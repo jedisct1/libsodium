@@ -1,4 +1,4 @@
-#include "sodium/randombytes.h"
+#include "randombytes.h"
 
 unsigned char x[65536];
 unsigned long long freq[256];
