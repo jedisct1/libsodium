@@ -7,26 +7,19 @@ libnacl_la_SOURCES = \
 	randombytes/devurandom.h \
 	crypto_core/hsalsa20/ref2/core_hsalsa20.c \
 	crypto_core/hsalsa20/ref2/crypto_core.h \
-	crypto_core/hsalsa20/ref2/crypto_core_hsalsa20.h \
 	crypto_core/salsa20/ref/core_salsa20.c \
 	crypto_core/salsa20/ref/crypto_core.h \
-	crypto_core/salsa20/ref/crypto_core_salsa20.h \
 	crypto_core/salsa2012/ref/core_salsa2012.c \
 	crypto_core/salsa2012/ref/crypto_core.h \
-	crypto_core/salsa2012/ref/crypto_core_salsa2012.h \
 	crypto_core/salsa208/ref/core_salsa208.c \
 	crypto_core/salsa208/ref/crypto_core.h \
-	crypto_core/salsa208/ref/crypto_core_salsa208.h \
 	crypto_scalarmult/curve25519/ref/base.c \
 	crypto_scalarmult/curve25519/ref/crypto_scalarmult.h \
-	crypto_scalarmult/curve25519/ref/crypto_scalarmult_curve25519.h \
 	crypto_scalarmult/curve25519/ref/smult.c \
 	crypto_hashblocks/sha256/ref/blocks_sha256.c \
 	crypto_hashblocks/sha256/ref/crypto_hashblocks.h \
-	crypto_hashblocks/sha256/ref/crypto_hashblocks_sha256.h \
 	crypto_hashblocks/sha512/ref/blocks_sha512.c \
 	crypto_hashblocks/sha512/ref/crypto_hashblocks.h \
-	crypto_hashblocks/sha512/ref/crypto_hashblocks_sha512.h \
 	crypto_hash/sha256/ref/crypto_hash.h \
 	crypto_hash/sha256/ref/hash_sha256.c \
 	crypto_hash/sha512/ref/crypto_hash.h \
