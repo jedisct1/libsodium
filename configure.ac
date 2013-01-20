@@ -1,5 +1,5 @@
 AC_PREREQ([2.61])
-AC_INIT([libnacl-ref],[0.0.1],[https://github.com/jedisct1/nacl-ref])
+AC_INIT([libnacl-ref],[0.0.1],[https://github.com/jedisct1/libnacl-ref])
 AC_CONFIG_MACRO_DIR([m4])
 AC_CONFIG_AUX_DIR([libltdl/config])
 AC_CONFIG_SRCDIR([src/libnacl-ref/randombytes/devurandom.c])
