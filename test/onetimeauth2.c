@@ -33,7 +33,7 @@ unsigned char a[16] = {
 ,0x2a,0x7d,0xfb,0x4b,0x3d,0x33,0x05,0xd9
 } ;
 
-main()
+int main(void)
 {
   printf("%d\n",crypto_onetimeauth_poly1305_verify(a,c,131,rs));
   return 0;

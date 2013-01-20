@@ -20,7 +20,7 @@ unsigned char c[16] = {
 
 unsigned char out[32];
 
-main()
+int main(void)
 {
   int i;
   crypto_core_hsalsa20(out,in,k,c);

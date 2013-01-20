@@ -41,7 +41,7 @@ unsigned char c[163] = {
 
 unsigned char m[163];
 
-main()
+int main(void)
 {
   int i;
   if (crypto_secretbox_xsalsa20poly1305_open(

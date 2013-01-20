@@ -10,7 +10,7 @@ unsigned char bobsk[32] = {
 
 unsigned char bobpk[32];
 
-main()
+int main(void)
 {
   int i;
   crypto_scalarmult_curve25519_base(bobpk,bobsk);

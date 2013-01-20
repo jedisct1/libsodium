@@ -24,7 +24,7 @@ unsigned char output[64 * 256 * 256];
 
 unsigned char h[32];
 
-main()
+int main(void)
 {
   int i;
   long long pos = 0;

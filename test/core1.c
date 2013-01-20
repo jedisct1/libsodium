@@ -17,7 +17,7 @@ unsigned char c[16] = {
 
 unsigned char firstkey[32];
 
-main()
+int main(void)
 {
   int i;
   crypto_core_hsalsa20(firstkey,zero,shared,c);

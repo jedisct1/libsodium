@@ -16,7 +16,7 @@ unsigned char nonce[24] = {
 
 unsigned char rs[32];
 
-main()
+int main(void)
 {
   int i;
   crypto_stream_xsalsa20(rs,32,nonce,firstkey);

@@ -22,7 +22,7 @@ unsigned char c[50] = {
 
 unsigned char a[32];
 
-main()
+int main(void)
 {
   int i;
   crypto_auth_hmacsha256(a,c,sizeof c,key);

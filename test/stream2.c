@@ -17,7 +17,7 @@ unsigned char output[4194304];
 
 unsigned char h[32];
 
-main()
+int main(void)
 {
   int i;
   crypto_stream_salsa20(output,4194304,noncesuffix,secondkey);

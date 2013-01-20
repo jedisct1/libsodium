@@ -27,7 +27,7 @@ unsigned char a[32] = {
 ,0x7b,0xb1,0x56,0xd3,0xd7,0xb3,0x0d,0x3f
 } ;
 
-main()
+int main(void)
 {
   printf("%d\n",crypto_auth_hmacsha256_verify(a,c,sizeof c,key));
   return 0;

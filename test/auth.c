@@ -7,7 +7,7 @@ unsigned char c[28] = "what do ya want for nothing?";
 
 unsigned char a[32];
 
-main()
+int main(void)
 {
   int i;
   crypto_auth_hmacsha512256(a,c,sizeof c,key);

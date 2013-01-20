@@ -8,7 +8,7 @@ unsigned char key[32];
 unsigned char c[10000];
 unsigned char a[32];
 
-main()
+int main(void)
 {
   int clen;
   int i;

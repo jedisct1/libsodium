@@ -40,7 +40,7 @@ unsigned char m[163] = {
 
 unsigned char c[163];
 
-main()
+int main(void)
 {
   int i;
   crypto_stream_xsalsa20_xor(c,m,163,nonce,firstkey);

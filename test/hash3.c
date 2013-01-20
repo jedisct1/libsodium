@@ -4,7 +4,7 @@
 unsigned char x[8] = "testing\n";
 unsigned char h[crypto_hash_sha512_BYTES];
 
-int main()
+int main(void)
 {
   int i;
   crypto_hash_sha512(h,x,sizeof x);

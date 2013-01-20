@@ -30,7 +30,7 @@ unsigned char c[131] = {
 
 unsigned char a[16];
 
-main()
+int main(void)
 {
   int i;
   crypto_onetimeauth_poly1305(a,c,131,rs);
