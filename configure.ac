@@ -3,7 +3,6 @@ AC_INIT([libnacl-ref],[0.0.1],[https://github.com/jedisct1/nacl-ref])
 AC_CONFIG_MACRO_DIR([m4])
 AC_CONFIG_AUX_DIR([libltdl/config])
 AC_CONFIG_SRCDIR([src/libnacl-ref/randombytes/devurandom.c])
-AC_CONFIG_HEADER([config.h])
 AC_CANONICAL_HOST
 AM_INIT_AUTOMAKE([1.9 dist-bzip2 tar-ustar])
 AM_MAINTAINER_MODE
