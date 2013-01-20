@@ -1,6 +1,7 @@
 AC_PREREQ([2.61])
-AC_INIT([nacl-ref],[0.0.1],[https://github.com/jedisct1/nacl-ref])
+AC_INIT([libnacl-ref],[0.0.1],[https://github.com/jedisct1/nacl-ref])
 AC_CONFIG_MACRO_DIR([m4])
+AC_CONFIG_AUX_DIR([libltdl/config])
 AC_CONFIG_SRCDIR([src/libnacl/PROTOTYPES.c])
 AC_CONFIG_HEADER([config.h])
 AC_CANONICAL_HOST
@@ -115,6 +116,9 @@ AX_CHECK_LINK_FLAG([-Wl,-z,relro], [LDFLAGS="$LDFLAGS -Wl,-z,relro"])
 AX_CHECK_LINK_FLAG([-Wl,-z,now], [LDFLAGS="$LDFLAGS -Wl,-z,now"])
 AX_CHECK_LINK_FLAG([-Wl,-z,noexecstack], [LDFLAGS="$LDFLAGS -Wl,-z,noexecstack"])
 
+LT_INIT
+AC_SUBST(LIBTOOL_DEPS)
+
 AC_ARG_VAR([AR], [path to the ar utility])
 AC_CHECK_TOOL([AR], [ar], [ar])
 
@@ -183,6 +187,12 @@ NACL_PATH=libnacl/build/${NACL_HOSTNAME}
 
 AC_SUBST([MAINT])
 AC_SUBST([NACL_PATH])
+
+dnl Libtool.
+
+LT_INIT([dlopen])
+LT_CONFIG_LTDL_DIR([libltdl])
+LTDL_INIT
 
 dnl Output.
 
