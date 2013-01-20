@@ -1,3 +1,3 @@
 
 SUBDIRS = \
-	libnacl
+	libnacl-ref

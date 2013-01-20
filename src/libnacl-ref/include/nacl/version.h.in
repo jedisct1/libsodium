@@ -1,0 +1,10 @@
+
+#ifndef __NACL_VERSION_H__
+#define __NACL_VERSION_H__
+
+#define NACL_VERSION_STRING "@VERSION@"
+
+#define NACL_VERSION_MAJOR 0
+#define NACL_VERSION_MINOR 1
+
+#endif

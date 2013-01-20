@@ -2,7 +2,7 @@ AC_PREREQ([2.61])
 AC_INIT([libnacl-ref],[0.0.1],[https://github.com/jedisct1/nacl-ref])
 AC_CONFIG_MACRO_DIR([m4])
 AC_CONFIG_AUX_DIR([libltdl/config])
-AC_CONFIG_SRCDIR([src/libnacl/PROTOTYPES.c])
+AC_CONFIG_SRCDIR([src/libnacl-ref/randombytes/devurandom.c])
 AC_CONFIG_HEADER([config.h])
 AC_CANONICAL_HOST
 AM_INIT_AUTOMAKE([1.9 dist-bzip2 tar-ustar])
@@ -203,12 +203,8 @@ AH_VERBATIM([NDEBUG], [/* Never ever ignore assertions */
 
 AC_CONFIG_FILES([Makefile
                  src/Makefile
-                 src/libnacl/Makefile
-                 src/libnacl/tests/Makefile
-                 src/libnacl/okcompilers/c
-                 src/libnacl/okcompilers/do])
+                 src/libnacl-ref/Makefile
+                 src/libnacl-ref/include/Makefile
+                 src/libnacl-ref/include/nacl/version.h])
 
 AC_OUTPUT
-
-chmod +x src/libnacl/do
-chmod +x src/libnacl/okcompilers/do

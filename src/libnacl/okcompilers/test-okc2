@@ -1,4 +1,0 @@
-#!/bin/sh
-PATH="/Users/j/pear/bin:/usr/local/bin:/usr/local/sbin:/opt/local/bin:/opt/local/sbin:/opt/openssh/bin:/opt/openssh/sbin:/usr/bin:/bin:/usr/sbin:/sbin:/usr/local/bin:/usr/X11/bin"
-export PATH
-g++ -O2 -fomit-frame-pointer "$@"

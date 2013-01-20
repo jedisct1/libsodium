@@ -38,7 +38,6 @@ m4/lt~obsolete.m4
 man/*.html
 man/Makefile.in
 missing
-src/libnacl/okcompilers/c
-src/libnacl/okcompilers/do
+src/libnacl-ref/include/version.h
 stamp-*
 testing
