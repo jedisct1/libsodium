@@ -69,9 +69,7 @@ libnacl_la_SOURCES = \
 
 libnacl_la_LDFLAGS = \
 	$(AM_LDFLAGS) \
-	-avoid-version \
 	-export-dynamic \
-	-module \
 	-no-undefined
 
 libnacl_la_CPPFLAGS = \
