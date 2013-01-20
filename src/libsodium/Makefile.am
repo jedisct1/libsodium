@@ -82,8 +82,7 @@ libsodium_la_LDFLAGS = \
 
 libsodium_la_CPPFLAGS = \
 	$(LTDLINCL) \
-	-I. \
-	-Iinclude/sodium
+	-I$(top_srcdir)/src/libsodium/include/sodium
 
 SUBDIRS = \
 	include
