@@ -4,7 +4,6 @@ AM_CPPFLAGS = \
 	-I$(top_srcdir)/src/libsodium/include/sodium
 
 TESTS_TARGETS = \
-	test-randombytes \
 	auth \
 	auth2 \
 	auth3 \
@@ -24,6 +23,7 @@ TESTS_TARGETS = \
 	onetimeauth \
 	onetimeauth2 \
 	onetimeauth7 \
+	randombytes \
 	scalarmult \
 	scalarmult2 \
 	scalarmult5 \
@@ -100,6 +100,9 @@ onetimeauth2_LDADD        = $(TESTS_LDADD)
 onetimeauth7_SOURCE       = onetimeauth7.c
 onetimeauth7_LDADD        = $(TESTS_LDADD)
 
+randombytes_SOURCE        = randombytes.c
+randombytes_LDADD         = $(TESTS_LDADD)
+
 scalarmult_SOURCE         = scalarmult.c
 scalarmult_LDADD          = $(TESTS_LDADD)
 
@@ -135,8 +138,5 @@ stream3_LDADD             = $(TESTS_LDADD)
 
 stream4_SOURCE            = stream4.c
 stream4_LDADD             = $(TESTS_LDADD)
-
-test_randombytes_SOURCE   = test-randombytes.c
-test_randombytes_LDADD    = $(TESTS_LDADD)
 
 verify: check
