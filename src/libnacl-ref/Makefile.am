@@ -74,6 +74,7 @@ libnacl_la_LDFLAGS = \
 
 libnacl_la_CPPFLAGS = \
 	$(LTDLINCL) \
+	-I. \
 	-Iinclude/nacl
 
 SUBDIRS = \
