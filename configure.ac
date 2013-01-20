@@ -181,9 +181,6 @@ AC_ARG_WITH(safecode,
   ])
 ])
 
-NACL_HOSTNAME="localhost"
-NACL_PATH=libnacl/build/${NACL_HOSTNAME}
-
 AC_SUBST([MAINT])
 AC_SUBST([NACL_PATH])
 
