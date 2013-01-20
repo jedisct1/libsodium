@@ -1,8 +1,8 @@
 AC_PREREQ([2.61])
-AC_INIT([libnacl-ref],[0.0.1],[https://github.com/jedisct1/libnacl-ref])
+AC_INIT([libsodium],[0.0.1],[https://github.com/jedisct1/libsodium])
 AC_CONFIG_MACRO_DIR([m4])
 AC_CONFIG_AUX_DIR([libltdl/config])
-AC_CONFIG_SRCDIR([src/libnacl-ref/randombytes/devurandom.c])
+AC_CONFIG_SRCDIR([src/libsodium/randombytes/devurandom.c])
 AC_CANONICAL_HOST
 AM_INIT_AUTOMAKE([1.9 dist-bzip2 tar-ustar])
 AM_MAINTAINER_MODE
@@ -182,7 +182,7 @@ AC_ARG_WITH(safecode,
 ])
 
 AC_SUBST([MAINT])
-AC_SUBST([NACL_PATH])
+AC_SUBST([SODIUM_PATH])
 
 dnl Libtool.
 
@@ -199,8 +199,8 @@ AH_VERBATIM([NDEBUG], [/* Never ever ignore assertions */
 
 AC_CONFIG_FILES([Makefile
                  src/Makefile
-                 src/libnacl-ref/Makefile
-                 src/libnacl-ref/include/Makefile
-                 src/libnacl-ref/include/nacl/version.h])
+                 src/libsodium/Makefile
+                 src/libsodium/include/Makefile
+                 src/libsodium/include/sodium/version.h])
 
 AC_OUTPUT

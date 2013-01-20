@@ -1,8 +1,8 @@
 
 lib_LTLIBRARIES = \
-	libnacl.la
+	libsodium.la
 
-libnacl_la_SOURCES = \
+libsodium_la_SOURCES = \
 	randombytes/devurandom.c \
 	randombytes/devurandom.h \
 	crypto_core/hsalsa20/ref2/core_hsalsa20.c \
@@ -67,15 +67,15 @@ libnacl_la_SOURCES = \
 	crypto_box/curve25519xsalsa20poly1305/ref/crypto_box.h \
 	crypto_box/curve25519xsalsa20poly1305/ref/keypair_curve25519xsalsa20poly1305.c
 
-libnacl_la_LDFLAGS = \
+libsodium_la_LDFLAGS = \
 	$(AM_LDFLAGS) \
 	-export-dynamic \
 	-no-undefined
 
-libnacl_la_CPPFLAGS = \
+libsodium_la_CPPFLAGS = \
 	$(LTDLINCL) \
 	-I. \
-	-Iinclude/nacl
+	-Iinclude/sodium
 
 SUBDIRS = \
 	include
