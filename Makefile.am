@@ -6,4 +6,5 @@ EXTRA_DIST = \
 	autogen.sh
 
 SUBDIRS = \
-	src
+	src \
+	test
