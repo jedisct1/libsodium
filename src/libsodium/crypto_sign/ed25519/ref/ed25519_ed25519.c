@@ -6,6 +6,8 @@
 
 #include "ge25519.h"
 
+extern const ge25519 ge25519_base;
+
 static void get_hram(unsigned char *hram, const unsigned char *sm, const unsigned char *pk, unsigned char *playground, unsigned long long smlen)
 {
   unsigned long long i;

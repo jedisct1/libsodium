@@ -20,8 +20,6 @@ typedef struct
   fe25519 t;
 } ge25519;
 
-const ge25519 ge25519_base;
-
 int ge25519_unpackneg_vartime(ge25519 *r, const unsigned char p[32]);
 
 void ge25519_pack(unsigned char r[32], const ge25519 *p);
