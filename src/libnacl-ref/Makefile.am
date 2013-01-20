@@ -50,6 +50,7 @@ libnacl_la_SOURCES = \
 	crypto_onetimeauth/poly1305/ref/auth_poly1305.c \
 	crypto_onetimeauth/poly1305/ref/crypto_onetimeauth.h \
 	crypto_onetimeauth/poly1305/ref/verify_poly1305.c \
+	crypto_sign/edwards25519sha512batch/ref/api.h \
 	crypto_sign/edwards25519sha512batch/ref/crypto_sign.h \
 	crypto_sign/edwards25519sha512batch/ref/fe25519.h \
 	crypto_sign/edwards25519sha512batch/ref/fe25519_edwards25519sha512batch.c \
