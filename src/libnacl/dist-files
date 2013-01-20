@@ -305,7 +305,6 @@
 ./okcompilers/test9.c
 ./OPERATIONS
 ./PROTOTYPES.c
-./PROTOTYPES.cpp
 ./randombytes/devurandom.c
 ./randombytes/devurandom.h
 ./randombytes/do
