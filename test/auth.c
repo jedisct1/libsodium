@@ -1,9 +1,6 @@
 #include <stdio.h>
 #include "crypto_auth_hmacsha512256.h"
 
-#define TEST_NAME "auth"
-#include "cmptest.h"
-
 /* "Test Case 2" from RFC 4231 */
 unsigned char key[32] = "Jefe";
 unsigned char c[28] = "what do ya want for nothing?";
