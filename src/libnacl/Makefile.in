@@ -1,0 +1,44 @@
+
+all: .done
+
+.done:
+	./do
+	touch .done
+
+test:
+	cd tests && $(MAKE) $(AM_MAKEFLAGS) test
+
+clean:
+	cd tests && $(MAKE) $(AM_MAKEFLAGS) clean
+	-$(RM) .done
+	-$(RM) -r okcompilers/bin
+	-$(RM) -r okcompilers/oldbin
+	-$(RM) -r build/*
+
+distclean: clean
+	cd tests && $(MAKE) $(AM_MAKEFLAGS) distclean
+	-$(RM) okcompilers/c
+	-$(RM) okcompilers/do
+
+install:
+install-data:
+install-exec:
+uninstall:
+install-dvi:
+install-html:
+install-info:
+install-ps:
+install-pdf:
+installdirs:
+check:
+installcheck:
+mostlyclean: clean
+maintainer-clean: distclean
+
+distdir:
+	while read dir  ; do @MKDIR_P@ "$(distdir)/$$dir" ; done < dist-dirs
+	while read file ; do @INSTALL@ "$$file" "$(distdir)/$$file" ; done < dist-files
+
+EMPTY_AUTOMAKE_TARGETS = dvi pdf ps info html tags ctags
+.PHONY: $(EMPTY_AUTOMAKE_TARGETS)
+$(EMPTY_AUTOMAKE_TARGETS):
