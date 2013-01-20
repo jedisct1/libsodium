@@ -38,6 +38,6 @@ m4/lt~obsolete.m4
 man/*.html
 man/Makefile.in
 missing
-src/libnacl-ref/include/version.h
+src/libnacl-ref/include/nacl/version.h
 stamp-*
 testing
