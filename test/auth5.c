@@ -4,6 +4,9 @@
 #include "randombytes.h"
 #include "windows/windows-quirks.h"
 
+#define TEST_NAME "auth5"
+#include "cmptest.h"
+
 unsigned char key[32];
 unsigned char c[10000];
 unsigned char a[32];

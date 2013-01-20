@@ -4,6 +4,9 @@
 #include "randombytes.h"
 #include "windows/windows-quirks.h"
 
+#define TEST_NAME "box8"
+#include "cmptest.h"
+
 unsigned char alicesk[crypto_box_SECRETKEYBYTES];
 unsigned char alicepk[crypto_box_PUBLICKEYBYTES];
 unsigned char bobsk[crypto_box_SECRETKEYBYTES];

@@ -2,6 +2,9 @@
 #include "crypto_box.h"
 #include "randombytes.h"
 
+#define TEST_NAME "box7"
+#include "cmptest.h"
+
 unsigned char alicesk[crypto_box_SECRETKEYBYTES];
 unsigned char alicepk[crypto_box_PUBLICKEYBYTES];
 unsigned char bobsk[crypto_box_SECRETKEYBYTES];

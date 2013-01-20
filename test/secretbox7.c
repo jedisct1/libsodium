@@ -2,6 +2,9 @@
 #include "crypto_secretbox.h"
 #include "randombytes.h"
 
+#define TEST_NAME "secretbox7"
+#include "cmptest.h"
+
 unsigned char k[crypto_secretbox_KEYBYTES];
 unsigned char n[crypto_secretbox_NONCEBYTES];
 unsigned char m[10000];

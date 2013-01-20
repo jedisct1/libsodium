@@ -1,6 +1,9 @@
 #include <stdio.h>
 #include "crypto_core_salsa20.h"
 
+#define TEST_NAME "core4"
+#include "cmptest.h"
+
 unsigned char k[32] = {
    1,  2,  3,  4,  5,  6,  7,  8
 ,  9, 10, 11, 12, 13, 14, 15, 16

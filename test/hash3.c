@@ -1,6 +1,9 @@
 #include <stdio.h>
 #include "crypto_hash_sha512.h"
 
+#define TEST_NAME "hash3"
+#include "cmptest.h"
+
 unsigned char x[8] = "testing\n";
 unsigned char h[crypto_hash_sha512_BYTES];
 
