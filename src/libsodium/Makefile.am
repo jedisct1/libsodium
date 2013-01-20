@@ -65,7 +65,15 @@ libsodium_la_SOURCES = \
 	crypto_box/curve25519xsalsa20poly1305/ref/before_curve25519xsalsa20poly1305.c \
 	crypto_box/curve25519xsalsa20poly1305/ref/box_curve25519xsalsa20poly1305.c \
 	crypto_box/curve25519xsalsa20poly1305/ref/crypto_box.h \
-	crypto_box/curve25519xsalsa20poly1305/ref/keypair_curve25519xsalsa20poly1305.c
+	crypto_box/curve25519xsalsa20poly1305/ref/keypair_curve25519xsalsa20poly1305.c \
+	crypto_sign/ed25519/ref/crypto_sign.h \
+	crypto_sign/ed25519/ref/ed25519_ed25519.c \
+	crypto_sign/ed25519/ref/fe25519.h \
+	crypto_sign/ed25519/ref/fe25519_ed25519.c \
+	crypto_sign/ed25519/ref/ge25519.h \
+	crypto_sign/ed25519/ref/ge25519_ed25519.c \
+	crypto_sign/ed25519/ref/sc25519.h \
+	crypto_sign/ed25519/ref/sc25519_ed25519.c
 
 libsodium_la_LDFLAGS = \
 	$(AM_LDFLAGS) \
