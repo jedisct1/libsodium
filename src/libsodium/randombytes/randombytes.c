@@ -16,6 +16,14 @@ static randombytes_implementation implementation = {
     .randombytes_close = salsa20_random_close
 };
 
+int
+randombytes_set_implementation(randombytes_implementation *impl)
+{
+    implementation = *impl;
+
+    return 0;
+}
+
 const char *
 randombytes_implementation_name(void)
 {
