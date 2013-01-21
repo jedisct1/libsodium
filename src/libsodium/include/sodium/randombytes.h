@@ -1,8 +1,3 @@
-/*
-randombytes/devurandom.h version 20080713
-D. J. Bernstein
-Public domain.
-*/
 
 #ifndef randombytes_devurandom_H
 #define randombytes_devurandom_H
@@ -18,7 +13,7 @@ extern void randombytes(unsigned char *,unsigned long long);
 #endif
 
 #ifndef randombytes_implementation
-#define randombytes_implementation "devurandom"
+#define randombytes_implementation "salsa20_random"
 #endif
 
 #endif

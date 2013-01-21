@@ -1,13 +1,12 @@
 
 lib_LTLIBRARIES = \
-	libsodium.la
-
-noinst_LTLIBRARIES = \
+	libsodium.la \
 	libsodium-randombytes.la
 
 libsodium_randombytes_la_SOURCES = \
-	randombytes/devurandom.c \
-	randombytes/devurandom.h
+	randombytes/randombytes.c \
+	randombytes/salsa20_random.c \
+	randombytes/salsa20_random.h
 
 libsodium_la_SOURCES = \
 	crypto_core/hsalsa20/ref2/core_hsalsa20.c \
@@ -90,6 +89,15 @@ libsodium_la_LDFLAGS = \
 	-version-info $(SODIUM_LIBRARY_VERSION)
 
 libsodium_la_CPPFLAGS = \
+	$(LTDLINCL) \
+	-I$(top_srcdir)/src/libsodium/include/sodium
+
+libsodium_randombytes_la_LDFLAGS = \
+	$(AM_LDFLAGS) \
+	-export-dynamic \
+	-version-info $(SODIUM_LIBRARY_VERSION)
+
+libsodium_randombytes_la_CPPFLAGS = \
 	$(LTDLINCL) \
 	-I$(top_srcdir)/src/libsodium/include/sodium
 
