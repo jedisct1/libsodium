@@ -5,7 +5,7 @@
 #include <stdio.h>
 
 #define TEST_NAME_RES TEST_NAME ".res"
-#define TEST_NAME_OUT TEST_NAME ".out"
+#define TEST_NAME_OUT TEST_NAME ".exp"
 
 FILE *fp_res;
 int   xmain(void);
