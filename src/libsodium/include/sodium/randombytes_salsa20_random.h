@@ -1,6 +1,6 @@
 
-#ifndef __SALSA20_RANDOM_H__
-#define __SALSA20_RANDOM_H__ 1
+#ifndef randombytes_salsa20_random_H
+#define randombytes_salsa20_random_H
 
 #include <stdint.h>
 #include <stdlib.h>
