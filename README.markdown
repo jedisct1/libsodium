@@ -7,8 +7,8 @@ decryption, signatures, etc.
 NaCl's goal is to provide all of the core operations needed to build
 higher-level cryptographic tools.
 
-Sodium is a portable, cross-compilable, installable, packageable
-version of NaCl, binary-compatible with NaCl.
+Sodium is a portable, cross-compilable, installable, packageable,
+API-compatible version of NaCl.
 
 ## Portable
 
