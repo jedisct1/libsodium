@@ -1,5 +1,6 @@
 
 SODIUM_EXPORT = \
+	sodium.h \
 	sodium/crypto_auth.h \
 	sodium/crypto_auth_hmacsha256.h \
 	sodium/crypto_auth_hmacsha512256.h \
