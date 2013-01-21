@@ -68,3 +68,33 @@ A convenience header includes everything you need to use the library:
 
     #include <sodium.h>
 
+Sodium also provides helper functions to generate random numbers,
+leveraging `/dev/urandom` or `/dev/random` on *nix and the cryptographic
+service provider on Windows. The interface is similar to
+`arc4random(3)`. It is `fork(2)`-safe but not thread-safe.
+
+    uint32_t randombytes_random(void);
+
+Return a random 32-bit unsigned value.
+
+    void     randombytes_stir(void);
+
+Generate a new key for the pseudorandom number generator. The file
+descriptor for the entropy source is kept open, so that the generator
+can be reseeded even in a chroot() jail.
+
+    uint32_t randombytes_uniform(const uint32_t upper_bound);
+
+Return a value between 0 and upper_bound using a uniform distribution.
+
+    void     randombytes_buf(void * const buf, const size_t size);
+
+Fill the buffer `buf` with `size` random bytes.
+
+    int      randombytes_close(void);
+
+Close the file descriptor or the handle for the cryptographic service
+provider.
+
+A custom implementation of these functions can be registered with
+`randombytes_set_implementation()`.
