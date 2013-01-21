@@ -12,6 +12,20 @@ AC_SUBST(VERSION)
 ISODATE=`date +%Y-%m-%d`
 AC_SUBST(ISODATE)
 
+SODIUM_LIBRARY_VERSION=0:0:0
+#                      | | |
+#               +------+ | +---+
+#               |        |     |
+#            current:revision:age
+#               |        |     |
+#               |        |     +- increment if interfaces have been added
+#               |        |        set to zero if interfaces have been removed
+#               |        |        or changed
+#               |        +- increment if source code has changed
+#               |           set to zero if current is incremented
+#               +- increment if interfaces have been added, removed or changed
+AC_SUBST(SODIUM_LIBRARY_VERSION)
+
 LX_CFLAGS=${CFLAGS-NONE}
 AC_PROG_CC_C99
 AC_USE_SYSTEM_EXTENSIONS

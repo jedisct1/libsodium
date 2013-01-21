@@ -82,7 +82,8 @@ EXTRA_DIST = \
 libsodium_la_LDFLAGS = \
 	$(AM_LDFLAGS) \
 	-export-dynamic \
-	-no-undefined
+	-no-undefined \
+	-version-info $(SODIUM_LIBRARY_VERSION)
 
 libsodium_la_CPPFLAGS = \
 	$(LTDLINCL) \
