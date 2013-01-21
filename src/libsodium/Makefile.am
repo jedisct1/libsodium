@@ -1,12 +1,6 @@
 
 lib_LTLIBRARIES = \
-	libsodium.la \
-	libsodium-randombytes.la
-
-libsodium_randombytes_la_SOURCES = \
-	randombytes/randombytes.c \
-	randombytes/salsa20_random.c \
-	randombytes/salsa20_random.h
+	libsodium.la
 
 libsodium_la_SOURCES = \
 	crypto_core/hsalsa20/ref2/core_hsalsa20.c \
@@ -78,6 +72,9 @@ libsodium_la_SOURCES = \
 	crypto_sign/ed25519/ref/ge25519_ed25519.c \
 	crypto_sign/ed25519/ref/sc25519.h \
 	crypto_sign/ed25519/ref/sc25519_ed25519.c \
+	randombytes/randombytes.c \
+	randombytes/salsa20_random.c \
+	randombytes/salsa20_random.h \
 	version.c
 
 EXTRA_DIST = \
