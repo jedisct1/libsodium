@@ -2,38 +2,38 @@
 EXTRA_DIST = \
 	cmptest.h \
 	windows/windows-quirks.h \
-	auth.expected \
-	auth2.expected \
-	auth3.expected \
-	auth5.expected \
-	box.expected \
-	box2.expected \
-	box7.expected \
-	box8.expected \
-	core1.expected \
-	core2.expected \
-	core3.expected \
-	core4.expected \
-	core5.expected \
-	core6.expected \
-	hash.expected \
-	hash2.expected \
-	hash3.expected \
-	onetimeauth.expected \
-	onetimeauth2.expected \
-	onetimeauth7.expected \
-	scalarmult.expected \
-	scalarmult2.expected \
-	scalarmult5.expected \
-	scalarmult6.expected \
-	secretbox.expected \
-	secretbox2.expected \
-	secretbox7.expected \
-	secretbox8.expected \
-	stream.expected \
-	stream2.expected \
-	stream3.expected \
-	stream4.expected
+	auth.exp \
+	auth2.exp \
+	auth3.exp \
+	auth5.exp \
+	box.exp \
+	box2.exp \
+	box7.exp \
+	box8.exp \
+	core1.exp \
+	core2.exp \
+	core3.exp \
+	core4.exp \
+	core5.exp \
+	core6.exp \
+	hash.exp \
+	hash2.exp \
+	hash3.exp \
+	onetimeauth.exp \
+	onetimeauth2.exp \
+	onetimeauth7.exp \
+	scalarmult.exp \
+	scalarmult2.exp \
+	scalarmult5.exp \
+	scalarmult6.exp \
+	secretbox.exp \
+	secretbox2.exp \
+	secretbox7.exp \
+	secretbox8.exp \
+	stream.exp \
+	stream2.exp \
+	stream3.exp \
+	stream4.exp
 
 AM_CPPFLAGS = \
 	-I$(top_srcdir)/src/libsodium/include \
