@@ -21,8 +21,6 @@
 # include <Wincrypt.h>
 #endif
 
-#define COMPILER_ASSERT(X) (void) sizeof(char[(X) ? 1 : -1])
-
 typedef struct SysRandom_ {
 #ifdef _WIN32
     HCRYPTPROV    hcrypt_prov;
