@@ -36,7 +36,7 @@ Installation is trivial, and both compilation and testing can take
 advantage of multiple CPU cores:
 
     ./configure
-    make check && make install
+    make && make check && make install
 
 ## Comparison with vanilla NaCl
 
