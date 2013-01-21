@@ -1,10 +1,14 @@
 
-#ifndef __NACL_VERSION_H__
-#define __NACL_VERSION_H__
+#ifndef __SODIUM_VERSION_H__
+#define __SODIUM_VERSION_H__
 
-#define NACL_VERSION_STRING "@VERSION@"
+#define SODIUM_VERSION_STRING "@VERSION@"
 
-#define NACL_VERSION_MAJOR 0
-#define NACL_VERSION_MINOR 1
+#define SODIUM_VERSION_MAJOR 0
+#define SODIUM_VERSION_MINOR 1
+
+const char *sodium_version_string(void);
+const int   sodium_version_major(void);
+const int   sodium_version_minor(void);
 
 #endif
