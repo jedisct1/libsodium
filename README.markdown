@@ -16,7 +16,7 @@ In order to pick the fastest working implementation of each primitive,
 NaCl performs tests and benchmarks at compile-time. Unfortunately, the
 resulting library is not garanteed to work on different hardware.
 
-Sodium currently only ships portable reference implementations.
+Sodium only ships portable reference implementations.
 
 Optimized implementations (including NEON optimizations) will eventually
 be supported, but tests and benchmarks will be performed at run-time,
