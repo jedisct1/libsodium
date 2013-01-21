@@ -42,6 +42,9 @@ advantage of multiple CPU cores:
 
 ## Comparison with vanilla NaCl
 
+Sodium does not ship C++ bindings. These might be part of a distinct
+package.
+
 The default public-key signature system in NaCl was a prototype that
 shouldn't be used any more.
 
