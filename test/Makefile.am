@@ -77,7 +77,7 @@ check_PROGRAMS = $(TESTS_TARGETS)
 
 TESTS = $(TESTS_TARGETS)
 
-TESTS_LDADD = $(top_srcdir)/src/libsodium/libsodium.la
+TESTS_LDADD = ${top_builddir}/src/libsodium/libsodium.la
 
 auth_SOURCE               = cmptest.h auth.c
 auth_LDADD                = $(TESTS_LDADD)
