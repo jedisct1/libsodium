@@ -36,7 +36,7 @@ SODIUM_EXPORT = \
 	sodium/crypto_verify_16.h \
 	sodium/crypto_verify_32.h \
 	sodium/randombytes.h \
-	sodium/salsa20_random.h \
+	sodium/randombytes_salsa20_random.h \
 	sodium/version.h
 
 EXTRA_SRC = $(SODIUM_EXPORT) \

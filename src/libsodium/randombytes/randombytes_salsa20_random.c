@@ -17,7 +17,7 @@
 #include "crypto_core_salsa20.h"
 #include "crypto_hash_sha256.h"
 #include "crypto_stream_salsa20.h"
-#include "salsa20_random.h"
+#include "randombytes_salsa20_random.h"
 
 #ifdef _WIN32
 # include <Windows.h>

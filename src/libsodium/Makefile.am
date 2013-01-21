@@ -73,8 +73,8 @@ libsodium_la_SOURCES = \
 	crypto_sign/ed25519/ref/sc25519.h \
 	crypto_sign/ed25519/ref/sc25519_ed25519.c \
 	randombytes/randombytes.c \
-	randombytes/salsa20_random.c \
-	randombytes/salsa20_random.h \
+	randombytes/randombytes_salsa20_random.c \
+	randombytes/randombytes_salsa20_random.h \
 	version.c
 
 EXTRA_DIST = \

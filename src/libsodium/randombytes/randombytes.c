@@ -5,7 +5,7 @@
 #include <limits.h>
 
 #include "randombytes.h"
-#include "salsa20_random.h"
+#include "randombytes_salsa20_random.h"
 
 static randombytes_implementation implementation = {
     .randombytes_implementation_name = salsa20_random_implementation_name,
