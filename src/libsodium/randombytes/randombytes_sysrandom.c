@@ -23,10 +23,10 @@
 
 typedef struct SysRandom_ {
 #ifdef _WIN32
-    HCRYPTPROV    hcrypt_prov;
+    HCRYPTPROV hcrypt_prov;
 #endif
-    int           random_data_source_fd;
-    _Bool         initialized;
+    int        random_data_source_fd;
+    _Bool      initialized;
 } SysRandom;
 
 static SysRandom stream = {
