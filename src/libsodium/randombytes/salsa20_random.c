@@ -306,3 +306,9 @@ salsa20_random_uniform(const uint32_t upper_bound)
     }
     return r % upper_bound;
 }
+
+const char *
+salsa20_random_implementation_name(void)
+{
+    return "salsa20_random";
+}
