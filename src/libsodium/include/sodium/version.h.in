@@ -7,8 +7,16 @@
 #define SODIUM_VERSION_MAJOR 0
 #define SODIUM_VERSION_MINOR 1
 
+#ifdef __cplusplus
+extern "C" {
+#endif
+
 const char *sodium_version_string(void);
 const int   sodium_version_major(void);
 const int   sodium_version_minor(void);
+
+#ifdef __cplusplus
+}
+#endif
 
 #endif
