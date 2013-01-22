@@ -1,0 +1,78 @@
+Designers
+=========
+
+crypto_sign/ed25519
+-------------------
+Daniel J. Bernstein
+Niels Duif
+Tanja Lange
+Peter Schwabe
+Bo-Yin Yang
+
+Implementors
+============
+
+crypto_core/hsalsa20
+--------------------
+Daniel J. Bernstein
+
+crypto_core/hsalsa20
+--------------------
+Daniel J. Bernstein
+
+crypto_core/salsa20
+-------------------
+Daniel J. Bernstein
+
+crypto_core/salsa2012
+---------------------
+Daniel J. Bernstein
+
+crypto_core/salsa208
+--------------------
+Daniel J. Bernstein
+
+crypto_hash/sha256
+------------------
+Daniel J. Bernstein (wrapper around crypto_hashblocks/sha256)
+
+crypto_hash/sha512
+------------------
+Daniel J. Bernstein (wrapper around crypto_hashblocks/sha512)
+
+crypto_hashblocks/sha256
+------------------------
+Daniel J. Bernstein
+
+crypto_hashblocks/sha512
+------------------------
+Daniel J. Bernstein
+
+crypto_scalarmult/curve25519
+----------------------------
+Matthew Dempsky (Mochi Media)
+
+crypto_sign/ed25519
+-------------------
+Daniel J. Bernstein
+Niels Duif
+Tanja Lange
+lead: Peter Schwabe
+Bo-Yin Yang
+
+crypto_stream/salsa20
+---------------------
+Daniel J. Bernstein
+
+crypto_stream/salsa2012
+-----------------------
+Daniel J. Bernstein
+
+crypto_stream/salsa208
+----------------------
+Daniel J. Bernstein
+
+crypto_stream/xsalsa20
+----------------------
+Daniel J. Bernstein
+
