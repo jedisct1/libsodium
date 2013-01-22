@@ -22,6 +22,7 @@
 #ifdef _WIN32
 # include <Windows.h>
 # include <Wincrypt.h>
+# include <sys/timeb.h>
 #endif
 
 #define SALSA20_RANDOM_BLOCK_SIZE crypto_core_salsa20_OUTPUTBYTES
