@@ -148,6 +148,10 @@ dnl Checks for typedefs, structures, and compiler characteristics.
 
 AC_C_BIGENDIAN
 
+dnl Checks for functions and headers
+
+AC_CHECK_FUNCS([SecureZeroMemory])
+
 dnl Switches.
 
 AC_ARG_ENABLE(pie,
