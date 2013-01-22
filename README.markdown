@@ -10,7 +10,7 @@ higher-level cryptographic tools.
 Sodium is a portable, cross-compilable, installable, packageable,
 API-compatible version of NaCl.
 
-## Portable
+## Portability
 
 In order to pick the fastest working implementation of each primitive,
 NaCl performs tests and benchmarks at compile-time. Unfortunately, the
@@ -25,7 +25,7 @@ so that the same binary package can still run everywhere.
 Sodium is tested on a variety of compilers and operating systems,
 including Windows, iOS and Android.
 
-## Installable
+## Installation
 
 Sodium is a shared library with a machine-independant set of
 headers, so that it can easily be used by 3rd party projects.
@@ -33,7 +33,10 @@ headers, so that it can easily be used by 3rd party projects.
 The library is built using autotools, making it easy to package.
 
 Installation is trivial, and both compilation and testing can take
-advantage of multiple CPU cores:
+advantage of multiple CPU cores.
+
+Download a [tarball of libsodium](http://download.dnscrypt.org/libsodium/),
+then follow the ritual:
 
     ./configure
     make && make check && make install
