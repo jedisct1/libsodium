@@ -12,6 +12,5 @@ fi
 
 $LIBTOOLIZE --ltdl && \
 aclocal && \
-autoheader && \
 automake --add-missing --force-missing --include-deps && \
 autoconf
