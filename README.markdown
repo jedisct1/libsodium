@@ -98,3 +98,8 @@ provider.
 
 A custom implementation of these functions can be registered with
 `randombytes_set_implementation()`.
+
+## Bindings for other languages
+
+* Ruby: [RbNaCl](https://github.com/cryptosphere/rbnacl)
+
