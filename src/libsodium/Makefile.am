@@ -89,14 +89,5 @@ libsodium_la_CPPFLAGS = \
 	$(LTDLINCL) \
 	-I$(top_srcdir)/src/libsodium/include/sodium
 
-libsodium_randombytes_la_LDFLAGS = \
-	$(AM_LDFLAGS) \
-	-export-dynamic \
-	-version-info $(SODIUM_LIBRARY_VERSION)
-
-libsodium_randombytes_la_CPPFLAGS = \
-	$(LTDLINCL) \
-	-I$(top_srcdir)/src/libsodium/include/sodium
-
 SUBDIRS = \
 	include
