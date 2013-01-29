@@ -5,7 +5,7 @@
 #define SODIUM_VERSION_STRING "@VERSION@"
 
 #define SODIUM_VERSION_MAJOR 0
-#define SODIUM_VERSION_MINOR 1
+#define SODIUM_VERSION_MINOR 2
 
 #ifdef __cplusplus
 extern "C" {
