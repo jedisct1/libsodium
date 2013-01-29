@@ -28,10 +28,10 @@ int crypto_sign_keypair(
   unsigned char seed[32];
 
   randombytes(seed, 32);
-  crypto_sign_publickey(pk, sk, seed);
+  crypto_sign_seed_keypair(pk, sk, seed);
 }
 
-int crypto_sign_publickey(
+int crypto_sign_seed_keypair(
     unsigned char *pk,
     unsigned char *sk,
     unsigned char *seed
