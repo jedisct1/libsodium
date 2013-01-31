@@ -1,4 +1,5 @@
-# libsodium
+![libsodium](https://raw.github.com/tarcieri/libsodium/logo/logo.png)
+============
 
 [NaCl](http://nacl.cr.yp.to/) (pronounced "salt") is a new easy-to-use
 high-speed software library for network communication, encryption,
