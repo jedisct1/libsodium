@@ -1,4 +1,4 @@
-![libsodium](https://raw.github.com/jedisct1/libsodium/logo.png)
+![libsodium](https://raw.github.com/jedisct1/libsodium/master/logo.png)
 ============
 
 [NaCl](http://nacl.cr.yp.to/) (pronounced "salt") is a new easy-to-use
