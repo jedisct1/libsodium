@@ -13,7 +13,7 @@ AC_SUBST(VERSION)
 ISODATE=`date +%Y-%m-%d`
 AC_SUBST(ISODATE)
 
-SODIUM_LIBRARY_VERSION=1:0:1
+SODIUM_LIBRARY_VERSION=1:1:1
 #                      | | |
 #               +------+ | +---+
 #               |        |     |
