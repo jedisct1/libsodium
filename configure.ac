@@ -59,9 +59,10 @@ AX_CHECK_COMPILE_FLAG([-fcatch-undefined-c99-behavior],
 AX_CHECK_COMPILE_FLAG([-fno-strict-aliasing], [CFLAGS="$CFLAGS -fno-strict-aliasing"])
 AX_CHECK_COMPILE_FLAG([-fno-strict-overflow], [CFLAGS="$CFLAGS -fno-strict-overflow"])
 
+LIBTOOL_EXTRA_FLAGS=-version-info $SODIUM_LIBRARY_VERSION
 case $host_os in
   cygwin* | mingw* | pw32* | cegcc*)
-    LIBTOOL_EXTRA_FLAGS=-module
+    LIBTOOL_EXTRA_FLAGS=-module -avoid-version
     AX_CHECK_LINK_FLAG([-Wl,--dynamicbase], [LDFLAGS="$LDFLAGS -Wl,--dynamicbase"])
     AX_CHECK_LINK_FLAG([-Wl,--nxcompat], [LDFLAGS="$LDFLAGS -Wl,--nxcompat"])
     AX_CHECK_COMPILE_FLAG([-fstack-protector-all], [
