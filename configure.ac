@@ -61,6 +61,7 @@ AX_CHECK_COMPILE_FLAG([-fno-strict-overflow], [CFLAGS="$CFLAGS -fno-strict-overf
 
 case $host_os in
   cygwin* | mingw* | pw32* | cegcc*)
+    LIBTOOL_EXTRA_FLAGS=-module
     AX_CHECK_LINK_FLAG([-Wl,--dynamicbase], [LDFLAGS="$LDFLAGS -Wl,--dynamicbase"])
     AX_CHECK_LINK_FLAG([-Wl,--nxcompat], [LDFLAGS="$LDFLAGS -Wl,--nxcompat"])
     AX_CHECK_COMPILE_FLAG([-fstack-protector-all], [
@@ -207,6 +208,7 @@ AC_ARG_WITH(safecode,
 
 AC_SUBST([MAINT])
 AC_SUBST([SODIUM_PATH])
+AC_SUBST([LIBTOOL_EXTRA_FLAGS])
 
 dnl Libtool.
 

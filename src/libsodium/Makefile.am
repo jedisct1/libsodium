@@ -84,7 +84,8 @@ libsodium_la_LDFLAGS = \
 	$(AM_LDFLAGS) \
 	-export-dynamic \
 	-version-info $(SODIUM_LIBRARY_VERSION) \
-	-no-undefined
+	-no-undefined \
+	$(LIBTOOL_EXTRA_FLAGS)
 
 libsodium_la_CPPFLAGS = \
 	$(LTDLINCL) \
