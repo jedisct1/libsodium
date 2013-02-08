@@ -30,6 +30,7 @@ EXTRA_DIST = \
 	secretbox2.exp \
 	secretbox7.exp \
 	secretbox8.exp \
+	shorthash.exp \
 	stream.exp \
 	stream2.exp \
 	stream3.exp \
@@ -68,6 +69,7 @@ TESTS_TARGETS = \
 	secretbox2 \
 	secretbox7 \
 	secretbox8 \
+	shorthash \
 	stream \
 	stream2 \
 	stream3 \
@@ -163,6 +165,9 @@ secretbox7_LDADD          = $(TESTS_LDADD)
 
 secretbox8_SOURCE         = cmptest.h secretbox8.c
 secretbox8_LDADD          = $(TESTS_LDADD)
+
+shorthash_SOURCE          = cmptest.h shorthash.c
+shorthash_LDADD           = $(TESTS_LDADD)
 
 stream_SOURCE             = cmptest.h stream.c
 stream_LDADD              = $(TESTS_LDADD)

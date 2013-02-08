@@ -71,8 +71,8 @@ test/secretbox
 test/secretbox2
 test/secretbox7
 test/secretbox8
+test/shorthash
 test/stream
 test/stream2
 test/stream3
 test/stream4
-
