@@ -71,7 +71,6 @@ test/default/secretbox
 test/default/secretbox2
 test/default/secretbox7
 test/default/secretbox8
-test/default/shorthash
 test/default/stream
 test/default/stream2
 test/default/stream3
