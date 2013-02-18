@@ -38,9 +38,13 @@ m4/lt~obsolete.m4
 man/*.html
 man/Makefile.in
 missing
+src/libsodium/curvecp/curvecpclient
+src/libsodium/curvecp/curvecpmakekey
+src/libsodium/curvecp/curvecpmessage
+src/libsodium/curvecp/curvecpprintkey
+src/libsodium/curvecp/curvecpserver
 src/libsodium/include/sodium/version.h
 stamp-*
-testing
 test/default/*.res
 test/default/*.trs
 test/default/auth
@@ -76,3 +80,4 @@ test/default/stream
 test/default/stream2
 test/default/stream3
 test/default/stream4
+testing
