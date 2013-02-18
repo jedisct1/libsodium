@@ -43,6 +43,7 @@ src/curvecp/curvecpmakekey
 src/curvecp/curvecpmessage
 src/curvecp/curvecpprintkey
 src/curvecp/curvecpserver
+src/libsodium/include/sodium/version.h
 stamp-*
 test/default/*.res
 test/default/*.trs
