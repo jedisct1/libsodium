@@ -179,22 +179,15 @@ AC_ARG_ENABLE(blocking-random,
 [AS_HELP_STRING(--enable-blocking-random,Use /dev/random instead of /dev/urandom)],
 [AC_DEFINE([USE_BLOCKING_RANDOM], [], [Use blocking random])])
 
-AC_ARG_ENABLE(debug,
-[AS_HELP_STRING(--enable-debug,For maintainers only - please do not use)],
-[
-  AS_IF([test "x$LX_CFLAGS" = "xNONE"], [
-    nxflags=""
-    for flag in `echo $CFLAGS`; do
-      case "$flag" in
-        -O*) ;;
-        -g*) ;;
-        *) AS_VAR_APPEND([nxflags], [" $flag"]) ;;
-      esac
-    done
-    CFLAGS="$nxflags -O0 -g3"
-  ])
-  CPPFLAGS="$CPPFLAGS -DDEBUG=1"
-])
+AC_ARG_ENABLE(blocking-random,
+[AS_HELP_STRING(--enable-blocking-random,Use /dev/random instead of /dev/urandom)],
+[AC_DEFINE([USE_BLOCKING_RANDOM], [], [Use blocking random])])
+
+curvecp=disabled
+AC_ARG_ENABLE(curvecp,
+[AS_HELP_STRING(--enable-curvecp,Compile and install curvecp tools)],
+[curvecp=enabled])
+AM_CONDITIONAL(CURVECP, test x$curvecp = xenabled)
 
 AC_ARG_WITH(safecode,
 [AS_HELP_STRING(--with-safecode,For maintainers only - please do not use)],

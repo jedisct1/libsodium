@@ -43,6 +43,9 @@ then follow the ritual:
     ./configure
     make && make check && make install
 
+[CurveCP](http://curvecp.org/) tools can be installed as well,
+provided that `--enable-curvecp` has been given to the `./configure` command.
+
 ## Comparison with vanilla NaCl
 
 Sodium does not ship C++ bindings. These might be part of a distinct

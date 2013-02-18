@@ -1,4 +1,8 @@
 
 SUBDIRS = \
-	libsodium \
+	libsodium
+
+if CURVECP
+SUBDIRS += \
 	curvecp
+endif
