@@ -1,0 +1,15 @@
+Example of use:
+
+  curvecpmakekey serverkey
+
+  curvecpprintkey serverkey > serverkey.hex
+
+  curvecpserver this.machine.name serverkey \
+    127.0.0.1 10000 31415926535897932384626433832795 \
+      curvecpmessage cat /usr/share/dict/words &
+
+  curvecpclient this.machine.name $(cat serverkey.hex) \
+    127.0.0.1 10000 31415926535897932384626433832795 \
+      curvecpmessage -c sh -c 'shasum5.12 <&6'
+
+  shasum5.12 < /usr/share/dict/words

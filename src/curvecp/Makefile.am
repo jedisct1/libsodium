@@ -28,5 +28,8 @@ curvecpserver_SOURCES = \
 curvecpmessage_SOURCES = \
 	curvecpmessage.c
 
+EXTRA_DIST = \
+	README
+
 SUBDIRS = \
 	libcurvecp
