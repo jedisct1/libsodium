@@ -93,5 +93,4 @@ libsodium_la_CPPFLAGS = \
 	-I$(top_srcdir)/src/libsodium/include/sodium
 
 SUBDIRS = \
-	curvecp \
 	include

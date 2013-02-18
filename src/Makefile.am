@@ -1,3 +1,4 @@
 
 SUBDIRS = \
-	libsodium
+	libsodium \
+	curvecp

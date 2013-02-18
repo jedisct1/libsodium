@@ -226,8 +226,9 @@ AH_VERBATIM([NDEBUG], [/* Never ever ignore assertions */
 
 AC_CONFIG_FILES([Makefile
                  src/Makefile
+                 src/curvecp/Makefile
+                 src/curvecp/libcurvecp/Makefile
                  src/libsodium/Makefile
-                 src/libsodium/curvecp/Makefile
                  src/libsodium/include/Makefile
                  src/libsodium/include/sodium/version.h
                  test/default/Makefile
