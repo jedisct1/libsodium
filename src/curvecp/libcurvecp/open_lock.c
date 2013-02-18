@@ -14,6 +14,8 @@ int open_lock(const char *fn)
   if (fd == -1) return -1;
   fcntl(fd,F_SETFD,1);
 #endif
+#ifdef F_LOCK
   if (lockf(fd,F_LOCK,0) == -1) { close(fd); return -1; }
+#endif
   return fd;
 }
