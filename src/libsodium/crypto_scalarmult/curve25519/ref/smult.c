@@ -248,13 +248,23 @@ int crypto_scalarmult(unsigned char *q,
   const unsigned char *n,
   const unsigned char *p)
 {
-  unsigned int work[96];
   unsigned char e[32];
   unsigned int i;
   for (i = 0;i < 32;++i) e[i] = n[i];
   e[0] &= 248;
   e[31] &= 127;
   e[31] |= 64;
+  return crypto_scalarmult_raw(q, e, p);
+}
+
+int crypto_scalarmult_raw(unsigned char *q,
+  const unsigned char *n,
+  const unsigned char *p)
+{
+  unsigned int work[96];
+  unsigned char e[32];
+  unsigned int i;
+  for (i = 0;i < 32;++i) e[i] = n[i];
   for (i = 0;i < 32;++i) work[i] = p[i];
   mainloop(work,e);
   recip(work + 32,work + 32);
