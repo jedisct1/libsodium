@@ -116,4 +116,4 @@ A custom implementation of these functions can be registered with
 A mailing-list is available to discuss libsodium.
 
 In order to join, just send a random mail to `sodium-subscribe` {at}
-`pureftpd`.`org`.
+`pureftpd`{dot}`org`.
