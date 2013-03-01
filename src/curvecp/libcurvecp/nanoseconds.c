@@ -7,7 +7,7 @@
 
 long long nanoseconds(void)
 {
-#ifdef CLOCK_REALTIME
+#if defined(CLOCK_REALTIME) && defined(HAVE_CLOCK_GETTIME)
   struct timespec t;
   if (clock_gettime(CLOCK_REALTIME,&t) != 0) return -1;
   return t.tv_sec * 1000000000LL + t.tv_nsec;

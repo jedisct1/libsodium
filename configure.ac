@@ -153,6 +153,8 @@ AC_C_BIGENDIAN
 
 dnl Checks for functions and headers
 
+AC_CHECK_FUNC(clock_gettime, , [AC_CHECK_LIB(rt, clock_gettime)])
+
 AC_CHECK_FUNCS([SecureZeroMemory])
 
 dnl Switches.
