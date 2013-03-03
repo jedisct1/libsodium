@@ -8,14 +8,12 @@
 extern "C" {
 #endif
 extern int crypto_scalarmult_curve25519_ref(unsigned char *,const unsigned char *,const unsigned char *);
-extern int crypto_scalarmult_curve25519_ref_raw(unsigned char *,const unsigned char *, const unsigned char *);
 extern int crypto_scalarmult_curve25519_ref_base(unsigned char *,const unsigned char *);
 #ifdef __cplusplus
 }
 #endif
 
 #define crypto_scalarmult_curve25519 crypto_scalarmult_curve25519_ref
-#define crypto_scalarmult_curve25519_raw crypto_scalarmult_curve25519_ref_raw
 #define crypto_scalarmult_curve25519_base crypto_scalarmult_curve25519_ref_base
 #define crypto_scalarmult_curve25519_BYTES crypto_scalarmult_curve25519_ref_BYTES
 #define crypto_scalarmult_curve25519_SCALARBYTES crypto_scalarmult_curve25519_ref_SCALARBYTES
