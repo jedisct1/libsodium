@@ -110,6 +110,7 @@ A custom implementation of these functions can be registered with
 ## Bindings for other languages
 
 * Ruby: [RbNaCl](https://github.com/cryptosphere/rbnacl)
+* Python: [PyNaCl](https://github.com/dstufft/pynacl)
 
 ## Mailing list
 
