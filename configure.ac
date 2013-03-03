@@ -1,5 +1,5 @@
 AC_PREREQ([2.61])
-AC_INIT([libsodium],[0.3],[https://github.com/jedisct1/libsodium])
+AC_INIT([libsodium],[0.4],[https://github.com/jedisct1/libsodium])
 AC_CONFIG_MACRO_DIR([m4])
 AC_CONFIG_AUX_DIR([libltdl/config])
 AC_CONFIG_SRCDIR([src/libsodium/version.c])
@@ -13,7 +13,7 @@ AC_SUBST(VERSION)
 ISODATE=`date +%Y-%m-%d`
 AC_SUBST(ISODATE)
 
-SODIUM_LIBRARY_VERSION=2:0:2
+SODIUM_LIBRARY_VERSION=3:0:0
 #                      | | |
 #               +------+ | +---+
 #               |        |     |
