@@ -15,7 +15,7 @@ API-compatible version of NaCl.
 
 In order to pick the fastest working implementation of each primitive,
 NaCl performs tests and benchmarks at compile-time. Unfortunately, the
-resulting library is not garanteed to work on different hardware.
+resulting library is not guaranteed to work on different hardware.
 
 Sodium only ships portable reference implementations.
 
@@ -28,7 +28,7 @@ including Windows, iOS and Android.
 
 ## Installation
 
-Sodium is a shared library with a machine-independant set of
+Sodium is a shared library with a machine-independent set of
 headers, so that it can easily be used by 3rd party projects.
 
 The library is built using autotools, making it easy to package.
