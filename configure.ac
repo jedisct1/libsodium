@@ -33,7 +33,7 @@ AC_USE_SYSTEM_EXTENSIONS
 CPPFLAGS="$CPPFLAGS -D_FORTIFY_SOURCE=2"
 
 AS_IF([test "$cross_compiling" != no],
-  AC_DEFINE(CROSS_COMPILING,,[define if you are cross-compiling])
+  AC_DEFINE(CROSS_COMPILING, [1], [define if you are cross-compiling])
 )
 
 AX_CHECK_COMPILE_FLAG([-fPIC], [
@@ -179,11 +179,11 @@ AC_ARG_ENABLE(ssp,
 
 AC_ARG_ENABLE(blocking-random,
 [AS_HELP_STRING(--enable-blocking-random,Use /dev/random instead of /dev/urandom)],
-[AC_DEFINE([USE_BLOCKING_RANDOM], [], [Use blocking random])])
+[AC_DEFINE([USE_BLOCKING_RANDOM], [1], [Use blocking random])])
 
 AC_ARG_ENABLE(blocking-random,
 [AS_HELP_STRING(--enable-blocking-random,Use /dev/random instead of /dev/urandom)],
-[AC_DEFINE([USE_BLOCKING_RANDOM], [], [Use blocking random])])
+[AC_DEFINE([USE_BLOCKING_RANDOM], [1], [Use blocking random])])
 
 curvecp=disabled
 AC_ARG_ENABLE(curvecp,
