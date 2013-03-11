@@ -42,7 +42,7 @@ static void fsum(felem *output, const felem *in) {
  * (note the order of the arguments!)
  */
 static void fdifference_backwards(felem *ioutput, const felem *iin) {
-  static const int64_t twotothe51 = (1l << 51);
+  static const int64_t twotothe51 = ((int64_t) 1) << 51;
   const int64_t *in = (const int64_t *) iin;
   int64_t *out = (int64_t *) ioutput;
 
