@@ -5,15 +5,15 @@
 #define SODIUM_VERSION_STRING "@VERSION@"
 
 #define SODIUM_VERSION_MAJOR 0
-#define SODIUM_VERSION_MINOR 3
+#define SODIUM_VERSION_MINOR 4
 
 #ifdef __cplusplus
 extern "C" {
 #endif
 
 const char *sodium_version_string(void);
-const int   sodium_version_major(void);
-const int   sodium_version_minor(void);
+int         sodium_version_major(void);
+int         sodium_version_minor(void);
 
 #ifdef __cplusplus
 }

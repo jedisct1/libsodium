@@ -7,13 +7,13 @@ sodium_version_string(void)
     return SODIUM_VERSION_STRING;
 }
 
-const int
+int
 sodium_version_major(void)
 {
     return SODIUM_VERSION_MAJOR;
 }
 
-const int
+int
 sodium_version_minor(void)
 {
     return SODIUM_VERSION_MINOR;
