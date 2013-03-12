@@ -52,10 +52,7 @@ AS_IF([test "$enable_pie" != "no"],[
   ])
 ])
 
-AX_CHECK_COMPILE_FLAG([-fcatch-undefined-c99-behavior],
-  [CFLAGS="$CFLAGS -fcatch-undefined-c99-behavior"],
-  [AX_CHECK_COMPILE_FLAG([-fwrapv], [CFLAGS="$CFLAGS -fwrapv"])]
-)
+AX_CHECK_COMPILE_FLAG([-fwrapv], [CFLAGS="$CFLAGS -fwrapv"])
 AX_CHECK_COMPILE_FLAG([-fno-strict-aliasing], [CFLAGS="$CFLAGS -fno-strict-aliasing"])
 AX_CHECK_COMPILE_FLAG([-fno-strict-overflow], [CFLAGS="$CFLAGS -fno-strict-overflow"])
 
