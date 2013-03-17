@@ -182,12 +182,6 @@ AC_ARG_ENABLE(blocking-random,
 [AS_HELP_STRING(--enable-blocking-random,Use /dev/random instead of /dev/urandom)],
 [AC_DEFINE([USE_BLOCKING_RANDOM], [1], [Use blocking random])])
 
-curvecp=disabled
-AC_ARG_ENABLE(curvecp,
-[AS_HELP_STRING(--enable-curvecp,Compile and install curvecp tools)],
-[curvecp=enabled])
-AM_CONDITIONAL(CURVECP, test x$curvecp = xenabled)
-
 AC_ARG_WITH(safecode,
 [AS_HELP_STRING(--with-safecode,For maintainers only - please do not use)],
 [AS_IF([test "x$withval" = "xyes"], [
@@ -218,8 +212,6 @@ AH_VERBATIM([NDEBUG], [/* Never ever ignore assertions */
 
 AC_CONFIG_FILES([Makefile
                  src/Makefile
-                 src/curvecp/Makefile
-                 src/curvecp/libcurvecp/Makefile
                  src/libsodium/Makefile
                  src/libsodium/include/Makefile
                  src/libsodium/include/sodium/version.h
