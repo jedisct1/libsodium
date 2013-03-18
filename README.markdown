@@ -109,6 +109,11 @@ A custom implementation of these functions can be registered with
 * Ruby: [RbNaCl](https://github.com/cryptosphere/rbnacl)
 * Python: [PyNaCl](https://github.com/dstufft/pynacl)
 
+## CurveCP
+
+CurveCP tools are part of a different project,
+[libchloride](https://github.com/jedisct1/libchloride)
+
 ## Mailing list
 
 A mailing-list is available to discuss libsodium.
