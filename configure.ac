@@ -148,6 +148,19 @@ dnl Checks for typedefs, structures, and compiler characteristics.
 
 AC_C_BIGENDIAN
 
+AC_MSG_CHECKING(for 128-bit arithmetic)
+AC_COMPILE_IFELSE([AC_LANG_PROGRAM([[
+#include <limits.h>
+]], [[
+typedef unsigned uint128_t __attribute__((mode(TI)));
+uint128_t x;
+(void) x;
+return sizeof(x) / CHAR_BIT != 16U
+]])],
+[AC_MSG_RESULT(yes)
+ AC_DEFINE([HAVE_TI_MODE], [1], [gcc TI mode is available])],
+[AC_MSG_RESULT(no)])
+
 dnl Checks for functions and headers
 
 AC_CHECK_FUNC(clock_gettime, , [AC_CHECK_LIB(rt, clock_gettime)])
