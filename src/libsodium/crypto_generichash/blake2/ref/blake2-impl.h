@@ -16,6 +16,8 @@
 
 #include <stdint.h>
 
+#include "utils.h"
+
 static inline uint32_t load32( const void *src )
 {
 #if defined(NATIVE_LITTLE_ENDIAN)
@@ -124,10 +126,7 @@ static inline uint64_t rotr64( const uint64_t w, const unsigned c )
 /* prevents compiler optimizing out memset() */
 static inline void secure_zero_memory( void *v, size_t n )
 {
-  volatile uint8_t *p = ( volatile uint8_t * )v;
-
-  while( n-- ) *p++ = 0;
+  sodium_memzero(v, n);
 }
 
 #endif
-
