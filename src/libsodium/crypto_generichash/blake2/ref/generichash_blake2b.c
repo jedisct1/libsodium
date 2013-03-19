@@ -14,7 +14,7 @@ crypto_generichash_blake2b(unsigned char *out, const unsigned char *in,
                            size_t keylen)
 {
     if (outlen <= 0U || outlen > BLAKE2B_OUTBYTES ||
-        keylen <= 0U || keylen > BLAKE2B_KEYBYTES ||
+        keylen > BLAKE2B_KEYBYTES ||
         inlen > UINT64_MAX) {
         return -1;
     }
