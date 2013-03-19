@@ -1,2 +1,0 @@
-#define CRYPTO_BYTES 16
-#define CRYPTO_KEYBYTES 32

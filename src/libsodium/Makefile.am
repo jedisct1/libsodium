@@ -31,7 +31,6 @@ libsodium_la_SOURCES = \
 	crypto_auth/hmacsha256/ref/crypto_auth.h \
 	crypto_auth/hmacsha256/ref/hmac_hmacsha256.c \
 	crypto_auth/hmacsha256/ref/verify_hmacsha256.c \
-	crypto_auth/hmacsha512256/ref/api.h \
 	crypto_auth/hmacsha512256/ref/crypto_auth.h \
 	crypto_auth/hmacsha512256/ref/hmac_hmacsha512256.c \
 	crypto_auth/hmacsha512256/ref/verify_hmacsha512256.c \
@@ -50,7 +49,6 @@ libsodium_la_SOURCES = \
 	crypto_onetimeauth/poly1305/ref/auth_poly1305.c \
 	crypto_onetimeauth/poly1305/ref/crypto_onetimeauth.h \
 	crypto_onetimeauth/poly1305/ref/verify_poly1305.c \
-	crypto_sign/edwards25519sha512batch/ref/api.h \
 	crypto_sign/edwards25519sha512batch/ref/crypto_sign.h \
 	crypto_sign/edwards25519sha512batch/ref/fe25519.h \
 	crypto_sign/edwards25519sha512batch/ref/fe25519_edwards25519sha512batch.c \

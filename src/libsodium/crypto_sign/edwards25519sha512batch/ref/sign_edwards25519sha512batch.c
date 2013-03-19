@@ -1,4 +1,3 @@
-#include "api.h"
 #include "crypto_sign.h"
 #include "crypto_hash_sha512.h"
 #include "randombytes.h"
