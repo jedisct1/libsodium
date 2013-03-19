@@ -11,6 +11,12 @@ libsodium_la_SOURCES = \
 	crypto_core/salsa2012/ref/crypto_core.h \
 	crypto_core/salsa208/ref/core_salsa208.c \
 	crypto_core/salsa208/ref/crypto_core.h \
+	crypto_generichash/blake2/ref/blake2-impl.h \
+	crypto_generichash/blake2/ref/blake2.h \
+	crypto_generichash/blake2/ref/blake2b-ref.c \
+	crypto_generichash/blake2/ref/blake2s-ref.c \
+	crypto_generichash/blake2/ref/crypto_generichash.h \
+	crypto_generichash/blake2/ref/generichash_blake2b.c \
 	crypto_scalarmult/curve25519/ref/base.c \
 	crypto_scalarmult/curve25519/ref/crypto_scalarmult.h \
 	crypto_scalarmult/curve25519/ref/smult.c \
