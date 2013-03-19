@@ -104,6 +104,15 @@ provider.
 A custom implementation of these functions can be registered with
 `randombytes_set_implementation()`.
 
+In addition, Sodium provides a function to securely wipe a memory
+region:
+
+    void     sodium_memzero(void * const pnt, const size_t size);
+    
+Warning: if a region has been allocated on the heap, you still have
+to make sure that it can't get swapped to disk, possibly using
+`mlock(2)`.
+
 ## Bindings for other languages
 
 * Ruby: [RbNaCl](https://github.com/cryptosphere/rbnacl)

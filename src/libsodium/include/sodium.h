@@ -33,6 +33,7 @@
 #include <sodium/crypto_verify_16.h>
 #include <sodium/crypto_verify_32.h>
 #include <sodium/randombytes.h>
+#include <sodium/utils.h>
 #include <sodium/version.h>
 
 #endif

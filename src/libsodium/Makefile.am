@@ -77,6 +77,7 @@ libsodium_la_SOURCES = \
 	randombytes/randombytes.c \
 	randombytes/randombytes_salsa20_random.c \
 	randombytes/randombytes_sysrandom.c \
+	utils.c \
 	version.c
 
 EXTRA_DIST = \

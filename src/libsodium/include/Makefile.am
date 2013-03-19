@@ -40,6 +40,7 @@ SODIUM_EXPORT = \
 	sodium/randombytes.h \
 	sodium/randombytes_salsa20_random.h \
 	sodium/randombytes_sysrandom.h \
+	sodium/utils.h \
 	sodium/version.h
 
 EXTRA_SRC = $(SODIUM_EXPORT) \
