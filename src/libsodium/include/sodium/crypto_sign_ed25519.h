@@ -6,7 +6,6 @@
 #define crypto_sign_ed25519_ref_BYTES 64
 
 #ifdef __cplusplus
-#include <string>
 extern "C" {
 #endif
 extern int crypto_sign_ed25519_ref(unsigned char *,unsigned long long *,const unsigned char *,unsigned long long,const unsigned char *);

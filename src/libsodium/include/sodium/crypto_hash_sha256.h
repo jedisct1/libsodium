@@ -3,7 +3,6 @@
 
 #define crypto_hash_sha256_ref_BYTES 32
 #ifdef __cplusplus
-#include <string>
 extern "C" {
 #endif
 extern int crypto_hash_sha256_ref(unsigned char *,const unsigned char *,unsigned long long);

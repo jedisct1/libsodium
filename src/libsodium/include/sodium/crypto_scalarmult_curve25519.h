@@ -4,7 +4,6 @@
 #define crypto_scalarmult_curve25519_ref_BYTES 32
 #define crypto_scalarmult_curve25519_ref_SCALARBYTES 32
 #ifdef __cplusplus
-#include <string>
 extern "C" {
 #endif
 extern int crypto_scalarmult_curve25519_ref(unsigned char *,const unsigned char *,const unsigned char *);

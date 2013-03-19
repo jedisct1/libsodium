@@ -6,7 +6,6 @@
 #define crypto_secretbox_xsalsa20poly1305_ref_ZEROBYTES 32
 #define crypto_secretbox_xsalsa20poly1305_ref_BOXZEROBYTES 16
 #ifdef __cplusplus
-#include <string>
 extern "C" {
 #endif
 extern int crypto_secretbox_xsalsa20poly1305_ref(unsigned char *,const unsigned char *,unsigned long long,const unsigned char *,const unsigned char *);

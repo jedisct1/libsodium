@@ -4,7 +4,6 @@
 #define crypto_hashblocks_sha512_ref_STATEBYTES 64
 #define crypto_hashblocks_sha512_ref_BLOCKBYTES 128
 #ifdef __cplusplus
-#include <string>
 extern "C" {
 #endif
 extern int crypto_hashblocks_sha512_ref(unsigned char *,const unsigned char *,unsigned long long);

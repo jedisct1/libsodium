@@ -3,7 +3,6 @@
 
 #define crypto_verify_16_ref_BYTES 16
 #ifdef __cplusplus
-#include <string>
 extern "C" {
 #endif
 extern int crypto_verify_16_ref(const unsigned char *,const unsigned char *);

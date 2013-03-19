@@ -4,7 +4,6 @@
 #define crypto_onetimeauth_poly1305_ref_BYTES 16
 #define crypto_onetimeauth_poly1305_ref_KEYBYTES 32
 #ifdef __cplusplus
-#include <string>
 extern "C" {
 #endif
 extern int crypto_onetimeauth_poly1305_ref(unsigned char *,const unsigned char *,unsigned long long,const unsigned char *);

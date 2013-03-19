@@ -5,7 +5,6 @@
 #define crypto_sign_edwards25519sha512batch_ref_PUBLICKEYBYTES 32
 #define crypto_sign_edwards25519sha512batch_ref_BYTES 64
 #ifdef __cplusplus
-#include <string>
 extern "C" {
 #endif
 extern int crypto_sign_edwards25519sha512batch_ref(unsigned char *,unsigned long long *,const unsigned char *,unsigned long long,const unsigned char *);

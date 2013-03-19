@@ -4,7 +4,6 @@
 #define crypto_hashblocks_sha256_ref_STATEBYTES 32
 #define crypto_hashblocks_sha256_ref_BLOCKBYTES 64
 #ifdef __cplusplus
-#include <string>
 extern "C" {
 #endif
 extern int crypto_hashblocks_sha256_ref(unsigned char *,const unsigned char *,unsigned long long);

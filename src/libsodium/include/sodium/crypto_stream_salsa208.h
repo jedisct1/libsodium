@@ -4,7 +4,6 @@
 #define crypto_stream_salsa208_ref_KEYBYTES 32
 #define crypto_stream_salsa208_ref_NONCEBYTES 8
 #ifdef __cplusplus
-#include <string>
 extern "C" {
 #endif
 extern int crypto_stream_salsa208_ref(unsigned char *,unsigned long long,const unsigned char *,const unsigned char *);

@@ -5,7 +5,6 @@
 #define crypto_stream_aes128ctr_portable_NONCEBYTES 16
 #define crypto_stream_aes128ctr_portable_BEFORENMBYTES 1408
 #ifdef __cplusplus
-#include <string>
 extern "C" {
 #endif
 extern int crypto_stream_aes128ctr_portable(unsigned char *,unsigned long long,const unsigned char *,const unsigned char *);

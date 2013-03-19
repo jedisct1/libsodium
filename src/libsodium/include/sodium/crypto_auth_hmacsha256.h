@@ -4,7 +4,6 @@
 #define crypto_auth_hmacsha256_ref_BYTES 32
 #define crypto_auth_hmacsha256_ref_KEYBYTES 32
 #ifdef __cplusplus
-#include <string>
 extern "C" {
 #endif
 extern int crypto_auth_hmacsha256_ref(unsigned char *,const unsigned char *,unsigned long long,const unsigned char *);

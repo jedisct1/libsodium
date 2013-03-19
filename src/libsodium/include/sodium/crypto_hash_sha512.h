@@ -3,7 +3,6 @@
 
 #define crypto_hash_sha512_ref_BYTES 64
 #ifdef __cplusplus
-#include <string>
 extern "C" {
 #endif
 extern int crypto_hash_sha512_ref(unsigned char *,const unsigned char *,unsigned long long);

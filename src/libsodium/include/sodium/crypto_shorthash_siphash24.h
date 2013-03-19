@@ -4,7 +4,6 @@
 #define crypto_shorthash_siphash24_ref_BYTES 8
 #define crypto_shorthash_siphash24_ref_KEYBYTES 16
 #ifdef __cplusplus
-#include <string>
 extern "C" {
 #endif
 extern int crypto_shorthash_siphash24_ref(unsigned char *,const unsigned char *,unsigned long long,const unsigned char *);

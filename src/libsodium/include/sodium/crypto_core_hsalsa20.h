@@ -6,7 +6,6 @@
 #define crypto_core_hsalsa20_ref2_KEYBYTES 32
 #define crypto_core_hsalsa20_ref2_CONSTBYTES 16
 #ifdef __cplusplus
-#include <string>
 extern "C" {
 #endif
 extern int crypto_core_hsalsa20_ref2(unsigned char *,const unsigned char *,const unsigned char *,const unsigned char *);
