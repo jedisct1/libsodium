@@ -76,3 +76,7 @@ crypto_stream/xsalsa20
 ----------------------
 Daniel J. Bernstein
 
+crypto_shorthash/siphash24
+--------------------------
+Jean-Philippe Aumasson
+Daniel J. Bernstein
