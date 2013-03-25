@@ -32,6 +32,8 @@ SODIUM_EXPORT = \
 	sodium/crypto_stream_salsa2012.h \
 	sodium/crypto_stream_salsa208.h \
 	sodium/crypto_stream_xsalsa20.h \
+	sodium/crypto_int32.h \
+	sodium/crypto_int64.h \
 	sodium/crypto_uint16.h \
 	sodium/crypto_uint32.h \
 	sodium/crypto_uint64.h \
