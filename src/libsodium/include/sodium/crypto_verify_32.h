@@ -5,7 +5,7 @@
 #ifdef __cplusplus
 extern "C" {
 #endif
-extern int crypto_verify_32_ref(const unsigned char *,const unsigned char *);
+SODIUM_EXPORT extern int crypto_verify_32_ref(const unsigned char *,const unsigned char *);
 #ifdef __cplusplus
 }
 #endif

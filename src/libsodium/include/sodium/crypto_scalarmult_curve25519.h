@@ -6,8 +6,8 @@
 #ifdef __cplusplus
 extern "C" {
 #endif
-extern int crypto_scalarmult_curve25519_ref(unsigned char *,const unsigned char *,const unsigned char *);
-extern int crypto_scalarmult_curve25519_ref_base(unsigned char *,const unsigned char *);
+SODIUM_EXPORT extern int crypto_scalarmult_curve25519_ref(unsigned char *,const unsigned char *,const unsigned char *);
+SODIUM_EXPORT extern int crypto_scalarmult_curve25519_ref_base(unsigned char *,const unsigned char *);
 #ifdef __cplusplus
 }
 #endif

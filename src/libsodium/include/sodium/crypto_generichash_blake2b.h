@@ -7,7 +7,7 @@ extern "C" {
 
 #include <stdlib.h>
     
-extern int crypto_generichash_blake2b_ref(unsigned char *out, const unsigned char *in,
+SODIUM_EXPORT extern int crypto_generichash_blake2b_ref(unsigned char *out, const unsigned char *in,
                                           const unsigned char *key,
                                           size_t outlen, unsigned long long inlen,
                                           size_t keylen);

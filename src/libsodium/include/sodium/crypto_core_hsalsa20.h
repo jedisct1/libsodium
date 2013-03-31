@@ -8,7 +8,7 @@
 #ifdef __cplusplus
 extern "C" {
 #endif
-extern int crypto_core_hsalsa20_ref2(unsigned char *,const unsigned char *,const unsigned char *,const unsigned char *);
+SODIUM_EXPORT extern int crypto_core_hsalsa20_ref2(unsigned char *,const unsigned char *,const unsigned char *,const unsigned char *);
 #ifdef __cplusplus
 }
 #endif

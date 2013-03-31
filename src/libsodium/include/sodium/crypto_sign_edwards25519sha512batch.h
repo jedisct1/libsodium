@@ -7,9 +7,9 @@
 #ifdef __cplusplus
 extern "C" {
 #endif
-extern int crypto_sign_edwards25519sha512batch_ref(unsigned char *,unsigned long long *,const unsigned char *,unsigned long long,const unsigned char *);
-extern int crypto_sign_edwards25519sha512batch_ref_open(unsigned char *,unsigned long long *,const unsigned char *,unsigned long long,const unsigned char *);
-extern int crypto_sign_edwards25519sha512batch_ref_keypair(unsigned char *,unsigned char *);
+SODIUM_EXPORT extern int crypto_sign_edwards25519sha512batch_ref(unsigned char *,unsigned long long *,const unsigned char *,unsigned long long,const unsigned char *);
+SODIUM_EXPORT extern int crypto_sign_edwards25519sha512batch_ref_open(unsigned char *,unsigned long long *,const unsigned char *,unsigned long long,const unsigned char *);
+SODIUM_EXPORT extern int crypto_sign_edwards25519sha512batch_ref_keypair(unsigned char *,unsigned char *);
 #ifdef __cplusplus
 }
 #endif
