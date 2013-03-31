@@ -117,6 +117,7 @@ to make sure that it can't get swapped to disk, possibly using
 
 * Ruby: [RbNaCl](https://github.com/cryptosphere/rbnacl)
 * Python: [PyNaCl](https://github.com/dstufft/pynacl)
+* Java: [Kalium](https://github.com/abstractj/kalium)
 
 ## CurveCP
 
