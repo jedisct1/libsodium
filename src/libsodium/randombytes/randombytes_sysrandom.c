@@ -9,6 +9,7 @@
 #ifndef _WIN32
 # include <poll.h>
 #endif
+#include <stdbool.h>
 #include <stdint.h>
 #include <stdlib.h>
 #include <string.h>
@@ -26,7 +27,7 @@ typedef struct SysRandom_ {
     HCRYPTPROV hcrypt_prov;
 #endif
     int        random_data_source_fd;
-    _Bool      initialized;
+    bool       initialized;
 } SysRandom;
 
 static SysRandom stream = {
