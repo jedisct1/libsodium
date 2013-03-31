@@ -1,11 +1,10 @@
 
+#include <assert.h>
 #include <limits.h>
 #include <stdint.h>
 
 #include "blake2.h"
 #include "crypto_generichash.h"
-
-#define COMPILER_ASSERT(X) (void) sizeof(char[(X) ? 1 : -1])
 
 int
 crypto_generichash_blake2b(unsigned char *out, const unsigned char *in,
@@ -18,8 +17,8 @@ crypto_generichash_blake2b(unsigned char *out, const unsigned char *in,
         inlen > UINT64_MAX) {
         return -1;
     }
-    COMPILER_ASSERT(outlen <= UINT8_MAX);
-    COMPILER_ASSERT(keylen <= UINT8_MAX);
+    assert(outlen <= UINT8_MAX);
+    assert(keylen <= UINT8_MAX);
 
     return blake2b((uint8_t *) out, in, key,
                    (uint8_t) outlen, inlen, (uint8_t) keylen);
