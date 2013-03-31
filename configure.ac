@@ -13,7 +13,10 @@ AC_SUBST(VERSION)
 ISODATE=`date +%Y-%m-%d`
 AC_SUBST(ISODATE)
 
-SODIUM_LIBRARY_VERSION=3:1:0
+SODIUM_LIBRARY_VERSION_MAJOR=4
+SODIUM_LIBRARY_VERSION_MINOR=0
+
+SODIUM_LIBRARY_VERSION=4:0:0
 #                      | | |
 #               +------+ | +---+
 #               |        |     |
@@ -25,6 +28,8 @@ SODIUM_LIBRARY_VERSION=3:1:0
 #               |        +- increment if source code has changed
 #               |           set to zero if current is incremented
 #               +- increment if interfaces have been added, removed or changed
+AC_SUBST(SODIUM_LIBRARY_VERSION_MAJOR)
+AC_SUBST(SODIUM_LIBRARY_VERSION_MINOR)
 AC_SUBST(SODIUM_LIBRARY_VERSION)
 
 LX_CFLAGS=${CFLAGS-NONE}

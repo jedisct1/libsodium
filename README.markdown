@@ -61,11 +61,11 @@ as `crypto_sign_edwards25519sha512batch*`.
 ## Additional features
 
 The Sodium library provides some convenience functions in order to retrieve
-the current version of the library:
+the current version of the package and of the shared library:
 
     const char *sodium_version_string(void);
-    const int   sodium_version_major(void);
-    const int   sodium_version_minor(void);
+    const int   sodium_library_version_major(void);
+    const int   sodium_library_version_minor(void);
 
 Headers are installed in `${prefix}/include/sodium`.
 
