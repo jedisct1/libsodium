@@ -1,6 +1,8 @@
 
 #include <sys/types.h>
+#ifndef _MSC_VER
 #include <sys/time.h>
+#endif
 
 #include <assert.h>
 #include <errno.h>
@@ -9,7 +11,10 @@
 #include <stdint.h>
 #include <stdlib.h>
 #include <string.h>
+#ifndef _MSC_VER
+#include <stdbool.h>
 #include <unistd.h>
+#endif
 
 #include "crypto_core_salsa20.h"
 #include "crypto_hash_sha256.h"
@@ -21,6 +26,12 @@
 # include <Windows.h>
 # include <Wincrypt.h>
 # include <sys/timeb.h>
+#endif
+
+#ifdef _MSC_VER
+# include <process.h>
+typedef int pid_t;
+#define getpid _getpid
 #endif
 
 #define SALSA20_RANDOM_BLOCK_SIZE crypto_core_salsa20_OUTPUTBYTES
@@ -38,13 +49,20 @@ typedef struct Salsa20Random_ {
     HCRYPTPROV    hcrypt_prov;
 #endif
     int           random_data_source_fd;
-    _Bool         initialized;
+    bool          initialized;
 } Salsa20Random;
 
 static Salsa20Random stream = {
-    .random_data_source_fd = -1,
-    .rnd32_outleft = (size_t) 0U,
-    .initialized = 0
+	/*.key = */ {0},
+	/* .rnd32 = */ {0},
+	/* .nonce = */ 0ULL,
+	/* .rnd32_outleft = */ 0U,
+	/* .pid = */ 0,
+#ifdef _WIN32
+	/* .hcrypt_prov = */ 0,
+#endif
+	/* .random_data_source_fd = */ -1,
+	/* initialized = */0
 };
 
 static uint64_t
@@ -188,7 +206,7 @@ salsa20_random_stir(void)
 static void
 salsa20_random_stir_if_needed(void)
 {
-    const pid_t pid = getpid();
+	const pid_t pid = getpid();
 
     if (stream.initialized == 0 || stream.pid != pid) {
         stream.pid = pid;
@@ -260,7 +278,7 @@ salsa20_random_buf(void * const buf, const size_t size)
 #ifdef ULONG_LONG_MAX
     assert(size <= ULONG_LONG_MAX);
 #endif
-    ret = crypto_stream_salsa20(buf, (unsigned long long) size,
+    ret = crypto_stream_salsa20((unsigned char *)buf, (unsigned long long) size,
                                 (unsigned char *) &stream.nonce,
                                 stream.key);
     assert(ret == 0);

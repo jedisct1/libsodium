@@ -2,6 +2,16 @@
 #ifndef sodium_H
 #define sodium_H
 
+#if defined(_MSC_VER) && !defined(SODIUM_STATIC)
+#	ifdef DLL_EXPORT
+#		define SODIUM_EXPORT __declspec(dllexport)
+#	else
+#		define SODIUM_EXPORT __declspec(dllimport) 
+#	endif
+#else
+#	define SODIUM_EXPORT
+#endif
+
 #include <sodium/crypto_auth.h>
 #include <sodium/crypto_auth_hmacsha256.h>
 #include <sodium/crypto_auth_hmacsha512256.h>

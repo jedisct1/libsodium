@@ -8,10 +8,10 @@
 #ifdef __cplusplus
 extern "C" {
 #endif
-extern int crypto_sign_ed25519_ref10(unsigned char *,unsigned long long *,const unsigned char *,unsigned long long,const unsigned char *);
-extern int crypto_sign_ed25519_ref10_open(unsigned char *,unsigned long long *,const unsigned char *,unsigned long long,const unsigned char *);
-extern int crypto_sign_ed25519_ref10_keypair(unsigned char *,unsigned char *);
-extern int crypto_sign_ed25519_ref10_seed_keypair(unsigned char *,unsigned char *,unsigned char *);
+SODIUM_EXPORT extern int crypto_sign_ed25519_ref10(unsigned char *,unsigned long long *,const unsigned char *,unsigned long long,const unsigned char *);
+SODIUM_EXPORT extern int crypto_sign_ed25519_ref10_open(unsigned char *,unsigned long long *,const unsigned char *,unsigned long long,const unsigned char *);
+SODIUM_EXPORT extern int crypto_sign_ed25519_ref10_keypair(unsigned char *,unsigned char *);
+SODIUM_EXPORT extern int crypto_sign_ed25519_ref10_seed_keypair(unsigned char *,unsigned char *,unsigned char *);
 #ifdef __cplusplus
 }
 #endif

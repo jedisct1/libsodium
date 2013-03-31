@@ -6,8 +6,8 @@
 #ifdef __cplusplus
 extern "C" {
 #endif
-extern int crypto_auth_hmacsha512256_ref(unsigned char *,const unsigned char *,unsigned long long,const unsigned char *);
-extern int crypto_auth_hmacsha512256_ref_verify(const unsigned char *,const unsigned char *,unsigned long long,const unsigned char *);
+SODIUM_EXPORT extern int crypto_auth_hmacsha512256_ref(unsigned char *,const unsigned char *,unsigned long long,const unsigned char *);
+SODIUM_EXPORT extern int crypto_auth_hmacsha512256_ref_verify(const unsigned char *,const unsigned char *,unsigned long long,const unsigned char *);
 #ifdef __cplusplus
 }
 #endif

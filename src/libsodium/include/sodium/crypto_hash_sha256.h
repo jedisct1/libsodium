@@ -5,7 +5,7 @@
 #ifdef __cplusplus
 extern "C" {
 #endif
-extern int crypto_hash_sha256_ref(unsigned char *,const unsigned char *,unsigned long long);
+SODIUM_EXPORT extern int crypto_hash_sha256_ref(unsigned char *,const unsigned char *,unsigned long long);
 #ifdef __cplusplus
 }
 #endif

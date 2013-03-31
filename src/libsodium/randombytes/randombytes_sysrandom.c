@@ -1,6 +1,8 @@
 
 #include <sys/types.h>
+#ifndef _MSC_VER
 #include <sys/time.h>
+#endif
 
 #include <assert.h>
 #include <errno.h>
@@ -12,13 +14,20 @@
 #include <stdint.h>
 #include <stdlib.h>
 #include <string.h>
+
+#ifndef _MSC_VER
+#include <stdbool.h>
 #include <unistd.h>
+#endif
 
 #include "randombytes_sysrandom.h"
 
 #ifdef _WIN32
 # include <Windows.h>
 # include <Wincrypt.h>
+# ifdef _MSC_VER
+#  pragma comment(lib, "advapi32.lib")
+# endif
 #endif
 
 typedef struct SysRandom_ {
@@ -26,12 +35,15 @@ typedef struct SysRandom_ {
     HCRYPTPROV hcrypt_prov;
 #endif
     int        random_data_source_fd;
-    _Bool      initialized;
+    bool       initialized;
 } SysRandom;
 
 static SysRandom stream = {
-    .random_data_source_fd = -1,
-    .initialized = 0
+#ifdef _WIN32
+	/* .hcrypt_prov = */ 0,
+#endif
+    /*.random_data_source_fd = */ -1,
+    /*.initialized = */ 0
 };
 
 #ifndef _WIN32
@@ -163,7 +175,7 @@ sysrandom_buf(void * const buf, const size_t size)
         abort();
     }
 #else
-    if (! CryptGenRandom(stream.hcrypt_prov, size, buf)) {
+    if (! CryptGenRandom(stream.hcrypt_prov, size, (BYTE *)buf)) {
         abort();
     }
 #endif

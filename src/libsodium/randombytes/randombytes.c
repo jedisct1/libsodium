@@ -8,12 +8,12 @@
 #include "randombytes_sysrandom.h"
 
 static randombytes_implementation implementation = {
-    .randombytes_implementation_name = sysrandom_implementation_name,
-    .randombytes_random = sysrandom,
-    .randombytes_stir = sysrandom_stir,
-    .randombytes_uniform = sysrandom_uniform,
-    .randombytes_buf = sysrandom_buf,
-    .randombytes_close = sysrandom_close
+    /*.randombytes_implementation_name =*/ sysrandom_implementation_name,
+    /*.randombytes_random =*/ sysrandom,
+    /*.randombytes_stir =*/ sysrandom_stir,
+    /*.randombytes_uniform =*/ sysrandom_uniform,
+    /*.randombytes_buf =*/ sysrandom_buf,
+    /*.randombytes_close =*/ sysrandom_close
 };
 
 int

@@ -18,8 +18,11 @@ crypto_generichash_blake2b(unsigned char *out, const unsigned char *in,
         inlen > UINT64_MAX) {
         return -1;
     }
+	/* The following is NOT a compile-time check! */
+	/*
     COMPILER_ASSERT(outlen <= UINT8_MAX);
     COMPILER_ASSERT(keylen <= UINT8_MAX);
+	*/
 
     return blake2b((uint8_t *) out, in, key,
                    (uint8_t) outlen, inlen, (uint8_t) keylen);

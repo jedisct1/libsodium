@@ -6,11 +6,11 @@
 #ifdef __cplusplus
 extern "C" {
 #endif
-extern int crypto_stream_salsa208_ref(unsigned char *,unsigned long long,const unsigned char *,const unsigned char *);
-extern int crypto_stream_salsa208_ref_xor(unsigned char *,const unsigned char *,unsigned long long,const unsigned char *,const unsigned char *);
-extern int crypto_stream_salsa208_ref_beforenm(unsigned char *,const unsigned char *);
-extern int crypto_stream_salsa208_ref_afternm(unsigned char *,unsigned long long,const unsigned char *,const unsigned char *);
-extern int crypto_stream_salsa208_ref_xor_afternm(unsigned char *,const unsigned char *,unsigned long long,const unsigned char *,const unsigned char *);
+SODIUM_EXPORT extern int crypto_stream_salsa208_ref(unsigned char *,unsigned long long,const unsigned char *,const unsigned char *);
+SODIUM_EXPORT extern int crypto_stream_salsa208_ref_xor(unsigned char *,const unsigned char *,unsigned long long,const unsigned char *,const unsigned char *);
+SODIUM_EXPORT extern int crypto_stream_salsa208_ref_beforenm(unsigned char *,const unsigned char *);
+SODIUM_EXPORT extern int crypto_stream_salsa208_ref_afternm(unsigned char *,unsigned long long,const unsigned char *,const unsigned char *);
+SODIUM_EXPORT extern int crypto_stream_salsa208_ref_xor_afternm(unsigned char *,const unsigned char *,unsigned long long,const unsigned char *,const unsigned char *);
 #ifdef __cplusplus
 }
 #endif

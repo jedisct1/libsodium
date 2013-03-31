@@ -6,7 +6,7 @@
 #ifdef __cplusplus
 extern "C" {
 #endif
-extern int crypto_shorthash_siphash24_ref(unsigned char *,const unsigned char *,unsigned long long,const unsigned char *);
+SODIUM_EXPORT extern int crypto_shorthash_siphash24_ref(unsigned char *,const unsigned char *,unsigned long long,const unsigned char *);
 #ifdef __cplusplus
 }
 #endif

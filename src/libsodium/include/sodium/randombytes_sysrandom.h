@@ -9,13 +9,13 @@
 extern "C" {
 #endif
 
-const char *sysrandom_implementation_name(void);
+SODIUM_EXPORT const char *sysrandom_implementation_name(void);
 
-uint32_t    sysrandom(void);
-void        sysrandom_stir(void);
-uint32_t    sysrandom_uniform(const uint32_t upper_bound);
-void        sysrandom_buf(void * const buf, const size_t size);
-int         sysrandom_close(void);
+SODIUM_EXPORT uint32_t    sysrandom(void);
+SODIUM_EXPORT void        sysrandom_stir(void);
+SODIUM_EXPORT uint32_t    sysrandom_uniform(const uint32_t upper_bound);
+SODIUM_EXPORT void        sysrandom_buf(void * const buf, const size_t size);
+SODIUM_EXPORT int         sysrandom_close(void);
 
 #ifdef __cplusplus
 }

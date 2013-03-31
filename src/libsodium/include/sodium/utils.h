@@ -8,7 +8,7 @@
 extern "C" {
 #endif
 
-void sodium_memzero(void * const pnt, const size_t size);
+SODIUM_EXPORT void sodium_memzero(void * const pnt, const size_t size);
 
 #ifdef __cplusplus
 }
