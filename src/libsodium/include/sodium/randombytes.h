@@ -8,7 +8,7 @@ extern "C" {
 
 #include <sys/types.h>
 
-#include <inttypes.h>
+#include <stdint.h>
 #include <stdio.h>
 
 typedef struct randombytes_implementation {
