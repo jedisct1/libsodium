@@ -21,6 +21,8 @@
 #include <sodium/crypto_scalarmult_curve25519.h>
 #include <sodium/crypto_secretbox.h>
 #include <sodium/crypto_secretbox_xsalsa20poly1305.h>
+#include <sodium/crypto_shorthash.h>
+#include <sodium/crypto_shorthash_siphash24.h>
 #include <sodium/crypto_sign.h>
 #include <sodium/crypto_sign_ed25519.h>
 #include <sodium/crypto_sign_edwards25519sha512batch.h>
