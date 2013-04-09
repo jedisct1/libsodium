@@ -131,9 +131,6 @@ libsodium_la_SOURCES = \
 	utils.c \
 	version.c
 
-EXTRA_DIST = \
-	crypto_sign/ed25519/ref/ge25519_base.data
-
 libsodium_la_LDFLAGS = \
 	$(AM_LDFLAGS) \
 	-export-dynamic \
