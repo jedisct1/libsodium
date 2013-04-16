@@ -1,8 +1,8 @@
 #ifndef crypto_auth_hmacsha512256_H
 #define crypto_auth_hmacsha512256_H
 
-#define crypto_auth_hmacsha512256_ref_BYTES 32
-#define crypto_auth_hmacsha512256_ref_KEYBYTES 32
+#define crypto_auth_hmacsha512256_BYTES 32
+#define crypto_auth_hmacsha512256_KEYBYTES 32
 #ifdef __cplusplus
 extern "C" {
 #endif
@@ -14,12 +14,5 @@ extern int crypto_auth_hmacsha512256_ref_verify(const unsigned char *,const unsi
 
 #define crypto_auth_hmacsha512256 crypto_auth_hmacsha512256_ref
 #define crypto_auth_hmacsha512256_verify crypto_auth_hmacsha512256_ref_verify
-#define crypto_auth_hmacsha512256_BYTES crypto_auth_hmacsha512256_ref_BYTES
-#define crypto_auth_hmacsha512256_KEYBYTES crypto_auth_hmacsha512256_ref_KEYBYTES
-#define crypto_auth_hmacsha512256_IMPLEMENTATION "crypto_auth/hmacsha512256/ref"
-#ifndef crypto_auth_hmacsha512256_ref_VERSION
-#define crypto_auth_hmacsha512256_ref_VERSION "-"
-#endif
-#define crypto_auth_hmacsha512256_VERSION crypto_auth_hmacsha512256_ref_VERSION
 
 #endif

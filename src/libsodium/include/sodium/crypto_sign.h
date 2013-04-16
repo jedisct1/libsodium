@@ -11,7 +11,5 @@
 #define crypto_sign_PUBLICKEYBYTES crypto_sign_ed25519_PUBLICKEYBYTES
 #define crypto_sign_SECRETKEYBYTES crypto_sign_ed25519_SECRETKEYBYTES
 #define crypto_sign_PRIMITIVE "ed25519"
-#define crypto_sign_IMPLEMENTATION crypto_sign_ed25519_IMPLEMENTATION
-#define crypto_sign_VERSION crypto_sign_ed25519_VERSION
 
 #endif

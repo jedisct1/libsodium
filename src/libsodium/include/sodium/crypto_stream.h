@@ -10,9 +10,6 @@
 #define crypto_stream_xor_afternm crypto_stream_xsalsa20_xor_afternm
 #define crypto_stream_KEYBYTES crypto_stream_xsalsa20_KEYBYTES
 #define crypto_stream_NONCEBYTES crypto_stream_xsalsa20_NONCEBYTES
-#define crypto_stream_BEFORENMBYTES crypto_stream_xsalsa20_BEFORENMBYTES
 #define crypto_stream_PRIMITIVE "xsalsa20"
-#define crypto_stream_IMPLEMENTATION crypto_stream_xsalsa20_IMPLEMENTATION
-#define crypto_stream_VERSION crypto_stream_xsalsa20_VERSION
 
 #endif

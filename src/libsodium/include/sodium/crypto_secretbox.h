@@ -10,7 +10,5 @@
 #define crypto_secretbox_ZEROBYTES crypto_secretbox_xsalsa20poly1305_ZEROBYTES
 #define crypto_secretbox_BOXZEROBYTES crypto_secretbox_xsalsa20poly1305_BOXZEROBYTES
 #define crypto_secretbox_PRIMITIVE "xsalsa20poly1305"
-#define crypto_secretbox_IMPLEMENTATION crypto_secretbox_xsalsa20poly1305_IMPLEMENTATION
-#define crypto_secretbox_VERSION crypto_secretbox_xsalsa20poly1305_VERSION
 
 #endif
