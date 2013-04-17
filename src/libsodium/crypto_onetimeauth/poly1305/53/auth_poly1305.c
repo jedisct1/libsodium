@@ -4,7 +4,9 @@ D. J. Bernstein
 Public domain.
 */
 
+#include <fenv.h>
 #include <stdint.h>
+#include <stdlib.h>
 
 #include "crypto_onetimeauth.h"
 
@@ -231,6 +233,13 @@ int crypto_onetimeauth(unsigned char *out,const unsigned char *m,unsigned long l
   register uint64 g2;
   register uint64 g3;
   register uint64 g4;
+
+  const int previous_rounding_mode = fegetround();
+  if (previous_rounding_mode != FE_TONEAREST) {
+      if (fesetround(FE_TONEAREST) != 0) {
+          return -1;
+      }
+  }
 
   r00 = *(uchar *) (r + 0);
   constants = (char *) &poly1305_53_constants;
@@ -1614,5 +1623,9 @@ nomorebytes:;
   f3 >>= 8;
   *(uchar *) (out + 15) = f3;
 
+  if (previous_rounding_mode != FE_TONEAREST &&
+      fesetround(previous_rounding_mode) != 0) {
+      abort();
+  }
   return 0;
 }
