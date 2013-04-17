@@ -4,13 +4,15 @@ D. J. Bernstein
 Public domain.
 */
 
+#include <stdint.h>
+
 #include "crypto_onetimeauth.h"
 
-typedef unsigned char uchar;
-typedef int int32;
-typedef unsigned int uint32;
-typedef long long int64;
-typedef unsigned long long uint64;
+typedef uint8_t  uchar;
+typedef int32_t  int32;
+typedef uint32_t uint32;
+typedef int64_t  int64;
+typedef uint64_t uint64;
 
 static const double poly1305_53_constants[] = {
   0.00000000558793544769287109375 /* alpham80 = 3 2^(-29) */
