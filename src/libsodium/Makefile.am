@@ -52,6 +52,7 @@ libsodium_la_SOURCES = \
 	crypto_stream/xsalsa20/ref/crypto_stream.h \
 	crypto_stream/xsalsa20/ref/stream_xsalsa20.c \
 	crypto_stream/xsalsa20/ref/xor_xsalsa20.c \
+	crypto_onetimeauth/poly1305/onetimeauth_poly1305.c \
 	crypto_onetimeauth/poly1305/ref/auth_poly1305.c \
 	crypto_onetimeauth/poly1305/ref/crypto_onetimeauth.h \
 	crypto_onetimeauth/poly1305/ref/verify_poly1305.c \

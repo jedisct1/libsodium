@@ -102,3 +102,9 @@ int crypto_onetimeauth(unsigned char *out,const unsigned char *in,unsigned long 
   for (j = 0;j < 16;++j) out[j] = h[j];
   return 0;
 }
+
+const char *
+crypto_onetimeauth_poly1305_ref_implementation_name(void)
+{
+    return "ref";
+}

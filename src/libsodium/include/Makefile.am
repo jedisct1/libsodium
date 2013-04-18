@@ -18,6 +18,7 @@ SODIUM_EXPORT = \
 	sodium/crypto_hashblocks_sha512.h \
 	sodium/crypto_onetimeauth.h \
 	sodium/crypto_onetimeauth_poly1305.h \
+	sodium/crypto_onetimeauth_poly1305_ref.h \
 	sodium/crypto_scalarmult_curve25519.h \
 	sodium/crypto_secretbox.h \
 	sodium/crypto_secretbox_xsalsa20poly1305.h \
