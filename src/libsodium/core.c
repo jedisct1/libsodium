@@ -2,7 +2,7 @@
 #include "sodium.h"
 
 int
-sodium_init(const struct sodium_options *options)
+sodium_init(sodium_options *options)
 {
     (void) options;
 
