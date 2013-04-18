@@ -201,15 +201,11 @@ randombytes_sysrandom_implementation_name(void)
     return "sysrandom";
 }
 
-struct randombytes_implementation
-randombytes_sysrandom_implementation(void)
-{
-    return (randombytes_implementation) {
-        .implementation_name = randombytes_sysrandom_implementation_name,
-        .random = randombytes_sysrandom,
-        .stir = randombytes_sysrandom_stir,
-        .uniform = randombytes_sysrandom_uniform,
-        .buf = randombytes_sysrandom_buf,
-        .close = randombytes_sysrandom_close
-    };
-}
+struct randombytes_implementation randombytes_sysrandom_implementation = {
+    .implementation_name = randombytes_sysrandom_implementation_name,
+    .random = randombytes_sysrandom,
+    .stir = randombytes_sysrandom_stir,
+    .uniform = randombytes_sysrandom_uniform,
+    .buf = randombytes_sysrandom_buf,
+    .close = randombytes_sysrandom_close
+};

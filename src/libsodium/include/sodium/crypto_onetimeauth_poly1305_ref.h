@@ -7,8 +7,8 @@
 extern "C" {
 #endif
 
-struct crypto_onetimeauth_poly1305_implementation
-       crypto_onetimeauth_poly1305_ref_implementation(void);
+extern struct crypto_onetimeauth_poly1305_implementation
+        crypto_onetimeauth_poly1305_ref_implementation;
 
 const char *crypto_onetimeauth_poly1305_ref_implementation_name(void);
     

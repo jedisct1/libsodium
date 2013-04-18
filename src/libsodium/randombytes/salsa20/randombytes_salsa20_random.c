@@ -299,15 +299,11 @@ randombytes_salsa20_implementation_name(void)
     return "salsa20";
 }
 
-struct randombytes_implementation
-randombytes_salsa20_implementation(void)
-{
-    return (randombytes_implementation) {
-        .implementation_name = randombytes_salsa20_implementation_name,
-        .random = randombytes_salsa20_random,
-        .stir = randombytes_salsa20_random_stir,
-        .uniform = randombytes_salsa20_random_uniform,
-        .buf = randombytes_salsa20_random_buf,
-        .close = randombytes_salsa20_random_close
-    };
-}
+struct randombytes_implementation randombytes_salsa20_implementation = {
+    .implementation_name = randombytes_salsa20_implementation_name,
+    .random = randombytes_salsa20_random,
+    .stir = randombytes_salsa20_random_stir,
+    .uniform = randombytes_salsa20_random_uniform,
+    .buf = randombytes_salsa20_random_buf,
+    .close = randombytes_salsa20_random_close
+};

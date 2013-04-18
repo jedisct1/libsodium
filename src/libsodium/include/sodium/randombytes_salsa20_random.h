@@ -9,8 +9,7 @@
 extern "C" {
 #endif
 
-struct randombytes_implementation
-       randombytes_salsa20_implementation(void);
+extern struct randombytes_implementation randombytes_salsa20_implementation;
 
 const char *randombytes_salsa20_implementation_name(void);
 

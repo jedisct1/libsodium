@@ -9,8 +9,7 @@
 extern "C" {
 #endif
 
-struct randombytes_implementation
-       randombytes_sysrandom_implementation(void);
+extern struct randombytes_implementation randombytes_sysrandom_implementation;
 
 const char *randombytes_sysrandom_implementation_name(void);
 

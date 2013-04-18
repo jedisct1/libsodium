@@ -111,11 +111,8 @@ crypto_onetimeauth_poly1305_implementation_name(void)
 }
 
 struct crypto_onetimeauth_poly1305_implementation
-crypto_onetimeauth_poly1305_ref_implementation(void)
-{
-    return (crypto_onetimeauth_poly1305_implementation) {
-        .implementation_name = crypto_onetimeauth_poly1305_implementation_name,
-        .onetimeauth = crypto_onetimeauth,
-        .onetimeauth_verify = crypto_onetimeauth_verify
-    };
-}
+crypto_onetimeauth_poly1305_ref_implementation = {
+    .implementation_name = crypto_onetimeauth_poly1305_implementation_name,
+    .onetimeauth = crypto_onetimeauth,
+    .onetimeauth_verify = crypto_onetimeauth_verify
+};
