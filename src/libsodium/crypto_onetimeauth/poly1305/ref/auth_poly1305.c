@@ -5,6 +5,7 @@ Public domain.
 */
 
 #include "crypto_onetimeauth.h"
+#include "crypto_onetimeauth_poly1305_ref.h"
 
 static void add(unsigned int h[17],const unsigned int c[17])
 {
@@ -107,4 +108,14 @@ const char *
 crypto_onetimeauth_poly1305_ref_implementation_name(void)
 {
     return "ref";
+}
+
+struct crypto_onetimeauth_poly1305_implementation
+crypto_onetimeauth_poly1305_ref_implementation(void)
+{
+    return (crypto_onetimeauth_poly1305_implementation) {
+        .implementation_name = crypto_onetimeauth_implementation_name,
+        .onetimeauth = crypto_onetimeauth,
+        .onetimeauth_verify = crypto_onetimeauth_verify
+    };
 }
