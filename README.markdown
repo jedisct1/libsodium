@@ -73,6 +73,19 @@ A convenience header includes everything you need to use the library:
 
     #include <sodium.h>
 
+Before doing anything else with the library, call:
+
+    sodium_init(NULL);
+
+And if you need to release memory and other resources possibly
+allocated by the library, call:
+
+    sodium_shutdown();
+
+After fork()ing, call:
+
+    sodium_reinit();
+
 Sodium also provides helper functions to generate random numbers,
 leveraging `/dev/urandom` or `/dev/random` on *nix and the cryptographic
 service provider on Windows. The interface is similar to

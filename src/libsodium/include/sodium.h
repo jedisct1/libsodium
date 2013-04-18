@@ -1,7 +1,8 @@
 
-#ifndef sodium_H
-#define sodium_H
+#ifndef __SODIUM_H__
+#define __SODIUM_H__
 
+#include <sodium/core.h>
 #include <sodium/crypto_auth.h>
 #include <sodium/crypto_auth_hmacsha256.h>
 #include <sodium/crypto_auth_hmacsha512256.h>
