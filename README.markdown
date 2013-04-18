@@ -75,7 +75,7 @@ A convenience header includes everything you need to use the library:
 
 Before doing anything else with the library, call:
 
-    sodium_init(NULL);
+    sodium_init();
 
 And if you need to release memory and other resources possibly
 allocated by the library, call:

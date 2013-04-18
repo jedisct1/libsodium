@@ -21,7 +21,9 @@ int main(void)
         perror("fopen(" TEST_NAME_RES ")");
         return 99;
     }
-    sodium_init(NULL);
+    if (sodium_init() != 0) {
+        return 99;
+    }
     xmain();
     sodium_shutdown();
     rewind(fp_res);

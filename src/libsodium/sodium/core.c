@@ -2,10 +2,8 @@
 #include "core.h"
 
 int
-sodium_init(const sodium_options *options)
+sodium_init(void)
 {
-    (void) options;
-
     return 0;
 }
 
