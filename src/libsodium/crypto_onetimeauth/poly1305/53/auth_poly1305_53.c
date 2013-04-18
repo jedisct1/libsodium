@@ -9,6 +9,7 @@ Public domain.
 #include <stdlib.h>
 
 #include "crypto_onetimeauth.h"
+#include "crypto_onetimeauth_poly1305_53.h"
 
 #pragma STDC FENV_ACCESS ON
 
@@ -1631,3 +1632,16 @@ nomorebytes:;
   }
   return 0;
 }
+
+const char *
+crypto_onetimeauth_poly1305_implementation_name(void)
+{
+    return "53";
+}
+
+struct crypto_onetimeauth_poly1305_implementation
+crypto_onetimeauth_poly1305_53_implementation = {
+    .implementation_name = crypto_onetimeauth_poly1305_implementation_name,
+    .onetimeauth = crypto_onetimeauth,
+    .onetimeauth_verify = crypto_onetimeauth_verify
+};
