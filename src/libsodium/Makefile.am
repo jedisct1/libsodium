@@ -3,6 +3,7 @@ lib_LTLIBRARIES = \
 	libsodium.la
 
 libsodium_la_SOURCES = \
+	core.c \
 	crypto_core/hsalsa20/ref2/core_hsalsa20.c \
 	crypto_core/hsalsa20/ref2/crypto_core.h \
 	crypto_core/salsa20/ref/core_salsa20.c \
