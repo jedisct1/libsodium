@@ -126,8 +126,8 @@ libsodium_la_SOURCES = \
 	crypto_sign/ed25519/ref10/sign.c \
 	crypto_sign/ed25519/ref10/sqrtm1.h \
 	randombytes/randombytes.c \
-	randombytes/randombytes_salsa20_random.c \
-	randombytes/randombytes_sysrandom.c \
+	randombytes/salsa20/randombytes_salsa20_random.c \
+	randombytes/sys/randombytes_sysrandom.c \
 	utils.c \
 	version.c
 
