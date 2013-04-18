@@ -99,7 +99,7 @@ safe_read(const int fd, void * const buf_, size_t count)
 
 #ifndef _WIN32
 static int
-salsa20_random_random_dev_open(void)
+randombytes_salsa20_random_random_dev_open(void)
 {
     static const char * const devices[] = {
 # ifndef USE_BLOCKING_RANDOM
@@ -120,13 +120,13 @@ salsa20_random_random_dev_open(void)
 }
 
 static void
-salsa20_random_init(void)
+randombytes_salsa20_random_init(void)
 {
     stream.nonce = sodium_hrtime();
     assert(stream.nonce != (uint64_t) 0U);
 
     if ((stream.random_data_source_fd =
-         salsa20_random_random_dev_open()) == -1) {
+         randombytes_salsa20_random_random_dev_open()) == -1) {
         abort();
     }
 }
@@ -134,7 +134,7 @@ salsa20_random_init(void)
 #else /* _WIN32 */
 
 static void
-salsa20_random_init(void)
+randombytes_salsa20_random_init(void)
 {
     stream.nonce = sodium_hrtime();
     assert(stream.nonce != (uint64_t) 0U);
@@ -147,7 +147,7 @@ salsa20_random_init(void)
 #endif
 
 void
-salsa20_random_stir(void)
+randombytes_salsa20_random_stir(void)
 {
     unsigned char  m0[3U * SHA256_BLOCK_SIZE - SHA256_MIN_PAD_SIZE];
     unsigned char  m1[SHA256_BLOCK_SIZE + crypto_hash_sha256_BYTES];
@@ -159,7 +159,7 @@ salsa20_random_stir(void)
     memset(stream.rnd32, 0, sizeof stream.rnd32);
     stream.rnd32_outleft = (size_t) 0U;
     if (stream.initialized == 0) {
-        salsa20_random_init();
+        randombytes_salsa20_random_init();
         stream.initialized = 1;
     }
     memset(m0, 0x69, SHA256_BLOCK_SIZE);
@@ -188,18 +188,18 @@ salsa20_random_stir(void)
 }
 
 static void
-salsa20_random_stir_if_needed(void)
+randombytes_salsa20_random_stir_if_needed(void)
 {
     const pid_t pid = getpid();
 
     if (stream.initialized == 0 || stream.pid != pid) {
         stream.pid = pid;
-        salsa20_random_stir();
+        randombytes_salsa20_random_stir();
     }
 }
 
 static uint32_t
-salsa20_random_getword(void)
+randombytes_salsa20_random_getword(void)
 {
     uint32_t val;
     int      ret;
@@ -223,7 +223,7 @@ salsa20_random_getword(void)
 }
 
 int
-salsa20_random_close(void)
+randombytes_salsa20_random_close(void)
 {
     int ret = -1;
 
@@ -245,19 +245,19 @@ salsa20_random_close(void)
 }
 
 uint32_t
-salsa20_random(void)
+randombytes_salsa20_random(void)
 {
-    salsa20_random_stir_if_needed();
+    randombytes_salsa20_random_stir_if_needed();
 
-    return salsa20_random_getword();
+    return randombytes_salsa20_random_getword();
 }
 
 void
-salsa20_random_buf(void * const buf, const size_t size)
+randombytes_salsa20_random_buf(void * const buf, const size_t size)
 {
     int ret;
 
-    salsa20_random_stir_if_needed();
+    randombytes_salsa20_random_stir_if_needed();
     COMPILER_ASSERT(sizeof stream.nonce == crypto_stream_salsa20_NONCEBYTES);
 #ifdef ULONG_LONG_MAX
     assert(size <= ULONG_LONG_MAX);
@@ -270,12 +270,12 @@ salsa20_random_buf(void * const buf, const size_t size)
 }
 
 /*
- * salsa20_random_uniform() derives from OpenBSD's arc4random_uniform()
+ * randombytes_salsa20_random_uniform() derives from OpenBSD's arc4random_uniform()
  * Copyright (c) 2008, Damien Miller <djm@openbsd.org>
  */
 
 uint32_t
-salsa20_random_uniform(const uint32_t upper_bound)
+randombytes_salsa20_random_uniform(const uint32_t upper_bound)
 {
     uint32_t min;
     uint32_t r;
@@ -285,7 +285,7 @@ salsa20_random_uniform(const uint32_t upper_bound)
     }
     min = (uint32_t) (-upper_bound % upper_bound);
     for (;;) {
-        r = salsa20_random();
+        r = randombytes_salsa20_random();
         if (r >= min) {
             break;
         }
@@ -304,10 +304,10 @@ randombytes_salsa20_implementation(void)
 {
     return (randombytes_implementation) {
         .implementation_name = randombytes_salsa20_implementation_name,
-        .random = salsa20_random,
-        .stir = salsa20_random_stir,
-        .uniform = salsa20_random_uniform,
-        .buf = salsa20_random_buf,
-        .close = salsa20_random_close
+        .random = randombytes_salsa20_random,
+        .stir = randombytes_salsa20_random_stir,
+        .uniform = randombytes_salsa20_random_uniform,
+        .buf = randombytes_salsa20_random_buf,
+        .close = randombytes_salsa20_random_close
     };
 }

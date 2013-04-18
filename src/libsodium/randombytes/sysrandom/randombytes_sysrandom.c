@@ -62,7 +62,7 @@ safe_read(const int fd, void * const buf_, size_t count)
 
 #ifndef _WIN32
 static int
-sysrandom_random_dev_open(void)
+randombytes_sysrandom_random_dev_open(void)
 {
     static const char * const devices[] = {
 # ifndef USE_BLOCKING_RANDOM
@@ -83,10 +83,10 @@ sysrandom_random_dev_open(void)
 }
 
 static void
-sysrandom_init(void)
+randombytes_sysrandom_init(void)
 {
     if ((stream.random_data_source_fd =
-         sysrandom_random_dev_open()) == -1) {
+         randombytes_sysrandom_random_dev_open()) == -1) {
         abort();
     }
 }
@@ -94,7 +94,7 @@ sysrandom_init(void)
 #else /* _WIN32 */
 
 static void
-sysrandom_init(void)
+randombytes_sysrandom_init(void)
 {
     if (! CryptAcquireContext(&stream.hcrypt_prov, NULL, NULL,
                               PROV_RSA_FULL, CRYPT_VERIFYCONTEXT)) {
@@ -104,24 +104,24 @@ sysrandom_init(void)
 #endif
 
 void
-sysrandom_stir(void)
+randombytes_sysrandom_stir(void)
 {
     if (stream.initialized == 0) {
-        sysrandom_init();
+        randombytes_sysrandom_init();
         stream.initialized = 1;
     }
 }
 
 static void
-sysrandom_stir_if_needed(void)
+randombytes_sysrandom_stir_if_needed(void)
 {
     if (stream.initialized == 0) {
-        sysrandom_stir();
+        randombytes_sysrandom_stir();
     }
 }
 
 int
-sysrandom_close(void)
+randombytes_sysrandom_close(void)
 {
     int ret = -1;
 
@@ -143,20 +143,20 @@ sysrandom_close(void)
 }
 
 uint32_t
-sysrandom(void)
+randombytes_sysrandom(void)
 {
     uint32_t r;
 
-    sysrandom_stir_if_needed();
-    sysrandom_buf(&r, sizeof r);
+    randombytes_sysrandom_stir_if_needed();
+    randombytes_sysrandom_buf(&r, sizeof r);
 
     return r;
 }
 
 void
-sysrandom_buf(void * const buf, const size_t size)
+randombytes_sysrandom_buf(void * const buf, const size_t size)
 {
-    sysrandom_stir_if_needed();
+    randombytes_sysrandom_stir_if_needed();
 #ifdef ULONG_LONG_MAX
     assert(size <= ULONG_LONG_MAX);
 #endif
@@ -172,12 +172,12 @@ sysrandom_buf(void * const buf, const size_t size)
 }
 
 /*
- * sysrandom_uniform() derives from OpenBSD's arc4random_uniform()
+ * randombytes_sysrandom_uniform() derives from OpenBSD's arc4random_uniform()
  * Copyright (c) 2008, Damien Miller <djm@openbsd.org>
  */
 
 uint32_t
-sysrandom_uniform(const uint32_t upper_bound)
+randombytes_sysrandom_uniform(const uint32_t upper_bound)
 {
     uint32_t min;
     uint32_t r;
@@ -187,7 +187,7 @@ sysrandom_uniform(const uint32_t upper_bound)
     }
     min = (uint32_t) (-upper_bound % upper_bound);
     for (;;) {
-        r = sysrandom();
+        r = randombytes_sysrandom();
         if (r >= min) {
             break;
         }
@@ -206,10 +206,10 @@ randombytes_sysrandom_implementation(void)
 {
     return (randombytes_implementation) {
         .implementation_name = randombytes_sysrandom_implementation_name,
-        .random = sysrandom,
-        .stir = sysrandom_stir,
-        .uniform = sysrandom_uniform,
-        .buf = sysrandom_buf,
-        .close = sysrandom_close
+        .random = randombytes_sysrandom,
+        .stir = randombytes_sysrandom_stir,
+        .uniform = randombytes_sysrandom_uniform,
+        .buf = randombytes_sysrandom_buf,
+        .close = randombytes_sysrandom_close
     };
 }

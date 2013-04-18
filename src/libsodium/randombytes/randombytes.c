@@ -10,11 +10,11 @@
 
 static randombytes_implementation implementation = {
     .implementation_name = randombytes_sysrandom_implementation_name,
-    .random = sysrandom,
-    .stir = sysrandom_stir,
-    .uniform = sysrandom_uniform,
-    .buf = sysrandom_buf,
-    .close = sysrandom_close
+    .random = randombytes_sysrandom,
+    .stir = randombytes_sysrandom_stir,
+    .uniform = randombytes_sysrandom_uniform,
+    .buf = randombytes_sysrandom_buf,
+    .close = randombytes_sysrandom_close
 };
 
 int
