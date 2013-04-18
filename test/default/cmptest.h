@@ -4,6 +4,8 @@
 
 #include <stdio.h>
 
+#include "sodium.h"
+
 #define TEST_NAME_RES TEST_NAME ".res"
 #define TEST_NAME_OUT TEST_NAME ".exp"
 
@@ -19,7 +21,9 @@ int main(void)
         perror("fopen(" TEST_NAME_RES ")");
         return 99;
     }
+    sodium_init(NULL);
     xmain();
+    sodium_shutdown();
     rewind(fp_res);
     if ((fp_out = fopen(TEST_NAME_OUT, "r")) == NULL) {
         perror("fopen(" TEST_NAME_OUT ")");        
