@@ -9,6 +9,8 @@ extern "C" {
 
 struct crypto_onetimeauth_poly1305_implementation
        crypto_onetimeauth_poly1305_ref_implementation(void);
+
+const char *crypto_onetimeauth_poly1305_ref_implementation_name(void);
     
 int crypto_onetimeauth_poly1305_ref(unsigned char *out,
                                     const unsigned char *in,

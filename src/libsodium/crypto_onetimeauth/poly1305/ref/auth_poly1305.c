@@ -105,7 +105,7 @@ int crypto_onetimeauth(unsigned char *out,const unsigned char *in,unsigned long 
 }
 
 const char *
-crypto_onetimeauth_poly1305_ref_implementation_name(void)
+crypto_onetimeauth_poly1305_implementation_name(void)
 {
     return "ref";
 }
@@ -114,7 +114,7 @@ struct crypto_onetimeauth_poly1305_implementation
 crypto_onetimeauth_poly1305_ref_implementation(void)
 {
     return (crypto_onetimeauth_poly1305_implementation) {
-        .implementation_name = crypto_onetimeauth_implementation_name,
+        .implementation_name = crypto_onetimeauth_poly1305_implementation_name,
         .onetimeauth = crypto_onetimeauth,
         .onetimeauth_verify = crypto_onetimeauth_verify
     };
