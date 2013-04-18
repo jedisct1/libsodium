@@ -1,8 +1,8 @@
 
-#include "sodium.h"
+#include "core.h"
 
 int
-sodium_init(sodium_options *options)
+sodium_init(const sodium_options *options)
 {
     (void) options;
 
