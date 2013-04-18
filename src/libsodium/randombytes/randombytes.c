@@ -9,12 +9,12 @@
 #include "randombytes_sysrandom.h"
 
 static randombytes_implementation implementation = {
-    .randombytes_implementation_name = sysrandom_implementation_name,
-    .randombytes_random = sysrandom,
-    .randombytes_stir = sysrandom_stir,
-    .randombytes_uniform = sysrandom_uniform,
-    .randombytes_buf = sysrandom_buf,
-    .randombytes_close = sysrandom_close
+    .implementation_name = sysrandom_implementation_name,
+    .random = sysrandom,
+    .stir = sysrandom_stir,
+    .uniform = sysrandom_uniform,
+    .buf = sysrandom_buf,
+    .close = sysrandom_close
 };
 
 int
@@ -28,37 +28,37 @@ randombytes_set_implementation(randombytes_implementation *impl)
 const char *
 randombytes_implementation_name(void)
 {
-    return implementation.randombytes_implementation_name();
+    return implementation.implementation_name();
 }
 
 uint32_t
 randombytes_random(void)
 {
-    return implementation.randombytes_random();
+    return implementation.random();
 }
 
 void
 randombytes_stir(void)
 {
-    return implementation.randombytes_stir();
+    return implementation.stir();
 }
 
 uint32_t
 randombytes_uniform(const uint32_t upper_bound)
 {
-    return implementation.randombytes_uniform(upper_bound);
+    return implementation.uniform(upper_bound);
 }
 
 void
 randombytes_buf(void * const buf, const size_t size)
 {
-    return implementation.randombytes_buf(buf, size);
+    return implementation.buf(buf, size);
 }
 
 int
 randombytes_close(void)
 {
-    return implementation.randombytes_close();
+    return implementation.close();
 }
 
 void
