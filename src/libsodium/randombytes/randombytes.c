@@ -9,7 +9,7 @@
 #include "randombytes_sysrandom.h"
 
 static randombytes_implementation implementation = {
-    .implementation_name = sysrandom_implementation_name,
+    .implementation_name = randombytes_sysrandom_implementation_name,
     .random = sysrandom,
     .stir = sysrandom_stir,
     .uniform = sysrandom_uniform,

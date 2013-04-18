@@ -15,6 +15,7 @@
 #include <string.h>
 #include <unistd.h>
 
+#include "randombytes.h"
 #include "randombytes_sysrandom.h"
 
 #ifdef _WIN32
@@ -195,7 +196,20 @@ sysrandom_uniform(const uint32_t upper_bound)
 }
 
 const char *
-sysrandom_implementation_name(void)
+randombytes_sysrandom_implementation_name(void)
 {
     return "sysrandom";
+}
+
+struct randombytes_implementation
+randombytes_sysrandom_implementation(void)
+{
+    return (randombytes_implementation) {
+        .implementation_name = randombytes_sysrandom_implementation_name,
+        .random = sysrandom,
+        .stir = sysrandom_stir,
+        .uniform = sysrandom_uniform,
+        .buf = sysrandom_buf,
+        .close = sysrandom_close
+    };
 }

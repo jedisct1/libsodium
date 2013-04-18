@@ -9,7 +9,10 @@
 extern "C" {
 #endif
 
-const char *sysrandom_implementation_name(void);
+struct randombytes_implementation
+       randombytes_sysrandom_implementation(void);
+
+const char *randombytes_sysrandom_implementation_name(void);
 
 uint32_t    sysrandom(void);
 void        sysrandom_stir(void);

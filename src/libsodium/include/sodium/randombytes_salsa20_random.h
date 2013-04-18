@@ -9,7 +9,10 @@
 extern "C" {
 #endif
 
-const char *salsa20_random_implementation_name(void);
+struct randombytes_implementation
+       randombytes_salsa20_implementation(void);
+
+const char *randombytes_salsa20_implementation_name(void);
 
 uint32_t    salsa20_random(void);
 void        salsa20_random_stir(void);

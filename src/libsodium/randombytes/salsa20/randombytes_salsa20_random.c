@@ -15,6 +15,7 @@
 #include "crypto_core_salsa20.h"
 #include "crypto_hash_sha256.h"
 #include "crypto_stream_salsa20.h"
+#include "randombytes.h"
 #include "randombytes_salsa20_random.h"
 #include "utils.h"
 
@@ -293,7 +294,20 @@ salsa20_random_uniform(const uint32_t upper_bound)
 }
 
 const char *
-salsa20_random_implementation_name(void)
+randombytes_salsa20_implementation_name(void)
 {
-    return "salsa20_random";
+    return "salsa20";
+}
+
+struct randombytes_implementation
+randombytes_salsa20_implementation(void)
+{
+    return (randombytes_implementation) {
+        .implementation_name = randombytes_salsa20_implementation_name,
+        .random = salsa20_random,
+        .stir = salsa20_random_stir,
+        .uniform = salsa20_random_uniform,
+        .buf = salsa20_random_buf,
+        .close = salsa20_random_close
+    };
 }
