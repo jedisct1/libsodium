@@ -3,7 +3,6 @@ lib_LTLIBRARIES = \
 	libsodium.la
 
 libsodium_la_SOURCES = \
-	core.c \
 	crypto_core/hsalsa20/ref2/core_hsalsa20.c \
 	crypto_core/hsalsa20/ref2/crypto_core.h \
 	crypto_core/salsa20/ref/core_salsa20.c \
@@ -133,8 +132,9 @@ libsodium_la_SOURCES = \
 	randombytes/randombytes.c \
 	randombytes/salsa20/randombytes_salsa20_random.c \
 	randombytes/sysrandom/randombytes_sysrandom.c \
-	utils.c \
-	version.c
+	sodium/core.c \
+	sodium/utils.c \
+	sodium/version.c
 
 libsodium_la_LDFLAGS = \
 	$(AM_LDFLAGS) \
