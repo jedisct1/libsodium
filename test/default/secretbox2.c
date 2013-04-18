@@ -1,5 +1,4 @@
 #include <stdio.h>
-#include "crypto_secretbox_xsalsa20poly1305.h"
 
 #define TEST_NAME "secretbox2"
 #include "cmptest.h"

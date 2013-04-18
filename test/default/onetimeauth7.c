@@ -1,7 +1,5 @@
 #include <stdio.h>
 #include <stdlib.h>
-#include "crypto_onetimeauth_poly1305.h"
-#include "randombytes.h"
 #include "windows/windows-quirks.h"
 
 #define TEST_NAME "onetimeauth7"

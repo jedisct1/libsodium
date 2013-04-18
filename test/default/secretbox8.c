@@ -1,8 +1,5 @@
 #include <stdio.h>
 #include <stdlib.h>
-#include "crypto_secretbox.h"
-#include "randombytes.h"
-#include "windows/windows-quirks.h"
 
 #define TEST_NAME "secretbox8"
 #include "cmptest.h"

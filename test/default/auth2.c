@@ -1,7 +1,6 @@
 /* "Test Case AUTH256-4" from RFC 4868 */
 
 #include <stdio.h>
-#include "crypto_auth_hmacsha256.h"
 
 #define TEST_NAME "auth2"
 #include "cmptest.h"

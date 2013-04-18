@@ -1,7 +1,5 @@
 #include <stdio.h>
 #include <stdlib.h>
-#include "crypto_auth_hmacsha512256.h"
-#include "randombytes.h"
 #include "windows/windows-quirks.h"
 
 #define TEST_NAME "auth5"

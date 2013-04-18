@@ -1,6 +1,4 @@
 #include <stdio.h>
-#include "crypto_stream_xsalsa20.h"
-#include "crypto_hash_sha256.h"
 
 #define TEST_NAME "stream"
 #include "cmptest.h"

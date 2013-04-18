@@ -1,5 +1,4 @@
 #include <stdio.h>
-#include "crypto_core_salsa20.h"
 
 #define TEST_NAME "core6"
 #include "cmptest.h"

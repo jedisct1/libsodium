@@ -1,5 +1,4 @@
 #include <stdio.h>
-#include "crypto_box_curve25519xsalsa20poly1305.h"
 
 #define TEST_NAME "box2"
 #include "cmptest.h"

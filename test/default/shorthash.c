@@ -1,6 +1,6 @@
 #include <stdio.h>
+
 #include "crypto_uint8.h"
-#include "crypto_shorthash.h"
 
 #define TEST_NAME "shorthash"
 #include "cmptest.h"

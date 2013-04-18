@@ -1,5 +1,4 @@
 #include <stdio.h>
-#include "crypto_scalarmult_curve25519.h"
 
 #define TEST_NAME "scalarmult"
 #include "cmptest.h"

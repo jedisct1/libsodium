@@ -1,5 +1,4 @@
 #include <stdio.h>
-#include "crypto_onetimeauth_poly1305.h"
 
 #define TEST_NAME "onetimeauth"
 #include "cmptest.h"

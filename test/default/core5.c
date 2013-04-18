@@ -1,5 +1,4 @@
 #include <stdio.h>
-#include "crypto_core_hsalsa20.h"
 
 #define TEST_NAME "core5"
 #include "cmptest.h"

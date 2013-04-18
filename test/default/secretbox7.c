@@ -1,6 +1,4 @@
 #include <stdio.h>
-#include "crypto_secretbox.h"
-#include "randombytes.h"
 
 #define TEST_NAME "secretbox7"
 #include "cmptest.h"

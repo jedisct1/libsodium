@@ -1,5 +1,4 @@
 #include <stdio.h>
-#include "crypto_auth_hmacsha512256.h"
 
 #define TEST_NAME "auth"
 #include "cmptest.h"

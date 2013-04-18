@@ -1,5 +1,4 @@
 #include <stdio.h>
-#include "crypto_hash.h"
 
 #define TEST_NAME "hash"
 #include "cmptest.h"
