@@ -3,8 +3,8 @@
 #include <limits.h>
 #include <stdint.h>
 
+#include "api.h"
 #include "blake2.h"
-#include "crypto_generichash.h"
 
 int
 crypto_generichash_blake2b(unsigned char *out, const unsigned char *in,
