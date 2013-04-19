@@ -48,9 +48,13 @@ crypto_hashblocks/sha512
 ------------------------
 Daniel J. Bernstein
 
-crypto_scalarmult/curve25519
-----------------------------
+crypto_scalarmult/curve25519/ref
+--------------------------------
 Matthew Dempsky (Mochi Media)
+
+crypto_scalarmult/curve25519/donna_c64
+--------------------------------------
+Adam Langley (Google)
 
 crypto_sign/ed25519
 -------------------
