@@ -11,6 +11,7 @@ SODIUM_EXPORT = \
 	sodium/crypto_core_salsa20.h \
 	sodium/crypto_core_salsa2012.h \
 	sodium/crypto_core_salsa208.h \
+	sodium/crypto_generichash.h \
 	sodium/crypto_generichash_blake2b.h \
 	sodium/crypto_hash.h \
 	sodium/crypto_hash_sha256.h \

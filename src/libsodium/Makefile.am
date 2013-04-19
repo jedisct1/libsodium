@@ -24,6 +24,7 @@ libsodium_la_SOURCES = \
 	crypto_core/salsa2012/ref/api.h \
 	crypto_core/salsa208/ref/core_salsa208.c \
 	crypto_core/salsa208/ref/api.h \
+	crypto_generichash/crypto_generichash.c \
 	crypto_generichash/blake2/ref/api.h \
 	crypto_generichash/blake2/ref/blake2-impl.h \
 	crypto_generichash/blake2/ref/blake2.h \
