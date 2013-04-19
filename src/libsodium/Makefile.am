@@ -4,13 +4,13 @@ lib_LTLIBRARIES = \
 
 libsodium_la_SOURCES = \
 	crypto_core/hsalsa20/ref2/core_hsalsa20.c \
-	crypto_core/hsalsa20/ref2/crypto_core.h \
+	crypto_core/hsalsa20/ref2/api.h \
 	crypto_core/salsa20/ref/core_salsa20.c \
-	crypto_core/salsa20/ref/crypto_core.h \
+	crypto_core/salsa20/ref/api.h \
 	crypto_core/salsa2012/ref/core_salsa2012.c \
-	crypto_core/salsa2012/ref/crypto_core.h \
+	crypto_core/salsa2012/ref/api.h \
 	crypto_core/salsa208/ref/core_salsa208.c \
-	crypto_core/salsa208/ref/crypto_core.h \
+	crypto_core/salsa208/ref/api.h \
 	crypto_generichash/blake2/ref/blake2-impl.h \
 	crypto_generichash/blake2/ref/blake2.h \
 	crypto_generichash/blake2/ref/blake2b-ref.c \

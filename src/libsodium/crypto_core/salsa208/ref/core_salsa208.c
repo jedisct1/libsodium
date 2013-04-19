@@ -4,7 +4,7 @@ D. J. Bernstein
 Public domain.
 */
 
-#include "crypto_core.h"
+#include "api.h"
 
 #define ROUNDS 8
 
