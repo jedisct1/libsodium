@@ -1,5 +1,5 @@
+#include "api.h"
 #include "crypto_verify_32.h"
-#include "crypto_auth.h"
 
 int crypto_auth_verify(const unsigned char *h,const unsigned char *in,unsigned long long inlen,const unsigned char *k)
 {
