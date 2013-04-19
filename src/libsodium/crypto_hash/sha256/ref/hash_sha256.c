@@ -4,8 +4,8 @@ D. J. Bernstein
 Public domain.
 */
 
+#include "api.h"
 #include "crypto_hashblocks_sha256.h"
-#include "crypto_hash.h"
 
 #define blocks crypto_hashblocks_sha256
 
