@@ -12,6 +12,8 @@
 #include <sodium/crypto_core_salsa20.h>
 #include <sodium/crypto_core_salsa2012.h>
 #include <sodium/crypto_core_salsa208.h>
+#include <sodium/crypto_generichash.h>
+#include <sodium/crypto_generichash_blake2b.h>
 #include <sodium/crypto_hash.h>
 #include <sodium/crypto_hash_sha256.h>
 #include <sodium/crypto_hash_sha512.h>
