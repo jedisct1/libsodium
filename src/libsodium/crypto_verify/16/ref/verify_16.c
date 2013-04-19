@@ -1,4 +1,4 @@
-#include "crypto_verify.h"
+#include "api.h"
 
 int crypto_verify(const unsigned char *x,const unsigned char *y)
 {
