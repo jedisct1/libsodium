@@ -4,6 +4,7 @@
 #include <assert.h>
 #include <inttypes.h>
 #include <limits.h>
+#include <stdint.h>
 
 #include "randombytes.h"
 #include "randombytes_sysrandom.h"
