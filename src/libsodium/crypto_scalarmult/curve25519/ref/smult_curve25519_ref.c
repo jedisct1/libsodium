@@ -7,6 +7,8 @@ Derived from public domain code by D. J. Bernstein.
 
 #include "api.h"
 
+#ifndef HAVE_TI_MODE
+
 static void add(unsigned int out[32],const unsigned int a[32],const unsigned int b[32])
 {
   unsigned int j;
@@ -263,3 +265,5 @@ int crypto_scalarmult(unsigned char *q,
   for (i = 0;i < 32;++i) q[i] = work[64 + i];
   return 0;
 }
+
+#endif

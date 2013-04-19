@@ -165,6 +165,7 @@ return sizeof(x) / CHAR_BIT != 16U
 [AC_MSG_RESULT(yes)
  AC_DEFINE([HAVE_TI_MODE], [1], [gcc TI mode is available])],
 [AC_MSG_RESULT(no)])
+AC_SUBST(HAVE_TI_MODE)
 
 dnl Checks for functions and headers
 
@@ -246,6 +247,7 @@ AC_CONFIG_FILES([Makefile
                  src/libsodium/Makefile
                  src/libsodium/include/Makefile
                  src/libsodium/include/sodium/version.h
+                 src/libsodium/include/sodium/crypto_scalarmult_curve25519.h
                  test/default/Makefile
                  test/Makefile
                  ])
