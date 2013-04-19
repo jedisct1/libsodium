@@ -31,6 +31,7 @@ libsodium_la_SOURCES = \
 	crypto_verify/16/ref/verify_16.c \
 	crypto_verify/32/ref/api.h \
 	crypto_verify/32/ref/verify_32.c \
+	crypto_auth/crypto_auth.c \
 	crypto_auth/hmacsha256/ref/api.h \
 	crypto_auth/hmacsha256/ref/hmac_hmacsha256.c \
 	crypto_auth/hmacsha256/ref/verify_hmacsha256.c \
