@@ -5,7 +5,7 @@ Public domain.
 Derived from public domain code by D. J. Bernstein.
 */
 
-#include "crypto_scalarmult.h"
+#include "api.h"
 
 static void add(unsigned int out[32],const unsigned int a[32],const unsigned int b[32])
 {
