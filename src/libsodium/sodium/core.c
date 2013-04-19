@@ -2,14 +2,15 @@
 #include "core.h"
 #include "crypto_onetimeauth.h"
 
-static char initialized;
+static _Bool initialized;
 
 int
 sodium_init(void)
 {
-    if (__sync_lock_test_and_set(&initialized, 1) != 0) {
+    if (initialized != 0) {
         return 1;
     }
+    initialized = 1;
     if (crypto_onetimeauth_pick_best_implementation() == NULL) {
         return -1;
     }

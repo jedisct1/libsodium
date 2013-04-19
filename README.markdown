@@ -77,6 +77,9 @@ Before doing anything else with the library, call:
 
     sodium_init();
 
+This function is not thread-safe. No other Sodium functions should be
+called until it successfully returns.
+
 And if you need to release memory and other resources possibly
 allocated by the library, call:
 
