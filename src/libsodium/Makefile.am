@@ -30,9 +30,9 @@ libsodium_la_SOURCES = \
 	crypto_hash/sha512/ref/hash_sha512.c \
 	crypto_shorthash/siphash24/ref/api.h \
 	crypto_shorthash/siphash24/ref/shorthash_siphash24.c \
-	crypto_verify/16/ref/crypto_verify.h \
+	crypto_verify/16/ref/api.h \
 	crypto_verify/16/ref/verify_16.c \
-	crypto_verify/32/ref/crypto_verify.h \
+	crypto_verify/32/ref/api.h \
 	crypto_verify/32/ref/verify_32.c \
 	crypto_auth/hmacsha256/ref/api.h \
 	crypto_auth/hmacsha256/ref/hmac_hmacsha256.c \
