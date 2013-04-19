@@ -154,6 +154,7 @@ dnl Checks for typedefs, structures, and compiler characteristics.
 AC_C_BIGENDIAN
 
 AC_MSG_CHECKING(for 128-bit arithmetic)
+have_ti_mode=no
 AC_COMPILE_IFELSE([AC_LANG_PROGRAM([[
 #include <limits.h>
 ]], [[
@@ -163,9 +164,11 @@ uint128_t x;
 return sizeof(x) / CHAR_BIT != 16U
 ]])],
 [AC_MSG_RESULT(yes)
- AC_DEFINE([HAVE_TI_MODE], [1], [gcc TI mode is available])],
+ AC_DEFINE([HAVE_TI_MODE], [1], [gcc TI mode is available])
+ have_ti_mode=yes],
 [AC_MSG_RESULT(no)])
-AC_SUBST(HAVE_TI_MODE)
+AM_CONDITIONAL([HAVE_TI_MODE], [test x$have_ti_mode = xyes])
+AC_SUBST([HAVE_TI_MODE])
 
 dnl Checks for functions and headers
 

@@ -17,12 +17,6 @@ libsodium_la_SOURCES = \
 	crypto_generichash/blake2/ref/blake2b-ref.c \
 	crypto_generichash/blake2/ref/blake2s-ref.c \
 	crypto_generichash/blake2/ref/generichash_blake2b.c \
-	crypto_scalarmult/curve25519/donna_c64/api.h \
-	crypto_scalarmult/curve25519/donna_c64/base_curve25519_donna_c64.c \
-	crypto_scalarmult/curve25519/donna_c64/smult_curve25519_donna_c64.c \
-	crypto_scalarmult/curve25519/ref/api.h \
-	crypto_scalarmult/curve25519/ref/base_curve25519_ref.c \
-	crypto_scalarmult/curve25519/ref/smult_curve25519_ref.c \
 	crypto_hashblocks/sha256/ref/blocks_sha256.c \
 	crypto_hashblocks/sha256/ref/api.h \
 	crypto_hashblocks/sha512/ref/blocks_sha512.c \
@@ -151,6 +145,18 @@ libsodium_la_SOURCES = \
 	sodium/core.c \
 	sodium/utils.c \
 	sodium/version.c
+
+if HAVE_TI_MODE
+libsodium_la_SOURCES += \
+	crypto_scalarmult/curve25519/donna_c64/api.h \
+	crypto_scalarmult/curve25519/donna_c64/base_curve25519_donna_c64.c \
+	crypto_scalarmult/curve25519/donna_c64/smult_curve25519_donna_c64.c
+else
+libsodium_la_SOURCES += \
+	crypto_scalarmult/curve25519/ref/api.h \
+	crypto_scalarmult/curve25519/ref/base_curve25519_ref.c \
+	crypto_scalarmult/curve25519/ref/smult_curve25519_ref.c
+endif
 
 libsodium_la_LDFLAGS = \
 	$(AM_LDFLAGS) \
