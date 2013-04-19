@@ -1,5 +1,5 @@
+#include "api.h"
 #include "randombytes.h"
-#include "crypto_sign.h"
 #include "crypto_hash_sha512.h"
 #include "ge.h"
 

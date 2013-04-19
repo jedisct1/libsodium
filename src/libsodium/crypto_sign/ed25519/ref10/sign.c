@@ -1,4 +1,4 @@
-#include "crypto_sign.h"
+#include "api.h"
 #include "crypto_hash_sha512.h"
 #include "ge.h"
 #include "sc.h"

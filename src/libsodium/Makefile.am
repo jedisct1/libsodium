@@ -60,7 +60,7 @@ libsodium_la_SOURCES = \
 	crypto_onetimeauth/poly1305/ref/api.h \
 	crypto_onetimeauth/poly1305/ref/auth_poly1305_ref.c \
 	crypto_onetimeauth/poly1305/ref/verify_poly1305_ref.c \
-	crypto_sign/edwards25519sha512batch/ref/crypto_sign.h \
+	crypto_sign/edwards25519sha512batch/ref/api.h \
 	crypto_sign/edwards25519sha512batch/ref/fe25519.h \
 	crypto_sign/edwards25519sha512batch/ref/fe25519_edwards25519sha512batch.c \
 	crypto_sign/edwards25519sha512batch/ref/ge25519.h \
@@ -68,16 +68,9 @@ libsodium_la_SOURCES = \
 	crypto_sign/edwards25519sha512batch/ref/sc25519.h \
 	crypto_sign/edwards25519sha512batch/ref/sc25519_edwards25519sha512batch.c \
 	crypto_sign/edwards25519sha512batch/ref/sign_edwards25519sha512batch.c \
-	crypto_secretbox/xsalsa20poly1305/ref/api.h \
-	crypto_secretbox/xsalsa20poly1305/ref/box_xsalsa20poly1305.c \
-	crypto_box/curve25519xsalsa20poly1305/ref/api.h \
-	crypto_box/curve25519xsalsa20poly1305/ref/after_curve25519xsalsa20poly1305.c \
-	crypto_box/curve25519xsalsa20poly1305/ref/before_curve25519xsalsa20poly1305.c \
-	crypto_box/curve25519xsalsa20poly1305/ref/box_curve25519xsalsa20poly1305.c \
-	crypto_box/curve25519xsalsa20poly1305/ref/keypair_curve25519xsalsa20poly1305.c \
 	crypto_sign/ed25519/ref10/base.h \
 	crypto_sign/ed25519/ref10/base2.h \
-	crypto_sign/ed25519/ref10/crypto_sign.h \
+	crypto_sign/ed25519/ref10/api.h \
 	crypto_sign/ed25519/ref10/d.h \
 	crypto_sign/ed25519/ref10/d2.h \
 	crypto_sign/ed25519/ref10/fe.h \
@@ -130,6 +123,13 @@ libsodium_la_SOURCES = \
 	crypto_sign/ed25519/ref10/sc_reduce.c \
 	crypto_sign/ed25519/ref10/sign.c \
 	crypto_sign/ed25519/ref10/sqrtm1.h \
+	crypto_secretbox/xsalsa20poly1305/ref/api.h \
+	crypto_secretbox/xsalsa20poly1305/ref/box_xsalsa20poly1305.c \
+	crypto_box/curve25519xsalsa20poly1305/ref/api.h \
+	crypto_box/curve25519xsalsa20poly1305/ref/after_curve25519xsalsa20poly1305.c \
+	crypto_box/curve25519xsalsa20poly1305/ref/before_curve25519xsalsa20poly1305.c \
+	crypto_box/curve25519xsalsa20poly1305/ref/box_curve25519xsalsa20poly1305.c \
+	crypto_box/curve25519xsalsa20poly1305/ref/keypair_curve25519xsalsa20poly1305.c \
 	randombytes/randombytes.c \
 	randombytes/salsa20/randombytes_salsa20_random.c \
 	randombytes/sysrandom/randombytes_sysrandom.c \
