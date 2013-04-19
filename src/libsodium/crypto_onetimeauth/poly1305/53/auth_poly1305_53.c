@@ -8,7 +8,7 @@ Public domain.
 #include <stdint.h>
 #include <stdlib.h>
 
-#include "crypto_onetimeauth.h"
+#include "api.h"
 #include "crypto_onetimeauth_poly1305_53.h"
 
 #pragma STDC FENV_ACCESS ON

@@ -4,7 +4,7 @@ D. J. Bernstein
 Public domain.
 */
 
-#include "crypto_onetimeauth.h"
+#include "api.h"
 #include "crypto_onetimeauth_poly1305_ref.h"
 
 static void add(unsigned int h[17],const unsigned int c[17])
