@@ -21,9 +21,9 @@ libsodium_la_SOURCES = \
 	crypto_scalarmult/curve25519/ref/crypto_scalarmult.h \
 	crypto_scalarmult/curve25519/ref/smult_curve25519_ref.c \
 	crypto_hashblocks/sha256/ref/blocks_sha256.c \
-	crypto_hashblocks/sha256/ref/crypto_hashblocks.h \
+	crypto_hashblocks/sha256/ref/api.h \
 	crypto_hashblocks/sha512/ref/blocks_sha512.c \
-	crypto_hashblocks/sha512/ref/crypto_hashblocks.h \
+	crypto_hashblocks/sha512/ref/api.h \
 	crypto_hash/sha256/ref/api.h \
 	crypto_hash/sha256/ref/hash_sha256.c \
 	crypto_hash/sha512/ref/api.h \

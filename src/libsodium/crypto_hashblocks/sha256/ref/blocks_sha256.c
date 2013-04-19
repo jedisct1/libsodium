@@ -1,4 +1,4 @@
-#include "crypto_hashblocks.h"
+#include "api.h"
 
 typedef unsigned int uint32;
 
