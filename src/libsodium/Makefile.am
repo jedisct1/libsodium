@@ -40,6 +40,18 @@ libsodium_la_SOURCES = \
 	crypto_auth/hmacsha512256/ref/api.h \
 	crypto_auth/hmacsha512256/ref/hmac_hmacsha512256.c \
 	crypto_auth/hmacsha512256/ref/verify_hmacsha512256.c \
+	crypto_stream/aes128ctr/portable/afternm_aes128ctr.c \
+	crypto_stream/aes128ctr/portable/api.h \
+	crypto_stream/aes128ctr/portable/beforenm_aes128ctr.c \
+	crypto_stream/aes128ctr/portable/common.h \
+	crypto_stream/aes128ctr/portable/common_aes128ctr.c \
+	crypto_stream/aes128ctr/portable/consts.h \
+	crypto_stream/aes128ctr/portable/consts_aes128ctr.c \
+	crypto_stream/aes128ctr/portable/int128.h \
+	crypto_stream/aes128ctr/portable/int128_aes128ctr.c \
+	crypto_stream/aes128ctr/portable/stream_aes128ctr.c \
+	crypto_stream/aes128ctr/portable/types.h \
+	crypto_stream/aes128ctr/portable/xor_afternm_aes128ctr.c \
 	crypto_stream/salsa20/ref/api.h \
 	crypto_stream/salsa20/ref/stream_salsa20.c \
 	crypto_stream/salsa20/ref/xor_salsa20.c \
