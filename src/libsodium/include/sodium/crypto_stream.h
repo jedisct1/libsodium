@@ -3,13 +3,16 @@
 
 #include "crypto_stream_xsalsa20.h"
 
-#define crypto_stream crypto_stream_xsalsa20
-#define crypto_stream_xor crypto_stream_xsalsa20_xor
-#define crypto_stream_beforenm crypto_stream_xsalsa20_beforenm
-#define crypto_stream_afternm crypto_stream_xsalsa20_afternm
-#define crypto_stream_xor_afternm crypto_stream_xsalsa20_xor_afternm
 #define crypto_stream_KEYBYTES crypto_stream_xsalsa20_KEYBYTES
 #define crypto_stream_NONCEBYTES crypto_stream_xsalsa20_NONCEBYTES
 #define crypto_stream_PRIMITIVE "xsalsa20"
+
+int crypto_stream(unsigned char *c, unsigned long long clen,
+                  const unsigned char *n, const unsigned char *k);
+
+
+int crypto_stream_xor(unsigned char *c, const unsigned char *m,
+                      unsigned long long mlen, const unsigned char *n,
+                      const unsigned char *k);
 
 #endif

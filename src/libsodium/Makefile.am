@@ -118,6 +118,7 @@ libsodium_la_SOURCES = \
 	crypto_sign/edwards25519sha512batch/ref/sc25519.h \
 	crypto_sign/edwards25519sha512batch/ref/sc25519_edwards25519sha512batch.c \
 	crypto_sign/edwards25519sha512batch/ref/sign_edwards25519sha512batch.c \
+	crypto_stream/crypto_stream.c \
 	crypto_stream/aes128ctr/portable/afternm_aes128ctr.c \
 	crypto_stream/aes128ctr/portable/api.h \
 	crypto_stream/aes128ctr/portable/beforenm_aes128ctr.c \
