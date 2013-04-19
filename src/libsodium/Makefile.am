@@ -68,8 +68,8 @@ libsodium_la_SOURCES = \
 	crypto_sign/edwards25519sha512batch/ref/sc25519.h \
 	crypto_sign/edwards25519sha512batch/ref/sc25519_edwards25519sha512batch.c \
 	crypto_sign/edwards25519sha512batch/ref/sign_edwards25519sha512batch.c \
+	crypto_secretbox/xsalsa20poly1305/ref/api.h \
 	crypto_secretbox/xsalsa20poly1305/ref/box_xsalsa20poly1305.c \
-	crypto_secretbox/xsalsa20poly1305/ref/crypto_secretbox.h \
 	crypto_box/curve25519xsalsa20poly1305/ref/api.h \
 	crypto_box/curve25519xsalsa20poly1305/ref/after_curve25519xsalsa20poly1305.c \
 	crypto_box/curve25519xsalsa20poly1305/ref/before_curve25519xsalsa20poly1305.c \

@@ -1,6 +1,6 @@
+#include "api.h"
 #include "crypto_onetimeauth_poly1305.h"
 #include "crypto_stream_xsalsa20.h"
-#include "crypto_secretbox.h"
 
 int crypto_secretbox(
   unsigned char *c,
