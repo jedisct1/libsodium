@@ -25,8 +25,11 @@ typedef struct crypto_onetimeauth_poly1305_implementation {
 } crypto_onetimeauth_poly1305_implementation;
 
 const char *crypto_onetimeauth_poly1305_ref_implementation_name(void);
-    
+
 int crypto_onetimeauth_poly1305_set_implementation(crypto_onetimeauth_poly1305_implementation *impl);
+
+crypto_onetimeauth_poly1305_implementation *
+        crypto_onetimeauth_pick_best_implementation(void);
 
 int crypto_onetimeauth_poly1305(unsigned char *out,
                                 const unsigned char *in,

@@ -13,22 +13,22 @@
 #endif
 
 void
-sodium_memzero(void * const pnt, const size_t size)
+sodium_memzero(void * const pnt, const size_t len)
 {
 #ifdef HAVE_SECUREZEROMEMORY
-    SecureZeroMemory(pnt, size);
+    SecureZeroMemory(pnt, len);
 #else
     volatile unsigned char *pnt_ = (volatile unsigned char *) pnt;
     size_t                     i = (size_t) 0U;
 
-    while (i < size) {
+    while (i < len) {
         pnt_[i++] = 0U;
     }
 #endif
 }
 
 void *
-_sodium_alignedcalloc(void ** const unaligned_p, const size_t len)
+_sodium_alignedcalloc(unsigned char ** const unaligned_p, const size_t len)
 {
     unsigned char *aligned;
     unsigned char *unaligned;
