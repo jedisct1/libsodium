@@ -6,8 +6,9 @@ extern "C" {
 #endif
 
 #include <stdlib.h>
-    
-extern int crypto_generichash_blake2b_ref(unsigned char *out, const unsigned char *in,
+
+extern int crypto_generichash_blake2b_ref(unsigned char *out,
+                                          const unsigned char *in,
                                           const unsigned char *key,
                                           size_t outlen, unsigned long long inlen,
                                           size_t keylen);
