@@ -17,9 +17,9 @@ libsodium_la_SOURCES = \
 	crypto_generichash/blake2/ref/blake2s-ref.c \
 	crypto_generichash/blake2/ref/crypto_generichash.h \
 	crypto_generichash/blake2/ref/generichash_blake2b.c \
-	crypto_scalarmult/curve25519/ref/base.c \
+	crypto_scalarmult/curve25519/ref/base_curve25519_ref.c \
 	crypto_scalarmult/curve25519/ref/crypto_scalarmult.h \
-	crypto_scalarmult/curve25519/ref/smult.c \
+	crypto_scalarmult/curve25519/ref/smult_curve25519_ref.c \
 	crypto_hashblocks/sha256/ref/blocks_sha256.c \
 	crypto_hashblocks/sha256/ref/crypto_hashblocks.h \
 	crypto_hashblocks/sha512/ref/blocks_sha512.c \

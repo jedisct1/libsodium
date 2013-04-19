@@ -3,12 +3,10 @@
 
 #include "crypto_scalarmult_curve25519.h"
 
-#define crypto_scalarmult crypto_scalarmult_curve25519
-#define crypto_scalarmult_base crypto_scalarmult_curve25519_base
-#define crypto_scalarmult_BYTES crypto_scalarmult_curve25519_BYTES
-#define crypto_scalarmult_SCALARBYTES crypto_scalarmult_curve25519_SCALARBYTES
-#define crypto_scalarmult_PRIMITIVE "curve25519"
-#define crypto_scalarmult_IMPLEMENTATION crypto_scalarmult_curve25519_IMPLEMENTATION
-#define crypto_scalarmult_VERSION crypto_scalarmult_curve25519_VERSION
+#define crypto_scalarmult_curve25519_implementation_name \
+    crypto_scalarmult_curve25519_ref_implementation_name
+
+#define crypto_scalarmult crypto_scalarmult_curve25519_ref
+#define crypto_scalarmult_base crypto_scalarmult_curve25519_ref_base
 
 #endif
