@@ -5,11 +5,10 @@
 #ifdef __cplusplus
 extern "C" {
 #endif
-extern int crypto_verify_16_ref(const unsigned char *,const unsigned char *);
+int crypto_verify_16(const unsigned char *x, const unsigned char *y);
+#define crypto_verify_16_ref crypto_verify_16
 #ifdef __cplusplus
 }
 #endif
-
-#define crypto_verify_16 crypto_verify_16_ref
 
 #endif

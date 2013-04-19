@@ -1,6 +1,6 @@
 #include "api.h"
 
-int crypto_verify(const unsigned char *x,const unsigned char *y)
+int crypto_verify_16(const unsigned char *x,const unsigned char *y)
 {
   unsigned int differentbits = 0;
 #define F(i) differentbits |= x[i] ^ y[i];
