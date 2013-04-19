@@ -3,13 +3,22 @@
 
 #include "crypto_sign_ed25519.h"
 
-#define crypto_sign crypto_sign_ed25519
-#define crypto_sign_open crypto_sign_ed25519_open
-#define crypto_sign_keypair crypto_sign_ed25519_keypair
-#define crypto_sign_seed_keypair crypto_sign_ed25519_seed_keypair
 #define crypto_sign_BYTES crypto_sign_ed25519_BYTES
 #define crypto_sign_PUBLICKEYBYTES crypto_sign_ed25519_PUBLICKEYBYTES
 #define crypto_sign_SECRETKEYBYTES crypto_sign_ed25519_SECRETKEYBYTES
 #define crypto_sign_PRIMITIVE "ed25519"
+
+int crypto_sign_seed_keypair(unsigned char *pk, unsigned char *sk,
+                             const unsigned char *seed);
+
+int crypto_sign_keypair(unsigned char *pk, unsigned char *sk);
+
+int crypto_sign(unsigned char *sm, unsigned long long *smlen,
+                const unsigned char *m, unsigned long long mlen,
+                const unsigned char *sk);
+
+int crypto_sign_open(unsigned char *m, unsigned long long *mlen,
+                     const unsigned char *sm, unsigned long long smlen,
+                     const unsigned char *pk);
 
 #endif

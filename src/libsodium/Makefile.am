@@ -54,6 +54,7 @@ libsodium_la_SOURCES = \
 	crypto_shorthash/crypto_shorthash.c \
 	crypto_shorthash/siphash24/ref/api.h \
 	crypto_shorthash/siphash24/ref/shorthash_siphash24.c \
+	crypto_sign/crypto_sign.c \
 	crypto_sign/ed25519/ref10/base.h \
 	crypto_sign/ed25519/ref10/base2.h \
 	crypto_sign/ed25519/ref10/api.h \
