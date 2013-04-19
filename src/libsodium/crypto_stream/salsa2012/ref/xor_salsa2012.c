@@ -4,8 +4,8 @@ D. J. Bernstein
 Public domain.
 */
 
+#include "api.h"
 #include "crypto_core_salsa2012.h"
-#include "crypto_stream.h"
 
 typedef unsigned int uint32;
 

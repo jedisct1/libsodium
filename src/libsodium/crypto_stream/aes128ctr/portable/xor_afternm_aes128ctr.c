@@ -3,10 +3,10 @@
  * Public domain */
 
 #include <stdio.h>
+#include "api.h"
 #include "int128.h"
 #include "common.h"
 #include "consts.h"
-#include "crypto_stream.h"
 
 int crypto_stream_xor_afternm(unsigned char *outp, const unsigned char *inp, unsigned long long len, const unsigned char *noncep, const unsigned char *c)
 {

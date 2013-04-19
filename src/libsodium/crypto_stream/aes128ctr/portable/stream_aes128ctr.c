@@ -1,4 +1,4 @@
-#include "crypto_stream.h"
+#include "api.h"
 
 int crypto_stream(
         unsigned char *out,
