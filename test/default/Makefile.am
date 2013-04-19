@@ -38,6 +38,8 @@ EXTRA_DIST = \
 AM_CPPFLAGS = \
 	-I$(top_srcdir)/src/libsodium/include \
 	-I$(top_srcdir)/src/libsodium/include/sodium \
+	-I$(top_builddir)/src/libsodium/include \
+	-I$(top_builddir)/src/libsodium/include/sodium \
 	-I$(top_srcdir)/test/quirks
 
 TESTS_TARGETS = \
