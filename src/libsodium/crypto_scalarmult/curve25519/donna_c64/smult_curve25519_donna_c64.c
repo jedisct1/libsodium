@@ -26,7 +26,7 @@
 #include <stdint.h>
 #include "api.h"
 
-#ifdef HAVE_MODE_TI
+#ifdef HAVE_TI_MODE
 
 typedef uint8_t u8;
 typedef uint64_t limb;

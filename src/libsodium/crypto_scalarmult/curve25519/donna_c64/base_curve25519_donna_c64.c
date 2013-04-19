@@ -1,7 +1,7 @@
 
 #include "api.h"
 
-#ifdef HAVE_MODE_TI
+#ifdef HAVE_TI_MODE
 
 static const unsigned char basepoint[32] = {9};
 
