@@ -84,3 +84,10 @@ crypto_shorthash/siphash24
 --------------------------
 Jean-Philippe Aumasson
 Daniel J. Bernstein
+
+crypto_generichash/blake2b
+--------------------------
+Jean-Philippe Aumasson
+Samuel Neves
+Zooko Wilcox-O'Hearn
+Christian Winnerlein
