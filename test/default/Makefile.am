@@ -15,6 +15,7 @@ EXTRA_DIST = \
 	core4.exp \
 	core5.exp \
 	core6.exp \
+	generichash.exp \
 	hash.exp \
 	hash2.exp \
 	hash3.exp \
@@ -57,6 +58,7 @@ TESTS_TARGETS = \
 	core4 \
 	core5 \
 	core6 \
+	generichash \
 	hash \
 	hash3 \
 	onetimeauth \
@@ -125,6 +127,9 @@ core5_LDADD               = $(TESTS_LDADD)
 
 core6_SOURCE              = cmptest.h core6.c
 core6_LDADD               = $(TESTS_LDADD)
+
+generichash_SOURCE        = cmptest.h generichash.c
+generichash_LDADD         = $(TESTS_LDADD)
 
 hash_SOURCE               = cmptest.h hash.c
 hash_LDADD                = $(TESTS_LDADD)
