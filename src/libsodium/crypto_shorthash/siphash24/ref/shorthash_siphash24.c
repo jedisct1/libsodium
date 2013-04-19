@@ -1,4 +1,4 @@
-#include "crypto_shorthash.h"
+#include "api.h"
 #include "crypto_uint64.h"
 #include "crypto_uint32.h"
 #include "crypto_uint8.h"
