@@ -48,6 +48,7 @@ libsodium_la_SOURCES = \
 	crypto_onetimeauth/poly1305/ref/auth_poly1305_ref.c \
 	crypto_onetimeauth/poly1305/ref/verify_poly1305_ref.c \
 	crypto_scalarmult/crypto_scalarmult.c \
+	crypto_secretbox/crypto_secretbox.c \
 	crypto_secretbox/xsalsa20poly1305/ref/api.h \
 	crypto_secretbox/xsalsa20poly1305/ref/box_xsalsa20poly1305.c \
 	crypto_shorthash/siphash24/ref/api.h \
