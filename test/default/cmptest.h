@@ -25,7 +25,6 @@ int main(void)
         return 99;
     }
     xmain();
-    sodium_shutdown();
     rewind(fp_res);
     if ((fp_out = fopen(TEST_NAME_OUT, "r")) == NULL) {
         perror("fopen(" TEST_NAME_OUT ")");        
