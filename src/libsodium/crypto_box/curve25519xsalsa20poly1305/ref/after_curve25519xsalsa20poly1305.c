@@ -1,5 +1,5 @@
+#include "api.h"
 #include "crypto_secretbox_xsalsa20poly1305.h"
-#include "crypto_box.h"
 
 int crypto_box_afternm(
   unsigned char *c,

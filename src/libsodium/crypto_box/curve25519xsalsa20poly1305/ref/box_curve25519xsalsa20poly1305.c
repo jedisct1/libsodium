@@ -1,4 +1,4 @@
-#include "crypto_box.h"
+#include "api.h"
 
 int crypto_box(
   unsigned char *c,

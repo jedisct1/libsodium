@@ -1,5 +1,5 @@
 #include "crypto_scalarmult_curve25519.h"
-#include "crypto_box.h"
+#include "api.h"
 #include "randombytes.h"
 
 int crypto_box_keypair(

@@ -1,6 +1,6 @@
+#include "api.h"
 #include "crypto_core_hsalsa20.h"
 #include "crypto_scalarmult_curve25519.h"
-#include "crypto_box.h"
 
 static const unsigned char sigma[16] = "expand 32-byte k";
 static const unsigned char n[16] = {0};
