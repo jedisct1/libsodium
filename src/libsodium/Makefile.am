@@ -40,6 +40,7 @@ libsodium_la_SOURCES = \
 	crypto_hashblocks/sha256/ref/api.h \
 	crypto_hashblocks/sha512/ref/blocks_sha512.c \
 	crypto_hashblocks/sha512/ref/api.h \
+	crypto_onetimeauth/crypto_onetimeauth.c \
 	crypto_onetimeauth/poly1305/onetimeauth_poly1305.c \
 	crypto_onetimeauth/poly1305/onetimeauth_poly1305_try.c \
 	crypto_onetimeauth/poly1305/53/api.h \
