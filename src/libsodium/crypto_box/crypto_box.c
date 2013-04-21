@@ -1,6 +1,54 @@
 
 #include "crypto_box.h"
 
+size_t
+crypto_box_publickeybytes(void)
+{
+    return crypto_box_PUBLICKEYBYTES;
+}
+
+size_t
+crypto_box_secretkeybytes(void)
+{
+    return crypto_box_SECRETKEYBYTES;
+}
+
+size_t
+crypto_box_beforenmbytes(void)
+{
+    return crypto_box_BEFORENMBYTES;
+}
+
+size_t
+crypto_box_noncebytes(void)
+{
+    return crypto_box_NONCEBYTES;
+}
+
+size_t
+crypto_box_zerobytes(void)
+{
+    return crypto_box_ZEROBYTES;
+}
+
+size_t
+crypto_box_boxzerobytes(void)
+{
+    return crypto_box_BOXZEROBYTES;
+}
+
+size_t
+crypto_box_macbytes(void)
+{
+    return crypto_box_MACBYTES;
+}
+
+const char *
+crypto_box_primitive(void)
+{
+    return crypto_box_PRIMITIVE;
+}
+
 int
 crypto_box_keypair(unsigned char *pk, unsigned char *sk)
 {
