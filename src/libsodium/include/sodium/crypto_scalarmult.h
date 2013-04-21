@@ -11,7 +11,7 @@ extern "C" {
 
 #define crypto_scalarmult_BYTES crypto_scalarmult_curve25519_BYTES
 size_t  crypto_scalarmult_bytes(void);
-    
+
 #define crypto_scalarmult_SCALARBYTES crypto_scalarmult_curve25519_SCALARBYTES
 size_t  crypto_scalarmult_scalarbytes(void);
 

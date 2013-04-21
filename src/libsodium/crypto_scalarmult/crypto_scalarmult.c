@@ -6,7 +6,7 @@ crypto_scalarmult_bytes(void)
 {
     return crypto_scalarmult_BYTES;
 }
-    
+
 size_t
 crypto_scalarmult_scalarbytes(void)
 {
