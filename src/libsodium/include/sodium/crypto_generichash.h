@@ -1,6 +1,8 @@
 #ifndef crypto_generichash_H
 #define crypto_generichash_H
 
+#include <stdlib.h>
+
 #include "crypto_generichash_blake2b.h"
 
 #ifdef __cplusplus
