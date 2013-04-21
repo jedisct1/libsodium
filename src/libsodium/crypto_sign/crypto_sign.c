@@ -1,6 +1,30 @@
 
 #include "crypto_sign.h"
 
+size_t
+crypto_sign_bytes(void)
+{
+    return crypto_sign_BYTES;
+}
+
+size_t
+crypto_sign_publickeybytes(void)
+{
+    return crypto_sign_PUBLICKEYBYTES;
+}
+
+size_t
+crypto_sign_secretkeybytes(void)
+{
+    return crypto_sign_SECRETKEYBYTES;
+}
+
+const char *
+crypto_sign_primitive(void)
+{
+    return crypto_sign_PRIMITIVE;
+}
+
 int
 crypto_sign_seed_keypair(unsigned char *pk, unsigned char *sk,
                          const unsigned char *seed)
