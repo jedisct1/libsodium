@@ -1,15 +1,22 @@
 #ifndef crypto_shorthash_H
 #define crypto_shorthash_H
 
-#include "crypto_shorthash_siphash24.h"
+#include <stdlib.h>
 
-#define crypto_shorthash_BYTES crypto_shorthash_siphash24_BYTES
-#define crypto_shorthash_KEYBYTES crypto_shorthash_siphash24_KEYBYTES
-#define crypto_shorthash_PRIMITIVE "siphash24"
+#include "crypto_shorthash_siphash24.h"
 
 #ifdef __cplusplus
 extern "C" {
 #endif
+
+#define crypto_shorthash_BYTES crypto_shorthash_siphash24_BYTES
+size_t  crypto_shorthash_bytes(void);
+
+#define crypto_shorthash_KEYBYTES crypto_shorthash_siphash24_KEYBYTES
+size_t  crypto_shorthash_keybytes(void);
+
+#define crypto_shorthash_PRIMITIVE "siphash24"
+const char *crypto_shorthash_primitive(void);
 
 int crypto_shorthash(unsigned char *out, const unsigned char *in,
                      unsigned long long inlen, const unsigned char *k);
