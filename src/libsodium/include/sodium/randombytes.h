@@ -7,6 +7,8 @@
 #include <stdint.h>
 #include <stdio.h>
 
+#include "export.h"
+
 #ifdef __cplusplus
 extern "C" {
 #endif

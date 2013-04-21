@@ -1,6 +1,8 @@
 #ifndef crypto_hash_sha512_H
 #define crypto_hash_sha512_H
 
+#include "export.h"
+
 #define crypto_hash_sha512_BYTES 64
 #define crypto_hash_sha512_BLOCKBYTES 128
 

@@ -4,6 +4,8 @@
 
 #include <stdlib.h>
 
+#include "export.h"
+
 #ifdef __cplusplus
 extern "C" {
 #endif

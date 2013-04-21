@@ -4,6 +4,7 @@
 #include <stdlib.h>
 
 #include "crypto_auth_hmacsha512256.h"
+#include "export.h"
 
 #ifdef __cplusplus
 extern "C" {

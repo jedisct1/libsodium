@@ -2,6 +2,7 @@
 #define crypto_onetimeauth_poly1305_ref_H
 
 #include "crypto_onetimeauth_poly1305.h"
+#include "export.h"
 
 #ifdef __cplusplus
 extern "C" {

@@ -1,6 +1,8 @@
 #ifndef crypto_shorthash_siphash24_H
 #define crypto_shorthash_siphash24_H
 
+#include "export.h"
+
 #define crypto_shorthash_siphash24_BYTES 8
 #define crypto_shorthash_siphash24_KEYBYTES 16
 

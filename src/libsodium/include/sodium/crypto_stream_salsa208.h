@@ -1,6 +1,8 @@
 #ifndef crypto_stream_salsa208_H
 #define crypto_stream_salsa208_H
 
+#include "export.h"
+
 #define crypto_stream_salsa208_KEYBYTES 32
 #define crypto_stream_salsa208_NONCEBYTES 8
 

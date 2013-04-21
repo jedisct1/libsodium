@@ -4,6 +4,8 @@
 #include <stdint.h>
 #include <stdlib.h>
 
+#include "export.h"
+
 #define crypto_generichash_blake2b_BYTES_MIN      1U
 #define crypto_generichash_blake2b_BYTES_MAX     64U
 #define crypto_generichash_blake2b_KEYBYTES_MIN   0U

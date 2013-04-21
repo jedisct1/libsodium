@@ -1,6 +1,8 @@
 #ifndef crypto_stream_aes128ctr_H
 #define crypto_stream_aes128ctr_H
 
+#include "export.h"
+
 #define crypto_stream_aes128ctr_KEYBYTES 16
 #define crypto_stream_aes128ctr_NONCEBYTES 16
 #define crypto_stream_aes128ctr_BEFORENMBYTES 1408

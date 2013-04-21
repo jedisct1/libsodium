@@ -1,6 +1,8 @@
 #ifndef crypto_core_salsa20_H
 #define crypto_core_salsa20_H
 
+#include "export.h"
+
 #define crypto_core_salsa20_OUTPUTBYTES 64
 #define crypto_core_salsa20_INPUTBYTES 16
 #define crypto_core_salsa20_KEYBYTES 32

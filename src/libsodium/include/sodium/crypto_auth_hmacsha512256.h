@@ -1,6 +1,8 @@
 #ifndef crypto_auth_hmacsha512256_H
 #define crypto_auth_hmacsha512256_H
 
+#include "export.h"
+
 #define crypto_auth_hmacsha512256_BYTES 32
 #define crypto_auth_hmacsha512256_KEYBYTES 32
 

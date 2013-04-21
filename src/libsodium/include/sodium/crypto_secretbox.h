@@ -4,6 +4,7 @@
 #include <stdlib.h>
 
 #include "crypto_secretbox_xsalsa20poly1305.h"
+#include "export.h"
 
 #ifdef __cplusplus
 extern "C" {

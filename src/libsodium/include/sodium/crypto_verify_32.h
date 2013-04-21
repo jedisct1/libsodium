@@ -1,6 +1,8 @@
 #ifndef crypto_verify_32_H
 #define crypto_verify_32_H
 
+#include "export.h"
+
 #define crypto_verify_32_BYTES 32
 
 #ifdef __cplusplus

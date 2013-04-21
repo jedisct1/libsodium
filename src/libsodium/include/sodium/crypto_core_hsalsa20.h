@@ -1,6 +1,8 @@
 #ifndef crypto_core_hsalsa20_H
 #define crypto_core_hsalsa20_H
 
+#include "export.h"
+
 #define crypto_core_hsalsa20_OUTPUTBYTES 32
 #define crypto_core_hsalsa20_INPUTBYTES 16
 #define crypto_core_hsalsa20_KEYBYTES 32

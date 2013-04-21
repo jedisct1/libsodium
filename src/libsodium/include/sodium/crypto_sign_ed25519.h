@@ -1,6 +1,8 @@
 #ifndef crypto_sign_ed25519_H
 #define crypto_sign_ed25519_H
 
+#include "export.h"
+
 #define crypto_sign_ed25519_SECRETKEYBYTES 64
 #define crypto_sign_ed25519_PUBLICKEYBYTES 32
 #define crypto_sign_ed25519_BYTES 64

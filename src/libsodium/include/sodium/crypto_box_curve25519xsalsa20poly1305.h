@@ -1,6 +1,8 @@
 #ifndef crypto_box_curve25519xsalsa20poly1305_H
 #define crypto_box_curve25519xsalsa20poly1305_H
 
+#include "export.h"
+
 #define crypto_box_curve25519xsalsa20poly1305_PUBLICKEYBYTES 32
 #define crypto_box_curve25519xsalsa20poly1305_SECRETKEYBYTES 32
 #define crypto_box_curve25519xsalsa20poly1305_BEFORENMBYTES 32

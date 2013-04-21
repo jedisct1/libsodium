@@ -4,6 +4,7 @@
 #include <stdlib.h>
 
 #include "crypto_stream_xsalsa20.h"
+#include "export.h"
 
 #ifdef __cplusplus
 extern "C" {

@@ -1,6 +1,8 @@
 #ifndef crypto_verify_16_H
 #define crypto_verify_16_H
 
+#include "export.h"
+
 #define crypto_verify_16_BYTES 16
 
 #ifdef __cplusplus

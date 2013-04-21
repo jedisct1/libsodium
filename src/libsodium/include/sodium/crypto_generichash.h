@@ -4,6 +4,7 @@
 #include <stdlib.h>
 
 #include "crypto_generichash_blake2b.h"
+#include "export.h"
 
 #ifdef __cplusplus
 extern "C" {

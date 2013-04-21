@@ -1,6 +1,8 @@
 #ifndef crypto_secretbox_xsalsa20poly1305_H
 #define crypto_secretbox_xsalsa20poly1305_H
 
+#include "export.h"
+
 #define crypto_secretbox_xsalsa20poly1305_KEYBYTES 32
 #define crypto_secretbox_xsalsa20poly1305_NONCEBYTES 24
 #define crypto_secretbox_xsalsa20poly1305_ZEROBYTES 32

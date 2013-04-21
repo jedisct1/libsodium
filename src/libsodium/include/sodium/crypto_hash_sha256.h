@@ -1,6 +1,8 @@
 #ifndef crypto_hash_sha256_H
 #define crypto_hash_sha256_H
 
+#include "export.h"
+
 #define crypto_hash_sha256_BYTES 32
 #define crypto_hash_sha256_BLOCKBYTES 64
 

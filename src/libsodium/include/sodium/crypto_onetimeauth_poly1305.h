@@ -1,6 +1,8 @@
 #ifndef crypto_onetimeauth_poly1305_H
 #define crypto_onetimeauth_poly1305_H
 
+#include "export.h"
+
 #define crypto_onetimeauth_poly1305_BYTES 16
 #define crypto_onetimeauth_poly1305_KEYBYTES 32
 #ifdef __cplusplus

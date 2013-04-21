@@ -1,6 +1,8 @@
 #ifndef crypto_hashblocks_sha256_H
 #define crypto_hashblocks_sha256_H
 
+#include "export.h"
+
 #define crypto_hashblocks_sha256_STATEBYTES 32
 #define crypto_hashblocks_sha256_BLOCKBYTES 64
 

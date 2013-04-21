@@ -1,6 +1,8 @@
 #ifndef crypto_stream_xsalsa20_H
 #define crypto_stream_xsalsa20_H
 
+#include "export.h"
+
 #define crypto_stream_xsalsa20_KEYBYTES 32
 #define crypto_stream_xsalsa20_NONCEBYTES 24
 

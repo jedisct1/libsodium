@@ -2,6 +2,7 @@
 #define crypto_hash_H
 
 #include "crypto_hash_sha512.h"
+#include "export.h"
 
 #define crypto_hash_BYTES crypto_hash_sha512_BYTES
 #define crypto_hash_BLOCKBYTES crypto_hash_sha512_BLOCKBYTES
