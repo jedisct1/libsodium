@@ -1,15 +1,22 @@
 #ifndef crypto_stream_H
 #define crypto_stream_H
 
-#include "crypto_stream_xsalsa20.h"
+#include <stdlib.h>
 
-#define crypto_stream_KEYBYTES crypto_stream_xsalsa20_KEYBYTES
-#define crypto_stream_NONCEBYTES crypto_stream_xsalsa20_NONCEBYTES
-#define crypto_stream_PRIMITIVE "xsalsa20"
+#include "crypto_stream_xsalsa20.h"
 
 #ifdef __cplusplus
 extern "C" {
 #endif
+
+#define crypto_stream_KEYBYTES crypto_stream_xsalsa20_KEYBYTES
+size_t  crypto_stream_keybytes(void);
+
+#define crypto_stream_NONCEBYTES crypto_stream_xsalsa20_NONCEBYTES
+size_t  crypto_stream_noncebytes(void);
+
+#define crypto_stream_PRIMITIVE "xsalsa20"
+const char *crypto_stream_primitive(void);
 
 int crypto_stream(unsigned char *c, unsigned long long clen,
                   const unsigned char *n, const unsigned char *k);
