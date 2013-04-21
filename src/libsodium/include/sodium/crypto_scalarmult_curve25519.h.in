@@ -1,7 +1,7 @@
 #ifndef crypto_scalarmult_curve25519_H
 #define crypto_scalarmult_curve25519_H
 
-#if @HAVE_TI_MODE_V@-1 == 0
+#if @HAVE_TI_MODE_V@
 # define SODIUM_HAVE_TI_MODE
 #endif
 
