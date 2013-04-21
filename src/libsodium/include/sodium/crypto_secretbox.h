@@ -24,5 +24,5 @@ int crypto_secretbox_open(unsigned char *m, const unsigned char *c,
 #ifdef __cplusplus
 }
 #endif
-    
+
 #endif

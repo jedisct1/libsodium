@@ -16,7 +16,7 @@ crypto_generichash_init(crypto_generichash_blake2b_state *state,
 {
     return crypto_generichash_blake2b_init(state, key, keylen, outlen);
 }
-    
+
 int
 crypto_generichash_update(crypto_generichash_blake2b_state *state,
                           const unsigned char *in,

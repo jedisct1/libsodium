@@ -32,9 +32,9 @@ int main(void)
       if (crypto_box_open(m2,c,mlen + crypto_box_ZEROBYTES,n,alicepk,bobsk) == 0) {
         for (i = 0;i < mlen + crypto_box_ZEROBYTES;++i)
           if (m2[i] != m[i]) {
-	    printf("forgery\n");
-	    return 100;
-	  }
+            printf("forgery\n");
+            return 100;
+          }
       } else {
         ++caught;
       }

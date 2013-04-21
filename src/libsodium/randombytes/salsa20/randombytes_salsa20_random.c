@@ -64,7 +64,7 @@ sodium_hrtime(void)
     tv.tv_usec = ((int) tb.millitm) * 1000;
     ret = 0;
 #else
-    ret = gettimeofday(&tv, NULL);    
+    ret = gettimeofday(&tv, NULL);
 #endif
     assert(ret == 0);
     if (ret == 0) {

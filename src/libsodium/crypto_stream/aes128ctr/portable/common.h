@@ -448,26 +448,26 @@ void store64_littleendian(unsigned char *x,uint64 u);
 
 
 #define bitslice(x0, x1, x2, x3, x4, x5, x6, x7, t) \
-	swapmove(x0, x1, 1, BS0, t);\
-	swapmove(x2, x3, 1, BS0, t);\
-	swapmove(x4, x5, 1, BS0, t);\
-	swapmove(x6, x7, 1, BS0, t);\
-	;\
-	swapmove(x0, x2, 2, BS1, t);\
-	swapmove(x1, x3, 2, BS1, t);\
-	swapmove(x4, x6, 2, BS1, t);\
-	swapmove(x5, x7, 2, BS1, t);\
-	;\
-	swapmove(x0, x4, 4, BS2, t);\
-	swapmove(x1, x5, 4, BS2, t);\
-	swapmove(x2, x6, 4, BS2, t);\
-	swapmove(x3, x7, 4, BS2, t);\
+        swapmove(x0, x1, 1, BS0, t);\
+        swapmove(x2, x3, 1, BS0, t);\
+        swapmove(x4, x5, 1, BS0, t);\
+        swapmove(x6, x7, 1, BS0, t);\
+        ;\
+        swapmove(x0, x2, 2, BS1, t);\
+        swapmove(x1, x3, 2, BS1, t);\
+        swapmove(x4, x6, 2, BS1, t);\
+        swapmove(x5, x7, 2, BS1, t);\
+        ;\
+        swapmove(x0, x4, 4, BS2, t);\
+        swapmove(x1, x5, 4, BS2, t);\
+        swapmove(x2, x6, 4, BS2, t);\
+        swapmove(x3, x7, 4, BS2, t);\
 
 
 #define swapmove(a, b, n, m, t) \
-	copy2(&t, &b);\
+        copy2(&t, &b);\
   rshift64_littleendian(&t, n);\
-	xor2(&t, &a);\
+        xor2(&t, &a);\
   and2(&t, &m);\
   xor2(&a, &t);\
   lshift64_littleendian(&t, n);\
@@ -480,21 +480,21 @@ void store64_littleendian(unsigned char *x,uint64 u);
 /* Macros used for encryption (and decryption) */
 
 #define shiftrows(x0, x1, x2, x3, x4, x5, x6, x7, i, M, bskey) \
-	xor2(&x0, (int128 *)(bskey + 128*(i-1) + 0));\
+        xor2(&x0, (int128 *)(bskey + 128*(i-1) + 0));\
   shufb(&x0, M);\
-	xor2(&x1, (int128 *)(bskey + 128*(i-1) + 16));\
+        xor2(&x1, (int128 *)(bskey + 128*(i-1) + 16));\
   shufb(&x1, M);\
-	xor2(&x2, (int128 *)(bskey + 128*(i-1) + 32));\
+        xor2(&x2, (int128 *)(bskey + 128*(i-1) + 32));\
   shufb(&x2, M);\
-	xor2(&x3, (int128 *)(bskey + 128*(i-1) + 48));\
+        xor2(&x3, (int128 *)(bskey + 128*(i-1) + 48));\
   shufb(&x3, M);\
-	xor2(&x4, (int128 *)(bskey + 128*(i-1) + 64));\
+        xor2(&x4, (int128 *)(bskey + 128*(i-1) + 64));\
   shufb(&x4, M);\
-	xor2(&x5, (int128 *)(bskey + 128*(i-1) + 80));\
+        xor2(&x5, (int128 *)(bskey + 128*(i-1) + 80));\
   shufb(&x5, M);\
-	xor2(&x6, (int128 *)(bskey + 128*(i-1) + 96));\
+        xor2(&x6, (int128 *)(bskey + 128*(i-1) + 96));\
   shufb(&x6, M);\
-	xor2(&x7, (int128 *)(bskey + 128*(i-1) + 112));\
+        xor2(&x7, (int128 *)(bskey + 128*(i-1) + 112));\
   shufb(&x7, M);\
 
 
@@ -507,28 +507,28 @@ void store64_littleendian(unsigned char *x,uint64 u);
   shufd(&t5, &x5, 0x93);\
   shufd(&t6, &x6, 0x93);\
   shufd(&t7, &x7, 0x93);\
-	;\
-	xor2(&x0, &t0);\
-	xor2(&x1, &t1);\
-	xor2(&x2, &t2);\
-	xor2(&x3, &t3);\
-	xor2(&x4, &t4);\
-	xor2(&x5, &t5);\
-	xor2(&x6, &t6);\
-	xor2(&x7, &t7);\
-	;\
-	xor2(&t0, &x7);\
-	xor2(&t1, &x0);\
-	xor2(&t2, &x1);\
-	xor2(&t1, &x7);\
-	xor2(&t3, &x2);\
-	xor2(&t4, &x3);\
-	xor2(&t5, &x4);\
-	xor2(&t3, &x7);\
-	xor2(&t6, &x5);\
-	xor2(&t7, &x6);\
-	xor2(&t4, &x7);\
-	;\
+        ;\
+        xor2(&x0, &t0);\
+        xor2(&x1, &t1);\
+        xor2(&x2, &t2);\
+        xor2(&x3, &t3);\
+        xor2(&x4, &t4);\
+        xor2(&x5, &t5);\
+        xor2(&x6, &t6);\
+        xor2(&x7, &t7);\
+        ;\
+        xor2(&t0, &x7);\
+        xor2(&t1, &x0);\
+        xor2(&t2, &x1);\
+        xor2(&t1, &x7);\
+        xor2(&t3, &x2);\
+        xor2(&t4, &x3);\
+        xor2(&t5, &x4);\
+        xor2(&t3, &x7);\
+        xor2(&t6, &x5);\
+        xor2(&t7, &x6);\
+        xor2(&t4, &x7);\
+        ;\
   shufd(&x0, &x0, 0x4e);\
   shufd(&x1, &x1, 0x4e);\
   shufd(&x2, &x2, 0x4e);\
@@ -537,229 +537,229 @@ void store64_littleendian(unsigned char *x,uint64 u);
   shufd(&x5, &x5, 0x4e);\
   shufd(&x6, &x6, 0x4e);\
   shufd(&x7, &x7, 0x4e);\
-	;\
-	xor2(&t0, &x0);\
-	xor2(&t1, &x1);\
-	xor2(&t2, &x2);\
-	xor2(&t3, &x3);\
-	xor2(&t4, &x4);\
-	xor2(&t5, &x5);\
-	xor2(&t6, &x6);\
-	xor2(&t7, &x7);\
+        ;\
+        xor2(&t0, &x0);\
+        xor2(&t1, &x1);\
+        xor2(&t2, &x2);\
+        xor2(&t3, &x3);\
+        xor2(&t4, &x4);\
+        xor2(&t5, &x5);\
+        xor2(&t6, &x6);\
+        xor2(&t7, &x7);\
 
 
 #define aesround(i, b0, b1, b2, b3, b4, b5, b6, b7, t0, t1, t2, t3, t4, t5, t6, t7, bskey) \
-	shiftrows(b0, b1, b2, b3, b4, b5, b6, b7, i, SR, bskey);\
-	sbox(b0, b1, b2, b3, b4, b5, b6, b7, t0, t1, t2, t3, t4, t5, t6, t7);\
-	mixcolumns(b0, b1, b4, b6, b3, b7, b2, b5, t0, t1, t2, t3, t4, t5, t6, t7);\
+        shiftrows(b0, b1, b2, b3, b4, b5, b6, b7, i, SR, bskey);\
+        sbox(b0, b1, b2, b3, b4, b5, b6, b7, t0, t1, t2, t3, t4, t5, t6, t7);\
+        mixcolumns(b0, b1, b4, b6, b3, b7, b2, b5, t0, t1, t2, t3, t4, t5, t6, t7);\
 
 
 #define lastround(b0, b1, b2, b3, b4, b5, b6, b7, t0, t1, t2, t3, t4, t5, t6, t7, bskey) \
-	shiftrows(b0, b1, b2, b3, b4, b5, b6, b7, 10, SRM0, bskey);\
-	sbox(b0, b1, b2, b3, b4, b5, b6, b7, t0, t1, t2, t3, t4, t5, t6, t7);\
-	xor2(&b0,(int128 *)(bskey + 128*10));\
-	xor2(&b1,(int128 *)(bskey + 128*10+16));\
-	xor2(&b4,(int128 *)(bskey + 128*10+32));\
-	xor2(&b6,(int128 *)(bskey + 128*10+48));\
-	xor2(&b3,(int128 *)(bskey + 128*10+64));\
-	xor2(&b7,(int128 *)(bskey + 128*10+80));\
-	xor2(&b2,(int128 *)(bskey + 128*10+96));\
-	xor2(&b5,(int128 *)(bskey + 128*10+112));\
+        shiftrows(b0, b1, b2, b3, b4, b5, b6, b7, 10, SRM0, bskey);\
+        sbox(b0, b1, b2, b3, b4, b5, b6, b7, t0, t1, t2, t3, t4, t5, t6, t7);\
+        xor2(&b0,(int128 *)(bskey + 128*10));\
+        xor2(&b1,(int128 *)(bskey + 128*10+16));\
+        xor2(&b4,(int128 *)(bskey + 128*10+32));\
+        xor2(&b6,(int128 *)(bskey + 128*10+48));\
+        xor2(&b3,(int128 *)(bskey + 128*10+64));\
+        xor2(&b7,(int128 *)(bskey + 128*10+80));\
+        xor2(&b2,(int128 *)(bskey + 128*10+96));\
+        xor2(&b5,(int128 *)(bskey + 128*10+112));\
 
 
 #define sbox(b0, b1, b2, b3, b4, b5, b6, b7, t0, t1, t2, t3, s0, s1, s2, s3) \
-	InBasisChange(b0, b1, b2, b3, b4, b5, b6, b7); \
-	Inv_GF256(b6, b5, b0, b3, b7, b1, b4, b2, t0, t1, t2, t3, s0, s1, s2, s3); \
-	OutBasisChange(b7, b1, b4, b2, b6, b5, b0, b3); \
+        InBasisChange(b0, b1, b2, b3, b4, b5, b6, b7); \
+        Inv_GF256(b6, b5, b0, b3, b7, b1, b4, b2, t0, t1, t2, t3, s0, s1, s2, s3); \
+        OutBasisChange(b7, b1, b4, b2, b6, b5, b0, b3); \
 
 
 #define InBasisChange(b0, b1, b2, b3, b4, b5, b6, b7) \
-	xor2(&b5, &b6);\
-	xor2(&b2, &b1);\
-	xor2(&b5, &b0);\
-	xor2(&b6, &b2);\
-	xor2(&b3, &b0);\
-	;\
-	xor2(&b6, &b3);\
-	xor2(&b3, &b7);\
-	xor2(&b3, &b4);\
-	xor2(&b7, &b5);\
-	xor2(&b3, &b1);\
-	;\
-	xor2(&b4, &b5);\
-	xor2(&b2, &b7);\
-	xor2(&b1, &b5);\
+        xor2(&b5, &b6);\
+        xor2(&b2, &b1);\
+        xor2(&b5, &b0);\
+        xor2(&b6, &b2);\
+        xor2(&b3, &b0);\
+        ;\
+        xor2(&b6, &b3);\
+        xor2(&b3, &b7);\
+        xor2(&b3, &b4);\
+        xor2(&b7, &b5);\
+        xor2(&b3, &b1);\
+        ;\
+        xor2(&b4, &b5);\
+        xor2(&b2, &b7);\
+        xor2(&b1, &b5);\
 
 #define OutBasisChange(b0, b1, b2, b3, b4, b5, b6, b7) \
-	xor2(&b0, &b6);\
-	xor2(&b1, &b4);\
-	xor2(&b2, &b0);\
-	xor2(&b4, &b6);\
-	xor2(&b6, &b1);\
-	;\
-	xor2(&b1, &b5);\
-	xor2(&b5, &b3);\
-	xor2(&b2, &b5);\
-	xor2(&b3, &b7);\
-	xor2(&b7, &b5);\
-	;\
-	xor2(&b4, &b7);\
+        xor2(&b0, &b6);\
+        xor2(&b1, &b4);\
+        xor2(&b2, &b0);\
+        xor2(&b4, &b6);\
+        xor2(&b6, &b1);\
+        ;\
+        xor2(&b1, &b5);\
+        xor2(&b5, &b3);\
+        xor2(&b2, &b5);\
+        xor2(&b3, &b7);\
+        xor2(&b7, &b5);\
+        ;\
+        xor2(&b4, &b7);\
 
 #define Mul_GF4(x0, x1, y0, y1, t0) \
-	copy2(&t0, &y0);\
-	xor2(&t0, &y1);\
-	and2(&t0, &x0);\
-	xor2(&x0, &x1);\
-	and2(&x0, &y1);\
-	and2(&x1, &y0);\
-	xor2(&x0, &x1);\
-	xor2(&x1, &t0);\
+        copy2(&t0, &y0);\
+        xor2(&t0, &y1);\
+        and2(&t0, &x0);\
+        xor2(&x0, &x1);\
+        and2(&x0, &y1);\
+        and2(&x1, &y0);\
+        xor2(&x0, &x1);\
+        xor2(&x1, &t0);\
 
 #define Mul_GF4_N(x0, x1, y0, y1, t0) \
-	copy2(&t0, &y0);\
-	xor2(&t0, &y1);\
-	and2(&t0, &x0);\
-	xor2(&x0, &x1);\
-	and2(&x0, &y1);\
-	and2(&x1, &y0);\
-	xor2(&x1, &x0);\
-	xor2(&x0, &t0);\
+        copy2(&t0, &y0);\
+        xor2(&t0, &y1);\
+        and2(&t0, &x0);\
+        xor2(&x0, &x1);\
+        and2(&x0, &y1);\
+        and2(&x1, &y0);\
+        xor2(&x1, &x0);\
+        xor2(&x0, &t0);\
 
 #define Mul_GF4_2(x0, x1, x2, x3, y0, y1, t0, t1) \
-	copy2(&t0, = y0);\
-	xor2(&t0, &y1);\
-	copy2(&t1, &t0);\
-	and2(&t0, &x0);\
-	and2(&t1, &x2);\
-	xor2(&x0, &x1);\
-	xor2(&x2, &x3);\
-	and2(&x0, &y1);\
-	and2(&x2, &y1);\
-	and2(&x1, &y0);\
-	and2(&x3, &y0);\
-	xor2(&x0, &x1);\
-	xor2(&x2, &x3);\
-	xor2(&x1, &t0);\
-	xor2(&x3, &t1);\
+        copy2(&t0, = y0);\
+        xor2(&t0, &y1);\
+        copy2(&t1, &t0);\
+        and2(&t0, &x0);\
+        and2(&t1, &x2);\
+        xor2(&x0, &x1);\
+        xor2(&x2, &x3);\
+        and2(&x0, &y1);\
+        and2(&x2, &y1);\
+        and2(&x1, &y0);\
+        and2(&x3, &y0);\
+        xor2(&x0, &x1);\
+        xor2(&x2, &x3);\
+        xor2(&x1, &t0);\
+        xor2(&x3, &t1);\
 
 #define Mul_GF16(x0, x1, x2, x3, y0, y1, y2, y3, t0, t1, t2, t3) \
-	copy2(&t0, &x0);\
-	copy2(&t1, &x1);\
-	Mul_GF4(x0, x1, y0, y1, t2);\
-	xor2(&t0, &x2);\
-	xor2(&t1, &x3);\
-	xor2(&y0, &y2);\
-	xor2(&y1, &y3);\
-	Mul_GF4_N(t0, t1, y0, y1, t2);\
-	Mul_GF4(x2, x3, y2, y3, t3);\
-	;\
-	xor2(&x0, &t0);\
-	xor2(&x2, &t0);\
-	xor2(&x1, &t1);\
-	xor2(&x3, &t1);\
+        copy2(&t0, &x0);\
+        copy2(&t1, &x1);\
+        Mul_GF4(x0, x1, y0, y1, t2);\
+        xor2(&t0, &x2);\
+        xor2(&t1, &x3);\
+        xor2(&y0, &y2);\
+        xor2(&y1, &y3);\
+        Mul_GF4_N(t0, t1, y0, y1, t2);\
+        Mul_GF4(x2, x3, y2, y3, t3);\
+        ;\
+        xor2(&x0, &t0);\
+        xor2(&x2, &t0);\
+        xor2(&x1, &t1);\
+        xor2(&x3, &t1);\
 
 #define Mul_GF16_2(x0, x1, x2, x3, x4, x5, x6, x7, y0, y1, y2, y3, t0, t1, t2, t3) \
-	copy2(&t0, &x0);\
-	copy2(&t1, &x1);\
-	Mul_GF4(x0, x1, y0, y1, t2);\
-	xor2(&t0, &x2);\
-	xor2(&t1, &x3);\
-	xor2(&y0, &y2);\
-	xor2(&y1, &y3);\
-	Mul_GF4_N(t0, t1, y0, y1, t3);\
-	Mul_GF4(x2, x3, y2, y3, t2);\
-	;\
-	xor2(&x0, &t0);\
-	xor2(&x2, &t0);\
-	xor2(&x1, &t1);\
-	xor2(&x3, &t1);\
-	;\
-	copy2(&t0, &x4);\
-	copy2(&t1, &x5);\
-	xor2(&t0, &x6);\
-	xor2(&t1, &x7);\
-	Mul_GF4_N(t0, t1, y0, y1, t3);\
-	Mul_GF4(x6, x7, y2, y3, t2);\
-	xor2(&y0, &y2);\
-	xor2(&y1, &y3);\
-	Mul_GF4(x4, x5, y0, y1, t3);\
-	;\
-	xor2(&x4, &t0);\
-	xor2(&x6, &t0);\
-	xor2(&x5, &t1);\
-	xor2(&x7, &t1);\
+        copy2(&t0, &x0);\
+        copy2(&t1, &x1);\
+        Mul_GF4(x0, x1, y0, y1, t2);\
+        xor2(&t0, &x2);\
+        xor2(&t1, &x3);\
+        xor2(&y0, &y2);\
+        xor2(&y1, &y3);\
+        Mul_GF4_N(t0, t1, y0, y1, t3);\
+        Mul_GF4(x2, x3, y2, y3, t2);\
+        ;\
+        xor2(&x0, &t0);\
+        xor2(&x2, &t0);\
+        xor2(&x1, &t1);\
+        xor2(&x3, &t1);\
+        ;\
+        copy2(&t0, &x4);\
+        copy2(&t1, &x5);\
+        xor2(&t0, &x6);\
+        xor2(&t1, &x7);\
+        Mul_GF4_N(t0, t1, y0, y1, t3);\
+        Mul_GF4(x6, x7, y2, y3, t2);\
+        xor2(&y0, &y2);\
+        xor2(&y1, &y3);\
+        Mul_GF4(x4, x5, y0, y1, t3);\
+        ;\
+        xor2(&x4, &t0);\
+        xor2(&x6, &t0);\
+        xor2(&x5, &t1);\
+        xor2(&x7, &t1);\
 
 #define Inv_GF16(x0, x1, x2, x3, t0, t1, t2, t3) \
-	copy2(&t0, &x1);\
-	copy2(&t1, &x0);\
-	and2(&t0, &x3);\
-	or2(&t1, &x2);\
-	copy2(&t2, &x1);\
-	copy2(&t3, &x0);\
-	or2(&t2, &x2);\
-	or2(&t3, &x3);\
-	xor2(&t2, &t3);\
-	;\
-	xor2(&t0, &t2);\
-	xor2(&t1, &t2);\
-	;\
-	Mul_GF4_2(x0, x1, x2, x3, t1, t0, t2, t3);\
+        copy2(&t0, &x1);\
+        copy2(&t1, &x0);\
+        and2(&t0, &x3);\
+        or2(&t1, &x2);\
+        copy2(&t2, &x1);\
+        copy2(&t3, &x0);\
+        or2(&t2, &x2);\
+        or2(&t3, &x3);\
+        xor2(&t2, &t3);\
+        ;\
+        xor2(&t0, &t2);\
+        xor2(&t1, &t2);\
+        ;\
+        Mul_GF4_2(x0, x1, x2, x3, t1, t0, t2, t3);\
 
 
 #define Inv_GF256(x0,  x1, x2, x3, x4, x5, x6, x7, t0, t1, t2, t3, s0, s1, s2, s3) \
-	copy2(&t3, &x4);\
-	copy2(&t2, &x5);\
-	copy2(&t1, &x1);\
-	copy2(&s1, &x7);\
-	copy2(&s0, &x0);\
-	;\
-	xor2(&t3, &x6);\
-	xor2(&t2, &x7);\
-	xor2(&t1, &x3);\
-	xor2(&s1, &x6);\
-	xor2(&s0, &x2);\
-	;\
-	copy2(&s2, &t3);\
-	copy2(&t0, &t2);\
-	copy2(&s3, &t3);\
-	;\
-	or2(&t2, &t1);\
-	or2(&t3, &s0);\
-	xor2(&s3, &t0);\
-	and2(&s2, &s0);\
-	and2(&t0, &t1);\
-	xor2(&s0, &t1);\
-	and2(&s3, &s0);\
-	copy2(&s0, &x3);\
-	xor2(&s0, &x2);\
-	and2(&s1, &s0);\
-	xor2(&t3, &s1);\
-	xor2(&t2, &s1);\
-	copy2(&s1, &x4);\
-	xor2(&s1, &x5);\
-	copy2(&s0, &x1);\
-	copy2(&t1, &s1);\
-	xor2(&s0, &x0);\
-	or2(&t1, &s0);\
-	and2(&s1, &s0);\
-	xor2(&t0, &s1);\
-	xor2(&t3, &s3);\
-	xor2(&t2, &s2);\
-	xor2(&t1, &s3);\
-	xor2(&t0, &s2);\
-	xor2(&t1, &s2);\
-	copy2(&s0, &x7);\
-	copy2(&s1, &x6);\
-	copy2(&s2, &x5);\
-	copy2(&s3, &x4);\
-	and2(&s0, &x3);\
-	and2(&s1, &x2);\
-	and2(&s2, &x1);\
-	or2(&s3, &x0);\
-	xor2(&t3, &s0);\
-	xor2(&t2, &s1);\
-	xor2(&t1, &s2);\
-	xor2(&t0, &s3);\
+        copy2(&t3, &x4);\
+        copy2(&t2, &x5);\
+        copy2(&t1, &x1);\
+        copy2(&s1, &x7);\
+        copy2(&s0, &x0);\
+        ;\
+        xor2(&t3, &x6);\
+        xor2(&t2, &x7);\
+        xor2(&t1, &x3);\
+        xor2(&s1, &x6);\
+        xor2(&s0, &x2);\
+        ;\
+        copy2(&s2, &t3);\
+        copy2(&t0, &t2);\
+        copy2(&s3, &t3);\
+        ;\
+        or2(&t2, &t1);\
+        or2(&t3, &s0);\
+        xor2(&s3, &t0);\
+        and2(&s2, &s0);\
+        and2(&t0, &t1);\
+        xor2(&s0, &t1);\
+        and2(&s3, &s0);\
+        copy2(&s0, &x3);\
+        xor2(&s0, &x2);\
+        and2(&s1, &s0);\
+        xor2(&t3, &s1);\
+        xor2(&t2, &s1);\
+        copy2(&s1, &x4);\
+        xor2(&s1, &x5);\
+        copy2(&s0, &x1);\
+        copy2(&t1, &s1);\
+        xor2(&s0, &x0);\
+        or2(&t1, &s0);\
+        and2(&s1, &s0);\
+        xor2(&t0, &s1);\
+        xor2(&t3, &s3);\
+        xor2(&t2, &s2);\
+        xor2(&t1, &s3);\
+        xor2(&t0, &s2);\
+        xor2(&t1, &s2);\
+        copy2(&s0, &x7);\
+        copy2(&s1, &x6);\
+        copy2(&s2, &x5);\
+        copy2(&s3, &x4);\
+        and2(&s0, &x3);\
+        and2(&s1, &x2);\
+        and2(&s2, &x1);\
+        or2(&s3, &x0);\
+        xor2(&t3, &s0);\
+        xor2(&t2, &s1);\
+        xor2(&t1, &s2);\
+        xor2(&t0, &s3);\
   ;\
   copy2(&s0, &t3);\
   xor2(&s0, &t2);\

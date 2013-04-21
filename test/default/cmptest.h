@@ -27,7 +27,7 @@ int main(void)
     xmain();
     rewind(fp_res);
     if ((fp_out = fopen(TEST_NAME_OUT, "r")) == NULL) {
-        perror("fopen(" TEST_NAME_OUT ")");        
+        perror("fopen(" TEST_NAME_OUT ")");
         return 99;
     }
     do {

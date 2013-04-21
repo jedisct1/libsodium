@@ -7,7 +7,7 @@ extern "C" {
 #endif
 
 int sodium_init(void);
-    
+
 #ifdef __cplusplus
 }
 #endif

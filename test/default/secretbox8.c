@@ -27,9 +27,9 @@ int main(void)
       if (crypto_secretbox_open(m2,c,mlen + crypto_secretbox_ZEROBYTES,n,k) == 0) {
         for (i = 0;i < mlen + crypto_secretbox_ZEROBYTES;++i)
           if (m2[i] != m[i]) {
-	    printf("forgery\n");
-	    return 100;
-	  }
+            printf("forgery\n");
+            return 100;
+          }
       } else {
         ++caught;
       }

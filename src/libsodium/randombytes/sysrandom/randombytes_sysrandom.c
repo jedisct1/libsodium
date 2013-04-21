@@ -160,7 +160,7 @@ randombytes_sysrandom_buf(void * const buf, const size_t size)
 #ifdef ULONG_LONG_MAX
     assert(size <= ULONG_LONG_MAX);
 #endif
-#ifndef _WIN32    
+#ifndef _WIN32
     if (safe_read(stream.random_data_source_fd, buf, size) != (ssize_t) size) {
         abort();
     }
