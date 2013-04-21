@@ -10,10 +10,19 @@
 extern "C" {
 #endif
 
+SODIUM_EXPORT
 int crypto_stream_xsalsa20_ref(unsigned char *,unsigned long long,const unsigned char *,const unsigned char *);
+
+SODIUM_EXPORT
 int crypto_stream_xsalsa20_ref_xor(unsigned char *,const unsigned char *,unsigned long long,const unsigned char *,const unsigned char *);
+
+SODIUM_EXPORT
 int crypto_stream_xsalsa20_ref_beforenm(unsigned char *,const unsigned char *);
+
+SODIUM_EXPORT
 int crypto_stream_xsalsa20_ref_afternm(unsigned char *,unsigned long long,const unsigned char *,const unsigned char *);
+
+SODIUM_EXPORT
 int crypto_stream_xsalsa20_ref_xor_afternm(unsigned char *,const unsigned char *,unsigned long long,const unsigned char *,const unsigned char *);
 
 #ifdef __cplusplus

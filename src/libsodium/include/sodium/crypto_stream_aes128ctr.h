@@ -11,10 +11,20 @@
 extern "C" {
 #endif
 
+
+SODIUM_EXPORT
 int crypto_stream_aes128ctr_portable(unsigned char *,unsigned long long,const unsigned char *,const unsigned char *);
+
+SODIUM_EXPORT
 int crypto_stream_aes128ctr_portable_xor(unsigned char *,const unsigned char *,unsigned long long,const unsigned char *,const unsigned char *);
+
+SODIUM_EXPORT
 int crypto_stream_aes128ctr_portable_beforenm(unsigned char *,const unsigned char *);
+
+SODIUM_EXPORT
 int crypto_stream_aes128ctr_portable_afternm(unsigned char *,unsigned long long,const unsigned char *,const unsigned char *);
+
+SODIUM_EXPORT
 int crypto_stream_aes128ctr_portable_xor_afternm(unsigned char *,const unsigned char *,unsigned long long,const unsigned char *,const unsigned char *);
 
 #ifdef __cplusplus

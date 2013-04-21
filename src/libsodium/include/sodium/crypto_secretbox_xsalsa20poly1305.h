@@ -12,7 +12,10 @@
 extern "C" {
 #endif
 
+SODIUM_EXPORT
 int crypto_secretbox_xsalsa20poly1305_ref(unsigned char *,const unsigned char *,unsigned long long,const unsigned char *,const unsigned char *);
+
+SODIUM_EXPORT
 int crypto_secretbox_xsalsa20poly1305_ref_open(unsigned char *,const unsigned char *,unsigned long long,const unsigned char *,const unsigned char *);
 
 #ifdef __cplusplus

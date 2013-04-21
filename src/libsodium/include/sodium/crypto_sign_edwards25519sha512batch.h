@@ -11,8 +11,13 @@
 extern "C" {
 #endif
 
+SODIUM_EXPORT
 int crypto_sign_edwards25519sha512batch_ref(unsigned char *,unsigned long long *,const unsigned char *,unsigned long long,const unsigned char *);
+
+SODIUM_EXPORT
 int crypto_sign_edwards25519sha512batch_ref_open(unsigned char *,unsigned long long *,const unsigned char *,unsigned long long,const unsigned char *);
+
+SODIUM_EXPORT
 int crypto_sign_edwards25519sha512batch_ref_keypair(unsigned char *,unsigned char *);
 
 #ifdef __cplusplus

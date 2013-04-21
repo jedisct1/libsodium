@@ -12,6 +12,7 @@
 extern "C" {
 #endif
 
+SODIUM_EXPORT
 int crypto_core_salsa20_ref(unsigned char *,const unsigned char *,const unsigned char *,const unsigned char *);
 
 #ifdef __cplusplus

@@ -11,9 +11,17 @@
 extern "C" {
 #endif
 
+
+SODIUM_EXPORT
 int crypto_sign_ed25519_ref10(unsigned char *,unsigned long long *,const unsigned char *,unsigned long long,const unsigned char *);
+
+SODIUM_EXPORT
 int crypto_sign_ed25519_ref10_open(unsigned char *,unsigned long long *,const unsigned char *,unsigned long long,const unsigned char *);
+
+SODIUM_EXPORT
 int crypto_sign_ed25519_ref10_keypair(unsigned char *,unsigned char *);
+
+SODIUM_EXPORT
 int crypto_sign_ed25519_ref10_seed_keypair(unsigned char *,unsigned char *,const unsigned char *);
 
 #ifdef __cplusplus

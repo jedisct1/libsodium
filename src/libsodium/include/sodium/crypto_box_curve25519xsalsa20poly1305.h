@@ -15,11 +15,22 @@
 extern "C" {
 #endif
 
+SODIUM_EXPORT
 int crypto_box_curve25519xsalsa20poly1305_ref(unsigned char *,const unsigned char *,unsigned long long,const unsigned char *,const unsigned char *,const unsigned char *);
+
+SODIUM_EXPORT
 int crypto_box_curve25519xsalsa20poly1305_ref_open(unsigned char *,const unsigned char *,unsigned long long,const unsigned char *,const unsigned char *,const unsigned char *);
+
+SODIUM_EXPORT
 int crypto_box_curve25519xsalsa20poly1305_ref_keypair(unsigned char *,unsigned char *);
+
+SODIUM_EXPORT
 int crypto_box_curve25519xsalsa20poly1305_ref_beforenm(unsigned char *,const unsigned char *,const unsigned char *);
+
+SODIUM_EXPORT
 int crypto_box_curve25519xsalsa20poly1305_ref_afternm(unsigned char *,const unsigned char *,unsigned long long,const unsigned char *,const unsigned char *);
+
+SODIUM_EXPORT
 int crypto_box_curve25519xsalsa20poly1305_ref_open_afternm(unsigned char *,const unsigned char *,unsigned long long,const unsigned char *,const unsigned char *);
 
 #ifdef __cplusplus

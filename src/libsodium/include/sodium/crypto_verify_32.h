@@ -8,7 +8,10 @@
 #ifdef __cplusplus
 extern "C" {
 #endif
+
+SODIUM_EXPORT
 int crypto_verify_32(const unsigned char *x, const unsigned char *y);
+
 #define crypto_verify_32_ref crypto_verify_32
 
 #ifdef __cplusplus

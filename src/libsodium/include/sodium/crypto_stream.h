@@ -19,9 +19,11 @@ size_t  crypto_stream_noncebytes(void);
 #define crypto_stream_PRIMITIVE "xsalsa20"
 const char *crypto_stream_primitive(void);
 
+SODIUM_EXPORT
 int crypto_stream(unsigned char *c, unsigned long long clen,
                   const unsigned char *n, const unsigned char *k);
 
+SODIUM_EXPORT
 int crypto_stream_xor(unsigned char *c, const unsigned char *m,
                       unsigned long long mlen, const unsigned char *n,
                       const unsigned char *k);

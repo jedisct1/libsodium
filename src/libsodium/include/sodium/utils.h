@@ -10,10 +10,11 @@
 extern "C" {
 #endif
 
-void sodium_memzero(void * const pnt, const size_t len);
-
 void *_sodium_alignedcalloc(unsigned char ** const unaligned_p,
                             const size_t len);
+
+SODIUM_EXPORT
+void sodium_memzero(void * const pnt, const size_t len);
 
 #ifdef __cplusplus
 }
