@@ -159,21 +159,25 @@ AC_C_BIGENDIAN(
 )
 
 AC_MSG_CHECKING(for 128-bit arithmetic)
-have_ti_mode=no
+HAVE_TI_MODE_V=0
 AC_COMPILE_IFELSE([AC_LANG_PROGRAM([[
-#include <limits.h>
 ]], [[
+#ifndef __GNUC__
+# error mode(TI) is a gcc extension
+#endif
+#if defined(__arm__) || defined(__ARMEL__)
+# error clang doesn't properly compile smult_curve25519_donna_c64.c on arm
+#endif
 typedef unsigned uint128_t __attribute__((mode(TI)));
 uint128_t x;
 (void) x;
-return sizeof(x) / CHAR_BIT != 16U
 ]])],
 [AC_MSG_RESULT(yes)
  AC_DEFINE([HAVE_TI_MODE], [1], [gcc TI mode is available])
- have_ti_mode=yes],
+ HAVE_TI_MODE_V=1],
 [AC_MSG_RESULT(no)])
-AM_CONDITIONAL([HAVE_TI_MODE], [test x$have_ti_mode = xyes])
-AC_SUBST([HAVE_TI_MODE])
+AM_CONDITIONAL([HAVE_TI_MODE], [test $HAVE_TI_MODE_V = 1])
+AC_SUBST(HAVE_TI_MODE_V)
 
 dnl Checks for functions and headers
 

@@ -1,7 +1,7 @@
 #ifndef crypto_scalarmult_curve25519_H
 #define crypto_scalarmult_curve25519_H
 
-#if @HAVE_TI_MODE@-1 == 0
+#if @HAVE_TI_MODE_V@-1 == 0
 # define SODIUM_HAVE_TI_MODE
 #endif
 
@@ -12,7 +12,7 @@
 extern "C" {
 #endif
 
-#ifndef SODIUM_HAVE_TI_MODE
+#ifdef SODIUM_HAVE_TI_MODE
 
 extern int crypto_scalarmult_curve25519_donna_c64(unsigned char *,const unsigned char *,const unsigned char *);
 extern int crypto_scalarmult_curve25519_donna_c64_base(unsigned char *,const unsigned char *);
