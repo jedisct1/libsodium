@@ -8,6 +8,10 @@
 #define crypto_sign_SECRETKEYBYTES crypto_sign_ed25519_SECRETKEYBYTES
 #define crypto_sign_PRIMITIVE "ed25519"
 
+#ifdef __cplusplus
+extern "C" {
+#endif
+
 int crypto_sign_seed_keypair(unsigned char *pk, unsigned char *sk,
                              const unsigned char *seed);
 
@@ -21,4 +25,8 @@ int crypto_sign_open(unsigned char *m, unsigned long long *mlen,
                      const unsigned char *sm, unsigned long long smlen,
                      const unsigned char *pk);
 
+#ifdef __cplusplus
+}
+#endif
+    
 #endif

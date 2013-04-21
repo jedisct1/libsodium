@@ -7,9 +7,17 @@
 #define crypto_scalarmult_SCALARBYTES crypto_scalarmult_curve25519_SCALARBYTES
 #define crypto_scalarmult_PRIMITIVE "curve25519"
 
+#ifdef __cplusplus
+extern "C" {
+#endif
+
 int crypto_scalarmult_base(unsigned char *q, const unsigned char *n);
 
 int crypto_scalarmult(unsigned char *q, const unsigned char *n,
                       const unsigned char *p);
 
+#ifdef __cplusplus
+}
+#endif
+    
 #endif

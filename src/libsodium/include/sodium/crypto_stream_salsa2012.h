@@ -3,14 +3,17 @@
 
 #define crypto_stream_salsa2012_KEYBYTES 32
 #define crypto_stream_salsa2012_NONCEBYTES 8
+
 #ifdef __cplusplus
 extern "C" {
 #endif
-extern int crypto_stream_salsa2012_ref(unsigned char *,unsigned long long,const unsigned char *,const unsigned char *);
-extern int crypto_stream_salsa2012_ref_xor(unsigned char *,const unsigned char *,unsigned long long,const unsigned char *,const unsigned char *);
-extern int crypto_stream_salsa2012_ref_beforenm(unsigned char *,const unsigned char *);
-extern int crypto_stream_salsa2012_ref_afternm(unsigned char *,unsigned long long,const unsigned char *,const unsigned char *);
-extern int crypto_stream_salsa2012_ref_xor_afternm(unsigned char *,const unsigned char *,unsigned long long,const unsigned char *,const unsigned char *);
+
+int crypto_stream_salsa2012_ref(unsigned char *,unsigned long long,const unsigned char *,const unsigned char *);
+int crypto_stream_salsa2012_ref_xor(unsigned char *,const unsigned char *,unsigned long long,const unsigned char *,const unsigned char *);
+int crypto_stream_salsa2012_ref_beforenm(unsigned char *,const unsigned char *);
+int crypto_stream_salsa2012_ref_afternm(unsigned char *,unsigned long long,const unsigned char *,const unsigned char *);
+int crypto_stream_salsa2012_ref_xor_afternm(unsigned char *,const unsigned char *,unsigned long long,const unsigned char *,const unsigned char *);
+
 #ifdef __cplusplus
 }
 #endif

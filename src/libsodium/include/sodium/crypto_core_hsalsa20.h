@@ -5,10 +5,13 @@
 #define crypto_core_hsalsa20_INPUTBYTES 16
 #define crypto_core_hsalsa20_KEYBYTES 32
 #define crypto_core_hsalsa20_CONSTBYTES 16
+
 #ifdef __cplusplus
 extern "C" {
 #endif
-extern int crypto_core_hsalsa20_ref2(unsigned char *,const unsigned char *,const unsigned char *,const unsigned char *);
+
+int crypto_core_hsalsa20_ref2(unsigned char *,const unsigned char *,const unsigned char *,const unsigned char *);
+
 #ifdef __cplusplus
 }
 #endif

@@ -5,11 +5,14 @@
 #define crypto_secretbox_xsalsa20poly1305_NONCEBYTES 24
 #define crypto_secretbox_xsalsa20poly1305_ZEROBYTES 32
 #define crypto_secretbox_xsalsa20poly1305_BOXZEROBYTES 16
+
 #ifdef __cplusplus
 extern "C" {
 #endif
-extern int crypto_secretbox_xsalsa20poly1305_ref(unsigned char *,const unsigned char *,unsigned long long,const unsigned char *,const unsigned char *);
-extern int crypto_secretbox_xsalsa20poly1305_ref_open(unsigned char *,const unsigned char *,unsigned long long,const unsigned char *,const unsigned char *);
+
+int crypto_secretbox_xsalsa20poly1305_ref(unsigned char *,const unsigned char *,unsigned long long,const unsigned char *,const unsigned char *);
+int crypto_secretbox_xsalsa20poly1305_ref_open(unsigned char *,const unsigned char *,unsigned long long,const unsigned char *,const unsigned char *);
+
 #ifdef __cplusplus
 }
 #endif

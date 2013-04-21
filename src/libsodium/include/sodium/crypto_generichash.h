@@ -9,6 +9,10 @@
 #define crypto_generichash_KEYBYTES_MAX crypto_generichash_blake2b_KEYBYTES_MAX
 #define crypto_generichash_PRIMITIVE "blake2b"
 
+#ifdef __cplusplus
+extern "C" {
+#endif
+
 typedef crypto_generichash_blake2b_state crypto_generichash_state;
 
 int crypto_generichash(unsigned char *out, size_t outlen,
@@ -25,5 +29,9 @@ int crypto_generichash_update(crypto_generichash_blake2b_state *state,
 
 int crypto_generichash_final(crypto_generichash_blake2b_state *state,
                              unsigned char *out, const size_t outlen);
+
+#ifdef __cplusplus
+}
+#endif
 
 #endif

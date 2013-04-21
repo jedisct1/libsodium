@@ -4,12 +4,15 @@
 #define crypto_sign_edwards25519sha512batch_SECRETKEYBYTES 64
 #define crypto_sign_edwards25519sha512batch_PUBLICKEYBYTES 32
 #define crypto_sign_edwards25519sha512batch_BYTES 64
+
 #ifdef __cplusplus
 extern "C" {
 #endif
-extern int crypto_sign_edwards25519sha512batch_ref(unsigned char *,unsigned long long *,const unsigned char *,unsigned long long,const unsigned char *);
-extern int crypto_sign_edwards25519sha512batch_ref_open(unsigned char *,unsigned long long *,const unsigned char *,unsigned long long,const unsigned char *);
-extern int crypto_sign_edwards25519sha512batch_ref_keypair(unsigned char *,unsigned char *);
+
+int crypto_sign_edwards25519sha512batch_ref(unsigned char *,unsigned long long *,const unsigned char *,unsigned long long,const unsigned char *);
+int crypto_sign_edwards25519sha512batch_ref_open(unsigned char *,unsigned long long *,const unsigned char *,unsigned long long,const unsigned char *);
+int crypto_sign_edwards25519sha512batch_ref_keypair(unsigned char *,unsigned char *);
+
 #ifdef __cplusplus
 }
 #endif

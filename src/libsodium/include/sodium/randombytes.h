@@ -2,14 +2,14 @@
 #ifndef randombytes_H
 #define randombytes_H
 
-#ifdef __cplusplus
-extern "C" {
-#endif
-
 #include <sys/types.h>
 
 #include <stdint.h>
 #include <stdio.h>
+
+#ifdef __cplusplus
+extern "C" {
+#endif
 
 typedef struct randombytes_implementation {
     const char *(*implementation_name)(void);

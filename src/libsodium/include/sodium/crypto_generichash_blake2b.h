@@ -16,6 +16,10 @@
 # define CRYPTO_ALIGN(x) __attribute__((aligned(x)))
 #endif
 
+#ifdef __cplusplus
+extern "C" {
+#endif
+
 #pragma pack(push, 1)
 CRYPTO_ALIGN(64) typedef struct {
     uint64_t h[8];
@@ -27,9 +31,6 @@ CRYPTO_ALIGN(64) typedef struct {
 } crypto_generichash_blake2b_state;
 #pragma pack(pop)
 
-#ifdef __cplusplus
-extern "C" {
-#endif
 int crypto_generichash_blake2b_ref(unsigned char *out, size_t outlen,
                                    const unsigned char *in,
                                    unsigned long long inlen,
