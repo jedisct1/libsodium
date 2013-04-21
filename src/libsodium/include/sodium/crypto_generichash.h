@@ -3,15 +3,27 @@
 
 #include "crypto_generichash_blake2b.h"
 
-#define crypto_generichash_BYTES_MIN crypto_generichash_blake2b_BYTES_MIN
-#define crypto_generichash_BYTES_MAX crypto_generichash_blake2b_BYTES_MAX
-#define crypto_generichash_KEYBYTES_MIN crypto_generichash_blake2b_KEYBYTES_MIN
-#define crypto_generichash_KEYBYTES_MAX crypto_generichash_blake2b_KEYBYTES_MAX
-#define crypto_generichash_PRIMITIVE "blake2b"
-
 #ifdef __cplusplus
 extern "C" {
 #endif
+
+#define crypto_generichash_BYTES_MIN crypto_generichash_blake2b_BYTES_MIN
+size_t  crypto_generichash_bytes_min(void);
+
+#define crypto_generichash_BYTES_MAX crypto_generichash_blake2b_BYTES_MAX
+size_t  crypto_generichash_bytes_max(void);
+
+#define crypto_generichash_KEYBYTES_MIN crypto_generichash_blake2b_KEYBYTES_MIN
+size_t  crypto_generichash_keybytes_min(void);
+
+#define crypto_generichash_KEYBYTES_MAX crypto_generichash_blake2b_KEYBYTES_MAX
+size_t  crypto_generichash_keybytes_max(void);
+
+#define crypto_generichash_BLOCKBYTES crypto_generichash_blake2b_BLOCKBYTES
+size_t  crypto_generichash_blockbytes(void);
+
+#define crypto_generichash_PRIMITIVE "blake2b"
+const char *crypto_generichash_primitive(void);
 
 typedef crypto_generichash_blake2b_state crypto_generichash_state;
 
