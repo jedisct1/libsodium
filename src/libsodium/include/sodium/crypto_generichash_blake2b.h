@@ -30,17 +30,14 @@ CRYPTO_ALIGN(64) typedef struct {
 #ifdef __cplusplus
 extern "C" {
 #endif
-int crypto_generichash_blake2b_ref(unsigned char *out,
+int crypto_generichash_blake2b_ref(unsigned char *out, size_t outlen,
                                    const unsigned char *in,
-                                   const unsigned char *key,
-                                   size_t outlen,
                                    unsigned long long inlen,
-                                   size_t keylen);
+                                   const unsigned char *key, size_t keylen);
 
 int crypto_generichash_blake2b_init(crypto_generichash_blake2b_state *state,
                                     const unsigned char *key,
-                                    const size_t keylen,
-                                    const size_t outlen);
+                                    const size_t keylen, const size_t outlen);
 
 int crypto_generichash_blake2b_update(crypto_generichash_blake2b_state *state,
                                       const unsigned char *in,

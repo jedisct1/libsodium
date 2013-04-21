@@ -7,10 +7,9 @@
 #include "blake2.h"
 
 int
-crypto_generichash_blake2b(unsigned char *out, const unsigned char *in,
-                           const unsigned char *key,
-                           size_t outlen, unsigned long long inlen,
-                           size_t keylen)
+crypto_generichash_blake2b(unsigned char *out, size_t outlen,
+                           const unsigned char *in, unsigned long long inlen,
+                           const unsigned char *key, size_t keylen)
 {
     if (outlen <= 0U || outlen > BLAKE2B_OUTBYTES ||
         keylen > BLAKE2B_KEYBYTES || inlen > UINT64_MAX) {
@@ -26,8 +25,7 @@ crypto_generichash_blake2b(unsigned char *out, const unsigned char *in,
 int
 crypto_generichash_blake2b_init(crypto_generichash_blake2b_state *state,
                                 const unsigned char *key,
-                                const size_t keylen,
-                                const size_t outlen)
+                                const size_t keylen, const size_t outlen)
 {
     if (outlen <= 0U || outlen > BLAKE2B_OUTBYTES ||
         keylen > BLAKE2B_KEYBYTES) {

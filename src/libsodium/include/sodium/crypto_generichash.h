@@ -11,10 +11,9 @@
 
 typedef crypto_generichash_blake2b_state crypto_generichash_state;
 
-int crypto_generichash(unsigned char *out, const unsigned char *in,
-                       const unsigned char *key,
-                       size_t outlen, unsigned long long inlen,
-                       size_t keylen);
+int crypto_generichash(unsigned char *out, size_t outlen,
+                       const unsigned char *in, unsigned long long inlen,
+                       const unsigned char *key, size_t keylen);
 
 int crypto_generichash_init(crypto_generichash_blake2b_state *state,
                             const unsigned char *key,

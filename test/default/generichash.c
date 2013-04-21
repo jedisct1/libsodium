@@ -15,8 +15,9 @@ int main(void)
 
     for(i = 0; i < MAXLEN; ++i) {
         in[i]=i;
-        crypto_generichash(out, in, k, 1 + i % crypto_generichash_BYTES_MAX,
-                           i, 1 + i % crypto_generichash_KEYBYTES_MAX);
+        crypto_generichash(out, 1 + i % crypto_generichash_BYTES_MAX,
+                           in, i,
+                           k, 1 + i % crypto_generichash_KEYBYTES_MAX);
         for (j = 0;j < 1 + i % crypto_generichash_BYTES_MAX;++j) {
             printf("%02x",(unsigned int) out[j]);
         }
