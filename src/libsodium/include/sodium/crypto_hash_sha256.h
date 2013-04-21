@@ -2,6 +2,7 @@
 #define crypto_hash_sha256_H
 
 #define crypto_hash_sha256_BYTES 32
+#define crypto_hash_sha256_BLOCKBYTES 64
 
 #ifdef __cplusplus
 extern "C" {

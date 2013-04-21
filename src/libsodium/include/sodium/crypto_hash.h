@@ -4,6 +4,7 @@
 #include "crypto_hash_sha512.h"
 
 #define crypto_hash_BYTES crypto_hash_sha512_BYTES
+#define crypto_hash_BLOCKBYTES crypto_hash_sha512_BLOCKBYTES
 #define crypto_hash_PRIMITIVE "sha512"
 
 #ifdef __cplusplus
