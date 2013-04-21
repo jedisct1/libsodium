@@ -17,6 +17,8 @@
 #include <stddef.h>
 #include <stdint.h>
 
+#include "crypto_generichash_blake2b.h"
+
 #if defined(_MSC_VER)
 #define ALIGN(x) __declspec(align(x))
 #else
@@ -86,6 +88,9 @@ extern "C" {
     uint8_t  personal[BLAKE2B_PERSONALBYTES];  // 64
   } blake2b_param;
 
+#ifndef DEFINE_BLAKE2B_STATE
+typedef crypto_generichash_blake2b_state blake2b_state;
+#else
   ALIGN( 64 ) typedef struct __blake2b_state
   {
     uint64_t h[8];
@@ -95,6 +100,7 @@ extern "C" {
     size_t   buflen;
     uint8_t  last_node;
   } blake2b_state;
+#endif
 
   typedef struct __blake2sp_state
   {

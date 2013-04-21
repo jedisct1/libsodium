@@ -15,6 +15,7 @@
 #include <string.h>
 #include <stdio.h>
 
+#include "crypto_generichash_blake2b.h"
 #include "blake2.h"
 #include "blake2-impl.h"
 
