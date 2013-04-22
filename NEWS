@@ -1,6 +1,19 @@
 
 * Version 0.4
- - TBD
+ - Most constants and operations are now available as actual functions
+instead of macros, making it easier to use from other languages.
+ - New operation: crypto_generichash, featuring a variable key size, a
+variable output size, and a streaming API. Currently implemented using
+Blake2b.
+ - The package can be compiled in a separate directory.
+ - aes128ctr functions are exported.
+ - Optimized versions of curve25519 (curve25519_donna_c64), poly1305
+(poly1305_53) and ed25519 (ed25519_ref10) are available. Optionally calling
+sodium_init() once before using the library makes it pick the fastest
+implementation.
+ - New convenience function: sodium_memzero() in order to securely
+wipe a memory area.
+ - A whole bunch of cleanups and portability enhancements.
 
 * Version 0.3
  - The crypto_shorthash operation has been added, implemented using
