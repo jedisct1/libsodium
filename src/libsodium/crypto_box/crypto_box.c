@@ -75,7 +75,7 @@ crypto_box_open_afternm(unsigned char *m, const unsigned char *c,
                         unsigned long long clen, const unsigned char *n,
                         const unsigned char *k)
 {
-    return crypto_box_curve25519xsalsa20poly1305_open_afternm(m, c, clen, m, k);
+    return crypto_box_curve25519xsalsa20poly1305_open_afternm(m, c, clen, n, k);
 }
 
 int
