@@ -41,7 +41,7 @@ _sodium_alignedcalloc(unsigned char ** const unaligned_p, const size_t len)
     }
     *unaligned_p = unaligned;
     for (i = (size_t) 0U; i < len + (size_t) 256U; ++i) {
-        unaligned[i] = (unsigned char) random();
+        unaligned[i] = (unsigned char) rand();
     }
     aligned = unaligned + 64;
     aligned += (ptrdiff_t) 63 & (-(ptrdiff_t) aligned);
