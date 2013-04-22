@@ -69,7 +69,7 @@ const char *checksum_compute(void)
       if (t[i] != m[i])
         return "crypto_sign_open does not match contents";
 
-    j = random() % smlen;
+    j = rand() % smlen;
     sm[j] ^= 1;
     if (crypto_sign_open(t,&tlen,sm,smlen,pk) == 0) {
       if (tlen != mlen) return "crypto_sign_open allows trivial forgery of length";

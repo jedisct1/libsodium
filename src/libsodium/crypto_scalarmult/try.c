@@ -72,10 +72,10 @@ const char *checksum_compute(void)
   for (i = 0;i < qlen;++i) q[i] = i + 3;
   for (i = 0;i < rlen;++i) r[i] = i + 4;
 
-  for (i = -16;i < 0;++i) p[i] = random();
-  for (i = -16;i < 0;++i) n[i] = random();
-  for (i = plen;i < plen + 16;++i) p[i] = random();
-  for (i = nlen;i < nlen + 16;++i) n[i] = random();
+  for (i = -16;i < 0;++i) p[i] = rand();
+  for (i = -16;i < 0;++i) n[i] = rand();
+  for (i = plen;i < plen + 16;++i) p[i] = rand();
+  for (i = nlen;i < nlen + 16;++i) n[i] = rand();
   for (i = -16;i < plen + 16;++i) p2[i] = p[i];
   for (i = -16;i < nlen + 16;++i) n2[i] = n[i];
 
@@ -86,12 +86,12 @@ const char *checksum_compute(void)
   for (i = plen;i < plen + 16;++i) if (p2[i] != p[i]) return "crypto_scalarmult_base writes after output";
 
   for (tests = 0;tests < 100;++tests) {
-    for (i = -16;i < 0;++i) q[i] = random();
-    for (i = -16;i < 0;++i) p[i] = random();
-    for (i = -16;i < 0;++i) m[i] = random();
-    for (i = qlen;i < qlen + 16;++i) q[i] = random();
-    for (i = plen;i < plen + 16;++i) p[i] = random();
-    for (i = mlen;i < mlen + 16;++i) m[i] = random();
+    for (i = -16;i < 0;++i) q[i] = rand();
+    for (i = -16;i < 0;++i) p[i] = rand();
+    for (i = -16;i < 0;++i) m[i] = rand();
+    for (i = qlen;i < qlen + 16;++i) q[i] = rand();
+    for (i = plen;i < plen + 16;++i) p[i] = rand();
+    for (i = mlen;i < mlen + 16;++i) m[i] = rand();
     for (i = -16;i < qlen + 16;++i) q2[i] = q[i];
     for (i = -16;i < plen + 16;++i) p2[i] = p[i];
     for (i = -16;i < mlen + 16;++i) m2[i] = m[i];

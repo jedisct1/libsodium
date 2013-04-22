@@ -57,16 +57,16 @@ const char *checksum_compute(void)
   const char *c;
 
   for (tests = 0;tests < 100000;++tests) {
-    for (i = 0;i < crypto_verify_BYTES;++i) x[i] = random();
-    for (i = 0;i < crypto_verify_BYTES;++i) y[i] = random();
+    for (i = 0;i < crypto_verify_BYTES;++i) x[i] = rand();
+    for (i = 0;i < crypto_verify_BYTES;++i) y[i] = rand();
     c = check(); if (c) return c;
     for (i = 0;i < crypto_verify_BYTES;++i) y[i] = x[i];
     c = check(); if (c) return c;
-    y[random() % crypto_verify_BYTES] = random();
+    y[rand() % crypto_verify_BYTES] = rand();
     c = check(); if (c) return c;
-    y[random() % crypto_verify_BYTES] = random();
+    y[rand() % crypto_verify_BYTES] = rand();
     c = check(); if (c) return c;
-    y[random() % crypto_verify_BYTES] = random();
+    y[rand() % crypto_verify_BYTES] = rand();
     c = check(); if (c) return c;
   }
 

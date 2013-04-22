@@ -60,12 +60,12 @@ const char *checksum_compute(void)
     long long klen = crypto_auth_KEYBYTES;
     long long hlen = crypto_auth_BYTES;
 
-    for (j = -16;j < 0;++j) h[j] = random();
-    for (j = -16;j < 0;++j) k[j] = random();
-    for (j = -16;j < 0;++j) m[j] = random();
-    for (j = hlen;j < hlen + 16;++j) h[j] = random();
-    for (j = klen;j < klen + 16;++j) k[j] = random();
-    for (j = mlen;j < mlen + 16;++j) m[j] = random();
+    for (j = -16;j < 0;++j) h[j] = rand();
+    for (j = -16;j < 0;++j) k[j] = rand();
+    for (j = -16;j < 0;++j) m[j] = rand();
+    for (j = hlen;j < hlen + 16;++j) h[j] = rand();
+    for (j = klen;j < klen + 16;++j) k[j] = rand();
+    for (j = mlen;j < mlen + 16;++j) m[j] = rand();
     for (j = -16;j < hlen + 16;++j) h2[j] = h[j];
     for (j = -16;j < klen + 16;++j) k2[j] = k[j];
     for (j = -16;j < mlen + 16;++j) m2[j] = m[j];
@@ -77,12 +77,12 @@ const char *checksum_compute(void)
     for (j = -16;j < 0;++j) if (h[j] != h2[j]) return "crypto_auth writes before output";
     for (j = hlen;j < hlen + 16;++j) if (h[j] != h2[j]) return "crypto_auth writes after output";
 
-    for (j = -16;j < 0;++j) h[j] = random();
-    for (j = -16;j < 0;++j) k[j] = random();
-    for (j = -16;j < 0;++j) m[j] = random();
-    for (j = hlen;j < hlen + 16;++j) h[j] = random();
-    for (j = klen;j < klen + 16;++j) k[j] = random();
-    for (j = mlen;j < mlen + 16;++j) m[j] = random();
+    for (j = -16;j < 0;++j) h[j] = rand();
+    for (j = -16;j < 0;++j) k[j] = rand();
+    for (j = -16;j < 0;++j) m[j] = rand();
+    for (j = hlen;j < hlen + 16;++j) h[j] = rand();
+    for (j = klen;j < klen + 16;++j) k[j] = rand();
+    for (j = mlen;j < mlen + 16;++j) m[j] = rand();
     for (j = -16;j < hlen + 16;++j) h2[j] = h[j];
     for (j = -16;j < klen + 16;++j) k2[j] = k[j];
     for (j = -16;j < mlen + 16;++j) m2[j] = m[j];

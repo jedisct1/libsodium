@@ -72,16 +72,16 @@ const char *checksum_compute(void)
     long long tlen = i + crypto_secretbox_ZEROBYTES;
     long long clen = i + crypto_secretbox_ZEROBYTES;
 
-    for (j = -16;j < 0;++j) k[j] = random();
-    for (j = -16;j < 0;++j) n[j] = random();
-    for (j = -16;j < 0;++j) m[j] = random();
-    for (j = klen;j < klen + 16;++j) k[j] = random();
-    for (j = nlen;j < nlen + 16;++j) n[j] = random();
-    for (j = mlen;j < mlen + 16;++j) m[j] = random();
+    for (j = -16;j < 0;++j) k[j] = rand();
+    for (j = -16;j < 0;++j) n[j] = rand();
+    for (j = -16;j < 0;++j) m[j] = rand();
+    for (j = klen;j < klen + 16;++j) k[j] = rand();
+    for (j = nlen;j < nlen + 16;++j) n[j] = rand();
+    for (j = mlen;j < mlen + 16;++j) m[j] = rand();
     for (j = -16;j < klen + 16;++j) k2[j] = k[j];
     for (j = -16;j < nlen + 16;++j) n2[j] = n[j];
     for (j = -16;j < mlen + 16;++j) m2[j] = m[j];
-    for (j = -16;j < clen + 16;++j) c2[j] = c[j] = random();
+    for (j = -16;j < clen + 16;++j) c2[j] = c[j] = rand();
 
     if (crypto_secretbox(c,m,mlen,n,k) != 0) return "crypto_secretbox returns nonzero";
 
@@ -93,10 +93,10 @@ const char *checksum_compute(void)
     for (j = 0;j < crypto_secretbox_BOXZEROBYTES;++j)
       if (c[j] != 0) return "crypto_secretbox does not clear extra bytes";
 
-    for (j = -16;j < 0;++j) c[j] = random();
-    for (j = clen;j < clen + 16;++j) c[j] = random();
+    for (j = -16;j < 0;++j) c[j] = rand();
+    for (j = clen;j < clen + 16;++j) c[j] = rand();
     for (j = -16;j < clen + 16;++j) c2[j] = c[j];
-    for (j = -16;j < tlen + 16;++j) t2[j] = t[j] = random();
+    for (j = -16;j < tlen + 16;++j) t2[j] = t[j] = rand();
 
     if (crypto_secretbox_open(t,c,clen,n,k) != 0) return "crypto_secretbox_open returns nonzero";
 

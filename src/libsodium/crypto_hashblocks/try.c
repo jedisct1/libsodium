@@ -52,11 +52,11 @@ const char *checksum_compute(void)
   for (i = 0;i < CHECKSUM_BYTES;++i) {
     long long hlen = crypto_hashblocks_STATEBYTES;
     long long mlen = i;
-    for (j = -16;j < 0;++j) h[j] = random();
-    for (j = hlen;j < hlen + 16;++j) h[j] = random();
+    for (j = -16;j < 0;++j) h[j] = rand();
+    for (j = hlen;j < hlen + 16;++j) h[j] = rand();
     for (j = -16;j < hlen + 16;++j) h2[j] = h[j];
-    for (j = -16;j < 0;++j) m[j] = random();
-    for (j = mlen;j < mlen + 16;++j) m[j] = random();
+    for (j = -16;j < 0;++j) m[j] = rand();
+    for (j = mlen;j < mlen + 16;++j) m[j] = rand();
     for (j = -16;j < mlen + 16;++j) m2[j] = m[j];
     if (crypto_hashblocks(h,m,mlen) != 0) return "crypto_hashblocks returns nonzero";
     for (j = -16;j < mlen + 16;++j) if (m2[j] != m[j]) return "crypto_hashblocks writes to input";

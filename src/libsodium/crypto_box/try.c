@@ -93,19 +93,19 @@ const char *checksum_compute(void)
     long long tlen = i + crypto_box_ZEROBYTES;
     long long clen = i + crypto_box_ZEROBYTES;
 
-    for (j = -16;j < 0;++j) ska[j] = random();
-    for (j = -16;j < 0;++j) skb[j] = random();
-    for (j = -16;j < 0;++j) pka[j] = random();
-    for (j = -16;j < 0;++j) pkb[j] = random();
-    for (j = -16;j < 0;++j) m[j] = random();
-    for (j = -16;j < 0;++j) n[j] = random();
+    for (j = -16;j < 0;++j) ska[j] = rand();
+    for (j = -16;j < 0;++j) skb[j] = rand();
+    for (j = -16;j < 0;++j) pka[j] = rand();
+    for (j = -16;j < 0;++j) pkb[j] = rand();
+    for (j = -16;j < 0;++j) m[j] = rand();
+    for (j = -16;j < 0;++j) n[j] = rand();
 
-    for (j = sklen;j < sklen + 16;++j) ska[j] = random();
-    for (j = sklen;j < sklen + 16;++j) skb[j] = random();
-    for (j = pklen;j < pklen + 16;++j) pka[j] = random();
-    for (j = pklen;j < pklen + 16;++j) pkb[j] = random();
-    for (j = mlen;j < mlen + 16;++j) m[j] = random();
-    for (j = nlen;j < nlen + 16;++j) n[j] = random();
+    for (j = sklen;j < sklen + 16;++j) ska[j] = rand();
+    for (j = sklen;j < sklen + 16;++j) skb[j] = rand();
+    for (j = pklen;j < pklen + 16;++j) pka[j] = rand();
+    for (j = pklen;j < pklen + 16;++j) pkb[j] = rand();
+    for (j = mlen;j < mlen + 16;++j) m[j] = rand();
+    for (j = nlen;j < nlen + 16;++j) n[j] = rand();
 
     for (j = -16;j < sklen + 16;++j) ska2[j] = ska[j];
     for (j = -16;j < sklen + 16;++j) skb2[j] = skb[j];
@@ -113,7 +113,7 @@ const char *checksum_compute(void)
     for (j = -16;j < pklen + 16;++j) pkb2[j] = pkb[j];
     for (j = -16;j < mlen + 16;++j) m2[j] = m[j];
     for (j = -16;j < nlen + 16;++j) n2[j] = n[j];
-    for (j = -16;j < clen + 16;++j) c2[j] = c[j] = random();
+    for (j = -16;j < clen + 16;++j) c2[j] = c[j] = rand();
 
     if (crypto_box(c,m,mlen,n,pkb,ska) != 0) return "crypto_box returns nonzero";
 
@@ -129,10 +129,10 @@ const char *checksum_compute(void)
     for (j = -16;j < pklen + 16;++j) if (pka2[j] != pka[j]) return "crypto_box overwrites pka";
     for (j = -16;j < pklen + 16;++j) if (pkb2[j] != pkb[j]) return "crypto_box overwrites pkb";
 
-    for (j = -16;j < 0;++j) c[j] = random();
-    for (j = clen;j < clen + 16;++j) c[j] = random();
+    for (j = -16;j < 0;++j) c[j] = rand();
+    for (j = clen;j < clen + 16;++j) c[j] = rand();
     for (j = -16;j < clen + 16;++j) c2[j] = c[j];
-    for (j = -16;j < tlen + 16;++j) t2[j] = t[j] = random();
+    for (j = -16;j < tlen + 16;++j) t2[j] = t[j] = rand();
 
     if (crypto_box_open(t,c,clen,n,pka,skb) != 0) return "crypto_box_open returns nonzero";
 
@@ -150,7 +150,7 @@ const char *checksum_compute(void)
 
     for (j = 0;j < mlen;++j) if (t[j] != m[j]) return "plaintext does not match";
 
-    for (j = -16;j < slen + 16;++j) s2[j] = s[j] = random();
+    for (j = -16;j < slen + 16;++j) s2[j] = s[j] = rand();
     if (crypto_box_beforenm(s,pkb,ska) != 0) return "crypto_box_beforenm returns nonzero";
     for (j = -16;j < pklen + 16;++j) if (pka2[j] != pka[j]) return "crypto_box_open overwrites pk";
     for (j = -16;j < sklen + 16;++j) if (skb2[j] != skb[j]) return "crypto_box_open overwrites sk";
@@ -158,7 +158,7 @@ const char *checksum_compute(void)
     for (j = slen;j < slen + 16;++j) if (s2[j] != s[j]) return "crypto_box_beforenm writes after output";
 
     for (j = -16;j < slen + 16;++j) s2[j] = s[j];
-    for (j = -16;j < tlen + 16;++j) t2[j] = t[j] = random();
+    for (j = -16;j < tlen + 16;++j) t2[j] = t[j] = rand();
     if (crypto_box_afternm(t,m,mlen,n,s) != 0) return "crypto_box_afternm returns nonzero";
     for (j = -16;j < slen + 16;++j) if (s2[j] != s[j]) return "crypto_box_afternm overwrites s";
     for (j = -16;j < mlen + 16;++j) if (m2[j] != m[j]) return "crypto_box_afternm overwrites m";
@@ -171,7 +171,7 @@ const char *checksum_compute(void)
 
     if (crypto_box_beforenm(s,pka,skb) != 0) return "crypto_box_beforenm returns nonzero";
 
-    for (j = -16;j < tlen + 16;++j) t2[j] = t[j] = random();
+    for (j = -16;j < tlen + 16;++j) t2[j] = t[j] = rand();
     if (crypto_box_open_afternm(t,c,clen,n,s) != 0) return "crypto_box_open_afternm returns nonzero";
     for (j = -16;j < slen + 16;++j) if (s2[j] != s[j]) return "crypto_box_open_afternm overwrites s";
     for (j = -16;j < mlen + 16;++j) if (m2[j] != m[j]) return "crypto_box_open_afternm overwrites m";
