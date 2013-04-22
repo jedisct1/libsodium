@@ -1,4 +1,14 @@
 
+* Version 0.4
+ - TBD
+
+* Version 0.3
+ - The crypto_shorthash operation has been added, implemented using
+SipHash-2-4.
+
+* Version 0.2
+ - crypto_sign_seed_keypair() has been added
+
 * Version 0.1
  - Initial release.
 
