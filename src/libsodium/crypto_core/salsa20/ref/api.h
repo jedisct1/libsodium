@@ -1,5 +1,3 @@
-#ifndef crypto_core_H
-#define crypto_core_H
 
 #include "crypto_core_salsa20.h"
 
@@ -11,5 +9,3 @@
 #define crypto_core_PRIMITIVE "salsa20"
 #define crypto_core_IMPLEMENTATION crypto_core_salsa20_IMPLEMENTATION
 #define crypto_core_VERSION crypto_core_salsa20_VERSION
-
-#endif

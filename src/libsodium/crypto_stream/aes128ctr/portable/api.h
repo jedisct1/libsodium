@@ -1,5 +1,3 @@
-#ifndef crypto_stream_H
-#define crypto_stream_H
 
 #include "crypto_stream_aes128ctr.h"
 
@@ -14,5 +12,3 @@
 #define crypto_stream_PRIMITIVE "aes128ctr"
 #define crypto_stream_IMPLEMENTATION crypto_stream_aes128ctr_IMPLEMENTATION
 #define crypto_stream_VERSION crypto_stream_aes128ctr_VERSION
-
-#endif

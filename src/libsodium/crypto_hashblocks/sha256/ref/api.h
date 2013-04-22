@@ -1,5 +1,3 @@
-#ifndef crypto_hashblocks_H
-#define crypto_hashblocks_H
 
 #include "crypto_hashblocks_sha256.h"
 
@@ -9,5 +7,3 @@
 #define crypto_hashblocks_PRIMITIVE "sha256"
 #define crypto_hashblocks_IMPLEMENTATION crypto_hashblocks_sha256_IMPLEMENTATION
 #define crypto_hashblocks_VERSION crypto_hashblocks_sha256_VERSION
-
-#endif

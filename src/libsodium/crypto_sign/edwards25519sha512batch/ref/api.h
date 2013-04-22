@@ -1,5 +1,3 @@
-#ifndef crypto_sign_H
-#define crypto_sign_H
 
 #include "crypto_sign_edwards25519sha512batch.h"
 
@@ -13,4 +11,3 @@
 #define crypto_sign_IMPLEMENTATION crypto_sign_edwards25519sha512batch_IMPLEMENTATION
 #define crypto_sign_VERSION crypto_sign_edwards25519sha512batch_VERSION
 
-#endif

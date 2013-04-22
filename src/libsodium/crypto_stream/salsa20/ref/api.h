@@ -1,5 +1,3 @@
-#ifndef crypto_stream_H
-#define crypto_stream_H
 
 #include "crypto_stream_salsa20.h"
 
@@ -14,5 +12,3 @@
 #define crypto_stream_PRIMITIVE "salsa20"
 #define crypto_stream_IMPLEMENTATION crypto_stream_salsa20_IMPLEMENTATION
 #define crypto_stream_VERSION crypto_stream_salsa20_VERSION
-
-#endif

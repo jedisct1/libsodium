@@ -1,5 +1,3 @@
-#ifndef crypto_secretbox_H
-#define crypto_secretbox_H
 
 #include "crypto_secretbox_xsalsa20poly1305.h"
 
@@ -12,5 +10,3 @@
 #define crypto_secretbox_PRIMITIVE "xsalsa20poly1305"
 #define crypto_secretbox_IMPLEMENTATION crypto_secretbox_xsalsa20poly1305_IMPLEMENTATION
 #define crypto_secretbox_VERSION crypto_secretbox_xsalsa20poly1305_VERSION
-
-#endif

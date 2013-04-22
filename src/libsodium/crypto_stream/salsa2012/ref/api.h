@@ -1,5 +1,3 @@
-#ifndef crypto_stream_H
-#define crypto_stream_H
 
 #include "crypto_stream_salsa2012.h"
 
@@ -15,4 +13,3 @@
 #define crypto_stream_IMPLEMENTATION crypto_stream_salsa2012_IMPLEMENTATION
 #define crypto_stream_VERSION crypto_stream_salsa2012_VERSION
 
-#endif

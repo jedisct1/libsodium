@@ -1,5 +1,3 @@
-#ifndef crypto_shorthash_H
-#define crypto_shorthash_H
 
 #include "crypto_shorthash_siphash24.h"
 
@@ -8,5 +6,3 @@
 #define crypto_shorthash_PRIMITIVE "siphash24"
 #define crypto_shorthash_IMPLEMENTATION crypto_shorthash_siphash24_IMPLEMENTATION
 #define crypto_shorthash_VERSION crypto_shorthash_siphash24_VERSION
-
-#endif

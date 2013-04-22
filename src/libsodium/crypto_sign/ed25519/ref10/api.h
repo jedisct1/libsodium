@@ -1,5 +1,3 @@
-#ifndef crypto_sign_H
-#define crypto_sign_H
 
 #include "crypto_sign_ed25519.h"
 
@@ -13,5 +11,3 @@
 #define crypto_sign_PRIMITIVE "ed25519"
 #define crypto_sign_IMPLEMENTATION crypto_sign_ed25519_IMPLEMENTATION
 #define crypto_sign_VERSION crypto_sign_ed25519_VERSION
-
-#endif

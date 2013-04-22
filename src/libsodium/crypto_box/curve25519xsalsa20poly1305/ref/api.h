@@ -1,5 +1,3 @@
-#ifndef crypto_box_H
-#define crypto_box_H
 
 #include "crypto_box_curve25519xsalsa20poly1305.h"
 
@@ -19,5 +17,3 @@
 #define crypto_box_PRIMITIVE "curve25519xsalsa20poly1305"
 #define crypto_box_IMPLEMENTATION crypto_box_curve25519xsalsa20poly1305_IMPLEMENTATION
 #define crypto_box_VERSION crypto_box_curve25519xsalsa20poly1305_VERSION
-
-#endif

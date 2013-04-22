@@ -1,5 +1,3 @@
-#ifndef crypto_auth_H
-#define crypto_auth_H
 
 #include "crypto_auth_hmacsha512256.h"
 
@@ -10,5 +8,3 @@
 #define crypto_auth_PRIMITIVE "hmacsha512256"
 #define crypto_auth_IMPLEMENTATION crypto_auth_hmacsha512256_IMPLEMENTATION
 #define crypto_auth_VERSION crypto_auth_hmacsha512256_VERSION
-
-#endif
