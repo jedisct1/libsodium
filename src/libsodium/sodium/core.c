@@ -1,8 +1,10 @@
 
+#include <stdbool.h>
+
 #include "core.h"
 #include "crypto_onetimeauth.h"
 
-static _Bool initialized;
+static bool initialized;
 
 int
 sodium_init(void)

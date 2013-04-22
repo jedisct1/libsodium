@@ -262,7 +262,7 @@ randombytes_salsa20_random_buf(void * const buf, const size_t size)
 #ifdef ULONG_LONG_MAX
     assert(size <= ULONG_LONG_MAX);
 #endif
-    ret = crypto_stream_salsa20(buf, (unsigned long long) size,
+    ret = crypto_stream_salsa20((unsigned char *) buf, (unsigned long long) size,
                                 (unsigned char *) &stream.nonce,
                                 stream.key);
     assert(ret == 0);

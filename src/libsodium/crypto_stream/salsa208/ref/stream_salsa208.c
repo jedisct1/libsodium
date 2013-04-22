@@ -9,7 +9,9 @@ Public domain.
 
 typedef unsigned int uint32;
 
-static const unsigned char sigma[16] = "expand 32-byte k";
+static const unsigned char sigma[16] = {
+        'e', 'x', 'p', 'a', 'n', 'd', ' ', '3', '2', '-', 'b', 'y', 't', 'e', ' ', 'k'
+};
 
 int crypto_stream(
         unsigned char *c,unsigned long long clen,

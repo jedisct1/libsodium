@@ -27,7 +27,7 @@ sodium_memzero(void * const pnt, const size_t len)
 #endif
 }
 
-void *
+unsigned char *
 _sodium_alignedcalloc(unsigned char ** const unaligned_p, const size_t len)
 {
     unsigned char *aligned;
@@ -35,7 +35,7 @@ _sodium_alignedcalloc(unsigned char ** const unaligned_p, const size_t len)
     size_t         i;
 
     if (SIZE_MAX - (size_t) 256U < len ||
-        (unaligned = malloc(len + (size_t) 256U)) == NULL) {
+        (unaligned = (unsigned char *) malloc(len + (size_t) 256U)) == NULL) {
         *unaligned_p = NULL;
         return NULL;
     }
