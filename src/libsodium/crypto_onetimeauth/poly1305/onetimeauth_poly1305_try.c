@@ -26,9 +26,9 @@ static unsigned char *k2, *k2_;
 static int
 allocate(void)
 {
-    h =  _sodium_alignedcalloc(&h_, crypto_onetimeauth_BYTES);
-    m =  _sodium_alignedcalloc(&m_, MAXTEST_BYTES);
-    k =  _sodium_alignedcalloc(&k_, crypto_onetimeauth_KEYBYTES);
+    h  = _sodium_alignedcalloc(&h_, crypto_onetimeauth_BYTES);
+    m  = _sodium_alignedcalloc(&m_, MAXTEST_BYTES);
+    k  = _sodium_alignedcalloc(&k_, crypto_onetimeauth_KEYBYTES);
     h2 = _sodium_alignedcalloc(&h2_, crypto_onetimeauth_BYTES);
     m2 = _sodium_alignedcalloc(&m2_, MAXTEST_BYTES + crypto_onetimeauth_BYTES);
     k2 = _sodium_alignedcalloc(&k2_, crypto_onetimeauth_KEYBYTES +

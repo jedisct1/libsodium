@@ -2,7 +2,9 @@
 #include "crypto_core_hsalsa20.h"
 #include "crypto_scalarmult_curve25519.h"
 
-static const unsigned char sigma[16] = "expand 32-byte k";
+static const unsigned char sigma[16] = {
+    'e', 'x', 'p', 'a', 'n', 'd', ' ', '3', '2', '-', 'b', 'y', 't', 'e', 'k'
+};
 static const unsigned char n[16] = {0};
 
 int crypto_box_beforenm(
