@@ -11,12 +11,12 @@ extern "C" {
 #endif
 
 SODIUM_EXPORT
-int crypto_hash_sha512_ref(unsigned char *,const unsigned char *,unsigned long long);
+int crypto_hash_sha512(unsigned char *,const unsigned char *,unsigned long long);
 
 #ifdef __cplusplus
 }
 #endif
 
-#define crypto_hash_sha512 crypto_hash_sha512_ref
+#define crypto_hash_sha512_ref crypto_hash_sha512
 
 #endif
