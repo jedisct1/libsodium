@@ -11,7 +11,6 @@
 extern "C" {
 #endif
 
-
 SODIUM_EXPORT
 int crypto_sign_ed25519(unsigned char *,unsigned long long *,const unsigned char *,unsigned long long,const unsigned char *);
 
