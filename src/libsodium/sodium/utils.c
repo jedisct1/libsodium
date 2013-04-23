@@ -27,6 +27,20 @@ sodium_memzero(void * const pnt, const size_t len)
 #endif
 }
 
+int
+sodium_memcmp(const void * const b1_, const void * const b2_, size_t size)
+{
+    const unsigned char *b1 = b1_;
+    const unsigned char *b2 = b2_;
+    size_t               i;
+    unsigned char        d = (unsigned char) 0U;
+
+    for (i = 0U; i < size; i++) {
+        d |= b1[i] ^ b2[i];
+    }
+    return (int) d;
+}
+
 unsigned char *
 _sodium_alignedcalloc(unsigned char ** const unaligned_p, const size_t len)
 {
