@@ -73,12 +73,20 @@ A convenience header includes everything you need to use the library:
 
     #include <sodium.h>
 
-Before doing anything else with the library, call:
+This is not required, however, before any other libsodium function, you can
+call:
 
     sodium_init();
 
+This will pick optimized implementations of some primitives, if they
+appear to work as expected after running some tests, and these will be
+used for subsequent operations. It only need to be called once.
+
 This function is not thread-safe. No other Sodium functions should be
-called until it successfully returns.
+called until it successfully returns. In a multithreading environment,
+if, for some reason, you really need to call `sodium_init()` while some
+other Sodium functions may be running in different threads, add locks
+accordingly (both around `sodium_init()` and around other functions).
 
 Sodium also provides helper functions to generate random numbers,
 leveraging `/dev/urandom` or `/dev/random` on *nix and the cryptographic
@@ -119,6 +127,47 @@ region:
 Warning: if a region has been allocated on the heap, you still have
 to make sure that it can't get swapped to disk, possibly using
 `mlock(2)`.
+
+In order to compare memory zones in constant time, Sodium proides:
+
+    int      sodium_memcmp(const void * const b1_, const void * const b2_,
+                           size_t size);
+
+## New operations
+
+### crypto_shorthash
+
+A lot of applications and programming language implementations have
+been recently found to be vulnerable to denial-of-service attacks when
+a hash function with weak security guarantees, like Murmurhash 3, was
+used to construct a hash table.
+
+In order to address this, Sodium provides the “shorthash” function,
+currently implemented using SipHash-2-4. This very fast hash function
+outputs short, but unpredictable (without knowing the secret key)
+values suitable for picking a list in a hash table for a given key.
+
+See `crypto_shorthash.h` for details.
+
+### crypto_generichash
+
+This hash function provides:
+
+* A variable output length (up to `crypto_generichash_BYTES_MAX` bytes)
+* A variable key length (from no key at all to
+  `crypto_generichash_KEYBYTES_MAX` bytes)
+* A high security margin while being fast as MD5 and providing more
+  flexibility
+* A simple interface as well as a streaming interface.
+
+`crypto_generichash` is currently being implemented using
+[Blake2](https://blake2.net/).
+
+## Constants available as functions
+
+In addition to constants for key sizes, output sizes and block sizes,
+Sodium provides these values through function calls, so that using
+them from different languages is easier.
 
 ## Bindings for other languages
 
