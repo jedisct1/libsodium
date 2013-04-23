@@ -7,6 +7,7 @@
 #include "crypto_scalarmult_curve25519.h"
 #include "crypto_secretbox_xsalsa20poly1305.h"
 #include "crypto_sign_ed25519.h"
+#include "crypto_stream_xsalsa20.h"
 #include "export.h"
 
 #ifdef __cplusplus
@@ -196,6 +197,23 @@ crypto_sign_ed25519_ref_open(unsigned char *m, unsigned long long *mlen,
                              const unsigned char *pk)
 {
     return crypto_sign_ed25519_open(m, mlen, sm, smlen, pk);
+}
+
+#undef crypto_stream_xsalsa20_ref
+SODIUM_EXPORT int
+crypto_stream_xsalsa20_ref(unsigned char *c, unsigned long long clen,
+                           const unsigned char *n, const unsigned char *k)
+{
+    return crypto_stream_xsalsa20(c, clen, n, k);
+}
+
+#undef crypto_stream_xsalsa20_ref_xor
+SODIUM_EXPORT int
+crypto_stream_xsalsa20_ref_xor(unsigned char *c, const unsigned char *m,
+                               unsigned long long mlen, const unsigned char *n,
+                               const unsigned char *k)
+{    
+    return crypto_stream_xsalsa20_xor(c, m, mlen, n, k);
 }
 
 #ifdef __cplusplus
