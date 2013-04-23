@@ -1,6 +1,8 @@
 
 #include "crypto_auth_hmacsha256.h"
 #include "crypto_auth_hmacsha512256.h"
+#include "crypto_box_curve25519xsalsa20poly1305.h"
+#include "crypto_scalarmult_curve25519.h"
 #include "export.h"
 
 #ifdef __cplusplus
@@ -104,6 +106,21 @@ crypto_box_curve25519xsalsa20poly1305_ref_open(unsigned char *m,
                                                const unsigned char *sk)
 {
     return crypto_box_curve25519xsalsa20poly1305_open(m, c, clen, n, pk, sk);
+}
+
+#undef crypto_scalarmult_curve25519_ref_base
+SODIUM_EXPORT int
+crypto_scalarmult_curve25519_ref_base(unsigned char *q, const unsigned char *n)
+{
+    return crypto_scalarmult_curve25519_base(q, n);
+}
+
+#undef crypto_scalarmult_curve25519_ref
+SODIUM_EXPORT int
+crypto_scalarmult_curve25519_ref(unsigned char *q, const unsigned char *n,
+                                 const unsigned char *p)
+{
+    return crypto_scalarmult_curve25519(q, n, p);
 }
 
 #ifdef __cplusplus
