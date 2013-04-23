@@ -13,12 +13,12 @@ extern "C" {
 #endif
 
 SODIUM_EXPORT
-int crypto_core_hsalsa20_ref2(unsigned char *,const unsigned char *,const unsigned char *,const unsigned char *);
+int crypto_core_hsalsa20(unsigned char *,const unsigned char *,const unsigned char *,const unsigned char *);
 
 #ifdef __cplusplus
 }
 #endif
 
-#define crypto_core_hsalsa20 crypto_core_hsalsa20_ref2
+#define crypto_core_hsalsa20_ref2 crypto_core_hsalsa20
 
 #endif

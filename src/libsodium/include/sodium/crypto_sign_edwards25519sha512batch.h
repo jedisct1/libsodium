@@ -12,20 +12,20 @@ extern "C" {
 #endif
 
 SODIUM_EXPORT
-int crypto_sign_edwards25519sha512batch_ref(unsigned char *,unsigned long long *,const unsigned char *,unsigned long long,const unsigned char *);
+int crypto_sign_edwards25519sha512batch(unsigned char *,unsigned long long *,const unsigned char *,unsigned long long,const unsigned char *);
 
 SODIUM_EXPORT
-int crypto_sign_edwards25519sha512batch_ref_open(unsigned char *,unsigned long long *,const unsigned char *,unsigned long long,const unsigned char *);
+int crypto_sign_edwards25519sha512batch_open(unsigned char *,unsigned long long *,const unsigned char *,unsigned long long,const unsigned char *);
 
 SODIUM_EXPORT
-int crypto_sign_edwards25519sha512batch_ref_keypair(unsigned char *,unsigned char *);
+int crypto_sign_edwards25519sha512batch_keypair(unsigned char *,unsigned char *);
 
 #ifdef __cplusplus
 }
 #endif
 
-#define crypto_sign_edwards25519sha512batch crypto_sign_edwards25519sha512batch_ref
-#define crypto_sign_edwards25519sha512batch_open crypto_sign_edwards25519sha512batch_ref_open
-#define crypto_sign_edwards25519sha512batch_keypair crypto_sign_edwards25519sha512batch_ref_keypair
+#define crypto_sign_edwards25519sha512batch_ref crypto_sign_edwards25519sha512batch
+#define crypto_sign_edwards25519sha512batch_ref_open crypto_sign_edwards25519sha512batch_open
+#define crypto_sign_edwards25519sha512batch_ref_keypair crypto_sign_edwards25519sha512batch_keypair
 
 #endif

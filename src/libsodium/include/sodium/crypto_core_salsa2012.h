@@ -13,12 +13,12 @@ extern "C" {
 #endif
 
 SODIUM_EXPORT
-int crypto_core_salsa2012_ref(unsigned char *,const unsigned char *,const unsigned char *,const unsigned char *);
+int crypto_core_salsa2012(unsigned char *,const unsigned char *,const unsigned char *,const unsigned char *);
 
 #ifdef __cplusplus
 }
 #endif
 
-#define crypto_core_salsa2012 crypto_core_salsa2012_ref
+#define crypto_core_salsa2012_ref crypto_core_salsa2012
 
 #endif

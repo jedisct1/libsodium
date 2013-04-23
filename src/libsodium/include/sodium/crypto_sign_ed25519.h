@@ -13,24 +13,24 @@ extern "C" {
 
 
 SODIUM_EXPORT
-int crypto_sign_ed25519_ref10(unsigned char *,unsigned long long *,const unsigned char *,unsigned long long,const unsigned char *);
+int crypto_sign_ed25519(unsigned char *,unsigned long long *,const unsigned char *,unsigned long long,const unsigned char *);
 
 SODIUM_EXPORT
-int crypto_sign_ed25519_ref10_open(unsigned char *,unsigned long long *,const unsigned char *,unsigned long long,const unsigned char *);
+int crypto_sign_ed25519_open(unsigned char *,unsigned long long *,const unsigned char *,unsigned long long,const unsigned char *);
 
 SODIUM_EXPORT
-int crypto_sign_ed25519_ref10_keypair(unsigned char *,unsigned char *);
+int crypto_sign_ed25519_keypair(unsigned char *,unsigned char *);
 
 SODIUM_EXPORT
-int crypto_sign_ed25519_ref10_seed_keypair(unsigned char *,unsigned char *,const unsigned char *);
+int crypto_sign_ed25519_seed_keypair(unsigned char *,unsigned char *,const unsigned char *);
 
 #ifdef __cplusplus
 }
 #endif
 
-#define crypto_sign_ed25519 crypto_sign_ed25519_ref10
-#define crypto_sign_ed25519_open crypto_sign_ed25519_ref10_open
-#define crypto_sign_ed25519_keypair crypto_sign_ed25519_ref10_keypair
-#define crypto_sign_ed25519_seed_keypair crypto_sign_ed25519_ref10_seed_keypair
+#define crypto_sign_ed25519_ref10 crypto_sign_ed25519
+#define crypto_sign_ed25519_ref10_open crypto_sign_ed25519_open
+#define crypto_sign_ed25519_ref10_keypair crypto_sign_ed25519_keypair
+#define crypto_sign_ed25519_ref10_seed_keypair crypto_sign_ed25519_seed_keypair
 
 #endif

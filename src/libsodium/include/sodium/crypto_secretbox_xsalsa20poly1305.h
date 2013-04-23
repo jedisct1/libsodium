@@ -13,16 +13,16 @@ extern "C" {
 #endif
 
 SODIUM_EXPORT
-int crypto_secretbox_xsalsa20poly1305_ref(unsigned char *,const unsigned char *,unsigned long long,const unsigned char *,const unsigned char *);
+int crypto_secretbox_xsalsa20poly1305(unsigned char *,const unsigned char *,unsigned long long,const unsigned char *,const unsigned char *);
 
 SODIUM_EXPORT
-int crypto_secretbox_xsalsa20poly1305_ref_open(unsigned char *,const unsigned char *,unsigned long long,const unsigned char *,const unsigned char *);
+int crypto_secretbox_xsalsa20poly1305_open(unsigned char *,const unsigned char *,unsigned long long,const unsigned char *,const unsigned char *);
 
 #ifdef __cplusplus
 }
 #endif
 
-#define crypto_secretbox_xsalsa20poly1305 crypto_secretbox_xsalsa20poly1305_ref
-#define crypto_secretbox_xsalsa20poly1305_open crypto_secretbox_xsalsa20poly1305_ref_open
+#define crypto_secretbox_xsalsa20poly1305_ref crypto_secretbox_xsalsa20poly1305
+#define crypto_secretbox_xsalsa20poly1305_ref_open crypto_secretbox_xsalsa20poly1305_open
 
 #endif

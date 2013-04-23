@@ -11,12 +11,12 @@ extern "C" {
 #endif
 
 SODIUM_EXPORT
-int crypto_shorthash_siphash24_ref(unsigned char *,const unsigned char *,unsigned long long,const unsigned char *);
+int crypto_shorthash_siphash24(unsigned char *,const unsigned char *,unsigned long long,const unsigned char *);
 
 #ifdef __cplusplus
 }
 #endif
 
-#define crypto_shorthash_siphash24 crypto_shorthash_siphash24_ref
+#define crypto_shorthash_siphash24_ref crypto_shorthash_siphash24
 
 #endif
