@@ -8,6 +8,8 @@
 #include "crypto_secretbox_xsalsa20poly1305.h"
 #include "crypto_sign_ed25519.h"
 #include "crypto_stream_xsalsa20.h"
+#include "crypto_verify_16.h"
+#include "crypto_verify_32.h"
 #include "export.h"
 
 #ifdef __cplusplus
@@ -212,8 +214,22 @@ SODIUM_EXPORT int
 crypto_stream_xsalsa20_ref_xor(unsigned char *c, const unsigned char *m,
                                unsigned long long mlen, const unsigned char *n,
                                const unsigned char *k)
-{    
+{
     return crypto_stream_xsalsa20_xor(c, m, mlen, n, k);
+}
+
+#undef crypto_verify_16_ref
+SODIUM_EXPORT int
+crypto_verify_16_ref(const unsigned char *x, const unsigned char *y)
+{
+    return crypto_verify_16(x, y);
+}
+
+#undef crypto_verify_32_ref
+SODIUM_EXPORT int
+crypto_verify_32_ref(const unsigned char *x, const unsigned char *y)
+{
+    return crypto_verify_32(x, y);
 }
 
 #ifdef __cplusplus
