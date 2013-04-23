@@ -1,4 +1,3 @@
-
 #ifndef __SODIUM_VERSION_H__
 #define __SODIUM_VERSION_H__
 
@@ -12,8 +11,8 @@ extern "C" {
 #endif
 
 const char *sodium_version_string(void);
-int         sodium_library_version_major(void);
-int         sodium_library_version_minor(void);
+int         sodium_version_major(void);
+int         sodium_version_minor(void);
 
 #ifdef __cplusplus
 }
