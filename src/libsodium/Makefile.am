@@ -152,6 +152,7 @@ libsodium_la_SOURCES = \
 	randombytes/randombytes.c \
 	randombytes/salsa20/randombytes_salsa20_random.c \
 	randombytes/sysrandom/randombytes_sysrandom.c \
+	sodium/compat.c \
 	sodium/core.c \
 	sodium/utils.c \
 	sodium/version.c
