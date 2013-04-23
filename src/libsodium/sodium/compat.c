@@ -2,6 +2,8 @@
 #include "crypto_auth_hmacsha256.h"
 #include "crypto_auth_hmacsha512256.h"
 #include "crypto_box_curve25519xsalsa20poly1305.h"
+#include "crypto_hash_sha256.h"
+#include "crypto_hash_sha512.h"
 #include "crypto_scalarmult_curve25519.h"
 #include "crypto_secretbox_xsalsa20poly1305.h"
 #include "export.h"
@@ -9,6 +11,22 @@
 #ifdef __cplusplus
 extern "C" {
 #endif
+
+#undef crypto_hash_sha256_ref
+SODIUM_EXPORT int
+crypto_hash_sha256_ref(unsigned char *out, const unsigned char *in,
+                       unsigned long long inlen)
+{
+    return crypto_hash_sha256(out, in, inlen);
+}
+
+#undef crypto_hash_sha512_ref
+SODIUM_EXPORT int
+crypto_hash_sha512_ref(unsigned char *out, const unsigned char *in,
+                       unsigned long long inlen)
+{
+    return crypto_hash_sha512(out, in, inlen);
+}
 
 #undef crypto_auth_hmacsha256_ref
 SODIUM_EXPORT int
