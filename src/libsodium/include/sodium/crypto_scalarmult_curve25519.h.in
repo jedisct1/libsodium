@@ -14,23 +14,22 @@ extern "C" {
 
 #ifdef SODIUM_HAVE_TI_MODE
 
-extern int crypto_scalarmult_curve25519_donna_c64(unsigned char *,const unsigned char *,const unsigned char *);
-extern int crypto_scalarmult_curve25519_donna_c64_base(unsigned char *,const unsigned char *);
-#define crypto_scalarmult_curve25519 crypto_scalarmult_curve25519_donna_c64
-#define crypto_scalarmult_curve25519_base crypto_scalarmult_curve25519_donna_c64_base
+extern int crypto_scalarmult_curve25519(unsigned char *,const unsigned char *,const unsigned char *);
+extern int crypto_scalarmult_curve25519_base(unsigned char *,const unsigned char *);
+#define crypto_scalarmult_curve25519_donna_c64 crypto_scalarmult_curve25519
+#define crypto_scalarmult_curve25519_donna_c64_base crypto_scalarmult_curve25519_base
 
 #else
 
-extern int crypto_scalarmult_curve25519_ref(unsigned char *,const unsigned char *,const unsigned char *);
-extern int crypto_scalarmult_curve25519_ref_base(unsigned char *,const unsigned char *);
-#define crypto_scalarmult_curve25519 crypto_scalarmult_curve25519_ref
-#define crypto_scalarmult_curve25519_base crypto_scalarmult_curve25519_ref_base
+extern int crypto_scalarmult_curve25519(unsigned char *,const unsigned char *,const unsigned char *);
+extern int crypto_scalarmult_curve25519_base(unsigned char *,const unsigned char *);
+#define crypto_scalarmult_curve25519_ref crypto_scalarmult_curve25519
+#define crypto_scalarmult_curve25519_ref_base crypto_scalarmult_curve25519_base
 
 #endif
 
 #ifdef __cplusplus
 }
 #endif
-
 
 #endif
