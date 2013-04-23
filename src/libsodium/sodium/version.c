@@ -8,13 +8,13 @@ sodium_version_string(void)
 }
 
 int
-sodium_version_major(void)
+sodium_library_version_major(void)
 {
     return SODIUM_LIBRARY_VERSION_MAJOR;
 }
 
 int
-sodium_version_minor(void)
+sodium_library_version_minor(void)
 {
     return SODIUM_LIBRARY_VERSION_MINOR;
 }
