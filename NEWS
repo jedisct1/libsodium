@@ -14,6 +14,9 @@ implementation.
  - New convenience function: sodium_memzero() in order to securely
 wipe a memory area.
  - A whole bunch of cleanups and portability enhancements.
+ - On Windows, a .REF file is generated along with the shared library,
+for use with Visual Studio. The installation path for these has become
+$prefix/bin as expected by MingW.
 
 * Version 0.3
  - The crypto_shorthash operation has been added, implemented using
