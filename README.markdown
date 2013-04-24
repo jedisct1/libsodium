@@ -174,6 +174,7 @@ them from different languages is easier.
 * Ruby: [RbNaCl](https://github.com/cryptosphere/rbnacl)
 * Python: [PyNaCl](https://github.com/dstufft/pynacl)
 * Java: [Kalium](https://github.com/abstractj/kalium)
+* Julia: [Sodium.jl](https://github.com/amitmurthy/Sodium.jl)
 
 ## CurveCP
 
