@@ -175,6 +175,7 @@ them from different languages is easier.
 * Python: [PyNaCl](https://github.com/dstufft/pynacl)
 * Java: [Kalium](https://github.com/abstractj/kalium)
 * Julia: [Sodium.jl](https://github.com/amitmurthy/Sodium.jl)
+* Erlang: [Erlang-NaCl](https://github.com/tonyg/erlang-nacl)
 
 ## CurveCP
 
