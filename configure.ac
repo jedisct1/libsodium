@@ -133,7 +133,6 @@ AX_CHECK_LINK_FLAG([-Wl,-z,noexecstack], [LDFLAGS="$LDFLAGS -Wl,-z,noexecstack"]
 
 LT_INIT
 AC_SUBST(LIBTOOL_DEPS)
-gl_LD_OUTPUT_DEF
 
 AC_ARG_VAR([AR], [path to the ar utility])
 AC_CHECK_TOOL([AR], [ar], [ar])
@@ -243,6 +242,8 @@ dnl Libtool.
 LT_INIT([dlopen])
 LT_CONFIG_LTDL_DIR([libltdl])
 LTDL_INIT
+AC_LIBTOOL_WIN32_DLL
+gl_LD_OUTPUT_DEF
 
 dnl Output.
 
