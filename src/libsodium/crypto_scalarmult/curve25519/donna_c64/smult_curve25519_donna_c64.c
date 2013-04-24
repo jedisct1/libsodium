@@ -36,7 +36,7 @@ typedef limb felem[5];
 typedef unsigned uint128_t __attribute__((mode(TI)));
 
 #undef force_inline
-#define force_inline __attribute__((always_inline))
+#define force_inline inline __attribute__((always_inline))
 
 /* Sum two numbers: output += in */
 static void force_inline
