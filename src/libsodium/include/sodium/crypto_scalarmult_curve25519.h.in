@@ -5,6 +5,8 @@
 # define SODIUM_HAVE_TI_MODE
 #endif
 
+#include "export.h"
+
 #define crypto_scalarmult_curve25519_BYTES 32
 #define crypto_scalarmult_curve25519_SCALARBYTES 32
 
@@ -14,15 +16,23 @@ extern "C" {
 
 #ifdef SODIUM_HAVE_TI_MODE
 
-extern int crypto_scalarmult_curve25519(unsigned char *,const unsigned char *,const unsigned char *);
-extern int crypto_scalarmult_curve25519_base(unsigned char *,const unsigned char *);
+SODIUM_EXPORT
+int crypto_scalarmult_curve25519(unsigned char *,const unsigned char *,const unsigned char *);
+
+SODIUM_EXPORT
+int crypto_scalarmult_curve25519_base(unsigned char *,const unsigned char *);
+
 #define crypto_scalarmult_curve25519_donna_c64 crypto_scalarmult_curve25519
 #define crypto_scalarmult_curve25519_donna_c64_base crypto_scalarmult_curve25519_base
 
 #else
 
-extern int crypto_scalarmult_curve25519(unsigned char *,const unsigned char *,const unsigned char *);
-extern int crypto_scalarmult_curve25519_base(unsigned char *,const unsigned char *);
+SODIUM_EXPORT
+int crypto_scalarmult_curve25519(unsigned char *,const unsigned char *,const unsigned char *);
+
+SODIUM_EXPORT
+int crypto_scalarmult_curve25519_base(unsigned char *,const unsigned char *);
+
 #define crypto_scalarmult_curve25519_ref crypto_scalarmult_curve25519
 #define crypto_scalarmult_curve25519_ref_base crypto_scalarmult_curve25519_base
 
