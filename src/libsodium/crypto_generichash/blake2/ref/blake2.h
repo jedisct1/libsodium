@@ -10,7 +10,7 @@
    You should have received a copy of the CC0 Public Domain Dedication along with
    this software. If not, see <http://creativecommons.org/publicdomain/zero/1.0/>.
 */
-#pragma once
+
 #ifndef __BLAKE2_H__
 #define __BLAKE2_H__
 
@@ -18,6 +18,13 @@
 #include <stdint.h>
 
 #include "crypto_generichash_blake2b.h"
+
+#define blake2b_init_param crypto_generichash_blake2b__init_param
+#define blake2b_init       crypto_generichash_blake2b__init
+#define blake2b_init_key   crypto_generichash_blake2b__init_key
+#define blake2b_update     crypto_generichash_blake2b__update
+#define blake2b_final      crypto_generichash_blake2b__final
+#define blake2b            crypto_generichash_blake2b__blake2b
 
 #if defined(_MSC_VER)
 #define ALIGN(x) __declspec(align(x))
