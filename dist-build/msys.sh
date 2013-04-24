@@ -1,5 +1,4 @@
 #! /bin/sh
 
-export CFLAGS="-Os -march=pentium2 -mtune=nocona"
-
-./configure --disable-ssp && make -j3
+export CFLAGS="-O3 -fomit-frame-pointer -march=pentium2 -mtune=nocona"
+./configure --disable-ssp && make && make check
