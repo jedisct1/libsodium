@@ -180,5 +180,12 @@ libsodium_la_CPPFLAGS = \
 	-I$(srcdir)/include/sodium \
 	-I$(builddir)/include/sodium
 
+if HAVE_LD_OUTPUT_DEF
+	libsodium_la_LDFLAGS += -Wl,--output-def,libsodium-$(DLL_VERSION).def
+	defexecdir = $(bindir)
+	defexec_DATA = libsodium-$(DLL_VERSION).def
+	DISTCLEANFILES += $(defexec_DATA)
+endif
+
 SUBDIRS = \
 	include
