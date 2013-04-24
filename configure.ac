@@ -42,11 +42,16 @@ AS_IF([test "$cross_compiling" != no],
   AC_DEFINE(CROSS_COMPILING, [1], [define if you are cross-compiling])
 )
 
-AX_CHECK_COMPILE_FLAG([-fPIC], [
-  AX_CHECK_LINK_FLAG([-fPIC],
-    [CFLAGS="$CFLAGS -fPIC"]
-  )
-])
+case $host_os in
+  cygwin* | mingw* | pw32* | cegcc*) ;;
+  *)
+    AX_CHECK_COMPILE_FLAG([-fPIC], [
+      AX_CHECK_LINK_FLAG([-fPIC],
+        [CFLAGS="$CFLAGS -fPIC"]
+      )
+    ])
+  ;;
+esac
 
 AS_IF([test "$enable_pie" != "no"],[
   AX_CHECK_COMPILE_FLAG([-fPIE], [
@@ -65,7 +70,6 @@ AX_CHECK_COMPILE_FLAG([-fno-strict-overflow], [CFLAGS="$CFLAGS -fno-strict-overf
 LIBTOOL_EXTRA_FLAGS="-version-info $SODIUM_LIBRARY_VERSION"
 case $host_os in
   cygwin* | mingw* | pw32* | cegcc*)
-    LIBTOOL_EXTRA_FLAGS="-module -avoid-version"
     AX_CHECK_LINK_FLAG([-Wl,--dynamicbase], [LDFLAGS="$LDFLAGS -Wl,--dynamicbase"])
     AX_CHECK_LINK_FLAG([-Wl,--nxcompat], [LDFLAGS="$LDFLAGS -Wl,--nxcompat"])
   ;;
