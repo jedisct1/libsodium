@@ -45,16 +45,11 @@ AS_IF([test "$cross_compiling" != no],
 AX_CHECK_COMPILE_FLAG([-fvisibility=hidden],
   [CFLAGS="$CFLAGS -fvisibility=hidden"])
 
-case $host_os in
-  cygwin* | mingw* | pw32* | cegcc*) ;;
-  *)
-    AX_CHECK_COMPILE_FLAG([-fPIC], [
-      AX_CHECK_LINK_FLAG([-fPIC],
-        [CFLAGS="$CFLAGS -fPIC"]
-      )
-    ])
-  ;;
-esac
+AX_CHECK_COMPILE_FLAG([-fPIC], [
+  AX_CHECK_LINK_FLAG([-fPIC],
+    [CFLAGS="$CFLAGS -fPIC"]
+  )
+])
 
 AS_IF([test "$enable_pie" != "no"],[
   AX_CHECK_COMPILE_FLAG([-fPIE], [
