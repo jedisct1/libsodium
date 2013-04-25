@@ -34,7 +34,7 @@ allocate(void)
     k2 = _sodium_alignedcalloc(&k2_, crypto_onetimeauth_KEYBYTES +
                                crypto_onetimeauth_BYTES);
 
-    return !(h && m && k && h2 && m2 && k2);
+    return -!(h && m && k && h2 && m2 && k2);
 }
 
 static void
@@ -143,7 +143,9 @@ crypto_onetimeauth_pick_best_implementation(void)
             (implementations[i]) != 0) {
             continue;
         }
-        allocate();
+        if (allocate() != 0) {
+            return NULL;
+        }
         err = checksum_compute();
         deallocate();
         if (err == NULL && strcmp(checksum, CHECKSUM) == 0) {
