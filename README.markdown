@@ -156,8 +156,6 @@ This hash function provides:
 * A variable output length (up to `crypto_generichash_BYTES_MAX` bytes)
 * A variable key length (from no key at all to
   `crypto_generichash_KEYBYTES_MAX` bytes)
-* A high security margin while being fast as MD5 and providing more
-  flexibility
 * A simple interface as well as a streaming interface.
 
 `crypto_generichash` is currently being implemented using
