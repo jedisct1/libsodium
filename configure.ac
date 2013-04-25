@@ -147,6 +147,9 @@ AS_IF([test -d /usr/local/lib], [
   LDFLAGS="$LDFLAGS -L/usr/local/lib"
 ])
 
+dnl Checks for headers
+AC_CHECK_HEADERS([emmintrin.h tmmintrin.h smmintrin.h immintrin.h x86intrin.h])
+
 dnl Checks for typedefs, structures, and compiler characteristics.
 
 AC_C_BIGENDIAN(
