@@ -10,7 +10,7 @@ else
   LIBTOOLIZE='libtoolize'
 fi
 
-$LIBTOOLIZE --ltdl && \
+$LIBTOOLIZE && \
 aclocal && \
 automake --add-missing --force-missing --include-deps && \
 autoconf

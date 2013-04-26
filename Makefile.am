@@ -7,6 +7,5 @@ EXTRA_DIST = \
 	THANKS
 
 SUBDIRS = \
-	libltdl \
 	src \
 	test

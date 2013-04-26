@@ -1,7 +1,6 @@
 AC_PREREQ([2.61])
 AC_INIT([libsodium],[0.4.1],[https://github.com/jedisct1/libsodium])
 AC_CONFIG_MACRO_DIR([m4])
-AC_CONFIG_AUX_DIR([libltdl/config])
 AC_CONFIG_SRCDIR([src/libsodium/sodium/version.c])
 AC_CANONICAL_HOST
 AM_INIT_AUTOMAKE([1.11 dist-bzip2 tar-ustar])
@@ -283,8 +282,6 @@ AC_SUBST([LIBTOOL_EXTRA_FLAGS])
 dnl Libtool.
 
 LT_INIT([dlopen])
-LT_CONFIG_LTDL_DIR([libltdl])
-LTDL_INIT
 AC_LIBTOOL_WIN32_DLL
 gl_LD_OUTPUT_DEF
 

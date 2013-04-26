@@ -25,12 +25,10 @@ config.*
 configure
 depcomp
 install-sh
-libltdl
 libtool
 ltmain.sh
 m4/argz.m4
 m4/libtool.m4
-m4/ltdl.m4
 m4/ltoptions.m4
 m4/ltsugar.m4
 m4/ltversion.m4
@@ -87,5 +85,6 @@ test/default/stream
 test/default/stream2
 test/default/stream3
 test/default/stream4
+test-driver
 testing
 
