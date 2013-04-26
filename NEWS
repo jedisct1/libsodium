@@ -1,4 +1,8 @@
 
+* Version 0.4.1
+ - sodium_version_*() functions were not exported in version 0.4. They
+   are now visible as intended.
+
 * Version 0.4
  - Most constants and operations are now available as actual functions
 instead of macros, making it easier to use from other languages.
