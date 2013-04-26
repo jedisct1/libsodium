@@ -93,7 +93,8 @@ accordingly (both around `sodium_init()` and around other functions).
 Sodium also provides helper functions to generate random numbers,
 leveraging `/dev/urandom` or `/dev/random` on *nix and the cryptographic
 service provider on Windows. The interface is similar to
-`arc4random(3)`. It is `fork(2)`-safe but not thread-safe.
+`arc4random(3)`. It is `fork(2)`-safe but not thread-safe. This holds
+true for `crypto_sign_keypair()` as well.
 
     uint32_t randombytes_random(void);
 
