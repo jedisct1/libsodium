@@ -39,6 +39,7 @@ int main(void)
     return 0;
 }
 
+#undef  printf
 #define printf(...) fprintf(fp_res, __VA_ARGS__)
 #define main xmain
 
