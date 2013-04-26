@@ -32,6 +32,9 @@ EXTRA_DIST = \
 	secretbox7.exp \
 	secretbox8.exp \
 	shorthash.exp \
+	sodium_core.exp \
+	sodium_utils.exp \
+	sodium_version.exp \
 	stream.exp \
 	stream2.exp \
 	stream3.exp \
@@ -76,6 +79,9 @@ TESTS_TARGETS = \
 	secretbox7 \
 	secretbox8 \
 	shorthash \
+	sodium_core \
+	sodium_utils \
+	sodium_version \
 	stream \
 	stream2 \
 	stream3 \
@@ -180,6 +186,15 @@ secretbox8_LDADD          = $(TESTS_LDADD)
 
 shorthash_SOURCE          = cmptest.h shorthash.c
 shorthash_LDADD           = $(TESTS_LDADD)
+
+sodium_core_SOURCE        = cmptest.h sodium_core.c
+sodium_core_LDADD         = $(TESTS_LDADD)
+
+sodium_utils_SOURCE       = cmptest.h sodium_utils.c
+sodium_utils_LDADD        = $(TESTS_LDADD)
+
+sodium_version_SOURCE     = cmptest.h sodium_version.c
+sodium_version_LDADD      = $(TESTS_LDADD)
 
 stream_SOURCE             = cmptest.h stream.c
 stream_LDADD              = $(TESTS_LDADD)
