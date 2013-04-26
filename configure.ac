@@ -203,6 +203,7 @@ AC_SUBST(HAVE_TI_MODE_V)
 AC_MSG_CHECKING(for cpuid instruction)
 HAVE_CPUID_V=0
 AC_COMPILE_IFELSE([AC_LANG_PROGRAM([[
+#include <stdlib.h>
 ]], [[
 unsigned int level = 0;
 unsigned int *eax = NULL, *ebx = NULL, *ecx = NULL, *edx = NULL;
