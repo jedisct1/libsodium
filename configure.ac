@@ -148,7 +148,29 @@ AS_IF([test -d /usr/local/lib], [
 ])
 
 dnl Checks for headers
-AC_CHECK_HEADERS([emmintrin.h tmmintrin.h smmintrin.h immintrin.h x86intrin.h])
+AC_CHECK_HEADERS([emmintrin.h], [], [], [
+#pragma GCC target("sse2")
+])
+
+AC_CHECK_HEADERS([tmmintrin.h], [], [], [
+#pragma GCC target("sse3")
+])
+
+AC_CHECK_HEADERS([smmintrin.h], [], [], [
+#pragma GCC target("sse4.1")
+])
+
+AC_CHECK_HEADERS([immintrin.h], [], [], [
+#pragma GCC target("avx")
+])
+
+AC_CHECK_HEADERS([x86intrin.h], [], [], [
+#pragma GCC target("xop")
+])
+
+AC_CHECK_HEADERS([wmmintrin.h], [], [], [
+#pragma GCC target("aes")
+])
 
 dnl Checks for typedefs, structures, and compiler characteristics.
 
@@ -184,6 +206,8 @@ AC_MSG_CHECKING(for cpuid instruction)
 HAVE_CPUID_V=0
 AC_COMPILE_IFELSE([AC_LANG_PROGRAM([[
 ]], [[
+unsigned int level = 0;
+unsigned int *eax = NULL, *ebx = NULL, *ecx = NULL, *edx = NULL;
 __asm__("cpuid" : "=a"(*eax), "=b" (*ebx), "=c"(*ecx), "=d"(*edx)
         : "0"(level));
 ]])],
