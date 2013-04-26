@@ -1,3 +1,5 @@
+[![Build Status](https://travis-ci.org/jedisct1/libsodium.png?branch=master)](https://travis-ci.org/jedisct1/libsodium?branch=master)
+
 ![libsodium](https://raw.github.com/jedisct1/libsodium/master/logo.png)
 ============
 
