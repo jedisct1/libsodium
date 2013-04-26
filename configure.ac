@@ -180,6 +180,20 @@ uint128_t x;
 AM_CONDITIONAL([HAVE_TI_MODE], [test $HAVE_TI_MODE_V = 1])
 AC_SUBST(HAVE_TI_MODE_V)
 
+AC_MSG_CHECKING(for cpuid instruction)
+HAVE_CPUID_V=0
+AC_COMPILE_IFELSE([AC_LANG_PROGRAM([[
+]], [[
+__asm__("cpuid" : "=a"(*eax), "=b" (*ebx), "=c"(*ecx), "=d"(*edx)
+        : "0"(level));
+]])],
+[AC_MSG_RESULT(yes)
+ AC_DEFINE([HAVE_CPUID], [1], [cpuid instruction is available])
+ HAVE_CPUID_V=1],
+[AC_MSG_RESULT(no)])
+AM_CONDITIONAL([HAVE_CPUID], [test $HAVE_CPUID_V = 1])
+AC_SUBST(HAVE_CPUID_V)
+
 dnl Checks for functions and headers
 
 AC_CHECK_FUNC(clock_gettime, , [AC_CHECK_LIB(rt, clock_gettime)])
