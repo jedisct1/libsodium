@@ -16,7 +16,7 @@ int main(void)
   printf ("%d\n", sodium_memcmp(buf1, buf2, sizeof buf1));
   sodium_memzero(buf1, sizeof buf1 / 2);
   printf ("%d\n", sodium_memcmp(buf1, buf2, sizeof buf1));
-  printf ("%d\n", sodium_memcmp(buf1, buf2, 0U));    
+  printf ("%d\n", sodium_memcmp(buf1, buf2, 0U));
   sodium_memzero(buf2, sizeof buf2 / 2);
   printf ("%d\n", sodium_memcmp(buf1, buf2, sizeof buf1));
 
