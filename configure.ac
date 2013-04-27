@@ -104,7 +104,8 @@ be sad
 ]])],
   [AC_MSG_RESULT(yes)
    AX_CHECK_COMPILE_FLAG([$CWFLAGS -Wno-unknown-warning-option],
-  [CWFLAGS="$CWFLAGS -Wno-unknown-warning-option"])],
+     [CWFLAGS="$CWFLAGS -Wno-unknown-warning-option"])
+  ],
   [AC_MSG_RESULT(no)
 ])
 
