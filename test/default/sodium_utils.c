@@ -6,8 +6,8 @@
 
 int main(void)
 {
-  char buf1[1000];
-  char buf2[1000];
+  unsigned char buf1[1000];
+  unsigned char buf2[1000];
 
   randombytes(buf1, sizeof buf1);
   memcpy(buf2, buf1, sizeof buf2);
