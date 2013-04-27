@@ -187,7 +187,21 @@ AC_C_BIGENDIAN(
   AC_MSG_WARN([universal endianess])
 )
 
-AC_MSG_CHECKING(if we can assemble basic amd64 code)
+AC_MSG_CHECKING(whether __STDC_LIMIT_MACROS is required)
+AC_COMPILE_IFELSE([AC_LANG_PROGRAM([[
+#include <limits.h>
+#include <stdint.h>
+]], [[
+(void) SIZE_MAX;
+(void) UINT64_MAX;
+]])],
+  [AC_MSG_RESULT(no)
+   CPPFLAGS="$CPPFLAGS -D__STDC_LIMIT_MACROS -D__STDC_CONSTANT_MACROS"
+  ],
+  [AC_MSG_RESULT(yes)
+])
+
+AC_MSG_CHECKING(whether we can assemble basic amd64 code)
 HAVE_AMD64_ASM_V=0
 AC_COMPILE_IFELSE([AC_LANG_PROGRAM([[
 ]], [[
