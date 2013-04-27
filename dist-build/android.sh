@@ -3,9 +3,9 @@
 export CFLAGS="-Os -mthumb"
 export DROID_HOST=darwin-x86
 export LDFLAGS="-mthumb"
-export NDK_PLATFORM=8
+export NDK_PLATFORM=9
 export NDK_ROOT=/usr/local/Cellar/android-ndk/r8e
-export TARGET_TOOLCHAIN_VERSION=4.6
+export TARGET_TOOLCHAIN_VERSION=4.4.3
 export TARGET=arm-linux-androideabi
 export NDK_TARGET="arm-linux-androideabi-${TARGET_TOOLCHAIN_VERSION}"
 export AR=droid-ar
