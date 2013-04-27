@@ -88,7 +88,7 @@ TESTS_TARGETS = \
 	stream2 \
 	stream3 \
 	stream4 \
-	stream5 \    
+	stream5 \
 	stream6
 
 check_PROGRAMS = $(TESTS_TARGETS)
