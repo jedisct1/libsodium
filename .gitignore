@@ -4,6 +4,7 @@
 *.lo
 *.log
 *.o
+*.plist
 *.s
 *.scan
 *.status
