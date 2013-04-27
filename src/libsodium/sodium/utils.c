@@ -30,8 +30,8 @@ sodium_memzero(void * const pnt, const size_t len)
 int
 sodium_memcmp(const void * const b1_, const void * const b2_, size_t size)
 {
-    const unsigned char *b1 = b1_;
-    const unsigned char *b2 = b2_;
+    const unsigned char *b1 = (const unsigned char *) b1_;
+    const unsigned char *b2 = (const unsigned char *) b2_;
     size_t               i;
     unsigned char        d = (unsigned char) 0U;
 
