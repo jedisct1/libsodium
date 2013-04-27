@@ -151,7 +151,7 @@ crypto_stream_beforenm(unsigned char *c, const unsigned char *k)
 {
     ECRYPT_ctx * const ctx = (ECRYPT_ctx *) c;
 
-    ECRYPT_keysetup(ctx,k,crypto_stream_KEYBYTES * 8,
+    ECRYPT_keysetup(ctx, k, crypto_stream_KEYBYTES * 8,
                     crypto_stream_NONCEBYTES * 8);
 }
 
