@@ -152,7 +152,7 @@ AC_CHECK_HEADERS([emmintrin.h], [], [], [
 ])
 
 AC_CHECK_HEADERS([tmmintrin.h], [], [], [
-#pragma GCC target("sse3")
+#pragma GCC target("ssse3")
 ])
 
 AC_CHECK_HEADERS([smmintrin.h], [], [], [
@@ -160,6 +160,10 @@ AC_CHECK_HEADERS([smmintrin.h], [], [], [
 ])
 
 AC_CHECK_HEADERS([immintrin.h], [], [], [
+#pragma GCC target("avx")
+])
+
+AC_CHECK_HEADERS([avxintrin.h], [], [], [
 #pragma GCC target("avx")
 ])
 
