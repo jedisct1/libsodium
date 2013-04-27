@@ -7,15 +7,16 @@ Public domain.
 #include "api.h"
 #include "crypto_core_salsa20.h"
 
+#ifndef HAVE_AMD64_ASM
+
 typedef unsigned int uint32;
 
 static const unsigned char sigma[16] = {
     'e', 'x', 'p', 'a', 'n', 'd', ' ', '3', '2', '-', 'b', 'y', 't', 'e', ' ', 'k'
 };
 
-int crypto_stream_xor(
-        unsigned char *c,
-  const unsigned char *m,unsigned long long mlen,
+int crypto_stream(
+        unsigned char *c,unsigned long long clen,
   const unsigned char *n,
   const unsigned char *k
 )
@@ -25,14 +26,13 @@ int crypto_stream_xor(
   unsigned long long i;
   unsigned int u;
 
-  if (!mlen) return 0;
+  if (!clen) return 0;
 
   for (i = 0;i < 8;++i) in[i] = n[i];
   for (i = 8;i < 16;++i) in[i] = 0;
 
-  while (mlen >= 64) {
-    crypto_core_salsa20(block,in,k,sigma);
-    for (i = 0;i < 64;++i) c[i] = m[i] ^ block[i];
+  while (clen >= 64) {
+    crypto_core_salsa20(c,in,k,sigma);
 
     u = 1;
     for (i = 8;i < 16;++i) {
@@ -41,14 +41,15 @@ int crypto_stream_xor(
       u >>= 8;
     }
 
-    mlen -= 64;
+    clen -= 64;
     c += 64;
-    m += 64;
   }
 
-  if (mlen) {
+  if (clen) {
     crypto_core_salsa20(block,in,k,sigma);
-    for (i = 0;i < mlen;++i) c[i] = m[i] ^ block[i];
+    for (i = 0;i < clen;++i) c[i] = block[i];
   }
   return 0;
 }
+
+#endif

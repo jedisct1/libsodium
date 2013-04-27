@@ -34,6 +34,7 @@ AC_SUBST(DLL_VERSION)
 
 LX_CFLAGS=${CFLAGS-NONE}
 AC_PROG_CC_C99
+AM_PROG_AS
 AC_USE_SYSTEM_EXTENSIONS
 CPPFLAGS="$CPPFLAGS -D_FORTIFY_SOURCE=2"
 
@@ -183,6 +184,24 @@ AC_C_BIGENDIAN(
   AC_MSG_ERROR([unknown endianess]),
   AC_MSG_WARN([universal endianess])
 )
+
+AC_MSG_CHECKING(if we can assemble basic amd64 code)
+HAVE_AMD64_ASM_V=0
+AC_COMPILE_IFELSE([AC_LANG_PROGRAM([[
+]], [[
+#if defined(__amd64) || defined(__amd64__) || defined(__x86_64__)
+/* neat */
+#else
+# error !amd64
+#endif
+__asm__("pxor %xmm12,%xmm6");
+]])],
+[AC_MSG_RESULT(yes)
+ AC_DEFINE([HAVE_AMD64_ASM], [1], [basic amd64 code can be assembled])
+ HAVE_AMD64_ASM_V=1],
+[AC_MSG_RESULT(no)])
+AM_CONDITIONAL([HAVE_AMD64_ASM], [test $HAVE_AMD64_ASM_V = 1])
+AC_SUBST(HAVE_AMD64_ASM_V)
 
 AC_MSG_CHECKING(for 128-bit arithmetic)
 HAVE_TI_MODE_V=0

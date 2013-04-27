@@ -137,9 +137,6 @@ libsodium_la_SOURCES = \
 	crypto_stream/aes256estream/hongjun/aes256.h \
 	crypto_stream/aes256estream/hongjun/api.h \
 	crypto_stream/aes256estream/hongjun/ecrypt-sync.h \
-	crypto_stream/salsa20/ref/api.h \
-	crypto_stream/salsa20/ref/stream_salsa20.c \
-	crypto_stream/salsa20/ref/xor_salsa20.c \
 	crypto_stream/salsa2012/ref/api.h \
 	crypto_stream/salsa2012/ref/stream_salsa2012.c \
 	crypto_stream/salsa2012/ref/xor_salsa2012.c \
@@ -171,6 +168,17 @@ libsodium_la_SOURCES += \
 	crypto_scalarmult/curve25519/ref/api.h \
 	crypto_scalarmult/curve25519/ref/base_curve25519_ref.c \
 	crypto_scalarmult/curve25519/ref/smult_curve25519_ref.c
+endif
+
+if HAVE_AMD64_ASM
+libsodium_la_SOURCES += \
+	crypto_stream/salsa20/amd64_xmm6/api.h \
+	crypto_stream/salsa20/amd64_xmm6/stream_salsa20_amd64_xmm6.s
+else
+libsodium_la_SOURCES += \
+	crypto_stream/salsa20/ref/api.h \
+	crypto_stream/salsa20/ref/stream_salsa20_ref.c \
+	crypto_stream/salsa20/ref/xor_salsa20_ref.c
 endif
 
 libsodium_la_LDFLAGS = \

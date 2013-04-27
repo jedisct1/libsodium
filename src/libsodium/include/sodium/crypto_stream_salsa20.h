@@ -9,6 +9,12 @@
  *  the crypto_box functions.
  */
 
+#if 1
+# ifndef SODIUM_HAVE_AMD64_ASM
+#  define SODIUM_HAVE_AMD64_ASM
+# endif
+#endif
+
 #include "export.h"
 
 #define crypto_stream_salsa20_KEYBYTES 32U
@@ -24,7 +30,10 @@ int crypto_stream_salsa20(unsigned char *,unsigned long long,const unsigned char
 SODIUM_EXPORT
 int crypto_stream_salsa20_xor(unsigned char *,const unsigned char *,unsigned long long,const unsigned char *,const unsigned char *);
 
-#if 1
+#ifdef SODIUM_HAVE_AMD64_ASM
+# define crypto_stream_salsa20_amd64_xmm6 crypto_stream_salsa20
+# define crypto_stream_salsa20_amd64_xmm6_xor crypto_stream_salsa20_xor
+#else
 # define crypto_stream_salsa20_ref crypto_stream_salsa20
 # define crypto_stream_salsa20_ref_xor crypto_stream_salsa20_xor
 #endif
@@ -32,8 +41,5 @@ int crypto_stream_salsa20_xor(unsigned char *,const unsigned char *,unsigned lon
 #ifdef __cplusplus
 }
 #endif
-
-#define crypto_stream_salsa20_ref crypto_stream_salsa20
-#define crypto_stream_salsa20_ref_xor crypto_stream_salsa20_xor
 
 #endif

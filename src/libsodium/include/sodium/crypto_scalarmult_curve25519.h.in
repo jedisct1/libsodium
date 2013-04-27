@@ -2,7 +2,9 @@
 #define crypto_scalarmult_curve25519_H
 
 #if @HAVE_TI_MODE_V@
-# define SODIUM_HAVE_TI_MODE
+# ifndef SODIUM_HAVE_TI_MODE
+#  define SODIUM_HAVE_TI_MODE
+# endif
 #endif
 
 #include "export.h"
