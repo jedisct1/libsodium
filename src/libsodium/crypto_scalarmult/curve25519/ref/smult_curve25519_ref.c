@@ -139,7 +139,6 @@ static void mainloop(unsigned int work[64],const unsigned char e[32])
   unsigned int s[32];
   unsigned int t[32];
   unsigned int u[32];
-  unsigned int i;
   unsigned int j;
   unsigned int b;
   int pos;

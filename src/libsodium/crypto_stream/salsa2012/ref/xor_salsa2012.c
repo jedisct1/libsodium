@@ -22,7 +22,7 @@ int crypto_stream_xor(
 {
   unsigned char in[16];
   unsigned char block[64];
-  int i;
+  unsigned long long i;
   unsigned int u;
 
   if (!mlen) return 0;

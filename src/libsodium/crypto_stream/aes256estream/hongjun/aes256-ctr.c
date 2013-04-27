@@ -19,6 +19,8 @@ ECRYPT_keysetup(ECRYPT_ctx* ctx, const u8* key, u32 keysize, u32 ivsize)
     unsigned int w[Nk*(Nr+1)], temp;
     int i, j;
 
+    (void) keysize;
+    (void) ivsize;
     (void) sizeof(char[sizeof *ctx == crypto_stream_BEFORENMBYTES ? 1 : -1]);
 
     for( i = 0; i < Nk; i++ ) {
@@ -99,6 +101,7 @@ ECRYPT_process_bytes(int action, ECRYPT_ctx* ctx, const u8* input, u8* output,
     u8 keystream[16];
     u32 i;
 
+    (void) action;
     memset(keystream, 0, sizeof keystream);
     partial_precompute_tworounds(ctx);
 
