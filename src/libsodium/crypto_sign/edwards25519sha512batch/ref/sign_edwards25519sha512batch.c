@@ -74,7 +74,7 @@ int crypto_sign_open(
     const unsigned char *pk
     )
 {
-  int i;
+  unsigned long long i;
   unsigned char t1[32], t2[32];
   ge25519 get1, get2, gepk;
   sc25519 schmr, scs;
