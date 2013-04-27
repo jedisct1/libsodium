@@ -7,7 +7,7 @@
 #include "sodium.h"
 
 #define TEST_NAME_RES TEST_NAME ".res"
-#define TEST_NAME_OUT TEST_NAME ".exp"
+#define TEST_NAME_OUT TEST_SRCDIR "/" TEST_NAME ".exp"
 
 FILE *fp_res;
 int   xmain(void);

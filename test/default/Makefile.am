@@ -43,6 +43,7 @@ EXTRA_DIST = \
 	stream6.exp
 
 AM_CPPFLAGS = \
+	-DTEST_SRCDIR=\"@srcdir@\" \
 	-I$(top_srcdir)/src/libsodium/include \
 	-I$(top_srcdir)/src/libsodium/include/sodium \
 	-I$(top_builddir)/src/libsodium/include \
