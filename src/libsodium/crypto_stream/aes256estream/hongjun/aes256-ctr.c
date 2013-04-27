@@ -13,134 +13,122 @@
 
 /* ------------------------------------------------------------------------- */
 /* key setup for AES-256*/
-static void ECRYPT_keysetup(
-  ECRYPT_ctx* ctx,
-  const u8* key,
-  u32 keysize,
-  u32 ivsize)
+static void
+ECRYPT_keysetup(ECRYPT_ctx* ctx, const u8* key, u32 keysize, u32 ivsize)
 {
     unsigned int w[Nk*(Nr+1)], temp;
-
     int i, j;
 
     (void) sizeof(char[sizeof *ctx == crypto_stream_BEFORENMBYTES ? 1 : -1]);
 
-        i = 0;
+    for( i = 0; i < Nk; i++ ) {
+        w[i] =  key[(i << 2)];
+        w[i] |= key[(i << 2)+1] << 8;
+        w[i] |= key[(i << 2)+2] << 16;
+        w[i] |= key[(i << 2)+3] << 24;
+    }
 
-        for( i = 0; i < Nk; i++ )
-        {
-                w[i] =  key[(i << 2)];
-                w[i] |= key[(i << 2)+1] << 8;
-                w[i] |= key[(i << 2)+2] << 16;
-                w[i] |= key[(i << 2)+3] << 24;
+    i = Nk;
+
+    while( i < Nb*(Nr+1) ) {
+        temp = w[i-1];
+
+        temp = Sbox[ temp & 0xFF] <<  24 ^
+            Sbox[(temp >> 8) & 0xFF]  ^
+            (Sbox[(temp >> 16) & 0xFF] << 8 ) ^
+            (Sbox[(temp >> 24) & 0xFF] << 16) ^
+            Rcon[i/Nk];
+        w[i] = w[i-Nk] ^ temp;
+        i++;
+
+        temp = w[i-1];
+        w[i] = w[i-Nk] ^ temp;
+        i++;
+
+        temp = w[i-1];
+        w[i] = w[i-Nk] ^ temp;
+        i++;
+
+        temp = w[i-1];
+        w[i] = w[i-Nk] ^ temp;
+        i++;
+
+        temp = w[i-1];
+        temp = Sbox[ temp & 0xFF] ^
+            Sbox[(temp >> 8) & 0xFF] << 8 ^
+            (Sbox[(temp >> 16) & 0xFF] << 16 ) ^
+            (Sbox[(temp >> 24) & 0xFF] << 24);
+        w[i] = w[i-Nk] ^ temp;
+        i++;
+
+        temp = w[i-1];
+        w[i] = w[i-Nk] ^ temp;
+        i++;
+
+        temp = w[i-1];
+        w[i] = w[i-Nk] ^ temp;
+        i++;
+
+        temp = w[i-1];
+        w[i] = w[i-Nk] ^ temp;
+        i++;
+    }
+
+    for (i = 0; i <= Nr; i++) {
+        for (j = 0; j < Nb; j++) {
+            ctx->round_key[i][j] = w[(i<<2)+j];
         }
-
-      i = Nk;
-
-        while( i < Nb*(Nr+1) )
-        {
-                temp = w[i-1];
-
-                temp = Sbox[ temp & 0xFF] <<  24 ^
-                       Sbox[(temp >> 8) & 0xFF]  ^
-                         (Sbox[(temp >> 16) & 0xFF] << 8 ) ^
-                       (Sbox[(temp >> 24) & 0xFF] << 16) ^
-                         Rcon[i/Nk];
-                w[i] = w[i-Nk] ^ temp;
-                i++;
-
-            temp = w[i-1];
-                w[i] = w[i-Nk] ^ temp;
-                i++;
-
-            temp = w[i-1];
-                w[i] = w[i-Nk] ^ temp;
-                i++;
-
-            temp = w[i-1];
-                w[i] = w[i-Nk] ^ temp;
-                i++;
-
-            temp = w[i-1];
-                temp = Sbox[ temp & 0xFF] ^
-                         Sbox[(temp >> 8) & 0xFF] << 8 ^
-                         (Sbox[(temp >> 16) & 0xFF] << 16 ) ^
-                       (Sbox[(temp >> 24) & 0xFF] << 24);
-                w[i] = w[i-Nk] ^ temp;
-                i++;
-
-            temp = w[i-1];
-                w[i] = w[i-Nk] ^ temp;
-                i++;
-
-            temp = w[i-1];
-                w[i] = w[i-Nk] ^ temp;
-                i++;
-
-            temp = w[i-1];
-                w[i] = w[i-Nk] ^ temp;
-                i++;
-        }
-
-
-        for (i = 0; i <= Nr; i++)
-        for (j = 0; j < Nb; j++)
-                        ctx->round_key[i][j] = w[(i<<2)+j];
-}
-
-
-/* ------------------------------------------------------------------------- */
-
-
-static void ECRYPT_ivsetup(
-  ECRYPT_ctx* ctx,
-  const u8* iv)
-{
-      (void) sizeof(char[(sizeof ctx->counter) == crypto_stream_NONCEBYTES ? 1 : -1]);
-      memcpy(ctx->counter, iv, crypto_stream_NONCEBYTES);
+    }
 }
 
 /* ------------------------------------------------------------------------- */
 
-static void ECRYPT_process_bytes(
-  int action,
-  ECRYPT_ctx* ctx,
-  const u8* input,
-  u8* output,
-  u32 msglen)
+static void
+ECRYPT_ivsetup(ECRYPT_ctx* ctx, const u8* iv)
 {
-  u8 keystream[16];
-  u32 i;
+    (void) sizeof(char[(sizeof ctx->counter) == crypto_stream_NONCEBYTES ? 1 : -1]);
+    memcpy(ctx->counter, iv, crypto_stream_NONCEBYTES);
+}
 
-  partial_precompute_tworounds(ctx);
+/* ------------------------------------------------------------------------- */
 
-  for ( ; msglen >= 16; msglen -= 16, input += 16, output += 16)
-  {
-      aes256_enc_block(ctx->counter, keystream, ctx);
+static void
+ECRYPT_process_bytes(int action, ECRYPT_ctx* ctx, const u8* input, u8* output,
+                     u32 msglen)
+{
+    u8 keystream[16];
+    u32 i;
 
-      ((u32*)output)[0] = ((u32*)input)[0] ^ ((u32*)keystream)[0] ^ ctx->round_key[Nr][0];
+    memset(keystream, 0, sizeof keystream);
+    partial_precompute_tworounds(ctx);
+
+    for ( ; msglen >= 16; msglen -= 16, input += 16, output += 16) {
+        aes256_enc_block(ctx->counter, keystream, ctx);
+
+        ((u32*)output)[0] = ((u32*)input)[0] ^ ((u32*)keystream)[0] ^ ctx->round_key[Nr][0];
         ((u32*)output)[1] = ((u32*)input)[1] ^ ((u32*)keystream)[1] ^ ctx->round_key[Nr][1];
         ((u32*)output)[2] = ((u32*)input)[2] ^ ((u32*)keystream)[2] ^ ctx->round_key[Nr][2];
         ((u32*)output)[3] = ((u32*)input)[3] ^ ((u32*)keystream)[3] ^ ctx->round_key[Nr][3];
 
-      ctx->counter[0]++;
+        ctx->counter[0]++;
 
-      if ((ctx->counter[0] & 0xff)== 0) partial_precompute_tworounds(ctx);
-  }
+        if ((ctx->counter[0] & 0xff)== 0) {
+            partial_precompute_tworounds(ctx);
+        }
+    }
 
-  if (msglen > 0)
-  {
-      aes256_enc_block(ctx->counter, keystream, ctx);
-      ((u32*)keystream)[0] ^= ctx->round_key[Nr][0];
+    if (msglen > 0) {
+        aes256_enc_block(ctx->counter, keystream, ctx);
+        ((u32*)keystream)[0] ^= ctx->round_key[Nr][0];
         ((u32*)keystream)[1] ^= ctx->round_key[Nr][1];
         ((u32*)keystream)[2] ^= ctx->round_key[Nr][2];
         ((u32*)keystream)[3] ^= ctx->round_key[Nr][3];
 
-      for (i = 0; i < msglen; i ++)
-              output[i] = input[i] ^ keystream[i];
+        for (i = 0; i < msglen; i ++) {
+            output[i] = input[i] ^ keystream[i];
         }
+    }
 }
-
 
 /* ------------------------------------------------------------------------- */
 
