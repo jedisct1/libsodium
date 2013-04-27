@@ -26,7 +26,7 @@ int crypto_hash(unsigned char *out,const unsigned char *in,unsigned long long in
 {
   unsigned char h[32];
   unsigned char padded[128];
-  int i;
+  unsigned long long i;
   unsigned long long bits = inlen << 3;
 
   for (i = 0;i < 32;++i) h[i] = iv[i];

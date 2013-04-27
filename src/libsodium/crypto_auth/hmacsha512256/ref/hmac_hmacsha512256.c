@@ -26,7 +26,7 @@ int crypto_auth(unsigned char *out,const unsigned char *in,unsigned long long in
 {
   unsigned char h[64];
   unsigned char padded[256];
-  int i;
+  unsigned long long i;
   unsigned long long bytes = 128 + inlen;
 
   for (i = 0;i < 64;++i) h[i] = iv[i];
