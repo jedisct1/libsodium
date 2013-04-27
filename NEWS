@@ -3,6 +3,8 @@
  - sodium_version_*() functions were not exported in version 0.4. They
 are now visible as intended.
  - sodium_init() now calls randombytes_stir().
+ - optimized assembly version of salsa20 is now used on amd64.
+ - further cleanups and enhanced compatibility with non-C99 compilers.
 
 * Version 0.4
  - Most constants and operations are now available as actual functions
