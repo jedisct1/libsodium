@@ -10,6 +10,12 @@
 extern "C" {
 #endif
 
+#ifndef __cplusplus
+# define _SODIUM_C99(X) (X)
+#else
+# define _SODIUM_C99(X)
+#endif
+
 unsigned char *_sodium_alignedcalloc(unsigned char ** const unaligned_p,
                                      const size_t len);
 

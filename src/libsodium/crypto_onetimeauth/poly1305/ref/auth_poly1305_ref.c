@@ -6,6 +6,7 @@ Public domain.
 
 #include "api.h"
 #include "crypto_onetimeauth_poly1305_ref.h"
+#include "utils.h"
 
 static void add(unsigned int h[17],const unsigned int c[17])
 {
@@ -112,7 +113,7 @@ crypto_onetimeauth_poly1305_implementation_name(void)
 
 struct crypto_onetimeauth_poly1305_implementation
 crypto_onetimeauth_poly1305_ref_implementation = {
-    .implementation_name = crypto_onetimeauth_poly1305_implementation_name,
-    .onetimeauth = crypto_onetimeauth,
-    .onetimeauth_verify = crypto_onetimeauth_verify
+    _SODIUM_C99(.implementation_name =) crypto_onetimeauth_poly1305_implementation_name,
+    _SODIUM_C99(.onetimeauth =) crypto_onetimeauth,
+    _SODIUM_C99(.onetimeauth_verify =) crypto_onetimeauth_verify
 };
