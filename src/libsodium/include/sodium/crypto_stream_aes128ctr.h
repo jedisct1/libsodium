@@ -11,9 +11,9 @@
 
 #include "export.h"
 
-#define crypto_stream_aes128ctr_KEYBYTES 16
-#define crypto_stream_aes128ctr_NONCEBYTES 16
-#define crypto_stream_aes128ctr_BEFORENMBYTES 1408
+#define crypto_stream_aes128ctr_KEYBYTES 16U
+#define crypto_stream_aes128ctr_NONCEBYTES 16U
+#define crypto_stream_aes128ctr_BEFORENMBYTES 1408U
 
 #ifdef __cplusplus
 extern "C" {

@@ -3,8 +3,8 @@
 
 #include "export.h"
 
-#define crypto_shorthash_siphash24_BYTES 8
-#define crypto_shorthash_siphash24_KEYBYTES 16
+#define crypto_shorthash_siphash24_BYTES 8U
+#define crypto_shorthash_siphash24_KEYBYTES 16U
 
 #ifdef __cplusplus
 extern "C" {

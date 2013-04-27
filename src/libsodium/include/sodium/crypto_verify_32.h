@@ -3,7 +3,7 @@
 
 #include "export.h"
 
-#define crypto_verify_32_BYTES 32
+#define crypto_verify_32_BYTES 32U
 
 #ifdef __cplusplus
 extern "C" {

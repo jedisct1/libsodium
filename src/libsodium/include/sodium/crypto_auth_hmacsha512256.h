@@ -3,8 +3,8 @@
 
 #include "export.h"
 
-#define crypto_auth_hmacsha512256_BYTES 32
-#define crypto_auth_hmacsha512256_KEYBYTES 32
+#define crypto_auth_hmacsha512256_BYTES 32U
+#define crypto_auth_hmacsha512256_KEYBYTES 32U
 
 #ifdef __cplusplus
 extern "C" {

@@ -12,9 +12,9 @@
 
 #include "export.h"
 
-#define crypto_stream_aes256estream_KEYBYTES 32
-#define crypto_stream_aes256estream_NONCEBYTES 16
-#define crypto_stream_aes256estream_BEFORENMBYTES 276
+#define crypto_stream_aes256estream_KEYBYTES 32U
+#define crypto_stream_aes256estream_NONCEBYTES 16U
+#define crypto_stream_aes256estream_BEFORENMBYTES 276U
 
 #ifdef __cplusplus
 extern "C" {

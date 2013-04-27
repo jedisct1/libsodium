@@ -11,8 +11,8 @@
 
 #include "export.h"
 
-#define crypto_stream_xsalsa20_KEYBYTES 32
-#define crypto_stream_xsalsa20_NONCEBYTES 24
+#define crypto_stream_xsalsa20_KEYBYTES 32U
+#define crypto_stream_xsalsa20_NONCEBYTES 24U
 
 #ifdef __cplusplus
 extern "C" {

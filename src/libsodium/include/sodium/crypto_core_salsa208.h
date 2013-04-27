@@ -3,10 +3,10 @@
 
 #include "export.h"
 
-#define crypto_core_salsa208_OUTPUTBYTES 64
-#define crypto_core_salsa208_INPUTBYTES 16
-#define crypto_core_salsa208_KEYBYTES 32
-#define crypto_core_salsa208_CONSTBYTES 16
+#define crypto_core_salsa208_OUTPUTBYTES 64U
+#define crypto_core_salsa208_INPUTBYTES 16U
+#define crypto_core_salsa208_KEYBYTES 32U
+#define crypto_core_salsa208_CONSTBYTES 16U
 
 #ifdef __cplusplus
 extern "C" {

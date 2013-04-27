@@ -3,10 +3,10 @@
 
 #include "export.h"
 
-#define crypto_secretbox_xsalsa20poly1305_KEYBYTES 32
-#define crypto_secretbox_xsalsa20poly1305_NONCEBYTES 24
-#define crypto_secretbox_xsalsa20poly1305_ZEROBYTES 32
-#define crypto_secretbox_xsalsa20poly1305_BOXZEROBYTES 16
+#define crypto_secretbox_xsalsa20poly1305_KEYBYTES 32U
+#define crypto_secretbox_xsalsa20poly1305_NONCEBYTES 24U
+#define crypto_secretbox_xsalsa20poly1305_ZEROBYTES 32U
+#define crypto_secretbox_xsalsa20poly1305_BOXZEROBYTES 16U
 
 #ifdef __cplusplus
 extern "C" {

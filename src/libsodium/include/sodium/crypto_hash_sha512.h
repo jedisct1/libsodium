@@ -3,8 +3,8 @@
 
 #include "export.h"
 
-#define crypto_hash_sha512_BYTES 64
-#define crypto_hash_sha512_BLOCKBYTES 128
+#define crypto_hash_sha512_BYTES 64U
+#define crypto_hash_sha512_BLOCKBYTES 128U
 
 #ifdef __cplusplus
 extern "C" {

@@ -9,7 +9,7 @@ int main(void)
 {
 #define MAXLEN 64
     crypto_uint8 in[MAXLEN], out[crypto_shorthash_BYTES], k[crypto_shorthash_KEYBYTES];
-    int i,j;
+    size_t i,j;
 
     for( i = 0; i < crypto_shorthash_KEYBYTES; ++i ) k[i] = i;
 

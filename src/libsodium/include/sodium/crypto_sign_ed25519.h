@@ -3,9 +3,9 @@
 
 #include "export.h"
 
-#define crypto_sign_ed25519_SECRETKEYBYTES 64
-#define crypto_sign_ed25519_PUBLICKEYBYTES 32
-#define crypto_sign_ed25519_BYTES 64
+#define crypto_sign_ed25519_SECRETKEYBYTES 64U
+#define crypto_sign_ed25519_PUBLICKEYBYTES 32U
+#define crypto_sign_ed25519_BYTES 64U
 
 #ifdef __cplusplus
 extern "C" {

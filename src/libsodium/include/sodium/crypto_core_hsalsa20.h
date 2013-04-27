@@ -3,10 +3,10 @@
 
 #include "export.h"
 
-#define crypto_core_hsalsa20_OUTPUTBYTES 32
-#define crypto_core_hsalsa20_INPUTBYTES 16
-#define crypto_core_hsalsa20_KEYBYTES 32
-#define crypto_core_hsalsa20_CONSTBYTES 16
+#define crypto_core_hsalsa20_OUTPUTBYTES 32U
+#define crypto_core_hsalsa20_INPUTBYTES 16U
+#define crypto_core_hsalsa20_KEYBYTES 32U
+#define crypto_core_hsalsa20_CONSTBYTES 16U
 
 #ifdef __cplusplus
 extern "C" {

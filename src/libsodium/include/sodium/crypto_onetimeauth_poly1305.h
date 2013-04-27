@@ -3,8 +3,8 @@
 
 #include "export.h"
 
-#define crypto_onetimeauth_poly1305_BYTES 16
-#define crypto_onetimeauth_poly1305_KEYBYTES 32
+#define crypto_onetimeauth_poly1305_BYTES 16U
+#define crypto_onetimeauth_poly1305_KEYBYTES 32U
 #ifdef __cplusplus
 extern "C" {
 #endif

@@ -3,8 +3,8 @@
 
 #include "export.h"
 
-#define crypto_hashblocks_sha256_STATEBYTES 32
-#define crypto_hashblocks_sha256_BLOCKBYTES 64
+#define crypto_hashblocks_sha256_STATEBYTES 32U
+#define crypto_hashblocks_sha256_BLOCKBYTES 64U
 
 #ifdef __cplusplus
 extern "C" {

@@ -3,12 +3,12 @@
 
 #include "export.h"
 
-#define crypto_box_curve25519xsalsa20poly1305_PUBLICKEYBYTES 32
-#define crypto_box_curve25519xsalsa20poly1305_SECRETKEYBYTES 32
-#define crypto_box_curve25519xsalsa20poly1305_BEFORENMBYTES 32
-#define crypto_box_curve25519xsalsa20poly1305_NONCEBYTES 24
-#define crypto_box_curve25519xsalsa20poly1305_ZEROBYTES 32
-#define crypto_box_curve25519xsalsa20poly1305_BOXZEROBYTES 16
+#define crypto_box_curve25519xsalsa20poly1305_PUBLICKEYBYTES 32U
+#define crypto_box_curve25519xsalsa20poly1305_SECRETKEYBYTES 32U
+#define crypto_box_curve25519xsalsa20poly1305_BEFORENMBYTES 32U
+#define crypto_box_curve25519xsalsa20poly1305_NONCEBYTES 24U
+#define crypto_box_curve25519xsalsa20poly1305_ZEROBYTES 32U
+#define crypto_box_curve25519xsalsa20poly1305_BOXZEROBYTES 16U
 #define crypto_box_curve25519xsalsa20poly1305_MACBYTES (crypto_box_curve25519xsalsa20poly1305_ZEROBYTES - crypto_box_curve25519xsalsa20poly1305_BOXZEROBYTES)
 
 #ifdef __cplusplus
