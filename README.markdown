@@ -19,11 +19,8 @@ In order to pick the fastest working implementation of each primitive,
 NaCl performs tests and benchmarks at compile-time. Unfortunately, the
 resulting library is not guaranteed to work on different hardware.
 
-Sodium only ships portable reference implementations.
-
-Optimized implementations (including NEON optimizations) will eventually
-be supported, but tests and benchmarks will be performed at run-time,
-so that the same binary package can still run everywhere.
+Sodium performs tests at run-time, so that the same binary package can
+still run everywhere.
 
 Sodium is tested on a variety of compilers and operating systems,
 including Windows, iOS and Android.
