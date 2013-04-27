@@ -1,6 +1,13 @@
 #ifndef crypto_box_H
 #define crypto_box_H
 
+/*
+ * THREAD SAFETY: crypto_box_keypair() is thread-safe,
+ * provided that you called sodium_init() once before using any
+ * other libsodium function.
+ * Other functions are always thread-safe.
+ */
+
 #include <stdlib.h>
 
 #include "crypto_box_curve25519xsalsa20poly1305.h"

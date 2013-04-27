@@ -2,6 +2,12 @@
 #ifndef randombytes_sysrandom_H
 #define randombytes_sysrandom_H
 
+/*
+ * THREAD SAFETY: randombytes_sysrandom() functions are thread-safe,
+ * provided that you called sodium_init() once before using any
+ * other libsodium function.
+ */
+
 #include <stdint.h>
 #include <stdlib.h>
 

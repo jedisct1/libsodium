@@ -2,6 +2,12 @@
 #ifndef randombytes_salsa20_random_H
 #define randombytes_salsa20_random_H
 
+/*
+ * THREAD SAFETY: randombytes_salsa20_random*() functions are
+ * fork()-safe but not thread-safe.
+ * Always wrap them in a mutex if you need thread safety.
+ */
+
 #include <stdint.h>
 #include <stdlib.h>
 
