@@ -3,6 +3,7 @@
 
 #include "core.h"
 #include "crypto_onetimeauth.h"
+#include "randombytes.h"
 
 static bool initialized;
 
