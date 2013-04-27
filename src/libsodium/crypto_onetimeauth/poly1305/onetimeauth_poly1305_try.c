@@ -10,7 +10,6 @@
 
 #define MAXTEST_BYTES 10000
 #define CHECKSUM_BYTES 4096
-#define TUNE_BYTES     1536
 
 #define CHECKSUM "e836d5ca58cf673fca2b4910f23f3990"
 
@@ -46,13 +45,6 @@ deallocate(void)
     free(h2_);
     free(m2_);
     free(k2_);
-}
-
-static void
-doit(void)
-{
-    crypto_onetimeauth(h,m,TUNE_BYTES,k);
-    crypto_onetimeauth_verify(h,m,TUNE_BYTES,k);
 }
 
 static const char *
