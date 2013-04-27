@@ -11,7 +11,7 @@ extern "C" {
 #endif
 
 #ifndef __cplusplus
-# define _SODIUM_C99(X) (X)
+# define _SODIUM_C99(X) X
 #else
 # define _SODIUM_C99(X)
 #endif
