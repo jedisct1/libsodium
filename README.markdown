@@ -178,7 +178,9 @@ them from different languages is easier.
 ## CurveCP
 
 CurveCP tools are part of a different project,
-[libchloride](https://github.com/jedisct1/libchloride)
+[libchloride](https://github.com/jedisct1/libchloride).
+If you are interested in an embeddable CurveCP implementation, take a
+look at [libcurvecpr](https://github.com/impl/libcurvecpr).
 
 ## Mailing list
 
