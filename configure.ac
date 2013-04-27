@@ -225,8 +225,8 @@ AC_COMPILE_IFELSE([AC_LANG_PROGRAM([[
 #ifndef __GNUC__
 # error mode(TI) is a gcc extension
 #endif
-#if defined(__arm__) || defined(__ARMEL__)
-# error clang doesn't properly compile smult_curve25519_donna_c64.c on arm
+#if defined(__clang__) && !defined(__x86_64__)
+# error clang doesn't properly compile smult_curve25519_donna_c64.c
 #endif
 typedef unsigned uint128_t __attribute__((mode(TI)));
 uint128_t x;
