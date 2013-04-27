@@ -38,7 +38,9 @@ EXTRA_DIST = \
 	stream.exp \
 	stream2.exp \
 	stream3.exp \
-	stream4.exp
+	stream4.exp \
+	stream5.exp \
+	stream6.exp
 
 AM_CPPFLAGS = \
 	-I$(top_srcdir)/src/libsodium/include \
@@ -85,7 +87,9 @@ TESTS_TARGETS = \
 	stream \
 	stream2 \
 	stream3 \
-	stream4
+	stream4 \
+	stream5 \    
+	stream6
 
 check_PROGRAMS = $(TESTS_TARGETS)
 
@@ -207,5 +211,11 @@ stream3_LDADD             = $(TESTS_LDADD)
 
 stream4_SOURCE            = cmptest.h stream4.c
 stream4_LDADD             = $(TESTS_LDADD)
+
+stream5_SOURCE            = cmptest.h stream5.c
+stream5_LDADD             = $(TESTS_LDADD)
+
+stream6_SOURCE            = cmptest.h stream6.c
+stream6_LDADD             = $(TESTS_LDADD)
 
 verify: check

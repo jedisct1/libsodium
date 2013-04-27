@@ -132,6 +132,11 @@ libsodium_la_SOURCES = \
 	crypto_stream/aes128ctr/portable/stream_aes128ctr.c \
 	crypto_stream/aes128ctr/portable/types.h \
 	crypto_stream/aes128ctr/portable/xor_afternm_aes128ctr.c \
+	crypto_stream/aes256estream/hongjun/aes-table.h \
+	crypto_stream/aes256estream/hongjun/aes256-ctr.c \
+	crypto_stream/aes256estream/hongjun/aes256.h \
+	crypto_stream/aes256estream/hongjun/api.h \
+	crypto_stream/aes256estream/hongjun/ecrypt-sync.h \
 	crypto_stream/salsa20/ref/api.h \
 	crypto_stream/salsa20/ref/stream_salsa20.c \
 	crypto_stream/salsa20/ref/xor_salsa20.c \
