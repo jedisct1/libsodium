@@ -12,7 +12,6 @@ unsigned char a[16];
 int main(void)
 {
   int clen;
-  int i;
   for (clen = 0;clen < 10000;++clen) {
     randombytes(key,sizeof key);
     randombytes(c,clen);

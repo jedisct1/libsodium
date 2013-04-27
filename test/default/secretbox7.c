@@ -11,8 +11,8 @@ unsigned char m2[10000];
 
 int main(void)
 {
-  int mlen;
-  int i;
+  size_t mlen;
+  size_t i;
 
   for (mlen = 0;mlen < 1000 && mlen + crypto_secretbox_ZEROBYTES < sizeof m;++mlen) {
     randombytes(k,crypto_secretbox_KEYBYTES);

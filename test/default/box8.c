@@ -16,8 +16,8 @@ unsigned char m2[10000];
 
 int main(void)
 {
-  int mlen;
-  int i;
+  size_t mlen;
+  size_t i;
   int caught;
 
   for (mlen = 0;mlen < 1000 && mlen + crypto_box_ZEROBYTES < sizeof m;++mlen) {
