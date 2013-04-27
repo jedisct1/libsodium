@@ -42,6 +42,48 @@ EXTRA_DIST = \
 	stream5.exp \
 	stream6.exp
 
+DISTCLEANFILES = \
+	auth.res \
+	auth2.res \
+	auth3.res \
+	auth5.res \
+	box.res \
+	box2.res \
+	box7.res \
+	box8.res \
+	core1.res \
+	core2.res \
+	core3.res \
+	core4.res \
+	core5.res \
+	core6.res \
+	generichash.res \
+	generichash2.res \
+	hash.res \
+	hash2.res \
+	hash3.res \
+	onetimeauth.res \
+	onetimeauth2.res \
+	onetimeauth7.res \
+	scalarmult.res \
+	scalarmult2.res \
+	scalarmult5.res \
+	scalarmult6.res \
+	secretbox.res \
+	secretbox2.res \
+	secretbox7.res \
+	secretbox8.res \
+	shorthash.res \
+	sodium_core.res \
+	sodium_utils.res \
+	sodium_version.res \
+	stream.res \
+	stream2.res \
+	stream3.res \
+	stream4.res \
+	stream5.res \
+	stream6.res
+
 AM_CPPFLAGS = \
 	-DTEST_SRCDIR=\"@srcdir@\" \
 	-I$(top_srcdir)/src/libsodium/include \
