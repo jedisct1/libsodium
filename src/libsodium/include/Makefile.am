@@ -55,6 +55,7 @@ SODIUM_EXPORT = \
 
 EXTRA_SRC = $(SODIUM_EXPORT) \
 	sodium/crypto_scalarmult_curve25519.h.in \
+	sodium/crypto_stream_salsa20.h.in \
 	sodium/version.h.in
 
 nobase_include_HEADERS = $(SODIUM_EXPORT)

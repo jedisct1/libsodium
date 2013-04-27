@@ -303,6 +303,7 @@ AC_CONFIG_FILES([Makefile
                  src/libsodium/include/Makefile
                  src/libsodium/include/sodium/version.h
                  src/libsodium/include/sodium/crypto_scalarmult_curve25519.h
+                 src/libsodium/include/sodium/crypto_stream_salsa20.h
                  test/default/Makefile
                  test/Makefile
                  ])

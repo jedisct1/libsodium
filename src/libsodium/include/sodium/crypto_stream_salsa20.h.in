@@ -24,10 +24,10 @@ int crypto_stream_salsa20(unsigned char *,unsigned long long,const unsigned char
 SODIUM_EXPORT
 int crypto_stream_salsa20_xor(unsigned char *,const unsigned char *,unsigned long long,const unsigned char *,const unsigned char *);
 
-#if 1
+#if 1    
 # define crypto_stream_salsa20_ref crypto_stream_salsa20
 # define crypto_stream_salsa20_ref_xor crypto_stream_salsa20_xor
-#endif
+#endif    
 
 #ifdef __cplusplus
 }
