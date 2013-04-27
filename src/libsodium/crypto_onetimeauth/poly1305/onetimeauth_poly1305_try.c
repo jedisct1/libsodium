@@ -138,7 +138,6 @@ crypto_onetimeauth_pick_best_implementation(void)
         if (allocate() != 0) {
             return NULL;
         }
-        doit();
         err = checksum_compute();
         deallocate();
         if (err == NULL && strcmp(checksum, CHECKSUM) == 0) {
