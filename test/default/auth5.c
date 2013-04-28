@@ -21,12 +21,12 @@ int main(void)
       return 100;
     }
     if (clen > 0) {
-      c[random() % clen] += 1 + (random() % 255);
+      c[rand() % clen] += 1 + (rand() % 255);
       if (crypto_auth_hmacsha512256_verify(a,c,clen,key) == 0) {
         printf("forgery %d\n",clen);
         return 100;
       }
-      a[random() % sizeof a] += 1 + (random() % 255);
+      a[rand() % sizeof a] += 1 + (rand() % 255);
       if (crypto_auth_hmacsha512256_verify(a,c,clen,key) == 0) {
         printf("forgery %d\n",clen);
         return 100;
