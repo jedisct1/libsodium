@@ -179,6 +179,20 @@ AC_CHECK_HEADERS([wmmintrin.h], [], [], [
 #pragma GCC target("aes")
 ])
 
+AC_MSG_CHECKING(for access to floating-point rounding mode)
+AC_COMPILE_IFELSE([AC_LANG_PROGRAM([[
+  #include <fenv.h>
+  #pragma STDC FENV_ACCESS ON
+]], [[
+  const int previous_rounding_mode = fegetround();
+  fesetround(FE_TONEAREST);
+  fesetround(previous_rounding_mode);
+]])],
+[AC_MSG_RESULT(yes)
+ AC_DEFINE([HAVE_FENV_H], [1], [floating-point rounding mode is accessible])
+],
+[AC_MSG_RESULT(no)])
+
 dnl Checks for typedefs, structures, and compiler characteristics.
 
 AC_C_BIGENDIAN(
@@ -201,10 +215,11 @@ AC_COMPILE_IFELSE([AC_LANG_PROGRAM([[
    CPPFLAGS="$CPPFLAGS -D__STDC_LIMIT_MACROS -D__STDC_CONSTANT_MACROS"
 ])
 
-AC_MSG_CHECKING(whether we can assemble basic amd64 code)
 HAVE_AMD64_ASM_V=0
-AC_COMPILE_IFELSE([AC_LANG_PROGRAM([[
-]], [[
+AS_IF([test "$enable_asm" != "no"],[
+  AC_MSG_CHECKING(whether we can assemble basic amd64 code)
+  AC_COMPILE_IFELSE([AC_LANG_PROGRAM([[
+  ]], [[
 #if defined(__amd64) || defined(__amd64__) || defined(__x86_64__)
 /* neat */
 #else
@@ -212,10 +227,11 @@ AC_COMPILE_IFELSE([AC_LANG_PROGRAM([[
 #endif
 __asm__("pxor %xmm12,%xmm6");
 ]])],
-[AC_MSG_RESULT(yes)
- AC_DEFINE([HAVE_AMD64_ASM], [1], [basic amd64 code can be assembled])
- HAVE_AMD64_ASM_V=1],
-[AC_MSG_RESULT(no)])
+  [AC_MSG_RESULT(yes)
+   AC_DEFINE([HAVE_AMD64_ASM], [1], [basic amd64 code can be assembled])
+   HAVE_AMD64_ASM_V=1],
+  [AC_MSG_RESULT(no)])
+])
 AM_CONDITIONAL([HAVE_AMD64_ASM], [test $HAVE_AMD64_ASM_V = 1])
 AC_SUBST(HAVE_AMD64_ASM_V)
 
@@ -266,6 +282,19 @@ dnl Switches.
 AC_ARG_ENABLE(pie,
 [AS_HELP_STRING(--enable-pie,Produce position independent executables @<:@default=yes@:>@)],
  enable_pie=$enableval, enable_pie="maybe")
+
+AC_ARG_ENABLE(asm,
+[AS_HELP_STRING(--disable-asm,Disable assembly implementations)],
+[
+  AS_IF([test "x$enableval" = "xno"], [
+    enable_asm="no"
+  ], [
+    enable_asm="yes"
+  ])
+],
+[
+  enable_asm="yes"
+])
 
 AC_ARG_ENABLE(ssp,
 [AS_HELP_STRING(--disable-ssp,Don't compile with -fstack-protector)],

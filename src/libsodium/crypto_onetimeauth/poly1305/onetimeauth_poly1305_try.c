@@ -123,7 +123,9 @@ crypto_onetimeauth_poly1305_implementation *
 crypto_onetimeauth_pick_best_implementation(void)
 {
     crypto_onetimeauth_poly1305_implementation *implementations[] = {
+#ifdef HAVE_FENV_H
         &crypto_onetimeauth_poly1305_53_implementation,
+#endif
         &crypto_onetimeauth_poly1305_ref_implementation,
         NULL
     };
