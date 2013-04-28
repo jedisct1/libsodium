@@ -169,11 +169,13 @@ them from different languages is easier.
 
 ## Bindings for other languages
 
-* Ruby: [RbNaCl](https://github.com/cryptosphere/rbnacl)
-* Python: [PyNaCl](https://github.com/dstufft/pynacl)
+* Erlang: [Erlang-NaCl](https://github.com/tonyg/erlang-nacl)
 * Java: [Kalium](https://github.com/abstractj/kalium)
 * Julia: [Sodium.jl](https://github.com/amitmurthy/Sodium.jl)
-* Erlang: [Erlang-NaCl](https://github.com/tonyg/erlang-nacl)
+* Python: [PyNaCl](https://github.com/dstufft/pynacl)
+* Racket: part of [CRESTaceans](https://github.com/mgorlick/CRESTaceans/tree/master/bindings/libsodium)
+* Ruby: [RbNaCl](https://github.com/cryptosphere/rbnacl)
+* Ruby: [Sodium](https://github.com/stouset/sodium)
 
 ## CurveCP
 
