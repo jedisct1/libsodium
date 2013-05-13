@@ -13,7 +13,7 @@
 #include <unistd.h>
 
 #include "crypto_core_salsa20.h"
-#include "crypto_hash_sha256.h"
+#include "crypto_auth_hmacsha512256.h"
 #include "crypto_stream_salsa20.h"
 #include "randombytes.h"
 #include "randombytes_salsa20_random.h"
@@ -26,8 +26,8 @@
 #endif
 
 #define SALSA20_RANDOM_BLOCK_SIZE crypto_core_salsa20_OUTPUTBYTES
-#define SHA256_BLOCK_SIZE 64U
-#define SHA256_MIN_PAD_SIZE (1U + 8U)
+#define SHA512_BLOCK_SIZE 128U
+#define SHA512_MIN_PAD_SIZE (1U + 16U)
 #define COMPILER_ASSERT(X) (void) sizeof(char[(X) ? 1 : -1])
 
 typedef struct Salsa20Random_ {
@@ -149,12 +149,16 @@ randombytes_salsa20_random_init(void)
 void
 randombytes_salsa20_random_stir(void)
 {
-    unsigned char  m0[3U * SHA256_BLOCK_SIZE - SHA256_MIN_PAD_SIZE];
-    unsigned char  m1[SHA256_BLOCK_SIZE + crypto_hash_sha256_BYTES];
-    unsigned char *k0 = m0 + SHA256_BLOCK_SIZE;
-    unsigned char *k1 = m1 + SHA256_BLOCK_SIZE;
+    const unsigned char s[crypto_auth_hmacsha512256_KEYBYTES] = {
+        'T', 'h', 'i', 's', 'I', 's', 'J', 'u', 's', 't', 'A', 'T',
+        'h', 'i', 'r', 't', 'y', 'T', 'w', 'o', 'B', 'y', 't', 'e',
+        's', 'S', 'e', 'e', 'd', '.', '.', '.'
+    };
+    unsigned char  m0[crypto_auth_hmacsha512256_BYTES +
+                      2U * SHA512_BLOCK_SIZE - SHA512_MIN_PAD_SIZE];
+    unsigned char *k0 = m0 + crypto_auth_hmacsha512256_BYTES;
     size_t         i;
-    size_t         sizeof_k0 = sizeof m0 - SHA256_BLOCK_SIZE;
+    size_t         sizeof_k0 = sizeof m0 - crypto_auth_hmacsha512256_BYTES;
 
     memset(stream.rnd32, 0, sizeof stream.rnd32);
     stream.rnd32_outleft = (size_t) 0U;
@@ -162,27 +166,21 @@ randombytes_salsa20_random_stir(void)
         randombytes_salsa20_random_init();
         stream.initialized = 1;
     }
-    memset(m0, 0x69, SHA256_BLOCK_SIZE);
-    memset(m1, 0x42, SHA256_BLOCK_SIZE);
 #ifndef _WIN32
-    if (safe_read(stream.random_data_source_fd, k0,
-                  sizeof_k0) != (ssize_t) sizeof_k0) {
+    if (safe_read(stream.random_data_source_fd, m0,
+                  sizeof m0) != (ssize_t) sizeof m0) {
         abort();
     }
 #else /* _WIN32 */
-    if (! CryptGenRandom(stream.hcrypt_prov, sizeof_k0, k0)) {
+    if (! CryptGenRandom(stream.hcrypt_prov, sizeof m0, m0)) {
         abort();
     }
 #endif
-    COMPILER_ASSERT(sizeof m0 >= 2U * SHA256_BLOCK_SIZE);
-    crypto_hash_sha256(k1, m0, sizeof m0);
-    COMPILER_ASSERT(sizeof m1 >= SHA256_BLOCK_SIZE + crypto_hash_sha256_BYTES);
-    crypto_hash_sha256(stream.key, m1, sizeof m1);
-    sodium_memzero(m1, sizeof m1);
-    COMPILER_ASSERT(sizeof stream.key == crypto_hash_sha256_BYTES);
-    assert(sizeof stream.key <= sizeof_k0);
+    COMPILER_ASSERT(sizeof stream.key == crypto_auth_hmacsha512256_BYTES);    
+    crypto_auth_hmacsha512256(stream.key, k0, sizeof_k0, s);
+    COMPILER_ASSERT(sizeof stream.key <= sizeof m0);
     for (i = (size_t) 0U; i < sizeof stream.key; i++) {
-        stream.key[i] ^= k0[i];
+        stream.key[i] ^= m0[i];
     }
     sodium_memzero(m0, sizeof m0);
 }
