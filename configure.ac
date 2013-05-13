@@ -41,10 +41,6 @@ AM_PROG_AS
 AC_USE_SYSTEM_EXTENSIONS
 CPPFLAGS="$CPPFLAGS -D_FORTIFY_SOURCE=2"
 
-AS_IF([test "$cross_compiling" != no],
-  AC_DEFINE(CROSS_COMPILING, [1], [define if you are cross-compiling])
-)
-
 AX_CHECK_COMPILE_FLAG([-fvisibility=hidden],
   [CFLAGS="$CFLAGS -fvisibility=hidden"])
 
