@@ -176,7 +176,7 @@ randombytes_salsa20_random_stir(void)
         abort();
     }
 #endif
-    COMPILER_ASSERT(sizeof stream.key == crypto_auth_hmacsha512256_BYTES);    
+    COMPILER_ASSERT(sizeof stream.key == crypto_auth_hmacsha512256_BYTES);
     crypto_auth_hmacsha512256(stream.key, k0, sizeof_k0, s);
     COMPILER_ASSERT(sizeof stream.key <= sizeof m0);
     for (i = (size_t) 0U; i < sizeof stream.key; i++) {
