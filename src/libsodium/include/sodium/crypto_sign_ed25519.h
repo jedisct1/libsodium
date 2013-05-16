@@ -1,6 +1,7 @@
 #ifndef crypto_sign_ed25519_H
 #define crypto_sign_ed25519_H
 
+#include <stddef.h>
 #include "export.h"
 
 #define crypto_sign_ed25519_SECRETKEYBYTES 64U
@@ -10,6 +11,18 @@
 #ifdef __cplusplus
 extern "C" {
 #endif
+
+SODIUM_EXPORT
+size_t crypto_sign_ed25519_bytes(void);
+
+SODIUM_EXPORT
+size_t crypto_sign_ed25519_publickeybytes(void);
+
+SODIUM_EXPORT
+size_t crypto_sign_ed25519_secretkeybytes(void);
+
+SODIUM_EXPORT
+const char * crypto_sign_ed25519_primitive(void);
 
 SODIUM_EXPORT
 int crypto_sign_ed25519(unsigned char *,unsigned long long *,const unsigned char *,unsigned long long,const unsigned char *);
