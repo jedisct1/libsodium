@@ -9,7 +9,7 @@
  *  the crypto_box functions.
  */
 
-#include <stdlib.h>
+#include <stddef.h>
 
 #include "crypto_stream_xsalsa20.h"
 #include "export.h"

@@ -2,7 +2,7 @@
 #ifndef __SODIUM_UTILS_H__
 #define __SODIUM_UTILS_H__
 
-#include <stdlib.h>
+#include <stddef.h>
 
 #include "export.h"
 

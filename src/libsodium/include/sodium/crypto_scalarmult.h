@@ -1,7 +1,7 @@
 #ifndef crypto_scalarmult_H
 #define crypto_scalarmult_H
 
-#include <stdlib.h>
+#include <stddef.h>
 
 #include "crypto_scalarmult_curve25519.h"
 #include "export.h"

@@ -1,7 +1,7 @@
 #ifndef crypto_shorthash_H
 #define crypto_shorthash_H
 
-#include <stdlib.h>
+#include <stddef.h>
 
 #include "crypto_shorthash_siphash24.h"
 #include "export.h"

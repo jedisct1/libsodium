@@ -8,7 +8,7 @@
  * Other functions are always thread-safe.
  */
 
-#include <stdlib.h>
+#include <stddef.h>
 
 #include "crypto_box_curve25519xsalsa20poly1305.h"
 #include "export.h"

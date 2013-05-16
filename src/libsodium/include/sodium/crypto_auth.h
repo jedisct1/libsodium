@@ -1,7 +1,7 @@
 #ifndef crypto_auth_H
 #define crypto_auth_H
 
-#include <stdlib.h>
+#include <stddef.h>
 
 #include "crypto_auth_hmacsha512256.h"
 #include "export.h"

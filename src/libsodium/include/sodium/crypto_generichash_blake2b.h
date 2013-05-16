@@ -1,8 +1,8 @@
 #ifndef crypto_generichash_blake2b_H
 #define crypto_generichash_blake2b_H
 
+#include <stddef.h>
 #include <stdint.h>
-#include <stdlib.h>
 
 #include "export.h"
 

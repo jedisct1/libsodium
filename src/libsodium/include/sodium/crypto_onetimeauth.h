@@ -1,7 +1,7 @@
 #ifndef crypto_onetimeauth_H
 #define crypto_onetimeauth_H
 
-#include <stdlib.h>
+#include <stddef.h>
 
 #include "crypto_onetimeauth_poly1305.h"
 #include "export.h"

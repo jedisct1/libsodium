@@ -8,8 +8,8 @@
  * Always wrap them in a mutex if you need thread safety.
  */
 
+#include <stddef.h>
 #include <stdint.h>
-#include <stdlib.h>
 
 #include "export.h"
 

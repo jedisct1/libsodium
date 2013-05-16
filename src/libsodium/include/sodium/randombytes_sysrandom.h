@@ -8,8 +8,8 @@
  * other libsodium function.
  */
 
+#include <stddef.h>
 #include <stdint.h>
-#include <stdlib.h>
 
 #include "export.h"
 

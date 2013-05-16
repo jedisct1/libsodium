@@ -1,7 +1,7 @@
 #ifndef crypto_secretbox_H
 #define crypto_secretbox_H
 
-#include <stdlib.h>
+#include <stddef.h>
 
 #include "crypto_secretbox_xsalsa20poly1305.h"
 #include "export.h"

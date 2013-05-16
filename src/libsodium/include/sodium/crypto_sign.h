@@ -8,7 +8,7 @@
  * Other functions, including crypto_sign_seed_keypair() are always thread-safe.
  */
 
-#include <stdlib.h>
+#include <stddef.h>
 
 #include "crypto_sign_ed25519.h"
 #include "export.h"
