@@ -32,7 +32,7 @@ crypto_box_curve25519xsalsa20poly1305_boxzerobytes(void) {
 
 size_t
 crypto_box_curve25519xsalsa20poly1305_macbytes(void) {
-    return (crypto_box_ZEROBYTES;
+    return crypto_box_curve25519xsalsa20poly1305_MACBYTES;
 }
 
 const char *
