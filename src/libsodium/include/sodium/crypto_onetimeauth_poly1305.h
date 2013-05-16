@@ -1,6 +1,7 @@
 #ifndef crypto_onetimeauth_poly1305_H
 #define crypto_onetimeauth_poly1305_H
 
+#include <stddef.h>
 #include "export.h"
 
 #define crypto_onetimeauth_poly1305_BYTES 16U
@@ -25,6 +26,15 @@ typedef struct crypto_onetimeauth_poly1305_implementation {
                                       unsigned long long inlen,
                                       const unsigned char *k);
 } crypto_onetimeauth_poly1305_implementation;
+
+SODIUM_EXPORT
+size_t crypto_onetimeauth_poly1305_bytes(void);
+
+SODIUM_EXPORT
+size_t crypto_onetimeauth_poly1305_keybytes(void);
+
+SODIUM_EXPORT
+const char * crypto_onetimeauth_poly1305_primitive(void);
 
 SODIUM_EXPORT
 const char *crypto_onetimeauth_poly1305_ref_implementation_name(void);

@@ -31,6 +31,7 @@ libsodium_la_SOURCES = \
 	crypto_core/salsa208/core_salsa208_api.c \
 	crypto_core/salsa208/ref/api.h \
 	crypto_generichash/crypto_generichash.c \
+	crypto_generichash/blake2/generichash_blake2_api.c \
 	crypto_generichash/blake2/ref/api.h \
 	crypto_generichash/blake2/ref/blake2-impl.h \
 	crypto_generichash/blake2/ref/blake2.h \
@@ -51,6 +52,7 @@ libsodium_la_SOURCES = \
 	crypto_hashblocks/sha512/ref/api.h \
 	crypto_onetimeauth/crypto_onetimeauth.c \
 	crypto_onetimeauth/poly1305/onetimeauth_poly1305.c \
+	crypto_onetimeauth/poly1305/onetimeauth_poly1305_api.c \
 	crypto_onetimeauth/poly1305/onetimeauth_poly1305_try.c \
 	crypto_onetimeauth/poly1305/53/api.h \
 	crypto_onetimeauth/poly1305/53/auth_poly1305_53.c \
@@ -165,8 +167,10 @@ libsodium_la_SOURCES = \
 	crypto_stream/xsalsa20/ref/api.h \
 	crypto_stream/xsalsa20/ref/stream_xsalsa20.c \
 	crypto_stream/xsalsa20/ref/xor_xsalsa20.c \
+	crypto_verify/16/verify_16_api.c \
 	crypto_verify/16/ref/api.h \
 	crypto_verify/16/ref/verify_16.c \
+	crypto_verify/32/verify_32_api.c \
 	crypto_verify/32/ref/api.h \
 	crypto_verify/32/ref/verify_32.c \
 	randombytes/randombytes.c \

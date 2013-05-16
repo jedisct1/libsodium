@@ -3,6 +3,7 @@
 
 #include <stdint.h>
 #include <stdlib.h>
+#include <stddef.h>
 
 #include "export.h"
 
@@ -32,6 +33,24 @@ CRYPTO_ALIGN(64) typedef struct crypto_generichash_blake2b_state {
     uint8_t  last_node;
 } crypto_generichash_blake2b_state;
 #pragma pack(pop)
+
+SODIUM_EXPORT
+size_t crypto_generichash_blake2b_bytes_min(void);
+
+SODIUM_EXPORT
+size_t crypto_generichash_blake2b_bytes_max(void);
+
+SODIUM_EXPORT
+size_t crypto_generichash_blake2b_keybytes_min(void);
+
+SODIUM_EXPORT
+size_t crypto_generichash_blake2b_keybytes_max(void);
+
+SODIUM_EXPORT
+size_t crypto_generichash_blake2b_blockbytes(void);
+
+SODIUM_EXPORT
+const char * crypto_generichash_blake2b_blockbytes_primitive(void);
 
 SODIUM_EXPORT
 int crypto_generichash_blake2b(unsigned char *out, size_t outlen,
