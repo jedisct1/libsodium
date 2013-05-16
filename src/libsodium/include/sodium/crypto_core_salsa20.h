@@ -1,6 +1,7 @@
 #ifndef crypto_core_salsa20_H
 #define crypto_core_salsa20_H
 
+#include <stddef.h>
 #include "export.h"
 
 #define crypto_core_salsa20_OUTPUTBYTES 64U
@@ -11,6 +12,21 @@
 #ifdef __cplusplus
 extern "C" {
 #endif
+
+SODIUM_EXPORT
+size_t crypto_core_salsa20_outputbytes(void);
+
+SODIUM_EXPORT
+size_t crypto_core_salsa20_inputbytes(void);
+
+SODIUM_EXPORT
+size_t crypto_core_salsa20_keybytes(void);
+
+SODIUM_EXPORT
+size_t crypto_core_salsa20_constbytes(void);
+
+SODIUM_EXPORT
+const char * crypto_core_salsa20_primitive(void);
 
 SODIUM_EXPORT
 int crypto_core_salsa20(unsigned char *,const unsigned char *,const unsigned char *,const unsigned char *);

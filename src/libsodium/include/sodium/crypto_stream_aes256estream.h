@@ -10,6 +10,7 @@
  *  the crypto_box functions.
  */
 
+#include <stddef.h>
 #include "export.h"
 
 #define crypto_stream_aes256estream_KEYBYTES 32U
@@ -19,6 +20,18 @@
 #ifdef __cplusplus
 extern "C" {
 #endif
+
+SODIUM_EXPORT
+size_t crypto_stream_aes256estream_keybytes(void);
+
+SODIUM_EXPORT
+size_t crypto_stream_aes256estream_noncebytes(void);
+
+SODIUM_EXPORT
+size_t crypto_stream_aes256estream_beforenmbytes(void);
+
+SODIUM_EXPORT
+const char * crypto_stream_aes256estream_primitive(void);
 
 SODIUM_EXPORT
 int crypto_stream_aes256estream(unsigned char *,unsigned long long,const unsigned char *,const unsigned char *);
