@@ -45,24 +45,28 @@ crypto_generichash(unsigned char *out, size_t outlen, const unsigned char *in,
 }
 
 int
-crypto_generichash_init(crypto_generichash_blake2b_state *state,
+crypto_generichash_init(crypto_generichash_state *state,
                         const unsigned char *key,
                         const size_t keylen, const size_t outlen)
 {
-    return crypto_generichash_blake2b_init(state, key, keylen, outlen);
+    return crypto_generichash_blake2b_init
+        ((crypto_generichash_blake2b_state *) state,
+            key, keylen, outlen);
 }
 
 int
-crypto_generichash_update(crypto_generichash_blake2b_state *state,
+crypto_generichash_update(crypto_generichash_state *state,
                           const unsigned char *in,
                           unsigned long long inlen)
 {
-    return crypto_generichash_blake2b_update(state, in, inlen);
+    return crypto_generichash_blake2b_update
+        ((crypto_generichash_blake2b_state *) state, in, inlen);
 }
 
 int
-crypto_generichash_final(crypto_generichash_blake2b_state *state,
+crypto_generichash_final(crypto_generichash_state *state,
                          unsigned char *out, const size_t outlen)
 {
-    return crypto_generichash_blake2b_final(state, out, outlen);
+    return crypto_generichash_blake2b_final
+        ((crypto_generichash_blake2b_state *) state, out, outlen);
 }
