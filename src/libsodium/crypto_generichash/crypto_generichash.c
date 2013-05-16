@@ -2,6 +2,12 @@
 #include "crypto_generichash.h"
 
 size_t
+crypto_generichash_bytes(void)
+{
+    return crypto_generichash_BYTES;
+}
+
+size_t
 crypto_generichash_bytes_min(void)
 {
     return crypto_generichash_BYTES_MIN;
@@ -11,6 +17,12 @@ size_t
 crypto_generichash_bytes_max(void)
 {
     return crypto_generichash_BYTES_MAX;
+}
+
+size_t
+crypto_generichash_keybytes(void)
+{
+    return crypto_generichash_KEYBYTES;
 }
 
 size_t

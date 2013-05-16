@@ -6,8 +6,10 @@
 
 #include "export.h"
 
+#define crypto_generichash_blake2b_BYTES         32U
 #define crypto_generichash_blake2b_BYTES_MIN     16U
 #define crypto_generichash_blake2b_BYTES_MAX     64U
+#define crypto_generichash_blake2b_KEYBYTES      32U
 #define crypto_generichash_blake2b_KEYBYTES_MIN  16U
 #define crypto_generichash_blake2b_KEYBYTES_MAX  64U
 #define crypto_generichash_blake2b_BLOCKBYTES   128U
