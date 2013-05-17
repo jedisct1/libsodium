@@ -14,6 +14,9 @@ SODIUM_EXPORT
 int crypto_auth_hmacsha256(unsigned char *,const unsigned char *,unsigned long long,const unsigned char *);
 
 SODIUM_EXPORT
+int crypto_auth_hmacsha256_2(unsigned char *,const unsigned char *,unsigned long long,const unsigned char *,unsigned);
+
+SODIUM_EXPORT
 int crypto_auth_hmacsha256_verify(const unsigned char *,const unsigned char *,unsigned long long,const unsigned char *);
 
 #ifdef __cplusplus

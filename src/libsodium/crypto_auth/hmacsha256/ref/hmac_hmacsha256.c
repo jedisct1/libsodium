@@ -22,7 +22,7 @@ static const char iv[32] = {
   0x5b,0xe0,0xcd,0x19,
 } ;
 
-int crypto_auth(unsigned char *out,const unsigned char *in,unsigned long long inlen,const unsigned char *k)
+int crypto_auth2(unsigned char *out,const unsigned char *in,unsigned long long inlen,const unsigned char *k,unsigned int klen)
 {
   unsigned char h[32];
   unsigned char padded[128];
@@ -31,8 +31,8 @@ int crypto_auth(unsigned char *out,const unsigned char *in,unsigned long long in
 
   for (i = 0;i < 32;++i) h[i] = iv[i];
 
-  for (i = 0;i < 32;++i) padded[i] = k[i] ^ 0x36;
-  for (i = 32;i < 64;++i) padded[i] = 0x36;
+  for (i = 0;i < 64;++i) padded[i] = 0x36;
+  for (i = 0;i < klen;++i) padded[i] = k[i] ^ 0x36;
 
   blocks(h,padded,64);
   blocks(h,in,inlen);
@@ -67,8 +67,8 @@ int crypto_auth(unsigned char *out,const unsigned char *in,unsigned long long in
     blocks(h,padded,128);
   }
 
-  for (i = 0;i < 32;++i) padded[i] = k[i] ^ 0x5c;
-  for (i = 32;i < 64;++i) padded[i] = 0x5c;
+  for (i = 0;i < 64;++i) padded[i] = 0x5c;
+  for (i = 0;i < klen;++i) padded[i] = k[i] ^ 0x5c;
   for (i = 0;i < 32;++i) padded[64 + i] = h[i];
 
   for (i = 0;i < 32;++i) out[i] = iv[i];
@@ -80,4 +80,9 @@ int crypto_auth(unsigned char *out,const unsigned char *in,unsigned long long in
   blocks(out,padded,128);
 
   return 0;
+}
+
+int crypto_auth(unsigned char *out,const unsigned char *in,unsigned long long inlen,const unsigned char *k)
+{
+    return crypto_auth2(out, in, inlen, k, 32U);
 }

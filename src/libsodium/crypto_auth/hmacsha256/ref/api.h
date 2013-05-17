@@ -1,6 +1,7 @@
 
 #include "crypto_auth_hmacsha256.h"
 
+#define crypto_auth2 crypto_auth_hmacsha256_2
 #define crypto_auth crypto_auth_hmacsha256
 #define crypto_auth_verify crypto_auth_hmacsha256_verify
 #define crypto_auth_BYTES crypto_auth_hmacsha256_BYTES
