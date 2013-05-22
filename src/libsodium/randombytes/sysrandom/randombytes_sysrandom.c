@@ -148,7 +148,6 @@ randombytes_sysrandom(void)
 {
     uint32_t r;
 
-    randombytes_sysrandom_stir_if_needed();
     randombytes_sysrandom_buf(&r, sizeof r);
 
     return r;
