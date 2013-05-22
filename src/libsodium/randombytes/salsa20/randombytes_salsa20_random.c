@@ -205,6 +205,7 @@ randombytes_salsa20_random_getword(void)
     COMPILER_ASSERT(sizeof stream.rnd32 >= sizeof val);
     COMPILER_ASSERT(sizeof stream.rnd32 % sizeof val == (size_t) 0U);
     if (stream.rnd32_outleft <= (size_t) 0U) {
+        randombytes_salsa20_random_stir_if_needed();
         COMPILER_ASSERT(sizeof stream.nonce == crypto_stream_salsa20_NONCEBYTES);
         ret = crypto_stream_salsa20((unsigned char *) stream.rnd32,
                                     (unsigned long long) sizeof stream.rnd32,
@@ -245,8 +246,6 @@ randombytes_salsa20_random_close(void)
 uint32_t
 randombytes_salsa20_random(void)
 {
-    randombytes_salsa20_random_stir_if_needed();
-
     return randombytes_salsa20_random_getword();
 }
 
