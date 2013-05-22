@@ -9,6 +9,7 @@
  *  the crypto_box functions.
  */
 
+#include <stddef.h>
 #include "export.h"
 
 #define crypto_stream_salsa208_KEYBYTES 32U
@@ -17,6 +18,15 @@
 #ifdef __cplusplus
 extern "C" {
 #endif
+
+SODIUM_EXPORT
+size_t crypto_stream_salsa208_keybytes(void);
+
+SODIUM_EXPORT
+size_t crypto_stream_salsa208_noncebytes(void);
+
+SODIUM_EXPORT
+const char * crypto_stream_salsa208_primitive(void);
 
 SODIUM_EXPORT
 int crypto_stream_salsa208(unsigned char *,unsigned long long,const unsigned char *,const unsigned char *);
