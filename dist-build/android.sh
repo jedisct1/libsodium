@@ -17,5 +17,10 @@ export NM=droid-nm
 export OBJCOPY=droid-objcopy
 export RANLIB=droid-ranlib
 export STRIP=droid-strip
+export PREFIX="$(pwd)/libsodium-android"
 
-./configure --host=arm-linux-androideabi && make -j3
+./configure --host=arm-linux-androideabi \
+            --disable-shared \
+            --prefix="$PREFIX" && \
+make -j3 install &&
+echo "libsodium has been installed into $PREFIX"
