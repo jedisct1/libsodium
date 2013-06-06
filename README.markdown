@@ -173,6 +173,7 @@ them from different languages is easier.
 ## Bindings for other languages
 
 * Erlang: [Erlang-NaCl](https://github.com/tonyg/erlang-nacl)
+* Haskell: [Saltine](https://github.com/tel/saltine)
 * Java: [Kalium](https://github.com/abstractj/kalium)
 * Julia: [Sodium.jl](https://github.com/amitmurthy/Sodium.jl)
 * Python: [PyNaCl](https://github.com/dstufft/pynacl)
