@@ -19,12 +19,15 @@ extern "C" {
 #endif
 
 #define crypto_stream_KEYBYTES crypto_stream_xsalsa20_KEYBYTES
+SODIUM_EXPORT
 size_t  crypto_stream_keybytes(void);
 
 #define crypto_stream_NONCEBYTES crypto_stream_xsalsa20_NONCEBYTES
+SODIUM_EXPORT
 size_t  crypto_stream_noncebytes(void);
 
 #define crypto_stream_PRIMITIVE "xsalsa20"
+SODIUM_EXPORT
 const char *crypto_stream_primitive(void);
 
 SODIUM_EXPORT
