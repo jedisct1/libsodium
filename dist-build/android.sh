@@ -20,6 +20,7 @@ export STRIP=droid-strip
 export PREFIX="$(pwd)/libsodium-android"
 
 ./configure --host=arm-linux-androideabi \
+            --disable-pie \
             --disable-shared \
             --prefix="$PREFIX" && \
 make -j3 install &&
