@@ -176,6 +176,7 @@ them from different languages is easier.
 * Haskell: [Saltine](https://github.com/tel/saltine)
 * Java: [Kalium](https://github.com/abstractj/kalium)
 * Julia: [Sodium.jl](https://github.com/amitmurthy/Sodium.jl)
+* PHP: [PHP-Sodium](https://github.com/alethia7/php-sodium)
 * Python: [PyNaCl](https://github.com/dstufft/pynacl)
 * Racket: part of [CRESTaceans](https://github.com/mgorlick/CRESTaceans/tree/master/bindings/libsodium)
 * Ruby: [RbNaCl](https://github.com/cryptosphere/rbnacl)
