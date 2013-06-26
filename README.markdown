@@ -36,7 +36,7 @@ Installation is trivial, and both compilation and testing can take
 advantage of multiple CPU cores.
 
 Download a
-[tarball of libsodium](http://download.dnscrypt.org/libsodium/releases/),
+[tarball of libsodium](http://download.libsodium.org/libsodium/releases/),
 then follow the ritual:
 
     ./configure
