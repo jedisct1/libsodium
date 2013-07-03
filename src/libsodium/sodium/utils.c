@@ -8,8 +8,8 @@
 #include "utils.h"
 #include "randombytes.h"
 #ifdef _WIN32
-# include <Windows.h>
-# include <Wincrypt.h>
+# include <windows.h>
+# include <wincrypt.h>
 #endif
 
 void
