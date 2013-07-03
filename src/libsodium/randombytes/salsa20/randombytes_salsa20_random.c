@@ -20,8 +20,8 @@
 #include "utils.h"
 
 #ifdef _WIN32
-# include <Windows.h>
-# include <Wincrypt.h>
+# include <windows.h>
+# include <wincrypt.h>
 # include <sys/timeb.h>
 #endif
 
