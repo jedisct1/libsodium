@@ -45,6 +45,10 @@ then follow the ritual:
 Pre-compiled Win32 packages are available for download at the same
 location.
 
+Integrity of source tarballs can currently be checked using PGP or
+verified DNS queries (`dig +dnssec +short txt <file>.download.libsodium.org`
+returns the SHA256 of any file available for download).
+
 ## Comparison with vanilla NaCl
 
 Sodium does not ship C++ bindings. These might be part of a distinct
