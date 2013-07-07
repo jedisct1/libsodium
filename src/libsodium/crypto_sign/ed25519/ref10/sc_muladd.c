@@ -175,7 +175,7 @@ void sc_muladd(unsigned char *s,const unsigned char *a,const unsigned char *b,co
   s14 -= s23 * 997805;
   s15 += s23 * 136657;
   s16 -= s23 * 683901;
-  s23 = 0;
+
 
   s10 += s22 * 666643;
   s11 += s22 * 470296;
@@ -183,7 +183,7 @@ void sc_muladd(unsigned char *s,const unsigned char *a,const unsigned char *b,co
   s13 -= s22 * 997805;
   s14 += s22 * 136657;
   s15 -= s22 * 683901;
-  s22 = 0;
+
 
   s9 += s21 * 666643;
   s10 += s21 * 470296;
@@ -191,7 +191,7 @@ void sc_muladd(unsigned char *s,const unsigned char *a,const unsigned char *b,co
   s12 -= s21 * 997805;
   s13 += s21 * 136657;
   s14 -= s21 * 683901;
-  s21 = 0;
+
 
   s8 += s20 * 666643;
   s9 += s20 * 470296;
@@ -199,7 +199,7 @@ void sc_muladd(unsigned char *s,const unsigned char *a,const unsigned char *b,co
   s11 -= s20 * 997805;
   s12 += s20 * 136657;
   s13 -= s20 * 683901;
-  s20 = 0;
+
 
   s7 += s19 * 666643;
   s8 += s19 * 470296;
@@ -207,7 +207,7 @@ void sc_muladd(unsigned char *s,const unsigned char *a,const unsigned char *b,co
   s10 -= s19 * 997805;
   s11 += s19 * 136657;
   s12 -= s19 * 683901;
-  s19 = 0;
+
 
   s6 += s18 * 666643;
   s7 += s18 * 470296;
@@ -215,7 +215,7 @@ void sc_muladd(unsigned char *s,const unsigned char *a,const unsigned char *b,co
   s9 -= s18 * 997805;
   s10 += s18 * 136657;
   s11 -= s18 * 683901;
-  s18 = 0;
+
 
   carry6 = (s6 + (1<<20)) >> 21; s7 += carry6; s6 -= carry6 << 21;
   carry8 = (s8 + (1<<20)) >> 21; s9 += carry8; s8 -= carry8 << 21;
@@ -236,7 +236,7 @@ void sc_muladd(unsigned char *s,const unsigned char *a,const unsigned char *b,co
   s8 -= s17 * 997805;
   s9 += s17 * 136657;
   s10 -= s17 * 683901;
-  s17 = 0;
+
 
   s4 += s16 * 666643;
   s5 += s16 * 470296;
@@ -244,7 +244,7 @@ void sc_muladd(unsigned char *s,const unsigned char *a,const unsigned char *b,co
   s7 -= s16 * 997805;
   s8 += s16 * 136657;
   s9 -= s16 * 683901;
-  s16 = 0;
+
 
   s3 += s15 * 666643;
   s4 += s15 * 470296;
@@ -252,7 +252,7 @@ void sc_muladd(unsigned char *s,const unsigned char *a,const unsigned char *b,co
   s6 -= s15 * 997805;
   s7 += s15 * 136657;
   s8 -= s15 * 683901;
-  s15 = 0;
+
 
   s2 += s14 * 666643;
   s3 += s14 * 470296;
@@ -260,7 +260,7 @@ void sc_muladd(unsigned char *s,const unsigned char *a,const unsigned char *b,co
   s5 -= s14 * 997805;
   s6 += s14 * 136657;
   s7 -= s14 * 683901;
-  s14 = 0;
+
 
   s1 += s13 * 666643;
   s2 += s13 * 470296;
@@ -268,7 +268,7 @@ void sc_muladd(unsigned char *s,const unsigned char *a,const unsigned char *b,co
   s4 -= s13 * 997805;
   s5 += s13 * 136657;
   s6 -= s13 * 683901;
-  s13 = 0;
+
 
   s0 += s12 * 666643;
   s1 += s12 * 470296;
@@ -319,7 +319,7 @@ void sc_muladd(unsigned char *s,const unsigned char *a,const unsigned char *b,co
   s3 -= s12 * 997805;
   s4 += s12 * 136657;
   s5 -= s12 * 683901;
-  s12 = 0;
+
 
   carry0 = s0 >> 21; s1 += carry0; s0 -= carry0 << 21;
   carry1 = s1 >> 21; s2 += carry1; s1 -= carry1 << 21;
