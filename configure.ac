@@ -37,6 +37,19 @@ AC_SUBST(DLL_VERSION)
 
 dnl Switches
 
+AC_ARG_ENABLE(ssp,
+[AS_HELP_STRING(--disable-ssp,Don't compile with -fstack-protector)],
+[
+  AS_IF([test "x$enableval" = "xno"], [
+    enable_ssp="no"
+  ], [
+    enable_ssp="yes"
+  ])
+],
+[
+  enable_ssp="yes"
+])
+
 AC_ARG_ENABLE(pie,
 [AS_HELP_STRING(--enable-pie,Produce position independent executables @<:@default=yes@:>@)],
  enable_pie=$enableval, enable_pie="maybe")
@@ -108,10 +121,17 @@ AX_CHECK_COMPILE_FLAG([-fno-strict-aliasing], [CFLAGS="$CFLAGS -fno-strict-alias
 AX_CHECK_COMPILE_FLAG([-fno-strict-overflow], [CFLAGS="$CFLAGS -fno-strict-overflow"])
 
 LIBTOOL_EXTRA_FLAGS="-version-info $SODIUM_LIBRARY_VERSION"
+
 case $host_os in
   cygwin* | mingw* | pw32* | cegcc*)
     AX_CHECK_LINK_FLAG([-Wl,--dynamicbase], [LDFLAGS="$LDFLAGS -Wl,--dynamicbase"])
     AX_CHECK_LINK_FLAG([-Wl,--nxcompat], [LDFLAGS="$LDFLAGS -Wl,--nxcompat"])
+  ;;
+esac
+
+AS_IF([test "x$enable_ssp" != "xno"],[
+case $host_os in
+  cygwin* | mingw* | pw32* | cegcc*)
   ;;
   dragonfly*)
     AX_CHECK_COMPILE_FLAG([-fstack-protector], [
@@ -128,6 +148,7 @@ case $host_os in
     ])
   ;;
 esac
+])
 
 AX_CHECK_COMPILE_FLAG([-Winit-self], [CFLAGS="$CFLAGS -Winit-self"])
 AX_CHECK_COMPILE_FLAG([-Wwrite-strings], [CFLAGS="$CFLAGS -Wwrite-strings"])
@@ -309,20 +330,6 @@ AC_CHECK_FUNC(fegetenv, , [AC_CHECK_LIB(m, fegetenv)])
 AC_CHECK_FUNCS([SecureZeroMemory])
 
 dnl Switches, continued
-
-AC_ARG_ENABLE(ssp,
-[AS_HELP_STRING(--disable-ssp,Don't compile with -fstack-protector)],
-[AS_IF([test "x$enableval" = "xno"], [
-    nxflags=""
-    for flag in `echo $CFLAGS`; do
-      case "$flag" in
-       -fstack-protector*) ;;
-        *) AS_VAR_APPEND([nxflags], [" $flag"]) ;;
-      esac
-    done
-    CFLAGS="$nxflags"
-  ])
-])
 
 AC_ARG_ENABLE(debug,
 [AS_HELP_STRING(--enable-debug,For maintainers only - please do not use)],
