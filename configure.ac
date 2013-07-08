@@ -35,6 +35,49 @@ AC_SUBST(SODIUM_LIBRARY_VERSION_MINOR)
 AC_SUBST(SODIUM_LIBRARY_VERSION)
 AC_SUBST(DLL_VERSION)
 
+dnl Switches
+
+AC_ARG_ENABLE(pie,
+[AS_HELP_STRING(--enable-pie,Produce position independent executables @<:@default=yes@:>@)],
+ enable_pie=$enableval, enable_pie="maybe")
+
+AC_ARG_ENABLE(asm,
+[AS_HELP_STRING(--disable-asm,Disable assembly implementations)],
+[
+  AS_IF([test "x$enableval" = "xno"], [
+    enable_asm="no"
+  ], [
+    enable_asm="yes"
+  ])
+],
+[
+  enable_asm="yes"
+])
+
+AS_IF([test "x$EMSCRIPTEN" != "x"],[
+  enable_asm="no"
+  AC_MSG_WARN([compiling to javascript - asm implementations disabled])
+])
+
+AC_ARG_ENABLE(blocking-random,
+[AS_HELP_STRING(--enable-blocking-random,Use /dev/random instead of /dev/urandom)],
+[AC_DEFINE([USE_BLOCKING_RANDOM], [1], [Use blocking random])])
+
+AC_ARG_WITH(safecode,
+[AS_HELP_STRING(--with-safecode,For maintainers only - please do not use)],
+[AS_IF([test "x$withval" = "xyes"], [
+    AC_ARG_VAR([SAFECODE_HOME], [set to the safecode base directory])
+    : ${SAFECODE_HOME:=/opt/safecode}
+    LDFLAGS="$LDFLAGS -L${SAFECODE_HOME}/lib"
+    LIBS="$LIBS -lsc_dbg_rt -lpoolalloc_bitmap -lstdc++"
+    CFLAGS="$CFLAGS -fmemsafety"
+  ])
+])
+
+AC_SUBST([MAINT])
+
+dnl Checks
+
 LX_CFLAGS=${CFLAGS-NONE}
 AC_PROG_CC_C99
 AM_PROG_AS
@@ -265,29 +308,7 @@ AC_CHECK_FUNC(fegetenv, , [AC_CHECK_LIB(m, fegetenv)])
 
 AC_CHECK_FUNCS([SecureZeroMemory])
 
-dnl Switches.
-
-AC_ARG_ENABLE(pie,
-[AS_HELP_STRING(--enable-pie,Produce position independent executables @<:@default=yes@:>@)],
- enable_pie=$enableval, enable_pie="maybe")
-
-AC_ARG_ENABLE(asm,
-[AS_HELP_STRING(--disable-asm,Disable assembly implementations)],
-[
-  AS_IF([test "x$enableval" = "xno"], [
-    enable_asm="no"
-  ], [
-    enable_asm="yes"
-  ])
-],
-[
-  enable_asm="yes"
-])
-
-AS_IF([test "x$EMSCRIPTEN" != "x"],[
-  enable_asm="no"
-  AC_MSG_WARN([compiling to javascript - asm implementations disabled])
-])
+dnl Switches, continued
 
 AC_ARG_ENABLE(ssp,
 [AS_HELP_STRING(--disable-ssp,Don't compile with -fstack-protector)],
@@ -302,10 +323,6 @@ AC_ARG_ENABLE(ssp,
     CFLAGS="$nxflags"
   ])
 ])
-
-AC_ARG_ENABLE(blocking-random,
-[AS_HELP_STRING(--enable-blocking-random,Use /dev/random instead of /dev/urandom)],
-[AC_DEFINE([USE_BLOCKING_RANDOM], [1], [Use blocking random])])
 
 AC_ARG_ENABLE(debug,
 [AS_HELP_STRING(--enable-debug,For maintainers only - please do not use)],
@@ -324,18 +341,6 @@ AC_ARG_ENABLE(debug,
   CPPFLAGS="$CPPFLAGS -DDEBUG=1"
 ])
 
-AC_ARG_WITH(safecode,
-[AS_HELP_STRING(--with-safecode,For maintainers only - please do not use)],
-[AS_IF([test "x$withval" = "xyes"], [
-    AC_ARG_VAR([SAFECODE_HOME], [set to the safecode base directory])
-    : ${SAFECODE_HOME:=/opt/safecode}
-    LDFLAGS="$LDFLAGS -L${SAFECODE_HOME}/lib"
-    LIBS="$LIBS -lsc_dbg_rt -lpoolalloc_bitmap -lstdc++"
-    CFLAGS="$CFLAGS -fmemsafety"
-  ])
-])
-
-AC_SUBST([MAINT])
 AC_SUBST([LIBTOOL_EXTRA_FLAGS])
 
 dnl Libtool.
