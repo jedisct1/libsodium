@@ -71,7 +71,7 @@ AS_IF([test "x$EMSCRIPTEN" != "x"],[
 ])
 
 AC_ARG_ENABLE(pie,
-[AS_HELP_STRING(--enable-pie,Produce position independent executables @<:@default=yes@:>@)],
+[AS_HELP_STRING(--disable-pie,Do not produce position independent executables)],
  enable_pie=$enableval, enable_pie="maybe")
 
 AC_ARG_ENABLE(blocking-random,
