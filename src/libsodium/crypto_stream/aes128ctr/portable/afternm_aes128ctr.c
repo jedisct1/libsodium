@@ -128,7 +128,7 @@ int crypto_stream_afternm(unsigned char *outp, unsigned long long len, const uns
 
     if(lensav == 0) goto end;
 
-    b = blp[0];
+    b = blp[0]; /* clang false positive */
     *(unsigned char *)(outp + 0) = b;
 
     blp += 1;

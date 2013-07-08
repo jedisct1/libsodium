@@ -139,7 +139,7 @@ int crypto_stream_xor_afternm(unsigned char *outp, const unsigned char *inp, uns
 
     if(lensav == 0) goto end;
 
-    b = blp[0];
+    b = blp[0]; /* clang false positive */
     b ^= *(unsigned char *)(inp + 0);
     *(unsigned char *)(outp + 0) = b;
 
