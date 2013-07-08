@@ -284,6 +284,11 @@ AC_ARG_ENABLE(asm,
   enable_asm="yes"
 ])
 
+AS_IF([test "x$EMSCRIPTEN" != "x"],[
+  enable_asm="no"
+  AC_MSG_WARN([compiling to javascript - asm implementations disabled])
+])
+
 AC_ARG_ENABLE(ssp,
 [AS_HELP_STRING(--disable-ssp,Don't compile with -fstack-protector)],
 [AS_IF([test "x$enableval" = "xno"], [
