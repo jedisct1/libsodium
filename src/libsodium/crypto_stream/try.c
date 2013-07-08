@@ -6,6 +6,7 @@
 
 #include <stdlib.h>
 #include "crypto_stream.h"
+#include "utils.h"
 #include "windows/windows-quirks.h"
 
 extern unsigned char *alignedcalloc(unsigned long long);
@@ -115,11 +116,7 @@ const char *checksum_compute(void)
     m[mlen] = 0;
   }
 
-  for (i = 0;i < crypto_stream_KEYBYTES;++i) {
-    checksum[2 * i] = "0123456789abcdef"[15 & (k[i] >> 4)];
-    checksum[2 * i + 1] = "0123456789abcdef"[15 & k[i]];
-  }
-  checksum[2 * i] = 0;
+  sodium_bin2hex(checksum, sizeof checksum, k, crypto_stream_KEYBYTES);
 
   return 0;
 }

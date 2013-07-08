@@ -7,6 +7,7 @@
 #include <stdlib.h>
 #include "crypto_hash_sha256.h"
 #include "crypto_auth.h"
+#include "utils.h"
 #include "windows/windows-quirks.h"
 
 extern unsigned char *alignedcalloc(unsigned long long);
@@ -112,10 +113,7 @@ const char *checksum_compute(void)
   if (crypto_auth(h,m,CHECKSUM_BYTES,k) != 0) return "crypto_auth returns nonzero";
   if (crypto_auth_verify(h,m,CHECKSUM_BYTES,k) != 0) return "crypto_auth_verify returns nonzero";
 
-  for (i = 0;i < crypto_auth_BYTES;++i) {
-    checksum[2 * i] = "0123456789abcdef"[15 & (h[i] >> 4)];
-    checksum[2 * i + 1] = "0123456789abcdef"[15 & h[i]];
-  }
-  checksum[2 * i] = 0;
+  sodium_bin2hex(checksum, sizeof checksum, h, crypto_auth_BYTES);
+
   return 0;
 }

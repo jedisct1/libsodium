@@ -110,11 +110,7 @@ checksum_compute(void)
     if (crypto_onetimeauth(h,m,CHECKSUM_BYTES,k) != 0) return "crypto_onetimeauth returns nonzero";
     if (crypto_onetimeauth_verify(h,m,CHECKSUM_BYTES,k) != 0) return "crypto_onetimeauth_verify returns nonzero";
 
-    for (i = 0;i < crypto_onetimeauth_BYTES;++i) {
-        checksum[2 * i] = "0123456789abcdef"[15 & (h[i] >> 4)];
-        checksum[2 * i + 1] = "0123456789abcdef"[15 & h[i]];
-    }
-    checksum[2 * i] = 0;
+    sodium_bin2hex(checksum, sizeof checksum, h, crypto_onetimeauth_BYTES);
 
     return NULL;
 }

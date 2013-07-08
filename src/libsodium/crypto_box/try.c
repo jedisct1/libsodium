@@ -6,6 +6,7 @@
 
 #include <stdlib.h>
 #include "crypto_box.h"
+#include "utils.h"
 #include "windows/windows-quirks.h"
 
 extern unsigned char *alignedcalloc(unsigned long long);
@@ -188,10 +189,7 @@ const char *checksum_compute(void)
     for (j = 0;j < i;++j) m[j + crypto_box_ZEROBYTES] ^= c[j + crypto_box_BOXZEROBYTES];
   }
 
-  for (i = 0;i < nlen;++i) {
-    checksum[2 * i] = "0123456789abcdef"[15 & (n[i] >> 4)];
-    checksum[2 * i + 1] = "0123456789abcdef"[15 & n[i]];
-  }
-  checksum[2 * i] = 0;
+  sodium_bin2hex(checksum, sizeof checksum, n, nlen);
+
   return 0;
 }

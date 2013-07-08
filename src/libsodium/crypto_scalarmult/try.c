@@ -6,6 +6,7 @@
 
 #include <stdlib.h>
 #include "crypto_scalarmult.h"
+#include "utils.h"
 #include "windows/windows-quirks.h"
 
 extern unsigned char *alignedcalloc(unsigned long long);
@@ -118,10 +119,7 @@ const char *checksum_compute(void)
     for (j = 0;j < nlen;++j) n[j] ^= p[j % plen];
   }
 
-  for (i = 0;i < crypto_scalarmult_BYTES;++i) {
-    checksum[2 * i] = "0123456789abcdef"[15 & (p[i] >> 4)];
-    checksum[2 * i + 1] = "0123456789abcdef"[15 & p[i]];
-  }
-  checksum[2 * i] = 0;
+  sodium_bin2hex(checksum, sizeof checksum, p, crypto_scalarmult_BYTES);
+
   return 0;
 }
