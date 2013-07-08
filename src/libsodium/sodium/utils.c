@@ -63,3 +63,24 @@ _sodium_alignedcalloc(unsigned char ** const unaligned_p, const size_t len)
 
     return aligned;
 }
+
+char *
+sodium_bin2hex(char * const hex, const size_t hexlen,
+               const unsigned char *bin, const size_t binlen)
+{
+    static const char hexdigits[16] = "0123456789abcdef";
+    size_t            i = (size_t) 0U;
+    size_t            j = (size_t) 0U;
+
+    if (binlen >= SIZE_MAX / 2 || hexlen < binlen * 2U) {
+        abort();
+    }
+    while (i < binlen) {
+        hex[j++] = hexdigits[bin[i] >> 4];
+        hex[j++] = hexdigits[bin[i] & 0xf];
+        i++;
+    }
+    hex[j] = 0;
+
+    return hex;
+}

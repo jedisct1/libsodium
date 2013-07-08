@@ -135,10 +135,16 @@ Warning: if a region has been allocated on the heap, you still have
 to make sure that it can't get swapped to disk, possibly using
 `mlock(2)`.
 
-In order to compare memory zones in constant time, Sodium proides:
+In order to compare memory zones in constant time, Sodium provides:
 
     int      sodium_memcmp(const void * const b1_, const void * const b2_,
                            size_t size);
+
+And a convenience function for converting a binary buffer to a
+hexadecimal string:
+
+    char *   sodium_bin2hex(char * const hex, const size_t hexlen,
+                            const unsigned char *bin, const size_t binlen);
 
 ## New operations
 
