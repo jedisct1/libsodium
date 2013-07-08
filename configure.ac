@@ -52,10 +52,6 @@ AC_ARG_ENABLE(ssp,
   enable_ssp="yes"
 ])
 
-AC_ARG_ENABLE(pie,
-[AS_HELP_STRING(--enable-pie,Produce position independent executables @<:@default=yes@:>@)],
- enable_pie=$enableval, enable_pie="maybe")
-
 AC_ARG_ENABLE(asm,
 [AS_HELP_STRING(--disable-asm,Disable assembly implementations)],
 [
@@ -73,6 +69,10 @@ AS_IF([test "x$EMSCRIPTEN" != "x"],[
   enable_asm="no"
   AC_MSG_WARN([compiling to javascript - asm implementations disabled])
 ])
+
+AC_ARG_ENABLE(pie,
+[AS_HELP_STRING(--enable-pie,Produce position independent executables @<:@default=yes@:>@)],
+ enable_pie=$enableval, enable_pie="maybe")
 
 AC_ARG_ENABLE(blocking-random,
 [AS_HELP_STRING(--enable-blocking-random,Use /dev/random instead of /dev/urandom)],
