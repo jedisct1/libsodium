@@ -138,14 +138,6 @@ AC_SUBST(LIBTOOL_DEPS)
 AC_ARG_VAR([AR], [path to the ar utility])
 AC_CHECK_TOOL([AR], [ar], [ar])
 
-AS_IF([test -d /usr/local/include], [
-  CPPFLAGS="$CPPFLAGS -I/usr/local/include"
-])
-
-AS_IF([test -d /usr/local/lib], [
-  LDFLAGS="$LDFLAGS -L/usr/local/lib"
-])
-
 dnl Checks for headers
 AC_CHECK_HEADERS([emmintrin.h], [], [], [
 #pragma GCC target("sse2")
