@@ -40,7 +40,7 @@ LX_CFLAGS=${CFLAGS-NONE}
 dnl Switches
 
 AC_ARG_ENABLE(ssp,
-[AS_HELP_STRING(--disable-ssp,Don't compile with -fstack-protector)],
+[AS_HELP_STRING(--disable-ssp,Do not compile with -fstack-protector)],
 [
   AS_IF([test "x$enableval" = "xno"], [
     enable_ssp="no"
