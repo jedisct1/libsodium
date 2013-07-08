@@ -35,6 +35,8 @@ AC_SUBST(SODIUM_LIBRARY_VERSION_MINOR)
 AC_SUBST(SODIUM_LIBRARY_VERSION)
 AC_SUBST(DLL_VERSION)
 
+LX_CFLAGS=${CFLAGS-NONE}
+
 dnl Switches
 
 AC_ARG_ENABLE(ssp,
@@ -87,11 +89,27 @@ AC_ARG_WITH(safecode,
   ])
 ])
 
+AC_ARG_ENABLE(debug,
+[AS_HELP_STRING(--enable-debug,For maintainers only - please do not use)],
+[
+  AS_IF([test "x$LX_CFLAGS" = "xNONE"], [
+    nxflags=""
+    for flag in `echo $CFLAGS`; do
+      case "$flag" in
+        -O*) ;;
+        -g*) ;;
+        *) AS_VAR_APPEND([nxflags], [" $flag"]) ;;
+      esac
+    done
+    CFLAGS="$nxflags -O0 -g3"
+  ])
+  CPPFLAGS="$CPPFLAGS -DDEBUG=1"
+])
+
 AC_SUBST([MAINT])
 
 dnl Checks
 
-LX_CFLAGS=${CFLAGS-NONE}
 AC_PROG_CC_C99
 AM_PROG_AS
 AC_USE_SYSTEM_EXTENSIONS
@@ -328,25 +346,6 @@ AC_CHECK_FUNC(clock_gettime, , [AC_CHECK_LIB(rt, clock_gettime)])
 AC_CHECK_FUNC(fegetenv, , [AC_CHECK_LIB(m, fegetenv)])
 
 AC_CHECK_FUNCS([SecureZeroMemory])
-
-dnl Switches, continued
-
-AC_ARG_ENABLE(debug,
-[AS_HELP_STRING(--enable-debug,For maintainers only - please do not use)],
-[
-  AS_IF([test "x$LX_CFLAGS" = "xNONE"], [
-    nxflags=""
-    for flag in `echo $CFLAGS`; do
-      case "$flag" in
-        -O*) ;;
-        -g*) ;;
-        *) AS_VAR_APPEND([nxflags], [" $flag"]) ;;
-      esac
-    done
-    CFLAGS="$nxflags -O0 -g3"
-  ])
-  CPPFLAGS="$CPPFLAGS -DDEBUG=1"
-])
 
 AC_SUBST([LIBTOOL_EXTRA_FLAGS])
 
