@@ -186,6 +186,7 @@ them from different languages is easier.
 * Haskell: [Saltine](https://github.com/tel/saltine)
 * Java: [Kalium](https://github.com/abstractj/kalium)
 * Julia: [Sodium.jl](https://github.com/amitmurthy/Sodium.jl)
+* Ocaml: [ocaml-sodium](https://github.com/dsheets/ocaml-sodium)
 * Pharo/Squeak: [Crypto-NaCl](http://www.eighty-twenty.org/index.cgi/tech/smalltalk/nacl-for-squeak-and-pharo-20130601.html)
 * PHP: [PHP-Sodium](https://github.com/alethia7/php-sodium)
 * Python: [PyNaCl](https://github.com/dstufft/pynacl)
