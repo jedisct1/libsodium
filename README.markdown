@@ -11,7 +11,7 @@ NaCl's goal is to provide all of the core operations needed to build
 higher-level cryptographic tools.
 
 Sodium is a portable, cross-compilable, installable, packageable
-crypto library based on NaCl, with a compatible API.
+fork of NaCl, with a compatible API.
 
 ## Portability
 
