@@ -71,7 +71,7 @@ _sodium_alignedcalloc(unsigned char ** const unaligned_p, const size_t len)
  *  sscanf will validate and convert it automatically.
  */
 unsigned char *
-sodium_hex2bin(unsigned char *bin, size_t binlen,
+sodium_hex2bin(unsigned char * const bin, const size_t binlen,
                const char *hex, const size_t hexlen)
 {
     size_t i = (size_t) 0U;
@@ -87,3 +87,41 @@ sodium_hex2bin(unsigned char *bin, size_t binlen,
     return bin;
 }
 
+/*
+ *  Converts binary data into base64, works on the same principal
+ *  sodium_bin2hex.
+ */
+char *
+sodium_bin2base64(char * const base64, const size_t base64len,
+                  const unsigned char *bin, const size_t binlen)
+{
+    const char *digits = "ABCDEFGHIJKLMNOPQRSTUVWXYZ"
+                         "abcdefghijklmnopqrstuvwxyz"
+                         "0123456789+/";
+    char bit[3];
+    size_t i, j;
+   
+    /* Make sure there is enough from include NULL */ 
+    if(base64len <= ((binlen + 2) / 3) * 4) {
+        abort();
+    }
+    for(i = 0, j = 0; i < binlen; i += 3) {
+        memcpy(bit, &bin[i], 3);
+        base64[j++] = digits[(bit[0] & 0xfd) >> 2];
+        base64[j++] = digits[((bit[0] & 0x03) << 4) |
+                      ((bit[1] & 0xf0) >> 4)];
+        base64[j++] = digits[((bit[1] & 0x0f) << 2) |
+                      ((bit[2] & 0xc0) >> 6)];
+        base64[j++] = digits[bit[2] & 0x3f];
+    }
+    base64[j] = '\0';
+    
+    switch(binlen % 3) {
+        case 1:
+            base64[--j] = '=';
+        case 2:
+            base64[--j] = '=';
+    }
+
+  return base64;
+}
