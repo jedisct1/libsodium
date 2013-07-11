@@ -4,6 +4,7 @@
 #include <stdint.h>
 #include <stdlib.h>
 #include <string.h>
+#include <stdio.h>
 
 #include "utils.h"
 #include "randombytes.h"
@@ -63,3 +64,26 @@ _sodium_alignedcalloc(unsigned char ** const unaligned_p, const size_t len)
 
     return aligned;
 }
+
+/*
+ *  Check to see that binlen is large enough.
+ *  Iterate each pair of hexadecimal and convert to binary via sscanf.
+ *  sscanf will validate and convert it automatically.
+ */
+unsigned char *
+sodium_hex2bin(unsigned char *bin, size_t binlen,
+               const char *hex, const size_t hexlen)
+{
+    size_t i = (size_t) 0U;
+
+    if (binlen < hexlen / 2) {
+        abort();
+    }
+    while(i < hexlen) {
+        if(sscanf(&hex[i*2], "%02x", (unsigned int*) &bin[i]) <= 0) break;
+        i++;
+    }
+
+    return bin;
+}
+
