@@ -6,6 +6,11 @@ crypto_sign_ed25519_bytes(void) {
 }
 
 size_t
+crypto_sign_ed25519_seedbytes(void) {
+    return crypto_sign_ed25519_SEEDBYTES;
+}
+
+size_t
 crypto_sign_ed25519_publickeybytes(void) {
     return crypto_sign_ed25519_PUBLICKEYBYTES;
 }

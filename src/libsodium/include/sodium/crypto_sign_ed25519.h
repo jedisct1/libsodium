@@ -6,6 +6,7 @@
 
 #define crypto_sign_ed25519_SECRETKEYBYTES 64U
 #define crypto_sign_ed25519_PUBLICKEYBYTES 32U
+#define crypto_sign_ed25519_SEEDBYTES 32U
 #define crypto_sign_ed25519_BYTES 64U
 
 #ifdef __cplusplus
@@ -14,6 +15,9 @@ extern "C" {
 
 SODIUM_EXPORT
 size_t crypto_sign_ed25519_bytes(void);
+
+SODIUM_EXPORT
+size_t crypto_sign_ed25519_seedbytes(void);
 
 SODIUM_EXPORT
 size_t crypto_sign_ed25519_publickeybytes(void);

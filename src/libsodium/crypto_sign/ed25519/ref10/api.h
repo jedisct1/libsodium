@@ -6,6 +6,7 @@
 #define crypto_sign_keypair crypto_sign_ed25519_keypair
 #define crypto_sign_seed_keypair crypto_sign_ed25519_seed_keypair
 #define crypto_sign_BYTES crypto_sign_ed25519_BYTES
+#define crypto_sign_SEEDBYTES crypto_sign_ed25519_SEEDBYTES
 #define crypto_sign_PUBLICKEYBYTES crypto_sign_ed25519_PUBLICKEYBYTES
 #define crypto_sign_SECRETKEYBYTES crypto_sign_ed25519_SECRETKEYBYTES
 #define crypto_sign_PRIMITIVE "ed25519"

@@ -21,6 +21,10 @@ extern "C" {
 SODIUM_EXPORT
 size_t  crypto_sign_bytes(void);
 
+#define crypto_sign_SEEDBYTES crypto_sign_ed25519_SEEDBYTES
+SODIUM_EXPORT
+size_t  crypto_sign_seedbytes(void);
+
 #define crypto_sign_PUBLICKEYBYTES crypto_sign_ed25519_PUBLICKEYBYTES
 SODIUM_EXPORT
 size_t  crypto_sign_publickeybytes(void);
