@@ -4,7 +4,6 @@
 #include <stdint.h>
 #include <stdlib.h>
 #include <string.h>
-#include <stdio.h>
 
 #include "utils.h"
 #include "randombytes.h"
@@ -65,16 +64,6 @@ _sodium_alignedcalloc(unsigned char ** const unaligned_p, const size_t len)
     return aligned;
 }
 
-/*
- *  First, it verifies the length of the bin buffer to ensure it will
- *  fit all data excluding NULL since it's binary.
- *
- *  Second, it iterate though hex buffer to ensure everything is valid
- *  ascii hexadecimal, accounting for both lowercase and uppercase letters
- *  and pack the data in char pairs, ignoring trailing odd characters.
- * 
- *  Lastly, it then itterates though the data and convert it.
- */
 unsigned char *
 sodium_hex2bin(unsigned char * const bin, const size_t binlen,
                const char *hex, const size_t hexlen)
@@ -106,3 +95,4 @@ sodium_hex2bin(unsigned char * const bin, const size_t binlen,
     
     return bin;
 }
+
