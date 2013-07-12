@@ -66,62 +66,43 @@ _sodium_alignedcalloc(unsigned char ** const unaligned_p, const size_t len)
 }
 
 /*
- *  Check to see that binlen is large enough.
- *  Iterate each pair of hexadecimal and convert to binary via sscanf.
- *  sscanf will validate and convert it automatically.
+ *  First, it verifies the length of the bin buffer to ensure it will
+ *  fit all data excluding NULL since it's binary.
+ *
+ *  Second, it iterate though hex buffer to ensure everything is valid
+ *  ascii hexadecimal, accounting for both lowercase and uppercase letters
+ *  and pack the data in char pairs, ignoring trailing odd characters.
+ * 
+ *  Lastly, it then itterates though the data and convert it.
  */
 unsigned char *
 sodium_hex2bin(unsigned char * const bin, const size_t binlen,
                const char *hex, const size_t hexlen)
 {
+    unsigned char buf[2];
     size_t i = (size_t) 0U;
-
-    if (binlen < hexlen / 2) {
-        abort();
-    }
-    while(i < hexlen) {
-        if(sscanf(&hex[i*2], "%02x", (unsigned int*) &bin[i]) <= 0) break;
-        i++;
-    }
-
-    return bin;
-}
-
-/*
- *  Converts binary data into base64, works on the same principal
- *  sodium_bin2hex.
- */
-char *
-sodium_bin2base64(char * const base64, const size_t base64len,
-                  const unsigned char *bin, const size_t binlen)
-{
-    const char *digits = "ABCDEFGHIJKLMNOPQRSTUVWXYZ"
-                         "abcdefghijklmnopqrstuvwxyz"
-                         "0123456789+/";
-    char bit[3];
-    size_t i, j;
-   
-    /* Make sure there is enough from include NULL */ 
-    if(base64len <= ((binlen + 2) / 3) * 4) {
-        abort();
-    }
-    for(i = 0, j = 0; i < binlen; i += 3) {
-        memcpy(bit, &bin[i], 3);
-        base64[j++] = digits[(bit[0] & 0xfd) >> 2];
-        base64[j++] = digits[((bit[0] & 0x03) << 4) |
-                      ((bit[1] & 0xf0) >> 4)];
-        base64[j++] = digits[((bit[1] & 0x0f) << 2) |
-                      ((bit[2] & 0xc0) >> 6)];
-        base64[j++] = digits[bit[2] & 0x3f];
-    }
-    base64[j] = '\0';
+    size_t j = (size_t) 0U;
+    size_t k = (size_t) 0U;
     
-    switch(binlen % 3) {
-        case 1:
-            base64[--j] = '=';
-        case 2:
-            base64[--j] = '=';
+    if(hexlen > SIZE_MAX * 2 || binlen < hexlen / 2) {
+        abort();
     }
-
-  return base64;
+    for(i = 0; i < hexlen / 2; i++) {
+        for(j = 0; j < 2; j++) {
+            k = (i * 2) + j;
+            if(hex[k] >= '0' && hex[k] <= '9') {
+                buf[j] = hex[k] - '0';
+            } else if(hex[k] >= 'a' && hex[k] <= 'f') {
+                buf[j] = hex[k] - 'a' + 10;
+            } else if(hex[k] >= 'A' && hex[k] <= 'F') {
+                buf[j] = hex[k] - 'A' + 10;
+            } else {
+                abort();
+            }
+        }
+        bin[i] = buf[0] << 4;
+        bin[i] |= buf[1];
+    }
+    
+    return bin;
 }
