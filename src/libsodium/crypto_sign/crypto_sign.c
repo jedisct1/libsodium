@@ -8,6 +8,12 @@ crypto_sign_bytes(void)
 }
 
 size_t
+crypto_sign_seedbytes(void)
+{
+    return crypto_sign_SEEDBYTES;
+}
+
+size_t
 crypto_sign_publickeybytes(void)
 {
     return crypto_sign_PUBLICKEYBYTES;
