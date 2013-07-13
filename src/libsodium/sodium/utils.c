@@ -68,7 +68,10 @@ char *
 sodium_bin2hex(char * const hex, const size_t hexlen,
                const unsigned char *bin, const size_t binlen)
 {
-    static const char hexdigits[16] = "0123456789abcdef";
+    static const char hexdigits[16] = {
+        '0', '1', '2', '3', '4', '5', '6', '7',
+        '8', '9', 'a', 'b', 'c', 'd', 'e', 'f'
+    };
     size_t            i = (size_t) 0U;
     size_t            j = (size_t) 0U;
 
