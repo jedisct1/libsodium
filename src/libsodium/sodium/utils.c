@@ -65,15 +65,15 @@ _sodium_alignedcalloc(unsigned char ** const unaligned_p, const size_t len)
 }
 
 unsigned char *
-sodium_hex2bin(unsigned char * const bin, const size_t binlen,
-               const char *hex, const size_t hexlen)
+sodium_hex2bin(unsigned char* const bin, const size_t binlen,
+               const char* const hex, const size_t hexlen)
 {
     unsigned char buf[2];
     size_t i = (size_t) 0U;
     size_t j = (size_t) 0U;
     size_t k = (size_t) 0U;
     
-    if(hexlen > SIZE_MAX * 2 || binlen < hexlen / 2) {
+    if(binlen < hexlen / 2) {
         abort();
     }
     for(i = 0; i < hexlen / 2; i++) {
