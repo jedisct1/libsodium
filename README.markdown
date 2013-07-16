@@ -185,6 +185,7 @@ them from different languages is easier.
 * Erlang: [Erlang-NaCl](https://github.com/tonyg/erlang-nacl)
 * Haskell: [Saltine](https://github.com/tel/saltine)
 * Java: [Kalium](https://github.com/abstractj/kalium)
+* Java JNI: [Kalium-JNI](https://github.com/joshjdevl/kalium-jni)
 * Julia: [Sodium.jl](https://github.com/amitmurthy/Sodium.jl)
 * Ocaml: [ocaml-sodium](https://github.com/dsheets/ocaml-sodium)
 * Pharo/Squeak: [Crypto-NaCl](http://www.eighty-twenty.org/index.cgi/tech/smalltalk/nacl-for-squeak-and-pharo-20130601.html)
