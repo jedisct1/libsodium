@@ -1,0 +1,8 @@
+
+#include "crypto_onetimeauth_poly1305.h"
+
+#define crypto_onetimeauth_poly1305_implementation_name \
+    crypto_onetimeauth_poly1305_donna_implementation_name
+
+#define crypto_onetimeauth crypto_onetimeauth_poly1305_donna
+#define crypto_onetimeauth_verify crypto_onetimeauth_poly1305_donna_verify

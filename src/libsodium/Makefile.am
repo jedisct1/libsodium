@@ -57,9 +57,10 @@ libsodium_la_SOURCES = \
 	crypto_onetimeauth/poly1305/53/api.h \
 	crypto_onetimeauth/poly1305/53/auth_poly1305_53.c \
 	crypto_onetimeauth/poly1305/53/verify_poly1305_53.c \
-	crypto_onetimeauth/poly1305/ref/api.h \
-	crypto_onetimeauth/poly1305/ref/auth_poly1305_ref.c \
-	crypto_onetimeauth/poly1305/ref/verify_poly1305_ref.c \
+	crypto_onetimeauth/poly1305/donna/api.h \
+	crypto_onetimeauth/poly1305/donna/portable-jane.h \
+	crypto_onetimeauth/poly1305/donna/auth_poly1305_donna.c \
+	crypto_onetimeauth/poly1305/donna/verify_poly1305_donna.c \
 	crypto_scalarmult/crypto_scalarmult.c \
 	crypto_secretbox/crypto_secretbox.c \
 	crypto_secretbox/xsalsa20poly1305/secretbox_xsalsa20poly1305_api.c \

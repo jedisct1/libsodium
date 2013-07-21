@@ -4,7 +4,7 @@
 #include "crypto_hash_sha256.h"
 #include "crypto_onetimeauth.h"
 #include "crypto_onetimeauth_poly1305.h"
-#include "crypto_onetimeauth_poly1305_ref.h"
+#include "crypto_onetimeauth_poly1305_donna.h"
 #include "crypto_onetimeauth_poly1305_53.h"
 #include "utils.h"
 
@@ -122,7 +122,7 @@ crypto_onetimeauth_pick_best_implementation(void)
 #ifdef HAVE_FENV_H
         &crypto_onetimeauth_poly1305_53_implementation,
 #endif
-        &crypto_onetimeauth_poly1305_ref_implementation,
+        &crypto_onetimeauth_poly1305_donna_implementation,
         NULL
     };
     const char *err;
