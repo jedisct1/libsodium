@@ -1,9 +1,9 @@
 #! /bin/sh
 
-export XCODEDIR="/Applications/Xcode.app/Contents/Developer"
+export XCODEDIR="/Applications/Xcode5-DP.app/Contents/Developer"
 export BASEDIR="${XCODEDIR}/Platforms/iPhoneOS.platform/Developer"
 export PATH="${BASEDIR}/usr/bin:$BASEDIR/usr/sbin:$PATH"
-export SDK="${BASEDIR}/SDKs/iPhoneOS6.1.sdk"
+export SDK="${BASEDIR}/SDKs/iPhoneOS7.0.sdk"
 export CFLAGS="-Oz -mthumb -arch armv7 -isysroot ${SDK}"
 export LDFLAGS="-mthumb -arch armv7 -isysroot ${SDK}"
 export PREFIX="$(pwd)/libsodium-ios"
