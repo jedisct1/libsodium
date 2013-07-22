@@ -65,8 +65,8 @@ _sodium_alignedcalloc(unsigned char ** const unaligned_p, const size_t len)
 }
 
 unsigned char *
-sodium_hex2bin(unsigned char* const bin, const size_t binlen,
-               const char* const hex, const size_t hexlen)
+sodium_hex2bin(unsigned char * const bin, const size_t binlen,
+               const char *hex, const size_t hexlen)
 {
     unsigned char buf[2];
     size_t i = (size_t) 0U;
@@ -77,8 +77,7 @@ sodium_hex2bin(unsigned char* const bin, const size_t binlen,
         abort();
     }
     for(i = 0; i < hexlen / 2; i++) {
-        for(j = 0; j < 2; j++) {
-            k = (i * 2) + j;
+        for(j = 0; j < 2; j++, k++) {
             if(hex[k] >= '0' && hex[k] <= '9') {
                 buf[j] = hex[k] - '0';
             } else if(hex[k] >= 'a' && hex[k] <= 'f') {
