@@ -208,3 +208,11 @@ A mailing-list is available to discuss libsodium.
 
 In order to join, just send a random mail to `sodium-subscribe` {at}
 `pureftpd`{dot}`org`.
+
+## License
+
+[ISC license](http://en.wikipedia.org/wiki/ISC_license).
+
+See the `COPYING` file for details, `AUTHORS` for designers and
+implementors, and `THANKS` for contributors.
+
