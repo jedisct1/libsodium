@@ -1,1 +1,44 @@
-git log is your friend.
+
+* Version 0.4.2
+ - All NaCl constants are now also exposed as functions.
+ - The Android and iOS cross-compilation script have been improved.
+ - libsodium can now be cross-compiled to Windows from Linux.
+ - libsodium can now be compiled with emscripten.
+ - New convenience function (prototyped in utils.h): sodium_bin2hex().
+
+* Version 0.4.1
+ - sodium_version_*() functions were not exported in version 0.4. They
+are now visible as intended.
+ - sodium_init() now calls randombytes_stir().
+ - optimized assembly version of salsa20 is now used on amd64.
+ - further cleanups and enhanced compatibility with non-C99 compilers.
+
+* Version 0.4
+ - Most constants and operations are now available as actual functions
+instead of macros, making it easier to use from other languages.
+ - New operation: crypto_generichash, featuring a variable key size, a
+variable output size, and a streaming API. Currently implemented using
+Blake2b.
+ - The package can be compiled in a separate directory.
+ - aes128ctr functions are exported.
+ - Optimized versions of curve25519 (curve25519_donna_c64), poly1305
+(poly1305_53) and ed25519 (ed25519_ref10) are available. Optionally calling
+sodium_init() once before using the library makes it pick the fastest
+implementation.
+ - New convenience function: sodium_memzero() in order to securely
+wipe a memory area.
+ - A whole bunch of cleanups and portability enhancements.
+ - On Windows, a .REF file is generated along with the shared library,
+for use with Visual Studio. The installation path for these has become
+$prefix/bin as expected by MingW.
+
+* Version 0.3
+ - The crypto_shorthash operation has been added, implemented using
+SipHash-2-4.
+
+* Version 0.2
+ - crypto_sign_seed_keypair() has been added
+
+* Version 0.1
+ - Initial release.
+
