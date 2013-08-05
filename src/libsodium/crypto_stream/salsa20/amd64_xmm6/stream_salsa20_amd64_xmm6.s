@@ -1,4 +1,3 @@
-
 #if defined(__amd64) || defined(__amd64__) || defined(__x86_64__)
 
 .text
@@ -944,4 +943,8 @@ add  $64,%rdi
 add  $64,%rsi
 jmp ._bytesbetween1and255
 
+#endif
+
+#if defined(__linux__) && defined(__ELF__)
+.section .note.GNU-stack,"",%progbits
 #endif
