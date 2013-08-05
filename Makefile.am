@@ -2,7 +2,7 @@ ACLOCAL_AMFLAGS = -I m4
 
 EXTRA_DIST = \
 	autogen.sh \
-	README.mardown \
+	README.markdown \
 	THANKS
 
 SUBDIRS = \
