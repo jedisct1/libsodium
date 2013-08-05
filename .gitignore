@@ -11,6 +11,7 @@
 *~
 .DS_Store
 .deps
+.dirstamp
 .done
 .libs
 INSTALL
@@ -91,4 +92,3 @@ test/default/stream5
 test/default/stream6
 test-driver
 testing
-
