@@ -281,7 +281,11 @@
 	/* unknown endian! */
 #endif
 
-#if defined(CPU_X86) || defined(CPU_X86_64)
+#if defined(__s390__) || defined(__zarch__) || defined(__SYSC_ZARCH__)
+# define CPU_Z390
+#endif
+
+#if defined(CPU_X86) || defined(CPU_X86_64) || defined(CPU_PPC) || defined(CPU_Z390)
 # undef CPU_ALIGNED_ACCESS_REQUIRED
 #else
 # define CPU_ALIGNED_ACCESS_REQUIRED
