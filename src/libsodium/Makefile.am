@@ -197,7 +197,7 @@ endif
 if HAVE_AMD64_ASM
 libsodium_la_SOURCES += \
 	crypto_stream/salsa20/amd64_xmm6/api.h \
-	crypto_stream/salsa20/amd64_xmm6/stream_salsa20_amd64_xmm6.s
+	crypto_stream/salsa20/amd64_xmm6/stream_salsa20_amd64_xmm6.S
 else
 libsodium_la_SOURCES += \
 	crypto_stream/salsa20/ref/api.h \
