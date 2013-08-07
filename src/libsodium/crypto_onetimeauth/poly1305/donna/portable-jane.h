@@ -281,9 +281,15 @@
 	/* unknown endian! */
 #endif
 
+#if defined(CPU_X86) || defined(CPU_X86_64)
+# undef CPU_ALIGNED_ACCESS_REQUIRED
+#else
+# define CPU_ALIGNED_ACCESS_REQUIRED
+#endif
+
 /* 0400-endian-100-be.h */
 
-#if defined(CPU_BE)
+#if defined(CPU_BE) && !defined(CPU_ALIGNED_ACCESS_REQUIRED)
 	static uint16_t INLINE fU8TO16_BE_FAST(const uint8_t *p) { return *(const uint16_t *)p; }
 	static uint32_t INLINE fU8TO32_BE_FAST(const uint8_t *p) { return *(const uint32_t *)p; }
 	static uint64_t INLINE fU8TO64_BE_FAST(const uint8_t *p) {	return *(const uint64_t *)p; }
@@ -301,7 +307,7 @@
 
 /* 0400-endian-100-le.h */
 
-#if defined(CPU_LE)
+#if defined(CPU_LE) && !defined(CPU_ALIGNED_ACCESS_REQUIRED)
 	static uint16_t INLINE fU8TO16_LE_FAST(const uint8_t *p) { return *(const uint16_t *)p; }
 	static uint32_t INLINE fU8TO32_LE_FAST(const uint8_t *p) { return *(const uint32_t *)p; }
 	static uint64_t INLINE fU8TO64_LE_FAST(const uint8_t *p) {	return *(const uint64_t *)p; }
