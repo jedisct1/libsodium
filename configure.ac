@@ -110,6 +110,10 @@ AC_SUBST([MAINT])
 
 dnl Checks
 
+PKG_PROG_PKG_CONFIG([0.25])
+AM_CONDITIONAL([HAVE_PKG_CONFIG], [test "x$PKG_CONFIG" != "x"])
+AC_SUBST(HAVE_PKG_CONFIG)
+
 AC_PROG_CC_C99
 AM_PROG_AS
 AC_USE_SYSTEM_EXTENSIONS
@@ -362,7 +366,9 @@ AH_VERBATIM([NDEBUG], [/* Never ever ignore assertions */
 #/**/undef/**/ NDEBUG
 #endif])
 
-AC_CONFIG_FILES([libsodium.pc])
+AS_IF([test "x$PKG_CONFIG" != "x"], [
+  AC_CONFIG_FILES([libsodium.pc])
+])
 AC_CONFIG_FILES([Makefile
                  src/Makefile
                  src/libsodium/Makefile
