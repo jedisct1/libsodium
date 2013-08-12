@@ -37,6 +37,9 @@ AC_SUBST(DLL_VERSION)
 
 LX_CFLAGS=${CFLAGS-NONE}
 
+# default CFLAGS
+CFLAGS="-std=c99"
+
 dnl Switches
 
 AC_ARG_ENABLE(ssp,
