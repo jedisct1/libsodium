@@ -9,3 +9,6 @@ EXTRA_DIST = \
 SUBDIRS = \
 	src \
 	test
+
+pkgconfigdir = $(libdir)/pkgconfig
+pkgconfig_DATA = @PACKAGE_NAME@.pc

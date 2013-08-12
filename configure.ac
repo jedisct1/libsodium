@@ -362,6 +362,7 @@ AH_VERBATIM([NDEBUG], [/* Never ever ignore assertions */
 #/**/undef/**/ NDEBUG
 #endif])
 
+AC_CONFIG_FILES([libsodium.pc])
 AC_CONFIG_FILES([Makefile
                  src/Makefile
                  src/libsodium/Makefile
