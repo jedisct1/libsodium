@@ -27,6 +27,7 @@ configure
 depcomp
 install-sh
 libtool
+libsodium.pc
 libsodium-*
 ltmain.sh
 m4/argz.m4
