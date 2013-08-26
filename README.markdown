@@ -191,6 +191,7 @@ them from different languages is easier.
 * Pharo/Squeak: [Crypto-NaCl](http://www.eighty-twenty.org/index.cgi/tech/smalltalk/nacl-for-squeak-and-pharo-20130601.html)
 * PHP: [PHP-Sodium](https://github.com/alethia7/php-sodium)
 * Python: [PyNaCl](https://github.com/dstufft/pynacl)
+* Python: [PySodium](https://github.com/stef/pysodium)
 * Racket: part of [CRESTaceans](https://github.com/mgorlick/CRESTaceans/tree/master/bindings/libsodium)
 * Ruby: [RbNaCl](https://github.com/cryptosphere/rbnacl)
 * Ruby: [Sodium](https://github.com/stouset/sodium)
