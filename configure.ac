@@ -1,4 +1,4 @@
-AC_PREREQ([2.61])
+AC_PREREQ([2.65])
 AC_INIT([libsodium],[0.4.2],
   [https://github.com/jedisct1/libsodium/issues],
   [libsodium],
