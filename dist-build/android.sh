@@ -24,9 +24,9 @@ if uname -a | grep -q -i linux; then
 fi
 export LDFLAGS="-mthumb"
 export NDK_PLATFORM=9
-export NDK_ROOT=${NDK_ROOT:-/usr/local/Cellar/android-ndk/r8e}
+export NDK_ROOT=${NDK_ROOT:-/usr/local/Cellar/android-ndk/9}
 export NDK_ANDROID_SOURCES="${NDK_ROOT}/sources/android"
-export TARGET_TOOLCHAIN_VERSION=4.4.3
+export TARGET_TOOLCHAIN_VERSION=4.6
 export TARGET=arm-linux-androideabi
 export NDK_TARGET="arm-linux-androideabi-${TARGET_TOOLCHAIN_VERSION}"
 export AR=droid-ar
