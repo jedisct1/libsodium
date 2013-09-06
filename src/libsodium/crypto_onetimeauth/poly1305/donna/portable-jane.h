@@ -294,12 +294,12 @@
 /* 0400-endian-100-be.h */
 
 #if defined(CPU_BE) && !defined(CPU_ALIGNED_ACCESS_REQUIRED)
-	static uint16_t INLINE fU8TO16_BE_FAST(const uint8_t *p) { return *(const uint16_t *)p; }
-	static uint32_t INLINE fU8TO32_BE_FAST(const uint8_t *p) { return *(const uint32_t *)p; }
-	static uint64_t INLINE fU8TO64_BE_FAST(const uint8_t *p) {	return *(const uint64_t *)p; }
-	static void INLINE fU16TO8_BE_FAST(uint8_t *p, const uint16_t v) { *(uint16_t *)p = v; }
-	static void INLINE fU32TO8_BE_FAST(uint8_t *p, const uint32_t v) { *(uint32_t *)p = v; }
-	static void INLINE fU64TO8_BE_FAST(uint8_t *p, const uint64_t v) { *(uint64_t *)p = v; }
+	static INLINE uint16_t fU8TO16_BE_FAST(const uint8_t *p) { return *(const uint16_t *)p; }
+	static INLINE uint32_t fU8TO32_BE_FAST(const uint8_t *p) { return *(const uint32_t *)p; }
+	static INLINE uint64_t fU8TO64_BE_FAST(const uint8_t *p) {	return *(const uint64_t *)p; }
+	static INLINE void fU16TO8_BE_FAST(uint8_t *p, const uint16_t v) { *(uint16_t *)p = v; }
+	static INLINE void fU32TO8_BE_FAST(uint8_t *p, const uint32_t v) { *(uint32_t *)p = v; }
+	static INLINE void fU64TO8_BE_FAST(uint8_t *p, const uint64_t v) { *(uint64_t *)p = v; }
 
 	#define U8TO16_BE(p) fU8TO16_BE_FAST(p)
 	#define U8TO32_BE(p) fU8TO32_BE_FAST(p)
@@ -312,12 +312,12 @@
 /* 0400-endian-100-le.h */
 
 #if defined(CPU_LE) && !defined(CPU_ALIGNED_ACCESS_REQUIRED)
-	static uint16_t INLINE fU8TO16_LE_FAST(const uint8_t *p) { return *(const uint16_t *)p; }
-	static uint32_t INLINE fU8TO32_LE_FAST(const uint8_t *p) { return *(const uint32_t *)p; }
-	static uint64_t INLINE fU8TO64_LE_FAST(const uint8_t *p) {	return *(const uint64_t *)p; }
-	static void INLINE fU16TO8_LE_FAST(uint8_t *p, const uint16_t v) { *(uint16_t *)p = v; }
-	static void INLINE fU32TO8_LE_FAST(uint8_t *p, const uint32_t v) { *(uint32_t *)p = v; }
-	static void INLINE fU64TO8_LE_FAST(uint8_t *p, const uint64_t v) { *(uint64_t *)p = v; }
+	static INLINE uint16_t fU8TO16_LE_FAST(const uint8_t *p) { return *(const uint16_t *)p; }
+	static INLINE uint32_t fU8TO32_LE_FAST(const uint8_t *p) { return *(const uint32_t *)p; }
+	static INLINE uint64_t fU8TO64_LE_FAST(const uint8_t *p) {	return *(const uint64_t *)p; }
+	static INLINE void fU16TO8_LE_FAST(uint8_t *p, const uint16_t v) { *(uint16_t *)p = v; }
+	static INLINE void fU32TO8_LE_FAST(uint8_t *p, const uint32_t v) { *(uint32_t *)p = v; }
+	static INLINE void fU64TO8_LE_FAST(uint8_t *p, const uint64_t v) { *(uint64_t *)p = v; }
 
 	#define U8TO16_LE(p) fU8TO16_LE_FAST(p)
 	#define U8TO32_LE(p) fU8TO32_LE_FAST(p)
@@ -331,52 +331,52 @@
 
 #if defined(CPU_PPC)
 	#if defined(CPU_POWER7)
-		static uint64_t INLINE fU8TO64_LE_FAST(const uint8_t *p) {
+		static INLINE uint64_t fU8TO64_LE_FAST(const uint8_t *p) {
 			uint64_d d;
 			__asm__ ("ldbrx %0,0,%1" : "=r"(d) : "r"(p))
 			return d;
 		}
 
-		static void INLINE
+		static INLINE void
 		fU64TO8_LE_FAST(uint8_t *p, const uint64_t v) {
 			__asm__ ("stdbrx %1,0,%0" : : "r"(p), "r"(v))
 		}
 	#elif defined(CPU_PPC64)
-		static uint64_t INLINE
+		static INLINE uint64_t
 		fU8TO64_LE_FAST(const uint8_t *p) {
 			uint64_t *s4, h, d;
 			__asm__ ("addi %0,%3,4;lwbrx %1,0,%3;lwbrx %2,0,%0;rldimi %1,%2,32,0" : "+r"(s4), "=r"(d), "=r"(h) : "b"(p));
 			return d;
 		}
 
-		static void INLINE
+		static INLINE void
 		fU64TO8_LE_FAST(uint8_t *p, const uint64_t v) {
 			uint64_t *s4, h = v >> 32;
 			__asm__ ("addi %0,%3,4;stwbrx %1,0,%3;stwbrx %2,0,%0" : "+r"(s4) : "r"(v), "r"(h), "b"(p));
 		}
 	#elif defined(CPU_PPC32)
-		static uint64_t INLINE
+		static INLINE uint64_t
 		fU8TO64_LE_FAST(const uint8_t *p) {
 			uint32_t *s4, h, l;
 			__asm__ ("addi %0,%3,4;lwbrx %1,0,%3;lwbrx %2,0,%0" : "+r"(s4), "=r"(l), "=r"(h) : "b"(p));\
 			return ((uint64_t)h << 32) | l;
 		}
 
-		static void INLINE
+		static INLINE void
 		fU64TO8_LE_FAST(uint8_t *p, const uint64_t v) {
 			uint32_t *s4, h = (uint32_t)(v >> 32), l = (uint32_t)(v & (uint32_t)0xffffffff);
 			__asm__ ("addi %0,%3,4;stwbrx %1,0,%3;stwbrx %2,0,%0" : "+r"(s4) : "r"(l), "r"(h), "b"(p));
 		}
 	#endif
 
-	static uint32_t INLINE
+	static INLINE uint32_t
 	fU8TO32_LE_FAST(const uint8_t *p) {
 		uint32_t d;
 		__asm__ ("lwbrx %0,0,%1" : "=r"(d) : "r"(p));
 		return d;
 	}
 
-	static void INLINE
+	static INLINE void
 	fU32TO8_LE_FAST(uint8_t *p, const uint32_t v) {
 		__asm__ __volatile__("stwbrx %1,0,%0" : : "r"(p), "r"(v));
 	}
@@ -391,40 +391,40 @@
 
 #if defined(CPU_SPARC)
 	#if defined(CPU_SPARC64)
-		static uint64_t INLINE
+		static INLINE uint64_t
 		fU8TO64_LE_FAST(const uint8_t *p) {
 			uint64_d d;
 			__asm__ ("ldxa [%1]0x88,%0" : "=r"(d) : "r"(p));
 			return d;
 		}
 
-		static void INLINE
+		static INLINE void
 		fU64TO8_LE_FAST(uint8_t *p, const uint64_t v) {
 			__asm__ ("stxa %0,[%1]0x88" : : "r"(v), "r"(p));
 		}
 	#else
-		static uint64_t INLINE
+		static INLINE uint64_t
 		fU8TO64_LE_FAST(const uint8_t *p) {
 			uint32_t *s4, h, l;
 			__asm__ ("add %3,4,%0\n\tlda [%3]0x88,%1\n\tlda [%0]0x88,%2" : "+r"(s4), "=r"(l), "=r"(h) : "r"(p));
 			return ((uint64_t)h << 32) | l;
 		}
 
-		static void INLINE
+		static INLINE void
 		fU64TO8_LE_FAST(uint8_t *p, const uint64_t v) {
 			uint32_t *s4, h = (uint32_t)(v >> 32), l = (uint32_t)(v & (uint32_t)0xffffffff);
 			__asm__ ("add %3,4,%0\n\tsta %1,[%3]0x88\n\tsta %2,[%0]0x88" : "+r"(s4) : "r"(l), "r"(h), "r"(p));
 		}
 	#endif
 
-	static uint32_t INLINE
+	static INLINE uint32_t
 	fU8TO32_LE_FAST(const uint8_t *p) {
 		uint32_t d;
 		__asm__ ("lda [%1]0x88,%0" : "=r"(d) : "r"(p));
 		return d;
 	}
 
-	static void INLINE
+	static INLINE void
 	fU32TO8_LE_FAST(uint8_t *p, const uint32_t v) {
 		__asm__ ("sta %0,[%1]0x88" : : "r"(p), "r"(v));
 	}
@@ -439,16 +439,16 @@
 
 #if (((defined(CPU_X86) && (CPU_X86 >= 400)) || defined(CPU_X86_64)) && (defined(COMPILER_MSVC) || defined(COMPILER_GCC)))
 	#if defined(COMPILER_MSVC)
-		static uint16_t INLINE U16_SWAP_FAST(uint16_t v) { return _byteswap_ushort(v); }
-		static uint32_t INLINE U32_SWAP_FAST(uint32_t v) { return _byteswap_ulong(v); }
-		static uint64_t INLINE U64_SWAP_FAST(uint64_t v) { return _byteswap_uint64(v); }
+		static INLINE uint16_t U16_SWAP_FAST(uint16_t v) { return _byteswap_ushort(v); }
+		static INLINE uint32_t U32_SWAP_FAST(uint32_t v) { return _byteswap_ulong(v); }
+		static INLINE uint64_t U64_SWAP_FAST(uint64_t v) { return _byteswap_uint64(v); }
 	#else
-		static uint16_t INLINE U16_SWAP_FAST(uint16_t v) { __asm__("rorw $8,%0" : "+r" (v)); return v; }
-		static uint32_t INLINE U32_SWAP_FAST(uint32_t v) { __asm__("bswap %0" : "+r" (v)); return v; }
+		static INLINE uint16_t U16_SWAP_FAST(uint16_t v) { __asm__("rorw $8,%0" : "+r" (v)); return v; }
+		static INLINE uint32_t U32_SWAP_FAST(uint32_t v) { __asm__("bswap %0" : "+r" (v)); return v; }
 		#if defined(CPU_X86_64)
-			static uint64_t INLINE U64_SWAP_FAST(uint64_t v) { __asm__("bswap %0" : "+r" (v)); return v; }
+			static INLINE uint64_t U64_SWAP_FAST(uint64_t v) { __asm__("bswap %0" : "+r" (v)); return v; }
 		#else
-			static uint64_t INLINE U64_SWAP_FAST(uint64_t v) { 
+			static INLINE uint64_t U64_SWAP_FAST(uint64_t v) { 
 				uint32_t lo = U32_SWAP_FAST((uint32_t)(v)), hi = U32_SWAP_FAST((uint32_t)(v >> 32));
 				return ((uint64_t)lo << 32) | hi;
 			}
@@ -456,12 +456,12 @@
 	#endif
 
 
-	static uint16_t INLINE fU8TO16_BE_FAST(const uint8_t *p) { return U16_SWAP_FAST(*(const uint16_t *)p); }
-	static uint32_t INLINE fU8TO32_BE_FAST(const uint8_t *p) { return U32_SWAP_FAST(*(const uint32_t *)p); }
-	static uint64_t INLINE fU8TO64_BE_FAST(const uint8_t *p) { return U64_SWAP_FAST(*(const uint64_t *)p); }
-	static void INLINE fU16TO8_BE_FAST(uint8_t *p, const uint16_t v) { *(uint16_t *)p = U16_SWAP_FAST(v); }
-	static void INLINE fU32TO8_BE_FAST(uint8_t *p, const uint32_t v) { *(uint32_t *)p = U32_SWAP_FAST(v); }
-	static void INLINE fU64TO8_BE_FAST(uint8_t *p, const uint64_t v) { *(uint64_t *)p = U64_SWAP_FAST(v); }
+	static INLINE uint16_t fU8TO16_BE_FAST(const uint8_t *p) { return U16_SWAP_FAST(*(const uint16_t *)p); }
+	static INLINE uint32_t fU8TO32_BE_FAST(const uint8_t *p) { return U32_SWAP_FAST(*(const uint32_t *)p); }
+	static INLINE uint64_t fU8TO64_BE_FAST(const uint8_t *p) { return U64_SWAP_FAST(*(const uint64_t *)p); }
+	static INLINE void fU16TO8_BE_FAST(uint8_t *p, const uint16_t v) { *(uint16_t *)p = U16_SWAP_FAST(v); }
+	static INLINE void fU32TO8_BE_FAST(uint8_t *p, const uint32_t v) { *(uint32_t *)p = U32_SWAP_FAST(v); }
+	static INLINE void fU64TO8_BE_FAST(uint8_t *p, const uint64_t v) { *(uint64_t *)p = U64_SWAP_FAST(v); }
 
 	#define U16_SWAP(p) U16_SWAP_FAST(p)
 	#define U32_SWAP(p) U32_SWAP_FAST(p)
@@ -477,7 +477,7 @@
 /* 0400-endian-999-generic-be.h */
 
 #if !defined(U8TO16_BE)
-	static uint16_t INLINE
+	static INLINE uint16_t
 	fU8TO16_BE_SLOW(const uint8_t *p) {
 		return
 		(((uint16_t)(p[0]) <<  8) |
@@ -489,7 +489,7 @@
 
 
 #if !defined(U8TO32_BE)
-	static uint32_t INLINE
+	static INLINE uint32_t
 	fU8TO32_BE_SLOW(const uint8_t *p) {
 		return
 		(((uint32_t)(p[0]) << 24) |
@@ -502,7 +502,7 @@
 #endif
 
 #if !defined(U8TO64_BE)
-	static uint64_t INLINE
+	static INLINE uint64_t
 	fU8TO64_BE_SLOW(const uint8_t *p) {
 		return
 		(((uint64_t)(p[0]) << 56) |
@@ -519,7 +519,7 @@
 #endif
 
 #if !defined(U16TO8_BE)
-	static void INLINE
+	static INLINE void
 	fU16TO8_BE_SLOW(uint8_t *p, const uint16_t v) {
 		p[0] = (uint8_t)(v >>  8);
 		p[1] = (uint8_t)(v      );
@@ -529,7 +529,7 @@
 #endif
 
 #if !defined(U32TO8_BE)
-	static void INLINE
+	static INLINE void
 	fU32TO8_BE_SLOW(uint8_t *p, const uint32_t v) {
 		p[0] = (uint8_t)(v >> 24);
 		p[1] = (uint8_t)(v >> 16);
@@ -541,7 +541,7 @@
 #endif
 
 #if !defined(U64TO8_BE)
-	static void INLINE
+	static INLINE void
 	fU64TO8_BE_SLOW(uint8_t *p, const uint64_t v) {
 		p[0] = (uint8_t)(v >> 56);
 		p[1] = (uint8_t)(v >> 48);
@@ -559,7 +559,7 @@
 /* 0400-endian-999-generic-le.h */
 
 #if !defined(U8TO16_LE)
-	static uint16_t INLINE
+	static INLINE uint16_t
 	fU8TO16_LE_SLOW(const uint8_t *p) {
 		return
 		(((uint16_t)(p[0])      ) |
@@ -570,7 +570,7 @@
 #endif
 
 #if !defined(U8TO32_LE)
-	static uint32_t INLINE
+	static INLINE uint32_t
 	fU8TO32_LE_SLOW(const uint8_t *p) {
 		return
 		(((uint32_t)(p[0])      ) |
@@ -584,7 +584,7 @@
 
 
 #if !defined(U8TO64_LE)
-	static uint64_t INLINE
+	static INLINE uint64_t
 	fU8TO64_LE_SLOW(const uint8_t *p) {
 		return
 		(((uint64_t)(p[0])      ) |
@@ -601,7 +601,7 @@
 #endif
 
 #if !defined(U16TO8_LE)
-	static void INLINE
+	static INLINE void
 	fU16TO8_LE_SLOW(uint8_t *p, const uint16_t v) {
 		p[0] = (uint8_t)(v      );
 		p[1] = (uint8_t)(v >>  8);
@@ -611,7 +611,7 @@
 #endif
 
 #if !defined(U32TO8_LE)
-	static void INLINE
+	static INLINE void
 	fU32TO8_LE_SLOW(uint8_t *p, const uint32_t v) {
 		p[0] = (uint8_t)(v      );
 		p[1] = (uint8_t)(v >>  8);
@@ -623,7 +623,7 @@
 #endif
 
 #if !defined(U64TO8_LE)
-	static void INLINE
+	static INLINE void
 	fU64TO8_LE_SLOW(uint8_t *p, const uint64_t v) {
 		p[0] = (uint8_t)(v      );
 		p[1] = (uint8_t)(v >>  8);
@@ -641,7 +641,7 @@
 /* 0400-endian-999-generic-swap.h */
 
 #if !defined(U16_SWAP)
-	static uint16_t INLINE
+	static INLINE uint16_t
 	fU16_SWAP_SLOW(uint16_t v) {
 	    v = (v << 8) | (v >> 8);
 	    return v;
@@ -651,7 +651,7 @@
 #endif
 
 #if !defined(U32_SWAP)
-	static uint32_t INLINE
+	static INLINE uint32_t
 	fU32_SWAP_SLOW(uint32_t v) {
 		v = ((v << 8) & 0xFF00FF00) | ((v >> 8) & 0xFF00FF);
 	    v = (v << 16) | (v >> 16);
@@ -662,7 +662,7 @@
 #endif
 
 #if !defined(U64_SWAP)
-	static uint64_t INLINE
+	static INLINE uint64_t
 	fU64_SWAP_SLOW(uint64_t v) {
 		v = ((v <<  8) & 0xFF00FF00FF00FF00ull) | ((v >>  8) & 0x00FF00FF00FF00FFull);
 		v = ((v << 16) & 0xFFFF0000FFFF0000ull) | ((v >> 16) & 0x0000FFFF0000FFFFull);
@@ -703,24 +703,24 @@
 		uint64_t lo, hi;
 	} uint128_t;
 
-	static uint128_t INLINE
+	static INLINE uint128_t
 	mul64x64_128(uint64_t a, uint64_t b) {
 		uint128_t v;
 		v.lo = _umul128(a, b, &v.hi);
 		return v;
 	}
 
-	static uint64_t INLINE
+	static INLINE uint64_t
 	shr128_pair(uint64_t hi, uint64_t lo, const int shift) {
 		return __shiftright128(lo, hi, shift);
 	}
 
-	static uint64_t INLINE
+	static INLINE uint64_t
 	shr128(uint128_t v, const int shift) {
 		return __shiftright128(v.lo, v.hi, shift);
 	}
 
-	static uint128_t INLINE
+	static INLINE uint128_t
 	add128(uint128_t a, uint128_t b) {
 		uint64_t t = a.lo;
 		a.lo += b.lo;
@@ -728,7 +728,7 @@
 		return a;
 	}
 
-	static uint128_t INLINE
+	static INLINE uint128_t
 	add128_64(uint128_t a, uint64_t b) {
 		uint64_t t = a.lo;
 		a.lo += b;
@@ -736,12 +736,12 @@
 		return a;
 	}
 
-	static uint64_t INLINE
+	static INLINE uint64_t
 	lo128(uint128_t a) {
 		return a.lo;
 	}
 
-	static uint64_t INLINE
+	static INLINE uint64_t
 	hi128(uint128_t a) {
 		return a.hi;
 	}
@@ -752,37 +752,37 @@
 #if defined(HAVE_NATIVE_UINT128)
 	#define HAVE_UINT128
 
-	static uint128_t INLINE
+	static INLINE uint128_t
 	mul64x64_128(uint64_t a, uint64_t b) {
 		return (uint128_t)a * b;
 	}
 
-	static uint64_t INLINE
+	static INLINE uint64_t
 	shr128(uint128_t v, const int shift) {
 		return (uint64_t)(v >> shift);
 	}
 
-	static uint64_t INLINE
+	static INLINE uint64_t
 	shr128_pair(uint64_t hi, uint64_t lo, const int shift) {
 		return (uint64_t)((((uint128_t)hi << 64) | lo) >> shift);
 	}
 
-	static uint128_t INLINE
+	static INLINE uint128_t
 	add128(uint128_t a, uint128_t b) {
 		return a + b;
 	}
 
-	static uint128_t INLINE
+	static INLINE uint128_t
 	add128_64(uint128_t a, uint64_t b) {
 		return a + b;
 	}
 
-	static uint64_t INLINE
+	static INLINE uint64_t
 	lo128(uint128_t a) {
 		return (uint64_t)a;
 	}
 
-	static uint64_t INLINE
+	static INLINE uint64_t
 	hi128(uint128_t a) {
 		return (uint64_t)(a >> 64);
 	}
