@@ -251,30 +251,30 @@ int crypto_onetimeauth(unsigned char *out,const unsigned char *m,unsigned long l
   }
 #endif
 
-  r00 = *(uchar *) (r + 0);
+  r00 = *(const uchar *) (r + 0);
   constants = (char *) &poly1305_53_constants;
 
-  r01 = *(uchar *) (r + 1);
+  r01 = *(const uchar *) (r + 1);
 
-  r02 = *(uchar *) (r + 2);
+  r02 = *(const uchar *) (r + 2);
   r0 = 2151;
 
-  r03 = *(uchar *) (r + 3); r03 &= 15;
+  r03 = *(const uchar *) (r + 3); r03 &= 15;
   r0 <<= 51;
 
-  r10 = *(uchar *) (r + 4); r10 &= 252;
+  r10 = *(const uchar *) (r + 4); r10 &= 252;
   r01 <<= 8;
   r0 += r00;
 
-  r11 = *(uchar *) (r + 5);
+  r11 = *(const uchar *) (r + 5);
   r02 <<= 16;
   r0 += r01;
 
-  r12 = *(uchar *) (r + 6);
+  r12 = *(const uchar *) (r + 6);
   r03 <<= 24;
   r0 += r02;
 
-  r13 = *(uchar *) (r + 7); r13 &= 15;
+  r13 = *(const uchar *) (r + 7); r13 &= 15;
   r1 = 2215;
   r0 += r03;
 
@@ -282,19 +282,19 @@ int crypto_onetimeauth(unsigned char *out,const unsigned char *m,unsigned long l
   r1 <<= 51;
   r2 = 2279;
 
-  r20 = *(uchar *) (r + 8); r20 &= 252;
+  r20 = *(const uchar *) (r + 8); r20 &= 252;
   r11 <<= 8;
   r1 += r10;
 
-  r21 = *(uchar *) (r + 9);
+  r21 = *(const uchar *) (r + 9);
   r12 <<= 16;
   r1 += r11;
 
-  r22 = *(uchar *) (r + 10);
+  r22 = *(const uchar *) (r + 10);
   r13 <<= 24;
   r1 += r12;
 
-  r23 = *(uchar *) (r + 11); r23 &= 15;
+  r23 = *(const uchar *) (r + 11); r23 &= 15;
   r2 <<= 51;
   r1 += r13;
 
@@ -302,15 +302,15 @@ int crypto_onetimeauth(unsigned char *out,const unsigned char *m,unsigned long l
   r21 <<= 8;
   r2 += r20;
 
-  r30 = *(uchar *) (r + 12); r30 &= 252;
+  r30 = *(const uchar *) (r + 12); r30 &= 252;
   r22 <<= 16;
   r2 += r21;
 
-  r31 = *(uchar *) (r + 13);
+  r31 = *(const uchar *) (r + 13);
   r23 <<= 24;
   r2 += r22;
 
-  r32 = *(uchar *) (r + 14);
+  r32 = *(const uchar *) (r + 14);
   r2 += r23;
   r3 = 2343;
 
@@ -318,7 +318,7 @@ int crypto_onetimeauth(unsigned char *out,const unsigned char *m,unsigned long l
   r3 <<= 51;
   alpha32 = *(double *) (constants + 40);
 
-  r33 = *(uchar *) (r + 15); r33 &= 15;
+  r33 = *(const uchar *) (r + 15); r33 &= 15;
   r31 <<= 8;
   r3 += r30;
 
@@ -435,65 +435,65 @@ int crypto_onetimeauth(unsigned char *out,const unsigned char *m,unsigned long l
 
 if (l < 16) goto addatmost15bytes;
 
-  m00 = *(uchar *) (m + 0);
+  m00 = *(const uchar *) (m + 0);
   m0 = 2151;
 
   m0 <<= 51;
   m1 = 2215;
-  m01 = *(uchar *) (m + 1);
+  m01 = *(const uchar *) (m + 1);
 
   m1 <<= 51;
   m2 = 2279;
-  m02 = *(uchar *) (m + 2);
+  m02 = *(const uchar *) (m + 2);
 
   m2 <<= 51;
   m3 = 2343;
-  m03 = *(uchar *) (m + 3);
+  m03 = *(const uchar *) (m + 3);
 
-  m10 = *(uchar *) (m + 4);
+  m10 = *(const uchar *) (m + 4);
   m01 <<= 8;
   m0 += m00;
 
-  m11 = *(uchar *) (m + 5);
+  m11 = *(const uchar *) (m + 5);
   m02 <<= 16;
   m0 += m01;
 
-  m12 = *(uchar *) (m + 6);
+  m12 = *(const uchar *) (m + 6);
   m03 <<= 24;
   m0 += m02;
 
-  m13 = *(uchar *) (m + 7);
+  m13 = *(const uchar *) (m + 7);
   m3 <<= 51;
   m0 += m03;
 
-  m20 = *(uchar *) (m + 8);
+  m20 = *(const uchar *) (m + 8);
   m11 <<= 8;
   m1 += m10;
 
-  m21 = *(uchar *) (m + 9);
+  m21 = *(const uchar *) (m + 9);
   m12 <<= 16;
   m1 += m11;
 
-  m22 = *(uchar *) (m + 10);
+  m22 = *(const uchar *) (m + 10);
   m13 <<= 24;
   m1 += m12;
 
-  m23 = *(uchar *) (m + 11);
+  m23 = *(const uchar *) (m + 11);
   m1 += m13;
 
-  m30 = *(uchar *) (m + 12);
+  m30 = *(const uchar *) (m + 12);
   m21 <<= 8;
   m2 += m20;
 
-  m31 = *(uchar *) (m + 13);
+  m31 = *(const uchar *) (m + 13);
   m22 <<= 16;
   m2 += m21;
 
-  m32 = *(uchar *) (m + 14);
+  m32 = *(const uchar *) (m + 14);
   m23 <<= 24;
   m2 += m22;
 
-  m33 = *(uchar *) (m + 15);
+  m33 = *(const uchar *) (m + 15);
   m2 += m23;
 
   d0 = m0;
@@ -545,80 +545,80 @@ if (l < 16) goto multiplyaddatmost15bytes;
 multiplyaddatleast16bytes:;
 
   m2 = 2279;
-  m20 = *(uchar *) (m + 8);
+  m20 = *(const uchar *) (m + 8);
   y7 = h7 + alpha130;
 
   m2 <<= 51;
   m3 = 2343;
-  m21 = *(uchar *) (m + 9);
+  m21 = *(const uchar *) (m + 9);
   y6 = h6 + alpha130;
 
   m3 <<= 51;
   m0 = 2151;
-  m22 = *(uchar *) (m + 10);
+  m22 = *(const uchar *) (m + 10);
   y1 = h1 + alpha32;
 
   m0 <<= 51;
   m1 = 2215;
-  m23 = *(uchar *) (m + 11);
+  m23 = *(const uchar *) (m + 11);
   y0 = h0 + alpha32;
 
   m1 <<= 51;
-  m30 = *(uchar *) (m + 12);
+  m30 = *(const uchar *) (m + 12);
   y7 -= alpha130;
 
   m21 <<= 8;
   m2 += m20;
-  m31 = *(uchar *) (m + 13);
+  m31 = *(const uchar *) (m + 13);
   y6 -= alpha130;
 
   m22 <<= 16;
   m2 += m21;
-  m32 = *(uchar *) (m + 14);
+  m32 = *(const uchar *) (m + 14);
   y1 -= alpha32;
 
   m23 <<= 24;
   m2 += m22;
-  m33 = *(uchar *) (m + 15);
+  m33 = *(const uchar *) (m + 15);
   y0 -= alpha32;
 
   m2 += m23;
-  m00 = *(uchar *) (m + 0);
+  m00 = *(const uchar *) (m + 0);
   y5 = h5 + alpha96;
 
   m31 <<= 8;
   m3 += m30;
-  m01 = *(uchar *) (m + 1);
+  m01 = *(const uchar *) (m + 1);
   y4 = h4 + alpha96;
 
   m32 <<= 16;
-  m02 = *(uchar *) (m + 2);
+  m02 = *(const uchar *) (m + 2);
   x7 = h7 - y7;
   y7 *= scale;
 
   m33 += 256;
-  m03 = *(uchar *) (m + 3);
+  m03 = *(const uchar *) (m + 3);
   x6 = h6 - y6;
   y6 *= scale;
 
   m33 <<= 24;
   m3 += m31;
-  m10 = *(uchar *) (m + 4);
+  m10 = *(const uchar *) (m + 4);
   x1 = h1 - y1;
 
   m01 <<= 8;
   m3 += m32;
-  m11 = *(uchar *) (m + 5);
+  m11 = *(const uchar *) (m + 5);
   x0 = h0 - y0;
 
   m3 += m33;
   m0 += m00;
-  m12 = *(uchar *) (m + 6);
+  m12 = *(const uchar *) (m + 6);
   y5 -= alpha96;
 
   m02 <<= 16;
   m0 += m01;
-  m13 = *(uchar *) (m + 7);
+  m13 = *(const uchar *) (m + 7);
   y4 -= alpha96;
 
   m03 <<= 24;
@@ -977,19 +977,19 @@ if (l == 0) goto nomorebytes;
   lbelow2 >>= 31;
   lbelow4 = l - 4;
 
-  m00 = *(uchar *) (m + 0);
+  m00 = *(const uchar *) (m + 0);
   lbelow3 >>= 31;
   m += lbelow2;
 
-  m01 = *(uchar *) (m + 1);
+  m01 = *(const uchar *) (m + 1);
   lbelow4 >>= 31;
   m += lbelow3;
 
-  m02 = *(uchar *) (m + 2);
+  m02 = *(const uchar *) (m + 2);
   m += lbelow4;
   m0 = 2151;
 
-  m03 = *(uchar *) (m + 3);
+  m03 = *(const uchar *) (m + 3);
   m0 <<= 51;
   m1 = 2215;
 
@@ -1026,19 +1026,19 @@ if (l == 0) goto nomorebytes;
   lbelow6 >>= 31;
   m += lbelow5;
 
-  m10 = *(uchar *) (m + 4);
+  m10 = *(const uchar *) (m + 4);
   lbelow7 >>= 31;
   m += lbelow6;
 
-  m11 = *(uchar *) (m + 5);
+  m11 = *(const uchar *) (m + 5);
   lbelow8 >>= 31;
   m += lbelow7;
 
-  m12 = *(uchar *) (m + 6);
+  m12 = *(const uchar *) (m + 6);
   m1 <<= 51;
   m += lbelow8;
 
-  m13 = *(uchar *) (m + 7);
+  m13 = *(const uchar *) (m + 7);
   m10 &= ~lbelow5;
   lbelow4 -= lbelow5;
 
@@ -1081,19 +1081,19 @@ if (l == 0) goto nomorebytes;
   lbelow10 >>= 31;
   m += lbelow9;
 
-  m20 = *(uchar *) (m + 8);
+  m20 = *(const uchar *) (m + 8);
   lbelow11 >>= 31;
   m += lbelow10;
 
-  m21 = *(uchar *) (m + 9);
+  m21 = *(const uchar *) (m + 9);
   lbelow12 >>= 31;
   m += lbelow11;
 
-  m22 = *(uchar *) (m + 10);
+  m22 = *(const uchar *) (m + 10);
   m2 <<= 51;
   m += lbelow12;
 
-  m23 = *(uchar *) (m + 11);
+  m23 = *(const uchar *) (m + 11);
   m20 &= ~lbelow9;
   lbelow8 -= lbelow9;
 
@@ -1131,15 +1131,15 @@ if (l == 0) goto nomorebytes;
   m += lbelow13;
   lbelow15 = l - 15;
 
-  m30 = *(uchar *) (m + 12);
+  m30 = *(const uchar *) (m + 12);
   lbelow15 >>= 31;
   m += lbelow14;
 
-  m31 = *(uchar *) (m + 13);
+  m31 = *(const uchar *) (m + 13);
   m += lbelow15;
   m2 += m23;
 
-  m32 = *(uchar *) (m + 14);
+  m32 = *(const uchar *) (m + 14);
   m30 &= ~lbelow13;
   lbelow12 -= lbelow13;
 
@@ -1516,66 +1516,66 @@ nomorebytes:;
   g4 = f4 + g;
 
   g4 = g4 - 4;
-  s00 = *(uchar *) (s + 0);
+  s00 = *(const uchar *) (s + 0);
 
   f = (int64) g4 >> 63;
-  s01 = *(uchar *) (s + 1);
+  s01 = *(const uchar *) (s + 1);
 
   f0 &= f;
   g0 &= ~f;
-  s02 = *(uchar *) (s + 2);
+  s02 = *(const uchar *) (s + 2);
 
   f1 &= f;
   f0 |= g0;
-  s03 = *(uchar *) (s + 3);
+  s03 = *(const uchar *) (s + 3);
 
   g1 &= ~f;
   f2 &= f;
-  s10 = *(uchar *) (s + 4);
+  s10 = *(const uchar *) (s + 4);
 
   f3 &= f;
   g2 &= ~f;
-  s11 = *(uchar *) (s + 5);
+  s11 = *(const uchar *) (s + 5);
 
   g3 &= ~f;
   f1 |= g1;
-  s12 = *(uchar *) (s + 6);
+  s12 = *(const uchar *) (s + 6);
 
   f2 |= g2;
   f3 |= g3;
-  s13 = *(uchar *) (s + 7);
+  s13 = *(const uchar *) (s + 7);
 
   s01 <<= 8;
   f0 += s00;
-  s20 = *(uchar *) (s + 8);
+  s20 = *(const uchar *) (s + 8);
 
   s02 <<= 16;
   f0 += s01;
-  s21 = *(uchar *) (s + 9);
+  s21 = *(const uchar *) (s + 9);
 
   s03 <<= 24;
   f0 += s02;
-  s22 = *(uchar *) (s + 10);
+  s22 = *(const uchar *) (s + 10);
 
   s11 <<= 8;
   f1 += s10;
-  s23 = *(uchar *) (s + 11);
+  s23 = *(const uchar *) (s + 11);
 
   s12 <<= 16;
   f1 += s11;
-  s30 = *(uchar *) (s + 12);
+  s30 = *(const uchar *) (s + 12);
 
   s13 <<= 24;
   f1 += s12;
-  s31 = *(uchar *) (s + 13);
+  s31 = *(const uchar *) (s + 13);
 
   f0 += s03;
   f1 += s13;
-  s32 = *(uchar *) (s + 14);
+  s32 = *(const uchar *) (s + 14);
 
   s21 <<= 8;
   f2 += s20;
-  s33 = *(uchar *) (s + 15);
+  s33 = *(const uchar *) (s + 15);
 
   s22 <<= 16;
   f2 += s21;

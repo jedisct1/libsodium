@@ -23,7 +23,7 @@ static inline uint32_t load32( const void *src )
 #if defined(NATIVE_LITTLE_ENDIAN)
   return *( uint32_t * )( src );
 #else
-  const uint8_t *p = ( uint8_t * )src;
+  const uint8_t *p = ( const uint8_t * )src;
   uint32_t w = *p++;
   w |= ( uint32_t )( *p++ ) <<  8;
   w |= ( uint32_t )( *p++ ) << 16;
@@ -37,7 +37,7 @@ static inline uint64_t load64( const void *src )
 #if defined(NATIVE_LITTLE_ENDIAN)
   return *( uint64_t * )( src );
 #else
-  const uint8_t *p = ( uint8_t * )src;
+  const uint8_t *p = ( const uint8_t * )src;
   uint64_t w = *p++;
   w |= ( uint64_t )( *p++ ) <<  8;
   w |= ( uint64_t )( *p++ ) << 16;
