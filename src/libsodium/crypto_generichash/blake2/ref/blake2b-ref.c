@@ -149,7 +149,7 @@ static inline int blake2b_init0( blake2b_state *S )
 int blake2b_init_param( blake2b_state *S, const blake2b_param *P )
 {
   blake2b_init0( S );
-  uint8_t *p = ( uint8_t * )( P );
+  const uint8_t *p = ( const uint8_t * )( P );
 
   /* IV XOR ParamBlock */
   for( size_t i = 0; i < 8; ++i )
@@ -353,7 +353,7 @@ int blake2b( uint8_t *out, const void *in, const void *key, const uint8_t outlen
     if( blake2b_init( S, outlen ) < 0 ) return -1;
   }
 
-  blake2b_update( S, ( uint8_t * )in, inlen );
+  blake2b_update( S, ( const uint8_t * )in, inlen );
   blake2b_final( S, out, outlen );
   return 0;
 }

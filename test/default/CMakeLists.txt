@@ -1,0 +1,74 @@
+
+INCLUDE_DIRECTORIES(
+    ${LIBSODIUM_SOURCE_INCLUDE_DIR}
+    ${LIBSODIUM_SOURCE_INCLUDE_DIR}/sodium
+    ${LIBSODIUM_BINARY_INCLUDE_DIR}
+    ${LIBSODIUM_BINARY_INCLUDE_DIR}/sodium
+    ${CMAKE_CURRENT_SOURCE_DIR}
+    ${CMAKE_CURRENT_SOURCE_DIR}/../quirks
+)
+
+ADD_DEFINITIONS("-DTEST_SRCDIR=\"${CMAKE_CURRENT_SOURCE_DIR}\"")
+
+# ************************************************************
+
+MACRO(PROJECT_ADD_TEST TNAME)
+    ADD_EXECUTABLE(
+	${TNAME}
+	    cmptest.h
+	    ${TNAME}.c
+    )
+
+    TARGET_LINK_LIBRARIES(
+	${TNAME}
+	    libsodium-static
+    )
+
+    ADD_TEST(
+	NAME ${TNAME}
+	COMMAND ${TNAME}
+    )
+ENDMACRO(PROJECT_ADD_TEST)
+
+# ************************************************************
+
+PROJECT_ADD_TEST(auth)
+PROJECT_ADD_TEST(auth2)
+PROJECT_ADD_TEST(auth3)
+PROJECT_ADD_TEST(auth5)
+PROJECT_ADD_TEST(box)
+PROJECT_ADD_TEST(box2)
+PROJECT_ADD_TEST(box7)
+PROJECT_ADD_TEST(box8)
+PROJECT_ADD_TEST(core1)
+PROJECT_ADD_TEST(core2)
+PROJECT_ADD_TEST(core3)
+PROJECT_ADD_TEST(core4)
+PROJECT_ADD_TEST(core5)
+PROJECT_ADD_TEST(core6)
+PROJECT_ADD_TEST(generichash)
+PROJECT_ADD_TEST(generichash2)
+PROJECT_ADD_TEST(hash)
+PROJECT_ADD_TEST(hash3)
+PROJECT_ADD_TEST(onetimeauth)
+PROJECT_ADD_TEST(onetimeauth2)
+PROJECT_ADD_TEST(onetimeauth7)
+PROJECT_ADD_TEST(randombytes)
+PROJECT_ADD_TEST(scalarmult)
+PROJECT_ADD_TEST(scalarmult2)
+PROJECT_ADD_TEST(scalarmult5)
+PROJECT_ADD_TEST(scalarmult6)
+PROJECT_ADD_TEST(secretbox)
+PROJECT_ADD_TEST(secretbox2)
+PROJECT_ADD_TEST(secretbox7)
+PROJECT_ADD_TEST(secretbox8)
+PROJECT_ADD_TEST(shorthash)
+PROJECT_ADD_TEST(sodium_core)
+PROJECT_ADD_TEST(sodium_utils)
+PROJECT_ADD_TEST(sodium_version)
+PROJECT_ADD_TEST(stream)
+PROJECT_ADD_TEST(stream2)
+PROJECT_ADD_TEST(stream3)
+PROJECT_ADD_TEST(stream4)
+PROJECT_ADD_TEST(stream5)
+PROJECT_ADD_TEST(stream6)

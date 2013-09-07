@@ -43,10 +43,10 @@ SODIUM_EXPORT
 int crypto_stream_aes256estream_beforenm(unsigned char *,const unsigned char *);
 
 SODIUM_EXPORT
-int crypto_stream_aes256estream_afternm(unsigned char *,unsigned long long,const unsigned char *,const unsigned char *);
+int crypto_stream_aes256estream_afternm(unsigned char *,unsigned long long,const unsigned char *, unsigned char *);
 
 SODIUM_EXPORT
-int crypto_stream_aes256estream_xor_afternm(unsigned char *,const unsigned char *,unsigned long long,const unsigned char *,const unsigned char *);
+int crypto_stream_aes256estream_xor_afternm(unsigned char *,const unsigned char *,unsigned long long,const unsigned char *, unsigned char *);
 
 #ifdef __cplusplus
 }
