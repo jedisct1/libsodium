@@ -49,6 +49,32 @@ Integrity of source tarballs can currently be checked using PGP or
 verified DNS queries (`dig +dnssec +short txt <file>.download.libsodium.org`
 returns the SHA256 of any file available for download).
 
+## Installation with CMake
+
+Sodium supports CMake.
+
+To use CMake (hopefully you will choose for an out-of-tree build) the steps are as follows:
+
+    mkdir build
+    cd build
+    cmake ../
+    make -j4 install
+
+You can eventually pass to CMake some options. Particularly:
+
+- CMAKE_BUILD_TYPE_TOLOWER=debug
+- ENABLE_BLOCKING_RANDOM=1
+- ENABLE_SSP=1
+- ENABLE_PIE=1
+- HAVE_AMD64_ASM_V=1
+- ENABLE_ASM=1
+- HAVE_TI_MODE_V=1
+
+You should prepend each option with -D such as:
+
+    cmake -DCMAKE_BUILD_TYPE=debug -DENABLE_SSP=1
+
+
 ## Comparison with vanilla NaCl
 
 Sodium does not ship C++ bindings. These might be part of a distinct
