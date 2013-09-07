@@ -121,7 +121,7 @@ static void
 ECRYPT_process_bytes(int action, ECRYPT_ctx* ctx, const u8* input, u8* output,
                      u32 msglen)
 {
-    u8 keystream[16];
+    __attribute__((aligned(32))) u8 keystream[16];
     u32 i;
 
     (void) action;
@@ -131,10 +131,10 @@ ECRYPT_process_bytes(int action, ECRYPT_ctx* ctx, const u8* input, u8* output,
     for ( ; msglen >= 16; msglen -= 16, input += 16, output += 16) {
         aes256_enc_block(ctx->counter, keystream, ctx);
 
-        ((u32*)output)[0] = ((u32*)input)[0] ^ ((u32*)keystream)[0] ^ ctx->round_key[Nr][0];
-        ((u32*)output)[1] = ((u32*)input)[1] ^ ((u32*)keystream)[1] ^ ctx->round_key[Nr][1];
-        ((u32*)output)[2] = ((u32*)input)[2] ^ ((u32*)keystream)[2] ^ ctx->round_key[Nr][2];
-        ((u32*)output)[3] = ((u32*)input)[3] ^ ((u32*)keystream)[3] ^ ctx->round_key[Nr][3];
+        ((u32*)output)[0] = UNALIGNED_U32_READ(input, 0) ^ ((u32*)keystream)[0] ^ ctx->round_key[Nr][0];
+        ((u32*)output)[1] = UNALIGNED_U32_READ(input, 1) ^ ((u32*)keystream)[1] ^ ctx->round_key[Nr][1];
+        ((u32*)output)[2] = UNALIGNED_U32_READ(input, 2) ^ ((u32*)keystream)[2] ^ ctx->round_key[Nr][2];
+        ((u32*)output)[3] = UNALIGNED_U32_READ(input, 3) ^ ((u32*)keystream)[3] ^ ctx->round_key[Nr][3];
 
         ctx->counter[0]++;
 
