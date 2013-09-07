@@ -156,5 +156,3 @@
       round(ctx,j0,j1,j2,j3,k0,k1,k2,k3,13);\
       last_round(ctx,k0,k1,k2,k3,(output),14);\
 }
-
-#define UNALIGNED_U32_READ(P, I) (((const u32 *)(const void *) (P))[(I)])

@@ -117,6 +117,27 @@ partial_precompute_tworounds(ECRYPT_ctx* ctx)
 
 /* ------------------------------------------------------------------------- */
 
+#if defined(CPU_X86) || defined(CPU_X86_64) || defined(CPU_PPC) || defined(CPU_Z390)
+# undef CPU_ALIGNED_ACCESS_REQUIRED
+#else
+# define CPU_ALIGNED_ACCESS_REQUIRED
+#endif
+
+#ifndef CPU_ALIGNED_ACCESS_REQUIRED
+# define UNALIGNED_U32_READ(P, I) (((const u32 *)(const void *) (P))[(I)])
+#else
+static inline uint32_t
+UNALIGNED_U32_READ(const u8 * const p, const size_t i)
+{
+    uint32_t t;
+    (void) sizeof(int[sizeof(*p) == sizeof(char) ? 1 : -1]);
+    memcpy(&t, p + i * (sizeof t / sizeof *p), sizeof t);
+    return t;
+}
+#endif
+
+/* ------------------------------------------------------------------------- */
+
 static void
 ECRYPT_process_bytes(int action, ECRYPT_ctx* ctx, const u8* input, u8* output,
                      u32 msglen)
