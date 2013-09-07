@@ -53,7 +53,7 @@ void shufd(int128 *r, const int128 *x, const unsigned int c)
 {
   int128 t;
   uint32 *tp = (uint32 *)&t;
-  uint32 *xp = (uint32 *)x;
+  const uint32 *xp = (const uint32 *)x;
   tp[0] = xp[c&3];
   tp[1] = xp[(c>>2)&3];
   tp[2] = xp[(c>>4)&3];
