@@ -127,19 +127,11 @@
         output[12] = Sbox[t12];   \
 }
 
-/*
-        ((u32*)output)[0] ^= ctx->round_key[r][0]; \
-        ((u32*)output)[1] ^= ctx->round_key[r][1]; \
-        ((u32*)output)[2] ^= ctx->round_key[r][2]; \
-        ((u32*)output)[3] ^= ctx->round_key[r][3]; \
-}
-*/
-
 #define aes256_enc_block(x,output,ctx) {\
-        u32 y0;\
-        u32 z0,z1,z2,z3;\
-        u32 a0,a1,a2,a3;\
-        u32 b0,b1,b2,b3;\
+      u32 y0;\
+      u32 z0,z1,z2,z3;\
+      u32 a0,a1,a2,a3;\
+      u32 b0,b1,b2,b3;\
       u32 c0,c1,c2,c3;\
       u32 d0,d1,d2,d3;\
       u32 e0,e1,e2,e3;\
@@ -149,15 +141,15 @@
       u32 i0,i1,i2,i3;\
       u32 j0,j1,j2,j3;\
       u32 k0,k1,k2,k3;\
-        first_round(ctx,x[0],y0);\
-        second_round(ctx,y0,z0,z1,z2,z3);\
-        round(ctx,z0,z1,z2,z3,a0,a1,a2,a3,3);\
-        round(ctx,a0,a1,a2,a3,b0,b1,b2,b3,4);\
-        round(ctx,b0,b1,b2,b3,c0,c1,c2,c3,5);\
-        round(ctx,c0,c1,c2,c3,d0,d1,d2,d3,6);\
-        round(ctx,d0,d1,d2,d3,e0,e1,e2,e3,7);\
-        round(ctx,e0,e1,e2,e3,f0,f1,f2,f3,8);\
-        round(ctx,f0,f1,f2,f3,g0,g1,g2,g3,9);\
+      first_round(ctx,x[0],y0);\
+      second_round(ctx,y0,z0,z1,z2,z3);\
+      round(ctx,z0,z1,z2,z3,a0,a1,a2,a3,3);\
+      round(ctx,a0,a1,a2,a3,b0,b1,b2,b3,4);\
+      round(ctx,b0,b1,b2,b3,c0,c1,c2,c3,5);\
+      round(ctx,c0,c1,c2,c3,d0,d1,d2,d3,6);\
+      round(ctx,d0,d1,d2,d3,e0,e1,e2,e3,7);\
+      round(ctx,e0,e1,e2,e3,f0,f1,f2,f3,8);\
+      round(ctx,f0,f1,f2,f3,g0,g1,g2,g3,9);\
       round(ctx,g0,g1,g2,g3,h0,h1,h2,h3,10);\
       round(ctx,h0,h1,h2,h3,i0,i1,i2,i3,11);\
       round(ctx,i0,i1,i2,i3,j0,j1,j2,j3,12);\
