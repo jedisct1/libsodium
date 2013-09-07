@@ -37,7 +37,7 @@ SODIUM_EXPORT
 const char * crypto_onetimeauth_poly1305_primitive(void);
 
 SODIUM_EXPORT
-const char *crypto_onetimeauth_poly1305_ref_implementation_name(void);
+const char *crypto_onetimeauth_poly1305_implementation_name(void);
 
 SODIUM_EXPORT
 int crypto_onetimeauth_poly1305_set_implementation(crypto_onetimeauth_poly1305_implementation *impl);
