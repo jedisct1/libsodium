@@ -16,6 +16,7 @@
 extern "C" {
 #endif
 
+/*
 #undef crypto_hash_sha256_ref
 SODIUM_EXPORT int
 crypto_hash_sha256_ref(unsigned char *out, const unsigned char *in,
@@ -231,6 +232,7 @@ crypto_verify_32_ref(const unsigned char *x, const unsigned char *y)
 {
     return crypto_verify_32(x, y);
 }
+*/
 
 #ifdef __cplusplus
 }

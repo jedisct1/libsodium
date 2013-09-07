@@ -155,7 +155,7 @@ void ge25519_add(ge25519_p3 *r, const ge25519_p3 *p, const ge25519_p3 *q)
 void ge25519_double(ge25519_p3 *r, const ge25519_p3 *p)
 {
   ge25519_p1p1 grp1p1;
-  dbl_p1p1(&grp1p1, (ge25519_p2 *)p);
+  dbl_p1p1(&grp1p1, (const ge25519_p2 *)p);
   p1p1_to_p3(r, &grp1p1);
 }
 

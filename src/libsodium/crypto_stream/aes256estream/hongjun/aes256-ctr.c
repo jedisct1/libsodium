@@ -108,10 +108,10 @@ ECRYPT_process_bytes(int action, ECRYPT_ctx* ctx, const u8* input, u8* output,
     for ( ; msglen >= 16; msglen -= 16, input += 16, output += 16) {
         aes256_enc_block(ctx->counter, keystream, ctx);
 
-        ((u32*)output)[0] = ((u32*)input)[0] ^ ((u32*)keystream)[0] ^ ctx->round_key[Nr][0];
-        ((u32*)output)[1] = ((u32*)input)[1] ^ ((u32*)keystream)[1] ^ ctx->round_key[Nr][1];
-        ((u32*)output)[2] = ((u32*)input)[2] ^ ((u32*)keystream)[2] ^ ctx->round_key[Nr][2];
-        ((u32*)output)[3] = ((u32*)input)[3] ^ ((u32*)keystream)[3] ^ ctx->round_key[Nr][3];
+        ((u32*)output)[0] = ((const u32*)input)[0] ^ ((u32*)keystream)[0] ^ ctx->round_key[Nr][0];
+        ((u32*)output)[1] = ((const u32*)input)[1] ^ ((u32*)keystream)[1] ^ ctx->round_key[Nr][1];
+        ((u32*)output)[2] = ((const u32*)input)[2] ^ ((u32*)keystream)[2] ^ ctx->round_key[Nr][2];
+        ((u32*)output)[3] = ((const u32*)input)[3] ^ ((u32*)keystream)[3] ^ ctx->round_key[Nr][3];
 
         ctx->counter[0]++;
 
@@ -149,7 +149,7 @@ crypto_stream_beforenm(unsigned char *c, const unsigned char *k)
 
 int
 crypto_stream_afternm(unsigned char *outp, unsigned long long len,
-                      const unsigned char *noncep, const unsigned char *c)
+                      const unsigned char *noncep, unsigned char *c)
 {
     ECRYPT_ctx * const ctx = (ECRYPT_ctx *) c;
     unsigned long long i;
@@ -166,7 +166,7 @@ crypto_stream_afternm(unsigned char *outp, unsigned long long len,
 int
 crypto_stream_xor_afternm(unsigned char *outp, const unsigned char *inp,
                           unsigned long long len, const unsigned char *noncep,
-                          const unsigned char *c)
+                          unsigned char *c)
 {
     ECRYPT_ctx * const ctx = (ECRYPT_ctx *) c;
 

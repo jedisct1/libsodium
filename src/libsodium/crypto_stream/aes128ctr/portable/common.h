@@ -370,7 +370,7 @@ void store64_littleendian(unsigned char *x,uint64 u);
 /* Macros used in multiple contexts */
 
 #define bitslicekey0(key, bskey) \
-  xmm0 = *(int128 *) (key + 0);\
+  xmm0 = *(const int128 *) (key + 0);\
   shufb(&xmm0, M0);\
   copy2(&xmm1, &xmm0);\
   copy2(&xmm2, &xmm0);\
@@ -480,21 +480,21 @@ void store64_littleendian(unsigned char *x,uint64 u);
 /* Macros used for encryption (and decryption) */
 
 #define shiftrows(x0, x1, x2, x3, x4, x5, x6, x7, i, M, bskey) \
-        xor2(&x0, (int128 *)(bskey + 128*(i-1) + 0));\
+        xor2(&x0, (const int128 *)(bskey + 128*(i-1) + 0));\
   shufb(&x0, M);\
-        xor2(&x1, (int128 *)(bskey + 128*(i-1) + 16));\
+        xor2(&x1, (const int128 *)(bskey + 128*(i-1) + 16));\
   shufb(&x1, M);\
-        xor2(&x2, (int128 *)(bskey + 128*(i-1) + 32));\
+        xor2(&x2, (const int128 *)(bskey + 128*(i-1) + 32));\
   shufb(&x2, M);\
-        xor2(&x3, (int128 *)(bskey + 128*(i-1) + 48));\
+        xor2(&x3, (const int128 *)(bskey + 128*(i-1) + 48));\
   shufb(&x3, M);\
-        xor2(&x4, (int128 *)(bskey + 128*(i-1) + 64));\
+        xor2(&x4, (const int128 *)(bskey + 128*(i-1) + 64));\
   shufb(&x4, M);\
-        xor2(&x5, (int128 *)(bskey + 128*(i-1) + 80));\
+        xor2(&x5, (const int128 *)(bskey + 128*(i-1) + 80));\
   shufb(&x5, M);\
-        xor2(&x6, (int128 *)(bskey + 128*(i-1) + 96));\
+        xor2(&x6, (const int128 *)(bskey + 128*(i-1) + 96));\
   shufb(&x6, M);\
-        xor2(&x7, (int128 *)(bskey + 128*(i-1) + 112));\
+        xor2(&x7, (const int128 *)(bskey + 128*(i-1) + 112));\
   shufb(&x7, M);\
 
 
@@ -557,14 +557,14 @@ void store64_littleendian(unsigned char *x,uint64 u);
 #define lastround(b0, b1, b2, b3, b4, b5, b6, b7, t0, t1, t2, t3, t4, t5, t6, t7, bskey) \
         shiftrows(b0, b1, b2, b3, b4, b5, b6, b7, 10, SRM0, bskey);\
         sbox(b0, b1, b2, b3, b4, b5, b6, b7, t0, t1, t2, t3, t4, t5, t6, t7);\
-        xor2(&b0,(int128 *)(bskey + 128*10));\
-        xor2(&b1,(int128 *)(bskey + 128*10+16));\
-        xor2(&b4,(int128 *)(bskey + 128*10+32));\
-        xor2(&b6,(int128 *)(bskey + 128*10+48));\
-        xor2(&b3,(int128 *)(bskey + 128*10+64));\
-        xor2(&b7,(int128 *)(bskey + 128*10+80));\
-        xor2(&b2,(int128 *)(bskey + 128*10+96));\
-        xor2(&b5,(int128 *)(bskey + 128*10+112));\
+        xor2(&b0,(const int128 *)(bskey + 128*10));\
+        xor2(&b1,(const int128 *)(bskey + 128*10+16));\
+        xor2(&b4,(const int128 *)(bskey + 128*10+32));\
+        xor2(&b6,(const int128 *)(bskey + 128*10+48));\
+        xor2(&b3,(const int128 *)(bskey + 128*10+64));\
+        xor2(&b7,(const int128 *)(bskey + 128*10+80));\
+        xor2(&b2,(const int128 *)(bskey + 128*10+96));\
+        xor2(&b5,(const int128 *)(bskey + 128*10+112));\
 
 
 #define sbox(b0, b1, b2, b3, b4, b5, b6, b7, t0, t1, t2, t3, s0, s1, s2, s3) \
