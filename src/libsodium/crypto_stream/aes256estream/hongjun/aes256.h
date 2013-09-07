@@ -164,24 +164,3 @@
       round(ctx,j0,j1,j2,j3,k0,k1,k2,k3,13);\
       last_round(ctx,k0,k1,k2,k3,(output),14);\
 }
-
-/*compute the intermediate values for the first two rounds*/
-void partial_precompute_tworounds(ECRYPT_ctx* ctx)
-{
-  u32 x0,x1,x2,x3,y0,y1,y2,y3;
-
-  x0 = ctx->counter[0] ^ ctx->round_key[0][0];
-  x1 = ctx->counter[1] ^ ctx->round_key[0][1];
-  x2 = ctx->counter[2] ^ ctx->round_key[0][2];
-  x3 = ctx->counter[3] ^ ctx->round_key[0][3];
-  x0 &= 0xffffff00;
-  round(ctx,x0,x1,x2,x3,y0,y1,y2,y3,1);
-  ctx->first_round_output_x0 = y0 ^ T0[0];
-  y0 = 0;
-  round(ctx,y0,y1,y2,y3,x0,x1,x2,x3,2);
-  ctx->second_round_output[0] = x0 ^ T0[0];
-  ctx->second_round_output[1] = x1 ^ T3[0];
-  ctx->second_round_output[2] = x2 ^ T2[0];
-  ctx->second_round_output[3] = x3 ^ T1[0];
-}
-
