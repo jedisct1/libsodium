@@ -318,16 +318,21 @@ AC_SUBST(HAVE_AMD64_ASM_V)
 AC_MSG_CHECKING(for 128-bit arithmetic)
 HAVE_TI_MODE_V=0
 AC_COMPILE_IFELSE([AC_LANG_PROGRAM([[
-]], [[
 #ifndef __GNUC__
 # error mode(TI) is a gcc extension
 #endif
 #if defined(__clang__) && !defined(__x86_64__)
 # error clang doesn't properly compile smult_curve25519_donna_c64.c
 #endif
+#include <stdint.h>
 typedef unsigned uint128_t __attribute__((mode(TI)));
-uint128_t x;
-(void) x;
+void fcontract(uint8_t *output) {
+  uint128_t t[5];
+  t[2] += 0x8000000000000 - 1;
+  *((uint64_t *)(output+16)) = (t[2] >> 26) | (t[3] << 25);
+}
+]], [[
+(void) fcontract;
 ]])],
 [AC_MSG_RESULT(yes)
  AC_DEFINE([HAVE_TI_MODE], [1], [gcc TI mode is available])
