@@ -3,6 +3,7 @@ language: c
 compiler:
  - clang
  - gcc
+ - g++
 
 before_script:
  - ./autogen.sh
