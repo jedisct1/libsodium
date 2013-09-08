@@ -326,10 +326,8 @@ AC_COMPILE_IFELSE([AC_LANG_PROGRAM([[
 #endif
 #include <stdint.h>
 typedef unsigned uint128_t __attribute__((mode(TI)));
-void fcontract(uint8_t *output) {
-  uint128_t t[5];
-  t[2] += 0x8000000000000 - 1;
-  *((uint64_t *)(output+16)) = (t[2] >> 26) | (t[3] << 25);
+void fcontract(uint128_t *t) {
+  *t += 0x8000000000000 - 1;
 }
 ]], [[
 (void) fcontract;
