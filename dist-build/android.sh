@@ -43,5 +43,6 @@ export PREFIX="$(pwd)/libsodium-android"
             --disable-pie \
             --disable-shared \
             --prefix="$PREFIX" && \
-make -j3 install &&
+make clean && \
+make -j3 install && \
 echo "libsodium has been installed into $PREFIX"
