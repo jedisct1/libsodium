@@ -353,6 +353,14 @@ __asm__("movl %ebx,%esi\n"
 AM_CONDITIONAL([HAVE_CPUID], [test $HAVE_CPUID_V = 1])
 AC_SUBST(HAVE_CPUID_V)
 
+AS_CASE([$host_cpu],
+  [i*86 | x86_64 | powerpc* | s390*],
+    [AC_MSG_NOTICE([data alignment is not required on this target])],
+  [*],
+    [AC_MSG_NOTICE([data alignment is required on this target])
+     AC_DEFINE([CPU_ALIGNED_ACCESS_REQUIRED], [1], [data alignment is required])]
+)
+
 dnl Checks for functions and headers
 
 AC_CHECK_FUNC(clock_gettime, , [AC_CHECK_LIB(rt, clock_gettime)])

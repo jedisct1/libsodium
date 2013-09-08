@@ -285,12 +285,6 @@
 # define CPU_Z390
 #endif
 
-#if defined(CPU_X86) || defined(CPU_X86_64) || defined(CPU_PPC) || defined(CPU_Z390)
-# undef CPU_ALIGNED_ACCESS_REQUIRED
-#else
-# define CPU_ALIGNED_ACCESS_REQUIRED
-#endif
-
 /* 0400-endian-100-be.h */
 
 #if defined(CPU_BE) && !defined(CPU_ALIGNED_ACCESS_REQUIRED)
