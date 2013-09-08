@@ -117,6 +117,16 @@ partial_precompute_tworounds(ECRYPT_ctx* ctx)
 
 /* ------------------------------------------------------------------------- */
 
+#if defined(__amd64__) || defined(__amd64) || defined(__x86_64__ ) || defined(_M_X64)
+# define CPU_X86_64
+#elif defined(__i386__) || defined(_M_IX86) || defined(__X86__) || defined(_X86_) || defined(__I86__)
+# define CPU_X86
+#elif defined(powerpc) || defined(__PPC__) || defined(__ppc__) || defined(_ARCH_PPC) || defined(__powerpc__) || defined(__powerpc) || defined(POWERPC) || defined(_M_PPC)
+# define CPU_PPC
+#elif defined(__s390__) || defined(__zarch__) || defined(__SYSC_ZARCH__)
+# define CPU_Z390
+#endif
+
 #if defined(CPU_X86) || defined(CPU_X86_64) || defined(CPU_PPC) || defined(CPU_Z390)
 # undef CPU_ALIGNED_ACCESS_REQUIRED
 #else
