@@ -104,8 +104,6 @@
 
 	#define mul32x32_64(a,b) ((uint64_t)(a) * (b))
 	#define mul32x32_64s(a,b) (((int64_t)(a))*(b))
-
-	#define ALIGN(x) __attribute__((aligned(x)))
 #endif
 
 /* 0100-compiler-100-icc.h */
@@ -183,8 +181,6 @@
 		#define mul32x32_64(a,b) __emulu(a,b)
 		#define mul32x32_64s(a,b) __emul(a,b)
 	#endif
-
-	#define ALIGN(x) __declspec(align(x))
 #endif
 /* 0100-compiler-999.h */
 
