@@ -1,8 +1,11 @@
 language: c
+
 compiler:
  - clang
  - gcc
+
 before_script:
  - ./autogen.sh
  - ./configure --disable-dependency-tracking
+
 script: make check
