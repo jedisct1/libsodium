@@ -100,11 +100,10 @@ AC_ARG_ENABLE(debug,
     AS_IF([test "x$LX_CFLAGS" = "xNONE"], [
       nxflags=""
       for flag in `echo $CFLAGS`; do
-        case "$flag" in
-          -O*) ;;
-          -g*) ;;
-          *) AS_VAR_APPEND([nxflags], [" $flag"]) ;;
-        esac
+        AS_CASE([$flag],
+          [-O*], [ ],
+          [-g*], [ ],
+          [*], [AS_VAR_APPEND([nxflags], [" $flag"])])
       done
       CFLAGS="$nxflags -O0 -g3"
     ])
@@ -150,32 +149,30 @@ AX_CHECK_COMPILE_FLAG([-fno-strict-overflow], [CFLAGS="$CFLAGS -fno-strict-overf
 
 LIBTOOL_EXTRA_FLAGS="-version-info $SODIUM_LIBRARY_VERSION"
 
-case $host_os in
-  cygwin* | mingw* | pw32* | cegcc*)
+AS_CASE([$host_os],
+  [cygwin* | mingw* | pw32* | cegcc*], [
     AX_CHECK_LINK_FLAG([-Wl,--dynamicbase], [LDFLAGS="$LDFLAGS -Wl,--dynamicbase"])
     AX_CHECK_LINK_FLAG([-Wl,--nxcompat], [LDFLAGS="$LDFLAGS -Wl,--nxcompat"])
-  ;;
-esac
+  ])
 
 AS_IF([test "x$enable_ssp" != "xno"],[
-case $host_os in
-  cygwin* | mingw* | pw32* | cegcc*)
-  ;;
-  dragonfly*)
+
+AS_CASE([$host_os],
+  [cygwin* | mingw* | pw32* | cegcc*], [ ],
+  [dragonfly*], [
     AX_CHECK_COMPILE_FLAG([-fstack-protector], [
       AX_CHECK_LINK_FLAG([-fstack-protector],
         [CFLAGS="$CFLAGS -fstack-protector"]
       )
     ])
-  ;;
-  *)
+  ],
+  [*], [
     AX_CHECK_COMPILE_FLAG([-fstack-protector-all], [
       AX_CHECK_LINK_FLAG([-fstack-protector-all],
         [CFLAGS="$CFLAGS -fstack-protector-all"]
       )
     ])
-  ;;
-esac
+  ])
 ])
 
 AX_CHECK_COMPILE_FLAG([-Winit-self], [CFLAGS="$CFLAGS -Winit-self"])
