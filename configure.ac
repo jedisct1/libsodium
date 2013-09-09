@@ -70,9 +70,13 @@ AS_IF([test "x$EMSCRIPTEN" != "x"],[
   AC_MSG_WARN([compiling to javascript - asm implementations disabled])
 ])
 
+AS_CASE([$host_os], [mingw64], [enable_asm="no"])
+
 AC_ARG_ENABLE(pie,
 [AS_HELP_STRING(--disable-pie,Do not produce position independent executables)],
  enable_pie=$enableval, enable_pie="maybe")
+
+AS_CASE([$host_os], [mingw64], [enable_pie="no"])
 
 AC_ARG_ENABLE(blocking-random,
 [AS_HELP_STRING(--enable-blocking-random,Use /dev/random instead of /dev/urandom)],
