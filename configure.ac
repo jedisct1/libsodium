@@ -70,7 +70,7 @@ AS_IF([test "x$EMSCRIPTEN" != "x"],[
   AC_MSG_WARN([compiling to javascript - asm implementations disabled])
 ])
 
-AS_CASE([$host_os], [mingw64], [enable_asm="no"])
+AS_CASE([$host], [x86_64-*-mingw* | x86_64-*-cygwin*], [enable_asm="no"])
 
 AC_ARG_ENABLE(pie,
 [AS_HELP_STRING(--disable-pie,Do not produce position independent executables)],
