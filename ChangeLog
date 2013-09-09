@@ -1,4 +1,16 @@
 
+* Version 0.4.3
+ - crypto_sign_seedbytes() and crypto_sign_SEEDBYTES were added.
+ - crypto_onetimeauth_poly1305_implementation_name() was added.
+ - poly1305-ref has been replaced by a faster implementation,
+Floodyberry's poly1305-donna-unrolled.
+ - Stackmarkings have been added to assembly code, for Hardened Gentoo.
+ - pkg-config can now be used in order to retrieve compilations flags for
+using libsodium.
+ - crypto_stream_aes256estream_*() can now deal with unaligned input
+on platforms that require word alignment.
+ - portability improvements.
+
 * Version 0.4.2
  - All NaCl constants are now also exposed as functions.
  - The Android and iOS cross-compilation script have been improved.
