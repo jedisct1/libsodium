@@ -24,7 +24,7 @@ uses AES as a replaceable component,
 - The Ed25519 digital signature algorithm uses SHA-512 for both key
 derivation and computing message digests,
 - APIs are provided to SHA-512 and SHA-512/256, but are replaceable by
-the Blake2 hash function, which is also available in the Sodium library.
+the Blake2 hash function, which the Sodium library also provides.
 
 The design choices, particularly in regard to the Curve25519
 Diffie-Hellman function, ephasize security (whereas NIST curves
