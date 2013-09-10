@@ -18,7 +18,7 @@ AC_SUBST(ISODATE)
 SODIUM_LIBRARY_VERSION_MAJOR=4
 SODIUM_LIBRARY_VERSION_MINOR=3
 DLL_VERSION=4
-SODIUM_LIBRARY_VERSION=7:0:3
+SODIUM_LIBRARY_VERSION=8:0:4
 #                      | | |
 #               +------+ | +---+
 #               |        |     |
