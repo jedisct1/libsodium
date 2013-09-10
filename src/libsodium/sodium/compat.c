@@ -4,6 +4,7 @@
 #include "crypto_box_curve25519xsalsa20poly1305.h"
 #include "crypto_hash_sha256.h"
 #include "crypto_hash_sha512.h"
+#include "crypto_onetimeauth_poly1305.h"
 #include "crypto_scalarmult_curve25519.h"
 #include "crypto_secretbox_xsalsa20poly1305.h"
 #include "crypto_sign_ed25519.h"
@@ -230,6 +231,16 @@ SODIUM_EXPORT int
 crypto_verify_32_ref(const unsigned char *x, const unsigned char *y)
 {
     return crypto_verify_32(x, y);
+}
+
+#undef crypto_onetimeauth_poly1305_ref
+SODIUM_EXPORT int
+crypto_onetimeauth_poly1305_ref(unsigned char *out,
+                                const unsigned char *in,
+                                unsigned long long inlen,
+                                const unsigned char *k)
+{
+    return crypto_onetimeauth_poly1305(out, in, inlen, k);
 }
 
 #ifdef __cplusplus
