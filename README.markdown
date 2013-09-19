@@ -27,7 +27,7 @@ derivation and computing message digests,
 the Blake2 hash function, which the Sodium library also provides.
 
 The design choices, particularly in regard to the Curve25519
-Diffie-Hellman function, ephasize security (whereas NIST curves
+Diffie-Hellman function, emphasize security (whereas NIST curves
 emphasize "performance" at the cost of security), and "magic
 constants" in NaCl/Sodium are picked by theorems designed to maximize
 security.
