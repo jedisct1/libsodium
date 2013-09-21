@@ -7,27 +7,40 @@
 
 #include <stdio.h>
 
+#ifdef NATIVE_LITTLE_ENDIAN
+# define LEROT(X, S) ((uint8_t) ((uint32_t)(X) >> (S)))
+# define SWP32(X)    (X)
+#elif defined(NATIVE_BIG_ENDIAN)
+# define LEROT(X, S) ((uint8_t) ((uint32_t)(X) >> (24 - (S))))
+# define SWP32(X)    ((uint32_t)((((uint32_t)(X) & 0xff000000) >> 24) | \
+                                 (((uint32_t)(X) & 0x00ff0000) >>  8) | \
+                                 (((uint32_t)(X) & 0x0000ff00) <<  8) | \
+                                 (((uint32_t)(X) & 0x000000ff) << 24)))
+#else
+# error Unsupported byte ordering
+#endif
+
 #define first_round(ctx,x0,y0) { \
         u32 z0,t0,tem0;              \
         z0 = (x0) ^ ctx->round_key[0][0];        \
-        t0 = (u8) z0;                \
+        t0 = LEROT(z0, 0);                       \
         tem0 = T0[t0];               \
-        (y0) = tem0 ^ ctx->first_round_output_x0; \
+        (y0) = tem0 ^ ctx->first_round_output_x0;       \
 }
 
 #define second_round(ctx,x0,y0,y1,y2,y3) { \
         u32 t0,t7,t10,t13; \
         u32 tem0,tem7,tem10,tem13;    \
-        t0 = (u8)(x0);      \
+        t0 = LEROT(x0, 0);            \
         tem0 = T0[t0];      \
         (y0) = tem0 ^ ctx->second_round_output[0];   \
-        t7 = (u8)((x0)>>24);     \
+        t7 = LEROT(x0, 24);                          \
         tem7 = T3[t7];    \
         (y1) = tem7 ^ ctx->second_round_output[1];   \
-        t10 = (u8)((x0)>>16);   \
+        t10 = LEROT(x0, 16);                 \
         tem10 = T2[t10]; \
         (y2) = tem10 ^ ctx->second_round_output[2];  \
-        t13 = (u8)((x0)>>8);    \
+        t13 = LEROT(x0, 8);                  \
         tem13 = T1[t13];\
         (y3) = tem13 ^ ctx->second_round_output[3];  \
 }
@@ -42,43 +55,43 @@
         u32 tem8,tem9,tem10,tem11;  \
         u32 tem12,tem13,tem14,tem15;\
         \
-        t0 = (u8)(x0);      \
+        t0 = LEROT(x0, 0);                      \
         tem0 = T0[t0];      \
-        t1 = (u8)((x1)>>8); \
+        t1 = LEROT(x1, 8);       \
         tem1 = tem0 ^ T1[t1];    \
-        t2 = (u8)((x2)>>16);     \
+        t2 = LEROT(x2, 16);      \
         tem2 = tem1 ^ T2[t2];    \
-        t3 = (u8)((x3)>>24);     \
+        t3 = LEROT(x3, 24);      \
         tem3 = tem2 ^ T3[t3];    \
         (y0) = tem3 ^ ctx->round_key[r][0];   \
         \
-        t4 = (u8)(x1);      \
+        t4 = LEROT(x1, 0);                      \
         tem4 = T0[t4];      \
-        t5 = (u8)((x2)>>8); \
+        t5 = LEROT(x2, 8);       \
         tem5 = tem4 ^ T1[t5];    \
-        t6 = (u8)((x3)>>16);     \
+        t6 = LEROT(x3, 16);      \
         tem6 = tem5 ^ T2[t6];    \
-        t7 = (u8)((x0)>>24);     \
+        t7 = LEROT(x0, 24);      \
         tem7 = tem6 ^ T3[t7];    \
         (y1) = tem7 ^ ctx->round_key[r][1];   \
         \
-        t8 = (u8)(x2);          \
+        t8 = LEROT(x2, 0);      \
         tem8 = T0[t8];          \
-        t9 = (u8)((x3)>>8);     \
+        t9 = LEROT(x3, 8);      \
         tem9 = tem8 ^ T1[t9];   \
-        t10 = (u8)((x0)>>16);   \
+        t10 = LEROT(x0, 16);            \
         tem10 = tem9 ^ T2[t10]; \
-        t11 = (u8)((x1)>>24);   \
+        t11 = LEROT(x1, 24);            \
         tem11 = tem10 ^ T3[t11];\
         (y2) = tem11 ^ ctx->round_key[r][2]; \
         \
-        t12 = (u8)(x3);         \
+        t12 = LEROT(x3, 0);     \
         tem12 = T0[t12];        \
-        t13 = (u8)((x0)>>8);    \
+        t13 = LEROT(x0, 8);                     \
         tem13 = tem12 ^ T1[t13];\
-        t14 = (u8)((x1)>>16);   \
+        t14 = LEROT(x1, 16);            \
         tem14 = tem13 ^ T2[t14];\
-        t15 = (u8)((x2)>>24);   \
+        t15 = LEROT(x2, 24);            \
         tem15 = tem14 ^ T3[t15];\
         (y3) = tem15 ^ ctx->round_key[r][3]; \
 }
@@ -90,40 +103,40 @@
         u32 t8,t9,t10,t11;  \
         u32 t12,t13,t14,t15;\
         \
-        t0 = (u8)(x0);        \
+        t0 = LEROT(x0, 0); \
         output[0] = Sbox[t0]; \
-      t7 = (u8)((x0)>>24);  \
+        t7 = LEROT(x0, 24);                     \
         output[7] = Sbox[t7]; \
-        t10 = (u8)((x0)>>16);   \
+        t10 = LEROT(x0, 16);            \
         output[10] = Sbox[t10]; \
-        t13 = (u8)((x0)>>8);    \
+        t13 = LEROT(x0, 8);     \
         output[13] = Sbox[t13]; \
         \
-        t1 = (u8)((x1)>>8);   \
+        t1 = LEROT(x1, 8);                      \
         output[1] = Sbox[t1]; \
-        t4 = (u8)(x1);        \
+        t4 = LEROT(x1, 0); \
         output[4] = Sbox[t4]; \
-        t11 = (u8)((x1)>>24);     \
+        t11 = LEROT(x1, 24);            \
         output[11] = Sbox[t11]; \
-        t14 = (u8)((x1)>>16);     \
+        t14 = LEROT(x1, 16);            \
         output[14] = Sbox[t14]; \
         \
-        t2 = (u8)((x2)>>16);  \
+        t2 = LEROT(x2, 16);                     \
         output[2] = Sbox[t2]; \
-        t5 = (u8)((x2)>>8);   \
+        t5 = LEROT(x2, 8);                      \
         output[5] = Sbox[t5]; \
-        t8 = (u8)(x2);            \
+        t8 = LEROT(x2, 0);              \
         output[8] = Sbox[t8]; \
-        t15 = (u8)((x2)>>24);     \
+        t15 = LEROT(x2, 24);            \
         output[15] = Sbox[t15]; \
       \
-        t3 = (u8)((x3)>>24);  \
+        t3 = LEROT(x3, 24);                     \
         output[3] = Sbox[t3]; \
-        t6 = (u8)((x3)>>16);  \
+        t6 = LEROT(x3, 16);                     \
         output[6] = Sbox[t6]; \
-        t9 = (u8)((x3)>>8);       \
+        t9 = LEROT(x3, 8);        \
         output[9] = Sbox[t9];     \
-        t12 = (u8)(x3);           \
+        t12 = LEROT(x3, 0);       \
         output[12] = Sbox[t12];   \
 }
 

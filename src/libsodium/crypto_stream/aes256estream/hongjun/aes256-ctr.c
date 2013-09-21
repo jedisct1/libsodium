@@ -104,7 +104,7 @@ partial_precompute_tworounds(ECRYPT_ctx* ctx)
   x1 = ctx->counter[1] ^ ctx->round_key[0][1];
   x2 = ctx->counter[2] ^ ctx->round_key[0][2];
   x3 = ctx->counter[3] ^ ctx->round_key[0][3];
-  x0 &= 0xffffff00;
+  x0 &= SWP32(0xffffff00);
   round(ctx,x0,x1,x2,x3,y0,y1,y2,y3,1);
   ctx->first_round_output_x0 = y0 ^ T0[0];
   y0 = 0;
