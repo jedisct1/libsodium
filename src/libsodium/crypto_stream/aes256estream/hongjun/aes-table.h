@@ -2,7 +2,13 @@
 #ifndef __AES_TABLE_H__
 #define __AES_TABLE_H__
 
-#include "aes-table-le.h"
+#ifdef NATIVE_LITTLE_ENDIAN
+# include "aes-table-le.h"
+#elif defined(NATIVE_BIG_ENDIAN)
+# include "aes-table-be.h"
+#else
+# error Unsupported byte ordering
+#endif
 
 static const unsigned char Rcon[31] =
 {
