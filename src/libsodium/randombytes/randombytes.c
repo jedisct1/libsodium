@@ -35,7 +35,7 @@ randombytes_random(void)
 void
 randombytes_stir(void)
 {
-    return implementation->stir();
+    implementation->stir();
 }
 
 uint32_t
