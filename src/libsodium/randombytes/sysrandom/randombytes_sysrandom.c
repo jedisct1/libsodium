@@ -1,19 +1,21 @@
 
 #include <sys/types.h>
-#include <sys/time.h>
+#ifndef _WIN32
+# include <sys/time.h>
+#endif
 
 #include <assert.h>
 #include <errno.h>
 #include <fcntl.h>
 #include <limits.h>
-#ifndef _WIN32
-# include <poll.h>
-#endif
 #include <stdbool.h>
 #include <stdint.h>
 #include <stdlib.h>
 #include <string.h>
-#include <unistd.h>
+#ifndef _WIN32
+# include <poll.h>
+# include <unistd.h>
+#endif
 
 #include "randombytes.h"
 #include "randombytes_sysrandom.h"
