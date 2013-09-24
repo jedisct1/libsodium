@@ -1,6 +1,8 @@
 
 #include <sys/types.h>
-#include <sys/time.h>
+#ifndef _WIN32
+# include <sys/time.h>
+#endif
 
 #include <assert.h>
 #include <errno.h>
@@ -10,7 +12,9 @@
 #include <stdint.h>
 #include <stdlib.h>
 #include <string.h>
-#include <unistd.h>
+#ifndef _MSC_VER
+# include <unistd.h>
+#endif
 
 #include "crypto_core_salsa20.h"
 #include "crypto_auth_hmacsha512256.h"
@@ -35,7 +39,9 @@ typedef struct Salsa20Random_ {
     unsigned char rnd32[SALSA20_RANDOM_BLOCK_SIZE];
     uint64_t      nonce;
     size_t        rnd32_outleft;
+#ifndef _MSC_VER
     pid_t         pid;
+#endif
 #ifdef _WIN32
     HCRYPTPROV    hcrypt_prov;
 #endif
@@ -188,12 +194,18 @@ randombytes_salsa20_random_stir(void)
 static void
 randombytes_salsa20_random_stir_if_needed(void)
 {
+#ifdef _MSC_VER
+    if (stream.initialized == 0) {
+        randombytes_salsa20_random_stir();
+    }
+#else
     const pid_t pid = getpid();
 
     if (stream.initialized == 0 || stream.pid != pid) {
         stream.pid = pid;
         randombytes_salsa20_random_stir();
     }
+#endif
 }
 
 static uint32_t
