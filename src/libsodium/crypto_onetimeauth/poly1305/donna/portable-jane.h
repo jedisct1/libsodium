@@ -121,7 +121,9 @@
 /* 0100-compiler-100-msvc.h */
 
 #if defined(_MSC_VER)
-	#define _CRT_SECURE_NO_WARNINGS	
+#ifndef _CRT_SECURE_NO_WARNINGS
+# define _CRT_SECURE_NO_WARNINGS
+#endif
 
 	#pragma warning(disable : 4127) /* conditional expression is constant */
 	#pragma warning(disable : 4100) /* unreferenced formal parameter */
