@@ -144,11 +144,13 @@ static inline int blake2s_init0( blake2s_state *S )
 /* init2 xors IV with input parameter block */
 int blake2s_init_param( blake2s_state *S, const blake2s_param *P )
 {
+  size_t i;
+
   blake2s_init0( S );
   uint32_t *p = ( uint32_t * )( P );
 
   /* IV XOR ParamBlock */
-  for( size_t i = 0; i < 8; ++i )
+  for( i = 0; i < 8; ++i )
     S->h[i] ^= load32( &p[i] );
 
   return 0;
@@ -213,11 +215,12 @@ static int blake2s_compress( blake2s_state *S, const uint8_t block[BLAKE2S_BLOCK
 {
   uint32_t m[16];
   uint32_t v[16];
+  size_t   i;
 
-  for( size_t i = 0; i < 16; ++i )
+  for( i = 0; i < 16; ++i )
     m[i] = load32( block + i * sizeof( m[i] ) );
 
-  for( size_t i = 0; i < 8; ++i )
+  for( i = 0; i < 8; ++i )
     v[i] = S->h[i];
 
   v[ 8] = blake2s_IV[0];
@@ -261,7 +264,7 @@ static int blake2s_compress( blake2s_state *S, const uint8_t block[BLAKE2S_BLOCK
   ROUND( 8 );
   ROUND( 9 );
 
-  for( size_t i = 0; i < 8; ++i )
+  for( i = 0; i < 8; ++i )
     S->h[i] = S->h[i] ^ v[i] ^ v[i + 8];
 
 #undef G
