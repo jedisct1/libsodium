@@ -276,6 +276,7 @@ AC_COMPILE_IFELSE([AC_LANG_PROGRAM([[
 
 dnl Checks for typedefs, structures, and compiler characteristics.
 
+AC_C_INLINE
 AC_C_BIGENDIAN(
   AC_DEFINE(NATIVE_BIG_ENDIAN, 1, [machine is bigendian]),
   AC_DEFINE(NATIVE_LITTLE_ENDIAN, 1, [machine is littleendian]),
