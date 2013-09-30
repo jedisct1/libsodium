@@ -213,6 +213,7 @@ them from different languages is easier.
 * Java: [Kalium](https://github.com/abstractj/kalium)
 * Java JNI: [Kalium-JNI](https://github.com/joshjdevl/kalium-jni)
 * Julia: [Sodium.jl](https://github.com/amitmurthy/Sodium.jl)
+* .NET: [libsodium-net](https://github.com/adamcaudill/libsodium-net)
 * Ocaml: [ocaml-sodium](https://github.com/dsheets/ocaml-sodium)
 * Pharo/Squeak: [Crypto-NaCl](http://www.eighty-twenty.org/index.cgi/tech/smalltalk/nacl-for-squeak-and-pharo-20130601.html)
 * PHP: [PHP-Sodium](https://github.com/alethia7/php-sodium)
