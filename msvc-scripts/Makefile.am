@@ -1,3 +1,4 @@
 EXTRA_DIST = \
 	process.bat \
-	rep.vbs
+	rep.vbs \
+	sodium.props
