@@ -292,9 +292,6 @@
     <ClCompile Include="src\libsodium\crypto_onetimeauth\poly1305\onetimeauth_poly1305_try.c">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="src\libsodium\crypto_onetimeauth\poly1305\53\verify_poly1305_53.c">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="src\libsodium\crypto_onetimeauth\poly1305\donna\verify_poly1305_donna.c">
       <Filter>Source Files</Filter>
     </ClCompile>
