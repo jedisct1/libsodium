@@ -11,12 +11,17 @@
 
 #include "export.h"
 
-#define crypto_scalarmult_curve25519_BYTES 32
-#define crypto_scalarmult_curve25519_SCALARBYTES 32
-
 #ifdef __cplusplus
 extern "C" {
 #endif
+
+#define crypto_scalarmult_curve25519_BYTES 32
+SODIUM_EXPORT
+size_t crypto_scalarmult_curve25519_bytes(void);
+
+#define crypto_scalarmult_curve25519_SCALARBYTES 32
+SODIUM_EXPORT
+size_t crypto_scalarmult_curve25519_scalarbytes(void);
 
 SODIUM_EXPORT
 int crypto_scalarmult_curve25519(unsigned char *,const unsigned char *,const unsigned char *);
@@ -31,12 +36,6 @@ int crypto_scalarmult_curve25519_base(unsigned char *,const unsigned char *);
 # define crypto_scalarmult_curve25519_ref crypto_scalarmult_curve25519
 # define crypto_scalarmult_curve25519_ref_base crypto_scalarmult_curve25519_base
 #endif
-
-SODIUM_EXPORT
-size_t crypto_scalarmult_curve25519_bytes(void);
-
-SODIUM_EXPORT
-size_t crypto_scalarmult_curve25519_scalarbytes(void);
 
 #ifdef __cplusplus
 }
