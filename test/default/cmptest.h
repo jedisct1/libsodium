@@ -9,6 +9,11 @@
 #define TEST_NAME_RES TEST_NAME ".res"
 #define TEST_NAME_OUT TEST_SRCDIR "/" TEST_NAME ".exp"
 
+#ifdef HAVE_ARC4RANDOM
+# undef rand
+# define rand(X) arc4random(X)
+#endif
+
 FILE *fp_res;
 int   xmain(void);
 
