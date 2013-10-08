@@ -150,9 +150,10 @@ static inline int blake2b_init0( blake2b_state *S )
 int blake2b_init_param( blake2b_state *S, const blake2b_param *P )
 {
   size_t i;
+  const uint8_t *p;
 
   blake2b_init0( S );
-  const uint8_t *p = ( const uint8_t * )( P );
+  p = ( const uint8_t * )( P );
 
   /* IV XOR ParamBlock */
   for( i = 0; i < 8; ++i )

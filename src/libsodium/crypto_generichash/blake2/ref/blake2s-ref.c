@@ -145,9 +145,10 @@ static inline int blake2s_init0( blake2s_state *S )
 int blake2s_init_param( blake2s_state *S, const blake2s_param *P )
 {
   size_t i;
+  uint32_t *p;
 
   blake2s_init0( S );
-  uint32_t *p = ( uint32_t * )( P );
+  p = ( uint32_t * )( P );
 
   /* IV XOR ParamBlock */
   for( i = 0; i < 8; ++i )
