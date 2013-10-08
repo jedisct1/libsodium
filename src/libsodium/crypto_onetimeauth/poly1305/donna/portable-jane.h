@@ -669,21 +669,9 @@
 
 /* 0400-uint128-100-clang.h */
 
-#if defined(CPU_64BITS) && (defined(COMPILER_CLANG) && (COMPILER_CLANG >= 30100))
-	#define HAVE_NATIVE_UINT128
-	typedef unsigned __int128 uint128_t;
-#endif
-
-/* 0400-uint128-100-gcc.h */
-
-#if (defined(CPU_64BITS) && defined(COMPILER_GCC)) && (!defined(COMPILER_CLANG) || (COMPILER_CLANG < 30100))
-	#if defined(__SIZEOF_INT128__)
-		#define HAVE_NATIVE_UINT128
-		typedef unsigned __int128 uint128_t;
-	#elif (COMPILER_GCC >= 40400)
-		#define HAVE_NATIVE_UINT128
-		typedef unsigned uint128_t __attribute__((mode(TI)));
-	#endif
+#ifdef HAVE_TI_MODE
+# define HAVE_NATIVE_UINT128
+typedef unsigned uint128_t __attribute__((mode(TI)));
 #endif
 
 /* 0400-uint128-100-msvc.h */
