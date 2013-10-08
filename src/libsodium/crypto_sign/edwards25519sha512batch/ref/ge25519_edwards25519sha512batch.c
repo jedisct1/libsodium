@@ -120,9 +120,11 @@ int ge25519_unpack_vartime(ge25519_p3 *r, const unsigned char p[32])
 {
   int ret;
   fe25519 t, fd;
+  unsigned char par;
+
   fe25519_setone(&r->z);
   fe25519_unpack(&fd, ecd);
-  unsigned char par = p[31] >> 7;
+  par = p[31] >> 7;
   fe25519_unpack(&r->y, p);
   fe25519_square(&r->x, &r->y);
   fe25519_mul(&t, &r->x, &fd);
@@ -163,16 +165,17 @@ void ge25519_scalarmult(ge25519_p3 *r, const ge25519_p3 *p, const sc25519 *s)
 {
   int i,j,k;
   ge25519_p3 g;
-  fe25519_unpack(&g.x, ge25519_neutral_x);
-  fe25519_unpack(&g.y, ge25519_neutral_y);
-  fe25519_unpack(&g.z, ge25519_neutral_z);
-  fe25519_unpack(&g.t, ge25519_neutral_t);
-
   ge25519_p3 pre[(1 << WINDOWSIZE)];
   ge25519_p3 t;
   ge25519_p1p1 tp1p1;
   unsigned char w;
   unsigned char sb[32];
+
+  fe25519_unpack(&g.x, ge25519_neutral_x);
+  fe25519_unpack(&g.y, ge25519_neutral_y);
+  fe25519_unpack(&g.z, ge25519_neutral_z);
+  fe25519_unpack(&g.t, ge25519_neutral_t);
+
   sc25519_to32bytes(sb, s);
 
   // Precomputation

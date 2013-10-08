@@ -32,13 +32,14 @@ int crypto_stream_afternm(unsigned char *outp, unsigned long long len, const uns
   unsigned long long lensav;
   unsigned char bl[128];
   unsigned char *blp;
+  unsigned char *np;
   unsigned char b;
 
   uint32 tmp;
 
   /* Copy nonce on the stack */
   copy2(&nonce_stack, (const int128 *) (noncep + 0));
-  unsigned char *np = (unsigned char *)&nonce_stack;
+  np = (unsigned char *)&nonce_stack;
 
     enc_block:
 
