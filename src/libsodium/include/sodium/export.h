@@ -9,7 +9,9 @@
 # define __attribute__(a)
 #endif
 
-#ifndef SODIUM_STATIC
+#ifdef SODIUM_STATIC
+# define SODIUM_EXPORT
+#else
 # if defined(_MSC_VER)
 #  ifdef DLL_EXPORT
 #   define SODIUM_EXPORT __declspec(dllexport)
