@@ -1,5 +1,7 @@
 
+#ifndef __cplusplus
 #include <stdbool.h>
+#endif
 
 #include "core.h"
 #include "crypto_onetimeauth.h"
