@@ -23,7 +23,6 @@ SODIUM_EXPORT = \
 	sodium/crypto_onetimeauth_poly1305_53.h \
 	sodium/crypto_onetimeauth_poly1305_donna.h \
 	sodium/crypto_scalarmult.h \
-	sodium/crypto_scalarmult_curve25519.h \
 	sodium/crypto_secretbox.h \
 	sodium/crypto_secretbox_xsalsa20poly1305.h \
 	sodium/crypto_shorthash.h \
@@ -34,7 +33,6 @@ SODIUM_EXPORT = \
 	sodium/crypto_stream.h \
 	sodium/crypto_stream_aes128ctr.h \
 	sodium/crypto_stream_aes256estream.h \
-	sodium/crypto_stream_salsa20.h \
 	sodium/crypto_stream_salsa2012.h \
 	sodium/crypto_stream_salsa208.h \
 	sodium/crypto_stream_xsalsa20.h \
@@ -50,8 +48,7 @@ SODIUM_EXPORT = \
 	sodium/randombytes.h \
 	sodium/randombytes_salsa20_random.h \
 	sodium/randombytes_sysrandom.h \
-	sodium/utils.h \
-	sodium/version.h
+	sodium/utils.h
 
 EXTRA_SRC = $(SODIUM_EXPORT) \
 	sodium/crypto_scalarmult_curve25519.h.in \
