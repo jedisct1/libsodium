@@ -55,4 +55,11 @@ EXTRA_SRC = $(SODIUM_EXPORT) \
 	sodium/crypto_stream_salsa20.h.in \
 	sodium/version.h.in
 
-nobase_include_HEADERS = $(SODIUM_EXPORT)
+pkgincludedir = $(includedir)/sodium
+
+pkginclude_HEADERS = $(SODIUM_EXPORT)
+
+nodist_pkginclude_HEADERS = \
+	sodium/crypto_scalarmult_curve25519.h \
+	sodium/crypto_stream_salsa20.h \
+	sodium/version.h
