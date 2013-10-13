@@ -196,7 +196,7 @@ fexpand(limb *output, const u8 *in) {
   output[1] = (*((const uint64_t *)(in+6)) >> 3) & 0x7ffffffffffff;
   output[2] = (*((const uint64_t *)(in+12)) >> 6) & 0x7ffffffffffff;
   output[3] = (*((const uint64_t *)(in+19)) >> 1) & 0x7ffffffffffff;
-  output[4] = (*((const uint64_t *)(in+25)) >> 4) & 0x7ffffffffffff;
+  output[4] = (*((const uint64_t *)(in+25)) >> 4) & 0xfffffffffffff;
 }
 
 /* Take a fully reduced polynomial form number and contract it into a
