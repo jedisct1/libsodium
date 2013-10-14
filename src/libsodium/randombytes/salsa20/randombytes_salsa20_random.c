@@ -8,7 +8,9 @@
 #include <errno.h>
 #include <fcntl.h>
 #include <limits.h>
+#ifndef __cplusplus
 #include <stdbool.h>
+#endif
 #include <stdint.h>
 #include <stdlib.h>
 #include <string.h>
