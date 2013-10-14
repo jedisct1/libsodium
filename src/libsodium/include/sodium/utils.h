@@ -10,10 +10,10 @@
 extern "C" {
 #endif
 
-#ifndef __cplusplus
-# define _SODIUM_C99(X) X
-#else
+#if defined(__cplusplus) || !defined(__STDC_VERSION__) || __STDC_VERSION__ < 199901L
 # define _SODIUM_C99(X)
+#else
+# define _SODIUM_C99(X) X
 #endif
 
 unsigned char *_sodium_alignedcalloc(unsigned char ** const unaligned_p,
