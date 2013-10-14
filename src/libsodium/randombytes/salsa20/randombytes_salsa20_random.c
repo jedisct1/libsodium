@@ -178,7 +178,7 @@ randombytes_salsa20_random_stir(void)
         abort();
     }
 #else /* _WIN32 */
-    if (! CryptGenRandom(stream.hcrypt_prov, sizeof m0, m0)) {
+    if (! CryptGenRandom(stream.hcrypt_prov, sizeof m0, (BYTE *) m0)) {
         abort();
     }
 #endif
