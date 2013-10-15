@@ -49,7 +49,7 @@ Sodium performs tests at run-time, so that the same binary package can
 still run everywhere.
 
 Sodium is tested on a variety of compilers and operating systems,
-including Windows (with MingW or Visual Studio 2013), iOS and Android.
+including Windows (with MingW or Visual Studio), iOS and Android.
 
 ## Installation
 
