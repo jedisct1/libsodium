@@ -1,6 +1,7 @@
 
 EXTRA_DIST = \
 	cmptest.h \
+	wintest.bat \
 	auth.exp \
 	auth2.exp \
 	auth3.exp \
