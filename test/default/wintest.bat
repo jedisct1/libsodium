@@ -1,7 +1,7 @@
 @ECHO OFF
 
 if "%1" == "" (
-  echo "Usage: do2 <Release | ReleaseDLL | Debug | DebugDLL"
+  echo "Usage: wintest.bat <Release | ReleaseDLL | Debug | DebugDLL"
 	goto :END
 )
 
