@@ -187,6 +187,12 @@
       <SubSystem>Console</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
     </Link>
+    <PostBuildEvent>
+      <Command>$(SolutionDir)/test/default/wintest.bat $(Configuration)</Command>
+    </PostBuildEvent>
+    <PostBuildEvent>
+      <Message>Run the test suite</Message>
+    </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='DebugDLL|Win32'">
     <ClCompile>
@@ -203,6 +209,12 @@
       <SubSystem>Console</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
     </Link>
+    <PostBuildEvent>
+      <Command>$(SolutionDir)/test/default/wintest.bat $(Configuration)</Command>
+    </PostBuildEvent>
+    <PostBuildEvent>
+      <Message>Run the test suite</Message>
+    </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <ClCompile>
@@ -254,6 +266,12 @@
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
     </Link>
+    <PostBuildEvent>
+      <Command>$(SolutionDir)/test/default/wintest.bat $(Configuration)</Command>
+    </PostBuildEvent>
+    <PostBuildEvent>
+      <Message>Run the test suite</Message>
+    </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='ReleaseDLL|Win32'">
     <ClCompile>
@@ -275,6 +293,12 @@
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
     </Link>
+    <PostBuildEvent>
+      <Command>$(SolutionDir)/test/default/wintest.bat $(Configuration)</Command>
+    </PostBuildEvent>
+    <PostBuildEvent>
+      <Message>Run the test suite</Message>
+    </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <ClCompile>
