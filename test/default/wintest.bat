@@ -6,8 +6,11 @@ if "%1" == "" (
 )
 
 if not exist sodium_version.c (
-	echo "Are you on the right path?" %CD%
-	goto :END
+	CD test\default
+	if not exist sodium_version.c (
+		echo "Are you on the right path?" %CD%
+		goto :END
+	)
 )
 
 if "%2" == "x64" (SET ARCH=x64) else (SET ARCH=Win32)
