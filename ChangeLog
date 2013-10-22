@@ -1,4 +1,13 @@
 
+* Version 0.4.4
+ - Visual Studio is officially supported (VC 2010 & VC 2013)
+ - mingw64 is now supported
+ - big-endian architectures are now supported as well
+ - The donna_c64 implementation of curve25519_donna_c64 now handles
+non-canonical points like the ref implementation
+ - Missing scalarmult_curve25519 constants are now exported
+ - A crypto_onetimeauth_poly1305_ref() wrapper has been added
+
 * Version 0.4.3
  - crypto_sign_seedbytes() and crypto_sign_SEEDBYTES were added.
  - crypto_onetimeauth_poly1305_implementation_name() was added.
