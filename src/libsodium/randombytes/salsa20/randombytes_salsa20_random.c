@@ -8,7 +8,6 @@
 #include <errno.h>
 #include <fcntl.h>
 #include <limits.h>
-#include <stdbool.h>
 #include <stdint.h>
 #include <stdlib.h>
 #include <string.h>
@@ -46,7 +45,7 @@ typedef struct Salsa20Random_ {
     HCRYPTPROV    hcrypt_prov;
 #endif
     int           random_data_source_fd;
-    bool          initialized;
+    int           initialized;
 } Salsa20Random;
 
 static Salsa20Random stream = {

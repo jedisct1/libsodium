@@ -1,11 +1,9 @@
 
-#include <stdbool.h>
-
 #include "core.h"
 #include "crypto_onetimeauth.h"
 #include "randombytes.h"
 
-static bool initialized;
+static int initialized;
 
 int
 sodium_init(void)

@@ -228,6 +228,3 @@ endif
 
 SUBDIRS = \
 	include
-
-EXTRA_DIST = \
-	quirks/windows/stdbool.h
