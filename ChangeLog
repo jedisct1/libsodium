@@ -1,4 +1,7 @@
 
+* Version 0.4.5
+ - Restore compatibility with OSX <= 10.6
+
 * Version 0.4.4
  - Visual Studio is officially supported (VC 2010 & VC 2013)
  - mingw64 is now supported
