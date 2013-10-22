@@ -7,6 +7,7 @@ EXTRA_DIST = \
 	THANKS
 
 SUBDIRS = \
+	msvc-scripts \
 	src \
 	test
 
