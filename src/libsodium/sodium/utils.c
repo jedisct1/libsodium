@@ -54,7 +54,7 @@ _sodium_alignedcalloc(unsigned char ** const unaligned_p, const size_t len)
         return NULL;
     }
     *unaligned_p = unaligned;
-#ifdef HAVE_ARC4RANDOM
+#ifdef HAVE_ARC4RANDOM_BUF
     (void) i;
     arc4random_buf(unaligned, len + (size_t) 256U);
 #else
