@@ -37,6 +37,7 @@ goto :END
 	SET CFLAGS=%CFLAGS% /GS /MTd /Od /DSODIUM_STATIC /DSODIUM_EXPORT=
 	goto :COMPILE
 :COMPILE
+echo Running the test suite:
 FOR %%f in (*.c) DO (
 	cl %CFLAGS% %%f %LDFLAGS% /OUT:%%f.exe > NUL 2>&1
 	if not exist %%f.exe (
