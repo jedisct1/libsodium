@@ -1,4 +1,3 @@
-
 #include <limits.h>
 #include <stddef.h>
 #include <stdint.h>
@@ -10,6 +9,11 @@
 #ifdef _WIN32
 # include <windows.h>
 # include <wincrypt.h>
+#endif
+
+#ifdef HAVE_ARC4RANDOM
+# undef rand
+# define rand(X) arc4random(X)
 #endif
 
 void
@@ -54,14 +58,9 @@ _sodium_alignedcalloc(unsigned char ** const unaligned_p, const size_t len)
         return NULL;
     }
     *unaligned_p = unaligned;
-#ifdef HAVE_ARC4RANDOM
-    (void) i;
-    arc4random_buf(unaligned, len + (size_t) 256U);
-#else
     for (i = (size_t) 0U; i < len + (size_t) 256U; ++i) {
         unaligned[i] = (unsigned char) rand();
     }
-#endif
     aligned = unaligned + 64;
     aligned += (ptrdiff_t) 63 & (-(ptrdiff_t) aligned);
     memset(aligned, 0, len);
