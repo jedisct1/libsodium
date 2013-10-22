@@ -6,6 +6,7 @@
 *.o
 *.plist
 *.scan
+*.sdf
 *.status
 *.tar.*
 *~
