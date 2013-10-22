@@ -15,14 +15,23 @@
 # endif
 #endif
 
+#include <stddef.h>
 #include "export.h"
-
-#define crypto_stream_salsa20_KEYBYTES 32U
-#define crypto_stream_salsa20_NONCEBYTES 8U
 
 #ifdef __cplusplus
 extern "C" {
 #endif
+
+#define crypto_stream_salsa20_KEYBYTES 32U
+SODIUM_EXPORT
+size_t crypto_stream_salsa20_keybytes(void);
+
+#define crypto_stream_salsa20_NONCEBYTES 8U
+SODIUM_EXPORT
+size_t crypto_stream_salsa20_noncebytes(void);
+
+SODIUM_EXPORT
+const char * crypto_stream_salsa20_primitive(void);
 
 SODIUM_EXPORT
 int crypto_stream_salsa20(unsigned char *,unsigned long long,const unsigned char *,const unsigned char *);
