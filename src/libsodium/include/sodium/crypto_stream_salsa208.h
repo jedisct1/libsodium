@@ -12,16 +12,15 @@
 #include <stddef.h>
 #include "export.h"
 
-#define crypto_stream_salsa208_KEYBYTES 32U
-#define crypto_stream_salsa208_NONCEBYTES 8U
-
 #ifdef __cplusplus
 extern "C" {
 #endif
 
+#define crypto_stream_salsa208_KEYBYTES 32U
 SODIUM_EXPORT
 size_t crypto_stream_salsa208_keybytes(void);
 
+#define crypto_stream_salsa208_NONCEBYTES 8U
 SODIUM_EXPORT
 size_t crypto_stream_salsa208_noncebytes(void);
 
