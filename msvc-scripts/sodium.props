@@ -15,7 +15,7 @@
       <Message>Process .in files</Message>
     </PreBuildEvent>
     <PostBuildEvent>
-      <Command>$(SolutionDir)/test/default/wintest.bat $(Configuration)</Command>
+      <Command>$(SolutionDir)/test/default/wintest.bat $(Configuration) $(Platform)</Command>
     </PostBuildEvent>
     <PostBuildEvent>
       <Message>Run the test suite</Message>
