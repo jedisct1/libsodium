@@ -47,6 +47,11 @@ deallocate(void)
     free(k2_);
 }
 
+#ifdef HAVE_ARC4RANDOM
+# undef rand
+# define rand(X) arc4random(X)
+#endif
+
 static const char *
 checksum_compute(void)
 {
