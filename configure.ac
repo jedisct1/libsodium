@@ -281,7 +281,7 @@ AC_C_BIGENDIAN(
   AC_DEFINE(NATIVE_BIG_ENDIAN, 1, [machine is bigendian]),
   AC_DEFINE(NATIVE_LITTLE_ENDIAN, 1, [machine is littleendian]),
   AC_MSG_ERROR([unknown endianess]),
-  AC_MSG_WARN([universal endianess])
+  AC_MSG_ERROR([universal endianess is not supported])
 )
 
 AC_MSG_CHECKING(whether __STDC_LIMIT_MACROS is required)
