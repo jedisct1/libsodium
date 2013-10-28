@@ -11,7 +11,7 @@ NaCl's goal is to provide all of the core operations needed to build
 higher-level cryptographic tools.
 
 Sodium is a portable, cross-compilable, installable, packageable
-fork of NaCl, with a compatible API.
+fork of NaCl (based on the latest released upstream version [nacl-20110221](http://hyperelliptic.org/nacl/nacl-20110221.tar.bz2)), with a compatible API.
 
 ## Is it full of NSA backdoors?
 
