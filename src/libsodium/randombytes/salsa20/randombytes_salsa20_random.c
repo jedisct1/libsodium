@@ -108,7 +108,7 @@ randombytes_salsa20_random_random_dev_open(void)
 {
     static const char * const devices[] = {
 # ifndef USE_BLOCKING_RANDOM
-        "/dev/arandom", "/dev/urandom",
+        "/dev/urandom",
 # endif
         "/dev/random", NULL
     };
