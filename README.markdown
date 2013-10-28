@@ -75,6 +75,13 @@ Integrity of source tarballs can currently be checked using PGP or
 verified DNS queries (`dig +dnssec +short txt <file>.download.libsodium.org`
 returns the SHA256 of any file available for download).
 
+## Pre-built binaries
+
+Pre-built libraries for Visual studio 2010, 2012 and 2013, both for
+x86 and x64, are available for download at
+https://download.libsodium.org/libsodium/releases/ , courtesy of
+Samuel Neves (@sneves).
+
 ## Comparison with vanilla NaCl
 
 Sodium does not ship C++ bindings. These might be part of a distinct
