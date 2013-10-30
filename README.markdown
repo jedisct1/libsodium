@@ -173,6 +173,11 @@ In order to compare memory zones in constant time, Sodium provides:
     int      sodium_memcmp(const void * const b1_, const void * const b2_,
                            size_t size);
 
+`sodium_memcmp()` returns `0` if `size` bytes at `b1_` and `b2_` are
+equal, another value if they are not. Unlike `memcmp()`,
+`sodium_memcmp()` cannot be used to put `b1_` and `b2_` into a defined
+order.
+
 And a convenience function for converting a binary buffer to a
 hexadecimal string:
 
