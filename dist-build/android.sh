@@ -3,7 +3,7 @@
 # Note that this script requires droid-wrapper
 if [ x`which droid-gcc` = x ]; then
 	echo "This build script requires droid-wrapper."
-	echo https://github.com/tmurakam/droid-wrapper
+	echo https://github.com/jevinskie/droid-wrapper
 	exit 1
 fi
 
