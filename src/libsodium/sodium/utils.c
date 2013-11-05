@@ -38,7 +38,7 @@ sodium_memcmp(const void * const b1_, const void * const b2_, size_t size)
     for (i = 0U; i < size; i++) {
         d |= b1[i] ^ b2[i];
     }
-    return (int) d;
+    return (int) ((1 & ((d - 1) >> 8)) - 1);
 }
 
 unsigned char *
