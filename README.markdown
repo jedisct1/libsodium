@@ -217,6 +217,7 @@ them from different languages is easier.
 
 * Erlang: [Erlang-NaCl](https://github.com/tonyg/erlang-nacl)
 * Haskell: [Saltine](https://github.com/tel/saltine)
+* Idris: [Idris-Sodium](https://github.com/jfdm/idris-sodium)
 * Java: [Kalium](https://github.com/abstractj/kalium)
 * Java JNI: [Kalium-JNI](https://github.com/joshjdevl/kalium-jni)
 * Julia: [Sodium.jl](https://github.com/amitmurthy/Sodium.jl)
