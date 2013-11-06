@@ -69,6 +69,15 @@ int crypto_generichash_blake2b(unsigned char *out, size_t outlen,
                                const unsigned char *key, size_t keylen);
 
 SODIUM_EXPORT
+int crypto_generichash_blake2b_salt_personal(unsigned char *out, size_t outlen,
+                                             const unsigned char *in,
+                                             unsigned long long inlen,
+                                             const unsigned char *key,
+                                             size_t keylen,
+                                             const unsigned char *salt,
+                                             const unsigned char *personal);
+
+SODIUM_EXPORT
 int crypto_generichash_blake2b_init(crypto_generichash_blake2b_state *state,
                                     const unsigned char *key,
                                     const size_t keylen, const size_t outlen);

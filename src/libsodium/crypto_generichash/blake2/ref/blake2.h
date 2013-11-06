@@ -27,6 +27,7 @@
 #define blake2b_update                 crypto_generichash_blake2b__update
 #define blake2b_final                  crypto_generichash_blake2b__final
 #define blake2b                        crypto_generichash_blake2b__blake2b
+#define blake2b_salt_personal          crypto_generichash_blake2b__blake2b_salt_personal
 
 #if defined(_MSC_VER)
 #define ALIGN(x) __declspec(align(x))
@@ -158,6 +159,7 @@ typedef crypto_generichash_blake2b_state blake2b_state;
   // Simple API
   int blake2s( uint8_t *out, const void *in, const void *key, const uint8_t outlen, const uint64_t inlen, uint8_t keylen );
   int blake2b( uint8_t *out, const void *in, const void *key, const uint8_t outlen, const uint64_t inlen, uint8_t keylen );
+  int blake2b_salt_personal( uint8_t *out, const void *in, const void *key, const uint8_t outlen, const uint64_t inlen, uint8_t keylen, const void *salt, const void *personal );
 
   int blake2sp( uint8_t *out, const void *in, const void *key, const uint8_t outlen, const uint64_t inlen, uint8_t keylen );
   int blake2bp( uint8_t *out, const void *in, const void *key, const uint8_t outlen, const uint64_t inlen, uint8_t keylen );

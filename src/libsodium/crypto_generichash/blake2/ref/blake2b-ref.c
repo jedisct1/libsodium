@@ -185,7 +185,7 @@ int blake2b_init( blake2b_state *S, const uint8_t outlen )
 }
 
 int blake2b_init_salt_personal( blake2b_state *S, const uint8_t outlen,
-                                const void *salt, const void *personal)
+                                const void *salt, const void *personal )
 {
   blake2b_param P[1];
 
@@ -425,6 +425,32 @@ int blake2b( uint8_t *out, const void *in, const void *key, const uint8_t outlen
   else
   {
     if( blake2b_init( S, outlen ) < 0 ) return -1;
+  }
+
+  blake2b_update( S, ( const uint8_t * )in, inlen );
+  blake2b_final( S, out, outlen );
+  return 0;
+}
+
+int blake2b_salt_personal( uint8_t *out, const void *in, const void *key, const uint8_t outlen, const uint64_t inlen, uint8_t keylen,
+                           const void *salt, const void *personal )
+{
+  blake2b_state S[1];
+
+  /* Verify parameters */
+  if ( NULL == in ) return -1;
+
+  if ( NULL == out ) return -1;
+
+  if( NULL == key ) keylen = 0;
+
+  if( keylen > 0 )
+  {
+    if( blake2b_init_key_salt_personal( S, outlen, key, keylen, salt, personal ) < 0 ) return -1;
+  }
+  else
+  {
+    if( blake2b_init_salt_personal( S, outlen, salt, personal ) < 0 ) return -1;
   }
 
   blake2b_update( S, ( const uint8_t * )in, inlen );
