@@ -201,12 +201,12 @@ int blake2b_init_salt_personal( blake2b_state *S, const uint8_t outlen,
   P->inner_length  = 0;
   memset( P->reserved, 0, sizeof( P->reserved ) );
   if (salt != NULL) {
-    blake2b_param_set_salt( P, salt );
+    blake2b_param_set_salt( P, (const uint8_t *) salt );
   } else {
     memset( P->salt, 0, sizeof( P->salt ) );
   }
   if (personal != NULL) {
-    blake2b_param_set_personal( P, personal );
+    blake2b_param_set_personal( P, (const uint8_t *) personal );
   } else {
     memset( P->personal, 0, sizeof( P->personal ) );
   }
@@ -264,12 +264,12 @@ int blake2b_init_key_salt_personal( blake2b_state *S, const uint8_t outlen, cons
   P->inner_length  = 0;
   memset( P->reserved, 0, sizeof( P->reserved ) );
   if (salt != NULL) {
-    blake2b_param_set_salt( P, salt );
+    blake2b_param_set_salt( P, (const uint8_t *) salt );
   } else {
     memset( P->salt, 0, sizeof( P->salt ) );
   }
   if (personal != NULL) {
-    blake2b_param_set_personal( P, personal );
+    blake2b_param_set_personal( P, (const uint8_t *) personal );
   } else {
     memset( P->personal, 0, sizeof( P->personal ) );
   }
