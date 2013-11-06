@@ -33,11 +33,11 @@ crypto_generichash_blake2b_init(crypto_generichash_blake2b_state *state,
     }
     assert(outlen <= UINT8_MAX);
     assert(keylen <= UINT8_MAX);
-    if (blake2b_init(state, (uint8_t) outlen) != 0) {
-        return -1;
-    }
-    if (key != NULL && keylen > 0U &&
-        blake2b_init_key(state, (uint8_t) outlen, key, keylen) != 0) {
+    if (key == NULL || keylen <= 0U) {
+        if (blake2b_init(state, (uint8_t) outlen) != 0) {
+            return -1;
+        }
+    } else if (blake2b_init_key(state, (uint8_t) outlen, key, keylen) != 0) {
         return -1;
     }
     return 0;
