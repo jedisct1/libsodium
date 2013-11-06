@@ -184,6 +184,34 @@ int blake2b_init( blake2b_state *S, const uint8_t outlen )
   return blake2b_init_param( S, P );
 }
 
+int blake2b_init_salt_personal( blake2b_state *S, const uint8_t outlen,
+                                const void *salt, const void *personal)
+{
+  blake2b_param P[1];
+
+  if ( ( !outlen ) || ( outlen > BLAKE2B_OUTBYTES ) ) return -1;
+
+  P->digest_length = outlen;
+  P->key_length    = 0;
+  P->fanout        = 1;
+  P->depth         = 1;
+  store32( &P->leaf_length, 0 );
+  store64( &P->node_offset, 0 );
+  P->node_depth    = 0;
+  P->inner_length  = 0;
+  memset( P->reserved, 0, sizeof( P->reserved ) );
+  if (salt != NULL) {
+    blake2b_param_set_salt( P, salt );
+  } else {
+    memset( P->salt, 0, sizeof( P->salt ) );
+  }
+  if (personal != NULL) {
+    blake2b_param_set_personal( P, personal );
+  } else {
+    memset( P->personal, 0, sizeof( P->personal ) );
+  }
+  return blake2b_init_param( S, P );
+}
 
 int blake2b_init_key( blake2b_state *S, const uint8_t outlen, const void *key, const uint8_t keylen )
 {
@@ -204,6 +232,47 @@ int blake2b_init_key( blake2b_state *S, const uint8_t outlen, const void *key, c
   memset( P->reserved, 0, sizeof( P->reserved ) );
   memset( P->salt,     0, sizeof( P->salt ) );
   memset( P->personal, 0, sizeof( P->personal ) );
+
+  if( blake2b_init_param( S, P ) < 0 ) return -1;
+
+  {
+    uint8_t block[BLAKE2B_BLOCKBYTES];
+    memset( block, 0, BLAKE2B_BLOCKBYTES );
+    memcpy( block, key, keylen );
+    blake2b_update( S, block, BLAKE2B_BLOCKBYTES );
+    secure_zero_memory( block, BLAKE2B_BLOCKBYTES ); /* Burn the key from stack */
+  }
+  return 0;
+}
+
+int blake2b_init_key_salt_personal( blake2b_state *S, const uint8_t outlen, const void *key, const uint8_t keylen,
+                                    const void *salt, const void *personal )
+{
+  blake2b_param P[1];
+
+  if ( ( !outlen ) || ( outlen > BLAKE2B_OUTBYTES ) ) return -1;
+
+  if ( !key || !keylen || keylen > BLAKE2B_KEYBYTES ) return -1;
+
+  P->digest_length = outlen;
+  P->key_length    = keylen;
+  P->fanout        = 1;
+  P->depth         = 1;
+  store32( &P->leaf_length, 0 );
+  store64( &P->node_offset, 0 );
+  P->node_depth    = 0;
+  P->inner_length  = 0;
+  memset( P->reserved, 0, sizeof( P->reserved ) );
+  if (salt != NULL) {
+    blake2b_param_set_salt( P, salt );
+  } else {
+    memset( P->salt, 0, sizeof( P->salt ) );
+  }
+  if (personal != NULL) {
+    blake2b_param_set_personal( P, personal );
+  } else {
+    memset( P->personal, 0, sizeof( P->personal ) );
+  }
 
   if( blake2b_init_param( S, P ) < 0 ) return -1;
 
