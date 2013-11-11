@@ -14,6 +14,8 @@
 #define crypto_generichash_blake2b_KEYBYTES_MIN  16U
 #define crypto_generichash_blake2b_KEYBYTES_MAX  64U
 #define crypto_generichash_blake2b_BLOCKBYTES   128U
+#define crypto_generichash_blake2b_SALTBYTES     16U
+#define crypto_generichash_blake2b_PERSONALBYTES 16U
 
 #if defined(_MSC_VER)
 # define CRYPTO_ALIGN(x) __declspec(align(x))
@@ -52,6 +54,12 @@ SODIUM_EXPORT
 size_t crypto_generichash_blake2b_blockbytes(void);
 
 SODIUM_EXPORT
+size_t crypto_generichash_blake2b_saltbytes(void);
+
+SODIUM_EXPORT
+size_t crypto_generichash_blake2b_personalbytes(void);
+
+SODIUM_EXPORT
 const char * crypto_generichash_blake2b_blockbytes_primitive(void);
 
 SODIUM_EXPORT
@@ -61,9 +69,25 @@ int crypto_generichash_blake2b(unsigned char *out, size_t outlen,
                                const unsigned char *key, size_t keylen);
 
 SODIUM_EXPORT
+int crypto_generichash_blake2b_salt_personal(unsigned char *out, size_t outlen,
+                                             const unsigned char *in,
+                                             unsigned long long inlen,
+                                             const unsigned char *key,
+                                             size_t keylen,
+                                             const unsigned char *salt,
+                                             const unsigned char *personal);
+
+SODIUM_EXPORT
 int crypto_generichash_blake2b_init(crypto_generichash_blake2b_state *state,
                                     const unsigned char *key,
                                     const size_t keylen, const size_t outlen);
+
+SODIUM_EXPORT
+int crypto_generichash_blake2b_init2(crypto_generichash_blake2b_state *state,
+                                     const unsigned char *key,
+                                     const size_t keylen, const size_t outlen,
+                                     const unsigned char *salt,
+                                     const unsigned char *personal);
 
 SODIUM_EXPORT
 int crypto_generichash_blake2b_update(crypto_generichash_blake2b_state *state,

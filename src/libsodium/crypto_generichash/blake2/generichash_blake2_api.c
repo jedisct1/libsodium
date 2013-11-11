@@ -25,6 +25,16 @@ crypto_generichash_blake2b_blockbytes(void) {
     return crypto_generichash_blake2b_BLOCKBYTES;
 }
 
+size_t
+crypto_generichash_blake2b_salt_bytes(void) {
+    return crypto_generichash_blake2b_SALTBYTES;
+}
+
+size_t
+crypto_generichash_blake2b_personal_bytes(void) {
+    return crypto_generichash_blake2b_PERSONALBYTES;
+}
+
 const char *
 crypto_generichash_blake2b_blockbytes_primitive(void) {
     return "blake2b";
