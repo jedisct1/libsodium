@@ -12,7 +12,7 @@ typedef uint32_t u32;
 #define Nb 4
 
 #pragma pack(push, 1)
-__attribute__((aligned(64))) typedef struct ECRYPT_ctx
+typedef struct ECRYPT_ctx
 {
   u32 round_key[Nr+1][4];
   u32 counter[4];
