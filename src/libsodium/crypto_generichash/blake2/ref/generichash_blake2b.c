@@ -63,11 +63,11 @@ crypto_generichash_blake2b_init(crypto_generichash_blake2b_state *state,
 }
 
 int
-crypto_generichash_blake2b_init2(crypto_generichash_blake2b_state *state,
-                                 const unsigned char *key,
-                                 const size_t keylen, const size_t outlen,
-                                 const unsigned char *salt,
-                                 const unsigned char *personal)
+crypto_generichash_blake2b_init_salt_personal(crypto_generichash_blake2b_state *state,
+                                              const unsigned char *key,
+                                              const size_t keylen, const size_t outlen,
+                                              const unsigned char *salt,
+                                              const unsigned char *personal)
 {
     if (outlen <= 0U || outlen > BLAKE2B_OUTBYTES ||
         keylen > BLAKE2B_KEYBYTES) {
