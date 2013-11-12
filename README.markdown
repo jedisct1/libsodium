@@ -232,6 +232,7 @@ them from different languages is easier.
 * Ocaml: [ocaml-sodium](https://github.com/dsheets/ocaml-sodium)
 * Pharo/Squeak: [Crypto-NaCl](http://www.eighty-twenty.org/index.cgi/tech/smalltalk/nacl-for-squeak-and-pharo-20130601.html)
 * PHP: [PHP-Sodium](https://github.com/alethia7/php-sodium)
+* PHP: [libsodium-php](https://github.com/jedisct1/libsodium-php)
 * Python: [PyNaCl](https://github.com/dstufft/pynacl)
 * Python: [PySodium](https://github.com/stef/pysodium)
 * Racket: part of [CRESTaceans](https://github.com/mgorlick/CRESTaceans/tree/master/bindings/libsodium)
