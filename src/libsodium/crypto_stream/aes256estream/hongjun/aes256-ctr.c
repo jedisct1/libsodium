@@ -27,7 +27,7 @@ ECRYPT_keysetup(ECRYPT_ctx* ctx, const u8* key, u32 keysize, u32 ivsize)
         w[i] =  key[(i << 2)];
         w[i] |= key[(i << 2)+1] << 8;
         w[i] |= key[(i << 2)+2] << 16;
-        w[i] |= key[(i << 2)+3] << 24;
+        w[i] |= (unsigned int) key[(i << 2)+3] << 24;
     }
 
     i = Nk;
@@ -35,7 +35,7 @@ ECRYPT_keysetup(ECRYPT_ctx* ctx, const u8* key, u32 keysize, u32 ivsize)
     while( i < Nb*(Nr+1) ) {
         temp = w[i-1];
 
-        temp = Sbox[ temp & 0xFF] <<  24 ^
+        temp = (unsigned int) Sbox[temp & 0xFF] << 24 ^
             Sbox[(temp >> 8) & 0xFF]  ^
             (Sbox[(temp >> 16) & 0xFF] << 8 ) ^
             (Sbox[(temp >> 24) & 0xFF] << 16) ^
@@ -56,10 +56,10 @@ ECRYPT_keysetup(ECRYPT_ctx* ctx, const u8* key, u32 keysize, u32 ivsize)
         i++;
 
         temp = w[i-1];
-        temp = Sbox[ temp & 0xFF] ^
+        temp = Sbox[temp & 0xFF] ^
             Sbox[(temp >> 8) & 0xFF] << 8 ^
-            (Sbox[(temp >> 16) & 0xFF] << 16 ) ^
-            (Sbox[(temp >> 24) & 0xFF] << 24);
+            (Sbox[(temp >> 16) & 0xFF] << 16) ^
+            ((unsigned int) Sbox[(temp >> 24) & 0xFF] << 24);
         w[i] = w[i-Nk] ^ temp;
         i++;
 
