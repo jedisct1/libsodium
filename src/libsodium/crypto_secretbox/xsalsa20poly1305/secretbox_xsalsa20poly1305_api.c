@@ -20,6 +20,11 @@ crypto_secretbox_xsalsa20poly1305_boxzerobytes(void) {
     return crypto_secretbox_xsalsa20poly1305_BOXZEROBYTES;
 }
 
+size_t
+crypto_secretbox_xsalsa20poly1305_macbytes(void) {
+    return crypto_secretbox_xsalsa20poly1305_MACBYTES;
+}
+
 const char *
 crypto_secretbox_xsalsa20poly1305_primitive(void) {
     return "xsalsa20poly1305";

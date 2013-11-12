@@ -25,6 +25,12 @@ crypto_secretbox_boxzerobytes(void)
     return crypto_secretbox_BOXZEROBYTES;
 }
 
+size_t
+crypto_secretbox_macbytes(void)
+{
+    return crypto_secretbox_MACBYTES;
+}
+
 const char *
 crypto_secretbox_primitive(void)
 {

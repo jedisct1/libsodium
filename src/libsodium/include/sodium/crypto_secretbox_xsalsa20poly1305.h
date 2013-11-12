@@ -8,6 +8,7 @@
 #define crypto_secretbox_xsalsa20poly1305_NONCEBYTES 24U
 #define crypto_secretbox_xsalsa20poly1305_ZEROBYTES 32U
 #define crypto_secretbox_xsalsa20poly1305_BOXZEROBYTES 16U
+#define crypto_secretbox_xsalsa20poly1305_MACBYTES (crypto_secretbox_xsalsa20poly1305_ZEROBYTES - crypto_secretbox_xsalsa20poly1305_BOXZEROBYTES)
 
 #ifdef __cplusplus
 extern "C" {
@@ -24,6 +25,9 @@ size_t crypto_secretbox_xsalsa20poly1305_zerobytes(void);
 
 SODIUM_EXPORT
 size_t crypto_secretbox_xsalsa20poly1305_boxzerobytes(void);
+
+SODIUM_EXPORT
+size_t crypto_secretbox_xsalsa20poly1305_macbytes(void);
 
 SODIUM_EXPORT
 const char * crypto_secretbox_xsalsa20poly1305_primitive(void);
