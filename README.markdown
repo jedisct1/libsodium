@@ -112,20 +112,19 @@ A convenience header includes everything you need to use the library:
 
     #include <sodium.h>
 
-This is not required, however, before any other libsodium function, you can
-call:
+This is not required, however, before any other libsodium function, it
+is recommended to call:
 
     sodium_init();
 
 This will pick optimized implementations of some primitives, if they
 appear to work as expected after running some tests, and these will be
-used for subsequent operations. It only need to be called once.
-
-This function is not thread-safe. No other Sodium functions should be
-called until it successfully returns. In a multithreading environment,
-if, for some reason, you really need to call `sodium_init()` while some
-other Sodium functions may be running in different threads, add locks
-accordingly (both around `sodium_init()` and around other functions).
+used for subsequent operations.
+It will also initialize the pseudorandom number generator.
+This function should only be called once, and before performing any other
+operations.
+Doing so is required to ensure thread safety of all the functions provided by
+the library.
 
 Sodium also provides helper functions to generate random numbers,
 leveraging `/dev/urandom` or `/dev/random` on *nix and the cryptographic
