@@ -112,7 +112,7 @@ A convenience header includes everything you need to use the library:
 
     #include <sodium.h>
 
-This is not required, however, before any other libsodium function, it
+This is not required, however, before any other libsodium functions, it
 is recommended to call:
 
     sodium_init();
