@@ -46,7 +46,9 @@ randombytes_uniform(const uint32_t upper_bound)
 void
 randombytes_buf(void * const buf, const size_t size)
 {
-    implementation->buf(buf, size);
+    if (size > (size_t) 0U) {
+        implementation->buf(buf, size);
+    }
 }
 
 int
