@@ -13,32 +13,6 @@ higher-level cryptographic tools.
 Sodium is a portable, cross-compilable, installable, packageable
 fork of NaCl (based on the latest released upstream version [nacl-20110221](http://hyperelliptic.org/nacl/nacl-20110221.tar.bz2)), with a compatible API.
 
-## Is it full of NSA backdoors?
-
-![No NIST](http://i.imgur.com/HSxeAmp.png)
-
-The design of Sodium's primitives is completely free from NIST (and by
-association, NSA) influence, with the following minor exceptions:
-- The Poly1305 MAC, used for authenticating integrity of ciphertexts,
-uses AES as a replaceable component,
-- The Ed25519 digital signature algorithm uses SHA-512 for both key
-derivation and computing message digests,
-- APIs are provided to SHA-512 and SHA-512/256, but are replaceable by
-the Blake2 hash function, which the Sodium library also provides.
-
-The design choices, particularly in regard to the Curve25519
-Diffie-Hellman function, emphasize security (whereas NIST curves
-emphasize "performance" at the cost of security), and "magic
-constants" in NaCl/Sodium are picked by theorems designed to maximize
-security.
-
-The same cannot be said of NIST curves, where the specific origins of
-certain constants are not described by the standards and may be
-subject to malicious influence by the NSA.
-
-And despite the emphasis on higher security, primitives are faster
-across-the-board than most implementations of the NIST standards.
-
 ## Portability
 
 In order to pick the fastest working implementation of each primitive,
