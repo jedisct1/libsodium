@@ -2,6 +2,7 @@
 #define crypto_generichash_H
 
 #include <stddef.h>
+#include <stdint.h>
 
 #include "crypto_generichash_blake2b.h"
 #include "export.h"
@@ -46,7 +47,7 @@ typedef crypto_generichash_blake2b_state crypto_generichash_state;
 
 SODIUM_EXPORT
 int crypto_generichash(unsigned char *out, size_t outlen,
-                       const unsigned char *in, unsigned long long inlen,
+                       const unsigned char *in, uint64_t inlen,
                        const unsigned char *key, size_t keylen);
 
 SODIUM_EXPORT
@@ -57,7 +58,7 @@ int crypto_generichash_init(crypto_generichash_state *state,
 SODIUM_EXPORT
 int crypto_generichash_update(crypto_generichash_state *state,
                               const unsigned char *in,
-                              unsigned long long inlen);
+                              uint64_t inlen);
 
 SODIUM_EXPORT
 int crypto_generichash_final(crypto_generichash_state *state,

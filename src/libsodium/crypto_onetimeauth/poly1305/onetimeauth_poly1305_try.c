@@ -55,13 +55,13 @@ deallocate(void)
 static const char *
 checksum_compute(void)
 {
-    long long i;
-    long long j;
+    int64_t i;
+    int64_t j;
 
     for (i = 0;i < CHECKSUM_BYTES;++i) {
-        long long mlen = i;
-        long long klen = crypto_onetimeauth_KEYBYTES;
-        long long hlen = crypto_onetimeauth_BYTES;
+        int64_t mlen = i;
+        int64_t klen = crypto_onetimeauth_KEYBYTES;
+        int64_t hlen = crypto_onetimeauth_BYTES;
 
         for (j = -16;j < 0;++j) h[j] = rand();
         for (j = -16;j < 0;++j) k[j] = rand();

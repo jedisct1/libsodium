@@ -2,6 +2,7 @@
 #define crypto_secretbox_xsalsa20poly1305_H
 
 #include <stddef.h>
+#include <stdint.h>
 #include "export.h"
 
 #define crypto_secretbox_xsalsa20poly1305_KEYBYTES 32U
@@ -33,10 +34,10 @@ SODIUM_EXPORT
 const char * crypto_secretbox_xsalsa20poly1305_primitive(void);
 
 SODIUM_EXPORT
-int crypto_secretbox_xsalsa20poly1305(unsigned char *,const unsigned char *,unsigned long long,const unsigned char *,const unsigned char *);
+int crypto_secretbox_xsalsa20poly1305(unsigned char *,const unsigned char *,uint64_t,const unsigned char *,const unsigned char *);
 
 SODIUM_EXPORT
-int crypto_secretbox_xsalsa20poly1305_open(unsigned char *,const unsigned char *,unsigned long long,const unsigned char *,const unsigned char *);
+int crypto_secretbox_xsalsa20poly1305_open(unsigned char *,const unsigned char *,uint64_t,const unsigned char *,const unsigned char *);
 
 #ifdef __cplusplus
 }

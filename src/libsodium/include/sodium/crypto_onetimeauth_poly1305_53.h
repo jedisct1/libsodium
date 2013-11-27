@@ -18,13 +18,13 @@ const char *crypto_onetimeauth_poly1305_53_implementation_name(void);
 SODIUM_EXPORT
 int crypto_onetimeauth_poly1305_53(unsigned char *out,
                                    const unsigned char *in,
-                                   unsigned long long inlen,
+                                   uint64_t inlen,
                                    const unsigned char *k);
 
 SODIUM_EXPORT
 int crypto_onetimeauth_poly1305_53_verify(const unsigned char *h,
                                           const unsigned char *in,
-                                          unsigned long long inlen,
+                                          uint64_t inlen,
                                           const unsigned char *k);
 
 #ifdef __cplusplus

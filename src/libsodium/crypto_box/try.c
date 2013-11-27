@@ -9,7 +9,7 @@
 #include "utils.h"
 #include "windows/windows-quirks.h"
 
-extern unsigned char *alignedcalloc(unsigned long long);
+extern unsigned char *alignedcalloc(uint64_t);
 
 const char *primitiveimplementation = crypto_box_IMPLEMENTATION;
 
@@ -81,8 +81,8 @@ char checksum[nlen * 2 + 1];
 
 const char *checksum_compute(void)
 {
-  long long i;
-  long long j;
+  int64_t i;
+  int64_t j;
 
   if (crypto_box_keypair(pka,ska) != 0) return "crypto_box_keypair returns nonzero";
   if (crypto_box_keypair(pkb,skb) != 0) return "crypto_box_keypair returns nonzero";
@@ -90,9 +90,9 @@ const char *checksum_compute(void)
   for (j = 0;j < crypto_box_ZEROBYTES;++j) m[j] = 0;
 
   for (i = 0;i < CHECKSUM_BYTES;++i) {
-    long long mlen = i + crypto_box_ZEROBYTES;
-    long long tlen = i + crypto_box_ZEROBYTES;
-    long long clen = i + crypto_box_ZEROBYTES;
+    int64_t mlen = i + crypto_box_ZEROBYTES;
+    int64_t tlen = i + crypto_box_ZEROBYTES;
+    int64_t clen = i + crypto_box_ZEROBYTES;
 
     for (j = -16;j < 0;++j) ska[j] = rand();
     for (j = -16;j < 0;++j) skb[j] = rand();

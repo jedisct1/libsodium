@@ -14,7 +14,7 @@ static unsigned char equal(signed char b,signed char c)
 
 static unsigned char negative(signed char b)
 {
-  unsigned long long x = b; /* 18446744073709551361..18446744073709551615: yes; 0..255: no */
+  uint64_t x = b; /* 18446744073709551361..18446744073709551615: yes; 0..255: no */
   x >>= 63; /* 1: yes; 0: no */
   return x;
 }

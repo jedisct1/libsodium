@@ -2,6 +2,7 @@
 #define crypto_shorthash_H
 
 #include <stddef.h>
+#include <stdint.h>
 
 #include "crypto_shorthash_siphash24.h"
 #include "export.h"
@@ -24,7 +25,7 @@ const char *crypto_shorthash_primitive(void);
 
 SODIUM_EXPORT
 int crypto_shorthash(unsigned char *out, const unsigned char *in,
-                     unsigned long long inlen, const unsigned char *k);
+                     uint64_t inlen, const unsigned char *k);
 
 #ifdef __cplusplus
 }

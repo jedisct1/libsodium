@@ -10,7 +10,7 @@
 #include "utils.h"
 #include "windows/windows-quirks.h"
 
-extern unsigned char *alignedcalloc(unsigned long long);
+extern unsigned char *alignedcalloc(uint64_t);
 
 const char *primitiveimplementation = crypto_auth_IMPLEMENTATION;
 
@@ -53,13 +53,13 @@ char checksum[crypto_auth_BYTES * 2 + 1];
 
 const char *checksum_compute(void)
 {
-  long long i;
-  long long j;
+  int64_t i;
+  int64_t j;
 
   for (i = 0;i < CHECKSUM_BYTES;++i) {
-    long long mlen = i;
-    long long klen = crypto_auth_KEYBYTES;
-    long long hlen = crypto_auth_BYTES;
+    int64_t mlen = i;
+    int64_t klen = crypto_auth_KEYBYTES;
+    int64_t hlen = crypto_auth_BYTES;
 
     for (j = -16;j < 0;++j) h[j] = rand();
     for (j = -16;j < 0;++j) k[j] = rand();

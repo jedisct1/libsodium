@@ -48,7 +48,7 @@ static const double poly1305_53_constants[] = {
 , 535219245894202480694386063513315216128475136.0 /* offset3 = alpha96 + 2^130 - 2^97 */
 } ;
 
-int crypto_onetimeauth(unsigned char *out,const unsigned char *m,unsigned long long l,const unsigned char *k)
+int crypto_onetimeauth(unsigned char *out,const unsigned char *m,uint64_t l,const unsigned char *k)
 {
   register const unsigned char *r = k;
   register const unsigned char *s = k + 16;

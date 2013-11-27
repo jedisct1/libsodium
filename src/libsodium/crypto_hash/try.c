@@ -9,7 +9,7 @@
 #include "utils.h"
 #include "windows/windows-quirks.h"
 
-extern unsigned char *alignedcalloc(unsigned long long);
+extern unsigned char *alignedcalloc(uint64_t);
 
 const char *primitiveimplementation = crypto_hash_IMPLEMENTATION;
 
@@ -47,12 +47,12 @@ char checksum[crypto_hash_BYTES * 2 + 1];
 
 const char *checksum_compute(void)
 {
-  long long i;
-  long long j;
+  int64_t i;
+  int64_t j;
 
   for (i = 0;i < CHECKSUM_BYTES;++i) {
-    long long hlen = crypto_hash_BYTES;
-    long long mlen = i;
+    int64_t hlen = crypto_hash_BYTES;
+    int64_t mlen = i;
     for (j = -16;j < 0;++j) h[j] = rand();
     for (j = hlen;j < hlen + 16;++j) h[j] = rand();
     for (j = -16;j < hlen + 16;++j) h2[j] = h[j];

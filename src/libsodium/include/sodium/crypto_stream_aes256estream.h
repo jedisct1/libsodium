@@ -11,6 +11,7 @@
  */
 
 #include <stddef.h>
+#include <stdint.h>
 #include "export.h"
 
 #define crypto_stream_aes256estream_KEYBYTES 32U
@@ -34,19 +35,19 @@ SODIUM_EXPORT
 const char * crypto_stream_aes256estream_primitive(void);
 
 SODIUM_EXPORT
-int crypto_stream_aes256estream(unsigned char *,unsigned long long,const unsigned char *,const unsigned char *);
+int crypto_stream_aes256estream(unsigned char *,uint64_t,const unsigned char *,const unsigned char *);
 
 SODIUM_EXPORT
-int crypto_stream_aes256estream_xor(unsigned char *,const unsigned char *,unsigned long long,const unsigned char *,const unsigned char *);
+int crypto_stream_aes256estream_xor(unsigned char *,const unsigned char *,uint64_t,const unsigned char *,const unsigned char *);
 
 SODIUM_EXPORT
 int crypto_stream_aes256estream_beforenm(unsigned char *,const unsigned char *);
 
 SODIUM_EXPORT
-int crypto_stream_aes256estream_afternm(unsigned char *,unsigned long long,const unsigned char *,const unsigned char *);
+int crypto_stream_aes256estream_afternm(unsigned char *,uint64_t,const unsigned char *,const unsigned char *);
 
 SODIUM_EXPORT
-int crypto_stream_aes256estream_xor_afternm(unsigned char *,const unsigned char *,unsigned long long,const unsigned char *,const unsigned char *);
+int crypto_stream_aes256estream_xor_afternm(unsigned char *,const unsigned char *,uint64_t,const unsigned char *,const unsigned char *);
 
 #ifdef __cplusplus
 }

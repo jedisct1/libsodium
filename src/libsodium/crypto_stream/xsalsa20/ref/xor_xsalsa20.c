@@ -14,7 +14,7 @@ static const unsigned char sigma[16] = {
 
 int crypto_stream_xor(
         unsigned char *c,
-  const unsigned char *m,unsigned long long mlen,
+  const unsigned char *m,uint64_t mlen,
   const unsigned char *n,
   const unsigned char *k
 )

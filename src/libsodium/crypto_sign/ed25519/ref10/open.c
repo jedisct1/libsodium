@@ -5,8 +5,8 @@
 #include "sc.h"
 
 int crypto_sign_open(
-  unsigned char *m,unsigned long long *mlen,
-  const unsigned char *sm,unsigned long long smlen,
+  unsigned char *m,uint64_t *mlen,
+  const unsigned char *sm,uint64_t smlen,
   const unsigned char *pk
 )
 {
@@ -14,7 +14,7 @@ int crypto_sign_open(
   unsigned char checkr[32];
   ge_p3 A;
   ge_p2 R;
-  unsigned long long i;
+  uint64_t i;
 
   *mlen = -1;
   if (smlen < 64) return -1;

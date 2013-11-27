@@ -10,6 +10,7 @@
  */
 
 #include <stddef.h>
+#include <stdint.h>
 #include "export.h"
 
 #define crypto_stream_xsalsa20_KEYBYTES 32U
@@ -29,10 +30,10 @@ SODIUM_EXPORT
 const char * crypto_stream_xsalsa20_primitive(void);
 
 SODIUM_EXPORT
-int crypto_stream_xsalsa20(unsigned char *,unsigned long long,const unsigned char *,const unsigned char *);
+int crypto_stream_xsalsa20(unsigned char *,uint64_t,const unsigned char *,const unsigned char *);
 
 SODIUM_EXPORT
-int crypto_stream_xsalsa20_xor(unsigned char *,const unsigned char *,unsigned long long,const unsigned char *,const unsigned char *);
+int crypto_stream_xsalsa20_xor(unsigned char *,const unsigned char *,uint64_t,const unsigned char *,const unsigned char *);
 
 #ifdef __cplusplus
 }

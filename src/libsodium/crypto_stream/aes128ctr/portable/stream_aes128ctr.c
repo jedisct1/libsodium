@@ -2,7 +2,7 @@
 
 int crypto_stream(
         unsigned char *out,
-        unsigned long long outlen,
+        uint64_t outlen,
         const unsigned char *n,
         const unsigned char *k
         )
@@ -16,7 +16,7 @@ int crypto_stream(
 int crypto_stream_xor(
         unsigned char *out,
         const unsigned char *in,
-        unsigned long long inlen,
+        uint64_t inlen,
         const unsigned char *n,
         const unsigned char *k
         )

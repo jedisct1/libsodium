@@ -22,12 +22,12 @@ static const unsigned char iv[32] = {
   0x5b,0xe0,0xcd,0x19,
 } ;
 
-int crypto_hash(unsigned char *out,const unsigned char *in,unsigned long long inlen)
+int crypto_hash(unsigned char *out,const unsigned char *in,uint64_t inlen)
 {
   unsigned char h[32];
   unsigned char padded[128];
-  unsigned long long i;
-  unsigned long long bits = inlen << 3;
+  uint64_t i;
+  uint64_t bits = inlen << 3;
 
   for (i = 0;i < 32;++i) h[i] = iv[i];
 

@@ -4,8 +4,8 @@
 #include "sc.h"
 
 int crypto_sign(
-  unsigned char *sm,unsigned long long *smlen,
-  const unsigned char *m,unsigned long long mlen,
+  unsigned char *sm,uint64_t *smlen,
+  const unsigned char *m,uint64_t mlen,
   const unsigned char *sk
 )
 {
@@ -13,7 +13,7 @@ int crypto_sign(
   unsigned char r[64];
   unsigned char hram[64];
   ge_p3 R;
-  unsigned long long i;
+  uint64_t i;
 
   crypto_hash_sha512(az,sk,32);
   az[0] &= 248;

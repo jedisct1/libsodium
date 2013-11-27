@@ -58,7 +58,7 @@ randombytes_close(void)
 }
 
 void
-randombytes(unsigned char * const buf, const unsigned long long buf_len)
+randombytes(unsigned char * const buf, const uint64_t buf_len)
 {
     assert(buf_len <= SIZE_MAX);
     randombytes_buf(buf, (size_t) buf_len);

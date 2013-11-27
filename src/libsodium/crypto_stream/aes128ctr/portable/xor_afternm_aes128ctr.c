@@ -8,7 +8,7 @@
 #include "common.h"
 #include "consts.h"
 
-int crypto_stream_xor_afternm(unsigned char *outp, const unsigned char *inp, unsigned long long len, const unsigned char *noncep, const unsigned char *c)
+int crypto_stream_xor_afternm(unsigned char *outp, const unsigned char *inp, uint64_t len, const unsigned char *noncep, const unsigned char *c)
 {
 
   int128 xmm0;
@@ -30,7 +30,7 @@ int crypto_stream_xor_afternm(unsigned char *outp, const unsigned char *inp, uns
   int128 xmm15;
 
   int128 nonce_stack;
-  unsigned long long lensav;
+  uint64_t lensav;
   unsigned char bl[128];
   unsigned char *blp;
   unsigned char *np;
