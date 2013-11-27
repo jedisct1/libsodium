@@ -10,6 +10,7 @@
  */
 
 #include <stddef.h>
+#include <stdint.h>
 #include "export.h"
 
 #ifdef __cplusplus
@@ -28,10 +29,10 @@ SODIUM_EXPORT
 const char * crypto_stream_salsa208_primitive(void);
 
 SODIUM_EXPORT
-int crypto_stream_salsa208(unsigned char *,unsigned long long,const unsigned char *,const unsigned char *);
+int crypto_stream_salsa208(unsigned char *,uint64_t,const unsigned char *,const unsigned char *);
 
 SODIUM_EXPORT
-int crypto_stream_salsa208_xor(unsigned char *,const unsigned char *,unsigned long long,const unsigned char *,const unsigned char *);
+int crypto_stream_salsa208_xor(unsigned char *,const unsigned char *,uint64_t,const unsigned char *,const unsigned char *);
 
 #ifdef __cplusplus
 }

@@ -12,15 +12,15 @@
 #define MAXTEST_BYTES 10000
 #define TUNE_BYTES 1536
 
-extern unsigned char *alignedcalloc(unsigned long long);
+extern unsigned char *alignedcalloc(uint64_t);
 
 const char *primitiveimplementation = crypto_sign_IMPLEMENTATION;
 
 static unsigned char *pk;
 static unsigned char *sk;
-static unsigned char *m; unsigned long long mlen;
-static unsigned char *sm; unsigned long long smlen;
-static unsigned char *t; unsigned long long tlen;
+static unsigned char *m; uint64_t mlen;
+static unsigned char *sm; uint64_t smlen;
+static unsigned char *t; uint64_t tlen;
 
 void preallocate(void)
 {
@@ -56,9 +56,9 @@ char checksum[crypto_sign_BYTES * 2 + 1];
 
 const char *checksum_compute(void)
 {
-  long long mlen;
-  long long i;
-  long long j;
+  int64_t mlen;
+  int64_t i;
+  int64_t j;
 
   if (crypto_sign_keypair(pk,sk) != 0) return "crypto_sign_keypair returns nonzero";
   for (mlen = 0;mlen < MAXTEST_BYTES;mlen += 1 + (mlen / 16)) {

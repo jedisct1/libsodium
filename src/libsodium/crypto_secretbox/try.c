@@ -9,7 +9,7 @@
 #include "utils.h"
 #include "windows/windows-quirks.h"
 
-extern unsigned char *alignedcalloc(unsigned long long);
+extern unsigned char *alignedcalloc(uint64_t);
 
 const char *primitiveimplementation = crypto_secretbox_IMPLEMENTATION;
 
@@ -63,15 +63,15 @@ char checksum[klen * 2 + 1];
 
 const char *checksum_compute(void)
 {
-  long long i;
-  long long j;
+  int64_t i;
+  int64_t j;
 
   for (j = 0;j < crypto_secretbox_ZEROBYTES;++j) m[j] = 0;
 
   for (i = 0;i < CHECKSUM_BYTES;++i) {
-    long long mlen = i + crypto_secretbox_ZEROBYTES;
-    long long tlen = i + crypto_secretbox_ZEROBYTES;
-    long long clen = i + crypto_secretbox_ZEROBYTES;
+    int64_t mlen = i + crypto_secretbox_ZEROBYTES;
+    int64_t tlen = i + crypto_secretbox_ZEROBYTES;
+    int64_t clen = i + crypto_secretbox_ZEROBYTES;
 
     for (j = -16;j < 0;++j) k[j] = rand();
     for (j = -16;j < 0;++j) n[j] = rand();

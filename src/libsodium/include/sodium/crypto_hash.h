@@ -14,7 +14,7 @@ extern "C" {
 
 SODIUM_EXPORT
 int crypto_hash(unsigned char *out, const unsigned char *in,
-                unsigned long long inlen);
+                uint64_t inlen);
 
 #ifdef __cplusplus
 }

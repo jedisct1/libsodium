@@ -9,6 +9,7 @@
  */
 
 #include <stddef.h>
+#include <stdint.h>
 
 #include "crypto_sign_ed25519.h"
 #include "export.h"
@@ -45,13 +46,13 @@ SODIUM_EXPORT
 int crypto_sign_keypair(unsigned char *pk, unsigned char *sk);
 
 SODIUM_EXPORT
-int crypto_sign(unsigned char *sm, unsigned long long *smlen,
-                const unsigned char *m, unsigned long long mlen,
+int crypto_sign(unsigned char *sm, uint64_t *smlen,
+                const unsigned char *m, uint64_t mlen,
                 const unsigned char *sk);
 
 SODIUM_EXPORT
-int crypto_sign_open(unsigned char *m, unsigned long long *mlen,
-                     const unsigned char *sm, unsigned long long smlen,
+int crypto_sign_open(unsigned char *m, uint64_t *mlen,
+                     const unsigned char *sm, uint64_t smlen,
                      const unsigned char *pk);
 
 #ifdef __cplusplus

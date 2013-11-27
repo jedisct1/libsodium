@@ -8,7 +8,7 @@
 #include "crypto_verify.h"
 #include "windows/windows-quirks.h"
 
-extern unsigned char *alignedcalloc(unsigned long long);
+extern unsigned char *alignedcalloc(uint64_t);
 
 const char *primitiveimplementation = crypto_verify_IMPLEMENTATION;
 
@@ -51,9 +51,9 @@ char checksum[2];
 
 const char *checksum_compute(void)
 {
-  long long tests;
-  long long i;
-  long long j;
+  int64_t tests;
+  int64_t i;
+  int64_t j;
   const char *c;
 
   for (tests = 0;tests < 100000;++tests) {

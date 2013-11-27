@@ -9,7 +9,7 @@
 
 #define blocks crypto_hashblocks_sha512
 
-typedef unsigned long long uint64;
+typedef uint64_t uint64;
 
 static const unsigned char iv[64] = {
   0x6a,0x09,0xe6,0x67,0xf3,0xbc,0xc9,0x08,
@@ -22,12 +22,12 @@ static const unsigned char iv[64] = {
   0x5b,0xe0,0xcd,0x19,0x13,0x7e,0x21,0x79
 } ;
 
-int crypto_auth(unsigned char *out,const unsigned char *in,unsigned long long inlen,const unsigned char *k)
+int crypto_auth(unsigned char *out,const unsigned char *in,uint64_t inlen,const unsigned char *k)
 {
   unsigned char h[64];
   unsigned char padded[256];
-  unsigned long long i;
-  unsigned long long bytes = 128 + inlen;
+  uint64_t i;
+  uint64_t bytes = 128 + inlen;
 
   for (i = 0;i < 64;++i) h[i] = iv[i];
 

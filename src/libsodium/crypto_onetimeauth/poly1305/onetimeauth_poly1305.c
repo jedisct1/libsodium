@@ -21,7 +21,7 @@ crypto_onetimeauth_poly1305_implementation_name(void)
 
 int
 crypto_onetimeauth_poly1305(unsigned char *out, const unsigned char *in,
-                            unsigned long long inlen, const unsigned char *k)
+                            uint64_t inlen, const unsigned char *k)
 {
     return implementation->onetimeauth(out, in, inlen, k);
 }
@@ -29,7 +29,7 @@ crypto_onetimeauth_poly1305(unsigned char *out, const unsigned char *in,
 int
 crypto_onetimeauth_poly1305_verify(const unsigned char *h,
                                    const unsigned char *in,
-                                   unsigned long long inlen,
+                                   uint64_t inlen,
                                    const unsigned char *k)
 {
     return implementation->onetimeauth_verify(h, in, inlen, k);

@@ -9,7 +9,7 @@
 #include "utils.h"
 #include "windows/windows-quirks.h"
 
-extern unsigned char *alignedcalloc(unsigned long long);
+extern unsigned char *alignedcalloc(uint64_t);
 
 const char *primitiveimplementation = crypto_scalarmult_IMPLEMENTATION;
 
@@ -63,9 +63,9 @@ char checksum[crypto_scalarmult_BYTES * 2 + 1];
 
 const char *checksum_compute(void)
 {
-  long long i;
-  long long j;
-  long long tests;
+  int64_t i;
+  int64_t j;
+  int64_t tests;
 
   for (i = 0;i < mlen;++i) m[i] = i;
   for (i = 0;i < nlen;++i) n[i] = i + 1;

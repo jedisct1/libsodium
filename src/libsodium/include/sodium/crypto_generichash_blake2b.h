@@ -65,13 +65,13 @@ const char * crypto_generichash_blake2b_blockbytes_primitive(void);
 SODIUM_EXPORT
 int crypto_generichash_blake2b(unsigned char *out, size_t outlen,
                                const unsigned char *in,
-                               unsigned long long inlen,
+                               uint64_t inlen,
                                const unsigned char *key, size_t keylen);
 
 SODIUM_EXPORT
 int crypto_generichash_blake2b_salt_personal(unsigned char *out, size_t outlen,
                                              const unsigned char *in,
-                                             unsigned long long inlen,
+                                             uint64_t inlen,
                                              const unsigned char *key,
                                              size_t keylen,
                                              const unsigned char *salt,
@@ -92,7 +92,7 @@ int crypto_generichash_blake2b_init_salt_personal(crypto_generichash_blake2b_sta
 SODIUM_EXPORT
 int crypto_generichash_blake2b_update(crypto_generichash_blake2b_state *state,
                                       const unsigned char *in,
-                                      unsigned long long inlen);
+                                      uint64_t inlen);
 
 SODIUM_EXPORT
 int crypto_generichash_blake2b_final(crypto_generichash_blake2b_state *state,

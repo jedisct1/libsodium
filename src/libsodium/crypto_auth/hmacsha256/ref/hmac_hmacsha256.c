@@ -22,12 +22,12 @@ static const unsigned char iv[32] = {
   0x5b,0xe0,0xcd,0x19,
 } ;
 
-int crypto_auth(unsigned char *out,const unsigned char *in,unsigned long long inlen,const unsigned char *k)
+int crypto_auth(unsigned char *out,const unsigned char *in,uint64_t inlen,const unsigned char *k)
 {
   unsigned char h[32];
   unsigned char padded[128];
-  unsigned long long i;
-  unsigned long long bits = 512 + (inlen << 3);
+  uint64_t i;
+  uint64_t bits = 512 + (inlen << 3);
 
   for (i = 0;i < 32;++i) h[i] = iv[i];
 

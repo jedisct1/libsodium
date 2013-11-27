@@ -220,7 +220,7 @@ randombytes_salsa20_random_getword(void)
         randombytes_salsa20_random_stir_if_needed();
         COMPILER_ASSERT(sizeof stream.nonce == crypto_stream_salsa20_NONCEBYTES);
         ret = crypto_stream_salsa20((unsigned char *) stream.rnd32,
-                                    (unsigned long long) sizeof stream.rnd32,
+                                    (uint64_t) sizeof stream.rnd32,
                                     (unsigned char *) &stream.nonce,
                                     stream.key);
         assert(ret == 0);
@@ -271,7 +271,7 @@ randombytes_salsa20_random_buf(void * const buf, const size_t size)
 #ifdef ULONG_LONG_MAX
     assert(size <= ULONG_LONG_MAX);
 #endif
-    ret = crypto_stream_salsa20((unsigned char *) buf, (unsigned long long) size,
+    ret = crypto_stream_salsa20((unsigned char *) buf, (uint64_t) size,
                                 (unsigned char *) &stream.nonce,
                                 stream.key);
     assert(ret == 0);

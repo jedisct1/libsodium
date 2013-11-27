@@ -9,7 +9,7 @@
 #include "utils.h"
 #include "windows/windows-quirks.h"
 
-extern unsigned char *alignedcalloc(unsigned long long);
+extern unsigned char *alignedcalloc(uint64_t);
 
 const char *primitiveimplementation = crypto_stream_IMPLEMENTATION;
 
@@ -59,15 +59,15 @@ char checksum[crypto_stream_KEYBYTES * 2 + 1];
 
 const char *checksum_compute(void)
 {
-  long long i;
-  long long j;
+  int64_t i;
+  int64_t j;
 
   for (i = 0;i < CHECKSUM_BYTES;++i) {
-    long long mlen = i;
-    long long clen = i;
-    long long slen = i;
-    long long klen = crypto_stream_KEYBYTES;
-    long long nlen = crypto_stream_NONCEBYTES;
+    int64_t mlen = i;
+    int64_t clen = i;
+    int64_t slen = i;
+    int64_t klen = crypto_stream_KEYBYTES;
+    int64_t nlen = crypto_stream_NONCEBYTES;
     for (j = -16;j < 0;++j) m[j] = rand();
     for (j = -16;j < 0;++j) c[j] = rand();
     for (j = -16;j < 0;++j) s[j] = rand();

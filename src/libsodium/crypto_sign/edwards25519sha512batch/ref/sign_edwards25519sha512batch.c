@@ -27,8 +27,8 @@ int crypto_sign_keypair(
 }
 
 int crypto_sign(
-    unsigned char *sm,unsigned long long *smlen,
-    const unsigned char *m,unsigned long long mlen,
+    unsigned char *sm,uint64_t *smlen,
+    const unsigned char *m,uint64_t mlen,
     const unsigned char *sk
     )
 {
@@ -36,7 +36,7 @@ int crypto_sign(
   ge25519 ger;
   unsigned char r[32];
   unsigned char s[32];
-  unsigned long long i;
+  uint64_t i;
   unsigned char hmg[crypto_hash_sha512_BYTES];
   unsigned char hmr[crypto_hash_sha512_BYTES];
 
@@ -69,12 +69,12 @@ int crypto_sign(
 }
 
 int crypto_sign_open(
-    unsigned char *m,unsigned long long *mlen,
-    const unsigned char *sm,unsigned long long smlen,
+    unsigned char *m,uint64_t *mlen,
+    const unsigned char *sm,uint64_t smlen,
     const unsigned char *pk
     )
 {
-  unsigned long long i;
+  uint64_t i;
   unsigned char t1[32], t2[32];
   ge25519 get1, get2, gepk;
   sc25519 schmr, scs;

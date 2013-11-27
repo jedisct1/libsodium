@@ -2,6 +2,7 @@
 #define crypto_sign_ed25519_H
 
 #include <stddef.h>
+#include <stdint.h>
 #include "export.h"
 
 #define crypto_sign_ed25519_SECRETKEYBYTES 64U
@@ -29,10 +30,10 @@ SODIUM_EXPORT
 const char * crypto_sign_ed25519_primitive(void);
 
 SODIUM_EXPORT
-int crypto_sign_ed25519(unsigned char *,unsigned long long *,const unsigned char *,unsigned long long,const unsigned char *);
+int crypto_sign_ed25519(unsigned char *,uint64_t *,const unsigned char *,uint64_t,const unsigned char *);
 
 SODIUM_EXPORT
-int crypto_sign_ed25519_open(unsigned char *,unsigned long long *,const unsigned char *,unsigned long long,const unsigned char *);
+int crypto_sign_ed25519_open(unsigned char *,uint64_t *,const unsigned char *,uint64_t,const unsigned char *);
 
 SODIUM_EXPORT
 int crypto_sign_ed25519_keypair(unsigned char *,unsigned char *);

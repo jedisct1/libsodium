@@ -186,11 +186,11 @@ crypto_stream_beforenm(unsigned char *c, const unsigned char *k)
 }
 
 int
-crypto_stream_afternm(unsigned char *outp, unsigned long long len,
+crypto_stream_afternm(unsigned char *outp, uint64_t len,
                       const unsigned char *noncep, const unsigned char *c)
 {
     ECRYPT_ctx * const ctx = (ECRYPT_ctx *) c;
-    unsigned long long i;
+    uint64_t i;
 
     ECRYPT_ivsetup(ctx, noncep);
     for (i = 0U; i < len; ++i) {
@@ -203,7 +203,7 @@ crypto_stream_afternm(unsigned char *outp, unsigned long long len,
 
 int
 crypto_stream_xor_afternm(unsigned char *outp, const unsigned char *inp,
-                          unsigned long long len, const unsigned char *noncep,
+                          uint64_t len, const unsigned char *noncep,
                           const unsigned char *c)
 {
     ECRYPT_ctx * const ctx = (ECRYPT_ctx *) c;
@@ -215,7 +215,7 @@ crypto_stream_xor_afternm(unsigned char *outp, const unsigned char *inp,
 }
 
 int
-crypto_stream(unsigned char *out, unsigned long long outlen,
+crypto_stream(unsigned char *out, uint64_t outlen,
               const unsigned char *n, const unsigned char *k)
 {
     unsigned char d[crypto_stream_BEFORENMBYTES];
@@ -227,7 +227,7 @@ crypto_stream(unsigned char *out, unsigned long long outlen,
 }
 
 int crypto_stream_xor(unsigned char *out, const unsigned char *in,
-                      unsigned long long inlen, const unsigned char *n,
+                      uint64_t inlen, const unsigned char *n,
                       const unsigned char *k)
 {
     unsigned char d[crypto_stream_BEFORENMBYTES];

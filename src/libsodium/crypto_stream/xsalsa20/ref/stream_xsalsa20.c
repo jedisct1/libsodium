@@ -13,7 +13,7 @@ static const unsigned char sigma[16] = {
 };
 
 int crypto_stream(
-        unsigned char *c,unsigned long long clen,
+        unsigned char *c,uint64_t clen,
   const unsigned char *n,
   const unsigned char *k
 )
