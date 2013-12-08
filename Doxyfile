@@ -455,7 +455,7 @@ HIDE_UNDOC_MEMBERS     = YES
 # no effect if EXTRACT_ALL is enabled.
 # The default value is: NO.
 
-HIDE_UNDOC_CLASSES     = NO
+HIDE_UNDOC_CLASSES     = YES
 
 # If the HIDE_FRIEND_COMPOUNDS tag is set to YES, doxygen will hide all friend
 # (class|struct|union) declarations. If set to NO these declarations will be
@@ -735,7 +735,7 @@ WARN_LOGFILE           =
 
 INPUT                  = README.markdown \
                          test \
-                         src/libsodium/include
+                         src
 
 # This tag can be used to specify the character encoding of the source files
 # that doxygen parses. Internally doxygen uses the UTF-8 encoding. Doxygen uses

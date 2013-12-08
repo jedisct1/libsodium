@@ -3,6 +3,10 @@
 
 #include <stdint.h>
 
+/** \ingroup ints
+ *
+ * @todo
+ */
 typedef uint8_t crypto_uint8;
 
 #endif
