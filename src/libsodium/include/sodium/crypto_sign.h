@@ -34,13 +34,13 @@ SODIUM_EXPORT
 size_t  crypto_sign_seedbytes(void);
 
 #define crypto_sign_PUBLICKEYBYTES crypto_sign_ed25519_PUBLICKEYBYTES
-/// length of verification key.   
+/// length of verification key.
 
 SODIUM_EXPORT
 size_t  crypto_sign_publickeybytes(void);
 
 #define crypto_sign_SECRETKEYBYTES crypto_sign_ed25519_SECRETKEYBYTES
-/// length of signing key.        
+/// length of signing key.
 SODIUM_EXPORT
 size_t  crypto_sign_secretkeybytes(void);
 
@@ -100,7 +100,7 @@ int crypto_sign_keypair(unsigned char *pk, unsigned char *sk);
  * unsigned long long mlen;
  * unsigned char sm[...];
  * unsigned long long smlen;
- * 
+ *
  * crypto_sign(sm,&smlen,m,mlen,sk);
  *~~~~~
  */
@@ -131,7 +131,7 @@ int crypto_sign(unsigned char *sm, unsigned long long *smlen,
  * const unsigned char pk[crypto_sign_PUBLICKEYBYTES];
  * const unsigned char sm[...]; unsigned long long smlen;
  * unsigned char m[...]; unsigned long long mlen;
- * 
+ *
  * crypto_sign_open(m,&mlen,sm,smlen,pk);
  *~~~~~
  */

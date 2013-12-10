@@ -2,8 +2,8 @@
 #define crypto_box_H
 
 /** \defgroup apke Authenticated Public-Key Encryption
- * 
- * Definitions and functions to perform Authenticated Encryption. 
+ *
+ * Definitions and functions to perform Authenticated Encryption.
  *
  * Authentication encryption provides guarantees towards the:
  *
@@ -22,13 +22,13 @@
  * open_after functions.
  *
  *
- * \warning 
+ * \warning
  * THREAD SAFETY: crypto_box_keypair() is thread-safe,
  * provided that you called sodium_init() once before using any
  * other libsodium function.
  * Other functions are always thread-safe.
  *
- * @{ 
+ * @{
 */
 
 #include <stddef.h>
@@ -42,7 +42,7 @@ extern "C" {
 
 
 #define crypto_box_PUBLICKEYBYTES crypto_box_curve25519xsalsa20poly1305_PUBLICKEYBYTES
-/// Size of Public Key. 
+/// Size of Public Key.
 SODIUM_EXPORT
 size_t  crypto_box_publickeybytes(void);
 
@@ -67,7 +67,7 @@ SODIUM_EXPORT
 size_t  crypto_box_zerobytes(void);
 
 #define crypto_box_BOXZEROBYTES crypto_box_curve25519xsalsa20poly1305_BOXZEROBYTES
-/// No. of leading 0 bytes in the cipher-text. 
+/// No. of leading 0 bytes in the cipher-text.
 SODIUM_EXPORT
 size_t  crypto_box_boxzerobytes(void);
 
@@ -82,7 +82,7 @@ SODIUM_EXPORT
 const char *crypto_box_primitive(void);
 
 /**
- * Randomly generates a secret key and a corresponding public key. 
+ * Randomly generates a secret key and a corresponding public key.
  *
  * @param[out] pk the buffer for the public key
  * @param[out] sk the buffer for the private key with length crypto_box_SECRETKEYTBYTES
@@ -111,7 +111,7 @@ int crypto_box_keypair(unsigned char *pk, unsigned char *sk);
 /**
  * Partially performs the computation required for both encryption and
  * decryption of data.
- * 
+ *
  * @param[out] k  the result of the computation.
  * @param[in]  pk the receivers public key, used for encryption.
  * @param[in]  sk the senders private key, used for signing.
@@ -122,11 +122,11 @@ int crypto_box_keypair(unsigned char *pk, unsigned char *sk);
  *
  * Example innvocation:
  *
- *~~~~~{.c}  
+ *~~~~~{.c}
  * unsigned char k[crypto_box_BEFORENMBYTES];
  * const unsigned char pk[crypto_box_PUBLICKEYBYTES];
  * const unsigned char sk[crypto_box_SECRETKEYBYTES];
- *  
+ *
  * crypto_box_beforenm(k,pk,sk);
  *~~~~~
  */
@@ -137,7 +137,7 @@ int crypto_box_beforenm(unsigned char *k,
 
 /**
  * Encrypts a given a message m, using partial computed data.
- * 
+ *
  * @param[out] ctxt   the buffer for the cipher-text.
  * @param[in]  msg    the message to be encrypted.
  * @param[in]  mlen   the length of msg.
@@ -158,7 +158,7 @@ int crypto_box_beforenm(unsigned char *k,
  * const unsigned char n[crypto_box_NONCEBYTES];
  * const unsigned char m[...]; unsigned long long mlen;
  * unsigned char c[...];
- *  
+ *
  * crypto_box_afternm(c,m,mlen,n,k);
  *~~~~~
  */
@@ -189,12 +189,12 @@ int crypto_box_afternm(unsigned char *c,
  * Example innvocation:
  *
  *~~~~~{.c}
- * 
+ *
  * const unsigned char k[crypto_box_BEFORENMBYTES];
  * const unsigned char n[crypto_box_NONCEBYTES];
  * const unsigned char c[...]; unsigned long long clen;
  * unsigned char m[...];
- *  
+ *
  * crypto_box_open_afternm(m,c,clen,n,k);
  *~~~~~
  */

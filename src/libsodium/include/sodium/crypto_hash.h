@@ -4,7 +4,7 @@
 #include "crypto_hash_sha512.h"
 #include "export.h"
 
-/** 
+/**
  * \defgroup hash Methods for Hashing
  *
  * Utility function to allow for hash computation.

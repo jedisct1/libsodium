@@ -29,12 +29,12 @@ SODIUM_EXPORT
 size_t  crypto_secretbox_noncebytes(void);
 
 #define crypto_secretbox_ZEROBYTES crypto_secretbox_xsalsa20poly1305_ZEROBYTES
-/// No. of leading 0 bytes in the message.  
+/// No. of leading 0 bytes in the message.
 SODIUM_EXPORT
 size_t  crypto_secretbox_zerobytes(void);
 
 #define crypto_secretbox_BOXZEROBYTES crypto_secretbox_xsalsa20poly1305_BOXZEROBYTES
-/// No. of leading 0 bytes in the cipher-text. 
+/// No. of leading 0 bytes in the cipher-text.
 SODIUM_EXPORT
 size_t  crypto_secretbox_boxzerobytes(void);
 

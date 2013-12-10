@@ -8,7 +8,7 @@
 
 /**
  * \addgroup hash
- * 
+ *
  * @TODO document
  *
  * @{

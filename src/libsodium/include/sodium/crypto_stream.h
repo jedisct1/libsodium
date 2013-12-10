@@ -4,7 +4,7 @@
 /** \defgroup symenc Symmetric Encryption
  *
  * Definitions and functions for symmetric encryption.
- * 
+ *
  * Alongside the standard interface there also exists a
  * pre-computation interface. In the event that applications are
  * required to send several messages to the same receiver, speed can
@@ -49,7 +49,7 @@ const char *crypto_stream_primitive(void);
 
 /**
  * Generates a stream using the given secret key and nonce.
- * 
+ *
  * @param[out] stream the generated stream.
  * @param[out] slen   the length of the generated stream.
  * @param[in]  nonce  the nonce used to generate the stream.
@@ -77,7 +77,7 @@ int crypto_stream(unsigned char *c, unsigned long long clen,
 
 /**
  * Encrypts the given message using the given secret key and nonce.
- * 
+ *
  * The crypto_stream_xor function guarantees that the ciphertext is
  * the plaintext (xor) the output of crypto_stream. Consequently
  * crypto_stream_xor can also be used to decrypt.
@@ -94,7 +94,7 @@ int crypto_stream(unsigned char *c, unsigned long long clen,
  * @pre  nonce must have length minimum crypto_stream_NONCEBYTES.
  * @pre  key must have length minimum crpyto_stream_KEYBYTES
  * @post first mlen bytes of ctxt will contain the ciphertext.
- * 
+ *
  * Example invocation:
  *
  *~~~~~{.c}
