@@ -100,7 +100,7 @@ int crypto_secretbox(unsigned char *c, const unsigned char *m,
  * @warning if verification fails msg may contain data from the
  * computation.
 
- * Example innvocation:
+ * Example invocation:
  *
  *~~~~~{.c}
  * const unsigned char k[crypto_secretbox_KEYBYTES];

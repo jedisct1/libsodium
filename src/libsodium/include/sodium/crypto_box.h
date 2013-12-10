@@ -94,7 +94,7 @@ const char *crypto_box_primitive(void);
  * @post first crypto_box_PUBLICKEYTBYTES of pk will be the key data.
  * @post first crypto_box_SECRETKEYTBYTES of sk will be the key data.
  *
- * Example innvocation:
+ * Example invocation:
  *
  *~~~~~{.c}
  *
@@ -120,7 +120,7 @@ int crypto_box_keypair(unsigned char *pk, unsigned char *sk);
  * for both crypto_box_afternm and crypto_box_open_afternm, and can be
  * reused for any number of messages.
  *
- * Example innvocation:
+ * Example invocation:
  *
  *~~~~~{.c}
  * unsigned char k[crypto_box_BEFORENMBYTES];
@@ -151,7 +151,7 @@ int crypto_box_beforenm(unsigned char *k,
  * @post first crypto_box_BOXZERBYTES of ctxt be all 0.
  * @post first mlen bytes of ctxt will contain the ciphertext.
  *
- * Example innvocation:
+ * Example invocation:
  *
  *~~~~~{.c}
  * const unsigned char k[crypto_box_BEFORENMBYTES];
@@ -186,7 +186,7 @@ int crypto_box_afternm(unsigned char *c,
  * @post first clen bytes of msg will contain the plaintext.
  * @post first crypto_box_ZEROBYTES of msg will be all 0.
  *
- * Example innvocation:
+ * Example invocation:
  *
  *~~~~~{.c}
  *
@@ -223,7 +223,7 @@ int crypto_box_open_afternm(unsigned char *m,
  * @post first crypto_box_BOXZERBYTES of ctxt be all 0.
  * @post first mlen bytes of ctxt will contain the ciphertext.
  *
- * Example innvocation:
+ * Example invocation:
  *
  *~~~~~{.c}
  * const unsigned char pk[crypto_box_PUBLICKEYBYTES];
@@ -262,7 +262,7 @@ int crypto_box(unsigned char *c,
  * @post first clen bytes of msg will contain the plaintext.
  * @post first crypto_box_ZEROBYTES of msg will be all 0.
  *
- * Example innvocation:
+ * Example invocation:
  *
  *~~~~~{.c}
  * const unsigned char pk[crypto_box_PUBLICKEYBYTES];

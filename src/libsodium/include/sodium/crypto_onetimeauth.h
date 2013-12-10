@@ -48,7 +48,7 @@ const char *crypto_onetimeauth_primitive(void);
  * @pre  key must be of length crypto_onetimeauth_KEY_BYTES
  * @post the first crypto_onetimeauth_BYTES of the token will contain the result.
  *
- * Example innvocation:
+ * Example invocation:
  *
  *~~~~~{.c}
  * const unsigned char k[crypto_onetimeauth_KEYBYTES];

@@ -125,7 +125,7 @@ int crypto_sign(unsigned char *sm, unsigned long long *smlen,
  * @warning if verification fails msg may contain data from the
  * computation.
  *
- * Example innvocation:
+ * Example invocation:
  *
  *~~~~~{.c}
  * const unsigned char pk[crypto_sign_PUBLICKEYBYTES];

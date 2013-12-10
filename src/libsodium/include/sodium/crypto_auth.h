@@ -48,7 +48,7 @@ const char *crypto_auth_primitive(void);
  * @pre  key must be of length crypto_auth_KEY_BYTES
  * @post the first crypto_auth_BYTES of auth will contain the result.
  *
- * Example innvocation:
+ * Example invocation:
  *
  *~~~~~{.c}
  * const unsigned char k[crypto_auth_KEYBYTES];
