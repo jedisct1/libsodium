@@ -21,7 +21,7 @@ extern "C" {
 SODIUM_EXPORT
 const char *sodium_version_string(void);
 
-  /// Return the library's Minor version number.
+  /// Return the library's Major version number.
 SODIUM_EXPORT
 int         sodium_library_version_major(void);
 
