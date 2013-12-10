@@ -20,7 +20,7 @@ extern "C" {
 #endif
 
 #define crypto_auth_BYTES crypto_auth_hmacsha512256_BYTES
-  /// Lenght of the authenticator
+  /// Length of the authenticator
 SODIUM_EXPORT
 size_t  crypto_auth_bytes(void);
 
