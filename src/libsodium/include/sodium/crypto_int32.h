@@ -3,18 +3,6 @@
 
 #include <stdint.h>
 
-/** \defgroup ints Integer Definitions
- *
- * @todo Document
- *
- * @{
- */
-
-/**
- * @todo
- */
 typedef int32_t crypto_int32;
 
-
-/// @}
 #endif

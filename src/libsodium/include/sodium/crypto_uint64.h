@@ -3,10 +3,6 @@
 
 #include <stdint.h>
 
-/** \ingroup ints
- *
- * @todo
- */
 typedef uint64_t crypto_uint64;
 
 #endif
