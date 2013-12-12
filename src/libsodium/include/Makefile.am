@@ -23,6 +23,7 @@ SODIUM_EXPORT = \
 	sodium/crypto_onetimeauth_poly1305_53.h \
 	sodium/crypto_onetimeauth_poly1305_donna.h \
 	sodium/crypto_scalarmult.h \
+	sodium/crypto_scalarmult_curve25519.h \
 	sodium/crypto_secretbox.h \
 	sodium/crypto_secretbox_xsalsa20poly1305.h \
 	sodium/crypto_shorthash.h \
@@ -52,7 +53,6 @@ SODIUM_EXPORT = \
 	sodium/utils.h
 
 EXTRA_SRC = $(SODIUM_EXPORT) \
-	sodium/crypto_scalarmult_curve25519.h.in \
 	sodium/version.h.in
 
 nobase_include_HEADERS = $(SODIUM_EXPORT)

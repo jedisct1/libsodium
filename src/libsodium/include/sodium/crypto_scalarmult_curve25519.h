@@ -1,12 +1,6 @@
 #ifndef crypto_scalarmult_curve25519_H
 #define crypto_scalarmult_curve25519_H
 
-#if @HAVE_TI_MODE_V@
-# ifndef SODIUM_HAVE_TI_MODE
-#  define SODIUM_HAVE_TI_MODE
-# endif
-#endif
-
 #include <stddef.h>
 
 #include "export.h"
@@ -28,14 +22,6 @@ int crypto_scalarmult_curve25519(unsigned char *,const unsigned char *,const uns
 
 SODIUM_EXPORT
 int crypto_scalarmult_curve25519_base(unsigned char *,const unsigned char *);
-
-#ifdef SODIUM_HAVE_TI_MODE
-# define crypto_scalarmult_curve25519_donna_c64 crypto_scalarmult_curve25519
-# define crypto_scalarmult_curve25519_donna_c64_base crypto_scalarmult_curve25519_base
-#else
-# define crypto_scalarmult_curve25519_ref crypto_scalarmult_curve25519
-# define crypto_scalarmult_curve25519_ref_base crypto_scalarmult_curve25519_base
-#endif
 
 #ifdef __cplusplus
 }

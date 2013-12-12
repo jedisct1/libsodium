@@ -148,6 +148,21 @@ crypto_scalarmult_curve25519_ref(unsigned char *q, const unsigned char *n,
     return crypto_scalarmult_curve25519(q, n, p);
 }
 
+#undef crypto_scalarmult_curve25519_donna_c64_base
+SODIUM_EXPORT int
+crypto_scalarmult_curve25519_donna_c64_base(unsigned char *q, const unsigned char *n)
+{
+    return crypto_scalarmult_curve25519_base(q, n);
+}
+
+#undef crypto_scalarmult_curve25519_donna_c64
+SODIUM_EXPORT int
+crypto_scalarmult_curve25519_donna_c64(unsigned char *q, const unsigned char *n,
+                                       const unsigned char *p)
+{
+    return crypto_scalarmult_curve25519(q, n, p);
+}
+
 #undef crypto_secretbox_xsalsa20poly1305_ref
 SODIUM_EXPORT int
 crypto_secretbox_xsalsa20poly1305_ref(unsigned char *c,
