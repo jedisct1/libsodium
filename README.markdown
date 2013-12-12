@@ -211,6 +211,7 @@ them from different languages is easier.
 * Racket: part of [CRESTaceans](https://github.com/mgorlick/CRESTaceans/tree/master/bindings/libsodium)
 * Ruby: [RbNaCl](https://github.com/cryptosphere/rbnacl)
 * Ruby: [Sodium](https://github.com/stouset/sodium)
+* Rust: [Sodium Oxide](https://github.com/dnaq/sodiumoxide)
 
 ## CurveCP
 
