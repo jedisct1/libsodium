@@ -48,7 +48,6 @@ src/curvecp/curvecpprintkey
 src/curvecp/curvecpserver
 src/libsodium/*.def
 src/libsodium/include/sodium/crypto_scalarmult_curve25519.h
-src/libsodium/include/sodium/crypto_stream_salsa20.h
 src/libsodium/include/sodium/version.h
 stamp-*
 test/default/*.res
