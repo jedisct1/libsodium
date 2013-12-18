@@ -319,66 +319,6 @@
 	#define U64TO8_LE(p, v) fU64TO8_LE_FAST(p, v)
 #endif
 
-/* 0400-endian-100-ppc.h */
-
-#if defined(CPU_PPC)
-	#if defined(CPU_POWER7)
-		static INLINE uint64_t fU8TO64_LE_FAST(const uint8_t *p) {
-			uint64_d d;
-			__asm__ ("ldbrx %0,0,%1" : "=r"(d) : "r"(p))
-			return d;
-		}
-
-		static INLINE void
-		fU64TO8_LE_FAST(uint8_t *p, const uint64_t v) {
-			__asm__ ("stdbrx %1,0,%0" : : "r"(p), "r"(v))
-		}
-	#elif defined(CPU_PPC64)
-		static INLINE uint64_t
-		fU8TO64_LE_FAST(const uint8_t *p) {
-			uint64_t *s4, h, d;
-			__asm__ ("addi %0,%3,4;lwbrx %1,0,%3;lwbrx %2,0,%0;rldimi %1,%2,32,0" : "+r"(s4), "=r"(d), "=r"(h) : "b"(p));
-			return d;
-		}
-
-		static INLINE void
-		fU64TO8_LE_FAST(uint8_t *p, const uint64_t v) {
-			uint64_t *s4, h = v >> 32;
-			__asm__ ("addi %0,%3,4;stwbrx %1,0,%3;stwbrx %2,0,%0" : "+r"(s4) : "r"(v), "r"(h), "b"(p));
-		}
-	#elif defined(CPU_PPC32)
-		static INLINE uint64_t
-		fU8TO64_LE_FAST(const uint8_t *p) {
-			uint32_t *s4, h, l;
-			__asm__ ("addi %0,%3,4;lwbrx %1,0,%3;lwbrx %2,0,%0" : "+r"(s4), "=r"(l), "=r"(h) : "b"(p));\
-			return ((uint64_t)h << 32) | l;
-		}
-
-		static INLINE void
-		fU64TO8_LE_FAST(uint8_t *p, const uint64_t v) {
-			uint32_t *s4, h = (uint32_t)(v >> 32), l = (uint32_t)(v & (uint32_t)0xffffffff);
-			__asm__ ("addi %0,%3,4;stwbrx %1,0,%3;stwbrx %2,0,%0" : "+r"(s4) : "r"(l), "r"(h), "b"(p));
-		}
-	#endif
-
-	static INLINE uint32_t
-	fU8TO32_LE_FAST(const uint8_t *p) {
-		uint32_t d;
-		__asm__ ("lwbrx %0,0,%1" : "=r"(d) : "r"(p));
-		return d;
-	}
-
-	static INLINE void
-	fU32TO8_LE_FAST(uint8_t *p, const uint32_t v) {
-		__asm__ __volatile__("stwbrx %1,0,%0" : : "r"(p), "r"(v));
-	}
-
-	#define U8TO32_LE(p) fU8TO32_LE_FAST(p)
-	#define U8TO64_LE(p) fU8TO64_LE_FAST(p)
-	#define U32TO8_LE(p, v) fU32TO8_LE_FAST(p, v)
-	#define U64TO8_LE(p, v) fU64TO8_LE_FAST(p, v)
-#endif
-
 /* 0400-endian-100-sparc.h */
 
 #if defined(CPU_SPARC)
