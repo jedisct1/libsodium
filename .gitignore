@@ -67,6 +67,7 @@ test/default/core5
 test/default/core6
 test/default/generichash
 test/default/generichash2
+test/default/generichash3
 test/default/hash
 test/default/hash3
 test/default/onetimeauth
