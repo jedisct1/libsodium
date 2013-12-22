@@ -79,6 +79,16 @@ int crypto_box_open(unsigned char *m, const unsigned char *c,
                     unsigned long long clen, const unsigned char *n,
                     const unsigned char *pk, const unsigned char *sk);
 
+SODIUM_EXPORT
+int crypto_box_easy(unsigned char *c, const unsigned char *m,
+                    unsigned long long mlen, const unsigned char *n,
+                    const unsigned char *pk, const unsigned char *sk);
+
+SODIUM_EXPORT
+int crypto_box_open_easy(unsigned char *m, const unsigned char *c,
+                         unsigned long long clen, const unsigned char *n,
+                         const unsigned char *pk, const unsigned char *sk);
+
 #ifdef __cplusplus
 }
 #endif
