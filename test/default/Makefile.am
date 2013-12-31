@@ -11,6 +11,7 @@ EXTRA_DIST = \
 	box7.exp \
 	box8.exp \
 	box_easy.exp \
+	box_easy2.exp \
 	core1.exp \
 	core2.exp \
 	core3.exp \
@@ -57,6 +58,7 @@ DISTCLEANFILES = \
 	box7.res \
 	box8.res \
 	box_easy.res \
+	box_easy2.res \
 	core1.res \
 	core2.res \
 	core3.res \
@@ -111,6 +113,7 @@ TESTS_TARGETS = \
 	box7 \
 	box8 \
 	box_easy \
+	box_easy2 \
 	core1 \
 	core2 \
 	core3 \
@@ -180,6 +183,9 @@ box8_LDADD                = $(TESTS_LDADD)
 
 box_easy_SOURCE           = cmptest.h box_easy.c
 box_easy_LDADD            = $(TESTS_LDADD)
+
+box_easy2_SOURCE          = cmptest.h box_easy2.c
+box_easy2_LDADD           = $(TESTS_LDADD)
 
 core1_SOURCE              = cmptest.h core1.c
 core1_LDADD               = $(TESTS_LDADD)
