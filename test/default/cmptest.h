@@ -29,7 +29,9 @@ int main(void)
     if (sodium_init() != 0) {
         return 99;
     }
-    xmain();
+    if (xmain() != 0) {
+        return 99;
+    }
     rewind(fp_res);
     if ((fp_out = fopen(TEST_NAME_OUT, "r")) == NULL) {
         perror("fopen(" TEST_NAME_OUT ")");
