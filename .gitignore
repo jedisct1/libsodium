@@ -88,6 +88,7 @@ test/default/secretbox2
 test/default/secretbox7
 test/default/secretbox8
 test/default/secretbox_easy
+test/default/secretbox_easy2
 test/default/shorthash
 test/default/sodium_core
 test/default/sodium_utils
