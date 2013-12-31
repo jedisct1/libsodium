@@ -8,6 +8,9 @@
 #define crypto_hash_sha256_BLOCKBYTES 64U
 
 #ifdef __cplusplus
+# if __GNUC__
+#  pragma GCC diagnostic ignored "-Wlong-long"
+# endif
 extern "C" {
 #endif
 

@@ -13,6 +13,9 @@
 #define crypto_box_curve25519xsalsa20poly1305_MACBYTES (crypto_box_curve25519xsalsa20poly1305_ZEROBYTES - crypto_box_curve25519xsalsa20poly1305_BOXZEROBYTES)
 
 #ifdef __cplusplus
+# if __GNUC__
+#  pragma GCC diagnostic ignored "-Wlong-long"
+# endif
 extern "C" {
 #endif
 

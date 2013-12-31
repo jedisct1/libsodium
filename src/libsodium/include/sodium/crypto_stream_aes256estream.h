@@ -18,6 +18,9 @@
 #define crypto_stream_aes256estream_BEFORENMBYTES 276U
 
 #ifdef __cplusplus
+# if __GNUC__
+#  pragma GCC diagnostic ignored "-Wlong-long"
+# endif
 extern "C" {
 #endif
 

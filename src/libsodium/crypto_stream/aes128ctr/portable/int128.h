@@ -3,6 +3,12 @@
 
 #include "common.h"
 
+#ifdef __cplusplus
+# if __GNUC__
+#  pragma GCC diagnostic ignored "-Wlong-long"
+# endif
+#endif
+
 typedef struct{
   unsigned long long a;
   unsigned long long b;

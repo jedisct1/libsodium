@@ -1,6 +1,12 @@
 #include "ge.h"
 #include "crypto_uint32.h"
 
+#ifdef __cplusplus
+# if __GNUC__
+#  pragma GCC diagnostic ignored "-Wlong-long"
+# endif
+#endif
+
 static unsigned char equal(signed char b,signed char c)
 {
   unsigned char ub = b;

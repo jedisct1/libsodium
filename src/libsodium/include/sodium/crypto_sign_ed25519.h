@@ -10,6 +10,9 @@
 #define crypto_sign_ed25519_BYTES 64U
 
 #ifdef __cplusplus
+# if __GNUC__
+#  pragma GCC diagnostic ignored "-Wlong-long"
+# endif
 extern "C" {
 #endif
 
