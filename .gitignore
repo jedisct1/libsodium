@@ -27,6 +27,7 @@ confdefs.h
 config.*
 configure
 depcomp
+android-toolchain
 install-sh
 libtool
 libsodium.pc

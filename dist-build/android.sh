@@ -1,45 +1,32 @@
 #! /bin/sh
 
-# Note that this script requires droid-wrapper
-if [ x`which droid-gcc` = x ]; then
-	echo "This build script requires droid-wrapper."
-	echo https://github.com/jevinskie/droid-wrapper
-	exit 1
-fi
-
 if [ -z "$NDK_ROOT" ]; then
     echo "You should probably set NDK_ROOT to the directory containing"
     echo "the Android NDK"
 fi
 
 if [ ! -f ./configure ]; then
-	echo "Can't find ./configure.  Wrong directory or haven't run autogen.sh?"
+	echo "Can't find ./configure. Wrong directory or haven't run autogen.sh?"
 	exit 1
 fi
 
-export CFLAGS="-Os -mthumb"
-export DROID_HOST=darwin-x86
-if uname -a | grep -q -i linux; then
-	export DROID_HOST=linux-x86
-fi
-export LDFLAGS="-mthumb"
-export NDK_PLATFORM=9
+export NDK_PLATFORM=${NDK_PLATFORM:-android-14}
 export NDK_ROOT=${NDK_ROOT:-/usr/local/Cellar/android-ndk/9}
-export NDK_ANDROID_SOURCES="${NDK_ROOT}/sources/android"
-export TARGET_TOOLCHAIN_VERSION=4.6
-export TARGET=arm-linux-androideabi
-export NDK_TARGET="arm-linux-androideabi-${TARGET_TOOLCHAIN_VERSION}"
-export AR=droid-ar
-export AS=droid-as
-export CC=droid-gcc
-export LD=droid-ld
-export NM=droid-nm
-export OBJCOPY=droid-objcopy
-export RANLIB=droid-ranlib
-export STRIP=droid-strip
+export TARGET_ARCH=arm
+export TARGET="${TARGET_ARCH}-linux-androideabi"
+export MAKE_TOOLCHAIN="${NDK_ROOT}/build/tools/make-standalone-toolchain.sh"
+
 export PREFIX="$(pwd)/libsodium-android"
+export TOOLCHAIN_DIR="$(pwd)/android-toolchain"
+export PATH="${PATH}:${TOOLCHAIN_DIR}"
+export CFLAGS="-Os -mthumb"
+export LDFLAGS="-mthumb"
+
+$MAKE_TOOLCHAIN --platform="$NDK_PLATFORM" --arch="$TARGET_ARCH" \
+                --install-dir="$TOOLCHAIN_DIR"
 
 ./configure --host=arm-linux-androideabi \
+            --with-sysroot="${TOOLCHAIN_DIR}/sysroot" \
             --disable-pie \
             --disable-shared \
             --prefix="$PREFIX" && \
