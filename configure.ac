@@ -392,6 +392,7 @@ AS_IF([test "x$PKG_CONFIG" != "x"], [
   AC_CONFIG_FILES([libsodium.pc])
 ])
 AC_CONFIG_FILES([Makefile
+                 dist-build/Makefile
                  msvc-scripts/Makefile
                  src/Makefile
                  src/libsodium/Makefile
