@@ -37,6 +37,7 @@ EXTRA_DIST = \
 	secretbox2.exp \
 	secretbox7.exp \
 	secretbox8.exp \
+	secretbox_easy.exp \
 	shorthash.exp \
 	sodium_core.exp \
 	sodium_utils.exp \
@@ -84,6 +85,7 @@ DISTCLEANFILES = \
 	secretbox2.res \
 	secretbox7.res \
 	secretbox8.res \
+	secretbox_easy.res \
 	shorthash.res \
 	sodium_core.res \
 	sodium_utils.res \
@@ -139,6 +141,7 @@ TESTS_TARGETS = \
 	secretbox2 \
 	secretbox7 \
 	secretbox8 \
+	secretbox_easy \
 	shorthash \
 	sodium_core \
 	sodium_utils \
@@ -261,6 +264,9 @@ secretbox7_LDADD          = $(TESTS_LDADD)
 
 secretbox8_SOURCE         = cmptest.h secretbox8.c
 secretbox8_LDADD          = $(TESTS_LDADD)
+
+secretbox_easy_SOURCE     = cmptest.h secretbox_easy.c
+secretbox_easy_LDADD      = $(TESTS_LDADD)
 
 shorthash_SOURCE          = cmptest.h shorthash.c
 shorthash_LDADD           = $(TESTS_LDADD)
