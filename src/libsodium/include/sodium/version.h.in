@@ -4,6 +4,10 @@
 
 #include "export.h"
 
+/** \addtogroup util
+ * @{
+ */
+
 #define SODIUM_VERSION_STRING "@VERSION@"
 
 #define SODIUM_LIBRARY_VERSION_MAJOR @SODIUM_LIBRARY_VERSION_MAJOR@
@@ -13,15 +17,20 @@
 extern "C" {
 #endif
 
+  /// Return the version string
 SODIUM_EXPORT
 const char *sodium_version_string(void);
 
+  /// Return the library's Major version number.
 SODIUM_EXPORT
 int         sodium_library_version_major(void);
 
+
+  /// Return the library's Minor version number.
 SODIUM_EXPORT
 int         sodium_library_version_minor(void);
 
+  /// @}
 #ifdef __cplusplus
 }
 #endif

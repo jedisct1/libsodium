@@ -1,3 +1,5 @@
+doxydoc
+*.bak
 *.cmake
 *.dSYM
 *.la
