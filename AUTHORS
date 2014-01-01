@@ -99,3 +99,8 @@ Christian Winnerlein
 crypto_onetimeauth/poly1305/donna
 ---------------------------------
 Andrew "floodyberry" M.
+
+crypto_pwhash/scryptxsalsa208sha256
+--------------------------------
+Colin Percival
+Alexander Peslyak

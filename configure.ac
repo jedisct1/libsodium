@@ -269,6 +269,8 @@ AC_CHECK_HEADERS([wmmintrin.h], [], [], [
 #pragma GCC target("aes")
 ])
 
+AC_CHECK_HEADERS([sys/mman.h])
+
 AC_MSG_CHECKING(for access to floating-point rounding mode)
 AC_COMPILE_IFELSE([AC_LANG_PROGRAM([[
   #include <fenv.h>
