@@ -13,6 +13,18 @@ higher-level cryptographic tools.
 Sodium is a portable, cross-compilable, installable, packageable
 fork of NaCl (based on the latest released upstream version [nacl-20110221](http://hyperelliptic.org/nacl/nacl-20110221.tar.bz2)), with a compatible API.
 
+The design choices, particularly in regard to the Curve25519
+Diffie-Hellman function, emphasize security (whereas NIST curves
+emphasize "performance" at the cost of security), and "magic
+constants" in NaCl/Sodium are picked by theorems designed to maximize
+security.
+
+The same cannot be said of NIST curves, where the specific origins of
+certain constants are not described by the standards.
+
+And despite the emphasis on higher security, primitives are faster
+across-the-board than most implementations of the NIST standards.
+
 ## Portability
 
 In order to pick the fastest working implementation of each primitive,
