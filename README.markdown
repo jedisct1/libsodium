@@ -16,8 +16,7 @@ fork of NaCl (based on the latest released upstream version [nacl-20110221](http
 The design choices, particularly in regard to the Curve25519
 Diffie-Hellman function, emphasize security (whereas NIST curves
 emphasize "performance" at the cost of security), and "magic
-constants" in NaCl/Sodium are picked by theorems designed to maximize
-security.
+constants" in NaCl/Sodium have clear rationales.
 
 The same cannot be said of NIST curves, where the specific origins of
 certain constants are not described by the standards.
