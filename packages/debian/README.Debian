@@ -1,0 +1,7 @@
+The .dirs files that duplicate .install files seem to be required to build the
+package in some circumstances, including Launchpad build servers.
+
+I have not tackled big items which I don't understand, such as removing .la file
+ and introducing multiarch (which depends on the former).
+If you can do any of those things, you're very welcome.
+-- Sergey "Shnatsel" Davidoff <shnatsel@gmail.com>
