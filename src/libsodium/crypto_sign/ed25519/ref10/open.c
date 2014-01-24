@@ -10,9 +10,9 @@ int crypto_sign_open(
   const unsigned char *pk
 )
 {
-  unsigned char d = 0;
   unsigned char h[64];
   unsigned char checkr[32];
+  unsigned char d = 0;
   ge_p3 A;
   ge_p2 R;
   unsigned long long i;
