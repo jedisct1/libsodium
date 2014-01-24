@@ -10,6 +10,7 @@ int crypto_sign_open(
   const unsigned char *pk
 )
 {
+  unsigned char d = 0;
   unsigned char h[64];
   unsigned char checkr[32];
   ge_p3 A;
@@ -20,6 +21,8 @@ int crypto_sign_open(
   if (smlen < 64) return -1;
   if (sm[63] & 224) return -1;
   if (ge_frombytes_negate_vartime(&A,pk) != 0) return -1;
+  for (i = 0; i < 32; ++i) d ^= pk[i];
+  if (d == 0) return -1;
 
   for (i = 0;i < smlen;++i) m[i] = sm[i];
   for (i = 0;i < 32;++i) m[32 + i] = pk[i];
