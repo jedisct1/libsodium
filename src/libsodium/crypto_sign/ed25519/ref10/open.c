@@ -21,7 +21,7 @@ int crypto_sign_open(
   if (smlen < 64) return -1;
   if (sm[63] & 224) return -1;
   if (ge_frombytes_negate_vartime(&A,pk) != 0) return -1;
-  for (i = 0; i < 32; ++i) d ^= pk[i];
+  for (i = 0; i < 32; ++i) d |= pk[i];
   if (d == 0) return -1;
 
   for (i = 0;i < smlen;++i) m[i] = sm[i];
