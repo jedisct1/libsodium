@@ -128,6 +128,8 @@ randombytes_salsa20_random_random_dev_open(void)
 static void
 randombytes_salsa20_random_init(void)
 {
+    const int errno_save = errno;
+
     stream.nonce = sodium_hrtime();
     assert(stream.nonce != (uint64_t) 0U);
 
@@ -135,6 +137,7 @@ randombytes_salsa20_random_init(void)
          randombytes_salsa20_random_random_dev_open()) == -1) {
         abort();
     }
+    errno = errno_save;
 }
 
 #else /* _WIN32 */

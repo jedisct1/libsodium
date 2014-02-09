@@ -88,10 +88,13 @@ randombytes_sysrandom_random_dev_open(void)
 static void
 randombytes_sysrandom_init(void)
 {
+    const int errno_save = errno;
+
     if ((stream.random_data_source_fd =
          randombytes_sysrandom_random_dev_open()) == -1) {
         abort();
     }
+    errno = errno_save;
 }
 
 #else /* _WIN32 */
