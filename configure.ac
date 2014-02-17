@@ -151,7 +151,7 @@ AX_CHECK_COMPILE_FLAG([-fwrapv], [CFLAGS="$CFLAGS -fwrapv"])
 AX_CHECK_COMPILE_FLAG([-fno-strict-aliasing], [CFLAGS="$CFLAGS -fno-strict-aliasing"])
 AX_CHECK_COMPILE_FLAG([-fno-strict-overflow], [CFLAGS="$CFLAGS -fno-strict-overflow"])
 
-LIBTOOL_EXTRA_FLAGS="-version-info $SODIUM_LIBRARY_VERSION"
+LIBTOOL_EXTRA_FLAGS="$LIBTOOL_EXTRA_FLAGS -version-info $SODIUM_LIBRARY_VERSION"
 
 AS_CASE([$host_os],
   [cygwin* | mingw* | pw32* | cegcc*], [
