@@ -21,7 +21,6 @@ export MAKE_TOOLCHAIN="${ANDROID_NDK_HOME}/build/tools/make-standalone-toolchain
 export PREFIX="$(pwd)/libsodium-android-${TARGET_ARCH}"
 export TOOLCHAIN_DIR="$(pwd)/android-toolchain-${TARGET_ARCH}"
 export PATH="${PATH}:${TOOLCHAIN_DIR}/bin"
-export LIBTOOL_EXTRA_FLAGS="-avoid-version"
 
 # Clean up before build
 rm -rf "${TOOLCHAIN_DIR}" "${PREFIX}"
@@ -32,7 +31,8 @@ $MAKE_TOOLCHAIN --platform="${NDK_PLATFORM:-android-14}" \
 
 ./configure --host="${HOST_COMPILER}" \
             --with-sysroot="${TOOLCHAIN_DIR}/sysroot" \
-            --prefix="${PREFIX}" && \
+            --prefix="${PREFIX}" \
+            --disable-soname-versions && \
 
 make clean && \
 make -j3 install && \
