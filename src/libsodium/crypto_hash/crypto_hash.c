@@ -7,3 +7,8 @@ crypto_hash(unsigned char *out, const unsigned char *in,
 {
     return crypto_hash_sha512(out, in, inlen);
 }
+
+const char *
+crypto_hash_primitive(void) {
+    return crypto_hash_sha512_primitive();
+}
