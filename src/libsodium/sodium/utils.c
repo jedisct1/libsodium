@@ -1,4 +1,7 @@
 
+#ifndef __STDC_WANT_LIB_EXT1__
+# define __STDC_WANT_LIB_EXT1__ 1
+#endif
 #include <limits.h>
 #include <stddef.h>
 #include <stdint.h>
@@ -17,6 +20,10 @@ sodium_memzero(void * const pnt, const size_t len)
 {
 #ifdef HAVE_SECUREZEROMEMORY
     SecureZeroMemory(pnt, len);
+#elif defined(HAVE_MEMSET_S)
+    if (memset_s(pnt, (rsize_t) len, 0, (rsize_t) len) != 0) {
+        abort();
+    }
 #else
     volatile unsigned char *pnt_ = (volatile unsigned char *) pnt;
     size_t                     i = (size_t) 0U;

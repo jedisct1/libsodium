@@ -381,6 +381,7 @@ AC_CHECK_FUNC(clock_gettime, , [AC_CHECK_LIB(rt, clock_gettime)])
 AC_CHECK_FUNC(fegetenv, , [AC_CHECK_LIB(m, fegetenv)])
 
 AC_CHECK_FUNCS([SecureZeroMemory arc4random arc4random_buf posix_memalign])
+AC_CHECK_FUNCS([memset_s])
 
 AC_SUBST([LIBTOOL_EXTRA_FLAGS])
 
