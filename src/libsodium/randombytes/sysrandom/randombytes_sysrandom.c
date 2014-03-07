@@ -12,7 +12,6 @@
 #include <stdlib.h>
 #include <string.h>
 #ifndef _WIN32
-# include <poll.h>
 # include <unistd.h>
 #endif
 
