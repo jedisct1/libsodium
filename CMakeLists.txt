@@ -300,7 +300,7 @@ foreach(test IN LISTS tests_list)
   get_filename_component(absdirname  ${dirname} ABSOLUTE)
   set(target "${PROJECT_NAME}-test-${basename}")
   add_executable(${target} "${test}.c")
-  include_directories(test/quirks ${CMAKE_CURRENT_BINARY_DIR})
+  target_include_directories(${target} PRIVATE test/quirks ${CMAKE_CURRENT_BINARY_DIR} )
   add_definitions(-DTEST_SRCDIR=\"${absdirname}\")
   target_link_libraries(${target} PRIVATE
 	crypto::sodium
