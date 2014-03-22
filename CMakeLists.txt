@@ -7,6 +7,38 @@ enable_testing()
 
 #SODIUM_STATIC
 
+include(CheckCSourceCompiles)
+CHECK_C_SOURCE_COMPILES(
+  "
+#ifndef __GNUC__
+# error mode(TI) is a gcc extension
+#endif
+#if defined(__clang__) && !defined(__x86_64__)
+# error clang doesn't properly compile smult_curve25519_donna_c64.c
+#endif
+#ifndef NATIVE_LITTLE_ENDIAN
+# error donna_c64 currently requires a little endian CPU
+#endif
+#include <stdint.h>
+typedef unsigned uint128_t __attribute__((mode(TI)));
+void fcontract(uint128_t *t) {
+  *t += 0x8000000000000 - 1;
+}
+]], [[
+(void) fcontract;
+]])],
+    " 
+  TI_MODE_COMPILE)
+
+if(TI_MODE_COMPILE)
+  message(STATUS "OK: 128 bit arithmetic with TI extension")
+  set(HAVE_TI_MODE_V 1)
+  add_definitions("-DHAVE_TI_MODE=1")
+else()
+  message(STATUS "NO: 128 bit arithmetic with TI extension")
+  set(HAVE_TI_MODE_V 0)
+endif()
+
 INCLUDE(TestBigEndian)
 
 TEST_BIG_ENDIAN(BE)
@@ -20,6 +52,20 @@ CONFIGURE_FILE(
   src/libsodium/include/sodium/version.h.in
   ${CMAKE_CURRENT_BINARY_DIR}/sodium/version.h
   )
+
+if(HAVE_TI_MODE_V)
+  set(curve25519_src 
+	src/libsodium/crypto_scalarmult/curve25519/donna_c64/api.h 
+	src/libsodium/crypto_scalarmult/curve25519/donna_c64/base_curve25519_donna_c64.c 
+	src/libsodium/crypto_scalarmult/curve25519/donna_c64/smult_curve25519_donna_c64.c
+	)
+else()
+  set(curve25519_src 
+	src/libsodium/crypto_scalarmult/curve25519/ref/api.h 
+	src/libsodium/crypto_scalarmult/curve25519/ref/base_curve25519_ref.c 
+	src/libsodium/crypto_scalarmult/curve25519/ref/smult_curve25519_ref.c
+	)
+endif()
 
 add_library(sodium
   src/libsodium/crypto_box/crypto_box.c
@@ -108,10 +154,7 @@ add_library(sodium
   src/libsodium/crypto_generichash/blake2/ref/generichash_blake2b.c
   src/libsodium/crypto_generichash/blake2/ref/blake2s-ref.c
   src/libsodium/crypto_scalarmult/crypto_scalarmult.c
-  src/libsodium/crypto_scalarmult/curve25519/ref/base_curve25519_ref.c
-  src/libsodium/crypto_scalarmult/curve25519/ref/smult_curve25519_ref.c
-  src/libsodium/crypto_scalarmult/curve25519/donna_c64/base_curve25519_donna_c64.c
-  src/libsodium/crypto_scalarmult/curve25519/donna_c64/smult_curve25519_donna_c64.c
+  ${curve25519_src}
   src/libsodium/crypto_scalarmult/curve25519/scalarmult_curve25519_api.c
   src/libsodium/randombytes/randombytes.c
   src/libsodium/randombytes/salsa20/randombytes_salsa20_random.c
@@ -164,14 +207,14 @@ add_library(sodium
 add_library(crypto::sodium ALIAS sodium)
 
 target_include_directories(sodium PUBLIC
-#  "$<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/src/libsodium/include/sodium>"
+  #  "$<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/src/libsodium/include/sodium>"
   "$<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/src/libsodium/include>"
   )
 
 include_directories(
   src/libsodium/include/sodium
   ${CMAKE_CURRENT_BINARY_DIR}/sodium
-)
+  )
 
 set(tests_list
   test/default/auth2
