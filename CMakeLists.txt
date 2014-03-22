@@ -8,8 +8,13 @@ enable_testing()
 #SODIUM_STATIC
 
 include(CheckCSourceCompiles)
+include(TestBigEndian)
+
+
+######################################################################
 CHECK_C_SOURCE_COMPILES(
   "
+int main(void) {
 #ifndef __GNUC__
 # error mode(TI) is a gcc extension
 #endif
@@ -24,23 +29,29 @@ typedef unsigned uint128_t __attribute__((mode(TI)));
 void fcontract(uint128_t *t) {
   *t += 0x8000000000000 - 1;
 }
-]], [[
 (void) fcontract;
-]])],
+};
     " 
-  TI_MODE_COMPILE)
+  HAVE_TI_MODE)
 
-if(TI_MODE_COMPILE)
-  message(STATUS "OK: 128 bit arithmetic with TI extension")
-  set(HAVE_TI_MODE_V 1)
-  add_definitions("-DHAVE_TI_MODE=1")
-else()
-  message(STATUS "NO: 128 bit arithmetic with TI extension")
-  set(HAVE_TI_MODE_V 0)
-endif()
 
-INCLUDE(TestBigEndian)
+######################################################################
+CHECK_C_SOURCE_COMPILES(
+  "
+int main(void) {
+#if defined(__amd64) || defined(__amd64__) || defined(__x86_64__)
+/* neat */
+#else
+# error !amd64
+#endif
+__asm__(\"pxor %xmm12,%xmm6\");
+};
+"
+  HAVE_AMD64_ASM
+  )
 
+
+######################################################################
 TEST_BIG_ENDIAN(BE)
 if(${BE})
   ADD_DEFINITIONS("-DNATIVE_BIG_ENDIAN=1")
@@ -53,7 +64,8 @@ CONFIGURE_FILE(
   ${CMAKE_CURRENT_BINARY_DIR}/sodium/version.h
   )
 
-if(HAVE_TI_MODE_V)
+if(HAVE_TI_MODE)
+  add_definitions(-DHAVE_TI_MODE)
   set(curve25519_src 
 	src/libsodium/crypto_scalarmult/curve25519/donna_c64/api.h 
 	src/libsodium/crypto_scalarmult/curve25519/donna_c64/base_curve25519_donna_c64.c 
@@ -64,6 +76,23 @@ else()
 	src/libsodium/crypto_scalarmult/curve25519/ref/api.h 
 	src/libsodium/crypto_scalarmult/curve25519/ref/base_curve25519_ref.c 
 	src/libsodium/crypto_scalarmult/curve25519/ref/smult_curve25519_ref.c
+	)
+endif()
+
+
+if(HAVE_AMD64_ASM)
+  SET(CMAKE_ASM_SOURCE_FILE_EXTENSIONS "s;S")
+  ENABLE_LANGUAGE(ASM)
+  add_definitions(-DHAVE_AMD64_ASM)
+  set(amd64_asm_src
+	src/libsodium/crypto_stream/salsa20/amd64_xmm6/api.h 
+	src/libsodium/crypto_stream/salsa20/amd64_xmm6/stream_salsa20_amd64_xmm6.S
+	)
+else()
+  set(amd64_asm_src
+	src/libsodium/crypto_stream/salsa20/ref/api.h 
+	src/libsodium/crypto_stream/salsa20/ref/stream_salsa20_ref.c 
+	src/libsodium/crypto_stream/salsa20/ref/xor_salsa20_ref.c
 	)
 endif()
 
@@ -168,8 +197,7 @@ add_library(sodium
   src/libsodium/crypto_stream/xsalsa20/ref/stream_xsalsa20.c
   src/libsodium/crypto_stream/xsalsa20/stream_xsalsa20_api.c
   src/libsodium/crypto_stream/salsa20/stream_salsa20_api.c
-  src/libsodium/crypto_stream/salsa20/ref/stream_salsa20_ref.c
-  src/libsodium/crypto_stream/salsa20/ref/xor_salsa20_ref.c
+  ${amd64_asm_src}
   src/libsodium/crypto_stream/aes128ctr/portable/int128_aes128ctr.c
   src/libsodium/crypto_stream/aes128ctr/portable/afternm_aes128ctr.c
   src/libsodium/crypto_stream/aes128ctr/portable/xor_afternm_aes128ctr.c
@@ -269,10 +297,11 @@ set(tests_list
 foreach(test IN LISTS tests_list)
   get_filename_component(basename ${test} NAME)
   get_filename_component(dirname  ${test} PATH)
+  get_filename_component(absdirname  ${dirname} ABSOLUTE)
   set(target "${PROJECT_NAME}-test-${basename}")
   add_executable(${target} "${test}.c")
   include_directories(test/quirks ${CMAKE_CURRENT_BINARY_DIR})
-  add_definitions(-DTEST_SRCDIR=\"${dirname}\")
+  add_definitions(-DTEST_SRCDIR=\"${absdirname}\")
   target_link_libraries(${target} PRIVATE
 	crypto::sodium
     )
