@@ -10,9 +10,10 @@ enable_testing()
 include(CheckCSourceCompiles)
 include(TestBigEndian)
 
-file(WRITE  ${CMAKE_BINARY_DIR}/Modules/FindSodium.cmake "set(SODIUM_FOUND 1)")
-file(APPEND ${CMAKE_BINARY_DIR}/Modules/FindSodium.cmake "set(SODIUM_LIBRARY crypto::sodium)")
-list(APPEND CMAKE_MODULE_PATH ${CMAKE_BINARY_DIR}/Modules)
+file(WRITE  ${CMAKE_BINARY_DIR}/Modules/FindSodium.cmake "set(SODIUM_FOUND 1)\n")
+file(APPEND ${CMAKE_BINARY_DIR}/Modules/FindSodium.cmake "set(SODIUM_LIBRARY crypto::sodium)\n")
+#set(CMAKE_MODULE_PATH ${CMAKE_BINARY_DIR}/Modules)
+#list(APPEND CMAKE_MODULE_PATH ${CMAKE_BINARY_DIR}/Modules)
 
 ######################################################################
 CHECK_C_SOURCE_COMPILES(
@@ -238,10 +239,11 @@ add_library(sodium
 add_library(crypto::sodium ALIAS sodium)
 
 target_include_directories(sodium PUBLIC
-  #  "$<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/src/libsodium/include/sodium>"
+  "$<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/src/libsodium/include/sodium>"
   "$<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/src/libsodium/include>"
+  "$<BUILD_INTERFACE:${CMAKE_CURRENT_BINARY_DIR}>"
   )
-
+set_property(TARGET sodium PROPERTY POSITION_INDEPENDENT_CODE ON)
 target_include_directories(sodium PRIVATE
   src/libsodium/include/sodium
   ${CMAKE_CURRENT_BINARY_DIR}/sodium
