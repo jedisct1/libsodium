@@ -31,7 +31,7 @@ void fcontract(uint128_t *t) {
 }
 (void) fcontract;
 };
-    " 
+    "
   HAVE_TI_MODE)
 
 
@@ -66,15 +66,15 @@ CONFIGURE_FILE(
 
 if(HAVE_TI_MODE)
   add_definitions(-DHAVE_TI_MODE)
-  set(curve25519_src 
-	src/libsodium/crypto_scalarmult/curve25519/donna_c64/api.h 
-	src/libsodium/crypto_scalarmult/curve25519/donna_c64/base_curve25519_donna_c64.c 
+  set(curve25519_src
+	src/libsodium/crypto_scalarmult/curve25519/donna_c64/api.h
+	src/libsodium/crypto_scalarmult/curve25519/donna_c64/base_curve25519_donna_c64.c
 	src/libsodium/crypto_scalarmult/curve25519/donna_c64/smult_curve25519_donna_c64.c
 	)
 else()
-  set(curve25519_src 
-	src/libsodium/crypto_scalarmult/curve25519/ref/api.h 
-	src/libsodium/crypto_scalarmult/curve25519/ref/base_curve25519_ref.c 
+  set(curve25519_src
+	src/libsodium/crypto_scalarmult/curve25519/ref/api.h
+	src/libsodium/crypto_scalarmult/curve25519/ref/base_curve25519_ref.c
 	src/libsodium/crypto_scalarmult/curve25519/ref/smult_curve25519_ref.c
 	)
 endif()
@@ -85,13 +85,13 @@ if(HAVE_AMD64_ASM)
   ENABLE_LANGUAGE(ASM)
   add_definitions(-DHAVE_AMD64_ASM)
   set(amd64_asm_src
-	src/libsodium/crypto_stream/salsa20/amd64_xmm6/api.h 
+	src/libsodium/crypto_stream/salsa20/amd64_xmm6/api.h
 	src/libsodium/crypto_stream/salsa20/amd64_xmm6/stream_salsa20_amd64_xmm6.S
 	)
 else()
   set(amd64_asm_src
-	src/libsodium/crypto_stream/salsa20/ref/api.h 
-	src/libsodium/crypto_stream/salsa20/ref/stream_salsa20_ref.c 
+	src/libsodium/crypto_stream/salsa20/ref/api.h
+	src/libsodium/crypto_stream/salsa20/ref/stream_salsa20_ref.c
 	src/libsodium/crypto_stream/salsa20/ref/xor_salsa20_ref.c
 	)
 endif()
@@ -239,7 +239,7 @@ target_include_directories(sodium PUBLIC
   "$<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/src/libsodium/include>"
   )
 
-include_directories(
+target_include_directories(sodium PRIVATE
   src/libsodium/include/sodium
   ${CMAKE_CURRENT_BINARY_DIR}/sodium
   )
@@ -300,7 +300,12 @@ foreach(test IN LISTS tests_list)
   get_filename_component(absdirname  ${dirname} ABSOLUTE)
   set(target "${PROJECT_NAME}-test-${basename}")
   add_executable(${target} "${test}.c")
-  target_include_directories(${target} PRIVATE test/quirks ${CMAKE_CURRENT_BINARY_DIR} )
+  target_include_directories(
+	${target} PRIVATE
+	test/quirks
+	${CMAKE_CURRENT_BINARY_DIR}
+	src/libsodium/include/sodium
+	)
   add_definitions(-DTEST_SRCDIR=\"${absdirname}\")
   target_link_libraries(${target} PRIVATE
 	crypto::sodium
@@ -309,3 +314,4 @@ foreach(test IN LISTS tests_list)
     COMMAND $<TARGET_FILE:${target}>
     )
 endforeach()
+
