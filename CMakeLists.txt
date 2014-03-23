@@ -10,6 +10,9 @@ enable_testing()
 include(CheckCSourceCompiles)
 include(TestBigEndian)
 
+file(WRITE  ${CMAKE_BINARY_DIR}/Modules/FindSodium.cmake "set(SODIUM_FOUND 1)")
+file(APPEND ${CMAKE_BINARY_DIR}/Modules/FindSodium.cmake "set(SODIUM_LIBRARY crypto::sodium)")
+list(APPEND CMAKE_MODULE_PATH ${CMAKE_BINARY_DIR}/Modules)
 
 ######################################################################
 CHECK_C_SOURCE_COMPILES(
