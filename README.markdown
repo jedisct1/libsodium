@@ -204,6 +204,7 @@ them from different languages is easier.
 
 ## Bindings for other languages
 
+* C++: [sodiumpp](https://github.com/rubendv/sodiumpp)
 * Erlang: [Erlang-NaCl](https://github.com/tonyg/erlang-nacl)
 * Erlang: [Salt](https://github.com/freza/salt)
 * Haskell: [Saltine](https://github.com/tel/saltine)
