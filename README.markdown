@@ -211,6 +211,7 @@ them from different languages is easier.
 * Java: [Kalium](https://github.com/abstractj/kalium)
 * Java JNI: [Kalium-JNI](https://github.com/joshjdevl/kalium-jni)
 * Julia: [Sodium.jl](https://github.com/amitmurthy/Sodium.jl)
+* LUA: [lua-sodium](https://github.com/morfoh/lua-sodium)
 * .NET: [libsodium-net](https://github.com/adamcaudill/libsodium-net)
 * NodeJS: [node-sodium](https://github.com/paixaop/node-sodium)
 * Ocaml: [ocaml-sodium](https://github.com/dsheets/ocaml-sodium)
