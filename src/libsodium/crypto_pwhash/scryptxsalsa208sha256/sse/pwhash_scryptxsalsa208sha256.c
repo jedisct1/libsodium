@@ -348,7 +348,7 @@ escrypt_kdf_sse(escrypt_local_t * local,
 		errno = ENOMEM;
 		return -1;
 	}
-	XY_size = (size_t)256 * r;
+	XY_size = (size_t)256 * r + 64;
 	need += XY_size;
 	if (need < XY_size) {
 		errno = ENOMEM;
