@@ -168,6 +168,65 @@ hexadecimal string:
     char *   sodium_bin2hex(char * const hex, const size_t hexlen,
                             const unsigned char *bin, const size_t binlen);
 
+## Easy interfaces to `crypto_box` and `crypto_secretbox`
+
+`crypto_box` and `crypto_secretbox` require prepending
+`crypto_box_ZEROBYTES` or `crypto_secretbox_ZEROBYTE` extra bytes to the
+message, and making sure that these are all zeros. 
+A similar padding is required to decrypt the ciphertext. And this
+padding is actually larger than the MAC size,
+`crypto_box_MACBYTES`/`crypto_secretbox_MACBYTES`.
+
+This API, as defined by NaCl, can be confusing. And while using a
+larger buffer and two pointers is not an issue for native C
+applications, this might not be an option when another runtime is
+controlling the allocations.
+
+Libsodium provides an easy, higher-level interface to these operations.
+
+    int crypto_box_easy(unsigned char *c, const unsigned char *m,
+                        unsigned long long mlen, const unsigned char *n,
+                        const unsigned char *pk, const unsigned char *sk);
+
+This function encrypts and authenticates a message `m` using the
+sender's secret key `sk`, the receiver's public key `pk` and a nonce
+`n`, which should be `crypto_box_NONCEBYTES` bytes long.
+The ciphertext, including the MAC, will be copied to `c`, whose length
+should be `len(m) + crypto_box_MACBYTES`, and that doesn't require to be
+initialized.
+
+    int crypto_box_open_easy(unsigned char *m, const unsigned char *c,
+                             unsigned long long clen, const unsigned char *n,
+                             const unsigned char *pk, const unsigned char *sk);
+
+This function verifies and decrypts a ciphertext `c` as returned by
+`crypto_box_easy()`, whose length is `clen`, using the nonce `n`, the
+receiver's secret key `sk`, and the sender's public key `pk`. The
+message is stored to `m`, whose length should be at least `len(c) -
+crypto_box_MACBYTES` and that doesn't require to be initialized.
+
+Similarily, secret-key authenticated encryption provide "easy" wrappers:
+
+    int crypto_secretbox_easy(unsigned char *c, const unsigned char *m,
+                              unsigned long long mlen, const unsigned char *n,
+                              const unsigned char *k);
+
+    int crypto_secretbox_open_easy(unsigned char *m, const unsigned char *c,
+                                   unsigned long long clen, const unsigned char *n,
+                                   const unsigned char *k);
+
+The length of the ciphertext, which will include the MAC, is
+`len(m) + crypto_secretbox_MACBYTES`, and the length of the buffer for
+the decrypted message doesn't have to be more than `len(c) -
+crypto_secretbox_MACBYTES`.
+
+The "easy" interface currently requires allocations and copying, which
+makes it slower than using the traditional NaCl interface. This
+shouldn't make any sensible difference in most use cases, and future
+versions of the library may not require extra copy operations any
+more. Unless speed is absolutely critical, you are welcome to use the
+"easy" interface, especially if you are new to NaCl/Sodium.
+
 ## New operations
 
 ### crypto_shorthash
