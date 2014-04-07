@@ -169,7 +169,8 @@ randombytes_sysrandom_buf(void * const buf, const size_t size)
         abort();
     }
 #else
-    if (! CryptGenRandom(stream.hcrypt_prov, size, (BYTE *) buf)) {
+    // Is cast from size_t to DWORD safe here?
+    if (! CryptGenRandom(stream.hcrypt_prov, (DWORD) size, (BYTE *) buf)) {
         abort();
     }
 #endif

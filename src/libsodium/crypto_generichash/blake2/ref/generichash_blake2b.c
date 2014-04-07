@@ -56,7 +56,8 @@ crypto_generichash_blake2b_init(crypto_generichash_blake2b_state *state,
         if (blake2b_init(state, (uint8_t) outlen) != 0) {
             return -1;
         }
-    } else if (blake2b_init_key(state, (uint8_t) outlen, key, keylen) != 0) {
+    } else if (blake2b_init_key(state, (uint8_t) outlen, key, 
+        (uint8_t) keylen /* Is cast from size_t to uint8_t safe here? */ ) != 0) {
         return -1;
     }
     return 0;
@@ -81,7 +82,8 @@ crypto_generichash_blake2b_init_salt_personal(crypto_generichash_blake2b_state *
             return -1;
         }
     } else if (blake2b_init_key_salt_personal(state,
-                                              (uint8_t) outlen, key, keylen,
+                                              (uint8_t)outlen, key, 
+                                              (uint8_t)keylen, /* Is cast from size_t to uint8_t safe here? */
                                               salt, personal) != 0) {
         return -1;
     }
