@@ -64,7 +64,7 @@ const char *crypto_secretbox_primitive(void);
  * @return 0 if operation is successful.
  *
  * @pre  first crypto_secretbox_ZEROBYTES of msg be all 0..
- * @post first crypto_secretbox_BOXZERBYTES of ctxt be all 0.
+ * @post first crypto_secretbox_BOXZEROBYTES of ctxt be all 0.
  * @post first mlen bytes of ctxt will contain the ciphertext.
  *
  *
