@@ -27,13 +27,13 @@
 
   <ItemDefinitionGroup Condition="'$(ConfigurationType)' == 'StaticLibrary'">
     <ClCompile>
-      <PreprocessorDefinitions>SODIUM_EXPORT=;SODIUM_STATIC;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>SODIUM_STATIC;%(PreprocessorDefinitions)</PreprocessorDefinitions>
     </ClCompile>
   </ItemDefinitionGroup>
 
   <ItemDefinitionGroup Condition="'$(ConfigurationType)' == 'DynamicLibrary'">
     <ClCompile>
-      <PreprocessorDefinitions>SODIUM_EXPORT=__declspec(dllexport);DLL_EXPORT;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>DLL_EXPORT;%(PreprocessorDefinitions)</PreprocessorDefinitions>
     </ClCompile>
   </ItemDefinitionGroup>
 
