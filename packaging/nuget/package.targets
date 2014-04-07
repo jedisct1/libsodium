@@ -20,14 +20,9 @@
       <AdditionalLibraryDirectories>$(MSBuildThisFileDirectory)bin\;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
     </Link>
   </ItemDefinitionGroup>
-  <ItemDefinitionGroup Condition="'$(Linkage-libsodium)' == 'dynamic'">
-    <ClCompile>
-      <PreprocessorDefinitions>SODIUM_EXPORT=__declspec(dllimport);DLL_EXPORT;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-    </ClCompile>
-  </ItemDefinitionGroup>  
   <ItemDefinitionGroup Condition="'$(Linkage-libsodium)' == 'static' Or '$(Linkage-libsodium)' == 'ltcg'">
     <ClCompile>
-      <PreprocessorDefinitions>SODIUM_EXPORT=;SODIUM_STATIC;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>SODIUM_STATIC;%(PreprocessorDefinitions)</PreprocessorDefinitions>
     </ClCompile>
   </ItemDefinitionGroup>
 
