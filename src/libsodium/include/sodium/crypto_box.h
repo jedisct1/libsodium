@@ -151,7 +151,7 @@ int crypto_box_beforenm(unsigned char *k,
  *
  * @pre  first crypto_box_ZEROBYTES of msg be all 0.
  * @pre  the nonce must have size crypto_box_NONCEBYTES.
- * @post first crypto_box_BOXZERBYTES of ctxt be all 0.
+ * @post first crypto_box_BOXZEROBYTES of ctxt be all 0.
  * @post first mlen bytes of ctxt will contain the ciphertext.
  *
  * Example invocation:
@@ -223,7 +223,7 @@ int crypto_box_open_afternm(unsigned char *m,
  *
  * @pre  first crypto_box_ZEROBYTES of msg be all 0.
  * @pre  the nonce must have size crypto_box_NONCEBYTES.
- * @post first crypto_box_BOXZERBYTES of ctxt be all 0.
+ * @post first crypto_box_BOXZEROBYTES of ctxt be all 0.
  * @post first mlen bytes of ctxt will contain the ciphertext.
  *
  * Example invocation:
