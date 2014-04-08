@@ -48,7 +48,8 @@ EXTRA_DIST = \
 	stream3.exp \
 	stream4.exp \
 	stream5.exp \
-	stream6.exp
+	stream6.exp \
+	verify1.exp
 
 DISTCLEANFILES = \
 	auth.res \
@@ -97,7 +98,8 @@ DISTCLEANFILES = \
 	stream3.res \
 	stream4.res \
 	stream5.res \
-	stream6.res
+	stream6.res \
+	verify1.res
 
 AM_CPPFLAGS = \
 	-DTEST_SRCDIR=\"@srcdir@\" \
@@ -154,7 +156,8 @@ TESTS_TARGETS = \
 	stream3 \
 	stream4 \
 	stream5 \
-	stream6
+	stream6 \
+	verify1
 
 check_PROGRAMS = $(TESTS_TARGETS)
 
@@ -303,5 +306,8 @@ stream5_LDADD             = $(TESTS_LDADD)
 
 stream6_SOURCE            = cmptest.h stream6.c
 stream6_LDADD             = $(TESTS_LDADD)
+
+verify1_SOURCE            = cmptest.h verify1.c
+verify1_LDADD             = $(TESTS_LDADD)
 
 verify: check

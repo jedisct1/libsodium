@@ -100,6 +100,7 @@ test/default/stream3
 test/default/stream4
 test/default/stream5
 test/default/stream6
+test/default/verify1
 test-driver
 testing
 android-toolchain-*
