@@ -180,6 +180,9 @@ libsodium_la_SOURCES = \
 	crypto_verify/32/verify_32_api.c \
 	crypto_verify/32/ref/api.h \
 	crypto_verify/32/ref/verify_32.c \
+	crypto_verify/64/verify_64_api.c \
+	crypto_verify/64/ref/api.h \
+	crypto_verify/64/ref/verify_64.c \
 	randombytes/randombytes.c \
 	randombytes/salsa20/randombytes_salsa20_random.c \
 	randombytes/sysrandom/randombytes_sysrandom.c \

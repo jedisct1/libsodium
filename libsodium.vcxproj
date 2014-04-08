@@ -359,6 +359,7 @@
     <ClInclude Include="src\libsodium\include\sodium\crypto_uint8.h" />
     <ClInclude Include="src\libsodium\include\sodium\crypto_verify_16.h" />
     <ClInclude Include="src\libsodium\include\sodium\crypto_verify_32.h" />
+    <ClInclude Include="src\libsodium\include\sodium\crypto_verify_64.h" />
     <ClInclude Include="src\libsodium\include\sodium\export.h" />
     <ClInclude Include="src\libsodium\include\sodium\randombytes.h" />
     <ClInclude Include="src\libsodium\include\sodium\randombytes_salsa20_random.h" />
@@ -494,6 +495,8 @@
     <ClCompile Include="src\libsodium\crypto_verify\16\verify_16_api.c" />
     <ClCompile Include="src\libsodium\crypto_verify\32\ref\verify_32.c" />
     <ClCompile Include="src\libsodium\crypto_verify\32\verify_32_api.c" />
+    <ClCompile Include="src\libsodium\crypto_verify\64\ref\verify_64.c" />
+    <ClCompile Include="src\libsodium\crypto_verify\64\verify_64_api.c" />
     <ClCompile Include="src\libsodium\randombytes\randombytes.c" />
     <ClCompile Include="src\libsodium\randombytes\salsa20\randombytes_salsa20_random.c" />
     <ClCompile Include="src\libsodium\randombytes\sysrandom\randombytes_sysrandom.c" />
