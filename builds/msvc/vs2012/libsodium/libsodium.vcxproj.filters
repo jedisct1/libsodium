@@ -391,12 +391,6 @@
     <ClCompile Include="..\..\..\..\src\libsodium\crypto_stream\xsalsa20\ref\xor_xsalsa20.c">
       <Filter>src</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\..\..\src\libsodium\crypto_box\crypto_box_easy.c">
-      <Filter>src</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\..\..\src\libsodium\crypto_secretbox\crypto_secretbox_easy.c">
-      <Filter>src</Filter>
-    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\..\..\src\libsodium\include\sodium\core.h">

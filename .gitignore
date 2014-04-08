@@ -1,5 +1,6 @@
 *.cmake
 *.dSYM
+*.exp
 *.la
 *.lo
 *.log

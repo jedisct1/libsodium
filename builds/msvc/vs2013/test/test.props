@@ -1,0 +1,51 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" ToolsVersion="12.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+
+  <PropertyGroup Label="Globals">
+    <_ProjectFileVersion>10.0.40219.1</_ProjectFileVersion>
+    <_PropertySheetDisplayName>Libsodium Test Common Settings</_PropertySheetDisplayName>
+    <CodeAnalysisRuleSet>AllRules.ruleset</CodeAnalysisRuleSet>
+    <RunCodeAnalysis>false</RunCodeAnalysis>
+  </PropertyGroup>
+
+  <!-- Configuration -->
+  
+  <ItemDefinitionGroup>
+    <ClCompile>
+      <AdditionalIncludeDirectories>$(ProjectDir)..\..\..\..\test\default\;$(ProjectDir)..\..\..\..\test\quirks\;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <!--<DisableSpecificWarnings>4146;4244;%(DisableSpecificWarnings)</DisableSpecificWarnings>-->
+      <EnablePREfast>false</EnablePREfast>
+      <PreprocessorDefinitions>_CRT_SECURE_NO_WARNINGS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <!--<PreprocessorDefinitions>inline=__inline;NATIVE_LITTLE_ENDIAN;%(PreprocessorDefinitions)</PreprocessorDefinitions>-->
+    </ClCompile>
+  </ItemDefinitionGroup>
+
+  <ItemDefinitionGroup Condition="$(Configuration.IndexOf('LEXE')) != -1 Or $(Configuration.IndexOf('SEXE')) != -1">
+    <ClCompile>
+      <PreprocessorDefinitions>SODIUM_STATIC;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+    </ClCompile>
+  </ItemDefinitionGroup>
+
+  <!-- Extensions -->
+
+  <ImportGroup Label="PropertySheets">
+    <Import Project="$(SolutionDir)libsodium.import.props" />
+  </ImportGroup>
+
+  <PropertyGroup Condition="$(Configuration.IndexOf('DEXE')) != -1">
+    <Linkage-libsodium>dynamic</Linkage-libsodium>
+  </PropertyGroup>
+  <PropertyGroup Condition="$(Configuration.IndexOf('LEXE')) != -1">
+    <Linkage-libsodium>ltcg</Linkage-libsodium>
+  </PropertyGroup>
+  <PropertyGroup Condition="$(Configuration.IndexOf('SEXE')) != -1">
+    <Linkage-libsodium>static</Linkage-libsodium>
+  </PropertyGroup>
+
+  <!-- Messages -->
+
+  <Target Name="LinkageInfo" BeforeTargets="PrepareForBuild">
+    <Message Text="Linkage-libsodium : $(Linkage-libsodium)" Importance="high"/>
+  </Target>
+  
+</Project>
