@@ -3,10 +3,10 @@
   <PropertyGroup Label="Globals">
     <ProjectGuid>{4EDBA07C-2F08-4C9E-805F-A4921814C117}</ProjectGuid>
     <ProjectName>test</ProjectName>
-    <RootNamespace>test12</RootNamespace>
+    <RootNamespace>test10</RootNamespace>
   </PropertyGroup>
   <PropertyGroup Label="Configuration">
-    <PlatformToolset>v120</PlatformToolset>
+    <PlatformToolset>v100</PlatformToolset>
     <ConfigurationType>Application</ConfigurationType>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
