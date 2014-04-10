@@ -169,7 +169,10 @@ randombytes_sysrandom_buf(void * const buf, const size_t size)
         abort();
     }
 #else
-    if (! CryptGenRandom(stream.hcrypt_prov, size, (BYTE *) buf)) {
+    if (size > 0xffffffff) {
+        abort();
+    }
+    if (! CryptGenRandom(stream.hcrypt_prov, (DWORD) size, (BYTE *) buf)) {
         abort();
     }
 #endif
