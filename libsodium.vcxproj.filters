@@ -202,7 +202,7 @@
     <ClCompile Include="src\libsodium\crypto_auth\crypto_auth.c">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="src\libsodium\crypto_auth\hmacsha256\ref\hmac_hmacsha256.c">
+    <ClCompile Include="src\libsodium\crypto_auth\hmacsha256\cp\hmac_hmacsha256.c">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="src\libsodium\crypto_auth\hmacsha512256\ref\hmac_hmacsha512256.c">
