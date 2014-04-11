@@ -60,9 +60,6 @@
     <ClInclude Include="src\libsodium\include\sodium\crypto_hash_sha512.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="src\libsodium\include\sodium\crypto_hashblocks_sha256.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="src\libsodium\include\sodium\crypto_hashblocks_sha512.h">
       <Filter>Header Files</Filter>
     </ClInclude>
@@ -268,13 +265,7 @@
     <ClCompile Include="src\libsodium\crypto_hash\sha512\hash_sha512_api.c">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="src\libsodium\crypto_hashblocks\sha256\ref\blocks_sha256.c">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="src\libsodium\crypto_hashblocks\sha512\ref\blocks_sha512.c">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="src\libsodium\crypto_hashblocks\sha256\hashblocks_sha256_api.c">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="src\libsodium\crypto_hashblocks\sha512\hashblocks_sha512_api.c">
