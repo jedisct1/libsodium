@@ -328,7 +328,7 @@
     <ClInclude Include="src\libsodium\include\sodium\crypto_generichash.h" />
     <ClInclude Include="src\libsodium\include\sodium\crypto_generichash_blake2b.h" />
     <ClInclude Include="src\libsodium\include\sodium\crypto_hash.h" />
-    <ClInclude Include="src\libsodium\include\sodium\crypto_hashblocks_sha512.h" />
+    <ClInclude Include="src\libsodium\include\sodium\_crypto_hashblocks_sha512.h" />
     <ClInclude Include="src\libsodium\include\sodium\crypto_hash_sha256.h" />
     <ClInclude Include="src\libsodium\include\sodium\crypto_hash_sha512.h" />
     <ClInclude Include="src\libsodium\include\sodium\crypto_int32.h" />

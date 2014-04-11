@@ -1,5 +1,5 @@
 
-#include "crypto_hashblocks_sha512.h"
+#include "_crypto_hashblocks_sha512.h"
 
 #define crypto_hashblocks crypto_hashblocks_sha512
 #define crypto_hashblocks_STATEBYTES crypto_hashblocks_sha512_STATEBYTES
