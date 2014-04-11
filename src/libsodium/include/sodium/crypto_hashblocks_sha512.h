@@ -13,13 +13,11 @@
 # endif
 extern "C" {
 #endif
-
+    
 int crypto_hashblocks_sha512(unsigned char *,const unsigned char *,unsigned long long);
 
 #ifdef __cplusplus
 }
 #endif
-
-#define crypto_hashblocks_sha512_ref crypto_hashblocks_sha512
 
 #endif
