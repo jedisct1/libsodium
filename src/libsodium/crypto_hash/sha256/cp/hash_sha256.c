@@ -37,10 +37,6 @@
 #include <stdlib.h>
 #include <string.h>
 
-void _SHA256_Init(crypto_hash_sha256_state *);
-void _SHA256_Update(crypto_hash_sha256_state *, const void *, size_t);
-void _SHA256_Final(unsigned char [32], crypto_hash_sha256_state *);
-
 /* Avoid namespace collisions with BSD <sys/endian.h>. */
 #define be32dec _sha256_be32dec
 #define be32enc _sha256_be32enc
@@ -108,7 +104,7 @@ be32dec_vect(uint32_t *dst, const unsigned char *src, size_t len)
         W[i] + k)
 
 static void
-SHA256_Transform(uint32_t * state, const unsigned char block[64])
+SHA256_Transform(uint32_t *state, const unsigned char block[64])
 {
     uint32_t W[64];
     uint32_t S[8];
@@ -204,82 +200,33 @@ static unsigned char PAD[64] = {
 };
 
 static void
-SHA256_Pad(crypto_hash_sha256_state * ctx)
+SHA256_Pad(crypto_hash_sha256_state *state)
 {
     unsigned char len[8];
     uint32_t r, plen;
 
-    be32enc_vect(len, ctx->count, 8);
+    be32enc_vect(len, state->count, 8);
 
-    r = (ctx->count[1] >> 3) & 0x3f;
+    r = (state->count[1] >> 3) & 0x3f;
     plen = (r < 56) ? (56 - r) : (120 - r);
-    _SHA256_Update(ctx, PAD, (size_t)plen);
+    crypto_hash_sha256_update(state, PAD, (unsigned long long) plen);
 
-    _SHA256_Update(ctx, len, 8);
-}
-
-void
-_SHA256_Init(crypto_hash_sha256_state * ctx)
-{
-    ctx->count[0] = ctx->count[1] = 0;
-
-    ctx->state[0] = 0x6A09E667;
-    ctx->state[1] = 0xBB67AE85;
-    ctx->state[2] = 0x3C6EF372;
-    ctx->state[3] = 0xA54FF53A;
-    ctx->state[4] = 0x510E527F;
-    ctx->state[5] = 0x9B05688C;
-    ctx->state[6] = 0x1F83D9AB;
-    ctx->state[7] = 0x5BE0CD19;
-}
-
-void
-_SHA256_Update(crypto_hash_sha256_state * ctx, const void *in, size_t len)
-{
-    uint32_t bitlen[2];
-    uint32_t r;
-    const unsigned char *src = (const unsigned char *) in;
-
-    r = (ctx->count[1] >> 3) & 0x3f;
-
-    bitlen[1] = ((uint32_t)len) << 3;
-    bitlen[0] = (uint32_t)(len >> 29);
-
-    if ((ctx->count[1] += bitlen[1]) < bitlen[1]) {
-        ctx->count[0]++;
-    }
-    ctx->count[0] += bitlen[0];
-
-    if (len < 64 - r) {
-        memcpy(&ctx->buf[r], src, len);
-        return;
-    }
-
-    memcpy(&ctx->buf[r], src, 64 - r);
-    SHA256_Transform(ctx->state, ctx->buf);
-    src += 64 - r;
-    len -= 64 - r;
-
-    while (len >= 64) {
-        SHA256_Transform(ctx->state, src);
-        src += 64;
-        len -= 64;
-    }
-    memcpy(ctx->buf, src, len);
-}
-
-void
-_SHA256_Final(unsigned char digest[32], crypto_hash_sha256_state * ctx)
-{
-    SHA256_Pad(ctx);
-    be32enc_vect(digest, ctx->state, 32);
-    sodium_memzero((void *) ctx, sizeof *ctx);
+    crypto_hash_sha256_update(state, len, 8);
 }
 
 int
 crypto_hash_sha256_init(crypto_hash_sha256_state *state)
 {
-    _SHA256_Init(state);
+    state->count[0] = state->count[1] = 0;
+
+    state->state[0] = 0x6A09E667;
+    state->state[1] = 0xBB67AE85;
+    state->state[2] = 0x3C6EF372;
+    state->state[3] = 0xA54FF53A;
+    state->state[4] = 0x510E527F;
+    state->state[5] = 0x9B05688C;
+    state->state[6] = 0x1F83D9AB;
+    state->state[7] = 0x5BE0CD19;
 
     return 0;
 }
@@ -289,11 +236,34 @@ crypto_hash_sha256_update(crypto_hash_sha256_state *state,
                           const unsigned char *in,
                           unsigned long long inlen)
 {
-    if (inlen > SIZE_MAX) {
-        sodium_memzero(state, sizeof *state);
-        return -1;
+    uint32_t bitlen[2];
+    uint32_t r;
+
+    r = (state->count[1] >> 3) & 0x3f;
+
+    bitlen[1] = ((uint32_t)inlen) << 3;
+    bitlen[0] = (uint32_t)(inlen >> 29);
+
+    if ((state->count[1] += bitlen[1]) < bitlen[1]) {
+        state->count[0]++;
     }
-    _SHA256_Update(state, (const void *) in, (size_t) inlen);
+    state->count[0] += bitlen[0];
+
+    if (inlen < 64 - r) {
+        memcpy(&state->buf[r], in, inlen);
+        return 0;
+    }
+    memcpy(&state->buf[r], in, 64 - r);
+    SHA256_Transform(state->state, state->buf);
+    in += 64 - r;
+    inlen -= 64 - r;
+
+    while (inlen >= 64) {
+        SHA256_Transform(state->state, in);
+        in += 64;
+        inlen -= 64;
+    }
+    memcpy(state->buf, in, inlen);
 
     return 0;
 }
@@ -302,7 +272,9 @@ int
 crypto_hash_sha256_final(crypto_hash_sha256_state *state,
                          unsigned char *out)
 {
-    _SHA256_Final(out, state);
+    SHA256_Pad(state);
+    be32enc_vect(out, state->state, 32);
+    sodium_memzero((void *) state, sizeof *state);
 
     return 0;
 }
