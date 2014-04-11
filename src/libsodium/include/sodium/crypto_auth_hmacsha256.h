@@ -38,7 +38,7 @@ int crypto_auth_hmacsha256_verify(const unsigned char *,const unsigned char *,un
 SODIUM_EXPORT
 int crypto_auth_hmacsha256_init(crypto_auth_hmacsha256_state *state,
                                 const unsigned char *key,
-                                const size_t keylen);
+                                size_t keylen);
 
 SODIUM_EXPORT
 int crypto_auth_hmacsha256_update(crypto_auth_hmacsha256_state *state,
