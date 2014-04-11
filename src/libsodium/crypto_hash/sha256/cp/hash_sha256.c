@@ -286,10 +286,7 @@ crypto_hash(unsigned char *out, const unsigned char *in,
     crypto_hash_sha256_state state;
 
     crypto_hash_sha256_init(&state);
-    if (crypto_hash_sha256_update(&state, in, inlen) != 0) {
-        sodium_memzero(out, crypto_hash_BYTES);
-        return -1;
-    }
+    crypto_hash_sha256_update(&state, in, inlen);
     crypto_hash_sha256_final(&state, out);
 
     return 0;
