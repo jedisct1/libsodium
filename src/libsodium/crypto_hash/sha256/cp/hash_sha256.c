@@ -189,7 +189,8 @@ SHA256_Transform(uint32_t *state, const unsigned char block[64])
 
     sodium_memzero((void *) W, 256);
     sodium_memzero((void *) S, 32);
-    t0 = t1 = 0;
+    sodium_memzero((void *) &t0, sizeof t0);
+    sodium_memzero((void *) &t1, sizeof t1);
 }
 
 static unsigned char PAD[64] = {
