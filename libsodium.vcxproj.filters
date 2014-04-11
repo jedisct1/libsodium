@@ -256,7 +256,7 @@
     <ClCompile Include="src\libsodium\crypto_hash\crypto_hash.c">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="src\libsodium\crypto_hash\sha256\ref\hash_sha256.c">
+    <ClCompile Include="src\libsodium\crypto_hash\sha256\cp\hash_sha256.c">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="src\libsodium\crypto_hash\sha256\hash_sha256_api.c">

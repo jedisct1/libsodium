@@ -403,7 +403,7 @@
     <ClCompile Include="src\libsodium\crypto_hashblocks\sha512\ref\blocks_sha512.c" />
     <ClCompile Include="src\libsodium\crypto_hash\crypto_hash.c" />
     <ClCompile Include="src\libsodium\crypto_hash\sha256\hash_sha256_api.c" />
-    <ClCompile Include="src\libsodium\crypto_hash\sha256\ref\hash_sha256.c" />
+    <ClCompile Include="src\libsodium\crypto_hash\sha256\cp\hash_sha256.c" />
     <ClCompile Include="src\libsodium\crypto_hash\sha512\hash_sha512_api.c" />
     <ClCompile Include="src\libsodium\crypto_hash\sha512\ref\hash_sha512.c" />
     <ClCompile Include="src\libsodium\crypto_onetimeauth\crypto_onetimeauth.c" />
