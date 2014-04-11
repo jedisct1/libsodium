@@ -17,8 +17,6 @@
 #include <sodium/crypto_hash.h>
 #include <sodium/crypto_hash_sha256.h>
 #include <sodium/crypto_hash_sha512.h>
-#include <sodium/crypto_hashblocks_sha256.h>
-#include <sodium/crypto_hashblocks_sha512.h>
 #include <sodium/crypto_onetimeauth.h>
 #include <sodium/crypto_onetimeauth_poly1305.h>
 #include <sodium/crypto_scalarmult.h>
@@ -29,7 +27,6 @@
 #include <sodium/crypto_shorthash_siphash24.h>
 #include <sodium/crypto_sign.h>
 #include <sodium/crypto_sign_ed25519.h>
-#include <sodium/crypto_sign_edwards25519sha512batch.h>
 #include <sodium/crypto_stream.h>
 #include <sodium/crypto_stream_aes128ctr.h>
 #include <sodium/crypto_stream_aes256estream.h>
