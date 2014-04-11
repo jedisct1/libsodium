@@ -191,8 +191,8 @@ SHA256_Transform(uint32_t * state, const unsigned char block[64])
         state[i] += S[i];
     }
 
-    sodium_memzero(W, 256);
-    sodium_memzero(S, 32);
+    sodium_memzero((void *) W, 256);
+    sodium_memzero((void *) S, 32);
     t0 = t1 = 0;
 }
 
@@ -273,22 +273,52 @@ _SHA256_Final(unsigned char digest[32], crypto_hash_sha256_state * ctx)
 {
     SHA256_Pad(ctx);
     be32enc_vect(digest, ctx->state, 32);
-    sodium_memzero((void *)ctx, sizeof(*ctx));
+    sodium_memzero((void *) ctx, sizeof *ctx);
+}
+
+int
+crypto_hash_sha256_init(crypto_hash_sha256_state *state)
+{
+    _SHA256_Init(state);
+
+    return 0;
+}
+
+int
+crypto_hash_sha256_update(crypto_hash_sha256_state *state,
+                          const unsigned char *in,
+                          unsigned long long inlen)
+{
+    if (inlen > SIZE_MAX) {
+        sodium_memzero(state, sizeof *state);
+        return -1;
+    }
+    _SHA256_Update(state, (const void *) in, (size_t) inlen);
+
+    return 0;
+}
+
+int
+crypto_hash_sha256_final(crypto_hash_sha256_state *state,
+                         unsigned char *out)
+{
+    _SHA256_Final(out, state);
+
+    return 0;
 }
 
 int
 crypto_hash(unsigned char *out, const unsigned char *in,
             unsigned long long inlen)
 {
-    crypto_hash_sha256_state ctx;
+    crypto_hash_sha256_state state;
 
-    if (inlen > SIZE_MAX) {
-        memset(out, 0, crypto_hash_BYTES);
+    crypto_hash_sha256_init(&state);
+    if (crypto_hash_sha256_update(&state, (const void *) in, inlen) != 0) {
+        sodium_memzero(out, crypto_hash_BYTES);
         return -1;
     }
-    _SHA256_Init(&ctx);
-    _SHA256_Update(&ctx, (const void *) in, (size_t) inlen);
-    _SHA256_Final(out, &ctx);
+    crypto_hash_sha256_final(&state, out);
 
     return 0;
 }

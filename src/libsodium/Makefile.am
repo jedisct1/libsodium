@@ -65,8 +65,8 @@ libsodium_la_SOURCES = \
 	crypto_pwhash/scryptxsalsa208sha256/crypto_scrypt-common.c \
 	crypto_pwhash/scryptxsalsa208sha256/crypto_scrypt.h \
 	crypto_pwhash/scryptxsalsa208sha256/scrypt_platform.c \
-	crypto_pwhash/scryptxsalsa208sha256/sha256.c \
-	crypto_pwhash/scryptxsalsa208sha256/sha256.h \
+	crypto_pwhash/scryptxsalsa208sha256/pbkdf2-sha256.c \
+	crypto_pwhash/scryptxsalsa208sha256/pbkdf2-sha256.h \
 	crypto_pwhash/scryptxsalsa208sha256/sysendian.h \
 	crypto_pwhash/scryptxsalsa208sha256/nosse/pwhash_scryptxsalsa208sha256.c \
 	crypto_pwhash/scryptxsalsa208sha256/sse/pwhash_scryptxsalsa208sha256.c \
