@@ -1,5 +1,5 @@
-#ifndef crypto_hashblocks_sha512_H
-#define crypto_hashblocks_sha512_H
+#ifndef _crypto_hashblocks_sha512_H
+#define _crypto_hashblocks_sha512_H
 
 #include <stddef.h>
 #include "export.h"
@@ -13,7 +13,8 @@
 # endif
 extern "C" {
 #endif
-    
+
+/* This function is only used internally */
 int crypto_hashblocks_sha512(unsigned char *,const unsigned char *,unsigned long long);
 
 #ifdef __cplusplus

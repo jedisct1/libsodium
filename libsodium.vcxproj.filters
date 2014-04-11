@@ -60,7 +60,7 @@
     <ClInclude Include="src\libsodium\include\sodium\crypto_hash_sha512.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="src\libsodium\include\sodium\crypto_hashblocks_sha512.h">
+    <ClInclude Include="src\libsodium\include\sodium\_crypto_hashblocks_sha512.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="src\libsodium\include\sodium\crypto_int32.h">

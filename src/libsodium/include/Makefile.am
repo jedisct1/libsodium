@@ -16,7 +16,6 @@ SODIUM_EXPORT = \
 	sodium/crypto_hash.h \
 	sodium/crypto_hash_sha256.h \
 	sodium/crypto_hash_sha512.h \
-	sodium/crypto_hashblocks_sha512.h \
 	sodium/crypto_onetimeauth.h \
 	sodium/crypto_onetimeauth_poly1305.h \
 	sodium/crypto_onetimeauth_poly1305_53.h \
@@ -53,6 +52,7 @@ SODIUM_EXPORT = \
 	sodium/utils.h
 
 EXTRA_SRC = $(SODIUM_EXPORT) \
+	sodium/_crypto_hashblocks_sha512.h \
 	sodium/version.h.in
 
 nobase_include_HEADERS = $(SODIUM_EXPORT)
