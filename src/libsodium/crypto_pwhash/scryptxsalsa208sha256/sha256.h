@@ -33,20 +33,17 @@
 
 #include <stdint.h>
 
-typedef struct SHA256Context {
-	uint32_t state[8];
-	uint32_t count[2];
-	unsigned char buf[64];
-} SHA256_CTX;
+#include "crypto_hash_sha256.h"
 
 typedef struct HMAC_SHA256Context {
-	SHA256_CTX ictx;
-	SHA256_CTX octx;
+	crypto_hash_sha256_state ictx;
+	crypto_hash_sha256_state octx;
 } HMAC_SHA256_CTX;
 
-void	_SHA256_Init(SHA256_CTX *);
-void	_SHA256_Update(SHA256_CTX *, const void *, size_t);
-void	_SHA256_Final(unsigned char [32], SHA256_CTX *);
+void _SHA256_Init(crypto_hash_sha256_state *);
+void _SHA256_Update(crypto_hash_sha256_state *, const void *, size_t);
+void _SHA256_Final(unsigned char [32], crypto_hash_sha256_state *);
+
 void	HMAC__SHA256_Init(HMAC_SHA256_CTX *, const void *, size_t);
 void	HMAC__SHA256_Update(HMAC_SHA256_CTX *, const void *, size_t);
 void	HMAC__SHA256_Final(unsigned char [32], HMAC_SHA256_CTX *);
