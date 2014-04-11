@@ -45,9 +45,6 @@ libsodium_la_SOURCES = \
 	crypto_hash/sha512/hash_sha512_api.c \
 	crypto_hash/sha512/ref/api.h \
 	crypto_hash/sha512/ref/hash_sha512.c \
-	crypto_hashblocks/sha256/ref/blocks_sha256.c \
-	crypto_hashblocks/sha256/hashblocks_sha256_api.c \
-	crypto_hashblocks/sha256/ref/api.h \
 	crypto_hashblocks/sha512/ref/blocks_sha512.c \
 	crypto_hashblocks/sha512/hashblocks_sha512_api.c \
 	crypto_hashblocks/sha512/ref/api.h \

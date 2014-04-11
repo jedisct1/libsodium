@@ -16,7 +16,6 @@ SODIUM_EXPORT = \
 	sodium/crypto_hash.h \
 	sodium/crypto_hash_sha256.h \
 	sodium/crypto_hash_sha512.h \
-	sodium/crypto_hashblocks_sha256.h \
 	sodium/crypto_hashblocks_sha512.h \
 	sodium/crypto_onetimeauth.h \
 	sodium/crypto_onetimeauth_poly1305.h \
