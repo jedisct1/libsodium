@@ -32,6 +32,18 @@ const char * crypto_hash_sha256_primitive(void);
 SODIUM_EXPORT
 int crypto_hash_sha256(unsigned char *,const unsigned char *,unsigned long long);
 
+SODIUM_EXPORT
+int crypto_hash_sha256_init(crypto_hash_sha256_state *state);
+
+SODIUM_EXPORT
+int crypto_hash_sha256_update(crypto_hash_sha256_state *state,
+                              const unsigned char *in,
+                              unsigned long long inlen);
+
+SODIUM_EXPORT
+int crypto_hash_sha256_final(crypto_hash_sha256_state *state,
+                             unsigned char *out);
+
 #ifdef __cplusplus
 }
 #endif

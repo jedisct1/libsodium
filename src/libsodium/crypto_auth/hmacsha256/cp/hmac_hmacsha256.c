@@ -38,21 +38,8 @@
 #include <stdlib.h>
 #include <string.h>
 
-typedef struct crypto_hmac_sha256_state {
-    crypto_hash_sha256_state ictx;
-    crypto_hash_sha256_state octx;
-} crypto_hmac_sha256_state;
-
-void _SHA256_Init(crypto_hash_sha256_state *);
-void _SHA256_Update(crypto_hash_sha256_state *, const void *, size_t);
-void _SHA256_Final(unsigned char [32], crypto_hash_sha256_state *);
-
-static void HMAC__SHA256_Init(crypto_hmac_sha256_state *, const void *, size_t);
-static void HMAC__SHA256_Update(crypto_hmac_sha256_state *, const void *, size_t);
-static void HMAC__SHA256_Final(unsigned char [32], crypto_hmac_sha256_state *);
-
 static void
-HMAC__SHA256_Init(crypto_hmac_sha256_state * ctx, const void * _K, size_t Klen)
+HMAC__SHA256_Init(crypto_auth_hmacsha256_state * ctx, const void * _K, size_t Klen)
 {
     unsigned char pad[64];
     unsigned char khash[32];
@@ -60,55 +47,88 @@ HMAC__SHA256_Init(crypto_hmac_sha256_state * ctx, const void * _K, size_t Klen)
     size_t i;
 
     if (Klen > 64) {
-        _SHA256_Init(&ctx->ictx);
-        _SHA256_Update(&ctx->ictx, K, Klen);
-        _SHA256_Final(khash, &ctx->ictx);
+        crypto_hash_sha256_init(&ctx->ictx);
+        crypto_hash_sha256_update(&ctx->ictx, K, Klen);
+        crypto_hash_sha256_final(&ctx->ictx, khash);
         K = khash;
         Klen = 32;
     }
-    _SHA256_Init(&ctx->ictx);
+    crypto_hash_sha256_init(&ctx->ictx);
     memset(pad, 0x36, 64);
     for (i = 0; i < Klen; i++) {
         pad[i] ^= K[i];
     }
-    _SHA256_Update(&ctx->ictx, pad, 64);
+    crypto_hash_sha256_update(&ctx->ictx, pad, 64);
 
-    _SHA256_Init(&ctx->octx);
+    crypto_hash_sha256_init(&ctx->octx);
     memset(pad, 0x5c, 64);
     for (i = 0; i < Klen; i++) {
         pad[i] ^= K[i];
     }
-    _SHA256_Update(&ctx->octx, pad, 64);
+    crypto_hash_sha256_update(&ctx->octx, pad, 64);
 
-    sodium_memzero(khash, 32);
+    sodium_memzero((void *) khash, 32);
 }
 
 static void
-HMAC__SHA256_Update(crypto_hmac_sha256_state * ctx, const void *in, size_t len)
+HMAC__SHA256_Update(crypto_auth_hmacsha256_state * ctx, const void *in, size_t len)
 {
-    _SHA256_Update(&ctx->ictx, in, len);
+    crypto_hash_sha256_update(&ctx->ictx, in, len);
 }
 
 static void
-HMAC__SHA256_Final(unsigned char digest[32], crypto_hmac_sha256_state * ctx)
+HMAC__SHA256_Final(unsigned char digest[32], crypto_auth_hmacsha256_state * ctx)
 {
     unsigned char ihash[32];
 
-    _SHA256_Final(ihash, &ctx->ictx);
-    _SHA256_Update(&ctx->octx, ihash, 32);
-    _SHA256_Final(digest, &ctx->octx);
+    crypto_hash_sha256_final(&ctx->ictx, ihash);
+    crypto_hash_sha256_update(&ctx->octx, ihash, 32);
+    crypto_hash_sha256_final(&ctx->octx, digest);
 
-    sodium_memzero(ihash, 32);
+    sodium_memzero((void *) ihash, 32);
+}
+
+int
+crypto_auth_hmacsha256_init(crypto_auth_hmacsha256_state *state,
+                            const unsigned char *key,
+                            const size_t keylen)
+{
+    HMAC__SHA256_Init(state, key, keylen);
+
+    return 0;
+}
+
+int
+crypto_auth_hmacsha256_update(crypto_auth_hmacsha256_state *state,
+                              const unsigned char *in,
+                              unsigned long long inlen)
+{
+    if (inlen > SIZE_MAX) {
+        sodium_memzero((void *) state, sizeof *state);
+        return -1;
+    }
+    HMAC__SHA256_Update(state, (const void *) in, (size_t) inlen);
+
+    return 0;
+}
+
+int
+crypto_auth_hmacsha256_final(crypto_auth_hmacsha256_state *state,
+                             unsigned char *out)
+{
+    HMAC__SHA256_Final(out, state);
+
+    return 0;
 }
 
 int
 crypto_auth(unsigned char *out, const unsigned char *in,
             unsigned long long inlen, const unsigned char *k)
 {
-    crypto_hmac_sha256_state ctx;
+    crypto_auth_hmacsha256_state ctx;
 
     if (inlen > SIZE_MAX) {
-        memset(out, 0, crypto_auth_BYTES);
+        sodium_memzero((void *) out, crypto_auth_BYTES);
         return -1;
     }
     HMAC__SHA256_Init(&ctx, k, crypto_auth_KEYBYTES);

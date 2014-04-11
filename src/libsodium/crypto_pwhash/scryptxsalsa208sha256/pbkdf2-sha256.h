@@ -23,7 +23,6 @@
  * OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
  * SUCH DAMAGE.
  *
- * $FreeBSD: src/lib/libmd/sha256.h,v 1.2 2006/01/17 15:35:56 phk Exp $
  */
 
 #ifndef _SHA256_H_
@@ -33,27 +32,14 @@
 
 #include <stdint.h>
 
-#include "crypto_hash_sha256.h"
-
-typedef struct HMAC_SHA256Context {
-	crypto_hash_sha256_state ictx;
-	crypto_hash_sha256_state octx;
-} HMAC_SHA256_CTX;
-
-void _SHA256_Init(crypto_hash_sha256_state *);
-void _SHA256_Update(crypto_hash_sha256_state *, const void *, size_t);
-void _SHA256_Final(unsigned char [32], crypto_hash_sha256_state *);
-
-void	HMAC__SHA256_Init(HMAC_SHA256_CTX *, const void *, size_t);
-void	HMAC__SHA256_Update(HMAC_SHA256_CTX *, const void *, size_t);
-void	HMAC__SHA256_Final(unsigned char [32], HMAC_SHA256_CTX *);
+#include "crypto_auth_hmacsha256.h"
 
 /**
  * PBKDF2_SHA256(passwd, passwdlen, salt, saltlen, c, buf, dkLen):
  * Compute PBKDF2(passwd, salt, c, dkLen) using HMAC-SHA256 as the PRF, and
  * write the output to buf.  The value dkLen must be at most 32 * (2^32 - 1).
  */
-void	PBKDF2_SHA256(const uint8_t *, size_t, const uint8_t *, size_t,
-    uint64_t, uint8_t *, size_t);
+void PBKDF2_SHA256(const uint8_t *, size_t, const uint8_t *, size_t,
+                   uint64_t, uint8_t *, size_t);
 
 #endif /* !_SHA256_H_ */

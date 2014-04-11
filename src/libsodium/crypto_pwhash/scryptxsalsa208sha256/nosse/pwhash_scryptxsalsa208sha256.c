@@ -33,7 +33,7 @@
 #include <stdlib.h>
 #include <string.h>
 
-#include "../sha256.h"
+#include "../pbkdf2-sha256.h"
 #include "../sysendian.h"
 #include "../crypto_scrypt.h"
 
