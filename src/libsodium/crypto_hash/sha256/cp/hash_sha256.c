@@ -37,12 +37,6 @@
 #include <stdlib.h>
 #include <string.h>
 
-typedef struct crypto_hash_sha256_state {
-    uint32_t state[8];
-    uint32_t count[2];
-    unsigned char buf[64];
-} crypto_hash_sha256_state;
-
 void _SHA256_Init(crypto_hash_sha256_state *);
 void _SHA256_Update(crypto_hash_sha256_state *, const void *, size_t);
 void _SHA256_Final(unsigned char [32], crypto_hash_sha256_state *);
