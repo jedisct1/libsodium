@@ -77,15 +77,9 @@ extern uint8_t * escrypt_r(escrypt_local_t * __local,
     const uint8_t * __setting,
     uint8_t * __buf, size_t __buflen);
 
-extern uint8_t * escrypt(const uint8_t * __passwd, const uint8_t * __setting);
-
 extern uint8_t * escrypt_gensalt_r(
     uint32_t __N_log2, uint32_t __r, uint32_t __p,
     const uint8_t * __src, size_t __srclen,
     uint8_t * __buf, size_t __buflen);
-
-extern uint8_t * escrypt_gensalt(
-    uint32_t __N_log2, uint32_t __r, uint32_t __p,
-    const uint8_t * __src, size_t __srclen);
 
 #endif /* !_CRYPTO_SCRYPT_H_ */
