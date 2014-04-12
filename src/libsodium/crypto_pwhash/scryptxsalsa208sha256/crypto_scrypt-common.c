@@ -171,22 +171,6 @@ escrypt_r(escrypt_local_t * local,
 }
 
 uint8_t *
-escrypt(const uint8_t * passwd, const uint8_t * setting)
-{
-	static uint8_t buf[4 + 1 + 5 + 5 + BYTES2CHARS(32) + 1 + HASH_LEN + 1];
-	escrypt_local_t local;
-	uint8_t * retval;
-
-	if (escrypt_init_local(&local))
-		return NULL;
-	retval = escrypt_r(&local,
-	    passwd, strlen((char *)passwd), setting, buf, sizeof(buf));
-	if (escrypt_free_local(&local))
-		return NULL;
-	return retval;
-}
-
-uint8_t *
 escrypt_gensalt_r(uint32_t N_log2, uint32_t r, uint32_t p,
     const uint8_t * src, size_t srclen,
     uint8_t * buf, size_t buflen)
@@ -225,15 +209,6 @@ escrypt_gensalt_r(uint32_t N_log2, uint32_t r, uint32_t p,
 	*dst = 0; /* NUL termination */
 
 	return buf;
-}
-
-uint8_t *
-escrypt_gensalt(uint32_t N_log2, uint32_t r, uint32_t p,
-    const uint8_t * src, size_t srclen)
-{
-	static uint8_t buf[4 + 1 + 5 + 5 + BYTES2CHARS(32) + 1];
-	return escrypt_gensalt_r(N_log2, r, p, src, srclen,
-	    buf, sizeof(buf));
 }
 
 int
