@@ -23,8 +23,6 @@ unsigned char out2[32];
 
 int main(void)
 {
-  int i;
-
   scalar[0] = 1U;
   crypto_scalarmult_curve25519(out1, scalar, p1);
   crypto_scalarmult_curve25519(out2, scalar, p2);
