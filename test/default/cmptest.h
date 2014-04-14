@@ -7,7 +7,7 @@
 #include "sodium.h"
 
 #ifndef TEST_SRCDIR
-#define TEST_SRCDIR "./"
+# define TEST_SRCDIR "."
 #endif
 
 #define TEST_NAME_RES TEST_NAME ".res"
