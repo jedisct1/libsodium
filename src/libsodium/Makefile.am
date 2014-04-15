@@ -7,6 +7,10 @@ libsodium_la_SOURCES = \
 	crypto_auth/hmacsha256/cp/api.h \
 	crypto_auth/hmacsha256/cp/hmac_hmacsha256.c \
 	crypto_auth/hmacsha256/cp/verify_hmacsha256.c \
+	crypto_auth/hmacsha512/auth_hmacsha512_api.c \
+	crypto_auth/hmacsha512/cp/api.h \
+	crypto_auth/hmacsha512/cp/hmac_hmacsha512.c \
+	crypto_auth/hmacsha512/cp/verify_hmacsha512.c \
 	crypto_auth/hmacsha512256/auth_hmacsha512256_api.c \
 	crypto_auth/hmacsha512256/cp/api.h \
 	crypto_auth/hmacsha512256/cp/hmac_hmacsha512256.c \

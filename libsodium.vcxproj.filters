@@ -24,6 +24,9 @@
     <ClInclude Include="src\libsodium\include\sodium\crypto_auth_hmacsha256.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="src\libsodium\include\sodium\crypto_auth_hmacsha512.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
     <ClInclude Include="src\libsodium\include\sodium\crypto_auth_hmacsha512256.h">
       <Filter>Header Files</Filter>
     </ClInclude>
@@ -190,6 +193,9 @@
     <ClCompile Include="src\libsodium\crypto_auth\hmacsha256\auth_hmacsha256_api.c">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="src\libsodium\crypto_auth\hmacsha512\auth_hmacsha512_api.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
     <ClCompile Include="src\libsodium\crypto_auth\hmacsha512256\auth_hmacsha512256_api.c">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -199,10 +205,16 @@
     <ClCompile Include="src\libsodium\crypto_auth\hmacsha256\cp\hmac_hmacsha256.c">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="src\libsodium\crypto_auth\hmacsha512\cp\hmac_hmacsha512.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
     <ClCompile Include="src\libsodium\crypto_auth\hmacsha512256\cp\hmac_hmacsha512256.c">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="src\libsodium\crypto_auth\hmacsha256\ref\verify_hmacsha256.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\libsodium\crypto_auth\hmacsha512\cp\verify_hmacsha512.c">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="src\libsodium\crypto_auth\hmacsha512256\cp\verify_hmacsha512256.c">

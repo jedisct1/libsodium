@@ -2,7 +2,7 @@
 #define crypto_auth_hmacsha512256_H
 
 #include <stddef.h>
-#include "crypto_hash_sha512.h"
+#include "crypto_auth_hmacsha512.h"
 #include "export.h"
 
 #define crypto_auth_hmacsha512256_BYTES 32U
@@ -14,11 +14,6 @@
 # endif
 extern "C" {
 #endif
-
-typedef struct crypto_auth_hmacsha512_state {
-    crypto_hash_sha512_state ictx;
-    crypto_hash_sha512_state octx;
-} crypto_auth_hmacsha512_state;
 
 typedef struct crypto_auth_hmacsha512_state crypto_auth_hmacsha512256_state;
 
@@ -36,6 +31,20 @@ int crypto_auth_hmacsha512256(unsigned char *,const unsigned char *,unsigned lon
 
 SODIUM_EXPORT
 int crypto_auth_hmacsha512256_verify(const unsigned char *,const unsigned char *,unsigned long long,const unsigned char *);
+
+SODIUM_EXPORT
+int crypto_auth_hmacsha512256_init(crypto_auth_hmacsha512256_state *state,
+                                const unsigned char *key,
+                                size_t keylen);
+
+SODIUM_EXPORT
+int crypto_auth_hmacsha512256_update(crypto_auth_hmacsha512256_state *state,
+                                  const unsigned char *in,
+                                  unsigned long long inlen);
+
+SODIUM_EXPORT
+int crypto_auth_hmacsha512256_final(crypto_auth_hmacsha512256_state *state,
+                                 unsigned char *out);
 
 #ifdef __cplusplus
 }
