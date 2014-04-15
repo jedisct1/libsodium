@@ -52,7 +52,6 @@ SODIUM_EXPORT = \
 	sodium/utils.h
 
 EXTRA_SRC = $(SODIUM_EXPORT) \
-	sodium/_crypto_hashblocks_sha512.h \
 	sodium/version.h.in
 
 nobase_include_HEADERS = $(SODIUM_EXPORT)

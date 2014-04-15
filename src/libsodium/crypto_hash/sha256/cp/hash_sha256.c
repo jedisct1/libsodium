@@ -187,8 +187,8 @@ SHA256_Transform(uint32_t *state, const unsigned char block[64])
         state[i] += S[i];
     }
 
-    sodium_memzero((void *) W, 256);
-    sodium_memzero((void *) S, 32);
+    sodium_memzero((void *) W, sizeof W);
+    sodium_memzero((void *) S, sizeof S);
     sodium_memzero((void *) &t0, sizeof t0);
     sodium_memzero((void *) &t1, sizeof t1);
 }

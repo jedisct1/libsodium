@@ -53,7 +53,7 @@ int crypto_auth_hmacsha256_final(crypto_auth_hmacsha256_state *state,
 }
 #endif
 
-#define crypto_auth_hmacsha256_ref crypto_auth_hmacsha256
-#define crypto_auth_hmacsha256_ref_verify crypto_auth_hmacsha256_verify
+#define crypto_auth_hmacsha256_cp crypto_auth_hmacsha256
+#define crypto_auth_hmacsha256_cp_verify crypto_auth_hmacsha256_verify
 
 #endif

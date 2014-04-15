@@ -30,19 +30,19 @@ Daniel J. Bernstein
 
 crypto_hash/sha256
 ------------------
-Daniel J. Bernstein (wrapper around crypto_hashblocks/sha256)
+Colin Percival
 
 crypto_hash/sha512
 ------------------
-Daniel J. Bernstein (wrapper around crypto_hashblocks/sha512)
+Colin Percival
 
-crypto_hashblocks/sha256
-------------------------
-Daniel J. Bernstein
+crypto_auth/hmacsha256
+------------------
+Colin Percival
 
-crypto_hashblocks/sha512
-------------------------
-Daniel J. Bernstein
+crypto_auth/hmacsha512
+------------------
+Colin Percival
 
 crypto_scalarmult/curve25519/ref
 --------------------------------
