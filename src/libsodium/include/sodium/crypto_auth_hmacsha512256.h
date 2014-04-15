@@ -50,7 +50,4 @@ int crypto_auth_hmacsha512256_final(crypto_auth_hmacsha512256_state *state,
 }
 #endif
 
-#define crypto_auth_hmacsha512256_cp crypto_auth_hmacsha512256
-#define crypto_auth_hmacsha512256_cp_verify crypto_auth_hmacsha512256_verify
-
 #endif
