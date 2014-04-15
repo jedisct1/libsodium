@@ -31,9 +31,6 @@
     <ClCompile Include="..\..\..\..\src\libsodium\crypto_generichash\blake2\ref\blake2b-ref.c">
       <Filter>src</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\..\..\src\libsodium\crypto_hashblocks\sha256\ref\blocks_sha256.c">
-      <Filter>src</Filter>
-    </ClCompile>
     <ClCompile Include="..\..\..\..\src\libsodium\crypto_hashblocks\sha512\ref\blocks_sha512.c">
       <Filter>src</Filter>
     </ClCompile>
@@ -226,9 +223,6 @@
     <ClCompile Include="..\..\..\..\src\libsodium\crypto_generichash\blake2\ref\generichash_blake2b.c">
       <Filter>src</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\..\..\src\libsodium\crypto_hash\sha256\ref\hash_sha256.c">
-      <Filter>src</Filter>
-    </ClCompile>
     <ClCompile Include="..\..\..\..\src\libsodium\crypto_hash\sha256\hash_sha256_api.c">
       <Filter>src</Filter>
     </ClCompile>
@@ -236,15 +230,6 @@
       <Filter>src</Filter>
     </ClCompile>
     <ClCompile Include="..\..\..\..\src\libsodium\crypto_hash\sha512\hash_sha512_api.c">
-      <Filter>src</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\..\..\src\libsodium\crypto_hashblocks\sha256\hashblocks_sha256_api.c">
-      <Filter>src</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\..\..\src\libsodium\crypto_hashblocks\sha512\hashblocks_sha512_api.c">
-      <Filter>src</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\..\..\src\libsodium\crypto_auth\hmacsha256\ref\hmac_hmacsha256.c">
       <Filter>src</Filter>
     </ClCompile>
     <ClCompile Include="..\..\..\..\src\libsodium\crypto_auth\hmacsha512256\ref\hmac_hmacsha512256.c">
@@ -364,9 +349,6 @@
     <ClCompile Include="..\..\..\..\src\libsodium\crypto_verify\32\verify_32_api.c">
       <Filter>src</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\..\..\src\libsodium\crypto_auth\hmacsha256\ref\verify_hmacsha256.c">
-      <Filter>src</Filter>
-    </ClCompile>
     <ClCompile Include="..\..\..\..\src\libsodium\crypto_auth\hmacsha512256\ref\verify_hmacsha512256.c">
       <Filter>src</Filter>
     </ClCompile>
@@ -395,6 +377,15 @@
       <Filter>src</Filter>
     </ClCompile>
     <ClCompile Include="..\..\..\..\src\libsodium\crypto_secretbox\crypto_secretbox_easy.c">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\src\libsodium\crypto_hash\sha256\cp\hash_sha256.c">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\src\libsodium\crypto_auth\hmacsha256\cp\hmac_hmacsha256.c">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\src\libsodium\crypto_auth\hmacsha256\cp\verify_hmacsha256.c">
       <Filter>src</Filter>
     </ClCompile>
   </ItemGroup>
@@ -442,12 +433,6 @@
       <Filter>include</Filter>
     </ClInclude>
     <ClInclude Include="..\..\..\..\src\libsodium\include\sodium\crypto_hash_sha512.h">
-      <Filter>include</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\..\src\libsodium\include\sodium\crypto_hashblocks_sha256.h">
-      <Filter>include</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\..\src\libsodium\include\sodium\crypto_hashblocks_sha512.h">
       <Filter>include</Filter>
     </ClInclude>
     <ClInclude Include="..\..\..\..\src\libsodium\include\sodium\crypto_int32.h">
@@ -551,6 +536,9 @@
     </ClInclude>
     <ClInclude Include="..\..\resource.h">
       <Filter>resource</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\src\libsodium\crypto_auth\hmacsha256\cp\api.h">
+      <Filter>include</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
