@@ -5,6 +5,7 @@
 #include <sodium/core.h>
 #include <sodium/crypto_auth.h>
 #include <sodium/crypto_auth_hmacsha256.h>
+#include <sodium/crypto_auth_hmacsha512.h>
 #include <sodium/crypto_auth_hmacsha512256.h>
 #include <sodium/crypto_box.h>
 #include <sodium/crypto_box_curve25519xsalsa20poly1305.h>

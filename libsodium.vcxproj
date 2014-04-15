@@ -318,6 +318,7 @@
     <ClInclude Include="src\libsodium\include\sodium\core.h" />
     <ClInclude Include="src\libsodium\include\sodium\crypto_auth.h" />
     <ClInclude Include="src\libsodium\include\sodium\crypto_auth_hmacsha256.h" />
+    <ClInclude Include="src\libsodium\include\sodium\crypto_auth_hmacsha512.h" />
     <ClInclude Include="src\libsodium\include\sodium\crypto_auth_hmacsha512256.h" />
     <ClInclude Include="src\libsodium\include\sodium\crypto_box.h" />
     <ClInclude Include="src\libsodium\include\sodium\crypto_box_curve25519xsalsa20poly1305.h" />
@@ -374,6 +375,9 @@
     <ClCompile Include="src\libsodium\crypto_auth\hmacsha256\auth_hmacsha256_api.c" />
     <ClCompile Include="src\libsodium\crypto_auth\hmacsha256\cp\hmac_hmacsha256.c" />
     <ClCompile Include="src\libsodium\crypto_auth\hmacsha256\cp\verify_hmacsha256.c" />
+    <ClCompile Include="src\libsodium\crypto_auth\hmacsha512\auth_hmacsha512_api.c" />
+    <ClCompile Include="src\libsodium\crypto_auth\hmacsha512\cp\hmac_hmacsha512.c" />
+    <ClCompile Include="src\libsodium\crypto_auth\hmacsha512\cp\verify_hmacsha512.c" />
     <ClCompile Include="src\libsodium\crypto_auth\hmacsha512256\auth_hmacsha512256_api.c" />
     <ClCompile Include="src\libsodium\crypto_auth\hmacsha512256\cp\hmac_hmacsha512256.c" />
     <ClCompile Include="src\libsodium\crypto_auth\hmacsha512256\cp\verify_hmacsha512256.c" />
