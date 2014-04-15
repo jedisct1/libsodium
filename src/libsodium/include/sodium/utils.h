@@ -23,7 +23,7 @@ SODIUM_EXPORT
 void sodium_memzero(void * const pnt, const size_t len);
 
 SODIUM_EXPORT
-int sodium_memcmp(const void * const b1_, const void * const b2_, size_t size);
+int sodium_memcmp(const void * const b1_, const void * const b2_, size_t len);
 
 SODIUM_EXPORT
 char *sodium_bin2hex(char * const hex, const size_t hex_maxlen,
