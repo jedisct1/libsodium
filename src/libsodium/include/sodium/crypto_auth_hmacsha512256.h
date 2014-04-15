@@ -34,17 +34,17 @@ int crypto_auth_hmacsha512256_verify(const unsigned char *,const unsigned char *
 
 SODIUM_EXPORT
 int crypto_auth_hmacsha512256_init(crypto_auth_hmacsha512256_state *state,
-                                const unsigned char *key,
-                                size_t keylen);
+                                   const unsigned char *key,
+                                   size_t keylen);
 
 SODIUM_EXPORT
 int crypto_auth_hmacsha512256_update(crypto_auth_hmacsha512256_state *state,
-                                  const unsigned char *in,
-                                  unsigned long long inlen);
+                                     const unsigned char *in,
+                                     unsigned long long inlen);
 
 SODIUM_EXPORT
 int crypto_auth_hmacsha512256_final(crypto_auth_hmacsha512256_state *state,
-                                 unsigned char *out);
+                                    unsigned char *out);
 
 #ifdef __cplusplus
 }
