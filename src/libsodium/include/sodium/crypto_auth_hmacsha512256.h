@@ -2,6 +2,7 @@
 #define crypto_auth_hmacsha512256_H
 
 #include <stddef.h>
+#include "crypto_hash_sha512.h"
 #include "export.h"
 
 #define crypto_auth_hmacsha512256_BYTES 32U
@@ -13,6 +14,13 @@
 # endif
 extern "C" {
 #endif
+
+typedef struct crypto_auth_hmacsha512_state {
+    crypto_hash_sha512_state ictx;
+    crypto_hash_sha512_state octx;
+} crypto_auth_hmacsha512_state;
+
+typedef struct crypto_auth_hmacsha512_state crypto_auth_hmacsha512256_state;
 
 SODIUM_EXPORT
 size_t crypto_auth_hmacsha512256_bytes(void);
@@ -33,7 +41,7 @@ int crypto_auth_hmacsha512256_verify(const unsigned char *,const unsigned char *
 }
 #endif
 
-#define crypto_auth_hmacsha512256_ref crypto_auth_hmacsha512256
-#define crypto_auth_hmacsha512256_ref_verify crypto_auth_hmacsha512256_verify
+#define crypto_auth_hmacsha512256_cp crypto_auth_hmacsha512256
+#define crypto_auth_hmacsha512256_cp_verify crypto_auth_hmacsha512256_verify
 
 #endif

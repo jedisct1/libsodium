@@ -8,9 +8,9 @@ libsodium_la_SOURCES = \
 	crypto_auth/hmacsha256/cp/hmac_hmacsha256.c \
 	crypto_auth/hmacsha256/cp/verify_hmacsha256.c \
 	crypto_auth/hmacsha512256/auth_hmacsha512256_api.c \
-	crypto_auth/hmacsha512256/ref/api.h \
-	crypto_auth/hmacsha512256/ref/hmac_hmacsha512256.c \
-	crypto_auth/hmacsha512256/ref/verify_hmacsha512256.c \
+	crypto_auth/hmacsha512256/cp/api.h \
+	crypto_auth/hmacsha512256/cp/hmac_hmacsha512256.c \
+	crypto_auth/hmacsha512256/cp/verify_hmacsha512256.c \
 	crypto_box/crypto_box.c \
 	crypto_box/crypto_box_easy.c \
 	crypto_box/curve25519xsalsa20poly1305/box_curve25519xsalsa20poly1305_api.c \
@@ -43,10 +43,8 @@ libsodium_la_SOURCES = \
 	crypto_hash/sha256/cp/api.h \
 	crypto_hash/sha256/cp/hash_sha256.c \
 	crypto_hash/sha512/hash_sha512_api.c \
-	crypto_hash/sha512/ref/api.h \
-	crypto_hash/sha512/ref/hash_sha512.c \
-	crypto_hashblocks/sha512/ref/blocks_sha512.c \
-	crypto_hashblocks/sha512/ref/api.h \
+	crypto_hash/sha512/cp/api.h \
+	crypto_hash/sha512/cp/hash_sha512.c \
 	crypto_onetimeauth/crypto_onetimeauth.c \
 	crypto_onetimeauth/poly1305/onetimeauth_poly1305.c \
 	crypto_onetimeauth/poly1305/onetimeauth_poly1305_api.c \

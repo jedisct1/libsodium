@@ -48,6 +48,6 @@ int crypto_hash_sha256_final(crypto_hash_sha256_state *state,
 }
 #endif
 
-#define crypto_hash_sha256_ref crypto_hash_sha256
+#define crypto_hash_sha256_cp crypto_hash_sha256
 
 #endif
