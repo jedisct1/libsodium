@@ -6,6 +6,8 @@ EXTRA_DIST = \
 	auth2.exp \
 	auth3.exp \
 	auth5.exp \
+	auth6.exp \
+	auth7.exp \
 	box.exp \
 	box2.exp \
 	box7.exp \
@@ -56,6 +58,8 @@ DISTCLEANFILES = \
 	auth2.res \
 	auth3.res \
 	auth5.res \
+	auth6.res \
+	auth7.res \
 	box.res \
 	box2.res \
 	box7.res \
@@ -114,6 +118,8 @@ TESTS_TARGETS = \
 	auth2 \
 	auth3 \
 	auth5 \
+	auth6 \
+	auth7 \
 	box \
 	box2 \
 	box7 \
@@ -177,6 +183,12 @@ auth3_LDADD               = $(TESTS_LDADD)
 
 auth5_SOURCE              = cmptest.h auth5.c windows/windows-quirks.h
 auth5_LDADD               = $(TESTS_LDADD)
+
+auth6_SOURCE              = cmptest.h auth6.c windows/windows-quirks.h
+auth6_LDADD               = $(TESTS_LDADD)
+
+auth7_SOURCE              = cmptest.h auth7.c windows/windows-quirks.h
+auth7_LDADD               = $(TESTS_LDADD)
 
 box_SOURCE                = cmptest.h box.c
 box_LDADD                 = $(TESTS_LDADD)
