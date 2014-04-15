@@ -56,6 +56,8 @@ test/default/auth
 test/default/auth2
 test/default/auth3
 test/default/auth5
+test/default/auth6
+test/default/auth7
 test/default/box
 test/default/box2
 test/default/box7
