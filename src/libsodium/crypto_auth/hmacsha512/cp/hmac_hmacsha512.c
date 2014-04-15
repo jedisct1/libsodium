@@ -66,7 +66,7 @@ crypto_auth_hmacsha512_init(crypto_auth_hmacsha512_state *state,
     }
     crypto_hash_sha512_update(&state->octx, pad, 128);
 
-    sodium_memzero((void *) khash, 64);
+    sodium_memzero((void *) khash, sizeof khash);
 
     return 0;
 }
@@ -91,7 +91,7 @@ crypto_auth_hmacsha512_final(crypto_auth_hmacsha512_state *state,
     crypto_hash_sha512_update(&state->octx, ihash, 64);
     crypto_hash_sha512_final(&state->octx, out);
 
-    sodium_memzero((void *) ihash, 64);
+    sodium_memzero((void *) ihash, sizeof ihash);
 
     return 0;
 }
