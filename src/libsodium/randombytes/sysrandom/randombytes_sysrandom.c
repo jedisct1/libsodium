@@ -24,6 +24,39 @@
 # include <wincrypt.h>
 #endif
 
+#ifdef __OpenBSD__
+
+uint32_t
+randombytes_sysrandom(void)
+{
+    return arc4random();
+}
+
+void
+randombytes_sysrandom_stir(void)
+{
+}
+
+uint32_t
+randombytes_sysrandom_uniform(const uint32_t upper_bound)
+{
+    return arc4random_uniform(upper_bound);
+}
+
+void
+randombytes_sysrandom_buf(void * const buf, const size_t size)
+{
+    return arc4random_buf(buf, size);
+}
+
+int
+randombytes_sysrandom_close(void)
+{
+    return 0;
+}
+
+#else /* __OpenBSD__ */
+
 typedef struct SysRandom_ {
 #ifdef _WIN32
     HCRYPTPROV hcrypt_prov;
@@ -201,6 +234,8 @@ randombytes_sysrandom_uniform(const uint32_t upper_bound)
     }
     return r % upper_bound;
 }
+
+#endif
 
 const char *
 randombytes_sysrandom_implementation_name(void)
