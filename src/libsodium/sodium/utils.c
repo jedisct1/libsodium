@@ -77,8 +77,8 @@ _sodium_alignedcalloc(unsigned char ** const unaligned_p, const size_t len)
 }
 
 char *
-sodium_bin2hex(char * const hex, const size_t hexlen,
-               const unsigned char *bin, const size_t binlen)
+sodium_bin2hex(char * const hex, const size_t hex_len,
+               const unsigned char * const bin, const size_t bin_len)
 {
     static const char hexdigits[16] = {
         '0', '1', '2', '3', '4', '5', '6', '7',
@@ -87,10 +87,10 @@ sodium_bin2hex(char * const hex, const size_t hexlen,
     size_t            i = (size_t) 0U;
     size_t            j = (size_t) 0U;
 
-    if (binlen >= SIZE_MAX / 2 || hexlen < binlen * 2U) {
+    if (bin_len >= SIZE_MAX / 2 || hex_len < bin_len * 2U) {
         abort();
     }
-    while (i < binlen) {
+    while (i < bin_len) {
         hex[j++] = hexdigits[bin[i] >> 4];
         hex[j++] = hexdigits[bin[i] & 0xf];
         i++;
