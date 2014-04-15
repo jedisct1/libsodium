@@ -2,6 +2,7 @@
 #ifndef __STDC_WANT_LIB_EXT1__
 # define __STDC_WANT_LIB_EXT1__ 1
 #endif
+#include <errno.h>
 #include <limits.h>
 #include <stddef.h>
 #include <stdint.h>
@@ -77,7 +78,7 @@ _sodium_alignedcalloc(unsigned char ** const unaligned_p, const size_t len)
 }
 
 char *
-sodium_bin2hex(char * const hex, const size_t hex_len,
+sodium_bin2hex(char * const hex, const size_t hex_maxlen,
                const unsigned char * const bin, const size_t bin_len)
 {
     static const char hexdigits[16] = {
@@ -87,7 +88,7 @@ sodium_bin2hex(char * const hex, const size_t hex_len,
     size_t            i = (size_t) 0U;
     size_t            j = (size_t) 0U;
 
-    if (bin_len >= SIZE_MAX / 2 || hex_len < bin_len * 2U) {
+    if (bin_len >= SIZE_MAX / 2 || hex_maxlen < bin_len * 2U) {
         abort();
     }
     while (i < bin_len) {
@@ -98,4 +99,56 @@ sodium_bin2hex(char * const hex, const size_t hex_len,
     hex[j] = 0;
 
     return hex;
+}
+
+int
+sodium_hex2bin(unsigned char * const bin, const size_t bin_maxlen,
+               const char * const hex, const size_t hex_len,
+               const char * const ignore, size_t * const bin_len,
+               const char ** const hex_end)
+{
+    size_t        bin_pos = (size_t) 0U;
+    size_t        hex_pos = (size_t) 0U;
+    int           ret = 0;
+    unsigned char c;
+    unsigned char c_acc = 0U;
+    unsigned char c_num;
+    unsigned char c_val;
+    unsigned char state = 0U;
+
+    while (hex_pos < hex_len) {
+        c = (unsigned char) hex[hex_pos];
+        if ((c_num = c ^ 48U) < 10U) {
+            c_val = c_num;
+        } else if ((c_num = (c & ~32U)) > 64 && c_num < 71U) {
+            c_val = c_num - 55U;
+        } else if (ignore != NULL && strchr(ignore, c) != NULL && state == 0U) {
+            hex_pos++;
+            continue;
+        } else {
+            break;
+        }
+        if (bin_pos >= bin_maxlen) {
+            ret = -1;
+            errno = ERANGE;
+            break;
+        }
+        if (state == 0U) {
+            c_acc = c_val * 16U;
+        } else {
+            bin[bin_pos++] = c_acc | c_val;
+        }
+        state = ~state;
+        hex_pos++;
+    }
+    if (state != 0U) {
+        hex_pos--;
+    }
+    if (hex_end != NULL) {
+        *hex_end = &hex[hex_pos];
+    }
+    if (bin_len != NULL) {
+        *bin_len = bin_pos;
+    }
+    return ret;
 }

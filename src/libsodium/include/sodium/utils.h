@@ -26,8 +26,14 @@ SODIUM_EXPORT
 int sodium_memcmp(const void * const b1_, const void * const b2_, size_t size);
 
 SODIUM_EXPORT
-char *sodium_bin2hex(char * const hex, const size_t hex_len,
+char *sodium_bin2hex(char * const hex, const size_t hex_maxlen,
                      const unsigned char * const bin, const size_t bin_len);
+
+SODIUM_EXPORT
+int sodium_hex2bin(unsigned char * const bin, const size_t bin_maxlen,
+                   const char * const hex, const size_t hex_len,
+                   const char * const ignore, size_t * const bin_len,
+                   const char ** const hex_end);
 
 #ifdef __cplusplus
 }
