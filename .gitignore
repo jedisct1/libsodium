@@ -1,5 +1,6 @@
 *.cmake
 *.dSYM
+*.exp
 *.la
 *.lo
 *.log
@@ -106,3 +107,5 @@ test-driver
 testing
 android-toolchain-*
 libsodium-android-*
+/bin/
+/obj/

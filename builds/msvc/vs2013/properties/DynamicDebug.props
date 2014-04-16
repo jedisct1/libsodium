@@ -1,0 +1,21 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+
+  <ImportGroup Label="PropertySheets">
+    <Import Project="Dynamic.props" />
+    <Import Project="Debug.props" />
+  </ImportGroup>
+
+  <PropertyGroup>
+    <_PropertySheetDisplayName>Dynamic Debug Library</_PropertySheetDisplayName>
+  </PropertyGroup>
+
+  <ItemDefinitionGroup>
+    <ClCompile>
+      <!-- Linking CRT dynamically when building a dynamic library is conventional. -->
+      <RuntimeLibrary>MultiThreadedDebugDLL</RuntimeLibrary>
+      <LinkIncremental>true</LinkIncremental>
+    </ClCompile>
+  </ItemDefinitionGroup>
+
+</Project>
