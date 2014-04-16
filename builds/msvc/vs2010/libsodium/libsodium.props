@@ -7,7 +7,12 @@
     <RunCodeAnalysis>false</RunCodeAnalysis>
   </PropertyGroup>
 
+  <!-- Configuration -->
+  
   <ItemDefinitionGroup>
+    <PreBuildEvent>
+      <Command>copy $(ProjectDir)..\..\version.h $(ProjectDir)..\..\..\..\src\libsodium\include\sodium\</Command>
+    </PreBuildEvent>
     <ClCompile>
       <AdditionalIncludeDirectories>$(ProjectDir)..\..\..\..\src\libsodium\include;$(ProjectDir)..\..\..\..\src\libsodium\include\sodium\;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <DisableSpecificWarnings>4146;4244;%(DisableSpecificWarnings)</DisableSpecificWarnings>
@@ -17,5 +22,11 @@
       <PreprocessorDefinitions Condition="'$(ConfigurationType)' == 'DynamicLibrary'">DLL_EXPORT;%(PreprocessorDefinitions)</PreprocessorDefinitions>
     </ClCompile>
   </ItemDefinitionGroup>
+
+  <!-- Messages -->
+
+  <Target Name="CustomInfo" BeforeTargets="PrepareForBuild">
+    <Message Text="Will copy $(ProjectDir)..\..\version.h -&gt; $(ProjectDir)..\..\..\..\src\libsodium\include\sodium\version.h" Importance="high"/>
+  </Target>
 
 </Project>
