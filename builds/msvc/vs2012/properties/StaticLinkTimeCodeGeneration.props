@@ -1,0 +1,17 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  
+  <ImportGroup Label="PropertySheets">
+    <Import Project="Static.props" />
+    <Import Project="LinkTimeCodeGeneration.props" />
+  </ImportGroup>
+ 
+  <PropertyGroup>
+    <_PropertySheetDisplayName>Static Link Time Code Generation Library</_PropertySheetDisplayName>
+    
+    <!-- This overrides Static.props->Common.props->TargetName and therefore this 
+    reference must always be set after Static.props->Common.props is included. -->
+    <TargetName>$(TargetName).ltcg</TargetName>
+  </PropertyGroup>
+
+</Project>
