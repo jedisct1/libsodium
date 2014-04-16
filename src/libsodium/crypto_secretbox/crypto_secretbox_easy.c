@@ -1,4 +1,5 @@
 
+#include <assert.h>
 #include <limits.h>
 #include <stdint.h>
 #include <stdlib.h>
@@ -41,8 +42,8 @@ crypto_secretbox_easy(unsigned char *c, const unsigned char *m,
         free(c_boxed);
         return -1;
     }
-    (void) sizeof(char[m_boxed_len - crypto_secretbox_BOXZEROBYTES ==
-                       mlen + crypto_secretbox_MACBYTES ? 1 : -1]);
+    assert(m_boxed_len - crypto_secretbox_BOXZEROBYTES ==
+           mlen + crypto_secretbox_MACBYTES);
     memcpy(c, c_boxed + crypto_secretbox_BOXZEROBYTES,
            mlen + crypto_secretbox_MACBYTES);
     free(c_boxed);
