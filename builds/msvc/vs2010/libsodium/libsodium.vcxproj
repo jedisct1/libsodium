@@ -225,8 +225,9 @@
     <ClCompile Include="..\..\..\..\src\libsodium\crypto_auth\hmacsha256\cp\hmac_hmacsha256.c" />
     <ClCompile Include="..\..\..\..\src\libsodium\crypto_auth\hmacsha256\cp\verify_hmacsha256.c" />
     <ClCompile Include="..\..\..\..\src\libsodium\crypto_auth\hmacsha512256\auth_hmacsha512256_api.c" />
-    <ClCompile Include="..\..\..\..\src\libsodium\crypto_auth\hmacsha512256\ref\hmac_hmacsha512256.c" />
-    <ClCompile Include="..\..\..\..\src\libsodium\crypto_auth\hmacsha512256\ref\verify_hmacsha512256.c" />
+    <ClCompile Include="..\..\..\..\src\libsodium\crypto_auth\hmacsha512256\cp\hmac_hmacsha512256.c" />
+    <ClCompile Include="..\..\..\..\src\libsodium\crypto_auth\hmacsha512256\cp\verify_hmacsha512256.c" />
+    <ClCompile Include="..\..\..\..\src\libsodium\crypto_auth\hmacsha512\cp\hmac_hmacsha512.c" />
     <ClCompile Include="..\..\..\..\src\libsodium\crypto_box\crypto_box.c" />
     <ClCompile Include="..\..\..\..\src\libsodium\crypto_box\crypto_box_easy.c">
       <!-- NOTE: does not compile. -->
@@ -249,12 +250,11 @@
     <ClCompile Include="..\..\..\..\src\libsodium\crypto_generichash\blake2\ref\blake2b-ref.c" />
     <ClCompile Include="..\..\..\..\src\libsodium\crypto_generichash\blake2\ref\generichash_blake2b.c" />
     <ClCompile Include="..\..\..\..\src\libsodium\crypto_generichash\crypto_generichash.c" />
-    <ClCompile Include="..\..\..\..\src\libsodium\crypto_hashblocks\sha512\ref\blocks_sha512.c" />
     <ClCompile Include="..\..\..\..\src\libsodium\crypto_hash\crypto_hash.c" />
     <ClCompile Include="..\..\..\..\src\libsodium\crypto_hash\sha256\cp\hash_sha256.c" />
     <ClCompile Include="..\..\..\..\src\libsodium\crypto_hash\sha256\hash_sha256_api.c" />
+    <ClCompile Include="..\..\..\..\src\libsodium\crypto_hash\sha512\cp\hash_sha512.c" />
     <ClCompile Include="..\..\..\..\src\libsodium\crypto_hash\sha512\hash_sha512_api.c" />
-    <ClCompile Include="..\..\..\..\src\libsodium\crypto_hash\sha512\ref\hash_sha512.c" />
     <ClCompile Include="..\..\..\..\src\libsodium\crypto_onetimeauth\crypto_onetimeauth.c" />
     <ClCompile Include="..\..\..\..\src\libsodium\crypto_onetimeauth\poly1305\donna\auth_poly1305_donna.c" />
     <ClCompile Include="..\..\..\..\src\libsodium\crypto_onetimeauth\poly1305\donna\verify_poly1305_donna.c" />
