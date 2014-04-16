@@ -229,10 +229,7 @@
     <ClCompile Include="..\..\..\..\src\libsodium\crypto_auth\hmacsha512256\cp\verify_hmacsha512256.c" />
     <ClCompile Include="..\..\..\..\src\libsodium\crypto_auth\hmacsha512\cp\hmac_hmacsha512.c" />
     <ClCompile Include="..\..\..\..\src\libsodium\crypto_box\crypto_box.c" />
-    <ClCompile Include="..\..\..\..\src\libsodium\crypto_box\crypto_box_easy.c">
-      <!-- NOTE: does not compile. -->
-      <ExcludedFromBuild>true</ExcludedFromBuild>
-    </ClCompile>
+    <ClCompile Include="..\..\..\..\src\libsodium\crypto_box\crypto_box_easy.c" />
     <ClCompile Include="..\..\..\..\src\libsodium\crypto_box\curve25519xsalsa20poly1305\box_curve25519xsalsa20poly1305_api.c" />
     <ClCompile Include="..\..\..\..\src\libsodium\crypto_box\curve25519xsalsa20poly1305\ref\after_curve25519xsalsa20poly1305.c" />
     <ClCompile Include="..\..\..\..\src\libsodium\crypto_box\curve25519xsalsa20poly1305\ref\before_curve25519xsalsa20poly1305.c" />
@@ -266,10 +263,7 @@
     <ClCompile Include="..\..\..\..\src\libsodium\crypto_scalarmult\curve25519\ref\smult_curve25519_ref.c" />
     <ClCompile Include="..\..\..\..\src\libsodium\crypto_scalarmult\curve25519\scalarmult_curve25519_api.c" />
     <ClCompile Include="..\..\..\..\src\libsodium\crypto_secretbox\crypto_secretbox.c" />
-    <ClCompile Include="..\..\..\..\src\libsodium\crypto_secretbox\crypto_secretbox_easy.c">
-      <!-- NOTE: does not compile. -->
-      <ExcludedFromBuild>true</ExcludedFromBuild>
-    </ClCompile>
+    <ClCompile Include="..\..\..\..\src\libsodium\crypto_secretbox\crypto_secretbox_easy.c" />
     <ClCompile Include="..\..\..\..\src\libsodium\crypto_secretbox\xsalsa20poly1305\ref\box_xsalsa20poly1305.c" />
     <ClCompile Include="..\..\..\..\src\libsodium\crypto_secretbox\xsalsa20poly1305\secretbox_xsalsa20poly1305_api.c" />
     <ClCompile Include="..\..\..\..\src\libsodium\crypto_shorthash\crypto_shorthash.c" />
