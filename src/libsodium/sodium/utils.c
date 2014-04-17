@@ -9,6 +9,10 @@
 #include <stdlib.h>
 #include <string.h>
 
+#ifdef HAVE_SYS_MMAN_H
+# include <sys/mman.h>
+#endif
+
 #include "utils.h"
 #include "randombytes.h"
 #ifdef _WIN32
@@ -151,4 +155,30 @@ sodium_hex2bin(unsigned char * const bin, const size_t bin_maxlen,
         *bin_len = bin_pos;
     }
     return ret;
+}
+
+int
+sodium_mlock(const void *addr, const size_t len)
+{
+#ifdef HAVE_MLOCK
+    return mlock(addr, len);
+#elif defined(HAVE_VIRTUALLOCK)
+    return -(VirtualLock(addr, len) != 0);
+#else
+    errno = ENOSYS;
+    return -1;
+#endif
+}
+
+int
+sodium_munlock(const void *addr, const size_t len)
+{
+#ifdef HAVE_MLOCK
+    return munlock(addr, len);
+#elif defined(HAVE_VIRTUALLOCK)
+    return -(VirtualUnlock(addr, len) != 0);
+#else
+    errno = ENOSYS;
+    return -1;
+#endif
 }

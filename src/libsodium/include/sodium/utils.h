@@ -35,6 +35,12 @@ int sodium_hex2bin(unsigned char * const bin, const size_t bin_maxlen,
                    const char * const ignore, size_t * const bin_len,
                    const char ** const hex_end);
 
+SODIUM_EXPORT
+int sodium_mlock(const void *addr, const size_t len);
+
+SODIUM_EXPORT
+int sodium_munlock(const void *addr, const size_t len);
+
 #ifdef __cplusplus
 }
 #endif
