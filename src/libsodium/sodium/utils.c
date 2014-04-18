@@ -158,7 +158,7 @@ sodium_hex2bin(unsigned char * const bin, const size_t bin_maxlen,
 }
 
 int
-sodium_mlock(const void *addr, const size_t len)
+sodium_mlock(void * const addr, const size_t len)
 {
 #ifdef HAVE_MLOCK
     return mlock(addr, len);
@@ -171,7 +171,7 @@ sodium_mlock(const void *addr, const size_t len)
 }
 
 int
-sodium_munlock(const void *addr, const size_t len)
+sodium_munlock(void * const addr, const size_t len)
 {
 #ifdef HAVE_MLOCK
     return munlock(addr, len);
