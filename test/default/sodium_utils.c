@@ -28,7 +28,7 @@ int main(void)
                                 "0123456789ABCDEF", 16U));
   hex = "Cafe : 6942";
   sodium_hex2bin(buf4, sizeof buf4, hex, strlen(hex), ": ", &bin_len, NULL);
-  printf("%zu:%02x%02x%02x%02x\n", bin_len,
+  printf("%lu:%02x%02x%02x%02x\n", (unsigned long) bin_len,
          buf4[0], buf4[1], buf4[2], buf4[3]);
 
   return 0;
