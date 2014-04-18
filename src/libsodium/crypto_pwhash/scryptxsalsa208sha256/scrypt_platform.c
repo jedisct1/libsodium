@@ -21,6 +21,7 @@
 #ifdef HAVE_SYS_MMAN_H
 # include <sys/mman.h>
 #endif
+#include <errno.h>
 #include <stdlib.h>
 
 #include "crypto_scrypt.h"
