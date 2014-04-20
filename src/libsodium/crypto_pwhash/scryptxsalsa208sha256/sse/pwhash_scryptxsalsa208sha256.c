@@ -28,6 +28,7 @@
  * online backup system.
  */
 
+#ifdef HAVE_EMMINTRIN_H
 #include <emmintrin.h>
 #if defined(__XOP__) && defined(DISABLED)
 #include <x86intrin.h>
@@ -379,3 +380,4 @@ escrypt_kdf_sse(escrypt_local_t * local,
 	/* Success! */
 	return 0;
 }
+#endif
