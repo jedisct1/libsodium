@@ -39,6 +39,20 @@ LX_CFLAGS=${CFLAGS-NONE}
 
 dnl Switches
 
+AC_ARG_ENABLE(sse,
+[AC_HELP_STRING(--disable-sse,disable SSE optimizations)],
+[
+  AS_IF([test "x$enableval" = "xno"], [
+    enable_sse="no"
+  ], [
+    enable_sse="yes"
+  ])
+],
+[
+  enable_sse="yes"
+])
+AM_CONDITIONAL([HAVE_SSE], [test "x$enable_sse" != "xno"])
+
 AC_ARG_ENABLE(ssp,
 [AS_HELP_STRING(--disable-ssp,Do not compile with -fstack-protector)],
 [
