@@ -241,32 +241,15 @@ AC_ARG_VAR([AR], [path to the ar utility])
 AC_CHECK_TOOL([AR], [ar], [ar])
 
 dnl Checks for headers
-AC_CHECK_HEADERS([emmintrin.h], [], [], [
-#pragma GCC target("sse2")
-])
 
-AC_CHECK_HEADERS([tmmintrin.h], [], [], [
-#pragma GCC target("ssse3")
-])
-
-AC_CHECK_HEADERS([smmintrin.h], [], [], [
-#pragma GCC target("sse4.1")
-])
-
-AC_CHECK_HEADERS([immintrin.h], [], [], [
-#pragma GCC target("avx")
-])
-
-AC_CHECK_HEADERS([avxintrin.h], [], [], [
-#pragma GCC target("avx")
-])
-
-AC_CHECK_HEADERS([x86intrin.h], [], [], [
-#pragma GCC target("xop")
-])
-
-AC_CHECK_HEADERS([wmmintrin.h], [], [], [
-#pragma GCC target("aes")
+AS_IF([test "x$EMSCRIPTEN" = "x"],[
+  AC_CHECK_HEADERS([emmintrin.h], [], [], [#pragma GCC target("sse2")])
+  AC_CHECK_HEADERS([tmmintrin.h], [], [], [#pragma GCC target("ssse3")])
+  AC_CHECK_HEADERS([smmintrin.h], [], [], [#pragma GCC target("sse4.1")])
+  AC_CHECK_HEADERS([immintrin.h], [], [], [#pragma GCC target("avx")])
+  AC_CHECK_HEADERS([avxintrin.h], [], [], [#pragma GCC target("avx")])
+  AC_CHECK_HEADERS([x86intrin.h], [], [], [#pragma GCC target("xop")])
+  AC_CHECK_HEADERS([wmmintrin.h], [], [], [#pragma GCC target("aes")])
 ])
 
 AC_CHECK_HEADERS([sys/mman.h])
@@ -382,8 +365,12 @@ dnl Checks for functions and headers
 AC_CHECK_FUNC(clock_gettime, , [AC_CHECK_LIB(rt, clock_gettime)])
 AC_CHECK_FUNC(fegetenv, , [AC_CHECK_LIB(m, fegetenv)])
 
-AC_CHECK_FUNCS([SecureZeroMemory arc4random arc4random_buf posix_memalign])
-AC_CHECK_FUNCS([memset_s mlock VirtualLock])
+AS_IF([test "x$EMSCRIPTEN" = "x"],[
+  AC_CHECK_FUNCS([arc4random arc4random_buf])
+  AC_CHECK_FUNCS([memset_s])
+])
+AC_CHECK_FUNCS([mlock VirtualLock])
+AC_CHECK_FUNCS([SecureZeroMemory posix_memalign])
 
 AC_SUBST([LIBTOOL_EXTRA_FLAGS])
 
