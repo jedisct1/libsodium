@@ -18,6 +18,9 @@ SODIUM_EXPORT
 size_t crypto_shorthash_siphash24_bytes(void);
 
 SODIUM_EXPORT
+size_t crypto_shorthash_siphash24_keybytes(void);
+
+SODIUM_EXPORT
 const char * crypto_shorthash_siphash24_primitive(void);
 
 SODIUM_EXPORT
