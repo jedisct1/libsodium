@@ -163,7 +163,9 @@ sodium_mlock(void * const addr, const size_t len)
 #ifdef HAVE_MLOCK
     return mlock(addr, len);
 #elif defined(HAVE_VIRTUALLOCK)
-    return -(VirtualLock(addr, len) != 0);
+    int res = VirtualLock(addr, len);
+    if (res == 0) return -1;
+    return 0;
 #else
     errno = ENOSYS;
     return -1;
@@ -176,7 +178,9 @@ sodium_munlock(void * const addr, const size_t len)
 #ifdef HAVE_MLOCK
     return munlock(addr, len);
 #elif defined(HAVE_VIRTUALLOCK)
-    return -(VirtualUnlock(addr, len) != 0);
+    int res = VirtualUnlock(addr, len);
+    if (res == 0) return -1;
+    return 0;
 #else
     errno = ENOSYS;
     return -1;
