@@ -1,4 +1,3 @@
-
 #ifndef __STDC_WANT_LIB_EXT1__
 # define __STDC_WANT_LIB_EXT1__ 1
 #endif
@@ -163,7 +162,7 @@ sodium_mlock(void * const addr, const size_t len)
 #ifdef HAVE_MLOCK
     return mlock(addr, len);
 #elif defined(HAVE_VIRTUALLOCK)
-    return -(VirtualLock(addr, len) != 0);
+    return -(VirtualLock(addr, len) == 0);
 #else
     errno = ENOSYS;
     return -1;
@@ -176,7 +175,7 @@ sodium_munlock(void * const addr, const size_t len)
 #ifdef HAVE_MLOCK
     return munlock(addr, len);
 #elif defined(HAVE_VIRTUALLOCK)
-    return -(VirtualUnlock(addr, len) != 0);
+    return -(VirtualUnlock(addr, len) == 0);
 #else
     errno = ENOSYS;
     return -1;
