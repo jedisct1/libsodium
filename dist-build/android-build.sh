@@ -28,12 +28,10 @@ rm -rf "${TOOLCHAIN_DIR}" "${PREFIX}"
 $MAKE_TOOLCHAIN --platform="${NDK_PLATFORM:-android-14}" \
                 --arch="$TARGET_ARCH" \
                 --install-dir="$TOOLCHAIN_DIR" && \
-
 ./configure --host="${HOST_COMPILER}" \
             --with-sysroot="${TOOLCHAIN_DIR}/sysroot" \
             --prefix="${PREFIX}" \
             --disable-soname-versions && \
-
 make clean && \
 make -j3 install && \
 echo "libsodium has been installed into $PREFIX"
