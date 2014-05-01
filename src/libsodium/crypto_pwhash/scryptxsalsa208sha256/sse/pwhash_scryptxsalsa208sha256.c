@@ -29,6 +29,7 @@
  */
 
 #ifdef HAVE_EMMINTRIN_H
+#pragma GCC target("sse2")
 #include <emmintrin.h>
 #if defined(__XOP__) && defined(DISABLED)
 #include <x86intrin.h>
