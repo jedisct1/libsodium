@@ -247,7 +247,6 @@ AS_IF([test "x$EMSCRIPTEN" = "x"],[
   AC_CHECK_HEADERS([tmmintrin.h], [], [], [#pragma GCC target("ssse3")])
   AC_CHECK_HEADERS([smmintrin.h], [], [], [#pragma GCC target("sse4.1")])
   AC_CHECK_HEADERS([immintrin.h], [], [], [#pragma GCC target("avx")])
-  AC_CHECK_HEADERS([avxintrin.h], [], [], [#pragma GCC target("avx")])
   AC_CHECK_HEADERS([x86intrin.h], [], [], [#pragma GCC target("xop")])
   AC_CHECK_HEADERS([wmmintrin.h], [], [], [#pragma GCC target("aes")])
 ])
