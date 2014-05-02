@@ -244,6 +244,7 @@ dnl Checks for headers
 
 AS_IF([test "x$EMSCRIPTEN" = "x"],[
   AC_CHECK_HEADERS([emmintrin.h], [], [], [#pragma GCC target("sse2")])
+  AC_CHECK_HEADERS([pmmintrin.h], [], [], [#pragma GCC target("sse3")])
   AC_CHECK_HEADERS([tmmintrin.h], [], [], [#pragma GCC target("ssse3")])
   AC_CHECK_HEADERS([smmintrin.h], [], [], [#pragma GCC target("sse4.1")])
   AC_CHECK_HEADERS([immintrin.h], [], [], [#pragma GCC target("avx")])

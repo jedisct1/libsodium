@@ -60,6 +60,12 @@ extern int escrypt_free_local(escrypt_local_t * __local);
 extern void *alloc_region(escrypt_region_t * region, size_t size);
 extern int free_region(escrypt_region_t * region);
 
+typedef int (*escrypt_kdf_t)(escrypt_local_t * __local,
+                             const uint8_t * __passwd, size_t __passwdlen,
+                             const uint8_t * __salt, size_t __saltlen,
+                             uint64_t __N, uint32_t __r, uint32_t __p,
+                             uint8_t * __buf, size_t __buflen);
+
 extern int escrypt_kdf_nosse(escrypt_local_t * __local,
     const uint8_t * __passwd, size_t __passwdlen,
     const uint8_t * __salt, size_t __saltlen,

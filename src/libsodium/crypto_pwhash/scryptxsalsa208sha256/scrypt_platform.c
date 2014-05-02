@@ -25,6 +25,7 @@
 #include <stdlib.h>
 
 #include "crypto_scrypt.h"
+#include "runtime.h"
 
 void *
 alloc_region(escrypt_region_t * region, size_t size)
