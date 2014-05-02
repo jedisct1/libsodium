@@ -323,18 +323,19 @@ void fcontract(uint128_t *t) {
 AM_CONDITIONAL([HAVE_TI_MODE], [test $HAVE_TI_MODE_V = 1])
 AC_SUBST(HAVE_TI_MODE_V)
 
-AC_MSG_CHECKING(for cpuid instruction)
 HAVE_CPUID_V=0
-AC_COMPILE_IFELSE([AC_LANG_PROGRAM([[ ]], [[
-__asm__("movl %ebx,%esi\n"
-        "cpuid\n"
-        "movl %esi,%ebx");
-]])],
-[AC_MSG_RESULT(yes)
- AC_DEFINE([HAVE_CPUID], [1], [cpuid instruction is available])
- HAVE_CPUID_V=1],
-[AC_MSG_RESULT(no)])
-AM_CONDITIONAL([HAVE_CPUID], [test $HAVE_CPUID_V = 1])
+AS_IF([test "$enable_asm" != "no"],[
+  AC_MSG_CHECKING(for cpuid instruction)
+  AC_COMPILE_IFELSE([AC_LANG_PROGRAM([[ ]], [[
+unsigned int a;
+__asm__ __volatile__("cpuid" : "=a" (a) : "a" (0U), "c" (0U));
+  ]])],
+  [AC_MSG_RESULT(yes)
+   AC_DEFINE([HAVE_CPUID], [1], [cpuid instruction is available])
+   HAVE_CPUID_V=1],
+  [AC_MSG_RESULT(no)])
+  AM_CONDITIONAL([HAVE_CPUID], [test $HAVE_CPUID_V = 1])
+  ])
 AC_SUBST(HAVE_CPUID_V)
 
 AS_CASE([$host_cpu],
