@@ -8,12 +8,12 @@ SODIUM_EXPORT
 int sodium_runtime_get_cpu_features(void);
 
 SODIUM_EXPORT
-int sodium_runtime_have_neon(void);
+int sodium_runtime_has_neon(void);
 
 SODIUM_EXPORT
-int sodium_runtime_have_sse2(void);
+int sodium_runtime_has_sse2(void);
 
 SODIUM_EXPORT
-int sodium_runtime_have_sse3(void);
+int sodium_runtime_has_sse3(void);
 
 #endif

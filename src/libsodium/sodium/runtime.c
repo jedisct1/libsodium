@@ -7,9 +7,9 @@
 
 typedef struct CPUFeatures_ {
     int initialized;
-    int have_neon;
-    int have_sse2;
-    int have_sse3;
+    int has_neon;
+    int has_sse2;
+    int has_sse3;
 } CPUFeatures;
 
 static CPUFeatures cpu_features;
@@ -21,20 +21,20 @@ static int
 _sodium_runtime_arm_cpu_features(CPUFeatures * const cpu_features)
 {
 #ifndef __arm__
-    cpu_features->have_neon = 0;
+    cpu_features->has_neon = 0;
     return -1;
 #else
 # ifdef __APPLE__
 #  ifdef __ARM_NEON__
-    cpu_features->have_neon = 1;
+    cpu_features->has_neon = 1;
 #  else
-    cpu_features->have_neon = 0;
+    cpu_features->has_neon = 0;
 #  endif
 # elif defined(HAVE_ANDROID_GETCPUFEATURES) && defined(ANDROID_CPU_ARM_FEATURE_NEON)
-    cpu_features->have_neon =
+    cpu_features->has_neon =
         (android_getCpuFeatures() & ANDROID_CPU_ARM_FEATURE_NEON) != 0x0;
 # else
-    cpu_features->have_neon = 0;
+    cpu_features->has_neon = 0;
 # endif
     return 0;
 #endif
@@ -66,8 +66,8 @@ _sodium_runtime_intel_cpu_features(CPUFeatures * const cpu_features)
         return -1;
     }
     _cpuid(cpu_info, 0x00000001);
-    cpu_features->have_sse2 = ((cpu_info[3] & CPUID_SSE2) != 0x0);
-    cpu_features->have_sse3 = ((cpu_info[2] & CPUIDECX_SSE3) != 0x0);
+    cpu_features->has_sse2 = ((cpu_info[3] & CPUID_SSE2) != 0x0);
+    cpu_features->has_sse3 = ((cpu_info[2] & CPUIDECX_SSE3) != 0x0);
 
     return 0;
 }
@@ -85,16 +85,16 @@ sodium_runtime_get_cpu_features(void)
 }
 
 int
-sodium_runtime_have_neon(void) {
-    return cpu_features.have_neon;
+sodium_runtime_has_neon(void) {
+    return cpu_features.has_neon;
 }
 
 int
-sodium_runtime_have_sse2(void) {
-    return cpu_features.have_sse2;
+sodium_runtime_has_sse2(void) {
+    return cpu_features.has_sse2;
 }
 
 int
-sodium_runtime_have_sse3(void) {
-    return cpu_features.have_sse3;
+sodium_runtime_has_sse3(void) {
+    return cpu_features.has_sse3;
 }
