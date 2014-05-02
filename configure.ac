@@ -253,20 +253,6 @@ AS_IF([test "x$EMSCRIPTEN" = "x"],[
 
 AC_CHECK_HEADERS([sys/mman.h])
 
-AC_MSG_CHECKING(for access to floating-point rounding mode)
-AC_COMPILE_IFELSE([AC_LANG_PROGRAM([[
-  #include <fenv.h>
-  #pragma STDC FENV_ACCESS ON
-]], [[
-  const int previous_rounding_mode = fegetround();
-  fesetround(FE_TONEAREST);
-  fesetround(previous_rounding_mode);
-]])],
-[AC_MSG_RESULT(yes)
- AC_DEFINE([HAVE_FENV_H], [1], [floating-point rounding mode is accessible])
-],
-[AC_MSG_RESULT(no)])
-
 dnl Checks for typedefs, structures, and compiler characteristics.
 
 AC_C_INLINE
