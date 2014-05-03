@@ -324,8 +324,11 @@ HAVE_CPUID_V=0
 AS_IF([test "$enable_asm" != "no"],[
   AC_MSG_CHECKING(for cpuid instruction)
   AC_COMPILE_IFELSE([AC_LANG_PROGRAM([[ ]], [[
-unsigned int a;
-__asm__ __volatile__("cpuid" : "=a" (a) : "a" (0U), "c" (0U));
+unsigned int cpu_info[4];
+__asm__ __volatile__ ("xchgl %%ebx, %k1; cpuid; xchgl %%ebx, %k1" :
+                      "=a" (cpu_info[0]), "=&r" (cpu_info[1]),
+                      "=c" (cpu_info[2]), "=d" (cpu_info[3]) :
+                      "0" (cpu_info_type), "2" (0U));
   ]])],
   [AC_MSG_RESULT(yes)
    AC_DEFINE([HAVE_CPUID], [1], [cpuid instruction is available])
