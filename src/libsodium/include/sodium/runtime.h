@@ -4,6 +4,10 @@
 
 #include "export.h"
 
+#ifdef __cplusplus
+extern "C" {
+#endif
+
 SODIUM_EXPORT
 int sodium_runtime_get_cpu_features(void);
 
@@ -15,5 +19,9 @@ int sodium_runtime_has_sse2(void);
 
 SODIUM_EXPORT
 int sodium_runtime_has_sse3(void);
+
+#ifdef __cplusplus
+}
+#endif
 
 #endif
