@@ -46,10 +46,19 @@ _cpuid(unsigned int cpu_info[4U], const unsigned int cpu_info_type)
 #ifdef _MSC_VER
     __cpuidex((int *) cpu_info, cpu_info_type, 0);
 #elif defined(HAVE_CPUID)
-    __asm__ __volatile__ ("cpuid" :
-                          "=a" (cpu_info[0]), "=b" (cpu_info[1]),
+# ifdef __x86_64__
+    __asm__ __volatile__ ("xchgq %%rbx, %q1; cpuid; xchgq %%rbx, %q1" :
+                          "=a" (cpu_info[0]), "=&r" (cpu_info[1]),
                           "=c" (cpu_info[2]), "=d" (cpu_info[3]) :
                           "a" (cpu_info_type), "c" (0U));
+# elif defined(__i386__)
+    __asm__ __volatile__ ("xchgl %%ebx, %k1; cpuid; xchgl %%ebx, %k1" :
+                          "=a" (cpu_info[0]), "=&r" (cpu_info[1]),
+                          "=c" (cpu_info[2]), "=d" (cpu_info[3]) :
+                          "0" (cpu_info_type), "2" (0U));
+# else
+   cpu_info[0] = cpu_info[1] = cpu_info[2] = cpu_info[3] = 0;
+# endif
 #else
     cpu_info[0] = cpu_info[1] = cpu_info[2] = cpu_info[3] = 0;
 #endif
