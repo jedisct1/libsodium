@@ -5,5 +5,5 @@ EXTRA_DIST = \
 	android-x86.sh \
 	android-mips.sh \
 	ios.sh \
-	msys-win32.sh \
-	msys-win64.sh
+	msys2-win32.sh \
+	msys2-win64.sh
