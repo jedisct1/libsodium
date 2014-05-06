@@ -172,6 +172,7 @@ sodium_mlock(void * const addr, const size_t len)
 int
 sodium_munlock(void * const addr, const size_t len)
 {
+    sodium_memzero(addr, len);
 #ifdef HAVE_MLOCK
     return munlock(addr, len);
 #elif defined(HAVE_VIRTUALLOCK)
