@@ -334,7 +334,6 @@ __asm__ __volatile__ ("xchgl %%ebx, %k1; cpuid; xchgl %%ebx, %k1" :
    AC_DEFINE([HAVE_CPUID], [1], [cpuid instruction is available])
    HAVE_CPUID_V=1],
   [AC_MSG_RESULT(no)])
-  AM_CONDITIONAL([HAVE_CPUID], [test $HAVE_CPUID_V = 1])
   ])
 AC_SUBST(HAVE_CPUID_V)
 
