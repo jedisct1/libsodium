@@ -21,6 +21,7 @@
 #include <stdint.h>
 #include <string.h>
 
+#include "crypto_pwhash_scryptxsalsa208sha256.h"
 #include "crypto_scrypt.h"
 #include "runtime.h"
 
@@ -215,7 +216,7 @@ escrypt_gensalt_r(uint32_t N_log2, uint32_t r, uint32_t p,
 }
 
 int
-crypto_scrypt(const uint8_t * passwd, size_t passwdlen,
+crypto_scrypt_compat(const uint8_t * passwd, size_t passwdlen,
     const uint8_t * salt, size_t saltlen, uint64_t N, uint32_t r, uint32_t p,
     uint8_t * buf, size_t buflen)
 {

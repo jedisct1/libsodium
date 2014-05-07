@@ -20,6 +20,7 @@
 #include <sodium/crypto_hash_sha512.h>
 #include <sodium/crypto_onetimeauth.h>
 #include <sodium/crypto_onetimeauth_poly1305.h>
+#include <sodium/crypto_pwhash_scryptxsalsa208sha256.h>
 #include <sodium/crypto_scalarmult.h>
 #include <sodium/crypto_scalarmult_curve25519.h>
 #include <sodium/crypto_secretbox.h>

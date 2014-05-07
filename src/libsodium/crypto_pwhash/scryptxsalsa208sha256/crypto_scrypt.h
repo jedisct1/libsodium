@@ -33,7 +33,7 @@
 #include <stdint.h>
 
 /**
- * crypto_scrypt(passwd, passwdlen, salt, saltlen, N, r, p, buf, buflen):
+ * crypto_scrypt_compat(passwd, passwdlen, salt, saltlen, N, r, p, buf, buflen):
  * Compute scrypt(passwd[0 .. passwdlen - 1], salt[0 .. saltlen - 1], N, r,
  * p, buflen) and write the result into buf.  The parameters r, p, and buflen
  * must satisfy r * p < 2^30 and buflen <= (2^32 - 1) * 32.  The parameter N
@@ -41,7 +41,7 @@
  *
  * Return 0 on success; or -1 on error.
  */
-extern int crypto_scrypt(const uint8_t * __passwd, size_t __passwdlen,
+extern int crypto_scrypt_compat(const uint8_t * __passwd, size_t __passwdlen,
     const uint8_t * __salt, size_t __saltlen,
     uint64_t __N, uint32_t __r, uint32_t __p,
     uint8_t * __buf, size_t __buflen);
