@@ -43,12 +43,6 @@ pickparams(const size_t memlimit, unsigned long long opslimit,
 }
 
 size_t
-crypto_pwhash_scryptxsalsa208sha256_bytes(void)
-{
-    return crypto_pwhash_scryptxsalsa208sha256_BYTES;
-}
-
-size_t
 crypto_pwhash_scryptxsalsa208sha256_saltbytes(void)
 {
     return crypto_pwhash_scryptxsalsa208sha256_SALTBYTES;
@@ -56,6 +50,7 @@ crypto_pwhash_scryptxsalsa208sha256_saltbytes(void)
 
 int
 crypto_pwhash_scryptxsalsa208sha256(unsigned char * const out,
+                                    unsigned long long outlen,
                                     const char * const passwd,
                                     unsigned long long passwdlen,
                                     const unsigned char * const salt,
@@ -78,5 +73,5 @@ crypto_pwhash_scryptxsalsa208sha256(unsigned char * const out,
                                 (const uint8_t *) salt,
                                 crypto_pwhash_scryptxsalsa208sha256_SALTBYTES,
                                 (uint64_t) (1) << N_log2, r, p,
-                                out, crypto_pwhash_scryptxsalsa208sha256_BYTES);
+                                out, outlen);
 }

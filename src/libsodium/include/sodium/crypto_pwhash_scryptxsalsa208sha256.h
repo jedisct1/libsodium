@@ -6,7 +6,6 @@
 
 #include "export.h"
 
-#define crypto_pwhash_scryptxsalsa208sha256_BYTES 64
 #define crypto_pwhash_scryptxsalsa208sha256_SALTBYTES 32
 
 #ifdef __cplusplus
@@ -17,13 +16,11 @@ extern "C" {
 #endif
 
 SODIUM_EXPORT
-size_t crypto_pwhash_scryptxsalsa208sha256_bytes(void);
-
-SODIUM_EXPORT
 size_t crypto_pwhash_scryptxsalsa208sha256_saltbytes(void);
 
 SODIUM_EXPORT
 int crypto_pwhash_scryptxsalsa208sha256(unsigned char * const out,
+                                        unsigned long long outlen,
                                         const char * const passwd,
                                         unsigned long long passwdlen,
                                         const unsigned char * const salt,
