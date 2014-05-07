@@ -61,7 +61,7 @@ crypto_pwhash_scryptxsalsa208sha256(unsigned char * const out,
     uint32_t p;
     uint32_t r;
 
-    if (passwdlen > SIZE_MAX) {
+    if (passwdlen > SIZE_MAX || outlen > SIZE_MAX) {
         errno = EFBIG;
         return -1;
     }
@@ -73,5 +73,5 @@ crypto_pwhash_scryptxsalsa208sha256(unsigned char * const out,
                                 (const uint8_t *) salt,
                                 crypto_pwhash_scryptxsalsa208sha256_SALTBYTES,
                                 (uint64_t) (1) << N_log2, r, p,
-                                out, outlen);
+                                out, (size_t) outlen);
 }
