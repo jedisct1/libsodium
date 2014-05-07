@@ -24,6 +24,7 @@
 #include "crypto_pwhash_scryptxsalsa208sha256.h"
 #include "crypto_scrypt.h"
 #include "runtime.h"
+#include "utils.h"
 
 #define BYTES2CHARS(bytes) \
         ((((bytes) * 8) + 5) / 6)
@@ -170,8 +171,7 @@ escrypt_r(escrypt_local_t * local, const uint8_t * passwd, size_t passwdlen,
     *dst++ = '$';
 
     dst = encode64(dst, buflen - (dst - buf), hash, sizeof(hash));
-    /* Could zeroize hash[] here, but escrypt_kdf() doesn't zeroize its
-     * memory allocations yet anyway. */
+    sodium_memzero(hash, sizeof hash);
     if (!dst || dst >= buf + buflen) { /* Can't happen */
         return NULL;
     }
