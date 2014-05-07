@@ -29,8 +29,7 @@
 #define BYTES2CHARS(bytes) \
         ((((bytes) * 8) + 5) / 6)
 
-#define HASH_SIZE 32 /* bytes */
-#define HASH_LEN BYTES2CHARS(HASH_SIZE) /* base-64 chars */
+#define HASH_LEN BYTES2CHARS(crypto_pwhash_scryptxsalsa208sha256_STRHASHBYTES) /* base-64 chars */
 
 static const char * const itoa64 =
     "./0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz";
@@ -113,7 +112,7 @@ uint8_t *
 escrypt_r(escrypt_local_t * local, const uint8_t * passwd, size_t passwdlen,
           const uint8_t * setting, uint8_t * buf, size_t buflen)
 {
-    uint8_t        hash[HASH_SIZE];
+    uint8_t        hash[crypto_pwhash_scryptxsalsa208sha256_STRHASHBYTES];
     escrypt_kdf_t  escrypt_kdf;
     const uint8_t *src;
     const uint8_t *salt;
@@ -186,7 +185,8 @@ escrypt_gensalt_r(uint32_t N_log2, uint32_t r, uint32_t p,
                   uint8_t * buf, size_t buflen)
 {
     uint8_t *dst;
-    size_t   prefixlen = 3 + 1 + 5 + 5;
+    size_t   prefixlen =
+        (sizeof "$7$" - 1U) + (1U /* N_log2 */) + (5U /* r */) + (5U /* p */);
     size_t   saltlen = BYTES2CHARS(srclen);
     size_t   need;
 
