@@ -26,11 +26,6 @@
 #include "runtime.h"
 #include "utils.h"
 
-#define BYTES2CHARS(bytes) \
-        ((((bytes) * 8) + 5) / 6)
-
-#define HASH_LEN BYTES2CHARS(crypto_pwhash_scryptxsalsa208sha256_STRHASHBYTES) /* base-64 chars */
-
 static const char * const itoa64 =
     "./0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz";
 
@@ -153,7 +148,8 @@ escrypt_r(escrypt_local_t * local, const uint8_t * passwd, size_t passwdlen,
     } else {
         saltlen = strlen((char *)salt);
     }
-    need = prefixlen + saltlen + 1 + HASH_LEN + 1;
+    need = prefixlen + saltlen + 1 +
+        crypto_pwhash_scryptxsalsa208sha256_STRHASHBYTES_ENCODED + 1;
     if (need > buflen || need < saltlen) {
         return NULL;
     }

@@ -8,7 +8,6 @@
 #include "crypto_scrypt.h"
 #include "randombytes.h"
 
-#define BYTES2CHARS(bytes) ((((bytes) * 8) + 5) / 6)
 #define SETTING_SIZE(saltbytes) \
     (sizeof "$7$" - 1U) + \
     (1U /* N_log2 */) + (5U /* r */) + (5U /* p */) + BYTES2CHARS(saltbytes)
