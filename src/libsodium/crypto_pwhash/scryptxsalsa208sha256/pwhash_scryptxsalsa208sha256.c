@@ -3,10 +3,12 @@
 #include <limits.h>
 #include <stddef.h>
 #include <stdint.h>
+#include <string.h>
 
 #include "crypto_pwhash_scryptxsalsa208sha256.h"
 #include "crypto_scrypt.h"
 #include "randombytes.h"
+#include "utils.h"
 
 #define SETTING_SIZE(saltbytes) \
     (sizeof "$7$" - 1U) + \
@@ -88,7 +90,7 @@ crypto_pwhash_scryptxsalsa208sha256(unsigned char * const out,
 }
 
 int
-crypto_pwhash_scryptxsalsa208sha256_str(char * const out,
+crypto_pwhash_scryptxsalsa208sha256_str(char out[crypto_pwhash_scryptxsalsa208sha256_STRBYTES],
                                         const char * const passwd,
                                         unsigned long long passwdlen,
                                         size_t memlimit,
@@ -121,6 +123,7 @@ crypto_pwhash_scryptxsalsa208sha256_str(char * const out,
     if (escrypt_r(&escrypt_local, (const uint8_t *) passwd, (size_t) passwdlen,
                   (const uint8_t *) setting, (uint8_t *) out,
                   crypto_pwhash_scryptxsalsa208sha256_STRBYTES) == NULL) {
+        escrypt_free_local(&escrypt_local);
         errno = EINVAL;
         return -1;
     }
@@ -135,4 +138,33 @@ crypto_pwhash_scryptxsalsa208sha256_str(char * const out,
              == crypto_pwhash_scryptxsalsa208sha256_STRBYTES ? 1 : -1]);
 
     return 0;
+}
+
+int
+crypto_pwhash_scryptxsalsa208sha256_str_verify(const char str[crypto_pwhash_scryptxsalsa208sha256_STRBYTES],
+                                               const char * const passwd,
+                                               unsigned long long passwdlen)
+{
+    char            wanted[crypto_pwhash_scryptxsalsa208sha256_STRBYTES];
+    escrypt_local_t escrypt_local;
+    int             ret = -1;
+
+    if (memchr(str, 0, crypto_pwhash_scryptxsalsa208sha256_STRBYTES) !=
+        &str[crypto_pwhash_scryptxsalsa208sha256_STRBYTES - 1U]) {
+        return -1;
+    }
+    if (escrypt_init_local(&escrypt_local) != 0) {
+        return -1;
+    }
+    if (escrypt_r(&escrypt_local, (const uint8_t *) passwd, (size_t) passwdlen,
+                  (const uint8_t *) str, (uint8_t *) wanted,
+                  sizeof wanted) == NULL) {
+        escrypt_free_local(&escrypt_local);
+        return -1;
+    }
+    escrypt_free_local(&escrypt_local);
+    ret = sodium_memcmp(wanted, str, sizeof wanted);
+    sodium_memzero(wanted, sizeof wanted);
+
+    return ret;
 }
