@@ -255,6 +255,67 @@ This hash function provides:
 `crypto_generichash` is currently being implemented using
 [Blake2](https://blake2.net/).
 
+## crypto_pwhash
+
+High-level functions for password hashing are not defined yet: they will
+eventually be wrappers for the winning function of the ongoing
+[Password Hashing Competition](https://password-hashing.net/).
+
+Meanwhile, the [scrypt](http://www.tarsnap.com/scrypt.html) function is
+available through explicitly-named functions, and will remain available
+in the library even after the PHC.
+
+    int crypto_pwhash_scryptxsalsa208sha256(unsigned char *out,
+                                            unsigned long long outlen,
+                                            const char *passwd,
+                                            unsigned long long passwdlen,
+                                            const unsigned char *salt,
+                                            size_t memlimit,
+                                            unsigned long long opslimit);
+
+This function derives `outlen` bytes from a password `passwd` and a
+salt `salt` that has to be `crypto_pwhash_scryptxsalsa208sha256_SALTBYTES`
+bytes long.
+
+The function will use at most `memlimit` bytes of memory and `opslimit`
+is the maximum number of iterations to perform. Making the function
+memory-hard and CPU intensive by increasing these parameters might increase
+security.
+
+Although password storage was not the primary goal of the scrypt
+function, it can still be used for this purpose:
+
+    int crypto_pwhash_scryptxsalsa208sha256_str
+        (char out[crypto_pwhash_scryptxsalsa208sha256_STRBYTES],
+         const char *passwd,
+         unsigned long long passwdlen,
+         size_t memlimit,
+         unsigned long long opslimit);
+
+This function returns a `crypto_pwhash_scryptxsalsa208sha256_STRBYTES`
+bytes C string (the length includes the final `\0`) suitable for storage.
+The string is guaranteed to only include ASCII characters.
+
+The function will use at most `memlimit` bytes of memory and `opslimit`
+is the maximum number of iterations to perform. These parameters are
+included in the output string, and do not need to be stored separately.
+
+The function automatically generates a random salt, which is also
+included in the output string.
+
+    int crypto_pwhash_scryptxsalsa208sha256_str_verify
+        (const char str[crypto_pwhash_scryptxsalsa208sha256_STRBYTES],
+         const char *passwd,
+         unsigned long long passwdlen);
+
+This function verifies that hashing the plaintext password `passwd`
+results in the stored hash value included in `str` when using the same
+parameters.
+
+`0` is returned if the passwords are matching, `-1` is they are not.
+The plaintext password should be immediately zeroed out from memory
+after this function returns, using `sodium_memzero()`.
+
 ## Constants available as functions
 
 In addition to constants for key sizes, output sizes and block sizes,
