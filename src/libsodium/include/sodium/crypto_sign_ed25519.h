@@ -4,7 +4,7 @@
 #include <stddef.h>
 #include "export.h"
 
-#define crypto_sign_ed25519_SECRETKEYBYTES 64U
+#define crypto_sign_ed25519_SECRETKEYBYTES (32U + 32U)
 #define crypto_sign_ed25519_PUBLICKEYBYTES 32U
 #define crypto_sign_ed25519_SEEDBYTES 32U
 #define crypto_sign_ed25519_BYTES 64U

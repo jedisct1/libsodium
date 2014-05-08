@@ -4,7 +4,7 @@
 #include <stddef.h>
 #include "export.h"
 
-#define crypto_sign_edwards25519sha512batch_SECRETKEYBYTES 64U
+#define crypto_sign_edwards25519sha512batch_SECRETKEYBYTES (32U + 32U)
 #define crypto_sign_edwards25519sha512batch_PUBLICKEYBYTES 32U
 #define crypto_sign_edwards25519sha512batch_BYTES 64U
 
