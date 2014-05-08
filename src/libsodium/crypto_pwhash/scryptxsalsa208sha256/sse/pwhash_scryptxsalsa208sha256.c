@@ -334,6 +334,10 @@ escrypt_kdf_sse(escrypt_local_t * local,
 		errno = EINVAL;
 		return -1;
 	}
+	if (r == 0 || p == 0) {
+		errno = EINVAL;
+		return -1;
+	}
 	if ((r > SIZE_MAX / 128 / p) ||
 #if SIZE_MAX / 256 <= UINT32_MAX
 	    (r > SIZE_MAX / 256) ||
