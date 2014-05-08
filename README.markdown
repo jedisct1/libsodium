@@ -255,7 +255,7 @@ This hash function provides:
 `crypto_generichash` is currently being implemented using
 [Blake2](https://blake2.net/).
 
-## crypto_pwhash
+### crypto_pwhash (scrypt)
 
 High-level functions for password hashing are not defined yet: they will
 eventually be wrappers for the winning function of the ongoing
