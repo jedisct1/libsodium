@@ -327,8 +327,9 @@ results in the stored hash value included in `str` when using the same
 parameters.
 
 `0` is returned if the passwords are matching, `-1` is they are not.
-The plaintext password should be immediately zeroed out from memory
-after this function returns, using `sodium_memzero()`.
+The plaintext password should be locked in memory using
+`sodium_mlock()` and immediately zeroed out and unlocked after this
+function returns, using `sodium_munlock()`.
 
 ## Constants available as functions
 
