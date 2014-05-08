@@ -29,6 +29,7 @@ EXTRA_DIST = \
 	onetimeauth.exp \
 	onetimeauth2.exp \
 	onetimeauth7.exp \
+	pwhash.exp \
 	scalarmult.exp \
 	scalarmult2.exp \
 	scalarmult5.exp \
@@ -82,6 +83,7 @@ DISTCLEANFILES = \
 	onetimeauth.res \
 	onetimeauth2.res \
 	onetimeauth7.res \
+	pwhash.res \
 	scalarmult.res \
 	scalarmult2.res \
 	scalarmult5.res \
@@ -142,6 +144,7 @@ TESTS_TARGETS = \
 	onetimeauth \
 	onetimeauth2 \
 	onetimeauth7 \
+	pwhash \
 	randombytes \
 	scalarmult \
 	scalarmult2 \
@@ -252,6 +255,9 @@ onetimeauth2_LDADD        = $(TESTS_LDADD)
 
 onetimeauth7_SOURCE       = cmptest.h onetimeauth7.c
 onetimeauth7_LDADD        = $(TESTS_LDADD)
+
+pwhash_SOURCE             = cmptest.h pwhash.c
+pwhash_LDADD              = $(TESTS_LDADD)
 
 randombytes_SOURCE        = randombytes.c
 randombytes_LDADD         = $(TESTS_LDADD)

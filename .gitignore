@@ -79,6 +79,7 @@ test/default/hash3
 test/default/onetimeauth
 test/default/onetimeauth2
 test/default/onetimeauth7
+test/default/pwhash
 test/default/randombytes
 test/default/scalarmult
 test/default/scalarmult2
