@@ -34,9 +34,10 @@ crypto_box_easy(unsigned char *c, const unsigned char *m,
         return -1;
     }
     memset(m_boxed, 0, crypto_box_ZEROBYTES);
+    sodium_mlock(m_boxed, m_boxed_len);
     memcpy(m_boxed + crypto_box_ZEROBYTES, m, mlen);
     rc = crypto_box(c_boxed, m_boxed, m_boxed_len, n, pk, sk);
-    sodium_memzero(m_boxed, m_boxed_len);
+    sodium_munlock(m_boxed, m_boxed_len);
     free(m_boxed);
     if (rc != 0) {
         free(c_boxed);
@@ -76,14 +77,17 @@ crypto_box_open_easy(unsigned char *m, const unsigned char *c,
         free(c_boxed);
         return -1;
     }
+    sodium_mlock(m_boxed, m_boxed_len);
     rc = crypto_box_open(m_boxed, c_boxed,
                          (unsigned long long) c_boxed_len, n, pk, sk);
     free(c_boxed);
     if (rc != 0) {
+        sodium_munlock(m_boxed, m_boxed_len);
         free(m_boxed);
         return -1;
     }
     memcpy(m, m_boxed + crypto_box_ZEROBYTES, clen - crypto_box_MACBYTES);
+    sodium_munlock(m_boxed, m_boxed_len);
     free(m_boxed);
 
     return 0;
