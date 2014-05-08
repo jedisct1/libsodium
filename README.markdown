@@ -147,7 +147,7 @@ In addition, Sodium provides a function to securely wipe a memory
 region:
 
     void     sodium_memzero(void * const pnt, const size_t size);
-    
+
 Warning: if a region has been allocated on the heap, you still have
 to make sure that it can't get swapped to disk, possibly using
 `mlock(2)`.
@@ -168,11 +168,25 @@ hexadecimal string:
     char *   sodium_bin2hex(char * const hex, const size_t hexlen,
                             const unsigned char *bin, const size_t binlen);
 
+Sensitive data should not be swapped out to disk, especially if swap
+partitions are not encrypted. Libsodium provides the `sodium_mlock()`
+function to lock pages in memory before writing sensitive content to
+them:
+
+    int      sodium_mlock(void *addr, size_t len);
+
+
+Once done with these pages, they can be unlocked with
+`sodium_munlock()`. This function will zero the data before unlocking
+the pages.
+
+    int      sodium_munlock(void * addr, size_t len);
+
 ## Easy interfaces to `crypto_box` and `crypto_secretbox`
 
 `crypto_box` and `crypto_secretbox` require prepending
 `crypto_box_ZEROBYTES` or `crypto_secretbox_ZEROBYTE` extra bytes to the
-message, and making sure that these are all zeros. 
+message, and making sure that these are all zeros.
 A similar padding is required to decrypt the ciphertext. And this
 padding is actually larger than the MAC size,
 `crypto_box_MACBYTES`/`crypto_secretbox_MACBYTES`.
