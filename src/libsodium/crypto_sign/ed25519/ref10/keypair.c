@@ -1,3 +1,6 @@
+
+#include <string.h>
+
 #include "api.h"
 #include "randombytes.h"
 #include "crypto_hash_sha512.h"
@@ -7,7 +10,6 @@ int crypto_sign_seed_keypair(unsigned char *pk, unsigned char *sk,
                              const unsigned char *seed)
 {
     ge_p3 A;
-    int i;
 
     crypto_hash_sha512(sk,seed,32);
     sk[0] &= 248;
@@ -17,8 +19,8 @@ int crypto_sign_seed_keypair(unsigned char *pk, unsigned char *sk,
     ge_scalarmult_base(&A,sk);
     ge_p3_tobytes(pk,&A);
 
-    for (i = 0;i < 32;++i) sk[i] = seed[i];
-    for (i = 0;i < 32;++i) sk[32 + i] = pk[i];
+    memmove(sk, seed, 32);
+    memmove(sk + 32, pk, 32);
     return 0;
 }
 
