@@ -93,6 +93,7 @@ test/default/secretbox8
 test/default/secretbox_easy
 test/default/secretbox_easy2
 test/default/shorthash
+test/default/sign
 test/default/sodium_core
 test/default/sodium_utils
 test/default/sodium_version
