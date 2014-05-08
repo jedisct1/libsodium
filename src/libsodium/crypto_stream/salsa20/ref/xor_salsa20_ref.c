@@ -6,6 +6,7 @@ Public domain.
 
 #include "api.h"
 #include "crypto_core_salsa20.h"
+#include "utils.h"
 
 #ifndef HAVE_AMD64_ASM
 
@@ -54,6 +55,9 @@ int crypto_stream_xor(
     crypto_core_salsa20(block,in,kcopy,sigma);
     for (i = 0;i < mlen;++i) c[i] = m[i] ^ block[i];
   }
+  sodium_memzero(block, sizeof block);
+  sodium_memzero(kcopy, sizeof kcopy);
+
   return 0;
 }
 
