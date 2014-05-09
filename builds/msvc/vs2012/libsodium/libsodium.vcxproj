@@ -211,6 +211,12 @@
     <ClCompile Include="..\..\..\..\src\libsodium\crypto_onetimeauth\poly1305\onetimeauth_poly1305.c" />
     <ClCompile Include="..\..\..\..\src\libsodium\crypto_onetimeauth\poly1305\onetimeauth_poly1305_api.c" />
     <ClCompile Include="..\..\..\..\src\libsodium\crypto_onetimeauth\poly1305\onetimeauth_poly1305_try.c" />
+    <ClCompile Include="..\..\..\..\src\libsodium\crypto_pwhash\scryptxsalsa208sha256\crypto_scrypt-common.c" />
+    <ClCompile Include="..\..\..\..\src\libsodium\crypto_pwhash\scryptxsalsa208sha256\nosse\pwhash_scryptxsalsa208sha256_nosse.c" />
+    <ClCompile Include="..\..\..\..\src\libsodium\crypto_pwhash\scryptxsalsa208sha256\pbkdf2-sha256.c" />
+    <ClCompile Include="..\..\..\..\src\libsodium\crypto_pwhash\scryptxsalsa208sha256\pwhash_scryptxsalsa208sha256.c" />
+    <ClCompile Include="..\..\..\..\src\libsodium\crypto_pwhash\scryptxsalsa208sha256\scrypt_platform.c" />
+    <ClCompile Include="..\..\..\..\src\libsodium\crypto_pwhash\scryptxsalsa208sha256\sse\pwhash_scryptxsalsa208sha256_sse.c" />
     <ClCompile Include="..\..\..\..\src\libsodium\crypto_scalarmult\crypto_scalarmult.c" />
     <ClCompile Include="..\..\..\..\src\libsodium\crypto_scalarmult\curve25519\ref\base_curve25519_ref.c" />
     <ClCompile Include="..\..\..\..\src\libsodium\crypto_scalarmult\curve25519\ref\smult_curve25519_ref.c" />
@@ -295,11 +301,14 @@
     <ClCompile Include="..\..\..\..\src\libsodium\crypto_verify\16\verify_16_api.c" />
     <ClCompile Include="..\..\..\..\src\libsodium\crypto_verify\32\ref\verify_32.c" />
     <ClCompile Include="..\..\..\..\src\libsodium\crypto_verify\32\verify_32_api.c" />
+    <ClCompile Include="..\..\..\..\src\libsodium\crypto_verify\64\ref\verify_64.c" />
+    <ClCompile Include="..\..\..\..\src\libsodium\crypto_verify\64\verify_64_api.c" />
     <ClCompile Include="..\..\..\..\src\libsodium\randombytes\randombytes.c" />
     <ClCompile Include="..\..\..\..\src\libsodium\randombytes\salsa20\randombytes_salsa20_random.c" />
     <ClCompile Include="..\..\..\..\src\libsodium\randombytes\sysrandom\randombytes_sysrandom.c" />
     <ClCompile Include="..\..\..\..\src\libsodium\sodium\compat.c" />
     <ClCompile Include="..\..\..\..\src\libsodium\sodium\core.c" />
+    <ClCompile Include="..\..\..\..\src\libsodium\sodium\runtime.c" />
     <ClCompile Include="..\..\..\..\src\libsodium\sodium\utils.c" />
     <ClCompile Include="..\..\..\..\src\libsodium\sodium\version.c" />
   </ItemGroup>
