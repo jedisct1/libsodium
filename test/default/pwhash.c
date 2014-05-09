@@ -13,7 +13,7 @@ int main(void)
     char           str_out[crypto_pwhash_scryptxsalsa208sha256_STRBYTES];
     unsigned char  out[OUT_LEN];
     char           out_hex[OUT_LEN * 2 + 1];
-    const char    *salt = "0a2c4e63%2AxC+E7";
+    const char    *salt = "[<~A 32-bytes salt for scrypt~>]";
     const char    *passwd = "Correct Horse Battery Staple";
 
     if (crypto_pwhash_scryptxsalsa208sha256(out, sizeof out,
