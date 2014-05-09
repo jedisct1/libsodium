@@ -28,7 +28,7 @@
  * online backup system.
  */
 
-#ifdef HAVE_EMMINTRIN_H
+#if defined(HAVE_EMMINTRIN_H) || defined(_MSC_VER)
 #pragma GCC target("sse2")
 #include <emmintrin.h>
 #if defined(__XOP__) && defined(DISABLED)
