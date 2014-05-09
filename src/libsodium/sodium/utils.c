@@ -28,6 +28,8 @@ sodium_memzero(void * const pnt, const size_t len)
     if (memset_s(pnt, (rsize_t) len, 0, (rsize_t) len) != 0) {
         abort();
     }
+#elif defined(HAVE_EXPLICIT_BZERO)
+    explicit_bzero(pnt, len);
 #else
     volatile unsigned char *pnt_ = (volatile unsigned char *) pnt;
     size_t                     i = (size_t) 0U;

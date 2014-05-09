@@ -355,7 +355,7 @@ AS_IF([test "x$EMSCRIPTEN" = "x"],[
   AC_CHECK_FUNCS([memset_s])
 ])
 AC_CHECK_FUNCS([mlock VirtualLock])
-AC_CHECK_FUNCS([SecureZeroMemory posix_memalign])
+AC_CHECK_FUNCS([SecureZeroMemory explicit_bzero posix_memalign])
 
 AC_SUBST([LIBTOOL_EXTRA_FLAGS])
 
