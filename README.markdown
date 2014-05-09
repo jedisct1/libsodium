@@ -351,7 +351,7 @@ them from different languages is easier.
 * .NET: [libsodium-net](https://github.com/adamcaudill/libsodium-net)
 * NodeJS: [node-sodium](https://github.com/paixaop/node-sodium)
 * Objective C: [NAChloride](https://github.com/gabriel/NAChloride)
-* Ocaml: [ocaml-sodium](https://github.com/dsheets/ocaml-sodium)
+* OCaml: [ocaml-sodium](https://github.com/dsheets/ocaml-sodium)
 * Perl: [Crypto-Sodium](https://github.com/mgregoro/Crypt-Sodium)
 * Pharo/Squeak: [Crypto-NaCl](http://www.eighty-twenty.org/index.cgi/tech/smalltalk/nacl-for-squeak-and-pharo-20130601.html)
 * PHP: [PHP-Sodium](https://github.com/alethia7/php-sodium)
