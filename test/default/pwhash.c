@@ -28,7 +28,6 @@ int main(void)
                                                 MEMLIMIT, OPSLIMIT) != 0) {
         printf("pwhash_str failure\n");
     }
-    puts(str_out);
     if (crypto_pwhash_scryptxsalsa208sha256_str_verify(str_out, passwd,
                                                        strlen(passwd)) != 0) {
         printf("pwhash_str_verify failure\n");
