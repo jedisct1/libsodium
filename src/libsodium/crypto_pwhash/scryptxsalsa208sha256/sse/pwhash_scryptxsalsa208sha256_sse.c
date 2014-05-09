@@ -29,7 +29,9 @@
  */
 
 #if defined(HAVE_EMMINTRIN_H) || defined(_MSC_VER)
-#pragma GCC target("sse2")
+# if __GNUC__
+#  pragma GCC target("sse2")
+# endif
 #include <emmintrin.h>
 #if defined(__XOP__) && defined(DISABLED)
 #include <x86intrin.h>
