@@ -153,8 +153,12 @@ escrypt_r(escrypt_local_t * local, const uint8_t * passwd, size_t passwdlen,
     if (need > buflen || need < saltlen) {
         return NULL;
     }
+#ifdef HAVE_EMMINTRIN_H
     escrypt_kdf =
         sodium_runtime_has_sse2() ? escrypt_kdf_sse : escrypt_kdf_nosse;
+#else
+    escrypt_kdf = escrypt_kdf_nosse;
+#endif
     if (escrypt_kdf(local, passwd, passwdlen, salt, saltlen,
                     N, r, p, hash, sizeof(hash))) {
         return NULL;
@@ -230,9 +234,12 @@ crypto_scrypt_compat(const uint8_t * passwd, size_t passwdlen,
     if (escrypt_init_local(&local)) {
         return -1;
     }
+#ifdef HAVE_EMMINTRIN_H
     escrypt_kdf =
         sodium_runtime_has_sse2() ? escrypt_kdf_sse : escrypt_kdf_nosse;
-
+#else
+    escrypt_kdf = escrypt_kdf_nosse;
+#endif
     retval = escrypt_kdf(&local,
                          passwd, passwdlen, salt, saltlen,
                          N, r, p, buf, buflen);
