@@ -1,4 +1,28 @@
 
+* Version 0.5.0
+ - sodium_mlock()/sodium_munlock() have been introduced to lock pages
+in memory before storing sensitive data, and to zero them before
+unlocking them.
+ - High-level wrappers for crypto_box and crypto_secretbox
+(crypto_box_easy and crypto_secretbox_easy) can be used to avoid
+dealing with the specific memory layout regular functions depend on.
+ - crypto_pwhash_scryptxsalsa208sha256* functions have been added
+to derive a key from a password, and for password storage.
+ - Salsa20 and ed25519 implementations now support overlapping
+inputs/keys/outputs (changes imported from supercop-20140505).
+ - New build scripts for Visual Studio, Emscripten, different Android
+architectures and msys2 are available.
+ - The poly1305-53 implementation has been replaced with Floodyberry's
+poly1305-donna32 and poly1305-donna64 implementations.
+ - sodium_hex2bin() has been added to complement sodium_bin2hex().
+ - On OpenBSD and Bitrig, arc4random() is used instead of reading
+/dev/urandom.
+ - crypto_auth_hmac_sha512() has been implemented.
+ - sha256 and sha512 now have a streaming interface.
+ - hmacsha256, hmacsha512 and hmacsha512256 now support keys of
+arbitrary length, and have a streaming interface.
+ - crypto_verify_64() has been implemented.
+
 * Version 0.4.5
  - Restore compatibility with OSX <= 10.6
 
