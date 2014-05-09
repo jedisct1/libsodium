@@ -24,7 +24,7 @@ sodium_memzero(void * const pnt, const size_t len)
 {
 #ifdef HAVE_SECUREZEROMEMORY
     SecureZeroMemory(pnt, len);
-#elif defined(HAVE_MEMSET_S) && defined(__STDC_VERSION__) && __STDC_VERSION__ >= 201000L
+#elif defined(HAVE_MEMSET_S)
     if (memset_s(pnt, (rsize_t) len, 0, (rsize_t) len) != 0) {
         abort();
     }
