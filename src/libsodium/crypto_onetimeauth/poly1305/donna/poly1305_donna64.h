@@ -34,14 +34,14 @@ typedef struct poly1305_state_internal_t {
 static unsigned long long
 U8TO64(const unsigned char *p) {
         return
-                (((unsigned long long)(p[0] & 0xff)      ) |
-             ((unsigned long long)(p[1] & 0xff) <<  8) |
-         ((unsigned long long)(p[2] & 0xff) << 16) |
-         ((unsigned long long)(p[3] & 0xff) << 24) |
-                 ((unsigned long long)(p[4] & 0xff) << 32) |
-                 ((unsigned long long)(p[5] & 0xff) << 40) |
-                 ((unsigned long long)(p[6] & 0xff) << 48) |
-                 ((unsigned long long)(p[7] & 0xff) << 56));
+           (((unsigned long long)(p[0] & 0xff)      ) |
+            ((unsigned long long)(p[1] & 0xff) <<  8) |
+            ((unsigned long long)(p[2] & 0xff) << 16) |
+            ((unsigned long long)(p[3] & 0xff) << 24) |
+            ((unsigned long long)(p[4] & 0xff) << 32) |
+            ((unsigned long long)(p[5] & 0xff) << 40) |
+            ((unsigned long long)(p[6] & 0xff) << 48) |
+            ((unsigned long long)(p[7] & 0xff) << 56));
 }
 
 /* store a 64 bit unsigned integer as eight 8 bit unsigned integers in little endian */
