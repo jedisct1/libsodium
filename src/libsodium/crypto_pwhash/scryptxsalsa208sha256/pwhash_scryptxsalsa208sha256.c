@@ -74,6 +74,7 @@ crypto_pwhash_scryptxsalsa208sha256(unsigned char * const out,
     uint32_t p;
     uint32_t r;
 
+    memset(out, 0, outlen);
     if (passwdlen > SIZE_MAX || outlen > SIZE_MAX) {
         errno = EFBIG;
         return -1;
@@ -103,6 +104,7 @@ crypto_pwhash_scryptxsalsa208sha256_str(char out[crypto_pwhash_scryptxsalsa208sh
     uint32_t        p;
     uint32_t        r;
 
+    memset(out, 0, crypto_pwhash_scryptxsalsa208sha256_STRBYTES);
     if (passwdlen > SIZE_MAX) {
         errno = EFBIG;
         return -1;
