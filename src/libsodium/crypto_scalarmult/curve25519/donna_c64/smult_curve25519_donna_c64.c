@@ -189,14 +189,44 @@ fsquare_times(felem output, const felem in, limb count) {
   output[4] = r4;
 }
 
+#ifndef CPU_ALIGNED_ACCESS_REQUIRED
+# define U8TO64(p)    (*((const uint64_t *) (p)))
+# define U64TO8(p, v) (*((uint64_t *) (p)) = (v))
+#else
+static force_inline uint64_t
+U8TO64(const unsigned char *p) {
+    return
+        (((uint64_t)(p[0] & 0xff)      ) |
+         ((uint64_t)(p[1] & 0xff) <<  8) |
+         ((uint64_t)(p[2] & 0xff) << 16) |
+         ((uint64_t)(p[3] & 0xff) << 24) |
+         ((uint64_t)(p[4] & 0xff) << 32) |
+         ((uint64_t)(p[5] & 0xff) << 40) |
+         ((uint64_t)(p[6] & 0xff) << 48) |
+         ((uint64_t)(p[7] & 0xff) << 56));
+}
+
+static force_inline void
+U64TO8(unsigned char *p, uint64_t v) {
+    p[0] = (v      ) & 0xff;
+    p[1] = (v >>  8) & 0xff;
+    p[2] = (v >> 16) & 0xff;
+    p[3] = (v >> 24) & 0xff;
+    p[4] = (v >> 32) & 0xff;
+    p[5] = (v >> 40) & 0xff;
+    p[6] = (v >> 48) & 0xff;
+    p[7] = (v >> 56) & 0xff;
+}
+#endif
+
 /* Take a little-endian, 32-byte number and expand it into polynomial form */
 static void
 fexpand(limb *output, const u8 *in) {
-  output[0] = *((const uint64_t *)(in)) & 0x7ffffffffffff;
-  output[1] = (*((const uint64_t *)(in+6)) >> 3) & 0x7ffffffffffff;
-  output[2] = (*((const uint64_t *)(in+12)) >> 6) & 0x7ffffffffffff;
-  output[3] = (*((const uint64_t *)(in+19)) >> 1) & 0x7ffffffffffff;
-  output[4] = (*((const uint64_t *)(in+25)) >> 4) & 0xfffffffffffff;
+  output[0] = U8TO64(in) & 0x7ffffffffffff;
+  output[1] = (U8TO64(in+6) >> 3) & 0x7ffffffffffff;
+  output[2] = (U8TO64(in+12) >> 6) & 0x7ffffffffffff;
+  output[3] = (U8TO64(in+19) >> 1) & 0x7ffffffffffff;
+  output[4] = (U8TO64(in+25) >> 4) & 0xfffffffffffff;
 }
 
 /* Take a fully reduced polynomial form number and contract it into a
@@ -251,10 +281,10 @@ fcontract(u8 *output, const felem input) {
   t[4] += t[3] >> 51; t[3] &= 0x7ffffffffffff;
   t[4] &= 0x7ffffffffffff;
 
-  *((uint64_t *)(output)) = t[0] | (t[1] << 51);
-  *((uint64_t *)(output+8)) = (t[1] >> 13) | (t[2] << 38);
-  *((uint64_t *)(output+16)) = (t[2] >> 26) | (t[3] << 25);
-  *((uint64_t *)(output+24)) = (t[3] >> 39) | (t[4] << 12);
+  U64TO8(output, t[0] | (t[1] << 51));
+  U64TO8(output + 8, (t[1] >> 13) | (t[2] << 38));
+  U64TO8(output + 16, (t[2] >> 26) | (t[3] << 25));
+  U64TO8(output + 24, (t[3] >> 39) | (t[4] << 12));
 }
 
 /* Input: Q, Q', Q-Q'
