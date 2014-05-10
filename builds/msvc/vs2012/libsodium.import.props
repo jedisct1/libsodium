@@ -15,57 +15,26 @@
 
   <ItemDefinitionGroup>
     <ClCompile>
-      <AdditionalIncludeDirectories>$(ProjectDir)..\..\..\..\..\libsodium\src\libsodium\include;$(ProjectDir)..\..\..\..\..\libsodium\src\libsodium\include\sodium\;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SourceRoot)libsodium\src\libsodium\include;$(SourceRoot)libsodium\src\libsodium\include\sodium\;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <PreprocessorDefinitions Condition="'$(Linkage-libsodium)' == 'static' Or '$(Linkage-libsodium)' == 'ltcg'">SODIUM_STATIC;%(PreprocessorDefinitions)</PreprocessorDefinitions>
     </ClCompile>
-  </ItemDefinitionGroup>
-  
-  <ItemDefinitionGroup Condition="'$(Linkage-libsodium)' == 'static' Or '$(Linkage-libsodium)' == 'ltcg'">
-    <ClCompile>
-      <PreprocessorDefinitions>SODIUM_STATIC;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-    </ClCompile>
-  </ItemDefinitionGroup>
-
-    <ItemDefinitionGroup Condition="'$(Linkage-libsodium)' == 'dynamic'">
-    <Link Condition="$(Configuration.IndexOf('Debug')) != -1">
-      <AdditionalDependencies>$(ProjectDir)..\..\..\..\..\libsodium\bin\$(PlatformName)\Debug\libsodium11\libsodium.imp.lib;%(AdditionalDependencies)</AdditionalDependencies>
-    </Link>
-    <Link Condition="$(Configuration.IndexOf('Release')) != -1">
-      <AdditionalDependencies>$(ProjectDir)..\..\..\..\..\libsodium\bin\$(PlatformName)\Release\libsodium11\libsodium.imp.lib;%(AdditionalDependencies)</AdditionalDependencies>
-    </Link>
-  </ItemDefinitionGroup>
-
-  <ItemDefinitionGroup Condition="'$(Linkage-libsodium)' == 'static'">
-    <Link Condition="$(Configuration.IndexOf('Debug')) != -1">
-      <AdditionalDependencies>$(ProjectDir)..\..\..\..\..\libsodium\bin\$(PlatformName)\Debug\libsodium11\libsodium.lib;%(AdditionalDependencies)</AdditionalDependencies>
-    </Link>
-    <Link Condition="$(Configuration.IndexOf('Release')) != -1">
-      <AdditionalDependencies>$(ProjectDir)..\..\..\..\..\libsodium\bin\$(PlatformName)\Release\libsodium11\libsodium.lib;%(AdditionalDependencies)</AdditionalDependencies>
-    </Link>
-  </ItemDefinitionGroup>
-
-  <ItemDefinitionGroup Condition="'$(Linkage-libsodium)' == 'ltcg'">
-    <Link Condition="$(Configuration.IndexOf('Debug')) != -1">
-      <AdditionalDependencies>$(ProjectDir)..\..\..\..\..\libsodium\bin\$(PlatformName)\Debug\libsodium11\libsodium.ltcg.lib;%(AdditionalDependencies)</AdditionalDependencies>
-    </Link>
-    <Link Condition="$(Configuration.IndexOf('Release')) != -1">
-      <AdditionalDependencies>$(ProjectDir)..\..\..\..\..\libsodium\bin\$(PlatformName)\Release\libsodium11\libsodium.ltcg.lib;%(AdditionalDependencies)</AdditionalDependencies>
+    <Link>
+      <AdditionalLibraryDirectories>$(SourceRoot)libsodium\bin\$(Processor)\$(DebugOrRelease)\$(PlatformToolset)\;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalDependencies Condition="'$(Linkage-libsodium)' == 'dynamic'">libsodium_imp.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies Condition="'$(Linkage-libsodium)' == 'static'">libsodium.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies Condition="'$(Linkage-libsodium)' == 'ltcg'">libsodium_ltcg.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
 
   <!-- Copy -->
 
   <Target Name="Linkage-libsodium-dynamic" AfterTargets="AfterBuild" Condition="'$(Linkage-libsodium)' == 'dynamic'">
-    <Copy Condition="$(Configuration.IndexOf('Debug')) != -1"
-          SourceFiles="$(ProjectDir)..\..\..\..\..\libsodium\bin\$(PlatformName)\Debug\libsodium11\libsodium.dll"
+    <Copy SourceFiles="$(SourceRoot)libsodium\bin\$(Processor)\$(DebugOrRelease)\$(PlatformToolset)\libsodium.dll"
           DestinationFiles="$(TargetDir)libsodium.dll"
           SkipUnchangedFiles="true" />
-    <Copy Condition="$(Configuration.IndexOf('Debug')) != -1"
-          SourceFiles="$(ProjectDir)..\..\..\..\..\libsodium\bin\$(PlatformName)\Debug\libsodium11\libsodium.pdb"
+    <Copy Condition="'$(DebugOrRelease)' == 'debug'"
+          SourceFiles="$(SourceRoot)libsodium\bin\$(Processor)\$(DebugOrRelease)\$(PlatformToolset)\libsodium.pdb"
           DestinationFiles="$(TargetDir)libsodium.pdb"
-          SkipUnchangedFiles="true" />
-    <Copy Condition="$(Configuration.IndexOf('Release')) != -1"
-          SourceFiles="$(ProjectDir)..\..\..\..\..\libsodium\bin\$(PlatformName)\Release\libsodium11\libsodium.dll"
-          DestinationFiles="$(TargetDir)libsodium.dll"
           SkipUnchangedFiles="true" />
   </Target>
 
@@ -73,7 +42,7 @@
 
   <Target Name="libsodium-info" BeforeTargets="AfterBuild" Condition="'$(Linkage-libsodium)' == 'dynamic'">
     <Message Text="Copying libsodium.dll -&gt; $(TargetDir)libsodium.dll" Importance="high"/>
-    <Message Text="Copying libsodium.pdb -&gt; $(TargetDir)libsodium.pdb" Importance="high" Condition="$(Configuration.IndexOf('Debug')) != -1" />
+    <Message Text="Copying libsodium.pdb -&gt; $(TargetDir)libsodium.pdb" Importance="high" Condition="'$(DebugOrRelease)' == 'debug'" />
   </Target>
 
 </Project>

@@ -3,8 +3,9 @@
   
   <PropertyGroup>
     <_PropertySheetDisplayName>x64 Settings</_PropertySheetDisplayName>
+    <Processor>x64</Processor>      
   </PropertyGroup>
-  
+    
   <ItemDefinitionGroup>
     <ClCompile>
       <!-- Note that Win64 defines may cause WIN32 to become defined when using windows headers, 

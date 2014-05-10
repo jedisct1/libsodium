@@ -35,118 +35,63 @@
     <files>
         <!-- include -->
                 
-        <file src="..\\..\\src\\libsodium\\include\\sodium.h" target="build\\native\\include"  />
-        <file src="..\\..\\src\\libsodium\\include\\sodium\\core.h" target="build\\native\\include"  />
-        <file src="..\\..\\src\\libsodium\\include\\sodium\\crypto_auth.h" target="build\\native\\include"  />
-        <file src="..\\..\\src\\libsodium\\include\\sodium\\crypto_auth_hmacsha256.h" target="build\\native\\include"  />
-        <file src="..\\..\\src\\libsodium\\include\\sodium\\crypto_auth_hmacsha512.h" target="build\\native\\include"  />
-        <file src="..\\..\\src\\libsodium\\include\\sodium\\crypto_auth_hmacsha512256.h" target="build\\native\\include"  />
-        <file src="..\\..\\src\\libsodium\\include\\sodium\\crypto_box.h" target="build\\native\\include"  />
-        <file src="..\\..\\src\\libsodium\\include\\sodium\\crypto_box_curve25519xsalsa20poly1305.h" target="build\\native\\include"  />
-        <file src="..\\..\\src\\libsodium\\include\\sodium\\crypto_core_hsalsa20.h" target="build\\native\\include"  />
-        <file src="..\\..\\src\\libsodium\\include\\sodium\\crypto_core_salsa20.h" target="build\\native\\include"  />
-        <file src="..\\..\\src\\libsodium\\include\\sodium\\crypto_core_salsa2012.h" target="build\\native\\include"  />
-        <file src="..\\..\\src\\libsodium\\include\\sodium\\crypto_core_salsa208.h" target="build\\native\\include"  />
-        <file src="..\\..\\src\\libsodium\\include\\sodium\\crypto_generichash.h" target="build\\native\\include"  />
-        <file src="..\\..\\src\\libsodium\\include\\sodium\\crypto_generichash_blake2b.h" target="build\\native\\include"  />
-        <file src="..\\..\\src\\libsodium\\include\\sodium\\crypto_hash.h" target="build\\native\\include"  />
-        <file src="..\\..\\src\\libsodium\\include\\sodium\\crypto_hash_sha256.h" target="build\\native\\include"  />
-        <file src="..\\..\\src\\libsodium\\include\\sodium\\crypto_hash_sha512.h" target="build\\native\\include"  />
-        <file src="..\\..\\src\\libsodium\\include\\sodium\\crypto_onetimeauth.h" target="build\\native\\include"  />
-        <file src="..\\..\\src\\libsodium\\include\\sodium\\crypto_onetimeauth_poly1305.h" target="build\\native\\include"  />
-        <file src="..\\..\\src\\libsodium\\include\\sodium\\crypto_onetimeauth_poly1305_53.h" target="build\\native\\include"  />
-        <file src="..\\..\\src\\libsodium\\include\\sodium\\crypto_onetimeauth_poly1305_donna.h" target="build\\native\\include"  />
-        <file src="..\\..\\src\\libsodium\\include\\sodium\\crypto_scalarmult.h" target="build\\native\\include"  />
-        <file src="..\\..\\src\\libsodium\\include\\sodium\\crypto_scalarmult_curve25519.h" target="build\\native\\include"  />
-        <file src="..\\..\\src\\libsodium\\include\\sodium\\crypto_secretbox.h" target="build\\native\\include"  />
-        <file src="..\\..\\src\\libsodium\\include\\sodium\\crypto_secretbox_xsalsa20poly1305.h" target="build\\native\\include"  />
-        <file src="..\\..\\src\\libsodium\\include\\sodium\\crypto_shorthash.h" target="build\\native\\include"  />
-        <file src="..\\..\\src\\libsodium\\include\\sodium\\crypto_shorthash_siphash24.h" target="build\\native\\include"  />
-        <file src="..\\..\\src\\libsodium\\include\\sodium\\crypto_sign.h" target="build\\native\\include"  />
-        <file src="..\\..\\src\\libsodium\\include\\sodium\\crypto_sign_ed25519.h" target="build\\native\\include"  />
-        <file src="..\\..\\src\\libsodium\\include\\sodium\\crypto_sign_edwards25519sha512batch.h" target="build\\native\\include"  />
-        <file src="..\\..\\src\\libsodium\\include\\sodium\\crypto_stream.h" target="build\\native\\include"  />
-        <file src="..\\..\\src\\libsodium\\include\\sodium\\crypto_stream_aes128ctr.h" target="build\\native\\include"  />
-        <file src="..\\..\\src\\libsodium\\include\\sodium\\crypto_stream_aes256estream.h" target="build\\native\\include"  />
-        <file src="..\\..\\src\\libsodium\\include\\sodium\\crypto_stream_salsa20.h" target="build\\native\\include"  />
-        <file src="..\\..\\src\\libsodium\\include\\sodium\\crypto_stream_salsa2012.h" target="build\\native\\include"  />
-        <file src="..\\..\\src\\libsodium\\include\\sodium\\crypto_stream_salsa208.h" target="build\\native\\include"  />
-        <file src="..\\..\\src\\libsodium\\include\\sodium\\crypto_stream_xsalsa20.h" target="build\\native\\include"  />
-        <file src="..\\..\\src\\libsodium\\include\\sodium\\crypto_int32.h" target="build\\native\\include"  />
-        <file src="..\\..\\src\\libsodium\\include\\sodium\\crypto_int64.h" target="build\\native\\include"  />
-        <file src="..\\..\\src\\libsodium\\include\\sodium\\crypto_uint16.h" target="build\\native\\include"  />
-        <file src="..\\..\\src\\libsodium\\include\\sodium\\crypto_uint32.h" target="build\\native\\include"  />
-        <file src="..\\..\\src\\libsodium\\include\\sodium\\crypto_uint64.h" target="build\\native\\include"  />
-        <file src="..\\..\\src\\libsodium\\include\\sodium\\crypto_uint8.h" target="build\\native\\include"  />
-        <file src="..\\..\\src\\libsodium\\include\\sodium\\crypto_verify_16.h" target="build\\native\\include"  />
-        <file src="..\\..\\src\\libsodium\\include\\sodium\\crypto_verify_32.h" target="build\\native\\include"  />
-        <file src="..\\..\\src\\libsodium\\include\\sodium\\crypto_verify_64.h" target="build\\native\\include"  />
-        <file src="..\\..\\src\\libsodium\\include\\sodium\\export.h" target="build\\native\\include"  />
-        <file src="..\\..\\src\\libsodium\\include\\sodium\\randombytes.h" target="build\\native\\include"  />
-        <file src="..\\..\\src\\libsodium\\include\\sodium\\randombytes_salsa20_random.h" target="build\\native\\include"  />
-        <file src="..\\..\\src\\libsodium\\include\\sodium\\randombytes_sysrandom.h" target="build\\native\\include"  />
-        <file src="..\\..\\src\\libsodium\\include\\sodium\\utils.h" target="build\\native\\include"  />
-        <file src="..\\..\\src\\libsodium\\include\\sodium\\version.h" target="build\\native\\include"  />     
+        <file src="..\\..\\src\\libsodium\\include\\sodium.h" target="build\\native\\include" />
+        <file src="..\\..\\src\\libsodium\\include\\sodium\\*.*" target="build\\native\\include\\sodium" />    
 
         <!-- targets -->
       
         <file src="package.targets" target="build\\native\\$(package.id).targets" />
         <file src="package.xml" target="build\\native\\package.xml" />
-        
-        <!-- docs -->
-        
-        <!-- Documents (.*) -->
-        <!--<file src="..\\..\\docs\\*" target="build\\native\\docs" />-->
-        
+                
         <!-- libraries -->
 
         <!-- x86 Dynamic libraries (.dll) -->
-        <file src="..\\..\\bin\\Win32\\Release\\$(package.namespace)\\$(package.target).dll" target="build\\native\\bin\\$(package.target)-x86-$(package.platformtoolset)-mt-$(package.pathversion).dll" />
-        <file src="..\\..\\bin\\Win32\\Debug\\$(package.namespace)\\$(package.target).dll" target="build\\native\\bin\\$(package.target)-x86-$(package.platformtoolset)-mt-gd-$(package.pathversion).dll" />
+        <file src="..\\..\\bin\\x86\\release\\$(package.platformtoolset)\\$(package.target).dll" target="build\\native\\bin\\$(package.target)-x86-$(package.platformtoolset)-mt-$(package.pathversion).dll" />
+        <file src="..\\..\\bin\\x86\\debug\\$(package.platformtoolset)\\$(package.target).dll" target="build\\native\\bin\\$(package.target)-x86-$(package.platformtoolset)-mt-gd-$(package.pathversion).dll" />
 
         <!-- x86 Debugging symbols (.pdb) -->
-        <!--<file src="..\\..\\bin\\Win32\\Release\\$(package.namespace)\\$(package.target).pdb" target="build\\native\\bin\\$(package.target)-x86-$(package.platformtoolset)-mt-$(package.pathversion).pdb" />-->
-        <file src="..\\..\\bin\\Win32\\Debug\\$(package.namespace)\\$(package.target).pdb" target="build\\native\\bin\\$(package.target)-x86-$(package.platformtoolset)-mt-gd-$(package.pathversion).pdb" />
+        <!--<file src="..\\..\\bin\\x86\\release\\$(package.platformtoolset)\\$(package.target).pdb" target="build\\native\\bin\\$(package.target)-x86-$(package.platformtoolset)-mt-$(package.pathversion).pdb" />-->
+        <file src="..\\..\\bin\\x86\\debug\\$(package.platformtoolset)\\$(package.target).pdb" target="build\\native\\bin\\$(package.target)-x86-$(package.platformtoolset)-mt-gd-$(package.pathversion).pdb" />
 
         <!-- x86 Static libraries (.lib) -->
-        <file src="..\\..\\bin\\Win32\\Release\\$(package.namespace)\\$(package.target).lib" target="build\\native\\bin\\$(package.target)-x86-$(package.platformtoolset)-mt-s-$(package.pathversion).lib" />
-        <file src="..\\..\\bin\\Win32\\Debug\\$(package.namespace)\\$(package.target).lib" target="build\\native\\bin\\$(package.target)-x86-$(package.platformtoolset)-mt-sgd-$(package.pathversion).lib" />
+        <file src="..\\..\\bin\\x86\\release\\$(package.platformtoolset)\\$(package.target).lib" target="build\\native\\bin\\$(package.target)-x86-$(package.platformtoolset)-mt-s-$(package.pathversion).lib" />
+        <file src="..\\..\\bin\\x86\\debug\\$(package.platformtoolset)\\$(package.target).lib" target="build\\native\\bin\\$(package.target)-x86-$(package.platformtoolset)-mt-sgd-$(package.pathversion).lib" />
 
-        <!-- x86 Static link time code generation libraries (.ltcg.lib) -->
-        <file src="..\\..\\bin\\Win32\\Release\\$(package.namespace)\\$(package.target).ltcg.lib" target="build\\native\\bin\\$(package.target)-x86-$(package.platformtoolset)-mt-s-$(package.pathversion).ltcg.lib" />
-        <file src="..\\..\\bin\\Win32\\Debug\\$(package.namespace)\\$(package.target).ltcg.lib" target="build\\native\\bin\\$(package.target)-x86-$(package.platformtoolset)-mt-sgd-$(package.pathversion).ltcg.lib" />
+        <!-- x86 Static link time code generation libraries (_ltcg.lib) -->
+        <file src="..\\..\\bin\\x86\\release\\$(package.platformtoolset)\\$(package.target)_ltcg.lib" target="build\\native\\bin\\$(package.target)-x86-$(package.platformtoolset)-mt-s-$(package.pathversion).ltcg.lib" />
+        <file src="..\\..\\bin\\x86\\debug\\$(package.platformtoolset)\\$(package.target)_ltcg.lib" target="build\\native\\bin\\$(package.target)-x86-$(package.platformtoolset)-mt-sgd-$(package.pathversion).ltcg.lib" />
 
-        <!-- x86 Import libraries (.imp.lib) -->
-        <file src="..\\..\\bin\\Win32\\Release\\$(package.namespace)\\$(package.target).imp.lib" target="build\\native\\bin\\$(package.target)-x86-$(package.platformtoolset)-mt-$(package.pathversion).imp.lib" />
-        <file src="..\\..\\bin\\Win32\\Debug\\$(package.namespace)\\$(package.target).imp.lib" target="build\\native\\bin\\$(package.target)-x86-$(package.platformtoolset)-mt-gd-$(package.pathversion).imp.lib" />
+        <!-- x86 Import libraries (_imp.lib) -->
+        <file src="..\\..\\bin\\x86\\release\\$(package.platformtoolset)\\$(package.target)_imp.lib" target="build\\native\\bin\\$(package.target)-x86-$(package.platformtoolset)-mt-$(package.pathversion).imp.lib" />
+        <file src="..\\..\\bin\\x86\\debug\\$(package.platformtoolset)\\$(package.target)_imp.lib" target="build\\native\\bin\\$(package.target)-x86-$(package.platformtoolset)-mt-gd-$(package.pathversion).imp.lib" />
 
         <!-- x86 Export libraries (.exp) -->
-        <file src="..\\..\\bin\\Win32\\Release\\$(package.namespace)\\$(package.target).imp.exp" target="build\\native\\bin\\$(package.target)-x86-$(package.platformtoolset)-mt-$(package.pathversion).exp" />
-        <file src="..\\..\\bin\\Win32\\Debug\\$(package.namespace)\\$(package.target).imp.exp" target="build\\native\\bin\\$(package.target)-x86-$(package.platformtoolset)-mt-gd-$(package.pathversion).exp" />
+        <file src="..\\..\\bin\\x86\\release\\$(package.platformtoolset)\\$(package.target)_imp.exp" target="build\\native\\bin\\$(package.target)-x86-$(package.platformtoolset)-mt-$(package.pathversion).exp" />
+        <file src="..\\..\\bin\\x86\\debug\\$(package.platformtoolset)\\$(package.target)_imp.exp" target="build\\native\\bin\\$(package.target)-x86-$(package.platformtoolset)-mt-gd-$(package.pathversion).exp" />
 
         <!-- x64 Dynamic libraries (.dll) -->
-        <file src="..\\..\\bin\\x64\\Release\\$(package.namespace)\\$(package.target).dll" target="build\\native\\bin\\$(package.target)-x64-$(package.platformtoolset)-mt-$(package.pathversion).dll" />
-        <file src="..\\..\\bin\\x64\\Debug\\$(package.namespace)\\$(package.target).dll" target="build\\native\\bin\\$(package.target)-x64-$(package.platformtoolset)-mt-gd-$(package.pathversion).dll" />
+        <file src="..\\..\\bin\\x64\\release\\$(package.platformtoolset)\\$(package.target).dll" target="build\\native\\bin\\$(package.target)-x64-$(package.platformtoolset)-mt-$(package.pathversion).dll" />
+        <file src="..\\..\\bin\\x64\\debug\\$(package.platformtoolset)\\$(package.target).dll" target="build\\native\\bin\\$(package.target)-x64-$(package.platformtoolset)-mt-gd-$(package.pathversion).dll" />
 
         <!-- x64 Debugging symbols (.pdb) -->
-        <!--<file src="..\\..\\bin\\x64\\Release\\$(package.namespace)\\$(package.target).pdb" target="build\\native\\bin\\$(package.target)-x64-$(package.platformtoolset)-mt-$(package.pathversion).pdb" />-->
-        <file src="..\\..\\bin\\x64\\Debug\\$(package.namespace)\\$(package.target).pdb" target="build\\native\\bin\\$(package.target)-x64-$(package.platformtoolset)-mt-gd-$(package.pathversion).pdb" />
+        <!--<file src="..\\..\\bin\\x64\\release\\$(package.platformtoolset)\\$(package.target).pdb" target="build\\native\\bin\\$(package.target)-x64-$(package.platformtoolset)-mt-$(package.pathversion).pdb" />-->
+        <file src="..\\..\\bin\\x64\\debug\\$(package.platformtoolset)\\$(package.target).pdb" target="build\\native\\bin\\$(package.target)-x64-$(package.platformtoolset)-mt-gd-$(package.pathversion).pdb" />
 
         <!-- x64 Static libraries (.lib) -->
-        <file src="..\\..\\bin\\x64\\Release\\$(package.namespace)\\$(package.target).lib" target="build\\native\\bin\\$(package.target)-x64-$(package.platformtoolset)-mt-s-$(package.pathversion).lib" />
-        <file src="..\\..\\bin\\x64\\Debug\\$(package.namespace)\\$(package.target).lib" target="build\\native\\bin\\$(package.target)-x64-$(package.platformtoolset)-mt-sgd-$(package.pathversion).lib" />
+        <file src="..\\..\\bin\\x64\\release\\$(package.platformtoolset)\\$(package.target).lib" target="build\\native\\bin\\$(package.target)-x64-$(package.platformtoolset)-mt-s-$(package.pathversion).lib" />
+        <file src="..\\..\\bin\\x64\\debug\\$(package.platformtoolset)\\$(package.target).lib" target="build\\native\\bin\\$(package.target)-x64-$(package.platformtoolset)-mt-sgd-$(package.pathversion).lib" />
 
-        <!-- x64 Static link time code generation libraries (.ltcg.lib) -->
-        <file src="..\\..\\bin\\Win32\\Release\\$(package.namespace)\\$(package.target).ltcg.lib" target="build\\native\\bin\\$(package.target)-x64-$(package.platformtoolset)-mt-s-$(package.pathversion).ltcg.lib" />
-        <file src="..\\..\\bin\\Win32\\Debug\\$(package.namespace)\\$(package.target).ltcg.lib" target="build\\native\\bin\\$(package.target)-x64-$(package.platformtoolset)-mt-sgd-$(package.pathversion).ltcg.lib" />
+        <!-- x64 Static link time code generation libraries (_ltcg.lib) -->
+        <file src="..\\..\\bin\\x64\\release\\$(package.platformtoolset)\\$(package.target)_ltcg.lib" target="build\\native\\bin\\$(package.target)-x64-$(package.platformtoolset)-mt-s-$(package.pathversion).ltcg.lib" />
+        <file src="..\\..\\bin\\x64\\debug\\$(package.platformtoolset)\\$(package.target)_ltcg.lib" target="build\\native\\bin\\$(package.target)-x64-$(package.platformtoolset)-mt-sgd-$(package.pathversion).ltcg.lib" />
 
-        <!-- x64 Import libraries (.imp.lib) -->
-        <file src="..\\..\\bin\\x64\\Release\\$(package.namespace)\\$(package.target).imp.lib" target="build\\native\\bin\\$(package.target)-x64-$(package.platformtoolset)-mt-$(package.pathversion).imp.lib" />
-        <file src="..\\..\\bin\\x64\\Debug\\$(package.namespace)\\$(package.target).imp.lib" target="build\\native\\bin\\$(package.target)-x64-$(package.platformtoolset)-mt-gd-$(package.pathversion).imp.lib" />
+        <!-- x64 Import libraries (_imp.lib) -->
+        <file src="..\\..\\bin\\x64\\release\\$(package.platformtoolset)\\$(package.target)_imp.lib" target="build\\native\\bin\\$(package.target)-x64-$(package.platformtoolset)-mt-$(package.pathversion).imp.lib" />
+        <file src="..\\..\\bin\\x64\\debug\\$(package.platformtoolset)\\$(package.target)_imp.lib" target="build\\native\\bin\\$(package.target)-x64-$(package.platformtoolset)-mt-gd-$(package.pathversion).imp.lib" />
 
         <!-- x64 Export libraries (.exp) -->
-        <file src="..\\..\\bin\\x64\\Release\\$(package.namespace)\\$(package.target).imp.exp" target="build\\native\\bin\\$(package.target)-x64-$(package.platformtoolset)-mt-$(package.pathversion).exp" />
-        <file src="..\\..\\bin\\x64\\Debug\\$(package.namespace)\\$(package.target).imp.exp" target="build\\native\\bin\\$(package.target)-x64-$(package.platformtoolset)-mt-gd-$(package.pathversion).exp" />
+        <file src="..\\..\\bin\\x64\\release\\$(package.platformtoolset)\\$(package.target)_imp.exp" target="build\\native\\bin\\$(package.target)-x64-$(package.platformtoolset)-mt-$(package.pathversion).exp" />
+        <file src="..\\..\\bin\\x64\\debug\\$(package.platformtoolset)\\$(package.target)_imp.exp" target="build\\native\\bin\\$(package.target)-x64-$(package.platformtoolset)-mt-gd-$(package.pathversion).exp" />
     </files>
 <!--
 #################################################################

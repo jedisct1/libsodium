@@ -1,0 +1,22 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+ 
+  <PropertyGroup>
+    <_PropertySheetDisplayName>Output Settings</_PropertySheetDisplayName>
+    <IntDir>$(ProjectDir)..\..\..\..\obj\$(Platform)\$(Configuration)\$(PlatformToolset)\</IntDir>
+    <OutDir>$(ProjectDir)..\..\..\..\bin\$(Processor)\$(DebugOrRelease)\$(PlatformToolset)\</OutDir>
+    <TargetDir>$(OutDir)</TargetDir>
+    <TargetPath>$(TargetDir)$(TargetName)$(TargetExt)</TargetPath>
+  </PropertyGroup>
+  
+  <ItemDefinitionGroup>
+    <Link>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <ImportLibrary>$(TargetDir)$(TargetName)_imp.lib</ImportLibrary>
+    </Link>
+    <BuildLog>
+      <Path>$(TargetDir)$(ProjectName)_$(DefaultLinkage).log</Path>
+    </BuildLog> 
+  </ItemDefinitionGroup>
+  
+</Project>

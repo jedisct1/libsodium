@@ -1,20 +1,25 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
 
-  <ImportGroup Label="PropertySheets">
-    <Import Project="Console.props" />
-    <Import Project="Release.props" />
-  </ImportGroup>
-
   <PropertyGroup>
     <_PropertySheetDisplayName>Console Release Dynamic</_PropertySheetDisplayName>
+    <DefaultLinkage>dynamic</DefaultLinkage>
   </PropertyGroup>
+
+  <ImportGroup Label="PropertySheets">
+    <Import Project="Release.props" />
+    <Import Project="EXE.props" />
+    <Import Project="Output.props" />
+  </ImportGroup>
 
   <ItemDefinitionGroup>
     <ClCompile>
-      <!-- Linking CRT dynamically when building a dynamic library is conventional. -->
       <RuntimeLibrary>MultiThreadedDebugDLL</RuntimeLibrary>
     </ClCompile>
   </ItemDefinitionGroup>
+
+  <ImportGroup Label="PropertySheets">
+    <Import Project="Messages.props" />
+  </ImportGroup>
 
 </Project>
