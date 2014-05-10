@@ -243,9 +243,35 @@ AC_CHECK_TOOL([AR], [ar], [ar])
 dnl Checks for headers
 
 AS_IF([test "x$EMSCRIPTEN" = "x"],[
-  AC_CHECK_HEADERS([mmintrin.h],  [], [], [#pragma GCC target("mmx")])
-  AC_CHECK_HEADERS([emmintrin.h], [], [], [#pragma GCC target("sse2")])
-  AC_CHECK_HEADERS([pmmintrin.h], [], [], [#pragma GCC target("sse3")])
+
+  AC_MSG_CHECKING(for MMX instructions set)
+  AC_COMPILE_IFELSE([AC_LANG_PROGRAM([[
+#pragma GCC target("mmx")
+#include <mmintrin.h>
+]], [[ __m64 x = _mm_setzero_si64(); ]])],
+    [AC_MSG_RESULT(yes)
+     AC_DEFINE([HAVE_MMINTRIN_H], [1], [mmx is available])],
+    [AC_MSG_RESULT(no)])
+
+  AC_MSG_CHECKING(for SSE2 instructions set)
+  AC_COMPILE_IFELSE([AC_LANG_PROGRAM([[
+#pragma GCC target("sse2")
+#include <emmintrin.h>
+]], [[ __m128d x = _mm_setzero_pd(); ]])],
+    [AC_MSG_RESULT(yes)
+     AC_DEFINE([HAVE_EMMINTRIN_H], [1], [sse2 is available])],
+    [AC_MSG_RESULT(no)])
+
+  AC_MSG_CHECKING(for SSE3 instructions set)
+  AC_COMPILE_IFELSE([AC_LANG_PROGRAM([[
+#pragma GCC target("sse3")
+#include <pmmintrin.h>
+]], [[ __m128 x = _mm_addsub_ps(_mm_cvtpd_ps(_mm_setzero_pd()),
+                                _mm_cvtpd_ps(_mm_setzero_pd())); ]])],
+    [AC_MSG_RESULT(yes)
+     AC_DEFINE([HAVE_PMMINTRIN_H], [1], [sse3 is available])],
+    [AC_MSG_RESULT(no)])
+
 ])
 
 AC_CHECK_HEADERS([sys/mman.h])
