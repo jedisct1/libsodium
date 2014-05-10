@@ -189,7 +189,7 @@ fsquare_times(felem output, const felem in, limb count) {
   output[4] = r4;
 }
 
-#ifndef CPU_ALIGNED_ACCESS_REQUIRED
+#if !defined(CPU_ALIGNED_ACCESS_REQUIRED) && defined(NATIVE_LITTLE_ENDIAN)
 # define U8TO64(p)    (*((const uint64_t *) (p)))
 # define U64TO8(p, v) (*((uint64_t *) (p)) = (v))
 #else
