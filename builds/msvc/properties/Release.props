@@ -7,7 +7,7 @@
   
   <PropertyGroup>
     <_PropertySheetDisplayName>Release Settings</_PropertySheetDisplayName>
-    <DebugOrRelease>release</DebugOrRelease>
+    <DebugOrRelease>Release</DebugOrRelease>
     <LinkIncremental>false</LinkIncremental>
   </PropertyGroup>
   
