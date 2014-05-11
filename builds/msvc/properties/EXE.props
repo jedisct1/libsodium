@@ -3,7 +3,7 @@
     
   <PropertyGroup>
     <_PropertySheetDisplayName>Console Application</_PropertySheetDisplayName>
-    <TargetName>$(TargetName)_$(DefaultLinkage)</TargetName>    
+    <IsExe>true</IsExe>    
   </PropertyGroup>
 
   <ItemDefinitionGroup>

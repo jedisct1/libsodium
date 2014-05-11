@@ -10,11 +10,7 @@
     <Message Text="Configuration     : $(Configuration)" Importance="high"/>
     <Message Text="PlatformToolset   : $(PlatformToolset)" Importance="high"/>
     <Message Text="Processor         : $(Processor)" Importance="high"/>
-    <!--<Message Text="TargetPath        : $(TargetPath)" Importance="high"/>
-    <Message Text="TargetDir         : $(TargetDir)" Importance="high"/>
-    <Message Text="TargetName        : $(TargetName)" Importance="high"/>
-    <Message Text="TargetExt         : $(TargetExt)" Importance="high"/>-->
-    <Message Text="Building..." Importance="high"/>
+    <Message Text="TargetPath        : $(TargetPath)" Importance="high"/>
   </Target>
 
 </Project>

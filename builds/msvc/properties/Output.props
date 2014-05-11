@@ -3,20 +3,27 @@
  
   <PropertyGroup>
     <_PropertySheetDisplayName>Output Settings</_PropertySheetDisplayName>
-    <IntDir>$(ProjectDir)..\..\..\..\obj\$(Platform)\$(Configuration)\$(PlatformToolset)\</IntDir>
-    <OutDir>$(ProjectDir)..\..\..\..\bin\$(Processor)\$(DebugOrRelease)\$(PlatformToolset)\</OutDir>
+    <BuildRoot>$(ProjectDir)..\..\</BuildRoot>
+    <RepoRoot>$(ProjectDir)..\..\..\..\</RepoRoot>
+    <SourceRoot>$(ProjectDir)..\..\..\..\..\</SourceRoot>
+    <OutDir>$(RepoRoot)bin\$(Processor)\$(DebugOrRelease)\$(PlatformToolset)\$(DefaultLinkage)\</OutDir>
+    <IntDir>$(RepoRoot)obj\$(TargetName)\$(Processor)\$(DebugOrRelease)\$(PlatformToolset)\$(DefaultLinkage)\</IntDir>
     <TargetDir>$(OutDir)</TargetDir>
+    <TargetName>$(TargetName)</TargetName>
     <TargetPath>$(TargetDir)$(TargetName)$(TargetExt)</TargetPath>
   </PropertyGroup>
   
   <ItemDefinitionGroup>
     <Link>
-      <GenerateDebugInformation>true</GenerateDebugInformation>
-      <ImportLibrary>$(TargetDir)$(TargetName)_imp.lib</ImportLibrary>
+      <ImportLibrary>$(OutDir)$(TargetName).lib</ImportLibrary>
     </Link>
     <BuildLog>
-      <Path>$(TargetDir)$(ProjectName)_$(DefaultLinkage).log</Path>
+      <Path>$(OutDir)$(TargetName).log</Path>
     </BuildLog> 
   </ItemDefinitionGroup>
+  
+  <ImportGroup Label="PropertySheets">
+    <Import Project="Messages.props" />
+  </ImportGroup>    
   
 </Project>

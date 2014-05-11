@@ -8,7 +8,6 @@
   <ImportGroup Label="PropertySheets">
     <Import Project="Debug.props" />
     <Import Project="LTCG.props" />
-    <Import Project="Output.props" />
   </ImportGroup>
 
   <ItemDefinitionGroup>
@@ -16,9 +15,5 @@
       <RuntimeLibrary>MultiThreadedDebug</RuntimeLibrary>
     </ClCompile>
   </ItemDefinitionGroup>
-
-  <ImportGroup Label="PropertySheets">
-    <Import Project="Messages.props" />
-  </ImportGroup>
 
 </Project>

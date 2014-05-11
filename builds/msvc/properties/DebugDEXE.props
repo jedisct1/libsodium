@@ -9,7 +9,6 @@
   <ImportGroup Label="PropertySheets">
     <Import Project="Debug.props" />
     <Import Project="EXE.props" />
-    <Import Project="Output.props" />
   </ImportGroup>
   
   <ItemDefinitionGroup>
@@ -18,9 +17,5 @@
       <LinkIncremental>true</LinkIncremental>
     </ClCompile>
   </ItemDefinitionGroup>
-
-  <ImportGroup Label="PropertySheets">
-    <Import Project="Messages.props" />
-  </ImportGroup>
   
 </Project>

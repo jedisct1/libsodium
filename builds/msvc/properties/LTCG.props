@@ -3,10 +3,10 @@
 
   <PropertyGroup>
     <_PropertySheetDisplayName>Link Time Code Generation Library</_PropertySheetDisplayName>
-    <TargetName>$(TargetName)_ltcg</TargetName>
   </PropertyGroup>
-
+  
   <ImportGroup Label="PropertySheets">
+    <Import Project="LIB.props" />
     <Import Project="Link.props" />
   </ImportGroup>
 

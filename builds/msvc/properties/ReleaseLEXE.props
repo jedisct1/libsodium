@@ -9,7 +9,6 @@
     <Import Project="Release.props" />
     <Import Project="Link.props" />
     <Import Project="EXE.props" />
-    <Import Project="Output.props" />
   </ImportGroup>
 
   <ItemDefinitionGroup>
@@ -17,9 +16,5 @@
       <RuntimeLibrary>MultiThreaded</RuntimeLibrary>
     </ClCompile>
   </ItemDefinitionGroup>
-
-  <ImportGroup Label="PropertySheets">
-    <Import Project="Messages.props" />
-  </ImportGroup>
 
 </Project>
