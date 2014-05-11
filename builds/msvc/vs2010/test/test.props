@@ -8,10 +8,10 @@
   </PropertyGroup>
 
   <!-- Configuration -->
-  
+
   <ItemDefinitionGroup>
     <ClCompile>
-      <AdditionalIncludeDirectories>$(ProjectDir)..\..\..\..\test\default\;$(ProjectDir)..\..\..\..\test\quirks\;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(RepoRoot)test\default\;$(RepoRoot)test\quirks\;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <EnablePREfast>false</EnablePREfast>
       <PreprocessorDefinitions>_CRT_SECURE_NO_WARNINGS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <!--<PreprocessorDefinitions>NATIVE_LITTLE_ENDIAN;%(PreprocessorDefinitions)</PreprocessorDefinitions>-->
@@ -24,14 +24,8 @@
     <Import Project="$(SolutionDir)libsodium.import.props" />
   </ImportGroup>
 
-  <PropertyGroup Condition="$(Configuration.IndexOf('DEXE')) != -1">
-    <Linkage-libsodium>dynamic</Linkage-libsodium>
-  </PropertyGroup>
-  <PropertyGroup Condition="$(Configuration.IndexOf('LEXE')) != -1">
-    <Linkage-libsodium>ltcg</Linkage-libsodium>
-  </PropertyGroup>
-  <PropertyGroup Condition="$(Configuration.IndexOf('SEXE')) != -1">
-    <Linkage-libsodium>static</Linkage-libsodium>
+  <PropertyGroup>
+    <Linkage-libsodium>$(DefaultLinkage)</Linkage-libsodium>
   </PropertyGroup>
 
   <!-- Messages -->

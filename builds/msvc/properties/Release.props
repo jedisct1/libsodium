@@ -1,11 +1,13 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+
+  <ImportGroup Label="PropertySheets">
+    <Import Project="Common.props" />
+  </ImportGroup>
   
   <PropertyGroup>
-    <_PropertySheetDisplayName>Release Configuration</_PropertySheetDisplayName>
-    <!-- RootNamespace is used to deconflict output files from differing project versions. -->
-    <IntDir>$(ProjectDir)..\..\..\..\obj\$(PlatformName)\$(Configuration)\$(RootNamespace)\</IntDir>
-    <OutDir>$(ProjectDir)..\..\..\..\bin\$(PlatformName)\Release\$(RootNamespace)\</OutDir>
+    <_PropertySheetDisplayName>Release Settings</_PropertySheetDisplayName>
+    <DebugOrRelease>release</DebugOrRelease>
     <LinkIncremental>false</LinkIncremental>
   </PropertyGroup>
   
@@ -26,12 +28,11 @@
     <Link>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <!--<GenerateDebugInformation>true</GenerateDebugInformation>-->
-      <ImportLibrary>$(ProjectDir)..\..\..\..\bin\$(PlatformName)\Release\$(RootNamespace)\$(TargetName).imp.lib</ImportLibrary>
       <OptimizeReferences>true</OptimizeReferences>
-    </Link>
+    </Link> 
   </ItemDefinitionGroup>
 
-  <ItemDefinitionGroup Condition="'$(Platform)'=='Win32'">
+  <ItemDefinitionGroup Condition="'$(Processor)' == 'x86'">
     <ClCompile>
       <EnableEnhancedInstructionSet>StreamingSIMDExtensions2</EnableEnhancedInstructionSet>
     </ClCompile>
