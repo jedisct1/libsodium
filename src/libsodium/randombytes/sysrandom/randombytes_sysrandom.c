@@ -141,8 +141,8 @@ randombytes_sysrandom_init(void)
 static void
 randombytes_sysrandom_init(void)
 {
-    if (! CryptAcquireContext(&stream.hcrypt_prov, NULL, NULL,
-                              PROV_RSA_FULL, CRYPT_VERIFYCONTEXT)) {
+    if (! CryptAcquireContextW(&stream.hcrypt_prov, NULL, NULL,
+                               PROV_RSA_FULL, CRYPT_VERIFYCONTEXT)) {
         abort();
     }
 }
