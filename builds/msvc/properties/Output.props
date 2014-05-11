@@ -1,0 +1,29 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+ 
+  <PropertyGroup>
+    <_PropertySheetDisplayName>Output Settings</_PropertySheetDisplayName>
+    <BuildRoot>$(ProjectDir)..\..\</BuildRoot>
+    <RepoRoot>$(ProjectDir)..\..\..\..\</RepoRoot>
+    <SourceRoot>$(ProjectDir)..\..\..\..\..\</SourceRoot>
+    <OutDir>$(RepoRoot)bin\$(Processor)\$(DebugOrRelease)\$(PlatformToolset)\$(DefaultLinkage)\</OutDir>
+    <IntDir>$(RepoRoot)obj\$(TargetName)\$(Processor)\$(DebugOrRelease)\$(PlatformToolset)\$(DefaultLinkage)\</IntDir>
+    <TargetDir>$(OutDir)</TargetDir>
+    <TargetName>$(TargetName)</TargetName>
+    <TargetPath>$(TargetDir)$(TargetName)$(TargetExt)</TargetPath>
+  </PropertyGroup>
+  
+  <ItemDefinitionGroup>
+    <Link>
+      <ImportLibrary>$(OutDir)$(TargetName).lib</ImportLibrary>
+    </Link>
+    <BuildLog>
+      <Path>$(OutDir)$(TargetName).log</Path>
+    </BuildLog> 
+  </ItemDefinitionGroup>
+  
+  <ImportGroup Label="PropertySheets">
+    <Import Project="Messages.props" />
+  </ImportGroup>    
+  
+</Project>

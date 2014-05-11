@@ -4,23 +4,19 @@
   <PropertyGroup>
     <_PropertySheetDisplayName>Common Settings</_PropertySheetDisplayName>
     <CharacterSet>Unicode</CharacterSet>
-    <TargetName>$(ProjectName)</TargetName>
   </PropertyGroup>
+
+  <ImportGroup Label="PropertySheets">
+    <Import Condition="'$(Platform)' == 'Win32'" Project="x86.props" />
+    <Import Condition="'$(Platform)' == 'x64'" Project="x64.props" />
+  </ImportGroup>  
 
   <ItemDefinitionGroup>
     <ClCompile>
       <MultiProcessorCompilation>true</MultiProcessorCompilation>
-      <!-- Windows and CRT definitions for unicode. Note that Linux only supports unicode so char is 16 bit. -->
       <PreprocessorDefinitions>UNICODE;_UNICODE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <WarningLevel>Level3</WarningLevel>
     </ClCompile>
   </ItemDefinitionGroup>
-
-  <Target Name="ConfigInfo" BeforeTargets="PrepareForBuild">
-    <Message Text="ConfigurationType : $(ConfigurationType)" Importance="high"/>
-    <Message Text="Configuration     : $(Configuration)" Importance="high"/>
-    <Message Text="PlatformToolset   : $(PlatformToolset)" Importance="high"/>
-    <Message Text="Building..." Importance="high"/>
-  </Target>
 
 </Project>

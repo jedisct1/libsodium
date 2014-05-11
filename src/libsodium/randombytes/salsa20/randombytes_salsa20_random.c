@@ -155,8 +155,8 @@ randombytes_salsa20_random_init(void)
     stream.nonce = sodium_hrtime();
     assert(stream.nonce != (uint64_t) 0U);
 
-    if (! CryptAcquireContext(&stream.hcrypt_prov, NULL, NULL,
-                              PROV_RSA_FULL, CRYPT_VERIFYCONTEXT)) {
+    if (! CryptAcquireContextW(&stream.hcrypt_prov, NULL, NULL,
+                               PROV_RSA_FULL, CRYPT_VERIFYCONTEXT)) {
         abort();
     }
 }

@@ -1,18 +1,18 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
-  
-  <ImportGroup Label="PropertySheets">
-    <Import Project="Static.props" />
-    <Import Project="Release.props" />
-  </ImportGroup>
 
   <PropertyGroup>
-    <_PropertySheetDisplayName>Static Release Library</_PropertySheetDisplayName>
+    <_PropertySheetDisplayName>Console Release Static</_PropertySheetDisplayName>
+    <DefaultLinkage>static</DefaultLinkage>
   </PropertyGroup>
+
+  <ImportGroup Label="PropertySheets">
+    <Import Project="Release.props" />
+    <Import Project="EXE.props" />
+  </ImportGroup>
 
   <ItemDefinitionGroup>
     <ClCompile>
-      <!-- Linking CRT statically when building a static library is conventional. -->
       <RuntimeLibrary>MultiThreaded</RuntimeLibrary>
     </ClCompile>
   </ItemDefinitionGroup>
