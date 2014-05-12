@@ -201,7 +201,6 @@ them:
 
     int      sodium_mlock(void *addr, size_t len);
 
-
 Once done with these pages, they can be unlocked with
 `sodium_munlock()`. This function will zero the data before unlocking
 the pages.
