@@ -23,6 +23,7 @@ poly1305-donna32 and poly1305-donna64 implementations.
 arbitrary length, and have a streaming interface.
  - crypto_verify_64() has been implemented.
  - first-class Visual Studio build system, thanks to @evoskuil
+ - CPU features are now detected at runtime.
 
 * Version 0.4.5
  - Restore compatibility with OSX <= 10.6
