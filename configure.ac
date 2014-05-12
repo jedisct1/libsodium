@@ -19,17 +19,17 @@ SODIUM_LIBRARY_VERSION_MAJOR=5
 SODIUM_LIBRARY_VERSION_MINOR=0
 DLL_VERSION=5
 SODIUM_LIBRARY_VERSION=10:0:0
-#                      | | |
-#               +------+ | +---+
-#               |        |     |
-#            current:revision:age
-#               |        |     |
-#               |        |     +- increment if interfaces have been added
-#               |        |        set to zero if interfaces have been removed
-#               |        |        or changed
-#               |        +- increment if source code has changed
-#               |           set to zero if current is incremented
-#               +- increment if interfaces have been added, removed or changed
+#                       | | |
+#                +------+ | +---+
+#                |        |     |
+#             current:revision:age
+#                |        |     |
+#                |        |     +- increment if interfaces have been added
+#                |        |        set to zero if interfaces have been removed
+#                |        |        or changed
+#                |        +- increment if source code has changed
+#                |           set to zero if current is incremented
+#                +- increment if interfaces have been added, removed or changed
 AC_SUBST(SODIUM_LIBRARY_VERSION_MAJOR)
 AC_SUBST(SODIUM_LIBRARY_VERSION_MINOR)
 AC_SUBST(SODIUM_LIBRARY_VERSION)
