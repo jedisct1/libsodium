@@ -12,7 +12,7 @@ typedef struct CPUFeatures_ {
     int has_sse3;
 } CPUFeatures;
 
-static CPUFeatures cpu_features;
+static CPUFeatures _cpu_features;
 
 #define CPUID_SSE2     0x04000000
 #define CPUIDECX_SSE3  0x00000001
@@ -112,24 +112,24 @@ sodium_runtime_get_cpu_features(void)
 {
     int ret = -1;
 
-    ret &= _sodium_runtime_arm_cpu_features(&cpu_features);
-    ret &= _sodium_runtime_intel_cpu_features(&cpu_features);
-    cpu_features.initialized = 1;
+    ret &= _sodium_runtime_arm_cpu_features(&_cpu_features);
+    ret &= _sodium_runtime_intel_cpu_features(&_cpu_features);
+    _cpu_features.initialized = 1;
 
     return ret;
 }
 
 int
 sodium_runtime_has_neon(void) {
-    return cpu_features.has_neon;
+    return _cpu_features.has_neon;
 }
 
 int
 sodium_runtime_has_sse2(void) {
-    return cpu_features.has_sse2;
+    return _cpu_features.has_sse2;
 }
 
 int
 sodium_runtime_has_sse3(void) {
-    return cpu_features.has_sse3;
+    return _cpu_features.has_sse3;
 }
