@@ -284,8 +284,8 @@ in the library even after the PHC.
                                             const char *passwd,
                                             unsigned long long passwdlen,
                                             const unsigned char *salt,
-                                            size_t memlimit,
-                                            unsigned long long opslimit);
+                                            unsigned long long opslimit,
+                                            size_t memlimit);
 
 This function derives `outlen` bytes from a password `passwd` and a
 salt `salt` that has to be `crypto_pwhash_scryptxsalsa208sha256_SALTBYTES`
@@ -303,8 +303,8 @@ function, it can still be used for this purpose:
         (char out[crypto_pwhash_scryptxsalsa208sha256_STRBYTES],
          const char *passwd,
          unsigned long long passwdlen,
-         size_t memlimit,
-         unsigned long long opslimit);
+         unsigned long long opslimit,
+         size_t memlimit);
 
 This function returns a `crypto_pwhash_scryptxsalsa208sha256_STRBYTES`
 bytes C string (the length includes the final `\0`) suitable for storage.

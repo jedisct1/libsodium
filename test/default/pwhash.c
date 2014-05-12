@@ -5,8 +5,8 @@
 #include "cmptest.h"
 
 #define OUT_LEN 128
-#define MEMLIMIT 10000000
 #define OPSLIMIT 1000000
+#define MEMLIMIT 10000000
 
 int main(void)
 {
@@ -21,17 +21,17 @@ int main(void)
     if (crypto_pwhash_scryptxsalsa208sha256(out, sizeof out,
                                             passwd, strlen(passwd),
                                             (const unsigned char *) salt,
-                                            MEMLIMIT, OPSLIMIT) != 0) {
+                                            OPSLIMIT, MEMLIMIT) != 0) {
         printf("pwhash failure\n");
     }
     sodium_bin2hex(out_hex, sizeof out_hex, out, sizeof out);
     printf("out_hex: [%s]\n", out_hex);
     if (crypto_pwhash_scryptxsalsa208sha256_str(str_out, passwd, strlen(passwd),
-                                                MEMLIMIT, OPSLIMIT) != 0) {
+                                                OPSLIMIT, MEMLIMIT) != 0) {
         printf("pwhash_str failure\n");
     }
     if (crypto_pwhash_scryptxsalsa208sha256_str(str_out2, passwd, strlen(passwd),
-                                                MEMLIMIT, OPSLIMIT) != 0) {
+                                                OPSLIMIT, MEMLIMIT) != 0) {
         printf("pwhash_str(2) failure\n");
     }
     if (strcmp(str_out, str_out2) == 0) {

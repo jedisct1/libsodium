@@ -15,7 +15,7 @@
     (1U /* N_log2 */) + (5U /* r */) + (5U /* p */) + BYTES2CHARS(saltbytes)
 
 static int
-pickparams(const size_t memlimit, unsigned long long opslimit,
+pickparams(unsigned long long opslimit, const size_t memlimit,
            uint32_t * const N_log2, uint32_t * const p, uint32_t * const r)
 {
     unsigned long long maxN;
@@ -67,8 +67,8 @@ crypto_pwhash_scryptxsalsa208sha256(unsigned char * const out,
                                     const char * const passwd,
                                     unsigned long long passwdlen,
                                     const unsigned char * const salt,
-                                    size_t memlimit,
-                                    unsigned long long opslimit)
+                                    unsigned long long opslimit,
+                                    size_t memlimit)
 {
     uint32_t N_log2;
     uint32_t p;
@@ -79,7 +79,7 @@ crypto_pwhash_scryptxsalsa208sha256(unsigned char * const out,
         errno = EFBIG;
         return -1;
     }
-    if (pickparams(memlimit, opslimit, &N_log2, &p, &r) != 0) {
+    if (pickparams(opslimit, memlimit, &N_log2, &p, &r) != 0) {
         errno = EINVAL;
         return -1;
     }
@@ -94,8 +94,8 @@ int
 crypto_pwhash_scryptxsalsa208sha256_str(char out[crypto_pwhash_scryptxsalsa208sha256_STRBYTES],
                                         const char * const passwd,
                                         unsigned long long passwdlen,
-                                        size_t memlimit,
-                                        unsigned long long opslimit)
+                                        unsigned long long opslimit,
+                                        size_t memlimit)
 {
     uint8_t         salt[crypto_pwhash_scryptxsalsa208sha256_STRSALTBYTES];
     char            setting[crypto_pwhash_scryptxsalsa208sha256_STRSETTINGBYTES + 1U];
@@ -109,7 +109,7 @@ crypto_pwhash_scryptxsalsa208sha256_str(char out[crypto_pwhash_scryptxsalsa208sh
         errno = EFBIG;
         return -1;
     }
-    if (pickparams(memlimit, opslimit, &N_log2, &p, &r) != 0) {
+    if (pickparams(opslimit, memlimit, &N_log2, &p, &r) != 0) {
         errno = EINVAL;
         return -1;
     }
