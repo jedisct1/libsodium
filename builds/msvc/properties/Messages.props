@@ -9,7 +9,6 @@
     <Message Text="ConfigurationType : $(ConfigurationType)" Importance="high"/>
     <Message Text="Configuration     : $(Configuration)" Importance="high"/>
     <Message Text="PlatformToolset   : $(PlatformToolset)" Importance="high"/>
-    <Message Text="Processor         : $(Processor)" Importance="high"/>
     <Message Text="TargetPath        : $(TargetPath)" Importance="high"/>
   </Target>
 

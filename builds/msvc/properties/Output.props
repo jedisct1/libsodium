@@ -3,11 +3,12 @@
  
   <PropertyGroup>
     <_PropertySheetDisplayName>Output Settings</_PropertySheetDisplayName>
+    <!-- BuildRoot, RepoRoot, SourceRoot, DebugOrRelease and DefaultLinkage are custom props and should therefore not be referenced from *.import.props or nuget target files. -->
     <BuildRoot>$(ProjectDir)..\..\</BuildRoot>
     <RepoRoot>$(ProjectDir)..\..\..\..\</RepoRoot>
-    <SourceRoot>$(ProjectDir)..\..\..\..\..\</SourceRoot>
-    <OutDir>$(RepoRoot)bin\$(Processor)\$(DebugOrRelease)\$(PlatformToolset)\$(DefaultLinkage)\</OutDir>
-    <IntDir>$(RepoRoot)obj\$(TargetName)\$(Processor)\$(DebugOrRelease)\$(PlatformToolset)\$(DefaultLinkage)\</IntDir>
+    <SourceRoot>$(ProjectDir)..\..\..\..\..\</SourceRoot>    
+    <OutDir>$(ProjectDir)..\..\..\..\bin\$(PlatformName)\$(DebugOrRelease)\$(PlatformToolset)\$(DefaultLinkage)\</OutDir>
+    <IntDir>$(ProjectDir)..\..\..\..\obj\$(TargetName)\$(PlatformName)\$(DebugOrRelease)\$(PlatformToolset)\$(DefaultLinkage)\</IntDir>
     <TargetDir>$(OutDir)</TargetDir>
     <TargetName>$(TargetName)</TargetName>
     <TargetPath>$(TargetDir)$(TargetName)$(TargetExt)</TargetPath>

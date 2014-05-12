@@ -3,7 +3,6 @@
   
   <PropertyGroup>
     <_PropertySheetDisplayName>x64 Settings</_PropertySheetDisplayName>
-    <Processor>x64</Processor>      
   </PropertyGroup>
     
   <ItemDefinitionGroup>

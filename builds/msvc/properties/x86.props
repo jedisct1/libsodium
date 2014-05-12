@@ -3,7 +3,6 @@
   
   <PropertyGroup>
     <_PropertySheetDisplayName>x86 Settings</_PropertySheetDisplayName>
-    <Processor>x86</Processor>      
   </PropertyGroup>
   
   <ItemDefinitionGroup>
