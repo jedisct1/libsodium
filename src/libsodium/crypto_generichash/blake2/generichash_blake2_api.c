@@ -26,12 +26,12 @@ crypto_generichash_blake2b_blockbytes(void) {
 }
 
 size_t
-crypto_generichash_blake2b_salt_bytes(void) {
+crypto_generichash_blake2b_saltbytes(void) {
     return crypto_generichash_blake2b_SALTBYTES;
 }
 
 size_t
-crypto_generichash_blake2b_personal_bytes(void) {
+crypto_generichash_blake2b_personalbytes(void) {
     return crypto_generichash_blake2b_PERSONALBYTES;
 }
 
