@@ -22,6 +22,7 @@ poly1305-donna32 and poly1305-donna64 implementations.
  - hmacsha256, hmacsha512 and hmacsha512256 now support keys of
 arbitrary length, and have a streaming interface.
  - crypto_verify_64() has been implemented.
+ - first-class Visual Studio build system, thanks to @evoskuil
 
 * Version 0.4.5
  - Restore compatibility with OSX <= 10.6
