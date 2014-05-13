@@ -1,6 +1,8 @@
 #ifndef crypto_hash_H
 #define crypto_hash_H
 
+#include <stddef.h>
+
 #include "crypto_hash_sha512.h"
 #include "export.h"
 
