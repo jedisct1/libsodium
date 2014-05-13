@@ -18,10 +18,11 @@ SODIUM_EXPORT
 size_t crypto_scalarmult_curve25519_scalarbytes(void);
 
 SODIUM_EXPORT
-int crypto_scalarmult_curve25519(unsigned char *,const unsigned char *,const unsigned char *);
+int crypto_scalarmult_curve25519(unsigned char *q, const unsigned char *n,
+                                 const unsigned char *p);
 
 SODIUM_EXPORT
-int crypto_scalarmult_curve25519_base(unsigned char *,const unsigned char *);
+int crypto_scalarmult_curve25519_base(unsigned char *q, const unsigned char *n);
 
 #ifdef __cplusplus
 }
