@@ -1,13 +1,13 @@
 @ECHO OFF
-REM Usage: [buildbase.bat ..\vs2013\libzmq.sln 12]
+REM Usage: [buildbase.bat ..\vs2013\mysolution.sln 12]
 
 SET solution=%1
 SET version=%2
-
 SET log=build_%version%.log
-
-REM This breaks if visual studio is not installed or is installed to a non-default location.
-SET environment="C:\Program Files (x86)\Microsoft Visual Studio %version%.0\VC\vcvarsall.bat"
+SET tools=Microsoft Visual Studio %version%.0\VC\vcvarsall.bat
+SET environment="%programfiles(x86)%\%tools%"
+IF NOT EXIST %environment% SET environment="%programfiles%\%tools%"
+IF NOT EXIST %environment% GOTO no_tools
 
 ECHO Building: %solution%
 
@@ -59,7 +59,11 @@ ECHO Complete: %solution%
 GOTO end
 
 :error
-ECHO *** ERROR, build terminated, see: %log%
+ECHO *** ERROR, build terminated early, see: %log%
+GOTO end
+
+:no_tools
+ECHO *** ERROR, build tools not found: %tools%
 
 :end
 

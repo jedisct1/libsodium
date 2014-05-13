@@ -58,63 +58,8 @@
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
-  <ImportGroup Condition="'$(Configuration)|$(Platform)'=='DebugDEXE|Win32'" Label="PropertySheets">
-    <Import Project="$(ProjectDir)..\..\properties\DebugDEXE.props" />
-    <Import Project="$(ProjectDir)..\..\properties\Output.props" />
-    <Import Project="$(ProjectDir)$(ProjectName).props" />
-  </ImportGroup>
-  <ImportGroup Condition="'$(Configuration)|$(Platform)'=='ReleaseDEXE|Win32'" Label="PropertySheets">
-    <Import Project="$(ProjectDir)..\..\properties\ReleaseDEXE.props" />
-    <Import Project="$(ProjectDir)..\..\properties\Output.props" />
-    <Import Project="$(ProjectDir)$(ProjectName).props" />
-  </ImportGroup>
-  <ImportGroup Condition="'$(Configuration)|$(Platform)'=='DebugDEXE|x64'" Label="PropertySheets">
-    <Import Project="$(ProjectDir)..\..\properties\DebugDEXE.props" />
-    <Import Project="$(ProjectDir)..\..\properties\Output.props" />
-    <Import Project="$(ProjectDir)$(ProjectName).props" />
-  </ImportGroup>
-  <ImportGroup Condition="'$(Configuration)|$(Platform)'=='ReleaseDEXE|x64'" Label="PropertySheets">
-    <Import Project="$(ProjectDir)..\..\properties\ReleaseDEXE.props" />
-    <Import Project="$(ProjectDir)..\..\properties\Output.props" />
-    <Import Project="$(ProjectDir)$(ProjectName).props" />
-  </ImportGroup>
-  <ImportGroup Condition="'$(Configuration)|$(Platform)'=='DebugLEXE|Win32'" Label="PropertySheets">
-    <Import Project="$(ProjectDir)..\..\properties\DebugLEXE.props" />
-    <Import Project="$(ProjectDir)..\..\properties\Output.props" />
-    <Import Project="$(ProjectDir)$(ProjectName).props" />
-  </ImportGroup>
-  <ImportGroup Condition="'$(Configuration)|$(Platform)'=='ReleaseLEXE|Win32'" Label="PropertySheets">
-    <Import Project="$(ProjectDir)..\..\properties\ReleaseLEXE.props" />
-    <Import Project="$(ProjectDir)..\..\properties\Output.props" />
-    <Import Project="$(ProjectDir)$(ProjectName).props" />
-  </ImportGroup>
-  <ImportGroup Condition="'$(Configuration)|$(Platform)'=='DebugLEXE|x64'" Label="PropertySheets">
-    <Import Project="$(ProjectDir)..\..\properties\DebugLEXE.props" />
-    <Import Project="$(ProjectDir)..\..\properties\Output.props" />
-    <Import Project="$(ProjectDir)$(ProjectName).props" />
-  </ImportGroup>
-  <ImportGroup Condition="'$(Configuration)|$(Platform)'=='ReleaseLEXE|x64'" Label="PropertySheets">
-    <Import Project="$(ProjectDir)..\..\properties\ReleaseLEXE.props" />
-    <Import Project="$(ProjectDir)..\..\properties\Output.props" />
-    <Import Project="$(ProjectDir)$(ProjectName).props" />
-  </ImportGroup>
-  <ImportGroup Condition="'$(Configuration)|$(Platform)'=='DebugSEXE|Win32'" Label="PropertySheets">
-    <Import Project="$(ProjectDir)..\..\properties\DebugSEXE.props" />
-    <Import Project="$(ProjectDir)..\..\properties\Output.props" />
-    <Import Project="$(ProjectDir)$(ProjectName).props" />
-  </ImportGroup>
-  <ImportGroup Condition="'$(Configuration)|$(Platform)'=='ReleaseSEXE|Win32'" Label="PropertySheets">
-    <Import Project="$(ProjectDir)..\..\properties\ReleaseSEXE.props" />
-    <Import Project="$(ProjectDir)..\..\properties\Output.props" />
-    <Import Project="$(ProjectDir)$(ProjectName).props" />
-  </ImportGroup>
-  <ImportGroup Condition="'$(Configuration)|$(Platform)'=='DebugSEXE|x64'" Label="PropertySheets">
-    <Import Project="$(ProjectDir)..\..\properties\DebugSEXE.props" />
-    <Import Project="$(ProjectDir)..\..\properties\Output.props" />
-    <Import Project="$(ProjectDir)$(ProjectName).props" />
-  </ImportGroup>
-  <ImportGroup Condition="'$(Configuration)|$(Platform)'=='ReleaseSEXE|x64'" Label="PropertySheets">
-    <Import Project="$(ProjectDir)..\..\properties\ReleaseSEXE.props" />
+  <ImportGroup Label="PropertySheets">
+    <Import Project="$(ProjectDir)..\..\properties\$(Configuration).props" />
     <Import Project="$(ProjectDir)..\..\properties\Output.props" />
     <Import Project="$(ProjectDir)$(ProjectName).props" />
   </ImportGroup>

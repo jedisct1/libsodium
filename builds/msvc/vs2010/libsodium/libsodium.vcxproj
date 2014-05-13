@@ -55,101 +55,14 @@
       <Platform>x64</Platform>
     </ProjectConfiguration>
   </ItemGroup>
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='DebugDLL|Win32'" Label="Configuration">
-    <ConfigurationType>DynamicLibrary</ConfigurationType>
-  </PropertyGroup>
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='ReleaseDLL|Win32'" Label="Configuration">
-    <ConfigurationType>DynamicLibrary</ConfigurationType>
-  </PropertyGroup>
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='DebugDLL|x64'" Label="Configuration">
-    <ConfigurationType>DynamicLibrary</ConfigurationType>
-  </PropertyGroup>
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='ReleaseDLL|x64'" Label="Configuration">
-    <ConfigurationType>DynamicLibrary</ConfigurationType>
-  </PropertyGroup>
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='DebugLTCG|Win32'" Label="Configuration">
-    <ConfigurationType>StaticLibrary</ConfigurationType>
-  </PropertyGroup>
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='ReleaseLTCG|Win32'" Label="Configuration">
-    <ConfigurationType>StaticLibrary</ConfigurationType>
-  </PropertyGroup>
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='DebugLTCG|x64'" Label="Configuration">
-    <ConfigurationType>StaticLibrary</ConfigurationType>
-  </PropertyGroup>
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='ReleaseLTCG|x64'" Label="Configuration">
-    <ConfigurationType>StaticLibrary</ConfigurationType>
-  </PropertyGroup>
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='DebugLIB|Win32'" Label="Configuration">
-    <ConfigurationType>StaticLibrary</ConfigurationType>
-  </PropertyGroup>
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='ReleaseLIB|Win32'" Label="Configuration">
-    <ConfigurationType>StaticLibrary</ConfigurationType>
-  </PropertyGroup>
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='DebugLIB|x64'" Label="Configuration">
-    <ConfigurationType>StaticLibrary</ConfigurationType>
-  </PropertyGroup>
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='ReleaseLIB|x64'" Label="Configuration">
-    <ConfigurationType>StaticLibrary</ConfigurationType>
-  </PropertyGroup>  
+  <PropertyGroup Label="Configuration">
+    <ConfigurationType Condition="$(Configuration.IndexOf('DLL')) == -1">StaticLibrary</ConfigurationType>
+    <ConfigurationType Condition="$(Configuration.IndexOf('DLL')) != -1">DynamicLibrary</ConfigurationType>
+  </PropertyGroup> 
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
-  <ImportGroup Condition="'$(Configuration)|$(Platform)'=='DebugDLL|Win32'" Label="PropertySheets">
-    <Import Project="$(ProjectDir)..\..\properties\DebugDLL.props" />
-    <Import Project="$(ProjectDir)..\..\properties\Output.props" />
-    <Import Project="$(ProjectDir)$(ProjectName).props" />
-  </ImportGroup>
-  <ImportGroup Condition="'$(Configuration)|$(Platform)'=='ReleaseDLL|Win32'" Label="PropertySheets">
-    <Import Project="$(ProjectDir)..\..\properties\ReleaseDLL.props" />
-    <Import Project="$(ProjectDir)..\..\properties\Output.props" />
-    <Import Project="$(ProjectDir)$(ProjectName).props" />
-  </ImportGroup>
-  <ImportGroup Condition="'$(Configuration)|$(Platform)'=='DebugDLL|x64'" Label="PropertySheets">
-    <Import Project="$(ProjectDir)..\..\properties\DebugDLL.props" />
-    <Import Project="$(ProjectDir)..\..\properties\Output.props" />
-    <Import Project="$(ProjectDir)$(ProjectName).props" />
-  </ImportGroup>
-  <ImportGroup Condition="'$(Configuration)|$(Platform)'=='ReleaseDLL|x64'" Label="PropertySheets">
-    <Import Project="$(ProjectDir)..\..\properties\ReleaseDLL.props" />
-    <Import Project="$(ProjectDir)..\..\properties\Output.props" />
-    <Import Project="$(ProjectDir)$(ProjectName).props" />
-  </ImportGroup>
-  <ImportGroup Condition="'$(Configuration)|$(Platform)'=='DebugLTCG|Win32'" Label="PropertySheets">
-    <Import Project="$(ProjectDir)..\..\properties\DebugLTCG.props" />
-    <Import Project="$(ProjectDir)..\..\properties\Output.props" />
-    <Import Project="$(ProjectDir)$(ProjectName).props" />
-  </ImportGroup>
-  <ImportGroup Condition="'$(Configuration)|$(Platform)'=='ReleaseLTCG|Win32'" Label="PropertySheets">
-    <Import Project="$(ProjectDir)..\..\properties\ReleaseLTCG.props" />
-    <Import Project="$(ProjectDir)..\..\properties\Output.props" />
-    <Import Project="$(ProjectDir)$(ProjectName).props" />
-  </ImportGroup>
-  <ImportGroup Condition="'$(Configuration)|$(Platform)'=='DebugLTCG|x64'" Label="PropertySheets">
-    <Import Project="$(ProjectDir)..\..\properties\DebugLTCG.props" />
-    <Import Project="$(ProjectDir)..\..\properties\Output.props" />
-    <Import Project="$(ProjectDir)$(ProjectName).props" />
-  </ImportGroup>
-  <ImportGroup Condition="'$(Configuration)|$(Platform)'=='ReleaseLTCG|x64'" Label="PropertySheets">
-    <Import Project="$(ProjectDir)..\..\properties\ReleaseLTCG.props" />
-    <Import Project="$(ProjectDir)..\..\properties\Output.props" />
-    <Import Project="$(ProjectDir)$(ProjectName).props" />
-  </ImportGroup>
-  <ImportGroup Condition="'$(Configuration)|$(Platform)'=='DebugLIB|Win32'" Label="PropertySheets">
-    <Import Project="$(ProjectDir)..\..\properties\DebugLIB.props" />
-    <Import Project="$(ProjectDir)..\..\properties\Output.props" />
-    <Import Project="$(ProjectDir)$(ProjectName).props" />
-  </ImportGroup>
-  <ImportGroup Condition="'$(Configuration)|$(Platform)'=='ReleaseLIB|Win32'" Label="PropertySheets">
-    <Import Project="$(ProjectDir)..\..\properties\ReleaseLIB.props" />
-    <Import Project="$(ProjectDir)..\..\properties\Output.props" />
-    <Import Project="$(ProjectDir)$(ProjectName).props" />
-  </ImportGroup>
-  <ImportGroup Condition="'$(Configuration)|$(Platform)'=='DebugLIB|x64'" Label="PropertySheets">
-    <Import Project="$(ProjectDir)..\..\properties\DebugLIB.props" />
-    <Import Project="$(ProjectDir)..\..\properties\Output.props" />
-    <Import Project="$(ProjectDir)$(ProjectName).props" />
-  </ImportGroup>
-  <ImportGroup Condition="'$(Configuration)|$(Platform)'=='ReleaseLIB|x64'" Label="PropertySheets">
-    <Import Project="$(ProjectDir)..\..\properties\ReleaseLIB.props" />
+  <ImportGroup Label="PropertySheets">
+    <Import Project="$(ProjectDir)..\..\properties\$(Configuration).props" />
     <Import Project="$(ProjectDir)..\..\properties\Output.props" />
     <Import Project="$(ProjectDir)$(ProjectName).props" />
   </ImportGroup>
