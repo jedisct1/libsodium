@@ -91,17 +91,16 @@ _sodium_runtime_intel_cpu_features(CPUFeatures * const cpu_features)
         return -1;
     }
     _cpuid(cpu_info, 0x00000001);
-
 #ifndef HAVE_EMMINTRIN_H
-    cpu_features->has_sse2 = ((cpu_info[3] & CPUID_SSE2) != 0x0);
-#else
     cpu_features->has_sse2 = 0;
+#else
+    cpu_features->has_sse2 = ((cpu_info[3] & CPUID_SSE2) != 0x0);
 #endif
 
 #ifndef HAVE_PMMINTRIN_H
-    cpu_features->has_sse3 = ((cpu_info[2] & CPUIDECX_SSE3) != 0x0);
-#else
     cpu_features->has_sse3 = 0;
+#else
+    cpu_features->has_sse3 = ((cpu_info[2] & CPUIDECX_SSE3) != 0x0);
 #endif
 
     return 0;
