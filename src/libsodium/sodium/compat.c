@@ -14,6 +14,8 @@
 #include "crypto_verify_32.h"
 #include "export.h"
 
+#ifdef EXPORT_ORIGINAL_IMPLEMENTATIONS
+
 #ifdef __cplusplus
 extern "C" {
 #endif
@@ -303,4 +305,6 @@ crypto_stream_salsa20_ref_xor(unsigned char *c,
 
 #ifdef __cplusplus
 }
+#endif
+
 #endif
