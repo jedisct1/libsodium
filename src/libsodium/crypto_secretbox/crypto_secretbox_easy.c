@@ -62,6 +62,8 @@ crypto_secretbox_open_easy(unsigned char *m, const unsigned char *c,
     size_t         m_boxed_len;
     int            rc;
 
+    (void) sizeof(int[crypto_secretbox_BOXZEROBYTES + crypto_secretbox_MACBYTES
+                      == crypto_secretbox_ZEROBYTES]);
     if (clen < crypto_secretbox_MACBYTES ||
         clen > SIZE_MAX - crypto_secretbox_BOXZEROBYTES) {
         return -1;
