@@ -5,9 +5,6 @@
 #include "crypto_hash_sha256.h"
 #include "export.h"
 
-#define crypto_auth_hmacsha256_BYTES 32U
-#define crypto_auth_hmacsha256_KEYBYTES 32U
-
 #ifdef __cplusplus
 # if __GNUC__
 #  pragma GCC diagnostic ignored "-Wlong-long"
@@ -20,9 +17,11 @@ typedef struct crypto_auth_hmacsha256_state {
     crypto_hash_sha256_state octx;
 } crypto_auth_hmacsha256_state;
 
+#define crypto_auth_hmacsha256_BYTES 32U
 SODIUM_EXPORT
 size_t crypto_auth_hmacsha256_bytes(void);
 
+#define crypto_auth_hmacsha256_KEYBYTES 32U
 SODIUM_EXPORT
 size_t crypto_auth_hmacsha256_keybytes(void);
 

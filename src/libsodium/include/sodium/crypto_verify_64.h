@@ -4,12 +4,11 @@
 #include <stddef.h>
 #include "export.h"
 
-#define crypto_verify_64_BYTES 64U
-
 #ifdef __cplusplus
 extern "C" {
 #endif
 
+#define crypto_verify_64_BYTES 64U
 SODIUM_EXPORT
 size_t crypto_verify_64_bytes(void);
 

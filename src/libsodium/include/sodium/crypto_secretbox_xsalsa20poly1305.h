@@ -4,12 +4,6 @@
 #include <stddef.h>
 #include "export.h"
 
-#define crypto_secretbox_xsalsa20poly1305_KEYBYTES 32U
-#define crypto_secretbox_xsalsa20poly1305_NONCEBYTES 24U
-#define crypto_secretbox_xsalsa20poly1305_ZEROBYTES 32U
-#define crypto_secretbox_xsalsa20poly1305_BOXZEROBYTES 16U
-#define crypto_secretbox_xsalsa20poly1305_MACBYTES (crypto_secretbox_xsalsa20poly1305_ZEROBYTES - crypto_secretbox_xsalsa20poly1305_BOXZEROBYTES)
-
 #ifdef __cplusplus
 # if __GNUC__
 #  pragma GCC diagnostic ignored "-Wlong-long"
@@ -17,18 +11,25 @@
 extern "C" {
 #endif
 
+#define crypto_secretbox_xsalsa20poly1305_KEYBYTES 32U
 SODIUM_EXPORT
 size_t crypto_secretbox_xsalsa20poly1305_keybytes(void);
 
+#define crypto_secretbox_xsalsa20poly1305_NONCEBYTES 24U
 SODIUM_EXPORT
 size_t crypto_secretbox_xsalsa20poly1305_noncebytes(void);
 
+#define crypto_secretbox_xsalsa20poly1305_ZEROBYTES 32U
 SODIUM_EXPORT
 size_t crypto_secretbox_xsalsa20poly1305_zerobytes(void);
 
+#define crypto_secretbox_xsalsa20poly1305_BOXZEROBYTES 16U
 SODIUM_EXPORT
 size_t crypto_secretbox_xsalsa20poly1305_boxzerobytes(void);
 
+#define crypto_secretbox_xsalsa20poly1305_MACBYTES \
+    (crypto_secretbox_xsalsa20poly1305_ZEROBYTES - \
+     crypto_secretbox_xsalsa20poly1305_BOXZEROBYTES)
 SODIUM_EXPORT
 size_t crypto_secretbox_xsalsa20poly1305_macbytes(void);
 

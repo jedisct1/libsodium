@@ -13,10 +13,6 @@
 extern "C" {
 #endif
 
-#define crypto_generichash_BYTES crypto_generichash_blake2b_BYTES
-SODIUM_EXPORT
-size_t  crypto_generichash_bytes(void);
-
 #define crypto_generichash_BYTES_MIN crypto_generichash_blake2b_BYTES_MIN
 SODIUM_EXPORT
 size_t  crypto_generichash_bytes_min(void);
@@ -25,9 +21,9 @@ size_t  crypto_generichash_bytes_min(void);
 SODIUM_EXPORT
 size_t  crypto_generichash_bytes_max(void);
 
-#define crypto_generichash_KEYBYTES crypto_generichash_blake2b_KEYBYTES
+#define crypto_generichash_BYTES crypto_generichash_blake2b_BYTES
 SODIUM_EXPORT
-size_t  crypto_generichash_keybytes(void);
+size_t  crypto_generichash_bytes(void);
 
 #define crypto_generichash_KEYBYTES_MIN crypto_generichash_blake2b_KEYBYTES_MIN
 SODIUM_EXPORT
@@ -37,9 +33,9 @@ size_t  crypto_generichash_keybytes_min(void);
 SODIUM_EXPORT
 size_t  crypto_generichash_keybytes_max(void);
 
-#define crypto_generichash_BLOCKBYTES crypto_generichash_blake2b_BLOCKBYTES
+#define crypto_generichash_KEYBYTES crypto_generichash_blake2b_KEYBYTES
 SODIUM_EXPORT
-size_t  crypto_generichash_blockbytes(void);
+size_t  crypto_generichash_keybytes(void);
 
 #define crypto_generichash_PRIMITIVE "blake2b"
 SODIUM_EXPORT

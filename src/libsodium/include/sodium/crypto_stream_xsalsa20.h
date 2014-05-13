@@ -12,9 +12,6 @@
 #include <stddef.h>
 #include "export.h"
 
-#define crypto_stream_xsalsa20_KEYBYTES 32U
-#define crypto_stream_xsalsa20_NONCEBYTES 24U
-
 #ifdef __cplusplus
 # if __GNUC__
 #  pragma GCC diagnostic ignored "-Wlong-long"
@@ -22,9 +19,11 @@
 extern "C" {
 #endif
 
+#define crypto_stream_xsalsa20_KEYBYTES 32U
 SODIUM_EXPORT
 size_t crypto_stream_xsalsa20_keybytes(void);
 
+#define crypto_stream_xsalsa20_NONCEBYTES 24U
 SODIUM_EXPORT
 size_t crypto_stream_xsalsa20_noncebytes(void);
 

@@ -5,9 +5,6 @@
 
 #include "export.h"
 
-#define crypto_pwhash_scryptxsalsa208sha256_SALTBYTES 32
-#define crypto_pwhash_scryptxsalsa208sha256_STRBYTES 102
-
 #ifdef __cplusplus
 # if __GNUC__
 #  pragma GCC diagnostic ignored "-Wlong-long"
@@ -15,9 +12,11 @@
 extern "C" {
 #endif
 
+#define crypto_pwhash_scryptxsalsa208sha256_SALTBYTES 32
 SODIUM_EXPORT
 size_t crypto_pwhash_scryptxsalsa208sha256_saltbytes(void);
 
+#define crypto_pwhash_scryptxsalsa208sha256_STRBYTES 102
 SODIUM_EXPORT
 size_t crypto_pwhash_scryptxsalsa208sha256_strbytes(void);
 

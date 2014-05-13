@@ -7,16 +7,6 @@
 
 #include "export.h"
 
-#define crypto_generichash_blake2b_BYTES         32U
-#define crypto_generichash_blake2b_BYTES_MIN     16U
-#define crypto_generichash_blake2b_BYTES_MAX     64U
-#define crypto_generichash_blake2b_KEYBYTES      32U
-#define crypto_generichash_blake2b_KEYBYTES_MIN  16U
-#define crypto_generichash_blake2b_KEYBYTES_MAX  64U
-#define crypto_generichash_blake2b_BLOCKBYTES   128U
-#define crypto_generichash_blake2b_SALTBYTES     16U
-#define crypto_generichash_blake2b_PERSONALBYTES 16U
-
 #if defined(_MSC_VER)
 # define CRYPTO_ALIGN(x) __declspec(align(x))
 #else
@@ -35,30 +25,41 @@ CRYPTO_ALIGN(64) typedef struct crypto_generichash_blake2b_state {
     uint64_t h[8];
     uint64_t t[2];
     uint64_t f[2];
-    uint8_t  buf[2 * crypto_generichash_blake2b_BLOCKBYTES];
+    uint8_t  buf[2 * 128];
     size_t   buflen;
     uint8_t  last_node;
 } crypto_generichash_blake2b_state;
 #pragma pack(pop)
 
+#define crypto_generichash_blake2b_BYTES_MIN     16U
 SODIUM_EXPORT
 size_t crypto_generichash_blake2b_bytes_min(void);
 
+#define crypto_generichash_blake2b_BYTES_MAX     64U
 SODIUM_EXPORT
 size_t crypto_generichash_blake2b_bytes_max(void);
 
+#define crypto_generichash_blake2b_BYTES         32U
+SODIUM_EXPORT
+size_t crypto_generichash_blake2b_bytes(void);
+
+#define crypto_generichash_blake2b_KEYBYTES_MIN  16U
 SODIUM_EXPORT
 size_t crypto_generichash_blake2b_keybytes_min(void);
 
+#define crypto_generichash_blake2b_KEYBYTES_MAX  64U
 SODIUM_EXPORT
 size_t crypto_generichash_blake2b_keybytes_max(void);
 
+#define crypto_generichash_blake2b_KEYBYTES      32U
 SODIUM_EXPORT
-size_t crypto_generichash_blake2b_blockbytes(void);
+size_t crypto_generichash_blake2b_keybytes(void);
 
+#define crypto_generichash_blake2b_SALTBYTES     16U
 SODIUM_EXPORT
 size_t crypto_generichash_blake2b_saltbytes(void);
 
+#define crypto_generichash_blake2b_PERSONALBYTES 16U
 SODIUM_EXPORT
 size_t crypto_generichash_blake2b_personalbytes(void);
 

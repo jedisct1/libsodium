@@ -5,9 +5,6 @@
 #include "crypto_hash_sha512.h"
 #include "export.h"
 
-#define crypto_auth_hmacsha512_BYTES 64U
-#define crypto_auth_hmacsha512_KEYBYTES 32U
-
 #ifdef __cplusplus
 # if __GNUC__
 #  pragma GCC diagnostic ignored "-Wlong-long"
@@ -20,9 +17,11 @@ typedef struct crypto_auth_hmacsha512_state {
     crypto_hash_sha512_state octx;
 } crypto_auth_hmacsha512_state;
 
+#define crypto_auth_hmacsha512_BYTES 64U
 SODIUM_EXPORT
 size_t crypto_auth_hmacsha512_bytes(void);
 
+#define crypto_auth_hmacsha512_KEYBYTES 32U
 SODIUM_EXPORT
 size_t crypto_auth_hmacsha512_keybytes(void);
 
@@ -54,7 +53,7 @@ int crypto_auth_hmacsha512_update(crypto_auth_hmacsha512_state *state,
 SODIUM_EXPORT
 int crypto_auth_hmacsha512_final(crypto_auth_hmacsha512_state *state,
                                  unsigned char *out);
-    
+
 #ifdef __cplusplus
 }
 #endif

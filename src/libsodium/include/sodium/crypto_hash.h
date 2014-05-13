@@ -4,10 +4,6 @@
 #include "crypto_hash_sha512.h"
 #include "export.h"
 
-#define crypto_hash_BYTES crypto_hash_sha512_BYTES
-#define crypto_hash_BLOCKBYTES crypto_hash_sha512_BLOCKBYTES
-#define crypto_hash_PRIMITIVE "sha512"
-
 #ifdef __cplusplus
 # if __GNUC__
 #  pragma GCC diagnostic ignored "-Wlong-long"
@@ -15,10 +11,15 @@
 extern "C" {
 #endif
 
+#define crypto_hash_BYTES crypto_hash_sha512_BYTES
+SODIUM_EXPORT
+size_t crypto_hash_bytes(void);
+
 SODIUM_EXPORT
 int crypto_hash(unsigned char *out, const unsigned char *in,
                 unsigned long long inlen);
 
+#define crypto_hash_PRIMITIVE "sha512"
 SODIUM_EXPORT
 const char *crypto_hash_primitive(void);
 

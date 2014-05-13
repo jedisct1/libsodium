@@ -1,6 +1,12 @@
 
 #include "crypto_hash.h"
 
+size_t
+crypto_hash_bytes(void)
+{
+    return crypto_hash_BYTES;
+}
+
 int
 crypto_hash(unsigned char *out, const unsigned char *in,
             unsigned long long inlen)

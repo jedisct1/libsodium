@@ -4,9 +4,6 @@
 #include <stddef.h>
 #include "export.h"
 
-#define crypto_shorthash_siphash24_BYTES 8U
-#define crypto_shorthash_siphash24_KEYBYTES 16U
-
 #ifdef __cplusplus
 # if __GNUC__
 #  pragma GCC diagnostic ignored "-Wlong-long"
@@ -14,9 +11,11 @@
 extern "C" {
 #endif
 
+#define crypto_shorthash_siphash24_BYTES 8U
 SODIUM_EXPORT
 size_t crypto_shorthash_siphash24_bytes(void);
 
+#define crypto_shorthash_siphash24_KEYBYTES 16U
 SODIUM_EXPORT
 size_t crypto_shorthash_siphash24_keybytes(void);
 

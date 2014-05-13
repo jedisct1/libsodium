@@ -4,14 +4,6 @@
 #include <stddef.h>
 #include "export.h"
 
-#define crypto_box_curve25519xsalsa20poly1305_PUBLICKEYBYTES 32U
-#define crypto_box_curve25519xsalsa20poly1305_SECRETKEYBYTES 32U
-#define crypto_box_curve25519xsalsa20poly1305_BEFORENMBYTES 32U
-#define crypto_box_curve25519xsalsa20poly1305_NONCEBYTES 24U
-#define crypto_box_curve25519xsalsa20poly1305_ZEROBYTES 32U
-#define crypto_box_curve25519xsalsa20poly1305_BOXZEROBYTES 16U
-#define crypto_box_curve25519xsalsa20poly1305_MACBYTES (crypto_box_curve25519xsalsa20poly1305_ZEROBYTES - crypto_box_curve25519xsalsa20poly1305_BOXZEROBYTES)
-
 #ifdef __cplusplus
 # if __GNUC__
 #  pragma GCC diagnostic ignored "-Wlong-long"
@@ -19,24 +11,33 @@
 extern "C" {
 #endif
 
+#define crypto_box_curve25519xsalsa20poly1305_PUBLICKEYBYTES 32U
 SODIUM_EXPORT
 size_t crypto_box_curve25519xsalsa20poly1305_publickeybytes(void);
 
+#define crypto_box_curve25519xsalsa20poly1305_SECRETKEYBYTES 32U
 SODIUM_EXPORT
 size_t crypto_box_curve25519xsalsa20poly1305_secretkeybytes(void);
 
+#define crypto_box_curve25519xsalsa20poly1305_BEFORENMBYTES 32U
 SODIUM_EXPORT
 size_t crypto_box_curve25519xsalsa20poly1305_beforenmbytes(void);
 
+#define crypto_box_curve25519xsalsa20poly1305_NONCEBYTES 24U
 SODIUM_EXPORT
 size_t crypto_box_curve25519xsalsa20poly1305_noncebytes(void);
 
+#define crypto_box_curve25519xsalsa20poly1305_ZEROBYTES 32U
 SODIUM_EXPORT
 size_t crypto_box_curve25519xsalsa20poly1305_zerobytes(void);
 
+#define crypto_box_curve25519xsalsa20poly1305_BOXZEROBYTES 16U
 SODIUM_EXPORT
 size_t crypto_box_curve25519xsalsa20poly1305_boxzerobytes(void);
 
+#define crypto_box_curve25519xsalsa20poly1305_MACBYTES \
+    (crypto_box_curve25519xsalsa20poly1305_ZEROBYTES - \
+     crypto_box_curve25519xsalsa20poly1305_BOXZEROBYTES)
 SODIUM_EXPORT
 size_t crypto_box_curve25519xsalsa20poly1305_macbytes(void);
 

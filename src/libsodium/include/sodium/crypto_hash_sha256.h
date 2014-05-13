@@ -7,9 +7,6 @@
 
 #include "export.h"
 
-#define crypto_hash_sha256_BYTES 32U
-#define crypto_hash_sha256_BLOCKBYTES 64U
-
 #ifdef __cplusplus
 # if __GNUC__
 #  pragma GCC diagnostic ignored "-Wlong-long"
@@ -23,6 +20,7 @@ typedef struct crypto_hash_sha256_state {
     unsigned char buf[64];
 } crypto_hash_sha256_state;
 
+#define crypto_hash_sha256_BYTES 32U
 SODIUM_EXPORT
 size_t crypto_hash_sha256_bytes(void);
 

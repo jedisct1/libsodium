@@ -4,8 +4,6 @@
 #include <stddef.h>
 #include "export.h"
 
-#define crypto_onetimeauth_poly1305_BYTES 16U
-#define crypto_onetimeauth_poly1305_KEYBYTES 32U
 #ifdef __cplusplus
 # if __GNUC__
 #  pragma GCC diagnostic ignored "-Wlong-long"
@@ -30,9 +28,11 @@ typedef struct crypto_onetimeauth_poly1305_implementation {
                                       const unsigned char *k);
 } crypto_onetimeauth_poly1305_implementation;
 
+#define crypto_onetimeauth_poly1305_BYTES 16U
 SODIUM_EXPORT
 size_t crypto_onetimeauth_poly1305_bytes(void);
 
+#define crypto_onetimeauth_poly1305_KEYBYTES 32U
 SODIUM_EXPORT
 size_t crypto_onetimeauth_poly1305_keybytes(void);
 

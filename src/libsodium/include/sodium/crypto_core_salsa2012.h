@@ -4,24 +4,23 @@
 #include <stddef.h>
 #include "export.h"
 
-#define crypto_core_salsa2012_OUTPUTBYTES 64U
-#define crypto_core_salsa2012_INPUTBYTES 16U
-#define crypto_core_salsa2012_KEYBYTES 32U
-#define crypto_core_salsa2012_CONSTBYTES 16U
-
 #ifdef __cplusplus
 extern "C" {
 #endif
 
+#define crypto_core_salsa2012_OUTPUTBYTES 64U
 SODIUM_EXPORT
 size_t crypto_core_salsa2012_outputbytes(void);
 
+#define crypto_core_salsa2012_INPUTBYTES 16U
 SODIUM_EXPORT
 size_t crypto_core_salsa2012_inputbytes(void);
 
+#define crypto_core_salsa2012_KEYBYTES 32U
 SODIUM_EXPORT
 size_t crypto_core_salsa2012_keybytes(void);
 
+#define crypto_core_salsa2012_CONSTBYTES 16U
 SODIUM_EXPORT
 size_t crypto_core_salsa2012_constbytes(void);
 

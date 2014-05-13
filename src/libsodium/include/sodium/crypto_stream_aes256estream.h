@@ -13,10 +13,6 @@
 #include <stddef.h>
 #include "export.h"
 
-#define crypto_stream_aes256estream_KEYBYTES 32U
-#define crypto_stream_aes256estream_NONCEBYTES 16U
-#define crypto_stream_aes256estream_BEFORENMBYTES 276U
-
 #ifdef __cplusplus
 # if __GNUC__
 #  pragma GCC diagnostic ignored "-Wlong-long"
@@ -24,12 +20,15 @@
 extern "C" {
 #endif
 
+#define crypto_stream_aes256estream_KEYBYTES 32U
 SODIUM_EXPORT
 size_t crypto_stream_aes256estream_keybytes(void);
 
+#define crypto_stream_aes256estream_NONCEBYTES 16U
 SODIUM_EXPORT
 size_t crypto_stream_aes256estream_noncebytes(void);
 
+#define crypto_stream_aes256estream_BEFORENMBYTES 276U
 SODIUM_EXPORT
 size_t crypto_stream_aes256estream_beforenmbytes(void);
 

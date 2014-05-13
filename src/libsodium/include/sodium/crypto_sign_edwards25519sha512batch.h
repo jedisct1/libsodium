@@ -4,10 +4,6 @@
 #include <stddef.h>
 #include "export.h"
 
-#define crypto_sign_edwards25519sha512batch_SECRETKEYBYTES (32U + 32U)
-#define crypto_sign_edwards25519sha512batch_PUBLICKEYBYTES 32U
-#define crypto_sign_edwards25519sha512batch_BYTES 64U
-
 #ifdef __cplusplus
 # if __GNUC__
 #  pragma GCC diagnostic ignored "-Wlong-long"
@@ -15,12 +11,15 @@
 extern "C" {
 #endif
 
+#define crypto_sign_edwards25519sha512batch_BYTES 64U
 SODIUM_EXPORT
 size_t crypto_sign_edwards25519sha512batch_bytes(void);
 
+#define crypto_sign_edwards25519sha512batch_PUBLICKEYBYTES 32U
 SODIUM_EXPORT
 size_t crypto_sign_edwards25519sha512batch_publickeybytes(void);
 
+#define crypto_sign_edwards25519sha512batch_SECRETKEYBYTES (32U + 32U)
 SODIUM_EXPORT
 size_t crypto_sign_edwards25519sha512batch_secretkeybytes(void);
 
