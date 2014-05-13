@@ -25,9 +25,6 @@ SODIUM_EXPORT
 size_t crypto_hash_sha512_bytes(void);
 
 SODIUM_EXPORT
-const char * crypto_hash_sha512_primitive(void);
-
-SODIUM_EXPORT
 int crypto_hash_sha512(unsigned char *out, const unsigned char *in,
                        unsigned long long inlen);
 

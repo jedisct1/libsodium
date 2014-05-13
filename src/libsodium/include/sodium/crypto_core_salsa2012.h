@@ -25,9 +25,6 @@ SODIUM_EXPORT
 size_t crypto_core_salsa2012_constbytes(void);
 
 SODIUM_EXPORT
-const char * crypto_core_salsa2012_primitive(void);
-
-SODIUM_EXPORT
 int crypto_core_salsa2012(unsigned char *out, const unsigned char *in,
                           const unsigned char *k, const unsigned char *c);
 

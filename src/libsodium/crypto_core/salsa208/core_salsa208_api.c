@@ -19,8 +19,3 @@ size_t
 crypto_core_salsa208_constbytes(void) {
     return crypto_core_salsa208_CONSTBYTES;
 }
-
-const char *
-crypto_core_salsa208_primitive(void) {
-    return "salsa208";
-}

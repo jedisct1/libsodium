@@ -34,9 +34,6 @@ SODIUM_EXPORT
 size_t crypto_secretbox_xsalsa20poly1305_macbytes(void);
 
 SODIUM_EXPORT
-const char * crypto_secretbox_xsalsa20poly1305_primitive(void);
-
-SODIUM_EXPORT
 int crypto_secretbox_xsalsa20poly1305(unsigned char *c,
                                       const unsigned char *m,
                                       unsigned long long mlen,

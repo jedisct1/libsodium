@@ -34,8 +34,3 @@ size_t
 crypto_box_curve25519xsalsa20poly1305_macbytes(void) {
     return crypto_box_curve25519xsalsa20poly1305_MACBYTES;
 }
-
-const char *
-crypto_box_curve25519xsalsa20poly1305_primitive(void) {
-    return "curve25519xsalsa20poly1305";
-}

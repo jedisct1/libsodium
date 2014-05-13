@@ -33,9 +33,6 @@ SODIUM_EXPORT
 size_t crypto_stream_aes256estream_beforenmbytes(void);
 
 SODIUM_EXPORT
-const char * crypto_stream_aes256estream_primitive(void);
-
-SODIUM_EXPORT
 int crypto_stream_aes256estream(unsigned char *out, unsigned long long len,
                                 const unsigned char *nonce, const unsigned char *c);
 

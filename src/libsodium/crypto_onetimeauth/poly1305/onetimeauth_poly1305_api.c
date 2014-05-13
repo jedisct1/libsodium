@@ -9,8 +9,3 @@ size_t
 crypto_onetimeauth_poly1305_keybytes(void) {
     return crypto_onetimeauth_poly1305_KEYBYTES;
 }
-
-const char *
-crypto_onetimeauth_poly1305_primitive(void) {
-    return "poly1305";
-}

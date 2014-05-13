@@ -9,8 +9,3 @@ size_t
 crypto_shorthash_siphash24_keybytes(void) {
     return crypto_shorthash_siphash24_KEYBYTES;
 }
-
-const char *
-crypto_shorthash_siphash24_primitive(void) {
-    return "siphash24";
-}

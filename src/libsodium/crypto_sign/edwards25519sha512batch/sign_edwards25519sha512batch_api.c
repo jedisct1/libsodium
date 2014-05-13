@@ -14,8 +14,3 @@ size_t
 crypto_sign_edwards25519sha512batch_secretkeybytes(void) {
     return crypto_sign_edwards25519sha512batch_SECRETKEYBYTES;
 }
-
-const char *
-crypto_sign_edwards25519sha512batch_primitive(void) {
-    return "edwards25519sha512batch";
-}

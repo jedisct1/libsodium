@@ -26,9 +26,6 @@ SODIUM_EXPORT
 size_t crypto_auth_hmacsha256_keybytes(void);
 
 SODIUM_EXPORT
-const char * crypto_auth_hmacsha256_primitive(void);
-
-SODIUM_EXPORT
 int crypto_auth_hmacsha256(unsigned char *out,
                            const unsigned char *in,
                            unsigned long long inlen,

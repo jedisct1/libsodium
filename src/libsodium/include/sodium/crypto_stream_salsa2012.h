@@ -28,9 +28,6 @@ SODIUM_EXPORT
 size_t crypto_stream_salsa2012_noncebytes(void);
 
 SODIUM_EXPORT
-const char * crypto_stream_salsa2012_primitive(void);
-
-SODIUM_EXPORT
 int crypto_stream_salsa2012(unsigned char *c, unsigned long long clen,
                             const unsigned char *n, const unsigned char *k);
 

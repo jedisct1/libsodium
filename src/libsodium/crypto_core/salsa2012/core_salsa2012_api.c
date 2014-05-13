@@ -19,8 +19,3 @@ size_t
 crypto_core_salsa2012_constbytes(void) {
     return crypto_core_salsa2012_CONSTBYTES;
 }
-
-const char *
-crypto_core_salsa2012_primitive(void) {
-    return "salsa2012";
-}

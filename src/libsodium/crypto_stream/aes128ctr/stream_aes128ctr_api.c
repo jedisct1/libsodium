@@ -14,8 +14,3 @@ size_t
 crypto_stream_aes128ctr_beforenmbytes(void) {
     return crypto_stream_aes128ctr_BEFORENMBYTES;
 }
-
-const char *
-crypto_stream_aes128ctr_primitive(void) {
-    return "aes128ctr";
-}

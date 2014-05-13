@@ -14,8 +14,3 @@ size_t
 crypto_stream_aes256estream_beforenmbytes(void) {
     return crypto_stream_aes256estream_BEFORENMBYTES;
 }
-
-const char *
-crypto_stream_aes256estream_primitive(void) {
-    return "aes256estream";
-}

@@ -28,9 +28,6 @@ SODIUM_EXPORT
 size_t crypto_sign_ed25519_secretkeybytes(void);
 
 SODIUM_EXPORT
-const char * crypto_sign_ed25519_primitive(void);
-
-SODIUM_EXPORT
 int crypto_sign_ed25519(unsigned char *sm, unsigned long long *smlen,
                         const unsigned char *m, unsigned long long mlen,
                         const unsigned char *sk);

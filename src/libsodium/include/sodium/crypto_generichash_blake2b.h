@@ -64,9 +64,6 @@ SODIUM_EXPORT
 size_t crypto_generichash_blake2b_personalbytes(void);
 
 SODIUM_EXPORT
-const char * crypto_generichash_blake2b_blockbytes_primitive(void);
-
-SODIUM_EXPORT
 int crypto_generichash_blake2b(unsigned char *out, size_t outlen,
                                const unsigned char *in,
                                unsigned long long inlen,

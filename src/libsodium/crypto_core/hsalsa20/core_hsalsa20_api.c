@@ -19,8 +19,3 @@ size_t
 crypto_core_hsalsa20_constbytes(void) {
     return crypto_core_hsalsa20_CONSTBYTES;
 }
-
-const char *
-crypto_core_hsalsa20_primitive(void) {
-    return "hsalsa20";
-}

@@ -9,8 +9,3 @@ size_t
 crypto_auth_hmacsha256_keybytes(void) {
     return crypto_auth_hmacsha256_KEYBYTES;
 }
-
-const char *
-crypto_auth_hmacsha256_primitive(void) {
-    return "hmacsha256";
-}

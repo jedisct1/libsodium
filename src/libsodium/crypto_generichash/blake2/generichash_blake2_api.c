@@ -39,8 +39,3 @@ size_t
 crypto_generichash_blake2b_personalbytes(void) {
     return crypto_generichash_blake2b_PERSONALBYTES;
 }
-
-const char *
-crypto_generichash_blake2b_blockbytes_primitive(void) {
-    return "blake2b";
-}

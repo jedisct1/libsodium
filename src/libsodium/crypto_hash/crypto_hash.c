@@ -16,5 +16,5 @@ crypto_hash(unsigned char *out, const unsigned char *in,
 
 const char *
 crypto_hash_primitive(void) {
-    return crypto_hash_sha512_primitive();
+    return crypto_hash_PRIMITIVE;
 }

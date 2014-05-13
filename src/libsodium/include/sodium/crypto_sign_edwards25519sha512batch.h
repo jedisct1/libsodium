@@ -24,9 +24,6 @@ SODIUM_EXPORT
 size_t crypto_sign_edwards25519sha512batch_secretkeybytes(void);
 
 SODIUM_EXPORT
-const char * crypto_sign_edwards25519sha512batch_primitive(void);
-
-SODIUM_EXPORT
 int crypto_sign_edwards25519sha512batch(unsigned char *sm,
                                         unsigned long long *smlen,
                                         const unsigned char *m,
