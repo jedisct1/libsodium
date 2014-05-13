@@ -6,6 +6,5 @@
 #define crypto_core_INPUTBYTES crypto_core_salsa20_INPUTBYTES
 #define crypto_core_KEYBYTES crypto_core_salsa20_KEYBYTES
 #define crypto_core_CONSTBYTES crypto_core_salsa20_CONSTBYTES
-#define crypto_core_PRIMITIVE "salsa20"
 #define crypto_core_IMPLEMENTATION crypto_core_salsa20_IMPLEMENTATION
 #define crypto_core_VERSION crypto_core_salsa20_VERSION

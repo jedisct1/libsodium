@@ -14,6 +14,5 @@
 #define crypto_box_ZEROBYTES crypto_box_curve25519xsalsa20poly1305_ZEROBYTES
 #define crypto_box_BOXZEROBYTES crypto_box_curve25519xsalsa20poly1305_BOXZEROBYTES
 #define crypto_box_MACBYTES (crypto_box_ZEROBYTES - crypto_box_BOXZEROBYTES)
-#define crypto_box_PRIMITIVE "curve25519xsalsa20poly1305"
 #define crypto_box_IMPLEMENTATION crypto_box_curve25519xsalsa20poly1305_IMPLEMENTATION
 #define crypto_box_VERSION crypto_box_curve25519xsalsa20poly1305_VERSION

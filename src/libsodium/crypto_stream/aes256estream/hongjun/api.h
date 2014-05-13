@@ -9,6 +9,5 @@
 #define crypto_stream_KEYBYTES crypto_stream_aes256estream_KEYBYTES
 #define crypto_stream_NONCEBYTES crypto_stream_aes256estream_NONCEBYTES
 #define crypto_stream_BEFORENMBYTES crypto_stream_aes256estream_BEFORENMBYTES
-#define crypto_stream_PRIMITIVE "aes256estream"
 #define crypto_stream_IMPLEMENTATION crypto_stream_aes256estream_IMPLEMENTATION
 #define crypto_stream_VERSION crypto_stream_aes256estream_VERSION
