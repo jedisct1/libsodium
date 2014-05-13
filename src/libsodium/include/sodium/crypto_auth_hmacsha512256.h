@@ -27,10 +27,14 @@ SODIUM_EXPORT
 const char * crypto_auth_hmacsha512256_primitive(void);
 
 SODIUM_EXPORT
-int crypto_auth_hmacsha512256(unsigned char *,const unsigned char *,unsigned long long,const unsigned char *);
+int crypto_auth_hmacsha512256(unsigned char *out, const unsigned char *in,
+                              unsigned long long inlen,const unsigned char *k);
 
 SODIUM_EXPORT
-int crypto_auth_hmacsha512256_verify(const unsigned char *,const unsigned char *,unsigned long long,const unsigned char *);
+int crypto_auth_hmacsha512256_verify(const unsigned char *h,
+                                     const unsigned char *in,
+                                     unsigned long long inlen,
+                                     const unsigned char *k);
 
 SODIUM_EXPORT
 int crypto_auth_hmacsha512256_init(crypto_auth_hmacsha512256_state *state,

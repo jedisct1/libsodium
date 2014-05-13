@@ -28,13 +28,22 @@ SODIUM_EXPORT
 const char * crypto_sign_edwards25519sha512batch_primitive(void);
 
 SODIUM_EXPORT
-int crypto_sign_edwards25519sha512batch(unsigned char *,unsigned long long *,const unsigned char *,unsigned long long,const unsigned char *);
+int crypto_sign_edwards25519sha512batch(unsigned char *sm,
+                                        unsigned long long *smlen,
+                                        const unsigned char *m,
+                                        unsigned long long mlen,
+                                        const unsigned char *sk);
 
 SODIUM_EXPORT
-int crypto_sign_edwards25519sha512batch_open(unsigned char *,unsigned long long *,const unsigned char *,unsigned long long,const unsigned char *);
+int crypto_sign_edwards25519sha512batch_open(unsigned char *m,
+                                             unsigned long long *mlen,
+                                             const unsigned char *sm,
+                                             unsigned long long smlen,
+                                             const unsigned char *pk);
 
 SODIUM_EXPORT
-int crypto_sign_edwards25519sha512batch_keypair(unsigned char *,unsigned char *);
+int crypto_sign_edwards25519sha512batch_keypair(unsigned char *pk,
+                                                unsigned char *sk);
 
 #ifdef __cplusplus
 }

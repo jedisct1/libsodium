@@ -31,10 +31,13 @@ SODIUM_EXPORT
 const char * crypto_stream_salsa208_primitive(void);
 
 SODIUM_EXPORT
-int crypto_stream_salsa208(unsigned char *,unsigned long long,const unsigned char *,const unsigned char *);
+int crypto_stream_salsa208(unsigned char *c, unsigned long long clen,
+                           const unsigned char *n, const unsigned char *k);
 
 SODIUM_EXPORT
-int crypto_stream_salsa208_xor(unsigned char *,const unsigned char *,unsigned long long,const unsigned char *,const unsigned char *);
+int crypto_stream_salsa208_xor(unsigned char *c, const unsigned char *m,
+                               unsigned long long mlen, const unsigned char *n,
+                               const unsigned char *k);
 
 #ifdef __cplusplus
 }

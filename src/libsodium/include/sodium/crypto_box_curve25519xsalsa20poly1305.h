@@ -44,22 +44,42 @@ SODIUM_EXPORT
 const char * crypto_box_curve25519xsalsa20poly1305_primitive(void);
 
 SODIUM_EXPORT
-int crypto_box_curve25519xsalsa20poly1305(unsigned char *,const unsigned char *,unsigned long long,const unsigned char *,const unsigned char *,const unsigned char *);
+int crypto_box_curve25519xsalsa20poly1305(unsigned char *c,
+                                          const unsigned char *m,
+                                          unsigned long long mlen,
+                                          const unsigned char *n,
+                                          const unsigned char *pk,
+                                          const unsigned char *sk);
 
 SODIUM_EXPORT
-int crypto_box_curve25519xsalsa20poly1305_open(unsigned char *,const unsigned char *,unsigned long long,const unsigned char *,const unsigned char *,const unsigned char *);
+int crypto_box_curve25519xsalsa20poly1305_open(unsigned char *m,
+                                               const unsigned char *c,
+                                               unsigned long long clen,
+                                               const unsigned char *n,
+                                               const unsigned char *pk,
+                                               const unsigned char *sk);
 
 SODIUM_EXPORT
-int crypto_box_curve25519xsalsa20poly1305_keypair(unsigned char *,unsigned char *);
+int crypto_box_curve25519xsalsa20poly1305_keypair(unsigned char *pk, unsigned char *sk);
 
 SODIUM_EXPORT
-int crypto_box_curve25519xsalsa20poly1305_beforenm(unsigned char *,const unsigned char *,const unsigned char *);
+int crypto_box_curve25519xsalsa20poly1305_beforenm(unsigned char *k,
+                                                   const unsigned char *pk,
+                                                   const unsigned char *sk);
 
 SODIUM_EXPORT
-int crypto_box_curve25519xsalsa20poly1305_afternm(unsigned char *,const unsigned char *,unsigned long long,const unsigned char *,const unsigned char *);
+int crypto_box_curve25519xsalsa20poly1305_afternm(unsigned char *c,
+                                                  const unsigned char *m,
+                                                  unsigned long long mlen,
+                                                  const unsigned char *n,
+                                                  const unsigned char *k);
 
 SODIUM_EXPORT
-int crypto_box_curve25519xsalsa20poly1305_open_afternm(unsigned char *,const unsigned char *,unsigned long long,const unsigned char *,const unsigned char *);
+int crypto_box_curve25519xsalsa20poly1305_open_afternm(unsigned char *m,
+                                                       const unsigned char *c,
+                                                       unsigned long long clen,
+                                                       const unsigned char *n,
+                                                       const unsigned char *k);
 
 #ifdef __cplusplus
 }

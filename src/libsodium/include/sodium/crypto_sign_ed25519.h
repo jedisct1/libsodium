@@ -32,16 +32,21 @@ SODIUM_EXPORT
 const char * crypto_sign_ed25519_primitive(void);
 
 SODIUM_EXPORT
-int crypto_sign_ed25519(unsigned char *,unsigned long long *,const unsigned char *,unsigned long long,const unsigned char *);
+int crypto_sign_ed25519(unsigned char *sm, unsigned long long *smlen,
+                        const unsigned char *m, unsigned long long mlen,
+                        const unsigned char *sk);
 
 SODIUM_EXPORT
-int crypto_sign_ed25519_open(unsigned char *,unsigned long long *,const unsigned char *,unsigned long long,const unsigned char *);
+int crypto_sign_ed25519_open(unsigned char *m, unsigned long long *mlen,
+                             const unsigned char *sm, unsigned long long smlen,
+                             const unsigned char *pk);
 
 SODIUM_EXPORT
-int crypto_sign_ed25519_keypair(unsigned char *,unsigned char *);
+int crypto_sign_ed25519_keypair(unsigned char *pk, unsigned char *sk);
 
 SODIUM_EXPORT
-int crypto_sign_ed25519_seed_keypair(unsigned char *,unsigned char *,const unsigned char *);
+int crypto_sign_ed25519_seed_keypair(unsigned char *pk, unsigned char *sk,
+                                     const unsigned char *seed);
 
 #ifdef __cplusplus
 }
