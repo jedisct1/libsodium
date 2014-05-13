@@ -1053,7 +1053,7 @@ TestData test_data[] = {
 int main(void)
 {
     unsigned char      sm[1024 + crypto_sign_BYTES];
-    unsigned char      m[1024];
+    unsigned char      m[1024 + crypto_sign_BYTES];
     unsigned char      pk[crypto_sign_PUBLICKEYBYTES];
     unsigned char      sk[crypto_sign_SECRETKEYBYTES];
     char               pk_hex[crypto_sign_PUBLICKEYBYTES * 2 + 1];
