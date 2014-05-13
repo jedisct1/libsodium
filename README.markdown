@@ -251,7 +251,8 @@ Similarily, secret-key authenticated encryption provide "easy" wrappers:
                               const unsigned char *k);
 
     int crypto_secretbox_open_easy(unsigned char *m, const unsigned char *c,
-                                   unsigned long long clen, const unsigned char *n,
+                                   unsigned long long clen,
+                                   const unsigned char *n,
                                    const unsigned char *k);
 
 The length of the ciphertext, which will include the MAC, is
@@ -382,4 +383,3 @@ In order to join, just send a random mail to `sodium-subscribe` {at}
 
 See the `COPYING` file for details, `AUTHORS` for designers and
 implementors, and `THANKS` for contributors.
-
