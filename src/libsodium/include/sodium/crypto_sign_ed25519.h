@@ -48,9 +48,4 @@ int crypto_sign_ed25519_seed_keypair(unsigned char *pk, unsigned char *sk,
 }
 #endif
 
-#define crypto_sign_ed25519_ref10 crypto_sign_ed25519
-#define crypto_sign_ed25519_ref10_open crypto_sign_ed25519_open
-#define crypto_sign_ed25519_ref10_keypair crypto_sign_ed25519_keypair
-#define crypto_sign_ed25519_ref10_seed_keypair crypto_sign_ed25519_seed_keypair
-
 #endif

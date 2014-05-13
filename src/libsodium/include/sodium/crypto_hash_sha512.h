@@ -44,6 +44,4 @@ int crypto_hash_sha512_final(crypto_hash_sha512_state *state,
 }
 #endif
 
-#define crypto_hash_sha512_cp crypto_hash_sha512
-
 #endif

@@ -32,6 +32,4 @@ int crypto_core_salsa2012(unsigned char *out, const unsigned char *in,
 }
 #endif
 
-#define crypto_core_salsa2012_ref crypto_core_salsa2012
-
 #endif

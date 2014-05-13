@@ -57,10 +57,4 @@ int crypto_stream_aes128ctr_xor_afternm(unsigned char *out, const unsigned char 
 }
 #endif
 
-#define crypto_stream_aes128ctr_portable crypto_stream_aes128ctr
-#define crypto_stream_aes128ctr_portable_xor crypto_stream_aes128ctr_xor
-#define crypto_stream_aes128ctr_portable_beforenm crypto_stream_aes128ctr_beforenm
-#define crypto_stream_aes128ctr_portable_afternm crypto_stream_aes128ctr_afternm
-#define crypto_stream_aes128ctr_portable_xor_afternm crypto_stream_aes128ctr_xor_afternm
-
 #endif

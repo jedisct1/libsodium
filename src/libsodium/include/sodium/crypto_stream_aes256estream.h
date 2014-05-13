@@ -59,10 +59,4 @@ int crypto_stream_aes256estream_xor_afternm(unsigned char *out, const unsigned c
 }
 #endif
 
-#define crypto_stream_aes256estream_hongjun crypto_stream_aes256estream
-#define crypto_stream_aes256estream_hongjun_xor crypto_stream_aes256estream_xor
-#define crypto_stream_aes256estream_hongjun_beforenm crypto_stream_aes256estream_beforenm
-#define crypto_stream_aes256estream_hongjun_afternm crypto_stream_aes256estream_afternm
-#define crypto_stream_aes256estream_hongjun_xor_afternm crypto_stream_aes256estream_xor_afternm
-
 #endif

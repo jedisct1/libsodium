@@ -40,7 +40,4 @@ int crypto_stream_salsa2012_xor(unsigned char *c, const unsigned char *m,
 }
 #endif
 
-#define crypto_stream_salsa2012_ref crypto_stream_salsa2012
-#define crypto_stream_salsa2012_ref_xor crypto_stream_salsa2012_xor
-
 #endif

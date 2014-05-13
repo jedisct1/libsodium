@@ -27,6 +27,4 @@ int crypto_shorthash_siphash24(unsigned char *out, const unsigned char *in,
 }
 #endif
 
-#define crypto_shorthash_siphash24_ref crypto_shorthash_siphash24
-
 #endif

@@ -104,9 +104,4 @@ int crypto_generichash_blake2b_final(crypto_generichash_blake2b_state *state,
 }
 #endif
 
-#define crypto_generichash_blake2b_ref crypto_generichash_blake2b
-#define crypto_generichash_blake2b_ref_init crypto_generichash_blake2b_init
-#define crypto_generichash_blake2b_ref_update crypto_generichash_blake2b_update
-#define crypto_generichash_blake2b_ref_final crypto_generichash_blake2b_final
-
 #endif

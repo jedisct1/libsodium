@@ -15,8 +15,6 @@ size_t crypto_verify_32_bytes(void);
 SODIUM_EXPORT
 int crypto_verify_32(const unsigned char *x, const unsigned char *y);
 
-#define crypto_verify_32_ref crypto_verify_32
-
 #ifdef __cplusplus
 }
 #endif

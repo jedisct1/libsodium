@@ -45,8 +45,4 @@ int crypto_sign_edwards25519sha512batch_keypair(unsigned char *pk,
 }
 #endif
 
-#define crypto_sign_edwards25519sha512batch_ref crypto_sign_edwards25519sha512batch
-#define crypto_sign_edwards25519sha512batch_ref_open crypto_sign_edwards25519sha512batch_open
-#define crypto_sign_edwards25519sha512batch_ref_keypair crypto_sign_edwards25519sha512batch_keypair
-
 #endif

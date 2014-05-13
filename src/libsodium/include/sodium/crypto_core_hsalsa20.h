@@ -32,6 +32,4 @@ int crypto_core_hsalsa20(unsigned char *out, const unsigned char *in,
 }
 #endif
 
-#define crypto_core_hsalsa20_ref2 crypto_core_hsalsa20
-
 #endif
