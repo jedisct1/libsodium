@@ -13,9 +13,7 @@ int crypto_sign_open(
   const unsigned char *pk
 )
 {
-  unsigned char pkcopy[32];
-  unsigned char rcopy[32];
-  unsigned char scopy[32];
+  crypto_hash_sha512_state hs;
   unsigned char h[64];
   unsigned char rcheck[32];
   unsigned int  i;
@@ -30,26 +28,23 @@ int crypto_sign_open(
   for (i = 0; i < 32; ++i) d |= pk[i];
   if (d == 0) return -1;
 
-  memmove(pkcopy,pk,32);
-  memmove(rcopy,sm,32);
-  memmove(scopy,sm + 32,32);
-
-  memmove(m,sm,smlen);
-  memmove(m + 32,pkcopy,32);
-  crypto_hash_sha512(h,m,smlen);
+  crypto_hash_sha512_init(&hs);
+  crypto_hash_sha512_update(&hs, sm, 32);
+  crypto_hash_sha512_update(&hs, pk, 32);
+  crypto_hash_sha512_update(&hs, sm + 64, smlen - 64);
+  crypto_hash_sha512_final(&hs, h);
   sc_reduce(h);
 
-  ge_double_scalarmult_vartime(&R,h,&A,scopy);
+  ge_double_scalarmult_vartime(&R,h,&A,sm+32);
   ge_tobytes(rcheck,&R);
-  if (crypto_verify_32(rcheck,rcopy) == 0) {
-    memmove(m,m + 64,smlen - 64);
-    memset(m + smlen - 64,0,64);
+  if (crypto_verify_32(rcheck,sm) == 0) {
+    memmove(m, sm + 64,smlen - 64);
     *mlen = smlen - 64;
     return 0;
   }
 
 badsig:
-  *mlen = -1;
-  memset(m,0,smlen);
+  *mlen = 0;
+  memset(m, 0, smlen - 64);
   return -1;
 }
