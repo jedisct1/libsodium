@@ -7,7 +7,7 @@
 <package xmlns="http://schemas.microsoft.com/packaging/2013/01/nuspec.xsd">
     <metadata minClientVersion="2.5">
         <id>libsodium_vc120</id>
-        <version>0.5.0.0</version>
+        <version>0.5.1.0</version>
         <title>libsodium_vc120</title>
         <authors>libsodium contributors</authors>
         <owners>Eric Voskuil</owners>
