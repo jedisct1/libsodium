@@ -1,4 +1,8 @@
 
+* Version 0.5.1
+ - crypto_pwhash_scryptxsalsa208sha256*() functions have been renamed
+crypto_pwhash_scryptsalsa208sha256*().
+
 * Version 0.5.0
  - sodium_mlock()/sodium_munlock() have been introduced to lock pages
 in memory before storing sensitive data, and to zero them before
