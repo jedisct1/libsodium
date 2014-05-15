@@ -6,7 +6,7 @@ unlocking them.
  - High-level wrappers for crypto_box and crypto_secretbox
 (crypto_box_easy and crypto_secretbox_easy) can be used to avoid
 dealing with the specific memory layout regular functions depend on.
- - crypto_pwhash_scryptxsalsa208sha256* functions have been added
+ - crypto_pwhash_scryptsalsa208sha256* functions have been added
 to derive a key from a password, and for password storage.
  - Salsa20 and ed25519 implementations now support overlapping
 inputs/keys/outputs (changes imported from supercop-20140505).

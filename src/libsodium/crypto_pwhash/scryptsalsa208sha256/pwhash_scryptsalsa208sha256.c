@@ -5,7 +5,7 @@
 #include <stdint.h>
 #include <string.h>
 
-#include "crypto_pwhash_scryptxsalsa208sha256.h"
+#include "crypto_pwhash_scryptsalsa208sha256.h"
 #include "crypto_scrypt.h"
 #include "randombytes.h"
 #include "utils.h"
@@ -50,19 +50,19 @@ pickparams(unsigned long long opslimit, const size_t memlimit,
 }
 
 size_t
-crypto_pwhash_scryptxsalsa208sha256_saltbytes(void)
+crypto_pwhash_scryptsalsa208sha256_saltbytes(void)
 {
-    return crypto_pwhash_scryptxsalsa208sha256_SALTBYTES;
+    return crypto_pwhash_scryptsalsa208sha256_SALTBYTES;
 }
 
 size_t
-crypto_pwhash_scryptxsalsa208sha256_strbytes(void)
+crypto_pwhash_scryptsalsa208sha256_strbytes(void)
 {
-    return crypto_pwhash_scryptxsalsa208sha256_STRBYTES;
+    return crypto_pwhash_scryptsalsa208sha256_STRBYTES;
 }
 
 int
-crypto_pwhash_scryptxsalsa208sha256(unsigned char * const out,
+crypto_pwhash_scryptsalsa208sha256(unsigned char * const out,
                                     unsigned long long outlen,
                                     const char * const passwd,
                                     unsigned long long passwdlen,
@@ -85,26 +85,26 @@ crypto_pwhash_scryptxsalsa208sha256(unsigned char * const out,
     }
     return crypto_scrypt_compat((const uint8_t *) passwd, (size_t) passwdlen,
                                 (const uint8_t *) salt,
-                                crypto_pwhash_scryptxsalsa208sha256_SALTBYTES,
+                                crypto_pwhash_scryptsalsa208sha256_SALTBYTES,
                                 (uint64_t) (1) << N_log2, r, p,
                                 out, (size_t) outlen);
 }
 
 int
-crypto_pwhash_scryptxsalsa208sha256_str(char out[crypto_pwhash_scryptxsalsa208sha256_STRBYTES],
+crypto_pwhash_scryptsalsa208sha256_str(char out[crypto_pwhash_scryptsalsa208sha256_STRBYTES],
                                         const char * const passwd,
                                         unsigned long long passwdlen,
                                         unsigned long long opslimit,
                                         size_t memlimit)
 {
-    uint8_t         salt[crypto_pwhash_scryptxsalsa208sha256_STRSALTBYTES];
-    char            setting[crypto_pwhash_scryptxsalsa208sha256_STRSETTINGBYTES + 1U];
+    uint8_t         salt[crypto_pwhash_scryptsalsa208sha256_STRSALTBYTES];
+    char            setting[crypto_pwhash_scryptsalsa208sha256_STRSETTINGBYTES + 1U];
     escrypt_local_t escrypt_local;
     uint32_t        N_log2;
     uint32_t        p;
     uint32_t        r;
 
-    memset(out, 0, crypto_pwhash_scryptxsalsa208sha256_STRBYTES);
+    memset(out, 0, crypto_pwhash_scryptsalsa208sha256_STRBYTES);
     if (passwdlen > SIZE_MAX) {
         errno = EFBIG;
         return -1;
@@ -124,7 +124,7 @@ crypto_pwhash_scryptxsalsa208sha256_str(char out[crypto_pwhash_scryptxsalsa208sh
     }
     if (escrypt_r(&escrypt_local, (const uint8_t *) passwd, (size_t) passwdlen,
                   (const uint8_t *) setting, (uint8_t *) out,
-                  crypto_pwhash_scryptxsalsa208sha256_STRBYTES) == NULL) {
+                  crypto_pwhash_scryptsalsa208sha256_STRBYTES) == NULL) {
         escrypt_free_local(&escrypt_local);
         errno = EINVAL;
         return -1;
@@ -132,27 +132,27 @@ crypto_pwhash_scryptxsalsa208sha256_str(char out[crypto_pwhash_scryptxsalsa208sh
     escrypt_free_local(&escrypt_local);
 
     (void) sizeof
-        (int[SETTING_SIZE(crypto_pwhash_scryptxsalsa208sha256_STRSALTBYTES)
-            == crypto_pwhash_scryptxsalsa208sha256_STRSETTINGBYTES ? 1 : -1]);
+        (int[SETTING_SIZE(crypto_pwhash_scryptsalsa208sha256_STRSALTBYTES)
+            == crypto_pwhash_scryptsalsa208sha256_STRSETTINGBYTES ? 1 : -1]);
     (void) sizeof
-        (int[crypto_pwhash_scryptxsalsa208sha256_STRSETTINGBYTES + 1U +
-             crypto_pwhash_scryptxsalsa208sha256_STRHASHBYTES_ENCODED + 1U
-             == crypto_pwhash_scryptxsalsa208sha256_STRBYTES ? 1 : -1]);
+        (int[crypto_pwhash_scryptsalsa208sha256_STRSETTINGBYTES + 1U +
+             crypto_pwhash_scryptsalsa208sha256_STRHASHBYTES_ENCODED + 1U
+             == crypto_pwhash_scryptsalsa208sha256_STRBYTES ? 1 : -1]);
 
     return 0;
 }
 
 int
-crypto_pwhash_scryptxsalsa208sha256_str_verify(const char str[crypto_pwhash_scryptxsalsa208sha256_STRBYTES],
+crypto_pwhash_scryptsalsa208sha256_str_verify(const char str[crypto_pwhash_scryptsalsa208sha256_STRBYTES],
                                                const char * const passwd,
                                                unsigned long long passwdlen)
 {
-    char            wanted[crypto_pwhash_scryptxsalsa208sha256_STRBYTES];
+    char            wanted[crypto_pwhash_scryptsalsa208sha256_STRBYTES];
     escrypt_local_t escrypt_local;
     int             ret = -1;
 
-    if (memchr(str, 0, crypto_pwhash_scryptxsalsa208sha256_STRBYTES) !=
-        &str[crypto_pwhash_scryptxsalsa208sha256_STRBYTES - 1U]) {
+    if (memchr(str, 0, crypto_pwhash_scryptsalsa208sha256_STRBYTES) !=
+        &str[crypto_pwhash_scryptsalsa208sha256_STRBYTES - 1U]) {
         return -1;
     }
     if (escrypt_init_local(&escrypt_local) != 0) {

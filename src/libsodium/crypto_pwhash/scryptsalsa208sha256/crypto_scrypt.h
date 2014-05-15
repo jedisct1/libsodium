@@ -32,12 +32,12 @@
 
 #include <stdint.h>
 
-#define crypto_pwhash_scryptxsalsa208sha256_STRPREFIXBYTES 14
-#define crypto_pwhash_scryptxsalsa208sha256_STRSETTINGBYTES 57
-#define crypto_pwhash_scryptxsalsa208sha256_STRSALTBYTES 32
-#define crypto_pwhash_scryptxsalsa208sha256_STRSALTBYTES_ENCODED 43
-#define crypto_pwhash_scryptxsalsa208sha256_STRHASHBYTES 32
-#define crypto_pwhash_scryptxsalsa208sha256_STRHASHBYTES_ENCODED 43
+#define crypto_pwhash_scryptsalsa208sha256_STRPREFIXBYTES 14
+#define crypto_pwhash_scryptsalsa208sha256_STRSETTINGBYTES 57
+#define crypto_pwhash_scryptsalsa208sha256_STRSALTBYTES 32
+#define crypto_pwhash_scryptsalsa208sha256_STRSALTBYTES_ENCODED 43
+#define crypto_pwhash_scryptsalsa208sha256_STRHASHBYTES 32
+#define crypto_pwhash_scryptsalsa208sha256_STRHASHBYTES_ENCODED 43
 
 #define BYTES2CHARS(bytes) ((((bytes) * 8) + 5) / 6)
 

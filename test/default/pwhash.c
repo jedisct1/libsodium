@@ -26,7 +26,7 @@ static void tv(void)
         {"a14975c26c088755a8b715ff2528d647cd343987fcf4aa25e7194a8417fb2b4b3f7268da9f3182b4cfb22d138b2749d673a47ecc7525dd15a0a3c66046971784bb63d7eae24cc84f2631712075a10e10a96b0e0ee67c43e01c423cb9c44e5371017e9c496956b632158da3fe12addecb88912e6759bc37f9af2f45af72c5cae3b179ffb676a697de6ebe45cd4c16d4a9d642d29ddc0186a0a48cb6cd62bfc3dd229d313b301560971e740e2cf1f99a9a090a5b283f35475057e96d7064e2e0fc81984591068d55a3b4169f22cccb0745a2689407ea1901a0a766eb99", 220, "3d968b2752b8838431165059319f3ff8910b7b8ecb54ea01d3f54769e9d98daf", 167, 717248, 10784179},
     };
     char          passwd[256];
-    unsigned char salt[crypto_pwhash_scryptxsalsa208sha256_SALTBYTES];
+    unsigned char salt[crypto_pwhash_scryptsalsa208sha256_SALTBYTES];
     unsigned char out[256];
     char          out_hex[256 * 2 + 1];
     size_t        i = 0U;
@@ -38,7 +38,7 @@ static void tv(void)
         sodium_hex2bin(salt, sizeof salt,
                        tests[i].salt_hex, strlen(tests[i].salt_hex),
                        NULL, NULL, NULL);
-        if (crypto_pwhash_scryptxsalsa208sha256(out, tests[i].outlen,
+        if (crypto_pwhash_scryptsalsa208sha256(out, tests[i].outlen,
                                                 passwd, tests[i].passwdlen,
                                                 (const unsigned char *) salt,
                                                 tests[i].opslimit,
@@ -70,7 +70,7 @@ static void tv2(void)
     size_t i = 0U;
 
     do {
-        if (crypto_pwhash_scryptxsalsa208sha256_str_verify(tests[i].out,
+        if (crypto_pwhash_scryptsalsa208sha256_str_verify(tests[i].out,
                                                            tests[i].passwd,
                                                            strlen(tests[i].passwd)) != 0) {
             printf("pwhash_str failure\n");
@@ -84,8 +84,8 @@ static void tv2(void)
 
 int main(void)
 {
-    char           str_out[crypto_pwhash_scryptxsalsa208sha256_STRBYTES];
-    char           str_out2[crypto_pwhash_scryptxsalsa208sha256_STRBYTES];
+    char           str_out[crypto_pwhash_scryptsalsa208sha256_STRBYTES];
+    char           str_out2[crypto_pwhash_scryptsalsa208sha256_STRBYTES];
     unsigned char  out[OUT_LEN];
     char           out_hex[OUT_LEN * 2 + 1];
     const char    *salt = "[<~A 32-bytes salt for scrypt~>]";
@@ -94,28 +94,28 @@ int main(void)
 
     tv();
     tv2();
-    if (crypto_pwhash_scryptxsalsa208sha256_str(str_out, passwd, strlen(passwd),
+    if (crypto_pwhash_scryptsalsa208sha256_str(str_out, passwd, strlen(passwd),
                                                 OPSLIMIT, MEMLIMIT) != 0) {
         printf("pwhash_str failure\n");
     }
-    if (crypto_pwhash_scryptxsalsa208sha256_str(str_out2, passwd, strlen(passwd),
+    if (crypto_pwhash_scryptsalsa208sha256_str(str_out2, passwd, strlen(passwd),
                                                 OPSLIMIT, MEMLIMIT) != 0) {
         printf("pwhash_str(2) failure\n");
     }
     if (strcmp(str_out, str_out2) == 0) {
         printf("pwhash_str doesn't generate different salts\n");
     }
-    if (crypto_pwhash_scryptxsalsa208sha256_str_verify(str_out, passwd,
+    if (crypto_pwhash_scryptsalsa208sha256_str_verify(str_out, passwd,
                                                        strlen(passwd)) != 0) {
         printf("pwhash_str_verify failure\n");
     }
-    if (crypto_pwhash_scryptxsalsa208sha256_str_verify(str_out, passwd,
+    if (crypto_pwhash_scryptsalsa208sha256_str_verify(str_out, passwd,
                                                        strlen(passwd)) != 0) {
         printf("pwhash_str_verify failure\n");
     }
     for (i = 14U; i < sizeof str_out; i++) {
         str_out[i]++;
-        if (crypto_pwhash_scryptxsalsa208sha256_str_verify(str_out, passwd,
+        if (crypto_pwhash_scryptsalsa208sha256_str_verify(str_out, passwd,
                                                            strlen(passwd)) == 0) {
             printf("pwhash_str_verify(2) failure\n");
         }

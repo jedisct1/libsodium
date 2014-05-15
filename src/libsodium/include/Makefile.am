@@ -20,7 +20,7 @@ SODIUM_EXPORT = \
 	sodium/crypto_onetimeauth.h \
 	sodium/crypto_onetimeauth_poly1305.h \
 	sodium/crypto_onetimeauth_poly1305_donna.h \
-	sodium/crypto_pwhash_scryptxsalsa208sha256.h \
+	sodium/crypto_pwhash_scryptsalsa208sha256.h \
 	sodium/crypto_scalarmult.h \
 	sodium/crypto_scalarmult_curve25519.h \
 	sodium/crypto_secretbox.h \

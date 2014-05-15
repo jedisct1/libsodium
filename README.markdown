@@ -305,7 +305,7 @@ Meanwhile, the [scrypt](http://www.tarsnap.com/scrypt.html) function is
 available through explicitly-named functions, and will remain available
 in the library even after the PHC.
 
-    int crypto_pwhash_scryptxsalsa208sha256(unsigned char *out,
+    int crypto_pwhash_scryptsalsa208sha256(unsigned char *out,
                                             unsigned long long outlen,
                                             const char *passwd,
                                             unsigned long long passwdlen,
@@ -314,7 +314,7 @@ in the library even after the PHC.
                                             size_t memlimit);
 
 This function derives `outlen` bytes from a password `passwd` and a
-salt `salt` that has to be `crypto_pwhash_scryptxsalsa208sha256_SALTBYTES`
+salt `salt` that has to be `crypto_pwhash_scryptsalsa208sha256_SALTBYTES`
 bytes long.
 
 The function will use at most `memlimit` bytes of memory and `opslimit`
@@ -325,14 +325,14 @@ security.
 Although password storage was not the primary goal of the scrypt
 function, it can still be used for this purpose:
 
-    int crypto_pwhash_scryptxsalsa208sha256_str
-        (char out[crypto_pwhash_scryptxsalsa208sha256_STRBYTES],
+    int crypto_pwhash_scryptsalsa208sha256_str
+        (char out[crypto_pwhash_scryptsalsa208sha256_STRBYTES],
          const char *passwd,
          unsigned long long passwdlen,
          unsigned long long opslimit,
          size_t memlimit);
 
-This function returns a `crypto_pwhash_scryptxsalsa208sha256_STRBYTES`
+This function returns a `crypto_pwhash_scryptsalsa208sha256_STRBYTES`
 bytes C string (the length includes the final `\0`) suitable for storage.
 The string is guaranteed to only include ASCII characters.
 
@@ -343,8 +343,8 @@ included in the output string, and do not need to be stored separately.
 The function automatically generates a random salt, which is also
 included in the output string.
 
-    int crypto_pwhash_scryptxsalsa208sha256_str_verify
-        (const char str[crypto_pwhash_scryptxsalsa208sha256_STRBYTES],
+    int crypto_pwhash_scryptsalsa208sha256_str_verify
+        (const char str[crypto_pwhash_scryptsalsa208sha256_STRBYTES],
          const char *passwd,
          unsigned long long passwdlen);
 

@@ -61,7 +61,7 @@
     <ClInclude Include="..\..\..\..\src\libsodium\include\sodium\crypto_onetimeauth_poly1305_donna.h">
       <Filter>include\sodium</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\..\..\src\libsodium\include\sodium\crypto_pwhash_scryptxsalsa208sha256.h">
+    <ClInclude Include="..\..\..\..\src\libsodium\include\sodium\crypto_pwhash_scryptsalsa208sha256.h">
       <Filter>include\sodium</Filter>
     </ClInclude>
     <ClInclude Include="..\..\..\..\src\libsodium\include\sodium\crypto_scalarmult.h">
@@ -562,11 +562,11 @@
     <ClInclude Include="..\..\..\..\src\libsodium\crypto_stream\aes128ctr\portable\consts.h">
       <Filter>src\crypto_stream\aes128ctr\portable</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\..\..\src\libsodium\crypto_pwhash\scryptxsalsa208sha256\crypto_scrypt.h">
-      <Filter>src\crypto_pwhash\scryptxsalsa208sha256</Filter>
+    <ClInclude Include="..\..\..\..\src\libsodium\crypto_pwhash\scryptsalsa208sha256\crypto_scrypt.h">
+      <Filter>src\crypto_pwhash\scryptsalsa208sha256</Filter>
     </ClInclude>
-    <ClCompile Include="..\..\..\..\src\libsodium\crypto_pwhash\scryptxsalsa208sha256\crypto_scrypt-common.c">
-      <Filter>src\crypto_pwhash\scryptxsalsa208sha256</Filter>
+    <ClCompile Include="..\..\..\..\src\libsodium\crypto_pwhash\scryptsalsa208sha256\crypto_scrypt-common.c">
+      <Filter>src\crypto_pwhash\scryptsalsa208sha256</Filter>
     </ClCompile>
     <ClInclude Include="..\..\..\..\src\libsodium\crypto_stream\aes256estream\hongjun\ecrypt-sync.h">
       <Filter>src\crypto_stream\aes256estream\hongjun</Filter>
@@ -601,11 +601,11 @@
     <ClInclude Include="..\..\..\..\src\libsodium\crypto_stream\aes128ctr\portable\int128.h">
       <Filter>src\crypto_stream\aes128ctr\portable</Filter>
     </ClInclude>
-    <ClCompile Include="..\..\..\..\src\libsodium\crypto_pwhash\scryptxsalsa208sha256\pbkdf2-sha256.c">
-      <Filter>src\crypto_pwhash\scryptxsalsa208sha256</Filter>
+    <ClCompile Include="..\..\..\..\src\libsodium\crypto_pwhash\scryptsalsa208sha256\pbkdf2-sha256.c">
+      <Filter>src\crypto_pwhash\scryptsalsa208sha256</Filter>
     </ClCompile>
-    <ClInclude Include="..\..\..\..\src\libsodium\crypto_pwhash\scryptxsalsa208sha256\pbkdf2-sha256.h">
-      <Filter>src\crypto_pwhash\scryptxsalsa208sha256</Filter>
+    <ClInclude Include="..\..\..\..\src\libsodium\crypto_pwhash\scryptsalsa208sha256\pbkdf2-sha256.h">
+      <Filter>src\crypto_pwhash\scryptsalsa208sha256</Filter>
     </ClInclude>
     <ClInclude Include="..\..\..\..\src\libsodium\crypto_sign\ed25519\ref10\pow22523.h">
       <Filter>src\crypto_sign\ed25519\ref10</Filter>
@@ -619,14 +619,14 @@
     <ClInclude Include="..\..\..\..\src\libsodium\crypto_sign\edwards25519sha512batch\ref\sc25519.h">
       <Filter>src\crypto_sign\edwards25519sha512batch\ref</Filter>
     </ClInclude>
-    <ClCompile Include="..\..\..\..\src\libsodium\crypto_pwhash\scryptxsalsa208sha256\scrypt_platform.c">
-      <Filter>src\crypto_pwhash\scryptxsalsa208sha256</Filter>
+    <ClCompile Include="..\..\..\..\src\libsodium\crypto_pwhash\scryptsalsa208sha256\scrypt_platform.c">
+      <Filter>src\crypto_pwhash\scryptsalsa208sha256</Filter>
     </ClCompile>
     <ClInclude Include="..\..\..\..\src\libsodium\crypto_sign\ed25519\ref10\sqrtm1.h">
       <Filter>src\crypto_sign\ed25519\ref10</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\..\..\src\libsodium\crypto_pwhash\scryptxsalsa208sha256\sysendian.h">
-      <Filter>src\crypto_pwhash\scryptxsalsa208sha256</Filter>
+    <ClInclude Include="..\..\..\..\src\libsodium\crypto_pwhash\scryptsalsa208sha256\sysendian.h">
+      <Filter>src\crypto_pwhash\scryptsalsa208sha256</Filter>
     </ClInclude>
     <ClInclude Include="..\..\..\..\src\libsodium\crypto_stream\aes128ctr\portable\types.h">
       <Filter>src\crypto_stream\aes128ctr\portable</Filter>
@@ -640,14 +640,14 @@
     <ClCompile Include="..\..\..\..\src\libsodium\sodium\runtime.c">
       <Filter>src\sodium</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\..\..\src\libsodium\crypto_pwhash\scryptxsalsa208sha256\pwhash_scryptxsalsa208sha256.c">
-      <Filter>src\crypto_pwhash\scryptxsalsa208sha256</Filter>
+    <ClCompile Include="..\..\..\..\src\libsodium\crypto_pwhash\scryptsalsa208sha256\pwhash_scryptsalsa208sha256.c">
+      <Filter>src\crypto_pwhash\scryptsalsa208sha256</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\..\..\src\libsodium\crypto_pwhash\scryptxsalsa208sha256\nosse\pwhash_scryptxsalsa208sha256_nosse.c">
-      <Filter>src\crypto_pwhash\scryptxsalsa208sha256\nosse</Filter>
+    <ClCompile Include="..\..\..\..\src\libsodium\crypto_pwhash\scryptsalsa208sha256\nosse\pwhash_scryptsalsa208sha256_nosse.c">
+      <Filter>src\crypto_pwhash\scryptsalsa208sha256\nosse</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\..\..\src\libsodium\crypto_pwhash\scryptxsalsa208sha256\sse\pwhash_scryptxsalsa208sha256_sse.c">
-      <Filter>src\crypto_pwhash\scryptxsalsa208sha256\sse</Filter>
+    <ClCompile Include="..\..\..\..\src\libsodium\crypto_pwhash\scryptsalsa208sha256\sse\pwhash_scryptsalsa208sha256_sse.c">
+      <Filter>src\crypto_pwhash\scryptsalsa208sha256\sse</Filter>
     </ClCompile>
     <ClInclude Include="..\..\..\..\src\libsodium\crypto_auth\hmacsha512256\cp\api.h">
       <Filter>src\crypto_auth\hmacsha512256\cp</Filter>
@@ -916,7 +916,7 @@
     <Filter Include="src\crypto_onetimeauth\poly1305">
       <UniqueIdentifier>{b788850f-cd6a-49bb-a2fc-5dc217fb21a3}</UniqueIdentifier>
     </Filter>
-    <Filter Include="src\crypto_pwhash\scryptxsalsa208sha256">
+    <Filter Include="src\crypto_pwhash\scryptsalsa208sha256">
       <UniqueIdentifier>{4dd0cec6-9024-4ca9-ad9f-e877e0aa4e39}</UniqueIdentifier>
     </Filter>
     <Filter Include="src\crypto_scalarmult\curve25519">
@@ -976,10 +976,10 @@
     <Filter Include="src\crypto_shorthash\siphash24\ref">
       <UniqueIdentifier>{4a1f7816-c9b5-4cfc-a4f3-54d094e13520}</UniqueIdentifier>
     </Filter>
-    <Filter Include="src\crypto_pwhash\scryptxsalsa208sha256\nosse">
+    <Filter Include="src\crypto_pwhash\scryptsalsa208sha256\nosse">
       <UniqueIdentifier>{629a0d99-8735-4761-b41b-b2a91b1fdffa}</UniqueIdentifier>
     </Filter>
-    <Filter Include="src\crypto_pwhash\scryptxsalsa208sha256\sse">
+    <Filter Include="src\crypto_pwhash\scryptsalsa208sha256\sse">
       <UniqueIdentifier>{08465b05-7a80-40b5-bbe5-31914fdd6e7e}</UniqueIdentifier>
     </Filter>
     <Filter Include="src\crypto_onetimeauth\poly1305\donna">

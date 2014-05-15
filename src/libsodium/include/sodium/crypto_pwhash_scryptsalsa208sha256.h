@@ -1,5 +1,5 @@
-#ifndef crypto_pwhash_scryptxsalsa208sha256_H
-#define crypto_pwhash_scryptxsalsa208sha256_H
+#ifndef crypto_pwhash_scryptsalsa208sha256_H
+#define crypto_pwhash_scryptsalsa208sha256_H
 
 #include <stddef.h>
 
@@ -12,16 +12,16 @@
 extern "C" {
 #endif
 
-#define crypto_pwhash_scryptxsalsa208sha256_SALTBYTES 32
+#define crypto_pwhash_scryptsalsa208sha256_SALTBYTES 32
 SODIUM_EXPORT
-size_t crypto_pwhash_scryptxsalsa208sha256_saltbytes(void);
+size_t crypto_pwhash_scryptsalsa208sha256_saltbytes(void);
 
-#define crypto_pwhash_scryptxsalsa208sha256_STRBYTES 102
+#define crypto_pwhash_scryptsalsa208sha256_STRBYTES 102
 SODIUM_EXPORT
-size_t crypto_pwhash_scryptxsalsa208sha256_strbytes(void);
+size_t crypto_pwhash_scryptsalsa208sha256_strbytes(void);
 
 SODIUM_EXPORT
-int crypto_pwhash_scryptxsalsa208sha256(unsigned char * const out,
+int crypto_pwhash_scryptsalsa208sha256(unsigned char * const out,
                                         unsigned long long outlen,
                                         const char * const passwd,
                                         unsigned long long passwdlen,
@@ -30,14 +30,14 @@ int crypto_pwhash_scryptxsalsa208sha256(unsigned char * const out,
                                         size_t memlimit);
 
 SODIUM_EXPORT
-int crypto_pwhash_scryptxsalsa208sha256_str(char out[crypto_pwhash_scryptxsalsa208sha256_STRBYTES],
+int crypto_pwhash_scryptsalsa208sha256_str(char out[crypto_pwhash_scryptsalsa208sha256_STRBYTES],
                                             const char * const passwd,
                                             unsigned long long passwdlen,
                                             unsigned long long opslimit,
                                             size_t memlimit);
 
 SODIUM_EXPORT
-int crypto_pwhash_scryptxsalsa208sha256_str_verify(const char str[crypto_pwhash_scryptxsalsa208sha256_STRBYTES],
+int crypto_pwhash_scryptsalsa208sha256_str_verify(const char str[crypto_pwhash_scryptsalsa208sha256_STRBYTES],
                                                    const char * const passwd,
                                                    unsigned long long passwdlen);
 
