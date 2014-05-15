@@ -5,6 +5,7 @@
 #include "crypto_hash_sha256.h"
 #include "crypto_hash_sha512.h"
 #include "crypto_onetimeauth_poly1305.h"
+#include "crypto_pwhash_scryptsalsa208sha256.h"
 #include "crypto_scalarmult_curve25519.h"
 #include "crypto_secretbox_xsalsa20poly1305.h"
 #include "crypto_sign_ed25519.h"
@@ -14,11 +15,56 @@
 #include "crypto_verify_32.h"
 #include "export.h"
 
-#ifdef EXPORT_ORIGINAL_IMPLEMENTATIONS
-
 #ifdef __cplusplus
 extern "C" {
 #endif
+
+SODIUM_EXPORT size_t
+crypto_pwhash_scryptxsalsa208sha256_saltbytes(void)
+{
+    return crypto_pwhash_scryptsalsa208sha256_saltbytes();
+}
+
+SODIUM_EXPORT size_t
+crypto_pwhash_scryptxsalsa208sha256_strbytes(void)
+{
+    return crypto_pwhash_scryptsalsa208sha256_strbytes();
+}
+
+SODIUM_EXPORT int
+crypto_pwhash_scryptxsalsa208sha256(unsigned char * const out,
+                                    unsigned long long outlen,
+                                    const char * const passwd,
+                                    unsigned long long passwdlen,
+                                    const unsigned char * const salt,
+                                    unsigned long long opslimit,
+                                    size_t memlimit)
+{
+    return crypto_pwhash_scryptsalsa208sha256(out, outlen, passwd, passwdlen,
+                                              salt, opslimit, memlimit);
+}
+
+SODIUM_EXPORT int
+crypto_pwhash_scryptxsalsa208sha256_str(char out[crypto_pwhash_scryptsalsa208sha256_STRBYTES],
+                                        const char * const passwd,
+                                        unsigned long long passwdlen,
+                                        unsigned long long opslimit,
+                                        size_t memlimit)
+{
+    return crypto_pwhash_scryptsalsa208sha256_str(out, passwd, passwdlen,
+                                                  opslimit, memlimit);
+}
+
+SODIUM_EXPORT int
+crypto_pwhash_scryptxsalsa208sha256_str_verify(const char str[crypto_pwhash_scryptsalsa208sha256_STRBYTES],
+                                               const char * const passwd,
+                                               unsigned long long passwdlen)
+{
+    return crypto_pwhash_scryptsalsa208sha256_str_verify(str,
+                                                         passwd, passwdlen);
+}
+
+#ifdef EXPORT_ORIGINAL_IMPLEMENTATIONS
 
 #undef crypto_hash_sha256_ref
 SODIUM_EXPORT int
@@ -303,8 +349,8 @@ crypto_stream_salsa20_ref_xor(unsigned char *c,
     return crypto_stream_salsa20_xor(c, m, mlen, n, k);
 }
 
-#ifdef __cplusplus
-}
 #endif
 
+#ifdef __cplusplus
+}
 #endif
