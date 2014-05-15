@@ -272,6 +272,14 @@ AS_IF([test "x$EMSCRIPTEN" = "x"],[
      AC_DEFINE([HAVE_PMMINTRIN_H], [1], [sse3 is available])],
     [AC_MSG_RESULT(no)])
 
+  AC_MSG_CHECKING(for SSSE3 instructions set)
+  AC_COMPILE_IFELSE([AC_LANG_PROGRAM([[
+#pragma GCC target("ssse3")
+#include <tmmintrin.h>
+]], [[ __m64 x = _mm_abs_pi32(_m_from_int(0)); ]])],
+    [AC_MSG_RESULT(yes)
+     AC_DEFINE([HAVE_TMMINTRIN_H], [1], [ssse3 is available])],
+    [AC_MSG_RESULT(no)])
 ])
 
 AC_CHECK_HEADERS([sys/mman.h])
