@@ -167,6 +167,9 @@ libsodium_la_SOURCES = \
 	crypto_stream/aes256estream/stream_aes256estream_api.c \
 	crypto_stream/aes256estream/hongjun/api.h \
 	crypto_stream/aes256estream/hongjun/ecrypt-sync.h \
+	crypto_stream/chacha20/stream_chacha20_api.c \
+	crypto_stream/chacha20/ref/api.h \
+	crypto_stream/chacha20/ref/stream_chacha20_ref.c \
 	crypto_stream/salsa20/stream_salsa20_api.c \
 	crypto_stream/salsa2012/stream_salsa2012_api.c \
 	crypto_stream/salsa2012/ref/api.h \

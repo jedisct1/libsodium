@@ -65,6 +65,7 @@ test/default/box7
 test/default/box8
 test/default/box_easy
 test/default/box_easy2
+test/default/chacha20
 test/default/core1
 test/default/core2
 test/default/core3
