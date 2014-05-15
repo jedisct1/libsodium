@@ -19,18 +19,21 @@
 extern "C" {
 #endif
 
+#undef crypto_pwhash_scryptxsalsa208sha256_saltbytes
 SODIUM_EXPORT size_t
 crypto_pwhash_scryptxsalsa208sha256_saltbytes(void)
 {
     return crypto_pwhash_scryptsalsa208sha256_saltbytes();
 }
 
+#undef crypto_pwhash_scryptxsalsa208sha256_strbytes
 SODIUM_EXPORT size_t
 crypto_pwhash_scryptxsalsa208sha256_strbytes(void)
 {
     return crypto_pwhash_scryptsalsa208sha256_strbytes();
 }
 
+#undef crypto_pwhash_scryptxsalsa208sha256
 SODIUM_EXPORT int
 crypto_pwhash_scryptxsalsa208sha256(unsigned char * const out,
                                     unsigned long long outlen,
@@ -44,6 +47,7 @@ crypto_pwhash_scryptxsalsa208sha256(unsigned char * const out,
                                               salt, opslimit, memlimit);
 }
 
+#undef crypto_pwhash_scryptxsalsa208sha256_str
 SODIUM_EXPORT int
 crypto_pwhash_scryptxsalsa208sha256_str(char out[crypto_pwhash_scryptsalsa208sha256_STRBYTES],
                                         const char * const passwd,
@@ -55,6 +59,7 @@ crypto_pwhash_scryptxsalsa208sha256_str(char out[crypto_pwhash_scryptsalsa208sha
                                                   opslimit, memlimit);
 }
 
+#undef crypto_pwhash_scryptxsalsa208sha256_str_verify
 SODIUM_EXPORT int
 crypto_pwhash_scryptxsalsa208sha256_str_verify(const char str[crypto_pwhash_scryptsalsa208sha256_STRBYTES],
                                                const char * const passwd,
