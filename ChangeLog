@@ -1,5 +1,6 @@
 
 * Version 0.5.1
+ - crypto_stream_chacha20*
  - crypto_pwhash_scryptxsalsa208sha256*() functions have been renamed
 crypto_pwhash_scryptsalsa208sha256*().
 
