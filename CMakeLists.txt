@@ -201,9 +201,9 @@ endif()
 
 string(TOLOWER ${CMAKE_SYSTEM_PROCESSOR} SYSTEM_PROCESSOR)
 if(SYSTEM_PROCESSOR MATCHES "i386|i686|x86|x86_64|powerpc*|s390*")
-  message(STATUS "data alignment is not required on this target")
+  message(STATUS "data alignment is not required on ${SYSTEM_PROCESSOR} target")
 else()
-  message(STATUS "data alignment is     required on this target")
+  message(STATUS "data alignment is     required on ${SYSTEM_PROCESSOR} target")
   add_definitions(-DCPU_ALIGNED_ACCESS_REQUIRED)
 endif()
 
