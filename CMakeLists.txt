@@ -315,8 +315,6 @@ foreach(test IN LISTS tests_list)
 	crypto::sodium
     )
   add_test(NAME ${PROJECT_NAME}.${test}
-    COMMAND "${CMAKE_COMMAND}"
+    COMMAND $<TARGET_FILE:${target}>
     )
 endforeach()
-
-
