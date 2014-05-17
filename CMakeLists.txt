@@ -157,44 +157,6 @@ if(${BE})
 else()
   ADD_DEFINITIONS("-DNATIVE_LITTLE_ENDIAN=1")
 endif()
-
-CONFIGURE_FILE(
-  src/libsodium/include/sodium/version.h.in
-  ${CMAKE_CURRENT_BINARY_DIR}/sodium/version.h
-  )
-
-if(HAVE_TI_MODE)
-  add_definitions(-DHAVE_TI_MODE)
-  set(curve25519_src
-	src/libsodium/crypto_scalarmult/curve25519/donna_c64/api.h
-	src/libsodium/crypto_scalarmult/curve25519/donna_c64/base_curve25519_donna_c64.c
-	src/libsodium/crypto_scalarmult/curve25519/donna_c64/smult_curve25519_donna_c64.c
-	)
-else()
-  set(curve25519_src
-	src/libsodium/crypto_scalarmult/curve25519/ref/api.h
-	src/libsodium/crypto_scalarmult/curve25519/ref/base_curve25519_ref.c
-	src/libsodium/crypto_scalarmult/curve25519/ref/smult_curve25519_ref.c
-	)
-endif()
-
-
-if(HAVE_AMD64_ASM)
-  SET(CMAKE_ASM_SOURCE_FILE_EXTENSIONS "s;S")
-  ENABLE_LANGUAGE(ASM)
-  add_definitions(-DHAVE_AMD64_ASM)
-  set(amd64_asm_src
-	src/libsodium/crypto_stream/salsa20/amd64_xmm6/api.h
-	src/libsodium/crypto_stream/salsa20/amd64_xmm6/stream_salsa20_amd64_xmm6.S
-	)
-else()
-  set(amd64_asm_src
-	src/libsodium/crypto_stream/salsa20/ref/api.h
-	src/libsodium/crypto_stream/salsa20/ref/stream_salsa20_ref.c
-	src/libsodium/crypto_stream/salsa20/ref/xor_salsa20_ref.c
-	)
-endif()
-
 set(CMAKE_REQUIRED_LIBRARIES rt)
 check_function_exists(clock_gettime HAVE_CLOCK_GETTIME)
 set(CMAKE_REQUIRED_LIBRARIES )
@@ -235,6 +197,51 @@ endif()
 check_function_exists(posix_memalign HAVE_POSIX_MEMALIGN)
 if(HAVE_POSIX_MEMALIGN)
   add_definitions(-DHAVE_POSIX_MEMALIGN=1)
+endif()
+
+string(TOLOWER ${CMAKE_SYSTEM_PROCESSOR} SYSTEM_PROCESSOR)
+if(SYSTEM_PROCESSOR MATCHES "i386|i686|x86|x86_64|powerpc*|s390*")
+  message(STATUS "data alignment is not required on this target")
+else()
+  message(STATUS "data alignment is     required on this target")
+  add_definitions(-DCPU_ALIGNED_ACCESS_REQUIRED)
+endif()
+
+CONFIGURE_FILE(
+  src/libsodium/include/sodium/version.h.in
+  ${CMAKE_CURRENT_BINARY_DIR}/sodium/version.h
+  )
+
+if(HAVE_TI_MODE)
+  add_definitions(-DHAVE_TI_MODE)
+  set(curve25519_src
+	src/libsodium/crypto_scalarmult/curve25519/donna_c64/api.h
+	src/libsodium/crypto_scalarmult/curve25519/donna_c64/base_curve25519_donna_c64.c
+	src/libsodium/crypto_scalarmult/curve25519/donna_c64/smult_curve25519_donna_c64.c
+	)
+else()
+  set(curve25519_src
+	src/libsodium/crypto_scalarmult/curve25519/ref/api.h
+	src/libsodium/crypto_scalarmult/curve25519/ref/base_curve25519_ref.c
+	src/libsodium/crypto_scalarmult/curve25519/ref/smult_curve25519_ref.c
+	)
+endif()
+
+
+if(HAVE_AMD64_ASM)
+  SET(CMAKE_ASM_SOURCE_FILE_EXTENSIONS "s;S")
+  ENABLE_LANGUAGE(ASM)
+  add_definitions(-DHAVE_AMD64_ASM)
+  set(amd64_asm_src
+	src/libsodium/crypto_stream/salsa20/amd64_xmm6/api.h
+	src/libsodium/crypto_stream/salsa20/amd64_xmm6/stream_salsa20_amd64_xmm6.S
+	)
+else()
+  set(amd64_asm_src
+	src/libsodium/crypto_stream/salsa20/ref/api.h
+	src/libsodium/crypto_stream/salsa20/ref/stream_salsa20_ref.c
+	src/libsodium/crypto_stream/salsa20/ref/xor_salsa20_ref.c
+	)
 endif()
 
 add_library(sodium
