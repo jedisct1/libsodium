@@ -55,6 +55,67 @@ __asm__(\"pxor %xmm12,%xmm6\");
   )
 
 
+CHECK_C_SOURCE_COMPILES(
+  "
+#pragma GCC target(\"mmx\")
+#include <mmintrin.h>
+int main(void) {
+ __m64 x = _mm_setzero_si64();
+};
+"
+  HAVE_MMINTRIN_H)
+
+if(HAVE_MMINTRIN_H)
+  ADD_DEFINITIONS("-DHAVE_MMINTRIN_H=1")
+endif()
+
+
+CHECK_C_SOURCE_COMPILES(
+  "
+#pragma GCC target(\"sse2\")
+#include <emmintrin.h>
+int main(void) {
+ __m128d x = _mm_setzero_pd();
+};
+"
+  HAVE_EMMINTRIN_H
+  )
+
+if(HAVE_EMINTRIN_H)
+  ADD_DEFINITIONS("-DHAVE_EMINTRIN_H=1")
+endif()
+
+CHECK_C_SOURCE_COMPILES(
+  "
+#pragma GCC target(\"sse3\")
+#include <pmmintrin.h>
+int main(void) {
+ __m128 x = _mm_addsub_ps(_mm_cvtpd_ps(_mm_setzero_pd()),
+                                _mm_cvtpd_ps(_mm_setzero_pd()));
+};
+"
+  HAVE_PMMINTRIN_H
+  )
+
+if(HAVE_PMINTRIN_H)
+  ADD_DEFINITIONS("-DHAVE_PMINTRIN_H=1")
+endif()
+
+
+CHECK_C_SOURCE_COMPILES(
+  "
+#pragma GCC target(\"ssse3\")
+#include <tmmintrin.h>
+int main(void) {
+ __m64 x = _mm_abs_pi32(_m_from_int(0));
+};
+"
+  HAVE_TMMINTRIN_H
+  )
+if(HAVE_TMINTRIN_H)
+  ADD_DEFINITIONS("-DHAVE_TMINTRIN_H=1")
+endif()
+
 ######################################################################
 TEST_BIG_ENDIAN(BE)
 if(${BE})
@@ -231,6 +292,16 @@ add_library(sodium
   src/libsodium/crypto_verify/16/ref/verify_16.c
   src/libsodium/crypto_verify/32/ref/verify_32.c
   src/libsodium/crypto_verify/32/verify_32_api.c
+  src/libsodium/crypto_verify/64/ref/verify_64.c
+  src/libsodium/crypto_verify/64/verify_64_api.c
+  src/libsodium/crypto_pwhash/scryptsalsa208sha256/pbkdf2-sha256.c
+  src/libsodium/crypto_pwhash/scryptsalsa208sha256/nosse/pwhash_scryptsalsa208sha256_nosse.c
+  src/libsodium/crypto_pwhash/scryptsalsa208sha256/crypto_scrypt-common.c
+  src/libsodium/crypto_pwhash/scryptsalsa208sha256/sse/pwhash_scryptsalsa208sha256_sse.c
+  src/libsodium/crypto_pwhash/scryptsalsa208sha256/scrypt_platform.c
+  src/libsodium/crypto_pwhash/scryptsalsa208sha256/pwhash_scryptsalsa208sha256.c
+  src/libsodium/crypto_stream/chacha20/stream_chacha20_api.c
+  src/libsodium/crypto_stream/chacha20/ref/stream_chacha20_ref.c
   )
 
 add_library(crypto::sodium ALIAS sodium)
@@ -250,6 +321,8 @@ set(tests_list
   test/default/auth2
   test/default/auth3
   test/default/auth5
+  test/default/auth6
+  test/default/auth7
   test/default/auth
   test/default/box2
   test/default/box7
@@ -257,6 +330,7 @@ set(tests_list
   test/default/box
   test/default/box_easy2
   test/default/box_easy
+  test/default/chacha20
   test/default/core1
   test/default/core2
   test/default/core3
@@ -271,6 +345,7 @@ set(tests_list
   test/default/onetimeauth2
   test/default/onetimeauth7
   test/default/onetimeauth
+  test/default/pwhash
   test/default/randombytes
   test/default/scalarmult2
   test/default/scalarmult5
@@ -285,6 +360,7 @@ set(tests_list
   test/default/secretbox_easy2
   test/default/secretbox_easy
   test/default/shorthash
+  test/default/sign
   test/default/sodium_core
   test/default/sodium_utils
   test/default/sodium_version
@@ -294,6 +370,7 @@ set(tests_list
   test/default/stream5
   test/default/stream6
   test/default/stream
+  test/default/verify1
   )
 
 
