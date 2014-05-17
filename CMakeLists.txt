@@ -154,29 +154,30 @@ add_library(sodium
   src/libsodium/crypto_sign/ed25519/ref10/sign.c
   src/libsodium/crypto_sign/ed25519/ref10/sc_muladd.c
   src/libsodium/crypto_sign/ed25519/sign_ed25519_api.c
-  src/libsodium/crypto_hash/sha512/ref/hash_sha512.c
+  src/libsodium/crypto_hash/sha512/cp/hash_sha512.c
   src/libsodium/crypto_hash/sha512/hash_sha512_api.c
-  src/libsodium/crypto_hash/sha256/ref/hash_sha256.c
+  src/libsodium/crypto_hash/sha256/cp/hash_sha256.c
   src/libsodium/crypto_hash/sha256/hash_sha256_api.c
   src/libsodium/crypto_hash/crypto_hash.c
   src/libsodium/sodium/utils.c
   src/libsodium/sodium/version.c
   src/libsodium/sodium/core.c
+  src/libsodium/sodium/runtime.c
   src/libsodium/sodium/compat.c
   src/libsodium/crypto_onetimeauth/poly1305/donna/auth_poly1305_donna.c
   src/libsodium/crypto_onetimeauth/poly1305/donna/verify_poly1305_donna.c
   src/libsodium/crypto_onetimeauth/poly1305/onetimeauth_poly1305.c
   src/libsodium/crypto_onetimeauth/poly1305/onetimeauth_poly1305_api.c
-  src/libsodium/crypto_onetimeauth/poly1305/53/auth_poly1305_53.c
-  src/libsodium/crypto_onetimeauth/poly1305/53/verify_poly1305_53.c
   src/libsodium/crypto_onetimeauth/poly1305/onetimeauth_poly1305_try.c
   src/libsodium/crypto_onetimeauth/crypto_onetimeauth.c
   src/libsodium/crypto_auth/crypto_auth.c
-  src/libsodium/crypto_auth/hmacsha256/ref/hmac_hmacsha256.c
-  src/libsodium/crypto_auth/hmacsha256/ref/verify_hmacsha256.c
+  src/libsodium/crypto_auth/hmacsha256/cp/hmac_hmacsha256.c
+  src/libsodium/crypto_auth/hmacsha256/cp/verify_hmacsha256.c
   src/libsodium/crypto_auth/hmacsha256/auth_hmacsha256_api.c
-  src/libsodium/crypto_auth/hmacsha512256/ref/hmac_hmacsha512256.c
-  src/libsodium/crypto_auth/hmacsha512256/ref/verify_hmacsha512256.c
+  src/libsodium/crypto_auth/hmacsha512/cp/hmac_hmacsha512.c
+  src/libsodium/crypto_auth/hmacsha512/cp/verify_hmacsha512.c
+  src/libsodium/crypto_auth/hmacsha512256/cp/hmac_hmacsha512256.c
+  src/libsodium/crypto_auth/hmacsha512256/cp/verify_hmacsha512256.c
   src/libsodium/crypto_auth/hmacsha512256/auth_hmacsha512256_api.c
   src/libsodium/crypto_shorthash/crypto_shorthash.c
   src/libsodium/crypto_shorthash/siphash24/shorthash_siphash24_api.c
@@ -226,10 +227,6 @@ add_library(sodium
   src/libsodium/crypto_core/hsalsa20/core_hsalsa20_api.c
   src/libsodium/crypto_core/salsa208/core_salsa208_api.c
   src/libsodium/crypto_core/salsa208/ref/core_salsa208.c
-  src/libsodium/crypto_hashblocks/sha512/ref/blocks_sha512.c
-  src/libsodium/crypto_hashblocks/sha512/hashblocks_sha512_api.c
-  src/libsodium/crypto_hashblocks/sha256/ref/blocks_sha256.c
-  src/libsodium/crypto_hashblocks/sha256/hashblocks_sha256_api.c
   src/libsodium/crypto_verify/16/verify_16_api.c
   src/libsodium/crypto_verify/16/ref/verify_16.c
   src/libsodium/crypto_verify/32/ref/verify_32.c
@@ -299,6 +296,8 @@ set(tests_list
   test/default/stream
   )
 
+
+set(CTEST_OUTPUT_ON_FAILURE ON)
 foreach(test IN LISTS tests_list)
   get_filename_component(basename ${test} NAME)
   get_filename_component(dirname  ${test} PATH)
@@ -316,7 +315,8 @@ foreach(test IN LISTS tests_list)
 	crypto::sodium
     )
   add_test(NAME ${PROJECT_NAME}.${test}
-    COMMAND $<TARGET_FILE:${target}>
+    COMMAND "${CMAKE_COMMAND}"
     )
 endforeach()
+
 
