@@ -486,6 +486,7 @@ foreach(test IN LISTS tests_list)
   get_filename_component(absdirname  ${dirname} ABSOLUTE)
   set(target "${PROJECT_NAME}-test-${basename}")
   add_executable(${target} "${test}.c")
+  set_property(TARGET ${target} PROPERTY POSITION_INDEPENDENT_CODE ON)
   target_include_directories(
 	${target} PRIVATE
 	test/quirks
