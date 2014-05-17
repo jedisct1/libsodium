@@ -4,9 +4,6 @@ cmake_minimum_required(VERSION 2.8.12)
 cmake_policy(SET CMP0028 NEW)
 enable_testing()
 
-
-#SODIUM_STATIC
-
 include(CheckCSourceCompiles)
 include(CheckFunctionExists)
 include(TestBigEndian)
@@ -16,7 +13,244 @@ file(APPEND ${CMAKE_BINARY_DIR}/Modules/FindSodium.cmake "set(SODIUM_LIBRARY cry
 #set(CMAKE_MODULE_PATH ${CMAKE_BINARY_DIR}/Modules)
 #list(APPEND CMAKE_MODULE_PATH ${CMAKE_BINARY_DIR}/Modules)
 
-######################################################################
+
+
+
+
+
+##
+## HAVE_MMINTRIN_H (mmx)
+##
+CHECK_C_SOURCE_COMPILES(
+  "
+#pragma GCC target(\"mmx\")
+#include <mmintrin.h>
+int main(void) {
+ __m64 x = _mm_setzero_si64();
+};
+"
+  HAVE_MMINTRIN_H)
+
+if(HAVE_MMINTRIN_H)
+  ADD_DEFINITIONS("-DHAVE_MMINTRIN_H=1")
+endif()
+
+
+##
+## HAVE_EMINTRIN_H (sse2)
+##
+CHECK_C_SOURCE_COMPILES(
+  "
+#pragma GCC target(\"sse2\")
+#include <emmintrin.h>
+int main(void) {
+ __m128d x = _mm_setzero_pd();
+};
+"
+  HAVE_EMMINTRIN_H
+  )
+
+if(HAVE_EMINTRIN_H)
+  ADD_DEFINITIONS("-DHAVE_EMINTRIN_H=1")
+endif()
+
+##
+## HAVE_PMINTRIN_H (sse3)
+##
+CHECK_C_SOURCE_COMPILES(
+  "
+#pragma GCC target(\"sse3\")
+#include <pmmintrin.h>
+int main(void) {
+ __m128 x = _mm_addsub_ps(_mm_cvtpd_ps(_mm_setzero_pd()),
+                                _mm_cvtpd_ps(_mm_setzero_pd()));
+};
+"
+  HAVE_PMMINTRIN_H
+  )
+
+if(HAVE_PMINTRIN_H)
+  ADD_DEFINITIONS("-DHAVE_PMINTRIN_H=1")
+endif()
+
+
+##
+## HAVE_TMINTRIN_H (ssse3)
+##
+CHECK_C_SOURCE_COMPILES(
+  "
+#pragma GCC target(\"ssse3\")
+#include <tmmintrin.h>
+int main(void) {
+ __m64 x = _mm_abs_pi32(_m_from_int(0));
+};
+"
+  HAVE_TMMINTRIN_H
+  )
+if(HAVE_TMINTRIN_H)
+  ADD_DEFINITIONS("-DHAVE_TMINTRIN_H=1")
+endif()
+
+##
+## HAVE_MEMSET_S
+##
+CHECK_C_SOURCE_COMPILES(
+  "
+#include <string.h>
+int main(void) {
+char dummy[42];
+(void) memset_s(dummy, (rsize_t) sizeof dummy, 0, (rsize_t) sizeof dummy);
+};
+"
+  HAVE_MEMSET_S
+  )
+
+if(HAVE_MEMSET_S)
+  ADD_DEFINITIONS("-DHAVE_MEMSET_S=1")
+endif()
+
+##
+## HAVE_CPUID_V
+##
+CHECK_C_SOURCE_COMPILES(
+  "
+int main(void) {
+unsigned int cpu_info[4];
+__asm__ __volatile__ (\"xchgl %%ebx, %k1; cpuid; xchgl %%ebx, %k1\" :
+                      \"=a\" (cpu_info[0]), \"=&r\" (cpu_info[1]),
+                      \"=c\" (cpu_info[2]), \"=d\" (cpu_info[3]) :
+                      \"0\" (0U), \"2\" (0U));
+};
+"
+  HAVE_CPUID_V
+  )
+
+if(HAVE_CPUID_V)
+  ADD_DEFINITIONS("-DHAVE_CPUID_V=1")
+endif()
+
+##
+## if using gcc, add:
+##
+## -D_FORTIFY_SOURCE=2 -fvisibility=hidden
+##
+## I did not find any AX_CHECK_COMPILE_FLAG equivialent
+##
+if(CMAKE_COMPILER_IS_GNUCXX)
+  include(CheckCSourceCompiles)
+  CHECK_C_SOURCE_COMPILES("
+#define GCC_VERSION (__GNUC__ * 100 + __GNUC_MINOR__)
+#if GCC_VERSION < 401
+#error \"gcc is not 4.1 or newer\"
+#endif
+
+int main(int argc, char **argv) { return 0; }
+" HAS_GCC41_OR_NEWER)
+
+  if(HAS_GCC41_OR_NEWER)
+    add_definitions(-D_FORTIFY_SOURCE=2 -fvisibility=hidden)
+  endif()
+endif()
+
+
+
+
+
+
+
+##
+## ENDIANESS
+##
+
+TEST_BIG_ENDIAN(BE)
+if(${BE})
+  ADD_DEFINITIONS("-DNATIVE_BIG_ENDIAN=1")
+else()
+  ADD_DEFINITIONS("-DNATIVE_LITTLE_ENDIAN=1")
+endif()
+
+##
+## HAVE_CLOCK_GETTIME
+##
+set(CMAKE_REQUIRED_LIBRARIES rt)
+check_function_exists(clock_gettime HAVE_CLOCK_GETTIME)
+set(CMAKE_REQUIRED_LIBRARIES )
+
+if(HAVE_CLOCK_GETTIME)
+  add_definitions(-DHAVE_CLOCK_GETTIME=1)
+endif()
+
+##
+## HAVE_FEGETENV
+##
+set(CMAKE_REQUIRED_LIBRARIES m)
+check_function_exists(fegetenv HAVE_FEGETENV)
+set(CMAKE_REQUIRED_LIBRARIES )
+
+if(HAVE_FEGETENV)
+  add_definitions(-DHAVE_FEGETENV=1)
+endif()
+
+##
+## HAVE_VIRTUALLOCK
+##
+check_function_exists(VirtualLock HAVE_VIRTUALLOCK)
+if(HAVE_VIRTUALLOCK)
+  add_definitions(-DHAVE_VIRTUALLOCK=1)
+endif()
+
+##
+## HAVE_MLOCK
+##
+check_function_exists(mlock HAVE_MLOCK)
+if(HAVE_MLOCK)
+  add_definitions(-DHAVE_MLOCK=1)
+endif()
+
+
+##
+## HAVE_SECUREZEROMEMORY
+##
+check_function_exists(SecureZeroMemory HAVE_SECUREZEROMEMORY)
+if(HAVE_SECUREZEROMEMORY)
+  add_definitions(-DHAVE_SECUREZEROMEMORY=1)
+endif()
+
+##
+## HAVE_EXPLICIT_BZERO
+##
+check_function_exists(explicit_bzero HAVE_EXPLICIT_BZERO)
+if(HAVE_EXPLICIT_BZERO)
+  add_definitions(-DHAVE_EXPLICIT_BZERO=1)
+endif()
+
+##
+## HAVE_POSIX_MEMALIGN
+##
+check_function_exists(posix_memalign HAVE_POSIX_MEMALIGN)
+if(HAVE_POSIX_MEMALIGN)
+  add_definitions(-DHAVE_POSIX_MEMALIGN=1)
+endif()
+
+##
+## CPU_ALIGNED_ACCESS_REQUIRED
+##
+string(TOLOWER ${CMAKE_SYSTEM_PROCESSOR} SYSTEM_PROCESSOR)
+if(SYSTEM_PROCESSOR MATCHES "i386|i686|x86|x86_64|powerpc*|s390*")
+  message(STATUS "data alignment is not required on ${SYSTEM_PROCESSOR} target")
+else()
+  message(STATUS "data alignment is     required on ${SYSTEM_PROCESSOR} target")
+  add_definitions(-DCPU_ALIGNED_ACCESS_REQUIRED)
+endif()
+
+CONFIGURE_FILE(
+  src/libsodium/include/sodium/version.h.in
+  ${CMAKE_CURRENT_BINARY_DIR}/sodium/version.h
+  )
+
+##
+## HAVE_TI_MODE
+##
 CHECK_C_SOURCE_COMPILES(
   "
 int main(void) {
@@ -39,201 +273,6 @@ void fcontract(uint128_t *t) {
     "
   HAVE_TI_MODE)
 
-
-######################################################################
-CHECK_C_SOURCE_COMPILES(
-  "
-int main(void) {
-#if defined(__amd64) || defined(__amd64__) || defined(__x86_64__)
-/* neat */
-#else
-# error !amd64
-#endif
-__asm__(\"pxor %xmm12,%xmm6\");
-};
-"
-  HAVE_AMD64_ASM
-  )
-
-
-CHECK_C_SOURCE_COMPILES(
-  "
-#pragma GCC target(\"mmx\")
-#include <mmintrin.h>
-int main(void) {
- __m64 x = _mm_setzero_si64();
-};
-"
-  HAVE_MMINTRIN_H)
-
-if(HAVE_MMINTRIN_H)
-  ADD_DEFINITIONS("-DHAVE_MMINTRIN_H=1")
-endif()
-
-
-CHECK_C_SOURCE_COMPILES(
-  "
-#pragma GCC target(\"sse2\")
-#include <emmintrin.h>
-int main(void) {
- __m128d x = _mm_setzero_pd();
-};
-"
-  HAVE_EMMINTRIN_H
-  )
-
-if(HAVE_EMINTRIN_H)
-  ADD_DEFINITIONS("-DHAVE_EMINTRIN_H=1")
-endif()
-
-CHECK_C_SOURCE_COMPILES(
-  "
-#pragma GCC target(\"sse3\")
-#include <pmmintrin.h>
-int main(void) {
- __m128 x = _mm_addsub_ps(_mm_cvtpd_ps(_mm_setzero_pd()),
-                                _mm_cvtpd_ps(_mm_setzero_pd()));
-};
-"
-  HAVE_PMMINTRIN_H
-  )
-
-if(HAVE_PMINTRIN_H)
-  ADD_DEFINITIONS("-DHAVE_PMINTRIN_H=1")
-endif()
-
-
-CHECK_C_SOURCE_COMPILES(
-  "
-#pragma GCC target(\"ssse3\")
-#include <tmmintrin.h>
-int main(void) {
- __m64 x = _mm_abs_pi32(_m_from_int(0));
-};
-"
-  HAVE_TMMINTRIN_H
-  )
-if(HAVE_TMINTRIN_H)
-  ADD_DEFINITIONS("-DHAVE_TMINTRIN_H=1")
-endif()
-
-CHECK_C_SOURCE_COMPILES(
-  "
-#include <string.h>
-int main(void) {
-char dummy[42];
-(void) memset_s(dummy, (rsize_t) sizeof dummy, 0, (rsize_t) sizeof dummy);
-};
-"
-  HAVE_MEMSET_S
-  )
-
-if(HAVE_MEMSET_S)
-  ADD_DEFINITIONS("-DHAVE_MEMSET_S=1")
-endif()
-
-CHECK_C_SOURCE_COMPILES(
-  "
-int main(void) {
-unsigned int cpu_info[4];
-__asm__ __volatile__ (\"xchgl %%ebx, %k1; cpuid; xchgl %%ebx, %k1\" :
-                      \"=a\" (cpu_info[0]), \"=&r\" (cpu_info[1]),
-                      \"=c\" (cpu_info[2]), \"=d\" (cpu_info[3]) :
-                      \"0\" (0U), \"2\" (0U));
-};
-"
-  HAVE_CPUID_V
-  )
-
-if(HAVE_CPUID_V)
-  ADD_DEFINITIONS("-DHAVE_CPUID_V=1")
-endif()
-
-# For GCC 4.1+ we always want to use the source fortify options
-if(CMAKE_COMPILER_IS_GNUCXX)
-  include(CheckCSourceCompiles)
-  CHECK_C_SOURCE_COMPILES("
-#define GCC_VERSION (__GNUC__ * 100 + __GNUC_MINOR__)
-#if GCC_VERSION < 401
-#error \"gcc is not 4.1 or newer\"
-#endif
-
-int main(int argc, char **argv) { return 0; }
-" HAS_GCC41)
-
-  if(HAS_GCC41)
-    add_definitions(-D_FORTIFY_SOURCE=2 -fvisibility=hidden)
-  endif()
-endif()
-
-
-
-
-
-
-
-######################################################################
-TEST_BIG_ENDIAN(BE)
-if(${BE})
-  ADD_DEFINITIONS("-DNATIVE_BIG_ENDIAN=1")
-else()
-  ADD_DEFINITIONS("-DNATIVE_LITTLE_ENDIAN=1")
-endif()
-set(CMAKE_REQUIRED_LIBRARIES rt)
-check_function_exists(clock_gettime HAVE_CLOCK_GETTIME)
-set(CMAKE_REQUIRED_LIBRARIES )
-
-if(HAVE_CLOCK_GETTIME)
-  add_definitions(-DHAVE_CLOCK_GETTIME=1)
-endif()
-
-set(CMAKE_REQUIRED_LIBRARIES m)
-check_function_exists(fegetenv HAVE_FEGETENV)
-set(CMAKE_REQUIRED_LIBRARIES )
-
-if(HAVE_FEGETENV)
-  add_definitions(-DHAVE_FEGETENV=1)
-endif()
-
-check_function_exists(VirtualLock HAVE_VIRTUALLOCK)
-if(HAVE_VIRTUALLOCK)
-  add_definitions(-DHAVE_VIRTUALLOCK=1)
-endif()
-
-check_function_exists(mlock HAVE_MLOCK)
-if(HAVE_MLOCK)
-  add_definitions(-DHAVE_MLOCK=1)
-endif()
-
-
-check_function_exists(SecureZeroMemory HAVE_SECUREZEROMEMORY)
-if(HAVE_SECUREZEROMEMORY)
-  add_definitions(-DHAVE_SECUREZEROMEMORY=1)
-endif()
-
-check_function_exists(explicit_bzero HAVE_EXPLICIT_BZERO)
-if(HAVE_EXPLICIT_BZERO)
-  add_definitions(-DHAVE_EXPLICIT_BZERO=1)
-endif()
-
-check_function_exists(posix_memalign HAVE_POSIX_MEMALIGN)
-if(HAVE_POSIX_MEMALIGN)
-  add_definitions(-DHAVE_POSIX_MEMALIGN=1)
-endif()
-
-string(TOLOWER ${CMAKE_SYSTEM_PROCESSOR} SYSTEM_PROCESSOR)
-if(SYSTEM_PROCESSOR MATCHES "i386|i686|x86|x86_64|powerpc*|s390*")
-  message(STATUS "data alignment is not required on ${SYSTEM_PROCESSOR} target")
-else()
-  message(STATUS "data alignment is     required on ${SYSTEM_PROCESSOR} target")
-  add_definitions(-DCPU_ALIGNED_ACCESS_REQUIRED)
-endif()
-
-CONFIGURE_FILE(
-  src/libsodium/include/sodium/version.h.in
-  ${CMAKE_CURRENT_BINARY_DIR}/sodium/version.h
-  )
-
 if(HAVE_TI_MODE)
   add_definitions(-DHAVE_TI_MODE)
   set(curve25519_src
@@ -249,6 +288,23 @@ else()
 	)
 endif()
 
+
+##
+## HAVE_AMD64_ASM
+##
+CHECK_C_SOURCE_COMPILES(
+  "
+int main(void) {
+#if defined(__amd64) || defined(__amd64__) || defined(__x86_64__)
+/* neat */
+#else
+# error !amd64
+#endif
+__asm__(\"pxor %xmm12,%xmm6\");
+};
+"
+  HAVE_AMD64_ASM
+  )
 
 if(HAVE_AMD64_ASM)
   SET(CMAKE_ASM_SOURCE_FILE_EXTENSIONS "s;S")
@@ -266,6 +322,9 @@ else()
 	)
 endif()
 
+##
+## libsodium
+##
 add_library(sodium
   src/libsodium/crypto_box/crypto_box.c
   src/libsodium/crypto_box/curve25519xsalsa20poly1305/box_curve25519xsalsa20poly1305_api.c
@@ -422,6 +481,9 @@ target_include_directories(sodium PRIVATE
   ${CMAKE_CURRENT_BINARY_DIR}/sodium
   )
 
+##
+## tests
+##
 set(tests_list
   test/default/auth2
   test/default/auth3
