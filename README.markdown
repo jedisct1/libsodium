@@ -70,6 +70,7 @@ Samuel Neves (@sneves).
 ## Bindings for other languages
 
 * C++: [sodiumpp](https://github.com/rubendv/sodiumpp)
+* Common LISP [cl-sodium](https://github.com/orthecreedence/cl-sodium)
 * Erlang: [Erlang-NaCl](https://github.com/tonyg/erlang-nacl)
 * Erlang: [Salt](https://github.com/freza/salt)
 * Haskell: [Saltine](https://github.com/tel/saltine)
