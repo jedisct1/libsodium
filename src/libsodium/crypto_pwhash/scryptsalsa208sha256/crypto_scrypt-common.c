@@ -222,10 +222,10 @@ escrypt_gensalt_r(uint32_t N_log2, uint32_t r, uint32_t p,
 }
 
 int
-crypto_scrypt_compat(const uint8_t * passwd, size_t passwdlen,
-                     const uint8_t * salt, size_t saltlen,
-                     uint64_t N, uint32_t r, uint32_t p,
-                     uint8_t * buf, size_t buflen)
+crypto_pwhash_scryptsalsa208sha256_ll(const uint8_t * passwd, size_t passwdlen,
+                                      const uint8_t * salt, size_t saltlen,
+                                      uint64_t N, uint32_t r, uint32_t p,
+                                      uint8_t * buf, size_t buflen)
 {
     escrypt_kdf_t   escrypt_kdf;
     escrypt_local_t local;

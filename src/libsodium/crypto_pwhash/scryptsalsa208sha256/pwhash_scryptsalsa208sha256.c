@@ -83,11 +83,12 @@ crypto_pwhash_scryptsalsa208sha256(unsigned char * const out,
         errno = EINVAL;
         return -1;
     }
-    return crypto_scrypt_compat((const uint8_t *) passwd, (size_t) passwdlen,
-                                (const uint8_t *) salt,
-                                crypto_pwhash_scryptsalsa208sha256_SALTBYTES,
-                                (uint64_t) (1) << N_log2, r, p,
-                                out, (size_t) outlen);
+    return crypto_pwhash_scryptsalsa208sha256_ll((const uint8_t *) passwd,
+                                                 (size_t) passwdlen,
+                                                 (const uint8_t *) salt,
+                                                 crypto_pwhash_scryptsalsa208sha256_SALTBYTES,
+                                                 (uint64_t) (1) << N_log2, r, p,
+                                                 out, (size_t) outlen);
 }
 
 int
