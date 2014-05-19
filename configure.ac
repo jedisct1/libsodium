@@ -380,7 +380,7 @@ AS_CASE([$host_cpu],
 )
 
 AC_MSG_CHECKING(for memset_s)
-AC_COMPILE_IFELSE([AC_LANG_PROGRAM([[
+AC_LINK_IFELSE([AC_LANG_PROGRAM([[
 #include <string.h>
 ]], [[
 char dummy[42];
