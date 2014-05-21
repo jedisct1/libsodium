@@ -1,6 +1,8 @@
 #ifndef INT128_H
 #define INT128_H
 
+#include <stdint.h>
+
 #include "common.h"
 
 #ifdef __cplusplus
@@ -10,8 +12,8 @@
 #endif
 
 typedef struct{
-  unsigned long long a;
-  unsigned long long b;
+  uint64_t a;
+  uint64_t b;
 } int128;
 
 #define xor2 crypto_stream_aes128ctr_portable_xor2
