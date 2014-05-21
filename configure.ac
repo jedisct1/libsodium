@@ -339,6 +339,10 @@ AC_COMPILE_IFELSE([AC_LANG_PROGRAM([[
 #ifndef NATIVE_LITTLE_ENDIAN
 # error donna_c64 currently requires a little endian CPU
 #endif
+#ifdef EMSCRIPTEN
+# error emscripten currently supports only shift operations on integers \
+#       larger than 64 bits
+#endif
 #include <stdint.h>
 typedef unsigned uint128_t __attribute__((mode(TI)));
 void fcontract(uint128_t *t) {
