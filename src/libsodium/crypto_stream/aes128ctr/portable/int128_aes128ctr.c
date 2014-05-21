@@ -1,3 +1,6 @@
+
+#include <string.h>
+
 #include "int128.h"
 #include "common.h"
 
@@ -27,13 +30,11 @@ void copy2(int128 *r, const int128 *x)
 
 void shufb(int128 *r, const unsigned char *l)
 {
-  int128 t;
+  unsigned char  ct[16];
   unsigned char *cr;
-  unsigned char *ct;
 
-  copy2(&t,r);
+  memcpy(ct, r, 16);
   cr = (unsigned char *)r;
-  ct = (unsigned char *)&t;
   cr[0] = ct[l[0]];
   cr[1] = ct[l[1]];
   cr[2] = ct[l[2]];
@@ -54,14 +55,13 @@ void shufb(int128 *r, const unsigned char *l)
 
 void shufd(int128 *r, const int128 *x, const unsigned int c)
 {
-  int128 t;
-  uint32 *tp = (uint32 *)&t;
-  const uint32 *xp = (const uint32 *)x;
-  tp[0] = xp[c&3];
-  tp[1] = xp[(c>>2)&3];
-  tp[2] = xp[(c>>4)&3];
-  tp[3] = xp[(c>>6)&3];
-  copy2(r,&t);
+  unsigned char        tp[16];
+  const unsigned char *xp = (const unsigned char *) x;
+  memcpy(tp + 0,  xp + (c >> 0 & 3) * 4, 4);
+  memcpy(tp + 4,  xp + (c >> 2 & 3) * 4, 4);
+  memcpy(tp + 8,  xp + (c >> 4 & 3) * 4, 4);
+  memcpy(tp + 12, xp + (c >> 6 & 3) * 4, 4);
+  memcpy(r, tp, 16);
 }
 
 void rshift32_littleendian(int128 *r, const unsigned int n)
