@@ -21,6 +21,8 @@
         <releaseNotes>https://raw.github.com/jedisct1/libsodium/master/ChangeLog</releaseNotes>
         <copyright>(c) 2013-2014, Frank Denis (attribution required)</copyright>
         <tags>native, NaCl, salt, sodium, libodium, C++</tags>
+        <dependencies>
+        </dependencies>        
         <!-- Salt shaker icon by Dubravko Soric :
         http://upload.wikimedia.org/wikipedia/commons/thumb/7/78/Salt_shaker_on_white_background.jpg/220px-Salt_shaker_on_white_background.jpg -->
     </metadata>
