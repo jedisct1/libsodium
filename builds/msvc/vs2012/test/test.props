@@ -24,8 +24,14 @@
     <Import Project="$(SolutionDir)libsodium.import.props" />
   </ImportGroup>
 
-  <PropertyGroup>
-    <Linkage-libsodium>$(DefaultLinkage)</Linkage-libsodium>
+    <PropertyGroup Condition="'$(DefaultLinkage)' == 'dynamic'">
+    <Linkage-libsodium>dynamic</Linkage-libsodium>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(DefaultLinkage)' == 'ltcg'">
+    <Linkage-libsodium>ltcg</Linkage-libsodium>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(DefaultLinkage)' == 'static'">
+    <Linkage-libsodium>static</Linkage-libsodium>
   </PropertyGroup>
 
   <!-- Messages -->
