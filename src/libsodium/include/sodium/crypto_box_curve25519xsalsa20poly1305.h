@@ -11,6 +11,10 @@
 extern "C" {
 #endif
 
+#define crypto_box_curve25519xsalsa20poly1305_SEEDBYTES 32U
+SODIUM_EXPORT
+size_t crypto_box_curve25519xsalsa20poly1305_seedbytes(void);
+
 #define crypto_box_curve25519xsalsa20poly1305_PUBLICKEYBYTES 32U
 SODIUM_EXPORT
 size_t crypto_box_curve25519xsalsa20poly1305_publickeybytes(void);
@@ -58,7 +62,13 @@ int crypto_box_curve25519xsalsa20poly1305_open(unsigned char *m,
                                                const unsigned char *sk);
 
 SODIUM_EXPORT
-int crypto_box_curve25519xsalsa20poly1305_keypair(unsigned char *pk, unsigned char *sk);
+int crypto_box_curve25519xsalsa20poly1305_seed_keypair(unsigned char *pk,
+                                                       unsigned char *sk,
+                                                       const unsigned char *seed);
+
+SODIUM_EXPORT
+int crypto_box_curve25519xsalsa20poly1305_keypair(unsigned char *pk,
+                                                  unsigned char *sk);
 
 SODIUM_EXPORT
 int crypto_box_curve25519xsalsa20poly1305_beforenm(unsigned char *k,
