@@ -2,6 +2,12 @@
 #include "crypto_box.h"
 
 size_t
+crypto_box_seedbytes(void)
+{
+    return crypto_box_SEEDBYTES;
+}
+
+size_t
 crypto_box_publickeybytes(void)
 {
     return crypto_box_PUBLICKEYBYTES;
@@ -47,6 +53,13 @@ const char *
 crypto_box_primitive(void)
 {
     return crypto_box_PRIMITIVE;
+}
+
+int
+crypto_box_seed_keypair(unsigned char *pk, unsigned char *sk,
+                        const unsigned char *seed)
+{
+    return crypto_box_curve25519xsalsa20poly1305_seed_keypair(pk, sk, seed);
 }
 
 int
