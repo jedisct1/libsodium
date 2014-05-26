@@ -6,35 +6,37 @@
 
 void xor2(int128 *r, const int128 *x)
 {
-  r->a ^= x->a;
-  r->b ^= x->b;
+  r->u64[0] ^= x->u64[0];
+  r->u64[1] ^= x->u64[1];
 }
 
 void and2(int128 *r, const int128 *x)
 {
-  r->a &= x->a;
-  r->b &= x->b;
+  r->u64[0] &= x->u64[0];
+  r->u64[1] &= x->u64[1];
 }
 
 void or2(int128 *r, const int128 *x)
 {
-  r->a |= x->a;
-  r->b |= x->b;
+  r->u64[0] |= x->u64[0];
+  r->u64[1] |= x->u64[1];
 }
 
 void copy2(int128 *r, const int128 *x)
 {
-  r->a = x->a;
-  r->b = x->b;
+  r->u64[0] = x->u64[0];
+  r->u64[1] = x->u64[1];
 }
 
 void shufb(int128 *r, const unsigned char *l)
 {
-  unsigned char  ct[16];
-  unsigned char *cr;
+  int128   t;
+  uint8_t *ct;
+  uint8_t *cr;
 
-  memcpy(ct, r, 16);
-  cr = (unsigned char *)r;
+  copy2(&t, r);
+  cr = r->u8;
+  ct = t.u8;
   cr[0] = ct[l[0]];
   cr[1] = ct[l[1]];
   cr[2] = ct[l[2]];
@@ -55,13 +57,13 @@ void shufb(int128 *r, const unsigned char *l)
 
 void shufd(int128 *r, const int128 *x, const unsigned int c)
 {
-  unsigned char        tp[16];
-  const unsigned char *xp = (const unsigned char *) x;
-  memcpy(tp + 0,  xp + (c >> 0 & 3) * 4, 4);
-  memcpy(tp + 4,  xp + (c >> 2 & 3) * 4, 4);
-  memcpy(tp + 8,  xp + (c >> 4 & 3) * 4, 4);
-  memcpy(tp + 12, xp + (c >> 6 & 3) * 4, 4);
-  memcpy(r, tp, 16);
+  int128 t;
+
+  t.u32[0] = x->u32[c >> 0 & 3];
+  t.u32[1] = x->u32[c >> 2 & 3];
+  t.u32[2] = x->u32[c >> 4 & 3];
+  t.u32[3] = x->u32[c >> 6 & 3];
+  copy2(r, &t);
 }
 
 void rshift32_littleendian(int128 *r, const unsigned int n)
@@ -108,8 +110,8 @@ void lshift64_littleendian(int128 *r, const unsigned int n)
 
 void toggle(int128 *r)
 {
-  r->a ^= 0xffffffffffffffffULL;
-  r->b ^= 0xffffffffffffffffULL;
+  r->u64[0] ^= 0xffffffffffffffffULL;
+  r->u64[1] ^= 0xffffffffffffffffULL;
 }
 
 void xor_rcon(int128 *r)

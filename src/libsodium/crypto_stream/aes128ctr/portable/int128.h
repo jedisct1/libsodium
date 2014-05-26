@@ -11,9 +11,10 @@
 # endif
 #endif
 
-typedef struct{
-  uint64_t a;
-  uint64_t b;
+typedef union {
+  uint64_t u64[2];
+  uint32_t u32[4];
+  uint8_t  u8[16];
 } int128;
 
 #define xor2 crypto_stream_aes128ctr_portable_xor2
