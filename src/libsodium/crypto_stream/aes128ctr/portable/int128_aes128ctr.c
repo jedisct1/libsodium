@@ -1,6 +1,4 @@
 
-#include <string.h>
-
 #include "int128.h"
 #include "common.h"
 
