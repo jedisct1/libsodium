@@ -51,7 +51,9 @@ Download a
 then follow the ritual:
 
     ./configure
-    make && make check && make install
+    make
+    make check
+    sudo make install
 
 Pre-compiled Win32 packages are available for download at the same
 location.
