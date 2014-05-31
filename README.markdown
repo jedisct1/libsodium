@@ -50,6 +50,7 @@ Download a
 [tarball of libsodium](https://download.libsodium.org/libsodium/releases/),
 then follow the ritual:
 
+    ./autogen.sh
     ./configure
     make && make check && make install
 
