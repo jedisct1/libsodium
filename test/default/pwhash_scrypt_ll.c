@@ -42,10 +42,10 @@ void test_vector(uint8_t * password, size_t passwordLength, uint8_t * salt, size
     
     // Print header
     printf("scrypt(“");
-    printf(password);
+    printf("%s", password);
     printf("”, “");
-    printf(salt);
-    printf("”, %u, %u, %u, %u) =\n", N, r, p, olen);
+    printf("%s", salt);
+    printf("”, %lu, %lu, %lu, %lu) =\n", N, r, p, olen);
 
     // Print test result
     int lineitems = 0;
@@ -60,10 +60,22 @@ void test_vector(uint8_t * password, size_t passwordLength, uint8_t * salt, size
 
 int main(void)
 {
-   test_vector(password1, strlen(password1), salt1, strlen(salt1), N1, r1, p1, olenGlobal);
-   test_vector(password2, strlen(password2), salt2, strlen(salt2), N2, r2, p2, olenGlobal);
-   test_vector(password3, strlen(password3), salt3, strlen(salt3), N3, r3, p3, olenGlobal);
-   test_vector(password4, strlen(password4), salt4, strlen(salt4), N4, r4, p4, olenGlobal);
+   test_vector(
+      password1, strlen((const char*)password1), 
+      salt1, strlen((const char*)salt1), 
+      N1, r1, p1, olenGlobal);
+   test_vector(
+      password2, strlen((const char*)password2), 
+      salt2, strlen((const char*)salt2), 
+      N2, r2, p2, olenGlobal);
+   test_vector(
+        password3, strlen((const char*)password3), 
+        salt3, strlen((const char*)salt3), 
+        N3, r3, p3, olenGlobal);
+   test_vector(
+    password4, strlen((const char*)password4), 
+    salt4, strlen((const char*)salt4), 
+    N4, r4, p4, olenGlobal);
 
    return 0;
 }
