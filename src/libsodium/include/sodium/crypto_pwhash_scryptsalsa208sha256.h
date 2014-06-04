@@ -22,24 +22,24 @@ size_t crypto_pwhash_scryptsalsa208sha256_strbytes(void);
 
 SODIUM_EXPORT
 int crypto_pwhash_scryptsalsa208sha256(unsigned char * const out,
-                                        unsigned long long outlen,
-                                        const char * const passwd,
-                                        unsigned long long passwdlen,
-                                        const unsigned char * const salt,
-                                        unsigned long long opslimit,
-                                        size_t memlimit);
+                                       unsigned long long outlen,
+                                       const char * const passwd,
+                                       unsigned long long passwdlen,
+                                       const unsigned char * const salt,
+                                       unsigned long long opslimit,
+                                       size_t memlimit);
 
 SODIUM_EXPORT
 int crypto_pwhash_scryptsalsa208sha256_str(char out[crypto_pwhash_scryptsalsa208sha256_STRBYTES],
-                                            const char * const passwd,
-                                            unsigned long long passwdlen,
-                                            unsigned long long opslimit,
-                                            size_t memlimit);
+                                           const char * const passwd,
+                                           unsigned long long passwdlen,
+                                           unsigned long long opslimit,
+                                           size_t memlimit);
 
 SODIUM_EXPORT
 int crypto_pwhash_scryptsalsa208sha256_str_verify(const char str[crypto_pwhash_scryptsalsa208sha256_STRBYTES],
-                                                   const char * const passwd,
-                                                   unsigned long long passwdlen);
+                                                  const char * const passwd,
+                                                  unsigned long long passwdlen);
 
 SODIUM_EXPORT
 int crypto_pwhash_scryptsalsa208sha256_ll(const uint8_t * passwd, size_t passwdlen,
