@@ -7,61 +7,59 @@
 
 /* Tarsnap test vectors, see: https://www.tarsnap.com/scrypt/scrypt.pdf */
 
-uint8_t password1[] = "";
-uint8_t salt1[] = "";
-uint64_t N1 = 16ul;
-uint32_t r1 = 1ul;
-uint32_t p1 = 1ul;
+static const char *password1 = "";
+static const char *salt1 = "";
+static uint64_t    N1 = 16U;
+static uint32_t    r1 = 1U;
+static uint32_t    p1 = 1U;
 
-uint8_t password2[] = "password";
-uint8_t salt2[] = "NaCl";
-uint64_t N2 = 1024ul;
-uint32_t r2 = 8ul;
-uint32_t p2 = 16ul;
+static const char *password2 = "password";
+static const char *salt2 = "NaCl";
+static uint64_t    N2 = 1024U;
+static uint32_t    r2 = 8U;
+static uint32_t    p2 = 16U;
 
-uint8_t password3[] = "pleaseletmein";
-uint8_t salt3[] = "SodiumChloride";
-uint64_t N3 = 16384ul;
-uint32_t r3 = 8ul;
-uint32_t p3 = 1ul;
+static const char *password3 = "pleaseletmein";
+static const char *salt3  = "SodiumChloride";
+static uint64_t    N3 = 16384U;
+static uint32_t    r3 = 8U;
+static uint32_t    p3 = 1U;
 
-uint8_t password4[] = "pleaseletmein";
-uint8_t salt4[] = "SodiumChloride";
-size_t N4 = 1048576ul;
-size_t r4 = 8ul;
-size_t p4 = 1ul;
+static const char *password4 = "pleaseletmein";
+static const char *salt4 = "SodiumChloride";
+static uint64_t    N4 = 1048576U;
+static uint32_t    r4 = 8U;
+static uint32_t    p4 = 1U;
 
-void test_vector(uint8_t * password,  uint8_t * salt, uint64_t N, uint32_t r, uint32_t p)
+static void test_vector(const char *password, const char *salt,
+                        uint64_t N, uint32_t r, uint32_t p)
 {
-    const size_t olen = 64;
     uint8_t data[64];
-    size_t passwordLength = strlen((const char*) password);
-    size_t saltLenght = strlen((const char*) salt);
-    int lineitems = 0;
-    const int lineitemsLimit = 15;
+    size_t  i;
+    size_t  olen = (sizeof data / sizeof data[0]);
+    size_t  passwordLength = strlen(password);
+    size_t  saltLenght = strlen(salt);
+    int     lineitems = 0;
+    int     lineitemsLimit = 15;
 
-    int i = crypto_pwhash_scryptsalsa208sha256_ll(password, passwordLength, salt, saltLenght, N, r, p, data, olen);
-    if(i != 0)
-    {
-        printf("crypto_scrypt_compat failed!");
+    if (crypto_pwhash_scryptsalsa208sha256_ll((const uint8_t *) password,
+                                              passwordLength,
+                                              (const uint8_t *) salt,
+                                              saltLenght,
+                                              N, r, p, data, olen) != 0) {
+        printf("pwhash_scryptsalsa208sha256_ll([%s],[%s]) failure\n",
+               password, salt);
+        return;
     }
- 
-    // Print header
-    printf("scrypt('");
-    printf("%s", password);
-    printf("', '");
-    printf("%s", salt);
-    printf("', %llu, %lu, %lu, %lu) =",
+
+    printf("scrypt('%s', '%s', %llu, %lu, %lu, %lu) =\n",
+           password, salt,
            (unsigned long long) N, (unsigned long) r, (unsigned long) p,
            (unsigned long) olen);
-    printf("\n");
 
-    // Print test result
-    for(i = 0; i < olen; ++i)
-    {
-        printf("%02x", data[i]);
-        printf((lineitems < lineitemsLimit)? " " : "\n");
-        lineitems = (lineitems < lineitemsLimit)? lineitems+1 : 0;
+    for (i = 0; i < olen; ++i) {
+        printf("%02x%c", data[i], lineitems < lineitemsLimit ? ' ' : '\n');
+        lineitems = lineitems < lineitemsLimit ? lineitems + 1 : 0;
     }
 }
 
