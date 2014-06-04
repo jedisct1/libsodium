@@ -1,4 +1,5 @@
 #include <stdio.h>
+#include <stdint.h>
 #include <string.h>
 
 #define TEST_NAME "pwhash_scrypt_ll"
@@ -50,7 +51,9 @@ void test_vector(uint8_t * password,  uint8_t * salt, uint64_t N, uint32_t r, ui
     printf("%s", password);
     printf("', '");
     printf("%s", salt);
-    printf("', %llu, %lu, %lu, %lu) =", N, r, p, olen);
+    printf("', %llu, %lu, %lu, %lu) =",
+           (unsigned long long) N, (unsigned long) r, (unsigned long) p,
+           (unsigned long) olen);
     printf("\n");
 
     // Print test result
