@@ -208,9 +208,24 @@ libsodium_la_SOURCES += \
 	crypto_scalarmult/curve25519/donna_c64/smult_curve25519_donna_c64.c
 else
 libsodium_la_SOURCES += \
-	crypto_scalarmult/curve25519/ref/api.h \
-	crypto_scalarmult/curve25519/ref/base_curve25519_ref.c \
-	crypto_scalarmult/curve25519/ref/smult_curve25519_ref.c
+	crypto_scalarmult/curve25519/ref10/api.h \
+	crypto_scalarmult/curve25519/ref10/base.c \
+	crypto_scalarmult/curve25519/ref10/fe.h \
+	crypto_scalarmult/curve25519/ref10/fe_0.c \
+	crypto_scalarmult/curve25519/ref10/fe_1.c \
+	crypto_scalarmult/curve25519/ref10/fe_add.c \
+	crypto_scalarmult/curve25519/ref10/fe_copy.c \
+	crypto_scalarmult/curve25519/ref10/fe_cswap.c \
+	crypto_scalarmult/curve25519/ref10/fe_frombytes.c \
+	crypto_scalarmult/curve25519/ref10/fe_invert.c \
+	crypto_scalarmult/curve25519/ref10/fe_mul.c \
+	crypto_scalarmult/curve25519/ref10/fe_mul121666.c \
+	crypto_scalarmult/curve25519/ref10/fe_sq.c \
+	crypto_scalarmult/curve25519/ref10/fe_sub.c \
+	crypto_scalarmult/curve25519/ref10/fe_tobytes.c \
+	crypto_scalarmult/curve25519/ref10/montgomery.h \
+	crypto_scalarmult/curve25519/ref10/pow225521.h \
+	crypto_scalarmult/curve25519/ref10/scalarmult.c
 endif
 
 if HAVE_AMD64_ASM
