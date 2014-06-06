@@ -50,8 +50,9 @@ Download a
 [tarball of libsodium](https://download.libsodium.org/libsodium/releases/),
 then follow the ritual:
 
-    ./configure
-    make && make check && make install
+    $ ./configure
+    $ make && make check
+    # make install
 
 Pre-compiled Win32 packages are available for download at the same
 location.
