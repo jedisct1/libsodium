@@ -226,7 +226,7 @@ fexpand(limb *output, const u8 *in) {
   output[1] = (U8TO64(in+6) >> 3) & 0x7ffffffffffff;
   output[2] = (U8TO64(in+12) >> 6) & 0x7ffffffffffff;
   output[3] = (U8TO64(in+19) >> 1) & 0x7ffffffffffff;
-  output[4] = (U8TO64(in+25) >> 4) & 0xfffffffffffff;
+  output[4] = (U8TO64(in+25) >> 4) & 0x7ffffffffffff;
 }
 
 /* Take a fully reduced polynomial form number and contract it into a
