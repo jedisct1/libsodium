@@ -209,23 +209,23 @@ libsodium_la_SOURCES += \
 else
 libsodium_la_SOURCES += \
 	crypto_scalarmult/curve25519/ref10/api.h \
-	crypto_scalarmult/curve25519/ref10/base.c \
+	crypto_scalarmult/curve25519/ref10/base_curve25519_ref10.c \
 	crypto_scalarmult/curve25519/ref10/fe.h \
-	crypto_scalarmult/curve25519/ref10/fe_0.c \
-	crypto_scalarmult/curve25519/ref10/fe_1.c \
-	crypto_scalarmult/curve25519/ref10/fe_add.c \
-	crypto_scalarmult/curve25519/ref10/fe_copy.c \
-	crypto_scalarmult/curve25519/ref10/fe_cswap.c \
-	crypto_scalarmult/curve25519/ref10/fe_frombytes.c \
-	crypto_scalarmult/curve25519/ref10/fe_invert.c \
-	crypto_scalarmult/curve25519/ref10/fe_mul.c \
-	crypto_scalarmult/curve25519/ref10/fe_mul121666.c \
-	crypto_scalarmult/curve25519/ref10/fe_sq.c \
-	crypto_scalarmult/curve25519/ref10/fe_sub.c \
-	crypto_scalarmult/curve25519/ref10/fe_tobytes.c \
+	crypto_scalarmult/curve25519/ref10/fe_0_curve25519_ref10.c \
+	crypto_scalarmult/curve25519/ref10/fe_1_curve25519_ref10.c \
+	crypto_scalarmult/curve25519/ref10/fe_add_curve25519_ref10.c \
+	crypto_scalarmult/curve25519/ref10/fe_copy_curve25519_ref10.c \
+	crypto_scalarmult/curve25519/ref10/fe_cswap_curve25519_ref10.c \
+	crypto_scalarmult/curve25519/ref10/fe_frombytes_curve25519_ref10.c \
+	crypto_scalarmult/curve25519/ref10/fe_invert_curve25519_ref10.c \
+	crypto_scalarmult/curve25519/ref10/fe_mul_curve25519_ref10.c \
+	crypto_scalarmult/curve25519/ref10/fe_mul121666_curve25519_ref10.c \
+	crypto_scalarmult/curve25519/ref10/fe_sq_curve25519_ref10.c \
+	crypto_scalarmult/curve25519/ref10/fe_sub_curve25519_ref10.c \
+	crypto_scalarmult/curve25519/ref10/fe_tobytes_curve25519_ref10.c \
 	crypto_scalarmult/curve25519/ref10/montgomery.h \
 	crypto_scalarmult/curve25519/ref10/pow225521.h \
-	crypto_scalarmult/curve25519/ref10/scalarmult.c
+	crypto_scalarmult/curve25519/ref10/scalarmult_curve25519_ref10.c
 endif
 
 if HAVE_AMD64_ASM
