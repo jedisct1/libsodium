@@ -119,8 +119,7 @@ randombytes_salsa20_random_random_dev_open(void)
     int               fd;
 
     do {
-        if (access(*device, F_OK | R_OK) == 0 &&
-            (fd = open(*device, O_RDONLY)) != -1) {
+        if ((fd = open(*device, O_RDONLY)) != -1) {
             if (fstat(fd, &st) == 0 && S_ISCHR(st.st_mode)) {
                 return fd;
             }
