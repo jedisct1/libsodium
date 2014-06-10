@@ -46,10 +46,14 @@ static void barrett_reduce(sc25519 *r, const crypto_uint32 x[64])
   q2[33] += carry;
 
   for(i=0;i<33;i++)r1[i] = x[i];
-  for(i=0;i<32;i++)
-    for(j=0;j<33;j++)
-      if(i+j < 33) r2[i+j] += m[i]*q3[j];
-
+  for(i=0;i<32;i++) {
+    for(j=0;j<33;j++) {
+      if(i+j < 33) {
+          /* coverity[overrun-local] */
+          r2[i+j] += m[i]*q3[j];
+      }
+    }
+  }
   for(i=0;i<32;i++)
   {
     carry = r2[i] >> 8;

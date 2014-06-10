@@ -202,6 +202,7 @@ randombytes_sysrandom_buf(void * const buf, const size_t size)
 {
     randombytes_sysrandom_stir_if_needed();
 #ifdef ULONG_LONG_MAX
+    /* coverity[result_independent_of_operands] */
     assert(size <= ULONG_LONG_MAX);
 #endif
 #ifndef _WIN32
