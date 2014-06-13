@@ -72,7 +72,7 @@ crypto_box_open_easy(unsigned char *m, const unsigned char *c,
     }
     memset(c_boxed, 0, crypto_box_BOXZEROBYTES);
     memcpy(c_boxed + crypto_box_BOXZEROBYTES, c, clen);
-    m_boxed_len = c_boxed_len + crypto_box_MACBYTES;
+    m_boxed_len = c_boxed_len;
     if ((m_boxed = (unsigned char *) malloc(m_boxed_len)) == NULL) {
         free(c_boxed);
         return -1;
