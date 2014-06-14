@@ -83,6 +83,7 @@ Samuel Neves (@sneves).
 * .NET: [libsodium-net](https://github.com/adamcaudill/libsodium-net)
 * NodeJS: [node-sodium](https://github.com/paixaop/node-sodium)
 * Objective C: [NAChloride](https://github.com/gabriel/NAChloride)
+* Objective C: [libsodium-objc](https://github.com/damiancarrillo/libsodium-objc)
 * OCaml: [ocaml-sodium](https://github.com/dsheets/ocaml-sodium)
 * Perl: [Crypto-Sodium](https://github.com/mgregoro/Crypt-Sodium)
 * Pharo/Squeak: [Crypto-NaCl](http://www.eighty-twenty.org/index.cgi/tech/smalltalk/nacl-for-squeak-and-pharo-20130601.html)
