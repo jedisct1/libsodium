@@ -111,8 +111,7 @@ randombytes_sysrandom_random_dev_open(void)
     int                fd;
 
     do {
-        if (access(*device, F_OK | R_OK) == 0 &&
-            (fd = open(*device, O_RDONLY)) != -1) {
+        if ((fd = open(*device, O_RDONLY)) != -1) {
             if (fstat(fd, &st) == 0 && S_ISCHR(st.st_mode)) {
                 return fd;
             }
@@ -202,6 +201,7 @@ randombytes_sysrandom_buf(void * const buf, const size_t size)
 {
     randombytes_sysrandom_stir_if_needed();
 #ifdef ULONG_LONG_MAX
+    /* coverity[result_independent_of_operands] */
     assert(size <= ULONG_LONG_MAX);
 #endif
 #ifndef _WIN32

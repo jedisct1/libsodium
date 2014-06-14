@@ -119,8 +119,7 @@ randombytes_salsa20_random_random_dev_open(void)
     int               fd;
 
     do {
-        if (access(*device, F_OK | R_OK) == 0 &&
-            (fd = open(*device, O_RDONLY)) != -1) {
+        if ((fd = open(*device, O_RDONLY)) != -1) {
             if (fstat(fd, &st) == 0 && S_ISCHR(st.st_mode)) {
                 return fd;
             }
@@ -279,6 +278,7 @@ randombytes_salsa20_random_buf(void * const buf, const size_t size)
     randombytes_salsa20_random_stir_if_needed();
     COMPILER_ASSERT(sizeof stream.nonce == crypto_stream_salsa20_NONCEBYTES);
 #ifdef ULONG_LONG_MAX
+    /* coverity[result_independent_of_operands] */
     assert(size <= ULONG_LONG_MAX);
 #endif
     ret = crypto_stream_salsa20((unsigned char *) buf, (unsigned long long) size,

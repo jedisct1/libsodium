@@ -25,12 +25,6 @@ static uint64_t    N3 = 16384U;
 static uint32_t    r3 = 8U;
 static uint32_t    p3 = 1U;
 
-static const char *password4 = "pleaseletmein";
-static const char *salt4 = "SodiumChloride";
-static uint64_t    N4 = 1048576U;
-static uint32_t    r4 = 8U;
-static uint32_t    p4 = 1U;
-
 static void test_vector(const char *password, const char *salt,
                         uint64_t N, uint32_t r, uint32_t p)
 {
@@ -68,7 +62,6 @@ int main(void)
    test_vector(password1, salt1, N1, r1, p1);
    test_vector(password2, salt2, N2, r2, p2);
    test_vector(password3, salt3, N3, r3, p3);
-   test_vector(password4, salt4, N4, r4, p4);
 
    return 0;
 }
