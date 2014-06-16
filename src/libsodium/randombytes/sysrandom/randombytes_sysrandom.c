@@ -22,7 +22,12 @@
 
 #ifdef _WIN32
 # include <windows.h>
-# include <wincrypt.h>
+# define RtlGenRandom SystemFunction036
+# if defined(__cplusplus)
+extern "C"
+# endif
+BOOLEAN NTAPI RtlGenRandom(PVOID RandomBuffer, ULONG RandomBufferLength);
+# pragma comment(lib, "advapi32.lib")
 #endif
 
 #ifdef __OpenBSD__
@@ -59,9 +64,6 @@ randombytes_sysrandom_close(void)
 #else /* __OpenBSD__ */
 
 typedef struct SysRandom_ {
-#ifdef _WIN32
-    HCRYPTPROV hcrypt_prov;
-#endif
     int        random_data_source_fd;
     int        initialized;
 } SysRandom;
@@ -140,10 +142,6 @@ randombytes_sysrandom_init(void)
 static void
 randombytes_sysrandom_init(void)
 {
-    if (! CryptAcquireContextW(&stream.hcrypt_prov, NULL, NULL,
-                               PROV_RSA_FULL, CRYPT_VERIFYCONTEXT)) {
-        abort();
-    }
 }
 #endif
 
@@ -177,8 +175,7 @@ randombytes_sysrandom_close(void)
         ret = 0;
     }
 #else /* _WIN32 */
-    if (stream.initialized != 0 &&
-        CryptReleaseContext(stream.hcrypt_prov, 0)) {
+    if (stream.initialized != 0) {
         stream.initialized = 0;
         ret = 0;
     }
@@ -212,7 +209,7 @@ randombytes_sysrandom_buf(void * const buf, const size_t size)
     if (size > 0xffffffff) {
         abort();
     }
-    if (! CryptGenRandom(stream.hcrypt_prov, (DWORD) size, (BYTE *) buf)) {
+    if (! RtlGenRandom((PVOID) buf, (ULONG) size)) {
         abort();
     }
 #endif

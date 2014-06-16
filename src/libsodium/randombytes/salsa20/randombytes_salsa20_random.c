@@ -25,8 +25,13 @@
 
 #ifdef _WIN32
 # include <windows.h>
-# include <wincrypt.h>
 # include <sys/timeb.h>
+# define RtlGenRandom SystemFunction036
+# if defined(__cplusplus)
+extern "C"
+# endif
+BOOLEAN NTAPI RtlGenRandom(PVOID RandomBuffer, ULONG RandomBufferLength);
+# pragma comment(lib, "advapi32.lib")
 #endif
 
 #define SALSA20_RANDOM_BLOCK_SIZE crypto_core_salsa20_OUTPUTBYTES
@@ -41,9 +46,6 @@ typedef struct Salsa20Random_ {
     size_t        rnd32_outleft;
 #ifndef _MSC_VER
     pid_t         pid;
-#endif
-#ifdef _WIN32
-    HCRYPTPROV    hcrypt_prov;
 #endif
     int           random_data_source_fd;
     int           initialized;
@@ -153,11 +155,6 @@ randombytes_salsa20_random_init(void)
 {
     stream.nonce = sodium_hrtime();
     assert(stream.nonce != (uint64_t) 0U);
-
-    if (! CryptAcquireContextW(&stream.hcrypt_prov, NULL, NULL,
-                               PROV_RSA_FULL, CRYPT_VERIFYCONTEXT)) {
-        abort();
-    }
 }
 #endif
 
@@ -187,7 +184,7 @@ randombytes_salsa20_random_stir(void)
         abort();
     }
 #else /* _WIN32 */
-    if (! CryptGenRandom(stream.hcrypt_prov, sizeof m0, (BYTE *) m0)) {
+    if (! RtlGenRandom((PVOID) m0, (ULONG) sizeof m0)) {
         abort();
     }
 #endif
@@ -255,8 +252,7 @@ randombytes_salsa20_random_close(void)
         ret = 0;
     }
 #else /* _WIN32 */
-    if (stream.initialized != 0 &&
-        CryptReleaseContext(stream.hcrypt_prov, 0)) {
+    if (stream.initialized != 0) {
         stream.initialized = 0;
         ret = 0;
     }
