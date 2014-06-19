@@ -248,19 +248,28 @@ crypto_stream_chacha20_ref(unsigned char *c, unsigned long long clen,
 }
 
 int
-crypto_stream_chacha20_ref_xor(unsigned char *c, const unsigned char *m,
-                               unsigned long long mlen, const unsigned char *n,
-                               const unsigned char *k)
+crypto_stream_chacha20_ref_xor_ic(unsigned char *c, const unsigned char *m,
+                                  unsigned long long mlen,
+                                  const unsigned char *n, uint64_t ic,
+                                  const unsigned char *k)
 {
     struct chacha_ctx ctx;
+    uint8_t           ic_bytes[8];
+    uint32_t          ic_high;
+    uint32_t          ic_low;
 
     if (!mlen) {
         return 0;
     }
+    ic_high = U32V(ic >> 32);
+    ic_low = U32V(ic);
+    U32TO8_LITTLE(&ic_bytes[0], ic_low);
+    U32TO8_LITTLE(&ic_bytes[4], ic_high);
     chacha_keysetup(&ctx, k);
-    chacha_ivsetup(&ctx, n, NULL);
+    chacha_ivsetup(&ctx, n, ic_bytes);
     chacha_encrypt_bytes(&ctx, m, c, mlen);
     sodium_memzero(&ctx, sizeof ctx);
+    sodium_memzero(ic_bytes, sizeof ic_bytes);
 
     return 0;
 }
