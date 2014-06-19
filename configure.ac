@@ -383,17 +383,6 @@ AS_CASE([$host_cpu],
      AC_DEFINE([CPU_ALIGNED_ACCESS_REQUIRED], [1], [data alignment is required])]
 )
 
-AC_MSG_CHECKING(for memset_s)
-AC_LINK_IFELSE([AC_LANG_PROGRAM([[
-#include <string.h>
-]], [[
-char dummy[42];
-(void) memset_s(dummy, (rsize_t) sizeof dummy, 0, (rsize_t) sizeof dummy);
-]])],
-[AC_MSG_RESULT(yes)
- AC_DEFINE([HAVE_MEMSET_S], [1], [memset_s is available])],
-[AC_MSG_RESULT(no)])
-
 dnl Checks for functions and headers
 
 AC_CHECK_FUNC(clock_gettime, , [AC_CHECK_LIB(rt, clock_gettime)])
