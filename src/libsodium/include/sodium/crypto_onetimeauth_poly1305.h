@@ -28,6 +28,11 @@ typedef struct crypto_onetimeauth_poly1305_implementation {
                                       const unsigned char *k);
 } crypto_onetimeauth_poly1305_implementation;
 
+typedef struct crypto_onetimeauth_poly1305_state {
+    unsigned long long aligner;
+    unsigned char      opaque[136];
+} crypto_onetimeauth_poly1305_state;
+
 #define crypto_onetimeauth_poly1305_BYTES 16U
 SODIUM_EXPORT
 size_t crypto_onetimeauth_poly1305_bytes(void);

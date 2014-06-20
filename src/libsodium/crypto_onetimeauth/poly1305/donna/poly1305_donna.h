@@ -3,10 +3,9 @@
 
 #include <stddef.h>
 
-typedef struct poly1305_context {
-    unsigned long long aligner;
-    unsigned char opaque[136];
-} poly1305_context;
+#include "crypto_onetimeauth_poly1305.h"
+
+typedef crypto_onetimeauth_poly1305_state poly1305_context;
 
 #endif /* POLY1305_DONNA_H */
 
