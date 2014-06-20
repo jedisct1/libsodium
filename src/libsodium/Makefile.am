@@ -53,7 +53,6 @@ libsodium_la_SOURCES = \
 	crypto_onetimeauth/poly1305/onetimeauth_poly1305.c \
 	crypto_onetimeauth/poly1305/onetimeauth_poly1305_api.c \
 	crypto_onetimeauth/poly1305/onetimeauth_poly1305_try.c \
-	crypto_onetimeauth/poly1305/donna/api.h \
 	crypto_onetimeauth/poly1305/donna/poly1305_donna.h \
 	crypto_onetimeauth/poly1305/donna/poly1305_donna32.h \
 	crypto_onetimeauth/poly1305/donna/poly1305_donna64.h \

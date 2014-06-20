@@ -1,6 +1,6 @@
 
 #include "crypto_onetimeauth_poly1305.h"
-#include "crypto_onetimeauth_poly1305_donna.h"
+#include "donna/poly1305_donna.h"
 
 static const crypto_onetimeauth_poly1305_implementation *implementation =
     &crypto_onetimeauth_poly1305_donna_implementation;

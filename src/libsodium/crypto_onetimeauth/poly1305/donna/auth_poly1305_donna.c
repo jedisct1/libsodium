@@ -1,10 +1,6 @@
 
-#include "api.h"
 #include "utils.h"
-
-#include "crypto_onetimeauth_poly1305_donna.h"
 #include "poly1305_donna.h"
-
 #ifdef HAVE_TI_MODE
 # include "poly1305_donna64.h"
 #else
@@ -50,8 +46,9 @@ poly1305_update(poly1305_context *ctx, const unsigned char *m,
 }
 
 int
-crypto_onetimeauth(unsigned char *out, const unsigned char *m,
-                   unsigned long long inlen, const unsigned char *key)
+crypto_onetimeauth_poly1305_donna(unsigned char *out, const unsigned char *m,
+                                  unsigned long long inlen,
+                                  const unsigned char *key)
 {
     poly1305_context ctx;
     poly1305_init(&ctx, key);
@@ -62,14 +59,14 @@ crypto_onetimeauth(unsigned char *out, const unsigned char *m,
 }
 
 const char *
-crypto_onetimeauth_poly1305_implementation_name(void)
+crypto_onetimeauth_poly1305_donna_implementation_name(void)
 {
     return POLY1305_IMPLEMENTATION_NAME;
 }
 
 struct crypto_onetimeauth_poly1305_implementation
 crypto_onetimeauth_poly1305_donna_implementation = {
-    _SODIUM_C99(.implementation_name =) crypto_onetimeauth_poly1305_implementation_name,
-    _SODIUM_C99(.onetimeauth =) crypto_onetimeauth,
-    _SODIUM_C99(.onetimeauth_verify =) crypto_onetimeauth_verify
+    _SODIUM_C99(.implementation_name =) crypto_onetimeauth_poly1305_donna_implementation_name,
+    _SODIUM_C99(.onetimeauth =) crypto_onetimeauth_poly1305_donna,
+    _SODIUM_C99(.onetimeauth_verify =) crypto_onetimeauth_poly1305_donna_verify
 };
