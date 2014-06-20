@@ -50,6 +50,7 @@ crypto_secretbox_chacha20poly1305_ad(unsigned char *c,
     crypto_onetimeauth_poly1305_update(&state, slen, sizeof slen);
 
     crypto_onetimeauth_poly1305_final(&state, c);
+    sodium_memzero(&state, sizeof state);
 
     return 0;
 }
@@ -82,7 +83,6 @@ crypto_secretbox_chacha20poly1305_ad_open(unsigned char *m,
     if (clen < crypto_secretbox_chacha20poly1305_ZEROBYTES) {
         return -1;
     }
-
     crypto_stream_chacha20(block0, sizeof block0, n, k);
     crypto_onetimeauth_poly1305_init(&state, block0);
     sodium_memzero(block0, sizeof block0);
@@ -98,6 +98,7 @@ crypto_secretbox_chacha20poly1305_ad_open(unsigned char *m,
     crypto_onetimeauth_poly1305_update(&state, slen, sizeof slen);
 
     crypto_onetimeauth_poly1305_final(&state, mac);
+    sodium_memzero(&state, sizeof state);
 
     ret = crypto_verify_16(mac, c);
     sodium_memzero(mac, sizeof mac);
