@@ -10,7 +10,7 @@
 static void
 poly1305_update(poly1305_context *ctx, const unsigned char *m,
                 unsigned long long bytes) {
-    poly1305_state_internal_t *st = (poly1305_state_internal_t *)ctx;
+    poly1305_state_internal_t *st = (poly1305_state_internal_t *)(void *)ctx;
     unsigned long long i;
 
     /* handle leftover */
