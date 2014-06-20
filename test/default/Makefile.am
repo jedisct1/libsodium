@@ -38,6 +38,7 @@ EXTRA_DIST = \
 	scalarmult5.exp \
 	scalarmult6.exp \
 	secretbox.exp \
+	secretbox_chacha20poly1305.exp \
 	secretbox2.exp \
 	secretbox7.exp \
 	secretbox8.exp \
@@ -93,6 +94,7 @@ DISTCLEANFILES = \
 	scalarmult5.res \
 	scalarmult6.res \
 	secretbox.res \
+	secretbox_chacha20poly1305.res \
 	secretbox2.res \
 	secretbox7.res \
 	secretbox8.res \
@@ -156,6 +158,7 @@ TESTS_TARGETS = \
 	scalarmult5 \
 	scalarmult6 \
 	secretbox \
+	secretbox_chacha20poly1305 \
 	secretbox2 \
 	secretbox7 \
 	secretbox8 \
@@ -288,6 +291,9 @@ scalarmult6_LDADD         = $(TESTS_LDADD)
 
 secretbox_SOURCE          = cmptest.h secretbox.c
 secretbox_LDADD           = $(TESTS_LDADD)
+
+secretbox_chacha20poly1305_SOURCE          = cmptest.h secretbox_chacha20poly1305.c
+secretbox_chacha20poly1305_LDADD           = $(TESTS_LDADD)
 
 secretbox2_SOURCE         = cmptest.h secretbox2.c
 secretbox2_LDADD          = $(TESTS_LDADD)
