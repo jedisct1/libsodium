@@ -58,6 +58,35 @@ crypto_onetimeauth_poly1305_donna(unsigned char *out, const unsigned char *m,
     return 0;
 }
 
+int
+crypto_onetimeauth_poly1305_donna_init(crypto_onetimeauth_poly1305_state *state,
+                                       const unsigned char *key)
+{
+    poly1305_init((poly1305_context *) state, key);
+
+    return 0;
+}
+
+int
+crypto_onetimeauth_poly1305_donna_update(crypto_onetimeauth_poly1305_state *state,
+                                         const unsigned char *in,
+                                         unsigned long long inlen)
+{
+    poly1305_update((poly1305_context *) state, in, inlen);
+
+    return 0;
+}
+
+int
+crypto_onetimeauth_poly1305_donna_final(crypto_onetimeauth_poly1305_state *state,
+                                        unsigned char *out)
+{
+    poly1305_finish((poly1305_context *) state, out);
+
+    return 0;
+}
+
+
 const char *
 crypto_onetimeauth_poly1305_donna_implementation_name(void)
 {
@@ -68,5 +97,8 @@ struct crypto_onetimeauth_poly1305_implementation
 crypto_onetimeauth_poly1305_donna_implementation = {
     _SODIUM_C99(.implementation_name =) crypto_onetimeauth_poly1305_donna_implementation_name,
     _SODIUM_C99(.onetimeauth =) crypto_onetimeauth_poly1305_donna,
-    _SODIUM_C99(.onetimeauth_verify =) crypto_onetimeauth_poly1305_donna_verify
+    _SODIUM_C99(.onetimeauth_verify =) crypto_onetimeauth_poly1305_donna_verify,
+    _SODIUM_C99(.onetimeauth_init =) crypto_onetimeauth_poly1305_donna_init,
+    _SODIUM_C99(.onetimeauth_update =) crypto_onetimeauth_poly1305_donna_update,
+    _SODIUM_C99(.onetimeauth_final =) crypto_onetimeauth_poly1305_donna_final
 };
