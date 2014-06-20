@@ -21,4 +21,15 @@ int crypto_onetimeauth_poly1305_donna_verify(const unsigned char *h,
                                              const unsigned char *in,
                                              unsigned long long inlen,
                                              const unsigned char *k);
-#endif /* POLY1305_DONNA_H */
+
+int crypto_onetimeauth_poly1305_donna_init(crypto_onetimeauth_poly1305_state *state,
+                                           const unsigned char *key);
+
+int crypto_onetimeauth_poly1305_donna_update(crypto_onetimeauth_poly1305_state *state,
+                                             const unsigned char *in,
+                                             unsigned long long inlen);
+
+int crypto_onetimeauth_poly1305_donna_final(crypto_onetimeauth_poly1305_state *state,
+                                            unsigned char *out);
+
+#endif /* __POLY1305_DONNA_H__ */
