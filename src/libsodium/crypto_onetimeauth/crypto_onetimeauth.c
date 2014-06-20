@@ -32,3 +32,28 @@ crypto_onetimeauth_verify(const unsigned char *h, const unsigned char *in,
 {
     return crypto_onetimeauth_poly1305_verify(h, in, inlen, k);
 }
+
+int
+crypto_onetimeauth_init(crypto_onetimeauth_state *state,
+                        const unsigned char *key)
+{
+    return crypto_onetimeauth_poly1305_init
+        ((crypto_onetimeauth_poly1305_state *) state, key);
+}
+
+int
+crypto_onetimeauth_update(crypto_onetimeauth_state *state,
+                          const unsigned char *in,
+                          unsigned long long inlen)
+{
+    return crypto_onetimeauth_poly1305_update
+        ((crypto_onetimeauth_poly1305_state *) state, in, inlen);
+}
+
+int
+crypto_onetimeauth_final(crypto_onetimeauth_state *state,
+                         unsigned char *out)
+{
+    return crypto_onetimeauth_poly1305_final
+        ((crypto_onetimeauth_poly1305_state *) state, out);
+}
