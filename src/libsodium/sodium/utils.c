@@ -19,6 +19,11 @@
 # include <wincrypt.h>
 #endif
 
+#ifdef HAVE_WEAK_SYMBOLS
+__attribute__((weak)) void
+__sodium_dummy_symbol_to_prevent_lto(void * const pnt, const size_t len) { }
+#endif
+
 void
 sodium_memzero(void * const pnt, const size_t len)
 {
@@ -30,6 +35,9 @@ sodium_memzero(void * const pnt, const size_t len)
     }
 #elif defined(HAVE_EXPLICIT_BZERO)
     explicit_bzero(pnt, len);
+#elif HAVE_WEAK_SYMBOLS
+    memset(pnt, 0, len);
+    __sodium_dummy_symbol_to_prevent_lto(pnt, len);
 #else
     volatile unsigned char *pnt_ = (volatile unsigned char *) pnt;
     size_t                     i = (size_t) 0U;

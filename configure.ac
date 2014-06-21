@@ -375,6 +375,16 @@ __asm__ __volatile__ ("xchgl %%ebx, %k1; cpuid; xchgl %%ebx, %k1" :
   ])
 AC_SUBST(HAVE_CPUID_V)
 
+AC_MSG_CHECKING(if weak symbols are supported)
+AC_LINK_IFELSE([AC_LANG_PROGRAM([[
+__attribute__((weak)) void __dummy(void *x) { }
+void f(void *x) { __dummy(x); }
+]], [[ ]]
+)],
+[AC_MSG_RESULT(yes)
+ AC_DEFINE([HAVE_WEAK_SYMBOLS], [1], [weak symbols are supported])],
+[AC_MSG_RESULT(no)])
+
 AS_CASE([$host_cpu],
   [i*86 | x86_64 | powerpc* | s390*],
     [AC_MSG_NOTICE([data alignment is not required on this target])],
