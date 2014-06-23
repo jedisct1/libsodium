@@ -171,14 +171,15 @@
     <ClInclude Include="src\libsodium\include\sodium\runtime.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="src\libsodium\include\sodium\crypto_scalarmult_curve25519.h.in">
+    <ClInclude Include="src\libsodium\include\sodium.h">
       <Filter>Header Files</Filter>
-    </None>
-    <None Include="src\libsodium\include\sodium\crypto_stream_salsa20.h.in">
+    </ClInclude>
+    <ClInclude Include="src\libsodium\include\sodium\crypto_secretbox_chacha20poly1305.h">
       <Filter>Header Files</Filter>
-    </None>
+    </ClInclude>
+    <ClInclude Include="src\libsodium\include\sodium\crypto_stream_chacha20.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\libsodium\crypto_core\hsalsa20\ref2\core_hsalsa20.c">

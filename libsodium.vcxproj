@@ -315,6 +315,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="src\libsodium\include\sodium.h" />
     <ClInclude Include="src\libsodium\include\sodium\core.h" />
     <ClInclude Include="src\libsodium\include\sodium\crypto_auth.h" />
     <ClInclude Include="src\libsodium\include\sodium\crypto_auth_hmacsha256.h" />
@@ -340,6 +341,7 @@
     <ClInclude Include="src\libsodium\include\sodium\crypto_scalarmult.h" />
     <ClInclude Include="src\libsodium\include\sodium\crypto_scalarmult_curve25519.h" />
     <ClInclude Include="src\libsodium\include\sodium\crypto_secretbox.h" />
+    <ClInclude Include="src\libsodium\include\sodium\crypto_secretbox_chacha20poly1305.h" />
     <ClInclude Include="src\libsodium\include\sodium\crypto_secretbox_xsalsa20poly1305.h" />
     <ClInclude Include="src\libsodium\include\sodium\crypto_shorthash.h" />
     <ClInclude Include="src\libsodium\include\sodium\crypto_shorthash_siphash24.h" />
@@ -349,6 +351,7 @@
     <ClInclude Include="src\libsodium\include\sodium\crypto_stream.h" />
     <ClInclude Include="src\libsodium\include\sodium\crypto_stream_aes128ctr.h" />
     <ClInclude Include="src\libsodium\include\sodium\crypto_stream_aes256estream.h" />
+    <ClInclude Include="src\libsodium\include\sodium\crypto_stream_chacha20.h" />
     <ClInclude Include="src\libsodium\include\sodium\crypto_stream_salsa20.h" />
     <ClInclude Include="src\libsodium\include\sodium\crypto_stream_salsa2012.h" />
     <ClInclude Include="src\libsodium\include\sodium\crypto_stream_salsa208.h" />
@@ -367,10 +370,6 @@
     <ClInclude Include="src\libsodium\include\sodium\runtime.h" />
     <ClInclude Include="src\libsodium\include\sodium\utils.h" />
     <ClInclude Include="src\libsodium\include\sodium\version.h" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="src\libsodium\include\sodium\crypto_scalarmult_curve25519.h.in" />
-    <None Include="src\libsodium\include\sodium\crypto_stream_salsa20.h.in" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\libsodium\crypto_auth\crypto_auth.c" />
