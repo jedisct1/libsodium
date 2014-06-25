@@ -4,6 +4,8 @@ D. J. Bernstein
 Public domain.
 */
 
+#include <stdint.h>
+
 #include "api.h"
 #include "crypto_core_salsa20.h"
 #include "utils.h"
@@ -16,10 +18,10 @@ static const unsigned char sigma[16] = {
     'e', 'x', 'p', 'a', 'n', 'd', ' ', '3', '2', '-', 'b', 'y', 't', 'e', ' ', 'k'
 };
 
-int crypto_stream_xor(
+int crypto_stream_salsa20_xor_ic(
         unsigned char *c,
   const unsigned char *m,unsigned long long mlen,
-  const unsigned char *n,
+  const unsigned char *n, uint64_t ic,
   const unsigned char *k
 )
 {
@@ -33,7 +35,10 @@ int crypto_stream_xor(
 
   for (i = 0;i < 32;++i) kcopy[i] = k[i];
   for (i = 0;i < 8;++i) in[i] = n[i];
-  for (i = 8;i < 16;++i) in[i] = 0;
+  for (i = 8;i < 16;++i) {
+      in[i] = (unsigned char) (ic & 0xff);
+      ic >>= 8;
+  }
 
   while (mlen >= 64) {
     crypto_core_salsa20(block,in,kcopy,sigma);

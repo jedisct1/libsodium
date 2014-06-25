@@ -33,19 +33,20 @@ mov  $0,%rax
 mov  %r9,%rcx
 rep stosb
 sub  %r9,%rdi
+movq $0,472(%rsp)
 jmp ._start
 
 .text
 .p2align 5
 
-.globl  crypto_stream_salsa20_xor
-.globl _crypto_stream_salsa20_xor
+.globl  crypto_stream_salsa20_xor_ic
+.globl _crypto_stream_salsa20_xor_ic
 #ifdef __ELF__
-.type  crypto_stream_salsa20_xor, @function
-.type _crypto_stream_salsa20_xor, @function
+.type  crypto_stream_salsa20_xor_ic, @function
+.type _crypto_stream_salsa20_xor_ic, @function
 #endif
-crypto_stream_salsa20_xor:
-_crypto_stream_salsa20_xor:
+crypto_stream_salsa20_xor_ic:
+_crypto_stream_salsa20_xor_ic:
 
 mov %rsp,%r11
 and $31,%r11
@@ -60,9 +61,10 @@ movq %rbx,456(%rsp)
 movq %rbp,464(%rsp)
 mov  %rdi,%rdi
 mov  %rsi,%rsi
+mov  %r9,%r10
+movq %r8,472(%rsp)
 mov  %rdx,%r9
 mov  %rcx,%rdx
-mov  %r8,%r10
 cmp  $0,%r9
 jbe ._done
 
@@ -75,17 +77,16 @@ movl %ecx,64(%rsp)
 movl %r8d,4+64(%rsp)
 movl %eax,8+64(%rsp)
 movl %r11d,12+64(%rsp)
-mov  $0,%rcx
 movl   24(%r10),%r8d
 movl   4(%r10),%eax
 movl   4(%rdx),%edx
-movq %rcx,472(%rsp)
+movq 472(%rsp),%rcx
 movl %ecx,80(%rsp)
 movl %r8d,4+80(%rsp)
 movl %eax,8+80(%rsp)
 movl %edx,12+80(%rsp)
 movl   12(%r10),%edx
-mov  $0,%rcx
+shr  $32,%rcx
 movl   28(%r10),%r8d
 movl   8(%r10),%eax
 movl %edx,96(%rsp)
