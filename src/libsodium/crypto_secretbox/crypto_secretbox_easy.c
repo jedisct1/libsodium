@@ -33,7 +33,7 @@ crypto_secretbox_easy_detached(unsigned char *c, unsigned char *mac,
     crypto_core_hsalsa20(subkey, n, k, sigma);
 
     memset(block0, 0U, crypto_secretbox_ZEROBYTES);
-    (void) sizeof(int[64U > crypto_secretbox_ZEROBYTES ? 1 : -1]);
+    (void) sizeof(int[64U >= crypto_secretbox_ZEROBYTES ? 1 : -1]);
     mlen0 = mlen;
     if (mlen0 > 64U - crypto_secretbox_ZEROBYTES) {
         mlen0 = 64U - crypto_secretbox_ZEROBYTES;
@@ -44,6 +44,8 @@ crypto_secretbox_easy_detached(unsigned char *c, unsigned char *mac,
     crypto_stream_salsa20_xor(block0, block0,
                               mlen0 + crypto_secretbox_ZEROBYTES,
                               n + 16, subkey);
+    (void) sizeof(int[crypto_secretbox_ZEROBYTES >=
+                      crypto_onetimeauth_poly1305_KEYBYTES ? 1 : -1]);
     crypto_onetimeauth_poly1305_init(&state, block0);
 
     memcpy(c, block0 + crypto_secretbox_ZEROBYTES, mlen0);
