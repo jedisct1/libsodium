@@ -72,12 +72,6 @@
     <ClInclude Include="src\libsodium\include\sodium\crypto_onetimeauth.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="src\libsodium\include\sodium\crypto_onetimeauth_poly1305.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="src\libsodium\include\sodium\crypto_onetimeauth_poly1305_donna.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="src\libsodium\include\sodium\crypto_scalarmult.h">
       <Filter>Header Files</Filter>
     </ClInclude>
@@ -174,10 +168,13 @@
     <ClInclude Include="src\libsodium\include\sodium.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="src\libsodium\include\sodium\crypto_secretbox_chacha20poly1305.h">
+    <ClInclude Include="src\libsodium\include\sodium\crypto_stream_chacha20.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="src\libsodium\include\sodium\crypto_stream_chacha20.h">
+    <ClInclude Include="src\libsodium\include\sodium\crypto_aead_chacha20poly1305.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\libsodium\include\sodium\crypto_onetimeauth_poly1305.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
@@ -593,9 +590,6 @@
     <ClCompile Include="src\libsodium\crypto_pwhash\scryptsalsa208sha256\sse\pwhash_scryptsalsa208sha256_sse.c">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="src\libsodium\crypto_secretbox\chacha20poly1305\secretbox_chacha20poly1305.c">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="src\libsodium\crypto_stream\chacha20\stream_chacha20_api.c">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -651,6 +645,9 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="src\libsodium\crypto_box\curve25519xsalsa20poly1305\ref\before_curve25519xsalsa20poly1305.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\libsodium\crypto_aead\chacha20poly1305\sodium\aead_chacha20poly1305.c">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
