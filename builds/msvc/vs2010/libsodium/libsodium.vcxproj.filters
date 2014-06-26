@@ -766,10 +766,10 @@
     <ClInclude Include="..\..\..\..\src\libsodium\crypto_stream\chacha20\ref\api.h">
       <Filter>src\crypto_stream\chacha20\ref</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\..\..\src\libsodium\include\sodium\crypto_secretbox_chacha20poly1305.h">
+    <ClInclude Include="..\..\..\..\src\libsodium\include\sodium\crypto_stream_chacha20.h">
       <Filter>include\sodium</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\..\..\src\libsodium\include\sodium\crypto_stream_chacha20.h">
+    <ClInclude Include="..\..\..\..\src\libsodium\include\sodium\crypto_aead_chacha20poly1305.h">
       <Filter>include\sodium</Filter>
     </ClInclude>
   </ItemGroup>
@@ -1048,8 +1048,14 @@
     <Filter Include="src\crypto_stream\chacha20\ref">
       <UniqueIdentifier>{65197ddf-17b9-4b40-9f6e-c5ba4067785b}</UniqueIdentifier>
     </Filter>
-    <Filter Include="src\crypto_secretbox\chacha20poly1305">
-      <UniqueIdentifier>{7322a00f-6cf1-4aa9-99e2-524c3a9f3c0e}</UniqueIdentifier>
+    <Filter Include="src\crypto_aead">
+      <UniqueIdentifier>{7a5c7f79-8538-46cb-a9ce-010f687acbc2}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\crypto_aead\chacha20poly1305">
+      <UniqueIdentifier>{404da9f2-09c6-4816-8afe-de701ddddb35}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\crypto_aead\chacha20poly1305\sodium">
+      <UniqueIdentifier>{da16d0f4-7f2d-4a0c-a0e2-92eec8662999}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -1101,8 +1107,8 @@
     <ClCompile Include="..\..\..\..\src\libsodium\crypto_stream\chacha20\ref\stream_chacha20_ref.c">
       <Filter>src\crypto_stream\chacha20\ref</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\..\..\src\libsodium\crypto_secretbox\chacha20poly1305\secretbox_chacha20poly1305.c">
-      <Filter>src\crypto_secretbox\chacha20poly1305</Filter>
+    <ClCompile Include="..\..\..\..\src\libsodium\crypto_aead\chacha20poly1305\sodium\aead_chacha20poly1305.c">
+      <Filter>src\crypto_aead\chacha20poly1305\sodium</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>
