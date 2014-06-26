@@ -2,6 +2,7 @@
 EXTRA_DIST = \
 	cmptest.h \
 	wintest.bat \
+	aead_chacha20poly1305.exp \
 	auth.exp \
 	auth2.exp \
 	auth3.exp \
@@ -38,7 +39,6 @@ EXTRA_DIST = \
 	scalarmult5.exp \
 	scalarmult6.exp \
 	secretbox.exp \
-	secretbox_chacha20poly1305.exp \
 	secretbox2.exp \
 	secretbox7.exp \
 	secretbox8.exp \
@@ -58,6 +58,7 @@ EXTRA_DIST = \
 	verify1.exp
 
 DISTCLEANFILES = \
+	aead_chacha20poly1305.res \
 	auth.res \
 	auth2.res \
 	auth3.res \
@@ -94,7 +95,6 @@ DISTCLEANFILES = \
 	scalarmult5.res \
 	scalarmult6.res \
 	secretbox.res \
-	secretbox_chacha20poly1305.res \
 	secretbox2.res \
 	secretbox7.res \
 	secretbox8.res \
@@ -122,6 +122,7 @@ AM_CPPFLAGS = \
 	-I$(top_srcdir)/test/quirks
 
 TESTS_TARGETS = \
+	aead_chacha20poly1305 \
 	auth \
 	auth2 \
 	auth3 \
@@ -158,7 +159,6 @@ TESTS_TARGETS = \
 	scalarmult5 \
 	scalarmult6 \
 	secretbox \
-	secretbox_chacha20poly1305 \
 	secretbox2 \
 	secretbox7 \
 	secretbox8 \
@@ -183,6 +183,9 @@ TESTS = $(TESTS_TARGETS)
 
 TESTS_LDADD = \
 	${top_builddir}/src/libsodium/libsodium.la
+
+aead_chacha20poly1305_SOURCE          = cmptest.h aead_chacha20poly1305.c
+aead_chacha20poly1305_LDADD           = $(TESTS_LDADD)
 
 auth_SOURCE               = cmptest.h auth.c
 auth_LDADD                = $(TESTS_LDADD)
@@ -291,9 +294,6 @@ scalarmult6_LDADD         = $(TESTS_LDADD)
 
 secretbox_SOURCE          = cmptest.h secretbox.c
 secretbox_LDADD           = $(TESTS_LDADD)
-
-secretbox_chacha20poly1305_SOURCE          = cmptest.h secretbox_chacha20poly1305.c
-secretbox_chacha20poly1305_LDADD           = $(TESTS_LDADD)
 
 secretbox2_SOURCE         = cmptest.h secretbox2.c
 secretbox2_LDADD          = $(TESTS_LDADD)

@@ -2,6 +2,7 @@ lib_LTLIBRARIES = \
 	libsodium.la
 
 libsodium_la_SOURCES = \
+	crypto_aead/chacha20poly1305/aead_chacha20poly1305.c \
 	crypto_auth/crypto_auth.c \
 	crypto_auth/hmacsha256/auth_hmacsha256_api.c \
 	crypto_auth/hmacsha256/cp/api.h \
@@ -71,7 +72,6 @@ libsodium_la_SOURCES = \
 	crypto_scalarmult/curve25519/scalarmult_curve25519_api.c \
 	crypto_secretbox/crypto_secretbox.c \
 	crypto_secretbox/crypto_secretbox_easy.c \
-	crypto_secretbox/chacha20poly1305/secretbox_chacha20poly1305.c \
 	crypto_secretbox/xsalsa20poly1305/secretbox_xsalsa20poly1305_api.c \
 	crypto_secretbox/xsalsa20poly1305/ref/api.h \
 	crypto_secretbox/xsalsa20poly1305/ref/box_xsalsa20poly1305.c \

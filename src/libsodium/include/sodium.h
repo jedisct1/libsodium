@@ -3,6 +3,7 @@
 #define __SODIUM_H__
 
 #include <sodium/core.h>
+#include <sodium/crypto_aead_chacha20poly1305.h>
 #include <sodium/crypto_auth.h>
 #include <sodium/crypto_auth_hmacsha256.h>
 #include <sodium/crypto_auth_hmacsha512.h>
@@ -24,7 +25,6 @@
 #include <sodium/crypto_scalarmult.h>
 #include <sodium/crypto_scalarmult_curve25519.h>
 #include <sodium/crypto_secretbox.h>
-#include <sodium/crypto_secretbox_chacha20poly1305.h>
 #include <sodium/crypto_secretbox_xsalsa20poly1305.h>
 #include <sodium/crypto_shorthash.h>
 #include <sodium/crypto_shorthash_siphash24.h>
