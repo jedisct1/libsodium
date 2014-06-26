@@ -263,12 +263,8 @@ The length of the ciphertext, which will include the MAC, is
 the decrypted message doesn't have to be more than `len(c) -
 crypto_secretbox_MACBYTES`.
 
-The "easy" interface currently requires allocations and copying, which
-makes it slower than using the traditional NaCl interface. This
-shouldn't make any sensible difference in most use cases, and future
-versions of the library may not require extra copy operations any
-more. Unless speed is absolutely critical, you are welcome to use the
-"easy" interface, especially if you are new to NaCl/Sodium.
+The "easy" interface is as fast as the traditional NaCl API and
+doesn't require any memory allocations.
 
 ## New operations
 
