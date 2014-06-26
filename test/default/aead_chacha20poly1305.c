@@ -23,15 +23,20 @@ static unsigned char ad[10U] = {
     0x87, 0xe2, 0x29, 0xd4, 0x50, 0x08, 0x45, 0xa0, 0x79, 0xc0
 };
 
-static unsigned char c[10U + crypto_aead_chacha20poly1305_ZEROBYTES];
+static unsigned char c[10U + crypto_aead_chacha20poly1305_MACBYTES];
 
 int main(void)
 {
-    unsigned char m2[10U];
-    size_t         i;
+    unsigned char      m2[10U];
+    unsigned long long clen;
+    unsigned long long m2len;
+    size_t             i;
 
-    crypto_aead_chacha20poly1305_encrypt(c, NULL, m, sizeof m, ad, sizeof ad,
+    crypto_aead_chacha20poly1305_encrypt(c, &clen, m, sizeof m, ad, sizeof ad,
                                          NULL, nonce, firstkey);
+    if (clen != sizeof m + crypto_aead_chacha20poly1305_macbytes()) {        
+        printf("clen is not properly set\n");
+    }
     for (i = 0U; i < sizeof c; ++i) {
         printf(",0x%02x", (unsigned int) c[i]);
         if (i % 8 == 7) {
@@ -40,10 +45,13 @@ int main(void)
     }
     printf("\n");
 
-    if (crypto_aead_chacha20poly1305_decrypt(m2, NULL, NULL, c, sizeof c,
+    if (crypto_aead_chacha20poly1305_decrypt(m2, &m2len, NULL, c, sizeof c,
                                              ad, sizeof ad,
                                              nonce, firstkey) != 0) {
-        printf("crypto_aead_chacha20poly1305_ad_open() failed\n");
+        printf("crypto_aead_chacha20poly1305_decrypt() failed\n");
+    }
+    if (m2len != sizeof c - crypto_aead_chacha20poly1305_macbytes()) {
+        printf("m2len is not properly set\n");
     }
     if (memcmp(m, m2, sizeof m) != 0) {
         printf("m != m2\n");
