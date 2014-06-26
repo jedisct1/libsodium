@@ -35,17 +35,16 @@ crypto_aead_chacha20poly1305_encrypt(unsigned char *c,
     crypto_onetimeauth_poly1305_state state;
     unsigned char                     block0[64U];
     unsigned char                     slen[8U];
-    
+
 #ifdef ULONG_LONG_MAX
-    if (mlen > ULONG_LONG_MAX - crypto_aead_chacha20poly1305_ZEROBYTES) {
+    if (mlen > ULONG_LONG_MAX - crypto_aead_chacha20poly1305_ABYTES) {
         if (clen != NULL) {
             *clen = 0ULL;
         }
         return -1;
     }
-#endif    
-    crypto_stream_chacha20_xor_ic
-        (c + crypto_aead_chacha20poly1305_ZEROBYTES, m, mlen, npub, 1U, k);
+#endif
+    crypto_stream_chacha20_xor_ic(c, m, mlen, npub, 1U, k);
 
     crypto_stream_chacha20(block0, sizeof block0, npub, k);
     crypto_onetimeauth_poly1305_init(&state, block0);
@@ -55,16 +54,15 @@ crypto_aead_chacha20poly1305_encrypt(unsigned char *c,
     _u64_le_from_ull(slen, adlen);
     crypto_onetimeauth_poly1305_update(&state, slen, sizeof slen);
 
-    crypto_onetimeauth_poly1305_update
-        (&state, c + crypto_aead_chacha20poly1305_ZEROBYTES, mlen);
+    crypto_onetimeauth_poly1305_update(&state, c, mlen);
     _u64_le_from_ull(slen, mlen);
     crypto_onetimeauth_poly1305_update(&state, slen, sizeof slen);
 
-    crypto_onetimeauth_poly1305_final(&state, c);
+    crypto_onetimeauth_poly1305_final(&state, c + mlen);
     sodium_memzero(&state, sizeof state);
 
     if (clen != NULL) {
-        *clen = mlen + crypto_aead_chacha20poly1305_ZEROBYTES;
+        *clen = mlen + crypto_aead_chacha20poly1305_ABYTES;
     }
     return 0;
 }
@@ -83,13 +81,13 @@ crypto_aead_chacha20poly1305_decrypt(unsigned char *m,
     crypto_onetimeauth_poly1305_state state;
     unsigned char                     block0[64U];
     unsigned char                     slen[8U];
-    unsigned char                     mac[crypto_aead_chacha20poly1305_MACBYTES];
+    unsigned char                     mac[crypto_aead_chacha20poly1305_ABYTES];
     int                               ret;
 
     if (mlen != NULL) {
         *mlen = 0ULL;
     }
-    if (clen < crypto_aead_chacha20poly1305_ZEROBYTES) {
+    if (clen < crypto_aead_chacha20poly1305_ABYTES) {
         return -1;
     }
     crypto_stream_chacha20(block0, sizeof block0, npub, k);
@@ -101,25 +99,24 @@ crypto_aead_chacha20poly1305_decrypt(unsigned char *m,
     crypto_onetimeauth_poly1305_update(&state, slen, sizeof slen);
 
     crypto_onetimeauth_poly1305_update
-        (&state, c + crypto_aead_chacha20poly1305_ZEROBYTES,
-         clen - crypto_aead_chacha20poly1305_ZEROBYTES);
-    _u64_le_from_ull(slen, clen - crypto_aead_chacha20poly1305_ZEROBYTES);
+        (&state, c, clen - crypto_aead_chacha20poly1305_ABYTES);
+    _u64_le_from_ull(slen, clen - crypto_aead_chacha20poly1305_ABYTES);
     crypto_onetimeauth_poly1305_update(&state, slen, sizeof slen);
 
     crypto_onetimeauth_poly1305_final(&state, mac);
     sodium_memzero(&state, sizeof state);
 
-    ret = crypto_verify_16(mac, c);
+    ret = crypto_verify_16(mac,
+                           c + clen - crypto_aead_chacha20poly1305_ABYTES);
     sodium_memzero(mac, sizeof mac);
     if (ret != 0) {
-        memset(m, 0, clen - crypto_aead_chacha20poly1305_ZEROBYTES);
+        memset(m, 0, clen - crypto_aead_chacha20poly1305_ABYTES);
         return -1;
     }
     crypto_stream_chacha20_xor_ic
-        (m, c + crypto_aead_chacha20poly1305_ZEROBYTES,
-         clen - crypto_aead_chacha20poly1305_ZEROBYTES, npub, 1U, k);
+        (m, c,  clen - crypto_aead_chacha20poly1305_ABYTES, npub, 1U, k);
     if (mlen != NULL) {
-        *mlen = clen - crypto_aead_chacha20poly1305_ZEROBYTES;
+        *mlen = clen - crypto_aead_chacha20poly1305_ABYTES;
     }
     return 0;
 }
@@ -142,9 +139,4 @@ crypto_aead_chacha20poly1305_nsecbytes(void) {
 size_t
 crypto_aead_chacha20poly1305_abytes(void) {
     return crypto_aead_chacha20poly1305_ABYTES;
-}
-
-size_t
-crypto_aead_chacha20poly1305_macbytes(void) {
-    return crypto_aead_chacha20poly1305_MACBYTES;
 }

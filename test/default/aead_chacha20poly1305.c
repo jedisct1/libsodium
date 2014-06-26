@@ -23,7 +23,7 @@ static unsigned char ad[10U] = {
     0x87, 0xe2, 0x29, 0xd4, 0x50, 0x08, 0x45, 0xa0, 0x79, 0xc0
 };
 
-static unsigned char c[10U + crypto_aead_chacha20poly1305_MACBYTES];
+static unsigned char c[10U + crypto_aead_chacha20poly1305_ABYTES];
 
 int main(void)
 {
@@ -34,7 +34,7 @@ int main(void)
 
     crypto_aead_chacha20poly1305_encrypt(c, &clen, m, sizeof m, ad, sizeof ad,
                                          NULL, nonce, firstkey);
-    if (clen != sizeof m + crypto_aead_chacha20poly1305_macbytes()) {        
+    if (clen != sizeof m + crypto_aead_chacha20poly1305_abytes()) {
         printf("clen is not properly set\n");
     }
     for (i = 0U; i < sizeof c; ++i) {
@@ -50,7 +50,7 @@ int main(void)
                                              nonce, firstkey) != 0) {
         printf("crypto_aead_chacha20poly1305_decrypt() failed\n");
     }
-    if (m2len != sizeof c - crypto_aead_chacha20poly1305_macbytes()) {
+    if (m2len != sizeof c - crypto_aead_chacha20poly1305_abytes()) {
         printf("m2len is not properly set\n");
     }
     if (memcmp(m, m2, sizeof m) != 0) {
