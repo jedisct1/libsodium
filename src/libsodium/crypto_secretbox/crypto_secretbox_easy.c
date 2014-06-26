@@ -68,39 +68,42 @@ crypto_secretbox_open_easy(unsigned char *m, const unsigned char *c,
                            unsigned long long clen, const unsigned char *n,
                            const unsigned char *k)
 {
-    unsigned char *c_boxed;
-    unsigned char *m_boxed;
-    size_t         c_boxed_len;
-    size_t         m_boxed_len;
-    int            rc;
+    unsigned char                     block0[64U];
+    unsigned char                     subkey[crypto_stream_salsa20_KEYBYTES];
+    unsigned long long                i;
+    unsigned long long                mlen0;
 
-    (void) sizeof(int[crypto_secretbox_BOXZEROBYTES + crypto_secretbox_MACBYTES
-                      == crypto_secretbox_ZEROBYTES ? 1 : -1]);
-    if (clen < crypto_secretbox_MACBYTES ||
-        clen > SIZE_MAX - crypto_secretbox_BOXZEROBYTES) {
+    if (clen < crypto_secretbox_MACBYTES) {
         return -1;
     }
-    c_boxed_len = clen + crypto_secretbox_BOXZEROBYTES;
-    if ((c_boxed = (unsigned char *) malloc(c_boxed_len)) == NULL) {
+    crypto_core_hsalsa20(subkey, n, k, sigma);
+    crypto_stream_salsa20(block0, crypto_stream_salsa20_KEYBYTES,
+                          n + 16, subkey);
+    if (crypto_onetimeauth_poly1305_verify(c, c + crypto_secretbox_MACBYTES,
+                                           clen - crypto_secretbox_MACBYTES,
+                                           block0) != 0) {
+        sodium_memzero(subkey, sizeof subkey);
         return -1;
     }
-    memset(c_boxed, 0, crypto_secretbox_BOXZEROBYTES);
-    memcpy(c_boxed + crypto_secretbox_BOXZEROBYTES, c, clen);
-    m_boxed_len = crypto_secretbox_ZEROBYTES + (clen - crypto_secretbox_MACBYTES);
-    if ((m_boxed = (unsigned char *) malloc(m_boxed_len)) == NULL) {
-        free(c_boxed);
-        return -1;
+    mlen0 = clen - crypto_secretbox_MACBYTES;
+    if (mlen0 > 64U - crypto_secretbox_ZEROBYTES) {
+        mlen0 = 64U - crypto_secretbox_ZEROBYTES;
     }
-    rc = crypto_secretbox_open(m_boxed, c_boxed,
-                               (unsigned long long) c_boxed_len, n, k);
-    free(c_boxed);
-    if (rc != 0) {
-        free(m_boxed);
-        return -1;
+    memcpy(block0 + crypto_secretbox_ZEROBYTES,
+           c + crypto_secretbox_MACBYTES, mlen0);
+    crypto_stream_salsa20_xor(block0, block0,
+                              crypto_secretbox_ZEROBYTES + mlen0,
+                              n + 16, subkey);
+    for (i = 0U; i < mlen0; i++) {
+        m[i] = block0[i + crypto_secretbox_ZEROBYTES];
     }
-    memcpy(m, m_boxed + crypto_secretbox_ZEROBYTES,
-           clen - crypto_secretbox_MACBYTES);
-    free(m_boxed);
+    if (clen - crypto_secretbox_MACBYTES > mlen0) {
+        crypto_stream_salsa20_xor_ic(m + mlen0,
+                                     c + crypto_secretbox_MACBYTES + mlen0,
+                                     clen - crypto_secretbox_MACBYTES - mlen0,
+                                     n + 16, 1U, subkey);
+    }
+    sodium_memzero(subkey, sizeof subkey);
 
     return 0;
 }
