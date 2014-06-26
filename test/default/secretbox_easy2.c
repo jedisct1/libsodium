@@ -9,6 +9,7 @@ unsigned char m2[10000];
 unsigned char c[crypto_secretbox_MACBYTES + 10000];
 unsigned char nonce[crypto_secretbox_NONCEBYTES];
 unsigned char k[crypto_secretbox_KEYBYTES];
+unsigned char mac[crypto_secretbox_MACBYTES];
 
 int main(void)
 {
@@ -21,6 +22,10 @@ int main(void)
     crypto_secretbox_easy(c, m, mlen, nonce, k);
     crypto_secretbox_open_easy(m2, c, mlen + crypto_secretbox_MACBYTES,
                                nonce, k);
+    printf("%d\n", memcmp(m, m2, mlen));
+
+    crypto_secretbox_easy_detached(c, mac, m, mlen, nonce, k);
+    crypto_secretbox_open_easy_detached(m2, c, mac, mlen, nonce, k);
     printf("%d\n", memcmp(m, m2, mlen));
 
     return 0;
