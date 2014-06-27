@@ -26,28 +26,28 @@ typedef struct randombytes_implementation {
 } randombytes_implementation;
 
 SODIUM_EXPORT
-int         randombytes_set_implementation(randombytes_implementation *impl);
+int randombytes_set_implementation(randombytes_implementation *impl);
 
 SODIUM_EXPORT
-void        randombytes(unsigned char * const buf, const unsigned long long buf_len);
+void randombytes(unsigned char * const buf, const unsigned long long buf_len);
 
 SODIUM_EXPORT
 const char *randombytes_implementation_name(void);
 
 SODIUM_EXPORT
-uint32_t    randombytes_random(void);
+uint32_t randombytes_random(void);
 
 SODIUM_EXPORT
-void        randombytes_stir(void);
+void randombytes_stir(void);
 
 SODIUM_EXPORT
-uint32_t    randombytes_uniform(const uint32_t upper_bound);
+uint32_t randombytes_uniform(const uint32_t upper_bound);
 
 SODIUM_EXPORT
-void        randombytes_buf(void * const buf, const size_t size);
+void randombytes_buf(void * const buf, const size_t size);
 
 SODIUM_EXPORT
-int         randombytes_close(void);
+int randombytes_close(void);
 
 #ifdef __cplusplus
 }
