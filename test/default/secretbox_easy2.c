@@ -24,8 +24,8 @@ int main(void)
                                nonce, k);
     printf("%d\n", memcmp(m, m2, mlen));
 
-    crypto_secretbox_easy_detached(c, mac, m, mlen, nonce, k);
-    crypto_secretbox_open_easy_detached(m2, c, mac, mlen, nonce, k);
+    crypto_secretbox_detached(c, mac, m, mlen, nonce, k);
+    crypto_secretbox_open_detached(m2, c, mac, mlen, nonce, k);
     printf("%d\n", memcmp(m, m2, mlen));
 
     return 0;

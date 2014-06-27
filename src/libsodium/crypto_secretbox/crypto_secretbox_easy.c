@@ -16,10 +16,10 @@ static const unsigned char sigma[16] = {
 };
 
 int
-crypto_secretbox_easy_detached(unsigned char *c, unsigned char *mac,
-                               const unsigned char *m,
-                               unsigned long long mlen, const unsigned char *n,
-                               const unsigned char *k)
+crypto_secretbox_detached(unsigned char *c, unsigned char *mac,
+                          const unsigned char *m,
+                          unsigned long long mlen, const unsigned char *n,
+                          const unsigned char *k)
 {
     crypto_onetimeauth_poly1305_state state;
     unsigned char                     block0[64U];
@@ -68,21 +68,21 @@ crypto_secretbox_easy(unsigned char *c, const unsigned char *m,
                       unsigned long long mlen, const unsigned char *n,
                       const unsigned char *k)
 {
-    return crypto_secretbox_easy_detached(c + crypto_secretbox_MACBYTES,
-                                          c, m, mlen, n, k);
+    return crypto_secretbox_detached(c + crypto_secretbox_MACBYTES,
+                                     c, m, mlen, n, k);
 }
 
 int
-crypto_secretbox_open_easy_detached(unsigned char *m, const unsigned char *c,
-                                    const unsigned char *mac,
-                                    unsigned long long clen,
-                                    const unsigned char *n,
-                                    const unsigned char *k)
+crypto_secretbox_open_detached(unsigned char *m, const unsigned char *c,
+                               const unsigned char *mac,
+                               unsigned long long clen,
+                               const unsigned char *n,
+                               const unsigned char *k)
 {
-    unsigned char                     block0[64U];
-    unsigned char                     subkey[crypto_stream_salsa20_KEYBYTES];
-    unsigned long long                i;
-    unsigned long long                mlen0;
+    unsigned char      block0[64U];
+    unsigned char      subkey[crypto_stream_salsa20_KEYBYTES];
+    unsigned long long i;
+    unsigned long long mlen0;
 
     crypto_core_hsalsa20(subkey, n, k, sigma);
     crypto_stream_salsa20(block0, crypto_stream_salsa20_KEYBYTES,
@@ -119,7 +119,7 @@ crypto_secretbox_open_easy(unsigned char *m, const unsigned char *c,
     if (clen < crypto_secretbox_MACBYTES) {
         return -1;
     }
-    return crypto_secretbox_open_easy_detached
-        (m, c + crypto_secretbox_MACBYTES, c,
-         clen - crypto_secretbox_MACBYTES, n, k);
+    return crypto_secretbox_open_detached(m, c + crypto_secretbox_MACBYTES, c,
+                                          clen - crypto_secretbox_MACBYTES,
+                                          n, k);
 }
