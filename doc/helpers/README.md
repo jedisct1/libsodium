@@ -43,6 +43,8 @@ int sodium_munlock(void * const addr, const size_t len);
 The `sodium_munlock()` function should be called after locked memory is not being used any more.
 It will zero `len` bytes starting at `addr` before actually flagging the pages as swappable again. Calling `sodium_memzero()` prior to `sodium_munlock()` is thus not required.
 
+On systems where it is supported, `sodium_mlock()` also wraps `madvise()` and advises the kernel not to include the locked memory in coredumps. `sodium_unlock()` also undoes this additional protection.
+
 ## Hexadecimal encoding/decoding
 
 ```c
