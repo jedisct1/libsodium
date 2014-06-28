@@ -170,7 +170,7 @@ int
 sodium_mlock(void * const addr, const size_t len)
 {
 #ifdef MADV_DONTDUMP
-    madvise(addr, len, MADV_DONTDUMP);
+    (void) madvise(addr, len, MADV_DONTDUMP);
 #endif
 #ifdef HAVE_MLOCK
     return mlock(addr, len);
@@ -187,7 +187,7 @@ sodium_munlock(void * const addr, const size_t len)
 {
     sodium_memzero(addr, len);
 #ifdef MADV_DODUMP
-    madvise(addr, len, MADV_DODUMP);
+    (void) madvise(addr, len, MADV_DODUMP);
 #endif
 #ifdef HAVE_MLOCK
     return munlock(addr, len);

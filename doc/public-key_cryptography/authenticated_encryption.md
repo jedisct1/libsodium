@@ -40,7 +40,7 @@ And in order to send messages to Alice, Bob only needs Alice's public key. Alice
 
 Alice can reply to Bob using the same system, without having to generate a distinct key pair.
 
-The nonce doesn't have to be confidential, but it should be used with just one invokation of `crypto_box_open_easy()` for a particular pair of public and secret keys. One easy way to generate a nonce is to use `randombytes_buf()`, considering the size of nonces the risk of any random collisions is neglible. For some applications, if you wish to use nonces to detect missing messages or to de-duplicate replayed messages, it is also ok to use a simple incrementing counter as a nonce. When doing so you must ensure that the same value can never be re-used (for example you may have multiple threads or even hosts generating messages using the same key pairs). 
+The nonce doesn't have to be confidential, but it should be used with just one invokation of `crypto_box_open_easy()` for a particular pair of public and secret keys. One easy way to generate a nonce is to use `randombytes_buf()`, considering the size of nonces the risk of any random collisions is negligible. For some applications, if you wish to use nonces to detect missing messages or to ignore replayed messages, it is also ok to use a simple incrementing counter as a nonce. When doing so you must ensure that the same value can never be re-used (for example you may have multiple threads or even hosts generating messages using the same key pairs). 
 
 This system provides mutual authentication. However, a typical use case is to secure communications between a server, whose public key is known in advance, and clients connecting anonymously.
 
