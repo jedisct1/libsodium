@@ -17,7 +17,7 @@ crypto_secretbox_easy(ciphertext, MESSAGE, MESSAGE_LEN, nonce, key);
 
 unsigned char decrypted[MESSAGE_LEN];
 if (crypto_secretbox_open_easy(decrypted, ciphertext, CIPHERTEXT_LEN, nonce, key) != 0) {
-    /* message forged! /*
+    /* message forged! */
 }
 ```
 
