@@ -40,7 +40,7 @@ And in order to send messages to Alice, Bob only needs Alice's public key. Alice
 
 Alice can reply to Bob using the same system, without having to generate a distinct key pair.
 
-The nonce doesn't have to be confidential, but it should never ever be reused with the same key. The easiest way to generate a nonce is to use `randombytes_buf()`.
+The nonce doesn't have to be confidential, but it should never ever be reused with the same key.
 
 This system provides mutual authentication. However, a typical use case is to secure communications between a server, whose public key is known in advance, and clients connecting anonymously.
 
