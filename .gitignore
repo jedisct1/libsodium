@@ -34,6 +34,7 @@ libtool
 libsodium.pc
 libsodium-*
 ltmain.sh
+doc/book
 m4/argz.m4
 m4/libtool.m4
 m4/ltoptions.m4
