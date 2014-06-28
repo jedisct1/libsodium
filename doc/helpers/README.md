@@ -78,5 +78,5 @@ The `sodium_hex2bin()` function parses a hexadecimal string `hex` and converts i
 
 The parser stops when a non-hexadecimal, non-ignored character is found or when `bin_maxlen` bytes have been written.
 
-The function returns `-1` if more than `bin_maxlen` would be required to parse the string.
-It returns `0` on success, and set `hex_end`, if it is not `NULL`, to a pointer to the character following the last parsed character.
+The function returns `-1` if more than `bin_maxlen` bytes would be required to store the parsed string.
+It returns `0` on success, and sets `hex_end`, if it is not `NULL`, to a pointer to the character following the last parsed character.
