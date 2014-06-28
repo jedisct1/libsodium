@@ -171,7 +171,9 @@ sodium_mlock(void * const addr, const size_t len)
 {
 #ifdef MADV_DONTDUMP
     if (madvise(addr, len, MADV_DONTDUMP) == -1) {
-        return -1;
+        if (errno != EINVAL) {
+            return -1;
+        }
     }
 #endif
 #ifdef HAVE_MLOCK
@@ -190,7 +192,9 @@ sodium_munlock(void * const addr, const size_t len)
     sodium_memzero(addr, len);
 #ifdef MADV_DODUMP
     if (madvise(addr, len, MADV_DODUMP) == -1) {
-        return -1;
+        if (errno != EINVAL) {
+            return -1;
+        }
     }
 #endif
 #ifdef HAVE_MLOCK
