@@ -35,7 +35,7 @@ The `sodium_mlock()` function locks at least `len` bytes of memory starting at `
 
 However, it is recommended to totally disable swap partitions on machines processing senstive data, or, as a second choice, to use encrypted swap partitions.
 
-`sodium_mlock()` wraps `mlock()` and `VirtualLock()`. **Note:** Many systems place limits on the amount of memory that may be locked by a process. Care should be taken to raise those limits (e.g. Unix ulimits) where neccessary. `sodium_lock()` will return -1 when any limit is reached. 
+`sodium_mlock()` wraps `mlock()` and `VirtualLock()`. **Note:** Many systems place limits on the amount of memory that may be locked by a process. Care should be taken to raise those limits (e.g. Unix ulimits) where neccessary. `sodium_lock()` will return `-1` when any limit is reached.
 
 ```c
 int sodium_munlock(void * const addr, const size_t len);
