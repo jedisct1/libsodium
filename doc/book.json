@@ -1,0 +1,25 @@
+{
+    "plugins": [],
+    "pluginsConfig": {
+        "fontSettings": {
+            "theme": "white",
+            "family": "sans",
+            "size": 1
+        }
+    },
+    "links": {
+        "home": null,
+        "about": false,
+        "issues": null,
+        "contribute": "https://github.com/jedisct1/libsodium/edit/doc/doc/",
+        "sharing": {
+            "google": null,
+            "facebook": null,
+            "twitter": null
+        }
+    },
+    "pdf": {
+        "toc": true,
+        "pageNumbers": true
+    }
+}

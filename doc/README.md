@@ -29,4 +29,4 @@ In order to join, just send a random mail to `sodium-subscribe` {at}
 
 [ISC license](http://en.wikipedia.org/wiki/ISC_license).
 
-See the `COPYING` file for details, `AUTHORS` fo
+See the `COPYING` file for details.
