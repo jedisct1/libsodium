@@ -61,6 +61,30 @@ crypto_pwhash_scryptsalsa208sha256_strbytes(void)
     return crypto_pwhash_scryptsalsa208sha256_STRBYTES;
 }
 
+size_t
+crypto_pwhash_scryptsalsa208sha256_opslimit_interactive(void)
+{
+    return crypto_pwhash_scryptsalsa208sha256_OPSLIMIT_INTERACTIVE;
+}
+
+size_t
+crypto_pwhash_scryptsalsa208sha256_memlimit_interactive(void)
+{
+    return crypto_pwhash_scryptsalsa208sha256_MEMLIMIT_INTERACTIVE;
+}
+
+size_t
+crypto_pwhash_scryptsalsa208sha256_opslimit_sensitive(void)
+{
+    return crypto_pwhash_scryptsalsa208sha256_OPSLIMIT_SENSITIVE;
+}
+
+size_t
+crypto_pwhash_scryptsalsa208sha256_memlimit_sensitive(void)
+{
+    return crypto_pwhash_scryptsalsa208sha256_MEMLIMIT_SENSITIVE;
+}
+
 int
 crypto_pwhash_scryptsalsa208sha256(unsigned char * const out,
                                     unsigned long long outlen,
