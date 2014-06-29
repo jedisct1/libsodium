@@ -24,6 +24,13 @@ Gitbook:
 
 [libsodium documentation](http://doc.libsodium.org)
 
+## Community
+
+A mailing-list is available to discuss libsodium.
+
+In order to join, just send a random mail to sodium-subscribe {at}
+pureftpd{dot}org.
+
 ## License
 
 [ISC license](http://en.wikipedia.org/wiki/ISC_license).
