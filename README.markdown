@@ -28,8 +28,8 @@ Gitbook:
 
 A mailing-list is available to discuss libsodium.
 
-In order to join, just send a random mail to sodium-subscribe {at}
-pureftpd{dot}org.
+In order to join, just send a random mail to `sodium-subscribe` {at}
+`pureftpd` {dot} `org`.
 
 ## License
 
