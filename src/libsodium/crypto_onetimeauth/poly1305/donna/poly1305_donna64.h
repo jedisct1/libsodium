@@ -197,13 +197,6 @@ poly1305_finish(poly1305_context *ctx, unsigned char mac[16]) {
         U64TO8(&mac[8], h1);
 
         /* zero out the state */
-        st->h[0] = 0;
-        st->h[1] = 0;
-        st->h[2] = 0;
-        st->r[0] = 0;
-        st->r[1] = 0;
-        st->r[2] = 0;
-        st->pad[0] = 0;
-        st->pad[1] = 0;
+        sodium_memzero((void *)st, sizeof *st);
 }
 
