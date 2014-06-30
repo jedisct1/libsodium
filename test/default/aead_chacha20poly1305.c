@@ -67,5 +67,31 @@ int main(void)
         }
         c[i] ^= (i + 1U);
     }
+
+    crypto_aead_chacha20poly1305_encrypt(c, &clen, m, sizeof m, NULL, 0U,
+                                         NULL, nonce, firstkey);
+    if (clen != sizeof m + crypto_aead_chacha20poly1305_abytes()) {
+        printf("clen is not properly set (adlen=0)\n");
+    }
+    for (i = 0U; i < sizeof c; ++i) {
+        printf(",0x%02x", (unsigned int) c[i]);
+        if (i % 8 == 7) {
+            printf("\n");
+        }
+    }
+    printf("\n");
+
+    if (crypto_aead_chacha20poly1305_decrypt(m2, &m2len, NULL, c, sizeof c,
+                                             NULL, 0U,
+                                             nonce, firstkey) != 0) {
+        printf("crypto_aead_chacha20poly1305_decrypt() failed (adlen=0)\n");
+    }
+    if (m2len != sizeof c - crypto_aead_chacha20poly1305_abytes()) {
+        printf("m2len is not properly set (adlen=0)\n");
+    }
+    if (memcmp(m, m2, sizeof m) != 0) {
+        printf("m != m2 (adlen=0)\n");
+    }
+
     return 0;
 }
