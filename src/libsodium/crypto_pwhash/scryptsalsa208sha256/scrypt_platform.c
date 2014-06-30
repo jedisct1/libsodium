@@ -27,6 +27,10 @@
 #include "crypto_scrypt.h"
 #include "runtime.h"
 
+#if !defined(MAP_ANON) && defined(MAP_ANONYMOUS)
+# define MAP_ANON MAP_ANONYMOUS
+#endif
+
 void *
 alloc_region(escrypt_region_t * region, size_t size)
 {
