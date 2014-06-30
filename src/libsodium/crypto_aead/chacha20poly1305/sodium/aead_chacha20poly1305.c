@@ -107,6 +107,7 @@ crypto_aead_chacha20poly1305_decrypt(unsigned char *m,
     crypto_onetimeauth_poly1305_final(&state, mac);
     sodium_memzero(&state, sizeof state);
 
+    (void) sizeof(int[sizeof mac == 16U ? 1 : -1]);
     ret = crypto_verify_16(mac,
                            c + clen - crypto_aead_chacha20poly1305_ABYTES);
     sodium_memzero(mac, sizeof mac);
