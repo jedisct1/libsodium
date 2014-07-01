@@ -2,12 +2,17 @@
 #define crypto_stream_aes256estream_H
 
 /*
- *  WARNING: This is just a stream cipher. It is NOT authenticated encryption.
- *  While it provides some protection against eavesdropping, it does NOT
- *  provide any security against active attacks.
- *  Furthermore, this implementation was not part of NaCl.
- *  Unless you know what you're doing, what you are looking for is probably
- *  the crypto_box functions.
+ * WARNING: This is just a stream cipher. It is NOT authenticated encryption.
+ * While it provides some protection against eavesdropping, it does NOT
+ * provide any security against active attacks.
+ * Furthermore, this implementation was not part of NaCl.
+ * 
+ * If you are looking for a stream cipher, you might consider
+ * crypto_stream_aes128ctr, crypto_stream_chacha20 or crypto_stream_(x)salsa20
+ * which are timing-attack resistant.
+ * 
+ * But unless you know what you're doing, what you are looking for is probably
+ * the crypto_box or crypto_secretbox functions.
  */
 
 #include <stddef.h>
