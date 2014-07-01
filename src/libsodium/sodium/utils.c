@@ -21,7 +21,11 @@
 
 #ifdef HAVE_WEAK_SYMBOLS
 __attribute__((weak)) void
-__sodium_dummy_symbol_to_prevent_lto(void * const pnt, const size_t len) { }
+__sodium_dummy_symbol_to_prevent_lto(void * const pnt, const size_t len)
+{
+    (void) pnt;
+    (void) len;
+}
 #endif
 
 void

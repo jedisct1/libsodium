@@ -36,6 +36,7 @@ crypto_aead_chacha20poly1305_encrypt(unsigned char *c,
     unsigned char                     block0[64U];
     unsigned char                     slen[8U];
 
+    (void) nsec;
 #ifdef ULONG_LONG_MAX
     if (mlen > ULONG_LONG_MAX - crypto_aead_chacha20poly1305_ABYTES) {
         if (clen != NULL) {
@@ -85,6 +86,7 @@ crypto_aead_chacha20poly1305_decrypt(unsigned char *m,
     unsigned char                     mac[crypto_aead_chacha20poly1305_ABYTES];
     int                               ret;
 
+    (void) nsec;
     if (mlen != NULL) {
         *mlen = 0ULL;
     }
