@@ -1,6 +1,13 @@
 #ifndef crypto_hash_sha256_H
 #define crypto_hash_sha256_H
 
+/*
+ * WARNING: Unless you absolutely need to use SHA256 for interoperatibility,
+ * purposes, you might want to consider crypto_generichash() instead.
+ * Unlike SHA256, crypto_generichash() is not vulnerable to length
+ * extension attacks.
+ */
+
 #include <stddef.h>
 #include <stdint.h>
 #include <stdlib.h>
