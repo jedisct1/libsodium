@@ -47,7 +47,7 @@ unsigned char c[147 + crypto_box_MACBYTES];
 
 int main(void)
 {
-    int i;
+    size_t i;
 
     crypto_box_easy(c, m, 131, nonce, bobpk, alicesk);
     for (i = 0; i < 131 + crypto_box_MACBYTES; ++i) {
