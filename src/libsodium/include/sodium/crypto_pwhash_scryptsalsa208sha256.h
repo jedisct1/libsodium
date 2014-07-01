@@ -12,27 +12,27 @@
 extern "C" {
 #endif
 
-#define crypto_pwhash_scryptsalsa208sha256_SALTBYTES 32
+#define crypto_pwhash_scryptsalsa208sha256_SALTBYTES 32U
 SODIUM_EXPORT
 size_t crypto_pwhash_scryptsalsa208sha256_saltbytes(void);
 
-#define crypto_pwhash_scryptsalsa208sha256_STRBYTES 102
+#define crypto_pwhash_scryptsalsa208sha256_STRBYTES 102U
 SODIUM_EXPORT
 size_t crypto_pwhash_scryptsalsa208sha256_strbytes(void);
 
-#define crypto_pwhash_scryptsalsa208sha256_OPSLIMIT_INTERACTIVE 524288
+#define crypto_pwhash_scryptsalsa208sha256_OPSLIMIT_INTERACTIVE 524288ULL
 SODIUM_EXPORT
 size_t crypto_pwhash_scryptsalsa208sha256_opslimit_interactive(void);
 
-#define crypto_pwhash_scryptsalsa208sha256_MEMLIMIT_INTERACTIVE 16777216
+#define crypto_pwhash_scryptsalsa208sha256_MEMLIMIT_INTERACTIVE 16777216ULL
 SODIUM_EXPORT
 size_t crypto_pwhash_scryptsalsa208sha256_memlimit_interactive(void);
 
-#define crypto_pwhash_scryptsalsa208sha256_OPSLIMIT_SENSITIVE 33554432
+#define crypto_pwhash_scryptsalsa208sha256_OPSLIMIT_SENSITIVE 33554432ULL
 SODIUM_EXPORT
 size_t crypto_pwhash_scryptsalsa208sha256_opslimit_sensitive(void);
 
-#define crypto_pwhash_scryptsalsa208sha256_MEMLIMIT_SENSITIVE 1073741824
+#define crypto_pwhash_scryptsalsa208sha256_MEMLIMIT_SENSITIVE 1073741824ULL
 SODIUM_EXPORT
 size_t crypto_pwhash_scryptsalsa208sha256_memlimit_sensitive(void);
 

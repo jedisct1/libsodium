@@ -9,11 +9,11 @@
 extern "C" {
 #endif
 
-#define crypto_scalarmult_curve25519_BYTES 32
+#define crypto_scalarmult_curve25519_BYTES 32U
 SODIUM_EXPORT
 size_t crypto_scalarmult_curve25519_bytes(void);
 
-#define crypto_scalarmult_curve25519_SCALARBYTES 32
+#define crypto_scalarmult_curve25519_SCALARBYTES 32U
 SODIUM_EXPORT
 size_t crypto_scalarmult_curve25519_scalarbytes(void);
 
