@@ -41,7 +41,7 @@ unsigned char mac[crypto_secretbox_MACBYTES];
 
 int main(void)
 {
-  int i;
+  size_t i;
 
   crypto_secretbox_easy(c, m, 131, nonce, firstkey);
   for (i = 0;i < 131 + crypto_secretbox_MACBYTES; ++i) {

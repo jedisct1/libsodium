@@ -44,13 +44,13 @@ static inline int blake2s_set_lastnode( blake2s_state *S )
   S->f[1] = ~0U;
   return 0;
 }
-
+#if 0
 static inline int blake2s_clear_lastnode( blake2s_state *S )
 {
   S->f[1] = 0U;
   return 0;
 }
-
+#endif
 /* Some helper functions, not necessarily useful */
 static inline int blake2s_set_lastblock( blake2s_state *S )
 {
@@ -59,7 +59,7 @@ static inline int blake2s_set_lastblock( blake2s_state *S )
   S->f[0] = ~0U;
   return 0;
 }
-
+#if 0
 static inline int blake2s_clear_lastblock( blake2s_state *S )
 {
   if( S->last_node ) blake2s_clear_lastnode( S );
@@ -67,7 +67,7 @@ static inline int blake2s_clear_lastblock( blake2s_state *S )
   S->f[0] = 0U;
   return 0;
 }
-
+#endif
 static inline int blake2s_increment_counter( blake2s_state *S, const uint32_t inc )
 {
   S->t[0] += inc;
@@ -76,6 +76,7 @@ static inline int blake2s_increment_counter( blake2s_state *S, const uint32_t in
 }
 
 // Parameter-related functions
+#if 0
 static inline int blake2s_param_set_digest_length( blake2s_param *P, const uint8_t digest_length )
 {
   P->digest_length = digest_length;
@@ -117,7 +118,7 @@ static inline int blake2s_param_set_inner_length( blake2s_param *P, const uint8_
   P->inner_length = inner_length;
   return 0;
 }
-
+#endif
 static inline int blake2s_param_set_salt( blake2s_param *P, const uint8_t salt[BLAKE2S_SALTBYTES] )
 {
   memcpy( P->salt, salt, BLAKE2S_SALTBYTES );

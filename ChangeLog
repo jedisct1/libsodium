@@ -1,7 +1,6 @@
 
 * Version 0.6.0
- - The ChaCha20 stream cipher has been added, as
-crypto_stream_chacha20_*
+ - The ChaCha20 stream cipher has been added, as crypto_stream_chacha20_*
  - The ChaCha20Poly1305 AEAD construction has been implemented, as
 crypto_aead_chacha20poly1305_*
  - The _easy API does not require any heap allocations any more and
@@ -17,15 +16,14 @@ allows setting individual parameters of the scrypt function.
  - New macros and functions for recommended crypto_pwhash_* parameters
 have been added.
  - Similarly to crypto_sign_seed_keypair(), crypto_box_seed_keypair()
-has been introduced to deterministically generate a key pair from a
-seed.
+has been introduced to deterministically generate a key pair from a seed.
  - crypto_onetimeauth() now provides a streaming interface.
  - crypto_stream_chacha20_xor_ic() and crypto_stream_salsa20_xor_ic()
 have been added to use a non-zero initial block counter.
  - On Windows, CryptGenRandom() was replaced by RtlGenRandom(), which
 doesn't require the Crypt API.
- - The high bit in curve25519 is masked instead of processing the
-key as a 256-bit value.
+ - The high bit in curve25519 is masked instead of processing the key as
+a 256-bit value.
  - The curve25519 ref implementation was replaced by the latest ref10
 implementation from Supercop.
  - sodium_mlock() now prevents memory from being included in coredumps
