@@ -11,7 +11,7 @@
   </PropertyGroup>
   
   <ItemDefinitionGroup>
-    <ClCompile><DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
+    <ClCompile>
       <BasicRuntimeChecks>EnableFastChecks</BasicRuntimeChecks>
       <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
       <FunctionLevelLinking>true</FunctionLevelLinking>
