@@ -19,7 +19,7 @@
       <PreprocessorDefinitions Condition="'$(Linkage-libsodium)' == 'static' Or '$(Linkage-libsodium)' == 'ltcg'">SODIUM_STATIC;%(PreprocessorDefinitions)</PreprocessorDefinitions>
     </ClCompile>
     <Link>
-      <AdditionalDependencies Condition="'$(Linkage-libsodium)' != ''">advapi32.lib;crypt32.lib;libsodium.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies Condition="'$(Linkage-libsodium)' != ''">advapi32.lib;libsodium.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <AdditionalLibraryDirectories Condition="$(Configuration.IndexOf('Debug')) != -1">$(ProjectDir)..\..\..\..\..\libsodium\bin\$(PlatformName)\Debug\$(PlatformToolset)\$(Linkage-libsodium)\;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
       <AdditionalLibraryDirectories Condition="$(Configuration.IndexOf('Release')) != -1">$(ProjectDir)..\..\..\..\..\libsodium\bin\$(PlatformName)\Release\$(PlatformToolset)\$(Linkage-libsodium)\;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
     </Link>
