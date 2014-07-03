@@ -2,7 +2,7 @@
 #ifndef __AES_TABLE_LE_H__
 #define __AES_TABLE_LE_H__
 
-static unsigned int T0[256] = {
+ALIGN(64) static unsigned int T0[256] = {
     0xa56363c6, 0x847c7cf8, 0x997777ee, 0x8d7b7bf6,
     0x0df2f2ff, 0xbd6b6bd6, 0xb16f6fde, 0x54c5c591,
     0x50303060, 0x03010102, 0xa96767ce, 0x7d2b2b56,
@@ -70,7 +70,7 @@ static unsigned int T0[256] = {
 };
 
 
-static unsigned int T1[256] = {
+ALIGN(64) static unsigned int T1[256] = {
     0x6363c6a5, 0x7c7cf884, 0x7777ee99, 0x7b7bf68d,
     0xf2f2ff0d, 0x6b6bd6bd, 0x6f6fdeb1, 0xc5c59154,
     0x30306050, 0x01010203, 0x6767cea9, 0x2b2b567d,
@@ -137,7 +137,7 @@ static unsigned int T1[256] = {
     0xb0b07bcb, 0x5454a8fc, 0xbbbb6dd6, 0x16162c3a
 };
 
-static unsigned int T2[256] = {
+ALIGN(64) static unsigned int T2[256] = {
     0x63c6a563, 0x7cf8847c, 0x77ee9977, 0x7bf68d7b,
     0xf2ff0df2, 0x6bd6bd6b, 0x6fdeb16f, 0xc59154c5,
     0x30605030, 0x01020301, 0x67cea967, 0x2b567d2b,
@@ -204,7 +204,7 @@ static unsigned int T2[256] = {
     0xb07bcbb0, 0x54a8fc54, 0xbb6dd6bb, 0x162c3a16
 };
 
-static unsigned int T3[256] = {
+ALIGN(64) static unsigned int T3[256] = {
     0xc6a56363, 0xf8847c7c, 0xee997777, 0xf68d7b7b,
     0xff0df2f2, 0xd6bd6b6b, 0xdeb16f6f, 0x9154c5c5,
     0x60503030, 0x02030101, 0xcea96767, 0x567d2b2b,

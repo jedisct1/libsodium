@@ -2,6 +2,12 @@
 #ifndef __AES_TABLE_H__
 #define __AES_TABLE_H__
 
+#if defined(_MSC_VER)
+# define ALIGN(x) __declspec(align(x))
+#else
+# define ALIGN(x) __attribute__((aligned(x)))
+#endif
+
 #ifdef NATIVE_LITTLE_ENDIAN
 # include "aes-table-le.h"
 #elif defined(NATIVE_BIG_ENDIAN)
@@ -20,7 +26,7 @@ static const unsigned char Rcon[31] =
 };
 
 
-static const unsigned char Sbox[256] = {
+ALIGN(64) static const unsigned char Sbox[256] = {
         0x63, 0x7c, 0x77, 0x7b, 0xf2, 0x6b, 0x6f, 0xc5,
         0x30, 0x01, 0x67, 0x2b, 0xfe, 0xd7, 0xab, 0x76,
         0xca, 0x82, 0xc9, 0x7d, 0xfa, 0x59, 0x47, 0xf0,
