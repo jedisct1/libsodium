@@ -6,38 +6,69 @@
 #include "ge.h"
 #include "sc.h"
 
-int crypto_sign(
-  unsigned char *sm,unsigned long long *smlen,
-  const unsigned char *m,unsigned long long mlen,
-  const unsigned char *sk
-)
+int
+crypto_sign_detached(unsigned char *sig, unsigned long long *siglen,
+                     const unsigned char *m, unsigned long long mlen,
+                     const unsigned char *sk)
 {
-  unsigned char pk[32];
-  unsigned char az[64];
-  unsigned char nonce[64];
-  unsigned char hram[64];
-  ge_p3 R;
+    crypto_hash_sha512_state hs;
+    unsigned char pk[32];
+    unsigned char az[64];
+    unsigned char nonce[64];
+    unsigned char hram[64];
+    unsigned char *sig_R = sig;
+    unsigned char *sig_S = sig + 32;
+    ge_p3 R;
 
-  memmove(pk,sk + 32,32);
+    memmove(pk, sk + 32, 32);
 
-  crypto_hash_sha512(az,sk,32);
-  az[0] &= 248;
-  az[31] &= 63;
-  az[31] |= 64;
+    crypto_hash_sha512(az, sk, 32);
+    az[0] &= 248;
+    az[31] &= 63;
+    az[31] |= 64;
 
-  *smlen = mlen + 64;
-  memmove(sm + 64,m,mlen);
-  memmove(sm + 32,az + 32,32);
-  crypto_hash_sha512(nonce,sm + 32,mlen + 32);
-  memmove(sm + 32,pk,32);
+    crypto_hash_sha512_init(&hs);
+    crypto_hash_sha512_update(&hs, az + 32, 32);
+    crypto_hash_sha512_update(&hs, m, mlen);
+    crypto_hash_sha512_final(&hs, nonce);
 
-  sc_reduce(nonce);
-  ge_scalarmult_base(&R,nonce);
-  ge_p3_tobytes(sm,&R);
+    memmove(sig_S, pk, 32);
 
-  crypto_hash_sha512(hram,sm,mlen + 64);
-  sc_reduce(hram);
-  sc_muladd(sm + 32,hram,az,nonce);
+    sc_reduce(nonce);
+    ge_scalarmult_base(&R, nonce);
+    ge_p3_tobytes(sig_R, &R);
 
-  return 0;
+    crypto_hash_sha512_init(&hs);
+    crypto_hash_sha512_update(&hs, sig_R, 32);
+    crypto_hash_sha512_update(&hs, sig_S, 32);
+    crypto_hash_sha512_update(&hs, m, mlen);
+    crypto_hash_sha512_final(&hs, hram);
+
+    sc_reduce(hram);
+    sc_muladd(sig_S, hram, az, nonce);
+
+    if (siglen != NULL) {
+        *siglen = 64U;
+    }
+    return 0;
+}
+
+int
+crypto_sign(unsigned char *sm, unsigned long long *smlen,
+            const unsigned char *m, unsigned long long mlen,
+            const unsigned char *sk)
+{
+    unsigned long long siglen;
+
+    if (crypto_sign_detached(sm, &siglen, m, mlen, sk) != 0 ||
+        siglen > crypto_sign_ed25519_BYTES) {
+        *smlen = 0;
+        memset(sm, 0, mlen + crypto_sign_ed25519_BYTES);
+        return -1;
+    }
+    memmove(sm + siglen, m, mlen);
+    if (smlen != NULL) {
+        *smlen = mlen + siglen;
+    }
+    return 0;
 }

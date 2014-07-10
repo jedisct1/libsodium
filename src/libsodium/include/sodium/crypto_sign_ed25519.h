@@ -38,6 +38,13 @@ int crypto_sign_ed25519_open(unsigned char *m, unsigned long long *mlen,
                              const unsigned char *pk);
 
 SODIUM_EXPORT
+int crypto_sign_ed25519_detached(unsigned char *sig,
+                                 unsigned long long *siglen,
+                                 const unsigned char *m,
+                                 unsigned long long mlen,
+                                 const unsigned char *sk);
+
+SODIUM_EXPORT
 int crypto_sign_ed25519_keypair(unsigned char *pk, unsigned char *sk);
 
 SODIUM_EXPORT
