@@ -16,8 +16,6 @@ crypto_sign_detached(unsigned char *sig, unsigned long long *siglen,
     unsigned char az[64];
     unsigned char nonce[64];
     unsigned char hram[64];
-    unsigned char *sig_R = sig;
-    unsigned char *sig_S = sig + 32;
     ge_p3 R;
 
     memmove(pk, sk + 32, 32);
@@ -32,20 +30,19 @@ crypto_sign_detached(unsigned char *sig, unsigned long long *siglen,
     crypto_hash_sha512_update(&hs, m, mlen);
     crypto_hash_sha512_final(&hs, nonce);
 
-    memmove(sig_S, pk, 32);
+    memmove(sig + 32, pk, 32);
 
     sc_reduce(nonce);
     ge_scalarmult_base(&R, nonce);
-    ge_p3_tobytes(sig_R, &R);
+    ge_p3_tobytes(sig, &R);
 
     crypto_hash_sha512_init(&hs);
-    crypto_hash_sha512_update(&hs, sig_R, 32);
-    crypto_hash_sha512_update(&hs, sig_S, 32);
+    crypto_hash_sha512_update(&hs, sig, 64);
     crypto_hash_sha512_update(&hs, m, mlen);
     crypto_hash_sha512_final(&hs, hram);
 
     sc_reduce(hram);
-    sc_muladd(sig_S, hram, az, nonce);
+    sc_muladd(sig + 32, hram, az, nonce);
 
     if (siglen != NULL) {
         *siglen = 64U;
