@@ -173,9 +173,13 @@ TESTS_TARGETS = \
 	stream2 \
 	stream3 \
 	stream4 \
-	stream5 \
-	stream6 \
 	verify1
+
+if !MINIMAL
+TESTS_TARGETS += \
+	stream5 \
+	stream6
+endif
 
 check_PROGRAMS = $(TESTS_TARGETS)
 

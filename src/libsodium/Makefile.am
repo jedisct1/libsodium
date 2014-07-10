@@ -30,12 +30,6 @@ libsodium_la_SOURCES = \
 	crypto_core/salsa20/ref/core_salsa20.c \
 	crypto_core/salsa20/core_salsa20_api.c \
 	crypto_core/salsa20/ref/api.h \
-	crypto_core/salsa2012/ref/core_salsa2012.c \
-	crypto_core/salsa2012/core_salsa2012_api.c \
-	crypto_core/salsa2012/ref/api.h \
-	crypto_core/salsa208/ref/core_salsa208.c \
-	crypto_core/salsa208/core_salsa208_api.c \
-	crypto_core/salsa208/ref/api.h \
 	crypto_generichash/crypto_generichash.c \
 	crypto_generichash/blake2/generichash_blake2_api.c \
 	crypto_generichash/blake2/ref/api.h \
@@ -136,15 +130,6 @@ libsodium_la_SOURCES = \
 	crypto_sign/ed25519/ref10/sc_reduce.c \
 	crypto_sign/ed25519/ref10/sign.c \
 	crypto_sign/ed25519/ref10/sqrtm1.h \
-	crypto_sign/edwards25519sha512batch/sign_edwards25519sha512batch_api.c \
-	crypto_sign/edwards25519sha512batch/ref/api.h \
-	crypto_sign/edwards25519sha512batch/ref/fe25519.h \
-	crypto_sign/edwards25519sha512batch/ref/fe25519_edwards25519sha512batch.c \
-	crypto_sign/edwards25519sha512batch/ref/ge25519.h \
-	crypto_sign/edwards25519sha512batch/ref/ge25519_edwards25519sha512batch.c \
-	crypto_sign/edwards25519sha512batch/ref/sc25519.h \
-	crypto_sign/edwards25519sha512batch/ref/sc25519_edwards25519sha512batch.c \
-	crypto_sign/edwards25519sha512batch/ref/sign_edwards25519sha512batch.c \
 	crypto_stream/crypto_stream.c \
 	crypto_stream/aes128ctr/portable/afternm_aes128ctr.c \
 	crypto_stream/aes128ctr/stream_aes128ctr_api.c \
@@ -159,26 +144,10 @@ libsodium_la_SOURCES = \
 	crypto_stream/aes128ctr/portable/stream_aes128ctr.c \
 	crypto_stream/aes128ctr/portable/types.h \
 	crypto_stream/aes128ctr/portable/xor_afternm_aes128ctr.c \
-	crypto_stream/aes256estream/hongjun/aes-table.h \
-	crypto_stream/aes256estream/hongjun/aes-table-be.h \
-	crypto_stream/aes256estream/hongjun/aes-table-le.h \
-	crypto_stream/aes256estream/hongjun/aes256-ctr.c \
-	crypto_stream/aes256estream/hongjun/aes256.h \
-	crypto_stream/aes256estream/stream_aes256estream_api.c \
-	crypto_stream/aes256estream/hongjun/api.h \
-	crypto_stream/aes256estream/hongjun/ecrypt-sync.h \
 	crypto_stream/chacha20/stream_chacha20_api.c \
 	crypto_stream/chacha20/ref/api.h \
 	crypto_stream/chacha20/ref/stream_chacha20_ref.c \
 	crypto_stream/salsa20/stream_salsa20_api.c \
-	crypto_stream/salsa2012/stream_salsa2012_api.c \
-	crypto_stream/salsa2012/ref/api.h \
-	crypto_stream/salsa2012/ref/stream_salsa2012.c \
-	crypto_stream/salsa2012/ref/xor_salsa2012.c \
-	crypto_stream/salsa208/stream_salsa208_api.c \
-	crypto_stream/salsa208/ref/api.h \
-	crypto_stream/salsa208/ref/stream_salsa208.c \
-	crypto_stream/salsa208/ref/xor_salsa208.c \
 	crypto_stream/xsalsa20/stream_xsalsa20_api.c \
 	crypto_stream/xsalsa20/ref/api.h \
 	crypto_stream/xsalsa20/ref/stream_xsalsa20.c \
@@ -195,7 +164,6 @@ libsodium_la_SOURCES = \
 	randombytes/randombytes.c \
 	randombytes/salsa20/randombytes_salsa20_random.c \
 	randombytes/sysrandom/randombytes_sysrandom.c \
-	sodium/compat.c \
 	sodium/core.c \
 	sodium/runtime.c \
 	sodium/utils.c \
@@ -237,6 +205,42 @@ libsodium_la_SOURCES += \
 	crypto_stream/salsa20/ref/api.h \
 	crypto_stream/salsa20/ref/stream_salsa20_ref.c \
 	crypto_stream/salsa20/ref/xor_salsa20_ref.c
+endif
+
+if !MINIMAL
+libsodium_la_SOURCES += \
+	crypto_core/salsa2012/ref/core_salsa2012.c \
+	crypto_core/salsa2012/core_salsa2012_api.c \
+	crypto_core/salsa2012/ref/api.h \
+	crypto_core/salsa208/ref/core_salsa208.c \
+	crypto_core/salsa208/core_salsa208_api.c \
+	crypto_core/salsa208/ref/api.h \
+	crypto_sign/edwards25519sha512batch/sign_edwards25519sha512batch_api.c \
+	crypto_sign/edwards25519sha512batch/ref/api.h \
+	crypto_sign/edwards25519sha512batch/ref/fe25519.h \
+	crypto_sign/edwards25519sha512batch/ref/fe25519_edwards25519sha512batch.c \
+	crypto_sign/edwards25519sha512batch/ref/ge25519.h \
+	crypto_sign/edwards25519sha512batch/ref/ge25519_edwards25519sha512batch.c \
+	crypto_sign/edwards25519sha512batch/ref/sc25519.h \
+	crypto_sign/edwards25519sha512batch/ref/sc25519_edwards25519sha512batch.c \
+	crypto_sign/edwards25519sha512batch/ref/sign_edwards25519sha512batch.c \
+	crypto_stream/aes256estream/hongjun/aes-table.h \
+	crypto_stream/aes256estream/hongjun/aes-table-be.h \
+	crypto_stream/aes256estream/hongjun/aes-table-le.h \
+	crypto_stream/aes256estream/hongjun/aes256-ctr.c \
+	crypto_stream/aes256estream/hongjun/aes256.h \
+	crypto_stream/aes256estream/stream_aes256estream_api.c \
+	crypto_stream/aes256estream/hongjun/api.h \
+	crypto_stream/aes256estream/hongjun/ecrypt-sync.h \
+	crypto_stream/salsa2012/stream_salsa2012_api.c \
+	crypto_stream/salsa2012/ref/api.h \
+	crypto_stream/salsa2012/ref/stream_salsa2012.c \
+	crypto_stream/salsa2012/ref/xor_salsa2012.c \
+	crypto_stream/salsa208/stream_salsa208_api.c \
+	crypto_stream/salsa208/ref/api.h \
+	crypto_stream/salsa208/ref/stream_salsa208.c \
+	crypto_stream/salsa208/ref/xor_salsa208.c \
+	sodium/compat.c
 endif
 
 libsodium_la_LDFLAGS = \

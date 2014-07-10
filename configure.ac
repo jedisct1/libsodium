@@ -86,6 +86,21 @@ AC_ARG_ENABLE(blocking-random,
   ])
 ])
 
+AC_ARG_ENABLE(minimal,
+[AS_HELP_STRING(--enable-minimal,
+  [Do not compile salsa208, salsa2012, edwards25519sha512batch and aes256estream])],
+[
+  AS_IF([test "x$enableval" = "xyes"], [
+    enable_minimal="yes"
+  ], [
+    enable_minimal="no"
+  ])
+],
+[
+  enable_minimal="no"
+])
+AM_CONDITIONAL([MINIMAL], [test x$enable_minimal = xyes])
+
 AC_ARG_WITH(safecode,
 [AS_HELP_STRING(--with-safecode,For maintainers only - please do not use)],
 [AS_IF([test "x$withval" = "xyes"], [
