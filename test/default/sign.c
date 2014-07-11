@@ -1052,6 +1052,7 @@ static TestData test_data[] = {
 
 int main(void)
 {
+    unsigned char      sig[crypto_sign_BYTES];
     unsigned char      sm[1024 + crypto_sign_BYTES];
     unsigned char      m[1024];
     unsigned char      skpk[crypto_sign_SECRETKEYBYTES +
@@ -1060,6 +1061,7 @@ int main(void)
     unsigned char      sk[crypto_sign_SECRETKEYBYTES];
     char               pk_hex[crypto_sign_PUBLICKEYBYTES * 2 + 1];
     char               sk_hex[crypto_sign_SECRETKEYBYTES * 2 + 1];
+    unsigned long long siglen;
     unsigned long long smlen;
     unsigned long long mlen;
     unsigned int       i;
@@ -1094,6 +1096,22 @@ int main(void)
                              test_data[i].pk) == 0) {
             printf("short signed message verifies: [%u]\n",
                    i  % crypto_sign_BYTES);
+            continue;
+        }
+        if (crypto_sign_detached(sig, &siglen,
+                                 (const unsigned char *) test_data[i].m, i,
+                                 test_data[i].sk) != 0) {
+            printf("detached signature failed: [%u]\n", i);
+            continue;
+        }
+        if (siglen == 0U || siglen > crypto_sign_BYTES) {
+            printf("detached signature has an unexpected length");
+            continue;
+        }
+        if (crypto_sign_verify_detached(sig,
+                                        (const unsigned char *) test_data[i].m,
+                                        i, test_data[i].pk) != 0) {
+            printf("detached signature verification failed: [%u]\n", i);
             continue;
         }
     }
