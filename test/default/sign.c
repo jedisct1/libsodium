@@ -1108,6 +1108,10 @@ int main(void)
             printf("detached signature has an unexpected length");
             continue;
         }
+        if (memcmp(test_data[i].sig, sig, crypto_sign_BYTES) != 0) {
+            printf("detached signature failure: [%u]\n", i);
+            continue;
+        }
         if (crypto_sign_verify_detached(sig,
                                         (const unsigned char *) test_data[i].m,
                                         i, test_data[i].pk) != 0) {
