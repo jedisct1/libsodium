@@ -42,7 +42,10 @@ crypto_sign_verify_detached(const unsigned char *sig, const unsigned char *m,
     ge_double_scalarmult_vartime(&R, h, &A, sig + 32);
     ge_tobytes(rcheck, &R);
 
-    return crypto_verify_32(rcheck, sig);
+    if (crypto_verify_32(rcheck, sig) != 0) {
+        return -1;
+    }
+    return 0;
 }
 
 int
