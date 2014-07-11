@@ -4,6 +4,7 @@
 #define crypto_sign crypto_sign_ed25519
 #define crypto_sign_detached crypto_sign_ed25519_detached
 #define crypto_sign_open crypto_sign_ed25519_open
+#define crypto_sign_verify_detached crypto_sign_ed25519_verify_detached
 #define crypto_sign_keypair crypto_sign_ed25519_keypair
 #define crypto_sign_seed_keypair crypto_sign_ed25519_seed_keypair
 #define crypto_sign_BYTES crypto_sign_ed25519_BYTES
