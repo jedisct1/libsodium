@@ -7,6 +7,7 @@
 #include "crypto_verify_32.h"
 #include "ge.h"
 #include "sc.h"
+#include "utils.h"
 
 int
 crypto_sign_verify_detached(const unsigned char *sig, const unsigned char *m,
@@ -43,6 +44,12 @@ crypto_sign_verify_detached(const unsigned char *sig, const unsigned char *m,
     ge_tobytes(rcheck, &R);
 
     if (crypto_verify_32(rcheck, sig) != 0) {
+        return -1;
+    }
+    if (sig == rcheck) {
+        return -1;
+    }
+    if (sodium_memcmp(sig, rcheck, 32) != 0) {
         return -1;
     }
     return 0;
