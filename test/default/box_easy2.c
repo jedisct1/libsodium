@@ -12,6 +12,7 @@ unsigned char alicepk[crypto_box_PUBLICKEYBYTES];
 unsigned char alicesk[crypto_box_SECRETKEYBYTES];
 unsigned char bobpk[crypto_box_PUBLICKEYBYTES];
 unsigned char bobsk[crypto_box_SECRETKEYBYTES];
+unsigned char mac[crypto_box_MACBYTES];
 
 int main(void)
 {
@@ -37,5 +38,9 @@ int main(void)
             return 1;
         }
     }
+    crypto_box_detached(c, mac, m, mlen, nonce, bobsk, alicepk);
+    crypto_box_open_detached(m2, c, mac, mlen, nonce, alicepk, bobsk);
+    printf("%d\n", memcmp(m, m2, mlen));
+
     return 0;
 }
