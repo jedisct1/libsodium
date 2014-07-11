@@ -14,6 +14,7 @@ unsigned char mac[crypto_secretbox_MACBYTES];
 int main(void)
 {
     unsigned long long mlen;
+    unsigned long long i;
 
     randombytes_buf(k, sizeof k);
     mlen = (unsigned long long) randombytes_uniform((uint32_t) sizeof m);
@@ -24,6 +25,12 @@ int main(void)
                                nonce, k);
     printf("%d\n", memcmp(m, m2, mlen));
 
+    for (i = 0; i < mlen + crypto_secretbox_MACBYTES - 1; i++) {
+        if (crypto_secretbox_open_easy(m2, c, i, nonce, k) == 0) {
+            printf("short open() should have failed");
+            return 1;
+        }
+    }
     crypto_secretbox_detached(c, mac, m, mlen, nonce, k);
     crypto_secretbox_open_detached(m2, c, mac, mlen, nonce, k);
     printf("%d\n", memcmp(m, m2, mlen));
