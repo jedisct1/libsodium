@@ -1090,6 +1090,12 @@ int main(void)
             printf("message can be forged: [%u]\n", i);
             continue;
         }
+        if (crypto_sign_open(m, &mlen, sm, i % crypto_sign_BYTES,
+                             test_data[i].pk) == 0) {
+            printf("short signed message verifies: [%u]\n",
+                   i  % crypto_sign_BYTES);
+            continue;
+        }
     }
     printf("%u tests\n", i);
 
