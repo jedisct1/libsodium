@@ -2,9 +2,10 @@
 
 export PREFIX="$(pwd)/libsodium-js"
 export EXPORTED_FUNCTIONS='["_sodium_version_string"]'
+export TOTAL_MEMORY=33554432
 export OPTFLAGS="--llvm-lto 3 -Oz"
 export CFLAGS="$OPTFLAGS --pre-js=test/default/pre.js "
-export LDFLAGS="-s EXPORTED_FUNCTIONS=${EXPORTED_FUNCTIONS}"
+export LDFLAGS="-s EXPORTED_FUNCTIONS=${EXPORTED_FUNCTIONS} -s TOTAL_MEMORY=${TOTAL_MEMORY}"
 
 emconfigure ./configure --enable-minimal --disable-shared --prefix="$PREFIX" && \
 emmake make clean &&
