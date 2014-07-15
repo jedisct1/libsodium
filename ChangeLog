@@ -1,4 +1,19 @@
 
+* Version 0.6.1
+ - Important bug fix: when crypto_sign_open() was given a signed
+message too short to even contain a signature, it was putting an
+unlimited amount of zeros into the target buffer instead of
+immediately returning -1. The bug was introduced in version 0.5.0.
+ - New API: crypto_sign_detached() and crypto_sign_verify_detached()
+to produce and verify ed25519 signatures without having to duplicate
+the message.
+ - New ./configure switch: --enable-minimal, to create a smaller
+library, with only the functions required for the high-level API.
+Mainly useful for the JavaScript target and embedded systems.
+ - All the symbols are not exported by the Emscripten build script.
+ - The pkg-config .pc file is now always installed even if the
+pkg-config tool is not available during the installation.
+
 * Version 0.6.0
  - The ChaCha20 stream cipher has been added, as crypto_stream_chacha20_*
  - The ChaCha20Poly1305 AEAD construction has been implemented, as
