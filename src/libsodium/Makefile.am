@@ -131,19 +131,6 @@ libsodium_la_SOURCES = \
 	crypto_sign/ed25519/ref10/sign.c \
 	crypto_sign/ed25519/ref10/sqrtm1.h \
 	crypto_stream/crypto_stream.c \
-	crypto_stream/aes128ctr/portable/afternm_aes128ctr.c \
-	crypto_stream/aes128ctr/stream_aes128ctr_api.c \
-	crypto_stream/aes128ctr/portable/api.h \
-	crypto_stream/aes128ctr/portable/beforenm_aes128ctr.c \
-	crypto_stream/aes128ctr/portable/common.h \
-	crypto_stream/aes128ctr/portable/common_aes128ctr.c \
-	crypto_stream/aes128ctr/portable/consts.h \
-	crypto_stream/aes128ctr/portable/consts_aes128ctr.c \
-	crypto_stream/aes128ctr/portable/int128.h \
-	crypto_stream/aes128ctr/portable/int128_aes128ctr.c \
-	crypto_stream/aes128ctr/portable/stream_aes128ctr.c \
-	crypto_stream/aes128ctr/portable/types.h \
-	crypto_stream/aes128ctr/portable/xor_afternm_aes128ctr.c \
 	crypto_stream/chacha20/stream_chacha20_api.c \
 	crypto_stream/chacha20/ref/api.h \
 	crypto_stream/chacha20/ref/stream_chacha20_ref.c \
@@ -224,6 +211,19 @@ libsodium_la_SOURCES += \
 	crypto_sign/edwards25519sha512batch/ref/sc25519.h \
 	crypto_sign/edwards25519sha512batch/ref/sc25519_edwards25519sha512batch.c \
 	crypto_sign/edwards25519sha512batch/ref/sign_edwards25519sha512batch.c \
+	crypto_stream/aes128ctr/portable/afternm_aes128ctr.c \
+	crypto_stream/aes128ctr/stream_aes128ctr_api.c \
+	crypto_stream/aes128ctr/portable/api.h \
+	crypto_stream/aes128ctr/portable/beforenm_aes128ctr.c \
+	crypto_stream/aes128ctr/portable/common.h \
+	crypto_stream/aes128ctr/portable/common_aes128ctr.c \
+	crypto_stream/aes128ctr/portable/consts.h \
+	crypto_stream/aes128ctr/portable/consts_aes128ctr.c \
+	crypto_stream/aes128ctr/portable/int128.h \
+	crypto_stream/aes128ctr/portable/int128_aes128ctr.c \
+	crypto_stream/aes128ctr/portable/stream_aes128ctr.c \
+	crypto_stream/aes128ctr/portable/types.h \
+	crypto_stream/aes128ctr/portable/xor_afternm_aes128ctr.c \
 	crypto_stream/aes256estream/hongjun/aes-table.h \
 	crypto_stream/aes256estream/hongjun/aes-table-be.h \
 	crypto_stream/aes256estream/hongjun/aes-table-le.h \

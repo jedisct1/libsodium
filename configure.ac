@@ -88,7 +88,7 @@ AC_ARG_ENABLE(blocking-random,
 
 AC_ARG_ENABLE(minimal,
 [AS_HELP_STRING(--enable-minimal,
-  [Do not compile salsa208, salsa2012, edwards25519sha512batch and aes256estream])],
+  [Only compile the minimum set of functions required for the high-level API])],
 [
   AS_IF([test "x$enableval" = "xyes"], [
     enable_minimal="yes"
