@@ -10,7 +10,7 @@ the message.
  - New ./configure switch: --enable-minimal, to create a smaller
 library, with only the functions required for the high-level API.
 Mainly useful for the JavaScript target and embedded systems.
- - All the symbols are not exported by the Emscripten build script.
+ - All the symbols are now exported by the Emscripten build script.
  - The pkg-config .pc file is now always installed even if the
 pkg-config tool is not available during the installation.
 
