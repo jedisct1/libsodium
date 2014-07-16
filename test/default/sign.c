@@ -1099,8 +1099,8 @@ int main(void)
             continue;
         }
         if (crypto_sign_detached(sig, &siglen,
-                                 (const unsigned char *) test_data[i].m, i,
-                                 test_data[i].sk) != 0) {
+                                 (const unsigned char *) test_data[i].m,
+                                 i, skpk) != 0) {
             printf("detached signature failed: [%u]\n", i);
             continue;
         }
