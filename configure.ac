@@ -406,9 +406,6 @@ AS_CASE([$host_cpu],
 
 dnl Checks for functions and headers
 
-AC_CHECK_FUNC(clock_gettime, , [AC_CHECK_LIB(rt, clock_gettime)])
-AC_CHECK_FUNC(fegetenv, , [AC_CHECK_LIB(m, fegetenv)])
-
 AS_IF([test "x$EMSCRIPTEN" = "x"],[
   AC_CHECK_FUNCS([arc4random arc4random_buf])
 ])
