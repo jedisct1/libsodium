@@ -54,9 +54,8 @@ const char *crypto_onetimeauth_poly1305_implementation_name(void);
 SODIUM_EXPORT
 int crypto_onetimeauth_poly1305_set_implementation(crypto_onetimeauth_poly1305_implementation *impl);
 
-SODIUM_EXPORT
 crypto_onetimeauth_poly1305_implementation *
-        crypto_onetimeauth_pick_best_implementation(void);
+crypto_onetimeauth_pick_best_implementation(void);
 
 SODIUM_EXPORT
 int crypto_onetimeauth_poly1305(unsigned char *out,
