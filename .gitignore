@@ -100,6 +100,8 @@ test/default/shorthash
 test/default/sign
 test/default/sodium_core
 test/default/sodium_utils
+test/default/sodium_utils2
+test/default/sodium_utils3
 test/default/sodium_version
 test/default/stream
 test/default/stream2

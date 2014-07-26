@@ -118,6 +118,12 @@
     <ClCompile Include="..\..\..\..\test\default\sodium_utils.c">
       <Filter>src</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\..\..\test\default\sodium_utils2.c">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\test\default\sodium_utils3.c">
+      <Filter>src</Filter>
+    </ClCompile>
     <ClCompile Include="..\..\..\..\test\default\sodium_version.c">
       <Filter>src</Filter>
     </ClCompile>

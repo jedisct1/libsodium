@@ -187,6 +187,12 @@
     <ClCompile Include="..\..\..\..\test\default\sodium_utils.c">
       <ExcludedFromBuild>true</ExcludedFromBuild>
     </ClCompile>
+    <ClCompile Include="..\..\..\..\test\default\sodium_utils2.c">
+      <ExcludedFromBuild>true</ExcludedFromBuild>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\test\default\sodium_utils3.c">
+      <ExcludedFromBuild>true</ExcludedFromBuild>
+    </ClCompile>
     <ClCompile Include="..\..\..\..\test\default\sodium_version.c">
       <ExcludedFromBuild>true</ExcludedFromBuild>
     </ClCompile>
