@@ -22,6 +22,11 @@ unsigned char *_sodium_alignedcalloc(unsigned char ** const unaligned_p,
 SODIUM_EXPORT
 void sodium_memzero(void * const pnt, const size_t len);
 
+/* WARNING: sodium_memcmp() must be used to verify if two secret keys
+ * are equal, in constant time.
+ * It returns 0 if the keys are equal, and -1 if they differ.
+ * This function is not designed for lexicographical comparisons.
+ */
 SODIUM_EXPORT
 int sodium_memcmp(const void * const b1_, const void * const b2_, size_t len);
 
