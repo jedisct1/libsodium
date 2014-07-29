@@ -31,7 +31,7 @@ __sodium_dummy_symbol_to_prevent_lto(void * const pnt, const size_t len)
 void
 sodium_memzero(void * const pnt, const size_t len)
 {
-#ifdef HAVE_SECUREZEROMEMORY
+#ifdef _WIN32
     SecureZeroMemory(pnt, len);
 #elif defined(HAVE_MEMSET_S)
     if (memset_s(pnt, (rsize_t) len, 0, (rsize_t) len) != 0) {
@@ -178,7 +178,7 @@ sodium_mlock(void * const addr, const size_t len)
 #endif
 #ifdef HAVE_MLOCK
     return mlock(addr, len);
-#elif defined(HAVE_VIRTUALLOCK)
+#elif defined(_WIN32)
     return -(VirtualLock(addr, len) == 0);
 #else
     errno = ENOSYS;
@@ -195,7 +195,7 @@ sodium_munlock(void * const addr, const size_t len)
 #endif
 #ifdef HAVE_MLOCK
     return munlock(addr, len);
-#elif defined(HAVE_VIRTUALLOCK)
+#elif defined(_WIN32)
     return -(VirtualUnlock(addr, len) == 0);
 #else
     errno = ENOSYS;
