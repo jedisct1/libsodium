@@ -409,8 +409,7 @@ dnl Checks for functions and headers
 AS_IF([test "x$EMSCRIPTEN" = "x"],[
   AC_CHECK_FUNCS([arc4random arc4random_buf])
 ])
-AC_CHECK_FUNCS([mlock VirtualLock])
-AC_CHECK_FUNCS([SecureZeroMemory explicit_bzero posix_memalign])
+AC_CHECK_FUNCS([mlock explicit_bzero posix_memalign])
 
 AC_SUBST([LIBTOOL_EXTRA_FLAGS])
 
