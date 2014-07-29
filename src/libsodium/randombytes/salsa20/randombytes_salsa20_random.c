@@ -67,7 +67,7 @@ sodium_hrtime(void)
 #ifdef _WIN32
     struct _timeb tb;
 
-    _ftime(&tb);
+    _ftime_s(&tb);
     tv.tv_sec = (long) tb.time;
     tv.tv_usec = ((int) tb.millitm) * 1000;
     ret = 0;
