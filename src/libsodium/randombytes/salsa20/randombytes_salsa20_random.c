@@ -18,6 +18,7 @@
 
 #include "crypto_core_salsa20.h"
 #include "crypto_auth_hmacsha512256.h"
+#include "crypto_generichash.h"
 #include "crypto_stream_salsa20.h"
 #include "randombytes.h"
 #include "randombytes_salsa20_random.h"
@@ -41,7 +42,7 @@ BOOLEAN NTAPI RtlGenRandom(PVOID RandomBuffer, ULONG RandomBufferLength);
 
 typedef struct Salsa20Random_ {
     unsigned char key[crypto_stream_salsa20_KEYBYTES];
-    unsigned char rnd32[SALSA20_RANDOM_BLOCK_SIZE];
+    unsigned char rnd32[16U * SALSA20_RANDOM_BLOCK_SIZE];
     uint64_t      nonce;
     size_t        rnd32_outleft;
 #ifndef _MSC_VER
@@ -214,14 +215,26 @@ randombytes_salsa20_random_stir_if_needed(void)
 #endif
 }
 
+static void
+randombytes_salsa20_random_rekey(const unsigned char * const mix)
+{
+    unsigned char *key = stream.key;
+    size_t         i;
+
+    for (i = (size_t) 0U; i < sizeof stream.key; i++) {
+        key[i] ^= mix[i];
+    }
+}
+
 static uint32_t
 randombytes_salsa20_random_getword(void)
 {
     uint32_t val;
     int      ret;
 
-    COMPILER_ASSERT(sizeof stream.rnd32 >= sizeof val);
-    COMPILER_ASSERT(sizeof stream.rnd32 % sizeof val == (size_t) 0U);
+    COMPILER_ASSERT(sizeof stream.rnd32 >= (sizeof stream.key) + (sizeof val));
+    COMPILER_ASSERT(((sizeof stream.rnd32) - (sizeof stream.key))
+                    % sizeof val == (size_t) 0U);
     if (stream.rnd32_outleft <= (size_t) 0U) {
         randombytes_salsa20_random_stir_if_needed();
         COMPILER_ASSERT(sizeof stream.nonce == crypto_stream_salsa20_NONCEBYTES);
@@ -230,11 +243,13 @@ randombytes_salsa20_random_getword(void)
                                     (unsigned char *) &stream.nonce,
                                     stream.key);
         assert(ret == 0);
+        stream.rnd32_outleft = (sizeof stream.rnd32) - (sizeof stream.key);
+        randombytes_salsa20_random_rekey(&stream.rnd32[stream.rnd32_outleft]);
         stream.nonce++;
-        stream.rnd32_outleft = sizeof stream.rnd32;
     }
     stream.rnd32_outleft -= sizeof val;
     memcpy(&val, &stream.rnd32[stream.rnd32_outleft], sizeof val);
+    memset(&stream.rnd32[stream.rnd32_outleft], 0, sizeof val);
 
     return val;
 }
@@ -278,10 +293,11 @@ randombytes_salsa20_random_buf(void * const buf, const size_t size)
     assert(size <= ULONG_LONG_MAX);
 #endif
     ret = crypto_stream_salsa20((unsigned char *) buf, (unsigned long long) size,
-                                (unsigned char *) &stream.nonce,
-                                stream.key);
+                                (unsigned char *) &stream.nonce, stream.key);
     assert(ret == 0);
     stream.nonce++;
+    crypto_stream_salsa20_xor(stream.key, stream.key, sizeof stream.key,
+                              (unsigned char *) &stream.nonce, stream.key);
 }
 
 /*
