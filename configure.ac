@@ -421,7 +421,7 @@ gl_LD_OUTPUT_DEF
 
 dnl Output.
 
-AH_VERBATIM([NDEBUG], [/* Never ever ignore assertions */
+AH_VERBATIM([NDEBUG], [/* Always evaluate assert() calls */
 #ifdef NDEBUG
 #/**/undef/**/ NDEBUG
 #endif])
