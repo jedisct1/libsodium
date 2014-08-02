@@ -2,6 +2,7 @@
 #define crypto_pwhash_scryptsalsa208sha256_H
 
 #include <stddef.h>
+#include <stdint.h>
 
 #include "export.h"
 
