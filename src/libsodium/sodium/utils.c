@@ -66,34 +66,6 @@ sodium_memcmp(const void * const b1_, const void * const b2_, size_t len)
     return (int) ((1 & ((d - 1) >> 8)) - 1);
 }
 
-unsigned char *
-_sodium_alignedcalloc(unsigned char ** const unaligned_p, const size_t len)
-{
-    unsigned char *aligned;
-    unsigned char *unaligned;
-    size_t         i;
-
-    if (SIZE_MAX - (size_t) 256U < len ||
-        (unaligned = (unsigned char *) malloc(len + (size_t) 256U)) == NULL) {
-        *unaligned_p = NULL;
-        return NULL;
-    }
-    *unaligned_p = unaligned;
-#ifdef HAVE_ARC4RANDOM_BUF
-    (void) i;
-    arc4random_buf(unaligned, len + (size_t) 256U);
-#else
-    for (i = (size_t) 0U; i < len + (size_t) 256U; ++i) {
-        unaligned[i] = (unsigned char) rand();
-    }
-#endif
-    aligned = unaligned + 64;
-    aligned += (ptrdiff_t) 63 & (-(ptrdiff_t) aligned);
-    memset(aligned, 0, len);
-
-    return aligned;
-}
-
 char *
 sodium_bin2hex(char * const hex, const size_t hex_maxlen,
                const unsigned char * const bin, const size_t bin_len)
