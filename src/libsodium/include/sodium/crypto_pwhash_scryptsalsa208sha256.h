@@ -20,6 +20,10 @@ size_t crypto_pwhash_scryptsalsa208sha256_saltbytes(void);
 SODIUM_EXPORT
 size_t crypto_pwhash_scryptsalsa208sha256_strbytes(void);
 
+#define crypto_pwhash_scryptsalsa208sha256_STRPREFIX "$7$"
+SODIUM_EXPORT
+const char *crypto_pwhash_scryptsalsa208sha256_strprefix(void);
+
 #define crypto_pwhash_scryptsalsa208sha256_OPSLIMIT_INTERACTIVE 524288ULL
 SODIUM_EXPORT
 size_t crypto_pwhash_scryptsalsa208sha256_opslimit_interactive(void);

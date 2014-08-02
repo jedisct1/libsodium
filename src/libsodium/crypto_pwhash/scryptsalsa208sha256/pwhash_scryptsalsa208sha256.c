@@ -61,6 +61,12 @@ crypto_pwhash_scryptsalsa208sha256_strbytes(void)
     return crypto_pwhash_scryptsalsa208sha256_STRBYTES;
 }
 
+const char *
+crypto_pwhash_scryptsalsa208sha256_strprefix(void)
+{
+    return crypto_pwhash_scryptsalsa208sha256_STRPREFIX;
+}
+
 size_t
 crypto_pwhash_scryptsalsa208sha256_opslimit_interactive(void)
 {
