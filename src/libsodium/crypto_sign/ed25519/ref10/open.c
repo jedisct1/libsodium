@@ -43,16 +43,8 @@ crypto_sign_verify_detached(const unsigned char *sig, const unsigned char *m,
     ge_double_scalarmult_vartime(&R, h, &A, sig + 32);
     ge_tobytes(rcheck, &R);
 
-    if (crypto_verify_32(rcheck, sig) != 0) {
-        return -1;
-    }
-    if (sig == rcheck) {
-        return -1;
-    }
-    if (sodium_memcmp(sig, rcheck, 32) != 0) {
-        return -1;
-    }
-    return 0;
+    return crypto_verify_32(rcheck, sig) | (-(rcheck - sig == 0)) |
+           sodium_memcmp(sig, rcheck, 32);
 }
 
 int
