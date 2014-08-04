@@ -320,7 +320,7 @@ AC_COMPILE_IFELSE([AC_LANG_PROGRAM([[
 
 HAVE_AMD64_ASM_V=0
 AS_IF([test "$enable_asm" != "no"],[
-  AC_MSG_CHECKING(whether we can assemble basic amd64 code)
+  AC_MSG_CHECKING(whether we should use x86_64 asm code)
   AC_COMPILE_IFELSE([AC_LANG_PROGRAM([[
   ]], [[
 #if defined(__amd64) || defined(__amd64__) || defined(__x86_64__)
@@ -329,12 +329,12 @@ AS_IF([test "$enable_asm" != "no"],[
 # endif
 /* neat */
 #else
-# error !amd64
+# error !x86_64
 #endif
 __asm__("pxor %xmm12,%xmm6");
 ]])],
   [AC_MSG_RESULT(yes)
-   AC_DEFINE([HAVE_AMD64_ASM], [1], [basic amd64 code can be assembled])
+   AC_DEFINE([HAVE_AMD64_ASM], [1], [x86_64 asm code should be used])
    HAVE_AMD64_ASM_V=1],
   [AC_MSG_RESULT(no)])
 ])
