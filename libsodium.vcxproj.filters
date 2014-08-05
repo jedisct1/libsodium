@@ -105,9 +105,6 @@
     <ClInclude Include="src\libsodium\include\sodium\crypto_stream_aes128ctr.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="src\libsodium\include\sodium\crypto_stream_aes256estream.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="src\libsodium\include\sodium\crypto_stream_salsa20.h">
       <Filter>Header Files</Filter>
     </ClInclude>
@@ -452,9 +449,6 @@
     <ClCompile Include="src\libsodium\crypto_sign\edwards25519sha512batch\sign_edwards25519sha512batch_api.c">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="src\libsodium\crypto_stream\aes256estream\hongjun\aes256-ctr.c">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="src\libsodium\crypto_stream\aes128ctr\portable\afternm_aes128ctr.c">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -477,9 +471,6 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="src\libsodium\crypto_stream\aes128ctr\stream_aes128ctr_api.c">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="src\libsodium\crypto_stream\aes256estream\stream_aes256estream_api.c">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="src\libsodium\crypto_stream\salsa20\stream_salsa20_api.c">

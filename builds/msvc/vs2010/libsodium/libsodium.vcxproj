@@ -130,7 +130,6 @@
     <ClInclude Include="..\..\..\..\src\libsodium\include\sodium\crypto_sign_edwards25519sha512batch.h" />
     <ClInclude Include="..\..\..\..\src\libsodium\include\sodium\crypto_stream.h" />
     <ClInclude Include="..\..\..\..\src\libsodium\include\sodium\crypto_stream_aes128ctr.h" />
-    <ClInclude Include="..\..\..\..\src\libsodium\include\sodium\crypto_stream_aes256estream.h" />
     <ClInclude Include="..\..\..\..\src\libsodium\include\sodium\crypto_stream_salsa20.h" />
     <ClInclude Include="..\..\..\..\src\libsodium\include\sodium\crypto_stream_salsa2012.h" />
     <ClInclude Include="..\..\..\..\src\libsodium\include\sodium\crypto_stream_salsa208.h" />
@@ -303,14 +302,6 @@
     <ClCompile Include="..\..\..\..\src\libsodium\crypto_stream\aes128ctr\portable\stream_aes128ctr.c" />
     <ClInclude Include="..\..\..\..\src\libsodium\crypto_stream\aes128ctr\portable\types.h" />
     <ClCompile Include="..\..\..\..\src\libsodium\crypto_stream\aes128ctr\portable\xor_afternm_aes128ctr.c" />
-    <ClInclude Include="..\..\..\..\src\libsodium\crypto_stream\aes256estream\hongjun\aes-table.h" />
-    <ClInclude Include="..\..\..\..\src\libsodium\crypto_stream\aes256estream\hongjun\aes-table-be.h" />
-    <ClInclude Include="..\..\..\..\src\libsodium\crypto_stream\aes256estream\hongjun\aes-table-le.h" />
-    <ClCompile Include="..\..\..\..\src\libsodium\crypto_stream\aes256estream\hongjun\aes256-ctr.c" />
-    <ClInclude Include="..\..\..\..\src\libsodium\crypto_stream\aes256estream\hongjun\aes256.h" />
-    <ClCompile Include="..\..\..\..\src\libsodium\crypto_stream\aes256estream\stream_aes256estream_api.c" />
-    <ClInclude Include="..\..\..\..\src\libsodium\crypto_stream\aes256estream\hongjun\api.h" />
-    <ClInclude Include="..\..\..\..\src\libsodium\crypto_stream\aes256estream\hongjun\ecrypt-sync.h" />
     <ClInclude Include="..\..\..\..\src\libsodium\crypto_stream\salsa20\amd64_xmm6\api.h" />
     <ClInclude Include="..\..\..\..\src\libsodium\crypto_stream\salsa20\ref\api.h" />
     <ClCompile Include="..\..\..\..\src\libsodium\crypto_stream\salsa20\stream_salsa20_api.c" />

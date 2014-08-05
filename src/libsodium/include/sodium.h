@@ -32,7 +32,6 @@
 #include <sodium/crypto_sign_ed25519.h>
 #include <sodium/crypto_stream.h>
 #include <sodium/crypto_stream_aes128ctr.h>
-#include <sodium/crypto_stream_aes256estream.h>
 #include <sodium/crypto_stream_chacha20.h>
 #include <sodium/crypto_stream_salsa20.h>
 #include <sodium/crypto_stream_salsa2012.h>

@@ -63,9 +63,6 @@ crypto_sign/ed25519                    Peter Schwabe
 
 crypto_stream/aes128ctr                Peter Schwabe
 
-crypto_stream/aes256estream            Hongjun Wu
-                                       Frank Denis
-
 crypto_stream/chacha20                 Daniel J. Bernstein
 
 crypto_stream/salsa20                  Daniel J. Bernstein

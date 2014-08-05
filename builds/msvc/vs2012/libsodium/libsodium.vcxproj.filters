@@ -94,9 +94,6 @@
     <ClInclude Include="..\..\..\..\src\libsodium\include\sodium\crypto_stream_aes128ctr.h">
       <Filter>include\sodium</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\..\..\src\libsodium\include\sodium\crypto_stream_aes256estream.h">
-      <Filter>include\sodium</Filter>
-    </ClInclude>
     <ClInclude Include="..\..\..\..\src\libsodium\include\sodium\crypto_stream_salsa20.h">
       <Filter>include\sodium</Filter>
     </ClInclude>
@@ -154,9 +151,6 @@
     <ClInclude Include="..\..\..\..\src\libsodium\include\sodium\utils.h">
       <Filter>include\sodium</Filter>
     </ClInclude>
-    <ClCompile Include="..\..\..\..\src\libsodium\crypto_stream\aes256estream\hongjun\aes256-ctr.c">
-      <Filter>src\crypto_stream\aes256estream\hongjun</Filter>
-    </ClCompile>
     <ClCompile Include="..\..\..\..\src\libsodium\crypto_box\curve25519xsalsa20poly1305\ref\after_curve25519xsalsa20poly1305.c">
       <Filter>src\crypto_box\curve25519xsalsa20poly1305\ref</Filter>
     </ClCompile>
@@ -427,9 +421,6 @@
     <ClCompile Include="..\..\..\..\src\libsodium\crypto_stream\aes128ctr\stream_aes128ctr_api.c">
       <Filter>src\crypto_stream\aes128ctr</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\..\..\src\libsodium\crypto_stream\aes256estream\stream_aes256estream_api.c">
-      <Filter>src\crypto_stream\aes256estream</Filter>
-    </ClCompile>
     <ClCompile Include="..\..\..\..\src\libsodium\crypto_stream\salsa20\stream_salsa20_api.c">
       <Filter>src\crypto_stream\salsa20</Filter>
     </ClCompile>
@@ -532,18 +523,6 @@
     <ClCompile Include="..\..\..\..\src\libsodium\randombytes\sysrandom\randombytes_sysrandom.c">
       <Filter>src\randombytes\sysrandom</Filter>
     </ClCompile>
-    <ClInclude Include="..\..\..\..\src\libsodium\crypto_stream\aes256estream\hongjun\aes256.h">
-      <Filter>src\crypto_stream\aes256estream\hongjun</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\..\src\libsodium\crypto_stream\aes256estream\hongjun\aes-table.h">
-      <Filter>src\crypto_stream\aes256estream\hongjun</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\..\src\libsodium\crypto_stream\aes256estream\hongjun\aes-table-be.h">
-      <Filter>src\crypto_stream\aes256estream\hongjun</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\..\src\libsodium\crypto_stream\aes256estream\hongjun\aes-table-le.h">
-      <Filter>src\crypto_stream\aes256estream\hongjun</Filter>
-    </ClInclude>
     <ClCompile Include="..\..\..\..\src\libsodium\crypto_auth\hmacsha512\auth_hmacsha512_api.c">
       <Filter>src\crypto_auth\hmacsha512</Filter>
     </ClCompile>
@@ -565,9 +544,6 @@
     <ClCompile Include="..\..\..\..\src\libsodium\crypto_pwhash\scryptsalsa208sha256\crypto_scrypt-common.c">
       <Filter>src\crypto_pwhash\scryptsalsa208sha256</Filter>
     </ClCompile>
-    <ClInclude Include="..\..\..\..\src\libsodium\crypto_stream\aes256estream\hongjun\ecrypt-sync.h">
-      <Filter>src\crypto_stream\aes256estream\hongjun</Filter>
-    </ClInclude>
     <ClInclude Include="..\..\..\..\src\libsodium\crypto_sign\ed25519\ref10\fe.h">
       <Filter>src\crypto_sign\ed25519\ref10</Filter>
     </ClInclude>
@@ -675,9 +651,6 @@
     </ClInclude>
     <ClInclude Include="..\..\..\..\src\libsodium\crypto_stream\aes128ctr\portable\api.h">
       <Filter>src\crypto_stream\aes128ctr\portable</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\..\src\libsodium\crypto_stream\aes256estream\hongjun\api.h">
-      <Filter>src\crypto_stream\aes256estream\hongjun</Filter>
     </ClInclude>
     <ClInclude Include="..\..\..\..\src\libsodium\crypto_verify\16\ref\api.h">
       <Filter>src\crypto_verify\16\ref</Filter>
@@ -946,9 +919,6 @@
     <Filter Include="src\crypto_stream\aes128ctr">
       <UniqueIdentifier>{ca40b775-e025-4359-87ae-02c771c1a222}</UniqueIdentifier>
     </Filter>
-    <Filter Include="src\crypto_stream\aes256estream">
-      <UniqueIdentifier>{afb86556-101b-407c-93f6-db784a9e3f4f}</UniqueIdentifier>
-    </Filter>
     <Filter Include="src\crypto_stream\salsa20">
       <UniqueIdentifier>{91c31952-2f36-418e-aa07-68ed57057d0f}</UniqueIdentifier>
     </Filter>
@@ -969,9 +939,6 @@
     </Filter>
     <Filter Include="src\crypto_stream\salsa2012\ref">
       <UniqueIdentifier>{1c006197-b25b-48e8-833f-2dd59a571b9d}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="src\crypto_stream\aes256estream\hongjun">
-      <UniqueIdentifier>{3acc42ca-4646-462d-bbac-2a07e9eb30be}</UniqueIdentifier>
     </Filter>
     <Filter Include="src\crypto_stream\aes128ctr\portable">
       <UniqueIdentifier>{46eb8265-dc41-4289-aa7d-c1918e05cf75}</UniqueIdentifier>

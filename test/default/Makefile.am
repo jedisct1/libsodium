@@ -53,8 +53,6 @@ EXTRA_DIST = \
 	stream2.exp \
 	stream3.exp \
 	stream4.exp \
-	stream5.exp \
-	stream6.exp \
 	verify1.exp
 
 DISTCLEANFILES = \
@@ -109,8 +107,6 @@ DISTCLEANFILES = \
 	stream2.res \
 	stream3.res \
 	stream4.res \
-	stream5.res \
-	stream6.res \
 	verify1.res
 
 AM_CPPFLAGS = \
@@ -174,12 +170,6 @@ TESTS_TARGETS = \
 	stream3 \
 	stream4 \
 	verify1
-
-if !MINIMAL
-TESTS_TARGETS += \
-	stream5 \
-	stream6
-endif
 
 check_PROGRAMS = $(TESTS_TARGETS)
 
@@ -340,12 +330,6 @@ stream3_LDADD             = $(TESTS_LDADD)
 
 stream4_SOURCE            = cmptest.h stream4.c
 stream4_LDADD             = $(TESTS_LDADD)
-
-stream5_SOURCE            = cmptest.h stream5.c
-stream5_LDADD             = $(TESTS_LDADD)
-
-stream6_SOURCE            = cmptest.h stream6.c
-stream6_LDADD             = $(TESTS_LDADD)
 
 verify1_SOURCE            = cmptest.h verify1.c
 verify1_LDADD             = $(TESTS_LDADD)
