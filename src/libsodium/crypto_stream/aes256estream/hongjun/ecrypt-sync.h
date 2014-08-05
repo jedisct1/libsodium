@@ -3,6 +3,7 @@
 #define __ECRYPT_SYNC__
 
 #include <stdint.h>
+#include <stdlib.h>
 
 typedef uint8_t  u8;
 typedef uint32_t u32;
@@ -22,6 +23,11 @@ typedef struct ECRYPT_ctx
 #pragma pack(pop)
 
 #define ECRYPT_encrypt_bytes(ctx, plaintext, ciphertext, msglen)   \
-  ECRYPT_process_bytes(0, ctx, plaintext, ciphertext, msglen)
+  do { \
+      if (msglen > 0xffffffff) { \
+          abort(); \
+      } \
+      ECRYPT_process_bytes(0, ctx, plaintext, ciphertext, msglen); \
+  } while(0)
 
 #endif

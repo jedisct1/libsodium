@@ -7,11 +7,13 @@
  * provide any security against active attacks.
  * Furthermore, this implementation was not part of NaCl.
  * 
- * If you are looking for a stream cipher, you might consider crypto_stream_chacha20
- * or crypto_stream_(x)salsa20 which are timing-attack resistant instead.
+ * If you are looking for a stream cipher, you should consider crypto_stream_chacha20
+ * or crypto_stream_(x)salsa20, which are timing-attacks resistant.
  * 
- * But unless you know what you're doing, what you are looking for is probably
+ * And unless you know what you're doing, what you are looking for is probably
  * the crypto_box or crypto_secretbox functions.
+ * 
+ * The maximum number of bytes these functions can generate/encrypt is 2^32 - 1.
  */
 
 #include <stddef.h>
