@@ -14,8 +14,7 @@ static const unsigned char keypair_seed[crypto_sign_ed25519_SEEDBYTES] = {
 int main(void)
 {
     unsigned char      ed25519_pk[crypto_sign_ed25519_PUBLICKEYBYTES];
-    unsigned char      ed25519_skpk[crypto_sign_ed25519_SECRETKEYBYTES +
-                                    crypto_sign_ed25519_PUBLICKEYBYTES];
+    unsigned char      ed25519_skpk[crypto_sign_ed25519_SECRETKEYBYTES];
     unsigned char      curve25519_pk[crypto_scalarmult_curve25519_BYTES];
     unsigned char      curve25519_pk2[crypto_scalarmult_curve25519_BYTES];
     unsigned char      curve25519_sk[crypto_scalarmult_curve25519_BYTES];

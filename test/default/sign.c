@@ -1055,8 +1055,7 @@ int main(void)
     unsigned char      sig[crypto_sign_BYTES];
     unsigned char      sm[1024 + crypto_sign_BYTES];
     unsigned char      m[1024];
-    unsigned char      skpk[crypto_sign_SECRETKEYBYTES +
-                            crypto_sign_PUBLICKEYBYTES];
+    unsigned char      skpk[crypto_sign_SECRETKEYBYTES];
     unsigned char      pk[crypto_sign_PUBLICKEYBYTES];
     unsigned char      sk[crypto_sign_SECRETKEYBYTES];
     char               pk_hex[crypto_sign_PUBLICKEYBYTES * 2 + 1];
