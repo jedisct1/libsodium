@@ -5,6 +5,7 @@
 #include "crypto_hash_sha512.h"
 #include "ge.h"
 #include "sc.h"
+#include "utils.h"
 
 int
 crypto_sign_detached(unsigned char *sig, unsigned long long *siglen,
@@ -43,6 +44,8 @@ crypto_sign_detached(unsigned char *sig, unsigned long long *siglen,
 
     sc_reduce(hram);
     sc_muladd(sig + 32, hram, az, nonce);
+
+    sodium_memzero(nonce, sizeof nonce);
 
     if (siglen != NULL) {
         *siglen = 64U;
