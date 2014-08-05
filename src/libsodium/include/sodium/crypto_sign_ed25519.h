@@ -57,6 +57,13 @@ SODIUM_EXPORT
 int crypto_sign_ed25519_seed_keypair(unsigned char *pk, unsigned char *sk,
                                      const unsigned char *seed);
 
+SODIUM_EXPORT
+int crypto_sign_ed25519_pk_to_curve25519(unsigned char *curve25519_pk,
+                                         const unsigned char *ed25519_pk);
+
+SODIUM_EXPORT
+int crypto_sign_ed25519_sk_to_curve25519(unsigned char *curve25519_sk,
+                                         const unsigned char *ed25519_sk);
 #ifdef __cplusplus
 }
 #endif

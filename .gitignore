@@ -74,6 +74,7 @@ test/default/core3
 test/default/core4
 test/default/core5
 test/default/core6
+test/default/ed25519_convert
 test/default/generichash
 test/default/generichash2
 test/default/generichash3

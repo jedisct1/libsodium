@@ -23,6 +23,7 @@ EXTRA_DIST = \
 	core4.exp \
 	core5.exp \
 	core6.exp \
+	ed25519_convert.exp \
 	generichash.exp \
 	generichash2.exp \
 	generichash3.exp \
@@ -77,6 +78,7 @@ DISTCLEANFILES = \
 	core4.res \
 	core5.res \
 	core6.res \
+	ed25519_convert.res \
 	generichash.res \
 	generichash2.res \
 	generichash3.res \
@@ -139,6 +141,7 @@ TESTS_TARGETS = \
 	core4 \
 	core5 \
 	core6 \
+	ed25519_convert \
 	generichash \
 	generichash2 \
 	generichash3 \
@@ -240,6 +243,9 @@ core5_LDADD               = $(TESTS_LDADD)
 
 core6_SOURCE              = cmptest.h core6.c
 core6_LDADD               = $(TESTS_LDADD)
+
+ed25519_convert_SOURCE    = cmptest.h ed25519_convert.c
+ed25519_convert_LDADD     = $(TESTS_LDADD)
 
 generichash_SOURCE        = cmptest.h generichash.c
 generichash_LDADD         = $(TESTS_LDADD)
