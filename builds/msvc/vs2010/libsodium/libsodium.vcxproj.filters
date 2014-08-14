@@ -484,9 +484,6 @@
     <ClCompile Include="..\..\..\..\src\libsodium\crypto_auth\hmacsha512256\cp\verify_hmacsha512256.c">
       <Filter>src\crypto_auth\hmacsha512256\cp</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\..\..\src\libsodium\sodium\compat.c">
-      <Filter>src\sodium</Filter>
-    </ClCompile>
     <ClCompile Include="..\..\..\..\src\libsodium\sodium\core.c">
       <Filter>src\sodium</Filter>
     </ClCompile>

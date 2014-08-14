@@ -520,7 +520,6 @@
     <ClCompile Include="src\libsodium\randombytes\randombytes.c" />
     <ClCompile Include="src\libsodium\randombytes\salsa20\randombytes_salsa20_random.c" />
     <ClCompile Include="src\libsodium\randombytes\sysrandom\randombytes_sysrandom.c" />
-    <ClCompile Include="src\libsodium\sodium\compat.c" />
     <ClCompile Include="src\libsodium\sodium\core.c" />
     <ClCompile Include="src\libsodium\sodium\runtime.c" />
     <ClCompile Include="src\libsodium\sodium\utils.c" />

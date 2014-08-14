@@ -231,8 +231,7 @@ libsodium_la_SOURCES += \
 	crypto_stream/salsa208/stream_salsa208_api.c \
 	crypto_stream/salsa208/ref/api.h \
 	crypto_stream/salsa208/ref/stream_salsa208.c \
-	crypto_stream/salsa208/ref/xor_salsa208.c \
-	sodium/compat.c
+	crypto_stream/salsa208/ref/xor_salsa208.c
 endif
 
 libsodium_la_LDFLAGS = \

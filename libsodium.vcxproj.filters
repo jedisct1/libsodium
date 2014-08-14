@@ -530,9 +530,6 @@
     <ClCompile Include="src\libsodium\crypto_verify\64\verify_64_api.c">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="src\libsodium\sodium\compat.c">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="src\libsodium\sodium\core.c">
       <Filter>Source Files</Filter>
     </ClCompile>
