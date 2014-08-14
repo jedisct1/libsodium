@@ -10,6 +10,7 @@ export PREFIX="$(pwd)/libsodium-ios"
 
 ./configure --host=arm-apple-darwin10 \
             --disable-shared \
+            --enable-minimal \
             --prefix="$PREFIX" && \
 make clean && \
 make -j3 install && \

@@ -31,6 +31,7 @@ $MAKE_TOOLCHAIN --platform="${NDK_PLATFORM:-android-14}" \
 ./configure --host="${HOST_COMPILER}" \
             --with-sysroot="${TOOLCHAIN_DIR}/sysroot" \
             --prefix="${PREFIX}" \
+            --enable-minimal \
             --disable-soname-versions && \
 make clean && \
 make -j3 install && \
