@@ -63,7 +63,9 @@ crypto_sign(unsigned char *sm, unsigned long long *smlen,
 
     if (crypto_sign_detached(sm, &siglen, m, mlen, sk) != 0 ||
         siglen > crypto_sign_ed25519_BYTES) {
-        *smlen = 0;
+        if (smlen != NULL) {
+            *smlen = 0;
+        }
         memset(sm, 0, mlen + crypto_sign_ed25519_BYTES);
         return -1;
     }
