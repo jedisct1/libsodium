@@ -332,7 +332,6 @@ _unprotected_ptr_from_user_ptr(const void *ptr)
 {
     uintptr_t      unprotected_ptr_u;
     unsigned char *canary_ptr;
-    unsigned char *unprotected_ptr;
     size_t         page_mask;
 
     canary_ptr = ((unsigned char *) ptr) - sizeof canary;
