@@ -30,9 +30,13 @@ int crypto_sign_seed_keypair(unsigned char *pk, unsigned char *sk,
 int crypto_sign_keypair(unsigned char *pk, unsigned char *sk)
 {
     unsigned char seed[32];
+    int           ret;
 
-    randombytes(seed,32);
-    return crypto_sign_seed_keypair(pk,sk,seed);
+    randombytes(seed, sizeof seed);
+    ret = crypto_sign_seed_keypair(pk, sk, seed);
+    sodium_memzero(seed, sizeof seed);
+
+    return ret;
 }
 
 int crypto_sign_ed25519_pk_to_curve25519(unsigned char *curve25519_pk,
