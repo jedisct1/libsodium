@@ -1,4 +1,28 @@
 
+* Version 0.7.0 (1.0 RC1)
+ - Allocating memory to store sensitive data can now be done using
+sodium_malloc() and sodium_allocarray(). These functions add guard
+pages around the protected data to make it less likely to be
+accessible in a heartbleed-like scenario. In addition, the protection
+for memory regions allocated that way can be changed using
+sodium_mprotect_noaccess(), sodium_mprotect_readonly() and
+sodium_mprotect_readwrite().
+ - ed25519 keys can be converted to curve25519 keys with
+crypto_sign_ed25519_pk_to_curve25519() and
+crypto_sign_ed25519_sk_to_curve25519(). This allows using the same
+keys for signature and encryption.
+ - The seed and the public key can be extracted from an ed25519 key
+using crypto_sign_ed25519_sk_to_seed() and crypto_sign_ed25519_sk_to_pk().
+ - aes256 was removed. A timing-attack resistant implementation might
+be added later, but not before version 1.0 is tagged.
+ - The crypto_pwhash_scryptxsalsa208sha256_* compatibility layer was
+removed. Use crypto_pwhash_scryptsalsa208sha256_*.
+ - The compatibility layer for implementation-specific functions was
+removed.
+ - Compilation issues with Mingw64 on MSYS (not MSYS2) were fixed.
+ - crypto_pwhash_scryptsalsa208sha256_STRPREFIX was added: it contains
+the prefix produced by crypto_pwhash_scryptsalsa208sha256_str()
+
 * Version 0.6.1
  - Important bug fix: when crypto_sign_open() was given a signed
 message too short to even contain a signature, it was putting an
