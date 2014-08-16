@@ -18,7 +18,6 @@
 
 #include "crypto_core_salsa20.h"
 #include "crypto_auth_hmacsha512256.h"
-#include "crypto_generichash.h"
 #include "crypto_stream_salsa20.h"
 #include "randombytes.h"
 #include "randombytes_salsa20_random.h"
