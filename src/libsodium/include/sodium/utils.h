@@ -46,7 +46,7 @@ int sodium_munlock(void * const addr, const size_t len);
 /* WARNING: sodium_malloc() and sodium_allocarray() are not general-purpose
  * allocation functions.
  *
- * They return a pointer to a region filled with 0xd0 bytes and immediately
+ * They return a pointer to a region filled with 0xd0 bytes, immediately
  * followed by a guard page.
  * As a result, accessing a single byte after the requested allocation size
  * will intentionally trigger a segmentation fault.
