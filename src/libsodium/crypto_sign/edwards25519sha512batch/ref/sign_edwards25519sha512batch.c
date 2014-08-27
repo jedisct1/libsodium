@@ -13,7 +13,7 @@ int crypto_sign_keypair(
   sc25519 scsk;
   ge25519 gepk;
 
-  randombytes(sk, 32);
+  randombytes_buf(sk, 32);
   crypto_hash_sha512(sk, sk, 32);
   sk[0] &= 248;
   sk[31] &= 127;

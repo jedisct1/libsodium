@@ -22,6 +22,6 @@ int crypto_box_keypair(
   unsigned char *sk
 )
 {
-  randombytes(sk,32);
+  randombytes_buf(sk,32);
   return crypto_scalarmult_curve25519_base(pk,sk);
 }

@@ -32,7 +32,7 @@ int crypto_sign_keypair(unsigned char *pk, unsigned char *sk)
     unsigned char seed[32];
     int           ret;
 
-    randombytes(seed, sizeof seed);
+    randombytes_buf(seed, sizeof seed);
     ret = crypto_sign_seed_keypair(pk, sk, seed);
     sodium_memzero(seed, sizeof seed);
 
