@@ -29,7 +29,7 @@ SODIUM_EXPORT
 int randombytes_set_implementation(randombytes_implementation *impl);
 
 SODIUM_EXPORT
-void randombytes(unsigned char * const buf, const unsigned long long buf_len);
+void randombytes(unsigned char * const buf, const size_t buf_len);
 
 SODIUM_EXPORT
 const char *randombytes_implementation_name(void);
