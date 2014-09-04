@@ -4,11 +4,6 @@
 #define TEST_NAME "sign"
 #include "cmptest.h"
 
-#define KEYPAIR_SEED "1@ABCFGHLOPRSTUWabcdefghiklmnopq"
-
-#define crypto_sign_SECRETKEYBYTES_WITHOUT_PK \
-    (crypto_sign_SECRETKEYBYTES - crypto_sign_PUBLICKEYBYTES)
-
 static const unsigned char keypair_seed[] = {
     0x42, 0x11, 0x51, 0xa4, 0x59, 0xfa, 0xea, 0xde,
     0x3d, 0x24, 0x71, 0x15, 0xf9, 0x4a, 0xed, 0xae,
@@ -17,7 +12,7 @@ static const unsigned char keypair_seed[] = {
 };
 
 typedef struct TestData_ {
-    const unsigned char  sk[crypto_sign_SECRETKEYBYTES_WITHOUT_PK];
+    const unsigned char  sk[crypto_sign_SEEDBYTES];
     const unsigned char  pk[crypto_sign_PUBLICKEYBYTES];
     const unsigned char  sig[crypto_sign_BYTES];
     const char          *m;
@@ -1068,8 +1063,8 @@ int main(void)
     unsigned int       i;
 
     for (i = 0U; i < (sizeof test_data) / (sizeof test_data[0]); i++) {
-        memcpy(skpk, test_data[i].sk, crypto_sign_SECRETKEYBYTES_WITHOUT_PK);
-        memcpy(skpk + crypto_sign_SECRETKEYBYTES_WITHOUT_PK,
+        memcpy(skpk, test_data[i].sk, crypto_sign_SEEDBYTES);
+        memcpy(skpk + crypto_sign_SEEDBYTES,
                test_data[i].pk, crypto_sign_PUBLICKEYBYTES);
         if (crypto_sign(sm, &smlen,
                         (const unsigned char *) test_data[i].m, i, skpk) != 0) {
