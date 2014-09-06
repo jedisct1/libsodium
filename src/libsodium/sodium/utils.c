@@ -69,8 +69,12 @@ sodium_memzero(void * const pnt, const size_t len)
     memset(pnt, 0, len);
     __sodium_dummy_symbol_to_prevent_lto(pnt, len);
 #else
-    static void * (* const volatile memset_ptr)(void *, int, size_t) = memset;
-    memset_ptr(pnt, 0, len);
+    volatile unsigned char *pnt_ = (volatile unsigned char *) pnt;
+    size_t                     i = (size_t) 0U;
+
+    while (i < len) {
+        pnt_[i++] = 0U;
+    }
 #endif
 }
 
