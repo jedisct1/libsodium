@@ -20,10 +20,10 @@ int crypto_sign_seed_keypair(unsigned char *pk, unsigned char *sk,
     sk[31] |= 64;
 
     ge_scalarmult_base(&A,sk);
-    ge_p3_tobytes(pk,&A);
+    ge_p3_tobytes(sk + 32, &A);
 
     memmove(sk, seed, 32);
-    memmove(sk + 32, pk, 32);
+    memmove(pk, sk + 32, 32);
     return 0;
 }
 
