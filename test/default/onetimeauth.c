@@ -39,5 +39,11 @@ int main(void)
     printf(",0x%02x",(unsigned int) a[i]);
     if (i % 8 == 7) printf("\n");
   }
+  assert(crypto_onetimeauth_bytes() > 0U);
+  assert(crypto_onetimeauth_keybytes() > 0U);
+  assert(strcmp(crypto_onetimeauth_primitive(), "poly1305") == 0);
+  assert(crypto_onetimeauth_poly1305_bytes() == crypto_onetimeauth_bytes());
+  assert(crypto_onetimeauth_poly1305_keybytes() == crypto_onetimeauth_keybytes());
+
   return 0;
 }
