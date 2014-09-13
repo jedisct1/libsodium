@@ -146,10 +146,10 @@ static inline int blake2s_init0( blake2s_state *S )
 int blake2s_init_param( blake2s_state *S, const blake2s_param *P )
 {
   size_t i;
-  uint32_t *p;
+  const uint32_t *p;
 
   blake2s_init0( S );
-  p = ( uint32_t * )( P );
+  p = ( const uint32_t * )( P );
 
   /* IV XOR ParamBlock */
   for( i = 0; i < 8; ++i )
@@ -310,6 +310,9 @@ int blake2s_final( blake2s_state *S, uint8_t *out, uint8_t outlen )
   uint8_t buffer[BLAKE2S_OUTBYTES];
   int     i;
 
+  if( outlen > BLAKE2S_OUTBYTES ) {
+    return -1;
+  }
   if( S->buflen > BLAKE2S_BLOCKBYTES )
   {
     blake2s_increment_counter( S, BLAKE2S_BLOCKBYTES );
@@ -350,7 +353,7 @@ int blake2s( uint8_t *out, const void *in, const void *key, const uint8_t outlen
     if( blake2s_init( S, outlen ) < 0 ) return -1;
   }
 
-  blake2s_update( S, ( uint8_t * )in, inlen );
+  blake2s_update( S, ( const uint8_t * )in, inlen );
   blake2s_final( S, out, outlen );
   return 0;
 }
