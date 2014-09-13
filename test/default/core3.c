@@ -37,5 +37,11 @@ int main(void)
   } while (++in[9]);
   crypto_hash_sha256(h,output,sizeof output);
   for (i = 0;i < 32;++i) printf("%02x",h[i]); printf("\n");
+
+  assert(crypto_core_salsa20_outputbytes() > 0U);
+  assert(crypto_core_salsa20_inputbytes() > 0U);
+  assert(crypto_core_salsa20_keybytes() > 0U);
+  assert(crypto_core_salsa20_constbytes() > 0U);
+
   return 0;
 }

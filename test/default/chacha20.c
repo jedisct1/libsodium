@@ -37,6 +37,8 @@ int main(void)
 {
     tv();
 
+    assert(crypto_stream_chacha20_keybytes() > 0U);
+    assert(crypto_stream_chacha20_noncebytes() > 0U);
+
     return 0;    
 }
-

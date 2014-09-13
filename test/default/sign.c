@@ -1138,5 +1138,15 @@ int main(void)
     printf("pk: [%s]\n", pk_hex);
     printf("sk: [%s]\n", sk_hex);
 
+    assert(crypto_sign_bytes() > 0U);
+    assert(crypto_sign_seedbytes() > 0U);
+    assert(crypto_sign_publickeybytes() > 0U);
+    assert(crypto_sign_secretkeybytes() > 0U);
+    assert(strcmp(crypto_sign_primitive(), "ed25519") == 0);
+    assert(crypto_sign_bytes() == crypto_sign_ed25519_bytes());
+    assert(crypto_sign_seedbytes() == crypto_sign_ed25519_seedbytes());
+    assert(crypto_sign_publickeybytes() == crypto_sign_ed25519_publickeybytes());
+    assert(crypto_sign_secretkeybytes() == crypto_sign_ed25519_secretkeybytes());
+
     return 0;
 }
