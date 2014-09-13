@@ -27,5 +27,11 @@ int main(void)
     printf("0x%02x",(unsigned int) firstkey[i]);
     if (i % 8 == 7) printf("\n");
   }
+
+  assert(crypto_core_hsalsa20_outputbytes() > 0U);
+  assert(crypto_core_hsalsa20_inputbytes() > 0U);
+  assert(crypto_core_hsalsa20_keybytes() > 0U);
+  assert(crypto_core_hsalsa20_constbytes() > 0U);
+
   return 0;
 }

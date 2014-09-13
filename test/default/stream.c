@@ -25,5 +25,12 @@ int main(void)
   crypto_stream(output,4194304,nonce,firstkey);
   crypto_hash_sha256(h,output,sizeof output);
   for (i = 0;i < 32;++i) printf("%02x",h[i]); printf("\n");
+
+  assert(crypto_stream_keybytes() > 0U);
+  assert(crypto_stream_noncebytes() > 0U);
+  assert(strcmp(crypto_stream_primitive(), "xsalsa20") == 0);
+  assert(crypto_stream_keybytes() == crypto_stream_xsalsa20_keybytes());
+  assert(crypto_stream_noncebytes() == crypto_stream_xsalsa20_noncebytes());
+
   return 0;
 }
