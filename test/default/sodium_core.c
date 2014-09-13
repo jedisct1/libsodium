@@ -4,7 +4,11 @@
 
 int main(void)
 {
-  printf ("%d\n", sodium_init());
+    printf ("%d\n", sodium_init());
 
-  return 0;
+    (void) sodium_runtime_has_neon();
+    (void) sodium_runtime_has_sse2();
+    (void) sodium_runtime_has_sse3();
+
+    return 0;
 }

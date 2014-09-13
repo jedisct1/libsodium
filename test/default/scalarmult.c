@@ -20,5 +20,12 @@ int main(void)
     printf("0x%02x",(unsigned int) alicepk[i]);
     if (i % 8 == 7) printf("\n");
   }
+  assert(crypto_scalarmult_bytes() > 0U);
+  assert(crypto_scalarmult_scalarbytes() > 0U);
+  assert(strcmp(crypto_scalarmult_primitive(), "curve25519") == 0);
+  assert(crypto_scalarmult_bytes() == crypto_scalarmult_curve25519_bytes());
+  assert(crypto_scalarmult_scalarbytes() == crypto_scalarmult_curve25519_scalarbytes());
+  assert(crypto_scalarmult_bytes() == crypto_scalarmult_scalarbytes());
+
   return 0;
 }

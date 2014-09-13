@@ -28,5 +28,9 @@ int main(void)
   printf("%d\n", crypto_verify_32(v32, v32x));
   printf("%d\n", crypto_verify_64(v64, v64x));
 
+  assert(crypto_verify_16_bytes() == 16U);
+  assert(crypto_verify_32_bytes() == 32U);
+  assert(crypto_verify_64_bytes() == 64U);
+
   return 0;
 }

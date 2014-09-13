@@ -16,5 +16,11 @@ int main(void)
         for (j = 0;j < crypto_shorthash_BYTES;++j) printf("%02x",(unsigned int) out[j]);
         printf("\n");
     }
+    assert(crypto_shorthash_bytes() > 0);
+    assert(crypto_shorthash_keybytes() > 0);
+    assert(strcmp(crypto_shorthash_primitive(), "siphash24") == 0);
+    assert(crypto_shorthash_bytes() == crypto_shorthash_siphash24_bytes());
+    assert(crypto_shorthash_keybytes() == crypto_shorthash_siphash24_keybytes());
+
     return 0;
 }
