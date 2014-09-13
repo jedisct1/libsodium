@@ -387,6 +387,9 @@ int blake2b_final( blake2b_state *S, uint8_t *out, uint8_t outlen )
   uint8_t buffer[BLAKE2B_OUTBYTES];
   int     i;
 
+  if( outlen > BLAKE2B_OUTBYTES ) {
+    return -1;
+  }
   if( S->buflen > BLAKE2B_BLOCKBYTES )
   {
     blake2b_increment_counter( S, BLAKE2B_BLOCKBYTES );
