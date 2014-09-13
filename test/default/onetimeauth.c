@@ -35,7 +35,7 @@ unsigned char a[16];
 int main(void)
 {
   int i;
-  crypto_onetimeauth_poly1305(a,c,131,rs);
+  crypto_onetimeauth(a,c,131,rs);
   for (i = 0;i < 16;++i) {
     printf(",0x%02x",(unsigned int) a[i]);
     if (i % 8 == 7) printf("\n");

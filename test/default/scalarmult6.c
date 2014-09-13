@@ -22,7 +22,7 @@ unsigned char k[32];
 int main(void)
 {
   int i;
-  crypto_scalarmult_curve25519(k,bobsk,alicepk);
+  crypto_scalarmult(k,bobsk,alicepk);
   for (i = 0;i < 32;++i) {
     if (i > 0) printf(","); else printf(" ");
     printf("0x%02x",(unsigned int) k[i]);

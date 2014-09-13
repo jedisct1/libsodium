@@ -46,7 +46,7 @@ unsigned char c[163];
 int main(void)
 {
   int i;
-  crypto_secretbox_xsalsa20poly1305(
+  crypto_secretbox(
     c,m,163,nonce,firstkey
   );
   for (i = 16;i < 163;++i) {

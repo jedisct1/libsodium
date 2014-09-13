@@ -46,7 +46,7 @@ unsigned char m[163];
 int main(void)
 {
   int i;
-  if (crypto_secretbox_xsalsa20poly1305_open(
+  if (crypto_secretbox_open(
        m,c,163,nonce,firstkey
       ) == 0) {
     for (i = 32;i < 163;++i) {

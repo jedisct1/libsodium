@@ -15,7 +15,7 @@ int main(void)
   int i;
   unsigned char sk[32];
   unsigned char pk[32];
-  crypto_box_curve25519xsalsa20poly1305_seed_keypair(pk, sk, seed);
+  crypto_box_seed_keypair(pk, sk, seed);
   for (i = 0;i < 32;++i) {
     printf(",0x%02x",(unsigned int) pk[i]);
     if (i % 8 == 7) printf("\n");

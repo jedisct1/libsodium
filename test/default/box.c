@@ -53,7 +53,7 @@ unsigned char c[163];
 int main(void)
 {
   int i;
-  crypto_box_curve25519xsalsa20poly1305(
+  crypto_box(
     c,m,163,nonce,bobpk,alicesk
   );
   for (i = 16;i < 163;++i) {

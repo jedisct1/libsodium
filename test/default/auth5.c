@@ -15,19 +15,19 @@ int main(void)
   for (clen = 0;clen < 10000;++clen) {
     randombytes(key,sizeof key);
     randombytes(c,clen);
-    crypto_auth_hmacsha512256(a,c,clen,key);
-    if (crypto_auth_hmacsha512256_verify(a,c,clen,key) != 0) {
+    crypto_auth(a,c,clen,key);
+    if (crypto_auth_verify(a,c,clen,key) != 0) {
       printf("fail %d\n",clen);
       return 100;
     }
     if (clen > 0) {
       c[rand() % clen] += 1 + (rand() % 255);
-      if (crypto_auth_hmacsha512256_verify(a,c,clen,key) == 0) {
+      if (crypto_auth_verify(a,c,clen,key) == 0) {
         printf("forgery %d\n",clen);
         return 100;
       }
       a[rand() % sizeof a] += 1 + (rand() % 255);
-      if (crypto_auth_hmacsha512256_verify(a,c,clen,key) == 0) {
+      if (crypto_auth_verify(a,c,clen,key) == 0) {
         printf("forgery %d\n",clen);
         return 100;
       }

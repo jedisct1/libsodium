@@ -53,7 +53,7 @@ unsigned char m[163];
 int main(void)
 {
   int i;
-  if (crypto_box_curve25519xsalsa20poly1305_open(
+  if (crypto_box_open(
        m,c,163,nonce,alicepk,bobsk
      ) == 0) {
     for (i = 32;i < 163;++i) {

@@ -23,7 +23,7 @@ unsigned char h[32];
 int main(void)
 {
   int i;
-  crypto_stream_xsalsa20(output,4194304,nonce,firstkey);
+  crypto_stream(output,4194304,nonce,firstkey);
   crypto_hash_sha256(h,output,sizeof output);
   for (i = 0;i < 32;++i) printf("%02x",h[i]); printf("\n");
   return 0;

@@ -15,19 +15,19 @@ int main(void)
   for (clen = 0;clen < 10000;++clen) {
     randombytes(key,sizeof key);
     randombytes(c,clen);
-    crypto_onetimeauth_poly1305(a,c,clen,key);
-    if (crypto_onetimeauth_poly1305_verify(a,c,clen,key) != 0) {
+    crypto_onetimeauth(a,c,clen,key);
+    if (crypto_onetimeauth_verify(a,c,clen,key) != 0) {
       printf("fail %d\n",clen);
       return 100;
     }
     if (clen > 0) {
       c[rand() % clen] += 1 + (rand() % 255);
-      if (crypto_onetimeauth_poly1305_verify(a,c,clen,key) == 0) {
+      if (crypto_onetimeauth_verify(a,c,clen,key) == 0) {
         printf("forgery %d\n",clen);
         return 100;
       }
       a[rand() % sizeof a] += 1 + (rand() % 255);
-      if (crypto_onetimeauth_poly1305_verify(a,c,clen,key) == 0) {
+      if (crypto_onetimeauth_verify(a,c,clen,key) == 0) {
         printf("forgery %d\n",clen);
         return 100;
       }

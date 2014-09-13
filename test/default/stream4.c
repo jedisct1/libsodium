@@ -45,7 +45,7 @@ unsigned char c[163];
 int main(void)
 {
   int i;
-  crypto_stream_xsalsa20_xor(c,m,163,nonce,firstkey);
+  crypto_stream_xor(c,m,163,nonce,firstkey);
   for (i = 32;i < 163;++i) {
     printf(",0x%02x",(unsigned int) c[i]);
     if (i % 8 == 7) printf("\n");

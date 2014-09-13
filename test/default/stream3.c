@@ -21,7 +21,7 @@ unsigned char rs[32];
 int main(void)
 {
   int i;
-  crypto_stream_xsalsa20(rs,32,nonce,firstkey);
+  crypto_stream(rs,32,nonce,firstkey);
   for (i = 0;i < 32;++i) {
     printf(",0x%02x",(unsigned int) rs[i]);
     if (i % 8 == 7) printf("\n");
