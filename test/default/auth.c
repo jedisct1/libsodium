@@ -20,8 +20,12 @@ int main(void)
   assert(crypto_auth_bytes() > 0U);
   assert(crypto_auth_keybytes() > 0U);
   assert(strcmp(crypto_auth_primitive(), "hmacsha512256") == 0);
-  assert(crypto_auth_hmacsha512256_bytes() > 0U);
-  assert(crypto_auth_hmacsha512256_keybytes() > 0U);
+  assert(crypto_auth_hmacsha256_bytes() > 0U);
+  assert(crypto_auth_hmacsha256_keybytes() > 0U);
+  assert(crypto_auth_hmacsha512_bytes() > 0U);
+  assert(crypto_auth_hmacsha512_keybytes() > 0U);
+  assert(crypto_auth_hmacsha512256_bytes() == crypto_auth_bytes());
+  assert(crypto_auth_hmacsha512256_keybytes() == crypto_auth_keybytes());
 
   return 0;
 }
