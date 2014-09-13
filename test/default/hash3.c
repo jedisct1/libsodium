@@ -1,4 +1,3 @@
-#include <stdio.h>
 
 #define TEST_NAME "hash3"
 #include "cmptest.h"

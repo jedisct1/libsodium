@@ -1,4 +1,3 @@
-#include <stdio.h>
 
 #define TEST_NAME "scalarmult2"
 #include "cmptest.h"

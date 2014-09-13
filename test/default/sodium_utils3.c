@@ -3,9 +3,6 @@
 
 #include <limits.h>
 #include <signal.h>
-#include <string.h>
-#include <stdio.h>
-#include <string.h>
 
 #define TEST_NAME "sodium_utils3"
 #include "cmptest.h"

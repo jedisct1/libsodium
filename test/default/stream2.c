@@ -1,4 +1,3 @@
-#include <stdio.h>
 
 #define TEST_NAME "stream2"
 #include "cmptest.h"

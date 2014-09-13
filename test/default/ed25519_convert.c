@@ -1,5 +1,3 @@
-#include <stdio.h>
-#include <string.h>
 
 #define TEST_NAME "ed25519_convert"
 #include "cmptest.h"

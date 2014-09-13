@@ -1,5 +1,3 @@
-#include <stdio.h>
-#include <string.h>
 
 #define TEST_NAME "verify1"
 #include "cmptest.h"

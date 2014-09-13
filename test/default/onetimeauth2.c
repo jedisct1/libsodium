@@ -1,4 +1,3 @@
-#include <stdio.h>
 
 #define TEST_NAME "onetimeauth2"
 #include "cmptest.h"

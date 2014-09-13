@@ -1,5 +1,3 @@
-#include <stdio.h>
-#include <string.h>
 
 #define TEST_NAME "sodium_utils"
 #include "cmptest.h"

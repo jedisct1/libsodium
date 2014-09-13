@@ -1,4 +1,3 @@
-#include <stdio.h>
 
 #define TEST_NAME "auth"
 #include "cmptest.h"
@@ -17,5 +16,10 @@ int main(void)
     printf(",0x%02x",(unsigned int) a[i]);
     if (i % 8 == 7) printf("\n");
   }
+
+  assert(crypto_auth_bytes() > 0U);
+  assert(crypto_auth_keybytes() > 0U);
+  assert(strcmp(crypto_auth_primitive(), "hmacsha512256") == 0);
+
   return 0;
 }

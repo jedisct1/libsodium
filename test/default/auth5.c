@@ -1,5 +1,4 @@
-#include <stdio.h>
-#include <stdlib.h>
+
 #include "windows/windows-quirks.h"
 
 #define TEST_NAME "auth5"

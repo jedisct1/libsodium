@@ -1,4 +1,3 @@
-#include <stdio.h>
 
 #include "crypto_uint8.h"
 

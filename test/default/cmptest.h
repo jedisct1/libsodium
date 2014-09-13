@@ -2,7 +2,11 @@
 #ifndef __CMPTEST_H__
 #define __CMPTEST_H__
 
+#include <assert.h>
 #include <stdio.h>
+#include <stdint.h>
+#include <stdlib.h>
+#include <string.h>
 
 #include "sodium.h"
 

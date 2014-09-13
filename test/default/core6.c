@@ -1,4 +1,3 @@
-#include <stdio.h>
 
 #define TEST_NAME "core6"
 #include "cmptest.h"

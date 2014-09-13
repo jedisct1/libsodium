@@ -1,4 +1,3 @@
-#include <stdio.h>
 
 #define TEST_NAME "sodium_core"
 #include "cmptest.h"

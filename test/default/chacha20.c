@@ -1,7 +1,4 @@
 
-#include <stdio.h>
-#include <string.h>
-
 #define TEST_NAME "chacha20"
 #include "cmptest.h"
 

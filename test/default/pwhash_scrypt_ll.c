@@ -1,6 +1,3 @@
-#include <stdio.h>
-#include <stdint.h>
-#include <string.h>
 
 #define TEST_NAME "pwhash_scrypt_ll"
 #include "cmptest.h"

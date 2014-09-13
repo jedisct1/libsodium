@@ -1,4 +1,3 @@
-#include <stdio.h>
 
 #define TEST_NAME "core4"
 #include "cmptest.h"
