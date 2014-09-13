@@ -15,13 +15,16 @@
 #define __BLAKE2_IMPL_H__
 
 #include <stdint.h>
+#include <string.h>
 
 #include "utils.h"
 
 static inline uint32_t load32( const void *src )
 {
 #if defined(NATIVE_LITTLE_ENDIAN)
-  return *( uint32_t * )( src );
+  uint32_t w;
+  memcpy(&w, src, sizeof w);
+  return w;
 #else
   const uint8_t *p = ( const uint8_t * )src;
   uint32_t w = *p++;
@@ -35,7 +38,9 @@ static inline uint32_t load32( const void *src )
 static inline uint64_t load64( const void *src )
 {
 #if defined(NATIVE_LITTLE_ENDIAN)
-  return *( uint64_t * )( src );
+  uint64_t w;
+  memcpy(&w, src, sizeof w);
+  return w;
 #else
   const uint8_t *p = ( const uint8_t * )src;
   uint64_t w = *p++;
@@ -53,7 +58,7 @@ static inline uint64_t load64( const void *src )
 static inline void store32( void *dst, uint32_t w )
 {
 #if defined(NATIVE_LITTLE_ENDIAN)
-  *( uint32_t * )( dst ) = w;
+  memcpy(dst, &w, sizeof w);
 #else
   uint8_t *p = ( uint8_t * )dst;
   *p++ = ( uint8_t )w; w >>= 8;
@@ -66,7 +71,7 @@ static inline void store32( void *dst, uint32_t w )
 static inline void store64( void *dst, uint64_t w )
 {
 #if defined(NATIVE_LITTLE_ENDIAN)
-  *( uint64_t * )( dst ) = w;
+  memcpy(dst, &w, sizeof w);
 #else
   uint8_t *p = ( uint8_t * )dst;
   *p++ = ( uint8_t )w; w >>= 8;
