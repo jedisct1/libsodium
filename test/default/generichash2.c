@@ -1,6 +1,4 @@
 
-#include "crypto_uint8.h"
-
 #define TEST_NAME "generichash2"
 #include "cmptest.h"
 
@@ -8,7 +6,7 @@ int main(void)
 {
 #define MAXLEN 64
     crypto_generichash_state st;
-    crypto_uint8 in[MAXLEN], out[crypto_generichash_BYTES_MAX], k[crypto_generichash_KEYBYTES_MAX];
+    unsigned char in[MAXLEN], out[crypto_generichash_BYTES_MAX], k[crypto_generichash_KEYBYTES_MAX];
     size_t h,i,j;
 
     for(h = 0; h < crypto_generichash_KEYBYTES_MAX; ++h) k[h] = h;
