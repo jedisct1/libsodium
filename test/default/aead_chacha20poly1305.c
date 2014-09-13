@@ -91,6 +91,18 @@ int main(void)
         printf("m != m2 (adlen=0)\n");
     }
 
+    if (crypto_aead_chacha20poly1305_decrypt(m2, &m2len, NULL, c,
+                                             crypto_aead_chacha20poly1305_ABYTES / 2,
+                                             NULL, 0U,
+                                             nonce, firstkey) != -1) {
+        printf("crypto_aead_chacha20poly1305_decrypt() worked with a short ciphertext\n");
+    }
+    if (crypto_aead_chacha20poly1305_decrypt(m2, &m2len, NULL, c, 0U,
+                                             NULL, 0U,
+                                             nonce, firstkey) != -1) {
+        printf("crypto_aead_chacha20poly1305_decrypt() worked with an empty ciphertext\n");
+    }
+
     assert(crypto_aead_chacha20poly1305_keybytes() > 0U);
     assert(crypto_aead_chacha20poly1305_npubbytes() > 0U);
     assert(crypto_aead_chacha20poly1305_nsecbytes() == 0U);
