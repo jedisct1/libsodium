@@ -17,18 +17,18 @@ int main(void)
         randombytes_buf(c, clen);
         crypto_auth(a, c, clen, key);
         if (crypto_auth_verify(a, c, clen, key) != 0) {
-            printf("fail %d\n", clen);
+            printf("fail %u\n", (unsigned int) clen);
             return 100;
         }
         if (clen > 0) {
             c[rand() % clen] += 1 + (rand() % 255);
             if (crypto_auth_verify(a, c, clen, key) == 0) {
-                printf("forgery %d\n", clen);
+                printf("forgery %u\n", (unsigned int) clen);
                 return 100;
             }
             a[rand() % sizeof a] += 1 + (rand() % 255);
             if (crypto_auth_verify(a, c, clen, key) == 0) {
-                printf("forgery %d\n", clen);
+                printf("forgery %u\n", (unsigned int) clen);
                 return 100;
             }
         }
