@@ -12,10 +12,11 @@ int main(void)
 {
     int i;
 
-    crypto_auth(a,c,sizeof c - 1U,key);
-    for (i = 0;i < 32;++i) {
-        printf(",0x%02x",(unsigned int) a[i]);
-        if (i % 8 == 7) printf("\n");
+    crypto_auth(a, c, sizeof c - 1U, key);
+    for (i = 0; i < 32; ++i) {
+        printf(",0x%02x", (unsigned int)a[i]);
+        if (i % 8 == 7)
+            printf("\n");
     }
 
     assert(crypto_auth_bytes() > 0U);

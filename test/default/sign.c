@@ -2,12 +2,10 @@
 #define TEST_NAME "sign"
 #include "cmptest.h"
 
-static const unsigned char keypair_seed[] = {
-    0x42, 0x11, 0x51, 0xa4, 0x59, 0xfa, 0xea, 0xde,
-    0x3d, 0x24, 0x71, 0x15, 0xf9, 0x4a, 0xed, 0xae,
-    0x42, 0x31, 0x81, 0x24, 0x09, 0x5a, 0xfa, 0xbe,
-    0x4d, 0x14, 0x51, 0xa5, 0x59, 0xfa, 0xed, 0xee
-};
+static const unsigned char keypair_seed[]
+    = { 0x42, 0x11, 0x51, 0xa4, 0x59, 0xfa, 0xea, 0xde, 0x3d, 0x24, 0x71,
+        0x15, 0xf9, 0x4a, 0xed, 0xae, 0x42, 0x31, 0x81, 0x24, 0x09, 0x5a,
+        0xfa, 0xbe, 0x4d, 0x14, 0x51, 0xa5, 0x59, 0xfa, 0xed, 0xee };
 
 typedef struct TestData_ {
     const unsigned char  sk[crypto_sign_SEEDBYTES];
@@ -1045,27 +1043,27 @@ static TestData test_data[] = {
 
 int main(void)
 {
-    unsigned char      extracted_seed[crypto_sign_ed25519_SEEDBYTES];
-    unsigned char      extracted_pk[crypto_sign_ed25519_PUBLICKEYBYTES];
-    unsigned char      sig[crypto_sign_BYTES];
-    unsigned char      sm[1024 + crypto_sign_BYTES];
-    unsigned char      m[1024];
-    unsigned char      skpk[crypto_sign_SECRETKEYBYTES];
-    unsigned char      pk[crypto_sign_PUBLICKEYBYTES];
-    unsigned char      sk[crypto_sign_SECRETKEYBYTES];
-    char               pk_hex[crypto_sign_PUBLICKEYBYTES * 2 + 1];
-    char               sk_hex[crypto_sign_SECRETKEYBYTES * 2 + 1];
+    unsigned char extracted_seed[crypto_sign_ed25519_SEEDBYTES];
+    unsigned char extracted_pk[crypto_sign_ed25519_PUBLICKEYBYTES];
+    unsigned char sig[crypto_sign_BYTES];
+    unsigned char sm[1024 + crypto_sign_BYTES];
+    unsigned char m[1024];
+    unsigned char skpk[crypto_sign_SECRETKEYBYTES];
+    unsigned char pk[crypto_sign_PUBLICKEYBYTES];
+    unsigned char sk[crypto_sign_SECRETKEYBYTES];
+    char          pk_hex[crypto_sign_PUBLICKEYBYTES * 2 + 1];
+    char          sk_hex[crypto_sign_SECRETKEYBYTES * 2 + 1];
     unsigned long long siglen;
     unsigned long long smlen;
     unsigned long long mlen;
-    unsigned int       i;
+    unsigned int i;
 
     for (i = 0U; i < (sizeof test_data) / (sizeof test_data[0]); i++) {
         memcpy(skpk, test_data[i].sk, crypto_sign_SEEDBYTES);
-        memcpy(skpk + crypto_sign_SEEDBYTES,
-               test_data[i].pk, crypto_sign_PUBLICKEYBYTES);
-        if (crypto_sign(sm, &smlen,
-                        (const unsigned char *) test_data[i].m, i, skpk) != 0) {
+        memcpy(skpk + crypto_sign_SEEDBYTES, test_data[i].pk,
+               crypto_sign_PUBLICKEYBYTES);
+        if (crypto_sign(sm, &smlen, (const unsigned char *)test_data[i].m, i,
+                        skpk) != 0) {
             printf("crypto_sign() failure: [%u]\n", i);
             continue;
         }
@@ -1077,7 +1075,7 @@ int main(void)
             printf("crypto_sign_open() failure: [%u]\n", i);
             continue;
         }
-        if (memcmp(test_data[i].m, m, (size_t) mlen) != 0) {
+        if (memcmp(test_data[i].m, m, (size_t)mlen) != 0) {
             printf("message verification failure: [%u]\n", i);
             continue;
         }
@@ -1089,12 +1087,12 @@ int main(void)
         if (crypto_sign_open(m, &mlen, sm, i % crypto_sign_BYTES,
                              test_data[i].pk) == 0) {
             printf("short signed message verifies: [%u]\n",
-                   i  % crypto_sign_BYTES);
+                   i % crypto_sign_BYTES);
             continue;
         }
         if (crypto_sign_detached(sig, &siglen,
-                                 (const unsigned char *) test_data[i].m,
-                                 i, skpk) != 0) {
+                                 (const unsigned char *)test_data[i].m, i, skpk)
+            != 0) {
             printf("detached signature failed: [%u]\n", i);
             continue;
         }
@@ -1107,7 +1105,7 @@ int main(void)
             continue;
         }
         if (crypto_sign_verify_detached(sig,
-                                        (const unsigned char *) test_data[i].m,
+                                        (const unsigned char *)test_data[i].m,
                                         i, test_data[i].pk) != 0) {
             printf("detached signature verification failed: [%u]\n", i);
             continue;
@@ -1123,13 +1121,12 @@ int main(void)
         return -1;
     }
     crypto_sign_ed25519_sk_to_seed(extracted_seed, sk);
-    if (memcmp(extracted_seed, keypair_seed,
-               crypto_sign_ed25519_SEEDBYTES) != 0) {
+    if (memcmp(extracted_seed, keypair_seed, crypto_sign_ed25519_SEEDBYTES)
+        != 0) {
         printf("crypto_sign_ed25519_sk_to_seed() failure\n");
     }
     crypto_sign_ed25519_sk_to_pk(extracted_pk, sk);
-    if (memcmp(extracted_pk, pk,
-               crypto_sign_ed25519_PUBLICKEYBYTES) != 0) {
+    if (memcmp(extracted_pk, pk, crypto_sign_ed25519_PUBLICKEYBYTES) != 0) {
         printf("crypto_sign_ed25519_sk_to_pk() failure\n");
     }
     sodium_bin2hex(pk_hex, sizeof pk_hex, pk, sizeof pk);
@@ -1145,8 +1142,10 @@ int main(void)
     assert(strcmp(crypto_sign_primitive(), "ed25519") == 0);
     assert(crypto_sign_bytes() == crypto_sign_ed25519_bytes());
     assert(crypto_sign_seedbytes() == crypto_sign_ed25519_seedbytes());
-    assert(crypto_sign_publickeybytes() == crypto_sign_ed25519_publickeybytes());
-    assert(crypto_sign_secretkeybytes() == crypto_sign_ed25519_secretkeybytes());
+    assert(crypto_sign_publickeybytes()
+           == crypto_sign_ed25519_publickeybytes());
+    assert(crypto_sign_secretkeybytes()
+           == crypto_sign_ed25519_secretkeybytes());
 
     return 0;
 }

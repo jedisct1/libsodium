@@ -7,8 +7,7 @@
 #define TEST_NAME "sodium_utils3"
 #include "cmptest.h"
 
-static void
-segv_handler(int sig)
+static void segv_handler(int sig)
 {
     printf("Intentional segfault / bus error caught\n");
     printf("OK\n");
@@ -24,11 +23,10 @@ segv_handler(int sig)
     exit(0);
 }
 
-int
-main(void)
+int main(void)
 {
-    void   *buf;
-    size_t  size;
+    void *buf;
+    size_t size;
 
 #ifdef SIGSEGV
     signal(SIGSEGV, segv_handler);
@@ -43,7 +41,7 @@ main(void)
     buf = sodium_malloc(size);
     sodium_mprotect_noaccess(buf);
     sodium_mprotect_readwrite(buf);
-    sodium_memzero(((unsigned char *) buf) - 8, 8U);
+    sodium_memzero(((unsigned char *)buf) - 8, 8U);
     sodium_mprotect_readonly(buf);
     sodium_free(buf);
     printf("Underflow not caught\n");

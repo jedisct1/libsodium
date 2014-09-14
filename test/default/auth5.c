@@ -10,25 +10,25 @@ unsigned char a[32];
 
 int main(void)
 {
-    int clen;
+    size_t clen;
 
-    for (clen = 0;clen < 10000;++clen) {
-        randombytes(key,sizeof key);
-        randombytes(c,clen);
-        crypto_auth(a,c,clen,key);
-        if (crypto_auth_verify(a,c,clen,key) != 0) {
-            printf("fail %d\n",clen);
+    for (clen = 0; clen < 10000; ++clen) {
+        randombytes_buf(key, sizeof key);
+        randombytes_buf(c, clen);
+        crypto_auth(a, c, clen, key);
+        if (crypto_auth_verify(a, c, clen, key) != 0) {
+            printf("fail %d\n", clen);
             return 100;
         }
         if (clen > 0) {
             c[rand() % clen] += 1 + (rand() % 255);
-            if (crypto_auth_verify(a,c,clen,key) == 0) {
-                printf("forgery %d\n",clen);
+            if (crypto_auth_verify(a, c, clen, key) == 0) {
+                printf("forgery %d\n", clen);
                 return 100;
             }
             a[rand() % sizeof a] += 1 + (rand() % 255);
-            if (crypto_auth_verify(a,c,clen,key) == 0) {
-                printf("forgery %d\n",clen);
+            if (crypto_auth_verify(a, c, clen, key) == 0) {
+                printf("forgery %d\n", clen);
                 return 100;
             }
         }

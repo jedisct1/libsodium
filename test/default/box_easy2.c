@@ -19,12 +19,12 @@ int main(void)
 
     crypto_box_keypair(alicepk, alicesk);
     crypto_box_keypair(bobpk, bobsk);
-    mlen = (unsigned long long) randombytes_uniform((uint32_t) sizeof m);
+    mlen = (unsigned long long)randombytes_uniform((uint32_t)sizeof m);
     randombytes_buf(m, mlen);
     randombytes_buf(nonce, sizeof nonce);
     crypto_box_easy(c, m, mlen, nonce, bobpk, alicesk);
-    if (crypto_box_open_easy(m2, c, mlen + crypto_box_MACBYTES,
-                             nonce, alicepk, bobsk) != 0) {
+    if (crypto_box_open_easy(m2, c, mlen + crypto_box_MACBYTES, nonce, alicepk,
+                             bobsk) != 0) {
         printf("open() failed");
         return 1;
     }

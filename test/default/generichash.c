@@ -5,18 +5,19 @@
 int main(void)
 {
 #define MAXLEN 64
-    unsigned char in[MAXLEN], out[crypto_generichash_BYTES_MAX], k[crypto_generichash_KEYBYTES_MAX];
-    size_t h,i,j;
+    unsigned char in[MAXLEN], out[crypto_generichash_BYTES_MAX],
+        k[crypto_generichash_KEYBYTES_MAX];
+    size_t h, i, j;
 
-    for(h = 0; h < crypto_generichash_KEYBYTES_MAX; ++h) k[h] = h;
+    for (h = 0; h < crypto_generichash_KEYBYTES_MAX; ++h)
+        k[h] = h;
 
-    for(i = 0; i < MAXLEN; ++i) {
-        in[i]=i;
-        crypto_generichash(out, 1 + i % crypto_generichash_BYTES_MAX,
-                           in, i,
-                           k, 1 + i % crypto_generichash_KEYBYTES_MAX);
-        for (j = 0;j < 1 + i % crypto_generichash_BYTES_MAX;++j) {
-            printf("%02x",(unsigned int) out[j]);
+    for (i = 0; i < MAXLEN; ++i) {
+        in[i] = i;
+        crypto_generichash(out, 1 + i % crypto_generichash_BYTES_MAX, in, i, k,
+                           1 + i % crypto_generichash_KEYBYTES_MAX);
+        for (j = 0; j < 1 + i % crypto_generichash_BYTES_MAX; ++j) {
+            printf("%02x", (unsigned int)out[j]);
         }
         printf("\n");
     }
@@ -32,12 +33,17 @@ int main(void)
     assert(crypto_generichash_keybytes() >= crypto_generichash_keybytes_min());
     assert(crypto_generichash_keybytes() <= crypto_generichash_keybytes_max());
     assert(strcmp(crypto_generichash_primitive(), "blake2b") == 0);
-    assert(crypto_generichash_bytes_min() == crypto_generichash_blake2b_bytes_min());
-    assert(crypto_generichash_bytes_max() == crypto_generichash_blake2b_bytes_max());
+    assert(crypto_generichash_bytes_min()
+           == crypto_generichash_blake2b_bytes_min());
+    assert(crypto_generichash_bytes_max()
+           == crypto_generichash_blake2b_bytes_max());
     assert(crypto_generichash_bytes() == crypto_generichash_blake2b_bytes());
-    assert(crypto_generichash_keybytes_min() == crypto_generichash_blake2b_keybytes_min());
-    assert(crypto_generichash_keybytes_max() == crypto_generichash_blake2b_keybytes_max());
-    assert(crypto_generichash_keybytes() == crypto_generichash_blake2b_keybytes());
+    assert(crypto_generichash_keybytes_min()
+           == crypto_generichash_blake2b_keybytes_min());
+    assert(crypto_generichash_keybytes_max()
+           == crypto_generichash_blake2b_keybytes_max());
+    assert(crypto_generichash_keybytes()
+           == crypto_generichash_blake2b_keybytes());
     assert(crypto_generichash_blake2b_saltbytes() > 0U);
     assert(crypto_generichash_blake2b_personalbytes() > 0U);
 
