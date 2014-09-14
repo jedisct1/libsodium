@@ -112,6 +112,7 @@ safe_read(const int fd, void * const buf_, size_t count)
 static int
 randombytes_salsa20_random_random_dev_open(void)
 {
+/* LCOV_EXCL_START */
     struct stat       st;
     static const char *devices[] = {
 # ifndef USE_BLOCKING_RANDOM
@@ -133,6 +134,7 @@ randombytes_salsa20_random_random_dev_open(void)
     } while (*device != NULL);
 
     return -1;
+/* LCOV_EXCL_STOP */
 }
 
 static void
@@ -145,7 +147,7 @@ randombytes_salsa20_random_init(void)
 
     if ((stream.random_data_source_fd =
          randombytes_salsa20_random_random_dev_open()) == -1) {
-        abort();
+        abort(); /* LCOV_EXCL_LINE */
     }
     errno = errno_save;
 }
@@ -183,11 +185,11 @@ randombytes_salsa20_random_stir(void)
 #ifndef _WIN32
     if (safe_read(stream.random_data_source_fd, m0,
                   sizeof m0) != (ssize_t) sizeof m0) {
-        abort();
+        abort(); /* LCOV_EXCL_LINE */
     }
 #else /* _WIN32 */
     if (! RtlGenRandom((PVOID) m0, (ULONG) sizeof m0)) {
-        abort();
+        abort(); /* LCOV_EXCL_LINE */
     }
 #endif
     COMPILER_ASSERT(sizeof stream.key == crypto_auth_hmacsha512256_BYTES);

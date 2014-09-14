@@ -37,6 +37,7 @@ crypto_aead_chacha20poly1305_encrypt(unsigned char *c,
     unsigned char                     slen[8U];
 
     (void) nsec;
+/* LCOV_EXCL_START */
 #ifdef ULONG_LONG_MAX
     if (mlen > ULONG_LONG_MAX - crypto_aead_chacha20poly1305_ABYTES) {
         if (clen != NULL) {
@@ -45,6 +46,7 @@ crypto_aead_chacha20poly1305_encrypt(unsigned char *c,
         return -1;
     }
 #endif
+/* LCOV_EXCL_STOP */
 
     crypto_stream_chacha20(block0, sizeof block0, npub, k);
     crypto_onetimeauth_poly1305_init(&state, block0);

@@ -15,7 +15,7 @@ sodium_init(void)
     }
     sodium_runtime_get_cpu_features();
     if (crypto_onetimeauth_pick_best_implementation() == NULL) {
-        return -1;
+        return -1; /* LCOV_EXCL_LINE */
     }
     randombytes_stir();
     _sodium_alloc_init();

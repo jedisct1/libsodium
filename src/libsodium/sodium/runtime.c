@@ -88,7 +88,7 @@ _sodium_runtime_intel_cpu_features(CPUFeatures * const cpu_features)
 
     _cpuid(cpu_info, 0x0);
     if ((id = cpu_info[0]) == 0U) {
-        return -1;
+        return -1; /* LCOV_EXCL_LINE */
     }
     _cpuid(cpu_info, 0x00000001);
 #ifndef HAVE_EMMINTRIN_H

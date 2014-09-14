@@ -61,7 +61,7 @@ sodium_memzero(void * const pnt, const size_t len)
     SecureZeroMemory(pnt, len);
 #elif defined(HAVE_MEMSET_S)
     if (memset_s(pnt, (rsize_t) len, 0, (rsize_t) len) != 0) {
-        abort();
+        abort(); /* LCOV_EXCL_LINE */
     }
 #elif defined(HAVE_EXPLICIT_BZERO)
     explicit_bzero(pnt, len);
@@ -215,7 +215,7 @@ _sodium_alloc_init(void)
     page_size = (size_t) si.dwPageSize;
 #endif
     if (page_size < CANARY_SIZE) {
-        abort();
+        abort(); /* LCOV_EXCL_LINE */
     }
     randombytes_buf(canary, sizeof canary);
 
@@ -360,7 +360,7 @@ _sodium_malloc(const size_t size)
         return NULL;
     }
     if (page_size <= sizeof canary || page_size < sizeof unprotected_size) {
-        abort();
+        abort(); /* LCOV_EXCL_LINE */
     }
     size_with_canary = (sizeof canary) + size;
     unprotected_size = _page_round(size_with_canary);

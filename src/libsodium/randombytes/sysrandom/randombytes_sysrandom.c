@@ -102,6 +102,7 @@ safe_read(const int fd, void * const buf_, size_t count)
 static int
 randombytes_sysrandom_random_dev_open(void)
 {
+/* LCOV_EXCL_START */
     struct stat        st;
     static const char *devices[] = {
 # ifndef USE_BLOCKING_RANDOM
@@ -123,6 +124,7 @@ randombytes_sysrandom_random_dev_open(void)
     } while (*device != NULL);
 
     return -1;
+/* LCOV_EXCL_STOP */
 }
 
 static void
@@ -132,7 +134,7 @@ randombytes_sysrandom_init(void)
 
     if ((stream.random_data_source_fd =
          randombytes_sysrandom_random_dev_open()) == -1) {
-        abort();
+        abort(); /* LCOV_EXCL_LINE */
     }
     errno = errno_save;
 }
@@ -203,14 +205,14 @@ randombytes_sysrandom_buf(void * const buf, const size_t size)
 #endif
 #ifndef _WIN32
     if (safe_read(stream.random_data_source_fd, buf, size) != (ssize_t) size) {
-        abort();
+        abort(); /* LCOV_EXCL_LINE */
     }
 #else
     if (size > 0xffffffff) {
-        abort();
+        abort(); /* LCOV_EXCL_LINE */
     }
     if (! RtlGenRandom((PVOID) buf, (ULONG) size)) {
-        abort();
+        abort(); /* LCOV_EXCL_LINE */
     }
 #endif
 }
