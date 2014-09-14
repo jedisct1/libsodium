@@ -33,6 +33,19 @@ static void tv(void)
         sodium_bin2hex(out_hex, sizeof out_hex, out, sizeof out);
         printf("[%s]\n", out_hex);
     } while (++i < (sizeof tests) / (sizeof tests[0]));
+
+    memset(out, 0x42, sizeof out);
+    crypto_stream_chacha20_xor(out, out, sizeof out, nonce, key);
+    sodium_bin2hex(out_hex, sizeof out_hex, out, sizeof out);
+    printf("[%s]\n", out_hex);
+
+    crypto_stream_chacha20_xor_ic(out, out, sizeof out, nonce, 0U, key);
+    sodium_bin2hex(out_hex, sizeof out_hex, out, sizeof out);
+    printf("[%s]\n", out_hex);
+
+    crypto_stream_chacha20_xor_ic(out, out, sizeof out, nonce, 1U, key);
+    sodium_bin2hex(out_hex, sizeof out_hex, out, sizeof out);
+    printf("[%s]\n", out_hex);
 };
 
 int main(void)
