@@ -27,5 +27,11 @@ int main(void)
         }
         printf("\n");
     }
+
+    assert(crypto_generichash_init(&st, k, sizeof k, 0U) == -1);
+    assert(crypto_generichash_init(&st, k, sizeof k,
+                                   crypto_generichash_BYTES_MAX + 1U) == -1);
+    assert(crypto_generichash_init(&st, k, crypto_generichash_KEYBYTES_MAX + 1U,
+                                   sizeof out) == -1);
     return 0;
 }

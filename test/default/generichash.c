@@ -22,6 +22,12 @@ int main(void)
         printf("\n");
     }
 
+    assert(crypto_generichash(out, 0U, in, sizeof in, k, sizeof k) == -1);
+    assert(crypto_generichash(out, crypto_generichash_BYTES_MAX + 1U, in, sizeof in,
+                              k, sizeof k) == -1);
+    assert(crypto_generichash(out, sizeof out, in, sizeof in,
+                              k, crypto_generichash_KEYBYTES_MAX + 1U) == -1);
+
     assert(crypto_generichash_bytes_min() > 0U);
     assert(crypto_generichash_bytes_max() > 0U);
     assert(crypto_generichash_bytes() > 0U);

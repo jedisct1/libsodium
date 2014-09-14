@@ -32,5 +32,13 @@ int main(void)
         }
         printf("\n");
     }
+    assert(crypto_generichash_blake2b_init_salt_personal(&st, k, sizeof k, 0U,
+                                                         salt, personal) == -1);
+    assert(crypto_generichash_blake2b_init_salt_personal(&st, k, sizeof k,
+                                                         crypto_generichash_BYTES_MAX + 1U,
+                                                         salt, personal) == -1);
+    assert(crypto_generichash_blake2b_init_salt_personal(&st, k,
+                                                         crypto_generichash_KEYBYTES_MAX + 1U,
+                                                         sizeof out, salt, personal) == -1);
     return 0;
 }
