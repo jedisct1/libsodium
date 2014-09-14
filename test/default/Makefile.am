@@ -35,6 +35,7 @@ EXTRA_DIST = \
 	onetimeauth7.exp \
 	pwhash.exp \
 	pwhash_scrypt_ll.exp \
+	randombytes.exp \
 	scalarmult.exp \
 	scalarmult2.exp \
 	scalarmult5.exp \
@@ -92,6 +93,7 @@ DISTCLEANFILES = \
 	onetimeauth7.res \
 	pwhash.res \
 	pwhash_scrypt_ll.res \
+	randombytes.res \
 	scalarmult.res \
 	scalarmult2.res \
 	scalarmult5.res \
@@ -283,7 +285,7 @@ pwhash_LDADD              = $(TESTS_LDADD)
 pwhash_scrypt_ll_SOURCE   = cmptest.h pwhash_scrypt_ll.c
 pwhash_scrypt_ll_LDADD    = $(TESTS_LDADD)
 
-randombytes_SOURCE        = randombytes.c
+randombytes_SOURCE        = cmptest.h randombytes.c
 randombytes_LDADD         = $(TESTS_LDADD)
 
 scalarmult_SOURCE         = cmptest.h scalarmult.c
