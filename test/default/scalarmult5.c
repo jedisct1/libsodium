@@ -20,12 +20,20 @@ unsigned char k[32];
 
 int main(void)
 {
-  int i;
-  crypto_scalarmult(k,alicesk,bobpk);
-  for (i = 0;i < 32;++i) {
-    if (i > 0) printf(","); else printf(" ");
-    printf("0x%02x",(unsigned int) k[i]);
-    if (i % 8 == 7) printf("\n");
-  }
-  return 0;
+    int i;
+
+    crypto_scalarmult(k,alicesk,bobpk);
+
+    for (i = 0;i < 32;++i) {
+        if (i > 0) {
+            printf(",");
+        } else {
+            printf(" ");
+        }
+        printf("0x%02x",(unsigned int) k[i]);
+        if (i % 8 == 7) {
+            printf("\n");
+        }
+    }
+    return 0;
 }

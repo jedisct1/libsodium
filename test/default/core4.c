@@ -23,12 +23,19 @@ unsigned char out[64];
 
 int main(void)
 {
-  int i;
-  crypto_core_salsa20(out,in,k,c);
-  for (i = 0;i < 64;++i) {
-    if (i > 0) printf(","); else printf(" ");
-    printf("%3d",(unsigned int) out[i]);
-    if (i % 8 == 7) printf("\n");
-  }
-  return 0;
+    int i;
+
+    crypto_core_salsa20(out,in,k,c);
+    for (i = 0;i < 64;++i) {
+        if (i > 0) {
+            printf(",");
+        } else {
+            printf(" ");
+        }
+        printf("%3d",(unsigned int) out[i]);
+        if (i % 8 == 7) {
+            printf("\n");
+        }
+    }
+    return 0;
 }

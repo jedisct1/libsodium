@@ -23,26 +23,28 @@ unsigned char out[64];
 
 void print(unsigned char *x,unsigned char *y)
 {
-  int i;
-  unsigned int borrow = 0;
-  for (i = 0;i < 4;++i) {
-    unsigned int xi = x[i];
-    unsigned int yi = y[i];
-    printf(",0x%02x",255 & (xi - yi - borrow));
-    borrow = (xi < yi + borrow);
-  }
+    int i;
+    unsigned int borrow = 0;
+
+    for (i = 0;i < 4;++i) {
+        unsigned int xi = x[i];
+        unsigned int yi = y[i];
+        printf(",0x%02x",255 & (xi - yi - borrow));
+        borrow = (xi < yi + borrow);
+    }
 }
 
 int main(void)
 {
-  crypto_core_salsa20(out,in,k,c);
-  print(out,c);
-  print(out + 20,c + 4); printf("\n");
-  print(out + 40,c + 8);
-  print(out + 60,c + 12); printf("\n");
-  print(out + 24,in);
-  print(out + 28,in + 4); printf("\n");
-  print(out + 32,in + 8);
-  print(out + 36,in + 12); printf("\n");
-  return 0;
+    crypto_core_salsa20(out,in,k,c);
+    print(out,c);
+    print(out + 20,c + 4); printf("\n");
+    print(out + 40,c + 8);
+    print(out + 60,c + 12); printf("\n");
+    print(out + 24,in);
+    print(out + 28,in + 4); printf("\n");
+    print(out + 32,in + 8);
+    print(out + 36,in + 12); printf("\n");
+
+    return 0;
 }

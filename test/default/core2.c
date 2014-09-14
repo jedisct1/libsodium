@@ -23,12 +23,19 @@ unsigned char secondkey[32];
 
 int main(void)
 {
-  int i;
-  crypto_core_hsalsa20(secondkey,nonceprefix,firstkey,c);
-  for (i = 0;i < 32;++i) {
-    if (i > 0) printf(","); else printf(" ");
-    printf("0x%02x",(unsigned int) secondkey[i]);
-    if (i % 8 == 7) printf("\n");
-  }
-  return 0;
+    int i;
+
+    crypto_core_hsalsa20(secondkey,nonceprefix,firstkey,c);
+    for (i = 0;i < 32;++i) {
+        if (i > 0) {
+            printf(",");
+        } else {
+            printf(" ");
+        }
+        printf("0x%02x",(unsigned int) secondkey[i]);
+        if (i % 8 == 7) {
+            printf("\n");
+        }
+    }
+    return 0;
 }

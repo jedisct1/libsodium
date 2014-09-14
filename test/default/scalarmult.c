@@ -13,19 +13,27 @@ unsigned char alicepk[32];
 
 int main(void)
 {
-  int i;
-  crypto_scalarmult_base(alicepk,alicesk);
-  for (i = 0;i < 32;++i) {
-    if (i > 0) printf(","); else printf(" ");
-    printf("0x%02x",(unsigned int) alicepk[i]);
-    if (i % 8 == 7) printf("\n");
-  }
-  assert(crypto_scalarmult_bytes() > 0U);
-  assert(crypto_scalarmult_scalarbytes() > 0U);
-  assert(strcmp(crypto_scalarmult_primitive(), "curve25519") == 0);
-  assert(crypto_scalarmult_bytes() == crypto_scalarmult_curve25519_bytes());
-  assert(crypto_scalarmult_scalarbytes() == crypto_scalarmult_curve25519_scalarbytes());
-  assert(crypto_scalarmult_bytes() == crypto_scalarmult_scalarbytes());
+    int i;
 
-  return 0;
+    crypto_scalarmult_base(alicepk,alicesk);
+
+    for (i = 0;i < 32;++i) {
+        if (i > 0) {
+            printf(",");
+        } else {
+            printf(" ");
+        }
+        printf("0x%02x",(unsigned int) alicepk[i]);
+        if (i % 8 == 7) {
+            printf("\n");
+        }
+    }
+    assert(crypto_scalarmult_bytes() > 0U);
+    assert(crypto_scalarmult_scalarbytes() > 0U);
+    assert(strcmp(crypto_scalarmult_primitive(), "curve25519") == 0);
+    assert(crypto_scalarmult_bytes() == crypto_scalarmult_curve25519_bytes());
+    assert(crypto_scalarmult_scalarbytes() == crypto_scalarmult_curve25519_scalarbytes());
+    assert(crypto_scalarmult_bytes() == crypto_scalarmult_scalarbytes());
+
+    return 0;
 }

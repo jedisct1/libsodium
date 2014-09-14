@@ -23,11 +23,14 @@ unsigned char out[32];
 
 int main(void)
 {
-  int i;
-  crypto_core_hsalsa20(out,in,k,c);
-  for (i = 0;i < 32;++i) {
-    printf(",0x%02x",(unsigned int) out[i]);
-    if (i % 8 == 7) printf("\n");
-  }
-  return 0;
+    int i;
+
+    crypto_core_hsalsa20(out,in,k,c);
+    for (i = 0;i < 32;++i) {
+        printf(",0x%02x",(unsigned int) out[i]);
+        if (i % 8 == 7) {
+            printf("\n");
+        }
+    }
+    return 0;
 }

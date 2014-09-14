@@ -51,33 +51,32 @@ unsigned char c[163];
 
 int main(void)
 {
-  int i;
-  crypto_box(
-    c,m,163,nonce,bobpk,alicesk
-  );
-  for (i = 16;i < 163;++i) {
-    printf(",0x%02x",(unsigned int) c[i]);
-    if (i % 8 == 7) printf("\n");
-  }
-  printf("\n");
+    int i;
 
-  assert(crypto_box_seedbytes() > 0U);
-  assert(crypto_box_publickeybytes() > 0U);
-  assert(crypto_box_secretkeybytes() > 0U);
-  assert(crypto_box_beforenmbytes() > 0U);
-  assert(crypto_box_noncebytes() > 0U);
-  assert(crypto_box_zerobytes() > 0U);
-  assert(crypto_box_boxzerobytes() > 0U);
-  assert(crypto_box_macbytes() > 0U);
-  assert(strcmp(crypto_box_primitive(), "curve25519xsalsa20poly1305") == 0);
-  assert(crypto_box_curve25519xsalsa20poly1305_seedbytes() == crypto_box_seedbytes());
-  assert(crypto_box_curve25519xsalsa20poly1305_publickeybytes() == crypto_box_publickeybytes());
-  assert(crypto_box_curve25519xsalsa20poly1305_secretkeybytes() == crypto_box_secretkeybytes());
-  assert(crypto_box_curve25519xsalsa20poly1305_beforenmbytes() == crypto_box_beforenmbytes());
-  assert(crypto_box_curve25519xsalsa20poly1305_noncebytes() == crypto_box_noncebytes());
-  assert(crypto_box_curve25519xsalsa20poly1305_zerobytes() == crypto_box_zerobytes());
-  assert(crypto_box_curve25519xsalsa20poly1305_boxzerobytes() == crypto_box_boxzerobytes());
-  assert(crypto_box_curve25519xsalsa20poly1305_macbytes() == crypto_box_macbytes());
+    crypto_box(c,m,163,nonce,bobpk,alicesk);
+    for (i = 16;i < 163;++i) {
+        printf(",0x%02x",(unsigned int) c[i]);
+        if (i % 8 == 7) printf("\n");
+    }
+    printf("\n");
 
-  return 0;
+    assert(crypto_box_seedbytes() > 0U);
+    assert(crypto_box_publickeybytes() > 0U);
+    assert(crypto_box_secretkeybytes() > 0U);
+    assert(crypto_box_beforenmbytes() > 0U);
+    assert(crypto_box_noncebytes() > 0U);
+    assert(crypto_box_zerobytes() > 0U);
+    assert(crypto_box_boxzerobytes() > 0U);
+    assert(crypto_box_macbytes() > 0U);
+    assert(strcmp(crypto_box_primitive(), "curve25519xsalsa20poly1305") == 0);
+    assert(crypto_box_curve25519xsalsa20poly1305_seedbytes() == crypto_box_seedbytes());
+    assert(crypto_box_curve25519xsalsa20poly1305_publickeybytes() == crypto_box_publickeybytes());
+    assert(crypto_box_curve25519xsalsa20poly1305_secretkeybytes() == crypto_box_secretkeybytes());
+    assert(crypto_box_curve25519xsalsa20poly1305_beforenmbytes() == crypto_box_beforenmbytes());
+    assert(crypto_box_curve25519xsalsa20poly1305_noncebytes() == crypto_box_noncebytes());
+    assert(crypto_box_curve25519xsalsa20poly1305_zerobytes() == crypto_box_zerobytes());
+    assert(crypto_box_curve25519xsalsa20poly1305_boxzerobytes() == crypto_box_boxzerobytes());
+    assert(crypto_box_curve25519xsalsa20poly1305_macbytes() == crypto_box_macbytes());
+
+    return 0;
 }

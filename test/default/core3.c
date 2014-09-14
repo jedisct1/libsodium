@@ -26,22 +26,25 @@ unsigned char h[32];
 
 int main(void)
 {
-  int i;
-  long long pos = 0;
-  for (i = 0;i < 8;++i) in[i] = noncesuffix[i];
-  do {
+    int i;
+    long long pos = 0;
+
+    for (i = 0;i < 8;++i) in[i] = noncesuffix[i];
     do {
-      crypto_core_salsa20(output + pos,in,secondkey,c);
-      pos += 64;
-    } while (++in[8]);
-  } while (++in[9]);
-  crypto_hash_sha256(h,output,sizeof output);
-  for (i = 0;i < 32;++i) printf("%02x",h[i]); printf("\n");
+        do {
+            crypto_core_salsa20(output + pos,in,secondkey,c);
+            pos += 64;
+        } while (++in[8]);
+    } while (++in[9]);
+    crypto_hash_sha256(h,output,sizeof output);
+    for (i = 0;i < 32;++i) {
+        printf("%02x",h[i]);
+    }
+    printf("\n");
+    assert(crypto_core_salsa20_outputbytes() > 0U);
+    assert(crypto_core_salsa20_inputbytes() > 0U);
+    assert(crypto_core_salsa20_keybytes() > 0U);
+    assert(crypto_core_salsa20_constbytes() > 0U);
 
-  assert(crypto_core_salsa20_outputbytes() > 0U);
-  assert(crypto_core_salsa20_inputbytes() > 0U);
-  assert(crypto_core_salsa20_keybytes() > 0U);
-  assert(crypto_core_salsa20_constbytes() > 0U);
-
-  return 0;
+    return 0;
 }

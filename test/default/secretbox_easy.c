@@ -40,23 +40,23 @@ unsigned char mac[crypto_secretbox_MACBYTES];
 
 int main(void)
 {
-  size_t i;
+    size_t i;
 
-  crypto_secretbox_easy(c, m, 131, nonce, firstkey);
-  for (i = 0;i < 131 + crypto_secretbox_MACBYTES; ++i) {
-    printf(",0x%02x",(unsigned int) c[i]);
-    if (i % 8 == 7) printf("\n");
-  }
-  printf("\n");
+    crypto_secretbox_easy(c, m, 131, nonce, firstkey);
+    for (i = 0;i < 131 + crypto_secretbox_MACBYTES; ++i) {
+        printf(",0x%02x",(unsigned int) c[i]);
+        if (i % 8 == 7) printf("\n");
+    }
+    printf("\n");
 
-  crypto_secretbox_detached(c, mac, m, 131, nonce, firstkey);
-  for (i = 0;i < crypto_secretbox_MACBYTES; ++i) {
-    printf(",0x%02x",(unsigned int) mac[i]);
-    if (i % 8 == 7) printf("\n");
-  }
-  for (i = 0;i < 131; ++i) {
-    printf(",0x%02x",(unsigned int) c[i]);
-    if (i % 8 == 7) printf("\n");
-  }
-  return 0;
+    crypto_secretbox_detached(c, mac, m, 131, nonce, firstkey);
+    for (i = 0;i < crypto_secretbox_MACBYTES; ++i) {
+        printf(",0x%02x",(unsigned int) mac[i]);
+        if (i % 8 == 7) printf("\n");
+    }
+    for (i = 0;i < 131; ++i) {
+        printf(",0x%02x",(unsigned int) c[i]);
+        if (i % 8 == 7) printf("\n");
+    }
+    return 0;
 }

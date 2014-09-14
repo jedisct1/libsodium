@@ -11,7 +11,7 @@ int main(void)
     };
     unsigned char personal[crypto_generichash_blake2b_PERSONALBYTES] = {
         '5', '1', '2', '6', 'f', 'b', '2', 'a', '3', '7', '4', '0', '0', 'd', '2', 'a'
-    };    
+    };
     unsigned char in[MAXLEN], out[crypto_generichash_blake2b_BYTES_MAX], k[crypto_generichash_blake2b_KEYBYTES_MAX];
     size_t h,i,j;
 

@@ -5,12 +5,19 @@ unsigned long long freq[256];
 
 int main(void)
 {
-  unsigned long long i;
+    unsigned long long i;
 
-  randombytes(x,sizeof x);
-  for (i = 0;i < 256;++i) freq[i] = 0;
-  for (i = 0;i < sizeof x;++i) ++freq[255 & (int) x[i]];
-  for (i = 0;i < 256;++i) if (!freq[i]) return 111;
-
-  return 0;
+    randombytes(x,sizeof x);
+    for (i = 0;i < 256;++i) {
+        freq[i] = 0;
+    }
+    for (i = 0;i < sizeof x;++i) {
+        ++freq[255 & (int) x[i]];
+    }
+    for (i = 0;i < 256;++i) {
+        if (!freq[i]) {
+            return 111;
+        }
+    }
+    return 0;
 }

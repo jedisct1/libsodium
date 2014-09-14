@@ -33,17 +33,18 @@ unsigned char a[16];
 
 int main(void)
 {
-  int i;
-  crypto_onetimeauth(a,c,131,rs);
-  for (i = 0;i < 16;++i) {
-    printf(",0x%02x",(unsigned int) a[i]);
-    if (i % 8 == 7) printf("\n");
-  }
-  assert(crypto_onetimeauth_bytes() > 0U);
-  assert(crypto_onetimeauth_keybytes() > 0U);
-  assert(strcmp(crypto_onetimeauth_primitive(), "poly1305") == 0);
-  assert(crypto_onetimeauth_poly1305_bytes() == crypto_onetimeauth_bytes());
-  assert(crypto_onetimeauth_poly1305_keybytes() == crypto_onetimeauth_keybytes());
+    int i;
 
-  return 0;
+    crypto_onetimeauth(a,c,131,rs);
+    for (i = 0;i < 16;++i) {
+        printf(",0x%02x",(unsigned int) a[i]);
+        if (i % 8 == 7) printf("\n");
+    }
+    assert(crypto_onetimeauth_bytes() > 0U);
+    assert(crypto_onetimeauth_keybytes() > 0U);
+    assert(strcmp(crypto_onetimeauth_primitive(), "poly1305") == 0);
+    assert(crypto_onetimeauth_poly1305_bytes() == crypto_onetimeauth_bytes());
+    assert(crypto_onetimeauth_poly1305_keybytes() == crypto_onetimeauth_keybytes());
+
+    return 0;
 }

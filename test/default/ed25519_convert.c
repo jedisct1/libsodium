@@ -11,14 +11,14 @@ static const unsigned char keypair_seed[crypto_sign_ed25519_SEEDBYTES] = {
 
 int main(void)
 {
-    unsigned char      ed25519_pk[crypto_sign_ed25519_PUBLICKEYBYTES];
-    unsigned char      ed25519_skpk[crypto_sign_ed25519_SECRETKEYBYTES];
-    unsigned char      curve25519_pk[crypto_scalarmult_curve25519_BYTES];
-    unsigned char      curve25519_pk2[crypto_scalarmult_curve25519_BYTES];
-    unsigned char      curve25519_sk[crypto_scalarmult_curve25519_BYTES];
-    char               curve25519_pk_hex[crypto_scalarmult_curve25519_BYTES * 2 + 1];
-    char               curve25519_sk_hex[crypto_scalarmult_curve25519_BYTES * 2 + 1];
-    unsigned int       i;
+    unsigned char  ed25519_pk[crypto_sign_ed25519_PUBLICKEYBYTES];
+    unsigned char  ed25519_skpk[crypto_sign_ed25519_SECRETKEYBYTES];
+    unsigned char  curve25519_pk[crypto_scalarmult_curve25519_BYTES];
+    unsigned char  curve25519_pk2[crypto_scalarmult_curve25519_BYTES];
+    unsigned char  curve25519_sk[crypto_scalarmult_curve25519_BYTES];
+    char           curve25519_pk_hex[crypto_scalarmult_curve25519_BYTES * 2 + 1];
+    char           curve25519_sk_hex[crypto_scalarmult_curve25519_BYTES * 2 + 1];
+    unsigned int   i;
 
     crypto_sign_ed25519_seed_keypair(ed25519_pk, ed25519_skpk, keypair_seed);
     crypto_sign_ed25519_pk_to_curve25519(curve25519_pk, ed25519_pk);

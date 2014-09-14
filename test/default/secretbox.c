@@ -44,27 +44,26 @@ unsigned char c[163];
 
 int main(void)
 {
-  int i;
-  crypto_secretbox(
-    c,m,163,nonce,firstkey
-  );
-  for (i = 16;i < 163;++i) {
-    printf(",0x%02x",(unsigned int) c[i]);
-    if (i % 8 == 7) printf("\n");
-  }
-  printf("\n");
+    int i;
 
-  assert(crypto_secretbox_keybytes() > 0U);
-  assert(crypto_secretbox_noncebytes() > 0U);
-  assert(crypto_secretbox_zerobytes() > 0U);
-  assert(crypto_secretbox_boxzerobytes() > 0U);
-  assert(crypto_secretbox_macbytes() > 0U);
-  assert(strcmp(crypto_secretbox_primitive(), "xsalsa20poly1305") == 0);
-  assert(crypto_secretbox_keybytes() == crypto_secretbox_xsalsa20poly1305_keybytes());
-  assert(crypto_secretbox_noncebytes() == crypto_secretbox_xsalsa20poly1305_noncebytes());
-  assert(crypto_secretbox_zerobytes() == crypto_secretbox_xsalsa20poly1305_zerobytes());
-  assert(crypto_secretbox_boxzerobytes() == crypto_secretbox_xsalsa20poly1305_boxzerobytes());
-  assert(crypto_secretbox_macbytes() == crypto_secretbox_xsalsa20poly1305_macbytes());
+    crypto_secretbox(c,m,163,nonce,firstkey);
+    for (i = 16;i < 163;++i) {
+        printf(",0x%02x",(unsigned int) c[i]);
+        if (i % 8 == 7) printf("\n");
+    }
+    printf("\n");
 
-  return 0;
+    assert(crypto_secretbox_keybytes() > 0U);
+    assert(crypto_secretbox_noncebytes() > 0U);
+    assert(crypto_secretbox_zerobytes() > 0U);
+    assert(crypto_secretbox_boxzerobytes() > 0U);
+    assert(crypto_secretbox_macbytes() > 0U);
+    assert(strcmp(crypto_secretbox_primitive(), "xsalsa20poly1305") == 0);
+    assert(crypto_secretbox_keybytes() == crypto_secretbox_xsalsa20poly1305_keybytes());
+    assert(crypto_secretbox_noncebytes() == crypto_secretbox_xsalsa20poly1305_noncebytes());
+    assert(crypto_secretbox_zerobytes() == crypto_secretbox_xsalsa20poly1305_zerobytes());
+    assert(crypto_secretbox_boxzerobytes() == crypto_secretbox_xsalsa20poly1305_boxzerobytes());
+    assert(crypto_secretbox_macbytes() == crypto_secretbox_xsalsa20poly1305_macbytes());
+
+    return 0;
 }

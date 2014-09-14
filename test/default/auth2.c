@@ -24,11 +24,12 @@ unsigned char a[32];
 
 int main(void)
 {
-  int i;
-  crypto_auth_hmacsha256(a,c,sizeof c,key);
-  for (i = 0;i < 32;++i) {
-    printf(",0x%02x",(unsigned int) a[i]);
-    if (i % 8 == 7) printf("\n");
-  }
-  return 0;
+    int i;
+
+    crypto_auth_hmacsha256(a,c,sizeof c,key);
+    for (i = 0;i < 32;++i) {
+        printf(",0x%02x",(unsigned int) a[i]);
+        if (i % 8 == 7) printf("\n");
+    }
+    return 0;
 }

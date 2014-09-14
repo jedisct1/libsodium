@@ -36,6 +36,6 @@ unsigned char a[16] = {
 
 int main(void)
 {
-  printf("%d\n",crypto_onetimeauth_verify(a,c,131,rs));
-  return 0;
+    printf("%d\n",crypto_onetimeauth_verify(a,c,131,rs));
+    return 0;
 }
