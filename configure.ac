@@ -165,7 +165,7 @@ AX_CHECK_COMPILE_FLAG([-fno-strict-overflow], [CFLAGS="$CFLAGS -fno-strict-overf
 LIBTOOL_OLD_FLAGS="$LIBTOOL_EXTRA_FLAGS"
 LIBTOOL_EXTRA_FLAGS="$LIBTOOL_EXTRA_FLAGS -version-info $SODIUM_LIBRARY_VERSION"
 AC_ARG_ENABLE(soname-versions,
-  [AC_HELP_STRING([--enable-soname-versions], [enable soname versions (must be disabled for android) (default: enabled)])],
+  [AC_HELP_STRING([--enable-soname-versions], [enable soname versions (must be disabled for Android) (default: enabled)])],
     [
 	AS_IF([test "x$enableval" = "xno"], [
           LIBTOOL_EXTRA_FLAGS="$LIBTOOL_OLD_FLAGS -avoid-version"
