@@ -33,7 +33,7 @@ int main(void)
     assert(crypto_generichash_bytes() > 0U);
     assert(crypto_generichash_bytes() >= crypto_generichash_bytes_min());
     assert(crypto_generichash_bytes() <= crypto_generichash_bytes_max());
-    assert(crypto_generichash_keybytes_min() >= 0U);
+    assert(crypto_generichash_keybytes_min() > 0U);
     assert(crypto_generichash_keybytes_max() > 0U);
     assert(crypto_generichash_keybytes() > 0U);
     assert(crypto_generichash_keybytes() >= crypto_generichash_keybytes_min());
