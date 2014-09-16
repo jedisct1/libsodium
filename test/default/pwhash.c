@@ -212,5 +212,14 @@ int main(void)
     }
     printf("OK\n");
 
+    assert(crypto_pwhash_scryptsalsa208sha256_saltbytes() > 0U);
+    assert(crypto_pwhash_scryptsalsa208sha256_strbytes() > 1U);
+    assert(crypto_pwhash_scryptsalsa208sha256_strbytes() >
+           strlen(crypto_pwhash_scryptsalsa208sha256_strprefix()));
+    assert(crypto_pwhash_scryptsalsa208sha256_opslimit_interactive() > 0U);
+    assert(crypto_pwhash_scryptsalsa208sha256_memlimit_interactive() > 0U);
+    assert(crypto_pwhash_scryptsalsa208sha256_opslimit_sensitive() > 0U);
+    assert(crypto_pwhash_scryptsalsa208sha256_memlimit_sensitive() > 0U);
+
     return 0;
 }

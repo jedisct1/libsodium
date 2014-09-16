@@ -106,8 +106,8 @@ crypto_pwhash_scryptsalsa208sha256(unsigned char * const out,
 
     memset(out, 0, outlen);
     if (passwdlen > SIZE_MAX || outlen > SIZE_MAX) {
-        errno = EFBIG;
-        return -1;
+        errno = EFBIG; /* LCOV_EXCL_LINE */
+        return -1; /* LCOV_EXCL_LINE */
     }
     if (pickparams(opslimit, memlimit, &N_log2, &p, &r) != 0) {
         errno = EINVAL;
@@ -137,8 +137,8 @@ crypto_pwhash_scryptsalsa208sha256_str(char out[crypto_pwhash_scryptsalsa208sha2
 
     memset(out, 0, crypto_pwhash_scryptsalsa208sha256_STRBYTES);
     if (passwdlen > SIZE_MAX) {
-        errno = EFBIG;
-        return -1;
+        errno = EFBIG; /* LCOV_EXCL_LINE */
+        return -1; /* LCOV_EXCL_LINE */
     }
     if (pickparams(opslimit, memlimit, &N_log2, &p, &r) != 0) {
         errno = EINVAL;
