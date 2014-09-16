@@ -104,7 +104,7 @@ sodium_bin2hex(char * const hex, const size_t hex_maxlen,
     size_t            j = (size_t) 0U;
 
     if (bin_len >= SIZE_MAX / 2 || hex_maxlen < bin_len * 2U) {
-        abort();
+        abort(); /* LCOV_EXCL_LINE */
     }
     while (i < bin_len) {
         hex[j++] = hexdigits[bin[i] >> 4];
@@ -298,11 +298,11 @@ _alloc_aligned(const size_t size)
     if ((ptr = mmap(NULL, size, PROT_READ | PROT_WRITE,
                     MAP_ANON | MAP_PRIVATE | MAP_NOCORE, -1, 0)) == MAP_FAILED) {
         ptr = NULL; /* LCOV_EXCL_LINE */
-    }
+    } /* LCOV_EXCL_LINE */
 #elif defined(HAVE_POSIX_MEMALIGN)
     if (posix_memalign(&ptr, page_size, size) != 0) {
         ptr = NULL; /* LCOV_EXCL_LINE */
-    }
+    } /* LCOV_EXCL_LINE */
 #elif defined(_WIN32)
     ptr = VirtualAlloc(NULL, size, MEM_COMMIT | MEM_RESERVE, PAGE_READWRITE);
 #elif !defined(HAVE_ALIGNED_MALLOC)

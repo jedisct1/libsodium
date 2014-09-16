@@ -29,9 +29,16 @@ int main(void)
     size_t size;
     unsigned int i;
 
+    if (sodium_malloc(SIZE_MAX - 1U) != NULL) {
+        return 1;
+    }
     if (sodium_allocarray(SIZE_MAX / 2U + 1U, SIZE_MAX / 2U) != NULL) {
         return 1;
     }
+    buf = sodium_allocarray(1000U, 50U);
+    memset(buf, 0, 50000U);
+    sodium_free(buf);
+
     sodium_free(sodium_malloc(0U));
     sodium_free(NULL);
     for (i = 0U; i < 10000U; i++) {
