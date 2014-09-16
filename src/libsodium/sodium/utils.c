@@ -287,7 +287,7 @@ _out_of_bounds(void)
     raise(SIGKILL);
 #endif
     abort();
-}
+}  /* LCOV_EXCL_LINE */
 
 static __attribute__((malloc)) unsigned char *
 _alloc_aligned(const size_t size)
@@ -297,11 +297,11 @@ _alloc_aligned(const size_t size)
 #ifdef MAP_ANON
     if ((ptr = mmap(NULL, size, PROT_READ | PROT_WRITE,
                     MAP_ANON | MAP_PRIVATE | MAP_NOCORE, -1, 0)) == MAP_FAILED) {
-        ptr = NULL;
+        ptr = NULL; /* LCOV_EXCL_LINE */
     }
 #elif defined(HAVE_POSIX_MEMALIGN)
     if (posix_memalign(&ptr, page_size, size) != 0) {
-        ptr = NULL;
+        ptr = NULL; /* LCOV_EXCL_LINE */
     }
 #elif defined(_WIN32)
     ptr = VirtualAlloc(NULL, size, MEM_COMMIT | MEM_RESERVE, PAGE_READWRITE);
@@ -338,7 +338,7 @@ _unprotected_ptr_from_user_ptr(const void *ptr)
     page_mask = page_size - 1U;
     unprotected_ptr_u = ((uintptr_t) canary_ptr & (uintptr_t) ~page_mask);
     if (unprotected_ptr_u <= page_size * 2U) {
-        abort();
+        abort(); /* LCOV_EXCL_LINE */
     }
     return (unsigned char *) unprotected_ptr_u;
 }
@@ -366,7 +366,7 @@ _sodium_malloc(const size_t size)
     unprotected_size = _page_round(size_with_canary);
     total_size = page_size + page_size + unprotected_size + page_size;
     if ((base_ptr = _alloc_aligned(total_size)) == NULL) {
-        return NULL;
+        return NULL; /* LCOV_EXCL_LINE */
     }
     unprotected_ptr = base_ptr + page_size * 2U;
     _mprotect_noaccess(base_ptr + page_size, page_size);
@@ -393,7 +393,7 @@ sodium_malloc(const size_t size)
     void *ptr;
 
     if ((ptr = _sodium_malloc(size)) == NULL) {
-        return NULL;
+        return NULL; /* LCOV_EXCL_LINE */
     }
     memset(ptr, (int) GARBAGE_VALUE, size);
 
