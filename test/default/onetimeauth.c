@@ -24,6 +24,7 @@ unsigned char a[16];
 
 int main(void)
 {
+    crypto_onetimeauth_state st;
     int i;
 
     crypto_onetimeauth(a, c, 131, rs);
@@ -32,6 +33,18 @@ int main(void)
         if (i % 8 == 7)
             printf("\n");
     }
+
+    memset(a, 0, sizeof a);
+    crypto_onetimeauth_init(&st, rs);
+    crypto_onetimeauth_update(&st, c, 100);
+    crypto_onetimeauth_update(&st, c + 100, 31);
+    crypto_onetimeauth_final(&st, a);
+    for (i = 0; i < 16; ++i) {
+        printf(",0x%02x", (unsigned int)a[i]);
+        if (i % 8 == 7)
+            printf("\n");
+    }
+
     assert(crypto_onetimeauth_bytes() > 0U);
     assert(crypto_onetimeauth_keybytes() > 0U);
     assert(strcmp(crypto_onetimeauth_primitive(), "poly1305") == 0);
