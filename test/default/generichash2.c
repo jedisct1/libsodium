@@ -33,5 +33,12 @@ int main(void)
                                    crypto_generichash_BYTES_MAX + 1U) == -1);
     assert(crypto_generichash_init(&st, k, crypto_generichash_KEYBYTES_MAX + 1U,
                                    sizeof out) == -1);
+    assert(crypto_generichash_init(&st, k, 0U, sizeof out) == 0);
+    assert(crypto_generichash_init(&st, k, 1U, sizeof out) == 0);
+    assert(crypto_generichash_init(&st, NULL, 1U, 0U) == -1);
+    assert(crypto_generichash_init(&st, NULL, crypto_generichash_KEYBYTES,
+                                   1U) == 0);
+    assert(crypto_generichash_init(&st, NULL, crypto_generichash_KEYBYTES,
+                                   0U) == -1);
     return 0;
 }

@@ -22,6 +22,20 @@ int main(void)
         printf("\n");
     }
 
+    memset(out, 0, sizeof out);
+    crypto_generichash(out, crypto_generichash_BYTES_MAX, in, i, k, 0U);
+    for (j = 0; j < crypto_generichash_BYTES_MAX; ++j) {
+        printf("%02x", (unsigned int)out[j]);
+    }
+    printf("\n");
+
+    memset(out, 0, sizeof out);
+    crypto_generichash(out, crypto_generichash_BYTES_MAX, in, i, NULL, 1U);
+    for (j = 0; j < crypto_generichash_BYTES_MAX; ++j) {
+        printf("%02x", (unsigned int)out[j]);
+    }
+    printf("\n");
+
     assert(crypto_generichash(out, 0U, in, sizeof in, k, sizeof k) == -1);
     assert(crypto_generichash(out, crypto_generichash_BYTES_MAX + 1U, in, sizeof in,
                               k, sizeof k) == -1);

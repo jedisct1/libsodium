@@ -43,11 +43,13 @@ static const uint8_t blake2b_sigma[12][16] =
 };
 
 
+/* LCOV_EXCL_START */
 static inline int blake2b_set_lastnode( blake2b_state *S )
 {
   S->f[1] = ~0ULL;
   return 0;
 }
+/* LCOV_EXCL_STOP */
 #if 0
 static inline int blake2b_clear_lastnode( blake2b_state *S )
 {
