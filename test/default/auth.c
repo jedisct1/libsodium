@@ -6,15 +6,42 @@
 unsigned char key[32] = "Jefe";
 unsigned char c[] = "what do ya want for nothing?";
 
-unsigned char a[32];
+/* Hacker manifesto */
+unsigned char key2[175] = "Another one got caught today, it's all over the papers.  \"Teenager Arrested in Computer Crime Scandal\", \"Hacker Arrested after Bank Tampering\"... Damn kids. They're all alike.";
+
+unsigned char a[crypto_auth_BYTES];
+unsigned char a2[crypto_auth_hmacsha512_BYTES];
 
 int main(void)
 {
+    crypto_auth_hmacsha512_state st;
     int i;
 
     crypto_auth(a, c, sizeof c - 1U, key);
-    for (i = 0; i < 32; ++i) {
+    for (i = 0; i < sizeof a; ++i) {
         printf(",0x%02x", (unsigned int)a[i]);
+        if (i % 8 == 7)
+            printf("\n");
+    }
+    printf("\n");
+
+    crypto_auth_hmacsha512_init(&st, key, sizeof key);
+    crypto_auth_hmacsha512_update(&st, c, 1U);
+    crypto_auth_hmacsha512_update(&st, c, sizeof c - 2U);
+    crypto_auth_hmacsha512_final(&st, a2);
+    for (i = 0; i < sizeof a2; ++i) {
+        printf(",0x%02x", (unsigned int)a2[i]);
+        if (i % 8 == 7)
+            printf("\n");
+    }
+    printf("\n");
+
+    crypto_auth_hmacsha512_init(&st, key2, sizeof key2);
+    crypto_auth_hmacsha512_update(&st, c, 1U);
+    crypto_auth_hmacsha512_update(&st, c, sizeof c - 2U);
+    crypto_auth_hmacsha512_final(&st, a2);
+    for (i = 0; i < sizeof a2; ++i) {
+        printf(",0x%02x", (unsigned int)a2[i]);
         if (i % 8 == 7)
             printf("\n");
     }
