@@ -1,6 +1,8 @@
 *.cmake
 *.dSYM
 *.exp
+*.gcda
+*.gcno
 *.la
 *.lo
 *.log
@@ -27,6 +29,7 @@ compile
 confdefs.h
 config.*
 configure
+coverage.info
 depcomp
 android-toolchain
 install-sh
