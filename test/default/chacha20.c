@@ -36,6 +36,8 @@ static void tv(void)
 
     memset(out, 0x42, sizeof out);
 
+    assert(crypto_stream_chacha20(out, 0U, nonce, key) == 0);
+    assert(crypto_stream_chacha20_xor(out, out, 0U, nonce, key) == 0);
     assert(crypto_stream_chacha20_xor(out, out, 0U, nonce, key) == 0);
     assert(crypto_stream_chacha20_xor_ic(out, out, 0U, nonce, 1U, key) == 0);
 
