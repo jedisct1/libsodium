@@ -35,6 +35,10 @@ static void tv(void)
     } while (++i < (sizeof tests) / (sizeof tests[0]));
 
     memset(out, 0x42, sizeof out);
+
+    assert(crypto_stream_chacha20_xor(out, out, 0U, nonce, key) == 0);
+    assert(crypto_stream_chacha20_xor_ic(out, out, 0U, nonce, 1U, key) == 0);
+
     crypto_stream_chacha20_xor(out, out, sizeof out, nonce, key);
     sodium_bin2hex(out_hex, sizeof out_hex, out, sizeof out);
     printf("[%s]\n", out_hex);

@@ -101,7 +101,7 @@ chacha_encrypt_bytes(chacha_ctx *x, const u8 *m, u8 *c, unsigned long long bytes
     unsigned long long i;
 
     if (!bytes) {
-        return;
+        return; /* LCOV_EXCL_LINE */
     }
     j0 = x->input[0];
     j1 = x->input[1];
