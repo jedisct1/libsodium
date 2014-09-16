@@ -7,7 +7,7 @@ unsigned char key[32] = "Jefe";
 unsigned char c[] = "what do ya want for nothing?";
 
 /* Hacker manifesto */
-unsigned char key2[175] = "Another one got caught today, it's all over the papers.  \"Teenager Arrested in Computer Crime Scandal\", \"Hacker Arrested after Bank Tampering\"... Damn kids. They're all alike.";
+unsigned char key2[] = "Another one got caught today, it's all over the papers. \"Teenager Arrested in Computer Crime Scandal\", \"Hacker Arrested after Bank Tampering\"... Damn kids. They're all alike.";
 
 unsigned char a[crypto_auth_BYTES];
 unsigned char a2[crypto_auth_hmacsha512_BYTES];
