@@ -2,6 +2,7 @@
 #include "crypto_onetimeauth_poly1305.h"
 #include "donna/poly1305_donna.h"
 
+/* LCOV_EXCL_START */
 static const crypto_onetimeauth_poly1305_implementation *implementation =
     &crypto_onetimeauth_poly1305_donna_implementation;
 
@@ -18,6 +19,7 @@ crypto_onetimeauth_poly1305_implementation_name(void)
 {
     return implementation->implementation_name();
 }
+/* LCOV_EXCL_STOP */
 
 int
 crypto_onetimeauth_poly1305(unsigned char *out, const unsigned char *in,

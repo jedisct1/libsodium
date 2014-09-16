@@ -93,12 +93,12 @@ safe_read(const int fd, void * const buf_, size_t count)
     assert(count > (size_t) 0U);
     do {
         while ((readnb = read(fd, buf, count)) < (ssize_t) 0 &&
-               errno == EINTR);
+               errno == EINTR);  /* LCOV_EXCL_LINE */
         if (readnb < (ssize_t) 0) {
-            return readnb;
+            return readnb; /* LCOV_EXCL_LINE */
         }
         if (readnb == (ssize_t) 0) {
-            break;
+            break; /* LCOV_EXCL_LINE */
         }
         count -= (size_t) readnb;
         buf += readnb;
