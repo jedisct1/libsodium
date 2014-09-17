@@ -144,5 +144,10 @@ int main(void)
     assert(crypto_generichash_blake2b_salt_personal(out, sizeof out, in, MAXLEN,
                                                     k, crypto_generichash_KEYBYTES_MAX + 1U,
                                                     salt, personal) == -1);
+    assert(crypto_generichash_blake2b_init_salt_personal(&st, k, sizeof k, crypto_generichash_BYTES,
+                                                         NULL, personal) == 0);
+    assert(crypto_generichash_blake2b_init_salt_personal(&st, k, sizeof k, crypto_generichash_BYTES,
+                                                         personal, NULL) == 0);
+
     return 0;
 }
