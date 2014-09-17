@@ -86,12 +86,13 @@ crypto_onetimeauth_poly1305_donna_final(crypto_onetimeauth_poly1305_state *state
     return 0;
 }
 
-
+/* LCOV_EXCL_START */
 const char *
 crypto_onetimeauth_poly1305_donna_implementation_name(void)
 {
     return POLY1305_IMPLEMENTATION_NAME;
 }
+/* LCOV_EXCL_STOP */
 
 struct crypto_onetimeauth_poly1305_implementation
 crypto_onetimeauth_poly1305_donna_implementation = {
