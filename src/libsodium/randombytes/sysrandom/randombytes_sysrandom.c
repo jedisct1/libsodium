@@ -237,7 +237,7 @@ randombytes_sysrandom_uniform(const uint32_t upper_bound)
         if (r >= min) {
             break;
         }
-    }
+    } /* LCOV_EXCL_LINE */
     return r % upper_bound;
 }
 

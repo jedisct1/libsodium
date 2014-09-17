@@ -30,6 +30,10 @@ static int randombytes_tests(void)
     unsigned int i;
 
     assert(strcmp(randombytes_implementation_name(), "sysrandom") == 0);
+
+    randombytes(x, 1U);
+    randombytes_close();
+
     for (i = 0; i < 256; ++i) {
         freq[i] = 0;
     }
@@ -41,6 +45,7 @@ static int randombytes_tests(void)
             printf("randombytes_uniform() test failed\n");
         }
     }
+    assert(randombytes_uniform(1U) == 0U);
     randombytes_close();
     randombytes_set_implementation(&randombytes_salsa20_implementation);
     assert(strcmp(randombytes_implementation_name(), "salsa20") == 0);
@@ -69,6 +74,10 @@ static int randombytes_tests(void)
             printf("randombytes_buf() test failed\n");
         }
     }
+    assert(randombytes_uniform(1U) == 0U);
+    randombytes_close();
+
+    randombytes(x, 1U);
     randombytes_close();
 
     return 0;
