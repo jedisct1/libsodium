@@ -50,5 +50,8 @@ int main(void)
         if (i % 8 == 7)
             printf("\n");
     }
+
+    assert(crypto_secretbox_easy(c, m, SIZE_MAX - 1U, nonce, firstkey) == -1);
+
     return 0;
 }

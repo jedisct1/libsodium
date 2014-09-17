@@ -42,5 +42,8 @@ int main(void)
             printf("\n");
     }
     printf("\n");
+
+    assert(crypto_box_easy(c, m, SIZE_MAX - 1U, nonce, bobpk, alicesk) == -1);
+
     return 0;
 }
