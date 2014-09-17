@@ -37,9 +37,20 @@ unsigned char c[163];
 
 int main(void)
 {
+    unsigned char k[crypto_box_BEFORENMBYTES];
     int i;
 
     crypto_box(c, m, 163, nonce, bobpk, alicesk);
+    for (i = 16; i < 163; ++i) {
+        printf(",0x%02x", (unsigned int)c[i]);
+        if (i % 8 == 7)
+            printf("\n");
+    }
+    printf("\n");
+
+    memset(c, 0, sizeof c);
+    crypto_box_beforenm(k, bobpk, alicesk);
+    crypto_box_afternm(c, m, 163, nonce, k);
     for (i = 16; i < 163; ++i) {
         printf(",0x%02x", (unsigned int)c[i]);
         if (i % 8 == 7)
