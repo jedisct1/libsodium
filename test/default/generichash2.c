@@ -15,8 +15,12 @@ int main(void)
 
     for (i = 0; i < MAXLEN; ++i) {
         in[i] = i;
-        crypto_generichash_init(&st, k, 1 + i % crypto_generichash_KEYBYTES_MAX,
-                                1 + i % crypto_generichash_BYTES_MAX);
+        if (crypto_generichash_init(&st, k,
+                                    1 + i % crypto_generichash_KEYBYTES_MAX,
+                                    1 + i % crypto_generichash_BYTES_MAX) != 0) {
+            printf("crypto_generichash_init()\n");
+            return 1;
+        }
         crypto_generichash_update(&st, in, i);
         crypto_generichash_update(&st, in, i);
         crypto_generichash_update(&st, in, i);
