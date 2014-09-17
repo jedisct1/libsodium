@@ -1,4 +1,8 @@
 
+#include <limits.h>
+#include <stdint.h>
+#include <stdlib.h>
+
 #include "crypto_box.h"
 #include "crypto_secretbox.h"
 #include "utils.h"
@@ -26,6 +30,9 @@ crypto_box_easy(unsigned char *c, const unsigned char *m,
                 unsigned long long mlen, const unsigned char *n,
                 const unsigned char *pk, const unsigned char *sk)
 {
+    if (mlen > SIZE_MAX - crypto_box_MACBYTES) {
+        return -1;
+    }
     return crypto_box_detached(c + crypto_box_MACBYTES, c, m, mlen, n,
                                pk, sk);
 }

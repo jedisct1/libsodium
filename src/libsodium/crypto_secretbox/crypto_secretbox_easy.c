@@ -27,9 +27,6 @@ crypto_secretbox_detached(unsigned char *c, unsigned char *mac,
     unsigned long long                i;
     unsigned long long                mlen0;
 
-    if (mlen > SIZE_MAX - crypto_secretbox_MACBYTES) {
-        return -1;
-    }
     crypto_core_hsalsa20(subkey, n, k, sigma);
 
     memset(block0, 0U, crypto_secretbox_ZEROBYTES);
@@ -68,6 +65,9 @@ crypto_secretbox_easy(unsigned char *c, const unsigned char *m,
                       unsigned long long mlen, const unsigned char *n,
                       const unsigned char *k)
 {
+    if (mlen > SIZE_MAX - crypto_secretbox_MACBYTES) {
+        return -1;
+    }
     return crypto_secretbox_detached(c + crypto_secretbox_MACBYTES,
                                      c, m, mlen, n, k);
 }
