@@ -67,9 +67,10 @@ sodium_hrtime(void)
 #ifdef _WIN32
     struct _timeb tb;
 
+# pragma warning(push)
 # pragma warning(disable: 4996)
     _ftime(&tb);
-# pragma warning(default: 4996)
+# pragma warning(pop)
     tv.tv_sec = (long) tb.time;
     tv.tv_usec = ((int) tb.millitm) * 1000;
     ret = 0;
