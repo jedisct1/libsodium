@@ -365,9 +365,9 @@ escrypt_kdf_sse(escrypt_local_t * local,
 	}
 	if (local->size < need) {
 		if (free_region(local))
-			return -1;
+			return -1; /* LCOV_EXCL_LINE */
 		if (!alloc_region(local, need))
-			return -1;
+			return -1; /* LCOV_EXCL_LINE */
 	}
 	B = (uint8_t *)local->aligned;
 	V = (uint32_t *)((uint8_t *)B + B_size);

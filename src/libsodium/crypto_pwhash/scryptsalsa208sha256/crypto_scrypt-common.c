@@ -171,8 +171,8 @@ escrypt_r(escrypt_local_t * local, const uint8_t * passwd, size_t passwdlen,
 
     dst = encode64(dst, buflen - (dst - buf), hash, sizeof(hash));
     sodium_memzero(hash, sizeof hash);
-    if (!dst || dst >= buf + buflen) { /* Can't happen LCOV_EXCL_LINE */
-        return NULL;
+    if (!dst || dst >= buf + buflen) {
+        return NULL; /* Can't happen LCOV_EXCL_LINE */
     }
     *dst = 0; /* NUL termination */
 
@@ -205,16 +205,16 @@ escrypt_gensalt_r(uint32_t N_log2, uint32_t r, uint32_t p,
     *dst++ = itoa64[N_log2];
 
     dst = encode64_uint32(dst, buflen - (dst - buf), r, 30);
-    if (!dst) { /* Can't happen LCOV_EXCL_LINE */
-        return NULL;
+    if (!dst) {
+        return NULL; /* Can't happen LCOV_EXCL_LINE */
     }
     dst = encode64_uint32(dst, buflen - (dst - buf), p, 30);
-    if (!dst) { /* Can't happen LCOV_EXCL_LINE */
-        return NULL;
+    if (!dst) {
+        return NULL; /* Can't happen LCOV_EXCL_LINE */
     }
     dst = encode64(dst, buflen - (dst - buf), src, srclen);
-    if (!dst || dst >= buf + buflen) { /* Can't happen LCOV_EXCL_LINE */
-        return NULL;
+    if (!dst || dst >= buf + buflen) {
+        return NULL; /* Can't happen LCOV_EXCL_LINE */
     }
     *dst = 0; /* NUL termination */
 
