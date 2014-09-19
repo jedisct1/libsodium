@@ -1,4 +1,10 @@
 
+* Version 0.7.1 (1.0 RC2)
+ - This is the second release candidate of Sodium 1.0. Minor
+compilation, readability and portability changes have been made and the
+test suite was improved, but the API is the same as the previous release
+candidate.
+
 * Version 0.7.0 (1.0 RC1)
  - Allocating memory to store sensitive data can now be done using
 sodium_malloc() and sodium_allocarray(). These functions add guard
