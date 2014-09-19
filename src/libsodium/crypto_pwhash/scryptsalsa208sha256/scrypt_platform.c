@@ -43,7 +43,7 @@ alloc_region(escrypt_region_t * region, size_t size)
 	    MAP_ANON | MAP_PRIVATE,
 #endif
 	    -1, 0)) == MAP_FAILED)
-		base = NULL;
+		base = NULL; /* LCOV_EXCL_LINE */
 	aligned = base;
 #elif defined(HAVE_POSIX_MEMALIGN)
 	if ((errno = posix_memalign((void **) &base, 64, size)) != 0)
@@ -77,7 +77,7 @@ free_region(escrypt_region_t * region)
 	if (region->base) {
 #ifdef MAP_ANON
 		if (munmap(region->base, region->size))
-			return -1;
+			return -1; /* LCOV_EXCL_LINE */
 #else
 		free(region->base);
 #endif

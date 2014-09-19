@@ -63,7 +63,7 @@ PBKDF2_SHA256(const uint8_t * passwd, size_t passwdlen, const uint8_t * salt,
                 crypto_auth_hmacsha256_final(&hctx, U);
 
                 memcpy(T, U, 32);
-
+/* LCOV_EXCL_START */
                 for (j = 2; j <= c; j++) {
                         crypto_auth_hmacsha256_init(&hctx, passwd, passwdlen);
                         crypto_auth_hmacsha256_update(&hctx, U, 32);
@@ -73,6 +73,7 @@ PBKDF2_SHA256(const uint8_t * passwd, size_t passwdlen, const uint8_t * salt,
                                 T[k] ^= U[k];
             }
                 }
+/* LCOV_EXCL_STOP */            
 
                 clen = dkLen - i * 32;
                 if (clen > 32) {

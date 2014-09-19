@@ -1057,6 +1057,7 @@ int main(void)
     unsigned long long smlen;
     unsigned long long mlen;
     unsigned int i;
+    unsigned int j;
 
     for (i = 0U; i < (sizeof test_data) / (sizeof test_data[0]); i++) {
         memcpy(skpk, test_data[i].sk, crypto_sign_SEEDBYTES);
@@ -1112,6 +1113,25 @@ int main(void)
         }
     }
     printf("%u tests\n", i);
+
+    i--;
+    for (j = 1U; j < 8U; j++) {
+        sig[63] ^= (j << 5);
+        if (crypto_sign_verify_detached(sig,
+                                        (const unsigned char *)test_data[i].m,
+                                        i, test_data[i].pk) != -1) {
+            printf("detached signature verification should have failed\n");
+            continue;
+        }
+        sig[63] ^= (j << 5);
+    }
+
+    memset(pk, 0, sizeof pk);
+    if (crypto_sign_verify_detached(sig,
+                                    (const unsigned char *)test_data[i].m,
+                                    i, pk) != -1) {
+        printf("detached signature verification should have failed\n");
+    }
 
     if (crypto_sign_keypair(pk, sk) != 0) {
         printf("crypto_sign_keypair() failure\n");
