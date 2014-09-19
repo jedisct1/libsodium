@@ -20,8 +20,8 @@ static void tv(void)
             "0001020304050607" } };
     unsigned char key[crypto_stream_chacha20_KEYBYTES];
     unsigned char nonce[crypto_stream_chacha20_NONCEBYTES];
-    unsigned char out[60];
-    char out_hex[60 * 2 + 1];
+    unsigned char out[160];
+    char out_hex[160 * 2 + 1];
     size_t i = 0U;
 
     do {
