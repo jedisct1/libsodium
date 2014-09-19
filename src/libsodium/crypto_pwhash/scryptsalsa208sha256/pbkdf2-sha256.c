@@ -44,42 +44,42 @@ void
 PBKDF2_SHA256(const uint8_t * passwd, size_t passwdlen, const uint8_t * salt,
               size_t saltlen, uint64_t c, uint8_t * buf, size_t dkLen)
 {
-        crypto_auth_hmacsha256_state PShctx, hctx;
-        size_t          i;
-        uint8_t         ivec[4];
-        uint8_t         U[32];
-        uint8_t         T[32];
-        uint64_t        j;
-        int             k;
-        size_t          clen;
+    crypto_auth_hmacsha256_state PShctx, hctx;
+    size_t          i;
+    uint8_t         ivec[4];
+    uint8_t         U[32];
+    uint8_t         T[32];
+    uint64_t        j;
+    int             k;
+    size_t          clen;
 
     crypto_auth_hmacsha256_init(&PShctx, passwd, passwdlen);
     crypto_auth_hmacsha256_update(&PShctx, salt, saltlen);
 
-        for (i = 0; i * 32 < dkLen; i++) {
-                be32enc(ivec, (uint32_t)(i + 1));
-                memcpy(&hctx, &PShctx, sizeof(crypto_auth_hmacsha256_state));
-                crypto_auth_hmacsha256_update(&hctx, ivec, 4);
-                crypto_auth_hmacsha256_final(&hctx, U);
+    for (i = 0; i * 32 < dkLen; i++) {
+        be32enc(ivec, (uint32_t)(i + 1));
+        memcpy(&hctx, &PShctx, sizeof(crypto_auth_hmacsha256_state));
+        crypto_auth_hmacsha256_update(&hctx, ivec, 4);
+        crypto_auth_hmacsha256_final(&hctx, U);
 
-                memcpy(T, U, 32);
-/* LCOV_EXCL_START */
-                for (j = 2; j <= c; j++) {
-                        crypto_auth_hmacsha256_init(&hctx, passwd, passwdlen);
-                        crypto_auth_hmacsha256_update(&hctx, U, 32);
-                        crypto_auth_hmacsha256_final(&hctx, U);
+        memcpy(T, U, 32);
+        /* LCOV_EXCL_START */
+        for (j = 2; j <= c; j++) {
+            crypto_auth_hmacsha256_init(&hctx, passwd, passwdlen);
+            crypto_auth_hmacsha256_update(&hctx, U, 32);
+            crypto_auth_hmacsha256_final(&hctx, U);
 
-                        for (k = 0; k < 32; k++) {
-                                T[k] ^= U[k];
+            for (k = 0; k < 32; k++) {
+                T[k] ^= U[k];
             }
-                }
-/* LCOV_EXCL_STOP */            
+        }
+        /* LCOV_EXCL_STOP */
 
-                clen = dkLen - i * 32;
-                if (clen > 32) {
-                        clen = 32;
+        clen = dkLen - i * 32;
+        if (clen > 32) {
+            clen = 32;
         }
-                memcpy(&buf[i * 32], T, clen);
-        }
+        memcpy(&buf[i * 32], T, clen);
+    }
     sodium_memzero((void *) &PShctx, sizeof PShctx);
 }
