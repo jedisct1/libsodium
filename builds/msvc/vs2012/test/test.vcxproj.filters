@@ -91,6 +91,9 @@
     <ClCompile Include="..\..\..\..\test\default\scalarmult6.c">
       <Filter>src</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\..\..\test\default\scalarmult7.c">
+      <Filter>src</Filter>
+    </ClCompile>
     <ClCompile Include="..\..\..\..\test\default\secretbox.c">
       <Filter>src</Filter>
     </ClCompile>

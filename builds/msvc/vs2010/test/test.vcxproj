@@ -157,6 +157,9 @@
     <ClCompile Include="..\..\..\..\test\default\scalarmult6.c">
       <ExcludedFromBuild>true</ExcludedFromBuild>
     </ClCompile>
+    <ClCompile Include="..\..\..\..\test\default\scalarmult7.c">
+      <ExcludedFromBuild>true</ExcludedFromBuild>
+    </ClCompile>
     <ClCompile Include="..\..\..\..\test\default\secretbox.c">
       <ExcludedFromBuild>true</ExcludedFromBuild>
     </ClCompile>

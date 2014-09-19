@@ -93,6 +93,7 @@ test/default/scalarmult
 test/default/scalarmult2
 test/default/scalarmult5
 test/default/scalarmult6
+test/default/scalarmult7
 test/default/secretbox
 test/default/secretbox2
 test/default/secretbox7
