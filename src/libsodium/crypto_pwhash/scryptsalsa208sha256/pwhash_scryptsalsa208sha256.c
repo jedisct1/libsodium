@@ -41,9 +41,11 @@ pickparams(unsigned long long opslimit, const size_t memlimit,
             }
         }
         maxrp = (opslimit / 4) / ((uint64_t) (1) << *N_log2);
+        /* LCOV_EXCL_START */
         if (maxrp > 0x3fffffff) {
             maxrp = 0x3fffffff;
         }
+        /* LCOV_EXCL_STOP */
         *p = (uint32_t) (maxrp) / *r;
     }
     return 0;
