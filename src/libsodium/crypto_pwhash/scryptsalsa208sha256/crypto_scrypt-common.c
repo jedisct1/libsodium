@@ -244,7 +244,7 @@ crypto_pwhash_scryptsalsa208sha256_ll(const uint8_t * passwd, size_t passwdlen,
                          passwd, passwdlen, salt, saltlen,
                          N, r, p, buf, buflen);
     if (escrypt_free_local(&local)) {
-        return -1;
+        return -1; /* LCOV_EXCL_LINE */
     }
     return retval;
 }
