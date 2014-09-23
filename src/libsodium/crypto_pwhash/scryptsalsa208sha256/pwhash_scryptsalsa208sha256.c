@@ -156,9 +156,11 @@ crypto_pwhash_scryptsalsa208sha256_str(char out[crypto_pwhash_scryptsalsa208sha2
     if (escrypt_r(&escrypt_local, (const uint8_t *) passwd, (size_t) passwdlen,
                   (const uint8_t *) setting, (uint8_t *) out,
                   crypto_pwhash_scryptsalsa208sha256_STRBYTES) == NULL) {
+        /* LCOV_EXCL_START */
         escrypt_free_local(&escrypt_local);
         errno = EINVAL;
         return -1;
+        /* LCOV_EXCL_STOP */
     }
     escrypt_free_local(&escrypt_local);
 
