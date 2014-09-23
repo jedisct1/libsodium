@@ -245,9 +245,11 @@ crypto_hash_sha256_update(crypto_hash_sha256_state *state,
     bitlen[1] = ((uint32_t)inlen) << 3;
     bitlen[0] = (uint32_t)(inlen >> 29);
 
+    /* LCOV_EXCL_START */
     if ((state->count[1] += bitlen[1]) < bitlen[1]) {
         state->count[0]++;
     }
+    /* LCOV_EXCL_STOP */
     state->count[0] += bitlen[0];
 
     if (inlen < 64 - r) {
