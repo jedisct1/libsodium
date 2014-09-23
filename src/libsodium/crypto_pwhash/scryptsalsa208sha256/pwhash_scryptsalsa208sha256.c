@@ -147,8 +147,8 @@ crypto_pwhash_scryptsalsa208sha256_str(char out[crypto_pwhash_scryptsalsa208sha2
     randombytes_buf(salt, sizeof salt);
     if (escrypt_gensalt_r(N_log2, r, p, salt, sizeof salt,
                           (uint8_t *) setting, sizeof setting) == NULL) {
-        errno = EINVAL;
-        return -1;
+        errno = EINVAL; /* LCOV_EXCL_LINE */
+        return -1; /* LCOV_EXCL_LINE */
     }
     if (escrypt_init_local(&escrypt_local) != 0) {
         return -1; /* LCOV_EXCL_LINE */
