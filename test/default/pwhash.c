@@ -214,7 +214,7 @@ static void tv3(void)
             "$7$AX....1....TrXs5Zk6s8sWHpQgWDIXTR8kUU3s6Jc3s.DtdS8M2i4$"
             "a4ik5hGDN7foMuHOW.cp.CtX01UyCeO0.JAG.AHPpx5" },
           { "Y0!?iQa9M%5ekffW(`",
-            "$7$A6....1X...TrXs5Zk6s8sWHpQgWDIXTR8kUU3s6Jc3s.DtdS8M2i4$"
+            "$7$A6....1!...TrXs5Zk6s8sWHpQgWDIXTR8kUU3s6Jc3s.DtdS8M2i4$"
             "a4ik5hGDN7foMuHOW.cp.CtX01UyCeO0.JAG.AHPpx5" },
           { "Y0!?iQa9M%5ekffW(`",
             "$7$A6....1" },
