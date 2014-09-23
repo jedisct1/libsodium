@@ -110,8 +110,8 @@ crypto_pwhash_scryptsalsa208sha256(unsigned char * const out,
         return -1; /* LCOV_EXCL_LINE */
     }
     if (pickparams(opslimit, memlimit, &N_log2, &p, &r) != 0) {
-        errno = EINVAL;
-        return -1;
+        errno = EINVAL; /* LCOV_EXCL_LINE */
+        return -1; /* LCOV_EXCL_LINE */
     }
     return crypto_pwhash_scryptsalsa208sha256_ll((const uint8_t *) passwd,
                                                  (size_t) passwdlen,
@@ -141,8 +141,8 @@ crypto_pwhash_scryptsalsa208sha256_str(char out[crypto_pwhash_scryptsalsa208sha2
         return -1; /* LCOV_EXCL_LINE */
     }
     if (pickparams(opslimit, memlimit, &N_log2, &p, &r) != 0) {
-        errno = EINVAL;
-        return -1;
+        errno = EINVAL; /* LCOV_EXCL_LINE */
+        return -1; /* LCOV_EXCL_LINE */
     }
     randombytes_buf(salt, sizeof salt);
     if (escrypt_gensalt_r(N_log2, r, p, salt, sizeof salt,
@@ -151,7 +151,7 @@ crypto_pwhash_scryptsalsa208sha256_str(char out[crypto_pwhash_scryptsalsa208sha2
         return -1;
     }
     if (escrypt_init_local(&escrypt_local) != 0) {
-        return -1;
+        return -1; /* LCOV_EXCL_LINE */
     }
     if (escrypt_r(&escrypt_local, (const uint8_t *) passwd, (size_t) passwdlen,
                   (const uint8_t *) setting, (uint8_t *) out,
@@ -187,7 +187,7 @@ crypto_pwhash_scryptsalsa208sha256_str_verify(const char str[crypto_pwhash_scryp
         return -1;
     }
     if (escrypt_init_local(&escrypt_local) != 0) {
-        return -1;
+        return -1; /* LCOV_EXCL_LINE */
     }
     if (escrypt_r(&escrypt_local, (const uint8_t *) passwd, (size_t) passwdlen,
                   (const uint8_t *) str, (uint8_t *) wanted,
