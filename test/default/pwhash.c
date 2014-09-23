@@ -272,15 +272,12 @@ int main(void)
                                                       strlen(passwd)) != 0) {
         printf("pwhash_str_verify failure\n");
     }
-    for (i = 14U; i < sizeof str_out; i++) {
-        str_out[i]++;
-        if (crypto_pwhash_scryptsalsa208sha256_str_verify(
-                str_out, passwd, strlen(passwd)) == 0) {
-            printf("pwhash_str_verify(2) failure\n");
-        }
-        str_out[i]--;
+    str_out[14]++;
+    if (crypto_pwhash_scryptsalsa208sha256_str_verify(
+        str_out, passwd, strlen(passwd)) == 0) {
+        printf("pwhash_str_verify(2) failure\n");
     }
-    printf("OK\n");
+    str_out[14]--;
 
     assert(crypto_pwhash_scryptsalsa208sha256_saltbytes() > 0U);
     assert(crypto_pwhash_scryptsalsa208sha256_strbytes() > 1U);
@@ -290,6 +287,8 @@ int main(void)
     assert(crypto_pwhash_scryptsalsa208sha256_memlimit_interactive() > 0U);
     assert(crypto_pwhash_scryptsalsa208sha256_opslimit_sensitive() > 0U);
     assert(crypto_pwhash_scryptsalsa208sha256_memlimit_sensitive() > 0U);
+
+    printf("OK\n");
 
     return 0;
 }
