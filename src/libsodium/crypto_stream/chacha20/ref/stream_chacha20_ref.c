@@ -191,7 +191,7 @@ chacha_encrypt_bytes(chacha_ctx *x, const u8 *m, u8 *c, unsigned long long bytes
 
         j12 = PLUSONE(j12);
         if (!j12) {
-            j13 = PLUSONE(j13);
+            j13 = PLUSONE(j13); /* LCOV_EXCL_LINE */
             /* stopping at 2^70 bytes per nonce is user's responsibility */
         }
 
