@@ -232,7 +232,7 @@ crypto_pwhash_scryptsalsa208sha256_ll(const uint8_t * passwd, size_t passwdlen,
     int             retval;
 
     if (escrypt_init_local(&local)) {
-        return -1;
+        return -1; /* LCOV_EXCL_LINE */
     }
 #if defined(HAVE_EMMINTRIN_H) || defined(_MSC_VER)
     escrypt_kdf =
