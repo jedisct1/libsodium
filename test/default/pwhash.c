@@ -204,13 +204,31 @@ static void tv3(void)
           { "Y0!?iQa9M%5ekffW(`",
             "$7$A6....1....TrXs5Zk6s8sWHpQgWDIXTR8kUU3s6Jc3s.DtdS8M2i4$"
             "a4ik5hGDN7foMuHOW.cp.CtX01UyCeO0.JAG.AHPpx5" },
+          { "Y0!?iQa9M%5ekffW(`",
+            "$7fA6....1....TrXs5Zk6s8sWHpQgWDIXTR8kUU3s6Jc3s.DtdS8M2i4"
+            "a4ik5hGDN7foMuHOW.cp.CtX01UyCeO0.JAG.AHPpx5" },
+          { "Y0!?iQa9M%5ekffW(`",
+            "$7$AX....1....TrXs5Zk6s8sWHpQgWDIXTR8kUU3s6Jc3s.DtdS8M2i4$"
+            "a4ik5hGDN7foMuHOW.cp.CtX01UyCeO0.JAG.AHPpx5" },
+          { "Y0!?iQa9M%5ekffW(`",
+            "$7$A6....1X...TrXs5Zk6s8sWHpQgWDIXTR8kUU3s6Jc3s.DtdS8M2i4$"
+            "a4ik5hGDN7foMuHOW.cp.CtX01UyCeO0.JAG.AHPpx5" },
+          { "Y0!?iQa9M%5ekffW(`",
+            "$7$A6....1" },
+          { "Y0!?iQa9M%5ekffW(`",
+            "$7$" },
+          { "Y0!?iQa9M%5ekffW(`",
+            "" },
+          { "Y0!?iQa9M%5ekffW(`",
+            "$7$A6....1....TrXs5Zk6s8sWHpQgWDIXTR8kUU3s6Jc3s.DtdS8M2i4$"
+            "" },
       };
     size_t i = 0U;
 
     do {
         if (crypto_pwhash_scryptsalsa208sha256_str_verify(
                 tests[i].out, tests[i].passwd, strlen(tests[i].passwd)) != 0) {
-            printf("pwhash_str failure\n");
+            printf("pwhash_str failure: [%u]\n", (unsigned int)i);
         }
     } while (++i < (sizeof tests) / (sizeof tests[0]));
 }
