@@ -204,11 +204,41 @@ static void tv3(void)
           { "Y0!?iQa9M%5ekffW(`",
             "$7$A6....1....TrXs5Zk6s8sWHpQgWDIXTR8kUU3s6Jc3s.DtdS8M2i4$"
             "a4ik5hGDN7foMuHOW.cp.CtX01UyCeO0.JAG.AHPpx5" },
+          { "Y0!?iQa9M%5ekffW(`",
+            "$7$A6....1....$TrXs5Zk6s8sWHpQgWDIXTR8kUU3s6Jc3s.DtdS8M2i4"
+            "a4ik5hGDN7foMuHOW.cp.CtX01UyCeO0.JAG.AHPpx5" },
+          { "Y0!?iQa9M%5ekffW(`",
+            "$7$.6....1....TrXs5Zk6s8sWHpQgWDIXTR8kUU3s6Jc3s.DtdS8M2i4$"
+            "a4ik5hGDN7foMuHOW.cp.CtX01UyCeO0.JAG.AHPpx5" },
+          { "Y0!?iQa9M%5ekffW(`",
+            "$7$A.....1....TrXs5Zk6s8sWHpQgWDIXTR8kUU3s6Jc3s.DtdS8M2i4$"
+            "a4ik5hGDN7foMuHOW.cp.CtX01UyCeO0.JAG.AHPpx5" },
+          { "Y0!?iQa9M%5ekffW(`",
+            "$7$A6.........TrXs5Zk6s8sWHpQgWDIXTR8kUU3s6Jc3s.DtdS8M2i4$"
+            "a4ik5hGDN7foMuHOW.cp.CtX01UyCeO0.JAG.AHPpx5" },
+          { "Y0!?iQa9M%5ekffW(`",
+            "$7$A6....1....TrXs5Zk6s8sWHpQgWDIXTR8kUU3s6Jc3s.DtdS8M2i44269$"
+            "a4ik5hGDN7foMuHOW.cp.CtX01UyCeO0.JAG.AH" },
+          { "Y0!?iQa9M%5ekffW(`",
+            "$7$A6....1....TrXs5Zk6s8sWHpQgWDIXTR8kUU3s6Jc3s.DtdS8M2i4$"
+            "a4ik5hGDN7foMuHOW.cp.CtX01UyCeO0.JAG.AHPpx54269" },
+          { "Y0!?iQa9M%5ekffW(`",
+            "$7^A6....1....TrXs5Zk6s8sWHpQgWDIXTR8kUU3s6Jc3s.DtdS8M2i4$"
+            "a4ik5hGDN7foMuHOW.cp.CtX01UyCeO0.JAG.AHPpx5" },
+          { "Y0!?iQa9M%5ekffW(`",
+            "$7$!6....1....TrXs5Zk6s8sWHpQgWDIXTR8kUU3s6Jc3s.DtdS8M2i4$"
+            "a4ik5hGDN7foMuHOW.cp.CtX01UyCeO0.JAG.AHPpx5" },
+          { "Y0!?iQa9M%5ekffW(`",
+            "$7$A!....1....TrXs5Zk6s8sWHpQgWDIXTR8kUU3s6Jc3s.DtdS8M2i4$"
+            "a4ik5hGDN7foMuHOW.cp.CtX01UyCeO0.JAG.AHPpx5" },
+          { "Y0!?iQa9M%5ekffW(`",
+            "$7$A6....!....TrXs5Zk6s8sWHpQgWDIXTR8kUU3s6Jc3s.DtdS8M2i4$"
+            "a4ik5hGDN7foMuHOW.cp.CtX01UyCeO0.JAG.AHPpx5" },
           { "",
             "$7$A6....1....TrXs5Zk6s8sWHpQgWDIXTR8kUU3s6Jc3s.DtdS8M2i4$"
             "a4ik5hGDN7foMuHOW.cp.CtX01UyCeO0.JAG.AHPpx5" },
           { "Y0!?iQa9M%5ekffW(`",
-            "$7fA6....1....TrXs5Zk6s8sWHpQgWDIXTR8kUU3s6Jc3s.DtdS8M2i4"
+            "$7fA6....1....TrXs5Zk6s8sWHpQgWDIXTR8kUU3s6Jc3s.DtdS8M2i4#"
             "a4ik5hGDN7foMuHOW.cp.CtX01UyCeO0.JAG.AHPpx5" },
           { "Y0!?iQa9M%5ekffW(`",
             "$7$AX....1....TrXs5Zk6s8sWHpQgWDIXTR8kUU3s6Jc3s.DtdS8M2i4$"
@@ -226,13 +256,21 @@ static void tv3(void)
             "$7$A6....1....TrXs5Zk6s8sWHpQgWDIXTR8kUU3s6Jc3s.DtdS8M2i4$"
             "" },
       };
+    char *out;
+    char *passwd;
     size_t i = 0U;
 
     do {
+        out = sodium_malloc(strlen(tests[i].out) + 1U);
+        memcpy(out, tests[i].out, strlen(tests[i].out) + 1U);
+        passwd = sodium_malloc(strlen(tests[i].passwd) + 1U);
+        memcpy(passwd, tests[i].passwd, strlen(tests[i].passwd) + 1U);
         if (crypto_pwhash_scryptsalsa208sha256_str_verify(
-                tests[i].out, tests[i].passwd, strlen(tests[i].passwd)) != 0) {
+                out, passwd, strlen(passwd)) != 0) {
             printf("pwhash_str failure: [%u]\n", (unsigned int)i);
         }
+        sodium_free(out);
+        sodium_free(passwd);
     } while (++i < (sizeof tests) / (sizeof tests[0]));
 }
 
