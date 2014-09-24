@@ -16,7 +16,8 @@
  * ================================================================== */
 
 /*
- * Print hex.
+ * Print hex is a wrapper around sodium_bin2hex which uses calloc
+ * to allocate temporary memory then immediately printing the result.
  */
 void
 print_hex(const void *buf, const size_t len)
@@ -25,7 +26,7 @@ print_hex(const void *buf, const size_t len)
     char *p;
     
     b = buf;
-    p = malloc((len * 2 + 1) * (sizeof *b));
+    p = calloc(len * 2 + 1, sizeof *b);
     
     /* the library supplies a few utility functions like the one below */
     sodium_bin2hex(p, len * 2 + 1, b, len);

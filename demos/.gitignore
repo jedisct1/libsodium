@@ -1,11 +1,11 @@
 auth
 box
-generhash
-generhashstream
+generichash
+generichashstream
 hash
 Makefile
 onetimeauth
-sretbox
+secretbox
 shorthash
 sign
 stream

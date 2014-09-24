@@ -27,11 +27,21 @@ auth(void)
     size_t mlen;                                /* message length */
     int r;
 
-    sodium_memzero(k, sizeof k);                /* must zero the key */
 
     puts("Example: crypto_auth\n");
-
+    
+    /*
+     * Keys are entered as ascii values. The key is zeroed to
+     * maintain consistency. Input is read through a special
+     * function which reads exactly n bytes into a buffer to
+     * prevent buffer overflows.
+     */
+    sodium_memzero(k, sizeof k);
     prompt_input("Input your key > ", (char*) k, sizeof k);
+    puts("Your key that you entered");
+    print_hex(k, sizeof k);
+    putchar('\n');
+
     mlen = prompt_input("Input your message > ", (char*) m, sizeof m);
     putchar('\n');
 
