@@ -1,4 +1,11 @@
 
+* Version 1.0.0
+ - The API and ABI are now stable. New features will be added, but
+backward-compatibility is guaranteed through all the 1.x.y releases.
+ - crypto_sign() properly works with overlapping regions again. Thanks
+to @pysiak for reporting this regression introduced in version 0.6.1.
+ - The test suite has been extended.
+
 * Version 0.7.1 (1.0 RC2)
  - This is the second release candidate of Sodium 1.0. Minor
 compilation, readability and portability changes have been made and the
