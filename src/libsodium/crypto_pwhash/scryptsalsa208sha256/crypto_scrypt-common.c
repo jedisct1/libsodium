@@ -60,7 +60,7 @@ encode64(uint8_t * dst, size_t dstlen, const uint8_t * src, size_t srclen)
         } while (bits < 24 && i < srclen);
         dnext = encode64_uint32(dst, dstlen, value, bits);
         if (!dnext) {
-            return NULL;
+            return NULL; /* LCOV_EXCL_LINE */
         }
         dstlen -= dnext - dst;
         dst = dnext;
