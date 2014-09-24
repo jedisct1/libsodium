@@ -264,9 +264,9 @@ static void tv3(void)
     size_t i = 0U;
 
     do {
-        out = sodium_malloc(strlen(tests[i].out) + 1U);
+        out = (char *) sodium_malloc(strlen(tests[i].out) + 1U);
         memcpy(out, tests[i].out, strlen(tests[i].out) + 1U);
-        passwd = sodium_malloc(strlen(tests[i].passwd) + 1U);
+        passwd = (char *) sodium_malloc(strlen(tests[i].passwd) + 1U);
         memcpy(passwd, tests[i].passwd, strlen(tests[i].passwd) + 1U);
         if (crypto_pwhash_scryptsalsa208sha256_str_verify(
                 out, passwd, strlen(passwd)) != 0) {
