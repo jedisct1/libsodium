@@ -18,8 +18,9 @@
  * Everybody else can use the public key to ensure that the message is both
  * valid and untampered.
  *
- * Note that both message and signed message must be padded for signature.
- * The padding does not have to be set to zero.
+ * Note that the signed message will have 16 bytes of signature prepended.
+ * Ensure that the signed buffer is at least crypto_sign_BYTES longer then
+ * the actual message.
  */
 static int
 sign(void)
