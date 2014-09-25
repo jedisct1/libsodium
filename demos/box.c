@@ -84,7 +84,7 @@ box(void)
 
     /* encrypt the message */
     printf("Encrypting with %s\n\n", crypto_box_primitive());
-    crypto_box_easy(c, m, mlen, n, bob_pk, alice_sk);
+    crypto_box_easy(c, m, mlen, n, alice_pk, bob_sk);
     
     /* sent message */
     puts("Bob sending message...\n");
