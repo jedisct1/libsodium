@@ -9,6 +9,27 @@
 #include "sc.h"
 #include "utils.h"
 
+static int
+crypto_sign_check_S_lt_l(const unsigned char *S)
+{
+    static const unsigned char l[32] =
+      { 0xed, 0xd3, 0xf5, 0x5c, 0x1a, 0x63, 0x12, 0x58,
+        0xd6, 0x9c, 0xf7, 0xa2, 0xde, 0xf9, 0xde, 0x14,
+        0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
+        0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x10 };
+    unsigned char c = 0;
+    unsigned char n = 1;
+    unsigned int  i = 32;
+
+    do {
+        i--;
+        c |= ((S[i] - l[i]) >> 8) & n;
+        n &= ((S[i] ^ l[i]) - 1) >> 8;
+    } while (i != 0);
+
+    return -(c == 0);
+}
+
 int
 crypto_sign_verify_detached(const unsigned char *sig, const unsigned char *m,
                             unsigned long long mlen, const unsigned char *pk)
@@ -21,7 +42,7 @@ crypto_sign_verify_detached(const unsigned char *sig, const unsigned char *m,
     ge_p3 A;
     ge_p2 R;
 
-    if (sig[63] & 224) {
+    if (crypto_sign_check_S_lt_l(sig + 32) != 0) {
         return -1;
     }
     if (ge_frombytes_negate_vartime(&A, pk) != 0) {
