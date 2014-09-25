@@ -19,9 +19,6 @@
  * library will perform Diffie-Hellman to generate a shared key for
  * symmetric encryption.
  *
- * Note that crypto_box uses padding at the start of both messages.
- * The padding must be zero else the encryption or decryption will fail.
- *
  * Encrypted messages will be 16 bytes longer because a 16 byte
  * authentication token will be prepended to the message.
  *
