@@ -29,6 +29,10 @@ crypto_secretbox_detached(unsigned char *c, unsigned char *mac,
 
     crypto_core_hsalsa20(subkey, n, k, sigma);
 
+    if (c - m < mlen || c - m > -mlen) {
+        memmove(c, m, mlen);
+        m = c;
+    }
     memset(block0, 0U, crypto_secretbox_ZEROBYTES);
     (void) sizeof(int[64U >= crypto_secretbox_ZEROBYTES ? 1 : -1]);
     mlen0 = mlen;
@@ -90,6 +94,10 @@ crypto_secretbox_open_detached(unsigned char *m, const unsigned char *c,
     if (crypto_onetimeauth_poly1305_verify(mac, c, clen, block0) != 0) {
         sodium_memzero(subkey, sizeof subkey);
         return -1;
+    }
+    if (m - c < clen || m - c > -clen) {
+        memmove(m, c, clen);
+        c = m;
     }
     mlen0 = clen;
     if (mlen0 > 64U - crypto_secretbox_ZEROBYTES) {
