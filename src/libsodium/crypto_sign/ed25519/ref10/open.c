@@ -28,7 +28,7 @@ crypto_sign_check_S_lt_l(const unsigned char *S)
         n &= ((S[i] ^ l[i]) - 1) >> 8;
     } while (i != 0);
 
-    return -(c == 0);
+    return ((int) c) - 1;
 }
 #endif
 
