@@ -9,6 +9,7 @@
 #include "sc.h"
 #include "utils.h"
 
+#ifdef ED25519_PREVENT_MALLEABILITY
 static int
 crypto_sign_check_S_lt_l(const unsigned char *S)
 {
@@ -29,6 +30,7 @@ crypto_sign_check_S_lt_l(const unsigned char *S)
 
     return -(c == 0);
 }
+#endif
 
 int
 crypto_sign_verify_detached(const unsigned char *sig, const unsigned char *m,
@@ -42,9 +44,15 @@ crypto_sign_verify_detached(const unsigned char *sig, const unsigned char *m,
     ge_p3 A;
     ge_p2 R;
 
+#ifdef ED25519_PREVENT_MALLEABILITY
     if (crypto_sign_check_S_lt_l(sig + 32) != 0) {
         return -1;
     }
+#else
+    if (sig[63] & 224) {
+        return -1;
+    }
+#endif
     if (ge_frombytes_negate_vartime(&A, pk) != 0) {
         return -1;
     }
