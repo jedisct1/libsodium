@@ -350,7 +350,6 @@ _sodium_malloc(const size_t size)
     unsigned char *base_ptr;
     unsigned char *canary_ptr;
     unsigned char *unprotected_ptr;
-    size_t         page_mask;
     size_t         size_with_canary;
     size_t         total_size;
     size_t         unprotected_size;
@@ -375,7 +374,6 @@ _sodium_malloc(const size_t size)
 #endif
     _mprotect_noaccess(unprotected_ptr + unprotected_size, page_size);
     sodium_mlock(unprotected_ptr, unprotected_size);
-    page_mask = page_size - 1U;
     canary_ptr = unprotected_ptr + _page_round(size_with_canary) -
         size_with_canary;
     user_ptr = canary_ptr + sizeof canary;
