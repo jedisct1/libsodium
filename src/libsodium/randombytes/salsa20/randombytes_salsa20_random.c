@@ -52,9 +52,9 @@ typedef struct Salsa20Random_ {
 } Salsa20Random;
 
 static Salsa20Random stream = {
-    _SODIUM_C99(.random_data_source_fd =) -1,
-    _SODIUM_C99(.rnd32_outleft =) (size_t) 0U,
-    _SODIUM_C99(.initialized =) 0
+    SODIUM_C99(.random_data_source_fd =) -1,
+    SODIUM_C99(.rnd32_outleft =) (size_t) 0U,
+    SODIUM_C99(.initialized =) 0
 };
 
 static uint64_t
@@ -335,10 +335,10 @@ randombytes_salsa20_implementation_name(void)
 }
 
 struct randombytes_implementation randombytes_salsa20_implementation = {
-    _SODIUM_C99(.implementation_name =) randombytes_salsa20_implementation_name,
-    _SODIUM_C99(.random =) randombytes_salsa20_random,
-    _SODIUM_C99(.stir =) randombytes_salsa20_random_stir,
-    _SODIUM_C99(.uniform =) randombytes_salsa20_random_uniform,
-    _SODIUM_C99(.buf =) randombytes_salsa20_random_buf,
-    _SODIUM_C99(.close =) randombytes_salsa20_random_close
+    SODIUM_C99(.implementation_name =) randombytes_salsa20_implementation_name,
+    SODIUM_C99(.random =) randombytes_salsa20_random,
+    SODIUM_C99(.stir =) randombytes_salsa20_random_stir,
+    SODIUM_C99(.uniform =) randombytes_salsa20_random_uniform,
+    SODIUM_C99(.buf =) randombytes_salsa20_random_buf,
+    SODIUM_C99(.close =) randombytes_salsa20_random_close
 };

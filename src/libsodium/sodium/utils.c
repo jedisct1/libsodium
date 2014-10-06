@@ -47,7 +47,7 @@ static unsigned char canary[CANARY_SIZE];
 
 #ifdef HAVE_WEAK_SYMBOLS
 __attribute__((weak)) void
-__sodium_dummy_symbol_to_prevent_lto(void * const pnt, const size_t len)
+_sodium_dummy_symbol_to_prevent_lto(void * const pnt, const size_t len)
 {
     (void) pnt;
     (void) len;
@@ -67,7 +67,7 @@ sodium_memzero(void * const pnt, const size_t len)
     explicit_bzero(pnt, len);
 #elif HAVE_WEAK_SYMBOLS
     memset(pnt, 0, len);
-    __sodium_dummy_symbol_to_prevent_lto(pnt, len);
+    _sodium_dummy_symbol_to_prevent_lto(pnt, len);
 #else
     volatile unsigned char *pnt_ = (volatile unsigned char *) pnt;
     size_t                     i = (size_t) 0U;

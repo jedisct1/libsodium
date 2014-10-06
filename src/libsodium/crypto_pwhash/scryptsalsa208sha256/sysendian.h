@@ -1,5 +1,5 @@
-#ifndef _SYSENDIAN_H_
-#define _SYSENDIAN_H_
+#ifndef sysendian_H
+#define sysendian_H
 
 #include <stdint.h>
 

@@ -1,5 +1,5 @@
-#ifndef __POLY1305_DONNA_H__
-#define __POLY1305_DONNA_H__
+#ifndef poly1305_donna_H
+#define poly1305_donna_H
 
 #include <stddef.h>
 

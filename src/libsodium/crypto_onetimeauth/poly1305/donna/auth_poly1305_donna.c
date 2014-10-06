@@ -96,10 +96,10 @@ crypto_onetimeauth_poly1305_donna_implementation_name(void)
 
 struct crypto_onetimeauth_poly1305_implementation
 crypto_onetimeauth_poly1305_donna_implementation = {
-    _SODIUM_C99(.implementation_name =) crypto_onetimeauth_poly1305_donna_implementation_name,
-    _SODIUM_C99(.onetimeauth =) crypto_onetimeauth_poly1305_donna,
-    _SODIUM_C99(.onetimeauth_verify =) crypto_onetimeauth_poly1305_donna_verify,
-    _SODIUM_C99(.onetimeauth_init =) crypto_onetimeauth_poly1305_donna_init,
-    _SODIUM_C99(.onetimeauth_update =) crypto_onetimeauth_poly1305_donna_update,
-    _SODIUM_C99(.onetimeauth_final =) crypto_onetimeauth_poly1305_donna_final
+    SODIUM_C99(.implementation_name =) crypto_onetimeauth_poly1305_donna_implementation_name,
+    SODIUM_C99(.onetimeauth =) crypto_onetimeauth_poly1305_donna,
+    SODIUM_C99(.onetimeauth_verify =) crypto_onetimeauth_poly1305_donna_verify,
+    SODIUM_C99(.onetimeauth_init =) crypto_onetimeauth_poly1305_donna_init,
+    SODIUM_C99(.onetimeauth_update =) crypto_onetimeauth_poly1305_donna_update,
+    SODIUM_C99(.onetimeauth_final =) crypto_onetimeauth_poly1305_donna_final
 };
