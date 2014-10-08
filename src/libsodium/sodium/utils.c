@@ -96,22 +96,20 @@ char *
 sodium_bin2hex(char * const hex, const size_t hex_maxlen,
                const unsigned char * const bin, const size_t bin_len)
 {
-    static const char hexdigits[16] = {
-        '0', '1', '2', '3', '4', '5', '6', '7',
-        '8', '9', 'a', 'b', 'c', 'd', 'e', 'f'
-    };
-    size_t            i = (size_t) 0U;
-    size_t            j = (size_t) 0U;
+    size_t i = (size_t) 0U;
+    int    b;
 
     if (bin_len >= SIZE_MAX / 2 || hex_maxlen < bin_len * 2U) {
         abort(); /* LCOV_EXCL_LINE */
     }
     while (i < bin_len) {
-        hex[j++] = hexdigits[bin[i] >> 4];
-        hex[j++] = hexdigits[bin[i] & 0xf];
+        b = bin[i] >> 4;
+        hex[i * 2U] = (char) (87 + b + (((b - 10) >> 31) & -39));
+        b = bin[i] & 0xf;
+        hex[i * 2U + 1U] = (char) (87 + b + (((b - 10) >> 31) & -39));
         i++;
     }
-    hex[j] = 0;
+    hex[i * 2U] = 0;
 
     return hex;
 }
