@@ -1,6 +1,6 @@
 
-#ifndef __SODIUM_VERSION_H__
-#define __SODIUM_VERSION_H__
+#ifndef sodium_version_H
+#define sodium_version_H
 
 #include "export.h"
 

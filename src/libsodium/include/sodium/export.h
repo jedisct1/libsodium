@@ -1,6 +1,6 @@
 
-#ifndef __SODIUM_EXPORT_H__
-#define __SODIUM_EXPORT_H__
+#ifndef sodium_export_H
+#define sodium_export_H
 
 #ifndef __GNUC__
 # ifdef __attribute__

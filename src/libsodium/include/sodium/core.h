@@ -1,6 +1,6 @@
 
-#ifndef __SODIUM_CORE_H__
-#define __SODIUM_CORE_H__
+#ifndef sodium_core_H
+#define sodium_core_H
 
 #include "export.h"
 

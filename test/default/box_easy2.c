@@ -36,6 +36,16 @@ int main(void)
             return 1;
         }
     }
+
+    memcpy(c, m, mlen);
+    crypto_box_easy(c, c, mlen, nonce, bobpk, alicesk);
+    printf("%d\n", memcmp(m, c, mlen) == 0);
+    printf("%d\n", memcmp(m, c + crypto_box_MACBYTES, mlen) == 0);
+    if (crypto_box_open_easy(c, c, mlen + crypto_box_MACBYTES, nonce, alicepk,
+                             bobsk) != 0) {
+        printf("crypto_box_open_easy() failed\n");
+    }
+
     crypto_box_detached(c, mac, m, mlen, nonce, bobsk, alicepk);
     crypto_box_open_detached(m2, c, mac, mlen, nonce, alicepk, bobsk);
     printf("%d\n", memcmp(m, m2, mlen));

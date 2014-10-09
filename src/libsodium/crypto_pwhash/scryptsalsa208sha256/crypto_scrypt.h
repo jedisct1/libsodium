@@ -27,8 +27,8 @@
  * This file was originally written by Colin Percival as part of the Tarsnap
  * online backup system.
  */
-#ifndef _CRYPTO_SCRYPT_H_
-#define _CRYPTO_SCRYPT_H_
+#ifndef crypto_scrypt_H
+#define crypto_scrypt_H
 
 #include <stdint.h>
 

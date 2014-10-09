@@ -25,13 +25,25 @@ int main(void)
 
     for (i = 0; i < mlen + crypto_secretbox_MACBYTES - 1; i++) {
         if (crypto_secretbox_open_easy(m2, c, i, nonce, k) == 0) {
-            printf("short open() should have failed");
+            printf("short open() should have failed\n");
             return 1;
         }
     }
     crypto_secretbox_detached(c, mac, m, mlen, nonce, k);
-    crypto_secretbox_open_detached(m2, c, mac, mlen, nonce, k);
+    if (crypto_secretbox_open_detached(m2, c, mac, mlen, nonce, k) != 0) {
+        printf("crypto_secretbox_open_detached() failed\n");
+    }
     printf("%d\n", memcmp(m, m2, mlen));
+
+    memcpy(c, m, mlen);
+    crypto_secretbox_easy(c, c, mlen, nonce, k);
+    printf("%d\n", memcmp(m, c, mlen) == 0);
+    printf("%d\n", memcmp(m, c + crypto_secretbox_MACBYTES, mlen) == 0);
+    if (crypto_secretbox_open_easy(c, c, mlen + crypto_secretbox_MACBYTES, nonce,
+                                   k) != 0) {
+        printf("crypto_secretbox_open_easy() failed\n");
+    }
+    printf("%d\n", memcmp(m, c, mlen));
 
     return 0;
 }

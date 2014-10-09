@@ -69,8 +69,8 @@ typedef struct SysRandom_ {
 } SysRandom;
 
 static SysRandom stream = {
-    _SODIUM_C99(.random_data_source_fd =) -1,
-    _SODIUM_C99(.initialized =) 0
+    SODIUM_C99(.random_data_source_fd =) -1,
+    SODIUM_C99(.initialized =) 0
 };
 
 #ifndef _WIN32
@@ -250,10 +250,10 @@ randombytes_sysrandom_implementation_name(void)
 }
 
 struct randombytes_implementation randombytes_sysrandom_implementation = {
-    _SODIUM_C99(.implementation_name =) randombytes_sysrandom_implementation_name,
-    _SODIUM_C99(.random =) randombytes_sysrandom,
-    _SODIUM_C99(.stir =) randombytes_sysrandom_stir,
-    _SODIUM_C99(.uniform =) randombytes_sysrandom_uniform,
-    _SODIUM_C99(.buf =) randombytes_sysrandom_buf,
-    _SODIUM_C99(.close =) randombytes_sysrandom_close
+    SODIUM_C99(.implementation_name =) randombytes_sysrandom_implementation_name,
+    SODIUM_C99(.random =) randombytes_sysrandom,
+    SODIUM_C99(.stir =) randombytes_sysrandom_stir,
+    SODIUM_C99(.uniform =) randombytes_sysrandom_uniform,
+    SODIUM_C99(.buf =) randombytes_sysrandom_buf,
+    SODIUM_C99(.close =) randombytes_sysrandom_close
 };

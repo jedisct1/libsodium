@@ -25,8 +25,8 @@
  *
  */
 
-#ifndef _SHA256_H_
-#define _SHA256_H_
+#ifndef pbkdf2_sha256_H
+#define pbkdf2_sha256_H
 
 #include <sys/types.h>
 

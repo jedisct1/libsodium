@@ -36,7 +36,7 @@ encode64_uint32(uint8_t * dst, size_t dstlen, uint32_t src, uint32_t srcbits)
 
     for (bit = 0; bit < srcbits; bit += 6) {
         if (dstlen < 1) {
-            return NULL;
+            return NULL; /* LCOV_EXCL_LINE */
         }
         *dst++ = itoa64[src & 0x3f];
         dstlen--;
@@ -60,7 +60,7 @@ encode64(uint8_t * dst, size_t dstlen, const uint8_t * src, size_t srclen)
         } while (bits < 24 && i < srclen);
         dnext = encode64_uint32(dst, dstlen, value, bits);
         if (!dnext) {
-            return NULL;
+            return NULL; /* LCOV_EXCL_LINE */
         }
         dstlen -= dnext - dst;
         dst = dnext;
@@ -192,7 +192,7 @@ escrypt_gensalt_r(uint32_t N_log2, uint32_t r, uint32_t p,
 
     need = prefixlen + saltlen + 1;
     if (need > buflen || need < saltlen || saltlen < srclen) {
-        return NULL;
+        return NULL; /* LCOV_EXCL_LINE */
     }
     if (N_log2 > 63 || ((uint64_t)r * (uint64_t)p >= (1U << 30))) {
         return NULL;
@@ -232,7 +232,7 @@ crypto_pwhash_scryptsalsa208sha256_ll(const uint8_t * passwd, size_t passwdlen,
     int             retval;
 
     if (escrypt_init_local(&local)) {
-        return -1;
+        return -1; /* LCOV_EXCL_LINE */
     }
 #if defined(HAVE_EMMINTRIN_H) || defined(_MSC_VER)
     escrypt_kdf =
@@ -244,7 +244,7 @@ crypto_pwhash_scryptsalsa208sha256_ll(const uint8_t * passwd, size_t passwdlen,
                          passwd, passwdlen, salt, saltlen,
                          N, r, p, buf, buflen);
     if (escrypt_free_local(&local)) {
-        return -1;
+        return -1; /* LCOV_EXCL_LINE */
     }
     return retval;
 }

@@ -1,6 +1,6 @@
 
-#ifndef __SODIUM_UTILS_H__
-#define __SODIUM_UTILS_H__
+#ifndef sodium_utils_H
+#define sodium_utils_H
 
 #include <stddef.h>
 
@@ -11,9 +11,9 @@ extern "C" {
 #endif
 
 #if defined(__cplusplus) || !defined(__STDC_VERSION__) || __STDC_VERSION__ < 199901L
-# define _SODIUM_C99(X)
+# define SODIUM_C99(X)
 #else
-# define _SODIUM_C99(X) X
+# define SODIUM_C99(X) X
 #endif
 
 SODIUM_EXPORT

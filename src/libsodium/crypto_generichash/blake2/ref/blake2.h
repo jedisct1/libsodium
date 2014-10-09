@@ -11,8 +11,8 @@
    this software. If not, see <http://creativecommons.org/publicdomain/zero/1.0/>.
 */
 
-#ifndef __BLAKE2_H__
-#define __BLAKE2_H__
+#ifndef blake2_H
+#define blake2_H
 
 #include <stddef.h>
 #include <stdint.h>
@@ -58,7 +58,7 @@ extern "C" {
   };
 
 #pragma pack(push, 1)
-  typedef struct __blake2s_param
+  typedef struct blake2s_param_
   {
     uint8_t  digest_length; // 1
     uint8_t  key_length;    // 2
@@ -73,7 +73,7 @@ extern "C" {
     uint8_t  personal[BLAKE2S_PERSONALBYTES];  // 32
   } blake2s_param;
 
-  ALIGN( 64 ) typedef struct __blake2s_state
+  ALIGN( 64 ) typedef struct blake2s_state_
   {
     uint32_t h[8];
     uint32_t t[2];
@@ -83,7 +83,7 @@ extern "C" {
     uint8_t  last_node;
   } blake2s_state ;
 
-  typedef struct __blake2b_param
+  typedef struct blake2b_param_
   {
     uint8_t  digest_length; // 1
     uint8_t  key_length;    // 2
@@ -101,7 +101,7 @@ extern "C" {
 #ifndef DEFINE_BLAKE2B_STATE
 typedef crypto_generichash_blake2b_state blake2b_state;
 #else
-  ALIGN( 64 ) typedef struct __blake2b_state
+  ALIGN( 64 ) typedef struct blake2b_state_
   {
     uint64_t h[8];
     uint64_t t[2];
@@ -112,7 +112,7 @@ typedef crypto_generichash_blake2b_state blake2b_state;
   } blake2b_state;
 #endif
 
-  typedef struct __blake2sp_state
+  typedef struct blake2sp_state_
   {
     blake2s_state S[8][1];
     blake2s_state R[1];
@@ -120,7 +120,7 @@ typedef crypto_generichash_blake2b_state blake2b_state;
     size_t  buflen;
   } blake2sp_state;
 
-  typedef struct __blake2bp_state
+  typedef struct blake2bp_state_
   {
     blake2b_state S[4][1];
     blake2b_state R[1];

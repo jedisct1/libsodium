@@ -190,10 +190,11 @@ chacha_encrypt_bytes(chacha_ctx *x, const u8 *m, u8 *c, unsigned long long bytes
         x15 = XOR(x15, U8TO32_LITTLE(m + 60));
 
         j12 = PLUSONE(j12);
+        /* LCOV_EXCL_START */
         if (!j12) {
             j13 = PLUSONE(j13);
-            /* stopping at 2^70 bytes per nonce is user's responsibility */
         }
+        /* LCOV_EXCL_STOP */
 
         U32TO8_LITTLE(c + 0, x0);
         U32TO8_LITTLE(c + 4, x1);

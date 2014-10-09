@@ -56,7 +56,7 @@ _cpuid(unsigned int cpu_info[4U], const unsigned int cpu_info_type)
                           "=&r" (cpu_info[0]), "=&r" (cpu_info[1]) :
                           "i" (0x200000));
     if (((cpu_info[0] ^ cpu_info[1]) & 0x200000) == 0x0) {
-        return;
+        return; /* LCOV_EXCL_LINE */
     }
 # endif
 # ifdef __i386__

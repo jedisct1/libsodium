@@ -1,6 +1,6 @@
 
-#ifndef __SODIUM_H__
-#define __SODIUM_H__
+#ifndef sodium_H
+#define sodium_H
 
 #include <sodium/core.h>
 #include <sodium/crypto_aead_chacha20poly1305.h>

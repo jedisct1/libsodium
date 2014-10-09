@@ -63,7 +63,8 @@ crypto_sign(unsigned char *sm, unsigned long long *smlen,
 
     memmove(sm + crypto_sign_ed25519_BYTES, m, mlen);
 /* LCOV_EXCL_START */
-    if (crypto_sign_detached(sm, &siglen, m, mlen, sk) != 0 ||
+    if (crypto_sign_detached(sm, &siglen, sm + crypto_sign_ed25519_BYTES,
+                             mlen, sk) != 0 ||
         siglen != crypto_sign_ed25519_BYTES) {
         if (smlen != NULL) {
             *smlen = 0;

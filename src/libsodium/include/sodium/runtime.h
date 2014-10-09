@@ -1,6 +1,6 @@
 
-#ifndef __SODIUM_RUNTIME_H__
-#define __SODIUM_RUNTIME_H__ 1
+#ifndef sodium_runtime_H
+#define sodium_runtime_H
 
 #include "export.h"
 

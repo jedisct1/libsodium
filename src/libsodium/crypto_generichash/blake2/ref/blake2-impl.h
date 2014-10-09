@@ -11,8 +11,8 @@
    this software. If not, see <http://creativecommons.org/publicdomain/zero/1.0/>.
 */
 
-#ifndef __BLAKE2_IMPL_H__
-#define __BLAKE2_IMPL_H__
+#ifndef blake2_impl_H
+#define blake2_impl_H
 
 #include <stdint.h>
 #include <string.h>

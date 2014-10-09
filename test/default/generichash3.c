@@ -126,6 +126,24 @@ int main(void)
     }
     printf("\n");
 
+    crypto_generichash_blake2b_init_salt_personal(&st, NULL, 0U, crypto_generichash_BYTES,
+                                                  NULL, personal);
+    crypto_generichash_blake2b_update(&st, in, MAXLEN);
+    crypto_generichash_blake2b_final(&st, out, crypto_generichash_blake2b_BYTES_MAX);
+    for (j = 0; j < crypto_generichash_blake2b_BYTES_MAX; ++j) {
+        printf("%02x", (unsigned int)out[j]);
+    }
+    printf("\n");
+
+    crypto_generichash_blake2b_init_salt_personal(&st, NULL, 0U, crypto_generichash_BYTES,
+                                                  salt, NULL);
+    crypto_generichash_blake2b_update(&st, in, MAXLEN);
+    crypto_generichash_blake2b_final(&st, out, crypto_generichash_blake2b_BYTES_MAX);
+    for (j = 0; j < crypto_generichash_blake2b_BYTES_MAX; ++j) {
+        printf("%02x", (unsigned int)out[j]);
+    }
+    printf("\n");
+
     assert(crypto_generichash_blake2b_init_salt_personal(&st, k, sizeof k, 0U,
                                                          salt, personal) == -1);
     assert(crypto_generichash_blake2b_init_salt_personal(&st, k, sizeof k,
@@ -148,6 +166,5 @@ int main(void)
                                                          NULL, personal) == 0);
     assert(crypto_generichash_blake2b_init_salt_personal(&st, k, sizeof k, crypto_generichash_BYTES,
                                                          salt, NULL) == 0);
-
     return 0;
 }
