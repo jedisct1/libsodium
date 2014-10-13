@@ -13,7 +13,7 @@
 # define SODIUM_EXPORT
 #else
 # if defined(_MSC_VER)
-#  ifdef DLL_EXPORT
+#  ifdef SODIUM_DLL_EXPORT
 #   define SODIUM_EXPORT __declspec(dllexport)
 #  else
 #   define SODIUM_EXPORT __declspec(dllimport)
