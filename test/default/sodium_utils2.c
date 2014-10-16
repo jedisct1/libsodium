@@ -7,6 +7,10 @@
 #define TEST_NAME "sodium_utils2"
 #include "cmptest.h"
 
+#ifdef __SANITIZE_ADDRESS__
+# error This test requires address sanitizer to be off
+#endif
+
 static void segv_handler(int sig)
 {
     printf("Intentional segfault / bus error caught\n");
