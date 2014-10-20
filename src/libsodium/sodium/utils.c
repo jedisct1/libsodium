@@ -92,6 +92,7 @@ sodium_memcmp(const void * const b1_, const void * const b2_, size_t len)
     return (int) ((1 & ((d - 1) >> 8)) - 1);
 }
 
+/* Derived from original code by CodesInChaos */
 char *
 sodium_bin2hex(char * const hex, const size_t hex_maxlen,
                const unsigned char * const bin, const size_t bin_len)
