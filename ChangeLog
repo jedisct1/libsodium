@@ -1,4 +1,11 @@
 
+* Version 1.0.1
+ - DLL_EXPORT was renamed SODIUM_DLL_EXPORT in order to avoid
+collisions with similar macros defined by other libraries.
+ - sodium_bin2hex() is now constant-time.
+ - Support overlapping input and output regions in
+crypto_secretbox_detached().
+
 * Version 1.0.0
  - The API and ABI are now stable. New features will be added, but
 backward-compatibility is guaranteed through all the 1.x.y releases.
