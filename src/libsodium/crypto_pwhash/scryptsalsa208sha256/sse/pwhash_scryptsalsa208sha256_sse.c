@@ -379,7 +379,7 @@ escrypt_kdf_sse(escrypt_local_t * local,
 	/* 2: for i = 0 to p - 1 do */
 	for (i = 0; i < p; i++) {
 		/* 3: B_i <-- MF(B_i, N) */
-		smix(&B[(size_t)128 * i * r], r, N, V, XY);
+		smix(&B[(size_t)128 * i * r], r, (uint32_t) N, V, XY);
 	}
 
 	/* 5: DK <-- PBKDF2(P, B, 1, dkLen) */

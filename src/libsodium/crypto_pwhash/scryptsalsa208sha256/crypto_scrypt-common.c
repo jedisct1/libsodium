@@ -75,7 +75,7 @@ decode64_one(uint32_t * dst, uint8_t src)
     const char *ptr = strchr(itoa64, src);
 
     if (ptr) {
-        *dst = ptr - itoa64;
+        *dst = (uint32_t) (ptr - itoa64);
         return 0;
     }
     *dst = 0;
