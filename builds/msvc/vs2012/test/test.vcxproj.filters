@@ -142,16 +142,22 @@
     <ClCompile Include="..\..\..\..\test\default\stream4.c">
       <Filter>src</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\..\..\test\default\stream5.c">
-      <Filter>src</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\..\..\test\default\stream6.c">
-      <Filter>src</Filter>
-    </ClCompile>
     <ClCompile Include="..\..\..\..\test\default\sign.c">
       <Filter>src</Filter>
     </ClCompile>
     <ClCompile Include="..\..\..\..\test\default\pwhash.c">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\test\default\aead_chacha20poly1305.c">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\test\default\auth6.c">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\test\default\auth7.c">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\test\default\verify1.c">
       <Filter>src</Filter>
     </ClCompile>
   </ItemGroup>
