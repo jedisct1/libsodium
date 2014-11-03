@@ -14,7 +14,7 @@ int main(void)
             '3', '7', '4', '0', '0', 'd', '2', 'a' };
     unsigned char in[MAXLEN], out[crypto_generichash_blake2b_BYTES_MAX],
         k[crypto_generichash_blake2b_KEYBYTES_MAX];
-    size_t h, i, j;
+    unsigned char h, i, j;
 
     for (h = 0; h < crypto_generichash_blake2b_KEYBYTES_MAX; ++h)
         k[h] = h;
