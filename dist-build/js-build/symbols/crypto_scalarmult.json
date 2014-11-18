@@ -1,0 +1,26 @@
+{
+	"name": "crypto_scalarmult",
+	"dependencies": ["_crypto_scalarmult", "_crypto_scalarmult_scalarbytes", "_crypto_scalarmult_bytes"],
+	"type": "function",
+	"inputs": [
+		{
+			"name": "publicKey",
+			"size": "libsodium_raw._crypto_scalarmult_scalarbytes()",
+			"type": "buffer"
+		},
+		{
+			"name": "privateKey",
+			"size": "libsodium_raw._crypto_scalarmult_scalarbytes()",
+			"type": "buffer"
+		}
+	],
+	"outputs": [
+		{
+			"type": "buffer",
+			"name": "sharedSecret",
+			"size": "libsodium_raw._crypto_scalarmult_bytes()"
+		}
+	],
+	"target": "libsodium_raw._crypto_scalarmult(publicKey_byte, privateKey_byte, sharedSecret_byte)",
+	"return": "return to_hex(publicKey_byte.extractBytes())"
+}
