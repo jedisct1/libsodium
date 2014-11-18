@@ -35,6 +35,9 @@ for (var i = 0; i < symbolsFiles.length; i++){
 }
 //console.log('Symbols descriptions loaded: ' + JSON.stringify(symbols, '', '\t'));
 
+//Load constants symbols
+loadConstants();
+
 for (var i = 0; i < symbols.length; i++){
 	buildSymbol(symbols[i]);
 }
@@ -116,11 +119,6 @@ function applyMacro(macroCode, symbols, substitutes){
 	}
 
 	return macroCode;
-
-	function checkStrArray(a){
-		for (var i = 0; i < a.length; i++) if (typeof a[i] != 'string') return false;
-		return true;
-	}
 }
 
 function finalizeWrapper(){
@@ -130,4 +128,31 @@ function finalizeWrapper(){
 
 function injectTabs(code){
 	return code.replace(/\n/g, '\n\t');
+}
+
+function loadConstants(){
+	var constList = fs.readFileSync(path.join(__dirname, 'constants.json'), {encoding: 'utf8'});
+	try {
+		constList = JSON.parse(constList);
+	} catch (e){
+		console.error('Invalid constants list');
+		process.exit(1);
+	}
+	if (!(Array.isArray(constList) && checkStrArray(constList))){
+		console.error('constants file must contain an array of strings');
+		process.exit(1);
+	}
+	for (var i = 0; i < constList.length; i++){
+		var currentConstant = {
+			name: constList[i],
+			type: "uint",
+			traget: "libsodium_raw._" + constList[i] + '()';
+		}
+		symbols.push(currentConstant);
+	}
+}
+
+function checkStrArray(a){
+	for (var i = 0; i < a.length; i++) if (typeof a[i] != 'string') return false;
+	return true;
 }

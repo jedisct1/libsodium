@@ -17,5 +17,5 @@
 		}
 	],
 	"target": "libsodium_raw._crypto_scalarmult_base(publicKey_byte, privateKey_byte)",
-	"return": "return to_hex(publicKey_byte.extractBytes())"
+	"return": "return to_hex(publicKey.extractBytes())"
 }

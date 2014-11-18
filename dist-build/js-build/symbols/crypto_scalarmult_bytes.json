@@ -1,5 +1,0 @@
-{
-	"name": "crypto_scalarmult_bytes",
-	"type": "uint",
-	"target": "libsodium_raw._crypto_scalarmult_bytes()"
-}

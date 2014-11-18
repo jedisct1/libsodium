@@ -1,0 +1,7 @@
+[
+	"crypto_secretbox_keybytes",
+	"crypto_secretbox_macbytes",
+	"crypto_secretbox_noncebytes",
+	"crypto_scalarmult_bytes",
+	"crypto_scalarmult_scalarbytes"
+]
