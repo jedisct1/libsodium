@@ -16,5 +16,5 @@
 		}
 	],
 	"target": "libsodium_raw._crypto_sign_keypair(publicKey_byte, privateKey_byte);",
-	"return": {"return {publicKey: to_hex(publicKey.extractBytes()), privateKey: to_hex(privateKey.extractBytes())};"}
+	"return": "return {publicKey: to_hex(publicKey.extractBytes()), privateKey: to_hex(privateKey.extractBytes())};"
 }

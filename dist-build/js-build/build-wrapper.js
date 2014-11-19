@@ -48,6 +48,8 @@ function buildSymbol(symbolDescription){
 	//console.log('Building symbol: ' + JSON.stringify(symbolDescription));
 	//console.log('symbol type: ' + symbolDescription.type);
 	if (symbolDescription.type == 'function'){
+		var targetName = symbolDescription.target;
+		targetName = targetName.replace(/\([\w|\,|\ ]+\)\;?/, '');
 		var funcCode = '\n\tfunction ' + symbolDescription.name + '(';
 		var funcBody = '';
 		//Adding parameters array in function's interface, their conversions in the function's body
@@ -74,6 +76,7 @@ function buildSymbol(symbolDescription){
 			funcBody += currentParameterCode + '\n';
 		}
 		funcCode += paramsArray + '){\n\t';
+		//funcCode += 'if (typeof ' + targetName + ' != \'function\') throw new TypeError(\'Undefined function\');\n\t';
 		//Writing the outputs declaration code
 		for (var i = 0; i < symbolDescription.outputs.length; i++){
 			var currentOutput = symbolDescription.outputs[i];
@@ -89,18 +92,19 @@ function buildSymbol(symbolDescription){
 			funcBody += currentOutputCode + '\n';
 		}
 		//Writing the target call
-		funcBody += symbolDescription.target + '\n';
-		funcBody += symbolDescription.return + '\n';
+		funcBody += sc(symbolDescription.target) + '\n';
+		funcBody += sc(symbolDescription.return) + '\n';
 		funcBody = injectTabs(funcBody);
 		funcCode += funcBody + '}\n';
 
 		functionsCode += funcCode;
 		//console.log('Function code:\n' + funcCode);
-		exportsCode += '\n\texports.' + symbolDescription.name + ' = ' + symbolDescription.name + ';';
+		exportsCode += '\n\tif (typeof ' + targetName + ' == \'function\')  exports.' + symbolDescription.name + ' = ' + symbolDescription.name + ';';
 	} else if (symbolDescription.type == 'uint'){
 		var constVal = symbolDescription.target;
+		var symbolName = symbolDescription.target.replace(new RegExp(/\(\)$/), '');
 		if (!(/\(\)$/.test(constVal))) constVal += '()'; //Add the () for a function call
-		exportsCode += '\n\texports.' + symbolDescription.name + ' = ' + constVal + ';';
+		exportsCode += '\n\tif (typeof ' + symbolName + ' == \'function\') exports.' + symbolDescription.name + ' = ' + constVal + ';';
 	} else {
 		console.log('What the hell is the symbol type ' + symbolDescription.type + ' ?');
 		process.exit(1);
@@ -146,7 +150,7 @@ function loadConstants(){
 		var currentConstant = {
 			name: constList[i],
 			type: "uint",
-			traget: "libsodium_raw._" + constList[i] + '()';
+			target: "libsodium_raw._" + constList[i] + '()'
 		}
 		symbols.push(currentConstant);
 	}
@@ -155,4 +159,10 @@ function loadConstants(){
 function checkStrArray(a){
 	for (var i = 0; i < a.length; i++) if (typeof a[i] != 'string') return false;
 	return true;
+}
+
+//Inject a semi-colon at the end of the line, if one is missing
+function sc(s){
+	if (s.lastIndexOf(';') != s.length - 1) return s + ';';
+	else return s;
 }
