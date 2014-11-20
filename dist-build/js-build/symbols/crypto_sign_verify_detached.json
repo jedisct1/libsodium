@@ -1,0 +1,24 @@
+{
+	"name": "crypto_sign_verify_detached",
+	"dependencies": ["_crypto_sign_publickeybytes", "_crypto_sign_bytes"],
+	"type": "function",
+	"inputs": [
+		{
+			"name": "signature",
+			"type": "buffer",
+			"size": "libsodium_raw._crypto_sign_bytes()"
+		},
+		{
+			"name": "message",
+			"type": "unsized_buffer"
+		},
+		{
+			"name": "publicKey",
+			"type": "buffer",
+			"size": "libsodium_raw._crypto_sign_publickeybytes()"
+		}
+	],
+	"outputs": [],
+	"target": "var verificationResult = libsodium_raw._crypto_sign_verify_detached(signature_byte, signature_size, message_byte, message_size, publicKey_byte);",
+	"return": "return (verificationResult != -1);"
+}

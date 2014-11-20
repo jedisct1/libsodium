@@ -1,0 +1,21 @@
+{
+	"name": "crypto_sign_ed25519_sk_to_seed",
+	"dependencies": ["_crypto_sign_secretkeybytes", "_crypto_sign_seedbytes"],
+	"type": "function",
+	"inputs": [
+		{
+			"name": "privateKey",
+			"type": "buffer",
+			"size": "libsodium_raw._crypto_sign_secretkeybytes()"
+		}
+	],
+	"outputs": [
+		{
+			"name": "seed",
+			"type": "buffer",
+			"size": "libsodium_raw._crypto_sign_seedbytes()"
+		}
+	],
+	"target": "libsodium_raw._crypto_sign_ed25519_sk_to_seed(seed_byte, privateKey_byte)",
+	"return": "return to_hex(seed.extractBytes())"
+}

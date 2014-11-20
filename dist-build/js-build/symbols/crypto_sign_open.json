@@ -1,0 +1,25 @@
+{
+	"name": "crypto_sign_open",
+	"dependencies": ["_crypto_sign_publickeybytes", "_crypto_sign_bytes"],
+	"type": "function",
+	"inputs": [
+		{
+			"name": "signedMessage",
+			"type": "unsized_buffer"
+		},
+		{
+			"name": "publicKey",
+			"type": "buffer",
+			"size": "libsodium_raw._crypto_sign_publickeybytes()"
+		}
+	],
+	"outputs": [
+		{
+			"type": "buffer",
+			"name": "message",
+			"size": "signedMessage_size - libsodium_raw._crypto_sign_bytes()"
+		}
+	],
+	"target": "libsodium_raw._crypto_sign_open(message_byte, message_size, signedMessage_byte, signedMessage_size, publicKey_byte)",
+	"return": "return decode_utf8(message.extractBytes())"
+}

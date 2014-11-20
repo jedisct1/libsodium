@@ -22,7 +22,7 @@ var exportsCode = '';
 
 //Load symbols. Write their wrapping code without checking their existence in emcc-built library
 var symbols = [];
-var symbolsFiles = fs.readdirSync(path.join(__dirname, 'symbols'));
+var symbolsFiles = fs.readdirSync(path.join(__dirname, 'symbols')).sort();
 for (var i = 0; i < symbolsFiles.length; i++){
 	var currentSymbol = fs.readFileSync(path.join(__dirname, 'symbols', symbolsFiles[i]), {encoding: 'utf8'});
 	try {
