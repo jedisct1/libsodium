@@ -14,12 +14,12 @@ unsigned char mac[crypto_box_MACBYTES];
 
 int main(void)
 {
-    uint32_t mlen;
+    unsigned long long mlen;
     unsigned long long i;
 
     crypto_box_keypair(alicepk, alicesk);
     crypto_box_keypair(bobpk, bobsk);
-    mlen = randombytes_uniform((uint32_t)sizeof m);
+    mlen = (unsigned long long)randombytes_uniform((uint32_t)sizeof m);
     randombytes_buf(m, mlen);
     randombytes_buf(nonce, sizeof nonce);
     crypto_box_easy(c, m, mlen, nonce, bobpk, alicesk);

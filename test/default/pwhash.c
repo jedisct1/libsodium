@@ -8,7 +8,7 @@ static void tv(void)
         const char *passwd_hex;
         unsigned long long passwdlen;
         const char *salt_hex;
-        size_t outlen;
+        unsigned long long outlen;
         unsigned long long opslimit;
         size_t memlimit;
     } tests[] = {
@@ -114,7 +114,7 @@ static void tv2(void)
         const char *passwd_hex;
         unsigned long long passwdlen;
         const char *salt_hex;
-        size_t outlen;
+        unsigned long long outlen;
         unsigned long long opslimit;
         size_t memlimit;
     } tests[] = {
@@ -285,8 +285,11 @@ int main(void)
 {
     char str_out[crypto_pwhash_scryptsalsa208sha256_STRBYTES];
     char str_out2[crypto_pwhash_scryptsalsa208sha256_STRBYTES];
+    unsigned char out[OUT_LEN];
+    char out_hex[OUT_LEN * 2 + 1];
     const char *salt = "[<~A 32-bytes salt for scrypt~>]";
     const char *passwd = "Correct Horse Battery Staple";
+    size_t i;
 
     tv();
     tv2();
