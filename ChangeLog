@@ -3,8 +3,11 @@
  - DLL_EXPORT was renamed SODIUM_DLL_EXPORT in order to avoid
 collisions with similar macros defined by other libraries.
  - sodium_bin2hex() is now constant-time.
- - Support overlapping input and output regions in
-crypto_secretbox_detached().
+ - crypto_secretbox_detached() now supports overlapping input and output
+regions.
+ - NaCl's donna_c64 implementation of curve25519 was reading an extra byte
+past the end of the buffer containing the base point. This has been
+fixed.
 
 * Version 1.0.0
  - The API and ABI are now stable. New features will be added, but
