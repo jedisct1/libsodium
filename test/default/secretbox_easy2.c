@@ -11,11 +11,11 @@ unsigned char mac[crypto_secretbox_MACBYTES];
 
 int main(void)
 {
-    unsigned long long mlen;
+    uint32_t mlen;
     unsigned long long i;
 
     randombytes_buf(k, sizeof k);
-    mlen = (unsigned long long)randombytes_uniform((uint32_t)sizeof m);
+    mlen = randombytes_uniform((uint32_t)sizeof m);
     randombytes_buf(m, mlen);
     randombytes_buf(nonce, sizeof nonce);
     crypto_secretbox_easy(c, m, mlen, nonce, k);

@@ -7,7 +7,7 @@ int main(void)
 #define MAXLEN 64
     unsigned char in[MAXLEN], out[crypto_generichash_BYTES_MAX],
         k[crypto_generichash_KEYBYTES_MAX];
-    size_t h, i, j;
+    unsigned char h, i, j;
 
     for (h = 0; h < crypto_generichash_KEYBYTES_MAX; ++h)
         k[h] = h;
