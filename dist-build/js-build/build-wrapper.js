@@ -48,8 +48,8 @@ function buildSymbol(symbolDescription){
 	//console.log('Building symbol: ' + JSON.stringify(symbolDescription));
 	//console.log('symbol type: ' + symbolDescription.type);
 	if (symbolDescription.type == 'function'){
-		var targetName = symbolDescription.target;
-		targetName = targetName.replace(/\([\w|\,|\ ]+\)\;?/, '');
+		var targetName = 'libsodium_raw._' + symbolDescription.name;
+		//targetName = targetName.replace(/\([\w|\,|\ ]+\)\;?/, '');
 		var funcCode = '\n\tfunction ' + symbolDescription.name + '(';
 		var funcBody = '';
 		//Adding parameters array in function's interface, their conversions in the function's body
@@ -66,6 +66,9 @@ function buildSymbol(symbolDescription){
 				currentParameterCode = applyMacro(currentParameterCode, ['{var_name}', '{var_size}'], [currentParameter.name, currentParameter.size]);
 			} else if (currentParameter.type == 'uint'){
 				currentParameterCode = macros['input_uint'];
+				currentParameterCode = applyMacro(currentParameterCode, ['{var_name}'], [currentParameter.name]);
+			} else if (currentParameter.type == 'unsized_buffer'){
+				currentParameterCode = macros['input_unsized_buf'];
 				currentParameterCode = applyMacro(currentParameterCode, ['{var_name}'], [currentParameter.name]);
 			} else {
 				//Unknown parameter type. What to do?

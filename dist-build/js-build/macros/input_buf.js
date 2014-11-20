@@ -1,4 +1,5 @@
 var {var_name}_byte;
+var {var_name}_size = {var_size};
 if ({var_name} instanceof Uint8Array){
 	if ({var_name}.length != {var_size}) throw new TypeError('invalid {var_name} size');
 	{var_name}_byte = injectBytes({var_name});

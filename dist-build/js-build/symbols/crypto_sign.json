@@ -1,0 +1,25 @@
+{
+	"name": "crypto_sign",
+	"dependencies": ["_crypto_sign"],
+	"type": "function",
+	"inputs": [
+		{
+			"name": "message",
+			"type": "unsized_buffer"
+		},
+		{
+			"name": "privateKey",
+			"type": "buffer",
+			"size": "libsodium_raw._crypto_sign_secretkeybytes()"
+		}
+	],
+	"outputs": [
+		{
+			"type": "buffer",
+			"name": "signature",
+			"size": "message.length + libsodium_raw._crypto_sign_bytes()"
+		}
+	],
+	"target": "libsodium_raw._crypto_sign(signature_byte, signature_size, message_byte, message_size, privateKey_byte)",
+	"return": "return to_hex(signature.extractBytes())"
+}
