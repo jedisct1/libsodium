@@ -14,7 +14,7 @@ for (var i = 0; i < macrosFiles.length; i++){
 }
 //console.log('Macros loaded: ' + JSON.stringify(macros, '', '\t'));
 
-var templateCode = fs.readFileSync(path.join(__dirname, 'libsodium-wrap-template.js'), {encoding: 'utf8'});
+var templateCode = fs.readFileSync(path.join(__dirname, 'wrap-template.js'), {encoding: 'utf8'});
 
 var scriptBuffer = templateCode;
 var functionsCode = '';
