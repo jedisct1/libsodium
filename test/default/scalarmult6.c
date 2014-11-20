@@ -21,9 +21,9 @@ int main(void)
     unsigned char *alicepk;
     int            i;
 
-    k = sodium_malloc(crypto_scalarmult_BYTES);
-    bobsk = sodium_malloc(crypto_scalarmult_SCALARBYTES);
-    alicepk = sodium_malloc(crypto_scalarmult_SCALARBYTES);
+    k = (unsigned char *) sodium_malloc(crypto_scalarmult_BYTES);
+    bobsk = (unsigned char *) sodium_malloc(crypto_scalarmult_SCALARBYTES);
+    alicepk = (unsigned char *) sodium_malloc(crypto_scalarmult_SCALARBYTES);
     assert(k != NULL && bobsk != NULL && alicepk != NULL);
 
     memcpy(bobsk, bobsk_, crypto_scalarmult_SCALARBYTES);
