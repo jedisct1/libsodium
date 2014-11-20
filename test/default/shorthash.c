@@ -2,21 +2,26 @@
 #define TEST_NAME "shorthash"
 #include "cmptest.h"
 
+#define MAXLEN 64
+
 int main(void)
 {
-#define MAXLEN 64
-    unsigned char in[MAXLEN], out[crypto_shorthash_BYTES],
-        k[crypto_shorthash_KEYBYTES];
-    size_t i, j;
+    unsigned char in[MAXLEN];
+    unsigned char out[crypto_shorthash_BYTES];
+    unsigned char k[crypto_shorthash_KEYBYTES];
+    size_t        i;
+    size_t        j;
 
-    for (i = 0; i < crypto_shorthash_KEYBYTES; ++i)
-        k[i] = i;
+    for (i = 0; i < crypto_shorthash_KEYBYTES; ++i) {
+        k[i] = (unsigned char) i;
+    }
 
     for (i = 0; i < MAXLEN; ++i) {
-        in[i] = i;
-        crypto_shorthash(out, in, i, k);
-        for (j = 0; j < crypto_shorthash_BYTES; ++j)
-            printf("%02x", (unsigned int)out[j]);
+        in[i] = (unsigned char) i;
+        crypto_shorthash(out, in, (unsigned long long) i, k);
+        for (j = 0; j < crypto_shorthash_BYTES; ++j) {
+            printf("%02x", (unsigned int) out[j]);
+        }
         printf("\n");
     }
     assert(crypto_shorthash_bytes() > 0);
