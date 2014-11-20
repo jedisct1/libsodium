@@ -13,3 +13,5 @@ emmake make install &&
 emcc --closure 1 $OPTFLAGS $LDFLAGS \
   "${PREFIX}/lib/libsodium.a" -o "${PREFIX}/lib/libsodium.js"
 node dist-build/js-build/build-wrapper.js
+cp ${PREFIX}/lib/libsodium.js* test/js/
+cp ${PREFIX}/lib/libsodium-wrap.js test/js 

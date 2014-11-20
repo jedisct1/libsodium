@@ -1,0 +1,101 @@
+<!DOCTYPE HTML>
+<html>
+	<head>
+		<title>Sodium test</title>
+	</head>
+	<script type="text/javascript" src="libsodium.js"></script>
+	<script type="text/javascript" src="libsodium-wrap.js"></script>
+	<!--<script type="text/javascript" src="pre.js"></script>-->
+	<style>
+		#message{
+			font-family: Consolas, Menlo, Monaco, Lucida Console, Liberation Mono, DejaVu Sans Mono, Bitstream Vera Sans Mono, Courier New, monospace, serif;
+			border-style: solid;
+			border-width: 1px;
+			border-color: black;
+			height: 500px;
+			width: 100%;
+			margin-top: 16px;
+			padding: 4px;
+		}
+		button{
+			background-color: white;
+			border-color: gray;
+			border-style: solid;
+			border-radius: 4px;
+			border-width: 2px;
+			font-size: 16px;
+			padding-left: 10px;
+			padding-right: 10px;
+			padding-top: 6px;
+			padding-bottom: 6px;
+		}
+	</style>
+	<body>
+		<div>
+			<button onclick="message.innerHTML=curve25519Test();">Test Curve25519</button>
+			<button onclick="message.innerHTML=ed25519Test();">Test Ed25519</button>
+		</div>
+		<div id="message">
+
+		</div>
+		<script>
+
+			function curve25519Test(){
+				var logStr = '';
+				function log(s){logStr+=s+'<br>';}
+
+				log('scalarmult_scalarbytes: ' + libsodium.crypto_scalarmult_scalarbytes);
+				log('scalarmult_bytes: ' + libsodium.crypto_scalarmult_bytes);
+
+				var c25519scalar1 = randBuffer(libsodium.crypto_scalarmult_scalarbytes);
+				var c25519publicKey1 = libsodium.crypto_scalarmult_base(c25519scalar1);
+				log('Private key 1:&nbsp;' + libsodium.to_hex(c25519scalar1));
+				log('Pubkey 1:&nbsp;' + c25519publicKey1);
+				var c25519scalar2 = randBuffer(libsodium.crypto_scalarmult_scalarbytes);
+				var c25519publicKey2 = libsodium.crypto_scalarmult_base(c25519scalar2);
+				log('Private key 2:&nbsp;' + libsodium.to_hex(c25519scalar2));
+				log('Pubkey 2:&nbsp;' + c25519publicKey2);
+
+				var sharedSecret1 = libsodium.crypto_scalarmult(c25519scalar2, c25519publicKey1);
+				log('Shared secret 1:&nbsp;' + sharedSecret1);
+				var sharedSecret2 = libsodium.crypto_scalarmult(c25519scalar1, c25519publicKey2);
+				log('Shared secret 2:&nbsp;' + sharedSecret2);
+				log('Is it a shared secret? :&nbsp;' + (sharedSecret1 == sharedSecret2));
+
+				return logStr;
+			}
+
+			function ed25519Test(){
+				var logStr = '';
+				function log(s){logStr+=s+'<br>';}
+
+				var ed25519seed = randBuffer(libsodium.crypto_sign_seedbytes);
+				var ed25519keypair = libsodium.crypto_sign_seed_keypair(ed25519seed);
+				var msg = 'Message';
+				log('Message to be signed: ' + msg);
+				log('Ed25519 seed: ' + libsodium.to_hex(ed25519seed));
+				log('Ed25519 keypair: ' + JSON.stringify(ed25519keypair));
+				var ed25519signature = libsodium.crypto_sign(msg, ed25519keypair.privateKey);
+				log('Ed25519 signature: ' + ed25519signature);
+
+				return logStr;
+			}
+
+			function randBuffer(size){
+				var b = new Uint8Array(size);
+				window.crypto.getRandomValues(b);
+				return b;
+			}
+
+			function strBuffer(b){
+				var bufStr = '[';
+				for (var i = 0; i < b.length; i++){
+					bufStr += b[i];
+					if (i != b.length - 1) bufStr += ', ';
+				}
+				bufStr += ']';
+				return bufStr;
+			}
+		</script>
+	</body>
+</html>
