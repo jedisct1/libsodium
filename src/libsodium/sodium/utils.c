@@ -358,7 +358,7 @@ _sodium_malloc(const size_t size)
     size_t         total_size;
     size_t         unprotected_size;
 
-    if (size >= SIZE_MAX - page_size * 4U) {
+    if (size >= (size_t) SIZE_MAX - page_size * 4U) {
         errno = ENOMEM;
         return NULL;
     }
@@ -407,7 +407,7 @@ sodium_allocarray(size_t count, size_t size)
 {
     size_t total_size;
 
-    if (size >= SIZE_MAX / count) {
+    if (size >= (size_t) SIZE_MAX / count) {
         errno = ENOMEM;
         return NULL;
     }
