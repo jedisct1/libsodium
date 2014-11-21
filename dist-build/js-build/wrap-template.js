@@ -2,7 +2,8 @@ var libsodium = (function () {
 	'use strict';
 	var exports = {};
 
-	var libsodium_raw = r;
+	var libsodium_raw = Module;
+	//libsodium_raw._sodium_init();
 
 	//---------------------------------------------------------------------------
 	// Horrifying UTF-8 and hex codecs
@@ -140,6 +141,8 @@ var libsodium = (function () {
 	exports.from_hex      = from_hex;
 	exports.is_hex        = is_hex;
 	exports.symbols       = symbols;
+	exports.raw           = libsodium_raw;
+	exports.init          = libsodium_raw._sodium_init;
 
 	{exports_here}
 
