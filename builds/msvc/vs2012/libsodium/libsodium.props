@@ -17,7 +17,7 @@
   
   <ItemDefinitionGroup>
     <PreBuildEvent>
-      <Command>copy $(BuildRoot)version.h $(RepoRoot)src\libsodium\include\sodium\</Command>
+      <Command>copy "$(BuildRoot)version.h" "$(RepoRoot)src\libsodium\include\sodium\"</Command>
     </PreBuildEvent>
     <ClCompile>
       <AdditionalIncludeDirectories>$(RepoRoot)src\libsodium\include;$(RepoRoot)src\libsodium\include\sodium\;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
