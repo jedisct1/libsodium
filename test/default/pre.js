@@ -28,10 +28,12 @@ Module['preRun'].push(function(){
         }
     }
     FS.init();
+    FS.mkdir('/test-data');
+    FS.mount(NODEFS,  { root: '.' }, '/test');
     FS.analyzePath('/dev/random').exists && FS.unlink('/dev/random');
     FS.analyzePath('/dev/urandom') && FS.unlink('/dev/urandom');
     var devFolder = FS.findObject('/dev') ||
         Module['FS_createFolder']('/', 'dev', true, true);
     Module['FS_createDevice'](devFolder, 'random', randombyte);
-    Module['FS_createDevice'](devFolder, 'urandom', randombyte);    
+    Module['FS_createDevice'](devFolder, 'urandom', randombyte);
 });

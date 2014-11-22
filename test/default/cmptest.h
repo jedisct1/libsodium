@@ -10,6 +10,10 @@
 
 #include "sodium.h"
 
+#ifdef __EMSCRIPTEN__
+# undef TEST_SRCDIR
+# define TEST_SRCDIR "/test-data"
+#endif
 #ifndef TEST_SRCDIR
 # define TEST_SRCDIR "."
 #endif
