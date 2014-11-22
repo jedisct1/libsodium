@@ -6,7 +6,7 @@ try {
 }
 Module['preRun'] = Module['preRun'] || [];
 Module['preRun'].push(function(){
-    var randombyte = null;    
+    var randombyte = null;
     try {
         function randombyte_standard() {
             var buf = new Int8Array(1);            
@@ -28,8 +28,10 @@ Module['preRun'].push(function(){
         }
     }
     FS.init();
+    FS.analyzePath('/dev/random').exists && FS.unlink('/dev/random');
+    FS.analyzePath('/dev/urandom') && FS.unlink('/dev/urandom');
     var devFolder = FS.findObject('/dev') ||
-        Module['FS_createFolder']('/', 'dev', true, true);    
+        Module['FS_createFolder']('/', 'dev', true, true);
     Module['FS_createDevice'](devFolder, 'random', randombyte);
     Module['FS_createDevice'](devFolder, 'urandom', randombyte);    
 });
