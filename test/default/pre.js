@@ -23,7 +23,9 @@ Module['preRun'].push(function(){
             }
             randombyte_node();
             randombyte = randombyte_node;
-        } catch(e) { }
+        } catch(e) {
+            throw 'No secure random number generator found';
+        }
     }
     FS.init();
     var devFolder = FS.findObject('/dev') ||
