@@ -29,7 +29,7 @@ Module['preRun'].push(function(){
     }
     FS.init();
     FS.mkdir('/test-data');
-    FS.mount(NODEFS,  { root: '.' }, '/test');
+    FS.mount(NODEFS,  { root: '.' }, '/test-data');
     FS.analyzePath('/dev/random').exists && FS.unlink('/dev/random');
     FS.analyzePath('/dev/urandom') && FS.unlink('/dev/urandom');
     var devFolder = FS.findObject('/dev') ||
