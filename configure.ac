@@ -413,6 +413,11 @@ AC_CHECK_FUNCS([posix_memalign])
 
 AC_SUBST([LIBTOOL_EXTRA_FLAGS])
 
+dnl Executables extension
+AS_IF([test "x$EMSCRIPTEN" != "x"],[
+  EXEEXT=.js
+])
+
 dnl Libtool.
 
 LT_INIT([dlopen])
