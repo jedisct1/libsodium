@@ -407,7 +407,7 @@ dnl Checks for functions and headers
 
 AS_IF([test "x$EMSCRIPTEN" = "x"],[
   AC_CHECK_FUNCS([arc4random arc4random_buf])
-  AC_CHECK_FUNCS([mlock mprotect explicit_bzero])
+  AC_CHECK_FUNCS([mlock madvise mprotect explicit_bzero])
 ])
 AC_CHECK_FUNCS([posix_memalign])
 

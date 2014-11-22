@@ -175,7 +175,7 @@ sodium_hex2bin(unsigned char * const bin, const size_t bin_maxlen,
 int
 sodium_mlock(void * const addr, const size_t len)
 {
-#ifdef MADV_DONTDUMP
+#if defined(MADV_DONTDUMP) && defined(HAVE_MADVISE)
     (void) madvise(addr, len, MADV_DONTDUMP);
 #endif
 #ifdef HAVE_MLOCK
@@ -192,7 +192,7 @@ int
 sodium_munlock(void * const addr, const size_t len)
 {
     sodium_memzero(addr, len);
-#ifdef MADV_DODUMP
+#if defined(MADV_DODUMP) && defined(HAVE_MADVISE)
     (void) madvise(addr, len, MADV_DODUMP);
 #endif
 #ifdef HAVE_MLOCK
