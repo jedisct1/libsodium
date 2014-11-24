@@ -32,7 +32,7 @@
 #if !defined(MAP_ANON) && defined(MAP_ANONYMOUS)
 # define MAP_ANON MAP_ANONYMOUS
 #endif
-#if defined(_WIN32) || defined(MAP_ANON) || defined(HAVE_POSIX_MEMALIGN)
+#if defined(_WIN32) || (defined(MAP_ANON) && defined(HAVE_MMAP)) || defined(HAVE_POSIX_MEMALIGN)
 # define HAVE_ALIGNED_MALLOC
 #endif
 #if defined(HAVE_MPROTECT) && !(defined(PROT_NONE) && defined(PROT_READ) && defined(PROT_WRITE))
@@ -298,7 +298,7 @@ _alloc_aligned(const size_t size)
 {
     void *ptr;
 
-#ifdef MAP_ANON
+#if defined(MAP_ANON) && defined(HAVE_MMAP)
     if ((ptr = mmap(NULL, size, PROT_READ | PROT_WRITE,
                     MAP_ANON | MAP_PRIVATE | MAP_NOCORE, -1, 0)) == MAP_FAILED) {
         ptr = NULL; /* LCOV_EXCL_LINE */
@@ -320,7 +320,7 @@ _alloc_aligned(const size_t size)
 static void
 _free_aligned(unsigned char * const ptr, const size_t size)
 {
-#ifdef MAP_ANON
+#if defined(MAP_ANON) && defined(HAVE_MMAP)
     (void) munmap(ptr, size);
 #elif defined(HAVE_POSIX_MEMALIGN)
     free(ptr);
