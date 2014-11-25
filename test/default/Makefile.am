@@ -2,6 +2,7 @@
 EXTRA_DIST = \
 	cmptest.h \
 	wintest.bat \
+	pre.js.inc \
 	aead_chacha20poly1305.exp \
 	auth.exp \
 	auth2.exp \

@@ -416,7 +416,7 @@ AC_SUBST([LIBTOOL_EXTRA_FLAGS])
 TEST_LDFLAGS=''
 AS_IF([test "x$EMSCRIPTEN" != "x"],[
   EXEEXT=.js
-  TEST_LDFLAGS='--pre-js pre.js'
+  TEST_LDFLAGS='--pre-js pre.js.inc'
 ])
 AC_SUBST(TEST_LDFLAGS)
 
