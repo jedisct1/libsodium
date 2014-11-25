@@ -45,10 +45,11 @@ int main(void)
     buf = sodium_malloc(size);
     sodium_mprotect_noaccess(buf);
     sodium_mprotect_readwrite(buf);
+#ifndef __EMSCRIPTEN__
     sodium_memzero(((unsigned char *)buf) - 8, 8U);
     sodium_mprotect_readonly(buf);
     sodium_free(buf);
     printf("Underflow not caught\n");
-
+#endif
     return 0;
 }
