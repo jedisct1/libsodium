@@ -127,6 +127,8 @@ AM_CPPFLAGS = \
 	-I$(top_builddir)/src/libsodium/include/sodium \
 	-I$(top_srcdir)/test/quirks
 
+AM_LDFLAGS = @TEST_LDFLAGS@
+
 TESTS_TARGETS = \
 	aead_chacha20poly1305 \
 	auth \

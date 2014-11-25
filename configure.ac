@@ -413,10 +413,12 @@ AC_CHECK_FUNCS([posix_memalign])
 
 AC_SUBST([LIBTOOL_EXTRA_FLAGS])
 
-dnl Executables extension
+TEST_LDFLAGS=''
 AS_IF([test "x$EMSCRIPTEN" != "x"],[
   EXEEXT=.js
+  TEST_LDFLAGS='--pre-js pre.js'
 ])
+AC_SUBST(TEST_LDFLAGS)
 
 dnl Libtool.
 
