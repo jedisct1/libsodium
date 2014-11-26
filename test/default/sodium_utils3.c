@@ -43,6 +43,7 @@ int main(void)
 #endif
     size = randombytes_uniform(100000U);
     buf = sodium_malloc(size);
+    assert(buf != NULL);
     sodium_mprotect_noaccess(buf);
     sodium_mprotect_readwrite(buf);
 #ifndef __EMSCRIPTEN__
