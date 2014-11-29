@@ -434,11 +434,9 @@ AH_VERBATIM([NDEBUG], [/* Always evaluate assert() calls */
 #/**/undef/**/ NDEBUG
 #endif])
 
-AS_IF([test "x$PKG_CONFIG" != "x"], [
-  AC_CONFIG_FILES([libsodium.pc])
-])
 AC_CONFIG_FILES([Makefile
                  dist-build/Makefile
+                 libsodium.pc
                  msvc-scripts/Makefile
                  src/Makefile
                  src/libsodium/Makefile
