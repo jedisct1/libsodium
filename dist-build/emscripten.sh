@@ -16,7 +16,8 @@ emcc -O3 --closure 1 --llvm-lto 1 $LDFLAGS $JS_EXPORTS_FLAGS \
 echo 'Compiling the test suite...' && \
 emmake make $MAKE_FLAGS check > /dev/null 2>&1
 
-echo 'Running the test suite:' && \
+echo 'Running the test suite.' && \
+echo 'sodium_utils2 and sodium_utils3 are expected to fail in Javascript.' && \
 (
   cd test/default && \
   for file in *.js; do
