@@ -72,14 +72,4 @@ int crypto_pwhash_scryptsalsa208sha256_ll(const uint8_t * passwd, size_t passwdl
 }
 #endif
 
-/* Backward compatibility with version 0.5.0 */
-
-#define crypto_pwhash_scryptxsalsa208sha256_SALTBYTES crypto_pwhash_scryptsalsa208sha256_SALTBYTES
-#define crypto_pwhash_scryptxsalsa208sha256_saltbytes crypto_pwhash_scryptsalsa208sha256_saltbytes
-#define crypto_pwhash_scryptxsalsa208sha256_STRBYTES crypto_pwhash_scryptsalsa208sha256_STRBYTES
-#define crypto_pwhash_scryptxsalsa208sha256_strbytes crypto_pwhash_scryptsalsa208sha256_strbytes
-#define crypto_pwhash_scryptxsalsa208sha256 crypto_pwhash_scryptsalsa208sha256
-#define crypto_pwhash_scryptxsalsa208sha256_str crypto_pwhash_scryptsalsa208sha256_str
-#define crypto_pwhash_scryptxsalsa208sha256_str_verify crypto_pwhash_scryptsalsa208sha256_str_verify
-
 #endif
