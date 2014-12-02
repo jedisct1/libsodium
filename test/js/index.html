@@ -76,8 +76,20 @@
 				log('Message to be signed: ' + msg);
 				log('Ed25519 seed: ' + libsodium.to_hex(ed25519seed));
 				log('Ed25519 keypair: ' + JSON.stringify(ed25519keypair));
-				var ed25519signature = libsodium.crypto_sign_detached(msg, ed25519keypair.privateKey);
+				var ed25519signature = libsodium.crypto_sign(msg, ed25519keypair.privateKey);
 				log('Ed25519 signature: ' + ed25519signature);
+				ed25519signature = libsodium.crypto_sign(msg, ed25519keypair.privateKey);
+				log('Ed25519 signature 2: ' + ed25519signature);
+
+				var ed25519signature_detached = libsodium.crypto_sign_detached(msg, ed25519keypair.privateKey);
+				log('Ed25519 detached signature: <br>' + ed25519signature_detached);
+
+				var verifySign1 = libsodium.crypto_sign_open(ed25519signature, ed25519keypair.publicKey);
+				console.log('Sign1');
+				log('Signed message: ' + verifySign1);
+				var verifySign2 = libsodium.crypto_sign_verify_detached(ed25519signature_detached, msg, ed25519keypair.publicKey);
+				console.log('Sign2');
+				log('Detached signature is valid? ' + verifySign2);
 
 				return logStr;
 			}

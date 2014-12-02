@@ -20,6 +20,6 @@
 			"size": "signedMessage_size - libsodium_raw._crypto_sign_bytes()"
 		}
 	],
-	"target": "libsodium_raw._crypto_sign_open(message_byte, message_size, signedMessage_byte, signedMessage_size, publicKey_byte)",
+	"target": "libsodium_raw._crypto_sign_open(message_byte, message_size, signedMessage_byte, signedMessage_size, 0, publicKey_byte)",
 	"return": "return decode_utf8(message.extractBytes())"
 }
