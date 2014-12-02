@@ -18,8 +18,13 @@
 			"type": "buffer",
 			"name": "signature",
 			"size": "libsodium_raw._crypto_sign_bytes()"
+		},
+		{
+			"type": "buffer",
+			"size": "8",
+			"name": "slen"
 		}
 	],
-	"target": "libsodium_raw._crypto_sign_detached(signature_byte, signature_size, message, message_size, privateKey_byte);",
+	"target": "libsodium_raw._crypto_sign_detached(signature_byte, slen_byte, message, message_size, 0, privateKey_byte);",
 	"return": "return to_hex(signature.extractBytes())"
 }

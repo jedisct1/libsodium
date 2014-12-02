@@ -32,6 +32,7 @@
 	</style>
 	<body>
 		<div>
+			<button onclick="libsodium.init();">Init</button>
 			<button onclick="message.innerHTML=curve25519Test();">Test Curve25519</button>
 			<button onclick="message.innerHTML=ed25519Test();">Test Ed25519</button>
 		</div>
@@ -75,7 +76,7 @@
 				log('Message to be signed: ' + msg);
 				log('Ed25519 seed: ' + libsodium.to_hex(ed25519seed));
 				log('Ed25519 keypair: ' + JSON.stringify(ed25519keypair));
-				var ed25519signature = libsodium.crypto_sign(msg, ed25519keypair.privateKey);
+				var ed25519signature = libsodium.crypto_sign_detached(msg, ed25519keypair.privateKey);
 				log('Ed25519 signature: ' + ed25519signature);
 
 				return logStr;

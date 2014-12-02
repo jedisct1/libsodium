@@ -1,0 +1,25 @@
+{
+	"name": "crypto_auth",
+	"dependencies": ["_crypto_auth_bytes", "_crypto_auth_keybytes"],
+	"type": "function",
+	"inputs": [
+		{
+			"name": "message",
+			"type": "unsized_buffer"
+		},
+		{
+			"name": "key",
+			"type": "buffer",
+			"size": "libsodium_raw._crypto_auth_keybytes()"
+		}
+	],
+	"outputs": [
+		{
+			"name": "tag",
+			"type": "buffer",
+			"size": "libsodium_raw._crypto_auth_bytes()"
+		}
+	],
+	"target": "libsodium_raw._crypto_auth(tag_byte, message_byte, message_size, key_byte)",
+	"return": "return to_hex(tag.extractBytes())"
+}
