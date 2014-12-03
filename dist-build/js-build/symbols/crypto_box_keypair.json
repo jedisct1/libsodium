@@ -1,0 +1,19 @@
+{
+	"name": "crypto_box_keypair",
+	"type": "function",
+	"inputs": [],
+	"outputs": [
+		{
+			"type": "buffer",
+			"size": "libsodium_raw._crypto_box_publickeybytes()",
+			"name": "publicKey"
+		},
+		{
+			"type": "buffer",
+			"size": "libsodium_raw._crypto_box_secretkeybytes()",
+			"name": "secretKey"
+		}
+	],
+	"target": "libsodium_raw._crypto_box_keypair(publicKey_byte, secretKey_byte)",
+	"return": "return {publicKey: to_hex(publicKey.extractBytes()), privateKey: to_hex(secretKey.extractBytes())}"
+}

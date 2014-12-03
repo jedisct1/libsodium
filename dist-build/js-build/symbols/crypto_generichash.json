@@ -10,8 +10,7 @@
 		{
 			"name": "key",
 			"type": "buffer",
-			"size": "libsodium_raw._crypto_generichash_keybytes()",
-			"optional": true
+			"size": "libsodium_raw._crypto_generichash_keybytes()"
 		}
 	],
 	"outputs": [
@@ -21,6 +20,6 @@
 			"type": "buffer"
 		}
 	],
-	"target": "libsodium_raw._crypto_generichash(hash_byte, hash_size, message_byte, message_size)",
-	"return": ""
+	"target": "libsodium_raw._crypto_generichash(hash_byte, hash_size, message_byte, message_size, key_byte, key_size)",
+	"return": "return to_hex(hash.extractBytes())"
 }

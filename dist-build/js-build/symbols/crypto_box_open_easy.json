@@ -1,0 +1,34 @@
+{
+	"name": "crypto_box_open_easy",
+	"type": "function",
+	"inputs": [
+		{
+			"name": "ciphertext",
+			"type": "unsized_buffer"
+		},
+		{
+			"name": "nonce",
+			"type": "buffer",
+			"size": "libsodium_raw._crypto_box_seedbytes()"
+		},
+		{
+			"name": "publicKey",
+			"type": "buffer",
+			"size": "libsodium_raw._crypto_box_publickeybytes()"
+		},
+		{
+			"name": "secretKey",
+			"type": "buffer",
+			"size": "libsodium_raw._crypto_box_secretkeybytes()"
+		}
+	],
+	"outputs": [
+		{
+			"name": "plaintext",
+			"type": "buffer",
+			"size": "ciphertext_size - libsodium_raw._crypto_box_macbytes()"
+		}
+	],
+	"target": "var decryptSuccess = libsodium_raw._crypto_box_open_easy(plaintext_byte, ciphertext_byte, ciphertext_size, nonce_byte, publicKey_byte, secretKey_byte)",
+	"return": "return (decryptSuccess == 0 ? decode_utf8(plaintext.extractBytes()) : undefined)"
+}

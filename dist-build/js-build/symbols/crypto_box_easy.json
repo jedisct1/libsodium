@@ -1,0 +1,34 @@
+{
+	"name": "crypto_box_easy",
+	"type": "function",
+	"inputs": [
+		{
+			"name": "message",
+			"type": "unsized_buffer"
+		},
+		{
+			"name": "nonce",
+			"type": "buffer",
+			"size": "libsodium_raw._crypto_box_noncebytes()"
+		},
+		{
+			"name": "publicKey",
+			"type": "buffer",
+			"size": "libsodium_raw._crypto_box_publickeybytes()"
+		},
+		{
+			"name": "secretKey",
+			"type": "buffer",
+			"size": "libsodium_raw._crypto_box_secretkeybytes()"
+		}
+	],
+	"outputs": [
+		{
+			"name": "ciphertext",
+			"type": "buffer",
+			"size": "message_size + libsodium_raw._crypto_box_macbytes()"
+		}
+	],
+	"target": "libsodium_raw._crypto_box_easy(ciphertext_byte, message_byte, message_size, nonce_byte, publicKey_byte, secretKey_byte)",
+	"return": "return to_hex(ciphertext.extractBytes())"
+}
