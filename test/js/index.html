@@ -37,6 +37,7 @@
 			<button onclick="message.innerHTML=ed25519Test();">Test Ed25519</button>
 			<button onclick="message.innerHTML=test25519();">Test Ed25519 -> Curve25519</button>
 			<button onclick="message.innerHTML=testCryptoBox();">Test CryptoBox</button>
+			<button onclick="message.innerHTML=testScrypt();">Test scrypt</button>
 		</div>
 		<div id="message">
 
@@ -166,6 +167,21 @@
 				plainText2 = libsodium.crypto_box_open_detached(detachedCipher2.ciphertext, detachedCipher2.mac, nonce, keyPair2.publicKey, keyPair1.privateKey);
 				log('Plaintext: ' + plainText1);
 				log('Are plaintexts equal: ' + (plainText1 == plainText2));
+
+				return logStr;
+			}
+
+			function testScrypt(){
+				var logStr = '';
+				function log(s){logStr+=s+'<br>';}
+
+				var password = 'password';
+				var salt = randBuffer(8);
+				log('Salt: ' + libsodium.to_hex(salt));
+				var r = 8, p = 1, opsLimit = 16384, keySize = 32;
+				log('r = ' + r + ', p = ' + p + ', opsLimit = ' + opsLimit + ', keySize = ' + keySize);
+				var derivedKey = libsodium.crypto_pwhash_scryptsalsa208sha256_ll(password, salt, opsLimit, r, p, keySize);
+				log('Derived key: ' + derivedKey);
 
 				return logStr;
 			}
