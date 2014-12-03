@@ -1,0 +1,26 @@
+{
+	"name": "crypto_generichash",
+	"dependencies": [],
+	"type": "function",
+	"inputs": [
+		{
+			"name": "message",
+			"type": "unsized_buffer"
+		},
+		{
+			"name": "key",
+			"type": "buffer",
+			"size": "libsodium_raw._crypto_generichash_keybytes()",
+			"optional": true
+		}
+	],
+	"outputs": [
+		{
+			"name": "hash",
+			"size": "libsodium_raw._crypto_generichash_bytes()",
+			"type": "buffer"
+		}
+	],
+	"target": "libsodium_raw._crypto_generichash(hash_byte, hash_size, message_byte, message_size)",
+	"return": ""
+}

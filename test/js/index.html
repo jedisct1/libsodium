@@ -32,9 +32,10 @@
 	</style>
 	<body>
 		<div>
-			<button onclick="libsodium.init();">Init</button>
+			<!--<button onclick="libsodium.init();">Init</button>-->
 			<button onclick="message.innerHTML=curve25519Test();">Test Curve25519</button>
 			<button onclick="message.innerHTML=ed25519Test();">Test Ed25519</button>
+			<button onclick="message.innerHTML=test25519();">Test Ed25519 -> Curve25519</button></button>
 		</div>
 		<div id="message">
 
@@ -78,18 +79,52 @@
 				log('Ed25519 keypair: ' + JSON.stringify(ed25519keypair));
 				var ed25519signature = libsodium.crypto_sign(msg, ed25519keypair.privateKey);
 				log('Ed25519 signature: ' + ed25519signature);
-				ed25519signature = libsodium.crypto_sign(msg, ed25519keypair.privateKey);
-				log('Ed25519 signature 2: ' + ed25519signature);
-
+				//ed25519signature = libsodium.crypto_sign(msg, ed25519keypair.privateKey);
+				//log('Ed25519 signature 2: ' + ed25519signature);
 				var ed25519signature_detached = libsodium.crypto_sign_detached(msg, ed25519keypair.privateKey);
 				log('Ed25519 detached signature: <br>' + ed25519signature_detached);
 
 				var verifySign1 = libsodium.crypto_sign_open(ed25519signature, ed25519keypair.publicKey);
-				console.log('Sign1');
+				//console.log('Sign1');
 				log('Signed message: ' + verifySign1);
 				var verifySign2 = libsodium.crypto_sign_verify_detached(ed25519signature_detached, msg, ed25519keypair.publicKey);
-				console.log('Sign2');
+				//console.log('Sign2');
 				log('Detached signature is valid? ' + verifySign2);
+
+				return logStr;
+			}
+
+			function test25519(){
+				var logStr = '';
+				function log(s){logStr+=s+'<br>';}
+
+				var ed25519seed1 = randBuffer(libsodium.crypto_sign_seedbytes);
+				var ed25519seed2 = randBuffer(libsodium.crypto_sign_seedbytes);
+				var ed25519keypair1 = libsodium.crypto_sign_seed_keypair(ed25519seed1);
+				var ed25519keypair2 = libsodium.crypto_sign_seed_keypair(ed25519seed2);
+
+				log('Ed25519 keypair 1 : ' + JSON.stringify(ed25519keypair1));
+				log('Ed25519 keypair 2 : ' + JSON.stringify(ed25519keypair2));
+
+				var curve25519keypair1 = {
+					publicKey: libsodium.crypto_sign_ed25519_pk_to_curve25519(ed25519keypair1.publicKey),
+					privateKey: libsodium.crypto_sign_ed25519_sk_to_curve25519(ed25519keypair1.privateKey)
+				};
+
+				log('Curve25519 keypair 1 : ' + JSON.stringify(curve25519keypair1));
+
+				var curve25519keypair2 = {
+					publicKey: libsodium.crypto_sign_ed25519_pk_to_curve25519(ed25519keypair2.publicKey),
+					privateKey: libsodium.crypto_sign_ed25519_sk_to_curve25519(ed25519keypair2.privateKey)
+				};
+
+				log('Curve25519 keypair 2 : ' + JSON.stringify(curve25519keypair2));
+
+				var sharedSecret1 = libsodium.crypto_scalarmult(curve25519keypair1.privateKey, curve25519keypair2.publicKey);
+				log('Shared secret 1: ' + sharedSecret1);
+				var sharedSecret2 = libsodium.crypto_scalarmult(curve25519keypair2.privateKey, curve25519keypair1.publicKey);
+				log('Shared secret 2: ' + sharedSecret2);
+				log('Are shared secrets equal: ' + (sharedSecret1 == sharedSecret2));
 
 				return logStr;
 			}
