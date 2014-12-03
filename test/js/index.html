@@ -156,6 +156,17 @@
 				log('Plaintext: ' + plainText1);
 				log('Are plaintexts equal: ' + (plainText1 == plainText2));
 
+				log('DETACHED TESTING');
+				var detachedCipher1 = libsodium.crypto_box_detached(message, nonce, keyPair1.publicKey, keyPair2.privateKey);
+				log('Detached cipher 1:<br>' + JSON.stringify(detachedCipher1));
+				var detachedCipher2 = libsodium.crypto_box_detached(message, nonce, keyPair2.publicKey, keyPair1.privateKey);
+				log('Detached cipher 2:<br>' + JSON.stringify(detachedCipher2));
+
+				plainText1 = libsodium.crypto_box_open_detached(detachedCipher1.ciphertext, detachedCipher1.mac, nonce, keyPair1.publicKey, keyPair2.privateKey);
+				plainText2 = libsodium.crypto_box_open_detached(detachedCipher2.ciphertext, detachedCipher2.mac, nonce, keyPair2.publicKey, keyPair1.privateKey);
+				log('Plaintext: ' + plainText1);
+				log('Are plaintexts equal: ' + (plainText1 == plainText2));
+
 				return logStr;
 			}
 

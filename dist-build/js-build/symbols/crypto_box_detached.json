@@ -34,6 +34,6 @@
 			"size": "libsodium_raw._crypto_box_macbytes()"
 		}
 	],
-	"target": "libsodium_raw._crypto_box_detached(ciphertext_byte, mac_byte, message_byte, message_size, nonce_byte, publicKey_byte, secretKey_byte)",
+	"target": "libsodium_raw._crypto_box_detached(ciphertext_byte, mac_byte, message_byte, message_size, 0, nonce_byte, publicKey_byte, secretKey_byte)",
 	"return": "return {ciphertext: to_hex(ciphertext.extractBytes()), mac: to_hex(mac.extractBytes())}"
 }
