@@ -35,7 +35,8 @@
 			<!--<button onclick="libsodium.init();">Init</button>-->
 			<button onclick="message.innerHTML=curve25519Test();">Test Curve25519</button>
 			<button onclick="message.innerHTML=ed25519Test();">Test Ed25519</button>
-			<button onclick="message.innerHTML=test25519();">Test Ed25519 -> Curve25519</button></button>
+			<button onclick="message.innerHTML=test25519();">Test Ed25519 -> Curve25519</button>
+			<button onclick="message.innerHTML=testCryptoBox();">Test CryptoBox</button>
 		</div>
 		<div id="message">
 
@@ -125,6 +126,35 @@
 				var sharedSecret2 = libsodium.crypto_scalarmult(curve25519keypair2.privateKey, curve25519keypair1.publicKey);
 				log('Shared secret 2: ' + sharedSecret2);
 				log('Are shared secrets equal: ' + (sharedSecret1 == sharedSecret2));
+
+				return logStr;
+			}
+
+			function testCryptoBox(){
+				var logStr = '';
+				function log(s){logStr+=s+'<br>';}
+
+				var nonce = randBuffer(libsodium.crypto_box_noncebytes);
+				log('Nonce: ' + strBuffer(nonce));
+				var seed1 = randBuffer(libsodium.crypto_box_seedbytes);
+				var seed2 = randBuffer(libsodium.crypto_box_seedbytes);
+				log('Seed 1: ' + strBuffer(seed1));
+				log('Seed 2: ' + strBuffer(seed2));
+				var keyPair1 = libsodium.crypto_box_seed_keypair(seed1);
+				var keyPair2 = libsodium.crypto_box_seed_keypair(seed2);
+				log('Keypair 1: ' + JSON.stringify(keyPair1));
+				log('Keypair 2: ' + JSON.stringify(keyPair2));
+
+				var message = "Crypto box testing";
+				var cipherText1 = libsodium.crypto_box_easy(message, nonce, keyPair1.publicKey, keyPair2.privateKey);
+				var cipherText2 = libsodium.crypto_box_easy(message, nonce, keyPair2.publicKey, keyPair1.privateKey);
+				log('Ciphertext: ' + cipherText1);
+				log('Ciphertexts are equal: ' + (cipherText1 == cipherText2));
+
+				var plainText1 = libsodium.crypto_box_open_easy(cipherText1, nonce, keyPair2.publicKey, keyPair1.privateKey);
+				var plainText2 = libsodium.crypto_box_open_easy(cipherText2, nonce, keyPair1.publicKey, keyPair2.privateKey);
+				log('Plaintext: ' + plainText1);
+				log('Are plaintexts equal: ' + (plainText1 == plainText2));
 
 				return logStr;
 			}

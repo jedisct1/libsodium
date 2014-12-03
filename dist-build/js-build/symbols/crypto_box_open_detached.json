@@ -1,10 +1,15 @@
 {
-	"name": "crypto_box_open_easy",
+	"name": "crypto_box_open_detached",
 	"type": "function",
 	"inputs": [
 		{
 			"name": "ciphertext",
 			"type": "unsized_buffer"
+		},
+		{
+			"name": "mac",
+			"type": "buffer",
+			"size": "libsodium_raw._crypto_box_macbytes()"
 		},
 		{
 			"name": "nonce",
@@ -22,13 +27,13 @@
 			"size": "libsodium_raw._crypto_box_secretkeybytes()"
 		}
 	],
-	"outputs": [
+	"outputs" : [
 		{
 			"name": "plaintext",
 			"type": "buffer",
-			"size": "ciphertext_size - libsodium_raw._crypto_box_macbytes()"
+			"size": "ciphertext_size"
 		}
 	],
-	"target": "var decryptSuccess = libsodium_raw._crypto_box_open_easy(plaintext_byte, ciphertext_byte, ciphertext_size, 0, nonce_byte, publicKey_byte, secretKey_byte)",
+	"target": "var decryptSuccess = libsodium_raw._crypto_box_open_detached(plaintext_byte, ciphertext_byte, mac_byte, ciphertext_size, nonce_byte, publicKey_byte, secretKey_byte)",
 	"return": "return (decryptSuccess == 0 ? decode_utf8(plaintext.extractBytes()) : undefined)"
 }
