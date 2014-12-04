@@ -12,16 +12,34 @@ emconfigure ./configure --enable-minimal --disable-shared --prefix="$PREFIX" \
 emmake make clean && \
 emmake make $MAKE_FLAGS install V=1 && \
 emcc -O3 --closure 1 --llvm-lto 1 $LDFLAGS $JS_EXPORTS_FLAGS \
-  "${PREFIX}/lib/libsodium.a" -o "${PREFIX}/lib/libsodium.js" && \
+  "${PREFIX}/lib/libsodium.a" -o "${PREFIX}/lib/libsodium.js" || exit 1
+
+if test "x$NODE" = x; then
+  for candidate in node nodejs; do
+    case $($candidate --version 2>&1) in #(
+      v*)
+        NODE=$candidate
+        break ;;
+    esac
+  done
+fi
+
+if test "x$NODE" = x; then
+  echo 'io.js / node.js not found - test suite skipped.' >&2
+  exit 1
+fi
+
+echo "Using [${NODE}] as a Javascript runtime."
+
 echo 'Compiling the test suite...' && \
 emmake make $MAKE_FLAGS check > /dev/null 2>&1
 
-echo 'Running the test suite.' && \
-echo 'sodium_utils2 and sodium_utils3 are expected to fail in Javascript.' && \
+echo 'Running the test suite.'
+echo 'sodium_utils2 and sodium_utils3 are expected to fail in Javascript.'
 (
   cd test/default && \
   for file in *.js; do
-    echo "#! /usr/bin/env node" > "${file}.tmp"
+    echo "#! /usr/bin/env ${NODE}" > "${file}.tmp"
     fgrep -v '#! /usr/bin/env node' "$file" >> "${file}.tmp"
     chmod +x "${file}.tmp"
     mv -f "${file}.tmp" "$file"
