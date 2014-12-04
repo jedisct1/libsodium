@@ -161,9 +161,10 @@ AS_IF([test "$enable_pie" != "no"],[
   ])
 ])
 
-AX_CHECK_COMPILE_FLAG([-fwrapv], [CFLAGS="$CFLAGS -fwrapv"])
 AX_CHECK_COMPILE_FLAG([-fno-strict-aliasing], [CFLAGS="$CFLAGS -fno-strict-aliasing"])
-AX_CHECK_COMPILE_FLAG([-fno-strict-overflow], [CFLAGS="$CFLAGS -fno-strict-overflow"])
+AX_CHECK_COMPILE_FLAG([-fno-strict-overflow], [CFLAGS="$CFLAGS -fno-strict-overflow"], [
+  AX_CHECK_COMPILE_FLAG([-fwrapv], [CFLAGS="$CFLAGS -fwrapv"])
+])
 
 LIBTOOL_OLD_FLAGS="$LIBTOOL_EXTRA_FLAGS"
 LIBTOOL_EXTRA_FLAGS="$LIBTOOL_EXTRA_FLAGS -version-info $SODIUM_LIBRARY_VERSION"
@@ -407,10 +408,18 @@ dnl Checks for functions and headers
 
 AS_IF([test "x$EMSCRIPTEN" = "x"],[
   AC_CHECK_FUNCS([arc4random arc4random_buf])
+  AC_CHECK_FUNCS([mmap mlock madvise mprotect explicit_bzero])
 ])
-AC_CHECK_FUNCS([mlock mprotect explicit_bzero posix_memalign])
+AC_CHECK_FUNCS([posix_memalign])
 
 AC_SUBST([LIBTOOL_EXTRA_FLAGS])
+
+TEST_LDFLAGS=''
+AS_IF([test "x$EMSCRIPTEN" != "x"],[
+  EXEEXT=.js
+  TEST_LDFLAGS='--pre-js pre.js.inc'
+])
+AC_SUBST(TEST_LDFLAGS)
 
 dnl Libtool.
 
@@ -425,11 +434,9 @@ AH_VERBATIM([NDEBUG], [/* Always evaluate assert() calls */
 #/**/undef/**/ NDEBUG
 #endif])
 
-AS_IF([test "x$PKG_CONFIG" != "x"], [
-  AC_CONFIG_FILES([libsodium.pc])
-])
 AC_CONFIG_FILES([Makefile
                  dist-build/Makefile
+                 libsodium.pc
                  msvc-scripts/Makefile
                  src/Makefile
                  src/libsodium/Makefile

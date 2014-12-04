@@ -6,6 +6,7 @@
 *.la
 *.lo
 *.log
+*.mem
 *.o
 *.plist
 *.scan

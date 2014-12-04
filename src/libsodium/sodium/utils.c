@@ -32,7 +32,7 @@
 #if !defined(MAP_ANON) && defined(MAP_ANONYMOUS)
 # define MAP_ANON MAP_ANONYMOUS
 #endif
-#if defined(_WIN32) || defined(MAP_ANON) || defined(HAVE_POSIX_MEMALIGN)
+#if defined(_WIN32) || (defined(MAP_ANON) && defined(HAVE_MMAP)) || defined(HAVE_POSIX_MEMALIGN)
 # define HAVE_ALIGNED_MALLOC
 #endif
 #if defined(HAVE_MPROTECT) && !(defined(PROT_NONE) && defined(PROT_READ) && defined(PROT_WRITE))
@@ -175,7 +175,7 @@ sodium_hex2bin(unsigned char * const bin, const size_t bin_maxlen,
 int
 sodium_mlock(void * const addr, const size_t len)
 {
-#ifdef MADV_DONTDUMP
+#if defined(MADV_DONTDUMP) && defined(HAVE_MADVISE)
     (void) madvise(addr, len, MADV_DONTDUMP);
 #endif
 #ifdef HAVE_MLOCK
@@ -192,7 +192,7 @@ int
 sodium_munlock(void * const addr, const size_t len)
 {
     sodium_memzero(addr, len);
-#ifdef MADV_DODUMP
+#if defined(MADV_DODUMP) && defined(HAVE_MADVISE)
     (void) madvise(addr, len, MADV_DODUMP);
 #endif
 #ifdef HAVE_MLOCK
@@ -298,7 +298,7 @@ _alloc_aligned(const size_t size)
 {
     void *ptr;
 
-#ifdef MAP_ANON
+#if defined(MAP_ANON) && defined(HAVE_MMAP)
     if ((ptr = mmap(NULL, size, PROT_READ | PROT_WRITE,
                     MAP_ANON | MAP_PRIVATE | MAP_NOCORE, -1, 0)) == MAP_FAILED) {
         ptr = NULL; /* LCOV_EXCL_LINE */
@@ -320,7 +320,7 @@ _alloc_aligned(const size_t size)
 static void
 _free_aligned(unsigned char * const ptr, const size_t size)
 {
-#ifdef MAP_ANON
+#if defined(MAP_ANON) && defined(HAVE_MMAP)
     (void) munmap(ptr, size);
 #elif defined(HAVE_POSIX_MEMALIGN)
     free(ptr);
@@ -358,7 +358,7 @@ _sodium_malloc(const size_t size)
     size_t         total_size;
     size_t         unprotected_size;
 
-    if (size >= SIZE_MAX - page_size * 4U) {
+    if (size >= (size_t) SIZE_MAX - page_size * 4U) {
         errno = ENOMEM;
         return NULL;
     }
@@ -407,7 +407,7 @@ sodium_allocarray(size_t count, size_t size)
 {
     size_t total_size;
 
-    if (size >= SIZE_MAX / count) {
+    if (size >= (size_t) SIZE_MAX / count) {
         errno = ENOMEM;
         return NULL;
     }

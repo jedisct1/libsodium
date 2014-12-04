@@ -7,7 +7,7 @@
 <package xmlns="http://schemas.microsoft.com/packaging/2013/01/nuspec.xsd">
     <metadata minClientVersion="2.5">
         <id>libsodium_vc120</id>
-        <version>0.7.0.0</version>
+        <version>1.0.0.0</version>
         <title>libsodium_vc120</title>
         <authors>libsodium contributors</authors>
         <owners>Eric Voskuil</owners>
@@ -40,52 +40,52 @@
         <!-- libraries -->
 
         <!-- x86 Dynamic libraries (.dll) -->
-        <file src="..\..\bin\Win32\Release\v120\dynamic\libsodium.dll" target="build\native\bin\libsodium-x86-v120-mt-0_7_0_0.dll" />
-        <file src="..\..\bin\Win32\Debug\v120\dynamic\libsodium.dll" target="build\native\bin\libsodium-x86-v120-mt-gd-0_7_0_0.dll" />
+        <file src="..\..\bin\Win32\Release\v120\dynamic\libsodium.dll" target="build\native\bin\libsodium-x86-v120-mt-1_0_0_0.dll" />
+        <file src="..\..\bin\Win32\Debug\v120\dynamic\libsodium.dll" target="build\native\bin\libsodium-x86-v120-mt-gd-1_0_0_0.dll" />
 
         <!-- x86 Debugging symbols (.pdb) -->
-        <!--<file src="..\..\bin\Win32\Release\v120\dynamic\libsodium.pdb" target="build\native\bin\libsodium-x86-v120-mt-0_7_0_0.pdb" />-->
-        <file src="..\..\bin\Win32\Debug\v120\dynamic\libsodium.pdb" target="build\native\bin\libsodium-x86-v120-mt-gd-0_7_0_0.pdb" />
+        <!--<file src="..\..\bin\Win32\Release\v120\dynamic\libsodium.pdb" target="build\native\bin\libsodium-x86-v120-mt-1_0_0_0.pdb" />-->
+        <file src="..\..\bin\Win32\Debug\v120\dynamic\libsodium.pdb" target="build\native\bin\libsodium-x86-v120-mt-gd-1_0_0_0.pdb" />
 
         <!-- x86 Import libraries (.imp.lib) -->
-        <file src="..\..\bin\Win32\Release\v120\dynamic\libsodium.lib" target="build\native\bin\libsodium-x86-v120-mt-0_7_0_0.imp.lib" />
-        <file src="..\..\bin\Win32\Debug\v120\dynamic\libsodium.lib" target="build\native\bin\libsodium-x86-v120-mt-gd-0_7_0_0.imp.lib" />
+        <file src="..\..\bin\Win32\Release\v120\dynamic\libsodium.lib" target="build\native\bin\libsodium-x86-v120-mt-1_0_0_0.imp.lib" />
+        <file src="..\..\bin\Win32\Debug\v120\dynamic\libsodium.lib" target="build\native\bin\libsodium-x86-v120-mt-gd-1_0_0_0.imp.lib" />
 
         <!-- x86 Export libraries (.exp) -->
-        <file src="..\..\bin\Win32\Release\v120\dynamic\libsodium.exp" target="build\native\bin\libsodium-x86-v120-mt-0_7_0_0.exp" />
-        <file src="..\..\bin\Win32\Debug\v120\dynamic\libsodium.exp" target="build\native\bin\libsodium-x86-v120-mt-gd-0_7_0_0.exp" />
+        <file src="..\..\bin\Win32\Release\v120\dynamic\libsodium.exp" target="build\native\bin\libsodium-x86-v120-mt-1_0_0_0.exp" />
+        <file src="..\..\bin\Win32\Debug\v120\dynamic\libsodium.exp" target="build\native\bin\libsodium-x86-v120-mt-gd-1_0_0_0.exp" />
 
         <!-- x86 Static libraries (.lib) -->
-        <file src="..\..\bin\Win32\Release\v120\static\libsodium.lib" target="build\native\bin\libsodium-x86-v120-mt-s-0_7_0_0.lib" />
-        <file src="..\..\bin\Win32\Debug\v120\static\libsodium.lib" target="build\native\bin\libsodium-x86-v120-mt-sgd-0_7_0_0.lib" />
+        <file src="..\..\bin\Win32\Release\v120\static\libsodium.lib" target="build\native\bin\libsodium-x86-v120-mt-s-1_0_0_0.lib" />
+        <file src="..\..\bin\Win32\Debug\v120\static\libsodium.lib" target="build\native\bin\libsodium-x86-v120-mt-sgd-1_0_0_0.lib" />
 
         <!-- x86 Static link time code generation libraries (.ltcg.lib) -->
-        <file src="..\..\bin\Win32\Release\v120\ltcg\libsodium.lib" target="build\native\bin\libsodium-x86-v120-mt-s-0_7_0_0.ltcg.lib" />
-        <file src="..\..\bin\Win32\Debug\v120\ltcg\libsodium.lib" target="build\native\bin\libsodium-x86-v120-mt-sgd-0_7_0_0.ltcg.lib" />
+        <file src="..\..\bin\Win32\Release\v120\ltcg\libsodium.lib" target="build\native\bin\libsodium-x86-v120-mt-s-1_0_0_0.ltcg.lib" />
+        <file src="..\..\bin\Win32\Debug\v120\ltcg\libsodium.lib" target="build\native\bin\libsodium-x86-v120-mt-sgd-1_0_0_0.ltcg.lib" />
 
         <!-- x64 Dynamic libraries (.dll) -->
-        <file src="..\..\bin\x64\Release\v120\dynamic\libsodium.dll" target="build\native\bin\libsodium-x64-v120-mt-0_7_0_0.dll" />
-        <file src="..\..\bin\x64\Debug\v120\dynamic\libsodium.dll" target="build\native\bin\libsodium-x64-v120-mt-gd-0_7_0_0.dll" />
+        <file src="..\..\bin\x64\Release\v120\dynamic\libsodium.dll" target="build\native\bin\libsodium-x64-v120-mt-1_0_0_0.dll" />
+        <file src="..\..\bin\x64\Debug\v120\dynamic\libsodium.dll" target="build\native\bin\libsodium-x64-v120-mt-gd-1_0_0_0.dll" />
 
         <!-- x64 Debugging symbols (.pdb) -->
-        <!--<file src="..\..\bin\x64\Release\v120\dynamic\libsodium.pdb" target="build\native\bin\libsodium-x64-v120-mt-0_7_0_0.pdb" />-->
-        <file src="..\..\bin\x64\Debug\v120\dynamic\libsodium.pdb" target="build\native\bin\libsodium-x64-v120-mt-gd-0_7_0_0.pdb" />
+        <!--<file src="..\..\bin\x64\Release\v120\dynamic\libsodium.pdb" target="build\native\bin\libsodium-x64-v120-mt-1_0_0_0.pdb" />-->
+        <file src="..\..\bin\x64\Debug\v120\dynamic\libsodium.pdb" target="build\native\bin\libsodium-x64-v120-mt-gd-1_0_0_0.pdb" />
 
         <!-- x64 Import libraries (.imp.lib) -->
-        <file src="..\..\bin\x64\Release\v120\dynamic\libsodium.lib" target="build\native\bin\libsodium-x64-v120-mt-0_7_0_0.imp.lib" />
-        <file src="..\..\bin\x64\Debug\v120\dynamic\libsodium.lib" target="build\native\bin\libsodium-x64-v120-mt-gd-0_7_0_0.imp.lib" />
+        <file src="..\..\bin\x64\Release\v120\dynamic\libsodium.lib" target="build\native\bin\libsodium-x64-v120-mt-1_0_0_0.imp.lib" />
+        <file src="..\..\bin\x64\Debug\v120\dynamic\libsodium.lib" target="build\native\bin\libsodium-x64-v120-mt-gd-1_0_0_0.imp.lib" />
 
         <!-- x64 Export libraries (.exp) -->
-        <file src="..\..\bin\x64\Release\v120\dynamic\libsodium.exp" target="build\native\bin\libsodium-x64-v120-mt-0_7_0_0.exp" />
-        <file src="..\..\bin\x64\Debug\v120\dynamic\libsodium.exp" target="build\native\bin\libsodium-x64-v120-mt-gd-0_7_0_0.exp" />
+        <file src="..\..\bin\x64\Release\v120\dynamic\libsodium.exp" target="build\native\bin\libsodium-x64-v120-mt-1_0_0_0.exp" />
+        <file src="..\..\bin\x64\Debug\v120\dynamic\libsodium.exp" target="build\native\bin\libsodium-x64-v120-mt-gd-1_0_0_0.exp" />
 
         <!-- x64 Static libraries (.lib) -->
-        <file src="..\..\bin\x64\Release\v120\static\libsodium.lib" target="build\native\bin\libsodium-x64-v120-mt-s-0_7_0_0.lib" />
-        <file src="..\..\bin\x64\Debug\v120\static\libsodium.lib" target="build\native\bin\libsodium-x64-v120-mt-sgd-0_7_0_0.lib" />
+        <file src="..\..\bin\x64\Release\v120\static\libsodium.lib" target="build\native\bin\libsodium-x64-v120-mt-s-1_0_0_0.lib" />
+        <file src="..\..\bin\x64\Debug\v120\static\libsodium.lib" target="build\native\bin\libsodium-x64-v120-mt-sgd-1_0_0_0.lib" />
 
         <!-- x64 Static link time code generation libraries (.ltcg.lib) -->
-        <file src="..\..\bin\x64\Release\v120\ltcg\libsodium.lib" target="build\native\bin\libsodium-x64-v120-mt-s-0_7_0_0.ltcg.lib" />
-        <file src="..\..\bin\x64\Debug\v120\ltcg\libsodium.lib" target="build\native\bin\libsodium-x64-v120-mt-sgd-0_7_0_0.ltcg.lib" />
+        <file src="..\..\bin\x64\Release\v120\ltcg\libsodium.lib" target="build\native\bin\libsodium-x64-v120-mt-s-1_0_0_0.ltcg.lib" />
+        <file src="..\..\bin\x64\Debug\v120\ltcg\libsodium.lib" target="build\native\bin\libsodium-x64-v120-mt-sgd-1_0_0_0.ltcg.lib" />
     </files>
 <!--
 #################################################################

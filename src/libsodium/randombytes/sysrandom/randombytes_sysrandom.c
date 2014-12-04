@@ -208,7 +208,7 @@ randombytes_sysrandom_buf(void * const buf, const size_t size)
         abort(); /* LCOV_EXCL_LINE */
     }
 #else
-    if (size > 0xffffffff) {
+    if (size > (size_t) 0xffffffff) {
         abort(); /* LCOV_EXCL_LINE */
     }
     if (! RtlGenRandom((PVOID) buf, (ULONG) size)) {

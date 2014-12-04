@@ -2,43 +2,51 @@
 #define TEST_NAME "generichash"
 #include "cmptest.h"
 
+#define MAXLEN 64
+
 int main(void)
 {
-#define MAXLEN 64
-    unsigned char in[MAXLEN], out[crypto_generichash_BYTES_MAX],
-        k[crypto_generichash_KEYBYTES_MAX];
-    size_t h, i, j;
+    unsigned char in[MAXLEN];
+    unsigned char out[crypto_generichash_BYTES_MAX];
+    unsigned char k[crypto_generichash_KEYBYTES_MAX];
+    size_t        h;
+    size_t        i;
+    size_t        j;
 
-    for (h = 0; h < crypto_generichash_KEYBYTES_MAX; ++h)
-        k[h] = h;
+    for (h = 0; h < crypto_generichash_KEYBYTES_MAX; ++h) {
+        k[h] = (unsigned char) h;
+    }
 
     for (i = 0; i < MAXLEN; ++i) {
-        in[i] = i;
-        crypto_generichash(out, 1 + i % crypto_generichash_BYTES_MAX, in, i, k,
+        in[i] = (unsigned char) i;
+        crypto_generichash(out, 1 + i % crypto_generichash_BYTES_MAX, in,
+                           (unsigned long long) i, k,
                            1 + i % crypto_generichash_KEYBYTES_MAX);
         for (j = 0; j < 1 + i % crypto_generichash_BYTES_MAX; ++j) {
-            printf("%02x", (unsigned int)out[j]);
+            printf("%02x", (unsigned int) out[j]);
         }
         printf("\n");
     }
 
     memset(out, 0, sizeof out);
-    crypto_generichash(out, crypto_generichash_BYTES_MAX, in, i, k, 0U);
+    crypto_generichash(out, crypto_generichash_BYTES_MAX, in,
+                       (unsigned long long) i, k, 0U);
     for (j = 0; j < crypto_generichash_BYTES_MAX; ++j) {
-        printf("%02x", (unsigned int)out[j]);
+        printf("%02x", (unsigned int) out[j]);
     }
     printf("\n");
 
     memset(out, 0, sizeof out);
-    crypto_generichash(out, crypto_generichash_BYTES_MAX, in, i, NULL, 1U);
+    crypto_generichash(out, crypto_generichash_BYTES_MAX, in,
+                       (unsigned long long) i, NULL, 1U);
     for (j = 0; j < crypto_generichash_BYTES_MAX; ++j) {
-        printf("%02x", (unsigned int)out[j]);
+        printf("%02x", (unsigned int) out[j]);
     }
     printf("\n");
 
     assert(crypto_generichash(out, 0U, in, sizeof in, k, sizeof k) == -1);
-    assert(crypto_generichash(out, crypto_generichash_BYTES_MAX + 1U, in, sizeof in,
-                              k, sizeof k) == -1);
+    assert(crypto_generichash(out, crypto_generichash_BYTES_MAX + 1U,
+                              in, sizeof in, k, sizeof k) == -1);
     assert(crypto_generichash(out, sizeof out, in, sizeof in,
                               k, crypto_generichash_KEYBYTES_MAX + 1U) == -1);
 

@@ -12,13 +12,13 @@
       <PreprocessorDefinitions>inline=__inline;%(PreprocessorDefinitions)</PreprocessorDefinitions>
     </ClCompile>
     <PreBuildEvent>
-      <Command>$(SolutionDir)/msvc-scripts/process.bat</Command>
+      <Command>"$(SolutionDir)/msvc-scripts/process.bat"</Command>
     </PreBuildEvent>
     <PreBuildEvent>
       <Message>Process .in files</Message>
     </PreBuildEvent>
     <PostBuildEvent>
-      <Command>$(SolutionDir)/test/default/wintest.bat $(Configuration) $(Platform)</Command>
+      <Command>"$(SolutionDir)/test/default/wintest.bat" $(Configuration) $(Platform)</Command>
     </PostBuildEvent>
     <PostBuildEvent>
       <Message>Run the test suite</Message>

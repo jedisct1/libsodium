@@ -2,6 +2,7 @@
 EXTRA_DIST = \
 	cmptest.h \
 	wintest.bat \
+	pre.js.inc \
 	aead_chacha20poly1305.exp \
 	auth.exp \
 	auth2.exp \
@@ -126,6 +127,8 @@ AM_CPPFLAGS = \
 	-I$(top_builddir)/src/libsodium/include \
 	-I$(top_builddir)/src/libsodium/include/sodium \
 	-I$(top_srcdir)/test/quirks
+
+AM_LDFLAGS = @TEST_LDFLAGS@
 
 TESTS_TARGETS = \
 	aead_chacha20poly1305 \
