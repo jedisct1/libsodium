@@ -5,6 +5,7 @@
 	</head>
 	<script type="text/javascript" src="libsodium.js"></script>
 	<script type="text/javascript" src="libsodium-wrap.js"></script>
+	<script type="text/javascript" src="test.js"></script>
 	<!--<script type="text/javascript" src="pre.js"></script>-->
 	<style>
 		#message{
@@ -66,6 +67,13 @@
 				log('Shared secret 2:&nbsp;' + sharedSecret2);
 				log('Is it a shared secret? :&nbsp;' + (sharedSecret1 == sharedSecret2));
 
+				try {
+					libsodium_test.scalarmult();
+					log('Vectors tests completed with success');
+				} catch (e){
+					log(e.message);
+				}
+
 				return logStr;
 			}
 
@@ -81,17 +89,21 @@
 				log('Ed25519 keypair: ' + JSON.stringify(ed25519keypair));
 				var ed25519signature = libsodium.crypto_sign(msg, ed25519keypair.privateKey);
 				log('Ed25519 signature: ' + ed25519signature);
-				//ed25519signature = libsodium.crypto_sign(msg, ed25519keypair.privateKey);
-				//log('Ed25519 signature 2: ' + ed25519signature);
 				var ed25519signature_detached = libsodium.crypto_sign_detached(msg, ed25519keypair.privateKey);
 				log('Ed25519 detached signature: <br>' + ed25519signature_detached);
 
 				var verifySign1 = libsodium.crypto_sign_open(ed25519signature, ed25519keypair.publicKey);
-				//console.log('Sign1');
 				log('Signed message: ' + verifySign1);
 				var verifySign2 = libsodium.crypto_sign_verify_detached(ed25519signature_detached, msg, ed25519keypair.publicKey);
-				//console.log('Sign2');
 				log('Detached signature is valid? ' + verifySign2);
+
+				libsodium_test.sign(function(e, proportion){
+					if (e) {
+						message.innerHTML += e + '<br>';
+					} else {
+						message.innerHTML += proportion.tested  + ' out of ' + proportion.count + ' Ed25519 vectors have been tested. All passed with success<br>';
+					}
+				});
 
 				return logStr;
 			}
@@ -183,40 +195,15 @@
 				var derivedKey = libsodium.crypto_pwhash_scryptsalsa208sha256_ll(password, salt, opsLimit, r, p, keySize);
 				log('Derived key: ' + derivedKey);
 
-				var vectors = [
-					{
-						pass: 'password',
-						salt: 'NaCl',
-						keyLength: 64,
-						r: 8,
-						p: 16,
-						opsLimit: 1024,
-						result: 'fdbabe1c9d3472007856e7190d01e9fe7c6ad7cbc8237830e77376634b3731622eaf30d92e22a3886ff109279d9830dac727afb94a83ee6d8360cbdfa2cc0640'
-					},
-					{
-						pass: 'pleaseletmein',
-						salt: 'SodiumChloride',
-						keyLength: 64,
-						r: 8,
-						p: 1,
-						opsLimit: 16384,
-						result: '7023bdcb3afd7348461c06cd81fd38ebfda8fbba904f8e3ea9b543f6545da1f2d5432955613f0fcf62d49705242a9af9e61e85dc0d651e40dfcf017b45575887'
-					}
-				];
-
-				var vectorsError = 0;
-				vectors.forEach(testVector);
-				log('Vectors tests completed ' + (vectorsError == 0 ? 'with success' : 'with ' + vectorsError + ' errors'));
+				try {
+					libsodium_test.scrypt();
+					log('Vectors tests completed with success');
+				} catch (e){
+					log(e.message);
+				}
 
 				return logStr;
 
-				function testVector(v){
-					var derivedKey = libsodium.crypto_pwhash_scryptsalsa208sha256_ll(v.pass, v.salt, v.opsLimit, v.r, v.p, v.keyLength);
-					if (v.result != derivedKey){
-						log('Error with vector ' + JSON.stringify(v));
-						vectorsError
-					}
-				}
 			}
 
 			function randBuffer(size){
