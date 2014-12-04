@@ -1,8 +1,5 @@
 var fs = require('fs');
 var path = require('path');
-//var phantom = require('phantom');
-
-//var htmlTestPage = '<html><head><script src=""></script></head></html>'
 
 //Loading preset macros
 var macros = {};
@@ -69,6 +66,9 @@ function buildSymbol(symbolDescription){
 				currentParameterCode = applyMacro(currentParameterCode, ['{var_name}'], [currentParameter.name]);
 			} else if (currentParameter.type == 'unsized_buffer'){
 				currentParameterCode = macros['input_unsized_buf'];
+				currentParameterCode = applyMacro(currentParameterCode, ['{var_name}'], [currentParameter.name]);
+			} else if (currentParameter.type == 'encoding'){
+				currentParameterCode = macros['input_encoding'];
 				currentParameterCode = applyMacro(currentParameterCode, ['{var_name}'], [currentParameter.name]);
 			} else {
 				//Unknown parameter type. What to do?

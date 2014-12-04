@@ -20,6 +20,10 @@
 			"name": "secretKey",
 			"type": "buffer",
 			"size": "libsodium_raw._crypto_box_secretkeybytes()"
+		},
+		{
+			"name": "encoding",
+			"type": "encoding"
 		}
 	],
 	"outputs": [

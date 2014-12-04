@@ -7,6 +7,10 @@
 			"name": "privateKey",
 			"size": "libsodium_raw._crypto_scalarmult_scalarbytes()",
 			"type": "buffer"
+		},
+		{
+			"name": "encoding",
+			"type": "encoding"
 		}
 	],
 	"outputs": [

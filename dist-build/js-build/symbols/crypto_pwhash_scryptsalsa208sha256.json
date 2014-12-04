@@ -22,6 +22,10 @@
 		{
 			"name": "keyLength",
 			"type": "uint"
+		},
+		{
+			"name": "encoding",
+			"type": "encoding"
 		}
 	],
 	"outputs": [

@@ -6,6 +6,10 @@
 			"name": "edPk",
 			"type": "buffer",
 			"size": "libsodium_raw._crypto_sign_publickeybytes()"
+		},
+		{
+			"name": "encoding",
+			"type": "encoding"
 		}
 	],
 	"outputs": [

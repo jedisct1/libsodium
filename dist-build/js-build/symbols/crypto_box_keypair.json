@@ -1,7 +1,12 @@
 {
 	"name": "crypto_box_keypair",
 	"type": "function",
-	"inputs": [],
+	"inputs": [
+		{
+			"name": "encoding",
+			"type": "encoding"
+		}
+	],
 	"outputs": [
 		{
 			"type": "buffer",

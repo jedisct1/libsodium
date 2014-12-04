@@ -7,6 +7,10 @@
 			"name": "seed",
 			"size": "libsodium_raw._crypto_sign_seedbytes()",
 			"type": "buffer"
+		},
+		{
+			"name": "encoding",
+			"type": "encoding"
 		}
 	],
 	"outputs": [

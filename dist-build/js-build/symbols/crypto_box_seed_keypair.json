@@ -6,6 +6,10 @@
 			"name": "seed",
 			"type": "buffer",
 			"size": "libsodium_raw._crypto_box_seedbytes()"
+		},
+		{
+			"name": "encoding",
+			"type": "encoding"
 		}
 	],
 	"outputs": [

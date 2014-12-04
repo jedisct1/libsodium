@@ -11,6 +11,10 @@
 			"name": "key",
 			"type": "buffer",
 			"size": "libsodium_raw._crypto_generichash_keybytes()"
+		},
+		{
+			"name": "encoding",
+			"type": "encoding"
 		}
 	],
 	"outputs": [

@@ -3,6 +3,7 @@ var libsodium = (function () {
 	var exports = {};
 
 	var libsodium_raw = Module;
+	var result_encoding = 'uint8array';
 	//libsodium_raw._sodium_init();
 
 	//---------------------------------------------------------------------------
@@ -53,6 +54,48 @@ var libsodium = (function () {
 
 	function is_hex(s){
 		return (typeof s == 'string' && /^([a-f]|[0-9])+$/i.test(s) && s.length % 2 == 0);
+	}
+
+	function available_encodings(){
+		return ['hex', 'utf8', 'uint8array'];
+	}
+
+	function set_encoding(enc){
+		if (typeof enc != 'string') throw new TypeError('encoding name must be a string');
+		if (!is_encoding(enc)) throw new Error(enc + ' encoding is not available');
+		result_encoding = enc;
+	}
+
+	function get_encoding(){
+		return result_encoding;
+	}
+
+	function encodeResult(result, optionalEncoding){
+		var selectedEncoding = optionalEncoding || result_encoding;
+		if (!is_encoding(selectedEncoding)) throw new Error(selectedEncoding + ' encoding is not available');
+		if (result instanceof TargetBuffer) {
+			var buf = result.extractBytes();
+			if (selectedEncoding == 'uint8array') return buf;
+			else if (selectedEncoding == 'utf8') return decode_utf8(buf);
+			else if (selectedEncoding == 'hex') return to_hex(buf);
+			else throw new Error('Internal error: what is encoding "' + selectedEncoding + '"?');
+		} else if (typeof result == 'object') { //Composed results. Example : key pairs
+			var props = Object.keys(result);
+			var encodedResult = {};
+			for (var i = 0; i < props.length; i++){
+				encodedResult[props[i]] = encodeResult(result[props[i]], selectedEncoding);
+			}
+			return encodedResult;
+		} else { //What to do if we have a result to encode, that is not a buffer nor an object?
+			throw new TypeError('Cannot encode result');
+		}
+	}
+
+	function is_encoding(enc){
+		var encs = available_encodings();
+		var encFound = false;
+		for (var i = 0; i < encs.length; i++) if (encs[i] == enc) encFound = true;
+		return encFound;
 	}
 
 	//---------------------------------------------------------------------------
@@ -133,16 +176,19 @@ var libsodium = (function () {
 
 	{wraps_here}
 
-	exports.encode_utf8   = encode_utf8;
-	exports.encode_latin1 = encode_latin1;
-	exports.decode_utf8   = decode_utf8;
-	exports.decode_latin1 = decode_latin1;
-	exports.to_hex        = to_hex;
-	exports.from_hex      = from_hex;
-	exports.is_hex        = is_hex;
-	exports.symbols       = symbols;
-	exports.raw           = libsodium_raw;
-	exports.init          = libsodium_raw._sodium_init;
+	exports.encode_utf8   	    = encode_utf8;
+	exports.encode_latin1       = encode_latin1;
+	exports.decode_utf8         = decode_utf8;
+	exports.decode_latin1       = decode_latin1;
+	exports.to_hex              = to_hex;
+	exports.from_hex            = from_hex;
+	exports.is_hex              = is_hex;
+	exports.available_encodings = available_encodings;
+	exports.set_encoding        = set_encoding;
+	exports.get_encoding        = get_encoding;
+	exports.symbols             = symbols;
+	exports.raw                 = libsodium_raw;
+	exports.init                = libsodium_raw._sodium_init;
 
 	{exports_here}
 

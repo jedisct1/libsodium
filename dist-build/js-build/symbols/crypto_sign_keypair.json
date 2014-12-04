@@ -2,7 +2,12 @@
 	"name": "crypto_sign_keypair",
 	"dependencies": ["_crypto_sign_keypair", "_crypto_sign_publickeybytes", "_crypto_sign_secretkeybytes"],
 	"type": "function",
-	"inputs": [],
+	"inputs": [
+		{
+			"name": "encoding",
+			"type": "encoding"
+		}
+	],
 	"outputs": [
 		{
 			"type": "buffer",

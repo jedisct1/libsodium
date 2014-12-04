@@ -7,6 +7,10 @@
 			"name": "privateKey",
 			"type": "buffer",
 			"size": "libsodium_raw._crypto_sign_secretkeybytes()"
+		},
+		{
+			"name": "encoding",
+			"type": "encoding"
 		}
 	],
 	"outputs": [
