@@ -114,6 +114,7 @@ test/default/stream2
 test/default/stream3
 test/default/stream4
 test/default/verify1
+test/default/*.js
 test-driver
 testing
 android-toolchain-*
