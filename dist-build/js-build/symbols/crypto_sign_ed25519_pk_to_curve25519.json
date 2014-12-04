@@ -1,0 +1,20 @@
+{
+	"name": "crypto_sign_ed25519_pk_to_curve25519",
+	"type": "function",
+	"inputs": [
+		{
+			"name": "edPk",
+			"type": "buffer",
+			"size": "libsodium_raw._crypto_sign_publickeybytes()"
+		}
+	],
+	"outputs": [
+		{
+			"name": "cPk",
+			"type": "buffer",
+			"size": "libsodium_raw._crypto_scalarmult_scalarbytes()"
+		}
+	],
+	"target": "libsodium_raw._crypto_sign_ed25519_pk_to_curve25519(cPk_byte, edPk_byte)",
+	"return": "return to_hex(cPk.extractBytes())"
+}

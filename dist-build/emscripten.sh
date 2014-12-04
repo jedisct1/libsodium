@@ -28,3 +28,7 @@ echo 'sodium_utils2 and sodium_utils3 are expected to fail in Javascript.' && \
   done
 )
 make $MAKE_FLAGS check && echo 'Done.'
+echo 'Building js wrapper\n'
+node dist-build/js-build/build-wrapper.js
+cp ${PREFIX}/lib/libsodium.js* test/js/
+cp ${PREFIX}/lib/libsodium-wrap.js test/js

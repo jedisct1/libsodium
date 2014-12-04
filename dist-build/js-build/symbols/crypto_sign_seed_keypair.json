@@ -1,0 +1,26 @@
+{
+	"name": "crypto_sign_seed_keypair",
+	"dependencies": ["_crypto_sign_seedbytes", "_crypto_sign_publickeybytes", "_crypto_sign_secretkeybytes"],
+	"type": "function",
+	"inputs": [
+		{
+			"name": "seed",
+			"size": "libsodium_raw._crypto_sign_seedbytes()",
+			"type": "buffer"
+		}
+	],
+	"outputs": [
+		{
+			"type": "buffer",
+			"name": "publicKey",
+			"size": "libsodium_raw._crypto_sign_publickeybytes()"
+		},
+		{
+			"type": "buffer",
+			"name": "privateKey",
+			"size": "libsodium_raw._crypto_sign_secretkeybytes()"
+		}
+	],
+	"target": "libsodium_raw._crypto_sign_seed_keypair(publicKey_byte, privateKey_byte, seed_byte)",
+	"return": "return {publicKey: to_hex(publicKey.extractBytes()), privateKey: to_hex(privateKey.extractBytes())}"
+}

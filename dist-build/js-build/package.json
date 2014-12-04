@@ -1,0 +1,11 @@
+{
+  "name": "libsodium-wrap-builder",
+  "version": "0.0.1",
+  "description": "A script that will build a wrapper object for the raw js-build libsodium library",
+  "main": "build-wrapper.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Ahmad Benmrad",
+  "license": "ISC"
+}

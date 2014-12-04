@@ -1,0 +1,39 @@
+{
+	"name": "crypto_pwhash_scryptsalsa208sha256_ll",
+	"type": "function",
+	"inputs": [
+		{
+			"name": "password",
+			"type": "unsized_buffer"
+		},
+		{
+			"name": "salt",
+			"type": "unsized_buffer"
+		},
+		{
+			"name": "opsLimit",
+			"type": "uint"
+		},
+		{
+			"name": "r",
+			"type": "uint"
+		},
+		{
+			"name": "p",
+			"type": "uint"
+		},
+		{
+			"name": "keyLength",
+			"type": "uint"
+		}
+	],
+	"outputs": [
+		{
+			"name": "derivedKey",
+			"size": "keyLength",
+			"type": "buffer"
+		}
+	],
+	"target": "libsodium_raw._crypto_pwhash_scryptsalsa208sha256_ll(password_byte, password_size, salt_byte, salt_size, opsLimit, 0, r, p, derivedKey_byte, keyLength)",
+	"return": "return to_hex(derivedKey.extractBytes())"
+}

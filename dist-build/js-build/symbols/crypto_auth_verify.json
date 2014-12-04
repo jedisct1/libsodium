@@ -1,0 +1,24 @@
+{
+	"name": "crypto_auth_verify",
+	"dependencies": ["_crypto_auth_keybytes", "_crypto_auth_bytes"],
+	"type": "function",
+	"inputs": [
+		{
+			"name": "tag",
+			"type": "buffer",
+			"size": "libsodium_raw._crypto_auth_bytes()"
+		},
+		{
+			"name": "message",
+			"type": "unsized_buffer"
+		},
+		{
+			"name": "key",
+			"type": "buffer",
+			"size": "libsodium_raw._crypto_auth_keybytes()"
+		}
+	],
+	"outputs": [],
+	"target": "var result = libsodium_raw._crypto_auth_verify(tag_byte, message_byte, message_size, key_byte)",
+	"return": "return (result != -1);"
+}

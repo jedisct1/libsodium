@@ -1,0 +1,21 @@
+{
+	"name": "crypto_sign_ed25519_sk_to_pk",
+	"dependencies": ["_crypto_sign_secretkeybytes", "_crypto_sign_publickeybytes"],
+	"type": "function",
+	"inputs": [
+		{
+			"name": "privateKey",
+			"type": "buffer",
+			"size": "libsodium_raw._crypto_sign_secretkeybytes()"
+		}
+	],
+	"outputs": [
+		{
+			"name": "publicKey",
+			"type": "buffer",
+			"size": "libsodium_raw._crypto_sign_publickeybytes()"
+		}
+	],
+	"target": "libsodium_raw._crypto_sign_ed25519_sk_to_pk(publicKey_byte, privateKey_byte)",
+	"return": "return to_hex(publicKey.extractBytes())"
+}

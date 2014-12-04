@@ -1,0 +1,25 @@
+{
+	"name": "crypto_box_seed_keypair",
+	"type": "function",
+	"inputs": [
+		{
+			"name": "seed",
+			"type": "buffer",
+			"size": "libsodium_raw._crypto_box_seedbytes()"
+		}
+	],
+	"outputs": [
+		{
+			"name": "publicKey",
+			"size": "libsodium_raw._crypto_box_publickeybytes()",
+			"type": "buffer"
+		},
+		{
+			"name": "privateKey",
+			"type": "buffer",
+			"size": "libsodium_raw._crypto_box_secretkeybytes()"
+		}
+	],
+	"target": "libsodium_raw._crypto_box_seed_keypair(publicKey_byte, privateKey_byte, seed_byte)",
+	"return": "return {publicKey: to_hex(publicKey.extractBytes()), privateKey: to_hex(privateKey.extractBytes())}"
+}
