@@ -6,10 +6,6 @@
 		{
 			"name": "message",
 			"type": "unsized_buffer"
-		},
-		{
-			"name": "encoding",
-			"type": "encoding"
 		}
 	],
 	"outputs": [

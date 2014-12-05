@@ -22,10 +22,6 @@
 		{
 			"name": "keyLength",
 			"type": "uint"
-		},
-		{
-			"name": "encoding",
-			"type": "encoding"
 		}
 	],
 	"outputs": [
@@ -36,5 +32,5 @@
 		}
 	],
 	"target": "libsodium_raw._crypto_pwhash_scryptsalsa208sha256(derivedKey_byte, keyLength, 0, password_byte, password_size, 0, salt_byte, 0, opsLimit, memLimit)",
-	"return": "return to_hex(derivedKey.extractBytes())"
+	"return": "return encodeResult(derivedKey, resultEncoding)"
 }

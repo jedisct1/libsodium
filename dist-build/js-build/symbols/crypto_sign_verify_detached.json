@@ -2,6 +2,7 @@
 	"name": "crypto_sign_verify_detached",
 	"dependencies": ["_crypto_sign_publickeybytes", "_crypto_sign_bytes"],
 	"type": "function",
+	"noEncoding": true,
 	"inputs": [
 		{
 			"name": "signature",
@@ -16,10 +17,6 @@
 			"name": "publicKey",
 			"type": "buffer",
 			"size": "libsodium_raw._crypto_sign_publickeybytes()"
-		},
-		{
-			"name": "encoding",
-			"type": "encoding"
 		}
 	],
 	"outputs": [],

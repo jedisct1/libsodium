@@ -2,6 +2,7 @@
 	"name": "crypto_sign_open",
 	"dependencies": ["_crypto_sign_publickeybytes", "_crypto_sign_bytes"],
 	"type": "function",
+	"noEncoding": true,
 	"inputs": [
 		{
 			"name": "signedMessage",
@@ -21,5 +22,5 @@
 		}
 	],
 	"target": "libsodium_raw._crypto_sign_open(message_byte, message_size, signedMessage_byte, signedMessage_size, 0, publicKey_byte)",
-	"return": "return decode_utf8(message.extractBytes())"
+	"return": "return encodeResult(message, resultEncoding)"
 }

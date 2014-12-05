@@ -11,10 +11,6 @@
 			"name": "privateKey",
 			"type": "buffer",
 			"size": "libsodium_raw._crypto_sign_secretkeybytes()"
-		},
-		{
-			"name": "encoding",
-			"type": "encoding"
 		}
 	],
 	"outputs": [
@@ -30,5 +26,5 @@
 		}
 	],
 	"target": "libsodium_raw._crypto_sign(signature_byte, slen_byte, message_byte, message_size, 0, privateKey_byte)",
-	"return": "return to_hex(signature.extractBytes())"
+	"return": "return encodeResult(signature, resultEncoding)"
 }

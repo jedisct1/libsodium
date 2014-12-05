@@ -20,10 +20,6 @@
 			"name": "secretKey",
 			"type": "buffer",
 			"size": "libsodium_raw._crypto_box_secretkeybytes()"
-		},
-		{
-			"name": "encoding",
-			"type": "encoding"
 		}
 	],
 	"outputs": [
@@ -34,5 +30,5 @@
 		}
 	],
 	"target": "var decryptSuccess = libsodium_raw._crypto_box_open_easy(plaintext_byte, ciphertext_byte, ciphertext_size, 0, nonce_byte, publicKey_byte, secretKey_byte)",
-	"return": "return (decryptSuccess == 0 ? decode_utf8(plaintext.extractBytes()) : undefined)"
+	"return": "return (decryptSuccess == 0 ? encodeResult(plaintext, resultEncoding) : undefined)"
 }

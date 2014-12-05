@@ -2,12 +2,7 @@
 	"name": "crypto_sign_keypair",
 	"dependencies": ["_crypto_sign_keypair", "_crypto_sign_publickeybytes", "_crypto_sign_secretkeybytes"],
 	"type": "function",
-	"inputs": [
-		{
-			"name": "encoding",
-			"type": "encoding"
-		}
-	],
+	"inputs": [],
 	"outputs": [
 		{
 			"type": "buffer",
@@ -21,5 +16,5 @@
 		}
 	],
 	"target": "libsodium_raw._crypto_sign_keypair(publicKey_byte, privateKey_byte);",
-	"return": "return {publicKey: to_hex(publicKey.extractBytes()), privateKey: to_hex(privateKey.extractBytes())};"
+	"return": "return encodeResult({publicKey: publicKey, privateKey: privateKey}, resultEncoding);"
 }

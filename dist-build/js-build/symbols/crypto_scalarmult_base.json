@@ -7,10 +7,6 @@
 			"name": "privateKey",
 			"size": "libsodium_raw._crypto_scalarmult_scalarbytes()",
 			"type": "buffer"
-		},
-		{
-			"name": "encoding",
-			"type": "encoding"
 		}
 	],
 	"outputs": [
@@ -21,5 +17,5 @@
 		}
 	],
 	"target": "libsodium_raw._crypto_scalarmult_base(publicKey_byte, privateKey_byte)",
-	"return": "return to_hex(publicKey.extractBytes())"
+	"return": "return encodeResult(publicKey, resultEncoding)"
 }

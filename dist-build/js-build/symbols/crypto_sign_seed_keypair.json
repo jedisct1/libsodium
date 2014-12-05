@@ -7,10 +7,6 @@
 			"name": "seed",
 			"size": "libsodium_raw._crypto_sign_seedbytes()",
 			"type": "buffer"
-		},
-		{
-			"name": "encoding",
-			"type": "encoding"
 		}
 	],
 	"outputs": [
@@ -26,5 +22,5 @@
 		}
 	],
 	"target": "libsodium_raw._crypto_sign_seed_keypair(publicKey_byte, privateKey_byte, seed_byte)",
-	"return": "return {publicKey: to_hex(publicKey.extractBytes()), privateKey: to_hex(privateKey.extractBytes())}"
+	"return": "return encodeResult{publicKey: publicKey, privateKey: privateKey}, resultEncoding)"
 }

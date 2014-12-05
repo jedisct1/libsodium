@@ -6,10 +6,6 @@
 			"name": "edSk",
 			"type": "buffer",
 			"size": "libsodium_raw._crypto_sign_secretkeybytes()"
-		},
-		{
-			"name": "encoding",
-			"type": "encoding"
 		}
 	],
 	"outputs": [
@@ -20,5 +16,5 @@
 		}
 	],
 	"target": "libsodium_raw._crypto_sign_ed25519_sk_to_curve25519(cSk_byte, edSk_byte)",
-	"return": "return to_hex(cSk.extractBytes())"
+	"return": "return encodeResult(cSk, resultEncoding)"
 }

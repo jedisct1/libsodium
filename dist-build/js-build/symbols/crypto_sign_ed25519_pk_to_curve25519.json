@@ -6,10 +6,6 @@
 			"name": "edPk",
 			"type": "buffer",
 			"size": "libsodium_raw._crypto_sign_publickeybytes()"
-		},
-		{
-			"name": "encoding",
-			"type": "encoding"
 		}
 	],
 	"outputs": [
@@ -20,5 +16,5 @@
 		}
 	],
 	"target": "libsodium_raw._crypto_sign_ed25519_pk_to_curve25519(cPk_byte, edPk_byte)",
-	"return": "return to_hex(cPk.extractBytes())"
+	"return": "return encodeResult(cPk, resultEncoding)"
 }

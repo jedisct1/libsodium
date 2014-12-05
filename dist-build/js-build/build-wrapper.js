@@ -46,7 +46,10 @@ function buildSymbol(symbolDescription){
 	//console.log('symbol type: ' + symbolDescription.type);
 	if (symbolDescription.type == 'function'){
 		var targetName = 'libsodium_raw._' + symbolDescription.name;
-		//targetName = targetName.replace(/\([\w|\,|\ ]+\)\;?/, '');
+		//Add encoding parameter to input list if encodingChoice is true
+		if (!symbolDescription.noEncoding){
+			symbolDescription.inputs.push({name: "resultEncoding", type: "encoding"})
+		}
 		var funcCode = '\n\tfunction ' + symbolDescription.name + '(';
 		var funcBody = '';
 		//Adding parameters array in function's interface, their conversions in the function's body
