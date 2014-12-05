@@ -45,6 +45,9 @@
 		</div>
 		<script>
 
+			var to_hex = libsodium.to_hex;
+			var from_hex = libsodium.from_hex;
+
 			function curve25519Test(){
 				var logStr = '';
 				function log(s){logStr+=s+'<br>';}
@@ -54,25 +57,25 @@
 
 				var c25519scalar1 = randBuffer(libsodium.crypto_scalarmult_scalarbytes);
 				var c25519publicKey1 = libsodium.crypto_scalarmult_base(c25519scalar1);
-				log('Private key 1:&nbsp;' + libsodium.to_hex(c25519scalar1));
-				log('Pubkey 1:&nbsp;' + c25519publicKey1);
+				log('Private key 1:&nbsp;' + to_hex(c25519scalar1));
+				log('Pubkey 1:&nbsp;' + to_hex(c25519publicKey1));
 				var c25519scalar2 = randBuffer(libsodium.crypto_scalarmult_scalarbytes);
 				var c25519publicKey2 = libsodium.crypto_scalarmult_base(c25519scalar2);
-				log('Private key 2:&nbsp;' + libsodium.to_hex(c25519scalar2));
-				log('Pubkey 2:&nbsp;' + c25519publicKey2);
+				log('Private key 2:&nbsp;' + to_hex(c25519scalar2));
+				log('Pubkey 2:&nbsp;' + to_hex(c25519publicKey2));
 
 				var sharedSecret1 = libsodium.crypto_scalarmult(c25519scalar2, c25519publicKey1);
-				log('Shared secret 1:&nbsp;' + sharedSecret1);
+				log('Shared secret 1:&nbsp;' + to_hex(sharedSecret1));
 				var sharedSecret2 = libsodium.crypto_scalarmult(c25519scalar1, c25519publicKey2);
-				log('Shared secret 2:&nbsp;' + sharedSecret2);
-				log('Is it a shared secret? :&nbsp;' + (sharedSecret1 == sharedSecret2));
+				log('Shared secret 2:&nbsp;' + to_hex(sharedSecret2));
+				log('Is it a shared secret? :&nbsp;' + (to_hex(sharedSecret1) == to_hex(sharedSecret2)));
 
-				try {
+				//try {
 					libsodium_test.scalarmult();
 					log('Vectors tests completed with success');
-				} catch (e){
+				/*} catch (e){
 					log(e.message);
-				}
+				}*/
 
 				return logStr;
 			}
@@ -82,19 +85,19 @@
 				function log(s){logStr+=s+'<br>';}
 
 				var ed25519seed = randBuffer(libsodium.crypto_sign_seedbytes);
-				var ed25519keypair = libsodium.crypto_sign_seed_keypair(ed25519seed);
+				var ed25519keypair = libsodium.crypto_sign_seed_keypair(ed25519seed, 'hex');
 				var msg = 'Message';
 				log('Message to be signed: ' + msg);
 				log('Ed25519 seed: ' + libsodium.to_hex(ed25519seed));
 				log('Ed25519 keypair: ' + JSON.stringify(ed25519keypair));
-				var ed25519signature = libsodium.crypto_sign(msg, ed25519keypair.privateKey);
-				log('Ed25519 signature: ' + ed25519signature);
-				var ed25519signature_detached = libsodium.crypto_sign_detached(msg, ed25519keypair.privateKey);
-				log('Ed25519 detached signature: <br>' + ed25519signature_detached);
+				var ed25519signature = libsodium.crypto_sign(msg, from_hex(ed25519keypair.privateKey));
+				log('Ed25519 signature: ' + to_hex(ed25519signature));
+				var ed25519signature_detached = libsodium.crypto_sign_detached(msg, from_hex(ed25519keypair.privateKey));
+				log('Ed25519 detached signature: <br>' + to_hex(ed25519signature_detached));
 
-				var verifySign1 = libsodium.crypto_sign_open(ed25519signature, ed25519keypair.publicKey);
-				log('Signed message: ' + verifySign1);
-				var verifySign2 = libsodium.crypto_sign_verify_detached(ed25519signature_detached, msg, ed25519keypair.publicKey);
+				var verifySign1 = libsodium.crypto_sign_open(ed25519signature, from_hex(ed25519keypair.publicKey));
+				log('Signed message: ' + to_hex(verifySign1));
+				var verifySign2 = libsodium.crypto_sign_verify_detached(ed25519signature_detached, msg, from_hex(ed25519keypair.publicKey));
 				log('Detached signature is valid? ' + verifySign2);
 
 				libsodium_test.sign(function(e, proportion){
@@ -114,31 +117,31 @@
 
 				var ed25519seed1 = randBuffer(libsodium.crypto_sign_seedbytes);
 				var ed25519seed2 = randBuffer(libsodium.crypto_sign_seedbytes);
-				var ed25519keypair1 = libsodium.crypto_sign_seed_keypair(ed25519seed1);
-				var ed25519keypair2 = libsodium.crypto_sign_seed_keypair(ed25519seed2);
+				var ed25519keypair1 = libsodium.crypto_sign_seed_keypair(ed25519seed1, 'hex');
+				var ed25519keypair2 = libsodium.crypto_sign_seed_keypair(ed25519seed2, 'hex');
 
 				log('Ed25519 keypair 1 : ' + JSON.stringify(ed25519keypair1));
 				log('Ed25519 keypair 2 : ' + JSON.stringify(ed25519keypair2));
 
 				var curve25519keypair1 = {
-					publicKey: libsodium.crypto_sign_ed25519_pk_to_curve25519(ed25519keypair1.publicKey),
-					privateKey: libsodium.crypto_sign_ed25519_sk_to_curve25519(ed25519keypair1.privateKey)
+					publicKey: libsodium.crypto_sign_ed25519_pk_to_curve25519(from_hex(ed25519keypair1.publicKey)),
+					privateKey: libsodium.crypto_sign_ed25519_sk_to_curve25519(from_hex(ed25519keypair1.privateKey))
 				};
 
-				log('Curve25519 keypair 1 : ' + JSON.stringify(curve25519keypair1));
+				//log('Curve25519 keypair 1 : ' + JSON.stringify(curve25519keypair1));
 
 				var curve25519keypair2 = {
-					publicKey: libsodium.crypto_sign_ed25519_pk_to_curve25519(ed25519keypair2.publicKey),
-					privateKey: libsodium.crypto_sign_ed25519_sk_to_curve25519(ed25519keypair2.privateKey)
+					publicKey: libsodium.crypto_sign_ed25519_pk_to_curve25519(from_hex(ed25519keypair2.publicKey)),
+					privateKey: libsodium.crypto_sign_ed25519_sk_to_curve25519(from_hex(ed25519keypair2.privateKey))
 				};
 
-				log('Curve25519 keypair 2 : ' + JSON.stringify(curve25519keypair2));
+				//log('Curve25519 keypair 2 : ' + JSON.stringify(curve25519keypair2));
 
 				var sharedSecret1 = libsodium.crypto_scalarmult(curve25519keypair1.privateKey, curve25519keypair2.publicKey);
-				log('Shared secret 1: ' + sharedSecret1);
+				log('Shared secret 1: ' + to_hex(sharedSecret1));
 				var sharedSecret2 = libsodium.crypto_scalarmult(curve25519keypair2.privateKey, curve25519keypair1.publicKey);
-				log('Shared secret 2: ' + sharedSecret2);
-				log('Are shared secrets equal: ' + (sharedSecret1 == sharedSecret2));
+				log('Shared secret 2: ' + to_hex(sharedSecret2));
+				log('Are shared secrets equal: ' + (to_hex(sharedSecret1) == to_hex(sharedSecret2)));
 
 				return logStr;
 			}
@@ -148,37 +151,37 @@
 				function log(s){logStr+=s+'<br>';}
 
 				var nonce = randBuffer(libsodium.crypto_box_noncebytes);
-				log('Nonce: ' + strBuffer(nonce));
+				log('Nonce: ' + to_hex(nonce));
 				var seed1 = randBuffer(libsodium.crypto_box_seedbytes);
 				var seed2 = randBuffer(libsodium.crypto_box_seedbytes);
-				log('Seed 1: ' + strBuffer(seed1));
-				log('Seed 2: ' + strBuffer(seed2));
-				var keyPair1 = libsodium.crypto_box_seed_keypair(seed1);
-				var keyPair2 = libsodium.crypto_box_seed_keypair(seed2);
+				log('Seed 1: ' + to_hex(seed1));
+				log('Seed 2: ' + to_hex(seed2));
+				var keyPair1 = libsodium.crypto_box_seed_keypair(seed1, 'hex');
+				var keyPair2 = libsodium.crypto_box_seed_keypair(seed2, 'hex');
 				log('Keypair 1: ' + JSON.stringify(keyPair1));
 				log('Keypair 2: ' + JSON.stringify(keyPair2));
 
 				var message = "Crypto box testing";
-				var cipherText1 = libsodium.crypto_box_easy(message, nonce, keyPair1.publicKey, keyPair2.privateKey);
-				var cipherText2 = libsodium.crypto_box_easy(message, nonce, keyPair2.publicKey, keyPair1.privateKey);
-				log('Ciphertext: ' + cipherText1);
-				log('Ciphertexts are equal: ' + (cipherText1 == cipherText2));
+				var cipherText1 = libsodium.crypto_box_easy(message, nonce, from_hex(keyPair1.publicKey), from_hex(keyPair2.privateKey));
+				var cipherText2 = libsodium.crypto_box_easy(message, nonce, from_hex(keyPair2.publicKey), from_hex(keyPair1.privateKey));
+				log('Ciphertext: ' + to_hex(cipherText1));
+				log('Ciphertexts are equal: ' + (to_hex(cipherText1) == to_hex(cipherText2)));
 
-				var plainText1 = libsodium.crypto_box_open_easy(cipherText1, nonce, keyPair2.publicKey, keyPair1.privateKey);
-				var plainText2 = libsodium.crypto_box_open_easy(cipherText2, nonce, keyPair1.publicKey, keyPair2.privateKey);
-				log('Plaintext: ' + plainText1);
-				log('Are plaintexts equal: ' + (plainText1 == plainText2));
+				var plainText1 = libsodium.crypto_box_open_easy(cipherText1, nonce, from_hex(keyPair2.publicKey), from_hex(keyPair1.privateKey));
+				var plainText2 = libsodium.crypto_box_open_easy(cipherText2, nonce, from_hex(keyPair1.publicKey), from_hex(keyPair2.privateKey));
+				log('Plaintext: ' + libsodium.decode_utf8(plainText1));
+				log('Are plaintexts equal: ' + (to_hex(plainText1) == to_hex(plainText2)));
 
 				log('DETACHED TESTING');
-				var detachedCipher1 = libsodium.crypto_box_detached(message, nonce, keyPair1.publicKey, keyPair2.privateKey);
+				var detachedCipher1 = libsodium.crypto_box_detached(message, nonce, from_hex(keyPair1.publicKey), from_hex(keyPair2.privateKey), 'hex');
 				log('Detached cipher 1:<br>' + JSON.stringify(detachedCipher1));
-				var detachedCipher2 = libsodium.crypto_box_detached(message, nonce, keyPair2.publicKey, keyPair1.privateKey);
+				var detachedCipher2 = libsodium.crypto_box_detached(message, nonce, from_hex(keyPair2.publicKey), from_hex(keyPair1.privateKey), 'hex');
 				log('Detached cipher 2:<br>' + JSON.stringify(detachedCipher2));
 
-				plainText1 = libsodium.crypto_box_open_detached(detachedCipher1.ciphertext, detachedCipher1.mac, nonce, keyPair1.publicKey, keyPair2.privateKey);
-				plainText2 = libsodium.crypto_box_open_detached(detachedCipher2.ciphertext, detachedCipher2.mac, nonce, keyPair2.publicKey, keyPair1.privateKey);
-				log('Plaintext: ' + plainText1);
-				log('Are plaintexts equal: ' + (plainText1 == plainText2));
+				plainText1 = libsodium.crypto_box_open_detached(from_hex(detachedCipher1.ciphertext), from_hex(detachedCipher1.mac), nonce, from_hex(keyPair1.publicKey), from_hex(keyPair2.privateKey));
+				plainText2 = libsodium.crypto_box_open_detached(from_hex(detachedCipher2.ciphertext), from_hex(detachedCipher2.mac), nonce, from_hex(keyPair2.publicKey), from_hex(keyPair1.privateKey));
+				log('Plaintext: ' + libsodium.decode_utf8(plainText1));
+				log('Are plaintexts equal: ' + (to_hex(plainText1) == to_hex(plainText2)));
 
 				return logStr;
 			}
@@ -192,7 +195,7 @@
 				log('Salt: ' + libsodium.to_hex(salt));
 				var r = 8, p = 1, opsLimit = 16384, keySize = 32;
 				log('r = ' + r + ', p = ' + p + ', opsLimit = ' + opsLimit + ', keySize = ' + keySize);
-				var derivedKey = libsodium.crypto_pwhash_scryptsalsa208sha256_ll(password, salt, opsLimit, r, p, keySize);
+				var derivedKey = libsodium.crypto_pwhash_scryptsalsa208sha256_ll(password, salt, opsLimit, r, p, keySize, 'hex');
 				log('Derived key: ' + derivedKey);
 
 				try {

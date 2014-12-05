@@ -1,6 +1,8 @@
 var libsodium_test = (function(){
 
 	var t = {};
+	var to_hex = libsodium.to_hex;
+	var from_hex = libsodium.from_hex;
 
 	t.scrypt = function(){
 		if (typeof libsodium.crypto_pwhash_scryptsalsa208sha256 != 'function')
@@ -31,7 +33,7 @@ var libsodium_test = (function(){
 
 		function testVector(v){
 			var derivedKey = libsodium.crypto_pwhash_scryptsalsa208sha256_ll(v.pass, v.salt, v.opsLimit, v.r, v.p, v.keyLength);
-			if (v.result != derivedKey){
+			if (v.result != to_hex(derivedKey)){
 				throw new Error('Error in pwhash_scryptsalsa208sha256_ll with vector ' + JSON.stringify(v));
 			}
 		}
@@ -42,9 +44,9 @@ var libsodium_test = (function(){
 
 		function scalarmult_base_test(){
 			var secretKey = '5dab087e624a8a4b79e17f8b83800ee66f3bb1292618b6fd1c2f8b27ff88e0eb';
-			var publicKey = libsodium.crypto_scalarmult_base(secretKey);
+			var publicKey = libsodium.crypto_scalarmult_base(from_hex(secretKey));
 			var expectedPubKey = 'de9edb7d7b7dc1b4d35b61c2ece435373f8343c85b78674dadfc7e146f882b4f';
-			if (publicKey != expectedPubKey) throw new Error('Error in scalarmult_base');
+			if (to_hex(publicKey) != expectedPubKey) throw new Error('Error in scalarmult_base');
 		}
 		scalarmult_base_test();
 
@@ -62,8 +64,8 @@ var libsodium_test = (function(){
 		];
 
 		function scalarmult_test(v){
-			var sharedSecret = libsodium.crypto_scalarmult(v.secretKey, v.publicKey);
-			if (v.sharedSecret != sharedSecret) throw new Error('Error in scalarmult with vector ' + JSON.stringify(v));
+			var sharedSecret = libsodium.crypto_scalarmult(from_hex(v.secretKey), from_hex(v.publicKey));
+			if (v.sharedSecret != to_hex(sharedSecret)) throw new Error('Error in scalarmult with vector ' + JSON.stringify(v));
 		}
 		scalarmult_vectors.forEach(scalarmult_test);
 
@@ -86,8 +88,8 @@ var libsodium_test = (function(){
 				return;
 			}
 			var currentVector;
-			console.log('Testing ' + vData.length + ' vectors');
 			var nTests = 64;
+			console.log('Testing ' + nTests + ' Ed25519 vectors');
 			var testCount = 0;
 			try {
 				while (testCount < nTests){
@@ -96,6 +98,7 @@ var libsodium_test = (function(){
 					testCount++;
 				}
 			} catch (e){
+				console.log('Error on test no. ' + testCount);
 				callback(e + ' ' + JSON.stringify(currentVector));
 				return;
 			}
@@ -104,9 +107,9 @@ var libsodium_test = (function(){
 			function testVector(v){
 				var publicKey = v.sk.substr(64); //libsodium.crypto_sign_ed25519_sk_to_pk(v.sk);
 				if (publicKey != v.pk) throw new Error('error with sk to pk derivation in Ed25519');
-				var signature = libsodium.crypto_sign_detached(v.m, v.sk);
-				if (signature != v.s) throw new Error('unexpected signature in Ed25519');
-				var isValid = libsodium.crypto_sign_verify_detached(signature, v.m, publicKey);
+				var signature = libsodium.crypto_sign_detached(from_hex(v.m), from_hex(v.sk));
+				if (to_hex(signature) != v.s) throw new Error('unexpected signature in Ed25519');
+				var isValid = libsodium.crypto_sign_verify_detached(signature, from_hex(v.m), from_hex(publicKey));
 				if (!isValid) throw new Error('invalid signature in Ed25519');
 			}
 		};

@@ -2,7 +2,6 @@
 	"name": "crypto_sign_open",
 	"dependencies": ["_crypto_sign_publickeybytes", "_crypto_sign_bytes"],
 	"type": "function",
-	"noEncoding": true,
 	"inputs": [
 		{
 			"name": "signedMessage",

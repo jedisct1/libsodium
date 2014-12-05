@@ -45,6 +45,7 @@ var libsodium = (function () {
 	}
 
 	function from_hex(s) {
+		if (!is_hex(s)) throw new TypeError('The provided string doesn\'t look like hex data');
 		var result = new Uint8Array(s.length / 2);
 		for (var i = 0; i < s.length / 2; i++) {
 			result[i] = parseInt(s.substr(2*i,2),16);
