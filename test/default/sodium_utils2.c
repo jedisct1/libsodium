@@ -50,7 +50,7 @@ int main(void)
         buf = sodium_malloc(size);
         assert(buf != NULL);
         memset(buf, i, size);
-        sodium_mprotect_readonly(buf);
+        sodium_mprotect_noaccess(buf);
         sodium_free(buf);
     }
     printf("OK\n");

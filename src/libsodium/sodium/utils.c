@@ -429,6 +429,7 @@ sodium_free(void *ptr)
         return;
     }
     canary_ptr = ((unsigned char *) ptr) - sizeof canary;
+    sodium_mprotect_readwrite(ptr);
     if (sodium_memcmp(canary_ptr, canary, sizeof canary) != 0) {
         _out_of_bounds();
     }
@@ -436,7 +437,6 @@ sodium_free(void *ptr)
     base_ptr = unprotected_ptr - page_size * 2U;
     memcpy(&unprotected_size, base_ptr, sizeof unprotected_size);
     total_size = page_size + page_size + unprotected_size + page_size;
-    _mprotect_readwrite(base_ptr, total_size);
 #ifndef HAVE_PAGE_PROTECTION
     if (sodium_memcmp(unprotected_ptr + unprotected_size,
                       canary, sizeof canary) != 0) {
