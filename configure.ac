@@ -1,4 +1,4 @@
-AC_PREREQ([2.65])
+AC_PREREQ([2.63])
 AC_INIT([libsodium],[1.0.1],
   [https://github.com/jedisct1/libsodium/issues],
   [libsodium],
@@ -9,6 +9,7 @@ AC_CONFIG_SRCDIR([src/libsodium/sodium/version.c])
 AC_CANONICAL_HOST
 AM_INIT_AUTOMAKE([1.11 dist-bzip2 tar-ustar foreign subdir-objects])
 m4_ifdef([AM_SILENT_RULES], [AM_SILENT_RULES([yes])])
+m4_ifndef([AS_VAR_APPEND], AC_DEFUN([AS_VAR_APPEND], $1=$$1$2))
 AM_MAINTAINER_MODE
 AM_DEP_TRACK
 
