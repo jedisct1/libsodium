@@ -13,11 +13,14 @@ export PREFIX="$(pwd)/libsodium-ios"
 export IOS_PREFIX="$PREFIX/tmp/osx"
 export OSX_PREFIX="$PREFIX/tmp/ios"
 
-mkdir -p $IOS_PREFIX && mkdir -p $OSX_PREFIX
+mkdir -p $IOS_PREFIX $OSX_PREFIX || exit 1
 
 # Build for OSX First
 
-./configure --prefix="$OSX_PREFIX" 
+./configure --disable-shared \
+            --enable-minimal \
+            --prefix="$OSX_PREFIX"
+
 make clean && make -j3 install
 
 # Cleanup
