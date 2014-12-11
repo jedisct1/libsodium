@@ -16,7 +16,6 @@ export OSX_PREFIX="$PREFIX/tmp/ios"
 mkdir -p $IOS_PREFIX $OSX_PREFIX || exit 1
 
 # Build for OSX First
-
 ./configure --disable-shared \
             --enable-minimal \
             --prefix="$OSX_PREFIX"
@@ -24,10 +23,9 @@ mkdir -p $IOS_PREFIX $OSX_PREFIX || exit 1
 make clean && make -j3 install
 
 # Cleanup
-rm Makefile
+make distclean
 
 # Build for iOS
-
 export XCODEDIR=$(xcode-select -p)
 export BASEDIR="${XCODEDIR}/Platforms/iPhoneOS.platform/Developer"
 export PATH="${BASEDIR}/usr/bin:$BASEDIR/usr/sbin:$PATH"
