@@ -51,6 +51,7 @@ mv -f -- "$IOS_PREFIX/include" "$PREFIX/"
 echo
 echo "libsodium has been installed into $PREFIX"
 echo
+file -- "$PREFIX/libsodium.a"
 
 # Cleanup
 rm -rf -- "$PREFIX/tmp"
