@@ -9,6 +9,7 @@ var libsodium = (function () {
 	//---------------------------------------------------------------------------
 	// Horrifying UTF-8 and hex codecs
 
+	//UTF8 to Uint8Array
 	function encode_utf8(s) {
 	return encode_latin1(unescape(encodeURIComponent(s)));
 	}
@@ -23,6 +24,7 @@ var libsodium = (function () {
 	return result;
 	}
 
+	//Uint8Array to UTF8
 	function decode_utf8(bs) {
 	return decodeURIComponent(escape(decode_latin1(bs)));
 	}
@@ -87,6 +89,8 @@ var libsodium = (function () {
 				encodedResult[props[i]] = encodeResult(result[props[i]], selectedEncoding);
 			}
 			return encodedResult;
+		} else if (typeof result == 'string') {
+			return result;
 		} else { //What to do if we have a result to encode, that is not a buffer nor an object?
 			throw new TypeError('Cannot encode result');
 		}

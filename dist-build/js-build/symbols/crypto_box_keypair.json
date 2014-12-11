@@ -15,5 +15,5 @@
 		}
 	],
 	"target": "libsodium_raw._crypto_box_keypair(publicKey_byte, secretKey_byte)",
-	"return": "return encodeResult({publicKey: publicKey, privateKey: secretKey}, resultEncoding)"
+	"return": "return encodeResult({publicKey: publicKey, privateKey: secretKey, keyType: 'curve25519'}, resultEncoding)"
 }
