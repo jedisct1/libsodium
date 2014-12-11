@@ -42,13 +42,15 @@ export LDFLAGS="-mthumb -arch armv7 -arch arm64 -isysroot ${SDK} -miphoneos-vers
 make clean > /dev/null && make -j3 install
 
 # Create universal binary and include folder
-lipo -create "$IOS_PREFIX/lib/libsodium.a" "$OSX_PREFIX/lib/libsodium.a" -output "$PREFIX/libsodium.a" 
-cp -r "$IOS_PREFIX/include" "$PREFIX/include"
+rm -fr -- "$PREFIX/include" "$PREFIX/libsodium.a" 2> /dev/null
+mkdir -p -- "$PREFIX"
+lipo -create "$IOS_PREFIX/lib/libsodium.a" "$OSX_PREFIX/lib/libsodium.a" -output "$PREFIX/libsodium.a"
+mv -f -- "$IOS_PREFIX/include" "$PREFIX/"
 
 echo
 echo "libsodium has been installed into $PREFIX"
 echo
 
 # Cleanup
-rm -rf "$PREFIX/tmp"
+rm -rf -- "$PREFIX/tmp"
 make distclean > /dev/null
