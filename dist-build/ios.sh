@@ -21,7 +21,7 @@ export CFLAGS="-Oz"
             --enable-minimal \
             --prefix="$OSX_PREFIX"
 
-make clean > /dev/null && make -j3 install
+make clean > /dev/null && make -j3 check && make -j3 install
 
 # Cleanup
 make distclean > /dev/null
