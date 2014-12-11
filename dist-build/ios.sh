@@ -45,6 +45,8 @@ make clean && make -j3 install
 lipo -create "$IOS_PREFIX/lib/libsodium.a" "$OSX_PREFIX/lib/libsodium.a" -output "$PREFIX/libsodium.a" 
 cp -r "$IOS_PREFIX/include" "$PREFIX/include"
 
+echo "libsodium has been installed into $PREFIX"
+
 # Cleanup
 rm -rf "$PREFIX/tmp"
-rm Makefile
+make distclean
