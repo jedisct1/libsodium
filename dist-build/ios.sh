@@ -16,6 +16,7 @@ export OSX_PREFIX="$PREFIX/tmp/ios"
 mkdir -p $IOS_PREFIX $OSX_PREFIX || exit 1
 
 # Build for OSX First
+export CFLAGS="-Oz"
 ./configure --disable-shared \
             --enable-minimal \
             --prefix="$OSX_PREFIX"
