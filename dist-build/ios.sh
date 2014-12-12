@@ -10,8 +10,8 @@
 #  Merge libs into final version for xcode import
 
 export PREFIX="$(pwd)/libsodium-ios"
-export IOS_PREFIX="$PREFIX/tmp/osx"
-export OSX_PREFIX="$PREFIX/tmp/ios"
+export IOS_PREFIX="$PREFIX/tmp/ios"
+export OSX_PREFIX="$PREFIX/tmp/osx"
 
 mkdir -p $IOS_PREFIX $OSX_PREFIX || exit 1
 
