@@ -11,20 +11,32 @@
 
 export PREFIX="$(pwd)/libsodium-ios"
 export IOS_PREFIX="$PREFIX/tmp/ios"
-export OSX_PREFIX="$PREFIX/tmp/osx"
+export OSX32_PREFIX="$PREFIX/tmp/osx32"
+export OSX64_PREFIX="$PREFIX/tmp/osx64"
 
-mkdir -p $IOS_PREFIX $OSX_PREFIX || exit 1
+mkdir -p $IOS_PREFIX $OSX32_PREFIX $OSX64_PREFIX || exit 1
 
-# Build for OSX First
-export CFLAGS="-Oz"
+# Build for OSX32 First
+export CFLAGS="-Oz -arch i386"
 ./configure --disable-shared \
             --enable-minimal \
-            --prefix="$OSX_PREFIX"
+            --prefix="$OSX32_PREFIX" || exit 1
 
-make clean > /dev/null && make -j3 check && make -j3 install
+make clean > /dev/null && make -j3 check && make -j3 install || exit 1
 
 # Cleanup
 make distclean > /dev/null
+
+# Build for OSX64 Then
+export CFLAGS="-Oz -arch x86_64"
+./configure --disable-shared \
+            --enable-minimal \
+            --prefix="$OSX64_PREFIX"
+
+make clean > /dev/null && make -j3 check && make -j3 install || exit 1
+
+# Cleanup
+make distclean > /dev/null || exit 1
 
 # Build for iOS
 export XCODEDIR=$(xcode-select -p)
@@ -38,14 +50,14 @@ export LDFLAGS="-mthumb -arch armv7 -arch arm64 -isysroot ${SDK} -miphoneos-vers
 ./configure --host=arm-apple-darwin10 \
             --disable-shared \
             --enable-minimal \
-            --prefix="$IOS_PREFIX" 
+            --prefix="$IOS_PREFIX" || exit 1
 
-make clean > /dev/null && make -j3 install
+make clean > /dev/null && make -j3 install || exit 1
 
 # Create universal binary and include folder
 rm -fr -- "$PREFIX/include" "$PREFIX/libsodium.a" 2> /dev/null
 mkdir -p -- "$PREFIX"
-lipo -create "$IOS_PREFIX/lib/libsodium.a" "$OSX_PREFIX/lib/libsodium.a" -output "$PREFIX/libsodium.a"
+lipo -create "$IOS_PREFIX/lib/libsodium.a" "$OSX32_PREFIX/lib/libsodium.a" "$OSX64_PREFIX/lib/libsodium.a" -output "$PREFIX/libsodium.a"
 mv -f -- "$IOS_PREFIX/include" "$PREFIX/"
 
 echo
