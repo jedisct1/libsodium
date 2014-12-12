@@ -315,7 +315,7 @@ _alloc_aligned(const size_t size)
 #elif defined(_WIN32)
     ptr = VirtualAlloc(NULL, size, MEM_COMMIT | MEM_RESERVE, PAGE_READWRITE);
 #elif !defined(HAVE_ALIGNED_MALLOC)
-    ptr = malloc(size);
+# error Unsupported configuration
 #else
 # error Bug
 #endif
