@@ -217,8 +217,13 @@ _sodium_alloc_init(void)
     SYSTEM_INFO si;
     GetSystemInfo(&si);
     page_size = (size_t) si.dwPageSize;
+#else
+    page_size = CANARY_SIZE;
+    if (page_size < sizeof(size_t)) {
+        page_size = sizeof(size_t);
+    }
 #endif
-    if (page_size < CANARY_SIZE) {
+    if (page_size < CANARY_SIZE || page_size < sizeof(size_t)) {
         abort(); /* LCOV_EXCL_LINE */
     }
     randombytes_buf(canary, sizeof canary);
