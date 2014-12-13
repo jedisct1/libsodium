@@ -6,6 +6,10 @@
 		{
 			"name": "message",
 			"type": "unsized_buffer"
+		},
+		{
+			"name": "additionalData",
+			"type": "unsized_buffer"
 		}
 	],
 	"outputs": [
