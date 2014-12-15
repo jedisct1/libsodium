@@ -1,0 +1,25 @@
+{
+	"name": "crypto_auth_hmacsha256",
+	"type": "function",
+	"dependencies": [],
+	"inputs": [
+		{
+			"name": "message",
+			"type": "unsized_buffer"
+		},
+		{
+			"name": "key",
+			"type": "buffer",
+			"size": "libsodium_raw._crypto_auth_hmacsha256_keybytes()"
+		}
+	],
+	"outputs": [
+		{
+			"name": "hash",
+			"type": "buffer",
+			"size": "libsodium_raw._crypto_auth_hmacsha256_bytes()"
+		}
+	],
+	"target": "libsodium_raw._crypto_auth_hmacsha256(hash_byte, message_byte, message_size, 0, key_byte)",
+	"return": "return encodeResult(hash, resultEncoding)"
+}

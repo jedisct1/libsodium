@@ -1,0 +1,25 @@
+{
+	"name": "crypto_onetimeauth",
+	"type": "function",
+	"dependencies": [],
+	"inputs": [
+		{
+			"name": "message",
+			"type": "unsized_buffer"
+		},
+		{
+			"name": "key",
+			"type": "buffer",
+			"size": "libsodium_raw._crypto_onetimeauth_keybytes()"
+		}
+	],
+	"outputs": [
+		{
+			"name": "hash",
+			"type": "buffer",
+			"size": "libsodium_raw._crypto_onetimeauth_bytes()"
+		}
+	],
+	"target": "libsodium_raw._crypto_onetimeauth(hash_byte, message_byte, message_size, 0, key_byte)",
+	"return": "encodeResult(hash, resultEncoding)"
+}

@@ -1,0 +1,25 @@
+{
+	"name": "crypto_onetimeauth_verify",
+	"type": "function",
+	"dependencies": [],
+	"noEncoding": true,
+	"inputs": [
+		{
+			"name": "hash",
+			"type": "buffer",
+			"size": "libsodium_raw._crypto_onetimeauth_bytes()"
+		},
+		{
+			"name": "message",
+			"type": "unsized_buffer"
+		},
+		{
+			"name": "key",
+			"type": "buffer",
+			"size": "libsodium_raw._crypto_onetimeauth_keybytes()"
+		}
+	],
+	"outputs": [],
+	"target": "var result = libsodium_raw._crypto_onetimeauth_verify(hash_byte, message_byte, message_size, 0, key_byte)",
+	"return": "return result == 0"
+}
