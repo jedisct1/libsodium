@@ -7,7 +7,7 @@ var libsodium = (function () {
 	//libsodium_raw._sodium_init();
 
 	//---------------------------------------------------------------------------
-	// Horrifying UTF-8 and hex codecs
+	// Horrifying UTF-8, base64 and hex codecs
 
 	//UTF8 to Uint8Array
 	function encode_utf8(s) {
@@ -59,8 +59,78 @@ var libsodium = (function () {
 		return (typeof s == 'string' && /^([a-f]|[0-9])+$/i.test(s) && s.length % 2 == 0);
 	}
 
+	/**
+	* Base64 <-> Uint8Array conversion tools.
+	* Harvested from MDN:
+	* https://developer.mozilla.org/en-US/docs/Web/JavaScript/Base64_encoding_and_decoding
+	*/
+	function b64ToUint6 (nChr) {
+		return nChr > 64 && nChr < 91 ?
+			nChr - 65
+			: nChr > 96 && nChr < 123 ?
+			nChr - 71
+			: nChr > 47 && nChr < 58 ?
+			nChr + 4
+			: nChr === 43 ?
+			62
+			: nChr === 47 ?
+			63
+			:
+			0;
+	}
+
+	function base64DecToArr (sBase64, nBlocksSize) {
+		var
+			sB64Enc = sBase64.replace(/[^A-Za-z0-9\+\/]/g, ""), nInLen = sB64Enc.length,
+			nOutLen = nBlocksSize ? Math.ceil((nInLen * 3 + 1 >> 2) / nBlocksSize) * nBlocksSize : nInLen * 3 + 1 >> 2, taBytes = new Uint8Array(nOutLen);
+		for (var nMod3, nMod4, nUint24 = 0, nOutIdx = 0, nInIdx = 0; nInIdx < nInLen; nInIdx++) {
+			nMod4 = nInIdx & 3;
+			nUint24 |= b64ToUint6(sB64Enc.charCodeAt(nInIdx)) << 18 - 6 * nMod4;
+			if (nMod4 === 3 || nInLen - nInIdx === 1) {
+				for (nMod3 = 0; nMod3 < 3 && nOutIdx < nOutLen; nMod3++, nOutIdx++) {
+					taBytes[nOutIdx] = nUint24 >>> (16 >>> nMod3 & 24) & 255;
+				}
+				nUint24 = 0;
+			}
+		}
+		return taBytes;
+	}
+
+	/* Base64 string to array encoding */
+
+	function uint6ToB64 (nUint6) {
+		return nUint6 < 26 ?
+			nUint6 + 65
+			: nUint6 < 52 ?
+			nUint6 + 71
+			: nUint6 < 62 ?
+			nUint6 - 4
+			: nUint6 === 62 ?
+			43
+			: nUint6 === 63 ?
+			47
+			:
+			65;
+	}
+
+	function base64EncArr (aBytes) {
+		var nMod3 = 2, sB64Enc = "";
+		for (var nLen = aBytes.length, nUint24 = 0, nIdx = 0; nIdx < nLen; nIdx++) {
+			nMod3 = nIdx % 3;
+			if (nIdx > 0 && (nIdx * 4 / 3) % 76 === 0) { sB64Enc += "\r\n"; }
+			nUint24 |= aBytes[nIdx] << (16 >>> nMod3 & 24);
+			if (nMod3 === 2 || aBytes.length - nIdx === 1) {
+			sB64Enc += String.fromCharCode(uint6ToB64(nUint24 >>> 18 & 63), uint6ToB64(nUint24 >>> 12 & 63), uint6ToB64(nUint24 >>> 6 & 63), uint6ToB64(nUint24 & 63));
+			nUint24 = 0;
+			}
+		}
+		return sB64Enc.substr(0, sB64Enc.length - 2 + nMod3) + (nMod3 === 2 ? '' : nMod3 === 1 ? '=' : '==');
+	}
+	var to_base64 = base64EncArr;
+	var from_base64 = base64DecToArr;
+
 	function available_encodings(){
-		return ['hex', 'utf8', 'uint8array'];
+		return ['hex', 'base64', 'utf8', 'uint8array'];
 	}
 
 	function set_encoding(enc){
@@ -81,6 +151,7 @@ var libsodium = (function () {
 			if (selectedEncoding == 'uint8array') return buf;
 			else if (selectedEncoding == 'utf8') return decode_utf8(buf);
 			else if (selectedEncoding == 'hex') return to_hex(buf);
+			else if (selectedEncoding == 'base64') return to_base64(buf);
 			else throw new Error('Internal error: what is encoding "' + selectedEncoding + '"?');
 		} else if (typeof result == 'object') { //Composed results. Example : key pairs
 			var props = Object.keys(result);
@@ -188,6 +259,8 @@ var libsodium = (function () {
 	exports.to_hex              = to_hex;
 	exports.from_hex            = from_hex;
 	exports.is_hex              = is_hex;
+	exports.to_base64           = to_base64;
+	exports.from_base64         = from_base64;
 	exports.available_encodings = available_encodings;
 	exports.set_encoding        = set_encoding;
 	exports.get_encoding        = get_encoding;
