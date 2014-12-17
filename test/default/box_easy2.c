@@ -17,12 +17,12 @@ int main(void)
     size_t         mlen;
     size_t         i;
 
-    alicepk = sodium_malloc(crypto_box_PUBLICKEYBYTES);
-    alicesk = sodium_malloc(crypto_box_SECRETKEYBYTES);
-    bobpk = sodium_malloc(crypto_box_PUBLICKEYBYTES);
-    bobsk = sodium_malloc(crypto_box_SECRETKEYBYTES);
-    mac = sodium_malloc(crypto_box_MACBYTES);
-    nonce = sodium_malloc(crypto_box_NONCEBYTES);    
+    alicepk = (unsigned char *) sodium_malloc(crypto_box_PUBLICKEYBYTES);
+    alicesk = (unsigned char *) sodium_malloc(crypto_box_SECRETKEYBYTES);
+    bobpk = (unsigned char *) sodium_malloc(crypto_box_PUBLICKEYBYTES);
+    bobsk = (unsigned char *) sodium_malloc(crypto_box_SECRETKEYBYTES);
+    mac = (unsigned char *) sodium_malloc(crypto_box_MACBYTES);
+    nonce = (unsigned char *) sodium_malloc(crypto_box_NONCEBYTES);
     crypto_box_keypair(alicepk, alicesk);
     crypto_box_keypair(bobpk, bobsk);
     mlen = (size_t) randombytes_uniform((uint32_t)sizeof m);
@@ -59,7 +59,7 @@ int main(void)
                         nonce, bobsk, alicepk);
     crypto_box_open_detached(m2, c, mac, (unsigned long long) mlen,
                              nonce, alicepk, bobsk);
-    printf("%d\n", memcmp(m, m2, mlen));    
+    printf("%d\n", memcmp(m, m2, mlen));
     sodium_free(alicepk);
     sodium_free(alicesk);
     sodium_free(bobpk);
