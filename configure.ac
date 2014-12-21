@@ -38,6 +38,12 @@ AC_SUBST(DLL_VERSION)
 
 LX_CFLAGS=${CFLAGS-NONE}
 
+dnl Path check
+
+AS_IF([test pwd | fgrep ' ' > /dev/null 2>&1],
+  [AC_MSG_WARN([The build directory contains whitespaces - This can cause tests/installation to fail due to limitations of some libtool versions])]
+)
+
 dnl Switches
 
 AC_ARG_ENABLE(ssp,
