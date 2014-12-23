@@ -78,10 +78,10 @@ AC_ARG_ENABLE(pie,
 AS_CASE([$host_os], [mingw*|cygwin*|msys], [enable_pie="no"])
 
 AC_ARG_ENABLE(blocking-random,
-[AS_HELP_STRING(--enable-blocking-random,Use /dev/random instead of /dev/urandom)],
+[AS_HELP_STRING(--enable-blocking-random,Enable this switch only if /dev/urandom is totally broken on the target platform)],
 [
   AS_IF([test "x$enableval" = "xyes"], [
-    AC_DEFINE([USE_BLOCKING_RANDOM], [1], [Use blocking random])
+    AC_DEFINE([USE_BLOCKING_RANDOM], [1], [/dev/urandom is insecure on the target platform])
   ])
 ])
 
