@@ -94,7 +94,7 @@ safe_read(const int fd, void * const buf_, size_t count)
     assert(count > (size_t) 0U);
     do {
         while ((readnb = read(fd, buf, count)) < (ssize_t) 0 &&
-               errno == EINTR);  /* LCOV_EXCL_LINE */
+               (errno == EINTR || errno == EAGAIN));  /* LCOV_EXCL_LINE */
         if (readnb < (ssize_t) 0) {
             return readnb; /* LCOV_EXCL_LINE */
         }
@@ -125,15 +125,22 @@ randombytes_salsa20_random_random_dev_open(void)
     int               fd;
 
     do {
-        if ((fd = open(*device, O_RDONLY)) != -1) {
+        fd = open(*device, O_RDONLY);
+        if (fd != -1) {
             if (fstat(fd, &st) == 0 && S_ISCHR(st.st_mode)) {
+# if defined(F_SETFD) && defined(FD_CLOEXEC)
+                (void) fcntl(fd, F_SETFD, fcntl(fd, F_GETFD) | FD_CLOEXEC);
+# endif
                 return fd;
             }
             (void) close(fd);
+        } else if (errno == EINTR) {
+            continue;
         }
         device++;
     } while (*device != NULL);
 
+    errno = EIO;
     return -1;
 /* LCOV_EXCL_STOP */
 }
