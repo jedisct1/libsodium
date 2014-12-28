@@ -162,7 +162,7 @@ AS_IF([test "$enable_pie" != "no"],[
     AX_CHECK_LINK_FLAG([-fPIE],
       [AX_CHECK_LINK_FLAG([-pie],
         [CFLAGS="$CFLAGS -fPIE"
-         LDFLAGS="$LDFLAGS -pie"])
+         LDFLAGS="$LDFLAGS -Wl,-pie"])
     ])
   ])
 ])
