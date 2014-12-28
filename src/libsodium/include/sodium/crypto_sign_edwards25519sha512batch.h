@@ -36,14 +36,14 @@ size_t crypto_sign_edwards25519sha512batch_secretkeybytes(void);
 
 SODIUM_EXPORT
 int crypto_sign_edwards25519sha512batch(unsigned char *sm,
-                                        unsigned long long *smlen,
+                                        unsigned long long *smlen_p,
                                         const unsigned char *m,
                                         unsigned long long mlen,
                                         const unsigned char *sk);
 
 SODIUM_EXPORT
 int crypto_sign_edwards25519sha512batch_open(unsigned char *m,
-                                             unsigned long long *mlen,
+                                             unsigned long long *mlen_p,
                                              const unsigned char *sm,
                                              unsigned long long smlen,
                                              const unsigned char *pk);

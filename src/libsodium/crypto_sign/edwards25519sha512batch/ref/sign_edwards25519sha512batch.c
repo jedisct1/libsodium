@@ -27,7 +27,7 @@ int crypto_sign_keypair(
 }
 
 int crypto_sign(
-    unsigned char *sm,unsigned long long *smlen,
+    unsigned char *sm,unsigned long long *smlen_p,
     const unsigned char *m,unsigned long long mlen,
     const unsigned char *sk
     )
@@ -40,7 +40,9 @@ int crypto_sign(
   unsigned char hmg[crypto_hash_sha512_BYTES];
   unsigned char hmr[crypto_hash_sha512_BYTES];
 
-  *smlen = mlen+64;
+  if (smlen_p != NULL) {
+    *smlen_p = mlen+64;
+  }
   for(i=0;i<mlen;i++)
     sm[32 + i] = m[i];
   for(i=0;i<32;i++)
@@ -69,7 +71,7 @@ int crypto_sign(
 }
 
 int crypto_sign_open(
-    unsigned char *m,unsigned long long *mlen,
+    unsigned char *m,unsigned long long *mlen_p,
     const unsigned char *sm,unsigned long long smlen,
     const unsigned char *pk
     )
@@ -94,9 +96,11 @@ int crypto_sign_open(
   ge25519_scalarmult_base(&get2, &scs);
   ge25519_pack(t2, &get2);
 
-  for(i=0;i<smlen-64;i++)
+  for(i=0;i<smlen-64;i++) {
     m[i] = sm[i + 32];
-  *mlen = smlen-64;
-
+  }
+  if (mlen_p != NULL) {
+    *mlen_p = smlen-64;
+  }
   return crypto_verify_32(t1, t2);
 }

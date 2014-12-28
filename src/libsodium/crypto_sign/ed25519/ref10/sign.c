@@ -8,7 +8,7 @@
 #include "utils.h"
 
 int
-crypto_sign_detached(unsigned char *sig, unsigned long long *siglen,
+crypto_sign_detached(unsigned char *sig, unsigned long long *siglen_p,
                      const unsigned char *m, unsigned long long mlen,
                      const unsigned char *sk)
 {
@@ -48,14 +48,14 @@ crypto_sign_detached(unsigned char *sig, unsigned long long *siglen,
     sodium_memzero(az, sizeof az);
     sodium_memzero(nonce, sizeof nonce);
 
-    if (siglen != NULL) {
-        *siglen = 64U;
+    if (siglen_p != NULL) {
+        *siglen_p = 64U;
     }
     return 0;
 }
 
 int
-crypto_sign(unsigned char *sm, unsigned long long *smlen,
+crypto_sign(unsigned char *sm, unsigned long long *smlen_p,
             const unsigned char *m, unsigned long long mlen,
             const unsigned char *sk)
 {
@@ -66,16 +66,16 @@ crypto_sign(unsigned char *sm, unsigned long long *smlen,
     if (crypto_sign_detached(sm, &siglen, sm + crypto_sign_ed25519_BYTES,
                              mlen, sk) != 0 ||
         siglen != crypto_sign_ed25519_BYTES) {
-        if (smlen != NULL) {
-            *smlen = 0;
+        if (smlen_p != NULL) {
+            *smlen_p = 0;
         }
         memset(sm, 0, mlen + crypto_sign_ed25519_BYTES);
         return -1;
     }
 /* LCOV_EXCL_STOP */
 
-    if (smlen != NULL) {
-        *smlen = mlen + siglen;
+    if (smlen_p != NULL) {
+        *smlen_p = mlen + siglen;
     }
     return 0;
 }
