@@ -169,7 +169,6 @@ AS_IF([test "$enable_pie" != "no"],[
                 LDFLAGS="$LDFLAGS -pie"
             ])
         ])
-        AX_CHECK_LINK_FLAG([-pie], [])
     ])
   ])
 ])
