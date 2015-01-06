@@ -40,8 +40,8 @@ crypto_box_easy(unsigned char *c, const unsigned char *m,
 int
 crypto_box_open_detached(unsigned char *m, const unsigned char *c,
                          const unsigned char *mac,
-                              unsigned long long clen, const unsigned char *n,
-                              const unsigned char *pk, const unsigned char *sk)
+                         unsigned long long clen, const unsigned char *n,
+                         const unsigned char *pk, const unsigned char *sk)
 {
     unsigned char k[crypto_box_BEFORENMBYTES];
     int           ret;
