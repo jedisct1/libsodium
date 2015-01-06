@@ -32,21 +32,9 @@ size_t  crypto_box_publickeybytes(void);
 SODIUM_EXPORT
 size_t  crypto_box_secretkeybytes(void);
 
-#define crypto_box_BEFORENMBYTES crypto_box_curve25519xsalsa20poly1305_BEFORENMBYTES
-SODIUM_EXPORT
-size_t  crypto_box_beforenmbytes(void);
-
 #define crypto_box_NONCEBYTES crypto_box_curve25519xsalsa20poly1305_NONCEBYTES
 SODIUM_EXPORT
 size_t  crypto_box_noncebytes(void);
-
-#define crypto_box_ZEROBYTES crypto_box_curve25519xsalsa20poly1305_ZEROBYTES
-SODIUM_EXPORT
-size_t  crypto_box_zerobytes(void);
-
-#define crypto_box_BOXZEROBYTES crypto_box_curve25519xsalsa20poly1305_BOXZEROBYTES
-SODIUM_EXPORT
-size_t  crypto_box_boxzerobytes(void);
 
 #define crypto_box_MACBYTES crypto_box_curve25519xsalsa20poly1305_MACBYTES
 SODIUM_EXPORT
@@ -62,30 +50,6 @@ int crypto_box_seed_keypair(unsigned char *pk, unsigned char *sk,
 
 SODIUM_EXPORT
 int crypto_box_keypair(unsigned char *pk, unsigned char *sk);
-
-SODIUM_EXPORT
-int crypto_box_beforenm(unsigned char *k, const unsigned char *pk,
-                        const unsigned char *sk);
-
-SODIUM_EXPORT
-int crypto_box_afternm(unsigned char *c, const unsigned char *m,
-                       unsigned long long mlen, const unsigned char *n,
-                       const unsigned char *k);
-
-SODIUM_EXPORT
-int crypto_box_open_afternm(unsigned char *m, const unsigned char *c,
-                            unsigned long long clen, const unsigned char *n,
-                            const unsigned char *k);
-
-SODIUM_EXPORT
-int crypto_box(unsigned char *c, const unsigned char *m,
-               unsigned long long mlen, const unsigned char *n,
-               const unsigned char *pk, const unsigned char *sk);
-
-SODIUM_EXPORT
-int crypto_box_open(unsigned char *m, const unsigned char *c,
-                    unsigned long long clen, const unsigned char *n,
-                    const unsigned char *pk, const unsigned char *sk);
 
 SODIUM_EXPORT
 int crypto_box_easy(unsigned char *c, const unsigned char *m,
@@ -110,6 +74,67 @@ int crypto_box_open_detached(unsigned char *m, const unsigned char *c,
                              const unsigned char *n,
                              const unsigned char *pk,
                              const unsigned char *sk);
+
+/* -- Precomputation interface -- */
+
+#define crypto_box_BEFORENMBYTES crypto_box_curve25519xsalsa20poly1305_BEFORENMBYTES
+SODIUM_EXPORT
+size_t  crypto_box_beforenmbytes(void);
+
+SODIUM_EXPORT
+int crypto_box_beforenm(unsigned char *k, const unsigned char *pk,
+                        const unsigned char *sk);
+
+SODIUM_EXPORT
+int crypto_box_easy_afternm(unsigned char *c, const unsigned char *m,
+                            unsigned long long mlen, const unsigned char *n,
+                            const unsigned char *k);
+
+SODIUM_EXPORT
+int crypto_box_open_easy_afternm(unsigned char *m, const unsigned char *c,
+                                 unsigned long long clen, const unsigned char *n,
+                                 const unsigned char *k);
+
+SODIUM_EXPORT
+int crypto_box_detached_afternm(unsigned char *c, unsigned char *mac,
+                                const unsigned char *m, unsigned long long mlen,
+                                const unsigned char *n, const unsigned char *k);
+
+SODIUM_EXPORT
+int crypto_box_open_detached_afternm(unsigned char *m, const unsigned char *c,
+                                     const unsigned char *mac,
+                                     unsigned long long clen, const unsigned char *n,
+                                     const unsigned char *k);
+
+/* -- Compatibility layer with NaCl -- */
+
+#define crypto_box_ZEROBYTES crypto_box_curve25519xsalsa20poly1305_ZEROBYTES
+SODIUM_EXPORT
+size_t  crypto_box_zerobytes(void);
+
+#define crypto_box_BOXZEROBYTES crypto_box_curve25519xsalsa20poly1305_BOXZEROBYTES
+SODIUM_EXPORT
+size_t  crypto_box_boxzerobytes(void);
+
+SODIUM_EXPORT
+int crypto_box(unsigned char *c, const unsigned char *m,
+               unsigned long long mlen, const unsigned char *n,
+               const unsigned char *pk, const unsigned char *sk);
+
+SODIUM_EXPORT
+int crypto_box_open(unsigned char *m, const unsigned char *c,
+                    unsigned long long clen, const unsigned char *n,
+                    const unsigned char *pk, const unsigned char *sk);
+
+SODIUM_EXPORT
+int crypto_box_afternm(unsigned char *c, const unsigned char *m,
+                       unsigned long long mlen, const unsigned char *n,
+                       const unsigned char *k);
+
+SODIUM_EXPORT
+int crypto_box_open_afternm(unsigned char *m, const unsigned char *c,
+                            unsigned long long clen, const unsigned char *n,
+                            const unsigned char *k);
 #ifdef __cplusplus
 }
 #endif
