@@ -1,3 +1,4 @@
+if (!{var_name} || typeof {var_name} == 'undefined') throw new Error('{var_name} cannot be null or undefined');
 var {var_name}_byte;
 var {var_name}_size = {var_name}.length;
 if ({var_name} instanceof Uint8Array){
