@@ -106,7 +106,7 @@ int crypto_box_open_detached_afternm(unsigned char *m, const unsigned char *c,
                                      unsigned long long clen, const unsigned char *n,
                                      const unsigned char *k);
 
-/* -- Compatibility layer with NaCl -- */
+/* -- NaCl compatibility interface ; Requires padding -- */
 
 #define crypto_box_ZEROBYTES crypto_box_curve25519xsalsa20poly1305_ZEROBYTES
 SODIUM_EXPORT
