@@ -38,6 +38,7 @@
 			<button onclick="message.innerHTML=ed25519Test();">Test Ed25519</button>
 			<button onclick="message.innerHTML=test25519();">Test Ed25519 -> Curve25519</button>
 			<button onclick="message.innerHTML=testCryptoBox();">Test CryptoBox</button>
+			<button onclick="message.innerHTML=testCryptoSecretBox();">Test CryptoSecretBox</button>
 			<button onclick="message.innerHTML=testScrypt();">Test scrypt</button>
 		</div>
 		<div id="message">
@@ -182,6 +183,28 @@
 				plainText2 = libsodium.crypto_box_open_detached(from_hex(detachedCipher2.ciphertext), from_hex(detachedCipher2.mac), nonce, from_hex(keyPair2.publicKey), from_hex(keyPair1.privateKey));
 				log('Plaintext: ' + libsodium.decode_utf8(plainText1));
 				log('Are plaintexts equal: ' + (to_hex(plainText1) == to_hex(plainText2)));
+
+				return logStr;
+			}
+
+			function testCryptoSecretBox(){
+				var logStr = '';
+				function log(s){logStr+=s+'<br>';}
+
+				var nonce = randBuffer(libsodium.crypto_secretbox_noncebytes);
+				log('Nonce: ' + to_hex(nonce));
+				var key = randBuffer(libsodium.crypto_secretbox_keybytes);
+				log('Key: ' + to_hex(key));
+
+				var message = 'Crypto Secretbox testing';
+				var cipher = libsodium.crypto_secretbox_easy(message, nonce, key);
+				log('Ciphertext: ' + to_hex(cipher));
+				var plaintext = libsodium.crypto_secretbox_open_easy(cipher, nonce, key);
+				log('Plaintext: ' + libsodium.decode_utf8(plaintext));
+				log('Plaintext and initial message are equal: ' + (libsodium.decode_utf8(plaintext) == message));
+
+				libsodium_test.secretbox_easy();
+				log('Test vectors passed with success');
 
 				return logStr;
 			}
