@@ -119,3 +119,4 @@ android-toolchain-*
 libsodium-android-*
 /bin/
 /obj/
+Vagrantfile
