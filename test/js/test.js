@@ -128,7 +128,6 @@ var libsodium_test = (function(){
 		];
 
 		for (var i = 0; i < vectors.length; i++){
-			console.log(JSON.stringify(vectors[i]));
 			secretbox_test(vectors[i]);
 		}
 
@@ -136,10 +135,46 @@ var libsodium_test = (function(){
 			var cipher = libsodium.crypto_secretbox_easy(from_hex(v.m), from_hex(v.nonce), from_hex(v.key));
 			if (to_hex(cipher) != v.c) throw new Error('Unexpected ciphertext');
 			var plaintext = libsodium.crypto_secretbox_open_easy(cipher, from_hex(v.nonce), from_hex(v.key));
-			console.log(to_hex(plaintext));
 			if (!(plaintext && to_hex(plaintext) == v.m)) throw new Error('Unexpected plaintext');
 		}
-	}
+	};
+
+	t.hash = function(){
+		var sha512Vectors = [
+			{
+				m: 'testing\n',
+				h: '24f950aac7b9ea9b3cb728228a0c82b67c39e96b4b344798870d5daee93e3ae5931baae8c7cacfea4b629452c38026a81d138bc7aad1af3ef7bfd5ec646d6c28'
+			},
+			{
+				m: 'The Conscience of a Hacker is a small essay written January 8, 1986 by a computer security hacker who went by the handle of The Mentor, who belonged to the 2nd generation of Legion of Doom.',
+				h: 'a77abe1ccf8f5497e228fbc0acd73a521ededb21b89726684a6ebbc3baa32361aca5a244daa84f24bf19c68baf78e6907625a659b15479eb7bd426fc62aafa73'
+			}
+		];
+		var sha256Vectors = [
+			{
+				m: 'testing\n',
+				h: '12a61f4e173fb3a11c05d6471f74728f76231b4a5fcd9667cef3af87a3ae4dc2'
+			},
+			{
+				m: 'The Conscience of a Hacker is a small essay written January 8, 1986 by a computer security hacker who went by the handle of The Mentor, who belonged to the 2nd generation of Legion of Doom.',
+				h: '71cc8123fef8c236e451d3c3ddf1adae9aa6cd9521e7041769d737024900a03a'
+			}
+		];
+
+		if (libsodium.crypto_hash) for (var i = 0; i < sha512Vectors.length; i++) sha512_test(sha512Vectors[i]);
+		if (libsodium.crypto_hash_sha256) for (var i = 0; i < sha256Vectors.length; i++) sha256_test(sha256Vectors[i]);
+
+		function sha512_test(v){
+			var hash = libsodium.crypto_hash(v.m);
+			if (to_hex(hash) != v.h) throw new Error('Unexpected hash value for vector ' + JSON.stringify(v));
+		}
+
+		function sha256_test(v){
+			var hash = libsodium.crypto_hash_sha256(v.m);
+			if (to_hex(hash) != v.h) throw new Error('Unexpected hash value for vector ' + JSON.stringify(v));
+		}
+
+	};
 
 	return t;
 })();

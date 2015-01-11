@@ -1,0 +1,20 @@
+{
+	"name": "crypto_hash",
+	"dependencies": [],
+	"type": "function",
+	"inputs": [
+		{
+			"name": "message",
+			"type": "unsized_buffer"
+		}
+	],
+	"outputs": [
+		{
+			"name": "hash",
+			"type": "buffer",
+			"size": "libsodium_raw._crypto_hash_bytes()"
+		}
+	],
+	"target": "libsodium_raw._crypto_hash(hash_byte, message_byte, message_size, 0)",
+	"return": "return encodeResult(hash, resultEncoding)"
+}

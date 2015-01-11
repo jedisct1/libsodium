@@ -40,6 +40,7 @@
 			<button onclick="message.innerHTML=testCryptoBox();">Test CryptoBox</button>
 			<button onclick="message.innerHTML=testCryptoSecretBox();">Test CryptoSecretBox</button>
 			<button onclick="message.innerHTML=testScrypt();">Test scrypt</button>
+			<button onclick="message.innerHTML=testHash();">Test SHA256/512</button>
 		</div>
 		<div id="message">
 
@@ -71,12 +72,12 @@
 				log('Shared secret 2:&nbsp;' + to_hex(sharedSecret2));
 				log('Is it a shared secret? :&nbsp;' + (to_hex(sharedSecret1) == to_hex(sharedSecret2)));
 
-				//try {
+				try {
 					libsodium_test.scalarmult();
 					log('Vectors tests completed with success');
-				/*} catch (e){
+				} catch (e){
 					log(e.message);
-				}*/
+				}
 
 				return logStr;
 			}
@@ -205,6 +206,25 @@
 
 				libsodium_test.secretbox_easy();
 				log('Test vectors passed with success');
+
+				return logStr;
+			}
+
+			function testHash(){
+				var logStr = '';
+				function log(s){logStr+=s+'<br>';}
+
+				var message = 'message';
+				log('Message to hash: ' + message);
+				var hash = libsodium.crypto_hash(message);
+				log('Hash: ' + to_hex(hash));
+
+				try {
+					libsodium_test.hash();
+					log('Test vectors passed with success');
+				} catch (e){
+					log(e.message);
+				}
 
 				return logStr;
 			}
