@@ -1,0 +1,25 @@
+{
+	"name": "crypto_auth_verify",
+	"dependencies": ["_crypto_auth_hmacsha256_keybytes", "_crypto_auth_hmacsha256_bytes"],
+	"type": "function",
+	"noEncoding": true,
+	"inputs": [
+		{
+			"name": "tag",
+			"type": "buffer",
+			"size": "libsodium_raw._crypto_auth_hmacsha256_bytes()"
+		},
+		{
+			"name": "message",
+			"type": "unsized_buffer"
+		},
+		{
+			"name": "key",
+			"type": "buffer",
+			"size": "libsodium_raw._crypto_auth_hmacsha256_keybytes()"
+		}
+	],
+	"outputs": [],
+	"target": "var result = libsodium_raw._crypto_auth_hmacsha256_verify(tag_byte, message_byte, message_size, 0, key_byte)",
+	"return": "return (result != -1);"
+}

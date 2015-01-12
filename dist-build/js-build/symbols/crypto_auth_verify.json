@@ -20,6 +20,6 @@
 		}
 	],
 	"outputs": [],
-	"target": "var result = libsodium_raw._crypto_auth_verify(tag_byte, message_byte, message_size, key_byte)",
+	"target": "var result = libsodium_raw._crypto_auth_verify(tag_byte, message_byte, message_size, 0, key_byte)",
 	"return": "return (result != -1);"
 }

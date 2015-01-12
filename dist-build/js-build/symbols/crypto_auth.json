@@ -20,6 +20,6 @@
 			"size": "libsodium_raw._crypto_auth_bytes()"
 		}
 	],
-	"target": "libsodium_raw._crypto_auth(tag_byte, message_byte, message_size, key_byte)",
+	"target": "libsodium_raw._crypto_auth(tag_byte, message_byte, message_size, 0, key_byte)",
 	"return": "return encodeResult(tag, resultEncoding)"
 }

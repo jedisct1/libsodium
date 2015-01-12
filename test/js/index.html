@@ -41,6 +41,7 @@
 			<button onclick="message.innerHTML=testCryptoSecretBox();">Test CryptoSecretBox</button>
 			<button onclick="message.innerHTML=testScrypt();">Test scrypt</button>
 			<button onclick="message.innerHTML=testHash();">Test SHA256/512</button>
+			<button onclick="message.innerHTML=testHmac();">Test HMAC</button>
 		</div>
 		<div id="message">
 
@@ -221,6 +222,29 @@
 
 				try {
 					libsodium_test.hash();
+					log('Test vectors passed with success');
+				} catch (e){
+					log(e.message);
+				}
+
+				return logStr;
+			}
+
+			function testHmac(){
+				var logStr = '';
+				function log(s){logStr+=s+'<br>';}
+
+				var message = 'Message to be signed';
+				log('Message: "' + message + '"');
+				var hmacKey = randBuffer(libsodium.crypto_auth_keybytes);
+				log('HMAC key: ' + to_hex(hmacKey));
+				var tag = libsodium.crypto_auth(message, hmacKey);
+				log('HMAC tag: ' + to_hex(tag));
+				var isValidTag = libsodium.crypto_auth_verify(tag, message, hmacKey);
+				log('HMAC is valid: ' + (isValidTag ? 'yes' : 'no'));
+
+				try {
+					libsodium_test.hmac();
 					log('Test vectors passed with success');
 				} catch (e){
 					log(e.message);

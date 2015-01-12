@@ -3,6 +3,7 @@ var libsodium_test = (function(){
 	var t = {};
 	var to_hex = libsodium.to_hex;
 	var from_hex = libsodium.from_hex;
+	var is_hex = libsodium.is_hex;
 
 	t.scrypt = function(){
 		if (typeof libsodium.crypto_pwhash_scryptsalsa208sha256 != 'function')
@@ -174,6 +175,104 @@ var libsodium_test = (function(){
 			if (to_hex(hash) != v.h) throw new Error('Unexpected hash value for vector ' + JSON.stringify(v));
 		}
 
+	};
+
+	t.hmac = function(){
+		var hmacSHA512256Vectors = [
+			{
+				k: 'Jefe',
+				m: 'what do ya want for nothing?',
+				h: '164b7a7bfcf819e2e395fbe73b56e0a387bd64222e831fd610270cd7ea250554'
+			}
+		];
+
+		var hmacSHA512Vectors = [
+			{
+				k: 'Jefe',
+				m: 'what do ya want for nothing?',
+				h: '164b7a7bfcf819e2e395fbe73b56e0a387bd64222e831fd610270cd7ea2505549758bf75c05a994a6d034f65f8f0e6fdcaeab1a34d4a6b4b636e070a38bce737'
+			}
+		];
+		var hmacSHA256Vectors = [
+			{
+				k: '0102030405060708090a0b0c0d0e0f101112131415161718191a1b1c1d1e1f20',
+				m: 'cdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcd',
+				h: '372efcf9b40b35c2115b1346903d2ef42fced46f0846e7257bb156d3d7b30d3f'
+			}
+		];
+
+		if (libsodium.crypto_auth) for (var i = 0; i < hmacSHA512256Vectors.length; i++) testHmacSHA512256Vector(hmacSHA512256Vectors[i]);
+		if (libsodium.crypto_auth_hmacsha512) for (var i = 0; i < hmacSHA512Vectors.length; i++) testHmacSHA512Vector(hmacSHA512Vectors[i]);
+		if (libsodium.crypto_auth_hmacsha256) for (var i = 0; i < hmacSHA256Vectors.length; i++) testHmacSHA256Vector(hmacSHA256Vectors[i]);
+
+		function testHmacSHA512256Vector(v){
+			var key;
+			if (is_hex(v.k)){
+				key = from_hex(v.k);
+			} else {
+				key = expandKey();
+			}
+			var tag = libsodium.crypto_auth(v.m, key);
+			var tagHex = to_hex(tag);
+			if (tagHex != v.h) throw new Error('Unexpected HMAC-SHA512/256 value for vector: ' + JSON.stringify(v));
+			var validTag = libsodium.crypto_auth_verify(tag, v.m, key);
+			if (!validTag) throw new Error('Cannot verify HMAC-SHA512/256 value for vector: ' + JSON.stringify(v));
+
+			function expandKey(){
+				if (v.k.length < libsodium.crypto_auth_keybytes){
+					var newKeyBuffer = new Uint8Array(libsodium.crypto_auth_keybytes);
+					var utf8KeyBuffer = libsodium.encode_utf8(v.k);
+					for (var i = 0; i < v.k.length; i++) newKeyBuffer[i] = utf8KeyBuffer[i];
+					return newKeyBuffer;
+				} else return v.k;
+			}
+		}
+
+		function testHmacSHA512Vector(v){
+			var key;
+			if (is_hex(v.k)){
+				key = from_hex(v.k);
+			} else {
+				key = expandKey();
+			}
+			var tag = libsodium.crypto_auth_hmacsha512(v.m, key);
+			var tagHex = to_hex(tag);
+			if (tagHex != v.h) throw new Error('Unexpected HMAC-SHA512 value for vector: ' + JSON.stringify(v));
+			var validTag = libsodium.crypto_auth_hmacsha512_verify(tag, v.m, key);
+			if (!validTag) throw new Error('Cannot verify HMAC-SHA512 value for vector: ' + JSON.stringify(v));
+
+			function expandKey(){
+				if (v.k.length < libsodium.crypto_auth_keybytes){
+					var newKeyBuffer = new Uint8Array(libsodium.crypto_auth_hmacsha512_keybytes);
+					var utf8KeyBuffer = libsodium.encode_utf8(v.k);
+					for (var i = 0; i < v.k.length; i++) newKeyBuffer[i] = utf8KeyBuffer[i];
+					return newKeyBuffer;
+				} else return v.k;
+			}
+		}
+
+		function testHmacSHA256Vector(v){
+			var key;
+			if (is_hex(v.k)){
+				key = from_hex(v.k);
+			} else {
+				key = expandKey();
+			}
+			var tag = libsodium.crypto_auth_hmacsha256(v.m, key);
+			var tagHex = to_hex(tag);
+			if (tagHex != v.h) throw new Error('Unexpected HMAC-SHA256 value for vector: ' + JSON.stringify(v));
+			var validTag = libsodium.crypto_auth_hmacsha256_verify(tag, v.m, key);
+			if (!validTag) throw new Error('Cannot verify HMAC-SHA256 value for vector: ' + JSON.stringify(v));
+
+			function expandKey(){
+				if (v.k.length < libsodium.crypto_auth_keybytes){
+					var newKeyBuffer = new Uint8Array(libsodium.crypto_auth_hmacsha256_keybytes);
+					var utf8KeyBuffer = libsodium.encode_utf8(v.k);
+					for (var i = 0; i < v.k.length; i++) newKeyBuffer[i] = utf8KeyBuffer[i];
+					return newKeyBuffer;
+				} else return v.k;
+			}
+		}
 	};
 
 	return t;
