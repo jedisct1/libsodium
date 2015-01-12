@@ -1,4 +1,24 @@
 
+* Version 1.0.2
+ - The _easy and _detached APIs now support precalculated keys;
+crypto_box_easy_afternm(), crypto_box_open_easy_afternm(),
+crypto_box_detached_afternm() and crypto_box_open_detached_afternm()
+have been added as an alternative to the NaCl interface.
+ - Memory allocation functions can now be used on Operating systems with
+no memory protection.
+ - crypto_sign_open() and crypto_sign_edwards25519sha512batch_open()
+now accept a NULL pointer instead of a pointer to the message size, if
+storing this information is not required.
+ - The close-on-exec flag is now set on the descriptor returned when
+opening /dev/urandom.
+ - A libsodium-uninstalled.pc file to use pkg-config even when
+libsodium is not installed, has been added.
+ - The iOS target now includes armv7s and arm64 optimized code, as well
+as i386 and x86_64 code for the iOS simulator.
+ - sodium_free() can now be called on regions with PROT_NONE protection.
+ - The Javascript tests can run on Ubuntu, where the node binary was
+renamed nodejs.
+
 * Version 1.0.1
  - DLL_EXPORT was renamed SODIUM_DLL_EXPORT in order to avoid
 collisions with similar macros defined by other libraries.
