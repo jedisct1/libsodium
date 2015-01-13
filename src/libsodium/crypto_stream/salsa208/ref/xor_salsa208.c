@@ -1,5 +1,5 @@
 /*
-version 20080913
+version 20140420
 D. J. Bernstein
 Public domain.
 */
@@ -23,16 +23,18 @@ int crypto_stream_xor(
 {
   unsigned char in[16];
   unsigned char block[64];
-  unsigned long long i;
+  unsigned char kcopy[32];
+  unsigned int i;
   unsigned int u;
 
   if (!mlen) return 0;
 
+  for (i = 0;i < 32;++i) kcopy[i] = k[i];
   for (i = 0;i < 8;++i) in[i] = n[i];
   for (i = 8;i < 16;++i) in[i] = 0;
 
   while (mlen >= 64) {
-    crypto_core_salsa208(block,in,k,sigma);
+    crypto_core_salsa208(block,in,kcopy,sigma);
     for (i = 0;i < 64;++i) c[i] = m[i] ^ block[i];
 
     u = 1;
@@ -48,10 +50,11 @@ int crypto_stream_xor(
   }
 
   if (mlen) {
-    crypto_core_salsa208(block,in,k,sigma);
-    for (i = 0;i < mlen;++i) c[i] = m[i] ^ block[i];
+    crypto_core_salsa208(block,in,kcopy,sigma);
+    for (i = 0;i < (unsigned int) mlen;++i) c[i] = m[i] ^ block[i];
   }
   sodium_memzero(block, sizeof block);
+  sodium_memzero(kcopy, sizeof kcopy);
 
   return 0;
 }

@@ -25,7 +25,7 @@ int crypto_stream(
   unsigned char in[16];
   unsigned char block[64];
   unsigned char kcopy[32];
-  unsigned long long i;
+  unsigned int i;
   unsigned int u;
 
   if (!clen) return 0;
@@ -50,7 +50,7 @@ int crypto_stream(
 
   if (clen) {
     crypto_core_salsa20(block,in,kcopy,sigma);
-    for (i = 0;i < clen;++i) c[i] = block[i];
+    for (i = 0;i < (unsigned int) clen;++i) c[i] = block[i];
   }
   sodium_memzero(block, sizeof block);
   sodium_memzero(kcopy, sizeof kcopy);
