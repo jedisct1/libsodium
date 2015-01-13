@@ -46,7 +46,9 @@ int crypto_sign_ed25519_pk_to_curve25519(unsigned char *curve25519_pk,
     fe    x;
     fe    one_minus_y;
 
-    ge_frombytes_negate_vartime(&A, ed25519_pk);
+    if (ge_frombytes_negate_vartime(&A, ed25519_pk) != 0) {
+        return -1;
+    }
     fe_1(one_minus_y);
     fe_sub(one_minus_y, one_minus_y, A.Y);
     fe_invert(one_minus_y, one_minus_y);
