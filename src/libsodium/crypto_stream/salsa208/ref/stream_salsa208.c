@@ -6,6 +6,7 @@ Public domain.
 
 #include "api.h"
 #include "crypto_core_salsa208.h"
+#include "utils.h"
 
 typedef unsigned int uint32;
 
@@ -47,5 +48,7 @@ int crypto_stream(
     crypto_core_salsa208(block,in,k,sigma);
     for (i = 0;i < clen;++i) c[i] = block[i];
   }
+  sodium_memzero(block, sizeof block);
+
   return 0;
 }
