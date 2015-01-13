@@ -98,7 +98,7 @@ chacha_encrypt_bytes(chacha_ctx *x, const u8 *m, u8 *c, unsigned long long bytes
     u32 j0, j1, j2, j3, j4, j5, j6, j7, j8, j9, j10, j11, j12, j13, j14, j15;
     u8 *ctarget = NULL;
     u8 tmp[64];
-    unsigned long long i;
+    unsigned int i;
 
     if (!bytes) {
         return; /* LCOV_EXCL_LINE */
@@ -215,7 +215,7 @@ chacha_encrypt_bytes(chacha_ctx *x, const u8 *m, u8 *c, unsigned long long bytes
 
         if (bytes <= 64) {
             if (bytes < 64) {
-                for (i = 0; i < bytes; ++i) {
+                for (i = 0; i < (unsigned int) bytes; ++i) {
                     ctarget[i] = c[i];
                 }
             }
