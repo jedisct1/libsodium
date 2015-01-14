@@ -2,6 +2,10 @@
 #define TEST_NAME "pwhash"
 #include "cmptest.h"
 
+#define OUT_LEN 128
+#define OPSLIMIT 1000000
+#define MEMLIMIT 10000000
+
 static void tv(void)
 {
     static struct {
@@ -280,10 +284,6 @@ static void tv3(void)
         sodium_free(passwd);
     } while (++i < (sizeof tests) / (sizeof tests[0]));
 }
-
-#define OUT_LEN 128
-#define OPSLIMIT 1000000
-#define MEMLIMIT 10000000
 
 int main(void)
 {
