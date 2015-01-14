@@ -29,7 +29,10 @@ crypto_secretbox_detached(unsigned char *c, unsigned char *mac,
 
     crypto_core_hsalsa20(subkey, n, k, sigma);
 
-    if (c - m < mlen || c - m > -mlen) {
+    if (((uintptr_t) c >= (uintptr_t) m &&
+         (uintptr_t) c - (uintptr_t) m < mlen) ||
+        ((uintptr_t) m >= (uintptr_t) c &&
+         (uintptr_t) m - (uintptr_t) c < mlen)) {
         memmove(c, m, mlen);
         m = c;
     }
@@ -95,7 +98,10 @@ crypto_secretbox_open_detached(unsigned char *m, const unsigned char *c,
         sodium_memzero(subkey, sizeof subkey);
         return -1;
     }
-    if (m - c < clen || m - c > -clen) {
+    if (((uintptr_t) c >= (uintptr_t) m &&
+         (uintptr_t) c - (uintptr_t) m < clen) ||
+        ((uintptr_t) m >= (uintptr_t) c &&
+         (uintptr_t) m - (uintptr_t) c < clen)) {
         memmove(m, c, clen);
         c = m;
     }
