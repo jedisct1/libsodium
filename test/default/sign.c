@@ -1091,7 +1091,7 @@ int main(void)
             printf("signature failure: [%u]\n", i);
             continue;
         }
-        if (crypto_sign_open(m, &mlen, sm, smlen, test_data[i].pk) != 0) {
+        if (crypto_sign_open(m, NULL, sm, smlen, test_data[i].pk) != 0) {
             printf("crypto_sign_open() failure: [%u]\n", i);
             continue;
         }
