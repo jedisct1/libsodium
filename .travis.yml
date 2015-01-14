@@ -26,9 +26,10 @@ env:
 addons:
   coverity_scan:
     project:
-      name: "jedisct1/libsodium"
-      description: "libsodium"
+      name: jedisct1/libsodium
+      version: 1.0.2
+      description: libsodium
       notification_email: coverityscan@pureftpd.org
-      build_command_prepend: "./autogen.sh ; ./configure"
-      build_command: "make -j4"
+      build_command_prepend: ./autogen.sh ; ./configure
+      build_command: make -j4
       branch_pattern: coverity_scan
