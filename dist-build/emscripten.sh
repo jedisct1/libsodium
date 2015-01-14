@@ -15,7 +15,7 @@ emcc -O3 --closure 1 --llvm-lto 1 $LDFLAGS $JS_EXPORTS_FLAGS \
   "${PREFIX}/lib/libsodium.a" -o "${PREFIX}/lib/libsodium.js" || exit 1
 
 if test "x$NODE" = x; then
-  for candidate in node nodejs; do
+  for candidate in iojs node nodejs; do
     case $($candidate --version 2>&1) in #(
       v*)
         NODE=$candidate
