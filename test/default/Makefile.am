@@ -179,14 +179,18 @@ TESTS_TARGETS = \
 	sign \
 	sodium_core \
 	sodium_utils \
-	sodium_utils2 \
-	sodium_utils3 \
 	sodium_version \
 	stream \
 	stream2 \
 	stream3 \
 	stream4 \
 	verify1
+
+if !EMSCRIPTEN
+TESTS_TARGETS += \
+	sodium_utils2 \
+	sodium_utils3
+endif
 
 check_PROGRAMS = $(TESTS_TARGETS)
 

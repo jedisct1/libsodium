@@ -432,6 +432,7 @@ AS_IF([test "x$EMSCRIPTEN" != "x"],[
   TEST_LDFLAGS='--pre-js pre.js.inc'
 ])
 AC_SUBST(TEST_LDFLAGS)
+AM_CONDITIONAL([EMSCRIPTEN], [test "x$EMSCRIPTEN" != "x"])
 
 dnl Libtool.
 
