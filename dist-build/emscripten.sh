@@ -7,6 +7,8 @@ export TOTAL_MEMORY=33554432
 export JS_EXPORTS_FLAGS="-s EXPORTED_FUNCTIONS=${EXPORTED_FUNCTIONS}"
 export LDFLAGS="-s TOTAL_MEMORY=${TOTAL_MEMORY}"
 
+rm -f test/js.done
+
 emconfigure ./configure --enable-minimal --disable-shared --prefix="$PREFIX" \
   CFLAGS="-O3" && \
 emmake make clean && \
@@ -45,4 +47,6 @@ echo 'sodium_utils2 and sodium_utils3 are expected to fail in Javascript.'
     mv -f "${file}.tmp" "$file"
   done
 )
-make $MAKE_FLAGS check && echo 'Done.'
+make $MAKE_FLAGS check
+echo 'Done.'
+touch -r "${PREFIX}/lib/libsodium.js" test/js.done
