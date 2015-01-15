@@ -47,6 +47,6 @@ echo 'sodium_utils2 and sodium_utils3 are expected to fail in Javascript.'
     mv -f "${file}.tmp" "$file"
   done
 )
-make $MAKE_FLAGS check
+make $MAKE_FLAGS check || exit 1
 echo 'Done.'
 touch -r "${PREFIX}/lib/libsodium.js" test/js.done
