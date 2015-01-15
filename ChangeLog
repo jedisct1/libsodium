@@ -4,7 +4,7 @@
 crypto_box_easy_afternm(), crypto_box_open_easy_afternm(),
 crypto_box_detached_afternm() and crypto_box_open_detached_afternm()
 have been added as an alternative to the NaCl interface.
- - Memory allocation functions can now be used on Operating systems with
+ - Memory allocation functions can now be used on operating systems with
 no memory protection.
  - crypto_sign_open() and crypto_sign_edwards25519sha512batch_open()
 now accept a NULL pointer instead of a pointer to the message size, if
