@@ -1,12 +1,6 @@
 lib_LTLIBRARIES = \
 	libsodium.la
 
-if !EMSCRIPTEN
-libsodium_la_SOURCES += \
-	randombytes/salsa20/randombytes_salsa20_random.c \
-	randombytes/sysrandom/randombytes_sysrandom.c
-endif
-
 libsodium_la_SOURCES = \
 	crypto_aead/chacha20poly1305/sodium/aead_chacha20poly1305.c \
 	crypto_auth/crypto_auth.c \
@@ -159,6 +153,12 @@ libsodium_la_SOURCES = \
 	sodium/runtime.c \
 	sodium/utils.c \
 	sodium/version.c
+
+if !EMSCRIPTEN
+libsodium_la_SOURCES += \
+	randombytes/salsa20/randombytes_salsa20_random.c \
+	randombytes/sysrandom/randombytes_sysrandom.c
+endif
 
 if HAVE_TI_MODE
 libsodium_la_SOURCES += \
