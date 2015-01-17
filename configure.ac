@@ -423,7 +423,7 @@ AC_SUBST([LIBTOOL_EXTRA_FLAGS])
 TEST_LDFLAGS=''
 AS_IF([test "x$EMSCRIPTEN" != "x"],[
   EXEEXT=.js
-  TEST_LDFLAGS='--memory-init-file 0 --pre-js pre.js.inc -s NO_FILESYSTEM=1 -s NO_BROWSER=1 -s RESERVED_FUNCTION_POINTERS=8'
+  TEST_LDFLAGS='--memory-init-file 0 --pre-js pre.js.inc -s NO_BROWSER=1 -s RESERVED_FUNCTION_POINTERS=8'
 ])
 AC_SUBST(TEST_LDFLAGS)
 AM_CONDITIONAL([EMSCRIPTEN], [test "x$EMSCRIPTEN" != "x"])
