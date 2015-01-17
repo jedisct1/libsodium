@@ -1,6 +1,12 @@
 lib_LTLIBRARIES = \
 	libsodium.la
 
+if !EMSCRIPTEN
+libsodium_la_SOURCES += \
+	randombytes/salsa20/randombytes_salsa20_random.c \
+	randombytes/sysrandom/randombytes_sysrandom.c
+endif
+
 libsodium_la_SOURCES = \
 	crypto_aead/chacha20poly1305/sodium/aead_chacha20poly1305.c \
 	crypto_auth/crypto_auth.c \
@@ -149,8 +155,6 @@ libsodium_la_SOURCES = \
 	crypto_verify/64/ref/api.h \
 	crypto_verify/64/ref/verify_64.c \
 	randombytes/randombytes.c \
-	randombytes/salsa20/randombytes_salsa20_random.c \
-	randombytes/sysrandom/randombytes_sysrandom.c \
 	sodium/core.c \
 	sodium/runtime.c \
 	sodium/utils.c \

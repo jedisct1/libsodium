@@ -241,10 +241,8 @@ randombytes_sysrandom_uniform(const uint32_t upper_bound)
     min = (uint32_t) (-upper_bound % upper_bound);
     for (;;) {
         r = randombytes_sysrandom();
-        if (r >= min) {
-            break;
-        }
-    } /* LCOV_EXCL_LINE */
+    } while (r < min); /* LCOV_EXCL_LINE */
+
     return r % upper_bound;
 }
 
