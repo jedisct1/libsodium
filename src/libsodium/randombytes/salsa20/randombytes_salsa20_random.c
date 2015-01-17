@@ -326,12 +326,10 @@ randombytes_salsa20_random_uniform(const uint32_t upper_bound)
         return 0;
     }
     min = (uint32_t) (-upper_bound % upper_bound);
-    for (;;) {
+    do {
         r = randombytes_salsa20_random();
-        if (r >= min) {
-            break;
-        }
-    } /* LCOV_EXCL_LINE */
+    } while (r < min); /* LCOV_EXCL_LINE */
+
     return r % upper_bound;
 }
 

@@ -29,8 +29,11 @@ static int randombytes_tests(void)
 {
     unsigned int i;
 
-    assert(strcmp(randombytes_implementation_name(), "sysrandom") == 0);
-
+#ifdef __EMSCRIPTEN__
+    assert(strcmp(randombytes_implementation_name(), "sysrandom"));
+#else
+    assert(strcmp(randombytes_implementation_name(), "js"));
+#endif
     randombytes(x, 1U);
     randombytes_close();
 
@@ -47,8 +50,10 @@ static int randombytes_tests(void)
     }
     assert(randombytes_uniform(1U) == 0U);
     randombytes_close();
+#ifndef __EMSCRIPTEN__
     randombytes_set_implementation(&randombytes_salsa20_implementation);
     assert(strcmp(randombytes_implementation_name(), "salsa20") == 0);
+#endif
     randombytes_stir();
     for (i = 0; i < 256; ++i) {
         freq[i] = 0;
