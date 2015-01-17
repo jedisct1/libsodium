@@ -13,7 +13,7 @@ emconfigure ./configure --enable-minimal --disable-shared --prefix="$PREFIX" \
   CFLAGS="-O3" && \
 emmake make clean && \
 emmake make $MAKE_FLAGS install V=1 && \
-emcc -O3 --closure 1 --llvm-lto 1 $LDFLAGS $JS_EXPORTS_FLAGS \
+emcc -O3 --closure 1 --llvm-lto 1 --memory-init-file 0 $LDFLAGS $JS_EXPORTS_FLAGS \
   "${PREFIX}/lib/libsodium.a" -o "${PREFIX}/lib/libsodium.js" || exit 1
 
 if test "x$NODE" = x; then
