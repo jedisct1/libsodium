@@ -37,12 +37,11 @@ echo 'Compiling the test suite...' && \
 emmake make $MAKE_FLAGS check > /dev/null 2>&1
 
 echo 'Running the test suite.'
-echo 'sodium_utils2 and sodium_utils3 are expected to fail in Javascript.'
 (
   cd test/default && \
   for file in *.js; do
     echo "#! /usr/bin/env ${NODE}" > "${file}.tmp"
-    fgrep -v '#! /usr/bin/env node' "$file" >> "${file}.tmp"
+    fgrep -v "#! /usr/bin/env {NODE}" "$file" >> "${file}.tmp"
     chmod +x "${file}.tmp"
     mv -f "${file}.tmp" "$file"
   done
