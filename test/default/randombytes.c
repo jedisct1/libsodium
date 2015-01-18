@@ -35,6 +35,7 @@ static int randombytes_tests(void)
     assert(strcmp(randombytes_implementation_name(), "js"));
 #endif
     randombytes(x, 1U);
+    while (randombytes_random() <= (uint32_t) 0x7fffffff);
     randombytes_close();
 
     for (i = 0; i < 256; ++i) {

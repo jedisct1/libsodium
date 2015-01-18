@@ -57,7 +57,7 @@ randombytes_stir(void)
         if (Module.getRandomValue === undefined) {
             try {
                 var randomValuesStandard = function() {
-                    var buf = new Uint16Array(1);
+                    var buf = new Uint32Array(1);
                     window.crypto.getRandomValues(buf);
                     return buf[0] >>> 0;
                 };
@@ -67,8 +67,8 @@ randombytes_stir(void)
                 try {
                     var crypto = require('crypto');
                     var randomValueIOJS = function() {
-                        var buf = crypto.randomBytes(2);
-                        return (buf[0] << 8 | buf[1]) >>> 0;
+                        var buf = crypto.randomBytes(4);
+                        return (buf[0] << 24 | buf[1] << 16 || buf[2] << 8 || buf[3]) >>> 0;
                     };
                     randomValueIOJS();
                     Module.getRandomValue = randomValueIOJS;
