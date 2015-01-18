@@ -79,17 +79,25 @@ randombytes_stir(void)
         }
     });
 #else
-    implementation->stir();
+    if (implementation != NULL && implementation->stir != NULL) {
+        implementation->stir();
+    }
 #endif
 }
 
+/*
+ * randombytes_uniform() derives from OpenBSD's arc4random_uniform()
+ * Copyright (c) 2008, Damien Miller <djm@openbsd.org>
+ */
 uint32_t
 randombytes_uniform(const uint32_t upper_bound)
 {
-#ifdef __EMSCRIPTEN__
     uint32_t min;
     uint32_t r;
 
+    if (implementation != NULL && implementation->uniform != NULL) {
+        return implementation->uniform(upper_bound);
+    }
     if (upper_bound < 2) {
         return 0;
     }
@@ -99,9 +107,6 @@ randombytes_uniform(const uint32_t upper_bound)
     } while (r < min);
 
     return r % upper_bound;
-#else
-    return implementation->uniform(upper_bound);
-#endif
 }
 
 void
@@ -124,11 +129,10 @@ randombytes_buf(void * const buf, const size_t size)
 int
 randombytes_close(void)
 {
-#ifdef __EMSCRIPTEN__
+    if (implementation != NULL && implementation->close != NULL) {
+        return implementation->close();
+    }
     return 0;
-#else
-    return implementation->close();
-#endif
 }
 
 void

@@ -43,12 +43,6 @@ randombytes_sysrandom_stir(void)
 {
 }
 
-uint32_t
-randombytes_sysrandom_uniform(const uint32_t upper_bound)
-{
-    return arc4random_uniform(upper_bound);
-}
-
 void
 randombytes_sysrandom_buf(void * const buf, const size_t size)
 {
@@ -224,29 +218,7 @@ randombytes_sysrandom_buf(void * const buf, const size_t size)
 #endif
 }
 
-/*
- * randombytes_sysrandom_uniform() derives from OpenBSD's arc4random_uniform()
- * Copyright (c) 2008, Damien Miller <djm@openbsd.org>
- */
-
-uint32_t
-randombytes_sysrandom_uniform(const uint32_t upper_bound)
-{
-    uint32_t min;
-    uint32_t r;
-
-    if (upper_bound < 2) {
-        return 0;
-    }
-    min = (uint32_t) (-upper_bound % upper_bound);
-    do {
-        r = randombytes_sysrandom();
-    } while (r < min); /* LCOV_EXCL_LINE */
-
-    return r % upper_bound;
-}
-
-#endif
+#endif /* __OpenBSD__ */
 
 const char *
 randombytes_sysrandom_implementation_name(void)
@@ -258,7 +230,7 @@ struct randombytes_implementation randombytes_sysrandom_implementation = {
     SODIUM_C99(.implementation_name =) randombytes_sysrandom_implementation_name,
     SODIUM_C99(.random =) randombytes_sysrandom,
     SODIUM_C99(.stir =) randombytes_sysrandom_stir,
-    SODIUM_C99(.uniform =) randombytes_sysrandom_uniform,
+    SODIUM_C99(.uniform =) NULL,
     SODIUM_C99(.buf =) randombytes_sysrandom_buf,
     SODIUM_C99(.close =) randombytes_sysrandom_close
 };

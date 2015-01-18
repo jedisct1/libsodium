@@ -311,28 +311,6 @@ randombytes_salsa20_random_buf(void * const buf, const size_t size)
                               (unsigned char *) &stream.nonce, stream.key);
 }
 
-/*
- * randombytes_salsa20_random_uniform() derives from OpenBSD's arc4random_uniform()
- * Copyright (c) 2008, Damien Miller <djm@openbsd.org>
- */
-
-uint32_t
-randombytes_salsa20_random_uniform(const uint32_t upper_bound)
-{
-    uint32_t min;
-    uint32_t r;
-
-    if (upper_bound < 2) {
-        return 0;
-    }
-    min = (uint32_t) (-upper_bound % upper_bound);
-    do {
-        r = randombytes_salsa20_random();
-    } while (r < min); /* LCOV_EXCL_LINE */
-
-    return r % upper_bound;
-}
-
 const char *
 randombytes_salsa20_implementation_name(void)
 {
@@ -343,7 +321,7 @@ struct randombytes_implementation randombytes_salsa20_implementation = {
     SODIUM_C99(.implementation_name =) randombytes_salsa20_implementation_name,
     SODIUM_C99(.random =) randombytes_salsa20_random,
     SODIUM_C99(.stir =) randombytes_salsa20_random_stir,
-    SODIUM_C99(.uniform =) randombytes_salsa20_random_uniform,
+    SODIUM_C99(.uniform =) NULL,
     SODIUM_C99(.buf =) randombytes_salsa20_random_buf,
     SODIUM_C99(.close =) randombytes_salsa20_random_close
 };
