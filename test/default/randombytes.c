@@ -36,6 +36,7 @@ static int randombytes_tests(void)
 #endif
     randombytes(x, 1U);
     while (randombytes_random() <= (uint32_t) 0x7fffffff);
+    while (randombytes_random() >= (uint32_t) 0x128);
     randombytes_close();
 
     for (i = 0; i < 256; ++i) {

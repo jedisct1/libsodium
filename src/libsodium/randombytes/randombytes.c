@@ -1,22 +1,22 @@
 
-#ifdef __EMSCRIPTEN__
-# include <emscripten.h>
-#endif
-
 #include <sys/types.h>
 
 #include <assert.h>
 #include <limits.h>
 #include <stdint.h>
 
+#ifdef __EMSCRIPTEN__
+# include <emscripten.h>
+#endif
+
 #include "randombytes.h"
 #include "randombytes_sysrandom.h"
 
-#ifdef __EMSCRIPTEN__
-static const randombytes_implementation *implementation = NULL;
-#else
+#ifndef __EMSCRIPTEN__
 static const randombytes_implementation *implementation =
     &randombytes_sysrandom_implementation;
+#else
+static const randombytes_implementation *implementation = NULL;
 #endif
 
 int
@@ -68,7 +68,7 @@ randombytes_stir(void)
                     var crypto = require('crypto');
                     var randomValueIOJS = function() {
                         var buf = crypto.randomBytes(4);
-                        return (buf[0] << 24 | buf[1] << 16 || buf[2] << 8 || buf[3]) >>> 0;
+                        return (buf[0] << 24 | buf[1] << 16 | buf[2] << 8 | buf[3]) >>> 0;
                     };
                     randomValueIOJS();
                     Module.getRandomValue = randomValueIOJS;
