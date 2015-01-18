@@ -30,29 +30,33 @@ randombytes_set_implementation(randombytes_implementation *impl)
 const char *
 randombytes_implementation_name(void)
 {
-#ifdef __EMSCRIPTEN__
-    return "js";
-#else
+#ifndef __EMSCRIPTEN__
     return implementation->implementation_name();
+#else
+    return "js";
 #endif
 }
 
 uint32_t
 randombytes_random(void)
 {
-#ifdef __EMSCRIPTEN__
+#ifndef __EMSCRIPTEN__
+    return implementation->random();
+#else
     return EM_ASM_INT_V({
         return Module.getRandomValue();
     });
-#else
-    return implementation->random();
 #endif
 }
 
 void
 randombytes_stir(void)
 {
-#ifdef __EMSCRIPTEN__
+#ifndef __EMSCRIPTEN__
+    if (implementation != NULL && implementation->stir != NULL) {
+        implementation->stir();
+    }
+#else
     EM_ASM({
         if (Module.getRandomValue === undefined) {
             try {
@@ -78,10 +82,6 @@ randombytes_stir(void)
             }
         }
     });
-#else
-    if (implementation != NULL && implementation->stir != NULL) {
-        implementation->stir();
-    }
 #endif
 }
 
@@ -112,16 +112,16 @@ randombytes_uniform(const uint32_t upper_bound)
 void
 randombytes_buf(void * const buf, const size_t size)
 {
-#ifdef __EMSCRIPTEN__
+#ifndef __EMSCRIPTEN__
+    if (size > (size_t) 0U) {
+        implementation->buf(buf, size);
+    }
+#else
     unsigned char *p = buf;
     size_t         i;
 
     for (i = (size_t) 0U; i < size; i++) {
         p[i] = (unsigned char) randombytes_random();
-    }
-#else
-    if (size > (size_t) 0U) {
-        implementation->buf(buf, size);
     }
 #endif
 }
