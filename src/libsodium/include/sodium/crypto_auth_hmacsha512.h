@@ -16,6 +16,8 @@ typedef struct crypto_auth_hmacsha512_state {
     crypto_hash_sha512_state ictx;
     crypto_hash_sha512_state octx;
 } crypto_auth_hmacsha512_state;
+SODIUM_EXPORT
+size_t crypto_auth_hmacsha512_statebytes(void);
 
 #define crypto_auth_hmacsha512_BYTES 64U
 SODIUM_EXPORT

@@ -17,6 +17,8 @@ int main(void)
     crypto_auth_hmacsha512_state st;
     int i;
 
+    assert(crypto_auth_hmacsha512_statebytes() ==
+           sizeof(crypto_auth_hmacsha512_state));
     crypto_auth(a, c, sizeof c - 1U, key);
     for (i = 0; i < sizeof a; ++i) {
         printf(",0x%02x", (unsigned int)a[i]);
@@ -55,6 +57,10 @@ int main(void)
     assert(crypto_auth_hmacsha512_keybytes() > 0U);
     assert(crypto_auth_hmacsha512256_bytes() == crypto_auth_bytes());
     assert(crypto_auth_hmacsha512256_keybytes() == crypto_auth_keybytes());
+    assert(crypto_auth_hmacsha256_statebytes() ==
+           sizeof(crypto_auth_hmacsha256_state));
+    assert(crypto_auth_hmacsha512_statebytes() ==
+           sizeof(crypto_auth_hmacsha512_state));
 
     return 0;
 }
