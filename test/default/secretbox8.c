@@ -1,6 +1,4 @@
 
-#include "quirks.h"
-
 #define TEST_NAME "secretbox8"
 #include "cmptest.h"
 

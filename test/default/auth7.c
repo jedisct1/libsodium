@@ -1,6 +1,4 @@
 
-#include "quirks.h"
-
 #define TEST_NAME "auth7"
 #include "cmptest.h"
 

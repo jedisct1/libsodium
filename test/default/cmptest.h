@@ -9,6 +9,7 @@
 #include <string.h>
 
 #include "sodium.h"
+#include "quirks.h"
 
 #ifdef __EMSCRIPTEN__
 # undef TEST_SRCDIR
@@ -24,14 +25,6 @@
 #ifdef HAVE_ARC4RANDOM
 # undef rand
 # define rand(X) arc4random(X)
-#endif
-
-#ifdef __EMSCRIPTEN__
-# define strcmp(s1, s2) xstrcmp(s1, s2)
-int strcmp(const char *s1, const char *s2) {
-    while (*s1 == *s2++) { if (*s1++ == 0) return 0; }
-    return *(unsigned char *) s1 - *(unsigned char *) --s2;
-}
 #endif
 
 FILE *fp_res;
