@@ -27,6 +27,7 @@ int main(void)
     crypto_onetimeauth_state st;
     int i;
 
+    assert(crypto_onetimeauth_statebytes() == sizeof st);
     crypto_onetimeauth(a, c, 131, rs);
     for (i = 0; i < 16; ++i) {
         printf(",0x%02x", (unsigned int)a[i]);
