@@ -36,6 +36,8 @@ int main(void)
     assert(crypto_hash_sha256_bytes() > 0U);
     assert(crypto_hash_sha512_bytes() >= crypto_hash_sha256_bytes());
     assert(crypto_hash_sha512_bytes() == crypto_hash_bytes());
+    assert(crypto_hash_sha256_statebytes() == sizeof(crypto_hash_sha256_state));
+    assert(crypto_hash_sha512_statebytes() == sizeof(crypto_hash_sha512_state));
 
     return 0;
 }

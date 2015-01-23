@@ -26,6 +26,8 @@ typedef struct crypto_hash_sha256_state {
     uint32_t      count[2];
     unsigned char buf[64];
 } crypto_hash_sha256_state;
+SODIUM_EXPORT
+size_t crypto_hash_sha256_statebytes(void);
 
 #define crypto_hash_sha256_BYTES 32U
 SODIUM_EXPORT
