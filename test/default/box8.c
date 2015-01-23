@@ -1,5 +1,5 @@
 
-#include "windows/windows-quirks.h"
+#include "quirks.h"
 
 #define TEST_NAME "box8"
 #include "cmptest.h"

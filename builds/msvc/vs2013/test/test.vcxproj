@@ -226,7 +226,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\..\..\test\default\cmptest.h" />
-    <ClInclude Include="..\..\..\..\test\quirks\windows\windows-quirks.h" />
+    <ClInclude Include="..\..\..\..\test\quirks\quirks.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
 </Project>

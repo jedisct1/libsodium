@@ -211,13 +211,13 @@ auth2_LDADD               = $(TESTS_LDADD)
 auth3_SOURCE              = cmptest.h auth3.c
 auth3_LDADD               = $(TESTS_LDADD)
 
-auth5_SOURCE              = cmptest.h auth5.c windows/windows-quirks.h
+auth5_SOURCE              = cmptest.h auth5.c quirks.h
 auth5_LDADD               = $(TESTS_LDADD)
 
-auth6_SOURCE              = cmptest.h auth6.c windows/windows-quirks.h
+auth6_SOURCE              = cmptest.h auth6.c quirks.h
 auth6_LDADD               = $(TESTS_LDADD)
 
-auth7_SOURCE              = cmptest.h auth7.c windows/windows-quirks.h
+auth7_SOURCE              = cmptest.h auth7.c quirks.h
 auth7_LDADD               = $(TESTS_LDADD)
 
 box_SOURCE                = cmptest.h box.c

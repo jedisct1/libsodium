@@ -1,5 +1,5 @@
 
-#include "windows/windows-quirks.h"
+#include "quirks.h"
 
 #define TEST_NAME "auth5"
 #include "cmptest.h"
