@@ -1,4 +1,16 @@
 
+* Version 1.0.3 (unreleased yet)
+ - crypto_generichash_statebytes(), crypto_auth_*_statebytes() and
+crypto_hash_*_statebytes() have been added in order to retrieve the
+size of structures keeping states from foreign languages.
+ - The JavaScript target doesn't require /dev/urandom or an external
+randombytes() implementation any more. Other minor Emscripten-related
+improvements have been made in order to support libsodium.js
+ - Custom randombytes implementations do not need to provide their own
+implementation of randombytes_uniform() any more. randombytes_stir()
+and randombytes_close() can also be NULL pointers if they are not
+required.
+
 * Version 1.0.2
  - The _easy and _detached APIs now support precalculated keys;
 crypto_box_easy_afternm(), crypto_box_open_easy_afternm(),
