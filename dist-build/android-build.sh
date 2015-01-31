@@ -32,6 +32,7 @@ bash $MAKE_TOOLCHAIN --platform="${NDK_PLATFORM:-android-14}" \
             --with-sysroot="${TOOLCHAIN_DIR}/sysroot" \
             --prefix="${PREFIX}" \
             --enable-minimal \
+            --disable-pie \
             --disable-soname-versions && \
 make clean && \
 make -j3 install && \
