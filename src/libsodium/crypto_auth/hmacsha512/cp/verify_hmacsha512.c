@@ -7,6 +7,6 @@ int crypto_auth_verify(const unsigned char *h, const unsigned char *in,
 {
   unsigned char correct[64];
   crypto_auth(correct,in,inlen,k);
-  return crypto_verify_64(h,correct) | (-(h - correct == 0)) |
+  return crypto_verify_64(h,correct) | (-(h == correct)) |
          sodium_memcmp(correct,h,64);
 }
