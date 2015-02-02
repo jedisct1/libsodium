@@ -19,9 +19,21 @@ int main(void)
 {
     int i;
 
-    crypto_stream(output, 4194304, nonce, firstkey);
+    crypto_stream(output, sizeof output, nonce, firstkey);
     crypto_hash_sha256(h, output, sizeof output);
 
+    for (i = 0; i < 32; ++i)
+        printf("%02x", h[i]);
+    printf("\n");
+
+    assert(sizeof output > 4000);
+
+    crypto_stream_xsalsa20_xor_ic(output, output, 4000, nonce, 0U, firstkey);
+    for (i = 0; i < 4000; ++i)
+        assert(output[i] == 0);
+
+    crypto_stream_xsalsa20_xor_ic(output, output, 4000, nonce, 1U, firstkey);
+    crypto_hash_sha256(h, output, sizeof output);
     for (i = 0; i < 32; ++i)
         printf("%02x", h[i]);
     printf("\n");

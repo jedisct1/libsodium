@@ -2,6 +2,7 @@
 #include "crypto_stream_xsalsa20.h"
 
 #define crypto_stream crypto_stream_xsalsa20
+#define crypto_stream_xor_ic crypto_stream_xsalsa20_xor_ic
 #define crypto_stream_xor crypto_stream_xsalsa20_xor
 #define crypto_stream_KEYBYTES crypto_stream_xsalsa20_KEYBYTES
 #define crypto_stream_NONCEBYTES crypto_stream_xsalsa20_NONCEBYTES
