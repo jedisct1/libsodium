@@ -5,8 +5,8 @@ Public domain.
 */
 
 #include "api.h"
-#include "crypto_stream_salsa20.h"
 #include "crypto_core_hsalsa20.h"
+#include "crypto_stream_salsa20.h"
 #include "utils.h"
 
 static const unsigned char sigma[16] = {
