@@ -36,6 +36,13 @@ int crypto_stream_xsalsa20_xor(unsigned char *c, const unsigned char *m,
                                unsigned long long mlen, const unsigned char *n,
                                const unsigned char *k);
 
+
+SODIUM_EXPORT
+int crypto_stream_xsalsa20_xor_ic(unsigned char *c, const unsigned char *m,
+                          	  unsigned long long mlen, 
+                                  const unsigned char *n, uint64_t ic,
+                          	  const unsigned char *k);
+
 #ifdef __cplusplus
 }
 #endif

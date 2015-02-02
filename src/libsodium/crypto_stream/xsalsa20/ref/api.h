@@ -8,3 +8,5 @@
 #define crypto_stream_IMPLEMENTATION crypto_stream_xsalsa20_IMPLEMENTATION
 #define crypto_stream_VERSION crypto_stream_xsalsa20_VERSION
 
+#define crypto_stream_xor_ic crypto_stream_xsalsa20_xor_ic
+
