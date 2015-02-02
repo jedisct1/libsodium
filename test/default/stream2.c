@@ -17,7 +17,19 @@ unsigned char h[32];
 int main(void)
 {
     int i;
-    crypto_stream_salsa20(output, 4194304, noncesuffix, secondkey);
+    crypto_stream_salsa20(output, sizeof output, noncesuffix, secondkey);
+    crypto_hash_sha256(h, output, sizeof output);
+    for (i = 0; i < 32; ++i)
+        printf("%02x", h[i]);
+    printf("\n");
+
+    assert(sizeof output > 4000);
+
+    crypto_stream_salsa20_xor_ic(output, output, 4000, noncesuffix, 0U, secondkey);
+    for (i = 0; i < 4000; ++i)
+        assert(output[i] == 0);
+
+    crypto_stream_salsa20_xor_ic(output, output, 4000, noncesuffix, 1U, secondkey);
     crypto_hash_sha256(h, output, sizeof output);
     for (i = 0; i < 32; ++i)
         printf("%02x", h[i]);
