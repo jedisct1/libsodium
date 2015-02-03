@@ -1,5 +1,6 @@
 
 * Version 1.0.3 (unreleased yet)
+ - crypto_stream_xsalsa20_ic() has been added.
  - crypto_generichash_statebytes(), crypto_auth_*_statebytes() and
 crypto_hash_*_statebytes() have been added in order to retrieve the
 size of structures keeping states from foreign languages.
