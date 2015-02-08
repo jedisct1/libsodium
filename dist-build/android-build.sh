@@ -22,7 +22,6 @@ export PREFIX="$(pwd)/libsodium-android-${TARGET_ARCH}"
 export TOOLCHAIN_DIR="$(pwd)/android-toolchain-${TARGET_ARCH}"
 export PATH="${PATH}:${TOOLCHAIN_DIR}/bin"
 
-# Clean up before build
 rm -rf "${TOOLCHAIN_DIR}" "${PREFIX}"
 
 bash $MAKE_TOOLCHAIN --platform="${NDK_PLATFORM:-android-18}" \
