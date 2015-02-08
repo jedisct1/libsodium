@@ -25,7 +25,7 @@ export PATH="${PATH}:${TOOLCHAIN_DIR}/bin"
 # Clean up before build
 rm -rf "${TOOLCHAIN_DIR}" "${PREFIX}"
 
-bash $MAKE_TOOLCHAIN --platform="${NDK_PLATFORM:-android-14}" \
+bash $MAKE_TOOLCHAIN --platform="${NDK_PLATFORM:-android-18}" \
                 --arch="$ARCH" \
                 --install-dir="$TOOLCHAIN_DIR" && \
 ./configure --host="${HOST_COMPILER}" \
