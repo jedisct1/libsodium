@@ -1,4 +1,4 @@
-#!/bin/sh
+#! /bin/sh
 
 if [ -z "$ANDROID_NDK_HOME" ]; then
     echo "You should probably set ANDROID_NDK_HOME to the directory containing"
