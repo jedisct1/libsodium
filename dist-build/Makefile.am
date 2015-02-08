@@ -4,7 +4,7 @@ EXTRA_DIST = \
 	android-arm.sh \
 	android-armv7.sh \
 	android-x86.sh \
-	android-mips.sh \
+	android-mips32.sh \
 	emscripten.sh \
 	ios.sh \
 	msys2-win32.sh \
