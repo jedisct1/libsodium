@@ -11,7 +11,7 @@ if [ ! -f ./configure ]; then
 	exit 1
 fi
 
-if [ "x$TARGET_ARCH" = 'x' ] || [ "x$HOST_COMPILER" = 'x' ]; then
+if [ "x$TARGET_ARCH" = 'x' ] || [ "x$ARCH" = 'x' ] || [ "x$HOST_COMPILER" = 'x' ]; then
     echo "You shouldn't use android-build.sh directly, use android-[arch].sh instead"
     exit 1
 fi
@@ -26,7 +26,7 @@ export PATH="${PATH}:${TOOLCHAIN_DIR}/bin"
 rm -rf "${TOOLCHAIN_DIR}" "${PREFIX}"
 
 bash $MAKE_TOOLCHAIN --platform="${NDK_PLATFORM:-android-14}" \
-                --arch="$TARGET_ARCH" \
+                --arch="$ARCH" \
                 --install-dir="$TOOLCHAIN_DIR" && \
 ./configure --host="${HOST_COMPILER}" \
             --with-sysroot="${TOOLCHAIN_DIR}/sysroot" \
