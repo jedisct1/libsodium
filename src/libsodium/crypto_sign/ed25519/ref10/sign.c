@@ -13,13 +13,10 @@ crypto_sign_detached(unsigned char *sig, unsigned long long *siglen_p,
                      const unsigned char *sk)
 {
     crypto_hash_sha512_state hs;
-    unsigned char pk[32];
     unsigned char az[64];
     unsigned char nonce[64];
     unsigned char hram[64];
     ge_p3 R;
-
-    memmove(pk, sk + 32, 32);
 
     crypto_hash_sha512(az, sk, 32);
     az[0] &= 248;
@@ -31,7 +28,7 @@ crypto_sign_detached(unsigned char *sig, unsigned long long *siglen_p,
     crypto_hash_sha512_update(&hs, m, mlen);
     crypto_hash_sha512_final(&hs, nonce);
 
-    memmove(sig + 32, pk, 32);
+    memmove(sig + 32, sk + 32, 32);
 
     sc_reduce(nonce);
     ge_scalarmult_base(&R, nonce);
