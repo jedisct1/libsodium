@@ -1,5 +1,7 @@
 
 * Version 1.0.3 (unreleased yet)
+ - In addition to sodium_bin2hex(), sodium_hex2bin() is now a
+constant-time function.
  - crypto_stream_xsalsa20_ic() has been added.
  - crypto_generichash_statebytes(), crypto_auth_*_statebytes() and
 crypto_hash_*_statebytes() have been added in order to retrieve the
