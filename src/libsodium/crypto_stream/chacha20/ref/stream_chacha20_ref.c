@@ -92,6 +92,15 @@ chacha_ivsetup(chacha_ctx *x, const u8 *iv, const u8 *counter)
 }
 
 static void
+chacha_ietf_ivsetup(chacha_ctx *x, const u8 *iv, const u8 *counter)
+{
+    x->input[12] = counter == NULL ? 0 : U8TO32_LITTLE(counter);
+    x->input[13] = U8TO32_LITTLE(iv + 0);
+    x->input[14] = U8TO32_LITTLE(iv + 4);
+    x->input[15] = U8TO32_LITTLE(iv + 8);
+}
+
+static void
 chacha_encrypt_bytes(chacha_ctx *x, const u8 *m, u8 *c, unsigned long long bytes)
 {
     u32 x0, x1, x2, x3, x4, x5, x6, x7, x8, x9, x10, x11, x12, x13, x14, x15;
@@ -249,6 +258,25 @@ crypto_stream_chacha20_ref(unsigned char *c, unsigned long long clen,
 }
 
 int
+crypto_stream_chacha20_ietf_ref(unsigned char *c, unsigned long long clen,
+                                const unsigned char *n, const unsigned char *k)
+{
+    struct chacha_ctx ctx;
+
+    if (!clen) {
+        return 0;
+    }
+    (void) sizeof(int[crypto_stream_chacha20_KEYBYTES == 256 / 8 ? 1 : -1]);
+    chacha_keysetup(&ctx, k);
+    chacha_ietf_ivsetup(&ctx, n, NULL);
+    memset(c, 0, clen);
+    chacha_encrypt_bytes(&ctx, c, c, clen);
+    sodium_memzero(&ctx, sizeof ctx);
+
+    return 0;
+}
+
+int
 crypto_stream_chacha20_ref_xor_ic(unsigned char *c, const unsigned char *m,
                                   unsigned long long mlen,
                                   const unsigned char *n, uint64_t ic,
@@ -268,6 +296,29 @@ crypto_stream_chacha20_ref_xor_ic(unsigned char *c, const unsigned char *m,
     U32TO8_LITTLE(&ic_bytes[4], ic_high);
     chacha_keysetup(&ctx, k);
     chacha_ivsetup(&ctx, n, ic_bytes);
+    chacha_encrypt_bytes(&ctx, m, c, mlen);
+
+    sodium_memzero(&ctx, sizeof ctx);
+    sodium_memzero(ic_bytes, sizeof ic_bytes);
+
+    return 0;
+}
+
+int
+crypto_stream_chacha20_ietf_ref_xor_ic(unsigned char *c, const unsigned char *m,
+                                       unsigned long long mlen,
+                                       const unsigned char *n, uint32_t ic,
+                                       const unsigned char *k)
+{
+    struct chacha_ctx ctx;
+    uint8_t           ic_bytes[4];
+
+    if (!mlen) {
+        return 0;
+    }
+    U32TO8_LITTLE(ic_bytes, ic);
+    chacha_keysetup(&ctx, k);
+    chacha_ietf_ivsetup(&ctx, n, ic_bytes);
     chacha_encrypt_bytes(&ctx, m, c, mlen);
     sodium_memzero(&ctx, sizeof ctx);
     sodium_memzero(ic_bytes, sizeof ic_bytes);
