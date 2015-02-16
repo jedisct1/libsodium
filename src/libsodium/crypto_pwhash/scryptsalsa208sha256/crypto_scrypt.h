@@ -32,7 +32,7 @@
 
 #include <stdint.h>
 
-#if SIZE_MAX > 0xffffffffUL
+#if SIZE_MAX > 0xffffffffULL
 # define ARCH_BITS 64
 #else
 # define ARCH_BITS 32
