@@ -31,7 +31,7 @@ int main(void)
     crypto_box_keypair(bobpk, bobsk);
     mlen = (size_t) randombytes_uniform((uint32_t)sizeof m);
     randombytes_buf(m, mlen);
-    randombytes_buf(nonce, sizeof nonce);
+    randombytes_buf(nonce, crypto_box_NONCEBYTES);
     crypto_box_easy(c, m, mlen, nonce, bobpk, alicesk);
     if (crypto_box_open_easy(m2, c,
                              (unsigned long long) mlen + crypto_box_MACBYTES,
