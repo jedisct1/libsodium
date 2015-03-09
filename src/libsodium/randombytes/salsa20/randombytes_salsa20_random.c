@@ -4,6 +4,9 @@
 # include <sys/stat.h>
 # include <sys/time.h>
 #endif
+#ifdef __linux__
+# include <sys/syscall.h>
+#endif
 
 #include <assert.h>
 #include <errno.h>
@@ -49,12 +52,14 @@ typedef struct Salsa20Random_ {
 #endif
     int           random_data_source_fd;
     int           initialized;
+    int           getrandom_available;
 } Salsa20Random;
 
 static Salsa20Random stream = {
     SODIUM_C99(.random_data_source_fd =) -1,
     SODIUM_C99(.rnd32_outleft =) (size_t) 0U,
-    SODIUM_C99(.initialized =) 0
+    SODIUM_C99(.initialized =) 0,
+    SODIUM_C99(.getrandom_available =) 0
 };
 
 static uint64_t
@@ -86,14 +91,14 @@ sodium_hrtime(void)
 
 #ifndef _WIN32
 static ssize_t
-safe_read(const int fd, void * const buf_, size_t count)
+safe_read(const int fd, void * const buf_, size_t size)
 {
     unsigned char *buf = (unsigned char *) buf_;
     ssize_t        readnb;
 
-    assert(count > (size_t) 0U);
+    assert(size > (size_t) 0U);
     do {
-        while ((readnb = read(fd, buf, count)) < (ssize_t) 0 &&
+        while ((readnb = read(fd, buf, size)) < (ssize_t) 0 &&
                (errno == EINTR || errno == EAGAIN));  /* LCOV_EXCL_LINE */
         if (readnb < (ssize_t) 0) {
             return readnb; /* LCOV_EXCL_LINE */
@@ -101,9 +106,9 @@ safe_read(const int fd, void * const buf_, size_t count)
         if (readnb == (ssize_t) 0) {
             break; /* LCOV_EXCL_LINE */
         }
-        count -= (size_t) readnb;
+        size -= (size_t) readnb;
         buf += readnb;
-    } while (count > (ssize_t) 0);
+    } while (size > (ssize_t) 0);
 
     return (ssize_t) (buf - (unsigned char *) buf_);
 }
@@ -145,6 +150,42 @@ randombytes_salsa20_random_random_dev_open(void)
 /* LCOV_EXCL_STOP */
 }
 
+#ifdef SYS_getrandom
+static int
+_randombytes_linux_getrandom(void * const buf, const size_t size)
+{
+    int readnb;
+
+    assert(size <= 256U);
+    do {
+        readnb = syscall(SYS_getrandom, buf, (int) size, 0);
+    } while (readnb < 0 && (errno == EINTR || errno == EAGAIN));
+
+    return (readnb == (int) size) - 1;
+}
+
+static int
+randombytes_linux_getrandom(void * const buf_, size_t size)
+{
+    unsigned char *buf = (unsigned char *) buf_;
+    size_t         chunk_size = 256U;
+
+    do {
+        if (size < chunk_size) {
+            chunk_size = size;
+            assert(chunk_size > (size_t) 0U);
+        }
+        if (_randombytes_linux_getrandom(buf, chunk_size) != 0) {
+            return -1;
+        }
+        size -= chunk_size;
+        buf += chunk_size;
+    } while (size > (size_t) 0U);
+
+    return 0;
+}
+#endif
+
 static void
 randombytes_salsa20_random_init(void)
 {
@@ -152,6 +193,19 @@ randombytes_salsa20_random_init(void)
 
     stream.nonce = sodium_hrtime();
     assert(stream.nonce != (uint64_t) 0U);
+
+# ifdef SYS_getrandom
+    {
+        unsigned char fodder[16];
+
+        if (randombytes_linux_getrandom(fodder, sizeof fodder) == 0) {
+            stream.getrandom_available = 1;
+            errno = errno_save;
+            return;
+        }
+        stream.getrandom_available = 0;
+    }
+# endif
 
     if ((stream.random_data_source_fd =
          randombytes_salsa20_random_random_dev_open()) == -1) {
@@ -191,10 +245,23 @@ randombytes_salsa20_random_stir(void)
         stream.initialized = 1;
     }
 #ifndef _WIN32
-    if (safe_read(stream.random_data_source_fd, m0,
+# ifdef SYS_getrandom
+    if (stream.getrandom_available != 0) {
+        if (randombytes_linux_getrandom(m0, sizeof m0) != 0) {
+            abort(); /* LCOV_EXCL_LINE */
+        }
+    } else if (stream.random_data_source_fd == -1 ||
+               safe_read(stream.random_data_source_fd, m0,
+                         sizeof m0) != (ssize_t) sizeof m0) {
+        abort(); /* LCOV_EXCL_LINE */
+    }
+# else
+    if (stream.random_data_source_fd == -1 ||
+        safe_read(stream.random_data_source_fd, m0,
                   sizeof m0) != (ssize_t) sizeof m0) {
         abort(); /* LCOV_EXCL_LINE */
     }
+# endif
 #else /* _WIN32 */
     if (! RtlGenRandom((PVOID) m0, (ULONG) sizeof m0)) {
         abort(); /* LCOV_EXCL_LINE */
@@ -277,6 +344,11 @@ randombytes_salsa20_random_close(void)
         stream.initialized = 0;
         ret = 0;
     }
+# ifdef SYS_getrandom
+    if (stream.getrandom_available != 0) {
+        ret = 0;
+    }
+# endif
 #else /* _WIN32 */
     if (stream.initialized != 0) {
         stream.initialized = 0;
