@@ -58,8 +58,8 @@ randombytes_sysrandom_close(void)
 #else /* __OpenBSD__ */
 
 typedef struct SysRandom_ {
-    int        random_data_source_fd;
-    int        initialized;
+    int random_data_source_fd;
+    int initialized;
 } SysRandom;
 
 static SysRandom stream = {
