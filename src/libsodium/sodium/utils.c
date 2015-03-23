@@ -416,7 +416,7 @@ sodium_allocarray(size_t count, size_t size)
 {
     size_t total_size;
 
-    if (size >= (size_t) SIZE_MAX / count) {
+    if (count > (size_t) 0U && size >= (size_t) SIZE_MAX / count) {
         errno = ENOMEM;
         return NULL;
     }
