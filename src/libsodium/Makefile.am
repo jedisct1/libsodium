@@ -18,6 +18,7 @@ libsodium_la_SOURCES = \
 	crypto_auth/hmacsha512256/cp/verify_hmacsha512256.c \
 	crypto_box/crypto_box.c \
 	crypto_box/crypto_box_easy.c \
+	crypto_box/crypto_box_seal.c \
 	crypto_box/curve25519xsalsa20poly1305/box_curve25519xsalsa20poly1305_api.c \
 	crypto_box/curve25519xsalsa20poly1305/ref/api.h \
 	crypto_box/curve25519xsalsa20poly1305/ref/after_curve25519xsalsa20poly1305.c \

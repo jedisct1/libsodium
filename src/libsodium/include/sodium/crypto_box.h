@@ -106,6 +106,21 @@ int crypto_box_open_detached_afternm(unsigned char *m, const unsigned char *c,
                                      unsigned long long clen, const unsigned char *n,
                                      const unsigned char *k);
 
+/* -- Ephemeral SK interface -- */
+
+#define crypto_box_SEALBYTES (crypto_box_PUBLICKEYBYTES + crypto_box_MACBYTES)
+SODIUM_EXPORT
+size_t crypto_box_sealbytes(void);
+
+SODIUM_EXPORT
+int crypto_box_seal(unsigned char *out, const unsigned char *in,
+                    unsigned long long inlen, const unsigned char *pk);
+
+SODIUM_EXPORT
+int crypto_box_seal_open(unsigned char *out, const unsigned char *in,
+                         unsigned long long inlen,
+                         const unsigned char *pk, const unsigned char *sk);
+
 /* -- NaCl compatibility interface ; Requires padding -- */
 
 #define crypto_box_ZEROBYTES crypto_box_curve25519xsalsa20poly1305_ZEROBYTES

@@ -16,6 +16,7 @@ EXTRA_DIST = \
 	box8.exp \
 	box_easy.exp \
 	box_easy2.exp \
+	box_seal.exp \
 	box_seed.exp \
 	chacha20.exp \
 	core1.exp \
@@ -75,6 +76,7 @@ DISTCLEANFILES = \
 	box8.res \
 	box_easy.res \
 	box_easy2.res \
+	box_seal.res \
 	box_seed.res \
 	chacha20.res \
 	core1.res \
@@ -144,6 +146,7 @@ TESTS_TARGETS = \
 	box8 \
 	box_easy \
 	box_easy2 \
+	box_seal \
 	box_seed \
 	chacha20 \
 	core1 \
@@ -237,6 +240,9 @@ box_easy_LDADD            = $(TESTS_LDADD)
 
 box_easy2_SOURCE          = cmptest.h box_easy2.c
 box_easy2_LDADD           = $(TESTS_LDADD)
+
+box_seal_SOURCE           = cmptest.h box_seal.c
+box_seal_LDADD            = $(TESTS_LDADD)
 
 box_seed_SOURCE           = cmptest.h box_seed.c
 box_seed_LDADD            = $(TESTS_LDADD)

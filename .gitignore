@@ -72,6 +72,7 @@ test/default/box7
 test/default/box8
 test/default/box_easy
 test/default/box_easy2
+test/default/box_seal
 test/default/box_seed
 test/default/chacha20
 test/default/core1

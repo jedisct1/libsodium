@@ -460,6 +460,9 @@
     <ClCompile Include="..\..\..\..\src\libsodium\crypto_box\crypto_box_easy.c">
       <Filter>src\crypto_box</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\..\..\src\libsodium\crypto_box\crypto_box_seal.c">
+      <Filter>src\crypto_box</Filter>
+    </ClCompile>
     <ClCompile Include="..\..\..\..\src\libsodium\crypto_secretbox\crypto_secretbox_easy.c">
       <Filter>src\crypto_secretbox</Filter>
     </ClCompile>

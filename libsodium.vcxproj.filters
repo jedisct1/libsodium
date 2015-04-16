@@ -569,6 +569,9 @@
     <ClCompile Include="src\libsodium\crypto_box\crypto_box_easy.c">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="src\libsodium\crypto_box\crypto_box_seal.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
     <ClCompile Include="src\libsodium\crypto_secretbox\crypto_secretbox_easy.c">
       <Filter>Source Files</Filter>
     </ClCompile>
