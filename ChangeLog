@@ -15,6 +15,7 @@ and randombytes_close() can also be NULL pointers if they are not
 required.
  - On Linux, getrandom(2) is being used instead of directly accessing
 /dev/urandom, if the kernel supports this system call.
+ - crypto_box_seal() and crypto_box_seal_open() have been added.
 
 * Version 1.0.2
  - The _easy and _detached APIs now support precalculated keys;
