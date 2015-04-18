@@ -14,12 +14,11 @@ export IOS32_PREFIX="$PREFIX/tmp/ios32"
 export IOS64_PREFIX="$PREFIX/tmp/ios64"
 export SIMULATOR32_PREFIX="$PREFIX/tmp/simulator32"
 export SIMULATOR64_PREFIX="$PREFIX/tmp/simulator64"
-export OSX_PREFIX="$PREFIX/tmp/osx"
 export IOS_SIMULATOR_VERSION_MIN=${IOS_SIMULATOR_VERSION_MIN-"5.1.1"}
 export IOS_VERSION_MIN=${IOS_VERSION_MIN-"5.1.1"}
 export XCODEDIR=$(xcode-select -p)
 
-mkdir -p $SIMULATOR32_PREFIX $SIMULATOR64_PREFIX $IOS32_PREFIX $IOS64_PREFIX $OSX_PREFIX || exit 1
+mkdir -p $SIMULATOR32_PREFIX $SIMULATOR64_PREFIX $IOS32_PREFIX $IOS64_PREFIX || exit 1
 
 # Build for the simulator
 export BASEDIR="${XCODEDIR}/Platforms/iPhoneSimulator.platform/Developer"
@@ -49,18 +48,6 @@ make distclean > /dev/null
             --prefix="$SIMULATOR64_PREFIX"
 
 make -j3 install || exit 1
-
-# Build for OSX
-export CFLAGS="-O2 -arch x86_64 -mmacosx-version-min=10.8 -march=core2"
-export LDFLAGS="-arch x86_64 -mmacosx-version-min=10.8"
-
-make distclean > /dev/null
-
-./configure --disable-shared \
-            --enable-minimal \
-            --prefix="$OSX_PREFIX"
-
-make -j3 check && make install || exit 1
 
 # Build for iOS
 export BASEDIR="${XCODEDIR}/Platforms/iPhoneOS.platform/Developer"
@@ -98,7 +85,7 @@ rm -fr -- "$PREFIX/include" "$PREFIX/libsodium.a" 2> /dev/null
 mkdir -p -- "$PREFIX"
 lipo -create \
   "$SIMULATOR32_PREFIX/lib/libsodium.a" \
-  "$OSX_PREFIX/lib/libsodium.a" \
+  "$SIMULATOR64_PREFIX/lib/libsodium.a" \
   "$IOS32_PREFIX/lib/libsodium.a" \
   "$IOS64_PREFIX/lib/libsodium.a" \
   -output "$PREFIX/libsodium.a"
