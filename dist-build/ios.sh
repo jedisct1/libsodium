@@ -4,7 +4,7 @@
 #  Configure for base system so simulator is covered
 #  
 #  Step 2.
-#  Make for iOS armv7, armv7s and arm64
+#  Make for iOS and iOS simulator
 #
 #  Step 3.
 #  Merge libs into final version for xcode import
