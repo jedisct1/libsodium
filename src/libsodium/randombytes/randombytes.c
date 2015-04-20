@@ -60,20 +60,21 @@ randombytes_stir(void)
     EM_ASM({
         if (Module.getRandomValue === undefined) {
             try {
-                var randomValuesStandard = function() {
-                    var buf = new Uint32Array(1);
-                    window.crypto.getRandomValues(buf);
-                    return buf[0] >>> 0;
-                };
+                var crypto_ = ("object" === typeof window ? window : self).crypto,
+                    randomValuesStandard = function() {
+                        var buf = new Uint32Array(1);
+                        crypto_.getRandomValues(buf);
+                        return buf[0] >>> 0;
+                    };
                 randomValuesStandard();
                 Module.getRandomValue = randomValuesStandard;
             } catch (e) {
                 try {
-                    var crypto = require('crypto');
-                    var randomValueIOJS = function() {
-                        var buf = crypto.randomBytes(4);
-                        return (buf[0] << 24 | buf[1] << 16 | buf[2] << 8 | buf[3]) >>> 0;
-                    };
+                    var crypto = require('crypto'),
+                        randomValueIOJS = function() {
+                            var buf = crypto.randomBytes(4);
+                            return (buf[0] << 24 | buf[1] << 16 | buf[2] << 8 | buf[3]) >>> 0;
+                        };
                     randomValueIOJS();
                     Module.getRandomValue = randomValueIOJS;
                 } catch (e) {
