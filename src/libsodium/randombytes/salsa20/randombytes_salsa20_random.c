@@ -367,7 +367,8 @@ randombytes_salsa20_random(void)
 void
 randombytes_salsa20_random_buf(void * const buf, const size_t size)
 {
-    int ret;
+    size_t i;
+    int    ret;
 
     randombytes_salsa20_random_stir_if_needed();
     COMPILER_ASSERT(sizeof stream.nonce == crypto_stream_salsa20_NONCEBYTES);
@@ -378,6 +379,9 @@ randombytes_salsa20_random_buf(void * const buf, const size_t size)
     ret = crypto_stream_salsa20((unsigned char *) buf, (unsigned long long) size,
                                 (unsigned char *) &stream.nonce, stream.key);
     assert(ret == 0);
+    for (i = 0U; i < sizeof size; i++) {
+        stream.key[i] ^= ((const unsigned char *) (const void *) &size)[i];
+    }
     stream.nonce++;
     crypto_stream_salsa20_xor(stream.key, stream.key, sizeof stream.key,
                               (unsigned char *) &stream.nonce, stream.key);
