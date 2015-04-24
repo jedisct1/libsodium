@@ -8,7 +8,7 @@
 #include "cmptest.h"
 
 #ifdef __SANITIZE_ADDRESS__
-# error This test requires address sanitizer to be off
+# warning The sodium_utils3 test is expected to fail with address sanitizer
 #endif
 
 static void segv_handler(int sig)
