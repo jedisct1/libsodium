@@ -22,6 +22,12 @@
     <ClCompile Include="..\..\..\..\test\default\box_easy2.c">
       <Filter>src</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\..\..\test\default\box_seal.c">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\test\default\box_seed.c">
+      <Filter>src</Filter>
+    </ClCompile>
     <ClCompile Include="..\..\..\..\test\default\box2.c">
       <Filter>src</Filter>
     </ClCompile>
@@ -74,6 +80,9 @@
       <Filter>src</Filter>
     </ClCompile>
     <ClCompile Include="..\..\..\..\test\default\onetimeauth7.c">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\test\default\pwhash_scrypt_ll.c">
       <Filter>src</Filter>
     </ClCompile>
     <ClCompile Include="..\..\..\..\test\default\randombytes.c">
