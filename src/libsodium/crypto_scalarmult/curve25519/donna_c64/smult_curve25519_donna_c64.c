@@ -189,9 +189,17 @@ fsquare_times(felem output, const felem in, limb count) {
   output[4] = r4;
 }
 
-#if !defined(CPU_ALIGNED_ACCESS_REQUIRED) && defined(NATIVE_LITTLE_ENDIAN)
-# define load_limb(p)     (*((const limb *) (p)))
-# define store_limb(p, v) (*((limb *) (p)) = (v))
+#ifdef NATIVE_LITTLE_ENDIAN
+static inline limb force_inline
+load_limb(const u8 *in) {
+    limb out;
+    memcpy(&out, in, sizeof (limb));
+    return out;
+}
+static inline void force_inline
+store_limb(u8 *out, limb in) {
+    memcpy(out, &in, sizeof (limb));
+}
 #else
 static inline limb force_inline
 load_limb(const u8 *in) {
