@@ -334,13 +334,9 @@
     <ClCompile Include="..\..\..\..\src\libsodium\sodium\runtime.c" />
     <ClCompile Include="..\..\..\..\src\libsodium\sodium\utils.c" />
     <ClCompile Include="..\..\..\..\src\libsodium\sodium\version.c" />
-    <ClInclude Include="..\..\resource.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="..\..\..\..\src\libsodium\crypto_stream\salsa20\amd64_xmm6\stream_salsa20_amd64_xmm6.S" />
-  </ItemGroup>
-  <ItemGroup>
-    <ResourceCompile Include="..\..\resource.rc" />
   </ItemGroup>
   <ItemGroup>
     <None Include="..\..\..\..\packaging\nuget\package.bat" />

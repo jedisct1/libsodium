@@ -747,14 +747,6 @@
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="..\..\resource.h">
-      <Filter>resource</Filter>
-    </ClInclude>
-    <ResourceCompile Include="..\..\resource.rc">
-      <Filter>resource</Filter>
-    </ResourceCompile>
-  </ItemGroup>
-  <ItemGroup>
     <None Include="..\..\..\..\packaging\nuget\package.bat">
       <Filter>packaging</Filter>
     </None>
