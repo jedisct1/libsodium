@@ -69,7 +69,7 @@ blkxor_64(escrypt_block_t *dest, const escrypt_block_t *src)
 static inline void
 blkcpy(escrypt_block_t *dest, const escrypt_block_t *src, size_t len)
 {
-	int i, L;
+	size_t i, L;
 #if (ARCH_BITS==32)
 	L = (len>>2);
 	for (i = 0; i < L; ++i)
@@ -84,7 +84,7 @@ blkcpy(escrypt_block_t *dest, const escrypt_block_t *src, size_t len)
 static inline void
 blkxor(escrypt_block_t *dest, const escrypt_block_t *src, size_t len)
 {
-	int i, L;
+	size_t i, L;
 #if (ARCH_BITS==32)
 	L = (len>>2);
 	for (i = 0; i < L; ++i)
