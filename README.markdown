@@ -22,7 +22,7 @@ including Windows (with MingW or Visual Studio, x86 and x64), iOS and Android.
 The documentation is a work-in-progress, and is being written using
 Gitbook:
 
-[libsodium documentation](http://doc.libsodium.org)
+[libsodium documentation](https://download.libsodium.org/doc/)
 
 ## Community
 
@@ -33,4 +33,4 @@ In order to join, just send a random mail to `sodium-subscribe` {at}
 
 ## License
 
-[ISC license](http://en.wikipedia.org/wiki/ISC_license).
+[ISC license](https://en.wikipedia.org/wiki/ISC_license).
