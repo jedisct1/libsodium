@@ -57,6 +57,8 @@ int main(void)
     assert(crypto_auth_hmacsha512_keybytes() > 0U);
     assert(crypto_auth_hmacsha512256_bytes() == crypto_auth_bytes());
     assert(crypto_auth_hmacsha512256_keybytes() == crypto_auth_keybytes());
+    assert(crypto_auth_hmacsha512256_statebytes() >=
+           crypto_auth_hmacsha512256_keybytes());
     assert(crypto_auth_hmacsha256_statebytes() ==
            sizeof(crypto_auth_hmacsha256_state));
     assert(crypto_auth_hmacsha512_statebytes() ==

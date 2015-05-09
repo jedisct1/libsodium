@@ -98,10 +98,37 @@ static int randombytes_tests(void)
     return 0;
 }
 
+static uint32_t randombytes_uniform_impl(const uint32_t upper_bound)
+{
+    return upper_bound;
+}
+
+static int impl_tests(void)
+{
+    randombytes_implementation impl = randombytes_sysrandom_implementation;
+    uint32_t                   v = randombytes_random();
+
+    impl.uniform = randombytes_uniform_impl;
+    randombytes_close();
+    randombytes_set_implementation(&impl);
+    assert(randombytes_uniform(v) == v);
+    assert(randombytes_uniform(v) == v);
+    assert(randombytes_uniform(v) == v);
+    assert(randombytes_uniform(v) == v);
+    randombytes_close();
+    impl.close = NULL;
+    randombytes_close();
+
+    return 0;
+}
+
 int main(void)
 {
     compat_tests();
     randombytes_tests();
+#ifndef __EMSCRIPTEN__
+    impl_tests();
+#endif
     printf("OK\n");
 
     return 0;
