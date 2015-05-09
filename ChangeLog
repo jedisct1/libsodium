@@ -1,5 +1,5 @@
 
-* Version 1.0.3 (unreleased yet)
+* Version 1.0.3
  - In addition to sodium_bin2hex(), sodium_hex2bin() is now a
 constant-time function.
  - crypto_stream_xsalsa20_ic() has been added.
@@ -16,6 +16,7 @@ required.
  - On Linux, getrandom(2) is being used instead of directly accessing
 /dev/urandom, if the kernel supports this system call.
  - crypto_box_seal() and crypto_box_seal_open() have been added.
+ - A solutions for Visual Studio 2015 was added.
 
 * Version 1.0.2
  - The _easy and _detached APIs now support precalculated keys;
