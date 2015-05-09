@@ -113,12 +113,12 @@ SODIUM_EXPORT
 size_t crypto_box_sealbytes(void);
 
 SODIUM_EXPORT
-int crypto_box_seal(unsigned char *out, const unsigned char *in,
-                    unsigned long long inlen, const unsigned char *pk);
+int crypto_box_seal(unsigned char *c, const unsigned char *m,
+                    unsigned long long mlen, const unsigned char *pk);
 
 SODIUM_EXPORT
-int crypto_box_seal_open(unsigned char *out, const unsigned char *in,
-                         unsigned long long inlen,
+int crypto_box_seal_open(unsigned char *m, const unsigned char *c,
+                         unsigned long long clen,
                          const unsigned char *pk, const unsigned char *sk);
 
 /* -- NaCl compatibility interface ; Requires padding -- */

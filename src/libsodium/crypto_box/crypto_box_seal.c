@@ -20,8 +20,8 @@ _crypto_box_seal_nonce(unsigned char *nonce,
 }
 
 int
-crypto_box_seal(unsigned char *out, const unsigned char *in,
-                unsigned long long inlen, const unsigned char *pk)
+crypto_box_seal(unsigned char *c, const unsigned char *m,
+                unsigned long long mlen, const unsigned char *pk)
 {
     unsigned char nonce[crypto_box_NONCEBYTES];
     unsigned char epk[crypto_box_PUBLICKEYBYTES];
@@ -31,9 +31,9 @@ crypto_box_seal(unsigned char *out, const unsigned char *in,
     if (crypto_box_keypair(epk, esk) != 0) {
         return -1;
     }
-    memcpy(out, epk, crypto_box_PUBLICKEYBYTES);
+    memcpy(c, epk, crypto_box_PUBLICKEYBYTES);
     _crypto_box_seal_nonce(nonce, epk, pk);
-    ret = crypto_box_easy(out + crypto_box_PUBLICKEYBYTES, in, inlen,
+    ret = crypto_box_easy(c + crypto_box_PUBLICKEYBYTES, m, mlen,
                           nonce, pk, esk);
     sodium_memzero(esk, sizeof esk);
 
@@ -41,21 +41,21 @@ crypto_box_seal(unsigned char *out, const unsigned char *in,
 }
 
 int
-crypto_box_seal_open(unsigned char *out, const unsigned char *in,
-                     unsigned long long inlen,
+crypto_box_seal_open(unsigned char *m, const unsigned char *c,
+                     unsigned long long clen,
                      const unsigned char *pk, const unsigned char *sk)
 {
     unsigned char nonce[crypto_box_NONCEBYTES];
 
-    if (inlen < crypto_box_SEALBYTES) {
+    if (clen < crypto_box_SEALBYTES) {
         return -1;
     }
-    _crypto_box_seal_nonce(nonce, in, pk);
+    _crypto_box_seal_nonce(nonce, c, pk);
 
     (void) sizeof(int[crypto_box_PUBLICKEYBYTES < crypto_box_SEALBYTES ? 1 : -1]);
-    return crypto_box_open_easy(out, in + crypto_box_PUBLICKEYBYTES,
-                                inlen - crypto_box_PUBLICKEYBYTES,
-                                nonce, in, sk);
+    return crypto_box_open_easy(m, c + crypto_box_PUBLICKEYBYTES,
+                                clen - crypto_box_PUBLICKEYBYTES,
+                                nonce, c, sk);
 }
 
 size_t
