@@ -29,7 +29,7 @@ crypto_box_seal(unsigned char *c, const unsigned char *m,
     int           ret;
 
     if (crypto_box_keypair(epk, esk) != 0) {
-        return -1;
+        return -1; /* LCOV_EXCL_LINE */
     }
     memcpy(c, epk, crypto_box_PUBLICKEYBYTES);
     _crypto_box_seal_nonce(nonce, epk, pk);
