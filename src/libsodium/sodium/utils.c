@@ -102,7 +102,7 @@ sodium_bin2hex(char * const hex, const size_t hex_maxlen,
     int          b;
     int          c;
 
-    if (bin_len >= SIZE_MAX / 2 || hex_maxlen < bin_len * 2U) {
+    if (bin_len >= SIZE_MAX / 2 || hex_maxlen <= bin_len * 2U) {
         abort(); /* LCOV_EXCL_LINE */
     }
     while (i < bin_len) {
