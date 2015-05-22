@@ -9,6 +9,12 @@
 # include <emscripten.h>
 #endif
 
+
+#ifdef __native_client__
+#include <stdlib.h>
+#include <irt.h>
+#endif
+
 #include "randombytes.h"
 #include "randombytes_sysrandom.h"
 
@@ -114,9 +120,24 @@ void
 randombytes_buf(void * const buf, const size_t size)
 {
 #ifndef __EMSCRIPTEN__
+#ifdef __native_client__
+    size_t n = 0;
+    struct nacl_irt_random rand_intf;
+
+    if (nacl_interface_query(NACL_IRT_RANDOM_v0_1,
+        &rand_intf, sizeof(rand_intf)) != sizeof(rand_intf)) abort();
+
+    while (n < size) {
+        size_t nread;
+        if (rand_intf.get_random_bytes(
+                (unsigned char *)buf+n, size-n, &nread) != 0) abort();
+        n += nread;
+    }
+#else
     if (size > (size_t) 0U) {
         implementation->buf(buf, size);
     }
+#endif
 #else
     unsigned char *p = buf;
     size_t         i;
