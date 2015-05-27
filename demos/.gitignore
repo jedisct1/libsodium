@@ -4,7 +4,6 @@ box_old
 generichash
 generichashstream
 hash
-Makefile
 onetimeauth
 secretbox
 shorthash
