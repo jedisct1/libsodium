@@ -27,7 +27,6 @@ generichash_stream(void)
     puts("Example: crypto_generichashstream\n");
 
     prompt_input("a key", (char*)key, sizeof key, 1);
-    putchar('\n');
 
     printf("Hashing message with %s\n", crypto_generichash_primitive());
 

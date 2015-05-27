@@ -61,9 +61,7 @@ generichash(void)
     puts("Example: crypto_generichash\n");
 
     key_len = prompt_input("a key", (char*)key, sizeof key, 1);
-
     message_len = prompt_input("a message", (char*)message, sizeof message, 1);
-    putchar('\n');
 
     printf("Hashing message with %s\n", crypto_generichash_primitive());
     if (crypto_generichash(hash, sizeof hash, message, message_len,

@@ -52,9 +52,9 @@ prompt_input(const char *prompt, char *input, const size_t max_input_len,
     size_t actual_input_len;
 
     if (variable_length != 0) {
-        printf("Enter %s (%zu bytes max) > ", prompt, max_input_len);
+        printf("\nEnter %s (%zu bytes max) > ", prompt, max_input_len);
     } else {
-        printf("Enter %s (%zu bytes) > ", prompt, max_input_len);
+        printf("\nEnter %s (%zu bytes) > ", prompt, max_input_len);
     }
     fflush(stdout);
     fgets(input_tmp, sizeof input_tmp, stdin);
@@ -67,14 +67,14 @@ prompt_input(const char *prompt, char *input, const size_t max_input_len,
     }
 
     if (actual_input_len > max_input_len) {
-        printf("Warning: truncating input to %zu bytes\n", max_input_len);
+        printf("Warning: truncating input to %zu bytes\n\n", max_input_len);
         actual_input_len = max_input_len;
     } else if (actual_input_len < max_input_len && variable_length == 0) {
-        printf("Warning: %zu bytes expected, %zu bytes given: padding with zeros\n",
+        printf("Warning: %zu bytes expected, %zu bytes given: padding with zeros\n\n",
                max_input_len, actual_input_len);
         memset(input, 0, max_input_len);
     } else {
-        printf("Length: %zu bytes\n", actual_input_len);
+        printf("Length: %zu bytes\n\n", actual_input_len);
     }
 
     memcpy(input, input_tmp, actual_input_len);
