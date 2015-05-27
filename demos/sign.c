@@ -22,12 +22,12 @@
 static int
 sign(void)
 {
-    unsigned char pk[crypto_sign_PUBLICKEYBYTES];      /* Bob public */
-    unsigned char sk[crypto_sign_SECRETKEYBYTES];      /* Bob secret */
-    unsigned char m[BUFFER_SIZE];                      /* message */
-    unsigned char sm[BUFFER_SIZE + crypto_sign_BYTES]; /* signed message */
-    unsigned long long int mlen;                       /* message length */
-    unsigned long long int smlen;                      /* signed length */
+    unsigned char pk[crypto_sign_PUBLICKEYBYTES];         /* Bob public */
+    unsigned char sk[crypto_sign_SECRETKEYBYTES];         /* Bob secret */
+    unsigned char m[MAX_INPUT_SIZE];                      /* message */
+    unsigned char sm[MAX_INPUT_SIZE + crypto_sign_BYTES]; /* signed message */
+    unsigned long long int mlen;                          /* message length */
+    unsigned long long int smlen;                         /* signed length */
     int r;
 
     puts("Example: crypto_sign\n");

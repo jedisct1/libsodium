@@ -21,7 +21,7 @@ generichashstream(void)
     unsigned char k[crypto_generichash_KEYBYTES_MAX]; /* key */
     unsigned char h[crypto_generichash_BYTES_MIN];    /* hash output */
     crypto_generichash_state state;                   /* hash stream */
-    unsigned char m[BUFFER_SIZE];                     /* input buffer */
+    unsigned char m[MAX_INPUT_SIZE];                  /* input buffer */
     size_t mlen;                                      /* input length */
 
     puts("Example: crypto_generichashstream\n");

@@ -20,7 +20,7 @@ shorthash(void)
 {
     unsigned char k[crypto_shorthash_KEYBYTES]; /* key */
     unsigned char h[crypto_shorthash_BYTES];    /* hash output */
-    unsigned char m[BUFFER_SIZE];               /* message */
+    unsigned char m[MAX_INPUT_SIZE];            /* message */
     size_t mlen;                                /* length */
 
     puts("Example: crypto_shorthash\n");

@@ -15,7 +15,7 @@
  * ================================================================== */
 
 /*
- * Print hex is a wrapper around sodium_bin2hex which allocates
+ * print_hex() is a wrapper around sodium_bin2hex() which allocates
  * temporary memory then immediately prints the result.
  */
 void
@@ -64,7 +64,7 @@ prompt_input(char *prompt, char *input, const size_t max_input_len)
 }
 
 /*
- * Print a message if the function was sucessful or failed.
+ * Display whether the function was sucessful or failed.
  */
 void
 print_verification(int r)

@@ -22,7 +22,7 @@ onetimeauth(void)
 {
     unsigned char k[crypto_onetimeauth_KEYBYTES]; /* key */
     unsigned char a[crypto_onetimeauth_BYTES];    /* authentication */
-    unsigned char m[BUFFER_SIZE];                 /* message */
+    unsigned char m[MAX_INPUT_SIZE];              /* message */
     size_t mlen;                                  /* message length */
     int r;
 

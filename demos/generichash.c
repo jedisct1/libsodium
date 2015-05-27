@@ -23,7 +23,7 @@ generichash(void)
 {
     unsigned char k[crypto_generichash_KEYBYTES_MAX]; /* key */
     unsigned char h[crypto_generichash_BYTES_MIN];    /* hash output */
-    unsigned char m[BUFFER_SIZE];                     /* message */
+    unsigned char m[MAX_INPUT_SIZE];                  /* message */
     size_t mlen;                                      /* length */
 
     puts("Example: crypto_generichash\n");

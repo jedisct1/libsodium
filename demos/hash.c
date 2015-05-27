@@ -18,7 +18,7 @@ static void
 hash(void)
 {
     unsigned char h[crypto_hash_BYTES]; /* hash output */
-    unsigned char m[BUFFER_SIZE];       /* message */
+    unsigned char m[MAX_INPUT_SIZE];    /* message */
     size_t mlen;                        /* length */
 
     puts("Example: crypto_hash\n");

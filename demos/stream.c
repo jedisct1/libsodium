@@ -25,8 +25,8 @@ stream(void)
 {
     unsigned char k[crypto_stream_KEYBYTES];   /* secret key */
     unsigned char n[crypto_stream_NONCEBYTES]; /* message nonce */
-    unsigned char m[BUFFER_SIZE];              /* plain-text */
-    unsigned char c[BUFFER_SIZE];              /* cipher-text */
+    unsigned char m[MAX_INPUT_SIZE];           /* plain-text */
+    unsigned char c[MAX_INPUT_SIZE];           /* cipher-text */
     size_t mlen;                               /* length */
     int r;
 

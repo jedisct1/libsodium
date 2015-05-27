@@ -30,10 +30,10 @@ box(void)
     unsigned char alice_pk[crypto_box_PUBLICKEYBYTES]; /* Alice public */
     unsigned char alice_sk[crypto_box_SECRETKEYBYTES]; /* Alice secret */
 
-    unsigned char n[crypto_box_NONCEBYTES];             /* message nonce */
-    unsigned char m[BUFFER_SIZE];                       /* plaintext */
-    unsigned char c[BUFFER_SIZE + crypto_box_MACBYTES]; /* ciphertext */
-    size_t mlen;                                        /* length */
+    unsigned char n[crypto_box_NONCEBYTES];                /* message nonce */
+    unsigned char m[MAX_INPUT_SIZE];                       /* plaintext */
+    unsigned char c[MAX_INPUT_SIZE + crypto_box_MACBYTES]; /* ciphertext */
+    size_t mlen;                                           /* length */
     int r;
 
     puts("Example: crypto_box_easy\n");
