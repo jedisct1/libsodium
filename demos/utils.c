@@ -74,3 +74,10 @@ print_verification(int r)
     else
         puts("Failure\n");
 }
+
+void
+init(void)
+{
+    sodium_init();
+    printf("Using libsodium %s\n", sodium_version_string());
+}

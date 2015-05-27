@@ -55,9 +55,8 @@ generichashstream(void)
 int
 main(void)
 {
-    sodium_init();
-    printf("Using LibSodium %s\n", sodium_version_string());
-
+    init();
     generichashstream();
+
     return 0;
 }
