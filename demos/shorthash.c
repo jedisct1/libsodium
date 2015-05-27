@@ -11,30 +11,48 @@
 #include "utils.h" /* utility functions shared by demos */
 
 /*
- * Short hash is a fast algorithm intended for hash tables and anything
- * else that does not require data integrity. There is the added benefit
- * of a key which will alter the output of the hash.
+ * Many applications and programming language implementations were
+ * recently found to be vulnerable to denial-of-service attacks when
+ * a hash function with weak security guarantees, such as Murmurhash
+ * 3, was used to construct a hash table.
+ *
+ * In order to address this, Sodium provides the crypto_shorthash()
+ * function, which outputs short but unpredictable (without knowing
+ * the secret key) values suitable for picking a list in a hash table
+ * for a given key.
+ *
+ * This function is optimized for short inputs.
+ *
+ * The output of this function is only 64 bits. Therefore, it should
+ * not be considered collision-resistant.
+ *
+ * Use cases:
+ *
+ * - Hash tables
+ * - Probabilistic data structures such as Bloom filters
+ * - Integrity checking in interactive protocols
  */
 void
 shorthash(void)
 {
-    unsigned char k[crypto_shorthash_KEYBYTES]; /* key */
-    unsigned char h[crypto_shorthash_BYTES];    /* hash output */
-    unsigned char m[MAX_INPUT_SIZE];            /* message */
-    size_t mlen;                                /* length */
+    unsigned char key[crypto_shorthash_KEYBYTES];
+    unsigned char hash[crypto_shorthash_BYTES];
+    unsigned char message[MAX_INPUT_SIZE];
+    size_t        message_len;
 
     puts("Example: crypto_shorthash\n");
 
-    memset(k, 0, sizeof k);
-    prompt_input("Input your key > ", (char*)k, sizeof k);
+    memset(key, 0, sizeof key);
+    prompt_input("Enter a key > ", (char*)key, sizeof key);
 
-    mlen = prompt_input("Input your message > ", (char*)m, sizeof m);
+    message_len = prompt_input("Enter a message > ",
+                               (char*)message, sizeof message);
     putchar('\n');
 
-    printf("Hashing message with %s\n", crypto_shorthash_primitive());
-    crypto_shorthash(h, m, mlen, k);
+    printf("Hashing the message with %s\n", crypto_shorthash_primitive());
+    crypto_shorthash(hash, message, message_len, key);
     fputs("Hash: ", stdout);
-    print_hex(h, sizeof h);
+    print_hex(hash, sizeof hash);
     putchar('\n');
     putchar('\n');
 }
