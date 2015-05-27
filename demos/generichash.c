@@ -54,7 +54,7 @@ generichash(void)
 {
     unsigned char key[crypto_generichash_KEYBYTES_MAX];
     unsigned char hash[crypto_generichash_BYTES];
-    unsigned char message[MAX_INPUT_SIZE];
+    unsigned char message[MAX_INPUT_LEN];
     size_t        message_len;
     size_t        key_len;
 

@@ -20,7 +20,7 @@ generichash_stream(void)
 {
     unsigned char            key[crypto_generichash_KEYBYTES_MAX];
     unsigned char            hash[crypto_generichash_BYTES];
-    unsigned char            message_part[MAX_INPUT_SIZE];
+    unsigned char            message_part[MAX_INPUT_LEN];
     crypto_generichash_state state;
     size_t                   message_part_len;
 

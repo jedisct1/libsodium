@@ -57,9 +57,9 @@ box_detached(void)
     unsigned char alice_sk[crypto_box_SECRETKEYBYTES]; /* Alice's secret key */
 
     unsigned char nonce[crypto_box_NONCEBYTES];
-    unsigned char message[MAX_INPUT_SIZE];
+    unsigned char message[MAX_INPUT_LEN];
     unsigned char mac[crypto_box_MACBYTES];
-    unsigned char ciphertext[MAX_INPUT_SIZE];
+    unsigned char ciphertext[MAX_INPUT_LEN];
     size_t        message_len;
     int           ret;
 

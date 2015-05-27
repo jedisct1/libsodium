@@ -24,8 +24,8 @@ sign(void)
 {
     unsigned char      pk[crypto_sign_PUBLICKEYBYTES]; /* Bob's public key */
     unsigned char      sk[crypto_sign_SECRETKEYBYTES]; /* Bob's secret key */
-    unsigned char      message[MAX_INPUT_SIZE];
-    unsigned char      message_signed[crypto_sign_BYTES + MAX_INPUT_SIZE];
+    unsigned char      message[MAX_INPUT_LEN];
+    unsigned char      message_signed[crypto_sign_BYTES + MAX_INPUT_LEN];
     unsigned long long message_len;
     unsigned long long message_signed_len;
     int                ret;

@@ -38,7 +38,7 @@ auth(void)
 {
     unsigned char key[crypto_auth_KEYBYTES];
     unsigned char mac[crypto_auth_BYTES];
-    unsigned char message[MAX_INPUT_SIZE];
+    unsigned char message[MAX_INPUT_LEN];
     size_t        message_len;
     int           ret;
 

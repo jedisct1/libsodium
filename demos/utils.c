@@ -44,7 +44,7 @@ size_t
 prompt_input(const char *prompt, char *input, const size_t max_input_len,
              int variable_length)
 {
-    char   input_tmp[MAX_INPUT_SIZE + 1U];
+    char   input_tmp[MAX_INPUT_LEN + 1U];
     size_t actual_input_len;
 
     if (variable_length != 0) {

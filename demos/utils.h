@@ -6,7 +6,7 @@
 
 #include <stddef.h>
 
-#define MAX_INPUT_SIZE 4096 /* max size of all input buffers in the demo */
+#define MAX_INPUT_LEN 4096 /* max size of all input buffers in the demo */
 
 void print_hex(const void *bin, const size_t bin_len);
 

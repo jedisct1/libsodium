@@ -37,7 +37,7 @@ shorthash(void)
 {
     unsigned char key[crypto_shorthash_KEYBYTES];
     unsigned char hash[crypto_shorthash_BYTES];
-    unsigned char message[MAX_INPUT_SIZE];
+    unsigned char message[MAX_INPUT_LEN];
     size_t        message_len;
 
     puts("Example: crypto_shorthash\n");
