@@ -112,11 +112,11 @@ box(void)
     puts("Bob sends the ciphertext...\n");
     printf("Ciphertext len: %zu bytes - Original message length: %zu bytes\n",
            ciphertext_len, message_len);
-    puts("Notice the prepended 16 byte authentication token");
-    puts("Format: nonce::encrypted_message");
+    puts("Notice the prepended 16 byte authentication token\n");
+    fputs("Nonce: ", stdout);
+    print_hex(ciphertext, ciphertext_len);
+    putchar('\n');
     fputs("Ciphertext: ", stdout);
-    print_hex(nonce, sizeof nonce);
-    fputs("::", stdout);
     print_hex(ciphertext, ciphertext_len);
     putchar('\n');
     putchar('\n');
