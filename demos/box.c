@@ -11,30 +11,57 @@
 #include "utils.h" /* utility functions shared by demos */
 
 /*
- * Shows how crypto_box works using Bob and Alice with a simple message.
- * Both clients must generate their own key pair and swap public key. The
- * library will perform Diffie-Hellman to generate a shared key for
- * symmetric encryption.
+ * Using public-key authenticated encryption, Bob can encrypt a
+ * confidential message specifically for Alice, using Alice's public
+ * key.
  *
- * Encrypted messages will be 16 bytes longer because a 16 byte
- * authentication token will be prepended to the message.
+ * Using Bob's public key, Alice can verify that the encrypted
+ * message was actually created by Bob and was not tampered with,
+ * before eventually decrypting it.
  *
- * Note the same nonce must not be used; it should be safe to use a counter.
+ * Alice only needs Bob's public key, the nonce and the ciphertext.
+ * Bob should never ever share his secret key, even with Alice.
+ *
+ * And in order to send messages to Alice, Bob only needs Alice's
+ * public key. Alice should never ever share her secret key either,
+ * even with Bob.
+ *
+ * Alice can reply to Bob using the same system, without having to
+ * generate a distinct key pair.
+ *
+ * The nonce doesn't have to be confidential, but it should be used
+ * with just one invokation of crypto_box_open_easy() for a
+ * particular pair of public and secret keys.
+ *
+ * One easy way to generate a nonce is to use randombytes_buf(),
+ * considering the size of nonces the risk of any random collisions
+ * is negligible. For some applications, if you wish to use nonces to
+ * detect missing messages or to ignore replayed messages, it is also
+ * ok to use a simple incrementing counter as a nonce.
+ *
+ * When doing so you must ensure that the same value can never be
+ * re-used (for example you may have multiple threads or even hosts
+ * generating messages using the same key pairs).
+ *
+ * This system provides mutual authentication. However, a typical use
+ * case is to secure communications between a server, whose public
+ * key is known in advance, and clients connecting anonymously.
  */
 static int
 box(void)
 {
-    unsigned char bob_pk[crypto_box_PUBLICKEYBYTES]; /* Bob public */
-    unsigned char bob_sk[crypto_box_SECRETKEYBYTES]; /* Bob secret */
+    unsigned char bob_pk[crypto_box_PUBLICKEYBYTES]; /* Bob's public key */
+    unsigned char bob_sk[crypto_box_SECRETKEYBYTES]; /* Bob's secret key */
 
-    unsigned char alice_pk[crypto_box_PUBLICKEYBYTES]; /* Alice public */
-    unsigned char alice_sk[crypto_box_SECRETKEYBYTES]; /* Alice secret */
+    unsigned char alice_pk[crypto_box_PUBLICKEYBYTES]; /* Alice's public key */
+    unsigned char alice_sk[crypto_box_SECRETKEYBYTES]; /* Alice's secret key */
 
-    unsigned char n[crypto_box_NONCEBYTES];                /* message nonce */
-    unsigned char m[MAX_INPUT_SIZE];                       /* plaintext */
-    unsigned char c[MAX_INPUT_SIZE + crypto_box_MACBYTES]; /* ciphertext */
-    size_t mlen;                                           /* length */
-    int r;
+    unsigned char nonce[crypto_box_NONCEBYTES];
+    unsigned char message[MAX_INPUT_SIZE];
+    unsigned char ciphertext[crypto_box_MACBYTES + MAX_INPUT_SIZE];
+    size_t        message_len;
+    size_t        ciphertext_len;
+    int           ret;
 
     puts("Example: crypto_box_easy\n");
 
@@ -43,72 +70,74 @@ box(void)
     crypto_box_keypair(alice_pk, alice_sk); /* generate Alice's keys */
 
     puts("Bob");
-    fputs("Public: ", stdout);
+    fputs("Public key: ", stdout);
     print_hex(bob_pk, sizeof bob_pk);
     putchar('\n');
-    fputs("Secret: ", stdout);
+    fputs("Secret key: ", stdout);
     print_hex(bob_sk, sizeof bob_sk);
     putchar('\n');
     putchar('\n');
 
     puts("Alice");
-    fputs("Public: ", stdout);
+    fputs("Public key: ", stdout);
     print_hex(alice_pk, sizeof alice_pk);
     putchar('\n');
-    fputs("Secret: ", stdout);
+    fputs("Secret key: ", stdout);
     print_hex(alice_sk, sizeof alice_sk);
     putchar('\n');
     putchar('\n');
 
-    /* nonce must be generated per message, safe to send with message */
+    /* nonce must be unique per (key, message) - it can be public and deterministic */
     puts("Generating nonce...");
-    randombytes_buf(n, sizeof n);
+    randombytes_buf(nonce, sizeof nonce);
     fputs("Nonce: ", stdout);
-    print_hex(n, sizeof n);
+    print_hex(nonce, sizeof nonce);
     putchar('\n');
     putchar('\n');
 
     /* read input */
-    mlen = prompt_input("Input your message > ", (char*)m, sizeof m);
+    message_len = prompt_input("Enter a message > ",
+                               (char*)message, sizeof message);
 
-    puts("Notice there is no padding");
-    print_hex(m, mlen);
+    print_hex(message, message_len);
     putchar('\n');
     putchar('\n');
 
-    /* encrypt the message */
-    printf("Encrypting with %s\n\n", crypto_box_primitive());
-    crypto_box_easy(c, m, mlen, n, alice_pk, bob_sk);
+    /* encrypt and authenticate the message */
+    printf("Encrypting and authenticating with %s\n\n", crypto_box_primitive());
+    crypto_box_easy(ciphertext, message, message_len, nonce, alice_pk, bob_sk);
+    ciphertext_len = crypto_box_MACBYTES + message_len;
 
-    /* sent message */
-    puts("Bob sending message...\n");
+    /* send the ciphertext */
+    puts("Bob sends the ciphertext...\n");
+    printf("Ciphertext len: %zu bytes - Original message length: %zu bytes\n",
+           ciphertext_len, message_len);
     puts("Notice the prepended 16 byte authentication token");
-    puts("Format: nonce::message");
+    puts("Format: nonce::encrypted_message");
     fputs("Ciphertext: ", stdout);
-    print_hex(n, sizeof n);
+    print_hex(nonce, sizeof nonce);
     fputs("::", stdout);
-    print_hex(c, mlen + crypto_box_MACBYTES);
+    print_hex(ciphertext, ciphertext_len);
     putchar('\n');
     putchar('\n');
 
     /* decrypt the message */
-    puts("Alice opening message...");
-    r = crypto_box_open_easy(m, c, mlen + crypto_box_MACBYTES, n, bob_pk,
-                             alice_sk);
-
-    puts("Notice there is no padding");
-    print_hex(m, mlen);
+    puts("Alice verifies and decrypts the ciphertext...");
+    ret = crypto_box_open_easy(message, ciphertext, ciphertext_len, nonce, bob_pk,
+                               alice_sk);
+    print_hex(message, message_len);
     putchar('\n');
 
-    print_verification(r);
-    if (r == 0)
-        printf("Plaintext: %s\n\n", m);
+    print_verification(ret);
+    if (ret == 0)
+        printf("Plaintext: %s\n\n", message);
 
     sodium_memzero(bob_sk, sizeof bob_sk); /* wipe sensitive data */
     sodium_memzero(alice_sk, sizeof alice_sk);
-    sodium_memzero(m, sizeof m);
-    sodium_memzero(c, sizeof c);
-    return r;
+    sodium_memzero(message, sizeof message);
+    sodium_memzero(ciphertext, sizeof ciphertext);
+
+    return ret;
 }
 
 int
