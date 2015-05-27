@@ -1,6 +1,5 @@
 /*
  * GraxRabble
- * 05 May 2014
  * Demo programs for libsodium.
  */
 #include <stdio.h>
