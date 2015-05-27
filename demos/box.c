@@ -128,9 +128,11 @@ box(void)
     putchar('\n');
 
     print_verification(ret);
-    if (ret == 0)
-        printf("Plaintext: %s\n\n", message);
-
+    if (ret == 0) {
+        printf("Plaintext: ");
+        fwrite(message, 1U, message_len, stdout);
+        putchar('\n');
+    }
     sodium_memzero(bob_sk, sizeof bob_sk); /* wipe sensitive data */
     sodium_memzero(alice_sk, sizeof alice_sk);
     sodium_memzero(message, sizeof message);
