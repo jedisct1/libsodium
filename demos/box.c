@@ -6,11 +6,9 @@
 #include <stdlib.h>
 #include <string.h>
 
-#include <sodium.h>             /* library header */
+#include <sodium.h> /* library header */
 
-#include "demo_utils.h"         /* utility functions shared by demos */
-
-
+#include "demo_utils.h" /* utility functions shared by demos */
 
 /*
  * Shows how crypto_box works using Bob and Alice with a simple message.
@@ -26,11 +24,11 @@
 static int
 box(void)
 {
-    unsigned char bob_pk[crypto_box_PUBLICKEYBYTES];    /* Bob public */
-    unsigned char bob_sk[crypto_box_SECRETKEYBYTES];    /* Bob secret */
+    unsigned char bob_pk[crypto_box_PUBLICKEYBYTES]; /* Bob public */
+    unsigned char bob_sk[crypto_box_SECRETKEYBYTES]; /* Bob secret */
 
-    unsigned char alice_pk[crypto_box_PUBLICKEYBYTES];  /* Alice public */
-    unsigned char alice_sk[crypto_box_SECRETKEYBYTES];  /* Alice secret */
+    unsigned char alice_pk[crypto_box_PUBLICKEYBYTES]; /* Alice public */
+    unsigned char alice_sk[crypto_box_SECRETKEYBYTES]; /* Alice secret */
 
     unsigned char n[crypto_box_NONCEBYTES];             /* message nonce */
     unsigned char m[BUFFER_SIZE];                       /* plaintext */
@@ -69,10 +67,10 @@ box(void)
     print_hex(n, sizeof n);
     putchar('\n');
     putchar('\n');
-    
+
     /* read input */
-    mlen = prompt_input("Input your message > ", (char*) m, sizeof m);
-    
+    mlen = prompt_input("Input your message > ", (char*)m, sizeof m);
+
     puts("Notice there is no padding");
     print_hex(m, mlen);
     putchar('\n');
@@ -81,7 +79,7 @@ box(void)
     /* encrypt the message */
     printf("Encrypting with %s\n\n", crypto_box_primitive());
     crypto_box_easy(c, m, mlen, n, alice_pk, bob_sk);
-    
+
     /* sent message */
     puts("Bob sending message...\n");
     puts("Notice the prepended 16 byte authentication token");
@@ -95,17 +93,18 @@ box(void)
 
     /* decrypt the message */
     puts("Alice opening message...");
-    r = crypto_box_open_easy(m, c, mlen + crypto_box_MACBYTES,
-            n, bob_pk, alice_sk);
+    r = crypto_box_open_easy(m, c, mlen + crypto_box_MACBYTES, n, bob_pk,
+                             alice_sk);
 
     puts("Notice there is no padding");
     print_hex(m, mlen);
     putchar('\n');
 
     print_verification(r);
-    if (r == 0) printf("Plaintext: %s\n\n", m);
+    if (r == 0)
+        printf("Plaintext: %s\n\n", m);
 
-    sodium_memzero(bob_pk, sizeof bob_pk);      /* wipe sensitive data */
+    sodium_memzero(bob_pk, sizeof bob_pk); /* wipe sensitive data */
     sodium_memzero(bob_sk, sizeof bob_sk);
     sodium_memzero(alice_pk, sizeof alice_pk);
     sodium_memzero(alice_sk, sizeof alice_sk);
@@ -123,4 +122,3 @@ main(void)
 
     return box() != 0;
 }
-

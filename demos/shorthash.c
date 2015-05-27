@@ -6,11 +6,9 @@
 #include <stdlib.h>
 #include <string.h>
 
-#include <sodium.h>             /* library header */
+#include <sodium.h> /* library header */
 
-#include "demo_utils.h"         /* utility functions shared by demos */
-
-
+#include "demo_utils.h" /* utility functions shared by demos */
 
 /*
  * Short hash is a fast algorithm intended for hash tables and anything
@@ -20,17 +18,17 @@
 void
 shorthash(void)
 {
-    unsigned char k[crypto_shorthash_KEYBYTES];     /* key */
-    unsigned char h[crypto_shorthash_BYTES];        /* hash output */
-    unsigned char m[BUFFER_SIZE];                   /* message */
-    size_t mlen;                                    /* length */
+    unsigned char k[crypto_shorthash_KEYBYTES]; /* key */
+    unsigned char h[crypto_shorthash_BYTES];    /* hash output */
+    unsigned char m[BUFFER_SIZE];               /* message */
+    size_t mlen;                                /* length */
 
     puts("Example: crypto_shorthash\n");
 
     sodium_memzero(k, sizeof k);
-    prompt_input("Input your key > ", (char*) k, sizeof k);
+    prompt_input("Input your key > ", (char*)k, sizeof k);
 
-    mlen = prompt_input("Input your message > ", (char*) m, sizeof m);
+    mlen = prompt_input("Input your message > ", (char*)m, sizeof m);
     putchar('\n');
 
     printf("Hashing message with %s\n", crypto_shorthash_primitive());
@@ -50,4 +48,3 @@ main(void)
     shorthash();
     return 0;
 }
-

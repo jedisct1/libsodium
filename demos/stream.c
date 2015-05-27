@@ -6,16 +6,14 @@
 #include <stdlib.h>
 #include <string.h>
 
-#include <sodium.h>             /* library header */
+#include <sodium.h> /* library header */
 
-#include "demo_utils.h"         /* utility functions shared by demos */
-
-
+#include "demo_utils.h" /* utility functions shared by demos */
 
 /*
  * Stream utilizes a nonce to generate a sequence of bytes. The library has
  * an internal function which XOR data and the stream into an encrypted result.
- * 
+ *
  * Note that this method does not supply authentication. Try secretbox instead.
  *
  * Note that nonce must be different for each message since it provides
@@ -25,17 +23,17 @@
 static int
 stream(void)
 {
-    unsigned char k[crypto_stream_KEYBYTES];        /* secret key */
-    unsigned char n[crypto_stream_NONCEBYTES];      /* message nonce */
-    unsigned char m[BUFFER_SIZE];                   /* plain-text */
-    unsigned char c[BUFFER_SIZE];                   /* cipher-text */
-    size_t mlen;                                    /* length */
+    unsigned char k[crypto_stream_KEYBYTES];   /* secret key */
+    unsigned char n[crypto_stream_NONCEBYTES]; /* message nonce */
+    unsigned char m[BUFFER_SIZE];              /* plain-text */
+    unsigned char c[BUFFER_SIZE];              /* cipher-text */
+    size_t mlen;                               /* length */
     int r;
 
     puts("Example: crypto_stream\n");
 
     sodium_memzero(k, sizeof k);
-    prompt_input("Input your key > ", (char*) k, sizeof k);
+    prompt_input("Input your key > ", (char*)k, sizeof k);
     putchar('\n');
 
     /* nonce must be generated per message, safe to send with message */
@@ -46,7 +44,7 @@ stream(void)
     putchar('\n');
     putchar('\n');
 
-    mlen = prompt_input("Input your message > ", (char*) m, sizeof m);
+    mlen = prompt_input("Input your message > ", (char*)m, sizeof m);
     putchar('\n');
 
     printf("Encrypting with (xor) %s\n", crypto_stream_primitive());
@@ -66,9 +64,10 @@ stream(void)
     r = crypto_stream_xor(m, c, mlen, n, k);
 
     print_verification(r);
-    if (r == 0) printf("Plaintext: %s\n\n", m);
+    if (r == 0)
+        printf("Plaintext: %s\n\n", m);
 
-    sodium_memzero(k, sizeof k);    /* wipe sensitive data */
+    sodium_memzero(k, sizeof k); /* wipe sensitive data */
     sodium_memzero(n, sizeof n);
     sodium_memzero(m, sizeof m);
     sodium_memzero(c, sizeof c);
@@ -83,4 +82,3 @@ main(void)
 
     return stream() != 0;
 }
-

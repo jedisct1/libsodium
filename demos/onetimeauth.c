@@ -6,11 +6,9 @@
 #include <stdlib.h>
 #include <string.h>
 
-#include <sodium.h>             /* library header */
+#include <sodium.h> /* library header */
 
-#include "demo_utils.h"         /* utility functions shared by demos */
-
-
+#include "demo_utils.h" /* utility functions shared by demos */
 
 /*
  * This method is only effective for a single use per key. The benefit is
@@ -22,13 +20,13 @@
 static int
 onetimeauth(void)
 {
-    unsigned char k[crypto_onetimeauth_KEYBYTES];/* key */
-    unsigned char a[crypto_onetimeauth_BYTES];      /* authentication */
-    unsigned char m[BUFFER_SIZE];                   /* message */
-    size_t mlen;                                    /* message length */
+    unsigned char k[crypto_onetimeauth_KEYBYTES]; /* key */
+    unsigned char a[crypto_onetimeauth_BYTES];    /* authentication */
+    unsigned char m[BUFFER_SIZE];                 /* message */
+    size_t mlen;                                  /* message length */
     int r;
 
-    sodium_memzero(k, sizeof k);                    /* must zero the key */
+    sodium_memzero(k, sizeof k); /* must zero the key */
 
     puts("Example: crypto_onetimeauth\n");
 
@@ -39,29 +37,28 @@ onetimeauth(void)
      * prevent buffer overflows.
      */
     sodium_memzero(k, sizeof k);
-    prompt_input("Input your key > ", (char*) k, sizeof k);
+    prompt_input("Input your key > ", (char*)k, sizeof k);
     puts("Your key that you entered");
     print_hex(k, sizeof k);
     putchar('\n');
 
-    mlen = prompt_input("Input your message > ", (char*) m, sizeof m);
+    mlen = prompt_input("Input your message > ", (char*)m, sizeof m);
     putchar('\n');
 
-    printf("Generating %s authentication...\n",
-            crypto_onetimeauth_primitive());
+    printf("Generating %s authentication...\n", crypto_onetimeauth_primitive());
     crypto_onetimeauth(a, m, mlen, k);
 
     puts("Format: authentication token::message");
     print_hex(a, sizeof a);
     fputs("::", stdout);
-    puts((const char*) m);
+    puts((const char*)m);
     putchar('\n');
 
     puts("Verifying authentication...");
     r = crypto_onetimeauth_verify(a, m, mlen, k);
     print_verification(r);
-    
-    sodium_memzero(k, sizeof k);        /* wipe sensitive data */
+
+    sodium_memzero(k, sizeof k); /* wipe sensitive data */
     sodium_memzero(a, sizeof a);
     sodium_memzero(m, sizeof m);
     return r;
@@ -75,4 +72,3 @@ main(void)
 
     return onetimeauth() != 0;
 }
-

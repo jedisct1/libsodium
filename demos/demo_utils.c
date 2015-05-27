@@ -5,11 +5,9 @@
 #include <stdlib.h>
 #include <string.h>
 
-#include "sodium.h"             /* library header */
+#include "sodium.h" /* library header */
 
-#include "demo_utils.h"         /* demo utility header */
-
-
+#include "demo_utils.h" /* demo utility header */
 
 /* ================================================================== *
  *                          utility functions                         *
@@ -24,10 +22,10 @@ print_hex(const void *buf, const size_t len)
 {
     const unsigned char *b;
     char *p;
-    
+
     b = buf;
     p = calloc(len * 2 + 1, sizeof *b);
-    
+
     /* the library supplies a few utility functions like the one below */
     sodium_bin2hex(p, len * 2 + 1, b, len);
     fputs(p, stdout);
@@ -45,10 +43,10 @@ prompt_input(char *prompt, char *buf, const size_t len)
     size_t n;
 
     fputs(prompt, stdout);
-    fgets(buf, len, stdin);             /* grab input with room for NULL */
-    
+    fgets(buf, len, stdin); /* grab input with room for NULL */
+
     n = strlen(buf);
-    if (buf[n - 1] == '\n') {           /* trim excess new line */
+    if (buf[n - 1] == '\n') { /* trim excess new line */
         buf[n - 1] = '\0';
         --n;
     }
@@ -61,7 +59,8 @@ prompt_input(char *prompt, char *buf, const size_t len)
 void
 print_verification(int r)
 {
-    if (r == 0) puts("Success\n");
-    else        puts("Failure\n");
+    if (r == 0)
+        puts("Success\n");
+    else
+        puts("Failure\n");
 }
-

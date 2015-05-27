@@ -6,11 +6,9 @@
 #include <stdlib.h>
 #include <string.h>
 
-#include <sodium.h>             /* library header */
+#include <sodium.h> /* library header */
 
-#include "demo_utils.h"         /* utility functions shared by demos */
-
-
+#include "demo_utils.h" /* utility functions shared by demos */
 
 /*
  * Generic hash is intended as a variable output hash with enough strength
@@ -23,17 +21,17 @@
 void
 generichash(void)
 {
-    unsigned char k[crypto_generichash_KEYBYTES_MAX];   /* key */
-    unsigned char h[crypto_generichash_BYTES_MIN];      /* hash output */
-    unsigned char m[BUFFER_SIZE];                       /* message */
-    size_t mlen;                                        /* length */
+    unsigned char k[crypto_generichash_KEYBYTES_MAX]; /* key */
+    unsigned char h[crypto_generichash_BYTES_MIN];    /* hash output */
+    unsigned char m[BUFFER_SIZE];                     /* message */
+    size_t mlen;                                      /* length */
 
     puts("Example: crypto_generichash\n");
 
     sodium_memzero(k, sizeof k);
-    prompt_input("Input your key > ", (char*) k, sizeof k);
+    prompt_input("Input your key > ", (char*)k, sizeof k);
 
-    mlen = prompt_input("Input your message > ", (char*) m, sizeof m);
+    mlen = prompt_input("Input your message > ", (char*)m, sizeof m);
     putchar('\n');
 
     printf("Hashing message with %s\n", crypto_generichash_primitive());
@@ -53,4 +51,3 @@ main(void)
     generichash();
     return 0;
 }
-
