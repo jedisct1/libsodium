@@ -48,7 +48,6 @@ generichashstream(void)
     fputs("Hash: ", stdout);
     print_hex(h, sizeof h);
     putchar('\n');
-    putchar('\n');
 }
 
 int
