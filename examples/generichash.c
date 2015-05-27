@@ -2,9 +2,6 @@
  * GraxRabble
  * example programs for libsodium.
  */
-#include <stdio.h>
-#include <stdlib.h>
-#include <string.h>
 
 #include <sodium.h> /* library header */
 
