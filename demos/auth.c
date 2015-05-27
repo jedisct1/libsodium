@@ -18,46 +18,42 @@
 static int
 auth(void)
 {
-    unsigned char k[crypto_auth_KEYBYTES]; /* key */
-    unsigned char a[crypto_auth_BYTES];    /* authentication token */
-    unsigned char m[MAX_INPUT_SIZE];       /* message */
-    size_t mlen;                           /* message length */
-    int r;
+    unsigned char key[crypto_auth_KEYBYTES];
+    unsigned char mac[crypto_auth_BYTES];
+    unsigned char message[MAX_INPUT_SIZE];
+    size_t        message_len;
+    int           ret;
 
     puts("Example: crypto_auth\n");
 
-    /*
-     * Keys are entered as ascii values. The key is zeroed to
-     * maintain consistency. Input is read through a special
-     * function which reads exactly n bytes into a buffer to
-     * prevent buffer overflows.
-     */
-    memset(k, 0, sizeof k);
-    prompt_input("Input your key > ", (char*)k, sizeof k);
-    puts("Your key that you entered");
-    print_hex(k, sizeof k);
+    memset(key, 0, sizeof key);
+    prompt_input("Enter a key > ", (char*)key, sizeof key);
+    puts("Complete key:");
+    print_hex(key, sizeof key);
     putchar('\n');
 
-    mlen = prompt_input("Input your message > ", (char*)m, sizeof m);
+    message_len = prompt_input("Enter a message > ",
+                               (char*)message, sizeof message);
     putchar('\n');
 
     printf("Generating %s authentication...\n", crypto_auth_primitive());
-    crypto_auth(a, m, mlen, k);
+    crypto_auth(mac, message, message_len, key);
 
-    puts("Format: authentication token::message");
-    print_hex(a, sizeof a);
+    puts("Format: authentication tag::message");
+    print_hex(mac, sizeof mac);
     fputs("::", stdout);
-    puts((const char*)m);
+    puts((const char*)message);
     putchar('\n');
 
-    puts("Verifying authentication...");
-    r = crypto_auth_verify(a, m, mlen, k);
-    print_verification(r);
+    puts("Verifying authentication tag...");
+    ret = crypto_auth_verify(mac, message, message_len, key);
+    print_verification(ret);
 
-    sodium_memzero(k, sizeof k); /* wipe sensitive data */
-    sodium_memzero(a, sizeof a);
-    sodium_memzero(m, sizeof m);
-    return r;
+    sodium_memzero(key, sizeof key); /* wipe sensitive data */
+    sodium_memzero(mac, sizeof mac);
+    sodium_memzero(message, sizeof message);
+
+    return ret;
 }
 
 int

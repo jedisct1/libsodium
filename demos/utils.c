@@ -70,9 +70,9 @@ void
 print_verification(int r)
 {
     if (r == 0)
-        puts("Success\n");
+        puts("Success!\n");
     else
-        puts("Failure\n");
+        puts("Failure.\n");
 }
 
 void
