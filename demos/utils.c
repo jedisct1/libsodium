@@ -8,7 +8,7 @@
 
 #include <sodium.h>
 
-#include "demo_utils.h"
+#include "utils.h"
 
 /* ================================================================== *
  *                          utility functions                         *

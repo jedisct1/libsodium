@@ -8,7 +8,7 @@
 
 #include <sodium.h> /* library header */
 
-#include "demo_utils.h" /* utility functions shared by demos */
+#include "utils.h" /* utility functions shared by demos */
 
 /*
  * Generic hash is intended as a variable output hash with enough strength

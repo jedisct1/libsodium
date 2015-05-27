@@ -8,7 +8,7 @@
 
 #include <sodium.h> /* library header */
 
-#include "demo_utils.h" /* utility functions shared by demos */
+#include "utils.h" /* utility functions shared by demos */
 
 /*
  * Streaming variant of generic hash. This has the ability to hash

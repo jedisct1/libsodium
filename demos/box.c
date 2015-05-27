@@ -8,7 +8,7 @@
 
 #include <sodium.h> /* library header */
 
-#include "demo_utils.h" /* utility functions shared by demos */
+#include "utils.h" /* utility functions shared by demos */
 
 /*
  * Shows how crypto_box works using Bob and Alice with a simple message.

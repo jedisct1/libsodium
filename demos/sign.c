@@ -8,7 +8,7 @@
 
 #include <sodium.h> /* library header */
 
-#include "demo_utils.h" /* utility functions shared by demos */
+#include "utils.h" /* utility functions shared by demos */
 
 /*
  * Signs a message with secret key which will authenticate a message.

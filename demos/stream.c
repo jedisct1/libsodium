@@ -8,7 +8,7 @@
 
 #include <sodium.h> /* library header */
 
-#include "demo_utils.h" /* utility functions shared by demos */
+#include "utils.h" /* utility functions shared by demos */
 
 /*
  * Stream utilizes a nonce to generate a sequence of bytes. The library has
