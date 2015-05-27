@@ -26,8 +26,7 @@ generichashstream(void)
 
     puts("Example: crypto_generichashstream\n");
 
-    memset(k, 0, sizeof k);
-    prompt_input("Input your key > ", (char*)k, sizeof k);
+    prompt_input("a key", (char*)k, sizeof k, 0);
     putchar('\n');
 
     printf("Hashing message with %s\n", crypto_generichash_primitive());
@@ -35,8 +34,8 @@ generichashstream(void)
     /* initialize the stream */
     crypto_generichash_init(&state, k, sizeof k, sizeof h);
 
-    while (1) {
-        mlen = prompt_input("> ", (char*)m, sizeof m);
+    for(;;) {
+        mlen = prompt_input("the next part of the message", (char*)m, sizeof m);
         if (mlen == 0)
             break;
 

@@ -42,11 +42,9 @@ shorthash(void)
 
     puts("Example: crypto_shorthash\n");
 
-    memset(key, 0, sizeof key);
-    prompt_input("Enter a key > ", (char*)key, sizeof key);
+    prompt_input("a key", (char*)key, sizeof key, 0);
 
-    message_len = prompt_input("Enter a message > ",
-                               (char*)message, sizeof message);
+    message_len = prompt_input("a message", (char*)message, sizeof message, 1);
     putchar('\n');
 
     printf("Hashing the message with %s\n", crypto_shorthash_primitive());

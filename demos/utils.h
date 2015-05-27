@@ -10,7 +10,8 @@
 
 void print_hex(const void *bin, const size_t bin_len);
 
-size_t prompt_input(char *prompt, char *input, const size_t max_input_len);
+size_t prompt_input(const char *prompt, char *input, const size_t max_input_len,
+                    int variable_length);
 
 void print_verification(int r);
 

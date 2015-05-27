@@ -96,8 +96,7 @@ box_detached(void)
     putchar('\n');
 
     /* read input */
-    message_len = prompt_input("Enter a message > ",
-                               (char*)message, sizeof message);
+    message_len = prompt_input("a message", (char*)message, sizeof message, 1);
 
     print_hex(message, message_len);
     putchar('\n');

@@ -43,8 +43,8 @@ sign(void)
     puts("\n");
 
     /* read input */
-    mlen = prompt_input("Input your message > ", (char*)m,
-                        sizeof m - crypto_sign_BYTES);
+    mlen = prompt_input("a message", (char*)m,
+                        sizeof m - crypto_sign_BYTES, 1);
     putc('\n', stdout);
 
     puts("Notice the message has no prepended padding");

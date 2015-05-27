@@ -11,34 +11,68 @@
 #include "utils.h" /* utility functions shared by demos */
 
 /*
- * Generic hash is intended as a variable output hash with enough strength
- * to ensure data integrity. The hash out put is also able to vary in size.
- * Key is optional and is able to vary in size.
+ * This function computes a fixed-length fingerprint for an arbitrary long message.
  *
- * Note that it is recommended to stay within the range of MIN and MAX
- * output because larger output will produce gaps.
+ * Sample use cases:
+ *
+ * File integrity checking
+ * Creating unique identifiers to index arbitrary long data
+ *
+ * The crypto_generichash() function puts a fingerprint of the
+ * message in whose length is inlen bytes into out. The output size
+ * can be chosen by the application.
+ *
+ * The minimum recommended output size is crypto_generichash_BYTES.
+ * This size makes it practically impossible for two messages to
+ * produce the same fingerprint.
+ *
+ * But for specific use cases, the size can be any value between
+ * crypto_generichash_BYTES_MIN (included) and
+ * crypto_generichash_BYTES_MAX (included).
+ *
+ * key can be NULL and keylen can be 0. In this case, a message will
+ * always have the same fingerprint, similar to the MD5 or SHA-1
+ * functions for which crypto_generichash() is a faster and more
+ * secure alternative.
+ *
+ * But a key can also be specified. A message will always have the
+ * same fingerprint for a given key, but different keys used to hash
+ * the same message are very likely to produce distinct fingerprints.
+ *
+ * In particular, the key can be used to make sure that different
+ * applications generate different fingerprints even if they process
+ * the same data.
+ *
+ * The recommended key size is crypto_generichash_KEYBYTES bytes.
+ *
+ * However, the key size can by any value between
+ * crypto_generichash_KEYBYTES_MIN (included) and
+ * crypto_generichash_KEYBYTES_MAX (included).
  */
 void
 generichash(void)
 {
-    unsigned char k[crypto_generichash_KEYBYTES_MAX]; /* key */
-    unsigned char h[crypto_generichash_BYTES_MIN];    /* hash output */
-    unsigned char m[MAX_INPUT_SIZE];                  /* message */
-    size_t mlen;                                      /* length */
+    unsigned char key[crypto_generichash_KEYBYTES_MAX];
+    unsigned char hash[crypto_generichash_BYTES_MIN];
+    unsigned char message[MAX_INPUT_SIZE];
+    size_t        message_len;
+    size_t        key_len;
 
     puts("Example: crypto_generichash\n");
 
-    memset(k, 0, sizeof k);
-    prompt_input("Input your key > ", (char*)k, sizeof k);
+    key_len = prompt_input("a key", (char*)key, sizeof key, 1);
 
-    mlen = prompt_input("Input your message > ", (char*)m, sizeof m);
+    message_len = prompt_input("a message", (char*)message, sizeof message, 1);
     putchar('\n');
 
     printf("Hashing message with %s\n", crypto_generichash_primitive());
-    crypto_generichash(h, sizeof h, m, mlen, k, sizeof k);
-    fputs("Hash: ", stdout);
-    print_hex(h, sizeof h);
-    putchar('\n');
+    if (crypto_generichash(hash, sizeof hash, message, message_len,
+                           key, key_len) != 0) {
+        puts("Couldn't hash the message, probably due to the key length");
+    } else {
+        fputs("Hash: ", stdout);
+        print_hex(hash, sizeof hash);
+    }
     putchar('\n');
 }
 

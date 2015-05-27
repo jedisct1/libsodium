@@ -45,22 +45,44 @@ print_hex(const void *bin, const size_t bin_len)
  * trailing newline characters.
  */
 size_t
-prompt_input(char *prompt, char *input, const size_t max_input_len)
+prompt_input(const char *prompt, char *input, const size_t max_input_len,
+             int variable_length)
 {
+    char   input_tmp[MAX_INPUT_SIZE + 1U];
     size_t actual_input_len;
 
-    fputs(prompt, stdout);
+    if (variable_length != 0) {
+        printf("Enter %s (%zu bytes max) > ", prompt, max_input_len);
+    } else {
+        printf("Enter %s (%zu bytes) > ", prompt, max_input_len);
+    }
     fflush(stdout);
-    fgets(input, max_input_len, stdin); /* grab input with room for \0 */
+    fgets(input_tmp, sizeof input_tmp, stdin);
+    actual_input_len = strlen(input_tmp);
 
-    actual_input_len = strlen(input);
-
-    /* trim excess new line */
-    if (actual_input_len > 0 && input[actual_input_len - 1] == '\n') {
-        input[actual_input_len - 1] = '\0';
+    /* trim \n */
+    if (actual_input_len > 0 && input_tmp[actual_input_len - 1] == '\n') {
+        input_tmp[actual_input_len - 1] = '\0';
         --actual_input_len;
     }
-    return actual_input_len;
+
+    if (actual_input_len > max_input_len) {
+        printf("Warning: truncating input to %zu bytes\n", max_input_len);
+        actual_input_len = max_input_len;
+    } else if (actual_input_len < max_input_len && variable_length == 0) {
+        printf("Warning: %zu bytes expected, %zu bytes given: padding with zeros\n",
+               max_input_len, actual_input_len);
+        memset(input, 0, max_input_len);
+    } else {
+        printf("Length: %zu bytes\n", actual_input_len);
+    }
+
+    memcpy(input, input_tmp, actual_input_len);
+    if (variable_length == 0) {
+        return max_input_len;
+    } else {
+        return actual_input_len;
+    }
 }
 
 /*
