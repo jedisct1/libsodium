@@ -76,7 +76,6 @@ box(void)
     fputs("Secret key: ", stdout);
     print_hex(bob_sk, sizeof bob_sk);
     putchar('\n');
-    putchar('\n');
 
     puts("Alice");
     fputs("Public key: ", stdout);
@@ -85,7 +84,6 @@ box(void)
     fputs("Secret key: ", stdout);
     print_hex(alice_sk, sizeof alice_sk);
     putchar('\n');
-    putchar('\n');
 
     /* nonce must be unique per (key, message) - it can be public and deterministic */
     puts("Generating nonce...");
@@ -93,13 +91,11 @@ box(void)
     fputs("Nonce: ", stdout);
     print_hex(nonce, sizeof nonce);
     putchar('\n');
-    putchar('\n');
 
     /* read input */
     message_len = prompt_input("a message", (char*)message, sizeof message, 1);
 
     print_hex(message, message_len);
-    putchar('\n');
     putchar('\n');
 
     /* encrypt and authenticate the message */
@@ -117,7 +113,6 @@ box(void)
     putchar('\n');
     fputs("Ciphertext: ", stdout);
     print_hex(ciphertext, ciphertext_len);
-    putchar('\n');
     putchar('\n');
 
     /* decrypt the message */

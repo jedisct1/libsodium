@@ -37,18 +37,16 @@ sign(void)
 
     fputs("Public: ", stdout);
     print_hex(pk, sizeof pk);
-    putc('\n', stdout);
+    putchar('\n');
     fputs("Secret: ", stdout);
     print_hex(sk, sizeof sk);
-    puts("\n");
+    putchar('\n');
 
-    /* read input */
     mlen = prompt_input("a message", (char*)m, sizeof m, 1);
     putchar('\n');
 
     puts("Notice the message has no prepended padding");
     print_hex(m, mlen);
-    putchar('\n');
     putchar('\n');
 
     printf("Signing message with %s...\n", crypto_sign_primitive());
@@ -56,7 +54,6 @@ sign(void)
 
     puts("Notice the signed message has prepended signature");
     print_hex(sm, smlen);
-    putchar('\n');
     putchar('\n');
 
     fputs("Signature: ", stdout);
@@ -71,11 +68,12 @@ sign(void)
 
     print_verification(r);
     if (r == 0)
-        printf("Message: %s\n\n", m);
+        printf("Message: %s\n", m);
 
     sodium_memzero(sk, sizeof sk); /* wipe sensitive data */
     sodium_memzero(m, sizeof m);
     sodium_memzero(sm, sizeof sm);
+
     return r;
 }
 
