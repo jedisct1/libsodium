@@ -37,10 +37,8 @@ sign(void)
 
     fputs("Public key: ", stdout);
     print_hex(pk, sizeof pk);
-    putchar('\n');
     fputs("Secret key: ", stdout);
     print_hex(sk, sizeof sk);
-    putchar('\n');
     puts("The secret key, as returned by crypto_sign_keypair(), actually includes "
          "a copy of the public key, in order to avoid a scalar multiplication "
          "when signing messages.");
@@ -52,13 +50,11 @@ sign(void)
 
     printf("Signed message:");
     print_hex(message_signed, message_signed_len);
-    putchar('\n');
     printf("A %u bytes signature was prepended to the message\n",
            crypto_sign_BYTES);
 
     fputs("Signature: ", stdout);
     print_hex(message_signed, crypto_sign_BYTES);
-    putchar('\n');
     fputs("Message: ", stdout);
     fwrite(message_signed + crypto_sign_BYTES, 1U,
            message_signed_len - crypto_sign_BYTES, stdout);

@@ -49,7 +49,6 @@ shorthash(void)
     crypto_shorthash(hash, message, message_len, key);
     fputs("Hash: ", stdout);
     print_hex(hash, sizeof hash);
-    putchar('\n');
 }
 
 int

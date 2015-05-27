@@ -52,7 +52,6 @@ auth(void)
 
     fputs("Authentication tag: ", stdout);
     print_hex(mac, sizeof mac);
-    putchar('\n');
 
     puts("Verifying authentication tag...");
     ret = crypto_auth_verify(mac, message, message_len, key);

@@ -12,7 +12,7 @@
 
 /*
  * print_hex() is a wrapper around sodium_bin2hex() which allocates
- * temporary memory then immediately prints the result.
+ * temporary memory then immediately prints the result followed by \n
  */
 void
 print_hex(const void *bin, const size_t bin_len)
@@ -31,7 +31,7 @@ print_hex(const void *bin, const size_t bin_len)
     if (sodium_bin2hex(hex, hex_size, bin, bin_len) == NULL) {
         abort();
     }
-    fputs(hex, stdout);
+    puts(hex);
     free(hex);
 }
 

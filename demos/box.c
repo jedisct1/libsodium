@@ -72,31 +72,25 @@ box(void)
     puts("Bob");
     fputs("Public key: ", stdout);
     print_hex(bob_pk, sizeof bob_pk);
-    putchar('\n');
     fputs("Secret key: ", stdout);
     print_hex(bob_sk, sizeof bob_sk);
-    putchar('\n');
 
     puts("Alice");
     fputs("Public key: ", stdout);
     print_hex(alice_pk, sizeof alice_pk);
-    putchar('\n');
     fputs("Secret key: ", stdout);
     print_hex(alice_sk, sizeof alice_sk);
-    putchar('\n');
 
     /* nonce must be unique per (key, message) - it can be public and deterministic */
     puts("Generating nonce...");
     randombytes_buf(nonce, sizeof nonce);
     fputs("Nonce: ", stdout);
     print_hex(nonce, sizeof nonce);
-    putchar('\n');
 
     /* read input */
     message_len = prompt_input("a message", (char*)message, sizeof message, 1);
 
     print_hex(message, message_len);
-    putchar('\n');
 
     /* encrypt and authenticate the message */
     printf("Encrypting and authenticating with %s\n\n", crypto_box_primitive());
@@ -110,17 +104,14 @@ box(void)
     puts("Notice the prepended 16 byte authentication token\n");
     fputs("Nonce: ", stdout);
     print_hex(nonce, nonce_len);
-    putchar('\n');
     fputs("Ciphertext: ", stdout);
     print_hex(ciphertext, ciphertext_len);
-    putchar('\n');
 
     /* decrypt the message */
     puts("Alice verifies and decrypts the ciphertext...");
     ret = crypto_box_open_easy(message, ciphertext, ciphertext_len, nonce, bob_pk,
                                alice_sk);
     print_hex(message, message_len);
-    putchar('\n');
 
     print_verification(ret);
     if (ret == 0) {
