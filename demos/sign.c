@@ -74,8 +74,7 @@ sign(void)
     if (r == 0)
         printf("Message: %s\n\n", m);
 
-    sodium_memzero(pk, sizeof pk); /* wipe sensitive data */
-    sodium_memzero(sk, sizeof sk);
+    sodium_memzero(sk, sizeof sk); /* wipe sensitive data */
     sodium_memzero(m, sizeof m);
     sodium_memzero(sm, sizeof sm);
     return r;

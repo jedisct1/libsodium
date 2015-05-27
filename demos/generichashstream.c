@@ -26,7 +26,7 @@ generichashstream(void)
 
     puts("Example: crypto_generichashstream\n");
 
-    sodium_memzero(k, sizeof k);
+    memset(k, 0, sizeof k);
     prompt_input("Input your key > ", (char*)k, sizeof k);
     putchar('\n');
 

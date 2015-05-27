@@ -32,7 +32,7 @@ auth(void)
      * function which reads exactly n bytes into a buffer to
      * prevent buffer overflows.
      */
-    sodium_memzero(k, sizeof k);
+    memset(k, 0, sizeof k);
     prompt_input("Input your key > ", (char*)k, sizeof k);
     puts("Your key that you entered");
     print_hex(k, sizeof k);

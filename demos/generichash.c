@@ -28,7 +28,7 @@ generichash(void)
 
     puts("Example: crypto_generichash\n");
 
-    sodium_memzero(k, sizeof k);
+    memset(k, 0, sizeof k);
     prompt_input("Input your key > ", (char*)k, sizeof k);
 
     mlen = prompt_input("Input your message > ", (char*)m, sizeof m);

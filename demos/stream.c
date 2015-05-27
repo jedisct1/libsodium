@@ -32,7 +32,7 @@ stream(void)
 
     puts("Example: crypto_stream\n");
 
-    sodium_memzero(k, sizeof k);
+    memset(k, 0, sizeof k);
     prompt_input("Input your key > ", (char*)k, sizeof k);
     putchar('\n');
 
@@ -68,7 +68,6 @@ stream(void)
         printf("Plaintext: %s\n\n", m);
 
     sodium_memzero(k, sizeof k); /* wipe sensitive data */
-    sodium_memzero(n, sizeof n);
     sodium_memzero(m, sizeof m);
     sodium_memzero(c, sizeof c);
     return r;

@@ -104,11 +104,8 @@ box(void)
     if (r == 0)
         printf("Plaintext: %s\n\n", m);
 
-    sodium_memzero(bob_pk, sizeof bob_pk); /* wipe sensitive data */
-    sodium_memzero(bob_sk, sizeof bob_sk);
-    sodium_memzero(alice_pk, sizeof alice_pk);
+    sodium_memzero(bob_sk, sizeof bob_sk); /* wipe sensitive data */
     sodium_memzero(alice_sk, sizeof alice_sk);
-    sodium_memzero(n, sizeof n);
     sodium_memzero(m, sizeof m);
     sodium_memzero(c, sizeof c);
     return r;
