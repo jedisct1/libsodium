@@ -10,10 +10,6 @@
 
 #include "utils.h"
 
-/* ================================================================== *
- *                          utility functions                         *
- * ================================================================== */
-
 /*
  * print_hex() is a wrapper around sodium_bin2hex() which allocates
  * temporary memory then immediately prints the result.
