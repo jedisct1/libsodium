@@ -60,12 +60,12 @@ sign(void)
     putchar('\n');
     putchar('\n');
 
-    puts("Format: signature::message");
-    fputs("Signed: ", stdout);
+    fputs("Signature: ", stdout);
     print_hex(sm, crypto_sign_BYTES);
-    fputs("::", stdout);
-    puts((const char*)sm + crypto_sign_BYTES);
-    putc('\n', stdout);
+    putchar('\n');
+    fputs("Message: ", stdout);
+    fwrite(sm + crypto_sign_BYTES, 1U, smlen - crypto_sign_BYTES, stdout);
+    putchar('\n');
 
     puts("Validating message...");
     r = crypto_sign_open(m, &mlen, sm, smlen, pk);
