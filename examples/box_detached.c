@@ -1,6 +1,6 @@
 /*
  * GraxRabble
- * Demo programs for libsodium.
+ * example programs for libsodium.
  */
 #include <stdio.h>
 #include <stdlib.h>
@@ -8,7 +8,7 @@
 
 #include <sodium.h> /* library header */
 
-#include "utils.h" /* utility functions shared by demos */
+#include "utils.h" /* utility functions shared by examples */
 
 /*
  * Using public-key authenticated encryption, Bob can encrypt a
