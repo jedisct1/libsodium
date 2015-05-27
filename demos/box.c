@@ -103,7 +103,7 @@ box(void)
            ciphertext_len, message_len);
     puts("Notice the prepended 16 byte authentication token\n");
     printf("Nonce: ");
-    print_hex(nonce, nonce_len);
+    print_hex(nonce, sizeof nonce);
     printf("Ciphertext: ");
     print_hex(ciphertext, ciphertext_len);
 
