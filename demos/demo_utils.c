@@ -6,9 +6,9 @@
 #include <stdlib.h>
 #include <string.h>
 
-#include "sodium.h" /* library header */
+#include <sodium.h>
 
-#include "demo_utils.h" /* demo utility header */
+#include "demo_utils.h"
 
 /* ================================================================== *
  *                          utility functions                         *
