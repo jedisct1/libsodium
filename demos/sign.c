@@ -68,8 +68,6 @@ sign(void)
         printf("Message: %s\n", message);
 
     sodium_memzero(sk, sizeof sk); /* wipe sensitive data */
-    sodium_memzero(message, sizeof message);
-    sodium_memzero(message_signed, sizeof message_signed);
 
     return ret;
 }
