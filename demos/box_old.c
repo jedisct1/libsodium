@@ -144,14 +144,11 @@ box(void)
 }
 
 int
-main(int argc, char **argv)
+main(void)
 {
-    int r;
-
     sodium_init();
     printf("Using LibSodium %s\n", sodium_version_string());
 
-    r = (0 == box() ? EXIT_SUCCESS : EXIT_FAILURE);
-    exit(r);
+    return box() != 0;
 }
 

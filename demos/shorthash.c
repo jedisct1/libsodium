@@ -43,12 +43,12 @@ shorthash(void)
 }
 
 int
-main(int argc, char **argv)
+main(void)
 {
     sodium_init();
     printf("Using LibSodium %s\n", sodium_version_string());
 
     shorthash();
-    exit(EXIT_SUCCESS);
+    return 0;
 }
 
