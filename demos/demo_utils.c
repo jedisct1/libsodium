@@ -1,6 +1,7 @@
 /*
  * These are the utility functions shared by all demo programs.
  */
+#include <limits.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
@@ -14,22 +15,28 @@
  * ================================================================== */
 
 /*
- * Print hex is a wrapper around sodium_bin2hex which uses calloc
- * to allocate temporary memory then immediately printing the result.
+ * Print hex is a wrapper around sodium_bin2hex which allocates
+ * temporary memory then immediately prints the result.
  */
 void
-print_hex(const void *buf, const size_t len)
+print_hex(const void *bin, const size_t bin_len)
 {
-    const unsigned char *b;
-    char *p;
+    char   *hex;
+    size_t  hex_size;
 
-    b = buf;
-    p = calloc(len * 2 + 1, sizeof *b);
-
+    if (bin_len >= SIZE_MAX / 2) {
+        abort();
+    }
+    hex_size = bin_len * 2 + 1;
+    if ((hex = malloc(hex_size)) == NULL) {
+        abort();
+    }
     /* the library supplies a few utility functions like the one below */
-    sodium_bin2hex(p, len * 2 + 1, b, len);
-    fputs(p, stdout);
-    free(p);
+    if (sodium_bin2hex(hex, hex_size, bin, bin_len) == NULL) {
+        abort();
+    }
+    fputs(hex, stdout);
+    free(hex);
 }
 
 /*
@@ -38,19 +45,22 @@ print_hex(const void *buf, const size_t len)
  * trailing newline characters.
  */
 size_t
-prompt_input(char *prompt, char *buf, const size_t len)
+prompt_input(char *prompt, char *input, const size_t max_input_len)
 {
-    size_t n;
+    size_t actual_input_len;
 
     fputs(prompt, stdout);
-    fgets(buf, len, stdin); /* grab input with room for NULL */
+    fflush(stdout);
+    fgets(input, max_input_len, stdin); /* grab input with room for \0 */
 
-    n = strlen(buf);
-    if (buf[n - 1] == '\n') { /* trim excess new line */
-        buf[n - 1] = '\0';
-        --n;
+    actual_input_len = strlen(input);
+
+    /* trim excess new line */
+    if (actual_input_len > 0 && input[actual_input_len - 1] == '\n') {
+        input[actual_input_len - 1] = '\0';
+        --actual_input_len;
     }
-    return n;
+    return actual_input_len;
 }
 
 /*
