@@ -89,9 +89,9 @@ prompt_input(const char *prompt, char *input, const size_t max_input_len,
  * Display whether the function was sucessful or failed.
  */
 void
-print_verification(int r)
+print_verification(int ret)
 {
-    if (r == 0)
+    if (ret == 0)
         puts("Success!\n");
     else
         puts("Failure.\n");
