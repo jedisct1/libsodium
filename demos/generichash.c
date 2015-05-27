@@ -68,7 +68,7 @@ generichash(void)
                            key, key_len) != 0) {
         puts("Couldn't hash the message, probably due to the key length");
     } else {
-        fputs("Hash: ", stdout);
+        printf("Hash: ");
         print_hex(hash, sizeof hash);
     }
 }

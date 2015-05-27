@@ -70,21 +70,21 @@ box_detached(void)
     crypto_box_keypair(alice_pk, alice_sk); /* generate Alice's keys */
 
     puts("Bob");
-    fputs("Public key: ", stdout);
+    printf("Public key: ");
     print_hex(bob_pk, sizeof bob_pk);
-    fputs("Secret key: ", stdout);
+    printf("Secret key: ");
     print_hex(bob_sk, sizeof bob_sk);
 
     puts("Alice");
-    fputs("Public key: ", stdout);
+    printf("Public key: ");
     print_hex(alice_pk, sizeof alice_pk);
-    fputs("Secret key: ", stdout);
+    printf("Secret key: ");
     print_hex(alice_sk, sizeof alice_sk);
 
     /* nonce must be unique per (key, message) - it can be public and deterministic */
     puts("Generating nonce...");
     randombytes_buf(nonce, sizeof nonce);
-    fputs("Nonce: ", stdout);
+    printf("Nonce: ");
     print_hex(nonce, sizeof nonce);
 
     /* read input */
@@ -99,11 +99,11 @@ box_detached(void)
 
     /* send the nonce, the MAC and the ciphertext */
     puts("Bob sends the nonce, the MAC and the ciphertext...\n");
-    fputs("Nonce: ", stdout);
+    printf("Nonce: ");
     print_hex(nonce, sizeof nonce);
-    fputs("MAC: ", stdout);
+    printf("MAC: ");
     print_hex(mac, sizeof mac);
-    fputs("Ciphertext: ", stdout);
+    printf("Ciphertext: ");
     print_hex(ciphertext, message_len);
 
     /* decrypt the message */

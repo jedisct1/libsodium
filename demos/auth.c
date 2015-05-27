@@ -50,7 +50,7 @@ auth(void)
     printf("Generating %s authentication...\n", crypto_auth_primitive());
     crypto_auth(mac, message, message_len, key);
 
-    fputs("Authentication tag: ", stdout);
+    printf("Authentication tag: ");
     print_hex(mac, sizeof mac);
 
     puts("Verifying authentication tag...");

@@ -35,9 +35,9 @@ sign(void)
     puts("Generating keypair...");
     crypto_sign_keypair(pk, sk); /* generate Bob's keys */
 
-    fputs("Public key: ", stdout);
+    printf("Public key: ");
     print_hex(pk, sizeof pk);
-    fputs("Secret key: ", stdout);
+    printf("Secret key: ");
     print_hex(sk, sizeof sk);
     puts("The secret key, as returned by crypto_sign_keypair(), actually includes "
          "a copy of the public key, in order to avoid a scalar multiplication "
@@ -53,9 +53,9 @@ sign(void)
     printf("A %u bytes signature was prepended to the message\n",
            crypto_sign_BYTES);
 
-    fputs("Signature: ", stdout);
+    printf("Signature: ");
     print_hex(message_signed, crypto_sign_BYTES);
-    fputs("Message: ", stdout);
+    printf("Message: ");
     fwrite(message_signed + crypto_sign_BYTES, 1U,
            message_signed_len - crypto_sign_BYTES, stdout);
     putchar('\n');

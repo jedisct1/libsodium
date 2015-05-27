@@ -47,7 +47,7 @@ shorthash(void)
 
     printf("Hashing the message with %s\n", crypto_shorthash_primitive());
     crypto_shorthash(hash, message, message_len, key);
-    fputs("Hash: ", stdout);
+    printf("Hash: ");
     print_hex(hash, sizeof hash);
 }
 

@@ -70,21 +70,21 @@ box(void)
     crypto_box_keypair(alice_pk, alice_sk); /* generate Alice's keys */
 
     puts("Bob");
-    fputs("Public key: ", stdout);
+    printf("Public key: ");
     print_hex(bob_pk, sizeof bob_pk);
-    fputs("Secret key: ", stdout);
+    printf("Secret key: ");
     print_hex(bob_sk, sizeof bob_sk);
 
     puts("Alice");
-    fputs("Public key: ", stdout);
+    printf("Public key: ");
     print_hex(alice_pk, sizeof alice_pk);
-    fputs("Secret key: ", stdout);
+    printf("Secret key: ");
     print_hex(alice_sk, sizeof alice_sk);
 
     /* nonce must be unique per (key, message) - it can be public and deterministic */
     puts("Generating nonce...");
     randombytes_buf(nonce, sizeof nonce);
-    fputs("Nonce: ", stdout);
+    printf("Nonce: ");
     print_hex(nonce, sizeof nonce);
 
     /* read input */
@@ -102,9 +102,9 @@ box(void)
     printf("Ciphertext len: %zu bytes - Original message length: %zu bytes\n",
            ciphertext_len, message_len);
     puts("Notice the prepended 16 byte authentication token\n");
-    fputs("Nonce: ", stdout);
+    printf("Nonce: ");
     print_hex(nonce, nonce_len);
-    fputs("Ciphertext: ", stdout);
+    printf("Ciphertext: ");
     print_hex(ciphertext, ciphertext_len);
 
     /* decrypt the message */

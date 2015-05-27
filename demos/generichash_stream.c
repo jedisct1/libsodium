@@ -47,7 +47,7 @@ generichash_stream(void)
     }
     crypto_generichash_final(&state, hash, sizeof hash);
 
-    fputs("Hash: ", stdout);
+    printf("Hash: ");
     print_hex(hash, sizeof hash);
 }
 
