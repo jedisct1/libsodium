@@ -48,7 +48,7 @@
  * key is known in advance, and clients connecting anonymously.
  */
 static int
-box(void)
+box_detached(void)
 {
     unsigned char bob_pk[crypto_box_PUBLICKEYBYTES]; /* Bob's public key */
     unsigned char bob_sk[crypto_box_SECRETKEYBYTES]; /* Bob's secret key */
@@ -58,12 +58,12 @@ box(void)
 
     unsigned char nonce[crypto_box_NONCEBYTES];
     unsigned char message[MAX_INPUT_SIZE];
-    unsigned char ciphertext[crypto_box_MACBYTES + MAX_INPUT_SIZE];
+    unsigned char mac[crypto_box_MACBYTES];
+    unsigned char ciphertext[MAX_INPUT_SIZE];
     size_t        message_len;
-    size_t        ciphertext_len;
     int           ret;
 
-    puts("Example: crypto_box_easy\n");
+    puts("Example: crypto_box_detached\n");
 
     puts("Generating keypairs...\n");
     crypto_box_keypair(bob_pk, bob_sk);     /* generate Bob's keys */
@@ -105,26 +105,26 @@ box(void)
 
     /* encrypt and authenticate the message */
     printf("Encrypting and authenticating with %s\n\n", crypto_box_primitive());
-    crypto_box_easy(ciphertext, message, message_len, nonce, alice_pk, bob_sk);
-    ciphertext_len = crypto_box_MACBYTES + message_len;
+    crypto_box_detached(ciphertext, mac, message, message_len, nonce,
+                        alice_pk, bob_sk);
 
-    /* send the nonce and the ciphertext */
-    puts("Bob sends the nonce and the ciphertext...\n");
-    printf("Ciphertext len: %zu bytes - Original message length: %zu bytes\n",
-           ciphertext_len, message_len);
-    puts("Notice the prepended 16 byte authentication token\n");
+    /* send the nonce, the MAC and the ciphertext */
+    puts("Bob sends the nonce, the MAC and the ciphertext...\n");
     fputs("Nonce: ", stdout);
-    print_hex(nonce, nonce_len);
+    print_hex(nonce, sizeof nonce);
+    putchar('\n');
+    fputs("MAC: ", stdout);
+    print_hex(mac, sizeof mac);
     putchar('\n');
     fputs("Ciphertext: ", stdout);
-    print_hex(ciphertext, ciphertext_len);
+    print_hex(ciphertext, message_len);
     putchar('\n');
     putchar('\n');
 
     /* decrypt the message */
-    puts("Alice verifies and decrypts the ciphertext...");
-    ret = crypto_box_open_easy(message, ciphertext, ciphertext_len, nonce, bob_pk,
-                               alice_sk);
+    puts("Alice verifies the MAC and decrypts the ciphertext...");
+    ret = crypto_box_open_detached(message, ciphertext, mac, message_len, nonce,
+                                   bob_pk, alice_sk);
     print_hex(message, message_len);
     putchar('\n');
 
@@ -145,5 +145,5 @@ main(void)
 {
     init();
 
-    return box() != 0;
+    return box_detached() != 0;
 }
