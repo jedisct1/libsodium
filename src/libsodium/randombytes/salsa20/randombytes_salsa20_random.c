@@ -65,27 +65,24 @@ static Salsa20Random stream = {
 static uint64_t
 sodium_hrtime(void)
 {
-    struct timeval tv;
-    uint64_t       ts = (uint64_t) 0U;
-    int            ret;
+    uint64_t ts;
 
 #ifdef _WIN32
-    struct _timeb tb;
-
+    {
+        struct _timeb tb;
 # pragma warning(push)
 # pragma warning(disable: 4996)
-    _ftime(&tb);
+        _ftime(&tb);
 # pragma warning(pop)
-    tv.tv_sec = (long) tb.time;
-    tv.tv_usec = ((int) tb.millitm) * 1000;
-    ret = 0;
-#else
-    ret = gettimeofday(&tv, NULL);
-#endif
-    assert(ret == 0);
-    if (ret == 0) {
-        ts = (uint64_t) tv.tv_sec * 1000000U + (uint64_t) tv.tv_usec;
+        ts = ((uint64_t) tb.time) * 1000000U + ((uint64_t) tb.millitm) * 1000U;
     }
+#else
+    {
+        struct timeval tv;
+        assert(gettimeofday(&tv, NULL) == 0);
+        ts = ((uint64_t) tv.tv_sec) * 1000000U + (uint64_t) tv.tv_usec;
+    }
+#endif
     return ts;
 }
 
