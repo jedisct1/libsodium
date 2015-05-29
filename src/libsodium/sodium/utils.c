@@ -23,13 +23,8 @@
 # include <unistd.h>
 #endif
 
-#ifdef _WIN32
+#if defined(_WIN32) && (!defined(WINAPI_FAMILY) || WINAPI_FAMILY == WINAPI_FAMILY_DESKTOP_APP)
 # define WINAPI_DESKTOP
-# if defined(WINAPI_FAMILY) && (WINAPI_FAMILY == WINAPI_FAMILY_PHONE_APP)
-#  undef WINAPI_DESKTOP
-# elif defined(WINAPI_FAMILY_ONE_PARTITION) && defined(WINAPI_FAMILY_DESKTOP) && !WINAPI_FAMILY_ONE_PARTITION(WINAPI_FAMILY_DESKTOP)
-#  undef WINAPI_DESKTOP
-# endif
 #endif
 
 #define CANARY_SIZE 16U
