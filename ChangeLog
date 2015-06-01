@@ -1,4 +1,13 @@
 
+* Version 1.0.4
+ - ChaCha20 with an extended (96 bit) nonce and a 32-bit counter has
+been implemented as crypto_stream_chacha20_ietf(),
+crypto_stream_chacha20_ietf_xor() and crypto_stream_chacha20_ietf_xor_ic().
+An IETF-compatible version of ChaCha20Poly1305 is available as
+crypto_aead_chacha20poly1305_ietf_npubbytes(),
+crypto_aead_chacha20poly1305_ietf_encrypt() and
+crypto_aead_chacha20poly1305_ietf_decrypt().
+
 * Version 1.0.3
  - In addition to sodium_bin2hex(), sodium_hex2bin() is now a
 constant-time function.
