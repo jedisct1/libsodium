@@ -30,10 +30,11 @@ main(void)
     printf("Cert has expired, but crypto_cert_verify() passed it anyway\n");
 
   //additional data
-  assert(!crypto_cert(c, 0, 0, time(NULL) + 60, ad, strlen(ad) + 1, pk, pk, sk));
-  if(crypto_cert_verify(c, ad, strlen(ad) + 1))
+  assert(!crypto_cert(c, 0, 0, time(NULL) + 60, (const unsigned char*)ad,
+      strlen(ad) + 1, pk, pk, sk));
+  if(crypto_cert_verify(c, (const unsigned char*)ad, strlen(ad) + 1))
     printf("crypto_cert_verify() failed with additional data\n");
-  if(!crypto_cert_verify(c, ad_bad, strlen(ad_bad) + 1))
+  if(!crypto_cert_verify(c, (const unsigned char*)ad_bad, strlen(ad_bad) + 1))
     printf("Additional data is invalid, but crypto_cert_verify() passed it anyway\n");
 
   return 0;
