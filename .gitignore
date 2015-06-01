@@ -74,6 +74,7 @@ test/default/box_easy
 test/default/box_easy2
 test/default/box_seal
 test/default/box_seed
+test/default/cert
 test/default/chacha20
 test/default/core1
 test/default/core2
