@@ -9,6 +9,7 @@ SODIUM_EXPORT = \
 	sodium/crypto_auth_hmacsha512256.h \
 	sodium/crypto_box.h \
 	sodium/crypto_box_curve25519xsalsa20poly1305.h \
+	sodium/crypto_cert.h \
 	sodium/crypto_core_hsalsa20.h \
 	sodium/crypto_core_salsa20.h \
 	sodium/crypto_core_salsa2012.h \
