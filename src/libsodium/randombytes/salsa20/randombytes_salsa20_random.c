@@ -221,6 +221,17 @@ randombytes_salsa20_random_init(void)
 }
 #endif
 
+static void
+randombytes_salsa20_random_rekey(const unsigned char * const mix)
+{
+    unsigned char *key = stream.key;
+    size_t         i;
+
+    for (i = (size_t) 0U; i < sizeof stream.key; i++) {
+        key[i] ^= mix[i];
+    }
+}
+
 void
 randombytes_salsa20_random_stir(void)
 {
@@ -267,9 +278,7 @@ randombytes_salsa20_random_stir(void)
     COMPILER_ASSERT(sizeof stream.key == crypto_auth_hmacsha512256_BYTES);
     crypto_auth_hmacsha512256(stream.key, k0, sizeof_k0, s);
     COMPILER_ASSERT(sizeof stream.key <= sizeof m0);
-    for (i = (size_t) 0U; i < sizeof stream.key; i++) {
-        stream.key[i] ^= m0[i];
-    }
+    randombytes_salsa20_random_rekey(m0);
     sodium_memzero(m0, sizeof m0);
 #ifndef _MSC_VER
     stream.pid = getpid();
@@ -290,17 +299,6 @@ randombytes_salsa20_random_stir_if_needed(void)
         abort();
     }
 #endif
-}
-
-static void
-randombytes_salsa20_random_rekey(const unsigned char * const mix)
-{
-    unsigned char *key = stream.key;
-    size_t         i;
-
-    for (i = (size_t) 0U; i < sizeof stream.key; i++) {
-        key[i] ^= mix[i];
-    }
 }
 
 static uint32_t
