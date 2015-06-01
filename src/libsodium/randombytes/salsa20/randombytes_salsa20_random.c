@@ -271,6 +271,9 @@ randombytes_salsa20_random_stir(void)
         stream.key[i] ^= m0[i];
     }
     sodium_memzero(m0, sizeof m0);
+#ifndef _MSC_VER
+    stream.pid = getpid();
+#endif
 }
 
 static void
@@ -281,11 +284,10 @@ randombytes_salsa20_random_stir_if_needed(void)
         randombytes_salsa20_random_stir();
     }
 #else
-    const pid_t pid = getpid();
-
-    if (stream.initialized == 0 || stream.pid != pid) {
-        stream.pid = pid;
+    if (stream.initialized == 0) {
         randombytes_salsa20_random_stir();
+    } else if (stream.pid != getpid()) {
+        abort();
     }
 #endif
 }
@@ -339,6 +341,7 @@ randombytes_salsa20_random_close(void)
         close(stream.random_data_source_fd) == 0) {
         stream.random_data_source_fd = -1;
         stream.initialized = 0;
+        stream.pid = (pid_t) 0;
         ret = 0;
     }
 # ifdef SYS_getrandom
