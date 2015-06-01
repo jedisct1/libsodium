@@ -75,9 +75,7 @@ crypto_cert_verify(const unsigned char *c, const unsigned char *ad,
     //verify validity period
     time_t now = time(NULL);
     if(crypto_cert_valid_from(c) > now || crypto_cert_valid_until(c) < now)
-    {
         return -1;
-    }
 
     //hash cert & additional data
     unsigned char hash[crypto_generichash_BYTES];
