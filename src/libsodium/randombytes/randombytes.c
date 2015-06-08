@@ -60,7 +60,8 @@ randombytes_stir(void)
     EM_ASM({
         if (Module.getRandomValue === undefined) {
             try {
-                var crypto_ = ("object" === typeof window ? window : self).crypto,
+                var window_ = "object" === typeof window ? window : self,
+                    crypto_ = typeof window_.crypto !== "undefined" ? window_.crypto : window_.msCrypto,
                     randomValuesStandard = function() {
                         var buf = new Uint32Array(1);
                         crypto_.getRandomValues(buf);
