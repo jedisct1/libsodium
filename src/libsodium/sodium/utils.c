@@ -23,6 +23,10 @@
 # include <unistd.h>
 #endif
 
+#if defined(_WIN32) && (!defined(WINAPI_FAMILY) || WINAPI_FAMILY == WINAPI_FAMILY_DESKTOP_APP)
+# define WINAPI_DESKTOP
+#endif
+
 #define CANARY_SIZE 16U
 #define GARBAGE_VALUE 0xd0
 
@@ -32,13 +36,13 @@
 #if !defined(MAP_ANON) && defined(MAP_ANONYMOUS)
 # define MAP_ANON MAP_ANONYMOUS
 #endif
-#if defined(_WIN32) || (defined(MAP_ANON) && defined(HAVE_MMAP)) || defined(HAVE_POSIX_MEMALIGN)
+#if defined(WINAPI_DESKTOP) || (defined(MAP_ANON) && defined(HAVE_MMAP)) || defined(HAVE_POSIX_MEMALIGN)
 # define HAVE_ALIGNED_MALLOC
 #endif
 #if defined(HAVE_MPROTECT) && !(defined(PROT_NONE) && defined(PROT_READ) && defined(PROT_WRITE))
 # undef HAVE_MPROTECT
 #endif
-#if defined(HAVE_ALIGNED_MALLOC) && (defined(_WIN32) || defined(HAVE_MPROTECT))
+#if defined(HAVE_ALIGNED_MALLOC) && (defined(WINAPI_DESKTOP) || defined(HAVE_MPROTECT))
 # define HAVE_PAGE_PROTECTION
 #endif
 
@@ -184,7 +188,7 @@ _sodium_alloc_init(void)
     if (page_size_ > 0L) {
         page_size = (size_t) page_size_;
     }
-# elif defined(_WIN32)
+# elif defined(WINAPI_DESKTOP)
     SYSTEM_INFO si;
     GetSystemInfo(&si);
     page_size = (size_t) si.dwPageSize;
@@ -206,7 +210,7 @@ sodium_mlock(void * const addr, const size_t len)
 #endif
 #ifdef HAVE_MLOCK
     return mlock(addr, len);
-#elif defined(_WIN32)
+#elif defined(WINAPI_DESKTOP)
     return -(VirtualLock(addr, len) == 0);
 #else
     errno = ENOSYS;
@@ -223,7 +227,7 @@ sodium_munlock(void * const addr, const size_t len)
 #endif
 #ifdef HAVE_MLOCK
     return munlock(addr, len);
-#elif defined(_WIN32)
+#elif defined(WINAPI_DESKTOP)
     return -(VirtualUnlock(addr, len) == 0);
 #else
     errno = ENOSYS;
@@ -236,7 +240,7 @@ _mprotect_noaccess(void *ptr, size_t size)
 {
 #ifdef HAVE_MPROTECT
     return mprotect(ptr, size, PROT_NONE);
-#elif defined(_WIN32)
+#elif defined(WINAPI_DESKTOP)
     DWORD old;
     return -(VirtualProtect(ptr, size, PAGE_NOACCESS, &old) == 0);
 #else
@@ -250,7 +254,7 @@ _mprotect_readonly(void *ptr, size_t size)
 {
 #ifdef HAVE_MPROTECT
     return mprotect(ptr, size, PROT_READ);
-#elif defined(_WIN32)
+#elif defined(WINAPI_DESKTOP)
     DWORD old;
     return -(VirtualProtect(ptr, size, PAGE_READONLY, &old) == 0);
 #else
@@ -264,7 +268,7 @@ _mprotect_readwrite(void *ptr, size_t size)
 {
 #ifdef HAVE_MPROTECT
     return mprotect(ptr, size, PROT_READ | PROT_WRITE);
-#elif defined(_WIN32)
+#elif defined(WINAPI_DESKTOP)
     DWORD old;
     return -(VirtualProtect(ptr, size, PAGE_READWRITE, &old) == 0);
 #else
@@ -308,7 +312,7 @@ _alloc_aligned(const size_t size)
     if (posix_memalign(&ptr, page_size, size) != 0) {
         ptr = NULL; /* LCOV_EXCL_LINE */
     } /* LCOV_EXCL_LINE */
-# elif defined(_WIN32)
+# elif defined(WINAPI_DESKTOP)
     ptr = VirtualAlloc(NULL, size, MEM_COMMIT | MEM_RESERVE, PAGE_READWRITE);
 # else
 #  error Bug
@@ -323,7 +327,7 @@ _free_aligned(unsigned char * const ptr, const size_t size)
     (void) munmap(ptr, size);
 # elif defined(HAVE_POSIX_MEMALIGN)
     free(ptr);
-# elif defined(_WIN32)
+# elif defined(WINAPI_DESKTOP)
     VirtualFree(ptr, 0U, MEM_RELEASE);
 # else
 #  error Bug
@@ -505,4 +509,17 @@ int
 sodium_mprotect_readwrite(void *ptr)
 {
     return _sodium_mprotect(ptr, _mprotect_readwrite);
+}
+
+void
+sodium_increment(unsigned char *n, const size_t nlen)
+{
+    size_t       i;
+    unsigned int c = 1U << 8;
+
+    for (i = (size_t) 0U; i < nlen; i++) {
+        c >>= 8;
+        c += n[i];
+        n[i] = (unsigned char) c;
+    }
 }

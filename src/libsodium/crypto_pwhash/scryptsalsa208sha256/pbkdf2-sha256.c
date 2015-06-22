@@ -53,6 +53,9 @@ PBKDF2_SHA256(const uint8_t * passwd, size_t passwdlen, const uint8_t * salt,
     int             k;
     size_t          clen;
 
+    if (dkLen > 0x1fffffffe0UL) {
+        abort();
+    }
     crypto_auth_hmacsha256_init(&PShctx, passwd, passwdlen);
     crypto_auth_hmacsha256_update(&PShctx, salt, saltlen);
 

@@ -65,27 +65,24 @@ static Salsa20Random stream = {
 static uint64_t
 sodium_hrtime(void)
 {
-    struct timeval tv;
-    uint64_t       ts = (uint64_t) 0U;
-    int            ret;
+    uint64_t ts;
 
 #ifdef _WIN32
-    struct _timeb tb;
-
+    {
+        struct _timeb tb;
 # pragma warning(push)
 # pragma warning(disable: 4996)
-    _ftime(&tb);
+        _ftime(&tb);
 # pragma warning(pop)
-    tv.tv_sec = (long) tb.time;
-    tv.tv_usec = ((int) tb.millitm) * 1000;
-    ret = 0;
-#else
-    ret = gettimeofday(&tv, NULL);
-#endif
-    assert(ret == 0);
-    if (ret == 0) {
-        ts = (uint64_t) tv.tv_sec * 1000000U + (uint64_t) tv.tv_usec;
+        ts = ((uint64_t) tb.time) * 1000000U + ((uint64_t) tb.millitm) * 1000U;
     }
+#else
+    {
+        struct timeval tv;
+        assert(gettimeofday(&tv, NULL) == 0);
+        ts = ((uint64_t) tv.tv_sec) * 1000000U + (uint64_t) tv.tv_usec;
+    }
+#endif
     return ts;
 }
 
@@ -224,6 +221,17 @@ randombytes_salsa20_random_init(void)
 }
 #endif
 
+static void
+randombytes_salsa20_random_rekey(const unsigned char * const mix)
+{
+    unsigned char *key = stream.key;
+    size_t         i;
+
+    for (i = (size_t) 0U; i < sizeof stream.key; i++) {
+        key[i] ^= mix[i];
+    }
+}
+
 void
 randombytes_salsa20_random_stir(void)
 {
@@ -270,10 +278,11 @@ randombytes_salsa20_random_stir(void)
     COMPILER_ASSERT(sizeof stream.key == crypto_auth_hmacsha512256_BYTES);
     crypto_auth_hmacsha512256(stream.key, k0, sizeof_k0, s);
     COMPILER_ASSERT(sizeof stream.key <= sizeof m0);
-    for (i = (size_t) 0U; i < sizeof stream.key; i++) {
-        stream.key[i] ^= m0[i];
-    }
+    randombytes_salsa20_random_rekey(m0);
     sodium_memzero(m0, sizeof m0);
+#ifndef _MSC_VER
+    stream.pid = getpid();
+#endif
 }
 
 static void
@@ -284,24 +293,12 @@ randombytes_salsa20_random_stir_if_needed(void)
         randombytes_salsa20_random_stir();
     }
 #else
-    const pid_t pid = getpid();
-
-    if (stream.initialized == 0 || stream.pid != pid) {
-        stream.pid = pid;
+    if (stream.initialized == 0) {
         randombytes_salsa20_random_stir();
+    } else if (stream.pid != getpid()) {
+        abort();
     }
 #endif
-}
-
-static void
-randombytes_salsa20_random_rekey(const unsigned char * const mix)
-{
-    unsigned char *key = stream.key;
-    size_t         i;
-
-    for (i = (size_t) 0U; i < sizeof stream.key; i++) {
-        key[i] ^= mix[i];
-    }
 }
 
 static uint32_t
@@ -342,6 +339,7 @@ randombytes_salsa20_random_close(void)
         close(stream.random_data_source_fd) == 0) {
         stream.random_data_source_fd = -1;
         stream.initialized = 0;
+        stream.pid = (pid_t) 0;
         ret = 0;
     }
 # ifdef SYS_getrandom

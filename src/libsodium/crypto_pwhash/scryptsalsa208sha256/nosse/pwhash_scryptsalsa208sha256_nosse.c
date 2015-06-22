@@ -279,6 +279,10 @@ escrypt_kdf_nosse(escrypt_local_t * local,
 		errno = EFBIG;
 		return -1;
 	}
+	if (N > UINT32_MAX) {
+		errno = EFBIG;
+		return -1;
+	}
 	if (((N & (N - 1)) != 0) || (N < 2)) {
 		errno = EINVAL;
 		return -1;

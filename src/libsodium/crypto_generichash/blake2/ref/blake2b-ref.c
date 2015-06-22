@@ -46,14 +46,14 @@ static const uint8_t blake2b_sigma[12][16] =
 /* LCOV_EXCL_START */
 static inline int blake2b_set_lastnode( blake2b_state *S )
 {
-  S->f[1] = ~0ULL;
+  S->f[1] = -1;
   return 0;
 }
 /* LCOV_EXCL_STOP */
 #if 0
 static inline int blake2b_clear_lastnode( blake2b_state *S )
 {
-  S->f[1] = 0ULL;
+  S->f[1] = 0;
   return 0;
 }
 #endif
@@ -62,7 +62,7 @@ static inline int blake2b_set_lastblock( blake2b_state *S )
 {
   if( S->last_node ) blake2b_set_lastnode( S );
 
-  S->f[0] = ~0ULL;
+  S->f[0] = -1;
   return 0;
 }
 #if 0
@@ -70,7 +70,7 @@ static inline int blake2b_clear_lastblock( blake2b_state *S )
 {
   if( S->last_node ) blake2b_clear_lastnode( S );
 
-  S->f[0] = 0ULL;
+  S->f[0] = 0;
   return 0;
 }
 #endif
