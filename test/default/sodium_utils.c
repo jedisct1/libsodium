@@ -8,6 +8,8 @@ int main(void)
     unsigned char buf2[1000];
     char buf3[33];
     unsigned char buf4[4];
+    unsigned char nonce[24];
+    char          nonce_hex[49];
     const char *hex;
     const char *hex_end;
     size_t bin_len;
@@ -60,5 +62,26 @@ int main(void)
     }
     printf("dt5: %ld\n", (long) (hex_end - hex));
 
+    memset(nonce, 0, sizeof nonce);
+    sodium_increment(nonce, sizeof nonce);
+    printf("%s\n", sodium_bin2hex(nonce_hex, sizeof nonce_hex,
+                                  nonce, sizeof nonce));
+    memset(nonce, 255, sizeof nonce);
+    sodium_increment(nonce, sizeof nonce);
+    printf("%s\n", sodium_bin2hex(nonce_hex, sizeof nonce_hex,
+                                  nonce, sizeof nonce));
+    nonce[1] = 1U;
+    sodium_increment(nonce, sizeof nonce);
+    printf("%s\n", sodium_bin2hex(nonce_hex, sizeof nonce_hex,
+                                  nonce, sizeof nonce));
+    nonce[1] = 0U;
+    sodium_increment(nonce, sizeof nonce);
+    printf("%s\n", sodium_bin2hex(nonce_hex, sizeof nonce_hex,
+                                  nonce, sizeof nonce));
+    nonce[0] = 255U;
+    nonce[2] = 255U;
+    sodium_increment(nonce, sizeof nonce);
+    printf("%s\n", sodium_bin2hex(nonce_hex, sizeof nonce_hex,
+                                  nonce, sizeof nonce));
     return 0;
 }

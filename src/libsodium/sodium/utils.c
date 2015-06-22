@@ -510,3 +510,16 @@ sodium_mprotect_readwrite(void *ptr)
 {
     return _sodium_mprotect(ptr, _mprotect_readwrite);
 }
+
+void
+sodium_increment(unsigned char *n, const size_t nlen)
+{
+    size_t       i;
+    unsigned int c = 1U;
+
+    for (i = (size_t) 0U; i < nlen; i++) {
+        c += n[i];
+        n[i] = (unsigned char) c;
+        c >>= 8;
+    }
+}

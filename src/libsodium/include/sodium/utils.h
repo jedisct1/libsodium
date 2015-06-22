@@ -95,6 +95,9 @@ int sodium_mprotect_readonly(void *ptr);
 SODIUM_EXPORT
 int sodium_mprotect_readwrite(void *ptr);
 
+SODIUM_EXPORT
+void sodium_increment(unsigned char *n, const size_t nlen);
+
 /* -------- */
 
 int _sodium_alloc_init(void);
