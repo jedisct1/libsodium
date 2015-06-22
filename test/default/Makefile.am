@@ -190,9 +190,11 @@ TESTS_TARGETS = \
 	verify1
 
 if !EMSCRIPTEN
+if !NATIVECLIENT
 TESTS_TARGETS += \
 	sodium_utils2 \
 	sodium_utils3
+endif
 endif
 
 check_PROGRAMS = $(TESTS_TARGETS)
@@ -372,5 +374,9 @@ stream4_LDADD             = $(TESTS_LDADD)
 
 verify1_SOURCE            = cmptest.h verify1.c
 verify1_LDADD             = $(TESTS_LDADD)
+
+if NATIVECLIENT
+LOG_COMPILER = ./nacl-test-wrapper.sh
+endif
 
 verify: check

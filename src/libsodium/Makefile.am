@@ -157,8 +157,14 @@ libsodium_la_SOURCES = \
 
 if !EMSCRIPTEN
 libsodium_la_SOURCES += \
-	randombytes/salsa20/randombytes_salsa20_random.c \
-	randombytes/sysrandom/randombytes_sysrandom.c
+	randombytes/salsa20/randombytes_salsa20_random.c
+if NATIVECLIENT
+libsodium_la_SOURCES += \
+	randombytes/nativeclient/randombytes_nativeclient.c
+else
+libsodium_la_SOURCES += \
+    randombytes/sysrandom/randombytes_sysrandom.c
+endif
 endif
 
 if HAVE_TI_MODE

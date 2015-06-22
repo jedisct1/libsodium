@@ -11,10 +11,16 @@
 
 #include "randombytes.h"
 #include "randombytes_sysrandom.h"
+#include "randombytes_nativeclient.h"
 
 #ifndef __EMSCRIPTEN__
+#ifdef __native_client__
+static const randombytes_implementation *implementation =
+    &randombytes_nativeclient_implementation;
+#else
 static const randombytes_implementation *implementation =
     &randombytes_sysrandom_implementation;
+#endif
 #else
 static const randombytes_implementation *implementation = NULL;
 #endif
