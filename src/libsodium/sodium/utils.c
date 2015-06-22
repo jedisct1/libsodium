@@ -515,11 +515,11 @@ void
 sodium_increment(unsigned char *n, const size_t nlen)
 {
     size_t       i;
-    unsigned int c = 1U;
+    unsigned int c = 1U << 8;
 
     for (i = (size_t) 0U; i < nlen; i++) {
+        c >>= 8;
         c += n[i];
         n[i] = (unsigned char) c;
-        c >>= 8;
     }
 }
