@@ -2,10 +2,6 @@
 #ifndef randombytes_nativeclient_H
 #define randombytes_nativeclient_H
 
-/*
- * THREAD SAFETY: TODO 
- */
-
 #include <stddef.h>
 #include <stdint.h>
 
