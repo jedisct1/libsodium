@@ -31,6 +31,7 @@
 #define crypto_scrypt_H
 
 #include <stdint.h>
+#include <unistd.h>
 
 #if SIZE_MAX > 0xffffffffULL
 # define ARCH_BITS 64
