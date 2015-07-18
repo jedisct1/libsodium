@@ -82,19 +82,19 @@ make -j3 install || exit 1
 
 # Create universal binary and include folder
 rm -fr -- "$PREFIX/include" "$PREFIX/libsodium.a" 2> /dev/null
-mkdir -p -- "$PREFIX"
+mkdir -p -- "$PREFIX/lib"
 lipo -create \
   "$SIMULATOR32_PREFIX/lib/libsodium.a" \
   "$SIMULATOR64_PREFIX/lib/libsodium.a" \
   "$IOS32_PREFIX/lib/libsodium.a" \
   "$IOS64_PREFIX/lib/libsodium.a" \
-  -output "$PREFIX/libsodium.a"
+  -output "$PREFIX/lib/libsodium.a"
 mv -f -- "$IOS32_PREFIX/include" "$PREFIX/"
 
 echo
 echo "libsodium has been installed into $PREFIX"
 echo
-file -- "$PREFIX/libsodium.a"
+file -- "$PREFIX/lib/libsodium.a"
 
 # Cleanup
 rm -rf -- "$PREFIX/tmp"
