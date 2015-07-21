@@ -19,6 +19,7 @@ int main(void)
 {
     int i;
 
+    randombytes_buf(output, sizeof output);
     crypto_stream(output, sizeof output, nonce, firstkey);
     crypto_hash_sha256(h, output, sizeof output);
 

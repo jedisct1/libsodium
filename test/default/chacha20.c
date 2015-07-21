@@ -35,13 +35,17 @@ void tv(void)
         printf("[%s]\n", out_hex);
     } while (++i < (sizeof tests) / (sizeof tests[0]));
 
-    memset(out, 0x42, sizeof out);
+    randombytes_buf(out, sizeof out);
+    crypto_stream_chacha20(out, sizeof out, nonce, key);
+    sodium_bin2hex(out_hex, sizeof out_hex, out, sizeof out);
+    printf("[%s]\n", out_hex);
 
     assert(crypto_stream_chacha20(out, 0U, nonce, key) == 0);
     assert(crypto_stream_chacha20_xor(out, out, 0U, nonce, key) == 0);
     assert(crypto_stream_chacha20_xor(out, out, 0U, nonce, key) == 0);
     assert(crypto_stream_chacha20_xor_ic(out, out, 0U, nonce, 1U, key) == 0);
 
+    memset(out, 0x42, sizeof out);
     crypto_stream_chacha20_xor(out, out, sizeof out, nonce, key);
     sodium_bin2hex(out_hex, sizeof out_hex, out, sizeof out);
     printf("[%s]\n", out_hex);
@@ -98,13 +102,17 @@ void tv_ietf(void)
         printf("[%s]\n", out_hex);
     } while (++i < (sizeof tests) / (sizeof tests[0]));
 
-    memset(out, 0x42, sizeof out);
+    randombytes_buf(out, sizeof out);
+    crypto_stream_chacha20_ietf(out, sizeof out, nonce, key);
+    sodium_bin2hex(out_hex, sizeof out_hex, out, sizeof out);
+    printf("[%s]\n", out_hex);
 
     assert(crypto_stream_chacha20_ietf(out, 0U, nonce, key) == 0);
     assert(crypto_stream_chacha20_ietf_xor(out, out, 0U, nonce, key) == 0);
     assert(crypto_stream_chacha20_ietf_xor(out, out, 0U, nonce, key) == 0);
     assert(crypto_stream_chacha20_ietf_xor_ic(out, out, 0U, nonce, 1U, key) == 0);
 
+    memset(out, 0x42, sizeof out);
     crypto_stream_chacha20_ietf_xor(out, out, sizeof out, nonce, key);
     sodium_bin2hex(out_hex, sizeof out_hex, out, sizeof out);
     printf("[%s]\n", out_hex);
