@@ -50,6 +50,7 @@ crypto_aead_chacha20poly1305_encrypt(unsigned char *c,
 #endif
 /* LCOV_EXCL_STOP */
 
+    sodium_memzero(block0, sizeof block0);
     crypto_stream_chacha20(block0, sizeof block0, npub, k);
     crypto_onetimeauth_poly1305_init(&state, block0);
     sodium_memzero(block0, sizeof block0);
@@ -100,6 +101,7 @@ crypto_aead_chacha20poly1305_ietf_encrypt(unsigned char *c,
 #endif
 /* LCOV_EXCL_STOP */
 
+    sodium_memzero(block0, sizeof block0);
     crypto_stream_chacha20_ietf(block0, sizeof block0, npub, k);
     crypto_onetimeauth_poly1305_init(&state, block0);
     sodium_memzero(block0, sizeof block0);
@@ -152,6 +154,7 @@ crypto_aead_chacha20poly1305_decrypt(unsigned char *m,
     if (clen < crypto_aead_chacha20poly1305_ABYTES) {
         return -1;
     }
+    sodium_memzero(block0, sizeof block0);
     crypto_stream_chacha20(block0, sizeof block0, npub, k);
     crypto_onetimeauth_poly1305_init(&state, block0);
     sodium_memzero(block0, sizeof block0);
@@ -208,6 +211,7 @@ crypto_aead_chacha20poly1305_ietf_decrypt(unsigned char *m,
     if (clen < crypto_aead_chacha20poly1305_ABYTES) {
         return -1;
     }
+    sodium_memzero(block0, sizeof block0);
     crypto_stream_chacha20_ietf(block0, sizeof block0, npub, k);
     crypto_onetimeauth_poly1305_init(&state, block0);
     sodium_memzero(block0, sizeof block0);
