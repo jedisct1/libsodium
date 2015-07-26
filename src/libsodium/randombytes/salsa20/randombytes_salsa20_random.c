@@ -243,7 +243,6 @@ randombytes_salsa20_random_stir(void)
     unsigned char  m0[crypto_auth_hmacsha512256_BYTES +
                       2U * SHA512_BLOCK_SIZE - SHA512_MIN_PAD_SIZE];
     unsigned char *k0 = m0 + crypto_auth_hmacsha512256_BYTES;
-    size_t         i;
     size_t         sizeof_k0 = sizeof m0 - crypto_auth_hmacsha512256_BYTES;
 
     memset(stream.rnd32, 0, sizeof stream.rnd32);
