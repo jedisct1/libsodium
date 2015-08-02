@@ -11,4 +11,5 @@ EXTRA_DIST = \
 	emscripten.sh \
 	ios.sh \
 	msys2-win32.sh \
-	msys2-win64.sh
+	msys2-win64.sh \
+	nativeclient.sh
