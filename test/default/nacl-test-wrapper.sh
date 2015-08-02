@@ -1,4 +1,4 @@
-#!/bin/bash
+#! /usr/bin/env bash
 
 if [ -z "$NACL_SDK_ROOT" -o -z "$PNACL_TRANSLATE" -o -z "$PNACL_FINALIZE" ]
 then

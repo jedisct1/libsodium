@@ -1,12 +1,14 @@
 *.cmake
 *.dSYM
 *.exp
+*.final
 *.gcda
 *.gcno
 *.la
 *.lo
 *.log
 *.mem
+*.nexe
 *.o
 *.plist
 *.scan

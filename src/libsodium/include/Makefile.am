@@ -50,9 +50,13 @@ SODIUM_EXPORT = \
 	sodium/randombytes.h \
 	sodium/randombytes_salsa20_random.h \
 	sodium/randombytes_sysrandom.h \
-	sodium/randombytes_nativeclient.h \
 	sodium/runtime.h \
 	sodium/utils.h
+
+if NATIVECLIENT
+SODIUM_EXPORT += \
+	sodium/randombytes_nativeclient.h
+endif
 
 EXTRA_SRC = $(SODIUM_EXPORT) \
 	sodium/version.h.in

@@ -11,7 +11,10 @@
 
 #include "randombytes.h"
 #include "randombytes_sysrandom.h"
-#include "randombytes_nativeclient.h"
+
+#ifdef __native_client__
+# include "randombytes_nativeclient.h"
+#endif
 
 #ifndef __EMSCRIPTEN__
 #ifdef __native_client__
