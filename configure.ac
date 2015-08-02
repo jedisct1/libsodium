@@ -430,6 +430,8 @@ AS_IF([test "x$EMSCRIPTEN" != "x"],[
 AC_SUBST(TEST_LDFLAGS)
 AM_CONDITIONAL([EMSCRIPTEN], [test "x$EMSCRIPTEN" != "x"])
 
+AM_CONDITIONAL([NATIVECLIENT], [test "x$NATIVECLIENT" != "x"])
+
 dnl Libtool.
 
 LT_INIT([dlopen])
