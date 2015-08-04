@@ -55,8 +55,8 @@ export PATH="${BASEDIR}/usr/bin:$BASEDIR/usr/sbin:$PATH"
 export SDK="${BASEDIR}/SDKs/iPhoneOS.sdk"
 
 ## 32-bit iOS
-export CFLAGS="-Oz -mthumb -arch armv7 -arch armv7s -isysroot ${SDK} -mios-version-min=${IOS_VERSION_MIN}"
-export LDFLAGS="-mthumb -arch armv7 -arch armv7s -isysroot ${SDK} -mios-version-min=${IOS_VERSION_MIN}"
+export CFLAGS="-Oz -mthumb -arch armv7 -isysroot ${SDK} -mios-version-min=${IOS_VERSION_MIN}"
+export LDFLAGS="-mthumb -arch armv7 -isysroot ${SDK} -mios-version-min=${IOS_VERSION_MIN}"
 
 make distclean > /dev/null
 
