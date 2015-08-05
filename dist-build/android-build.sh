@@ -25,13 +25,13 @@ export PATH="${PATH}:${TOOLCHAIN_DIR}/bin"
 rm -rf "${TOOLCHAIN_DIR}" "${PREFIX}"
 
 bash $MAKE_TOOLCHAIN --platform="${NDK_PLATFORM:-android-21}" \
-                --arch="$ARCH" \
-                --install-dir="$TOOLCHAIN_DIR" && \
-./configure --host="${HOST_COMPILER}" \
-            --with-sysroot="${TOOLCHAIN_DIR}/sysroot" \
-            --prefix="${PREFIX}" \
-            --enable-minimal \
-            --disable-soname-versions && \
+    --arch="$ARCH" --install-dir="$TOOLCHAIN_DIR" && \
+./configure \
+    --disable-soname-versions \
+    --enable-minimal \
+    --host="${HOST_COMPILER}" \
+    --prefix="${PREFIX}" \
+    --with-sysroot="${TOOLCHAIN_DIR}/sysroot" && \
 make clean && \
 make -j3 install && \
 echo "libsodium has been installed into $PREFIX"
