@@ -34,4 +34,4 @@ bash $MAKE_TOOLCHAIN --platform="${NDK_PLATFORM:-android-21}" \
     --with-sysroot="${TOOLCHAIN_DIR}/sysroot" && \
 make clean && \
 make -j3 install && \
-echo "libsodium has been installed into $PREFIX"
+echo "libsodium has been installed into ${PREFIX}"
