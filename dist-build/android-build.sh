@@ -24,7 +24,7 @@ export PATH="${PATH}:${TOOLCHAIN_DIR}/bin"
 
 rm -rf "${TOOLCHAIN_DIR}" "${PREFIX}"
 
-bash $MAKE_TOOLCHAIN --platform="${NDK_PLATFORM:-android-21}" \
+bash $MAKE_TOOLCHAIN --platform="${NDK_PLATFORM:-android-16}" \
     --arch="$ARCH" --install-dir="$TOOLCHAIN_DIR" && \
 ./configure \
     --disable-soname-versions \
