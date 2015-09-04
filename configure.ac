@@ -406,13 +406,22 @@ void f(void *x) { __dummy(x); }
  AC_DEFINE([HAVE_WEAK_SYMBOLS], [1], [weak symbols are supported])],
 [AC_MSG_RESULT(no)])
 
+AC_MSG_CHECKING(if unaligned data access is supported)
+unaligned_access_ok=
 AS_CASE([$host_cpu],
   [i*86 | x86_64 | powerpc* | s390*],
-    [AC_MSG_NOTICE([data alignment is not required on this target])],
-  [*],
-    [AC_MSG_NOTICE([data alignment is required on this target])
-     AC_DEFINE([CPU_ALIGNED_ACCESS_REQUIRED], [1], [data alignment is required])]
+    [unaligned_access_ok=yes],
+  [arm*],
+    [AC_COMPILE_IFELSE([AC_LANG_PROGRAM([[
+#ifndef __ARM_FEATURE_UNALIGNED
+# error unaligned access not supported
+#endif
+      ]], [[]])], [unaligned_access_ok=yes], [])]
 )
+AS_IF([test "x$unaligned_access_ok" = xyes],
+  [AC_MSG_RESULT(yes)],
+  [AC_MSG_RESULT(no)
+   AC_DEFINE([CPU_ALIGNED_ACCESS_REQUIRED], [1], [data alignment is required])])
 
 dnl Checks for functions and headers
 
