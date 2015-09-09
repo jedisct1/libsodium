@@ -51,7 +51,7 @@ static unsigned char canary[CANARY_SIZE];
 
 #ifdef HAVE_WEAK_SYMBOLS
 __attribute__((weak)) void
-_sodium_dummy_symbol_to_prevent_lto(void * const pnt, const size_t len)
+_sodium_dummy_symbol_to_prevent_memzero_lto(void * const pnt, const size_t len)
 {
     (void) pnt;
     (void) len;
@@ -71,7 +71,7 @@ sodium_memzero(void * const pnt, const size_t len)
     explicit_bzero(pnt, len);
 #elif HAVE_WEAK_SYMBOLS
     memset(pnt, 0, len);
-    _sodium_dummy_symbol_to_prevent_lto(pnt, len);
+    _sodium_dummy_symbol_to_prevent_memzero_lto(pnt, len);
 #else
     volatile unsigned char *pnt_ = (volatile unsigned char *) pnt;
     size_t                     i = (size_t) 0U;
@@ -82,14 +82,34 @@ sodium_memzero(void * const pnt, const size_t len)
 #endif
 }
 
+#ifdef HAVE_WEAK_SYMBOLS
+__attribute__((weak)) void
+_sodium_dummy_symbol_to_prevent_memcmp_lto(const unsigned char *b1,
+                                           const unsigned char *b2,
+                                           const size_t len)
+{
+    (void) b1;
+    (void) b2;
+    (void) len;
+}
+#endif
+
 int
 sodium_memcmp(const void * const b1_, const void * const b2_, size_t len)
 {
+#ifdef HAVE_WEAK_SYMBOLS
     const unsigned char *b1 = (const unsigned char *) b1_;
     const unsigned char *b2 = (const unsigned char *) b2_;
+#else
+    const volatile unsigned char *b1 = (const volatile unsigned char *) b1_;
+    const volatile unsigned char *b2 = (const volatile unsigned char *) b2_;
+#endif
     size_t               i;
     unsigned char        d = (unsigned char) 0U;
 
+#if HAVE_WEAK_SYMBOLS
+    _sodium_dummy_symbol_to_prevent_memcmp_lto(b1, b2, len);
+#endif
     for (i = 0U; i < len; i++) {
         d |= b1[i] ^ b2[i];
     }
