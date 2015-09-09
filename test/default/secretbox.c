@@ -42,6 +42,15 @@ int main(void)
     }
     printf("\n");
 
+    memcpy(c, m, 163);
+    crypto_secretbox(c, c, 163, nonce, firstkey);
+    for (i = 16; i < 163; ++i) {
+        printf(",0x%02x", (unsigned int)c[i]);
+        if (i % 8 == 7)
+            printf("\n");
+    }
+    printf("\n");
+
     assert(crypto_secretbox_keybytes() > 0U);
     assert(crypto_secretbox_noncebytes() > 0U);
     assert(crypto_secretbox_zerobytes() > 0U);
