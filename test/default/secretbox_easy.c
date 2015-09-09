@@ -30,8 +30,8 @@ int main(void)
     unsigned char *mac;
     size_t         i;
 
-    c = sodium_malloc(131 + crypto_secretbox_MACBYTES + 1);
-    mac = sodium_malloc(crypto_secretbox_MACBYTES);
+    c = (unsigned char *) sodium_malloc(131 + crypto_secretbox_MACBYTES + 1);
+    mac = (unsigned char *) sodium_malloc(crypto_secretbox_MACBYTES);
     assert(c != NULL && mac != NULL);
 
     crypto_secretbox_easy(c, m, 131, nonce, firstkey);
