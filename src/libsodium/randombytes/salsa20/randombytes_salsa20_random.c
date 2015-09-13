@@ -147,7 +147,7 @@ randombytes_salsa20_random_random_dev_open(void)
 /* LCOV_EXCL_STOP */
 }
 
-#ifdef SYS_getrandom
+# ifdef SYS_getrandom
 static int
 _randombytes_linux_getrandom(void * const buf, const size_t size)
 {
@@ -181,7 +181,7 @@ randombytes_linux_getrandom(void * const buf_, size_t size)
 
     return 0;
 }
-#endif
+# endif
 
 static void
 randombytes_salsa20_random_init(void)
