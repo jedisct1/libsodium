@@ -42,6 +42,10 @@ BOOLEAN NTAPI RtlGenRandom(PVOID RandomBuffer, ULONG RandomBufferLength);
 #define SHA512_MIN_PAD_SIZE (1U + 16U)
 #define COMPILER_ASSERT(X) (void) sizeof(char[(X) ? 1 : -1])
 
+#if defined(__OpenBSD__) || defined(__CloudABI__)
+# define HAVE_SAFE_ARC4RANDOM 1
+#endif
+
 typedef struct Salsa20Random_ {
     unsigned char key[crypto_stream_salsa20_KEYBYTES];
     unsigned char rnd32[16U * SALSA20_RANDOM_BLOCK_SIZE];
@@ -112,15 +116,16 @@ safe_read(const int fd, void * const buf_, size_t size)
 #endif
 
 #ifndef _WIN32
+# ifndef HAVE_SAFE_ARC4RANDOM
 static int
 randombytes_salsa20_random_random_dev_open(void)
 {
 /* LCOV_EXCL_START */
     struct stat       st;
     static const char *devices[] = {
-# ifndef USE_BLOCKING_RANDOM
+#  ifndef USE_BLOCKING_RANDOM
         "/dev/urandom",
-# endif
+#  endif
         "/dev/random", NULL
     };
     const char **     device = devices;
@@ -130,9 +135,9 @@ randombytes_salsa20_random_random_dev_open(void)
         fd = open(*device, O_RDONLY);
         if (fd != -1) {
             if (fstat(fd, &st) == 0 && S_ISCHR(st.st_mode)) {
-# if defined(F_SETFD) && defined(FD_CLOEXEC)
+#  if defined(F_SETFD) && defined(FD_CLOEXEC)
                 (void) fcntl(fd, F_SETFD, fcntl(fd, F_GETFD) | FD_CLOEXEC);
-# endif
+#  endif
                 return fd;
             }
             (void) close(fd);
@@ -146,6 +151,7 @@ randombytes_salsa20_random_random_dev_open(void)
     return -1;
 /* LCOV_EXCL_STOP */
 }
+# endif
 
 # ifdef SYS_getrandom
 static int
@@ -191,7 +197,11 @@ randombytes_salsa20_random_init(void)
     stream.nonce = sodium_hrtime();
     assert(stream.nonce != (uint64_t) 0U);
 
-# ifdef SYS_getrandom
+# ifdef HAVE_SAFE_ARC4RANDOM
+    errno = errno_save;
+# else
+
+#  ifdef SYS_getrandom
     {
         unsigned char fodder[16];
 
@@ -202,13 +212,14 @@ randombytes_salsa20_random_init(void)
         }
         stream.getrandom_available = 0;
     }
-# endif
+#  endif /* SYS_getrandom */
 
     if ((stream.random_data_source_fd =
          randombytes_salsa20_random_random_dev_open()) == -1) {
         abort(); /* LCOV_EXCL_LINE */
     }
     errno = errno_save;
+# endif /* HAVE_SAFE_ARC4RANDOM */
 }
 
 #else /* _WIN32 */
@@ -252,7 +263,10 @@ randombytes_salsa20_random_stir(void)
         stream.initialized = 1;
     }
 #ifndef _WIN32
-# ifdef SYS_getrandom
+
+# ifdef HAVE_SAFE_ARC4RANDOM
+    arc4random_buf(m0, sizeof m0);
+# elif defined(SYS_getrandom)
     if (stream.getrandom_available != 0) {
         if (randombytes_linux_getrandom(m0, sizeof m0) != 0) {
             abort(); /* LCOV_EXCL_LINE */
@@ -269,6 +283,7 @@ randombytes_salsa20_random_stir(void)
         abort(); /* LCOV_EXCL_LINE */
     }
 # endif
+
 #else /* _WIN32 */
     if (! RtlGenRandom((PVOID) m0, (ULONG) sizeof m0)) {
         abort(); /* LCOV_EXCL_LINE */
@@ -290,12 +305,12 @@ randombytes_salsa20_random_stir_if_needed(void)
 #ifdef HAVE_GETPID
     if (stream.initialized == 0) {
         randombytes_salsa20_random_stir();
+    } else if (stream.pid != getpid()) {
+        abort();
     }
 #else
     if (stream.initialized == 0) {
         randombytes_salsa20_random_stir();
-    } else if (stream.pid != getpid()) {
-        abort();
     }
 #endif
 }
@@ -338,14 +353,22 @@ randombytes_salsa20_random_close(void)
         close(stream.random_data_source_fd) == 0) {
         stream.random_data_source_fd = -1;
         stream.initialized = 0;
+# ifdef HAVE_GETPID
         stream.pid = (pid_t) 0;
+# endif
         ret = 0;
     }
+
+# ifdef HAVE_SAFE_ARC4RANDOM
+    ret = 0;
+# endif
+
 # ifdef SYS_getrandom
     if (stream.getrandom_available != 0) {
         ret = 0;
     }
 # endif
+
 #else /* _WIN32 */
     if (stream.initialized != 0) {
         stream.initialized = 0;
