@@ -47,7 +47,7 @@ typedef struct Salsa20Random_ {
     unsigned char rnd32[16U * SALSA20_RANDOM_BLOCK_SIZE];
     uint64_t      nonce;
     size_t        rnd32_outleft;
-#ifndef _MSC_VER
+#ifdef HAVE_GETPID
     pid_t         pid;
 #endif
     int           random_data_source_fd;
@@ -279,7 +279,7 @@ randombytes_salsa20_random_stir(void)
     COMPILER_ASSERT(sizeof stream.key <= sizeof m0);
     randombytes_salsa20_random_rekey(m0);
     sodium_memzero(m0, sizeof m0);
-#ifndef _MSC_VER
+#ifdef HAVE_GETPID
     stream.pid = getpid();
 #endif
 }
@@ -287,7 +287,7 @@ randombytes_salsa20_random_stir(void)
 static void
 randombytes_salsa20_random_stir_if_needed(void)
 {
-#ifdef _MSC_VER
+#ifdef HAVE_GETPID
     if (stream.initialized == 0) {
         randombytes_salsa20_random_stir();
     }
