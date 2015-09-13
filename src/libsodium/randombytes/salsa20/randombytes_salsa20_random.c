@@ -61,7 +61,7 @@ typedef struct Salsa20Random_ {
 static Salsa20Random stream = {
 #if !defined(_MSC_VER) && !defined(__CloudABI__)
     SODIUM_C99(.random_data_source_fd =) -1,
-    SODIUM_C99(.getrandom_available =) 0
+    SODIUM_C99(.getrandom_available =) 0,
 #endif
     SODIUM_C99(.rnd32_outleft =) (size_t) 0U,
     SODIUM_C99(.initialized =) 0,
