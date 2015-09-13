@@ -12,6 +12,9 @@
 #include <errno.h>
 #include <fcntl.h>
 #include <limits.h>
+#ifdef __CloudABI__
+#include <pthread.h>
+#endif
 #include <stdint.h>
 #include <stdlib.h>
 #include <string.h>
@@ -47,19 +50,21 @@ typedef struct Salsa20Random_ {
     unsigned char rnd32[16U * SALSA20_RANDOM_BLOCK_SIZE];
     uint64_t      nonce;
     size_t        rnd32_outleft;
-#ifndef _MSC_VER
+#if !defined(_MSC_VER) && !defined(__CloudABI__)
     pid_t         pid;
-#endif
     int           random_data_source_fd;
-    int           initialized;
     int           getrandom_available;
+#endif
+    int           initialized;
 } Salsa20Random;
 
 static Salsa20Random stream = {
+#if !defined(_MSC_VER) && !defined(__CloudABI__)
     SODIUM_C99(.random_data_source_fd =) -1,
+    SODIUM_C99(.getrandom_available =) 0
+#endif
     SODIUM_C99(.rnd32_outleft =) (size_t) 0U,
     SODIUM_C99(.initialized =) 0,
-    SODIUM_C99(.getrandom_available =) 0
 };
 
 static uint64_t
@@ -86,7 +91,7 @@ sodium_hrtime(void)
     return ts;
 }
 
-#ifndef _WIN32
+#if !defined(_WIN32) && !defined(__CloudABI__)
 static ssize_t
 safe_read(const int fd, void * const buf_, size_t size)
 {
@@ -111,7 +116,33 @@ safe_read(const int fd, void * const buf_, size_t size)
 }
 #endif
 
-#ifndef _WIN32
+#ifdef __CloudABI__
+
+static pthread_once_t randombytes_salsa20_random_once = PTHREAD_ONCE_INIT;
+
+static void
+randombytes_salsa20_random_teardown(void)
+{
+    stream.initialized = 0;
+}
+
+static void
+randombytes_salsa20_random_init_once(void)
+{
+    pthread_atfork(NULL, NULL, randombytes_salsa20_random_teardown);
+}
+
+static void
+randombytes_salsa20_random_init(void)
+{
+    stream.nonce = sodium_hrtime();
+    assert(stream.nonce != (uint64_t) 0U);
+
+    pthread_once(&randombytes_salsa20_random_once,
+        randombytes_salsa20_random_init_once);
+}
+
+#elif !defined(_WIN32)
 static int
 randombytes_salsa20_random_random_dev_open(void)
 {
@@ -251,7 +282,9 @@ randombytes_salsa20_random_stir(void)
         randombytes_salsa20_random_init();
         stream.initialized = 1;
     }
-#ifndef _WIN32
+#ifdef __CloudABI__
+    arc4random_buf(m0, sizeof m0);
+#elif !defined(_WIN32)
 # ifdef SYS_getrandom
     if (stream.getrandom_available != 0) {
         if (randombytes_linux_getrandom(m0, sizeof m0) != 0) {
@@ -287,7 +320,7 @@ randombytes_salsa20_random_stir(void)
 static void
 randombytes_salsa20_random_stir_if_needed(void)
 {
-#ifdef _MSC_VER
+#if defined(_MSC_VER) || defined(__CloudABI__)
     if (stream.initialized == 0) {
         randombytes_salsa20_random_stir();
     }
@@ -333,7 +366,7 @@ randombytes_salsa20_random_close(void)
 {
     int ret = -1;
 
-#ifndef _WIN32
+#if !defined(_WIN32) && !defined(__CloudABI__)
     if (stream.random_data_source_fd != -1 &&
         close(stream.random_data_source_fd) == 0) {
         stream.random_data_source_fd = -1;
