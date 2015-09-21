@@ -16,9 +16,12 @@ char hex[crypto_scalarmult_BYTES * 2 + 1];
 
 int main(void)
 {
-    unsigned char *alicepk = sodium_malloc(crypto_scalarmult_BYTES);
-    unsigned char *bobpk = sodium_malloc(crypto_scalarmult_BYTES);
-    unsigned char *k = sodium_malloc(crypto_scalarmult_BYTES);
+    unsigned char *alicepk =
+        (unsigned char *) sodium_malloc(crypto_scalarmult_BYTES);
+    unsigned char *bobpk =
+        (unsigned char *) sodium_malloc(crypto_scalarmult_BYTES);
+    unsigned char *k =
+        (unsigned char *) sodium_malloc(crypto_scalarmult_BYTES);
 
     assert(alicepk != NULL && bobpk != NULL && k != NULL);
 
