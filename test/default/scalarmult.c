@@ -2,30 +2,46 @@
 #define TEST_NAME "scalarmult"
 #include "cmptest.h"
 
-unsigned char alicesk[32]
+const unsigned char alicesk[crypto_scalarmult_BYTES]
     = { 0x77, 0x07, 0x6d, 0x0a, 0x73, 0x18, 0xa5, 0x7d, 0x3c, 0x16, 0xc1,
         0x72, 0x51, 0xb2, 0x66, 0x45, 0xdf, 0x4c, 0x2f, 0x87, 0xeb, 0xc0,
         0x99, 0x2a, 0xb1, 0x77, 0xfb, 0xa5, 0x1d, 0xb9, 0x2c, 0x2a };
 
-unsigned char alicepk[32];
+const unsigned char bobsk[crypto_scalarmult_BYTES]
+    = { 0x5d, 0xab, 0x08, 0x7e, 0x62, 0x4a, 0x8a, 0x4b, 0x79, 0xe1, 0x7f,
+        0x8b, 0x83, 0x80, 0x0e, 0xe6, 0x6f, 0x3b, 0xb1, 0x29, 0x26, 0x18,
+        0xb6, 0xfd, 0x1c, 0x2f, 0x8b, 0x27, 0xff, 0x88, 0xe0, 0xeb };
+
+char hex[crypto_scalarmult_BYTES * 2 + 1];
 
 int main(void)
 {
-    int i;
+    unsigned char *alicepk = sodium_malloc(crypto_scalarmult_BYTES);
+    unsigned char *bobpk = sodium_malloc(crypto_scalarmult_BYTES);
+    unsigned char *k = sodium_malloc(crypto_scalarmult_BYTES);
+
+    assert(alicepk != NULL && bobpk != NULL && k != NULL);
 
     crypto_scalarmult_base(alicepk, alicesk);
+    sodium_bin2hex(hex, sizeof hex, alicepk, crypto_scalarmult_BYTES);
+    printf("%s\n", hex);
 
-    for (i = 0; i < 32; ++i) {
-        if (i > 0) {
-            printf(",");
-        } else {
-            printf(" ");
-        }
-        printf("0x%02x", (unsigned int)alicepk[i]);
-        if (i % 8 == 7) {
-            printf("\n");
-        }
-    }
+    crypto_scalarmult_base(bobpk, bobsk);
+    sodium_bin2hex(hex, sizeof hex, bobpk, crypto_scalarmult_BYTES);
+    printf("%s\n", hex);
+
+    crypto_scalarmult(k, alicesk, bobpk);
+    sodium_bin2hex(hex, sizeof hex, k, crypto_scalarmult_BYTES);
+    printf("%s\n", hex);
+
+    crypto_scalarmult(k, bobsk, alicepk);
+    sodium_bin2hex(hex, sizeof hex, k, crypto_scalarmult_BYTES);
+    printf("%s\n", hex);
+
+    sodium_free(k);
+    sodium_free(bobpk);
+    sodium_free(alicepk);
+
     assert(crypto_scalarmult_bytes() > 0U);
     assert(crypto_scalarmult_scalarbytes() > 0U);
     assert(strcmp(crypto_scalarmult_primitive(), "curve25519") == 0);
