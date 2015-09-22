@@ -1,5 +1,6 @@
 
 * Version 1.0.4 (not released yet)
+ - Support for NaCl has finally been added.
  - ChaCha20 with an extended (96 bit) nonce and a 32-bit counter has
 been implemented as crypto_stream_chacha20_ietf(),
 crypto_stream_chacha20_ietf_xor() and crypto_stream_chacha20_ietf_xor_ic().
