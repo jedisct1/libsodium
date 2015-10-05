@@ -119,7 +119,13 @@ randombytes_sysrandom_random_dev_open(void)
     do {
         fd = open(*device, O_RDONLY);
         if (fd != -1) {
-            if (fstat(fd, &st) == 0 && S_ISCHR(st.st_mode)) {
+            if (fstat(fd, &st) == 0 &&
+# ifdef S_IFNAM
+                (S_IFNAM(st.st_mode) || S_ISCHR(st.st_mode))
+# else
+                S_ISCHR(st.st_mode)
+# endif
+               ) {
 # if defined(F_SETFD) && defined(FD_CLOEXEC)
                 (void) fcntl(fd, F_SETFD, fcntl(fd, F_GETFD) | FD_CLOEXEC);
 # endif
