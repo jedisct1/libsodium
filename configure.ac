@@ -211,6 +211,13 @@ AX_CHECK_COMPILE_FLAG([-Wwrite-strings], [CFLAGS="$CFLAGS -Wwrite-strings"])
 AX_CHECK_COMPILE_FLAG([-Wdiv-by-zero], [CFLAGS="$CFLAGS -Wdiv-by-zero"])
 AX_CHECK_COMPILE_FLAG([-Wsometimes-uninitialized], [CFLAGS="$CFLAGS -Wsometimes-uninitialized"])
 
+AX_CHECK_COMPILE_FLAG([$CFLAGS -mmmx], [CFLAGS="$CFLAGS -mmmx"])
+AX_CHECK_COMPILE_FLAG([$CFLAGS -msse], [CFLAGS="$CFLAGS -msse"])
+AX_CHECK_COMPILE_FLAG([$CFLAGS -msse2], [CFLAGS="$CFLAGS -msse2"])
+AX_CHECK_COMPILE_FLAG([$CFLAGS -msse3], [CFLAGS="$CFLAGS -msse3"])
+AX_CHECK_COMPILE_FLAG([$CFLAGS -maes], [CFLAGS="$CFLAGS -maes"])
+AX_CHECK_COMPILE_FLAG([$CFLAGS -mpclmul], [CFLAGS="$CFLAGS -mpclmul"])
+
 AC_ARG_VAR([CWFLAGS], [define to compilation flags for generating extra warnings])
 
 AX_CHECK_COMPILE_FLAG([$CWFLAGS -Wall], [CWFLAGS="$CWFLAGS -Wall"])
