@@ -11,21 +11,11 @@
 #define AES_MAXROUNDS  14
 #define GMAC_BLOCKSIZE 16
 
-#if defined(_MSC_VER)
-# define CRYPTO_ALIGN(x) __declspec(align(x))
-#else
-# define CRYPTO_ALIGN(x) __attribute__((aligned(x)))
-#endif
-
-typedef CRYPTO_ALIGN(128) struct ghash {
+typedef CRYPTO_ALIGN(128) struct context {
+    __m128i ekey[AES_MAXROUNDS + 1];
     unsigned char initial_state[GMAC_BLOCKSIZE];
     unsigned char state[GMAC_BLOCKSIZE];
     unsigned char subkey[GMAC_BLOCKSIZE];
-} ghash;
-
-typedef CRYPTO_ALIGN(128) struct context {
-    __m128i ekey[AES_MAXROUNDS + 1];
-    ghash   ghash;
 } context;
 
 static inline void
@@ -321,13 +311,13 @@ _aes_enc_one(context *ctx, unsigned char *dst, unsigned char *src)
                       _mm_srli_si128(tmp7, 4))))
 
 static void
-_gmac_update(ghash *ghash, const unsigned char *src, size_t len)
+_gmac_update(context *ctx, const unsigned char *src, size_t len)
 {
     __m128i mask = _mm_loadu_si128((const void *) swap_mask);
     __m128i tmp0, tmp1, tmp2, tmp3, tmp4, tmp5, tmp6, tmp7, tmp8, tmp9;
 
-    tmp1 = _mm_shuffle_epi8(_mm_loadu_si128((void *) ghash->subkey), mask);
-    tmp6 = _mm_shuffle_epi8(_mm_loadu_si128((void *) ghash->initial_state), mask);
+    tmp1 = _mm_shuffle_epi8(_mm_loadu_si128((void *) ctx->subkey), mask);
+    tmp6 = _mm_shuffle_epi8(_mm_loadu_si128((void *) ctx->initial_state), mask);
     while (len >= 16) {
         GMAC_UPDATE;
         len -= 16;
@@ -341,8 +331,8 @@ _gmac_update(ghash *ghash, const unsigned char *src, size_t len)
         GMAC_UPDATE;
     }
     tmp6 = _mm_shuffle_epi8(tmp6, mask);
-    _mm_storeu_si128((void *) ghash->state, tmp6);
-    _mm_storeu_si128((void *) ghash->initial_state, tmp6);
+    _mm_storeu_si128((void *) ctx->state, tmp6);
+    _mm_storeu_si128((void *) ctx->initial_state, tmp6);
 }
 
 static void
@@ -360,6 +350,100 @@ _gmac_final(context *ctx, unsigned char *tag, unsigned char *ivc_block, unsigned
 }
 
 int
+crypto_aead_aes256gcm_aesni_beforenm(crypto_aead_aes256gcm_aesni_state *ctx_,
+                                     const unsigned char *k)
+{
+    context *ctx = (context *) ctx_;
+
+    (void) sizeof(int[(sizeof *ctx_) >= (sizeof *ctx) ? 1 : -1]);
+    memset(ctx, 0, sizeof *ctx);
+    _key_setup(ctx, k);
+    _aes_enc_one(ctx, ctx->subkey, ctx->subkey);
+
+    return 0;
+}
+
+int
+crypto_aead_aes256gcm_aesni_encrypt_afternm(unsigned char *c,
+                                            unsigned long long *clen_p,
+                                            const unsigned char *m,
+                                            unsigned long long mlen,
+                                            const unsigned char *ad,
+                                            unsigned long long adlen,
+                                            const unsigned char *nsec,
+                                            const unsigned char *npub,
+                                            crypto_aead_aes256gcm_aesni_state *ctx_)
+{
+    context        *ctx = (context *) ctx_;
+    unsigned char  *mac;
+    unsigned char   ivc_block[AES_BLOCKSIZE];
+
+    (void) nsec;
+    memset(ivc_block, 0, sizeof ivc_block);
+    memcpy(ivc_block, npub, crypto_aead_aes256gcm_NPUBBYTES);
+    ivc_block[AES_BLOCKSIZE - 1U] = 1U;
+    _gmac_update(ctx, ad, adlen);
+    _aes_ctr(ctx, c, m, mlen, ivc_block);
+    _gmac_update(ctx, c, mlen);
+    mac = c + mlen;
+    _u64_be_from_ull(mac, adlen * 8ULL);
+    _u64_be_from_ull(mac + 8U, mlen * 8ULL);
+    _gmac_update(ctx, mac, GMAC_BLOCKSIZE);
+    _gmac_final(ctx, mac, ivc_block, ctx->state);
+    sodium_memzero(ctx, sizeof *ctx);
+    if (clen_p != NULL) {
+        *clen_p = mlen + crypto_aead_aes256gcm_ABYTES;
+    }
+    return 0;
+}
+
+int
+crypto_aead_aes256gcm_aesni_decrypt_afternm(unsigned char *m,
+                                            unsigned long long *mlen_p,
+                                            unsigned char *nsec,
+                                            const unsigned char *c,
+                                            unsigned long long clen,
+                                            const unsigned char *ad,
+                                            unsigned long long adlen,
+                                            const unsigned char *npub,
+                                            crypto_aead_aes256gcm_aesni_state *ctx_)
+{
+    context       *ctx = (context *) ctx_;
+    unsigned char  mac[GMAC_BLOCKSIZE];
+    unsigned char  ivc_block[AES_BLOCKSIZE];
+    size_t         mlen;
+
+    (void) nsec;
+    if (mlen_p != NULL) {
+        *mlen_p = 0;
+    }
+    if (clen < crypto_aead_aes256gcm_ABYTES) {
+        return -1;
+    }
+    mlen = clen - crypto_aead_aes256gcm_ABYTES;
+    memset(ivc_block, 0, sizeof ivc_block);
+    memcpy(ivc_block, npub, crypto_aead_aes256gcm_NPUBBYTES);
+    ivc_block[AES_BLOCKSIZE - 1U] = 1U;
+
+    _gmac_update(ctx, ad, adlen);
+    _gmac_update(ctx, c, mlen);
+    _u64_be_from_ull(mac, adlen * 8ULL);
+    _u64_be_from_ull(mac + 8U, mlen * 8ULL);
+    _gmac_update(ctx, mac, GMAC_BLOCKSIZE);
+    _gmac_final(ctx, mac, ivc_block, ctx->state);
+    if (sodium_memcmp(c + mlen, mac, crypto_aead_aes256gcm_ABYTES) != 0) {
+        sodium_memzero(ctx, sizeof *ctx);
+        return -1;
+    }
+    _aes_ctr(ctx, m, c, mlen, ivc_block);
+    sodium_memzero(ctx, sizeof *ctx);
+    if (mlen_p != NULL) {
+        *mlen_p = mlen;
+    }
+    return 0;
+}
+
+int
 crypto_aead_aes256gcm_aesni_encrypt(unsigned char *c,
                                     unsigned long long *clen_p,
                                     const unsigned char *m,
@@ -370,75 +454,29 @@ crypto_aead_aes256gcm_aesni_encrypt(unsigned char *c,
                                     const unsigned char *npub,
                                     const unsigned char *k)
 {
-    context         ctx;
-    unsigned char  *mac;
-    unsigned char   ivc_block[AES_BLOCKSIZE];
+    crypto_aead_aes256gcm_aesni_state ctx;
 
-    (void) nsec;
-    memset(&ctx, 0, sizeof ctx);
-    memset(ivc_block, 0, sizeof ivc_block);
-    memcpy(ivc_block, npub, crypto_aead_aes256gcm_NPUBBYTES);
-    ivc_block[AES_BLOCKSIZE - 1U] = 1U;
-    _key_setup(&ctx, k);
-    _aes_enc_one(&ctx, ctx.ghash.subkey, ctx.ghash.subkey);
-    _gmac_update(&ctx.ghash, ad, adlen);
-    _aes_ctr(&ctx, c, m, mlen, ivc_block);
-    _gmac_update(&ctx.ghash, c, mlen);
-    mac = c + mlen;
-    _u64_be_from_ull(mac, adlen * 8ULL);
-    _u64_be_from_ull(mac + 8U, mlen * 8ULL);
-    _gmac_update(&ctx.ghash, mac, GMAC_BLOCKSIZE);
-    _gmac_final(&ctx, mac, ivc_block, ctx.ghash.state);
-    sodium_memzero(&ctx, sizeof ctx);
-    if (clen_p != NULL) {
-        *clen_p = mlen + crypto_aead_aes256gcm_ABYTES;
-    }
-    return 0;
+    crypto_aead_aes256gcm_aesni_beforenm(&ctx, k);
+
+    return crypto_aead_aes256gcm_aesni_encrypt_afternm
+        (c, clen_p, m, mlen, ad, adlen, nsec, npub, &ctx);
 }
 
-int crypto_aead_aes256gcm_aesni_decrypt(unsigned char *m,
-                                        unsigned long long *mlen_p,
-                                        unsigned char *nsec,
-                                        const unsigned char *c,
-                                        unsigned long long clen,
-                                        const unsigned char *ad,
-                                        unsigned long long adlen,
-                                        const unsigned char *npub,
-                                        const unsigned char *k)
+int
+crypto_aead_aes256gcm_aesni_decrypt(unsigned char *m,
+                                    unsigned long long *mlen_p,
+                                    unsigned char *nsec,
+                                    const unsigned char *c,
+                                    unsigned long long clen,
+                                    const unsigned char *ad,
+                                    unsigned long long adlen,
+                                    const unsigned char *npub,
+                                    const unsigned char *k)
 {
-    context       ctx;
-    unsigned char mac[GMAC_BLOCKSIZE];
-    unsigned char ivc_block[AES_BLOCKSIZE];
-    size_t        mlen;
+    crypto_aead_aes256gcm_aesni_state ctx;
 
-    (void) nsec;
-    if (mlen_p != NULL) {
-        *mlen_p = 0;
-    }
-    if (clen < crypto_aead_aes256gcm_ABYTES) {
-        return -1;
-    }
-    mlen = clen - crypto_aead_aes256gcm_ABYTES;
-    memset(&ctx, 0, sizeof ctx);
-    memset(ivc_block, 0, sizeof ivc_block);
-    memcpy(ivc_block, npub, crypto_aead_aes256gcm_NPUBBYTES);
-    ivc_block[AES_BLOCKSIZE - 1U] = 1U;
-    _key_setup(&ctx, k);
-    _aes_enc_one(&ctx, ctx.ghash.subkey, ctx.ghash.subkey);
-    _gmac_update(&ctx.ghash, ad, adlen);
-    _gmac_update(&ctx.ghash, c, mlen);
-    _u64_be_from_ull(mac, adlen * 8ULL);
-    _u64_be_from_ull(mac + 8U, mlen * 8ULL);
-    _gmac_update(&ctx.ghash, mac, GMAC_BLOCKSIZE);
-    _gmac_final(&ctx, mac, ivc_block, ctx.ghash.state);
-    if (sodium_memcmp(c + mlen, mac, crypto_aead_aes256gcm_ABYTES) != 0) {
-        sodium_memzero(&ctx, sizeof ctx);
-        return -1;
-    }
-    _aes_ctr(&ctx, m, c, mlen, ivc_block);
-    sodium_memzero(&ctx, sizeof ctx);
-    if (mlen_p != NULL) {
-        *mlen_p = mlen;
-    }
-    return 0;
+    crypto_aead_aes256gcm_aesni_beforenm(&ctx, k);
+
+    return crypto_aead_aes256gcm_aesni_decrypt_afternm
+        (m, mlen_p, nsec, c, clen, ad, adlen, npub, &ctx);
 }
