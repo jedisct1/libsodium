@@ -29,4 +29,12 @@
 # endif
 #endif
 
+#ifndef CRYPTO_ALIGN
+# if defined(_MSC_VER)
+#  define CRYPTO_ALIGN(x) __declspec(align(x))
+# else
+#  define CRYPTO_ALIGN(x) __attribute__((aligned(x)))
+# endif
+#endif
+
 #endif
