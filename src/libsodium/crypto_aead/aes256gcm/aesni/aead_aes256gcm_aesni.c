@@ -305,97 +305,106 @@ mulv(__m128i A, __m128i B)
 /* 4 multiply-accumulate at once; again
    <https://software.intel.com/sites/default/files/managed/72/cc/clmul-wp-rev-2.02-2014-04-20.pdf>
    for the Aggregated Reduction Method & sample code.
-*/
-static inline __m128i
-reduce4(__m128i H0, __m128i H1, __m128i H2, __m128i H3, __m128i X0, __m128i X1,
-        __m128i X2, __m128i X3, __m128i acc)
-{
-/*algorithm by Krzysztof Jankowski, Pierre Laurent - Intel*/
+   Algorithm by Krzysztof Jankowski, Pierre Laurent - Intel */
+
 #define RED_DECL(a) __m128i H##a##_X##a##_lo, H##a##_X##a##_hi, tmp##a, tmp##a##B
-    MAKE4(RED_DECL);
-    __m128i       lo, hi;
-    __m128i       tmp8, tmp9;
-    const __m128i rev = _mm_set_epi8(0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15);
-
-/* byte-revert the inputs & xor the first one into the accumulator */
 #define RED_SHUFFLE(a) X##a = _mm_shuffle_epi8(X##a, rev)
-    MAKE4(RED_SHUFFLE);
-    X3 = _mm_xor_si128(X3, acc);
-
-/* 4 low H*X (x0*h0) */
 #define RED_MUL_LOW(a) H##a##_X##a##_lo = _mm_clmulepi64_si128(H##a, X##a, 0x00)
-    MAKE4(RED_MUL_LOW);
-    lo = _mm_xor_si128(H0_X0_lo, H1_X1_lo);
-    lo = _mm_xor_si128(lo, H2_X2_lo);
-    lo = _mm_xor_si128(lo, H3_X3_lo);
-
-/* 4 high H*X (x1*h1) */
 #define RED_MUL_HIGH(a) H##a##_X##a##_hi = _mm_clmulepi64_si128(H##a, X##a, 0x11)
-    MAKE4(RED_MUL_HIGH);
-    hi = _mm_xor_si128(H0_X0_hi, H1_X1_hi);
-    hi = _mm_xor_si128(hi, H2_X2_hi);
-    hi = _mm_xor_si128(hi, H3_X3_hi);
-
-/* 4 middle H*X, using Karatsuba, i.e.
-     x1*h0+x0*h1 =(x1+x0)*(h1+h0)-x1*h1-x0*h0
-     we already have all x1y1 & x0y0 (accumulated in hi & lo)
-     (0 is low half and 1 is high half)
-  */
-/* permute the high and low 64 bits in H1 & X1,
-     so create (h0,h1) from (h1,h0) and (x0,x1) from (x1,x0),
-     then compute (h0+h1,h1+h0) and (x0+x1,x1+x0),
-     and finally multiply
-  */
 #define RED_MUL_MID(a)                          \
     tmp##a = _mm_shuffle_epi32(H##a, 0x4e);     \
     tmp##a##B = _mm_shuffle_epi32(X##a, 0x4e);  \
     tmp##a = _mm_xor_si128(tmp##a, H##a);       \
     tmp##a##B = _mm_xor_si128(tmp##a##B, X##a); \
     tmp##a = _mm_clmulepi64_si128(tmp##a, tmp##a##B, 0x00)
-    MAKE4(RED_MUL_MID);
 
-/* substracts x1*h1 and x0*h0 */
-    tmp0 = _mm_xor_si128(tmp0, lo);
-    tmp0 = _mm_xor_si128(tmp0, hi);
-    tmp0 = _mm_xor_si128(tmp1, tmp0);
-    tmp0 = _mm_xor_si128(tmp2, tmp0);
-    tmp0 = _mm_xor_si128(tmp3, tmp0);
-
-    /* reduction */
-    tmp0B = _mm_slli_si128(tmp0, 8);
-    tmp0 = _mm_srli_si128(tmp0, 8);
-    lo = _mm_xor_si128(tmp0B, lo);
-    hi = _mm_xor_si128(tmp0, hi);
-    tmp3 = lo;
-    tmp2B = hi;
-    tmp3B = _mm_srli_epi32(tmp3, 31);
-    tmp8 = _mm_srli_epi32(tmp2B, 31);
-    tmp3 = _mm_slli_epi32(tmp3, 1);
-    tmp2B = _mm_slli_epi32(tmp2B, 1);
-    tmp9 = _mm_srli_si128(tmp3B, 12);
-    tmp8 = _mm_slli_si128(tmp8, 4);
-    tmp3B = _mm_slli_si128(tmp3B, 4);
-    tmp3 = _mm_or_si128(tmp3, tmp3B);
-    tmp2B = _mm_or_si128(tmp2B, tmp8);
-    tmp2B = _mm_or_si128(tmp2B, tmp9);
-    tmp3B = _mm_slli_epi32(tmp3, 31);
-    tmp8 = _mm_slli_epi32(tmp3, 30);
-    tmp9 = _mm_slli_epi32(tmp3, 25);
-    tmp3B = _mm_xor_si128(tmp3B, tmp8);
-    tmp3B = _mm_xor_si128(tmp3B, tmp9);
-    tmp8 = _mm_srli_si128(tmp3B, 4);
-    tmp3B = _mm_slli_si128(tmp3B, 12);
-    tmp3 = _mm_xor_si128(tmp3, tmp3B);
-    tmp2 = _mm_srli_epi32(tmp3, 1);
-    tmp0B = _mm_srli_epi32(tmp3, 2);
-    tmp1B = _mm_srli_epi32(tmp3, 7);
-    tmp2 = _mm_xor_si128(tmp2, tmp0B);
-    tmp2 = _mm_xor_si128(tmp2, tmp1B);
-    tmp2 = _mm_xor_si128(tmp2, tmp8);
-    tmp3 = _mm_xor_si128(tmp3, tmp2);
-    tmp2B = _mm_xor_si128(tmp2B, tmp3);
-
-    return tmp2B;
+#define REDUCE4(rev, H0_, H1_, H2_, H3_, X0_, X1_, X2_, X3_, acc) \
+{ \
+    MAKE4(RED_DECL); \
+    __m128i       lo, hi; \
+    __m128i       tmp8, tmp9; \
+    __m128i       H0 = H0_; \
+    __m128i       H1 = H1_; \
+    __m128i       H2 = H2_; \
+    __m128i       H3 = H3_; \
+    __m128i       X0 = X0_; \
+    __m128i       X1 = X1_; \
+    __m128i       X2 = X2_; \
+    __m128i       X3 = X3_; \
+\
+/* byte-revert the inputs & xor the first one into the accumulator */ \
+\
+    MAKE4(RED_SHUFFLE); \
+    X3 = _mm_xor_si128(X3, acc); \
+\
+/* 4 low H*X (x0*h0) */ \
+\
+    MAKE4(RED_MUL_LOW); \
+    lo = _mm_xor_si128(H0_X0_lo, H1_X1_lo); \
+    lo = _mm_xor_si128(lo, H2_X2_lo); \
+    lo = _mm_xor_si128(lo, H3_X3_lo); \
+\
+/* 4 high H*X (x1*h1) */ \
+\
+    MAKE4(RED_MUL_HIGH); \
+    hi = _mm_xor_si128(H0_X0_hi, H1_X1_hi); \
+    hi = _mm_xor_si128(hi, H2_X2_hi); \
+    hi = _mm_xor_si128(hi, H3_X3_hi); \
+\
+/* 4 middle H*X, using Karatsuba, i.e. \
+     x1*h0+x0*h1 =(x1+x0)*(h1+h0)-x1*h1-x0*h0 \
+     we already have all x1y1 & x0y0 (accumulated in hi & lo) \
+     (0 is low half and 1 is high half) \
+  */ \
+/* permute the high and low 64 bits in H1 & X1, \
+     so create (h0,h1) from (h1,h0) and (x0,x1) from (x1,x0), \
+     then compute (h0+h1,h1+h0) and (x0+x1,x1+x0), \
+     and finally multiply \
+  */ \
+    MAKE4(RED_MUL_MID); \
+\
+/* substracts x1*h1 and x0*h0 */ \
+    tmp0 = _mm_xor_si128(tmp0, lo); \
+    tmp0 = _mm_xor_si128(tmp0, hi); \
+    tmp0 = _mm_xor_si128(tmp1, tmp0); \
+    tmp0 = _mm_xor_si128(tmp2, tmp0); \
+    tmp0 = _mm_xor_si128(tmp3, tmp0);\
+\
+    /* reduction */ \
+    tmp0B = _mm_slli_si128(tmp0, 8); \
+    tmp0 = _mm_srli_si128(tmp0, 8); \
+    lo = _mm_xor_si128(tmp0B, lo); \
+    hi = _mm_xor_si128(tmp0, hi); \
+    tmp3 = lo; \
+    tmp2B = hi; \
+    tmp3B = _mm_srli_epi32(tmp3, 31); \
+    tmp8 = _mm_srli_epi32(tmp2B, 31); \
+    tmp3 = _mm_slli_epi32(tmp3, 1); \
+    tmp2B = _mm_slli_epi32(tmp2B, 1); \
+    tmp9 = _mm_srli_si128(tmp3B, 12); \
+    tmp8 = _mm_slli_si128(tmp8, 4); \
+    tmp3B = _mm_slli_si128(tmp3B, 4); \
+    tmp3 = _mm_or_si128(tmp3, tmp3B); \
+    tmp2B = _mm_or_si128(tmp2B, tmp8); \
+    tmp2B = _mm_or_si128(tmp2B, tmp9); \
+    tmp3B = _mm_slli_epi32(tmp3, 31); \
+    tmp8 = _mm_slli_epi32(tmp3, 30); \
+    tmp9 = _mm_slli_epi32(tmp3, 25); \
+    tmp3B = _mm_xor_si128(tmp3B, tmp8); \
+    tmp3B = _mm_xor_si128(tmp3B, tmp9); \
+    tmp8 = _mm_srli_si128(tmp3B, 4); \
+    tmp3B = _mm_slli_si128(tmp3B, 12); \
+    tmp3 = _mm_xor_si128(tmp3, tmp3B); \
+    tmp2 = _mm_srli_epi32(tmp3, 1); \
+    tmp0B = _mm_srli_epi32(tmp3, 2); \
+    tmp1B = _mm_srli_epi32(tmp3, 7); \
+    tmp2 = _mm_xor_si128(tmp2, tmp0B); \
+    tmp2 = _mm_xor_si128(tmp2, tmp1B); \
+    tmp2 = _mm_xor_si128(tmp2, tmp8); \
+    tmp3 = _mm_xor_si128(tmp3, tmp2); \
+    tmp2B = _mm_xor_si128(tmp2B, tmp3); \
+\
+    accv = tmp2B; \
 }
 
 #define XORx(a)                                                      \
@@ -413,6 +422,7 @@ aesni_encrypt8full(unsigned char *out, uint32_t *n, const __m128i *rkeys,
                    const __m128i h4v)
 {
     const __m128i pt = _mm_set_epi8(12, 13, 14, 15, 11, 10, 9, 8, 7, 6, 5, 4, 3, 2, 1, 0);
+    const __m128i rev = _mm_set_epi8(0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15);
     __m128i       accv = _mm_loadu_si128((const __m128i *) accum);
     int           i;
 
@@ -427,8 +437,8 @@ aesni_encrypt8full(unsigned char *out, uint32_t *n, const __m128i *rkeys,
     MAKE8(AESENCLASTx);
     MAKE8(XORx);
     MAKE8(STOREx);
-    accv = reduce4(hv, h2v, h3v, h4v, temp3, temp2, temp1, temp0, accv);
-    accv = reduce4(hv, h2v, h3v, h4v, temp7, temp6, temp5, temp4, accv);
+    REDUCE4(rev, hv, h2v, h3v, h4v, temp3, temp2, temp1, temp0, accv);
+    REDUCE4(rev, hv, h2v, h3v, h4v, temp7, temp6, temp5, temp4, accv);
     _mm_storeu_si128((__m128i *) accum, accv);
 }
 
@@ -438,10 +448,12 @@ aesni_addmul8full(const unsigned char *in, unsigned char *accum,
                   const __m128i hv, const __m128i h2v,
                   const __m128i h3v, const __m128i h4v)
 {
+    const __m128i rev = _mm_set_epi8(0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15);
     __m128i accv = _mm_loadu_si128((const __m128i *) accum);
+
     MAKE8(LOADx);
-    accv = reduce4(hv, h2v, h3v, h4v, in3, in2, in1, in0, accv);
-    accv = reduce4(hv, h2v, h3v, h4v, in7, in6, in5, in4, accv);
+    REDUCE4(rev, hv, h2v, h3v, h4v, in3, in2, in1, in0, accv);
+    REDUCE4(rev, hv, h2v, h3v, h4v, in7, in6, in5, in4, accv);
     _mm_storeu_si128((__m128i *) accum, accv);
 }
 
@@ -523,13 +535,13 @@ crypto_aead_aes256gcm_aesni_encrypt_afternm(unsigned char *c, unsigned long long
     H4v = mulv(H3v, Hv);
 
     accv = _mm_setzero_si128();
-    /* unrolled by 4 GCM (by 8 doesn't improve using reduce4) */
+    /* unrolled by 4 GCM (by 8 doesn't improve using REDUCE4) */
     for (i = 0; i < adlen_rnd64; i += 64) {
         __m128i X4 = _mm_loadu_si128((const __m128i *) (ad + i + 0));
         __m128i X3 = _mm_loadu_si128((const __m128i *) (ad + i + 16));
         __m128i X2 = _mm_loadu_si128((const __m128i *) (ad + i + 32));
         __m128i X1 = _mm_loadu_si128((const __m128i *) (ad + i + 48));
-        accv = reduce4(Hv, H2v, H3v, H4v, X1, X2, X3, X4, accv);
+        REDUCE4(rev, Hv, H2v, H3v, H4v, X1, X2, X3, X4, accv);
     }
     _mm_storeu_si128((__m128i *) accum, accv);
 
@@ -648,7 +660,7 @@ crypto_aead_aes256gcm_aesni_decrypt_afternm(unsigned char *m, unsigned long long
         __m128i X3 = _mm_loadu_si128((const __m128i *) (ad + i + 16));
         __m128i X2 = _mm_loadu_si128((const __m128i *) (ad + i + 32));
         __m128i X1 = _mm_loadu_si128((const __m128i *) (ad + i + 48));
-        accv = reduce4(Hv, H2v, H3v, H4v, X1, X2, X3, X4, accv);
+        REDUCE4(rev, Hv, H2v, H3v, H4v, X1, X2, X3, X4, accv);
     }
     _mm_storeu_si128((__m128i *) accum, accv);
 
