@@ -13,7 +13,6 @@
 
 #ifdef HAVE_WMMINTRIN_H
 
-#pragma GCC target("ssse3")
 #pragma GCC target("sse4.1")
 #pragma GCC target("aes")
 #pragma GCC target("pclmul")
