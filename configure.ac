@@ -313,7 +313,10 @@ AS_IF([test "x$EMSCRIPTEN" = "x"],[
 ]], [[ __m128i x = _mm_aesimc_si128(_mm_setzero_si128());
        __m128i y = _mm_clmulepi64_si128(_mm_setzero_si128(), _mm_setzero_si128(), 0);]])],
     [AC_MSG_RESULT(yes)
-     AC_DEFINE([HAVE_WMMINTRIN_H], [1], [aesni is available])],
+     AC_DEFINE([HAVE_WMMINTRIN_H], [1], [aesni is available])
+     AX_CHECK_COMPILE_FLAG([-maes], [CFLAGS="$CFLAGS -maes"])
+     AX_CHECK_COMPILE_FLAG([-mpclmul], [CFLAGS="$CFLAGS -mpclmul"])
+     ],
     [AC_MSG_RESULT(no)])
 ])
 

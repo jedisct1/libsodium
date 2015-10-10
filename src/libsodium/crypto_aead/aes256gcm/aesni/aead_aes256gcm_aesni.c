@@ -3,6 +3,16 @@
  * AES256-GCM, based on original code by Romain Dolbeau
  */
 
+#include <stdint.h>
+#include <stdlib.h>
+#include <string.h>
+
+#include "crypto_aead_aes256gcm_aesni.h"
+#include "export.h"
+#include "utils.h"
+
+#ifdef HAVE_WMMINTRIN_H
+
 #pragma GCC target("sse")
 #pragma GCC target("sse2")
 #pragma GCC target("ssse3")
@@ -19,15 +29,7 @@
 #ifndef __PCLMUL__
 # define __PCLMUL__
 #endif
-
 #include <immintrin.h>
-#include <stdint.h>
-#include <stdlib.h>
-#include <string.h>
-
-#include "crypto_aead_aes256gcm_aesni.h"
-#include "export.h"
-#include "utils.h"
 
 #if defined(__INTEL_COMPILER) || defined(_bswap64)
 #elif defined(_MSC_VER)
@@ -807,7 +809,7 @@ size_t crypto_aead_aes256gcm_aesni_abytes(void)
 
 size_t crypto_aead_aes256gcm_aesni_statebytes(void)
 {
-    (void) sizeof(int[(sizeof(crypto_aead_aes256gcm_aesni_state) >=
-                       sizeof(context)) ? 1 : -1]);
     return sizeof(crypto_aead_aes256gcm_aesni_state);
 }
+
+#endif
