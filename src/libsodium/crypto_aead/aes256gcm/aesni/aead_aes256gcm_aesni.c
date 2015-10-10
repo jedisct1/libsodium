@@ -11,7 +11,8 @@
 #include "export.h"
 #include "utils.h"
 
-#ifdef HAVE_WMMINTRIN_H
+#if defined(HAVE_WMMINTRIN_H) || \
+    (defined(_MSC_VER) && (defined(_M_X64) || defined(_M_AMD64) || defined(_M_IX86)))
 
 #pragma GCC target("sse4.1")
 #pragma GCC target("aes")
