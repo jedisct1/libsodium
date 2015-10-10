@@ -319,7 +319,7 @@ mulv(__m128i A, __m128i B)
     tmp##a = _mm_clmulepi64_si128(tmp##a, tmp##a##B, 0x00)
 
 #define REDUCE4(rev, H0_, H1_, H2_, H3_, X0_, X1_, X2_, X3_, acc) \
-{ \
+do { \
     MAKE4(RED_DECL); \
     __m128i       lo, hi; \
     __m128i       tmp8, tmp9; \
@@ -405,7 +405,7 @@ mulv(__m128i A, __m128i B)
     tmp2B = _mm_xor_si128(tmp2B, tmp3); \
 \
     accv = tmp2B; \
-}
+} while(0)
 
 #define XORx(a)                                                      \
     __m128i in##a = _mm_load_si128((const __m128i *) (in + a * 16)); \
@@ -557,18 +557,18 @@ crypto_aead_aes256gcm_aesni_encrypt_afternm(unsigned char *c, unsigned long long
 
 /* this only does 8 full blocks, so no fancy bounds checking is necessary*/
 #define LOOPRND128                                                                                \
-    {                                                                                             \
+    do {                                                                                           \
         const int iter = 8;                                                                       \
         const int lb = iter * 16;                                                                 \
                                                                                                   \
         for (i = 0; i < mlen_rnd128; i += lb) {                                                   \
             aesni_encrypt8full(c + i, (uint32_t *) n2, rkeys, m + i, accum, Hv, H2v, H3v, H4v);   \
         }                                                                                         \
-    }
+    } while(0)
 
 /* remainder loop, with the slower GCM update to accomodate partial blocks */
 #define LOOPRMD128                                           \
-    {                                                        \
+    do {                                                     \
         const int iter = 8;                                  \
         const int lb = iter * 16;                            \
                                                              \
@@ -592,7 +592,7 @@ crypto_aead_aes256gcm_aesni_encrypt_afternm(unsigned char *c, unsigned long long
                 addmul(accum, c + i + j, bl, H);             \
             }                                                \
         }                                                    \
-    }
+    } while(0)
 
     n2[15] = 0;
     COUNTER_INC2(n2);
@@ -675,25 +675,25 @@ crypto_aead_aes256gcm_aesni_decrypt_afternm(unsigned char *m, unsigned long long
     mlen_rnd128 = mlen & ~127ULL;
 
 #define LOOPACCUMDRND128                                                                          \
-    {                                                                                             \
+    do {                                                                                          \
         const int iter = 8;                                                                       \
         const int lb = iter * 16;                                                                 \
         for (i = 0; i < mlen_rnd128; i += lb) {                                                   \
             aesni_addmul8full(c + i, accum, Hv, H2v, H3v, H4v);                                   \
         }                                                                                         \
-    }
+    } while(0)
 
 #define LOOPDRND128                                                                               \
-    {                                                                                             \
+    do {                                                                                          \
         const int iter = 8;                                                                       \
         const int lb = iter * 16;                                                                 \
         for (i = 0; i < mlen_rnd128; i += lb) {                                                   \
             aesni_decrypt8full(m + i, (uint32_t *) n2, rkeys, c + i);                             \
         }                                                                                         \
-    }
+    } while(0)
 
 #define LOOPACCUMDRMD128                                     \
-    {                                                        \
+    do {                                                     \
         const int iter = 8;                                  \
         const int lb = iter * 16;                            \
                                                              \
@@ -712,10 +712,10 @@ crypto_aead_aes256gcm_aesni_decrypt_afternm(unsigned char *m, unsigned long long
                 addmul(accum, c + i + j, bl, H);             \
             }                                                \
         }                                                    \
-    }
+    } while(0)
 
 #define LOOPDRMD128                                          \
-    {                                                        \
+    do {                                                     \
         const int iter = 8;                                  \
         const int lb = iter * 16;                            \
                                                              \
@@ -731,7 +731,7 @@ crypto_aead_aes256gcm_aesni_decrypt_afternm(unsigned char *m, unsigned long long
                 m[i + j] = c[i + j] ^ outni[j];              \
             }                                                \
         }                                                    \
-    }
+    } while(0)
     n2[15] = 0;
 
     COUNTER_INC2(n2);
