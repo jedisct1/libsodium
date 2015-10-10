@@ -128,13 +128,19 @@ aesni_encrypt1(unsigned char *out, __m128i nv, const __m128i *rkeys)
     function */
 /* Step 1 : loading the nonce */
 /* load & increment the n vector (non-vectorized, unused for now) */
-#define NVx(a)                                                               \
-    __m128i nv##a = _mm_shuffle_epi8(_mm_load_si128((const __m128i *) n), pt); \
+#define NVDECLx(a)                                                             \
+    __m128i nv##a
+
+#define NVx(a)                                                                 \
+    nv##a = _mm_shuffle_epi8(_mm_load_si128((const __m128i *) n), pt);         \
     n[3]++
 
 /* Step 2 : define value in round one (xor with subkey #0, aka key) */
+#define TEMPDECLx(a) \
+    __m128i temp##a
+
 #define TEMPx(a) \
-    __m128i temp##a = _mm_xor_si128(nv##a, rkeys[0])
+    temp##a = _mm_xor_si128(nv##a, rkeys[0])
 
 /* Step 3: one round of AES */
 #define AESENCx(a) \
@@ -174,6 +180,8 @@ aesni_encrypt1(unsigned char *out, __m128i nv, const __m128i *rkeys)
     {                                                                                                 \
         const __m128i pt = _mm_set_epi8(12, 13, 14, 15, 11, 10, 9, 8, 7, 6, 5, 4, 3, 2, 1, 0);        \
         int   i;                                                                                      \
+        MAKEN(NVDECLx);                                                                               \
+        MAKEN(TEMPDECLx);                                                                             \
                                                                                                       \
         MAKEN(NVx);                                                                                   \
         MAKEN(TEMPx);                                                                                 \
@@ -407,6 +415,8 @@ aesni_encrypt8full(unsigned char *out, uint32_t *n, const __m128i *rkeys,
     __m128i       accv = _mm_loadu_si128((const __m128i *) accum);
     int           i;
 
+    MAKE8(NVDECLx);
+    MAKE8(TEMPDECLx);
     MAKE8(NVx);
     MAKE8(TEMPx);
 #pragma unroll(13)
@@ -442,6 +452,8 @@ aesni_decrypt8full(unsigned char *out, uint32_t *n, const __m128i *rkeys,
     const __m128i pt = _mm_set_epi8(12, 13, 14, 15, 11, 10, 9, 8, 7, 6, 5, 4, 3, 2, 1, 0);
     int           i;
 
+    MAKE8(NVDECLx);
+    MAKE8(TEMPDECLx);
     MAKE8(NVx);
     MAKE8(TEMPx);
 #pragma unroll(13)
