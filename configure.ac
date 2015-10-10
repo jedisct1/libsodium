@@ -271,7 +271,8 @@ AS_IF([test "x$EMSCRIPTEN" = "x"],[
 #include <mmintrin.h>
 ]], [[ __m64 x = _mm_setzero_si64(); ]])],
     [AC_MSG_RESULT(yes)
-     AC_DEFINE([HAVE_MMINTRIN_H], [1], [mmx is available])],
+     AC_DEFINE([HAVE_MMINTRIN_H], [1], [mmx is available])
+     AX_CHECK_COMPILE_FLAG([-mmmx], [CFLAGS_MMX="-mmmx"])],
     [AC_MSG_RESULT(no)])
 
   AC_MSG_CHECKING(for SSE2 instructions set)
@@ -283,7 +284,8 @@ AS_IF([test "x$EMSCRIPTEN" = "x"],[
 #include <emmintrin.h>
 ]], [[ __m128d x = _mm_setzero_pd(); ]])],
     [AC_MSG_RESULT(yes)
-     AC_DEFINE([HAVE_EMMINTRIN_H], [1], [sse2 is available])],
+     AC_DEFINE([HAVE_EMMINTRIN_H], [1], [sse2 is available])
+     AX_CHECK_COMPILE_FLAG([-msse2], [CFLAGS_SSE2="-msse2"])],
     [AC_MSG_RESULT(no)])
 
   AC_MSG_CHECKING(for SSE3 instructions set)
@@ -296,7 +298,8 @@ AS_IF([test "x$EMSCRIPTEN" = "x"],[
 ]], [[ __m128 x = _mm_addsub_ps(_mm_cvtpd_ps(_mm_setzero_pd()),
                                 _mm_cvtpd_ps(_mm_setzero_pd())); ]])],
     [AC_MSG_RESULT(yes)
-     AC_DEFINE([HAVE_PMMINTRIN_H], [1], [sse3 is available])],
+     AC_DEFINE([HAVE_PMMINTRIN_H], [1], [sse3 is available])
+     AX_CHECK_COMPILE_FLAG([-msse3], [CFLAGS_SSE3="-msse3"])],
     [AC_MSG_RESULT(no)])
 
   AC_MSG_CHECKING(for SSSE3 instructions set)
@@ -308,7 +311,21 @@ AS_IF([test "x$EMSCRIPTEN" = "x"],[
 #include <tmmintrin.h>
 ]], [[ __m64 x = _mm_abs_pi32(_m_from_int(0)); ]])],
     [AC_MSG_RESULT(yes)
-     AC_DEFINE([HAVE_TMMINTRIN_H], [1], [ssse3 is available])],
+     AC_DEFINE([HAVE_TMMINTRIN_H], [1], [ssse3 is available])
+     AX_CHECK_COMPILE_FLAG([-mssse3], [CFLAGS_SSSE3="-mssse3"])],
+    [AC_MSG_RESULT(no)])
+
+  AC_MSG_CHECKING(for SSE4.1 instructions set)
+  AC_COMPILE_IFELSE([AC_LANG_PROGRAM([[
+#pragma GCC target("sse4.1")
+#ifndef __SSE4_1__
+# define __SSE4_1__
+#endif
+#include <smmintrin.h>
+]], [[ __m128i x = _mm_minpos_epu16(_mm_setzero_si128()); ]])],
+    [AC_MSG_RESULT(yes)
+     AC_DEFINE([HAVE_SMMINTRIN_H], [1], [sse4.1 is available])
+     AX_CHECK_COMPILE_FLAG([-msse4.1], [CFLAGS_SSE4_1="-msse4.1"])],
     [AC_MSG_RESULT(no)])
 
   AC_MSG_CHECKING(for AESNI instructions set and PCLMULQDQ)
@@ -326,11 +343,19 @@ AS_IF([test "x$EMSCRIPTEN" = "x"],[
        __m128i y = _mm_clmulepi64_si128(_mm_setzero_si128(), _mm_setzero_si128(), 0);]])],
     [AC_MSG_RESULT(yes)
      AC_DEFINE([HAVE_WMMINTRIN_H], [1], [aesni is available])
-     AX_CHECK_COMPILE_FLAG([-maes], [CFLAGS="$CFLAGS -maes"])
-     AX_CHECK_COMPILE_FLAG([-mpclmul], [CFLAGS="$CFLAGS -mpclmul"])
+     AX_CHECK_COMPILE_FLAG([-maes], [CFLAGS_AESNI="-maes"])
+     AX_CHECK_COMPILE_FLAG([-mpclmul], [CFLAGS_PCLMUL="-mpclmul"])
      ],
     [AC_MSG_RESULT(no)])
 ])
+
+AC_SUBST(CFLAGS_MMX)
+AC_SUBST(CFLAGS_SSE2)
+AC_SUBST(CFLAGS_SSE3)
+AC_SUBST(CFLAGS_SSSE3)
+AC_SUBST(CFLAGS_SSE4_1)
+AC_SUBST(CFLAGS_AESNI)
+AC_SUBST(CFLAGS_PCLMUL)
 
 AC_CHECK_HEADERS([sys/mman.h])
 

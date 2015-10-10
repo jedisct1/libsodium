@@ -2,7 +2,6 @@ lib_LTLIBRARIES = \
 	libsodium.la
 
 libsodium_la_SOURCES = \
-	crypto_aead/aes256gcm/aesni/aead_aes256gcm_aesni.c \
 	crypto_aead/chacha20poly1305/sodium/aead_chacha20poly1305.c \
 	crypto_auth/crypto_auth.c \
 	crypto_auth/hmacsha256/auth_hmacsha256_api.c \
@@ -63,7 +62,6 @@ libsodium_la_SOURCES = \
 	crypto_pwhash/scryptsalsa208sha256/pwhash_scryptsalsa208sha256.c \
 	crypto_pwhash/scryptsalsa208sha256/sysendian.h \
 	crypto_pwhash/scryptsalsa208sha256/nosse/pwhash_scryptsalsa208sha256_nosse.c \
-	crypto_pwhash/scryptsalsa208sha256/sse/pwhash_scryptsalsa208sha256_sse.c \
 	crypto_scalarmult/crypto_scalarmult.c \
 	crypto_scalarmult/curve25519/scalarmult_curve25519_api.c \
 	crypto_secretbox/crypto_secretbox.c \
@@ -269,3 +267,20 @@ endif
 
 SUBDIRS = \
 	include
+
+libsodium_la_LIBADD = libaesni.la libsse2.la
+noinst_LTLIBRARIES =  libaesni.la libsse2.la
+
+libaesni_la_LDFLAGS = $(libsodium_la_LDFLAGS)
+libaesni_la_CPPFLAGS = $(libsodium_la_CPPFLAGS) \
+	@CFLAGS_SSE4_1@ @CFLAGS_AESNI@ @CFLAGS_PCLMUL@
+
+libaesni_la_SOURCES = \
+	crypto_aead/aes256gcm/aesni/aead_aes256gcm_aesni.c
+
+libsse2_la_LDFLAGS = $(libsodium_la_LDFLAGS)
+libsse2_la_CPPFLAGS = $(libsodium_la_CPPFLAGS) \
+	@CFLAGS_SSE2@
+
+libsse2_la_SOURCES = \
+	crypto_pwhash/scryptsalsa208sha256/sse/pwhash_scryptsalsa208sha256_sse.c

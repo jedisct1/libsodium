@@ -13,25 +13,10 @@
 
 #ifdef HAVE_WMMINTRIN_H
 
-#pragma GCC target("sse")
-#pragma GCC target("sse2")
-#pragma GCC target("ssse3")
 #pragma GCC target("sse4.1")
 #pragma GCC target("aes")
 #pragma GCC target("pclmul")
 
-#ifndef __SSSE3__
-# define __SSSE3__
-#endif
-#ifndef __SSE4_1__
-# define __SSE4_1__
-#endif
-#ifndef __AES__
-# define __AES__
-#endif
-#ifndef __PCLMUL__
-# define __PCLMUL__
-#endif
 #include <immintrin.h>
 
 #if defined(__INTEL_COMPILER) || defined(_bswap64)
