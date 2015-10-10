@@ -12,11 +12,24 @@ extern "C" {
 #endif
 
 #define crypto_aead_aes256gcm_KEYBYTES  32U
-#define crypto_aead_aes256gcm_NSECBYTES 0U
-#define crypto_aead_aes256gcm_NPUBBYTES 12U
-#define crypto_aead_aes256gcm_ABYTES    16U
+SODIUM_EXPORT
+size_t crypto_aead_aes256gcm_aesni_keybytes(void);
 
-typedef CRYPTO_ALIGN(128) unsigned char crypto_aead_aes256gcm_aesni_state[384];
+#define crypto_aead_aes256gcm_NSECBYTES 0U
+SODIUM_EXPORT
+size_t crypto_aead_aes256gcm_aesni_nsecbytes(void);
+
+#define crypto_aead_aes256gcm_NPUBBYTES 12U
+SODIUM_EXPORT
+size_t crypto_aead_aes256gcm_aesni_npubbytes(void);
+
+#define crypto_aead_aes256gcm_ABYTES    16U
+SODIUM_EXPORT
+size_t crypto_aead_aes256gcm_aesni_abytes(void);
+
+typedef CRYPTO_ALIGN(16) unsigned char crypto_aead_aes256gcm_aesni_state[272];
+SODIUM_EXPORT
+size_t crypto_aead_aes256gcm_aesni_statebytes(void);
 
 SODIUM_EXPORT
 int crypto_aead_aes256gcm_aesni_encrypt(unsigned char *c,

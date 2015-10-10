@@ -32,6 +32,9 @@ scrypt                                 Colin Percival
 Implementors
 ============
 
+crypto_aead/aes256gcm/aesni            Romain Dolbeau
+                                       Frank Denis
+
 crypto_aead/chacha20poly1305           Frank Denis
 
 crypto_box/curve25519xsalsa20poly1305  Daniel J. Bernstein
