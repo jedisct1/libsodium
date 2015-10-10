@@ -265,6 +265,9 @@ AS_IF([test "x$EMSCRIPTEN" = "x"],[
   AC_MSG_CHECKING(for MMX instructions set)
   AC_COMPILE_IFELSE([AC_LANG_PROGRAM([[
 #pragma GCC target("mmx")
+#ifndef __MMX__
+# define __MMX__
+#endif
 #include <mmintrin.h>
 ]], [[ __m64 x = _mm_setzero_si64(); ]])],
     [AC_MSG_RESULT(yes)
@@ -274,6 +277,9 @@ AS_IF([test "x$EMSCRIPTEN" = "x"],[
   AC_MSG_CHECKING(for SSE2 instructions set)
   AC_COMPILE_IFELSE([AC_LANG_PROGRAM([[
 #pragma GCC target("sse2")
+#ifndef __SSE2__
+# define __SSE2__
+#endif
 #include <emmintrin.h>
 ]], [[ __m128d x = _mm_setzero_pd(); ]])],
     [AC_MSG_RESULT(yes)
@@ -283,6 +289,9 @@ AS_IF([test "x$EMSCRIPTEN" = "x"],[
   AC_MSG_CHECKING(for SSE3 instructions set)
   AC_COMPILE_IFELSE([AC_LANG_PROGRAM([[
 #pragma GCC target("sse3")
+#ifndef __SSE3__
+# define __SSE3__
+#endif
 #include <pmmintrin.h>
 ]], [[ __m128 x = _mm_addsub_ps(_mm_cvtpd_ps(_mm_setzero_pd()),
                                 _mm_cvtpd_ps(_mm_setzero_pd())); ]])],
@@ -293,6 +302,9 @@ AS_IF([test "x$EMSCRIPTEN" = "x"],[
   AC_MSG_CHECKING(for SSSE3 instructions set)
   AC_COMPILE_IFELSE([AC_LANG_PROGRAM([[
 #pragma GCC target("ssse3")
+#ifndef __SSSE3__
+# define __SSSE3__
+#endif
 #include <tmmintrin.h>
 ]], [[ __m64 x = _mm_abs_pi32(_m_from_int(0)); ]])],
     [AC_MSG_RESULT(yes)

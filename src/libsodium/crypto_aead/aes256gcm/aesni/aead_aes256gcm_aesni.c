@@ -20,6 +20,9 @@
 #pragma GCC target("aes")
 #pragma GCC target("pclmul")
 
+#ifndef __SSSE3__
+# define __SSSE3__
+#endif
 #ifndef __SSE4_1__
 # define __SSE4_1__
 #endif
