@@ -65,7 +65,7 @@ aesni_key256_expand(const unsigned char *key, __m128 rkeys[16])
      This is all strongly inspired by the openssl assembly code.
   */
 #define BLOCK1(IMM)                                                 \
-    temp1 = (__m128)_mm_aeskeygenassist_si128((__m128i) temp2, IMM);\
+    temp1 = _mm_castsi128_ps(_mm_aeskeygenassist_si128(_mm_castps_si128(temp2), IMM));\
     rkeys[idx++] = temp2;                                           \
     temp4 = _mm_shuffle_ps(temp4, temp0, 0x10);                     \
     temp0 = _mm_xor_ps(temp0, temp4);                               \
@@ -75,7 +75,7 @@ aesni_key256_expand(const unsigned char *key, __m128 rkeys[16])
     temp0 = _mm_xor_ps(temp0, temp1)
 
 #define BLOCK2(IMM)                                                 \
-    temp1 = (__m128)_mm_aeskeygenassist_si128((__m128i) temp0, IMM);\
+    temp1 = _mm_castsi128_ps(_mm_aeskeygenassist_si128(_mm_castps_si128(temp0), IMM));\
     rkeys[idx++] = temp0;                                           \
     temp4 = _mm_shuffle_ps(temp4, temp2, 0x10);                     \
     temp2 = _mm_xor_ps(temp2, temp4);                               \
@@ -463,7 +463,7 @@ crypto_aead_aes256gcm_aesni_beforenm(crypto_aead_aes256gcm_aesni_state *ctx_,
     unsigned char *H = ctx->H;
 
     (void) sizeof(int[(sizeof *ctx_) >= (sizeof *ctx) ? 1 : -1]);
-    aesni_key256_expand(k, (__m128*) rkeys);
+    aesni_key256_expand(k, (__m128 *) rkeys);
     aesni_encrypt1(H, zero, rkeys);
 
     return 0;
