@@ -10,12 +10,16 @@ typedef struct CPUFeatures_ {
     int has_neon;
     int has_sse2;
     int has_sse3;
+    int has_pclmul;
+    int has_aesni;
 } CPUFeatures;
 
 static CPUFeatures _cpu_features;
 
-#define CPUID_SSE2     0x04000000
-#define CPUIDECX_SSE3  0x00000001
+#define CPUID_SSE2      0x04000000
+#define CPUIDECX_SSE3   0x00000001
+#define CPUIDECX_PCLMUL 0x00000002
+#define CPUIDECX_AESNI  0x02000000
 
 static int
 _sodium_runtime_arm_cpu_features(CPUFeatures * const cpu_features)
@@ -104,6 +108,14 @@ _sodium_runtime_intel_cpu_features(CPUFeatures * const cpu_features)
     cpu_features->has_sse3 = ((cpu_info[2] & CPUIDECX_SSE3) != 0x0);
 #endif
 
+#ifndef HAVE_WMMINTRIN_H
+    cpu_features->has_pclmul = 0;
+    cpu_features->has_aesni = 0;
+#else
+    cpu_features->has_pclmul = ((cpu_info[2] & CPUIDECX_PCLMUL) != 0x0);
+    cpu_features->has_aesni = ((cpu_info[2] & CPUIDECX_AESNI) != 0x0);
+#endif
+
     return 0;
 }
 
@@ -132,4 +144,14 @@ sodium_runtime_has_sse2(void) {
 int
 sodium_runtime_has_sse3(void) {
     return _cpu_features.has_sse3;
+}
+
+int
+sodium_runtime_has_pclmul(void) {
+    return _cpu_features.has_pclmul;
+}
+
+int
+sodium_runtime_has_aesni(void) {
+    return _cpu_features.has_aesni;
 }

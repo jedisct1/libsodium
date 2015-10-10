@@ -3,6 +3,23 @@
  * AES256-GCM, based on original code by Romain Dolbeau
  */
 
+#pragma GCC target("sse")
+#pragma GCC target("sse2")
+#pragma GCC target("ssse3")
+#pragma GCC target("sse4.1")
+#pragma GCC target("aes")
+#pragma GCC target("pclmul")
+
+#ifndef __SSE4_1__
+# define __SSE4_1__
+#endif
+#ifndef __AES__
+# define __AES__
+#endif
+#ifndef __PCLMUL__
+# define __PCLMUL__
+#endif
+
 #include <immintrin.h>
 #include <stdint.h>
 #include <stdlib.h>

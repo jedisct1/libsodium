@@ -211,9 +211,6 @@ AX_CHECK_COMPILE_FLAG([-Wwrite-strings], [CFLAGS="$CFLAGS -Wwrite-strings"])
 AX_CHECK_COMPILE_FLAG([-Wdiv-by-zero], [CFLAGS="$CFLAGS -Wdiv-by-zero"])
 AX_CHECK_COMPILE_FLAG([-Wsometimes-uninitialized], [CFLAGS="$CFLAGS -Wsometimes-uninitialized"])
 
-AC_MSG_CHECKING([Checking if we can compile for westmere])
-AX_CHECK_COMPILE_FLAG([-march=westmere $CFLAGS], [CFLAGS="-march=westmere $CFLAGS"])
-
 AC_ARG_VAR([CWFLAGS], [define to compilation flags for generating extra warnings])
 
 AX_CHECK_COMPILE_FLAG([$CWFLAGS -Wall], [CWFLAGS="$CWFLAGS -Wall"])
@@ -300,6 +297,23 @@ AS_IF([test "x$EMSCRIPTEN" = "x"],[
 ]], [[ __m64 x = _mm_abs_pi32(_m_from_int(0)); ]])],
     [AC_MSG_RESULT(yes)
      AC_DEFINE([HAVE_TMMINTRIN_H], [1], [ssse3 is available])],
+    [AC_MSG_RESULT(no)])
+
+  AC_MSG_CHECKING(for AESNI instructions set and PCLMULQDQ)
+  AC_COMPILE_IFELSE([AC_LANG_PROGRAM([[
+#pragma GCC target("aes")
+#pragma GCC target("pclmul")
+#ifndef __AES__
+# define __AES__
+#endif
+#ifndef __PCLMUL__
+# define __PCLMUL__
+#endif
+#include <wmmintrin.h>
+]], [[ __m128i x = _mm_aesimc_si128(_mm_setzero_si128());
+       __m128i y = _mm_clmulepi64_si128(_mm_setzero_si128(), _mm_setzero_si128(), 0);]])],
+    [AC_MSG_RESULT(yes)
+     AC_DEFINE([HAVE_WMMINTRIN_H], [1], [aesni is available])],
     [AC_MSG_RESULT(no)])
 ])
 
