@@ -42,7 +42,7 @@ typedef struct context {
 } context;
 
 static inline void
-aesni_key256_expand(const unsigned char *key, __m128 rkeys[16])
+aesni_key256_expand(const unsigned char *key, __m128 *rkeys)
 {
     __m128 key0 = _mm_loadu_ps((const float *) (key + 0));
     __m128 key1 = _mm_loadu_ps((const float *) (key + 16));
@@ -108,7 +108,7 @@ aesni_key256_expand(const unsigned char *key, __m128 rkeys[16])
 
 /** single, by-the-book AES encryption with AES-NI */
 static inline void
-aesni_encrypt1(unsigned char *out, __m128i nv, const __m128i rkeys[16])
+aesni_encrypt1(unsigned char *out, __m128i nv, const __m128i *rkeys)
 {
     __m128i temp = _mm_xor_si128(nv, rkeys[0]);
     int     i;
@@ -170,7 +170,7 @@ aesni_encrypt1(unsigned char *out, __m128i nv, const __m128i rkeys[16])
 /* create a function of unrolling N ; the MAKEN is the unrolling
    macro, defined above. The N in MAKEN must match N, obviously. */
 #define FUNC(N, MAKEN)                                                                                \
-    static inline void aesni_encrypt##N(unsigned char *out, uint32_t *n, const __m128i rkeys[16])     \
+    static inline void aesni_encrypt##N(unsigned char *out, uint32_t *n, const __m128i *rkeys)        \
     {                                                                                                 \
         const __m128i pt = _mm_set_epi8(12, 13, 14, 15, 11, 10, 9, 8, 7, 6, 5, 4, 3, 2, 1, 0);        \
         int   i;                                                                                      \
@@ -398,7 +398,7 @@ reduce4(__m128i H0, __m128i H1, __m128i H2, __m128i H3, __m128i X0, __m128i X1,
 
 /* full encrypt & checksum 8 blocks at once */
 static inline void
-aesni_encrypt8full(unsigned char *out, uint32_t *n, const __m128i rkeys[16],
+aesni_encrypt8full(unsigned char *out, uint32_t *n, const __m128i *rkeys,
                    const unsigned char *in, unsigned char *accum,
                    const __m128i hv, const __m128i h2v, const __m128i h3v,
                    const __m128i h4v)
@@ -436,7 +436,7 @@ aesni_addmul8full(const unsigned char *in, unsigned char *accum,
 
 /* decrypt 8 blocks at once */
 static inline void
-aesni_decrypt8full(unsigned char *out, uint32_t *n, const __m128i rkeys[16],
+aesni_decrypt8full(unsigned char *out, uint32_t *n, const __m128i *rkeys,
                    const unsigned char *in)
 {
     const __m128i pt = _mm_set_epi8(12, 13, 14, 15, 11, 10, 9, 8, 7, 6, 5, 4, 3, 2, 1, 0);
