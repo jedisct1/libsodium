@@ -203,21 +203,17 @@ static inline void
 addmul(unsigned char *c, const unsigned char *a, unsigned int xlen, const unsigned char *b)
 {
     const __m128i rev = _mm_set_epi8(0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15);
-    const __m128i ff = _mm_set1_epi32(-1);
-    __m128i       A = _mm_loadu_si128((const __m128i *) a);
+    __m128i       A;
 
-    A = _mm_shuffle_epi8(A, rev);
-    if (xlen < 16) { /* less than 16 useful bytes - insert zeroes where needed */
-        uint64_t mask = -1ull ^ (1ull << (((16 - xlen) % 8) * 8)) - 1ull;
-        __m128i  vm;
-
-        if (xlen > 8) {
-            vm = _mm_insert_epi64(ff, mask, 0);
-        } else {
-            vm = _mm_insert_epi64(_mm_setzero_si128(), mask, 1);
-        }
-        A = _mm_and_si128(vm, A);
+    if (xlen >= 16) {
+        A = _mm_loadu_si128((const __m128i *) a);
+    } else {
+        unsigned char padded[16];
+        memset(padded, 0, 16);
+        memcpy(padded, a, xlen);
+        A = _mm_loadu_si128((const __m128i *) padded);
     }
+    A = _mm_shuffle_epi8(A, rev);
     __m128i B = _mm_loadu_si128((const __m128i *) b);
     __m128i C = _mm_loadu_si128((const __m128i *) c);
     A = _mm_xor_si128(A, C);
