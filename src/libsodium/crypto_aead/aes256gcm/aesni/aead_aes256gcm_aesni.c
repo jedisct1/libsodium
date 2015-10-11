@@ -7,7 +7,7 @@
 #include <stdlib.h>
 #include <string.h>
 
-#include "crypto_aead_aes256gcm_aesni.h"
+#include "crypto_aead_aes256gcm.h"
 #include "export.h"
 #include "runtime.h"
 #include "utils.h"
@@ -480,8 +480,8 @@ do { \
 } while(0)
 
 int
-crypto_aead_aes256gcm_aesni_beforenm(crypto_aead_aes256gcm_state *ctx_,
-                                     const unsigned char *k)
+crypto_aead_aes256gcm_beforenm(crypto_aead_aes256gcm_state *ctx_,
+                               const unsigned char *k)
 {
     context       *ctx = (context *) ctx_;
     __m128i       *rkeys = ctx->rkeys;
@@ -496,12 +496,12 @@ crypto_aead_aes256gcm_aesni_beforenm(crypto_aead_aes256gcm_state *ctx_,
 }
 
 int
-crypto_aead_aes256gcm_aesni_encrypt_afternm(unsigned char *c, unsigned long long *clen,
-                                            const unsigned char *m, unsigned long long mlen,
-                                            const unsigned char *ad, unsigned long long adlen,
-                                            const unsigned char *nsec,
-                                            const unsigned char *npub,
-                                            const crypto_aead_aes256gcm_state *ctx_)
+crypto_aead_aes256gcm_encrypt_afternm(unsigned char *c, unsigned long long *clen,
+                                      const unsigned char *m, unsigned long long mlen,
+                                      const unsigned char *ad, unsigned long long adlen,
+                                      const unsigned char *nsec,
+                                      const unsigned char *npub,
+                                      const crypto_aead_aes256gcm_state *ctx_)
 {
     unsigned char       H[16];
     const __m128i       rev = _mm_set_epi8(0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15);
@@ -612,12 +612,12 @@ crypto_aead_aes256gcm_aesni_encrypt_afternm(unsigned char *c, unsigned long long
 }
 
 int
-crypto_aead_aes256gcm_aesni_decrypt_afternm(unsigned char *m, unsigned long long *mlen_p,
-                                            unsigned char *nsec,
-                                            const unsigned char *c, unsigned long long clen,
-                                            const unsigned char *ad, unsigned long long adlen,
-                                            const unsigned char *npub,
-                                            const crypto_aead_aes256gcm_state *ctx_)
+crypto_aead_aes256gcm_decrypt_afternm(unsigned char *m, unsigned long long *mlen_p,
+                                      unsigned char *nsec,
+                                      const unsigned char *c, unsigned long long clen,
+                                      const unsigned char *ad, unsigned long long adlen,
+                                      const unsigned char *npub,
+                                      const crypto_aead_aes256gcm_state *ctx_)
 {
     unsigned char       H[16];
     const __m128i       rev = _mm_set_epi8(0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15);
@@ -761,46 +761,45 @@ crypto_aead_aes256gcm_aesni_decrypt_afternm(unsigned char *m, unsigned long long
 }
 
 int
-crypto_aead_aes256gcm_aesni_encrypt(unsigned char *c,
-                                    unsigned long long *clen_p,
-                                    const unsigned char *m,
-                                    unsigned long long mlen,
-                                    const unsigned char *ad,
-                                    unsigned long long adlen,
-                                    const unsigned char *nsec,
-                                    const unsigned char *npub,
-                                    const unsigned char *k)
+crypto_aead_aes256gcm_encrypt(unsigned char *c,
+                              unsigned long long *clen_p,
+                              const unsigned char *m,
+                              unsigned long long mlen,
+                              const unsigned char *ad,
+                              unsigned long long adlen,
+                              const unsigned char *nsec,
+                              const unsigned char *npub,
+                              const unsigned char *k)
 {
     crypto_aead_aes256gcm_state ctx;
 
-    crypto_aead_aes256gcm_aesni_beforenm(&ctx, k);
+    crypto_aead_aes256gcm_beforenm(&ctx, k);
 
-    return crypto_aead_aes256gcm_aesni_encrypt_afternm
+    return crypto_aead_aes256gcm_encrypt_afternm
         (c, clen_p, m, mlen, ad, adlen, nsec, npub, &ctx);
 }
 
 int
-crypto_aead_aes256gcm_aesni_decrypt(unsigned char *m,
-                                    unsigned long long *mlen_p,
-                                    unsigned char *nsec,
-                                    const unsigned char *c,
-                                    unsigned long long clen,
-                                    const unsigned char *ad,
-                                    unsigned long long adlen,
-                                    const unsigned char *npub,
-                                    const unsigned char *k)
+crypto_aead_aes256gcm_decrypt(unsigned char *m,
+                              unsigned long long *mlen_p,
+                              unsigned char *nsec,
+                              const unsigned char *c,
+                              unsigned long long clen,
+                              const unsigned char *ad,
+                              unsigned long long adlen,
+                              const unsigned char *npub,
+                              const unsigned char *k)
 {
     crypto_aead_aes256gcm_state ctx;
 
-    crypto_aead_aes256gcm_aesni_beforenm((crypto_aead_aes256gcm_state *)
-                                         &ctx, k);
+    crypto_aead_aes256gcm_beforenm(&ctx, k);
 
-    return crypto_aead_aes256gcm_aesni_decrypt_afternm
+    return crypto_aead_aes256gcm_decrypt_afternm
         (m, mlen_p, nsec, c, clen, ad, adlen, npub, &ctx);
 }
 
 int
-crypto_aead_aes256gcm_aesni_is_available(void)
+crypto_aead_aes256gcm_is_available(void)
 {
     return sodium_runtime_has_pclmul() & sodium_runtime_has_aesni();
 }
@@ -838,7 +837,7 @@ crypto_aead_aes256gcm_statebytes(void)
 #else
 
 int
-crypto_aead_aes256gcm_aesni_is_available(void)
+crypto_aead_aes256gcm_is_available(void)
 {
     return 0;
 }

@@ -3059,20 +3059,18 @@ tv(void)
                        NULL, NULL, NULL);
         ciphertext = sodium_malloc(ciphertext_len);
 
-        crypto_aead_aes256gcm_aesni_encrypt(ciphertext, &found_ciphertext_len,
-                                            message, message_len,
-                                            ad, ad_len,
-                                            NULL, nonce, key);
+        crypto_aead_aes256gcm_encrypt(ciphertext, &found_ciphertext_len,
+                                      message, message_len,
+                                      ad, ad_len, NULL, nonce, key);
 
         assert((size_t) found_ciphertext_len == ciphertext_len);
         if (memcmp(ciphertext, expected_ciphertext, ciphertext_len) != 0) {
             printf("Encryption of test vector #%u failed\n", (unsigned int) i);
         }
         decrypted = sodium_malloc(message_len);
-        if (crypto_aead_aes256gcm_aesni_decrypt(decrypted, &found_message_len,
-                                                NULL,
-                                                ciphertext, ciphertext_len,
-                                                ad, ad_len, nonce, key) != 0) {
+        if (crypto_aead_aes256gcm_decrypt(decrypted, &found_message_len,
+                                          NULL, ciphertext, ciphertext_len,
+                                          ad, ad_len, nonce, key) != 0) {
             printf("Verification of test vector #%u failed\n", (unsigned int) i);
         }
         assert((size_t) found_message_len == message_len);
@@ -3095,7 +3093,7 @@ tv(void)
 int
 main(void)
 {
-    if (crypto_aead_aes256gcm_aesni_is_available()) {
+    if (crypto_aead_aes256gcm_is_available()) {
         tv();
     }
     printf("OK\n");
