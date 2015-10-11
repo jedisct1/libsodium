@@ -810,17 +810,20 @@ crypto_aead_aes256gcm_nsecbytes(void)
     return crypto_aead_aes256gcm_NSECBYTES;
 }
 
-size_t crypto_aead_aes256gcm_npubbytes(void)
+size_t
+crypto_aead_aes256gcm_npubbytes(void)
 {
     return crypto_aead_aes256gcm_NPUBBYTES;
 }
 
-size_t crypto_aead_aes256gcm_abytes(void)
+size_t
+crypto_aead_aes256gcm_abytes(void)
 {
     return crypto_aead_aes256gcm_ABYTES;
 }
 
-size_t crypto_aead_aes256gcm_statebytes(void)
+size_t
+crypto_aead_aes256gcm_statebytes(void)
 {
     return sizeof(crypto_aead_aes256gcm_state);
 }
