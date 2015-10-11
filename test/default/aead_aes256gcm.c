@@ -3012,6 +3012,9 @@ static struct {
     }
 };
 
+#if defined(HAVE_WMMINTRIN_H) || \
+    (defined(_MSC_VER) && (defined(_M_X64) || defined(_M_AMD64) || defined(_M_IX86)))
+
 int
 tv(void)
 {
@@ -3100,3 +3103,16 @@ main(void)
 
     return 0;
 }
+
+#else
+
+int
+main(void)
+{
+    assert(crypto_aead_aes256gcm_is_available() >= 0);
+    printf("OK\n");
+
+    return 0;
+}
+
+#endif
