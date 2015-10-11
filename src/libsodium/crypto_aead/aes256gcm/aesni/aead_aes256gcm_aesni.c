@@ -208,10 +208,10 @@ addmul(unsigned char *c, const unsigned char *a, unsigned int xlen, const unsign
     if (xlen >= 16) {
         A = _mm_loadu_si128((const __m128i *) a);
     } else {
-        unsigned char padded[16];
+        CRYPTO_ALIGN(16) unsigned char padded[16];
         memset(padded, 0, 16);
         memcpy(padded, a, xlen);
-        A = _mm_loadu_si128((const __m128i *) padded);
+        A = _mm_load_si128((const __m128i *) padded);
     }
     A = _mm_shuffle_epi8(A, rev);
     __m128i B = _mm_loadu_si128((const __m128i *) b);
@@ -422,7 +422,7 @@ do { \
     const __m128i h4v = h4v_; \
     const __m128i pt = _mm_set_epi8(12, 13, 14, 15, 11, 10, 9, 8, 7, 6, 5, 4, 3, 2, 1, 0); \
     const __m128i rev = _mm_set_epi8(0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15); \
-    __m128i       accv = _mm_loadu_si128((const __m128i *) accum); \
+    __m128i       accv = _mm_load_si128((const __m128i *) accum); \
     int           i; \
 \
     MAKE8(NVDECLx); \
@@ -437,7 +437,7 @@ do { \
     MAKE8(STOREx); \
     REDUCE4(rev, hv, h2v, h3v, h4v, temp3, temp2, temp1, temp0, accv); \
     REDUCE4(rev, hv, h2v, h3v, h4v, temp7, temp6, temp5, temp4, accv); \
-    _mm_storeu_si128((__m128i *) accum, accv); \
+    _mm_store_si128((__m128i *) accum, accv); \
 } while(0)
 
 /* checksum 8 blocks at once */
@@ -449,12 +449,12 @@ do { \
     const __m128i h3v = h3v_ ; \
     const __m128i h4v = h4v_ ; \
     const __m128i rev = _mm_set_epi8(0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15); \
-    __m128i accv      = _mm_loadu_si128((const __m128i *) accum); \
+    __m128i accv      = _mm_load_si128((const __m128i *) accum); \
 \
     MAKE8(LOADx); \
     REDUCE4(rev, hv, h2v, h3v, h4v, in3, in2, in1, in0, accv); \
     REDUCE4(rev, hv, h2v, h3v, h4v, in7, in6, in5, in4, accv); \
-    _mm_storeu_si128((__m128i *) accum, accv); \
+    _mm_store_si128((__m128i *) accum, accv); \
 } while(0)
 
 /* decrypt 8 blocks at once */
@@ -543,7 +543,7 @@ crypto_aead_aes256gcm_aesni_encrypt_afternm(unsigned char *c, unsigned long long
         __m128i X1 = _mm_loadu_si128((const __m128i *) (ad + i + 48));
         REDUCE4(rev, Hv, H2v, H3v, H4v, X1, X2, X3, X4, accv);
     }
-    _mm_storeu_si128((__m128i *) accum, accv);
+    _mm_store_si128((__m128i *) accum, accv);
 
     /* GCM remainder loop */
     for (i = adlen_rnd64; i < adlen; i += 16) {
@@ -662,7 +662,7 @@ crypto_aead_aes256gcm_aesni_decrypt_afternm(unsigned char *m, unsigned long long
         __m128i X1 = _mm_loadu_si128((const __m128i *) (ad + i + 48));
         REDUCE4(rev, Hv, H2v, H3v, H4v, X1, X2, X3, X4, accv);
     }
-    _mm_storeu_si128((__m128i *) accum, accv);
+    _mm_store_si128((__m128i *) accum, accv);
 
     for (i = adlen_rnd64; i < adlen; i += 16) {
         unsigned int blocklen = 16;
