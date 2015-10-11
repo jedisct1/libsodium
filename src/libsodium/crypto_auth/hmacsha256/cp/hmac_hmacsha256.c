@@ -66,6 +66,7 @@ crypto_auth_hmacsha256_init(crypto_auth_hmacsha256_state *state,
     }
     crypto_hash_sha256_update(&state->octx, pad, 64);
 
+    sodium_memzero((void *) pad, sizeof pad);
     sodium_memzero((void *) khash, sizeof khash);
 
     return 0;
