@@ -119,7 +119,7 @@ aesni_encrypt1(unsigned char *out, __m128i nv, const __m128i *rkeys)
         temp = _mm_aesenc_si128(temp, rkeys[i]);
     }
     temp = _mm_aesenclast_si128(temp, rkeys[14]);
-    _mm_store_si128((__m128i *) out, temp);
+    _mm_storeu_si128((__m128i *) out, temp);
 }
 
 /** multiple-blocks-at-once AES encryption with AES-NI ;
@@ -153,7 +153,7 @@ aesni_encrypt1(unsigned char *out, __m128i nv, const __m128i *rkeys)
 
 /* Step 5: store result */
 #define STOREx(a) \
-    _mm_store_si128((__m128i *) (out + (a * 16)), temp##a)
+    _mm_storeu_si128((__m128i *) (out + (a * 16)), temp##a)
 
 /* all the MAKE* macros are for automatic explicit unrolling */
 #define MAKE4(X) \
@@ -403,12 +403,12 @@ do { \
     accv = tmp2B; \
 } while(0)
 
-#define XORx(a)                                                      \
-    __m128i in##a = _mm_load_si128((const __m128i *) (in + a * 16)); \
+#define XORx(a)                                                       \
+    __m128i in##a = _mm_loadu_si128((const __m128i *) (in + a * 16)); \
     temp##a = _mm_xor_si128(temp##a, in##a)
 
-#define LOADx(a)                                                     \
-    __m128i in##a = _mm_load_si128((const __m128i *) (in + a * 16));
+#define LOADx(a)                                                      \
+    __m128i in##a = _mm_loadu_si128((const __m128i *) (in + a * 16));
 
 /* full encrypt & checksum 8 blocks at once */
 #define aesni_encrypt8full(out_, n_, rkeys, in_, accum, hv_, h2v_, h3v_, h4v_) \
