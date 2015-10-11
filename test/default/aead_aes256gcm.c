@@ -3029,8 +3029,8 @@ tv(void)
     size_t              i = 0U;
     size_t              message_len;
 
-    key = sodium_malloc(crypto_aead_aes256gcm_KEYBYTES);
-    nonce = sodium_malloc(crypto_aead_aes256gcm_NPUBBYTES);
+    key = (unsigned char *) sodium_malloc(crypto_aead_aes256gcm_KEYBYTES);
+    nonce = (unsigned char *) sodium_malloc(crypto_aead_aes256gcm_NPUBBYTES);
 
     do {
         sodium_hex2bin(key, crypto_aead_aes256gcm_KEYBYTES,
@@ -3040,24 +3040,24 @@ tv(void)
                        tests[i].nonce_hex, strlen(tests[i].nonce_hex),
                        NULL, NULL, NULL);
         message_len = strlen(tests[i].message_hex) / 2;
-        message = sodium_malloc(message_len);
+        message = (unsigned char *) sodium_malloc(message_len);
         sodium_hex2bin(message, message_len,
                        tests[i].message_hex, strlen(tests[i].message_hex),
                        NULL, NULL, NULL);
         ad_len = strlen(tests[i].ad_hex) / 2;
-        ad = sodium_malloc(ad_len);
+        ad = (unsigned char *) sodium_malloc(ad_len);
         sodium_hex2bin(ad, ad_len,
                        tests[i].ad_hex, strlen(tests[i].ad_hex),
                        NULL, NULL, NULL);
         ciphertext_len = message_len + crypto_aead_aes256gcm_ABYTES;
-        expected_ciphertext = sodium_malloc(ciphertext_len);
+        expected_ciphertext = (unsigned char *) sodium_malloc(ciphertext_len);
         sodium_hex2bin(expected_ciphertext, message_len,
                        tests[i].ciphertext_hex, strlen(tests[i].ciphertext_hex),
                        NULL, NULL, NULL);
         sodium_hex2bin(expected_ciphertext + message_len, crypto_aead_aes256gcm_ABYTES,
                        tests[i].mac_hex, strlen(tests[i].mac_hex),
                        NULL, NULL, NULL);
-        ciphertext = sodium_malloc(ciphertext_len);
+        ciphertext = (unsigned char *) sodium_malloc(ciphertext_len);
 
         crypto_aead_aes256gcm_encrypt(ciphertext, &found_ciphertext_len,
                                       message, message_len,
@@ -3067,7 +3067,7 @@ tv(void)
         if (memcmp(ciphertext, expected_ciphertext, ciphertext_len) != 0) {
             printf("Encryption of test vector #%u failed\n", (unsigned int) i);
         }
-        decrypted = sodium_malloc(message_len);
+        decrypted = (unsigned char *) sodium_malloc(message_len);
         if (crypto_aead_aes256gcm_decrypt(decrypted, &found_message_len,
                                           NULL, ciphertext, ciphertext_len,
                                           ad, ad_len, nonce, key) != 0) {
