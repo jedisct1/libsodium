@@ -9,6 +9,8 @@ int main(void)
     (void)sodium_runtime_has_neon();
     (void)sodium_runtime_has_sse2();
     (void)sodium_runtime_has_sse3();
+    (void)sodium_runtime_has_pclmul();
+    (void)sodium_runtime_has_aesni();
 
     return 0;
 }
