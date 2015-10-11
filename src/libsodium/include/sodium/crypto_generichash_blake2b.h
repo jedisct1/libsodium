@@ -7,12 +7,6 @@
 
 #include "export.h"
 
-#if defined(_MSC_VER)
-# define CRYPTO_ALIGN(x) __declspec(align(x))
-#else
-# define CRYPTO_ALIGN(x) __attribute__((aligned(x)))
-#endif
-
 #ifdef __cplusplus
 # if __GNUC__
 #  pragma GCC diagnostic ignored "-Wlong-long"

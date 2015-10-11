@@ -20,6 +20,12 @@ int sodium_runtime_has_sse2(void);
 SODIUM_EXPORT
 int sodium_runtime_has_sse3(void);
 
+SODIUM_EXPORT
+int sodium_runtime_has_pclmul(void);
+
+SODIUM_EXPORT
+int sodium_runtime_has_aesni(void);
+
 #ifdef __cplusplus
 }
 #endif
