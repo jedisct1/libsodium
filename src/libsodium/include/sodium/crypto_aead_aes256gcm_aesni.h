@@ -13,23 +13,23 @@ extern "C" {
 
 #define crypto_aead_aes256gcm_KEYBYTES  32U
 SODIUM_EXPORT
-size_t crypto_aead_aes256gcm_aesni_keybytes(void);
+size_t crypto_aead_aes256gcm_keybytes(void);
 
 #define crypto_aead_aes256gcm_NSECBYTES 0U
 SODIUM_EXPORT
-size_t crypto_aead_aes256gcm_aesni_nsecbytes(void);
+size_t crypto_aead_aes256gcm_nsecbytes(void);
 
 #define crypto_aead_aes256gcm_NPUBBYTES 12U
 SODIUM_EXPORT
-size_t crypto_aead_aes256gcm_aesni_npubbytes(void);
+size_t crypto_aead_aes256gcm_pubbytes(void);
 
 #define crypto_aead_aes256gcm_ABYTES    16U
 SODIUM_EXPORT
-size_t crypto_aead_aes256gcm_aesni_abytes(void);
+size_t crypto_aead_aes256gcm_abytes(void);
 
-typedef CRYPTO_ALIGN(16) unsigned char crypto_aead_aes256gcm_aesni_state[272];
+typedef CRYPTO_ALIGN(16) unsigned char crypto_aead_aes256gcm_state[512];
 SODIUM_EXPORT
-size_t crypto_aead_aes256gcm_aesni_statebytes(void);
+size_t crypto_aead_aes256gcm_statebytes(void);
 
 SODIUM_EXPORT
 int crypto_aead_aes256gcm_aesni_encrypt(unsigned char *c,
@@ -54,7 +54,7 @@ int crypto_aead_aes256gcm_aesni_decrypt(unsigned char *m,
                                         const unsigned char *k);
 
 SODIUM_EXPORT
-int crypto_aead_aes256gcm_aesni_beforenm(crypto_aead_aes256gcm_aesni_state *ctx_,
+int crypto_aead_aes256gcm_aesni_beforenm(crypto_aead_aes256gcm_state *ctx_,
                                          const unsigned char *k);
 
 SODIUM_EXPORT
@@ -66,7 +66,7 @@ int crypto_aead_aes256gcm_aesni_encrypt_afternm(unsigned char *c,
                                                 unsigned long long adlen,
                                                 const unsigned char *nsec,
                                                 const unsigned char *npub,
-                                                const crypto_aead_aes256gcm_aesni_state *ctx_);
+                                                const crypto_aead_aes256gcm_state *ctx_);
 
 SODIUM_EXPORT
 int crypto_aead_aes256gcm_aesni_decrypt_afternm(unsigned char *m,
@@ -77,7 +77,7 @@ int crypto_aead_aes256gcm_aesni_decrypt_afternm(unsigned char *m,
                                                 const unsigned char *ad,
                                                 unsigned long long adlen,
                                                 const unsigned char *npub,
-                                                const crypto_aead_aes256gcm_aesni_state *ctx_);
+                                                const crypto_aead_aes256gcm_state *ctx_);
 #ifdef __cplusplus
 }
 #endif
