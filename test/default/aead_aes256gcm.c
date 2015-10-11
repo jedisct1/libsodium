@@ -3095,7 +3095,7 @@ tv(void)
 int
 main(void)
 {
-    if (sodium_runtime_has_aesni() && sodium_runtime_has_pclmul()) {
+    if (crypto_aead_aes256gcm_aesni_is_available()) {
         tv();
     }
     printf("OK\n");

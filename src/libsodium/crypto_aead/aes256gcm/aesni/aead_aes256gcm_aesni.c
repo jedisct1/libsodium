@@ -9,6 +9,7 @@
 
 #include "crypto_aead_aes256gcm_aesni.h"
 #include "export.h"
+#include "runtime.h"
 #include "utils.h"
 
 #if defined(HAVE_WMMINTRIN_H) || \
@@ -798,6 +799,12 @@ crypto_aead_aes256gcm_aesni_decrypt(unsigned char *m,
         (m, mlen_p, nsec, c, clen, ad, adlen, npub, &ctx);
 }
 
+int
+crypto_aead_aes256gcm_aesni_is_available(void)
+{
+    return sodium_runtime_has_pclmul() & sodium_runtime_has_aesni();
+}
+
 size_t
 crypto_aead_aes256gcm_keybytes(void)
 {
@@ -826,6 +833,14 @@ size_t
 crypto_aead_aes256gcm_statebytes(void)
 {
     return sizeof(crypto_aead_aes256gcm_state);
+}
+
+#else
+
+int
+crypto_aead_aes256gcm_aesni_is_available(void)
+{
+    return 0;
 }
 
 #endif
