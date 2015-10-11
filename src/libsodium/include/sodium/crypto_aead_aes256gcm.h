@@ -24,7 +24,7 @@ size_t crypto_aead_aes256gcm_nsecbytes(void);
 
 #define crypto_aead_aes256gcm_NPUBBYTES 12U
 SODIUM_EXPORT
-size_t crypto_aead_aes256gcm_pubbytes(void);
+size_t crypto_aead_aes256gcm_npubbytes(void);
 
 #define crypto_aead_aes256gcm_ABYTES    16U
 SODIUM_EXPORT

@@ -3099,6 +3099,11 @@ main(void)
     if (crypto_aead_aes256gcm_is_available()) {
         tv();
     }
+    assert(crypto_aead_aes256gcm_keybytes() == crypto_aead_aes256gcm_KEYBYTES);
+    assert(crypto_aead_aes256gcm_nsecbytes() == crypto_aead_aes256gcm_NSECBYTES);
+    assert(crypto_aead_aes256gcm_npubbytes() == crypto_aead_aes256gcm_NPUBBYTES);
+    assert(crypto_aead_aes256gcm_abytes() == crypto_aead_aes256gcm_ABYTES);
+    assert(crypto_aead_aes256gcm_statebytes() > (size_t) 0U);
     printf("OK\n");
 
     return 0;
