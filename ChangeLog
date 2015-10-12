@@ -1,5 +1,8 @@
 
 * Version 1.0.4 (not released yet)
+ - Support for AES256-GCM has been added. This requires
+a CPU with the aesni and pclmul extensions, and is accessible via the
+crypto_aead_aes256gcm_*() functions.
  - The Javascript target doesn't use eval() any more, so that the
 library can be used in Chrome packaged applications.
  - QNX and CloudABI are now supported.
