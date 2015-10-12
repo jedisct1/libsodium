@@ -3025,6 +3025,54 @@ static struct {
         "68F2E77696CE7AE8E2CA4EC588E54D002E58495C",
         "BA8AE31BC506486D6873E4FCE460E7DC57591FF00611F31C3834FE1C04AD80B66803AFCF5B27E6333FA67C99DA47C2F0CED68D531BD741A943CFF7A6713BD0",
         "2611CD7DAA01D61C5C886DC1A8170107"
+    },
+    {
+        "0000000000000000000000000000000000000000000000000000000000000000",
+        "000000000000000000000000",
+        "",
+        "d9313225f88406e5a55909c5aff5269a86a7a9531534f7da2e4c303d8a318a721c3c0c95956809532fcf0e2449a6b525b16aedf5aa0de657ba637b391aafd255522dc1f099567d07f47f37a32a84427d643a8cdcbfe5c0c97598a2bd2555d1aa8cb08e48590dbb3da7b08b1056828838c5f61e6393ba7a0abcc9f662898015ad",
+        "",
+        "f4c58f80a3a1a9cd52755214bdbb6ad0"
+    },
+    {
+        "0000000000000000000000000000000000000000000000000000000000000000",
+        "000000000000000000000000",
+        "000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000",
+        "",
+        "cea7403d4d606b6e074ec5d3baf39d18726003ca37a62a74d1a2f58e7506358edd4ab1284d4ae17b41e85924470c36f7",
+        "0eb41c52b074ecacb213f6de062f7897"
+    },
+    {
+        "0000000000000000000000000000000000000000000000000000000000000000",
+        "000000000000000000000000",
+        "0000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000",
+        "",
+        "cea7403d4d606b6e074ec5d3baf39d18726003ca37a62a74d1a2f58e7506358edd4ab1284d4ae17b41e85924470c36f74741cbe181bb7f30617c1de3ab0c3a1fd0c48f7321a82d376095ace0419167a0bcaf49b0c0cea62de6bc1c66545e1dadabfa77cd6e85da245fb0bdc5e52cfc29ba0ae1ab2837e0f36387b70e93176012",
+        "ae1753b346fd6971d20cb69a2d6148bc"
+    },
+    {
+        "0000000000000000000000000000000000000000000000000000000000000000",
+        "ffffffff0000000000000000",
+        "0000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000",
+        "",
+        "ee2491af7588cbd4ccccaea18a6118cdf00222178a0b53be8a7a0ef9806991a81c70151316ef97ffea3d83e8905d933c253b56a63f115a2cd4005281bfbdd9a07a1b19d7e07caf3f90a11228785d7bf749449598214a4222c3c476ea5df9d60250b8d66787b568762a5cb70149e2957c1cc5ef636113b1e1752096ec404fe2b6",
+        "0c23c9176aedc5bacbca56f777324aa4"
+    },
+    {
+        "0000000000000000000000000000000000000000000000000000000000000000",
+        "ffffffffffffffffffffffff",
+        "010000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000002",
+        "0102030405060708090a0b0c0d",
+        "d3b089dead85b8b6874327390d0fff1575051e2a96243ab8ca0927447f58d7053d99918491eeeee470cd929077ccb404ef140354241e12e2e36e3aea89a06e79c064479d7cdd711220dff6059ab913a1ea3ba7bcdb2d5b8746a990ec54cf2aab55c11c9c849ab552fc03cc4425db4e54b13d334e9ef145805c73680d7899b64bab",
+        "c9ee768b5473f678ac00203affa6a34e"
+    },
+    {
+        "843ffcf5d2b72694d19ed01d01249412d5cb4a08f134d246513633e84d006bbb",
+        "dbcca32ebf9b804617c3aa9e",
+        "000102030405060708090a0b0c0d0e0f101112131415161718191a1b1c1d1e1f202122232425262728292a2b2c2d2e2f303132333435363738393a3b3c3d3e3f404142434445464748494a4b4c4d4e4f",
+        "00000000000000000000000000000000101112131415161718191a1b1c1d1e1f",
+        "3847bb9e60181f62ba36beae09cc3cfeb5958a16e37c72e87add8be814ee6dbbb98c0727709c84d26a6adf5e7b4e17cdfd84977b328d3eda489a30ff8d1875b530239d4abaf15a5903f516cac0c91b3a",
+        "39fa8fc1c78405e86326c97d428cd1c6"
     }
 };
 
@@ -3041,6 +3089,7 @@ tv(void)
     unsigned char      *key;
     unsigned char      *message;
     unsigned char      *nonce;
+    char               *hex;
     unsigned long long  found_ciphertext_len;
     unsigned long long  found_message_len;
     size_t              ad_len;
@@ -3052,9 +3101,11 @@ tv(void)
     nonce = (unsigned char *) sodium_malloc(crypto_aead_aes256gcm_NPUBBYTES);
 
     do {
+        assert(strlen(tests[i].key_hex) == 2 * crypto_aead_aes256gcm_KEYBYTES);
         sodium_hex2bin(key, crypto_aead_aes256gcm_KEYBYTES,
                        tests[i].key_hex, strlen(tests[i].key_hex),
                        NULL, NULL, NULL);
+        assert(strlen(tests[i].nonce_hex) == 2 * crypto_aead_aes256gcm_NPUBBYTES);
         sodium_hex2bin(nonce, crypto_aead_aes256gcm_NPUBBYTES,
                        tests[i].nonce_hex, strlen(tests[i].nonce_hex),
                        NULL, NULL, NULL);
@@ -3070,9 +3121,11 @@ tv(void)
                        NULL, NULL, NULL);
         ciphertext_len = message_len + crypto_aead_aes256gcm_ABYTES;
         expected_ciphertext = (unsigned char *) sodium_malloc(ciphertext_len);
+        assert(strlen(tests[i].ciphertext_hex) == 2 * message_len);
         sodium_hex2bin(expected_ciphertext, message_len,
                        tests[i].ciphertext_hex, strlen(tests[i].ciphertext_hex),
                        NULL, NULL, NULL);
+        assert(strlen(tests[i].mac_hex) == 2 * crypto_aead_aes256gcm_ABYTES);
         sodium_hex2bin(expected_ciphertext + message_len, crypto_aead_aes256gcm_ABYTES,
                        tests[i].mac_hex, strlen(tests[i].mac_hex),
                        NULL, NULL, NULL);
@@ -3085,6 +3138,11 @@ tv(void)
         assert((size_t) found_ciphertext_len == ciphertext_len);
         if (memcmp(ciphertext, expected_ciphertext, ciphertext_len) != 0) {
             printf("Encryption of test vector #%u failed\n", (unsigned int) i);
+            hex = sodium_malloc(found_ciphertext_len * 2 + 1);
+            sodium_bin2hex(hex, found_ciphertext_len * 2 + 1,
+                           ciphertext, ciphertext_len);
+            printf("Computed: [%s]\n", hex);
+            sodium_free(hex);
         }
         decrypted = (unsigned char *) sodium_malloc(message_len);
         if (crypto_aead_aes256gcm_decrypt(decrypted, &found_message_len,
