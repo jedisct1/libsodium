@@ -1,5 +1,8 @@
 
 * Version 1.0.4 (not released yet)
+ - The Javascript target doesn't use eval() any more, so that the
+library can be used in Chrome packaged applications.
+ - QNX and CloudABI are now supported.
  - Support for NaCl has finally been added.
  - ChaCha20 with an extended (96 bit) nonce and a 32-bit counter has
 been implemented as crypto_stream_chacha20_ietf(),
