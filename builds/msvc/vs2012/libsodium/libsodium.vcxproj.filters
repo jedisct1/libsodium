@@ -745,6 +745,9 @@
     <ClInclude Include="..\..\..\..\src\libsodium\include\sodium\crypto_aead_chacha20poly1305.h">
       <Filter>include\sodium</Filter>
     </ClInclude>
+    <ClInclude Include="..\..\..\..\src\libsodium\include\sodium\crypto_aead_aes256gcm.h">
+      <Filter>include\sodium</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="..\..\..\..\packaging\nuget\package.bat">
@@ -1016,6 +1019,12 @@
     <Filter Include="src\crypto_aead\chacha20poly1305\sodium">
       <UniqueIdentifier>{da16d0f4-7f2d-4a0c-a0e2-92eec8662999}</UniqueIdentifier>
     </Filter>
+    <Filter Include="src\crypto_aead\aes256gcm">
+      <UniqueIdentifier>{732cd960-dc65-4d36-89c5-1a49ebfbdbda}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\crypto_aead\aes256gcm\aesni">
+      <UniqueIdentifier>{7bf8d585-f45f-4087-b226-954e163917ff}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\..\..\..\src\libsodium\crypto_scalarmult\curve25519\ref10\base_curve25519_ref10.c">
@@ -1068,6 +1077,9 @@
     </ClCompile>
     <ClCompile Include="..\..\..\..\src\libsodium\crypto_aead\chacha20poly1305\sodium\aead_chacha20poly1305.c">
       <Filter>src\crypto_aead\chacha20poly1305\sodium</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\src\libsodium\crypto_aead\aes256gcm\aesni\aead_aes256gcm_aesni.c">
+      <Filter>src\crypto_aead\aes256gcm\aesni</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>
