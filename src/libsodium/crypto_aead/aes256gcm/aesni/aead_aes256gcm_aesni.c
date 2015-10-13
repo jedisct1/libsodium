@@ -204,7 +204,11 @@ static inline void
 addmul(unsigned char *c, const unsigned char *a, unsigned int xlen, const unsigned char *b)
 {
     const __m128i rev = _mm_set_epi8(0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15);
-    __m128i       A;
+    __m128i       A, B, C;
+    __m128i       tmp2, tmp3, tmp4, tmp5, tmp6, tmp7, tmp8, tmp9;
+    __m128i       tmp10, tmp11, tmp12, tmp13, tmp14, tmp15, tmp16, tmp17, tmp18;
+    __m128i       tmp19, tmp20, tmp21, tmp22, tmp23, tmp24, tmp25, tmp26, tmp27;
+    __m128i       tmp28, tmp29, tmp30, tmp31, tmp32, tmp33, tmp34, tmp35, tmp36;
 
     if (xlen >= 16) {
         A = _mm_loadu_si128((const __m128i *) a);
@@ -215,44 +219,44 @@ addmul(unsigned char *c, const unsigned char *a, unsigned int xlen, const unsign
         A = _mm_load_si128((const __m128i *) padded);
     }
     A = _mm_shuffle_epi8(A, rev);
-    __m128i B = _mm_loadu_si128((const __m128i *) b);
-    __m128i C = _mm_loadu_si128((const __m128i *) c);
+    B = _mm_loadu_si128((const __m128i *) b);
+    C = _mm_loadu_si128((const __m128i *) c);
     A = _mm_xor_si128(A, C);
-    __m128i tmp3 = _mm_clmulepi64_si128(A, B, 0x00);
-    __m128i tmp4 = _mm_clmulepi64_si128(A, B, 0x10);
-    __m128i tmp5 = _mm_clmulepi64_si128(A, B, 0x01);
-    __m128i tmp6 = _mm_clmulepi64_si128(A, B, 0x11);
-    __m128i tmp10 = _mm_xor_si128(tmp4, tmp5);
-    __m128i tmp13 = _mm_slli_si128(tmp10, 8);
-    __m128i tmp11 = _mm_srli_si128(tmp10, 8);
-    __m128i tmp15 = _mm_xor_si128(tmp3, tmp13);
-    __m128i tmp17 = _mm_xor_si128(tmp6, tmp11);
-    __m128i tmp7 = _mm_srli_epi32(tmp15, 31);
-    __m128i tmp8 = _mm_srli_epi32(tmp17, 31);
-    __m128i tmp16 = _mm_slli_epi32(tmp15, 1);
-    __m128i tmp18 = _mm_slli_epi32(tmp17, 1);
-    __m128i tmp9 = _mm_srli_si128(tmp7, 12);
-    __m128i tmp22 = _mm_slli_si128(tmp8, 4);
-    __m128i tmp25 = _mm_slli_si128(tmp7, 4);
-    __m128i tmp29 = _mm_or_si128(tmp16, tmp25);
-    __m128i tmp19 = _mm_or_si128(tmp18, tmp22);
-    __m128i tmp20 = _mm_or_si128(tmp19, tmp9);
-    __m128i tmp26 = _mm_slli_epi32(tmp29, 31);
-    __m128i tmp23 = _mm_slli_epi32(tmp29, 30);
-    __m128i tmp32 = _mm_slli_epi32(tmp29, 25);
-    __m128i tmp27 = _mm_xor_si128(tmp26, tmp23);
-    __m128i tmp28 = _mm_xor_si128(tmp27, tmp32);
-    __m128i tmp24 = _mm_srli_si128(tmp28, 4);
-    __m128i tmp33 = _mm_slli_si128(tmp28, 12);
-    __m128i tmp30 = _mm_xor_si128(tmp29, tmp33);
-    __m128i tmp2 = _mm_srli_epi32(tmp30, 1);
-    __m128i tmp12 = _mm_srli_epi32(tmp30, 2);
-    __m128i tmp14 = _mm_srli_epi32(tmp30, 7);
-    __m128i tmp34 = _mm_xor_si128(tmp2, tmp12);
-    __m128i tmp35 = _mm_xor_si128(tmp34, tmp14);
-    __m128i tmp36 = _mm_xor_si128(tmp35, tmp24);
-    __m128i tmp31 = _mm_xor_si128(tmp30, tmp36);
-    __m128i tmp21 = _mm_xor_si128(tmp20, tmp31);
+    tmp3 = _mm_clmulepi64_si128(A, B, 0x00);
+    tmp4 = _mm_clmulepi64_si128(A, B, 0x10);
+    tmp5 = _mm_clmulepi64_si128(A, B, 0x01);
+    tmp6 = _mm_clmulepi64_si128(A, B, 0x11);
+    tmp10 = _mm_xor_si128(tmp4, tmp5);
+    tmp13 = _mm_slli_si128(tmp10, 8);
+    tmp11 = _mm_srli_si128(tmp10, 8);
+    tmp15 = _mm_xor_si128(tmp3, tmp13);
+    tmp17 = _mm_xor_si128(tmp6, tmp11);
+    tmp7 = _mm_srli_epi32(tmp15, 31);
+    tmp8 = _mm_srli_epi32(tmp17, 31);
+    tmp16 = _mm_slli_epi32(tmp15, 1);
+    tmp18 = _mm_slli_epi32(tmp17, 1);
+    tmp9 = _mm_srli_si128(tmp7, 12);
+    tmp22 = _mm_slli_si128(tmp8, 4);
+    tmp25 = _mm_slli_si128(tmp7, 4);
+    tmp29 = _mm_or_si128(tmp16, tmp25);
+    tmp19 = _mm_or_si128(tmp18, tmp22);
+    tmp20 = _mm_or_si128(tmp19, tmp9);
+    tmp26 = _mm_slli_epi32(tmp29, 31);
+    tmp23 = _mm_slli_epi32(tmp29, 30);
+    tmp32 = _mm_slli_epi32(tmp29, 25);
+    tmp27 = _mm_xor_si128(tmp26, tmp23);
+    tmp28 = _mm_xor_si128(tmp27, tmp32);
+    tmp24 = _mm_srli_si128(tmp28, 4);
+    tmp33 = _mm_slli_si128(tmp28, 12);
+    tmp30 = _mm_xor_si128(tmp29, tmp33);
+    tmp2 = _mm_srli_epi32(tmp30, 1);
+    tmp12 = _mm_srli_epi32(tmp30, 2);
+    tmp14 = _mm_srli_epi32(tmp30, 7);
+    tmp34 = _mm_xor_si128(tmp2, tmp12);
+    tmp35 = _mm_xor_si128(tmp34, tmp14);
+    tmp36 = _mm_xor_si128(tmp35, tmp24);
+    tmp31 = _mm_xor_si128(tmp30, tmp36);
+    tmp21 = _mm_xor_si128(tmp20, tmp31);
     _mm_storeu_si128((__m128i *) c, tmp21);
 }
 
@@ -405,11 +409,11 @@ do { \
 } while(0)
 
 #define XORx(a)                                                       \
-    __m128i in##a = _mm_loadu_si128((const __m128i *) (in + a * 16)); \
-    temp##a = _mm_xor_si128(temp##a, in##a)
+        temp##a = _mm_xor_si128(temp##a,                              \
+                                _mm_loadu_si128((const __m128i *) (in + a * 16)))
 
 #define LOADx(a)                                                      \
-    __m128i in##a = _mm_loadu_si128((const __m128i *) (in + a * 16));
+    __m128i in##a = _mm_loadu_si128((const __m128i *) (in + a * 16))
 
 /* full encrypt & checksum 8 blocks at once */
 #define aesni_encrypt8full(out_, n_, rkeys, in_, accum, hv_, h2v_, h3v_, h4v_) \
