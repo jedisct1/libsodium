@@ -3,7 +3,7 @@
   <PropertyGroup Label="Globals">
     <ProjectGuid>{4EDBA07C-2F08-4C9E-805F-A4921814C117}</ProjectGuid>
     <ProjectName>test</ProjectName>
-    <PlatformToolset>v110_wp80</PlatformToolset>
+    <PlatformToolset>v110</PlatformToolset>
     <ConfigurationType>Application</ConfigurationType>
   </PropertyGroup>
   <ItemGroup Label="ProjectConfigurations">
