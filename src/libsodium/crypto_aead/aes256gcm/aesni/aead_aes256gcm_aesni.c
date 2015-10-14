@@ -426,9 +426,9 @@ do { \
     const __m128i h3v = h3v_; \
     const __m128i h4v = h4v_; \
     const __m128i pt = _mm_set_epi8(12, 13, 14, 15, 11, 10, 9, 8, 7, 6, 5, 4, 3, 2, 1, 0); \
-    __m128i       accv = _mm_load_si128((const __m128i *) accum); \
+    __m128i       accv_; \
     int           roundctr; \
-\
+    \
     MAKE8(NVDECLx); \
     MAKE8(TEMPDECLx); \
     MAKE8(NVx); \
@@ -439,9 +439,10 @@ do { \
     MAKE8(AESENCLASTx); \
     MAKE8(XORx); \
     MAKE8(STOREx); \
-    REDUCE4(rev, hv, h2v, h3v, h4v, temp3, temp2, temp1, temp0, accv); \
-    REDUCE4(rev, hv, h2v, h3v, h4v, temp7, temp6, temp5, temp4, accv); \
-    _mm_store_si128((__m128i *) accum, accv); \
+    accv_ = _mm_load_si128((const __m128i *) accum); \
+    REDUCE4(rev, hv, h2v, h3v, h4v, temp3, temp2, temp1, temp0, accv_); \
+    REDUCE4(rev, hv, h2v, h3v, h4v, temp7, temp6, temp5, temp4, accv_); \
+    _mm_store_si128((__m128i *) accum, accv_); \
 } while(0)
 
 /* checksum 8 blocks at once */
@@ -449,15 +450,16 @@ do { \
 do { \
     const unsigned char *in = in_; \
     const __m128i hv = hv_; \
-    const __m128i h2v = h2v_ ; \
-    const __m128i h3v = h3v_ ; \
-    const __m128i h4v = h4v_ ; \
-    __m128i accv      = _mm_load_si128((const __m128i *) accum); \
-\
+    const __m128i h2v = h2v_; \
+    const __m128i h3v = h3v_; \
+    const __m128i h4v = h4v_; \
+    __m128i accv_; \
+    \
     MAKE8(LOADx); \
-    REDUCE4(rev, hv, h2v, h3v, h4v, in3, in2, in1, in0, accv); \
-    REDUCE4(rev, hv, h2v, h3v, h4v, in7, in6, in5, in4, accv); \
-    _mm_store_si128((__m128i *) accum, accv); \
+    accv_ = _mm_load_si128((const __m128i *) accum); \
+    REDUCE4(rev, hv, h2v, h3v, h4v, in3, in2, in1, in0, accv_); \
+    REDUCE4(rev, hv, h2v, h3v, h4v, in7, in6, in5, in4, accv_); \
+    _mm_store_si128((__m128i *) accum, accv_); \
 } while(0)
 
 /* decrypt 8 blocks at once */
