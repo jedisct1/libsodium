@@ -3138,7 +3138,7 @@ tv(void)
         assert((size_t) found_ciphertext_len == ciphertext_len);
         if (memcmp(ciphertext, expected_ciphertext, ciphertext_len) != 0) {
             printf("Encryption of test vector #%u failed\n", (unsigned int) i);
-            hex = (char *) sodium_malloc(found_ciphertext_len * 2 + 1);
+            hex = (char *) sodium_malloc((size_t) found_ciphertext_len * 2 + 1);
             sodium_bin2hex(hex, (size_t) found_ciphertext_len * 2 + 1,
                            ciphertext, ciphertext_len);
             printf("Computed: [%s]\n", hex);
