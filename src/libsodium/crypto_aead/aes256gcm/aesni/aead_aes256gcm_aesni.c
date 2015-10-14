@@ -416,7 +416,7 @@ do { \
     __m128i in##a = _mm_loadu_si128((const __m128i *) (in + a * 16))
 
 /* full encrypt & checksum 8 blocks at once */
-#define aesni_encrypt8full(out_, n_, rkeys, in_, accum, hv_, h2v_, h3v_, h4v_) \
+#define aesni_encrypt8full(out_, n_, rkeys, in_, accum, hv_, h2v_, h3v_, h4v_, rev) \
 do { \
     unsigned char *out = out_; \
     uint32_t *n = n_; \
@@ -426,7 +426,6 @@ do { \
     const __m128i h3v = h3v_; \
     const __m128i h4v = h4v_; \
     const __m128i pt = _mm_set_epi8(12, 13, 14, 15, 11, 10, 9, 8, 7, 6, 5, 4, 3, 2, 1, 0); \
-    const __m128i rev = _mm_set_epi8(0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15); \
     __m128i       accv = _mm_load_si128((const __m128i *) accum); \
     int           i; \
 \
@@ -542,11 +541,11 @@ crypto_aead_aes256gcm_encrypt_afternm(unsigned char *c, unsigned long long *clen
     accv = _mm_setzero_si128();
     /* unrolled by 4 GCM (by 8 doesn't improve using REDUCE4) */
     for (i = 0; i < adlen_rnd64; i += 64) {
-        __m128i X4 = _mm_loadu_si128((const __m128i *) (ad + i + 0));
-        __m128i X3 = _mm_loadu_si128((const __m128i *) (ad + i + 16));
-        __m128i X2 = _mm_loadu_si128((const __m128i *) (ad + i + 32));
-        __m128i X1 = _mm_loadu_si128((const __m128i *) (ad + i + 48));
-        REDUCE4(rev, Hv, H2v, H3v, H4v, X1, X2, X3, X4, accv);
+        __m128i X4_ = _mm_loadu_si128((const __m128i *) (ad + i + 0));
+        __m128i X3_ = _mm_loadu_si128((const __m128i *) (ad + i + 16));
+        __m128i X2_ = _mm_loadu_si128((const __m128i *) (ad + i + 32));
+        __m128i X1_ = _mm_loadu_si128((const __m128i *) (ad + i + 48));
+        REDUCE4(rev, Hv, H2v, H3v, H4v, X1_, X2_, X3_, X4_, accv);
     }
     _mm_store_si128((__m128i *) accum, accv);
 
@@ -561,14 +560,14 @@ crypto_aead_aes256gcm_encrypt_afternm(unsigned char *c, unsigned long long *clen
     }
 
 /* this only does 8 full blocks, so no fancy bounds checking is necessary*/
-#define LOOPRND128                                                                                \
-    do {                                                                                           \
-        const int iter = 8;                                                                       \
-        const int lb = iter * 16;                                                                 \
-                                                                                                  \
-        for (i = 0; i < mlen_rnd128; i += lb) {                                                   \
-            aesni_encrypt8full(c + i, (uint32_t *) n2, rkeys, m + i, accum, Hv, H2v, H3v, H4v);   \
-        }                                                                                         \
+#define LOOPRND128                                                                                   \
+    do {                                                                                             \
+        const int iter = 8;                                                                          \
+        const int lb = iter * 16;                                                                    \
+                                                                                                     \
+        for (i = 0; i < mlen_rnd128; i += lb) {                                                      \
+            aesni_encrypt8full(c + i, (uint32_t *) n2, rkeys, m + i, accum, Hv, H2v, H3v, H4v, rev); \
+        }                                                                                            \
     } while(0)
 
 /* remainder loop, with the slower GCM update to accomodate partial blocks */
@@ -661,11 +660,11 @@ crypto_aead_aes256gcm_decrypt_afternm(unsigned char *m, unsigned long long *mlen
 
     accv = _mm_setzero_si128();
     for (i = 0; i < adlen_rnd64; i += 64) {
-        __m128i X4 = _mm_loadu_si128((const __m128i *) (ad + i + 0));
-        __m128i X3 = _mm_loadu_si128((const __m128i *) (ad + i + 16));
-        __m128i X2 = _mm_loadu_si128((const __m128i *) (ad + i + 32));
-        __m128i X1 = _mm_loadu_si128((const __m128i *) (ad + i + 48));
-        REDUCE4(rev, Hv, H2v, H3v, H4v, X1, X2, X3, X4, accv);
+        __m128i X4_ = _mm_loadu_si128((const __m128i *) (ad + i + 0));
+        __m128i X3_ = _mm_loadu_si128((const __m128i *) (ad + i + 16));
+        __m128i X2_ = _mm_loadu_si128((const __m128i *) (ad + i + 32));
+        __m128i X1_ = _mm_loadu_si128((const __m128i *) (ad + i + 48));
+        REDUCE4(rev, Hv, H2v, H3v, H4v, X1_, X2_, X3_, X4_, accv);
     }
     _mm_store_si128((__m128i *) accum, accv);
 
