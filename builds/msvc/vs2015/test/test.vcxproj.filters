@@ -169,6 +169,9 @@
     <ClCompile Include="..\..\..\..\test\default\verify1.c">
       <Filter>src</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\..\..\test\default\aead_aes256gcm.c">
+      <Filter>src</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\..\..\test\default\cmptest.h">
