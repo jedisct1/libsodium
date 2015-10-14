@@ -445,14 +445,13 @@ do { \
 } while(0)
 
 /* checksum 8 blocks at once */
-#define aesni_addmul8full(in_, accum, hv_, h2v_, h3v_, h4v_) \
+#define aesni_addmul8full(in_, accum, hv_, h2v_, h3v_, h4v_, rev) \
 do { \
     const unsigned char *in = in_; \
     const __m128i hv = hv_; \
     const __m128i h2v = h2v_ ; \
     const __m128i h3v = h3v_ ; \
     const __m128i h4v = h4v_ ; \
-    const __m128i rev = _mm_set_epi8(0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15); \
     __m128i accv      = _mm_load_si128((const __m128i *) accum); \
 \
     MAKE8(LOADx); \
@@ -683,7 +682,7 @@ crypto_aead_aes256gcm_decrypt_afternm(unsigned char *m, unsigned long long *mlen
         const int iter = 8;                                                                       \
         const int lb = iter * 16;                                                                 \
         for (i = 0; i < mlen_rnd128; i += lb) {                                                   \
-            aesni_addmul8full(c + i, accum, Hv, H2v, H3v, H4v);                                   \
+            aesni_addmul8full(c + i, accum, Hv, H2v, H3v, H4v, rev);                              \
         }                                                                                         \
     } while(0)
 
