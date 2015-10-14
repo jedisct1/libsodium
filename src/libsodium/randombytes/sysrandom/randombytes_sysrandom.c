@@ -120,8 +120,8 @@ randombytes_sysrandom_random_dev_open(void)
         fd = open(*device, O_RDONLY);
         if (fd != -1) {
             if (fstat(fd, &st) == 0 &&
-# ifdef S_IFNAM
-                (S_IFNAM(st.st_mode) || S_ISCHR(st.st_mode))
+# ifdef S_ISNAM
+                (S_ISNAM(st.st_mode) || S_ISCHR(st.st_mode))
 # else
                 S_ISCHR(st.st_mode)
 # endif
