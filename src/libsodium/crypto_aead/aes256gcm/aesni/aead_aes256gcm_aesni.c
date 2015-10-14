@@ -319,7 +319,7 @@ mulv(__m128i A, __m128i B)
     tmp##a##B = _mm_xor_si128(tmp##a##B, X##a); \
     tmp##a = _mm_clmulepi64_si128(tmp##a, tmp##a##B, 0x00)
 
-#define REDUCE4(rev, H0_, H1_, H2_, H3_, X0_, X1_, X2_, X3_, acc) \
+#define REDUCE4(rev, H0_, H1_, H2_, H3_, X0_, X1_, X2_, X3_, accv) \
 do { \
     MAKE4(RED_DECL); \
     __m128i       lo, hi; \
@@ -336,7 +336,7 @@ do { \
 /* byte-revert the inputs & xor the first one into the accumulator */ \
 \
     MAKE4(RED_SHUFFLE); \
-    X3 = _mm_xor_si128(X3, acc); \
+    X3 = _mm_xor_si128(X3, accv); \
 \
 /* 4 low H*X (x0*h0) */ \
 \
