@@ -113,11 +113,11 @@ static inline void
 aesni_encrypt1(unsigned char *out, __m128i nv, const __m128i *rkeys)
 {
     __m128i temp = _mm_xor_si128(nv, rkeys[0]);
-    int     i;
+    int     roundctr;
 
 #pragma unroll(13)
-    for (i = 1; i < 14; i++) {
-        temp = _mm_aesenc_si128(temp, rkeys[i]);
+    for (roundctr = 1; roundctr < 14; roundctr++) {
+        temp = _mm_aesenc_si128(temp, rkeys[roundctr]);
     }
     temp = _mm_aesenclast_si128(temp, rkeys[14]);
     _mm_storeu_si128((__m128i *) out, temp);
@@ -146,7 +146,7 @@ aesni_encrypt1(unsigned char *out, __m128i nv, const __m128i *rkeys)
 
 /* Step 3: one round of AES */
 #define AESENCx(a) \
-    temp##a = _mm_aesenc_si128(temp##a, rkeys[i])
+    temp##a = _mm_aesenc_si128(temp##a, rkeys[roundctr])
 
 /* Step 4: last round of AES */
 #define AESENCLASTx(a) \
@@ -181,13 +181,13 @@ aesni_encrypt1(unsigned char *out, __m128i nv, const __m128i *rkeys)
     static inline void aesni_encrypt##N(unsigned char *out, uint32_t *n, const __m128i *rkeys)        \
     {                                                                                                 \
         const __m128i pt = _mm_set_epi8(12, 13, 14, 15, 11, 10, 9, 8, 7, 6, 5, 4, 3, 2, 1, 0);        \
-        int   i;                                                                                      \
+        int           roundctr;                                                                       \
         MAKEN(NVDECLx);                                                                               \
         MAKEN(TEMPDECLx);                                                                             \
                                                                                                       \
         MAKEN(NVx);                                                                                   \
         MAKEN(TEMPx);                                                                                 \
-        for (i = 1; i < 14; i++) {                                                                    \
+        for (roundctr = 1; roundctr < 14; roundctr++) {                                               \
             MAKEN(AESENCx);                                                                           \
         }                                                                                             \
         MAKEN(AESENCLASTx);                                                                           \
@@ -427,13 +427,13 @@ do { \
     const __m128i h4v = h4v_; \
     const __m128i pt = _mm_set_epi8(12, 13, 14, 15, 11, 10, 9, 8, 7, 6, 5, 4, 3, 2, 1, 0); \
     __m128i       accv = _mm_load_si128((const __m128i *) accum); \
-    int           i; \
+    int           roundctr; \
 \
     MAKE8(NVDECLx); \
     MAKE8(TEMPDECLx); \
     MAKE8(NVx); \
     MAKE8(TEMPx); \
-    for (i = 1; i < 14; i++) { \
+    for (roundctr = 1; roundctr < 14; roundctr++) { \
         MAKE8(AESENCx); \
     } \
     MAKE8(AESENCLASTx); \
@@ -468,13 +468,13 @@ do { \
     uint32_t            *n = n_; \
     const unsigned char *in = in_; \
     const __m128i        pt = _mm_set_epi8(12, 13, 14, 15, 11, 10, 9, 8, 7, 6, 5, 4, 3, 2, 1, 0); \
-    int                  i; \
+    int                  roundctr; \
 \
     MAKE8(NVDECLx); \
     MAKE8(TEMPDECLx); \
     MAKE8(NVx); \
     MAKE8(TEMPx); \
-    for (i = 1; i < 14; i++) { \
+    for (roundctr = 1; roundctr < 14; roundctr++) { \
         MAKE8(AESENCx); \
     } \
     MAKE8(AESENCLASTx); \
@@ -691,6 +691,7 @@ crypto_aead_aes256gcm_decrypt_afternm(unsigned char *m, unsigned long long *mlen
     do {                                                                                          \
         const int iter = 8;                                                                       \
         const int lb = iter * 16;                                                                 \
+                                                                                                  \
         for (i = 0; i < mlen_rnd128; i += lb) {                                                   \
             aesni_decrypt8full(m + i, (uint32_t *) n2, rkeys, c + i);                             \
         }                                                                                         \
