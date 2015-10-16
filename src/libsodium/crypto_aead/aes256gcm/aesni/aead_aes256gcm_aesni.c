@@ -781,7 +781,8 @@ crypto_aead_aes256gcm_encrypt(unsigned char *c,
     crypto_aead_aes256gcm_beforenm(&ctx, k);
 
     return crypto_aead_aes256gcm_encrypt_afternm
-        (c, clen_p, m, mlen, ad, adlen, nsec, npub, &ctx);
+        (c, clen_p, m, mlen, ad, adlen, nsec, npub,
+            (const crypto_aead_aes256gcm_state *) &ctx);
 }
 
 int
@@ -800,7 +801,8 @@ crypto_aead_aes256gcm_decrypt(unsigned char *m,
     crypto_aead_aes256gcm_beforenm(&ctx, k);
 
     return crypto_aead_aes256gcm_decrypt_afternm
-        (m, mlen_p, nsec, c, clen, ad, adlen, npub, &ctx);
+        (m, mlen_p, nsec, c, clen, ad, adlen, npub,
+            (const crypto_aead_aes256gcm_state *) &ctx);
 }
 
 int
