@@ -90,11 +90,13 @@ int main(void)
         randombytes_buf(buf2, bin_len);
         if (memcmp(buf1, buf2, bin_len) *
             sodium_compare(buf1, buf2, bin_len) < 0) {
-            printf("sodium_compare() failure with length=%zu\n", bin_len);
+            printf("sodium_compare() failure with length=%u\n",
+                   (unsigned int) bin_len);
         }
         memcpy(buf1, buf2, bin_len);
         if (sodium_compare(buf1, buf2, bin_len)) {
-            printf("sodium_compare() equality failure with length=%zu\n", bin_len);
+            printf("sodium_compare() equality failure with length=%u\n",
+                   (unsigned int) bin_len);
         }
     }
     return 0;
