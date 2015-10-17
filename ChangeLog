@@ -15,7 +15,10 @@ crypto_aead_chacha20poly1305_ietf_npubbytes(),
 crypto_aead_chacha20poly1305_ietf_encrypt() and
 crypto_aead_chacha20poly1305_ietf_decrypt().
  - The sodium_increment() helper function has been added, to increment
-an arbitrary long number (such as a nonce).
+an arbitrary large number (such as a nonce).
+ - The sodium_compare() helper function has been added, to compare
+arbitrary large numbers (such as nonces, in order to prevent replay
+attacks).
 
 * Version 1.0.3
  - In addition to sodium_bin2hex(), sodium_hex2bin() is now a
