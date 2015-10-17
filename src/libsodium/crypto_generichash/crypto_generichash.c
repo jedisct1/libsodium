@@ -46,7 +46,7 @@ crypto_generichash_primitive(void)
 size_t
 crypto_generichash_statebytes(void)
 {
-    return sizeof(crypto_generichash_state);
+    return (sizeof(crypto_generichash_state) + (size_t) 63U) & ~(size_t) 63U;
 }
 
 int

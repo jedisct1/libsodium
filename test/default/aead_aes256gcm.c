@@ -3177,7 +3177,7 @@ main(void)
     assert(crypto_aead_aes256gcm_nsecbytes() == crypto_aead_aes256gcm_NSECBYTES);
     assert(crypto_aead_aes256gcm_npubbytes() == crypto_aead_aes256gcm_NPUBBYTES);
     assert(crypto_aead_aes256gcm_abytes() == crypto_aead_aes256gcm_ABYTES);
-    assert(crypto_aead_aes256gcm_statebytes() > (size_t) 0U);
+    assert(crypto_aead_aes256gcm_statebytes() >= sizeof(crypto_aead_aes256gcm_state));
     printf("OK\n");
 
     return 0;
