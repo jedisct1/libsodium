@@ -19,13 +19,27 @@ extern "C" {
 SODIUM_EXPORT
 void sodium_memzero(void * const pnt, const size_t len);
 
-/* WARNING: sodium_memcmp() must be used to verify if two secret keys
+/*
+ * WARNING: sodium_memcmp() must be used to verify if two secret keys
  * are equal, in constant time.
  * It returns 0 if the keys are equal, and -1 if they differ.
  * This function is not designed for lexicographical comparisons.
  */
 SODIUM_EXPORT
 int sodium_memcmp(const void * const b1_, const void * const b2_, size_t len);
+
+/*
+ * sodium_compare() returns -1 if b1_ < b2_, 1 if b1_ > b2_ and 0 if b1_ == b2_
+ * It is suitable for lexicographical comparisons, or to compare nonces
+ * and counters stored in little-endian format.
+ * However, it is slower than sodium_memcmp().
+ */
+SODIUM_EXPORT
+int sodium_compare(const unsigned char *b1_, const unsigned char *b2_,
+                   size_t len);
+
+SODIUM_EXPORT
+void sodium_increment(unsigned char *n, const size_t nlen);
 
 SODIUM_EXPORT
 char *sodium_bin2hex(char * const hex, const size_t hex_maxlen,
@@ -94,9 +108,6 @@ int sodium_mprotect_readonly(void *ptr);
 
 SODIUM_EXPORT
 int sodium_mprotect_readwrite(void *ptr);
-
-SODIUM_EXPORT
-void sodium_increment(unsigned char *n, const size_t nlen);
 
 /* -------- */
 

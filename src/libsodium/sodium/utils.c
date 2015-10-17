@@ -116,6 +116,42 @@ sodium_memcmp(const void * const b1_, const void * const b2_, size_t len)
     return (int) ((1 & ((d - 1) >> 8)) - 1);
 }
 
+#ifdef HAVE_WEAK_SYMBOLS
+__attribute__((weak)) void
+_sodium_dummy_symbol_to_prevent_compare_lto(const unsigned char *b1,
+                                            const unsigned char *b2,
+                                            const size_t len)
+{
+    (void) b1;
+    (void) b2;
+    (void) len;
+}
+#endif
+
+int
+sodium_compare(const unsigned char *b1_, const unsigned char *b2_, size_t len)
+{
+#ifdef HAVE_WEAK_SYMBOLS
+    const unsigned char *b1 = b1_;
+    const unsigned char *b2 = b2_;
+#else
+    const volatile unsigned char *b1 = (const volatile unsigned char *) b1_;
+    const volatile unsigned char *b2 = (const volatile unsigned char *) b2_;
+#endif
+    unsigned char gt = 0U;
+    unsigned char eq = 1U;
+    size_t        i;
+
+#if HAVE_WEAK_SYMBOLS
+    _sodium_dummy_symbol_to_prevent_compare_lto(b1, b2, len);
+#endif
+    for (i = (size_t) 0U; i < len; i++) {
+        gt |= ((b2[i] - b1[i]) >> 8) & eq;
+        eq &= ((b2[i] ^ b1[i]) - 1) >> 8;
+    }
+    return (int) (gt + gt + eq) - 1;
+}
+
 /* Derived from original code by CodesInChaos */
 char *
 sodium_bin2hex(char * const hex, const size_t hex_maxlen,

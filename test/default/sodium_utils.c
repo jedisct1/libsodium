@@ -13,6 +13,7 @@ int main(void)
     const char    *hex;
     const char    *hex_end;
     size_t         bin_len;
+    int            i;
 
     randombytes_buf(buf1, sizeof buf1);
     memcpy(buf2, buf1, sizeof buf2);
@@ -83,5 +84,18 @@ int main(void)
     sodium_increment(nonce, sizeof nonce);
     printf("%s\n", sodium_bin2hex(nonce_hex, sizeof nonce_hex,
                                   nonce, sizeof nonce));
+    for (i = 0; i < 1000; i++) {
+        bin_len = (size_t) randombytes_uniform(sizeof buf1);
+        randombytes_buf(buf1, bin_len);
+        randombytes_buf(buf2, bin_len);
+        if (memcmp(buf1, buf2, bin_len) *
+            sodium_compare(buf1, buf2, bin_len) < 0) {
+            printf("sodium_compare() failure with length=%zu\n", bin_len);
+        }
+        memcpy(buf1, buf2, bin_len);
+        if (sodium_compare(buf1, buf2, bin_len)) {
+            printf("sodium_compare() equality failure with length=%zu\n", bin_len);
+        }
+    }
     return 0;
 }
