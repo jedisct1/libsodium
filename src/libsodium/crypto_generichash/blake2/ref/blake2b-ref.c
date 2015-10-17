@@ -418,11 +418,15 @@ int blake2b( uint8_t *out, const void *in, const void *key, const uint8_t outlen
   blake2b_state S[1];
 
   /* Verify parameters */
-  if ( NULL == in ) return -1;
+  if ( NULL == in && inlen > 0 ) return -1;
 
   if ( NULL == out ) return -1;
 
-  if( NULL == key ) keylen = 0;
+  if( NULL == key && keylen > 0 ) return -1;
+
+  if( !outlen || outlen > BLAKE2B_OUTBYTES ) return -1;
+
+  if( keylen > BLAKE2B_KEYBYTES ) return -1;
 
   if( keylen > 0 )
   {
