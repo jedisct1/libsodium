@@ -2,6 +2,9 @@
 #define TEST_NAME "aead_aes256gcm"
 #include "cmptest.h"
 
+#if defined(HAVE_WMMINTRIN_H) || \
+    (defined(_MSC_VER) && (defined(_M_X64) || defined(_M_AMD64) || defined(_M_IX86)))
+
 static struct {
     const char *key_hex;
     const char *nonce_hex;
@@ -3075,9 +3078,6 @@ static struct {
         "39fa8fc1c78405e86326c97d428cd1c6"
     }
 };
-
-#if defined(HAVE_WMMINTRIN_H) || \
-    (defined(_MSC_VER) && (defined(_M_X64) || defined(_M_AMD64) || defined(_M_IX86)))
 
 int
 tv(void)
