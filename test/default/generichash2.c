@@ -2,7 +2,8 @@
 #define TEST_NAME "generichash2"
 #include "cmptest.h"
 
-int main(void)
+int
+main(void)
 {
 #define MAXLEN 64
     crypto_generichash_state st;
