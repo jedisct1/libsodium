@@ -4,15 +4,15 @@
 
 int main(void)
 {
-    unsigned char buf1[1000];
-    unsigned char buf2[1000];
-    char buf3[33];
-    unsigned char buf4[4];
-    unsigned char nonce[24];
-    char          nonce_hex[49];
-    const char *hex;
-    const char *hex_end;
-    size_t bin_len;
+    unsigned char  buf1[1000];
+    unsigned char  buf2[1000];
+    char           buf3[33];
+    unsigned char  buf4[4];
+    unsigned char  nonce[24];
+    char           nonce_hex[49];
+    const char    *hex;
+    const char    *hex_end;
+    size_t         bin_len;
 
     randombytes_buf(buf1, sizeof buf1);
     memcpy(buf2, buf1, sizeof buf2);
