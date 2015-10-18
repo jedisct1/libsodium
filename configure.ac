@@ -414,7 +414,7 @@ AC_COMPILE_IFELSE([AC_LANG_PROGRAM([[
 # error mode(TI) is a gcc extension
 #endif
 #if defined(__clang__) && !defined(__x86_64__)
-# error clang doesn't properly compile smult_curve25519_donna_c64.c
+# error clang does not properly compile smult_curve25519_donna_c64.c
 #endif
 #ifndef NATIVE_LITTLE_ENDIAN
 # error donna_c64 currently requires a little endian CPU
