@@ -64,9 +64,11 @@
     <Import Project="$(ProjectDir)$(ProjectName).props" />
   </ImportGroup>
   <ItemGroup>
-    <ClCompile Include="..\..\..\..\test\default\aead_aes256gcm.c" />
+    <ClCompile Include="..\..\..\..\test\default\aead_aes256gcm.c">
+      <ExcludedFromBuild>true</ExcludedFromBuild>
+    </ClCompile>
     <ClCompile Include="..\..\..\..\test\default\aead_chacha20poly1305.c">
-      <ExcludedFromBuild>false</ExcludedFromBuild>
+      <ExcludedFromBuild>true</ExcludedFromBuild>
     </ClCompile>
     <ClCompile Include="..\..\..\..\test\default\auth.c">
       <ExcludedFromBuild>true</ExcludedFromBuild>
