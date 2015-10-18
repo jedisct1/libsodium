@@ -1,5 +1,5 @@
 
-* Version 1.0.4 (not released yet)
+* Version 1.0.4
  - Support for AES256-GCM has been added. This requires
 a CPU with the aesni and pclmul extensions, and is accessible via the
 crypto_aead_aes256gcm_*() functions.
