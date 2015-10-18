@@ -838,7 +838,7 @@ crypto_aead_aes256gcm_abytes(void)
 size_t
 crypto_aead_aes256gcm_statebytes(void)
 {
-    return sizeof(crypto_aead_aes256gcm_state);
+    return (sizeof(crypto_aead_aes256gcm_state) + (size_t) 15U) & ~(size_t) 15U;
 }
 
 #else
