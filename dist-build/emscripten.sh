@@ -17,7 +17,7 @@ emcc -O3 --llvm-lto 1 --memory-init-file 0 $LDFLAGS $JS_EXPORTS_FLAGS \
   "${PREFIX}/lib/libsodium.a" -o "${PREFIX}/lib/libsodium.js" || exit 1
 
 if test "x$NODE" = x; then
-  for candidate in iojs node nodejs; do
+  for candidate in node nodejs; do
     case $($candidate --version 2>&1) in #(
       v*)
         NODE=$candidate
@@ -27,7 +27,7 @@ if test "x$NODE" = x; then
 fi
 
 if test "x$NODE" = x; then
-  echo 'io.js / node.js not found - test suite skipped.' >&2
+  echo 'node.js not found - test suite skipped.' >&2
   exit 1
 fi
 

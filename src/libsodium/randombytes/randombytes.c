@@ -81,12 +81,12 @@ randombytes_stir(void)
             } catch (e) {
                 try {
                     var crypto = require('crypto'),
-                        randomValueIOJS = function() {
+                        randomValueNodeJS = function() {
                             var buf = crypto.randomBytes(4);
                             return (buf[0] << 24 | buf[1] << 16 | buf[2] << 8 | buf[3]) >>> 0;
                         };
-                    randomValueIOJS();
-                    Module.getRandomValue = randomValueIOJS;
+                    randomValueNodeJS();
+                    Module.getRandomValue = randomValueNodeJS;
                 } catch (e) {
                     throw 'No secure random number generator found';
                 }
