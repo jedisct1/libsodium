@@ -507,7 +507,6 @@ crypto_aead_aes256gcm_encrypt_afternm(unsigned char *c, unsigned long long *clen
                                       const unsigned char *npub,
                                       const crypto_aead_aes256gcm_state *ctx_)
 {
-    unsigned char       H[16];
     const __m128i       rev = _mm_set_epi8(0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15);
     const context      *ctx = (const context *) ctx_;
     const __m128i      *rkeys = ctx->rkeys;
@@ -515,6 +514,7 @@ crypto_aead_aes256gcm_encrypt_afternm(unsigned char *c, unsigned long long *clen
     unsigned long long  i, j;
     unsigned long long  adlen_rnd64 = adlen & ~63ULL;
     unsigned long long  mlen_rnd128 = mlen & ~127ULL;
+    CRYPTO_ALIGN(16) unsigned char H[16];
     CRYPTO_ALIGN(16) unsigned char n2[16];
     CRYPTO_ALIGN(16) unsigned char T[16];
     CRYPTO_ALIGN(16) unsigned char accum[16];
@@ -623,7 +623,6 @@ crypto_aead_aes256gcm_decrypt_afternm(unsigned char *m, unsigned long long *mlen
                                       const unsigned char *npub,
                                       const crypto_aead_aes256gcm_state *ctx_)
 {
-    unsigned char       H[16];
     const __m128i       rev = _mm_set_epi8(0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15);
     const context      *ctx = (const context *) ctx_;
     const __m128i      *rkeys = ctx->rkeys;
@@ -632,6 +631,7 @@ crypto_aead_aes256gcm_decrypt_afternm(unsigned char *m, unsigned long long *mlen
     unsigned long long  adlen_rnd64 = adlen & ~63ULL;
     unsigned long long  mlen;
     unsigned long long  mlen_rnd128;
+    CRYPTO_ALIGN(16) unsigned char H[16];
     CRYPTO_ALIGN(16) unsigned char n2[16];
     CRYPTO_ALIGN(16) unsigned char T[16];
     CRYPTO_ALIGN(16) unsigned char accum[16];
