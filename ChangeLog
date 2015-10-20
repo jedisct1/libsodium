@@ -1,4 +1,11 @@
 
+* Version 1.0.5 (not released yet)
+ - Compilations issues on some platforms were fixed: missing alignment
+directives were added (required at least on RHEL-6/i386), and a
+workaround for a VRP bug on gcc/armv7 was added (required on OpenSUSE
+Tumbleweed).
+ - Javascript target: io.js is not supported any more. Use nodejs.
+
 * Version 1.0.4
  - Support for AES256-GCM has been added. This requires
 a CPU with the aesni and pclmul extensions, and is accessible via the
