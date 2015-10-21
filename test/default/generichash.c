@@ -1301,9 +1301,9 @@ tv(void)
     size_t         i = 0U;
     size_t         in_len;
 
-    key = sodium_malloc(crypto_generichash_KEYBYTES_MAX);
-    out = sodium_malloc(crypto_generichash_BYTES_MAX);
-    expected_out = sodium_malloc(crypto_generichash_BYTES_MAX);
+    key = (unsigned char *) sodium_malloc(crypto_generichash_KEYBYTES_MAX);
+    out = (unsigned char *) sodium_malloc(crypto_generichash_BYTES_MAX);
+    expected_out = (unsigned char *) sodium_malloc(crypto_generichash_BYTES_MAX);
     do {
         assert(strlen(tests[i].key_hex) == 2 * crypto_generichash_KEYBYTES_MAX);
         sodium_hex2bin(key, crypto_generichash_KEYBYTES_MAX,
@@ -1314,7 +1314,7 @@ tv(void)
                        tests[i].out_hex, strlen(tests[i].out_hex),
                        NULL, NULL, NULL);
         in_len = strlen(tests[i].in_hex) / 2;
-        in = sodium_malloc(in_len);
+        in = (unsigned char *) sodium_malloc(in_len);
         sodium_hex2bin(in, in_len, tests[i].in_hex, strlen(tests[i].in_hex),
                        NULL, NULL, NULL);
         crypto_generichash(out, crypto_generichash_BYTES_MAX,
