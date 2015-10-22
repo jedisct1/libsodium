@@ -57,14 +57,10 @@ extern "C" {
     BLAKE2B_PERSONALBYTES = 16
   };
 
-#ifndef __sun
-#pragma pack(push, 1)
+#ifdef __SUNPRO_C
+# pragma pack(1)
 #else
-# ifndef __GNU_C__
-#pragma pack(1)
-# else
-#pragma pack(push, 1)
-# endif
+# pragma pack(push, 1)
 #endif
 
   typedef struct blake2s_param_
@@ -137,14 +133,10 @@ typedef crypto_generichash_blake2b_state blake2b_state;
     size_t  buflen;
   } blake2bp_state;
 
-#ifndef __sun
-#pragma pack(pop)
+#ifdef __SUNPRO_C
+# pragma pack()
 #else
-# ifndef __GNU_C__
-#  pragma pack()
-# else
-#  pragma pack(pop)
-# endif
+# pragma pack(pop)
 #endif
 
   // Streaming API
