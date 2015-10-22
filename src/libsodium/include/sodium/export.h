@@ -20,7 +20,11 @@
 #  endif
 # else
 #  if defined(__SUNPRO_C)
-#   define SODIUM_EXPORT __attribute__ __global
+#   ifndef __GNU_C__
+#    define SODIUM_EXPORT __attribute__(visibility(__global))
+#   else
+#    define SODIUM_EXPORT __attribute__ __global
+#   endif
 #  elif defined(_MSG_VER)
 #   define SODIUM_EXPORT extern __declspec(dllexport)
 #  else
