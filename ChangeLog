@@ -1,9 +1,9 @@
 
 * Version 1.0.5 (not released yet)
  - Compilations issues on some platforms were fixed: missing alignment
-directives were added (required at least on RHEL-6/i386), and a
-workaround for a VRP bug on gcc/armv7 was added (required on OpenSUSE
-Tumbleweed).
+directives were added (required at least on RHEL-6/i386), a workaround
+for a VRP bug on gcc/armv7 was added (required on OpenSUSE Tumbleweed),
+and the library can now be compiled with the SunPro compiler.
  - Javascript target: io.js is not supported any more. Use nodejs.
 
 * Version 1.0.4
