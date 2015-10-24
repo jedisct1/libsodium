@@ -1,6 +1,6 @@
 
 * Version 1.0.5
- - Compilations issues on some platforms were fixed: missing alignment
+ - Compilation issues on some platforms were fixed: missing alignment
 directives were added (required at least on RHEL-6/i386), a workaround
 for a VRP bug on gcc/armv7 was added, and the library can now be compiled
 with the SunPro compiler.
