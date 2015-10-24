@@ -57,7 +57,7 @@ static inline int blake2b_clear_lastnode( blake2b_state *S )
   return 0;
 }
 #endif
-/* Some helper functions, not necessarily useful */
+
 static inline int blake2b_set_lastblock( blake2b_state *S )
 {
   if( S->last_node ) blake2b_set_lastnode( S );
@@ -389,7 +389,7 @@ int blake2b_final( blake2b_state *S, uint8_t *out, uint8_t outlen )
   uint8_t buffer[BLAKE2B_OUTBYTES];
   int     i;
 
-  if( outlen > BLAKE2B_OUTBYTES ) {
+  if( !outlen || outlen > BLAKE2B_OUTBYTES ) {
     return -1;
   }
   if( S->buflen > BLAKE2B_BLOCKBYTES )
@@ -418,13 +418,13 @@ int blake2b( uint8_t *out, const void *in, const void *key, const uint8_t outlen
   blake2b_state S[1];
 
   /* Verify parameters */
-  if ( NULL == in && inlen > 0 ) return -1;
+  if( NULL == in && inlen > 0 ) return -1;
 
-  if ( NULL == out ) return -1;
-
-  if( NULL == key && keylen > 0 ) return -1;
+  if( NULL == out ) return -1;
 
   if( !outlen || outlen > BLAKE2B_OUTBYTES ) return -1;
+
+  if( NULL == key && keylen > 0 ) return -1;
 
   if( keylen > BLAKE2B_KEYBYTES ) return -1;
 
@@ -448,11 +448,15 @@ int blake2b_salt_personal( uint8_t *out, const void *in, const void *key, const 
   blake2b_state S[1];
 
   /* Verify parameters */
-  if ( NULL == in ) return -1;
+  if( NULL == in && inlen > 0 ) return -1;
 
-  if ( NULL == out ) return -1;
+  if( NULL == out ) return -1;
 
-  if( NULL == key ) keylen = 0;
+  if( !outlen || outlen > BLAKE2B_OUTBYTES ) return -1;
+
+  if( NULL == key && keylen > 0 ) return -1;
+
+  if( keylen > BLAKE2B_KEYBYTES ) return -1;
 
   if( keylen > 0 )
   {
