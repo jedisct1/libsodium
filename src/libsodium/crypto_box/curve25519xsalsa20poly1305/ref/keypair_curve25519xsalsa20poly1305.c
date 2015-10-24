@@ -4,6 +4,7 @@
 #include "crypto_scalarmult_curve25519.h"
 #include "api.h"
 #include "randombytes.h"
+#include "utils.h"
 
 int crypto_box_seed_keypair(
   unsigned char *pk,
@@ -14,6 +15,7 @@ int crypto_box_seed_keypair(
   unsigned char hash[64];
   crypto_hash_sha512(hash,seed,32);
   memmove(sk,hash,32);
+  sodium_memzero(hash, sizeof hash);
   return crypto_scalarmult_curve25519_base(pk,sk);
 }
 
