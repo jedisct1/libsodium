@@ -19,12 +19,16 @@ void tv(void)
             "0100000000000000" },
           { "000102030405060708090a0b0c0d0e0f101112131415161718191a1b1c1d1e1f",
             "0001020304050607" } };
-    unsigned char key[crypto_stream_chacha20_KEYBYTES];
-    unsigned char nonce[crypto_stream_chacha20_NONCEBYTES];
-    unsigned char out[160];
-    char          out_hex[160 * 2 + 1];
-    size_t        i = 0U;
+    unsigned char  key[crypto_stream_chacha20_KEYBYTES];
+    unsigned char  nonce[crypto_stream_chacha20_NONCEBYTES];
+    unsigned char *part;
+    unsigned char  out[160];
+    unsigned char  zero[160];
+    char           out_hex[160 * 2 + 1];
+    size_t         i = 0U;
+    size_t         plen;
 
+    memset(zero, 0, sizeof zero);
     do {
         sodium_hex2bin((unsigned char *)key, sizeof key, tests[i].key_hex,
                        strlen(tests[i].key_hex), NULL, NULL, NULL);
@@ -33,6 +37,14 @@ void tv(void)
         crypto_stream_chacha20(out, sizeof out, nonce, key);
         sodium_bin2hex(out_hex, sizeof out_hex, out, sizeof out);
         printf("[%s]\n", out_hex);
+        for (plen = 1U; plen < sizeof out; plen++) {
+            part = sodium_malloc(plen);
+            crypto_stream_chacha20_xor(part, out, plen, nonce, key);
+            if (memcmp(part, zero, plen) != 0) {
+                printf("Failed with length %lu\n", (unsigned long) plen);
+            }
+            sodium_free(part);
+        }
     } while (++i < (sizeof tests) / (sizeof tests[0]));
 
     randombytes_buf(out, sizeof out);
@@ -85,12 +97,16 @@ void tv_ietf(void)
           { "000102030405060708090a0b0c0d0e0f101112131415161718191a1b1c1d1e1f",
             "000000090000004a00000000",
             1U }};
-    unsigned char key[crypto_stream_chacha20_KEYBYTES];
-    unsigned char nonce[crypto_stream_chacha20_IETF_NONCEBYTES];
-    unsigned char out[160];
-    char          out_hex[160 * 2 + 1];
-    size_t        i = 0U;
+    unsigned char  key[crypto_stream_chacha20_KEYBYTES];
+    unsigned char  nonce[crypto_stream_chacha20_IETF_NONCEBYTES];
+    unsigned char *part;
+    unsigned char  out[160];
+    unsigned char  zero[160];
+    char           out_hex[160 * 2 + 1];
+    size_t         i = 0U;
+    size_t         plen;
 
+    memset(zero, 0, sizeof zero);
     do {
         sodium_hex2bin((unsigned char *)key, sizeof key, tests[i].key_hex,
                        strlen(tests[i].key_hex), ": ", NULL, NULL);
@@ -100,6 +116,14 @@ void tv_ietf(void)
         crypto_stream_chacha20_ietf_xor_ic(out, out, sizeof out, nonce, tests[i].ic, key);
         sodium_bin2hex(out_hex, sizeof out_hex, out, sizeof out);
         printf("[%s]\n", out_hex);
+        for (plen = 1U; plen < sizeof out; plen++) {
+            part = sodium_malloc(plen);
+            crypto_stream_chacha20_ietf_xor_ic(part, out, plen, nonce, tests[i].ic, key);
+            if (memcmp(part, zero, plen) != 0) {
+                printf("Failed with length %lu\n", (unsigned long) plen);
+            }
+            sodium_free(part);
+        }
     } while (++i < (sizeof tests) / (sizeof tests[0]));
 
     randombytes_buf(out, sizeof out);
