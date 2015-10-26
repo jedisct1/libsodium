@@ -131,6 +131,7 @@ chacha_encrypt_bytes(chacha_ctx *x, const u8 *m, u8 *c, unsigned long long bytes
 
     for (;;) {
         if (bytes < 64) {
+            memset(tmp, 0, 64);
             for (i = 0; i < bytes; ++i) {
                 tmp[i] = m[i];
             }
