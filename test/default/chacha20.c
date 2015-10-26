@@ -38,7 +38,7 @@ void tv(void)
         sodium_bin2hex(out_hex, sizeof out_hex, out, sizeof out);
         printf("[%s]\n", out_hex);
         for (plen = 1U; plen < sizeof out; plen++) {
-            part = sodium_malloc(plen);
+            part = (unsigned char *) sodium_malloc(plen);
             crypto_stream_chacha20_xor(part, out, plen, nonce, key);
             if (memcmp(part, zero, plen) != 0) {
                 printf("Failed with length %lu\n", (unsigned long) plen);
@@ -117,7 +117,7 @@ void tv_ietf(void)
         sodium_bin2hex(out_hex, sizeof out_hex, out, sizeof out);
         printf("[%s]\n", out_hex);
         for (plen = 1U; plen < sizeof out; plen++) {
-            part = sodium_malloc(plen);
+            part = (unsigned char *) sodium_malloc(plen);
             crypto_stream_chacha20_ietf_xor_ic(part, out, plen, nonce, tests[i].ic, key);
             if (memcmp(part, zero, plen) != 0) {
                 printf("Failed with length %lu\n", (unsigned long) plen);
