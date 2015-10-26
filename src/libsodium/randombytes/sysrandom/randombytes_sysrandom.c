@@ -1,4 +1,5 @@
 
+#include <stdlib.h>
 #include <sys/types.h>
 #ifndef _WIN32
 # include <sys/stat.h>
@@ -13,7 +14,6 @@
 #include <fcntl.h>
 #include <limits.h>
 #include <stdint.h>
-#include <stdlib.h>
 #include <string.h>
 #ifndef _WIN32
 # include <unistd.h>
@@ -120,7 +120,9 @@ randombytes_sysrandom_random_dev_open(void)
         fd = open(*device, O_RDONLY);
         if (fd != -1) {
             if (fstat(fd, &st) == 0 &&
-# ifdef S_ISNAM
+# ifdef __COMPCERT__
+                1
+# elif defined(S_ISNAM)
                 (S_ISNAM(st.st_mode) || S_ISCHR(st.st_mode))
 # else
                 S_ISCHR(st.st_mode)

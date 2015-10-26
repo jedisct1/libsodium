@@ -24,10 +24,10 @@
  * SUCH DAMAGE.
  */
 
+#include <stdlib.h>
 #include <sys/types.h>
 
 #include <stdint.h>
-#include <stdlib.h>
 #include <string.h>
 
 #include "crypto_auth_hmacsha256.h"
