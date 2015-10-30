@@ -642,10 +642,14 @@ crypto_aead_aes256gcm_decrypt_afternm(unsigned char *m, unsigned long long *mlen
     if (clen > 16ULL * (1ULL << 32) - 16ULL) {
         abort();
     }
-    mlen = clen - 16;
     if (mlen_p != NULL) {
         *mlen_p = 0U;
     }
+    if (clen < 16) {
+        return -1;
+    }
+    mlen = clen - 16;
+    
     memcpy(&n2[0], npub, 12);
     *(uint32_t *) &n2[12] = 0x01000000;
     aesni_encrypt1(T, _mm_load_si128((const __m128i *) n2), rkeys);
