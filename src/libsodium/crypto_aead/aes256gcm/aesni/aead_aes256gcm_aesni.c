@@ -214,8 +214,12 @@ addmul(unsigned char *c, const unsigned char *a, unsigned int xlen, const unsign
         A = _mm_loadu_si128((const __m128i *) a);
     } else {
         CRYPTO_ALIGN(16) unsigned char padded[16];
+        unsigned int i;
+
         memset(padded, 0, 16);
-        memcpy(padded, a, xlen);
+        for (i = 0; i < xlen; i++) {
+            padded[i] = a[i];
+        }
         A = _mm_load_si128((const __m128i *) padded);
     }
     A = _mm_shuffle_epi8(A, rev);
