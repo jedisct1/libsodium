@@ -638,7 +638,6 @@ crypto_aead_aes256gcm_decrypt_afternm(unsigned char *m, unsigned long long *mlen
     CRYPTO_ALIGN(16) unsigned char fb[16];
 
     (void) nsec;
-    memcpy(H, ctx->H, sizeof H);
     if (clen > 16ULL * (1ULL << 32) - 16ULL) {
         abort();
     }
@@ -649,7 +648,7 @@ crypto_aead_aes256gcm_decrypt_afternm(unsigned char *m, unsigned long long *mlen
         return -1;
     }
     mlen = clen - 16;
-    
+
     memcpy(&n2[0], npub, 12);
     *(uint32_t *) &n2[12] = 0x01000000;
     aesni_encrypt1(T, _mm_load_si128((const __m128i *) n2), rkeys);
@@ -657,6 +656,7 @@ crypto_aead_aes256gcm_decrypt_afternm(unsigned char *m, unsigned long long *mlen
     (*(uint64_t *) &fb[0]) = _bswap64((uint64_t)(8 * adlen));
     (*(uint64_t *) &fb[8]) = _bswap64((uint64_t)(8 * mlen));
 
+    memcpy(H, ctx->H, sizeof H);
     Hv = _mm_shuffle_epi8(_mm_load_si128((const __m128i *) H), rev);
     _mm_store_si128((__m128i *) H, Hv);
     H2v = mulv(Hv, Hv);
