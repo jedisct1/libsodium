@@ -8,6 +8,7 @@
  */
 
 #include <stdint.h>
+#include <stdlib.h>
 #include <string.h>
 
 #include "api.h"
@@ -266,6 +267,9 @@ crypto_stream_chacha20_ietf_ref(unsigned char *c, unsigned long long clen,
 
     if (!clen) {
         return 0;
+    }
+    if (clen > 64ULL * (1ULL << 32) - 64ULL) {
+        abort();
     }
     (void) sizeof(int[crypto_stream_chacha20_KEYBYTES == 256 / 8 ? 1 : -1]);
     chacha_keysetup(&ctx, k);
