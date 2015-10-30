@@ -3146,6 +3146,20 @@ tv(void)
         }
         decrypted = (unsigned char *) sodium_malloc(message_len);
         if (crypto_aead_aes256gcm_decrypt(decrypted, &found_message_len,
+                                          NULL, ciphertext,
+                                          randombytes_uniform(ciphertext_len),
+                                          ad, ad_len, nonce, key) != -1) {
+            printf("Verification of test vector #%u after truncation succeeded\n",
+                   (unsigned int) i);
+        }
+        if (crypto_aead_aes256gcm_decrypt(decrypted, &found_message_len,
+                                          NULL, ciphertext,
+                                          randombytes_uniform(crypto_aead_aes256gcm_ABYTES),
+                                          ad, ad_len, nonce, key) != -1) {
+            printf("Verification of test vector #%u with a truncated tag failed\n",
+                   (unsigned int) i);
+        }
+        if (crypto_aead_aes256gcm_decrypt(decrypted, &found_message_len,
                                           NULL, ciphertext, ciphertext_len,
                                           ad, ad_len, nonce, key) != 0) {
             printf("Verification of test vector #%u failed\n", (unsigned int) i);
