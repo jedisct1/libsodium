@@ -21,6 +21,12 @@ SODIUM_EXPORT
 int sodium_runtime_has_sse3(void);
 
 SODIUM_EXPORT
+int sodium_runtime_has_ssse3(void);
+
+SODIUM_EXPORT
+int sodium_runtime_has_sse41(void);
+
+SODIUM_EXPORT
 int sodium_runtime_has_pclmul(void);
 
 SODIUM_EXPORT

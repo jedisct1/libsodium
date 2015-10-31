@@ -17,9 +17,9 @@ ISODATE=`date +%Y-%m-%d`
 AC_SUBST(ISODATE)
 
 SODIUM_LIBRARY_VERSION_MAJOR=7
-SODIUM_LIBRARY_VERSION_MINOR=6
+SODIUM_LIBRARY_VERSION_MINOR=7
 DLL_VERSION=6
-SODIUM_LIBRARY_VERSION=16:0:3
+SODIUM_LIBRARY_VERSION=17:0:4
 #                       | | |
 #                +------+ | +---+
 #                |        |     |
