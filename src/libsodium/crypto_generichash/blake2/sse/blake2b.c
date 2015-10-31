@@ -30,12 +30,6 @@
 #if defined(HAVE_SSE41)
 #include <smmintrin.h>
 #endif
-#if defined(HAVE_AVX)
-#include <immintrin.h>
-#endif
-#if defined(HAVE_XOP)
-#include <x86intrin.h>
-#endif
 
 #include "blake2b-round.h"
 
@@ -256,7 +250,7 @@ static inline int blake2b_compress( blake2b_state *S, const uint8_t block[BLAKE2
   __m128i row4l, row4h;
   __m128i b0, b1;
   __m128i t0, t1;
-#if defined(HAVE_SSSE3) && !defined(HAVE_XOP)
+#if defined(HAVE_SSSE3)
   const __m128i r16 = _mm_setr_epi8( 2, 3, 4, 5, 6, 7, 0, 1, 10, 11, 12, 13, 14, 15, 8, 9 );
   const __m128i r24 = _mm_setr_epi8( 3, 4, 5, 6, 7, 0, 1, 2, 11, 12, 13, 14, 15, 8, 9, 10 );
 #endif
