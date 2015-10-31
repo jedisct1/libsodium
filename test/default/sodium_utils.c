@@ -1,4 +1,3 @@
-
 #define TEST_NAME "sodium_utils"
 #include "cmptest.h"
 
@@ -6,6 +5,8 @@ int main(void)
 {
     unsigned char  buf1[1000];
     unsigned char  buf2[1000];
+    unsigned char  buf1_rev[1000];
+    unsigned char  buf2_rev[1000];
     char           buf3[33];
     unsigned char  buf4[4];
     unsigned char  nonce[24];
@@ -13,7 +14,8 @@ int main(void)
     const char    *hex;
     const char    *hex_end;
     size_t         bin_len;
-    int            i;
+    unsigned int   i;
+    unsigned int   j;
 
     randombytes_buf(buf1, sizeof buf1);
     memcpy(buf2, buf1, sizeof buf2);
@@ -84,11 +86,15 @@ int main(void)
     sodium_increment(nonce, sizeof nonce);
     printf("%s\n", sodium_bin2hex(nonce_hex, sizeof nonce_hex,
                                   nonce, sizeof nonce));
-    for (i = 0; i < 1000; i++) {
+    for (i = 0U; i < 1000U; i++) {
         bin_len = (size_t) randombytes_uniform(sizeof buf1);
         randombytes_buf(buf1, bin_len);
         randombytes_buf(buf2, bin_len);
-        if (memcmp(buf1, buf2, bin_len) *
+        for (j = 0U; j < bin_len; j++) {
+            buf1_rev[bin_len - 1 - j] = buf1[j];
+            buf2_rev[bin_len - 1 - j] = buf2[j];
+        }
+        if (memcmp(buf1_rev, buf2_rev, bin_len) *
             sodium_compare(buf1, buf2, bin_len) < 0) {
             printf("sodium_compare() failure with length=%u\n",
                    (unsigned int) bin_len);
