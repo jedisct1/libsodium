@@ -315,6 +315,10 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="src\libsodium\crypto_generichash\blake2\ref\blake2b-load-sse2.h" />
+    <ClInclude Include="src\libsodium\crypto_generichash\blake2\ref\blake2b-load-sse41.h" />
+    <ClInclude Include="src\libsodium\crypto_generichash\blake2\ref\blake2b-round.h" />
+    <ClInclude Include="src\libsodium\crypto_onetimeauth\poly1305\onetimeauth_poly1305.h" />
     <ClInclude Include="src\libsodium\include\sodium.h" />
     <ClInclude Include="src\libsodium\include\sodium\core.h" />
     <ClInclude Include="src\libsodium\include\sodium\crypto_aead_aes256gcm.h" />
@@ -400,6 +404,9 @@
     <ClCompile Include="src\libsodium\crypto_core\salsa20\core_salsa20_api.c" />
     <ClCompile Include="src\libsodium\crypto_core\salsa20\ref\core_salsa20.c" />
     <ClCompile Include="src\libsodium\crypto_generichash\blake2\generichash_blake2_api.c" />
+    <ClCompile Include="src\libsodium\crypto_generichash\blake2\ref\blake2b-compress-ref.c" />
+    <ClCompile Include="src\libsodium\crypto_generichash\blake2\ref\blake2b-compress-sse41.c" />
+    <ClCompile Include="src\libsodium\crypto_generichash\blake2\ref\blake2b-compress-ssse3.c" />
     <ClCompile Include="src\libsodium\crypto_generichash\blake2\ref\blake2b-ref.c" />
     <ClCompile Include="src\libsodium\crypto_generichash\blake2\ref\generichash_blake2b.c" />
     <ClCompile Include="src\libsodium\crypto_generichash\crypto_generichash.c" />
