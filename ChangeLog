@@ -1,4 +1,27 @@
 
+* Version 1.0.6 (not released yet)
+ - Optimized implementations of Blake2 have been added for modern
+Intel platforms. crypto_generichash() is now faster than MD5 and SHA1
+implementations while being far more secure.
+ - Functions for which the return value should be checked have been
+tagged with `__attribute__ ((warn_unused_result))`. This will
+intentionally break code compiled with `-Werror` that didn't bother
+checking critical return values.
+ - The `crypto_sign_edwards25519sha512batch_*()` functions have been
+tagged as deprecated.
+ - Undocumented symbols that were exported, but were only useful for
+internal purposes have been removed or made private:
+`sodium_runtime_get_cpu_features()`, the implementation-specific
+`crypto_onetimeauth_poly1305_donna()` symbols,
+`crypto_onetimeauth_poly1305_set_implementation()`,
+`crypto_onetimeauth_poly1305_implementation_name()` and
+`crypto_onetimeauth_pick_best_implementation()`.
+ - The previous changes should not break actual applications, but to be
+safe, the library version major was incremented.
+ - `sodium_runtime_has_ssse3()` and `sodium_runtime_has_sse41()` have
+been added.
+ - The library can now be compiled with the CompCert compiler.
+
 * Version 1.0.5
  - Compilation issues on some platforms were fixed: missing alignment
 directives were added (required at least on RHEL-6/i386), a workaround
