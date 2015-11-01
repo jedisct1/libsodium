@@ -10,26 +10,26 @@ typedef crypto_onetimeauth_poly1305_state poly1305_context;
 extern struct crypto_onetimeauth_poly1305_implementation
     crypto_onetimeauth_poly1305_donna_implementation;
 
-const char *crypto_onetimeauth_poly1305_donna_implementation_name(void);
+static const char *crypto_onetimeauth_poly1305_donna_implementation_name(void);
 
-int crypto_onetimeauth_poly1305_donna(unsigned char *out,
-                                      const unsigned char *in,
-                                      unsigned long long inlen,
-                                      const unsigned char *k);
-
-int crypto_onetimeauth_poly1305_donna_verify(const unsigned char *h,
+static int crypto_onetimeauth_poly1305_donna(unsigned char *out,
                                              const unsigned char *in,
                                              unsigned long long inlen,
                                              const unsigned char *k);
 
-int crypto_onetimeauth_poly1305_donna_init(crypto_onetimeauth_poly1305_state *state,
-                                           const unsigned char *key);
+static int crypto_onetimeauth_poly1305_donna_verify(const unsigned char *h,
+                                                    const unsigned char *in,
+                                                    unsigned long long inlen,
+                                                    const unsigned char *k);
 
-int crypto_onetimeauth_poly1305_donna_update(crypto_onetimeauth_poly1305_state *state,
-                                             const unsigned char *in,
-                                             unsigned long long inlen);
+static int crypto_onetimeauth_poly1305_donna_init(crypto_onetimeauth_poly1305_state *state,
+                                                  const unsigned char *key);
 
-int crypto_onetimeauth_poly1305_donna_final(crypto_onetimeauth_poly1305_state *state,
-                                            unsigned char *out);
+static int crypto_onetimeauth_poly1305_donna_update(crypto_onetimeauth_poly1305_state *state,
+                                                    const unsigned char *in,
+                                                    unsigned long long inlen);
+
+static int crypto_onetimeauth_poly1305_donna_final(crypto_onetimeauth_poly1305_state *state,
+                                                   unsigned char *out);
 
 #endif /* __POLY1305_DONNA_H__ */

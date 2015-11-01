@@ -54,32 +54,9 @@ SODIUM_EXPORT
 int crypto_onetimeauth_poly1305_final(crypto_onetimeauth_poly1305_state *state,
                                       unsigned char *out);
 
-const char *crypto_onetimeauth_poly1305_implementation_name(void);
-
 /* ------------------------------------------------------------------------- */
 
-typedef struct crypto_onetimeauth_poly1305_implementation {
-    const char *(*implementation_name)(void);
-    int         (*onetimeauth)(unsigned char *out,
-                               const unsigned char *in,
-                               unsigned long long inlen,
-                               const unsigned char *k);
-    int         (*onetimeauth_verify)(const unsigned char *h,
-                                      const unsigned char *in,
-                                      unsigned long long inlen,
-                                      const unsigned char *k);
-    int         (*onetimeauth_init)(crypto_onetimeauth_poly1305_state *state,
-                                    const unsigned char *key);
-    int         (*onetimeauth_update)(crypto_onetimeauth_poly1305_state *state,
-                                      const unsigned char *in,
-                                      unsigned long long inlen);
-    int         (*onetimeauth_final)(crypto_onetimeauth_poly1305_state *state,
-                                     unsigned char *out);
-} crypto_onetimeauth_poly1305_implementation;
-
-int crypto_onetimeauth_poly1305_set_implementation(crypto_onetimeauth_poly1305_implementation *impl);
-
-crypto_onetimeauth_poly1305_implementation *crypto_onetimeauth_pick_best_implementation(void);
+int _crypto_onetimeauth_poly1305_pick_best_implementation(void);
 
 #ifdef __cplusplus
 }

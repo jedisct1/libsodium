@@ -6,6 +6,7 @@
 #else
 # include "poly1305_donna32.h"
 #endif
+#include "../onetimeauth_poly1305.h"
 
 static void
 poly1305_update(poly1305_context *ctx, const unsigned char *m,
@@ -45,7 +46,7 @@ poly1305_update(poly1305_context *ctx, const unsigned char *m,
     }
 }
 
-int
+static int
 crypto_onetimeauth_poly1305_donna(unsigned char *out, const unsigned char *m,
                                   unsigned long long inlen,
                                   const unsigned char *key)
@@ -58,7 +59,7 @@ crypto_onetimeauth_poly1305_donna(unsigned char *out, const unsigned char *m,
     return 0;
 }
 
-int
+static int
 crypto_onetimeauth_poly1305_donna_init(crypto_onetimeauth_poly1305_state *state,
                                        const unsigned char *key)
 {
@@ -67,7 +68,7 @@ crypto_onetimeauth_poly1305_donna_init(crypto_onetimeauth_poly1305_state *state,
     return 0;
 }
 
-int
+static int
 crypto_onetimeauth_poly1305_donna_update(crypto_onetimeauth_poly1305_state *state,
                                          const unsigned char *in,
                                          unsigned long long inlen)
@@ -77,7 +78,7 @@ crypto_onetimeauth_poly1305_donna_update(crypto_onetimeauth_poly1305_state *stat
     return 0;
 }
 
-int
+static int
 crypto_onetimeauth_poly1305_donna_final(crypto_onetimeauth_poly1305_state *state,
                                         unsigned char *out)
 {
@@ -86,17 +87,8 @@ crypto_onetimeauth_poly1305_donna_final(crypto_onetimeauth_poly1305_state *state
     return 0;
 }
 
-/* LCOV_EXCL_START */
-const char *
-crypto_onetimeauth_poly1305_donna_implementation_name(void)
-{
-    return POLY1305_IMPLEMENTATION_NAME;
-}
-/* LCOV_EXCL_STOP */
-
 struct crypto_onetimeauth_poly1305_implementation
 crypto_onetimeauth_poly1305_donna_implementation = {
-    SODIUM_C99(.implementation_name =) crypto_onetimeauth_poly1305_donna_implementation_name,
     SODIUM_C99(.onetimeauth =) crypto_onetimeauth_poly1305_donna,
     SODIUM_C99(.onetimeauth_verify =) crypto_onetimeauth_poly1305_donna_verify,
     SODIUM_C99(.onetimeauth_init =) crypto_onetimeauth_poly1305_donna_init,

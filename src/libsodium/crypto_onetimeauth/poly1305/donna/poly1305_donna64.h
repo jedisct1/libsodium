@@ -2,8 +2,6 @@
         poly1305 implementation using 64 bit * 64 bit = 128 bit multiplication and 128 bit addition
 */
 
-#define POLY1305_IMPLEMENTATION_NAME "donna64"
-
 #if defined(__SIZEOF_INT128__)
 typedef unsigned __int128 uint128_t;
 #else

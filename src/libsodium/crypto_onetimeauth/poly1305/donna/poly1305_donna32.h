@@ -2,8 +2,6 @@
         poly1305 implementation using 32 bit * 32 bit = 64 bit multiplication and 64 bit addition
 */
 
-#define POLY1305_IMPLEMENTATION_NAME "donna32"
-
 #if defined(_MSC_VER)
 # define POLY1305_NOINLINE __declspec(noinline)
 #elif defined(__GNUC__)
