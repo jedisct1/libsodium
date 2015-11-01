@@ -16,7 +16,7 @@ internal purposes have been removed or made private:
 `crypto_onetimeauth_poly1305_set_implementation()`,
 `crypto_onetimeauth_poly1305_implementation_name()` and
 `crypto_onetimeauth_pick_best_implementation()`.
- - `sodium_compare()` now works as documentaed, and compares numbers
+ - `sodium_compare()` now works as documented, and compares numbers
 in little-endian format instead of behaving like `memcmp()`.
  - The previous changes should not break actual applications, but to be
 safe, the library version major was incremented.
