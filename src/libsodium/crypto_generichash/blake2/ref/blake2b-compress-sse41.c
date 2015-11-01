@@ -3,7 +3,6 @@
 #define BLAKE2_USE_SSE41
 
 #include <stdint.h>
-#include <stdlib.h>
 #include <string.h>
 
 #if defined(HAVE_EMMINTRIN_H) && defined(HAVE_TMMINTRIN_H) && defined(HAVE_SMMINTRIN_H)

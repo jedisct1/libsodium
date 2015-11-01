@@ -2,7 +2,6 @@
 #define BLAKE2_USE_SSSE2
 
 #include <stdint.h>
-#include <stdlib.h>
 #include <string.h>
 
 #if defined(HAVE_EMMINTRIN_H) && defined(HAVE_TMMINTRIN_H)
