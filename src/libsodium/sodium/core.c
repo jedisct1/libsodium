@@ -14,7 +14,7 @@ sodium_init(void)
     if (initialized != 0) {
         return 1;
     }
-    sodium_runtime_get_cpu_features();
+    _sodium_runtime_get_cpu_features();
     randombytes_stir();
     _sodium_alloc_init();
     _crypto_generichash_blake2b_pick_best_implementation();

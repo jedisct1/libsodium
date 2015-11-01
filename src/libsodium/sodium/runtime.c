@@ -136,7 +136,7 @@ _sodium_runtime_intel_cpu_features(CPUFeatures * const cpu_features)
 }
 
 int
-sodium_runtime_get_cpu_features(void)
+_sodium_runtime_get_cpu_features(void)
 {
     int ret = -1;
 
