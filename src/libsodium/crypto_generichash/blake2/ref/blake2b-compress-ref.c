@@ -1,6 +1,4 @@
 
-#define BLAKE2_USE_SSSE2
-
 #include <stdint.h>
 #include <string.h>
 

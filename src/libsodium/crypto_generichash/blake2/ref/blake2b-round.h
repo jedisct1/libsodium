@@ -14,8 +14,8 @@
 #ifndef blake2b_round_H
 #define blake2b_round_H
 
-#ifndef BLAKE2_USE_SSSE2
-# error BLAKE2_USE_SSSE2 must be defined in order to use this file
+#ifndef BLAKE2_USE_SSSE3
+# error BLAKE2_USE_SSSE3 must be defined in order to use this file
 #endif
 
 #define LOADU(p)  _mm_loadu_si128( (const __m128i *)(const void *)(p) )

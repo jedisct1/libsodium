@@ -1,5 +1,5 @@
 
-#define BLAKE2_USE_SSSE2
+#define BLAKE2_USE_SSSE3
 #define BLAKE2_USE_SSE41
 
 #include <stdint.h>
