@@ -393,7 +393,7 @@ _free_aligned(unsigned char * const ptr, const size_t size)
 }
 
 static unsigned char *
-_unprotected_ptr_from_user_ptr(const void *ptr)
+_unprotected_ptr_from_user_ptr(void * const ptr)
 {
     uintptr_t      unprotected_ptr_u;
     unsigned char *canary_ptr;
