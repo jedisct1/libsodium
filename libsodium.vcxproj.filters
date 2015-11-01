@@ -281,15 +281,6 @@
     <ClCompile Include="src\libsodium\crypto_onetimeauth\poly1305\onetimeauth_poly1305.c">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="src\libsodium\crypto_onetimeauth\poly1305\onetimeauth_poly1305_api.c">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="src\libsodium\crypto_onetimeauth\poly1305\onetimeauth_poly1305_try.c">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="src\libsodium\crypto_onetimeauth\poly1305\donna\verify_poly1305_donna.c">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="src\libsodium\crypto_scalarmult\crypto_scalarmult.c">
       <Filter>Source Files</Filter>
     </ClCompile>
