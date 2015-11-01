@@ -1,4 +1,5 @@
 
+#include "crypto_verify_16.h"
 #include "utils.h"
 #include "poly1305_donna.h"
 #ifdef HAVE_TI_MODE
@@ -85,6 +86,18 @@ crypto_onetimeauth_poly1305_donna_final(crypto_onetimeauth_poly1305_state *state
     poly1305_finish((poly1305_context *) state, out);
 
     return 0;
+}
+
+static int
+crypto_onetimeauth_poly1305_donna_verify(const unsigned char *h,
+                                         const unsigned char *in,
+                                         unsigned long long inlen,
+                                         const unsigned char *k)
+{
+    unsigned char correct[16];
+
+    crypto_onetimeauth_poly1305_donna(correct,in,inlen,k);
+    return crypto_verify_16(h,correct);
 }
 
 struct crypto_onetimeauth_poly1305_implementation
