@@ -39,7 +39,8 @@ SODIUM_EXPORT
 int crypto_onetimeauth_poly1305_verify(const unsigned char *h,
                                        const unsigned char *in,
                                        unsigned long long inlen,
-                                       const unsigned char *k);
+                                       const unsigned char *k)
+            __attribute__ ((warn_unused_result));
 
 SODIUM_EXPORT
 int crypto_onetimeauth_poly1305_init(crypto_onetimeauth_poly1305_state *state,

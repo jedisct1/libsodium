@@ -44,7 +44,8 @@ SODIUM_EXPORT
 int randombytes_set_implementation(randombytes_implementation *impl);
 
 SODIUM_EXPORT
-const char *randombytes_implementation_name(void);
+const char *randombytes_implementation_name(void)
+            __attribute__ ((warn_unused_result));
 
 /* -- NaCl compatibility interface -- */
 

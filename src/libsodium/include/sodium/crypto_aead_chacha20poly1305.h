@@ -47,7 +47,8 @@ int crypto_aead_chacha20poly1305_decrypt(unsigned char *m,
                                          const unsigned char *ad,
                                          unsigned long long adlen,
                                          const unsigned char *npub,
-                                         const unsigned char *k);
+                                         const unsigned char *k)
+            __attribute__ ((warn_unused_result));
 
 #define crypto_aead_chacha20poly1305_IETF_NPUBBYTES 12U
 SODIUM_EXPORT
@@ -73,7 +74,9 @@ int crypto_aead_chacha20poly1305_ietf_decrypt(unsigned char *m,
                                               const unsigned char *ad,
                                               unsigned long long adlen,
                                               const unsigned char *npub,
-                                              const unsigned char *k);
+                                              const unsigned char *k)
+            __attribute__ ((warn_unused_result));
+
 #ifdef __cplusplus
 }
 #endif

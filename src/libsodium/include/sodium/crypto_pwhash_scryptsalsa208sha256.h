@@ -48,25 +48,29 @@ int crypto_pwhash_scryptsalsa208sha256(unsigned char * const out,
                                        unsigned long long passwdlen,
                                        const unsigned char * const salt,
                                        unsigned long long opslimit,
-                                       size_t memlimit);
+                                       size_t memlimit)
+            __attribute__ ((warn_unused_result));
 
 SODIUM_EXPORT
 int crypto_pwhash_scryptsalsa208sha256_str(char out[crypto_pwhash_scryptsalsa208sha256_STRBYTES],
                                            const char * const passwd,
                                            unsigned long long passwdlen,
                                            unsigned long long opslimit,
-                                           size_t memlimit);
+                                           size_t memlimit)
+            __attribute__ ((warn_unused_result));
 
 SODIUM_EXPORT
 int crypto_pwhash_scryptsalsa208sha256_str_verify(const char str[crypto_pwhash_scryptsalsa208sha256_STRBYTES],
                                                   const char * const passwd,
-                                                  unsigned long long passwdlen);
+                                                  unsigned long long passwdlen)
+            __attribute__ ((warn_unused_result));
 
 SODIUM_EXPORT
 int crypto_pwhash_scryptsalsa208sha256_ll(const uint8_t * passwd, size_t passwdlen,
                                           const uint8_t * salt, size_t saltlen,
                                           uint64_t N, uint32_t r, uint32_t p,
-                                          uint8_t * buf, size_t buflen);
+                                          uint8_t * buf, size_t buflen)
+            __attribute__ ((warn_unused_result));
 
 #ifdef __cplusplus
 }

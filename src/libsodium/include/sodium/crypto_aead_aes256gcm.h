@@ -54,7 +54,8 @@ int crypto_aead_aes256gcm_decrypt(unsigned char *m,
                                   const unsigned char *ad,
                                   unsigned long long adlen,
                                   const unsigned char *npub,
-                                  const unsigned char *k);
+                                  const unsigned char *k)
+            __attribute__ ((warn_unused_result));
 
 SODIUM_EXPORT
 int crypto_aead_aes256gcm_beforenm(crypto_aead_aes256gcm_state *ctx_,
@@ -80,7 +81,9 @@ int crypto_aead_aes256gcm_decrypt_afternm(unsigned char *m,
                                           const unsigned char *ad,
                                           unsigned long long adlen,
                                           const unsigned char *npub,
-                                          const crypto_aead_aes256gcm_state *ctx_);
+                                          const crypto_aead_aes256gcm_state *ctx_)
+            __attribute__ ((warn_unused_result));
+
 #ifdef __cplusplus
 }
 #endif

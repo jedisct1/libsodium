@@ -30,7 +30,8 @@ SODIUM_EXPORT
 int crypto_auth_hmacsha256_verify(const unsigned char *h,
                                   const unsigned char *in,
                                   unsigned long long inlen,
-                                  const unsigned char *k);
+                                  const unsigned char *k)
+            __attribute__ ((warn_unused_result));
 
 /* ------------------------------------------------------------------------- */
 

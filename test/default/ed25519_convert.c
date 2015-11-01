@@ -19,7 +19,9 @@ int main(void)
     unsigned int i;
 
     crypto_sign_ed25519_seed_keypair(ed25519_pk, ed25519_skpk, keypair_seed);
-    crypto_sign_ed25519_pk_to_curve25519(curve25519_pk, ed25519_pk);
+    if (crypto_sign_ed25519_pk_to_curve25519(curve25519_pk, ed25519_pk) != 0) {
+        printf("conversion failed\n");
+    }
     crypto_sign_ed25519_sk_to_curve25519(curve25519_sk, ed25519_skpk);
     sodium_bin2hex(curve25519_pk_hex, sizeof curve25519_pk_hex, curve25519_pk,
                    sizeof curve25519_pk);
@@ -31,7 +33,9 @@ int main(void)
 
     for (i = 0U; i < 500U; i++) {
         crypto_sign_ed25519_keypair(ed25519_pk, ed25519_skpk);
-        crypto_sign_ed25519_pk_to_curve25519(curve25519_pk, ed25519_pk);
+        if (crypto_sign_ed25519_pk_to_curve25519(curve25519_pk, ed25519_pk) != 0) {
+            printf("conversion failed\n");
+        }
         crypto_sign_ed25519_sk_to_curve25519(curve25519_sk, ed25519_skpk);
         crypto_scalarmult_curve25519_base(curve25519_pk2, curve25519_sk);
         if (memcmp(curve25519_pk, curve25519_pk2, sizeof curve25519_pk) != 0) {

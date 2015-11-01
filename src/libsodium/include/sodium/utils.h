@@ -26,7 +26,8 @@ void sodium_memzero(void * const pnt, const size_t len);
  * This function is not designed for lexicographical comparisons.
  */
 SODIUM_EXPORT
-int sodium_memcmp(const void * const b1_, const void * const b2_, size_t len);
+int sodium_memcmp(const void * const b1_, const void * const b2_, size_t len)
+            __attribute__ ((warn_unused_result));
 
 /*
  * sodium_compare() returns -1 if b1_ < b2_, 1 if b1_ > b2_ and 0 if b1_ == b2_
@@ -36,7 +37,8 @@ int sodium_memcmp(const void * const b1_, const void * const b2_, size_t len);
  */
 SODIUM_EXPORT
 int sodium_compare(const unsigned char *b1_, const unsigned char *b2_,
-                   size_t len);
+                   size_t len)
+            __attribute__ ((warn_unused_result));
 
 SODIUM_EXPORT
 void sodium_increment(unsigned char *n, const size_t nlen);
@@ -92,10 +94,12 @@ int sodium_munlock(void * const addr, const size_t len);
  */
 
 SODIUM_EXPORT
-void *sodium_malloc(const size_t size);
+void *sodium_malloc(const size_t size)
+            __attribute__ ((warn_unused_result));
 
 SODIUM_EXPORT
-void *sodium_allocarray(size_t count, size_t size);
+void *sodium_allocarray(size_t count, size_t size)
+            __attribute__ ((warn_unused_result));
 
 SODIUM_EXPORT
 void sodium_free(void *ptr);

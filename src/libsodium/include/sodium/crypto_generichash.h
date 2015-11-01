@@ -39,7 +39,8 @@ size_t  crypto_generichash_keybytes(void);
 
 #define crypto_generichash_PRIMITIVE "blake2b"
 SODIUM_EXPORT
-const char *crypto_generichash_primitive(void);
+const char *crypto_generichash_primitive(void)
+            __attribute__ ((warn_unused_result));
 
 typedef crypto_generichash_blake2b_state crypto_generichash_state;
 SODIUM_EXPORT

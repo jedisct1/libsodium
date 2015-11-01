@@ -17,7 +17,8 @@ SODIUM_EXPORT
 extern struct randombytes_implementation randombytes_nativeclient_implementation;
 
 SODIUM_EXPORT
-const char *randombytes_nativeclient_implementation_name(void);
+const char *randombytes_nativeclient_implementation_name(void)
+            __attribute__ ((warn_unused_result));
 
 SODIUM_EXPORT
 uint32_t    randombytes_nativeclient(void);
