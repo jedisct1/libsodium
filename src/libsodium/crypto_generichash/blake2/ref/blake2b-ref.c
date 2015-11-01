@@ -12,8 +12,8 @@
 */
 
 #include <stdint.h>
+#include <stdlib.h>
 #include <string.h>
-#include <stdio.h>
 
 #include "blake2.h"
 #include "blake2-impl.h"

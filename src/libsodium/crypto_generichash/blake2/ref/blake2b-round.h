@@ -11,8 +11,12 @@
    this software. If not, see <http://creativecommons.org/publicdomain/zero/1.0/>.
 */
 
-#ifndef __BLAKE2B_ROUND_H__
-#define __BLAKE2B_ROUND_H__
+#ifndef blake2b_round_H
+#define blake2b_round_H
+
+#ifndef BLAKE2_USE_SSSE2
+# error BLAKE2_USE_SSSE2 must be defined in order to use this file
+#endif
 
 #define LOADU(p)  _mm_loadu_si128( (const __m128i *)(p) )
 #define STOREU(p,r) _mm_storeu_si128((__m128i *)(p), r)

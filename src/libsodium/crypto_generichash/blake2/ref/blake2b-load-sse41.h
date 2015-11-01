@@ -10,9 +10,9 @@
    You should have received a copy of the CC0 Public Domain Dedication along with
    this software. If not, see <http://creativecommons.org/publicdomain/zero/1.0/>.
 */
-#pragma once
-#ifndef __BLAKE2B_LOAD_SSE41_H__
-#define __BLAKE2B_LOAD_SSE41_H__
+
+#ifndef blake2b_load_sse41_H
+#define blake2b_load_sse41_H
 
 #define LOAD_MSG_0_1(b0, b1) \
 do \

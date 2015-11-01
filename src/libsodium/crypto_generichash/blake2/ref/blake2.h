@@ -179,6 +179,9 @@ typedef crypto_generichash_blake2b_state blake2b_state;
     return blake2b( out, in, key, outlen, inlen, keylen );
   }
 
+  int blake2b_compress_ssse3( blake2b_state *S, const uint8_t block[BLAKE2B_BLOCKBYTES] );
+  int blake2b_compress_sse41( blake2b_state *S, const uint8_t block[BLAKE2B_BLOCKBYTES] );
+
 #if defined(__cplusplus)
 }
 #endif

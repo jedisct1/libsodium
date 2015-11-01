@@ -327,7 +327,7 @@ AS_IF([test "x$EMSCRIPTEN" = "x"],[
 ]], [[ __m128i x = _mm_minpos_epu16(_mm_setzero_si128()); ]])],
     [AC_MSG_RESULT(yes)
      AC_DEFINE([HAVE_SMMINTRIN_H], [1], [sse4.1 is available])
-     AX_CHECK_COMPILE_FLAG([-msse4.1], [CFLAGS_SSE4_1="-msse4.1"])],
+     AX_CHECK_COMPILE_FLAG([-msse4.1], [CFLAGS_SSE41="-msse4.1"])],
     [AC_MSG_RESULT(no)])
   CFLAGS="$oldcflags"
 
@@ -355,7 +355,7 @@ AC_SUBST(CFLAGS_MMX)
 AC_SUBST(CFLAGS_SSE2)
 AC_SUBST(CFLAGS_SSE3)
 AC_SUBST(CFLAGS_SSSE3)
-AC_SUBST(CFLAGS_SSE4_1)
+AC_SUBST(CFLAGS_SSE41)
 AC_SUBST(CFLAGS_AESNI)
 AC_SUBST(CFLAGS_PCLMUL)
 
