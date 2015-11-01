@@ -1,5 +1,5 @@
 /*
-   BLAKE2 reference source code package - reference C implementations
+   BLAKE2 reference source code package - C implementations
 
    Written in 2012 by Samuel Neves <sneves@dei.uc.pt>
 
@@ -18,6 +18,8 @@
 #include "blake2.h"
 #include "blake2-impl.h"
 #include "runtime.h"
+
+static blake2b_compress_fn blake2b_compress = blake2b_compress_ref;
 
 static const uint64_t blake2b_IV[8] =
 {
@@ -279,23 +281,6 @@ int blake2b_init_key_salt_personal( blake2b_state *S, const uint8_t outlen, cons
 /* inlen now in bytes */
 int blake2b_update( blake2b_state *S, const uint8_t *in, uint64_t inlen )
 {
-  blake2b_compress_fn blake2b_compress;
-
-  do {
-#if defined(HAVE_EMMINTRIN_H) && defined(HAVE_TMMINTRIN_H) && defined(HAVE_SMMINTRIN_H)
-    if (sodium_runtime_has_sse41()) {
-      blake2b_compress = blake2b_compress_sse41;
-      break;
-    }
-#endif
-#if defined(HAVE_EMMINTRIN_H) && defined(HAVE_TMMINTRIN_H)
-    if (sodium_runtime_has_ssse3()) {
-      blake2b_compress = blake2b_compress_ssse3;
-      break;
-    }
-#endif
-    blake2b_compress = blake2b_compress_ref;
-  } while(0);
   while( inlen > 0 )
   {
     size_t left = S->buflen;
@@ -326,26 +311,9 @@ int blake2b_update( blake2b_state *S, const uint8_t *in, uint64_t inlen )
 
 int blake2b_final( blake2b_state *S, uint8_t *out, uint8_t outlen )
 {
-  blake2b_compress_fn blake2b_compress;
-
   if( !outlen || outlen > BLAKE2B_OUTBYTES ) {
     return -1;
   }
-  do {
-#if defined(HAVE_EMMINTRIN_H) && defined(HAVE_TMMINTRIN_H) && defined(HAVE_SMMINTRIN_H)
-    if (sodium_runtime_has_sse41()) {
-      blake2b_compress = blake2b_compress_sse41;
-      break;
-    }
-#endif
-#if defined(HAVE_EMMINTRIN_H) && defined(HAVE_TMMINTRIN_H)
-    if (sodium_runtime_has_ssse3()) {
-      blake2b_compress = blake2b_compress_ssse3;
-      break;
-    }
-#endif
-    blake2b_compress = blake2b_compress_ref;
-  } while(0);
   if( S->buflen > BLAKE2B_BLOCKBYTES )
   {
     blake2b_increment_counter( S, BLAKE2B_BLOCKBYTES );
@@ -431,5 +399,25 @@ int blake2b_salt_personal( uint8_t *out, const void *in, const void *key, const 
 
   blake2b_update( S, ( const uint8_t * )in, inlen );
   blake2b_final( S, out, outlen );
+  return 0;
+}
+
+int
+blake2b_pick_best_implementation(void)
+{
+#if defined(HAVE_EMMINTRIN_H) && defined(HAVE_TMMINTRIN_H) && defined(HAVE_SMMINTRIN_H)
+  if (sodium_runtime_has_sse41()) {
+    blake2b_compress = blake2b_compress_sse41;
+    return 0;
+  }
+#endif
+#if defined(HAVE_EMMINTRIN_H) && defined(HAVE_TMMINTRIN_H)
+  if (sodium_runtime_has_ssse3()) {
+    blake2b_compress = blake2b_compress_ssse3;
+    return 0;
+  }
+#endif
+  blake2b_compress = blake2b_compress_ref;
+
   return 0;
 }

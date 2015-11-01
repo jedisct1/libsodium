@@ -14,11 +14,12 @@ sodium_init(void)
         return 1;
     }
     sodium_runtime_get_cpu_features();
+    randombytes_stir();
+    _sodium_alloc_init();
+    _crypto_generichash_blake2b_pick_best_implementation();
     if (crypto_onetimeauth_pick_best_implementation() == NULL) {
         return -1; /* LCOV_EXCL_LINE */
     }
-    randombytes_stir();
-    _sodium_alloc_init();
     initialized = 1;
 
     return 0;

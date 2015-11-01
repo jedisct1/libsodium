@@ -104,6 +104,10 @@ int crypto_generichash_blake2b_final(crypto_generichash_blake2b_state *state,
                                      unsigned char *out,
                                      const size_t outlen);
 
+/* ------------------------------------------------------------------------- */
+
+int _crypto_generichash_blake2b_pick_best_implementation(void);
+
 #ifdef __cplusplus
 }
 #endif

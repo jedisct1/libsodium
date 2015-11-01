@@ -106,3 +106,9 @@ crypto_generichash_blake2b_final(crypto_generichash_blake2b_state *state,
     assert(outlen <= UINT8_MAX);
     return blake2b_final(state, (uint8_t *) out, (uint8_t) outlen);
 }
+
+int
+_crypto_generichash_blake2b_pick_best_implementation(void)
+{
+    return blake2b_pick_best_implementation();
+}

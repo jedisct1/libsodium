@@ -19,15 +19,16 @@
 
 #include "crypto_generichash_blake2b.h"
 
-#define blake2b_init_param             crypto_generichash_blake2b__init_param
-#define blake2b_init                   crypto_generichash_blake2b__init
-#define blake2b_init_salt_personal     crypto_generichash_blake2b__init_salt_personal
-#define blake2b_init_key               crypto_generichash_blake2b__init_key
-#define blake2b_init_key_salt_personal crypto_generichash_blake2b__init_key_salt_personal
-#define blake2b_update                 crypto_generichash_blake2b__update
-#define blake2b_final                  crypto_generichash_blake2b__final
-#define blake2b                        crypto_generichash_blake2b__blake2b
-#define blake2b_salt_personal          crypto_generichash_blake2b__blake2b_salt_personal
+#define blake2b_init_param               crypto_generichash_blake2b__init_param
+#define blake2b_init                     crypto_generichash_blake2b__init
+#define blake2b_init_salt_personal       crypto_generichash_blake2b__init_salt_personal
+#define blake2b_init_key                 crypto_generichash_blake2b__init_key
+#define blake2b_init_key_salt_personal   crypto_generichash_blake2b__init_key_salt_personal
+#define blake2b_update                   crypto_generichash_blake2b__update
+#define blake2b_final                    crypto_generichash_blake2b__final
+#define blake2b                          crypto_generichash_blake2b__blake2b
+#define blake2b_salt_personal            crypto_generichash_blake2b__blake2b_salt_personal
+#define blake2b_pick_best_implementation crypto_generichash_blake2b__pick_best_implementation
 
 #if defined(_MSC_VER)
 #define ALIGN(x) __declspec(align(x))
@@ -180,6 +181,7 @@ typedef crypto_generichash_blake2b_state blake2b_state;
   }
 
   typedef int ( *blake2b_compress_fn )( blake2b_state *S, const uint8_t block[BLAKE2B_BLOCKBYTES] );
+  int blake2b_pick_best_implementation(void);
   int blake2b_compress_ref( blake2b_state *S, const uint8_t block[BLAKE2B_BLOCKBYTES] );
   int blake2b_compress_ssse3( blake2b_state *S, const uint8_t block[BLAKE2B_BLOCKBYTES] );
   int blake2b_compress_sse41( blake2b_state *S, const uint8_t block[BLAKE2B_BLOCKBYTES] );
