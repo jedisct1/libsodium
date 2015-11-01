@@ -91,8 +91,7 @@ static inline int blake2b_clear_lastblock( blake2b_state *S )
 #endif
 static inline int blake2b_increment_counter( blake2b_state *S, const uint64_t inc )
 {
-#if __x86_64__
-  // ADD/ADC chain
+#if defined(__x86_64__) && defined(__SIZEOF_INT128__)
   __uint128_t t = ( ( __uint128_t )S->t[1] << 64 ) | S->t[0];
   t += inc;
   S->t[0] = ( uint64_t )( t >>  0 );
@@ -103,7 +102,6 @@ static inline int blake2b_increment_counter( blake2b_state *S, const uint64_t in
 #endif
   return 0;
 }
-
 
 // Parameter-related functions
 #if 0
@@ -127,13 +125,13 @@ static inline int blake2b_param_set_max_depth( blake2b_param *P, const uint8_t d
 
 static inline int blake2b_param_set_leaf_length( blake2b_param *P, const uint32_t leaf_length )
 {
-  P->leaf_length = leaf_length;
+  store32( &P->leaf_length, leaf_length );
   return 0;
 }
 
 static inline int blake2b_param_set_node_offset( blake2b_param *P, const uint64_t node_offset )
 {
-  P->node_offset = node_offset;
+  store64( &P->node_offset, node_offset );
   return 0;
 }
 
@@ -163,9 +161,10 @@ static inline int blake2b_param_set_personal( blake2b_param *P, const uint8_t pe
 
 static inline int blake2b_init0( blake2b_state *S )
 {
+  int i;
   memset( S, 0, sizeof( blake2b_state ) );
 
-  for( int i = 0; i < 8; ++i ) S->h[i] = blake2b_IV[i];
+  for( i = 0; i < 8; ++i ) S->h[i] = blake2b_IV[i];
 
   return 0;
 }
@@ -173,64 +172,130 @@ static inline int blake2b_init0( blake2b_state *S )
 /* init xors IV with input parameter block */
 int blake2b_init_param( blake2b_state *S, const blake2b_param *P )
 {
-  //blake2b_init0( S );
-  const uint8_t * v = ( const uint8_t * )( blake2b_IV );
-  const uint8_t * p = ( const uint8_t * )( P );
-  uint8_t * h = ( uint8_t * )( S->h );
-  /* IV XOR ParamBlock */
-  memset( S, 0, sizeof( blake2b_state ) );
+  size_t i;
+  const uint8_t *p;
 
-  for( int i = 0; i < BLAKE2B_OUTBYTES; ++i ) h[i] = v[i] ^ p[i];
+  blake2b_init0( S );
+  p = ( const uint8_t * )( P );
+
+  /* IV XOR ParamBlock */
+  for( i = 0; i < 8; ++i )
+    S->h[i] ^= load64( p + sizeof( S->h[i] ) * i );
 
   return 0;
 }
 
-
-/* Some sort of default parameter block initialization, for sequential blake2b */
 int blake2b_init( blake2b_state *S, const uint8_t outlen )
 {
+  blake2b_param P[1];
+
   if ( ( !outlen ) || ( outlen > BLAKE2B_OUTBYTES ) ) return -1;
 
-  const blake2b_param P =
-  {
-    outlen,
-    0,
-    1,
-    1,
-    0,
-    0,
-    0,
-    0,
-    {0},
-    {0},
-    {0}
-  };
-  return blake2b_init_param( S, &P );
+  P->digest_length = outlen;
+  P->key_length    = 0;
+  P->fanout        = 1;
+  P->depth         = 1;
+  store32( &P->leaf_length, 0 );
+  store64( &P->node_offset, 0 );
+  P->node_depth    = 0;
+  P->inner_length  = 0;
+  memset( P->reserved, 0, sizeof( P->reserved ) );
+  memset( P->salt,     0, sizeof( P->salt ) );
+  memset( P->personal, 0, sizeof( P->personal ) );
+  return blake2b_init_param( S, P );
+}
+
+int blake2b_init_salt_personal( blake2b_state *S, const uint8_t outlen,
+                                const void *salt, const void *personal )
+{
+  blake2b_param P[1];
+
+  if ( ( !outlen ) || ( outlen > BLAKE2B_OUTBYTES ) ) return -1;
+
+  P->digest_length = outlen;
+  P->key_length    = 0;
+  P->fanout        = 1;
+  P->depth         = 1;
+  store32( &P->leaf_length, 0 );
+  store64( &P->node_offset, 0 );
+  P->node_depth    = 0;
+  P->inner_length  = 0;
+  memset( P->reserved, 0, sizeof( P->reserved ) );
+  if (salt != NULL) {
+    blake2b_param_set_salt( P, (const uint8_t *) salt );
+  } else {
+    memset( P->salt, 0, sizeof( P->salt ) );
+  }
+  if (personal != NULL) {
+    blake2b_param_set_personal( P, (const uint8_t *) personal );
+  } else {
+    memset( P->personal, 0, sizeof( P->personal ) );
+  }
+  return blake2b_init_param( S, P );
 }
 
 int blake2b_init_key( blake2b_state *S, const uint8_t outlen, const void *key, const uint8_t keylen )
 {
+  blake2b_param P[1];
+
   if ( ( !outlen ) || ( outlen > BLAKE2B_OUTBYTES ) ) return -1;
 
-  if ( ( !keylen ) || keylen > BLAKE2B_KEYBYTES ) return -1;
+  if ( !key || !keylen || keylen > BLAKE2B_KEYBYTES ) return -1;
 
-  const blake2b_param P =
+  P->digest_length = outlen;
+  P->key_length    = keylen;
+  P->fanout        = 1;
+  P->depth         = 1;
+  store32( &P->leaf_length, 0 );
+  store64( &P->node_offset, 0 );
+  P->node_depth    = 0;
+  P->inner_length  = 0;
+  memset( P->reserved, 0, sizeof( P->reserved ) );
+  memset( P->salt,     0, sizeof( P->salt ) );
+  memset( P->personal, 0, sizeof( P->personal ) );
+
+  if( blake2b_init_param( S, P ) < 0 ) return -1;
+
   {
-    outlen,
-    keylen,
-    1,
-    1,
-    0,
-    0,
-    0,
-    0,
-    {0},
-    {0},
-    {0}
-  };
+    uint8_t block[BLAKE2B_BLOCKBYTES];
+    memset( block, 0, BLAKE2B_BLOCKBYTES );
+    memcpy( block, key, keylen );
+    blake2b_update( S, block, BLAKE2B_BLOCKBYTES );
+    secure_zero_memory( block, BLAKE2B_BLOCKBYTES ); /* Burn the key from stack */
+  }
+  return 0;
+}
 
-  if( blake2b_init_param( S, &P ) < 0 )
-    return 0;
+int blake2b_init_key_salt_personal( blake2b_state *S, const uint8_t outlen, const void *key, const uint8_t keylen,
+                                    const void *salt, const void *personal )
+{
+  blake2b_param P[1];
+
+  if ( ( !outlen ) || ( outlen > BLAKE2B_OUTBYTES ) ) return -1;
+
+  if ( !key || !keylen || keylen > BLAKE2B_KEYBYTES ) return -1;
+
+  P->digest_length = outlen;
+  P->key_length    = keylen;
+  P->fanout        = 1;
+  P->depth         = 1;
+  store32( &P->leaf_length, 0 );
+  store64( &P->node_offset, 0 );
+  P->node_depth    = 0;
+  P->inner_length  = 0;
+  memset( P->reserved, 0, sizeof( P->reserved ) );
+  if (salt != NULL) {
+    blake2b_param_set_salt( P, (const uint8_t *) salt );
+  } else {
+    memset( P->salt, 0, sizeof( P->salt ) );
+  }
+  if (personal != NULL) {
+    blake2b_param_set_personal( P, (const uint8_t *) personal );
+  } else {
+    memset( P->personal, 0, sizeof( P->personal ) );
+  }
+
+  if( blake2b_init_param( S, P ) < 0 ) return -1;
 
   {
     uint8_t block[BLAKE2B_BLOCKBYTES];
@@ -312,7 +377,7 @@ static inline int blake2b_compress( blake2b_state *S, const uint8_t block[BLAKE2
   return 0;
 }
 
-
+/* inlen now in bytes */
 int blake2b_update( blake2b_state *S, const uint8_t *in, uint64_t inlen )
 {
   while( inlen > 0 )
@@ -343,45 +408,56 @@ int blake2b_update( blake2b_state *S, const uint8_t *in, uint64_t inlen )
   return 0;
 }
 
-
 int blake2b_final( blake2b_state *S, uint8_t *out, uint8_t outlen )
 {
-  if( outlen > BLAKE2B_OUTBYTES )
+  if( !outlen || outlen > BLAKE2B_OUTBYTES ) {
     return -1;
-
+  }
   if( S->buflen > BLAKE2B_BLOCKBYTES )
   {
     blake2b_increment_counter( S, BLAKE2B_BLOCKBYTES );
     blake2b_compress( S, S->buf );
     S->buflen -= BLAKE2B_BLOCKBYTES;
-    memcpy( S->buf, S->buf + BLAKE2B_BLOCKBYTES, S->buflen );
+    memmove( S->buf, S->buf + BLAKE2B_BLOCKBYTES, S->buflen );
   }
 
   blake2b_increment_counter( S, S->buflen );
   blake2b_set_lastblock( S );
   memset( S->buf + S->buflen, 0, 2 * BLAKE2B_BLOCKBYTES - S->buflen ); /* Padding */
   blake2b_compress( S, S->buf );
+
+#ifdef NATIVE_LITTLE_ENDIAN
   memcpy( out, &S->h[0], outlen );
+#else
+  {
+    uint8_t buffer[BLAKE2B_OUTBYTES];
+    int     i;
+
+    for( i = 0; i < 8; ++i ) /* Output full hash to temp buffer */
+      store64( buffer + sizeof( S->h[i] ) * i, S->h[i] );
+    memcpy( out, buffer, outlen );
+  }
+#endif
   return 0;
 }
 
-
+/* inlen, at least, should be uint64_t. Others can be size_t. */
 int blake2b( uint8_t *out, const void *in, const void *key, const uint8_t outlen, const uint64_t inlen, uint8_t keylen )
 {
   blake2b_state S[1];
 
   /* Verify parameters */
-  if ( NULL == in && inlen > 0 ) return -1;
+  if( NULL == in && inlen > 0 ) return -1;
 
-  if ( NULL == out ) return -1;
-
-  if( NULL == key && keylen > 0 ) return -1;
+  if( NULL == out ) return -1;
 
   if( !outlen || outlen > BLAKE2B_OUTBYTES ) return -1;
 
+  if( NULL == key && keylen > 0 ) return -1;
+
   if( keylen > BLAKE2B_KEYBYTES ) return -1;
 
-  if( keylen )
+  if( keylen > 0 )
   {
     if( blake2b_init_key( S, outlen, key, keylen ) < 0 ) return -1;
   }
@@ -401,11 +477,15 @@ int blake2b_salt_personal( uint8_t *out, const void *in, const void *key, const 
   blake2b_state S[1];
 
   /* Verify parameters */
-  if ( NULL == in ) return -1;
+  if( NULL == in && inlen > 0 ) return -1;
 
-  if ( NULL == out ) return -1;
+  if( NULL == out ) return -1;
 
-  if( NULL == key ) keylen = 0;
+  if( !outlen || outlen > BLAKE2B_OUTBYTES ) return -1;
+
+  if( NULL == key && keylen > 0 ) return -1;
+
+  if( keylen > BLAKE2B_KEYBYTES ) return -1;
 
   if( keylen > 0 )
   {
