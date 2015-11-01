@@ -370,12 +370,6 @@
     <ClCompile Include="..\..\..\..\src\libsodium\crypto_onetimeauth\poly1305\onetimeauth_poly1305.c">
       <Filter>src\crypto_onetimeauth\poly1305</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\..\..\src\libsodium\crypto_onetimeauth\poly1305\onetimeauth_poly1305_api.c">
-      <Filter>src\crypto_onetimeauth\poly1305</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\..\..\src\libsodium\crypto_onetimeauth\poly1305\onetimeauth_poly1305_try.c">
-      <Filter>src\crypto_onetimeauth\poly1305</Filter>
-    </ClCompile>
     <ClCompile Include="..\..\..\..\src\libsodium\crypto_box\curve25519xsalsa20poly1305\ref\keypair_curve25519xsalsa20poly1305.c">
       <Filter>src\crypto_box\curve25519xsalsa20poly1305\ref</Filter>
     </ClCompile>
@@ -441,9 +435,6 @@
     </ClCompile>
     <ClCompile Include="..\..\..\..\src\libsodium\crypto_stream\xsalsa20\stream_xsalsa20_api.c">
       <Filter>src\crypto_stream\xsalsa20</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\..\..\src\libsodium\crypto_onetimeauth\poly1305\donna\verify_poly1305_donna.c">
-      <Filter>src\crypto_onetimeauth\poly1305\donna</Filter>
     </ClCompile>
     <ClCompile Include="..\..\..\..\src\libsodium\crypto_stream\aes128ctr\portable\xor_afternm_aes128ctr.c">
       <Filter>src\crypto_stream\aes128ctr\portable</Filter>
@@ -747,6 +738,18 @@
     </ClInclude>
     <ClInclude Include="..\..\..\..\src\libsodium\include\sodium\crypto_aead_aes256gcm.h">
       <Filter>include\sodium</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\src\libsodium\crypto_generichash\blake2\ref\blake2b-round.h">
+      <Filter>src\crypto_generichash\blake2\ref</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\src\libsodium\crypto_onetimeauth\poly1305\onetimeauth_poly1305.h">
+      <Filter>src\crypto_onetimeauth\poly1305</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\src\libsodium\crypto_generichash\blake2\ref\blake2b-load-sse2.h">
+      <Filter>src\crypto_generichash\blake2\ref</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\src\libsodium\crypto_generichash\blake2\ref\blake2b-load-sse41.h">
+      <Filter>src\crypto_generichash\blake2\ref</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -1080,6 +1083,15 @@
     </ClCompile>
     <ClCompile Include="..\..\..\..\src\libsodium\crypto_aead\aes256gcm\aesni\aead_aes256gcm_aesni.c">
       <Filter>src\crypto_aead\aes256gcm\aesni</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\src\libsodium\crypto_generichash\blake2\ref\blake2b-compress-ref.c">
+      <Filter>src\crypto_generichash\blake2\ref</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\src\libsodium\crypto_generichash\blake2\ref\blake2b-compress-sse41.c">
+      <Filter>src\crypto_generichash\blake2\ref</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\src\libsodium\crypto_generichash\blake2\ref\blake2b-compress-ssse3.c">
+      <Filter>src\crypto_generichash\blake2\ref</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>
