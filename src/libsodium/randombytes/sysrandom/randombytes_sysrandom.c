@@ -188,14 +188,14 @@ randombytes_sysrandom_init(void)
 
 # ifdef SYS_getrandom
     {
-	unsigned char fodder[16];
+        unsigned char fodder[16];
 
-	if (randombytes_linux_getrandom(fodder, sizeof fodder) == 0) {
-	    stream.getrandom_available = 1;
-	    errno = errno_save;
-	    return;
-	}
-	stream.getrandom_available = 0;
+        if (randombytes_linux_getrandom(fodder, sizeof fodder) == 0) {
+            stream.getrandom_available = 1;
+            errno = errno_save;
+            return;
+        }
+        stream.getrandom_available = 0;
     }
 # endif
 
