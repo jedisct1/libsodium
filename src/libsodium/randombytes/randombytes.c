@@ -107,9 +107,15 @@ randombytes_uniform(const uint32_t upper_bound)
     uint32_t min;
     uint32_t r;
 
+#ifdef __EMSCRIPTEN__
     if (implementation != NULL && implementation->uniform != NULL) {
         return implementation->uniform(upper_bound);
     }
+#else
+    if (implementation->uniform != NULL) {
+        return implementation->uniform(upper_bound);
+    }
+#endif
     if (upper_bound < 2) {
         return 0;
     }
