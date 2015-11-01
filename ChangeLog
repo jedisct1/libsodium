@@ -1,5 +1,5 @@
 
-* Version 1.0.6 (not released yet)
+* Version 1.0.6
  - Optimized implementations of Blake2 have been added for modern
 Intel platforms. crypto_generichash() is now faster than MD5 and SHA1
 implementations while being far more secure.
