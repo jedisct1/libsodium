@@ -88,8 +88,6 @@ static inline int blake2b_increment_counter( blake2b_state *S, const uint64_t in
   return 0;
 }
 
-
-
 // Parameter-related functions
 #if 0
 static inline int blake2b_param_set_digest_length( blake2b_param *P, const uint8_t digest_length )
