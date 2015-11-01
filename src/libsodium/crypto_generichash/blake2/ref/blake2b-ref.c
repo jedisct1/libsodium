@@ -281,13 +281,21 @@ int blake2b_update( blake2b_state *S, const uint8_t *in, uint64_t inlen )
 {
   blake2b_compress_fn blake2b_compress;
 
-  if (sodium_runtime_has_sse41()) {
-    blake2b_compress = blake2b_compress_sse41;
-  } else if (sodium_runtime_has_ssse3()) {
-    blake2b_compress = blake2b_compress_ssse3;
-  } else {
+  do {
+#if defined(HAVE_EMMINTRIN_H) && defined(HAVE_TMMINTRIN_H) && defined(HAVE_SMMINTRIN_H)
+    if (sodium_runtime_has_sse41()) {
+      blake2b_compress = blake2b_compress_sse41;
+      break;
+    }
+#endif
+#if defined(HAVE_EMMINTRIN_H) && defined(HAVE_TMMINTRIN_H)
+    if (sodium_runtime_has_ssse3()) {
+      blake2b_compress = blake2b_compress_ssse3;
+      break;
+    }
+#endif
     blake2b_compress = blake2b_compress_ref;
-  }
+  } while(0);
   while( inlen > 0 )
   {
     size_t left = S->buflen;
@@ -323,13 +331,21 @@ int blake2b_final( blake2b_state *S, uint8_t *out, uint8_t outlen )
   if( !outlen || outlen > BLAKE2B_OUTBYTES ) {
     return -1;
   }
-  if (sodium_runtime_has_sse41()) {
-    blake2b_compress = blake2b_compress_sse41;
-  } else if (sodium_runtime_has_ssse3()) {
-    blake2b_compress = blake2b_compress_ssse3;
-  } else {
+  do {
+#if defined(HAVE_EMMINTRIN_H) && defined(HAVE_TMMINTRIN_H) && defined(HAVE_SMMINTRIN_H)
+    if (sodium_runtime_has_sse41()) {
+      blake2b_compress = blake2b_compress_sse41;
+      break;
+    }
+#endif
+#if defined(HAVE_EMMINTRIN_H) && defined(HAVE_TMMINTRIN_H)
+    if (sodium_runtime_has_ssse3()) {
+      blake2b_compress = blake2b_compress_ssse3;
+      break;
+    }
+#endif
     blake2b_compress = blake2b_compress_ref;
-  }
+  } while(0);
   if( S->buflen > BLAKE2B_BLOCKBYTES )
   {
     blake2b_increment_counter( S, BLAKE2B_BLOCKBYTES );
