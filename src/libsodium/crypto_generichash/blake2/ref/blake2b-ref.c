@@ -76,8 +76,15 @@ static inline int blake2b_clear_lastblock( blake2b_state *S )
 #endif
 static inline int blake2b_increment_counter( blake2b_state *S, const uint64_t inc )
 {
+#if defined(__x86_64__) && defined(__SIZEOF_INT128__)
+  __uint128_t t = ( ( __uint128_t )S->t[1] << 64 ) | S->t[0];
+  t += inc;
+  S->t[0] = ( uint64_t )( t >>  0 );
+  S->t[1] = ( uint64_t )( t >> 64 );
+#else
   S->t[0] += inc;
   S->t[1] += ( S->t[0] < inc );
+#endif
   return 0;
 }
 
@@ -164,8 +171,6 @@ int blake2b_init_param( blake2b_state *S, const blake2b_param *P )
 
   return 0;
 }
-
-
 
 int blake2b_init( blake2b_state *S, const uint8_t outlen )
 {
@@ -383,12 +388,8 @@ int blake2b_update( blake2b_state *S, const uint8_t *in, uint64_t inlen )
   return 0;
 }
 
-/* Is this correct? */
 int blake2b_final( blake2b_state *S, uint8_t *out, uint8_t outlen )
 {
-  uint8_t buffer[BLAKE2B_OUTBYTES];
-  int     i;
-
   if( !outlen || outlen > BLAKE2B_OUTBYTES ) {
     return -1;
   }
@@ -405,10 +406,18 @@ int blake2b_final( blake2b_state *S, uint8_t *out, uint8_t outlen )
   memset( S->buf + S->buflen, 0, 2 * BLAKE2B_BLOCKBYTES - S->buflen ); /* Padding */
   blake2b_compress( S, S->buf );
 
-  for( i = 0; i < 8; ++i ) /* Output full hash to temp buffer */
-    store64( buffer + sizeof( S->h[i] ) * i, S->h[i] );
+#ifdef NATIVE_LITTLE_ENDIAN
+  memcpy( out, &S->h[0], outlen );
+#else
+  {
+    uint8_t buffer[BLAKE2B_OUTBYTES];
+    int     i;
 
-  memcpy( out, buffer, outlen );
+    for( i = 0; i < 8; ++i ) /* Output full hash to temp buffer */
+      store64( buffer + sizeof( S->h[i] ) * i, S->h[i] );
+    memcpy( out, buffer, outlen );
+  }
+#endif
   return 0;
 }
 
