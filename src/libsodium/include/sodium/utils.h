@@ -95,11 +95,11 @@ int sodium_munlock(void * const addr, const size_t len);
 
 SODIUM_EXPORT
 void *sodium_malloc(const size_t size)
-            __attribute__ ((warn_unused_result));
+            __attribute__ ((malloc));
 
 SODIUM_EXPORT
 void *sodium_allocarray(size_t count, size_t size)
-            __attribute__ ((warn_unused_result));
+            __attribute__ ((malloc));
 
 SODIUM_EXPORT
 void sodium_free(void *ptr);
