@@ -24,33 +24,39 @@ extern "C" {
 
 #define crypto_sign_edwards25519sha512batch_BYTES 64U
 SODIUM_EXPORT
-size_t crypto_sign_edwards25519sha512batch_bytes(void);
+size_t crypto_sign_edwards25519sha512batch_bytes(void)
+       __attribute__ ((deprecated));
 
 #define crypto_sign_edwards25519sha512batch_PUBLICKEYBYTES 32U
 SODIUM_EXPORT
-size_t crypto_sign_edwards25519sha512batch_publickeybytes(void);
+size_t crypto_sign_edwards25519sha512batch_publickeybytes(void)
+       __attribute__ ((deprecated));
 
 #define crypto_sign_edwards25519sha512batch_SECRETKEYBYTES (32U + 32U)
 SODIUM_EXPORT
-size_t crypto_sign_edwards25519sha512batch_secretkeybytes(void);
+size_t crypto_sign_edwards25519sha512batch_secretkeybytes(void)
+       __attribute__ ((deprecated));
 
 SODIUM_EXPORT
 int crypto_sign_edwards25519sha512batch(unsigned char *sm,
                                         unsigned long long *smlen_p,
                                         const unsigned char *m,
                                         unsigned long long mlen,
-                                        const unsigned char *sk);
+                                        const unsigned char *sk)
+       __attribute__ ((deprecated));
 
 SODIUM_EXPORT
 int crypto_sign_edwards25519sha512batch_open(unsigned char *m,
                                              unsigned long long *mlen_p,
                                              const unsigned char *sm,
                                              unsigned long long smlen,
-                                             const unsigned char *pk);
+                                             const unsigned char *pk)
+       __attribute__ ((deprecated));
 
 SODIUM_EXPORT
 int crypto_sign_edwards25519sha512batch_keypair(unsigned char *pk,
-                                                unsigned char *sk);
+                                                unsigned char *sk)
+       __attribute__ ((deprecated));
 
 #ifdef __cplusplus
 }
