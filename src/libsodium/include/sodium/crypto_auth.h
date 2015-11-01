@@ -23,8 +23,7 @@ size_t  crypto_auth_keybytes(void);
 
 #define crypto_auth_PRIMITIVE "hmacsha512256"
 SODIUM_EXPORT
-const char *crypto_auth_primitive(void)
-            __attribute__ ((warn_unused_result));
+const char *crypto_auth_primitive(void);
 
 SODIUM_EXPORT
 int crypto_auth(unsigned char *out, const unsigned char *in,

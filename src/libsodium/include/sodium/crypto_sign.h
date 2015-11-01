@@ -38,8 +38,7 @@ size_t  crypto_sign_secretkeybytes(void);
 
 #define crypto_sign_PRIMITIVE "ed25519"
 SODIUM_EXPORT
-const char *crypto_sign_primitive(void)
-            __attribute__ ((warn_unused_result));
+const char *crypto_sign_primitive(void);
 
 SODIUM_EXPORT
 int crypto_sign_seed_keypair(unsigned char *pk, unsigned char *sk,
