@@ -19,9 +19,11 @@ int main(void)
     randombytes_buf(m, (unsigned long long) mlen);
     randombytes_buf(nonce, sizeof nonce);
     crypto_secretbox_easy(c, m, (unsigned long long) mlen, nonce, k);
-    crypto_secretbox_open_easy(m2, c,
-                               (unsigned long long) mlen + crypto_secretbox_MACBYTES,
-                               nonce, k);
+    if (crypto_secretbox_open_easy(m2, c,
+                                   (unsigned long long) mlen + crypto_secretbox_MACBYTES,
+                                   nonce, k) != 0) {
+        printf("crypto_secretbox_open_easy() failed\n");
+    }
     printf("%d\n", memcmp(m, m2, mlen));
 
     for (i = 0; i < mlen + crypto_secretbox_MACBYTES - 1; i++) {
