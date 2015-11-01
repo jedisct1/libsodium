@@ -5,7 +5,7 @@
 #include <string.h>
 
 #if (defined(HAVE_EMMINTRIN_H) && defined(HAVE_TMMINTRIN_H)) || \
-    (defined(_MSC_VER) && (defined(_M_X64) || defined(_M_AMD64) || defined(_M_IX86)))
+    (defined(_MSC_VER) && (defined(_M_X64) || defined(_M_AMD64)))
 
 #pragma GCC target("sse2")
 #pragma GCC target("ssse3")
