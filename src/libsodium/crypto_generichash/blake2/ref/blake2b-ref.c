@@ -406,7 +406,7 @@ int
 blake2b_pick_best_implementation(void)
 {
 #if (defined(HAVE_EMMINTRIN_H) && defined(HAVE_TMMINTRIN_H) && defined(HAVE_SMMINTRIN_H)) || \
-    (defined(_MSC_VER) && (defined(_M_X64) || defined(_M_AMD64)))
+    (defined(_MSC_VER) && (defined(_M_X64) || defined(_M_AMD64) || defined(_M_IX86)))
   if (sodium_runtime_has_sse41()) {
     blake2b_compress = blake2b_compress_sse41;
     return 0;
