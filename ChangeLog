@@ -1,7 +1,7 @@
 
 * Version 1.0.6
  - Optimized implementations of Blake2 have been added for modern
-Intel platforms. crypto_generichash() is now faster than MD5 and SHA1
+Intel platforms. `crypto_generichash()` is now faster than MD5 and SHA1
 implementations while being far more secure.
  - Functions for which the return value should be checked have been
 tagged with `__attribute__ ((warn_unused_result))`. This will
