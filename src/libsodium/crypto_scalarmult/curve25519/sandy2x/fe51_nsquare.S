@@ -159,3 +159,7 @@ movq 40(%rsp),%rbx
 movq 48(%rsp),%rbp
 add %r11,%rsp
 ret
+
+#if defined(__linux__) && defined(__ELF__)
+.section .note.GNU-stack,"",%progbits
+#endif

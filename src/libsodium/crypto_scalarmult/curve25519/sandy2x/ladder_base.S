@@ -1281,3 +1281,7 @@ movq 1544(%rsp),%r12
 movq 1552(%rsp),%r13
 add %r11,%rsp
 ret
+
+#if defined(__linux__) && defined(__ELF__)
+.section .note.GNU-stack,"",%progbits
+#endif
