@@ -5,10 +5,16 @@
 #include "fe51_namespace.h"
 #include "consts_namespace.h"
 .p2align 5
-.globl _fe51_pack
+
 .globl fe51_pack
-_fe51_pack:
+.globl _fe51_pack
+#ifdef __ELF__
+.type  fe51_pack, @function
+.type _fe51_pack, @function
+#endif
 fe51_pack:
+_fe51_pack:
+
 mov %rsp,%r11
 and $31,%r11
 add $32,%r11

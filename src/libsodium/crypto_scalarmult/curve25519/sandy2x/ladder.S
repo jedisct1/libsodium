@@ -1,10 +1,16 @@
 #include "ladder_namespace.h"
 #include "consts_namespace.h"
 .p2align 5
-.globl _ladder
+
 .globl ladder
-_ladder:
+.globl _ladder
+#ifdef __ELF__
+.type  ladder, @function
+.type _ladder, @function
+#endif
 ladder:
+_ladder:
+
 mov %rsp,%r11
 and $31,%r11
 add $1856,%r11
