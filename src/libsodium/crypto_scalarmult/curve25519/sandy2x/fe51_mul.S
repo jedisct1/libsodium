@@ -129,7 +129,7 @@ movq 72(%rsp),%rax
 mulq  32(%rcx)
 add  %rax,%r14
 adc %rdx,%r15
-movq REDMASK51,%rsi
+movq REDMASK51(%rip),%rsi
 shld $13,%r8,%r9
 and  %rsi,%r8
 shld $13,%r10,%r11

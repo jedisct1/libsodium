@@ -104,7 +104,7 @@ mulq  32(%rdi)
 add  %rax,%r15
 adc %rdx,%rbx
 shld $13,%r15,%rbx
-movq REDMASK51,%rdx
+movq REDMASK51(%rip),%rdx
 and  %rdx,%rcx
 add  %rbx,%rcx
 and  %rdx,%r9

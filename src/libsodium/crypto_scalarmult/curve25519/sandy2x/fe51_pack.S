@@ -20,7 +20,7 @@ movq   8(%rsi),%rcx
 movq   16(%rsi),%r8
 movq   24(%rsi),%r9
 movq   32(%rsi),%rsi
-movq REDMASK51,%rax
+movq REDMASK51(%rip),%rax
 lea  -18(%rax),%r10
 mov  $3,%r11
 ._reduceloop:
