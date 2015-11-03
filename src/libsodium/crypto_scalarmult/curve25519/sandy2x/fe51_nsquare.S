@@ -5,8 +5,8 @@
 #include "fe51_namespace.h"
 #include "consts_namespace.h"
 .p2align 5
-.global _fe51_nsquare
-.global fe51_nsquare
+.globl _fe51_nsquare
+.globl fe51_nsquare
 _fe51_nsquare:
 fe51_nsquare:
 mov %rsp,%r11

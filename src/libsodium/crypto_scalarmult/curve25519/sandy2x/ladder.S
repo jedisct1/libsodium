@@ -1,8 +1,8 @@
 #include "ladder_namespace.h"
 #include "consts_namespace.h"
 .p2align 5
-.global _ladder
-.global ladder
+.globl _ladder
+.globl ladder
 _ladder:
 ladder:
 mov %rsp,%r11
