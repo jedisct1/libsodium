@@ -12,6 +12,7 @@ typedef struct CPUFeatures_ {
     int has_sse3;
     int has_ssse3;
     int has_sse41;
+    int has_avx;
     int has_pclmul;
     int has_aesni;
 } CPUFeatures;
@@ -22,6 +23,7 @@ static CPUFeatures _cpu_features;
 #define CPUIDECX_SSE3   0x00000001
 #define CPUIDECX_SSSE3  0x00000200
 #define CPUIDECX_SSE41  0x00080000
+#define CPUIDECX_AVX    0x10000000
 #define CPUIDECX_PCLMUL 0x00000002
 #define CPUIDECX_AESNI  0x02000000
 
@@ -124,6 +126,12 @@ _sodium_runtime_intel_cpu_features(CPUFeatures * const cpu_features)
     cpu_features->has_sse41 = ((cpu_info[2] & CPUIDECX_SSE41) != 0x0);
 #endif
 
+#ifndef HAVE_AVXINTRIN_H
+    cpu_features->has_avx = 0;
+#else
+    cpu_features->has_avx = ((cpu_info[2] & CPUIDECX_AVX) != 0x0);
+#endif
+
 #ifndef HAVE_WMMINTRIN_H
     cpu_features->has_pclmul = 0;
     cpu_features->has_aesni = 0;
@@ -170,6 +178,11 @@ sodium_runtime_has_ssse3(void) {
 int
 sodium_runtime_has_sse41(void) {
     return _cpu_features.has_sse41;
+}
+
+int
+sodium_runtime_has_avx(void) {
+    return _cpu_features.has_avx;
 }
 
 int
