@@ -204,10 +204,8 @@ EXTRA_DIST = \
 	crypto_scalarmult/curve25519/sandy2x/ladder.S \
 	crypto_scalarmult/curve25519/sandy2x/ladder_base.S
 
-if HAVE_AMD64_ASM
+if HAVE_AVX_ASM
 libsodium_la_SOURCES += \
-	crypto_stream/salsa20/amd64_xmm6/api.h \
-	crypto_stream/salsa20/amd64_xmm6/stream_salsa20_amd64_xmm6.S \
 	crypto_scalarmult/curve25519/sandy2x/consts_namespace.h \
 	crypto_scalarmult/curve25519/sandy2x/curve25519_sandy2x.c \
 	crypto_scalarmult/curve25519/sandy2x/curve25519_sandy2x.h \
@@ -221,6 +219,12 @@ libsodium_la_SOURCES += \
 	crypto_scalarmult/curve25519/sandy2x/ladder_base_namespace.h \
 	crypto_scalarmult/curve25519/sandy2x/ladder_namespace.h \
 	crypto_scalarmult/curve25519/sandy2x/sandy2x.S
+endif
+
+if HAVE_AMD64_ASM
+libsodium_la_SOURCES += \
+	crypto_stream/salsa20/amd64_xmm6/api.h \
+	crypto_stream/salsa20/amd64_xmm6/stream_salsa20_amd64_xmm6.S
 else
 libsodium_la_SOURCES += \
 	crypto_stream/salsa20/ref/api.h \

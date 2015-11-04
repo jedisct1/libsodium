@@ -5,7 +5,7 @@
 #include "fe.h"
 #include "crypto_uint64.h"
 
-#ifdef HAVE_AMD64_ASM
+#ifdef HAVE_AVX_ASM
 
 static crypto_uint64 load_3(const unsigned char *in)
 {

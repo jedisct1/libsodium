@@ -7,7 +7,7 @@
 
 #include <stddef.h>
 
-#ifdef HAVE_AMD64_ASM
+#ifdef HAVE_AVX_ASM
 
 #include "utils.h"
 #include "curve25519_sandy2x.h"

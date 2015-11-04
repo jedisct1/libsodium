@@ -5,7 +5,7 @@
 
 #include "fe51.h"
 
-#ifdef HAVE_AMD64_ASM
+#ifdef HAVE_AVX_ASM
 
 #define fe51_square(x, y) fe51_nsquare(x, y, 1)
 

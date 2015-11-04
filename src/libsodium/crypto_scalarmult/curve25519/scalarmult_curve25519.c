@@ -3,7 +3,7 @@
 #include "scalarmult_curve25519.h"
 #include "runtime.h"
 
-#ifdef HAVE_AMD64_ASM
+#ifdef HAVE_AVX_ASM
 # include "sandy2x/curve25519_sandy2x.h"
 #endif
 #ifdef HAVE_TI_MODE
@@ -49,7 +49,7 @@ _crypto_scalarmult_curve25519_pick_best_implementation(void)
 #else
     implementation = &crypto_scalarmult_curve25519_ref10_implementation;
 #endif
-#ifdef HAVE_AMD64_ASM
+#ifdef HAVE_AVX_ASM
     if (sodium_runtime_has_avx()) {
         implementation = &crypto_scalarmult_curve25519_sandy2x_implementation;
     }

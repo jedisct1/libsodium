@@ -399,7 +399,7 @@ AC_COMPILE_IFELSE([AC_LANG_PROGRAM([[
 
 HAVE_AMD64_ASM_V=0
 AS_IF([test "$enable_asm" != "no"],[
-  AC_MSG_CHECKING(whether we should use x86_64 asm code)
+  AC_MSG_CHECKING(whether we can use x86_64 asm code)
   AC_COMPILE_IFELSE([AC_LANG_PROGRAM([[
   ]], [[
 #if defined(__amd64) || defined(__amd64__) || defined(__x86_64__)
@@ -413,12 +413,35 @@ AS_IF([test "$enable_asm" != "no"],[
 __asm__("pxor %xmm12,%xmm6");
 ]])],
   [AC_MSG_RESULT(yes)
-   AC_DEFINE([HAVE_AMD64_ASM], [1], [x86_64 asm code should be used])
+   AC_DEFINE([HAVE_AMD64_ASM], [1], [x86_64 asm code can be used])
    HAVE_AMD64_ASM_V=1],
   [AC_MSG_RESULT(no)])
 ])
 AM_CONDITIONAL([HAVE_AMD64_ASM], [test $HAVE_AMD64_ASM_V = 1])
 AC_SUBST(HAVE_AMD64_ASM_V)
+
+HAVE_AVX_ASM_V=0
+AS_IF([test "$enable_asm" != "no"],[
+  AC_MSG_CHECKING(whether we can assemble AVX opcodes)
+  AC_COMPILE_IFELSE([AC_LANG_PROGRAM([[
+  ]], [[
+#if defined(__amd64) || defined(__amd64__) || defined(__x86_64__)
+# if defined(__CYGWIN__) || defined(__MINGW32__) || defined(__MINGW64__) || defined(_WIN32) || defined(_WIN64)
+#  error Windows x86_64 calling conventions are not supported yet
+# endif
+/* neat */
+#else
+# error !x86_64
+#endif
+__asm__("vpunpcklqdq %xmm0,%xmm13,%xmm0");
+]])],
+  [AC_MSG_RESULT(yes)
+   AC_DEFINE([HAVE_AVX_ASM], [1], [AVX opcodes are supported])
+   HAVE_AVX_ASM_V=1],
+  [AC_MSG_RESULT(no)])
+])
+AM_CONDITIONAL([HAVE_AVX_ASM], [test $HAVE_AVX_ASM_V = 1])
+AC_SUBST(HAVE_AVX_ASM_V)
 
 AC_MSG_CHECKING(for 128-bit arithmetic)
 HAVE_TI_MODE_V=0
