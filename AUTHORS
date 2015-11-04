@@ -56,6 +56,8 @@ crypto_scalarmult/curve25519/ref10     Daniel J. Bernstein
 
 crypto_scalarmult/curve25519/donna_c64 Adam Langley
 
+crypto_scalarmult/curve25519/sandy2x   Tung Chou
+
 crypto_secretbox/xsalsa20poly1305      Daniel J. Bernstein
 
 crypto_sign/ed25519                    Peter Schwabe
