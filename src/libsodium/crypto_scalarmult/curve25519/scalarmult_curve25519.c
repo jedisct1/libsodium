@@ -2,6 +2,9 @@
 #include "crypto_scalarmult_curve25519.h"
 #include "scalarmult_curve25519.h"
 
+#ifdef HAVE_AMD64_ASM
+# include "sandy2x/curve25519_sandy2x.h"
+#endif
 #ifdef HAVE_TI_MODE
 # include "donna_c64/curve25519_donna_c64.h"
 static const crypto_scalarmult_curve25519_implementation *implementation =
