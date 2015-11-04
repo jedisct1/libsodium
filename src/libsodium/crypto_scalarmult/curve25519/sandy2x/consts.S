@@ -3,7 +3,7 @@
 */
 
 #ifdef __linux__
-# error This is a work in progress, which is know *NOT* to work on Linux
+# error This is a work in progress, which is known *NOT* to work on Linux
 # error Please do not fill a bug report at this point
 #endif
 
