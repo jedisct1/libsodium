@@ -35,7 +35,7 @@ void fe_frombytes(fe h,const unsigned char *s)
   crypto_uint64 h6 = load_3(s + 20) << 7;
   crypto_uint64 h7 = load_3(s + 23) << 5;
   crypto_uint64 h8 = load_3(s + 26) << 4;
-  crypto_uint64 h9 = load_3(s + 29) << 2;
+  crypto_uint64 h9 = (load_3(s + 29) & 8388607) << 2;
   crypto_uint64 carry0;
   crypto_uint64 carry1;
   crypto_uint64 carry2;
