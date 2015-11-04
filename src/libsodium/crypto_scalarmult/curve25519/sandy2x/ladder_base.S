@@ -55,7 +55,7 @@ xorq 16(%rsi),%r8
 xorq 24(%rsi),%r9
 leaq 512(%rsp),%rsi
 mov  $64,%rax
-._small_loop:
+._ladder_base_small_loop:
 mov  %rdx,%r10
 mov  %rcx,%r11
 mov  %r8,%r12
@@ -78,10 +78,10 @@ movl   %r12d,512(%rsi)
 movl   %r13d,768(%rsi)
 add  $4,%rsi
 sub  $1,%rax
-jne ._small_loop
+jne ._ladder_base_small_loop
 mov  $255,%rdx
 add  $760,%rsi
-._loop:
+._ladder_base_loop:
 sub  $1,%rdx
 vbroadcastss 0(%rsi),%xmm10
 sub  $4,%rsi
@@ -1265,7 +1265,7 @@ vpunpcklqdq %xmm12,%xmm11,%xmm6
 vpunpckhqdq %xmm14,%xmm13,%xmm9
 vpunpcklqdq %xmm14,%xmm13,%xmm8
 cmp  $0,%rdx
-jne ._loop
+jne ._ladder_base_loop
 movdqu   %xmm1,80(%rdi)
 movdqu   %xmm0,0(%rdi)
 movdqu   %xmm3,96(%rdi)
@@ -1281,7 +1281,3 @@ movq 1544(%rsp),%r12
 movq 1552(%rsp),%r13
 add %r11,%rsp
 ret
-
-#if defined(__linux__) && defined(__ELF__)
-.section .note.GNU-stack,"",%progbits
-#endif
