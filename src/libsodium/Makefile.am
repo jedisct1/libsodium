@@ -200,16 +200,21 @@ if HAVE_AMD64_ASM
 libsodium_la_SOURCES += \
 	crypto_stream/salsa20/amd64_xmm6/api.h \
 	crypto_stream/salsa20/amd64_xmm6/stream_salsa20_amd64_xmm6.S \
+	crypto_scalarmult/curve25519/sandy2x/consts.S \
 	crypto_scalarmult/curve25519/sandy2x/consts_namespace.h \
 	crypto_scalarmult/curve25519/sandy2x/curve25519_sandy2x.c \
 	crypto_scalarmult/curve25519/sandy2x/curve25519_sandy2x.h \
 	crypto_scalarmult/curve25519/sandy2x/fe.h \
 	crypto_scalarmult/curve25519/sandy2x/fe51.h \
 	crypto_scalarmult/curve25519/sandy2x/fe51_invert.c \
+	crypto_scalarmult/curve25519/sandy2x/fe51_mul.S \
 	crypto_scalarmult/curve25519/sandy2x/fe51_namespace.h \
+	crypto_scalarmult/curve25519/sandy2x/fe51_nsquare.S \
+	crypto_scalarmult/curve25519/sandy2x/fe51_pack.S \
 	crypto_scalarmult/curve25519/sandy2x/fe_frombytes_sandy2x.c \
 	crypto_scalarmult/curve25519/sandy2x/ladder.S \
 	crypto_scalarmult/curve25519/sandy2x/ladder.h \
+	crypto_scalarmult/curve25519/sandy2x/ladder_base.S \
 	crypto_scalarmult/curve25519/sandy2x/ladder_base.h \
 	crypto_scalarmult/curve25519/sandy2x/ladder_base_namespace.h \
 	crypto_scalarmult/curve25519/sandy2x/ladder_namespace.h
