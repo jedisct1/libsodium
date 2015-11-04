@@ -1,5 +1,5 @@
-#ifndef CONSTS_NAMESPACE_H
-#define CONSTS_NAMESPACE_H
+#ifndef consts_namespace_H
+#define consts_namespace_H
 
 #define v0_0 crypto_scalarmult_curve25519_sandy2x_v0_0
 #define v1_0 crypto_scalarmult_curve25519_sandy2x_v1_0
@@ -18,5 +18,5 @@
 #define subc2 crypto_scalarmult_curve25519_sandy2x_subc2
 #define REDMASK51 crypto_scalarmult_curve25519_sandy2x_REDMASK51
 
-#endif //ifndef CONSTS_NAMESPACE_H
+#endif //ifndef consts_namespace_H
 

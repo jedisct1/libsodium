@@ -5,6 +5,8 @@
 #include "fe.h"
 #include "crypto_uint64.h"
 
+#ifdef HAVE_AMD64_ASM
+
 static crypto_uint64 load_3(const unsigned char *in)
 {
   crypto_uint64 result;
@@ -70,3 +72,5 @@ void fe_frombytes(fe h,const unsigned char *s)
   h[8] = h8;
   h[9] = h9;
 }
+
+#endif

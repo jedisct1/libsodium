@@ -5,8 +5,8 @@
    New function fe51_nsquare is introduced.
 */
 
-#ifndef FE51_H
-#define FE51_H
+#ifndef fe51_H
+#define fe51_H
 
 #include "crypto_uint64.h"
 #include "fe51_namespace.h"

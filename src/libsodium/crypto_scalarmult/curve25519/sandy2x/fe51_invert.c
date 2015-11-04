@@ -5,6 +5,8 @@
 
 #include "fe51.h"
 
+#ifdef HAVE_AMD64_ASM
+
 #define fe51_square(x, y) fe51_nsquare(x, y, 1)
 
 void fe51_invert(fe51 *r, const fe51 *x)
@@ -51,3 +53,5 @@ void fe51_invert(fe51 *r, const fe51 *x)
 	/* 2^255 - 2^5 */ fe51_nsquare(&t,&t,5);
 	/* 2^255 - 21 */ fe51_mul(r,&t,&z11);
 }
+
+#endif

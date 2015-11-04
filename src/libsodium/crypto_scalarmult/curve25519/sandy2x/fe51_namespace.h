@@ -1,5 +1,5 @@
-#ifndef FE51_NAMESPACE_H
-#define FE51_NAMESPACE_H
+#ifndef fe51_namespace_H
+#define fe51_namespace_H
 
 #define  fe51              crypto_scalarmult_curve25519_sandy2x_fe51
 #define _fe51             _crypto_scalarmult_curve25519_sandy2x_fe51
@@ -12,5 +12,5 @@
 
 #define  fe51_invert       crypto_scalarmult_curve25519_sandy2x_fe51_invert
 
-#endif //ifndef FE51_NAMESPACE_H
+#endif //ifndef fe51_namespace_H
 

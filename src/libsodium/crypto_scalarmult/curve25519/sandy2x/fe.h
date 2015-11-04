@@ -3,8 +3,8 @@
    All the redundant functions are removed.
 */
 
-#ifndef FE_H
-#define FE_H
+#ifndef fe_H
+#define fe_H
 
 #include "crypto_uint64.h"
 
