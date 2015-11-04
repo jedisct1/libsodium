@@ -2,11 +2,6 @@
    REDMASK51 is from amd64-51/consts.s.
 */
 
-#ifdef __linux__
-# error This is a work in progress, which is known *NOT* to work on Linux
-# error Please do not fill a bug report at this point
-#endif
-
 #include "fe51_namespace.h"
 #include "consts_namespace.h"
 #include "ladder_namespace.h"
