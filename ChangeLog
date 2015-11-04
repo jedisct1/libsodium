@@ -1,4 +1,9 @@
 
+* Version 1.0.7 (not released yet)
+ - Sandy2x, the fastest Curve25519 implementation ever, has been
+merged in, and is automatically used on CPUs supporting the AVX
+instructions set.
+
 * Version 1.0.6
  - Optimized implementations of Blake2 have been added for modern
 Intel platforms. `crypto_generichash()` is now faster than MD5 and SHA1
