@@ -1,3 +1,5 @@
+#ifdef IN_SANDY2X
+
 /*
    This file is the result of merging 
    amd64-51/fe25519_pack.c and amd64-51/fe25519_freeze.s.
@@ -213,3 +215,5 @@ movq 0(%rsp),%r11
 movq 8(%rsp),%r12
 add %r11,%rsp
 ret
+
+#endif

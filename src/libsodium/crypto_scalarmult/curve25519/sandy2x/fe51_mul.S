@@ -1,3 +1,5 @@
+#ifdef IN_SANDY2X
+
 /*
    This file is basically amd64-51/fe25519_mul.s.
 */
@@ -183,3 +185,5 @@ add %r11,%rsp
 mov %rdi,%rax
 mov %rsi,%rdx
 ret
+
+#endif

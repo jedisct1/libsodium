@@ -1,3 +1,5 @@
+#ifdef IN_SANDY2X
+
 /*
    This file is adapted from amd64-51/fe25519_square.s:
    Adding loop to perform n squares.
@@ -159,3 +161,5 @@ movq 40(%rsp),%rbx
 movq 48(%rsp),%rbp
 add %r11,%rsp
 ret
+
+#endif

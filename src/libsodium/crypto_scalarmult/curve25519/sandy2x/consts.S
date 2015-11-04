@@ -1,3 +1,5 @@
+#ifdef IN_SANDY2X
+
 /*
    REDMASK51 is from amd64-51/consts.s.
 */
@@ -19,3 +21,5 @@ m26: .quad 67108863, 67108863
 subc0: .quad 0x07FFFFDA, 0x03FFFFFE
 subc2: .quad 0x07FFFFFE, 0x03FFFFFE
 REDMASK51:   .quad 0x0007FFFFFFFFFFFF
+
+#endif

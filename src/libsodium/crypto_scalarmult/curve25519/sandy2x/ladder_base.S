@@ -1,3 +1,5 @@
+#ifdef IN_SANDY2X
+
 #include "ladder_base_namespace.h"
 #include "consts_namespace.h"
 .p2align 5
@@ -1281,3 +1283,5 @@ movq 1544(%rsp),%r12
 movq 1552(%rsp),%r13
 add %r11,%rsp
 ret
+
+#endif
