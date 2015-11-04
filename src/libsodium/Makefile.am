@@ -220,7 +220,7 @@ libsodium_la_SOURCES += \
 	crypto_scalarmult/curve25519/sandy2x/ladder_base.h \
 	crypto_scalarmult/curve25519/sandy2x/ladder_base_namespace.h \
 	crypto_scalarmult/curve25519/sandy2x/ladder_namespace.h \
-	crypto_scalarmult/curve25519/sandy2x/sandy2x.S \
+	crypto_scalarmult/curve25519/sandy2x/sandy2x.S
 else
 libsodium_la_SOURCES += \
 	crypto_stream/salsa20/ref/api.h \
