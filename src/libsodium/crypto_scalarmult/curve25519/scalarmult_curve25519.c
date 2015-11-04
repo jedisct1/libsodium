@@ -1,0 +1,38 @@
+
+#include "crypto_scalarmult_curve25519.h"
+#include "scalarmult_curve25519.h"
+
+#ifdef HAVE_TI_MODE
+# include "donna_c64/curve25519_donna_c64.h"
+static const crypto_scalarmult_curve25519_implementation *implementation =
+    &crypto_scalarmult_curve25519_donna_c64_implementation;
+#else
+# include "ref10/curve25519_ref10.h"
+static const crypto_scalarmult_curve25519_implementation *implementation =
+    &crypto_scalarmult_curve25519_ref10_implementation;
+#endif
+
+int
+crypto_scalarmult_curve25519(unsigned char *q, const unsigned char *n,
+                             const unsigned char *p)
+{
+    return implementation->mult(q, n, p);
+}
+
+int
+crypto_scalarmult_curve25519_base(unsigned char *q, const unsigned char *n)
+{
+    return implementation->mult_base(q, n);
+}
+
+size_t
+crypto_scalarmult_curve25519_bytes(void)
+{
+    return crypto_scalarmult_curve25519_BYTES;
+}
+
+size_t
+crypto_scalarmult_curve25519_scalarbytes(void)
+{
+    return crypto_scalarmult_curve25519_SCALARBYTES;
+}

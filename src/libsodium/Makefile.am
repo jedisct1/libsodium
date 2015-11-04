@@ -65,7 +65,8 @@ libsodium_la_SOURCES = \
 	crypto_pwhash/scryptsalsa208sha256/sysendian.h \
 	crypto_pwhash/scryptsalsa208sha256/nosse/pwhash_scryptsalsa208sha256_nosse.c \
 	crypto_scalarmult/crypto_scalarmult.c \
-	crypto_scalarmult/curve25519/scalarmult_curve25519_api.c \
+	crypto_scalarmult/curve25519/scalarmult_curve25519.c \
+	crypto_scalarmult/curve25519/scalarmult_curve25519.h \
 	crypto_secretbox/crypto_secretbox.c \
 	crypto_secretbox/crypto_secretbox_easy.c \
 	crypto_secretbox/xsalsa20poly1305/secretbox_xsalsa20poly1305_api.c \
@@ -172,13 +173,12 @@ endif
 
 if HAVE_TI_MODE
 libsodium_la_SOURCES += \
-	crypto_scalarmult/curve25519/donna_c64/api.h \
-	crypto_scalarmult/curve25519/donna_c64/base_curve25519_donna_c64.c \
-	crypto_scalarmult/curve25519/donna_c64/smult_curve25519_donna_c64.c
+	crypto_scalarmult/curve25519/donna_c64/curve25519_donna_c64.c \
+	crypto_scalarmult/curve25519/donna_c64/curve25519_donna_c64.h
 else
 libsodium_la_SOURCES += \
-	crypto_scalarmult/curve25519/ref10/api.h \
-	crypto_scalarmult/curve25519/ref10/base_curve25519_ref10.c \
+	crypto_scalarmult/curve25519/ref10/curve25519_ref10.c \
+	crypto_scalarmult/curve25519/ref10/curve25519_ref10.h \
 	crypto_scalarmult/curve25519/ref10/fe.h \
 	crypto_scalarmult/curve25519/ref10/fe_0_curve25519_ref10.c \
 	crypto_scalarmult/curve25519/ref10/fe_1_curve25519_ref10.c \
@@ -193,8 +193,7 @@ libsodium_la_SOURCES += \
 	crypto_scalarmult/curve25519/ref10/fe_sub_curve25519_ref10.c \
 	crypto_scalarmult/curve25519/ref10/fe_tobytes_curve25519_ref10.c \
 	crypto_scalarmult/curve25519/ref10/montgomery.h \
-	crypto_scalarmult/curve25519/ref10/pow225521.h \
-	crypto_scalarmult/curve25519/ref10/scalarmult_curve25519_ref10.c
+	crypto_scalarmult/curve25519/ref10/pow225521.h
 endif
 
 if HAVE_AMD64_ASM

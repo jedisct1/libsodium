@@ -15,14 +15,14 @@
 #define x2 var[1]
 #define z2 var[2]
 
-int crypto_scalarmult(unsigned char *q,
-  const unsigned char *n,
-  const unsigned char *p)
+int
+crypto_scalarmult(unsigned char *q, const unsigned char *n,
+                  const unsigned char *p)
 {
   unsigned char e[32];
   unsigned int i;
 
-  fe var[3]; 
+  fe var[3];
 
   fe51 x_51;
   fe51 z_51;
@@ -54,4 +54,3 @@ int crypto_scalarmult(unsigned char *q,
 
   return 0;
 }
-
