@@ -1,4 +1,5 @@
 #include "fe.h"
+#include "crypto_int32.h"
 #include "crypto_int64.h"
 #include "crypto_uint64.h"
 
