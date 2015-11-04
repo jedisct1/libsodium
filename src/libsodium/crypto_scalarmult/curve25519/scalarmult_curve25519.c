@@ -1,6 +1,7 @@
 
 #include "crypto_scalarmult_curve25519.h"
 #include "scalarmult_curve25519.h"
+#include "runtime.h"
 
 #ifdef HAVE_AMD64_ASM
 # include "sandy2x/curve25519_sandy2x.h"
@@ -38,4 +39,20 @@ size_t
 crypto_scalarmult_curve25519_scalarbytes(void)
 {
     return crypto_scalarmult_curve25519_SCALARBYTES;
+}
+
+int
+_crypto_scalarmult_curve25519_pick_best_implementation(void)
+{
+#ifdef HAVE_TI_MODE
+    implementation = &crypto_scalarmult_curve25519_donna_c64_implementation;
+#else
+    implementation = &crypto_scalarmult_curve25519_ref10_implementation;
+#endif
+#ifdef HAVE_AMD64_ASM
+    if (sodium_runtime_has_avx()) {
+        implementation = &crypto_scalarmult_curve25519_sandy2x_implementation;
+    }
+#endif
+    return 0;
 }
