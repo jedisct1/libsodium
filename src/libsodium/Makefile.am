@@ -196,7 +196,7 @@ libsodium_la_SOURCES += \
 	crypto_scalarmult/curve25519/ref10/pow225521.h
 endif
 
-EXTRA_DIST = \
+noinst_HEADERS = \
 	crypto_scalarmult/curve25519/sandy2x/consts.S \
 	crypto_scalarmult/curve25519/sandy2x/fe51_mul.S \
 	crypto_scalarmult/curve25519/sandy2x/fe51_nsquare.S \
