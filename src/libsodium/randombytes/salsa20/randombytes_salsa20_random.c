@@ -20,7 +20,7 @@
 #endif
 
 #include "crypto_core_salsa20.h"
-#include "crypto_auth_hmacsha512256.h"
+#include "crypto_generichash.h"
 #include "crypto_stream_salsa20.h"
 #include "randombytes.h"
 #include "randombytes_salsa20_random.h"
@@ -38,8 +38,7 @@ BOOLEAN NTAPI RtlGenRandom(PVOID RandomBuffer, ULONG RandomBufferLength);
 #endif
 
 #define SALSA20_RANDOM_BLOCK_SIZE crypto_core_salsa20_OUTPUTBYTES
-#define SHA512_BLOCK_SIZE 128U
-#define SHA512_MIN_PAD_SIZE (1U + 16U)
+#define HASH_BLOCK_SIZE 128U
 #define COMPILER_ASSERT(X) (void) sizeof(char[(X) ? 1 : -1])
 
 #if defined(__OpenBSD__) || defined(__CloudABI__)
@@ -255,16 +254,15 @@ void
 randombytes_salsa20_random_stir(void)
 {
     /* constant to personalize the hash function */
-    const unsigned char hsigma[crypto_auth_hmacsha512256_KEYBYTES] = {
+    const unsigned char hsigma[crypto_generichash_KEYBYTES] = {
         0x54, 0x68, 0x69, 0x73, 0x49, 0x73, 0x4a, 0x75,
         0x73, 0x74, 0x41, 0x54, 0x68, 0x69, 0x72, 0x74,
         0x79, 0x54, 0x77, 0x6f, 0x42, 0x79, 0x74, 0x65,
         0x73, 0x53, 0x65, 0x65, 0x64, 0x2e, 0x2e, 0x2e
     };
-    unsigned char  m0[crypto_auth_hmacsha512256_BYTES +
-                      2U * SHA512_BLOCK_SIZE - SHA512_MIN_PAD_SIZE];
-    unsigned char *k0 = m0 + crypto_auth_hmacsha512256_BYTES;
-    size_t         sizeof_k0 = sizeof m0 - crypto_auth_hmacsha512256_BYTES;
+    unsigned char  m0[crypto_stream_salsa20_KEYBYTES + HASH_BLOCK_SIZE];
+    unsigned char *k0 = m0 + crypto_stream_salsa20_KEYBYTES;
+    size_t         sizeof_k0 = sizeof m0 - crypto_stream_salsa20_KEYBYTES;
 
     memset(stream.rnd32, 0, sizeof stream.rnd32);
     stream.rnd32_outleft = (size_t) 0U;
@@ -299,8 +297,10 @@ randombytes_salsa20_random_stir(void)
         abort(); /* LCOV_EXCL_LINE */
     }
 #endif
-    COMPILER_ASSERT(sizeof stream.key == crypto_auth_hmacsha512256_BYTES);
-    crypto_auth_hmacsha512256(stream.key, k0, sizeof_k0, hsigma);
+    if (crypto_generichash(stream.key, sizeof stream.key, k0, sizeof_k0,
+                           hsigma, sizeof hsigma) != 0) {
+        abort();
+    }
     COMPILER_ASSERT(sizeof stream.key <= sizeof m0);
     randombytes_salsa20_random_rekey(m0);
     sodium_memzero(m0, sizeof m0);
