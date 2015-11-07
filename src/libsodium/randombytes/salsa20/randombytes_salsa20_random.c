@@ -254,10 +254,12 @@ randombytes_salsa20_random_rekey(const unsigned char * const mix)
 void
 randombytes_salsa20_random_stir(void)
 {
-    const unsigned char s[crypto_auth_hmacsha512256_KEYBYTES] = {
-        'T', 'h', 'i', 's', 'I', 's', 'J', 'u', 's', 't', 'A', 'T',
-        'h', 'i', 'r', 't', 'y', 'T', 'w', 'o', 'B', 'y', 't', 'e',
-        's', 'S', 'e', 'e', 'd', '.', '.', '.'
+    /* constant to personalize the hash function */
+    const unsigned char hsigma[crypto_auth_hmacsha512256_KEYBYTES] = {
+        0x54, 0x68, 0x69, 0x73, 0x49, 0x73, 0x4a, 0x75,
+        0x73, 0x74, 0x41, 0x54, 0x68, 0x69, 0x72, 0x74,
+        0x79, 0x54, 0x77, 0x6f, 0x42, 0x79, 0x74, 0x65,
+        0x73, 0x53, 0x65, 0x65, 0x64, 0x2e, 0x2e, 0x2e
     };
     unsigned char  m0[crypto_auth_hmacsha512256_BYTES +
                       2U * SHA512_BLOCK_SIZE - SHA512_MIN_PAD_SIZE];
@@ -298,7 +300,7 @@ randombytes_salsa20_random_stir(void)
     }
 #endif
     COMPILER_ASSERT(sizeof stream.key == crypto_auth_hmacsha512256_BYTES);
-    crypto_auth_hmacsha512256(stream.key, k0, sizeof_k0, s);
+    crypto_auth_hmacsha512256(stream.key, k0, sizeof_k0, hsigma);
     COMPILER_ASSERT(sizeof stream.key <= sizeof m0);
     randombytes_salsa20_random_rekey(m0);
     sodium_memzero(m0, sizeof m0);
