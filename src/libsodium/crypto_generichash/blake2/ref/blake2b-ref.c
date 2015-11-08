@@ -11,6 +11,7 @@
    this software. If not, see <http://creativecommons.org/publicdomain/zero/1.0/>.
 */
 
+#include <assert.h>
 #include <stdint.h>
 #include <stdlib.h>
 #include <string.h>
@@ -319,7 +320,8 @@ int blake2b_final( blake2b_state *S, uint8_t *out, uint8_t outlen )
     blake2b_increment_counter( S, BLAKE2B_BLOCKBYTES );
     blake2b_compress( S, S->buf );
     S->buflen -= BLAKE2B_BLOCKBYTES;
-    memmove( S->buf, S->buf + BLAKE2B_BLOCKBYTES, S->buflen );
+    assert( S->buflen <= BLAKE2B_BLOCKBYTES );
+    memcpy( S->buf, S->buf + BLAKE2B_BLOCKBYTES, S->buflen );
   }
 
   blake2b_increment_counter( S, S->buflen );
