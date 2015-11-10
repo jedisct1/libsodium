@@ -30,6 +30,7 @@
 #ifndef crypto_scrypt_H
 #define crypto_scrypt_H
 
+#include <limits.h>
 #include <stdint.h>
 #include <stddef.h>
 

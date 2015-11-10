@@ -1,4 +1,6 @@
 
+#include <limits.h>
+#include <stdint.h>
 #include <string.h>
 
 #include "crypto_hash_sha512.h"
