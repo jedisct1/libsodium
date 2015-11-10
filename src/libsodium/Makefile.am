@@ -240,15 +240,6 @@ libsodium_la_SOURCES += \
 	crypto_core/salsa208/ref/core_salsa208.c \
 	crypto_core/salsa208/core_salsa208_api.c \
 	crypto_core/salsa208/ref/api.h \
-	crypto_sign/edwards25519sha512batch/sign_edwards25519sha512batch_api.c \
-	crypto_sign/edwards25519sha512batch/ref/api.h \
-	crypto_sign/edwards25519sha512batch/ref/fe25519.h \
-	crypto_sign/edwards25519sha512batch/ref/fe25519_edwards25519sha512batch.c \
-	crypto_sign/edwards25519sha512batch/ref/ge25519.h \
-	crypto_sign/edwards25519sha512batch/ref/ge25519_edwards25519sha512batch.c \
-	crypto_sign/edwards25519sha512batch/ref/sc25519.h \
-	crypto_sign/edwards25519sha512batch/ref/sc25519_edwards25519sha512batch.c \
-	crypto_sign/edwards25519sha512batch/ref/sign_edwards25519sha512batch.c \
 	crypto_stream/aes128ctr/portable/afternm_aes128ctr.c \
 	crypto_stream/aes128ctr/stream_aes128ctr_api.c \
 	crypto_stream/aes128ctr/portable/api.h \
