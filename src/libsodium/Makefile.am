@@ -240,6 +240,7 @@ libsodium_la_SOURCES += \
 	crypto_core/salsa208/ref/core_salsa208.c \
 	crypto_core/salsa208/core_salsa208_api.c \
 	crypto_core/salsa208/ref/api.h \
+	crypto_sign/ed25519/ref10/obsolete.c \
 	crypto_stream/aes128ctr/portable/afternm_aes128ctr.c \
 	crypto_stream/aes128ctr/stream_aes128ctr_api.c \
 	crypto_stream/aes128ctr/portable/api.h \
