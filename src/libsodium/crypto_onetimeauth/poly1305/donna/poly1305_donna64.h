@@ -30,7 +30,8 @@ typedef struct poly1305_state_internal_t {
 
 /* interpret eight 8 bit unsigned integers as a 64 bit unsigned integer in little endian */
 static unsigned long long
-U8TO64(const unsigned char *p) {
+U8TO64(const unsigned char *p)
+{
         return
            (((unsigned long long)(p[0] & 0xff)      ) |
             ((unsigned long long)(p[1] & 0xff) <<  8) |
@@ -44,7 +45,8 @@ U8TO64(const unsigned char *p) {
 
 /* store a 64 bit unsigned integer as eight 8 bit unsigned integers in little endian */
 static void
-U64TO8(unsigned char *p, unsigned long long v) {
+U64TO8(unsigned char *p, unsigned long long v)
+{
         p[0] = (v      ) & 0xff;
         p[1] = (v >>  8) & 0xff;
         p[2] = (v >> 16) & 0xff;
@@ -56,7 +58,8 @@ U64TO8(unsigned char *p, unsigned long long v) {
 }
 
 static void
-poly1305_init(crypto_onetimeauth_poly1305_state *state, const unsigned char key[32]) {
+poly1305_init(crypto_onetimeauth_poly1305_state *state, const unsigned char key[32])
+{
         poly1305_state_internal_t *st = (poly1305_state_internal_t *)(void *)state;
         unsigned long long t0,t1;
 
@@ -82,7 +85,8 @@ poly1305_init(crypto_onetimeauth_poly1305_state *state, const unsigned char key[
 }
 
 static void
-poly1305_blocks(poly1305_state_internal_t *st, const unsigned char *m, unsigned long long bytes) {
+poly1305_blocks(poly1305_state_internal_t *st, const unsigned char *m, unsigned long long bytes)
+{
         const unsigned long long hibit = (st->final) ? 0 : ((unsigned long long)1 << 40); /* 1 << 128 */
         unsigned long long r0,r1,r2;
         unsigned long long s1,s2;
@@ -135,7 +139,8 @@ poly1305_blocks(poly1305_state_internal_t *st, const unsigned char *m, unsigned 
 
 
 static POLY1305_NOINLINE void
-poly1305_finish(crypto_onetimeauth_poly1305_state *state, unsigned char mac[16]) {
+poly1305_finish(crypto_onetimeauth_poly1305_state *state, unsigned char mac[16])
+{
         poly1305_state_internal_t *st = (poly1305_state_internal_t *)(void *)state;
         unsigned long long h0,h1,h2,c;
         unsigned long long g0,g1,g2;
