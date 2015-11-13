@@ -105,5 +105,13 @@ int main(void)
                    (unsigned int) bin_len);
         }
     }
+    memset(buf1, 0, sizeof buf1);
+    if (sodium_is_zero(buf1, sizeof buf1) != 1) {
+        printf("sodium_is_zero() failed\n");
+    }
+    buf1[randombytes_uniform(sizeof buf1)]++;
+    if (sodium_is_zero(buf1, sizeof buf1) != 0) {
+        printf("sodium_is_zero() failed\n");
+    }
     return 0;
 }

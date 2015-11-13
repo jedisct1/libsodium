@@ -154,6 +154,31 @@ sodium_compare(const unsigned char *b1_, const unsigned char *b2_, size_t len)
     return (int) (gt + gt + eq) - 1;
 }
 
+int
+sodium_is_zero(const unsigned char *n, const size_t nlen)
+{
+    size_t        i;
+    unsigned char c = 0U;
+
+    for (i = (size_t) 0U; i < nlen; i++) {
+        c |= n[i];
+    }
+    return ((c - 1U) >> 8) & 1U;
+}
+
+void
+sodium_increment(unsigned char *n, const size_t nlen)
+{
+    size_t       i;
+    unsigned int c = 1U << 8;
+
+    for (i = (size_t) 0U; i < nlen; i++) {
+        c >>= 8;
+        c += n[i];
+        n[i] = (unsigned char) c;
+    }
+}
+
 /* Derived from original code by CodesInChaos */
 char *
 sodium_bin2hex(char * const hex, const size_t hex_maxlen,
@@ -567,17 +592,4 @@ int
 sodium_mprotect_readwrite(void *ptr)
 {
     return _sodium_mprotect(ptr, _mprotect_readwrite);
-}
-
-void
-sodium_increment(unsigned char *n, const size_t nlen)
-{
-    size_t       i;
-    unsigned int c = 1U << 8;
-
-    for (i = (size_t) 0U; i < nlen; i++) {
-        c >>= 8;
-        c += n[i];
-        n[i] = (unsigned char) c;
-    }
 }

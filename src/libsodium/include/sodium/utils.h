@@ -41,6 +41,9 @@ int sodium_compare(const unsigned char *b1_, const unsigned char *b2_,
             __attribute__ ((warn_unused_result));
 
 SODIUM_EXPORT
+int sodium_is_zero(const unsigned char *n, const size_t nlen);
+
+SODIUM_EXPORT
 void sodium_increment(unsigned char *n, const size_t nlen);
 
 SODIUM_EXPORT
