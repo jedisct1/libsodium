@@ -5,8 +5,6 @@
 
 #include "crypto_onetimeauth_poly1305.h"
 
-typedef crypto_onetimeauth_poly1305_state poly1305_context;
-
 extern struct crypto_onetimeauth_poly1305_implementation
     crypto_onetimeauth_poly1305_donna_implementation;
 
