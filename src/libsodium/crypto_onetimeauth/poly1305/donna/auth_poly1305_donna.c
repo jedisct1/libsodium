@@ -64,6 +64,10 @@ static int
 crypto_onetimeauth_poly1305_donna_init(crypto_onetimeauth_poly1305_state *state,
                                        const unsigned char *key)
 {
+    (void) sizeof(int[sizeof (crypto_onetimeauth_poly1305_state) >=
+                      sizeof (poly1305_context) ? 1 : -1]);
+    (void) sizeof(int[sizeof (poly1305_context) >=
+                      sizeof (poly1305_state_internal_t) ? 1 : -1]);
     poly1305_init((poly1305_context *) state, key);
 
     return 0;
