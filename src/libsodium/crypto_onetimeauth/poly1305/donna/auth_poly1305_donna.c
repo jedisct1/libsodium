@@ -10,9 +10,10 @@
 #include "../onetimeauth_poly1305.h"
 
 static void
-poly1305_update(crypto_onetimeauth_poly1305_state *ctx, const unsigned char *m,
-                unsigned long long bytes) {
-    poly1305_state_internal_t *st = (poly1305_state_internal_t *)(void *)ctx;
+poly1305_update(crypto_onetimeauth_poly1305_state *state, const unsigned char *m,
+                unsigned long long bytes)
+{
+    poly1305_state_internal_t *st = (poly1305_state_internal_t *)(void *)state;
     unsigned long long i;
 
     /* handle leftover */
@@ -52,10 +53,10 @@ crypto_onetimeauth_poly1305_donna(unsigned char *out, const unsigned char *m,
                                   unsigned long long inlen,
                                   const unsigned char *key)
 {
-    crypto_onetimeauth_poly1305_state ctx;
-    poly1305_init(&ctx, key);
-    poly1305_update(&ctx, m, inlen);
-    poly1305_finish(&ctx, out);
+    crypto_onetimeauth_poly1305_state state;
+    poly1305_init(&state, key);
+    poly1305_update(&state, m, inlen);
+    poly1305_finish(&state, out);
 
     return 0;
 }
