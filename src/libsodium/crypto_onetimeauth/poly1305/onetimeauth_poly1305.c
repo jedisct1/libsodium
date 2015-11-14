@@ -1,7 +1,11 @@
 
 #include "crypto_onetimeauth_poly1305.h"
-#include "donna/poly1305_donna.h"
 #include "onetimeauth_poly1305.h"
+#include "runtime.h"
+#include "donna/poly1305_donna.h"
+#if defined(HAVE_TI_MODE) && defined(HAVE_AMD64_ASM) && defined(HAVE_EMMINTRIN_H)
+# include "sse2/poly1305_sse2.h"
+#endif
 
 static const crypto_onetimeauth_poly1305_implementation *implementation =
     &crypto_onetimeauth_poly1305_donna_implementation;
@@ -58,5 +62,10 @@ int
 _crypto_onetimeauth_poly1305_pick_best_implementation(void)
 {
     implementation = &crypto_onetimeauth_poly1305_donna_implementation;
+#if defined(HAVE_TI_MODE) && defined(HAVE_AMD64_ASM) && defined(HAVE_EMMINTRIN_H)
+    if (sodium_runtime_has_sse2()) {
+        implementation = &crypto_onetimeauth_poly1305_sse2_implementation;
+    }
+#endif
     return 0;
 }

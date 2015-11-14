@@ -299,7 +299,9 @@ libsse2_la_LDFLAGS = $(libsodium_la_LDFLAGS)
 libsse2_la_CPPFLAGS = $(libsodium_la_CPPFLAGS) \
 	@CFLAGS_SSE2@
 libsse2_la_SOURCES = \
-	crypto_pwhash/scryptsalsa208sha256/sse/pwhash_scryptsalsa208sha256_sse.c
+	crypto_pwhash/scryptsalsa208sha256/sse/pwhash_scryptsalsa208sha256_sse.c \
+	crypto_onetimeauth/poly1305/sse2/poly1305_sse2.c \
+	crypto_onetimeauth/poly1305/sse2/poly1305_sse2.h
 
 libssse3_la_LDFLAGS = $(libsodium_la_LDFLAGS)
 libssse3_la_CPPFLAGS = $(libsodium_la_CPPFLAGS) \

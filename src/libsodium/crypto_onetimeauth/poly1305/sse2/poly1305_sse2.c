@@ -2,6 +2,7 @@
 #include <stdint.h>
 #include <string.h>
 
+#include "crypto_verify_16.h"
 #include "utils.h"
 #include "poly1305_sse2.h"
 #include "../onetimeauth_poly1305.h"
@@ -602,5 +603,27 @@ crypto_onetimeauth_poly1305_sse2(unsigned char *out, const unsigned char *m,
 
     return 0;
 }
+
+static int
+crypto_onetimeauth_poly1305_sse2_verify(const unsigned char *h,
+                                        const unsigned char *in,
+                                        unsigned long long inlen,
+                                        const unsigned char *k)
+{
+    unsigned char correct[16];
+
+    crypto_onetimeauth_poly1305_sse2(correct,in,inlen,k);
+
+    return crypto_verify_16(h,correct);
+}
+
+struct crypto_onetimeauth_poly1305_implementation
+crypto_onetimeauth_poly1305_sse2_implementation = {
+    SODIUM_C99(.onetimeauth =) crypto_onetimeauth_poly1305_sse2,
+    SODIUM_C99(.onetimeauth_verify =) crypto_onetimeauth_poly1305_sse2_verify,
+    SODIUM_C99(.onetimeauth_init =) crypto_onetimeauth_poly1305_sse2_init,
+    SODIUM_C99(.onetimeauth_update =) crypto_onetimeauth_poly1305_sse2_update,
+    SODIUM_C99(.onetimeauth_final =) crypto_onetimeauth_poly1305_sse2_final
+};
 
 #endif
