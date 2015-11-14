@@ -58,9 +58,8 @@ U64TO8(unsigned char *p, unsigned long long v)
 }
 
 static void
-poly1305_init(crypto_onetimeauth_poly1305_state *state, const unsigned char key[32])
+poly1305_init(poly1305_state_internal_t *st, const unsigned char key[32])
 {
-        poly1305_state_internal_t *st = (poly1305_state_internal_t *)(void *)state;
         unsigned long long t0,t1;
 
         /* r &= 0xffffffc0ffffffc0ffffffc0fffffff */
@@ -139,9 +138,8 @@ poly1305_blocks(poly1305_state_internal_t *st, const unsigned char *m, unsigned 
 
 
 static POLY1305_NOINLINE void
-poly1305_finish(crypto_onetimeauth_poly1305_state *state, unsigned char mac[16])
+poly1305_finish(poly1305_state_internal_t *st, unsigned char mac[16])
 {
-        poly1305_state_internal_t *st = (poly1305_state_internal_t *)(void *)state;
         unsigned long long h0,h1,h2,c;
         unsigned long long g0,g1,g2;
         unsigned long long t0,t1;
