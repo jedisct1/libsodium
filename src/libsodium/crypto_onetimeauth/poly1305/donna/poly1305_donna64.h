@@ -14,7 +14,13 @@ typedef unsigned uint128_t __attribute__((mode(TI)));
 #define SHR(in, shift) (unsigned long long)(in >> (shift))
 #define LO(in) (unsigned long long)(in)
 
-#define POLY1305_NOINLINE __attribute__((noinline))
+#if defined(_MSC_VER)
+# define POLY1305_NOINLINE __declspec(noinline)
+#elif defined(__GNUC__)
+# define POLY1305_NOINLINE __attribute__((noinline))
+#else
+# define POLY1305_NOINLINE
+#endif
 
 #define poly1305_block_size 16
 
