@@ -205,4 +205,3 @@ poly1305_finish(poly1305_state_internal_t *st, unsigned char mac[16])
         /* zero out the state */
         sodium_memzero((void *)st, sizeof *st);
 }
-
