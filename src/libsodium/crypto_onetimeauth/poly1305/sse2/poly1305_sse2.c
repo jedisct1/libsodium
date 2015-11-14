@@ -606,6 +606,8 @@ poly1305_finish_ext(poly1305_state_internal_t *st, const unsigned char *m,
 
     *(uint64_t *)(mac + 0) = h0;
     *(uint64_t *)(mac + 8) = h1;
+
+    sodium_memzero((void *)st, sizeof *st);
 }
 
 static void
