@@ -32,6 +32,8 @@ typedef unsigned uint128_t __attribute__((mode(TI)));
 # define POLY1305_NOINLINE
 #endif
 
+#define poly1305_block_size 32
+
 enum poly1305_state_flags_t {
         poly1305_started = 1,
         poly1305_final_shift8 = 4,
@@ -50,7 +52,9 @@ typedef struct poly1305_state_internal_t {
         uint32_t R4[5];          /*  20 bytes  */
         uint64_t pad[2];         /*  16 bytes  */
         uint64_t flags;          /*   8 bytes  */
-} poly1305_state_internal_t;   /* 124 bytes total */
+        unsigned long long leftover; /* 8 bytes */
+        unsigned char buffer[poly1305_block_size]; /* 32 bytes */
+} poly1305_state_internal_t;   /* 164 bytes total */
 
 /* copy 0-31 bytes */
 static void force_inline
@@ -137,6 +141,7 @@ poly1305_init_ext(poly1305_state_internal_t *st,
         }
 
         st->flags = 0;
+        st->leftover = 0U;
 }
 
 static POLY1305_NOINLINE void
@@ -502,6 +507,47 @@ poly1305_blocks(poly1305_state_internal_t *st, const unsigned char *m,
         }
 }
 
+static void
+poly1305_update(poly1305_state_internal_t *st, const unsigned char *m,
+                unsigned long long bytes)
+{
+    unsigned long long i;
+
+    /* handle leftover */
+    if (st->leftover) {
+        unsigned long long want = (poly1305_block_size - st->leftover);
+
+        if (want > bytes)
+            want = bytes;
+        for (i = 0; i < want; i++)
+            st->buffer[st->leftover + i] = m[i];
+        bytes -= want;
+        m += want;
+        st->leftover += want;
+        if (st->leftover < poly1305_block_size)
+            return;
+        poly1305_blocks(st, st->buffer, poly1305_block_size);
+        st->leftover = 0;
+    }
+
+    /* process full blocks */
+    if (bytes >= poly1305_block_size) {
+        unsigned long long want = (bytes & ~(poly1305_block_size - 1));
+
+        poly1305_blocks(st, m, want);
+        m += want;
+        bytes -= want;
+    }
+
+    /* store leftover */
+    if (bytes) {
+        for (i = 0; i < bytes; i++) {
+            st->buffer[st->leftover + i] = m[i];
+        }
+        st->leftover += bytes;
+    }
+}
+
 static POLY1305_NOINLINE void
 poly1305_finish_ext(poly1305_state_internal_t *st, const unsigned char *m,
                     unsigned long long leftover, unsigned char mac[16])
@@ -555,6 +601,12 @@ poly1305_finish_ext(poly1305_state_internal_t *st, const unsigned char *m,
         *(uint64_t *)(mac + 8) = h1;
 }
 
+static void
+poly1305_finish(poly1305_state_internal_t *st, unsigned char mac[16])
+{
+    return poly1305_finish_ext(st, st->buffer, st->leftover, mac);
+}
+
 static int
 crypto_onetimeauth_poly1305_sse2_init(crypto_onetimeauth_poly1305_state *state,
                                       const unsigned char *key)
@@ -569,8 +621,7 @@ crypto_onetimeauth_poly1305_sse2_update(crypto_onetimeauth_poly1305_state *state
                                         const unsigned char *in,
                                         unsigned long long inlen)
 {
-#warning Handle partial blocks
-    poly1305_blocks((poly1305_state_internal_t *)(void *) state, in, inlen);
+    poly1305_update((poly1305_state_internal_t *)(void *) state, in, inlen);
 
     return 0;
 }
@@ -579,8 +630,8 @@ static int
 crypto_onetimeauth_poly1305_sse2_final(crypto_onetimeauth_poly1305_state *state,
                                        unsigned char *out)
 {
-    poly1305_finish_ext((poly1305_state_internal_t *)(void *) state,
-                        NULL, 0ULL, out);
+    poly1305_finish((poly1305_state_internal_t *)(void *) state, out);
+
     return 0;
 }
 
