@@ -410,7 +410,7 @@ AS_IF([test "$enable_asm" != "no"],[
 #else
 # error !x86_64
 #endif
-__asm__("pxor %xmm12,%xmm6");
+__asm__ __volatile__ ("pxor %xmm12,%xmm6");
 ]])],
   [AC_MSG_RESULT(yes)
    AC_DEFINE([HAVE_AMD64_ASM], [1], [x86_64 asm code can be used])
@@ -433,7 +433,7 @@ AS_IF([test "$enable_asm" != "no"],[
 #else
 # error !x86_64
 #endif
-__asm__("vpunpcklqdq %xmm0,%xmm13,%xmm0");
+__asm__ __volatile__ ("vpunpcklqdq %xmm0,%xmm13,%xmm0");
 ]])],
   [AC_MSG_RESULT(yes)
    AC_DEFINE([HAVE_AVX_ASM], [1], [AVX opcodes are supported])
