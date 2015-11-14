@@ -620,6 +620,8 @@ static int
 crypto_onetimeauth_poly1305_sse2_init(crypto_onetimeauth_poly1305_state *state,
                                       const unsigned char *key)
 {
+    (void) sizeof(int[sizeof (crypto_onetimeauth_poly1305_state) >=
+                      sizeof (poly1305_state_internal_t) ? 1 : -1]);
     poly1305_init_ext((poly1305_state_internal_t *)(void *) state, key, 0U);
 
     return 0;
