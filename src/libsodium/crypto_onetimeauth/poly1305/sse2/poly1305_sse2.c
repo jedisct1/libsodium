@@ -7,7 +7,7 @@
 #include "poly1305_sse2.h"
 #include "../onetimeauth_poly1305.h"
 
-#if defined(HAVE_TI_MODE) && defined(HAVE_AMD64_ASM) && defined(HAVE_EMMINTRIN_H)
+#if defined(HAVE_TI_MODE) && defined(HAVE_EMMINTRIN_H)
 
 #pragma GCC target("sse2")
 
@@ -566,10 +566,11 @@ poly1305_finish_ext(poly1305_state_internal_t *st, const unsigned char *m,
 
     if (st->flags & poly1305_started) {
         /* finalize, H *= [r^2,r], or H *= [r,1] */
-        if (!leftover || (leftover > 16))
+        if (!leftover || (leftover > 16)) {
             st->flags |= poly1305_final_r2_r;
-        else
+        } else {
             st->flags |= poly1305_final_r_1;
+        }
         poly1305_blocks(st, NULL, 32);
     }
 
@@ -580,13 +581,20 @@ poly1305_finish_ext(poly1305_state_internal_t *st, const unsigned char *m,
     /* pad */
     h0 = ((h0      ) | (h1 << 44));
     h1 = ((h1 >> 20) | (h2 << 24));
-
+#ifdef HAVE_AMD64_ASM
     __asm__ __volatile__("addq %2, %0 ;\n"
                          "adcq %3, %1 ;\n"
                          : "+r"(h0), "+r"(h1)
                          : "r"(st->pad[0]), "r"(st->pad[1])
                          : "flags", "cc");
-
+#else
+    {
+        uint64_t h[2] = { h0, h1 };
+        *((uint128_t *)(void *) h) += *((uint128_t *)(void *) &st->pad[0]);
+        h0 = h[0];
+        h1 = h[1];
+    }
+#endif
     _mm_storeu_si128((xmmi *)st + 0, _mm_setzero_si128());
     _mm_storeu_si128((xmmi *)st + 1, _mm_setzero_si128());
     _mm_storeu_si128((xmmi *)st + 2, _mm_setzero_si128());
@@ -603,7 +611,7 @@ poly1305_finish_ext(poly1305_state_internal_t *st, const unsigned char *m,
 static void
 poly1305_finish(poly1305_state_internal_t *st, unsigned char mac[16])
 {
-    return poly1305_finish_ext(st, st->buffer, st->leftover, mac);
+    poly1305_finish_ext(st, st->buffer, st->leftover, mac);
 }
 
 static int
@@ -644,7 +652,7 @@ crypto_onetimeauth_poly1305_sse2(unsigned char *out, const unsigned char *m,
 
     poly1305_init_ext(&st, key, inlen);
     blocks = inlen & ~31;
-    if (blocks) {
+    if (blocks > 0) {
         poly1305_blocks(&st, m, blocks);
         m += blocks;
         inlen -= blocks;
