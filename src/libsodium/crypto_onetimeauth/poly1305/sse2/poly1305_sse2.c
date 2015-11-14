@@ -1,8 +1,35 @@
+
 #include <stdint.h>
-#include <x86intrin.h>
+#include <string.h>
+
+#include "utils.h"
+#include "poly1305_sse2.h"
+#include "../onetimeauth_poly1305.h"
+
+#if defined(HAVE_TI_MODE) && defined(HAVE_AMD64_ASM) && defined(HAVE_EMMINTRIN_H)
+
+#pragma GCC target("sse2")
+
+#include <emmintrin.h>
+
+#undef force_inline
+#define force_inline __attribute__((always_inline))
 
 typedef __m128i xmmi;
-typedef unsigned int uint128_t __attribute__((mode(TI)));
+
+#if defined(__SIZEOF_INT128__)
+typedef unsigned __int128 uint128_t;
+#else
+typedef unsigned uint128_t __attribute__((mode(TI)));
+#endif
+
+#if defined(_MSC_VER)
+# define POLY1305_NOINLINE __declspec(noinline)
+#elif defined(__GNUC__)
+# define POLY1305_NOINLINE __attribute__((noinline))
+#else
+# define POLY1305_NOINLINE
+#endif
 
 enum poly1305_state_flags_t {
         poly1305_started = 1,
@@ -22,43 +49,33 @@ typedef struct poly1305_state_internal_t {
         uint32_t R4[5];          /*  20 bytes  */
         uint64_t pad[2];         /*  16 bytes  */
         uint64_t flags;          /*   8 bytes  */
-} poly1305_state_internal;   /* 124 bytes total */
-
-typedef uint8_t poly1305_state[128];
-
-#if defined(__AVX__)
-#define FN(name) name##_avx
-#else
-#define FN(name) name##_sse2
-#endif
-
-size_t
-FN(poly1305_block_size)(void) {
-        return 32;
-}
+} poly1305_state_internal_t;   /* 124 bytes total */
 
 /* copy 0-31 bytes */
-inline __attribute__((always_inline)) static void
-poly1305_block_copy31(uint8_t *dst, const uint8_t *src, size_t bytes) {
-        size_t offset = src - dst;
+static void force_inline
+poly1305_block_copy31(unsigned char *dst, const unsigned char *src, unsigned long long bytes)
+{
+        unsigned long long offset = src - dst;
         if (bytes & 16) { _mm_store_si128((xmmi *)dst, _mm_loadu_si128((xmmi *)(dst + offset))); dst += 16; }
         if (bytes &  8) { *(uint64_t *)dst = *(uint64_t *)(dst + offset); dst += 8; }
         if (bytes &  4) { *(uint32_t *)dst = *(uint32_t *)(dst + offset); dst += 4; }
         if (bytes &  2) { *(uint16_t *)dst = *(uint16_t *)(dst + offset); dst += 2; }
-        if (bytes &  1) { *( uint8_t *)dst = *( uint8_t *)(dst + offset);           }
+        if (bytes &  1) { *( unsigned char *)dst = *( unsigned char *)(dst + offset);           }
 }
 
-__attribute__((noinline)) void
-FN(poly1305_init_ext)(poly1305_state_internal *st, const unsigned char key[32], size_t bytes) {
+static POLY1305_NOINLINE void
+poly1305_init_ext(poly1305_state_internal_t *st,
+                  const unsigned char key[32], unsigned long long bytes)
+{
         uint32_t *R;
         uint128_t d[3],m0;
         uint64_t r0,r1,r2;
         uint32_t rp0,rp1,rp2,rp3,rp4;
         uint64_t rt0,rt1,rt2,st2,c;
         uint64_t t0,t1;
-        size_t i;
+        unsigned long long i;
 
-        if (!bytes) bytes = ~(size_t)0;
+        if (!bytes) bytes = ~(unsigned long long)0;
 
         /* H = 0 */
         _mm_storeu_si128((xmmi *)&st->hh[0], _mm_setzero_si128());
@@ -121,9 +138,11 @@ FN(poly1305_init_ext)(poly1305_state_internal *st, const unsigned char key[32], 
         st->flags = 0;
 }
 
-__attribute__((noinline)) void
-FN(poly1305_blocks)(poly1305_state_internal *st, const uint8_t *m, size_t bytes) {
-        __attribute__((aligned(64))) xmmi HIBIT = _mm_shuffle_epi32(_mm_cvtsi32_si128(1 << 24), _MM_SHUFFLE(1,0,1,0));
+static POLY1305_NOINLINE void
+poly1305_blocks(poly1305_state_internal_t *st, const unsigned char *m,
+                unsigned long long bytes)
+{
+        CRYPTO_ALIGN(64) xmmi HIBIT = _mm_shuffle_epi32(_mm_cvtsi32_si128(1 << 24), _MM_SHUFFLE(1,0,1,0));
         const xmmi MMASK = _mm_shuffle_epi32(_mm_cvtsi32_si128((1 << 26) - 1), _MM_SHUFFLE(1,0,1,0));
         const xmmi FIVE = _mm_shuffle_epi32(_mm_cvtsi32_si128(5), _MM_SHUFFLE(1,0,1,0));
 
@@ -341,7 +360,6 @@ FN(poly1305_blocks)(poly1305_state_internal *st, const uint8_t *m, size_t bytes)
                 }
         }
 
-
         if (bytes >= 32) {
                 xmmi v01,v02,v03,v04;
                 xmmi v11,v12,v13,v14;
@@ -483,17 +501,19 @@ FN(poly1305_blocks)(poly1305_state_internal *st, const uint8_t *m, size_t bytes)
         }
 }
 
-__attribute__((noinline)) void
-FN(poly1305_finish_ext)(poly1305_state_internal *st, const uint8_t *m, size_t leftover, unsigned char mac[16]) {
+static POLY1305_NOINLINE void
+poly1305_finish_ext(poly1305_state_internal_t *st, const unsigned char *m,
+                    unsigned long long leftover, unsigned char mac[16])
+{
         uint64_t h0,h1,h2;
         uint64_t t0,t1,c;
 
         if (leftover) {
-                __attribute__((aligned(16))) unsigned char final[32] = {0};
+                CRYPTO_ALIGN(16) unsigned char final[32] = {0};
                 poly1305_block_copy31(final, m, leftover);
                 if (leftover != 16) final[leftover] = 1;
                 st->flags |= (leftover >= 16) ? poly1305_final_shift8 : poly1305_final_shift16;
-                FN(poly1305_blocks)(st, final, 32);
+                poly1305_blocks(st, final, 32);
         }
 
         if (st->flags & poly1305_started) {
@@ -502,7 +522,7 @@ FN(poly1305_finish_ext)(poly1305_state_internal *st, const uint8_t *m, size_t le
                         st->flags |= poly1305_final_r2_r;
                 else
                         st->flags |= poly1305_final_r_1;
-                FN(poly1305_blocks)(st, NULL, 32);
+                poly1305_blocks(st, NULL, 32);
         }
 
         h0 = st->h[0];
@@ -534,19 +554,53 @@ FN(poly1305_finish_ext)(poly1305_state_internal *st, const uint8_t *m, size_t le
         *(uint64_t *)(mac + 8) = h1;
 }
 
+static int
+crypto_onetimeauth_poly1305_sse2_init(crypto_onetimeauth_poly1305_state *state,
+                                      const unsigned char *key)
+{
+    poly1305_init_ext((poly1305_state_internal_t *)(void *) state, key, 0U);
 
-void
-FN(poly1305_auth)(unsigned char out[16], const unsigned char *m, size_t inlen, const unsigned char key[32]) {
-        __attribute__((aligned(64))) poly1305_state S;
-        poly1305_state_internal *st = (poly1305_state_internal *)S;
-        size_t blocks;
-        FN(poly1305_init_ext)(st, key, inlen);
-        blocks = inlen & ~31;
-        if (blocks) {
-                FN(poly1305_blocks)(st, m, blocks);
-                m += blocks;
-                inlen -= blocks;
-        }
-        FN(poly1305_finish_ext)(st, m, inlen, out);
+    return 0;
 }
 
+static int
+crypto_onetimeauth_poly1305_sse2_update(crypto_onetimeauth_poly1305_state *state,
+                                        const unsigned char *in,
+                                        unsigned long long inlen)
+{
+#warning Handle partial blocks
+    poly1305_blocks((poly1305_state_internal_t *)(void *) state, in, inlen);
+
+    return 0;
+}
+
+static int
+crypto_onetimeauth_poly1305_sse2_final(crypto_onetimeauth_poly1305_state *state,
+                                       unsigned char *out)
+{
+    poly1305_finish_ext((poly1305_state_internal_t *)(void *) state,
+                        NULL, 0ULL, out);
+    return 0;
+}
+
+static int
+crypto_onetimeauth_poly1305_sse2(unsigned char *out, const unsigned char *m,
+                                 unsigned long long inlen,
+                                 const unsigned char *key)
+{
+    CRYPTO_ALIGN(64) poly1305_state_internal_t st;
+    unsigned long long blocks;
+
+    poly1305_init_ext(&st, key, inlen);
+    blocks = inlen & ~31;
+    if (blocks) {
+        poly1305_blocks(&st, m, blocks);
+        m += blocks;
+        inlen -= blocks;
+    }
+    poly1305_finish_ext(&st, m, inlen, out);
+
+    return 0;
+}
+
+#endif
