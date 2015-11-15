@@ -3,7 +3,8 @@
  - Sandy2x, the fastest Curve25519 implementation ever, has been
 merged in, and is automatically used on CPUs supporting the AVX
 instructions set.
- - A SSE2 optimized implementation of Poly1305 was added.
+ - An SSE2 optimized implementation of Poly1305 was added, and is
+twice as fast as the portable one.
 
 * Version 1.0.6
  - Optimized implementations of Blake2 have been added for modern
