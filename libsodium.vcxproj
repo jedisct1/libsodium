@@ -319,8 +319,6 @@
     <ClInclude Include="src\libsodium\crypto_generichash\blake2\ref\blake2b-load-sse41.h" />
     <ClInclude Include="src\libsodium\crypto_generichash\blake2\ref\blake2b-round.h" />
     <ClInclude Include="src\libsodium\crypto_onetimeauth\poly1305\onetimeauth_poly1305.h" />
-    <ClInclude Include="src\libsodium\crypto_scalarmult\curve25519\donna_c64\curve25519_donna_c64.h" />
-    <ClInclude Include="src\libsodium\crypto_scalarmult\curve25519\scalarmult_curve25519.h" />
     <ClInclude Include="src\libsodium\include\sodium.h" />
     <ClInclude Include="src\libsodium\include\sodium\core.h" />
     <ClInclude Include="src\libsodium\include\sodium\crypto_aead_aes256gcm.h" />
@@ -418,7 +416,7 @@
     <ClCompile Include="src\libsodium\crypto_hash\sha512\hash_sha512_api.c" />
     <ClCompile Include="src\libsodium\crypto_hash\sha512\cp\hash_sha512.c" />
     <ClCompile Include="src\libsodium\crypto_onetimeauth\crypto_onetimeauth.c" />
-    <ClCompile Include="src\libsodium\crypto_onetimeauth\poly1305\donna\auth_poly1305_donna.c" />
+    <ClCompile Include="src\libsodium\crypto_onetimeauth\poly1305\donna\poly1305_donna.c" />
     <ClCompile Include="src\libsodium\crypto_onetimeauth\poly1305\onetimeauth_poly1305.c" />
     <ClCompile Include="src\libsodium\crypto_pwhash\scryptsalsa208sha256\crypto_scrypt-common.c" />
     <ClCompile Include="src\libsodium\crypto_pwhash\scryptsalsa208sha256\nosse\pwhash_scryptsalsa208sha256_nosse.c" />
@@ -488,16 +486,12 @@
     <ClCompile Include="src\libsodium\crypto_sign\ed25519\ref10\ge_sub.c" />
     <ClCompile Include="src\libsodium\crypto_sign\ed25519\ref10\ge_tobytes.c" />
     <ClCompile Include="src\libsodium\crypto_sign\ed25519\ref10\keypair.c" />
+    <ClCompile Include="src\libsodium\crypto_sign\ed25519\ref10\obsolete.c" />
     <ClCompile Include="src\libsodium\crypto_sign\ed25519\ref10\open.c" />
     <ClCompile Include="src\libsodium\crypto_sign\ed25519\ref10\sc_muladd.c" />
     <ClCompile Include="src\libsodium\crypto_sign\ed25519\ref10\sc_reduce.c" />
     <ClCompile Include="src\libsodium\crypto_sign\ed25519\ref10\sign.c" />
     <ClCompile Include="src\libsodium\crypto_sign\ed25519\sign_ed25519_api.c" />
-    <ClCompile Include="src\libsodium\crypto_sign\edwards25519sha512batch\ref\fe25519_edwards25519sha512batch.c" />
-    <ClCompile Include="src\libsodium\crypto_sign\edwards25519sha512batch\ref\ge25519_edwards25519sha512batch.c" />
-    <ClCompile Include="src\libsodium\crypto_sign\edwards25519sha512batch\ref\sc25519_edwards25519sha512batch.c" />
-    <ClCompile Include="src\libsodium\crypto_sign\edwards25519sha512batch\ref\sign_edwards25519sha512batch.c" />
-    <ClCompile Include="src\libsodium\crypto_sign\edwards25519sha512batch\sign_edwards25519sha512batch_api.c" />
     <ClCompile Include="src\libsodium\crypto_stream\aes128ctr\portable\afternm_aes128ctr.c" />
     <ClCompile Include="src\libsodium\crypto_stream\aes128ctr\portable\beforenm_aes128ctr.c" />
     <ClCompile Include="src\libsodium\crypto_stream\aes128ctr\portable\common_aes128ctr.c" />
