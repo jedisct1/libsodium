@@ -12,7 +12,9 @@ int crypto_box(
   unsigned char k[crypto_box_BEFORENMBYTES];
   int           ret;
 
-  crypto_box_beforenm(k,pk,sk);
+  if (crypto_box_beforenm(k,pk,sk) != 0) {
+      return -1;
+  }
   ret = crypto_box_afternm(c,m,mlen,n,k);
   sodium_memzero(k, sizeof k);
 
@@ -30,7 +32,9 @@ int crypto_box_open(
   unsigned char k[crypto_box_BEFORENMBYTES];
   int           ret;
 
-  crypto_box_beforenm(k,pk,sk);
+  if (crypto_box_beforenm(k,pk,sk) != 0) {
+      return -1;
+  }
   ret = crypto_box_open_afternm(m,c,clen,n,k);
   sodium_memzero(k, sizeof k);
 

@@ -15,7 +15,8 @@ int main(void)
 {
     size_t mlen;
     size_t i;
-    int caught;
+    int    caught;
+    int    ret;
 
     for (mlen = 0; mlen < 1000 && mlen + crypto_box_ZEROBYTES < sizeof m;
          ++mlen) {
@@ -23,7 +24,8 @@ int main(void)
         crypto_box_keypair(bobpk, bobsk);
         randombytes_buf(n, crypto_box_NONCEBYTES);
         randombytes_buf(m + crypto_box_ZEROBYTES, mlen);
-        crypto_box(c, m, mlen + crypto_box_ZEROBYTES, n, bobpk, alicesk);
+        ret = crypto_box(c, m, mlen + crypto_box_ZEROBYTES, n, bobpk, alicesk);
+        assert(ret == 0);
         caught = 0;
         while (caught < 10) {
             c[rand() % (mlen + crypto_box_ZEROBYTES)] = rand();

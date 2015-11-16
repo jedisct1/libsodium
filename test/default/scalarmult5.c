@@ -17,8 +17,10 @@ unsigned char k[32];
 int main(void)
 {
     int i;
+    int ret;
 
-    crypto_scalarmult(k, alicesk, bobpk);
+    ret = crypto_scalarmult(k, alicesk, bobpk);
+    assert(ret == 0);
 
     for (i = 0; i < 32; ++i) {
         if (i > 0) {

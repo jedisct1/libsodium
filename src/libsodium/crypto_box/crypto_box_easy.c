@@ -26,7 +26,9 @@ crypto_box_detached(unsigned char *c, unsigned char *mac,
 
     (void) sizeof(int[crypto_box_BEFORENMBYTES >=
                       crypto_secretbox_KEYBYTES ? 1 : -1]);
-    crypto_box_beforenm(k, pk, sk);
+    if (crypto_box_beforenm(k, pk, sk) != 0) {
+        return -1;
+    }
     ret = crypto_box_detached_afternm(c, mac, m, mlen, n, k);
     sodium_memzero(k, sizeof k);
 
@@ -75,7 +77,9 @@ crypto_box_open_detached(unsigned char *m, const unsigned char *c,
     unsigned char k[crypto_box_BEFORENMBYTES];
     int           ret;
 
-    crypto_box_beforenm(k, pk, sk);
+    if (crypto_box_beforenm(k, pk, sk) != 0) {
+        return -1;
+    }
     ret = crypto_box_open_detached_afternm(m, c, mac, clen, n, k);
     sodium_memzero(k, sizeof k);
 

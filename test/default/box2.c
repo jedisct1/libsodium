@@ -39,6 +39,7 @@ int main(void)
 {
     unsigned char k[crypto_box_BEFORENMBYTES];
     int i;
+    int ret;
 
     if (crypto_box_open(m, c, 163, nonce, alicepk, bobsk) == 0) {
         for (i = 32; i < 163; ++i) {
@@ -50,7 +51,8 @@ int main(void)
     }
 
     memset(m, 0, sizeof m);
-    crypto_box_beforenm(k, alicepk, bobsk);
+    ret = crypto_box_beforenm(k, alicepk, bobsk);
+    assert(ret == 0);
     if (crypto_box_open_afternm(m, c, 163, nonce, k) == 0) {
         for (i = 32; i < 163; ++i) {
             printf(",0x%02x", (unsigned int)m[i]);

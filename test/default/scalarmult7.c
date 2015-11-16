@@ -22,9 +22,13 @@ unsigned char out2[32];
 
 int main(void)
 {
+    int ret;
+
     scalar[0] = 1U;
-    crypto_scalarmult_curve25519(out1, scalar, p1);
-    crypto_scalarmult_curve25519(out2, scalar, p2);
+    ret = crypto_scalarmult_curve25519(out1, scalar, p1);
+    assert(ret == 0);
+    ret = crypto_scalarmult_curve25519(out2, scalar, p2);
+    assert(ret == 0);
     printf("%d\n", !!memcmp(out1, out2, 32));
 
     return 0;

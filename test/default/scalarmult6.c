@@ -18,6 +18,7 @@ int main(void)
     unsigned char *bobsk;
     unsigned char *alicepk;
     int            i;
+    int            ret;
 
     k = (unsigned char *) sodium_malloc(crypto_scalarmult_BYTES);
     bobsk = (unsigned char *) sodium_malloc(crypto_scalarmult_SCALARBYTES);
@@ -27,7 +28,8 @@ int main(void)
     memcpy(bobsk, bobsk_, crypto_scalarmult_SCALARBYTES);
     memcpy(alicepk, alicepk_, crypto_scalarmult_SCALARBYTES);
 
-    crypto_scalarmult(k, bobsk, alicepk);
+    ret = crypto_scalarmult(k, bobsk, alicepk);
+    assert(ret == 0);
 
     sodium_free(alicepk);
     sodium_free(bobsk);

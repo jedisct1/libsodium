@@ -18,6 +18,7 @@ int main(void)
     unsigned char *k2;
     size_t         mlen;
     size_t         i;
+    int            ret;
 
     alicepk = (unsigned char *) sodium_malloc(crypto_box_PUBLICKEYBYTES);
     alicesk = (unsigned char *) sodium_malloc(crypto_box_SECRETKEYBYTES);
@@ -32,7 +33,8 @@ int main(void)
     mlen = (size_t) randombytes_uniform((uint32_t)sizeof m);
     randombytes_buf(m, mlen);
     randombytes_buf(nonce, crypto_box_NONCEBYTES);
-    crypto_box_easy(c, m, mlen, nonce, bobpk, alicesk);
+    ret = crypto_box_easy(c, m, mlen, nonce, bobpk, alicesk);
+    assert(ret == 0);
     if (crypto_box_open_easy(m2, c,
                              (unsigned long long) mlen + crypto_box_MACBYTES,
                              nonce, alicepk, bobsk) != 0) {
@@ -50,7 +52,8 @@ int main(void)
     }
 
     memcpy(c, m, mlen);
-    crypto_box_easy(c, c, (unsigned long long) mlen, nonce, bobpk, alicesk);
+    ret = crypto_box_easy(c, c, (unsigned long long) mlen, nonce, bobpk, alicesk);
+    assert(ret == 0);
     printf("%d\n", memcmp(m, c, mlen) == 0);
     printf("%d\n", memcmp(m, c + crypto_box_MACBYTES, mlen) == 0);
     if (crypto_box_open_easy(c, c,
@@ -59,8 +62,10 @@ int main(void)
         printf("crypto_box_open_easy() failed\n");
     }
 
-    crypto_box_beforenm(k1, alicepk, bobsk);
-    crypto_box_beforenm(k2, bobpk, alicesk);
+    ret = crypto_box_beforenm(k1, alicepk, bobsk);
+    assert(ret == 0);
+    ret = crypto_box_beforenm(k2, bobpk, alicesk);
+    assert(ret == 0);
 
     memset(m2, 0, sizeof m2);
 
@@ -79,8 +84,9 @@ int main(void)
         printf("crypto_box_open_easy_afternm() with a huge ciphertext should have failed\n");
     }
     memset(m2, 0, sizeof m2);
-    crypto_box_detached(c, mac, m, (unsigned long long) mlen,
-                        nonce, alicepk, bobsk);
+    ret = crypto_box_detached(c, mac, m, (unsigned long long) mlen,
+                              nonce, alicepk, bobsk);
+    assert(ret == 0);
     if (crypto_box_open_detached(m2, c, mac, (unsigned long long) mlen,
                                  nonce, bobpk, alicesk) != 0) {
         printf("crypto_box_open_detached() failed\n");

@@ -15,6 +15,7 @@ int main(void)
 {
     size_t mlen;
     size_t i;
+    int    ret;
 
     for (mlen = 0; mlen < 1000 && mlen + crypto_box_ZEROBYTES < sizeof m;
          ++mlen) {
@@ -22,7 +23,8 @@ int main(void)
         crypto_box_keypair(bobpk, bobsk);
         randombytes_buf(n, crypto_box_NONCEBYTES);
         randombytes_buf(m + crypto_box_ZEROBYTES, mlen);
-        crypto_box(c, m, mlen + crypto_box_ZEROBYTES, n, bobpk, alicesk);
+        ret = crypto_box(c, m, mlen + crypto_box_ZEROBYTES, n, bobpk, alicesk);
+        assert(ret == 0);
         if (crypto_box_open(m2, c, mlen + crypto_box_ZEROBYTES, n, alicepk,
                             bobsk) == 0) {
             for (i = 0; i < mlen + crypto_box_ZEROBYTES; ++i) {

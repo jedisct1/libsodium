@@ -22,6 +22,7 @@ int main(void)
         (unsigned char *) sodium_malloc(crypto_scalarmult_BYTES);
     unsigned char *k =
         (unsigned char *) sodium_malloc(crypto_scalarmult_BYTES);
+    int ret;
 
     assert(alicepk != NULL && bobpk != NULL && k != NULL);
 
@@ -33,11 +34,13 @@ int main(void)
     sodium_bin2hex(hex, sizeof hex, bobpk, crypto_scalarmult_BYTES);
     printf("%s\n", hex);
 
-    crypto_scalarmult(k, alicesk, bobpk);
+    ret = crypto_scalarmult(k, alicesk, bobpk);
+    assert(ret == 0);
     sodium_bin2hex(hex, sizeof hex, k, crypto_scalarmult_BYTES);
     printf("%s\n", hex);
 
-    crypto_scalarmult(k, bobsk, alicepk);
+    ret = crypto_scalarmult(k, bobsk, alicepk);
+    assert(ret == 0);
     sodium_bin2hex(hex, sizeof hex, k, crypto_scalarmult_BYTES);
     printf("%s\n", hex);
 

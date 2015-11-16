@@ -34,8 +34,10 @@ unsigned char c[147 + crypto_box_MACBYTES];
 int main(void)
 {
     size_t i;
+    int    ret;
 
-    crypto_box_easy(c, m, 131, nonce, bobpk, alicesk);
+    ret = crypto_box_easy(c, m, 131, nonce, bobpk, alicesk);
+    assert(ret == 0);
     for (i = 0; i < 131 + crypto_box_MACBYTES; ++i) {
         printf(",0x%02x", (unsigned int)c[i]);
         if (i % 8 == 7)

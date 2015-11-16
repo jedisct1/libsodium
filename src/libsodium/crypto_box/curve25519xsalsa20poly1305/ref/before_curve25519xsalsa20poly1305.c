@@ -14,6 +14,8 @@ int crypto_box_beforenm(
 )
 {
   unsigned char s[32];
-  crypto_scalarmult_curve25519(s,sk,pk);
+  if (crypto_scalarmult_curve25519(s,sk,pk) != 0) {
+      return -1;
+  }
   return crypto_core_hsalsa20(k,n,s,sigma);
 }
