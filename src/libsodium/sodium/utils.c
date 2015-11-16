@@ -113,7 +113,7 @@ sodium_memcmp(const void * const b1_, const void * const b2_, size_t len)
     for (i = 0U; i < len; i++) {
         d |= b1[i] ^ b2[i];
     }
-    return (int) ((1 & ((d - 1) >> 8)) - 1);
+    return (1 & ((d - 1) >> 8)) - 1;
 }
 
 #ifdef HAVE_WEAK_SYMBOLS
@@ -158,12 +158,12 @@ int
 sodium_is_zero(const unsigned char *n, const size_t nlen)
 {
     size_t        i;
-    unsigned char c = 0U;
+    unsigned char d = 0U;
 
     for (i = 0U; i < nlen; i++) {
-        c |= n[i];
+        d |= n[i];
     }
-    return 1 & ((c - 1) >> 8);
+    return 1 & ((d - 1) >> 8);
 }
 
 void
