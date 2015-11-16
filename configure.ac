@@ -519,9 +519,9 @@ AS_CASE([$host_cpu],
       ]], [[]])], [aligned_access_required=no], [])]
 )
 AS_IF([test "x$aligned_access_required" = "xyes"],
-  [AC_MSG_RESULT(yes)
-   AC_DEFINE([CPU_ALIGNED_ACCESS_REQUIRED], [1], [data alignment is required])],
-  [AC_MSG_RESULT(no)])
+  [AC_MSG_RESULT(yes)],
+  [AC_MSG_RESULT(no)
+   AC_DEFINE([CPU_UNALIGNED_ACCESS], [1], [unaligned memory access is supported])])
 
 dnl Checks for functions and headers
 
