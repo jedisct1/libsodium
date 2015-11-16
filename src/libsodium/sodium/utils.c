@@ -157,25 +157,61 @@ sodium_compare(const unsigned char *b1_, const unsigned char *b2_, size_t len)
 int
 sodium_is_zero(const unsigned char *n, const size_t nlen)
 {
-    size_t        i;
-    unsigned char c = 0U;
-
-    for (i = (size_t) 0U; i < nlen; i++) {
+    size_t        i = 0U;
+#if !defined(CPU_UNALIGNED_ACCESS) || !defined(NATIVE_LITTLE_ENDIAN)
+    uint_fast8_t  c = 0U;
+#else
+    uint_fast64_t c = 0U;
+    for (; i < (nlen & ~0x7); i += 8U) {
+        c |= *((const uint64_t *) (const void *) &n[i]);
+    }
+#endif
+    for (; i < nlen; i++) {
         c |= n[i];
     }
-    return ((c - 1U) >> 8) & 1U;
+    return (int) (((c - 1U) >> 8) & 1U);
 }
 
 void
 sodium_increment(unsigned char *n, const size_t nlen)
 {
-    size_t       i;
-    unsigned int c = 1U << 8;
-
-    for (i = (size_t) 0U; i < nlen; i++) {
-        c >>= 8;
-        c += n[i];
+    size_t        i = 0U;
+#if !defined(CPU_UNALIGNED_ACCESS) || !defined(NATIVE_LITTLE_ENDIAN)
+    uint_fast16_t c = 1U;
+#else
+    uint_fast64_t c = 1U;
+    for (; i < (nlen & ~0x3); i += 4U) {
+        c += (uint_fast64_t) *((const uint32_t *) (const void *) &n[i]);
+        *((uint32_t *) (void *) &n[i]) = (uint32_t) c;
+        c >>= 32;
+    }
+#endif
+    for (; i < nlen; i++) {
+        c += (uint_fast16_t) n[i];
         n[i] = (unsigned char) c;
+        c >>= 8;
+    }
+}
+
+void
+sodium_add(unsigned char *a, const unsigned char *b, const size_t len)
+{
+    size_t        i = 0U;
+#if !defined(CPU_UNALIGNED_ACCESS) || !defined(NATIVE_LITTLE_ENDIAN)
+    uint_fast16_t c = 0U;
+#else
+    uint_fast64_t c = 0U;
+    for (; i < (len & ~0x3); i += 4U) {
+        c += (uint_fast64_t) *((const uint32_t *) (const void *) &a[i]) +
+             (uint_fast64_t) *((const uint32_t *) (const void *) &b[i]);
+        *((uint32_t *) (void *) &a[i]) = (uint32_t) c;
+        c >>= 32;
+    }
+#endif
+    for (; i < len; i++) {
+        c += (uint_fast16_t) a[i] + (uint_fast16_t) b[i];
+        a[i] = (unsigned char) c;
+        c >>= 8;
     }
 }
 

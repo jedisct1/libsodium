@@ -47,6 +47,9 @@ SODIUM_EXPORT
 void sodium_increment(unsigned char *n, const size_t nlen);
 
 SODIUM_EXPORT
+void sodium_add(unsigned char *a, const unsigned char *b, const size_t len);
+
+SODIUM_EXPORT
 char *sodium_bin2hex(char * const hex, const size_t hex_maxlen,
                      const unsigned char * const bin, const size_t bin_len);
 
