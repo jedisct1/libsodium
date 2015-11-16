@@ -157,24 +157,13 @@ sodium_compare(const unsigned char *b1_, const unsigned char *b2_, size_t len)
 int
 sodium_is_zero(const unsigned char *n, const size_t nlen)
 {
-    size_t       i = 0U;
+    size_t        i;
+    unsigned char c = 0U;
 
-#if !defined(CPU_UNALIGNED_ACCESS) || !defined(NATIVE_LITTLE_ENDIAN)
-    uint_fast8_t c = 0U;
-    for (; i < nlen; i++) {
+    for (i = 0U; i < nlen; i++) {
         c |= n[i];
     }
-    return (int) ((((uint_fast16_t) c - 1U) >> 8) & 1U);
-#else
-    uint_fast32_t c = 0U;
-    for (; i < (nlen & ~0x3); i += 4U) {
-        c |= *((const uint32_t *) (const void *) &n[i]);
-    }
-    for (; i < nlen; i++) {
-        c |= n[i];
-    }
-    return (int) ((((uint_fast64_t) c - 1U) >> 32) & 1U);
-#endif
+    return 1 & ((c - 1) >> 8);
 }
 
 void
