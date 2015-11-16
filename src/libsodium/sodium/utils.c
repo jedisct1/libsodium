@@ -157,7 +157,7 @@ sodium_compare(const unsigned char *b1_, const unsigned char *b2_, size_t len)
 int
 sodium_is_zero(const unsigned char *n, const size_t nlen)
 {
-    size_t        i = 0U;
+    size_t       i = 0U;
 
 #if !defined(CPU_UNALIGNED_ACCESS) || !defined(NATIVE_LITTLE_ENDIAN)
     uint_fast8_t c = 0U;
