@@ -3,6 +3,7 @@
 
 int main(void)
 {
+    unsigned char  buf_add[1000];
     unsigned char  buf1[1000];
     unsigned char  buf2[1000];
     unsigned char  buf1_rev[1000];
@@ -109,9 +110,36 @@ int main(void)
     if (sodium_is_zero(buf1, sizeof buf1) != 1) {
         printf("sodium_is_zero() failed\n");
     }
-    buf1[randombytes_uniform(sizeof buf1)]++;
-    if (sodium_is_zero(buf1, sizeof buf1) != 0) {
-        printf("sodium_is_zero() failed\n");
+    for (i = 0U; i < sizeof buf1; i++) {
+        buf1[i]++;
+        if (sodium_is_zero(buf1, sizeof buf1) != 0) {
+            printf("sodium_is_zero() failed\n");
+        }
+        buf1[i]--;
+    }
+    bin_len = randombytes_uniform(sizeof buf1);
+    randombytes_buf(buf1, bin_len);
+    memcpy(buf2, buf1, bin_len);
+    memset(buf_add, 0, bin_len);
+    j = randombytes_uniform(10000);
+    for (i = 0U; i < j; i++) {
+        sodium_increment(buf1, bin_len);
+        sodium_increment(buf_add, bin_len);
+    }
+    sodium_add(buf2, buf_add, bin_len);
+    if (sodium_compare(buf1, buf2, bin_len) != 0) {
+        printf("sodium_add() failed\n");
+    }
+    bin_len = randombytes_uniform(sizeof buf1);
+    randombytes_buf(buf1, bin_len);
+    memcpy(buf2, buf1, bin_len);
+    memset(buf_add, 0xff, bin_len);
+    sodium_increment(buf2, bin_len);
+    sodium_increment(buf2, 0U);
+    sodium_add(buf2, buf_add, bin_len);
+    sodium_add(buf2, buf_add, 0U);
+    if (sodium_compare(buf1, buf2, bin_len) != 0) {
+        printf("sodium_add() failed\n");
     }
     return 0;
 }
