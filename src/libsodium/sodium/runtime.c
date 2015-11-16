@@ -102,42 +102,48 @@ _sodium_runtime_intel_cpu_features(CPUFeatures * const cpu_features)
         return -1; /* LCOV_EXCL_LINE */
     }
     _cpuid(cpu_info, 0x00000001);
-#ifndef HAVE_EMMINTRIN_H
-    cpu_features->has_sse2 = 0;
-#else
+#if defined(HAVE_EMMINTRIN_H) || \
+    (defined(_MSC_VER) && (defined(_M_X64) || defined(_M_AMD64) || defined(_M_IX86)))
     cpu_features->has_sse2 = ((cpu_info[3] & CPUID_SSE2) != 0x0);
+#else
+    cpu_features->has_sse2 = 0;
 #endif
 
-#ifndef HAVE_PMMINTRIN_H
-    cpu_features->has_sse3 = 0;
-#else
+#if defined(HAVE_PMMINTRIN_H) || \
+    (defined(_MSC_VER) && (defined(_M_X64) || defined(_M_AMD64) || defined(_M_IX86)))
     cpu_features->has_sse3 = ((cpu_info[2] & CPUIDECX_SSE3) != 0x0);
+#else
+    cpu_features->has_sse3 = 0;
 #endif
 
-#ifndef HAVE_TMMINTRIN_H
-    cpu_features->has_ssse3 = 0;
-#else
+#if defined(HAVE_TMMINTRIN_H) || \
+    (defined(_MSC_VER) && (defined(_M_X64) || defined(_M_AMD64) || defined(_M_IX86)))
     cpu_features->has_ssse3 = ((cpu_info[2] & CPUIDECX_SSSE3) != 0x0);
+#else
+    cpu_features->has_ssse3 = 0;
 #endif
 
-#ifndef HAVE_SMMINTRIN_H
-    cpu_features->has_sse41 = 0;
-#else
+#if defined(HAVE_SMMINTRIN_H) || \
+    (defined(_MSC_VER) && (defined(_M_X64) || defined(_M_AMD64) || defined(_M_IX86)))
     cpu_features->has_sse41 = ((cpu_info[2] & CPUIDECX_SSE41) != 0x0);
+#else
+    cpu_features->has_sse41 = 0;
 #endif
 
-#ifndef HAVE_AVXINTRIN_H
-    cpu_features->has_avx = 0;
-#else
+#if defined(HAVE_AVXINTRIN_H) || \
+    (defined(_MSC_VER) && (defined(_M_X64) || defined(_M_AMD64) || defined(_M_IX86)))
     cpu_features->has_avx = ((cpu_info[2] & CPUIDECX_AVX) != 0x0);
+#else
+    cpu_features->has_avx = 0;
 #endif
 
-#ifndef HAVE_WMMINTRIN_H
-    cpu_features->has_pclmul = 0;
-    cpu_features->has_aesni = 0;
-#else
+#if defined(HAVE_WMMINTRIN_H) || \
+    (defined(_MSC_VER) && (defined(_M_X64) || defined(_M_AMD64) || defined(_M_IX86)))
     cpu_features->has_pclmul = ((cpu_info[2] & CPUIDECX_PCLMUL) != 0x0);
     cpu_features->has_aesni = ((cpu_info[2] & CPUIDECX_AESNI) != 0x0);
+#else
+    cpu_features->has_pclmul = 0;
+    cpu_features->has_aesni = 0;
 #endif
 
     return 0;
