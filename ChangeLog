@@ -1,10 +1,18 @@
 
 * Version 1.0.7 (not released yet)
+ - More functions whose return value should be checked have been
+tagged with `__attribute__ ((warn_unused_result))`: `crypto_box_easy()`,
+`crypto_box_detached()`, `crypto_box_beforenm()`, `crypto_box()`, and
+`crypto_scalarmult()`.
  - Sandy2x, the fastest Curve25519 implementation ever, has been
 merged in, and is automatically used on CPUs supporting the AVX
 instructions set.
  - An SSE2 optimized implementation of Poly1305 was added, and is
 twice as fast as the portable one.
+ - New helper functions have been added: `sodium_is_zero()` and
+ `sodium_add()`.
+ - `sodium_runtime_has_aesni()` now properly detects the CPU flag when
+ compiled using Visual Studio.
 
 * Version 1.0.6
  - Optimized implementations of Blake2 have been added for modern
