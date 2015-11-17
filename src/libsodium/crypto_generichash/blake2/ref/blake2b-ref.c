@@ -415,7 +415,7 @@ blake2b_pick_best_implementation(void)
   }
 #endif
 #if (defined(HAVE_EMMINTRIN_H) && defined(HAVE_TMMINTRIN_H)) || \
-    (defined(_MSC_VER) && (defined(_M_X64) || defined(_M_AMD64) || defined(_M_IX86)))
+    (defined(_MSC_VER) && (defined(_M_X64) || defined(_M_AMD64)))
   if (sodium_runtime_has_ssse3()) {
     blake2b_compress = blake2b_compress_ssse3;
     return 0;
