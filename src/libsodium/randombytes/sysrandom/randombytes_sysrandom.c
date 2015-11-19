@@ -39,24 +39,24 @@ BOOLEAN NTAPI RtlGenRandom(PVOID RandomBuffer, ULONG RandomBufferLength);
 
 #ifdef HAVE_SAFE_ARC4RANDOM
 
-uint32_t
+static uint32_t
 randombytes_sysrandom(void)
 {
     return arc4random();
 }
 
-void
+static void
 randombytes_sysrandom_stir(void)
 {
 }
 
-void
+static void
 randombytes_sysrandom_buf(void * const buf, const size_t size)
 {
     return arc4random_buf(buf, size);
 }
 
-int
+static int
 randombytes_sysrandom_close(void)
 {
     return 0;
@@ -214,7 +214,7 @@ randombytes_sysrandom_init(void)
 }
 #endif
 
-void
+static void
 randombytes_sysrandom_stir(void)
 {
     if (stream.initialized == 0) {
@@ -231,7 +231,7 @@ randombytes_sysrandom_stir_if_needed(void)
     }
 }
 
-int
+static int
 randombytes_sysrandom_close(void)
 {
     int ret = -1;
@@ -257,17 +257,7 @@ randombytes_sysrandom_close(void)
     return ret;
 }
 
-uint32_t
-randombytes_sysrandom(void)
-{
-    uint32_t r;
-
-    randombytes_sysrandom_buf(&r, sizeof r);
-
-    return r;
-}
-
-void
+static void
 randombytes_sysrandom_buf(void * const buf, const size_t size)
 {
     randombytes_sysrandom_stir_if_needed();
@@ -298,9 +288,19 @@ randombytes_sysrandom_buf(void * const buf, const size_t size)
 #endif
 }
 
+static uint32_t
+randombytes_sysrandom(void)
+{
+    uint32_t r;
+
+    randombytes_sysrandom_buf(&r, sizeof r);
+
+    return r;
+}
+
 #endif /* __OpenBSD__ */
 
-const char *
+static const char *
 randombytes_sysrandom_implementation_name(void)
 {
     return "sysrandom";

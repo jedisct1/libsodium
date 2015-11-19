@@ -250,7 +250,7 @@ randombytes_salsa20_random_rekey(const unsigned char * const mix)
     }
 }
 
-void
+static void
 randombytes_salsa20_random_stir(void)
 {
     /* constant to personalize the hash function */
@@ -325,35 +325,7 @@ randombytes_salsa20_random_stir_if_needed(void)
 #endif
 }
 
-static uint32_t
-randombytes_salsa20_random_getword(void)
-{
-    uint32_t val;
-    int      ret;
-
-    COMPILER_ASSERT(sizeof stream.rnd32 >= (sizeof stream.key) + (sizeof val));
-    COMPILER_ASSERT(((sizeof stream.rnd32) - (sizeof stream.key))
-                    % sizeof val == (size_t) 0U);
-    if (stream.rnd32_outleft <= (size_t) 0U) {
-        randombytes_salsa20_random_stir_if_needed();
-        COMPILER_ASSERT(sizeof stream.nonce == crypto_stream_salsa20_NONCEBYTES);
-        ret = crypto_stream_salsa20((unsigned char *) stream.rnd32,
-                                    (unsigned long long) sizeof stream.rnd32,
-                                    (unsigned char *) &stream.nonce,
-                                    stream.key);
-        assert(ret == 0);
-        stream.rnd32_outleft = (sizeof stream.rnd32) - (sizeof stream.key);
-        randombytes_salsa20_random_rekey(&stream.rnd32[stream.rnd32_outleft]);
-        stream.nonce++;
-    }
-    stream.rnd32_outleft -= sizeof val;
-    memcpy(&val, &stream.rnd32[stream.rnd32_outleft], sizeof val);
-    memset(&stream.rnd32[stream.rnd32_outleft], 0, sizeof val);
-
-    return val;
-}
-
-int
+static int
 randombytes_salsa20_random_close(void)
 {
     int ret = -1;
@@ -388,13 +360,7 @@ randombytes_salsa20_random_close(void)
     return ret;
 }
 
-uint32_t
-randombytes_salsa20_random(void)
-{
-    return randombytes_salsa20_random_getword();
-}
-
-void
+static void
 randombytes_salsa20_random_buf(void * const buf, const size_t size)
 {
     size_t i;
@@ -417,7 +383,41 @@ randombytes_salsa20_random_buf(void * const buf, const size_t size)
                               (unsigned char *) &stream.nonce, stream.key);
 }
 
-const char *
+static uint32_t
+randombytes_salsa20_random_getword(void)
+{
+    uint32_t val;
+    int      ret;
+
+    COMPILER_ASSERT(sizeof stream.rnd32 >= (sizeof stream.key) + (sizeof val));
+    COMPILER_ASSERT(((sizeof stream.rnd32) - (sizeof stream.key))
+                    % sizeof val == (size_t) 0U);
+    if (stream.rnd32_outleft <= (size_t) 0U) {
+        randombytes_salsa20_random_stir_if_needed();
+        COMPILER_ASSERT(sizeof stream.nonce == crypto_stream_salsa20_NONCEBYTES);
+        ret = crypto_stream_salsa20((unsigned char *) stream.rnd32,
+                                    (unsigned long long) sizeof stream.rnd32,
+                                    (unsigned char *) &stream.nonce,
+                                    stream.key);
+        assert(ret == 0);
+        stream.rnd32_outleft = (sizeof stream.rnd32) - (sizeof stream.key);
+        randombytes_salsa20_random_rekey(&stream.rnd32[stream.rnd32_outleft]);
+        stream.nonce++;
+    }
+    stream.rnd32_outleft -= sizeof val;
+    memcpy(&val, &stream.rnd32[stream.rnd32_outleft], sizeof val);
+    memset(&stream.rnd32[stream.rnd32_outleft], 0, sizeof val);
+
+    return val;
+}
+
+static uint32_t
+randombytes_salsa20_random(void)
+{
+    return randombytes_salsa20_random_getword();
+}
+
+static const char *
 randombytes_salsa20_implementation_name(void)
 {
     return "salsa20";

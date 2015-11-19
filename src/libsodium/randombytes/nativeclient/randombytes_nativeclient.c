@@ -10,7 +10,7 @@
 # include "randombytes.h"
 # include "randombytes_nativeclient.h"
 
-void
+static void
 randombytes_nativeclient_buf(void * const buf, const size_t size)
 {
     size_t readnb;
@@ -21,7 +21,7 @@ randombytes_nativeclient_buf(void * const buf, const size_t size)
     assert(readnb == size);
 }
 
-uint32_t
+static uint32_t
 randombytes_nativeclient_random(void)
 {
     uint32_t r;
@@ -31,7 +31,7 @@ randombytes_nativeclient_random(void)
     return r;
 }
 
-const char *
+static const char *
 randombytes_nativeclient_implementation_name(void)
 {
     return "nativeclient";
