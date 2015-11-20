@@ -11,29 +11,39 @@
 #include "utils.h"
 
 int
-crypto_sign_verify_detached(const unsigned char *sig, const unsigned char *m,
-                            unsigned long long mlen, const unsigned char *pk)
+crypto_sign_verify_beforenm(unsigned char *A, const unsigned char *pk)
 {
-    crypto_hash_sha512_state hs;
-    unsigned char h[64];
-    unsigned char rcheck[32];
-    unsigned int  i;
+    unsigned int i;
     unsigned char d = 0;
-    ge_p3 A;
-    ge_p2 R;
 
-    if (sig[63] & 224) {
-        return -1;
-    }
-    if (ge_frombytes_negate_vartime(&A, pk) != 0) {
-        return -1;
-    }
     for (i = 0; i < 32; ++i) {
         d |= pk[i];
     }
     if (d == 0) {
         return -1;
     }
+    if (ge_frombytes_negate_vartime((ge_p3 *)A, pk) != 0) {
+        return -1;
+    }
+
+    return 0;
+}
+
+int
+crypto_sign_verify_detached_afternm(const unsigned char *sig, const unsigned char *m,
+                                    unsigned long long mlen, const unsigned char *A,
+                                    const unsigned char *pk)
+{
+    crypto_hash_sha512_state hs;
+    unsigned char h[64];
+    unsigned char rcheck[32];
+    unsigned int  i;
+    ge_p2 R;
+
+    if (sig[63] & 224) {
+        return -1;
+    }
+
     crypto_hash_sha512_init(&hs);
     crypto_hash_sha512_update(&hs, sig, 32);
     crypto_hash_sha512_update(&hs, pk, 32);
@@ -41,11 +51,24 @@ crypto_sign_verify_detached(const unsigned char *sig, const unsigned char *m,
     crypto_hash_sha512_final(&hs, h);
     sc_reduce(h);
 
-    ge_double_scalarmult_vartime(&R, h, &A, sig + 32);
+    ge_double_scalarmult_vartime(&R, h, (ge_p3 *)A, sig + 32);
     ge_tobytes(rcheck, &R);
 
     return crypto_verify_32(rcheck, sig) | (-(rcheck == sig)) |
            sodium_memcmp(sig, rcheck, 32);
+}
+
+int
+crypto_sign_verify_detached(const unsigned char *sig, const unsigned char *m,
+                            unsigned long long mlen, const unsigned char *pk)
+{
+    ge_p3 A;
+
+    if (crypto_sign_verify_beforenm((unsigned char *)&A, pk)) {
+        return -1;
+    }
+
+    return crypto_sign_verify_detached_afternm(sig, m, mlen, (unsigned char *)&A, pk);
 }
 
 int
