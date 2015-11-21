@@ -26,7 +26,6 @@
  *
  */
 
-#include "api.h"
 #include "crypto_auth_hmacsha256.h"
 #include "crypto_hash_sha256.h"
 #include "utils.h"
@@ -98,12 +97,12 @@ crypto_auth_hmacsha256_final(crypto_auth_hmacsha256_state *state,
 }
 
 int
-crypto_auth(unsigned char *out, const unsigned char *in,
-            unsigned long long inlen, const unsigned char *k)
+crypto_auth_hmacsha256(unsigned char *out, const unsigned char *in,
+                       unsigned long long inlen, const unsigned char *k)
 {
     crypto_auth_hmacsha256_state state;
 
-    crypto_auth_hmacsha256_init(&state, k, crypto_auth_KEYBYTES);
+    crypto_auth_hmacsha256_init(&state, k, crypto_auth_hmacsha256_KEYBYTES);
     crypto_auth_hmacsha256_update(&state, in, inlen);
     crypto_auth_hmacsha256_final(&state, out);
 
