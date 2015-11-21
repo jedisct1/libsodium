@@ -4,7 +4,6 @@ D. J. Bernstein
 Public domain.
 */
 
-#include "api.h"
 #include "crypto_core_salsa20.h"
 #include "utils.h"
 
@@ -16,7 +15,7 @@ static const unsigned char sigma[16] = {
     'e', 'x', 'p', 'a', 'n', 'd', ' ', '3', '2', '-', 'b', 'y', 't', 'e', ' ', 'k'
 };
 
-int crypto_stream(
+int crypto_stream_salsa20(
         unsigned char *c,unsigned long long clen,
   const unsigned char *n,
   const unsigned char *k

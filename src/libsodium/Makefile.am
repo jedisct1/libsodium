@@ -27,10 +27,8 @@ libsodium_la_SOURCES = \
 	crypto_box/curve25519xsalsa20poly1305/ref/keypair_curve25519xsalsa20poly1305.c \
 	crypto_core/hsalsa20/ref2/core_hsalsa20.c \
 	crypto_core/hsalsa20/core_hsalsa20_api.c \
-	crypto_core/hsalsa20/ref2/api.h \
 	crypto_core/salsa20/ref/core_salsa20.c \
 	crypto_core/salsa20/core_salsa20_api.c \
-	crypto_core/salsa20/ref/api.h \
 	crypto_generichash/crypto_generichash.c \
 	crypto_generichash/blake2/generichash_blake2_api.c \
 	crypto_generichash/blake2/ref/api.h \
@@ -139,7 +137,6 @@ libsodium_la_SOURCES = \
 	crypto_stream/chacha20/ref/stream_chacha20_ref.c \
 	crypto_stream/salsa20/stream_salsa20_api.c \
 	crypto_stream/xsalsa20/stream_xsalsa20_api.c \
-	crypto_stream/xsalsa20/ref/api.h \
 	crypto_stream/xsalsa20/ref/stream_xsalsa20.c \
 	crypto_stream/xsalsa20/ref/xor_xsalsa20.c \
 	crypto_verify/16/verify_16_api.c \
@@ -223,11 +220,9 @@ endif
 
 if HAVE_AMD64_ASM
 libsodium_la_SOURCES += \
-	crypto_stream/salsa20/amd64_xmm6/api.h \
 	crypto_stream/salsa20/amd64_xmm6/stream_salsa20_amd64_xmm6.S
 else
 libsodium_la_SOURCES += \
-	crypto_stream/salsa20/ref/api.h \
 	crypto_stream/salsa20/ref/stream_salsa20_ref.c \
 	crypto_stream/salsa20/ref/xor_salsa20_ref.c
 endif
@@ -236,10 +231,8 @@ if !MINIMAL
 libsodium_la_SOURCES += \
 	crypto_core/salsa2012/ref/core_salsa2012.c \
 	crypto_core/salsa2012/core_salsa2012_api.c \
-	crypto_core/salsa2012/ref/api.h \
 	crypto_core/salsa208/ref/core_salsa208.c \
 	crypto_core/salsa208/core_salsa208_api.c \
-	crypto_core/salsa208/ref/api.h \
 	crypto_sign/ed25519/ref10/obsolete.c \
 	crypto_stream/aes128ctr/portable/afternm_aes128ctr.c \
 	crypto_stream/aes128ctr/stream_aes128ctr_api.c \
@@ -255,11 +248,9 @@ libsodium_la_SOURCES += \
 	crypto_stream/aes128ctr/portable/types.h \
 	crypto_stream/aes128ctr/portable/xor_afternm_aes128ctr.c \
 	crypto_stream/salsa2012/stream_salsa2012_api.c \
-	crypto_stream/salsa2012/ref/api.h \
 	crypto_stream/salsa2012/ref/stream_salsa2012.c \
 	crypto_stream/salsa2012/ref/xor_salsa2012.c \
 	crypto_stream/salsa208/stream_salsa208_api.c \
-	crypto_stream/salsa208/ref/api.h \
 	crypto_stream/salsa208/ref/stream_salsa208.c \
 	crypto_stream/salsa208/ref/xor_salsa208.c
 endif

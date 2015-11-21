@@ -6,7 +6,6 @@ Public domain.
 
 #include <stdint.h>
 
-#include "api.h"
 #include "crypto_core_salsa20.h"
 #include "utils.h"
 
