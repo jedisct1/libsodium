@@ -38,11 +38,8 @@ typedef limb felem[5];
 // platforms only as far as I know.
 typedef unsigned uint128_t __attribute__((mode(TI)));
 
-#undef force_inline
-#define force_inline __attribute__((always_inline))
-
 /* Sum two numbers: output += in */
-static inline void force_inline
+static inline void
 fsum(limb *output, const limb *in) {
   output[0] += in[0];
   output[1] += in[1];
@@ -57,7 +54,7 @@ fsum(limb *output, const limb *in) {
  * Assumes that out[i] < 2**52
  * On return, out[i] < 2**55
  */
-static inline void force_inline
+static inline void
 fdifference_backwards(felem out, const felem in) {
   /* 152 is 19 << 3 */
   static const limb two54m152 = (((limb)1) << 54) - 152;
@@ -71,7 +68,7 @@ fdifference_backwards(felem out, const felem in) {
 }
 
 /* Multiply a number by a scalar: output = in * scalar */
-static inline void force_inline
+static inline void
 fscalar_product(felem output, const felem in, const limb scalar) {
   uint128_t a;
 
@@ -101,7 +98,7 @@ fscalar_product(felem output, const felem in, const limb scalar) {
  * Assumes that in[i] < 2**55 and likewise for in2.
  * On return, output[i] < 2**52
  */
-static inline void force_inline
+static inline void
 fmul(felem output, const felem in2, const felem in) {
   uint128_t t[5];
   limb r0,r1,r2,r3,r4,s0,s1,s2,s3,s4,c;
@@ -150,7 +147,7 @@ fmul(felem output, const felem in2, const felem in) {
   output[4] = r4;
 }
 
-static inline void force_inline
+static inline void
 fsquare_times(felem output, const felem in, limb count) {
   uint128_t t[5];
   limb r0,r1,r2,r3,r4,c;
@@ -193,18 +190,18 @@ fsquare_times(felem output, const felem in, limb count) {
 }
 
 #ifdef NATIVE_LITTLE_ENDIAN
-static inline limb force_inline
+static inline limb
 load_limb(const u8 *in) {
     limb out;
     memcpy(&out, in, sizeof (limb));
     return out;
 }
-static inline void force_inline
+static inline void
 store_limb(u8 *out, limb in) {
     memcpy(out, &in, sizeof (limb));
 }
 #else
-static inline limb force_inline
+static inline limb
 load_limb(const u8 *in) {
   return
     ((limb)in[0]) |
@@ -217,7 +214,7 @@ load_limb(const u8 *in) {
     (((limb)in[7]) << 56);
 }
 
-static inline void force_inline
+static inline void
 store_limb(u8 *out, limb in) {
   out[0] = in & 0xff;
   out[1] = (in >> 8) & 0xff;

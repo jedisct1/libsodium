@@ -13,9 +13,6 @@
 
 #include <emmintrin.h>
 
-#undef force_inline
-#define force_inline __attribute__((always_inline))
-
 typedef __m128i xmmi;
 
 #if defined(__SIZEOF_INT128__)
@@ -57,7 +54,7 @@ typedef struct poly1305_state_internal_t {
 } poly1305_state_internal_t;   /* 164 bytes total */
 
 /* copy 0-31 bytes */
-static void force_inline
+static inline void
 poly1305_block_copy31(unsigned char *dst, const unsigned char *src, unsigned long long bytes)
 {
     unsigned long long offset = src - dst;
