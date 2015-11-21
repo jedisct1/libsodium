@@ -45,6 +45,10 @@ BOOLEAN NTAPI RtlGenRandom(PVOID RandomBuffer, ULONG RandomBufferLength);
 # define HAVE_SAFE_ARC4RANDOM 1
 #endif
 
+#ifndef SSIZE_MAX
+# define SSIZE_MAX (SIZE_MAX / 2 - 1)
+#endif
+
 typedef struct Salsa20Random_ {
     unsigned char key[crypto_stream_salsa20_KEYBYTES];
     unsigned char rnd32[16U * SALSA20_RANDOM_BLOCK_SIZE];
@@ -97,6 +101,7 @@ safe_read(const int fd, void * const buf_, size_t size)
     ssize_t        readnb;
 
     assert(size > (size_t) 0U);
+    assert(size <= SSIZE_MAX);
     do {
         while ((readnb = read(fd, buf, size)) < (ssize_t) 0 &&
                (errno == EINTR || errno == EAGAIN));  /* LCOV_EXCL_LINE */
