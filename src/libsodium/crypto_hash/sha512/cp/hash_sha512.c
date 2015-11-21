@@ -309,8 +309,8 @@ crypto_hash_sha512_final(crypto_hash_sha512_state *state,
 }
 
 int
-crypto_hash(unsigned char *out, const unsigned char *in,
-            unsigned long long inlen)
+crypto_hash_sha512(unsigned char *out, const unsigned char *in,
+                   unsigned long long inlen)
 {
     crypto_hash_sha512_state state;
 

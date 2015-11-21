@@ -42,10 +42,8 @@ libsodium_la_SOURCES = \
 	crypto_generichash/blake2/ref/generichash_blake2b.c \
 	crypto_hash/crypto_hash.c \
 	crypto_hash/sha256/hash_sha256_api.c \
-	crypto_hash/sha256/cp/api.h \
 	crypto_hash/sha256/cp/hash_sha256.c \
 	crypto_hash/sha512/hash_sha512_api.c \
-	crypto_hash/sha512/cp/api.h \
 	crypto_hash/sha512/cp/hash_sha512.c \
 	crypto_onetimeauth/crypto_onetimeauth.c \
 	crypto_onetimeauth/poly1305/onetimeauth_poly1305.c \

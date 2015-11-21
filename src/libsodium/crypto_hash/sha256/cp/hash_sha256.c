@@ -26,7 +26,6 @@
  *
  */
 
-#include "api.h"
 #include "crypto_hash_sha256.h"
 #include "utils.h"
 
@@ -289,8 +288,8 @@ crypto_hash_sha256_final(crypto_hash_sha256_state *state,
 }
 
 int
-crypto_hash(unsigned char *out, const unsigned char *in,
-            unsigned long long inlen)
+crypto_hash_sha256(unsigned char *out, const unsigned char *in,
+                   unsigned long long inlen)
 {
     crypto_hash_sha256_state state;
 
