@@ -26,7 +26,6 @@
  *
  */
 
-#include "api.h"
 #include "crypto_hash_sha512.h"
 #include "utils.h"
 
