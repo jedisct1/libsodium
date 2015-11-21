@@ -20,6 +20,14 @@
 #include "blake2-impl.h"
 #include "runtime.h"
 
+#ifdef HAVE_TI_MODE
+# if defined(__SIZEOF_INT128__)
+typedef unsigned __int128 uint128_t;
+# else
+typedef unsigned uint128_t __attribute__((mode(TI)));
+# endif
+#endif
+
 static blake2b_compress_fn blake2b_compress = blake2b_compress_ref;
 
 static const uint64_t blake2b_IV[8] =
@@ -63,8 +71,8 @@ static inline int blake2b_clear_lastblock( blake2b_state *S )
 #endif
 static inline int blake2b_increment_counter( blake2b_state *S, const uint64_t inc )
 {
-#if defined(__x86_64__) && defined(__SIZEOF_INT128__)
-  __uint128_t t = ( ( __uint128_t )S->t[1] << 64 ) | S->t[0];
+#ifdef HAVE_TI_MODE
+  uint128_t t = ( ( __uint128_t )S->t[1] << 64 ) | S->t[0];
   t += inc;
   S->t[0] = ( uint64_t )( t >>  0 );
   S->t[1] = ( uint64_t )( t >> 64 );
