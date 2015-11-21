@@ -5,6 +5,7 @@ Public domain.
 */
 
 #include "crypto_core_salsa20.h"
+#include "crypto_stream_salsa20.h"
 #include "utils.h"
 
 #ifndef HAVE_AMD64_ASM

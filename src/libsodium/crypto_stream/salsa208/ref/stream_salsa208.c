@@ -5,6 +5,7 @@ Public domain.
 */
 
 #include "crypto_core_salsa208.h"
+#include "crypto_stream_salsa208.h"
 #include "utils.h"
 
 typedef unsigned int uint32;
