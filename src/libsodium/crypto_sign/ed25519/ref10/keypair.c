@@ -1,16 +1,16 @@
 
 #include <string.h>
 
-#include "api.h"
+#include "crypto_sign_ed25519.h"
 #include "crypto_hash_sha512.h"
 #include "crypto_scalarmult_curve25519.h"
-#include "randombytes.h"
-#include "utils.h"
 #include "fe.h"
 #include "ge.h"
+#include "randombytes.h"
+#include "utils.h"
 
-int crypto_sign_seed_keypair(unsigned char *pk, unsigned char *sk,
-                             const unsigned char *seed)
+int crypto_sign_ed25519_seed_keypair(unsigned char *pk, unsigned char *sk,
+                                     const unsigned char *seed)
 {
     ge_p3 A;
 
@@ -27,13 +27,13 @@ int crypto_sign_seed_keypair(unsigned char *pk, unsigned char *sk,
     return 0;
 }
 
-int crypto_sign_keypair(unsigned char *pk, unsigned char *sk)
+int crypto_sign_ed25519_keypair(unsigned char *pk, unsigned char *sk)
 {
     unsigned char seed[32];
     int           ret;
 
     randombytes_buf(seed, sizeof seed);
-    ret = crypto_sign_seed_keypair(pk, sk, seed);
+    ret = crypto_sign_ed25519_seed_keypair(pk, sk, seed);
     sodium_memzero(seed, sizeof seed);
 
     return ret;

@@ -17,7 +17,6 @@ libsodium_la_SOURCES = \
 	crypto_box/crypto_box_easy.c \
 	crypto_box/crypto_box_seal.c \
 	crypto_box/curve25519xsalsa20poly1305/box_curve25519xsalsa20poly1305_api.c \
-	crypto_box/curve25519xsalsa20poly1305/ref/api.h \
 	crypto_box/curve25519xsalsa20poly1305/ref/after_curve25519xsalsa20poly1305.c \
 	crypto_box/curve25519xsalsa20poly1305/ref/before_curve25519xsalsa20poly1305.c \
 	crypto_box/curve25519xsalsa20poly1305/ref/box_curve25519xsalsa20poly1305.c \
@@ -70,7 +69,6 @@ libsodium_la_SOURCES = \
 	crypto_sign/ed25519/ref10/base.h \
 	crypto_sign/ed25519/ref10/base2.h \
 	crypto_sign/ed25519/sign_ed25519_api.c \
-	crypto_sign/ed25519/ref10/api.h \
 	crypto_sign/ed25519/ref10/d.h \
 	crypto_sign/ed25519/ref10/d2.h \
 	crypto_sign/ed25519/ref10/fe.h \

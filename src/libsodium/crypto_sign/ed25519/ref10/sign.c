@@ -1,16 +1,16 @@
 
 #include <string.h>
 
-#include "api.h"
 #include "crypto_hash_sha512.h"
+#include "crypto_sign_ed25519.h"
 #include "ge.h"
 #include "sc.h"
 #include "utils.h"
 
 int
-crypto_sign_detached(unsigned char *sig, unsigned long long *siglen_p,
-                     const unsigned char *m, unsigned long long mlen,
-                     const unsigned char *sk)
+crypto_sign_ed25519_detached(unsigned char *sig, unsigned long long *siglen_p,
+                             const unsigned char *m, unsigned long long mlen,
+                             const unsigned char *sk)
 {
     crypto_hash_sha512_state hs;
     unsigned char az[64];
@@ -51,16 +51,17 @@ crypto_sign_detached(unsigned char *sig, unsigned long long *siglen_p,
 }
 
 int
-crypto_sign(unsigned char *sm, unsigned long long *smlen_p,
-            const unsigned char *m, unsigned long long mlen,
-            const unsigned char *sk)
+crypto_sign_ed25519(unsigned char *sm, unsigned long long *smlen_p,
+                    const unsigned char *m, unsigned long long mlen,
+                    const unsigned char *sk)
 {
     unsigned long long siglen;
 
     memmove(sm + crypto_sign_ed25519_BYTES, m, mlen);
 /* LCOV_EXCL_START */
-    if (crypto_sign_detached(sm, &siglen, sm + crypto_sign_ed25519_BYTES,
-                             mlen, sk) != 0 ||
+    if (crypto_sign_ed25519_detached(sm, &siglen,
+                                     sm + crypto_sign_ed25519_BYTES,
+                                     mlen, sk) != 0 ||
         siglen != crypto_sign_ed25519_BYTES) {
         if (smlen_p != NULL) {
             *smlen_p = 0;
