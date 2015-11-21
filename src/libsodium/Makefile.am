@@ -135,13 +135,10 @@ libsodium_la_SOURCES = \
 	crypto_stream/xsalsa20/ref/stream_xsalsa20.c \
 	crypto_stream/xsalsa20/ref/xor_xsalsa20.c \
 	crypto_verify/16/verify_16_api.c \
-	crypto_verify/16/ref/api.h \
 	crypto_verify/16/ref/verify_16.c \
 	crypto_verify/32/verify_32_api.c \
-	crypto_verify/32/ref/api.h \
 	crypto_verify/32/ref/verify_32.c \
 	crypto_verify/64/verify_64_api.c \
-	crypto_verify/64/ref/api.h \
 	crypto_verify/64/ref/verify_64.c \
 	randombytes/randombytes.c \
 	sodium/core.c \
