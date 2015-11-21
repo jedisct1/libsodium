@@ -234,7 +234,6 @@ libsodium_la_SOURCES += \
 	crypto_sign/ed25519/ref10/obsolete.c \
 	crypto_stream/aes128ctr/portable/afternm_aes128ctr.c \
 	crypto_stream/aes128ctr/stream_aes128ctr_api.c \
-	crypto_stream/aes128ctr/portable/api.h \
 	crypto_stream/aes128ctr/portable/beforenm_aes128ctr.c \
 	crypto_stream/aes128ctr/portable/common.h \
 	crypto_stream/aes128ctr/portable/common_aes128ctr.c \
