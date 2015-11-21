@@ -682,7 +682,7 @@
     <ClInclude Include="..\..\..\..\src\libsodium\crypto_scalarmult\curve25519\ref10\pow225521.h">
       <Filter>src\crypto_scalarmult\curve25519\ref10</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\..\..\src\libsodium\crypto_stream\chacha20\ref\api.h">
+    <ClInclude Include="..\..\..\..\src\libsodium\crypto_stream\chacha20\ref\stream_chacha20_ref.h">
       <Filter>src\crypto_stream\chacha20\ref</Filter>
     </ClInclude>
     <ClInclude Include="..\..\..\..\src\libsodium\include\sodium\crypto_stream_chacha20.h">

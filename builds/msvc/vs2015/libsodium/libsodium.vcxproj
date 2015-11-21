@@ -103,7 +103,7 @@
     <ClInclude Include="..\..\..\..\src\libsodium\crypto_scalarmult\curve25519\ref10\fe.h" />
     <ClInclude Include="..\..\..\..\src\libsodium\crypto_scalarmult\curve25519\ref10\montgomery.h" />
     <ClInclude Include="..\..\..\..\src\libsodium\crypto_scalarmult\curve25519\ref10\pow225521.h" />
-    <ClInclude Include="..\..\..\..\src\libsodium\crypto_stream\chacha20\ref\api.h" />
+    <ClInclude Include="..\..\..\..\src\libsodium\crypto_stream\chacha20\ref\stream_chacha20_ref.h" />
     <ClInclude Include="..\..\..\..\src\libsodium\include\sodium.h" />
     <ClInclude Include="..\..\..\..\src\libsodium\include\sodium\core.h" />
     <ClInclude Include="..\..\..\..\src\libsodium\include\sodium\crypto_aead_aes256gcm.h" />

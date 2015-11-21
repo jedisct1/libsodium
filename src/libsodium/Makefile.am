@@ -123,7 +123,7 @@ libsodium_la_SOURCES = \
 	crypto_sign/ed25519/ref10/sqrtm1.h \
 	crypto_stream/crypto_stream.c \
 	crypto_stream/chacha20/stream_chacha20_api.c \
-	crypto_stream/chacha20/ref/api.h \
+	crypto_stream/chacha20/ref/stream_chacha20_ref.h \
 	crypto_stream/chacha20/ref/stream_chacha20_ref.c \
 	crypto_stream/salsa20/stream_salsa20_api.c \
 	crypto_stream/xsalsa20/stream_xsalsa20_api.c \

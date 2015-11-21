@@ -9,8 +9,8 @@
 #include <stdlib.h>
 #include <string.h>
 
-#include "api.h"
 #include "crypto_stream_chacha20.h"
+#include "stream_chacha20_ref.h"
 #include "utils.h"
 
 struct chacha_ctx {

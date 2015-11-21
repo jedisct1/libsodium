@@ -1,5 +1,5 @@
 #include "crypto_stream_chacha20.h"
-#include "ref/api.h"
+#include "ref/stream_chacha20_ref.h"
 
 size_t
 crypto_stream_chacha20_keybytes(void) {
