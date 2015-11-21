@@ -28,7 +28,6 @@ libsodium_la_SOURCES = \
 	crypto_core/salsa20/core_salsa20_api.c \
 	crypto_generichash/crypto_generichash.c \
 	crypto_generichash/blake2/generichash_blake2_api.c \
-	crypto_generichash/blake2/ref/api.h \
 	crypto_generichash/blake2/ref/blake2-impl.h \
 	crypto_generichash/blake2/ref/blake2.h \
 	crypto_generichash/blake2/ref/blake2b-compress-ref.c \
@@ -63,11 +62,9 @@ libsodium_la_SOURCES = \
 	crypto_secretbox/crypto_secretbox.c \
 	crypto_secretbox/crypto_secretbox_easy.c \
 	crypto_secretbox/xsalsa20poly1305/secretbox_xsalsa20poly1305_api.c \
-	crypto_secretbox/xsalsa20poly1305/ref/api.h \
 	crypto_secretbox/xsalsa20poly1305/ref/box_xsalsa20poly1305.c \
 	crypto_shorthash/crypto_shorthash.c \
 	crypto_shorthash/siphash24/shorthash_siphash24_api.c \
-	crypto_shorthash/siphash24/ref/api.h \
 	crypto_shorthash/siphash24/ref/shorthash_siphash24.c \
 	crypto_sign/crypto_sign.c \
 	crypto_sign/ed25519/ref10/base.h \

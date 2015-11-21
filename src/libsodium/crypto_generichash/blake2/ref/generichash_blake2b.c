@@ -3,7 +3,7 @@
 #include <limits.h>
 #include <stdint.h>
 
-#include "api.h"
+#include "crypto_generichash_blake2b.h"
 #include "blake2.h"
 
 int
