@@ -2,14 +2,14 @@
 #define TEST_NAME "box7"
 #include "cmptest.h"
 
-unsigned char alicesk[crypto_box_SECRETKEYBYTES];
-unsigned char alicepk[crypto_box_PUBLICKEYBYTES];
-unsigned char bobsk[crypto_box_SECRETKEYBYTES];
-unsigned char bobpk[crypto_box_PUBLICKEYBYTES];
-unsigned char n[crypto_box_NONCEBYTES];
-unsigned char m[10000];
-unsigned char c[10000];
-unsigned char m2[10000];
+static unsigned char alicesk[crypto_box_SECRETKEYBYTES];
+static unsigned char alicepk[crypto_box_PUBLICKEYBYTES];
+static unsigned char bobsk[crypto_box_SECRETKEYBYTES];
+static unsigned char bobpk[crypto_box_PUBLICKEYBYTES];
+static unsigned char n[crypto_box_NONCEBYTES];
+static unsigned char m[10000];
+static unsigned char c[10000];
+static unsigned char m2[10000];
 
 int main(void)
 {

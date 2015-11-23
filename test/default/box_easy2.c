@@ -2,9 +2,9 @@
 #define TEST_NAME "box_easy2"
 #include "cmptest.h"
 
-unsigned char m[10000];
-unsigned char m2[10000];
-unsigned char c[crypto_box_MACBYTES + 10000];
+static unsigned char m[10000];
+static unsigned char m2[10000];
+static unsigned char c[crypto_box_MACBYTES + 10000];
 
 int main(void)
 {

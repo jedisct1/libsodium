@@ -2,11 +2,11 @@
 #define TEST_NAME "secretbox8"
 #include "cmptest.h"
 
-unsigned char k[crypto_secretbox_KEYBYTES];
-unsigned char n[crypto_secretbox_NONCEBYTES];
-unsigned char m[10000];
-unsigned char c[10000];
-unsigned char m2[10000];
+static unsigned char k[crypto_secretbox_KEYBYTES];
+static unsigned char n[crypto_secretbox_NONCEBYTES];
+static unsigned char m[10000];
+static unsigned char c[10000];
+static unsigned char m2[10000];
 
 int main(void)
 {

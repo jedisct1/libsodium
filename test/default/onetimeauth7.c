@@ -2,9 +2,9 @@
 #define TEST_NAME "onetimeauth7"
 #include "cmptest.h"
 
-unsigned char key[32];
-unsigned char c[10000];
-unsigned char a[16];
+static unsigned char key[32];
+static unsigned char c[10000];
+static unsigned char a[16];
 
 int main(void)
 {

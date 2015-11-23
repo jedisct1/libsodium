@@ -2,8 +2,8 @@
 #define TEST_NAME "randombytes"
 #include "cmptest.h"
 
-unsigned char x[65536];
-unsigned long long freq[256];
+static unsigned char x[65536];
+static unsigned long long freq[256];
 
 static int compat_tests(void)
 {

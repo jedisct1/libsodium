@@ -2,9 +2,9 @@
 #define TEST_NAME "verify1"
 #include "cmptest.h"
 
-unsigned char v16[16], v16x[16];
-unsigned char v32[32], v32x[32];
-unsigned char v64[64], v64x[64];
+static unsigned char v16[16], v16x[16];
+static unsigned char v32[32], v32x[32];
+static unsigned char v64[64], v64x[64];
 
 int main(void)
 {
