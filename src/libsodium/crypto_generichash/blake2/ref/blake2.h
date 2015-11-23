@@ -53,7 +53,7 @@ extern "C" {
     BLAKE2B_PERSONALBYTES = 16
   };
 
-#ifdef __SUNPRO_C
+#if defined(__IBMC__) || defined(__SUNPRO_C) || defined(__SUNPRO_CC)
 # pragma pack(1)
 #else
 # pragma pack(push, 1)
@@ -129,7 +129,7 @@ CRYPTO_ALIGN( 64 ) typedef struct blake2b_state_
     size_t  buflen;
   } blake2bp_state;
 
-#ifdef __SUNPRO_C
+#if defined(__IBMC__) || defined(__SUNPRO_C) || defined(__SUNPRO_CC)
 # pragma pack()
 #else
 # pragma pack(pop)

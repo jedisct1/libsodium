@@ -14,7 +14,7 @@
 extern "C" {
 #endif
 
-#ifdef __SUNPRO_C
+#if defined(__IBMC__) || defined(__SUNPRO_C) || defined(__SUNPRO_CC)
 # pragma pack(1)
 #else
 # pragma pack(push, 1)
@@ -29,7 +29,7 @@ typedef CRYPTO_ALIGN(64) struct crypto_generichash_blake2b_state {
     uint8_t  last_node;
 } crypto_generichash_blake2b_state;
 
-#ifdef __SUNPRO_C
+#if defined(__IBMC__) || defined(__SUNPRO_C) || defined(__SUNPRO_CC)
 # pragma pack()
 #else
 # pragma pack(pop)
