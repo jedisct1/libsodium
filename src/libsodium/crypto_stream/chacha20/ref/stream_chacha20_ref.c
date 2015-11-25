@@ -62,46 +62,46 @@ static const unsigned char sigma[16] = {
 };
 
 static void
-chacha_keysetup(chacha_ctx *x, const u8 *k)
+chacha_keysetup(chacha_ctx *ctx, const u8 *k)
 {
     const unsigned char *constants;
 
-    x->input[4] = U8TO32_LITTLE(k + 0);
-    x->input[5] = U8TO32_LITTLE(k + 4);
-    x->input[6] = U8TO32_LITTLE(k + 8);
-    x->input[7] = U8TO32_LITTLE(k + 12);
+    ctx->input[4] = U8TO32_LITTLE(k + 0);
+    ctx->input[5] = U8TO32_LITTLE(k + 4);
+    ctx->input[6] = U8TO32_LITTLE(k + 8);
+    ctx->input[7] = U8TO32_LITTLE(k + 12);
     k += 16;
     constants = sigma;
-    x->input[8] = U8TO32_LITTLE(k + 0);
-    x->input[9] = U8TO32_LITTLE(k + 4);
-    x->input[10] = U8TO32_LITTLE(k + 8);
-    x->input[11] = U8TO32_LITTLE(k + 12);
-    x->input[0] = U8TO32_LITTLE(constants + 0);
-    x->input[1] = U8TO32_LITTLE(constants + 4);
-    x->input[2] = U8TO32_LITTLE(constants + 8);
-    x->input[3] = U8TO32_LITTLE(constants + 12);
+    ctx->input[8] = U8TO32_LITTLE(k + 0);
+    ctx->input[9] = U8TO32_LITTLE(k + 4);
+    ctx->input[10] = U8TO32_LITTLE(k + 8);
+    ctx->input[11] = U8TO32_LITTLE(k + 12);
+    ctx->input[0] = U8TO32_LITTLE(constants + 0);
+    ctx->input[1] = U8TO32_LITTLE(constants + 4);
+    ctx->input[2] = U8TO32_LITTLE(constants + 8);
+    ctx->input[3] = U8TO32_LITTLE(constants + 12);
 }
 
 static void
-chacha_ivsetup(chacha_ctx *x, const u8 *iv, const u8 *counter)
+chacha_ivsetup(chacha_ctx *ctx, const u8 *iv, const u8 *counter)
 {
-    x->input[12] = counter == NULL ? 0 : U8TO32_LITTLE(counter + 0);
-    x->input[13] = counter == NULL ? 0 : U8TO32_LITTLE(counter + 4);
-    x->input[14] = U8TO32_LITTLE(iv + 0);
-    x->input[15] = U8TO32_LITTLE(iv + 4);
+    ctx->input[12] = counter == NULL ? 0 : U8TO32_LITTLE(counter + 0);
+    ctx->input[13] = counter == NULL ? 0 : U8TO32_LITTLE(counter + 4);
+    ctx->input[14] = U8TO32_LITTLE(iv + 0);
+    ctx->input[15] = U8TO32_LITTLE(iv + 4);
 }
 
 static void
-chacha_ietf_ivsetup(chacha_ctx *x, const u8 *iv, const u8 *counter)
+chacha_ietf_ivsetup(chacha_ctx *ctx, const u8 *iv, const u8 *counter)
 {
-    x->input[12] = counter == NULL ? 0 : U8TO32_LITTLE(counter);
-    x->input[13] = U8TO32_LITTLE(iv + 0);
-    x->input[14] = U8TO32_LITTLE(iv + 4);
-    x->input[15] = U8TO32_LITTLE(iv + 8);
+    ctx->input[12] = counter == NULL ? 0 : U8TO32_LITTLE(counter);
+    ctx->input[13] = U8TO32_LITTLE(iv + 0);
+    ctx->input[14] = U8TO32_LITTLE(iv + 4);
+    ctx->input[15] = U8TO32_LITTLE(iv + 8);
 }
 
 static void
-chacha_encrypt_bytes(chacha_ctx *x, const u8 *m, u8 *c, unsigned long long bytes)
+chacha_encrypt_bytes(chacha_ctx *ctx, const u8 *m, u8 *c, unsigned long long bytes)
 {
     u32 x0, x1, x2, x3, x4, x5, x6, x7, x8, x9, x10, x11, x12, x13, x14, x15;
     u32 j0, j1, j2, j3, j4, j5, j6, j7, j8, j9, j10, j11, j12, j13, j14, j15;
@@ -112,22 +112,22 @@ chacha_encrypt_bytes(chacha_ctx *x, const u8 *m, u8 *c, unsigned long long bytes
     if (!bytes) {
         return; /* LCOV_EXCL_LINE */
     }
-    j0 = x->input[0];
-    j1 = x->input[1];
-    j2 = x->input[2];
-    j3 = x->input[3];
-    j4 = x->input[4];
-    j5 = x->input[5];
-    j6 = x->input[6];
-    j7 = x->input[7];
-    j8 = x->input[8];
-    j9 = x->input[9];
-    j10 = x->input[10];
-    j11 = x->input[11];
-    j12 = x->input[12];
-    j13 = x->input[13];
-    j14 = x->input[14];
-    j15 = x->input[15];
+    j0 = ctx->input[0];
+    j1 = ctx->input[1];
+    j2 = ctx->input[2];
+    j3 = ctx->input[3];
+    j4 = ctx->input[4];
+    j5 = ctx->input[5];
+    j6 = ctx->input[6];
+    j7 = ctx->input[7];
+    j8 = ctx->input[8];
+    j9 = ctx->input[9];
+    j10 = ctx->input[10];
+    j11 = ctx->input[11];
+    j12 = ctx->input[12];
+    j13 = ctx->input[13];
+    j14 = ctx->input[14];
+    j15 = ctx->input[15];
 
     for (;;) {
         if (bytes < 64) {
@@ -229,8 +229,8 @@ chacha_encrypt_bytes(chacha_ctx *x, const u8 *m, u8 *c, unsigned long long bytes
                     ctarget[i] = c[i];
                 }
             }
-            x->input[12] = j12;
-            x->input[13] = j13;
+            ctx->input[12] = j12;
+            ctx->input[13] = j13;
             return;
         }
         bytes -= 64;
