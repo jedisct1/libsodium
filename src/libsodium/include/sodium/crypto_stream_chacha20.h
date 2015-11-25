@@ -65,6 +65,11 @@ int crypto_stream_chacha20_ietf_xor_ic(unsigned char *c, const unsigned char *m,
                                        unsigned long long mlen,
                                        const unsigned char *n, uint32_t ic,
                                        const unsigned char *k);
+
+/* ------------------------------------------------------------------------- */
+
+int _crypto_stream_chacha20_pick_best_implementation(void);
+
 #ifdef __cplusplus
 }
 #endif

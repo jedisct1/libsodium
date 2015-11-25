@@ -2,6 +2,10 @@
 #include "stream_chacha20.h"
 #include "runtime.h"
 #include "ref/stream_chacha20_ref.h"
+#if (defined(HAVE_EMMINTRIN_H) && defined(HAVE_TMMINTRIN_H)) || \
+    (defined(_MSC_VER) && (defined(_M_X64) || defined(_M_AMD64)))
+# include "vec/stream_chacha20_vec.h"
+#endif
 
 static const crypto_stream_chacha20_implementation *implementation =
     &crypto_stream_chacha20_ref_implementation;
@@ -67,4 +71,17 @@ crypto_stream_chacha20_ietf_xor(unsigned char *c, const unsigned char *m,
                                 const unsigned char *k)
 {
     return implementation->stream_ietf_xor_ic(c, m, mlen, n, 0U, k);
+}
+
+int
+_crypto_stream_chacha20_pick_best_implementation(void)
+{
+    implementation = &crypto_stream_chacha20_ref_implementation;
+#if (defined(HAVE_EMMINTRIN_H) && defined(HAVE_TMMINTRIN_H)) || \
+    (defined(_MSC_VER) && (defined(_M_X64) || defined(_M_AMD64)))
+    if (sodium_runtime_has_ssse3()) {
+        implementation = &crypto_stream_chacha20_vec_implementation;
+    }
+#endif
+    return 0;
 }
