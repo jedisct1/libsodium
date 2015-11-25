@@ -16,7 +16,7 @@
 
 #define CHACHA_RNDS 20
 
-typedef unsigned vec __attribute__((vector_size(16)));
+typedef unsigned int vec __attribute__((vector_size(16)));
 
 #include <emmintrin.h>
 #include <tmmintrin.h>
@@ -148,14 +148,13 @@ static void
 chacha_encrypt_bytes(chacha_ctx *ctx, const uint8_t *in, uint8_t *out,
                      unsigned long long inlen)
 {
-    unsigned long long iters;
-    unsigned int i;
-    unsigned int *op = (unsigned *)out;
-    unsigned int *ip = (unsigned *)in;
-    unsigned int *kp;
-    vec s0, s1, s2, s3;
     CRYPTO_ALIGN(16) unsigned chacha_const[]
         = { 0x61707865, 0x3320646E, 0x79622D32, 0x6B206574 };
+    uint32_t           *op = (uint32_t *) out;
+    const uint32_t     *ip = (const uint32_t *) in;
+    vec                 s0, s1, s2, s3;
+    unsigned long long  iters;
+    unsigned long long  i;
 
     s0 = LOAD_ALIGNED(chacha_const);
     s1 = ctx->s1;
@@ -314,7 +313,6 @@ stream_vec_xor_ic(unsigned char *c, const unsigned char *m,
     chacha_keysetup(&ctx, k);
     chacha_ivsetup(&ctx, n, ic);
     chacha_encrypt_bytes(&ctx, m, c, mlen);
-
     sodium_memzero(&ctx, sizeof ctx);
 
     return 0;
