@@ -1,4 +1,6 @@
 
+#include <stdint.h>
+
 #include "crypto_stream_chacha20.h"
 
 extern struct crypto_stream_chacha20_implementation
