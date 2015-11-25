@@ -9,8 +9,9 @@ merged in, and is automatically used on CPUs supporting the AVX
 instructions set.
  - An SSE2 optimized implementation of Poly1305 was added, and is
 twice as fast as the portable one.
- - An SSSE3 optimized implementation of ChaCha20 was added.
- - sodium_increment() is faster.
+ - An SSSE3 optimized implementation of ChaCha20 was added, and is
+twice as fast as the portable one.
+ - sodium_increment(), crypto_verify_*() are faster.
  - New helper functions have been added: `sodium_is_zero()` and
  `sodium_add()`.
  - `sodium_runtime_has_aesni()` now properly detects the CPU flag when
