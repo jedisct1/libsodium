@@ -7,8 +7,10 @@ blake2                                 Jean-Philippe Aumasson
                                        Samuel Neves
                                        Zooko Wilcox-O'Hearn
 
-chacha20                               Daniel J. Bernstein
-salsa20
+chacha20/ref                           Daniel J. Bernstein
+chacha20/vec                           Ted Krovetz
+
+salsa20                                Daniel J. Bernstein
 
 chacha20poly1305                       Adam Langley
 
