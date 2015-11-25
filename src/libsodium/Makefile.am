@@ -285,7 +285,9 @@ libssse3_la_LDFLAGS = $(libsodium_la_LDFLAGS)
 libssse3_la_CPPFLAGS = $(libsodium_la_CPPFLAGS) \
 	@CFLAGS_SSE2@ @CFLAGS_SSSE3@
 libssse3_la_SOURCES = \
-	crypto_generichash/blake2/ref/blake2b-compress-ssse3.c
+	crypto_generichash/blake2/ref/blake2b-compress-ssse3.c \
+	crypto_stream/chacha20/vec/stream_chacha20_vec.h \
+	crypto_stream/chacha20/vec/stream_chacha20_vec.c
 
 libsse41_la_LDFLAGS = $(libsodium_la_LDFLAGS)
 libsse41_la_CPPFLAGS = $(libsodium_la_CPPFLAGS) \
