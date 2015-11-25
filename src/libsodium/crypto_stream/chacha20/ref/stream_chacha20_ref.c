@@ -303,7 +303,6 @@ stream_ref_xor_ic(unsigned char *c, const unsigned char *m,
     chacha_encrypt_bytes(&ctx, m, c, mlen);
 
     sodium_memzero(&ctx, sizeof ctx);
-    sodium_memzero(ic_bytes, sizeof ic_bytes);
 
     return 0;
 }
@@ -325,7 +324,6 @@ stream_ietf_ref_xor_ic(unsigned char *c, const unsigned char *m,
     chacha_ietf_ivsetup(&ctx, n, ic_bytes);
     chacha_encrypt_bytes(&ctx, m, c, mlen);
     sodium_memzero(&ctx, sizeof ctx);
-    sodium_memzero(ic_bytes, sizeof ic_bytes);
 
     return 0;
 }
