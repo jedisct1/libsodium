@@ -301,7 +301,6 @@ stream_ref_xor_ic(unsigned char *c, const unsigned char *m,
     chacha_keysetup(&ctx, k);
     chacha_ivsetup(&ctx, n, ic_bytes);
     chacha_encrypt_bytes(&ctx, m, c, mlen);
-
     sodium_memzero(&ctx, sizeof ctx);
 
     return 0;
