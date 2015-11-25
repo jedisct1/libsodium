@@ -2,8 +2,7 @@
 #include "stream_chacha20.h"
 #include "runtime.h"
 #include "ref/stream_chacha20_ref.h"
-#if (defined(HAVE_EMMINTRIN_H) && defined(HAVE_TMMINTRIN_H)) || \
-    (defined(_MSC_VER) && (defined(_M_X64) || defined(_M_AMD64)))
+#if (defined(HAVE_EMMINTRIN_H) && defined(HAVE_TMMINTRIN_H) && defined(__GNUC__))
 # include "vec/stream_chacha20_vec.h"
 #endif
 
@@ -77,8 +76,7 @@ int
 _crypto_stream_chacha20_pick_best_implementation(void)
 {
     implementation = &crypto_stream_chacha20_ref_implementation;
-#if (defined(HAVE_EMMINTRIN_H) && defined(HAVE_TMMINTRIN_H)) || \
-    (defined(_MSC_VER) && (defined(_M_X64) || defined(_M_AMD64)))
+#if (defined(HAVE_EMMINTRIN_H) && defined(HAVE_TMMINTRIN_H) && defined(__GNUC__))
     if (sodium_runtime_has_ssse3()) {
         implementation = &crypto_stream_chacha20_vec_implementation;
     }

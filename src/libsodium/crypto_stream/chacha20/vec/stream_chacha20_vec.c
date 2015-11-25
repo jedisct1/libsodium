@@ -9,8 +9,7 @@
 #include "stream_chacha20_vec.h"
 #include "../stream_chacha20.h"
 
-#if (defined(HAVE_EMMINTRIN_H) && defined(HAVE_TMMINTRIN_H)) || \
-    (defined(_MSC_VER) && (defined(_M_X64) || defined(_M_AMD64)))
+#if (defined(HAVE_EMMINTRIN_H) && defined(HAVE_TMMINTRIN_H) && defined(__GNUC__))
 
 #pragma GCC target("sse2")
 #pragma GCC target("ssse3")
