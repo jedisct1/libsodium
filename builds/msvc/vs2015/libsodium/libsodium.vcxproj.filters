@@ -925,7 +925,7 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="..\..\..\..\src\libsodium\crypto_stream\chacha20\stream_chacha20_api.c">
+    <ClCompile Include="..\..\..\..\src\libsodium\crypto_stream\chacha20\stream_chacha20.c">
       <Filter>src\crypto_stream\chacha20</Filter>
     </ClCompile>
     <ClCompile Include="..\..\..\..\src\libsodium\crypto_stream\chacha20\ref\stream_chacha20_ref.c">

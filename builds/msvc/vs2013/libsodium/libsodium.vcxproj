@@ -93,7 +93,7 @@
     <ClCompile Include="..\..\..\..\src\libsodium\crypto_scalarmult\curve25519\scalarmult_curve25519.c" />
     <ClCompile Include="..\..\..\..\src\libsodium\crypto_sign\ed25519\ref10\obsolete.c" />
     <ClCompile Include="..\..\..\..\src\libsodium\crypto_stream\chacha20\ref\stream_chacha20_ref.c" />
-    <ClCompile Include="..\..\..\..\src\libsodium\crypto_stream\chacha20\stream_chacha20_api.c" />
+    <ClCompile Include="..\..\..\..\src\libsodium\crypto_stream\chacha20\stream_chacha20.c" />
     <ClCompile Include="..\..\..\..\src\libsodium\crypto_stream\salsa20\ref\stream_salsa20_ref.c" />
     <ClCompile Include="..\..\..\..\src\libsodium\crypto_stream\salsa20\ref\xor_salsa20_ref.c" />
     <ClInclude Include="..\..\..\..\src\libsodium\crypto_generichash\blake2\ref\blake2b-load-sse2.h" />

@@ -501,7 +501,7 @@
     <ClCompile Include="src\libsodium\crypto_stream\aes128ctr\portable\xor_afternm_aes128ctr.c" />
     <ClCompile Include="src\libsodium\crypto_stream\aes128ctr\stream_aes128ctr_api.c" />
     <ClCompile Include="src\libsodium\crypto_stream\chacha20\ref\stream_chacha20_ref.c" />
-    <ClCompile Include="src\libsodium\crypto_stream\chacha20\stream_chacha20_api.c" />
+    <ClCompile Include="src\libsodium\crypto_stream\chacha20\stream_chacha20.c" />
     <ClCompile Include="src\libsodium\crypto_stream\crypto_stream.c" />
     <ClCompile Include="src\libsodium\crypto_stream\salsa2012\ref\stream_salsa2012.c" />
     <ClCompile Include="src\libsodium\crypto_stream\salsa2012\ref\xor_salsa2012.c" />

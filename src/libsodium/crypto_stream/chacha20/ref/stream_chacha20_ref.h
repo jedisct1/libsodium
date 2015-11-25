@@ -1,6 +1,9 @@
 
 #include "crypto_stream_chacha20.h"
 
+extern struct crypto_stream_chacha20_implementation
+    crypto_stream_chacha20_ref_implementation;
+
 int
 crypto_stream_chacha20_ref(unsigned char *c, unsigned long long clen,
                            const unsigned char *n, const unsigned char *k);

@@ -9,9 +9,10 @@
 #include <stdlib.h>
 #include <string.h>
 
+#include "utils.h"
 #include "crypto_stream_chacha20.h"
 #include "stream_chacha20_ref.h"
-#include "utils.h"
+#include "../stream_chacha20.h"
 
 struct chacha_ctx {
     uint32_t input[16];
@@ -238,9 +239,9 @@ chacha_encrypt_bytes(chacha_ctx *x, const u8 *m, u8 *c, unsigned long long bytes
     }
 }
 
-int
-crypto_stream_chacha20_ref(unsigned char *c, unsigned long long clen,
-                           const unsigned char *n, const unsigned char *k)
+static int
+stream_ref(unsigned char *c, unsigned long long clen,
+           const unsigned char *n, const unsigned char *k)
 {
     struct chacha_ctx ctx;
 
@@ -257,9 +258,9 @@ crypto_stream_chacha20_ref(unsigned char *c, unsigned long long clen,
     return 0;
 }
 
-int
-crypto_stream_chacha20_ietf_ref(unsigned char *c, unsigned long long clen,
-                                const unsigned char *n, const unsigned char *k)
+static int
+stream_ietf_ref(unsigned char *c, unsigned long long clen,
+                const unsigned char *n, const unsigned char *k)
 {
     struct chacha_ctx ctx;
 
@@ -279,11 +280,11 @@ crypto_stream_chacha20_ietf_ref(unsigned char *c, unsigned long long clen,
     return 0;
 }
 
-int
-crypto_stream_chacha20_ref_xor_ic(unsigned char *c, const unsigned char *m,
-                                  unsigned long long mlen,
-                                  const unsigned char *n, uint64_t ic,
-                                  const unsigned char *k)
+static int
+stream_ref_xor_ic(unsigned char *c, const unsigned char *m,
+                  unsigned long long mlen,
+                  const unsigned char *n, uint64_t ic,
+                  const unsigned char *k)
 {
     struct chacha_ctx ctx;
     uint8_t           ic_bytes[8];
@@ -307,11 +308,11 @@ crypto_stream_chacha20_ref_xor_ic(unsigned char *c, const unsigned char *m,
     return 0;
 }
 
-int
-crypto_stream_chacha20_ietf_ref_xor_ic(unsigned char *c, const unsigned char *m,
-                                       unsigned long long mlen,
-                                       const unsigned char *n, uint32_t ic,
-                                       const unsigned char *k)
+static int
+stream_ietf_ref_xor_ic(unsigned char *c, const unsigned char *m,
+                       unsigned long long mlen,
+                       const unsigned char *n, uint32_t ic,
+                       const unsigned char *k)
 {
     struct chacha_ctx ctx;
     uint8_t           ic_bytes[4];
@@ -328,3 +329,11 @@ crypto_stream_chacha20_ietf_ref_xor_ic(unsigned char *c, const unsigned char *m,
 
     return 0;
 }
+
+struct crypto_stream_chacha20_implementation
+crypto_stream_chacha20_ref_implementation = {
+    SODIUM_C99(.stream =) stream_ref,
+    SODIUM_C99(.stream_ietf =) stream_ietf_ref,
+    SODIUM_C99(.stream_xor_ic =) stream_ref_xor_ic,
+    SODIUM_C99(.stream_ietf_xor_ic =) stream_ietf_ref_xor_ic
+};
