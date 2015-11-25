@@ -115,19 +115,25 @@ typedef struct chacha_ctx chacha_ctx;
 static void
 chacha_ivsetup(chacha_ctx *ctx, const uint8_t *iv, uint64_t ic)
 {
-    ctx->s3[0] = (uint32_t) ic;
-    ctx->s3[1] = (uint32_t) (ic >> 32);
-    ctx->s3[2] = ((uint32_t *) iv)[0];
-    ctx->s3[3] = ((uint32_t *) iv)[1];
+    const vec s3 = {
+        (uint32_t) ic,
+        (uint32_t) (ic >> 32),
+        ((uint32_t *) iv)[0],
+        ((uint32_t *) iv)[1]
+    };
+    ctx->s3 = s3;
 }
 
 static void
 chacha_ietf_ivsetup(chacha_ctx *ctx, const uint8_t *iv, uint32_t ic)
 {
-    ctx->s3[0] = ic;
-    ctx->s3[1] = ((uint32_t *) iv)[0];
-    ctx->s3[2] = ((uint32_t *) iv)[1];
-    ctx->s3[3] = ((uint32_t *) iv)[2];
+    const vec s3 = {
+        ic,
+        ((uint32_t *) iv)[0],
+        ((uint32_t *) iv)[1],
+        ((uint32_t *) iv)[2]
+    };
+    ctx->s3 = s3;
 }
 
 static void
