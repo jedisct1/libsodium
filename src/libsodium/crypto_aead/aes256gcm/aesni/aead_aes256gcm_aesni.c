@@ -173,15 +173,7 @@ aesni_encrypt1(unsigned char *out, __m128i nv, const __m128i *rkeys)
     X(6);        \
     X(7)
 
-#define COUNTER_INC2(N) \
-    { \
-        void     *xp = (void *) &(N)[12]; \
-        uint32_t  x;                      \
-                                          \
-        memcpy(&x, xp, sizeof x);         \
-        x += 2;                           \
-        memcpy(xp, &x, sizeof x);         \
-    }
+#define COUNTER_INC2(N) (N)[3] += 2
 
 /* create a function of unrolling N ; the MAKEN is the unrolling
    macro, defined above. The N in MAKEN must match N, obviously. */
@@ -526,8 +518,8 @@ crypto_aead_aes256gcm_encrypt_afternm(unsigned char *c, unsigned long long *clen
     unsigned long long  i, j;
     unsigned long long  adlen_rnd64 = adlen & ~63ULL;
     unsigned long long  mlen_rnd128 = mlen & ~127ULL;
+    CRYPTO_ALIGN(16) uint32_t      n2[4];
     CRYPTO_ALIGN(16) unsigned char H[16];
-    CRYPTO_ALIGN(16) unsigned char n2[16];
     CRYPTO_ALIGN(16) unsigned char T[16];
     CRYPTO_ALIGN(16) unsigned char accum[16];
     CRYPTO_ALIGN(16) unsigned char fb[16];
@@ -537,11 +529,8 @@ crypto_aead_aes256gcm_encrypt_afternm(unsigned char *c, unsigned long long *clen
     if (mlen > 16ULL * (1ULL << 32)) {
         abort();
     }
-    memcpy(&n2[0], npub, 12);
-    {
-        const uint32_t one = 0x01000000;
-        memcpy(&n2[12], &one, sizeof one);
-    }
+    memcpy(&n2[0], npub, 3 * 4);
+    n2[3] = 0x01000000;
     aesni_encrypt1(T, _mm_load_si128((const __m128i *) n2), rkeys);
     {
         uint64_t x;
@@ -585,7 +574,7 @@ crypto_aead_aes256gcm_encrypt_afternm(unsigned char *c, unsigned long long *clen
         const int lb = iter * 16;                                                                    \
                                                                                                      \
         for (i = 0; i < mlen_rnd128; i += lb) {                                                      \
-            aesni_encrypt8full(c + i, (uint32_t *) n2, rkeys, m + i, accum, Hv, H2v, H3v, H4v, rev); \
+            aesni_encrypt8full(c + i, n2, rkeys, m + i, accum, Hv, H2v, H3v, H4v, rev);              \
         }                                                                                            \
     } while(0)
 
@@ -599,7 +588,7 @@ crypto_aead_aes256gcm_encrypt_afternm(unsigned char *c, unsigned long long *clen
             CRYPTO_ALIGN(16) unsigned char outni[8 * 16];    \
             unsigned long long mj = lb;                      \
                                                              \
-            aesni_encrypt8(outni, (uint32_t *) n2, rkeys);   \
+            aesni_encrypt8(outni, n2, rkeys);                \
             if ((i + mj) >= mlen) {                          \
                 mj = mlen - i;                               \
             }                                                \
@@ -617,7 +606,7 @@ crypto_aead_aes256gcm_encrypt_afternm(unsigned char *c, unsigned long long *clen
         }                                                    \
     } while(0)
 
-    n2[15] = 0;
+    n2[3] &= 0x00ffffff;
     COUNTER_INC2(n2);
     LOOPRND128;
     LOOPRMD128;
@@ -649,8 +638,8 @@ crypto_aead_aes256gcm_decrypt_afternm(unsigned char *m, unsigned long long *mlen
     unsigned long long  adlen_rnd64 = adlen & ~63ULL;
     unsigned long long  mlen;
     unsigned long long  mlen_rnd128;
+    CRYPTO_ALIGN(16) uint32_t      n2[4];
     CRYPTO_ALIGN(16) unsigned char H[16];
-    CRYPTO_ALIGN(16) unsigned char n2[16];
     CRYPTO_ALIGN(16) unsigned char T[16];
     CRYPTO_ALIGN(16) unsigned char accum[16];
     CRYPTO_ALIGN(16) unsigned char fb[16];
@@ -667,11 +656,8 @@ crypto_aead_aes256gcm_decrypt_afternm(unsigned char *m, unsigned long long *mlen
     }
     mlen = clen - 16;
 
-    memcpy(&n2[0], npub, 12);
-    {
-        const uint32_t one = 0x01000000;
-        memcpy(&n2[12], &one, sizeof one);
-    }
+    memcpy(&n2[0], npub, 3 * 4);
+    n2[3] = 0x01000000;
     aesni_encrypt1(T, _mm_load_si128((const __m128i *) n2), rkeys);
     {
         uint64_t x;
@@ -722,7 +708,7 @@ crypto_aead_aes256gcm_decrypt_afternm(unsigned char *m, unsigned long long *mlen
         const int lb = iter * 16;                                                                 \
                                                                                                   \
         for (i = 0; i < mlen_rnd128; i += lb) {                                                   \
-            aesni_decrypt8full(m + i, (uint32_t *) n2, rkeys, c + i);                             \
+            aesni_decrypt8full(m + i, n2, rkeys, c + i);                                          \
         }                                                                                         \
     } while(0)
 
@@ -760,13 +746,13 @@ crypto_aead_aes256gcm_decrypt_afternm(unsigned char *m, unsigned long long *mlen
             if ((i + mj) >= mlen) {                          \
                 mj = mlen - i;                               \
             }                                                \
-            aesni_encrypt8(outni, (uint32_t *) n2, rkeys);   \
+            aesni_encrypt8(outni, n2, rkeys);                \
             for (j = 0; j < mj; j++) {                       \
                 m[i + j] = c[i + j] ^ outni[j];              \
             }                                                \
         }                                                    \
     } while(0)
-    n2[15] = 0;
+    n2[3] &= 0x00ffffff;
 
     COUNTER_INC2(n2);
     LOOPACCUMDRND128;
@@ -782,7 +768,7 @@ crypto_aead_aes256gcm_decrypt_afternm(unsigned char *m, unsigned long long *mlen
             return -1;
         }
     }
-    memset(&n2[12], 0, sizeof (uint32_t));
+    n2[3] = 0U;
     COUNTER_INC2(n2);
     LOOPDRND128;
     LOOPDRMD128;
