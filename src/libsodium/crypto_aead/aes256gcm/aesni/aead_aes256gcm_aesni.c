@@ -173,7 +173,15 @@ aesni_encrypt1(unsigned char *out, __m128i nv, const __m128i *rkeys)
     X(6);        \
     X(7)
 
-#define COUNTER_INC2(N) (*(uint32_t *) &(N)[12]) = (2U + (((*(uint32_t *) &(N)[12]))))
+#define COUNTER_INC2(N) \
+    { \
+        void     *xp = (void *) &(N)[12]; \
+        uint32_t  x;                      \
+                                          \
+        memcpy(&x, xp, sizeof x);         \
+        x += 2;                           \
+        memcpy(xp, &x, sizeof x);         \
+    }
 
 /* create a function of unrolling N ; the MAKEN is the unrolling
    macro, defined above. The N in MAKEN must match N, obviously. */
@@ -530,12 +538,18 @@ crypto_aead_aes256gcm_encrypt_afternm(unsigned char *c, unsigned long long *clen
         abort();
     }
     memcpy(&n2[0], npub, 12);
-    *(uint32_t *) &n2[12] = 0x01000000;
+    {
+        const uint32_t one = 0x01000000;
+        memcpy(&n2[12], &one, sizeof one);
+    }
     aesni_encrypt1(T, _mm_load_si128((const __m128i *) n2), rkeys);
-
-    (*(uint64_t *) &fb[0]) = _bswap64((uint64_t) (8 * adlen));
-    (*(uint64_t *) &fb[8]) = _bswap64((uint64_t) (8 * mlen));
-
+    {
+        uint64_t x;
+        x = _bswap64((uint64_t) (8 * adlen));
+        memcpy(&fb[0], &x, sizeof x);
+        x = _bswap64((uint64_t) (8 * mlen));
+        memcpy(&fb[8], &x, sizeof x);
+    }
     /* we store H (and it's power) byte-reverted once and for all */
     Hv = _mm_shuffle_epi8(_mm_load_si128((const __m128i *) H), rev);
     _mm_store_si128((__m128i *) H, Hv);
@@ -654,12 +668,18 @@ crypto_aead_aes256gcm_decrypt_afternm(unsigned char *m, unsigned long long *mlen
     mlen = clen - 16;
 
     memcpy(&n2[0], npub, 12);
-    *(uint32_t *) &n2[12] = 0x01000000;
+    {
+        const uint32_t one = 0x01000000;
+        memcpy(&n2[12], &one, sizeof one);
+    }
     aesni_encrypt1(T, _mm_load_si128((const __m128i *) n2), rkeys);
-
-    (*(uint64_t *) &fb[0]) = _bswap64((uint64_t)(8 * adlen));
-    (*(uint64_t *) &fb[8]) = _bswap64((uint64_t)(8 * mlen));
-
+    {
+        uint64_t x;
+        x = _bswap64((uint64_t)(8 * adlen));
+        memcpy(&fb[0], &x, sizeof x);
+        x = _bswap64((uint64_t)(8 * mlen));
+        memcpy(&fb[8], &x, sizeof x);
+    }
     memcpy(H, ctx->H, sizeof H);
     Hv = _mm_shuffle_epi8(_mm_load_si128((const __m128i *) H), rev);
     _mm_store_si128((__m128i *) H, Hv);
