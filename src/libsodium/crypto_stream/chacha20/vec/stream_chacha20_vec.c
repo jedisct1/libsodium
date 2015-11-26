@@ -27,9 +27,9 @@ typedef unsigned int vec __attribute__((vector_size(16)));
 #  define VBPI 3
 # endif
 # define ONE (vec) _mm_set_epi32(0, 0, 0, 1)
-# define LOAD(m) (vec) _mm_loadu_si128((__m128i *)(m))
-# define LOAD_ALIGNED(m) (vec) _mm_load_si128((__m128i *)(m))
-# define STORE(m, r) _mm_storeu_si128((__m128i *)(m), (__m128i)(r))
+# define LOAD(m) (vec) _mm_loadu_si128((const __m128i *) (const void *) (m))
+# define LOAD_ALIGNED(m) (vec) _mm_load_si128((const __m128i *) (const void *) (m))
+# define STORE(m, r) _mm_storeu_si128((__m128i *) (void *) (m), (__m128i) (r))
 # define ROTV1(x) (vec) _mm_shuffle_epi32((__m128i)x, _MM_SHUFFLE(0, 3, 2, 1))
 # define ROTV2(x) (vec) _mm_shuffle_epi32((__m128i)x, _MM_SHUFFLE(1, 0, 3, 2))
 # define ROTV3(x) (vec) _mm_shuffle_epi32((__m128i)x, _MM_SHUFFLE(2, 1, 0, 3))
@@ -118,8 +118,8 @@ chacha_ivsetup(chacha_ctx *ctx, const uint8_t *iv, uint64_t ic)
     const vec s3 = {
         (uint32_t) ic,
         (uint32_t) (ic >> 32),
-        ((uint32_t *) iv)[0],
-        ((uint32_t *) iv)[1]
+        ((const uint32_t *) (const void *) iv)[0],
+        ((const uint32_t *) (const void *) iv)[1]
     };
     ctx->s3 = s3;
 }
@@ -129,9 +129,9 @@ chacha_ietf_ivsetup(chacha_ctx *ctx, const uint8_t *iv, uint32_t ic)
 {
     const vec s3 = {
         ic,
-        ((uint32_t *) iv)[0],
-        ((uint32_t *) iv)[1],
-        ((uint32_t *) iv)[2]
+        ((const uint32_t *) (const void *) iv)[0],
+        ((const uint32_t *) (const void *) iv)[1],
+        ((const uint32_t *) (const void *) iv)[2]
     };
     ctx->s3 = s3;
 }
@@ -139,11 +139,8 @@ chacha_ietf_ivsetup(chacha_ctx *ctx, const uint8_t *iv, uint32_t ic)
 static void
 chacha_keysetup(chacha_ctx *ctx, const uint8_t *k)
 {
-    unsigned int *kp;
-
-    kp = (unsigned int *) k;
-    ctx->s1 = LOAD(&((vec *)kp)[0]);
-    ctx->s2 = LOAD(&((vec *)kp)[1]);
+    ctx->s1 = LOAD(k);
+    ctx->s2 = LOAD(k + 16);
 }
 
 static void
@@ -152,8 +149,8 @@ chacha_encrypt_bytes(chacha_ctx *ctx, const uint8_t *in, uint8_t *out,
 {
     CRYPTO_ALIGN(16) unsigned chacha_const[]
         = { 0x61707865, 0x3320646E, 0x79622D32, 0x6B206574 };
-    uint32_t           *op = (uint32_t *) out;
-    const uint32_t     *ip = (const uint32_t *) in;
+    uint32_t           *op = (uint32_t *) (void *) out;
+    const uint32_t     *ip = (const uint32_t *) (const void *) in;
     vec                 s0, s1, s2, s3;
     unsigned long long  iters;
     unsigned long long  i;
@@ -254,8 +251,8 @@ chacha_encrypt_bytes(chacha_ctx *ctx, const uint8_t *in, uint8_t *out,
         } else {
             buf[0] = REVV_BE(v0 + s0);
         }
-        for (i = inlen & ~15; i < inlen; i++) {
-            ((char *)op)[i] = ((char *)ip)[i] ^ ((char *)buf)[i];
+        for (i = inlen & ~15ULL; i < inlen; i++) {
+            ((char *)op)[i] = ((const char *)ip)[i] ^ ((char *)buf)[i];
         }
     }
 }
