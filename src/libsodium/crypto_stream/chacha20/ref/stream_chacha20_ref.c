@@ -112,6 +112,9 @@ chacha_encrypt_bytes(chacha_ctx *ctx, const u8 *m, u8 *c, unsigned long long byt
     if (!bytes) {
         return; /* LCOV_EXCL_LINE */
     }
+    if (bytes > 64ULL * (1ULL << 32) - 64ULL) {
+        abort();
+    }
     j0 = ctx->input[0];
     j1 = ctx->input[1];
     j2 = ctx->input[2];
@@ -266,9 +269,6 @@ stream_ietf_ref(unsigned char *c, unsigned long long clen,
 
     if (!clen) {
         return 0;
-    }
-    if (clen > 64ULL * (1ULL << 32) - 64ULL) {
-        abort();
     }
     (void) sizeof(int[crypto_stream_chacha20_KEYBYTES == 256 / 8 ? 1 : -1]);
     chacha_keysetup(&ctx, k);

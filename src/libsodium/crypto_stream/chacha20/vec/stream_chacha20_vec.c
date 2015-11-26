@@ -137,6 +137,9 @@ chacha_encrypt_bytes(chacha_ctx *ctx, const uint8_t *in, uint8_t *out,
     unsigned long long  iters;
     unsigned long long  i;
 
+    if (inlen > 64ULL * (1ULL << 32) - 64ULL) {
+        abort();
+    }
     s0 = LOAD_ALIGNED(chacha_const);
     s1 = ctx->s1;
     s2 = ctx->s2;
@@ -234,7 +237,7 @@ chacha_encrypt_bytes(chacha_ctx *ctx, const uint8_t *in, uint8_t *out,
             buf[0] = REVV_BE(v0 + s0);
         }
         for (i = inlen & ~15ULL; i < inlen; i++) {
-            ((char *)op)[i] = ((const char *)ip)[i] ^ ((char *)buf)[i];
+            ((char *) op)[i] = ((const char *) ip)[i] ^ ((char *) buf)[i];
         }
     }
 }
@@ -266,9 +269,6 @@ stream_ietf_vec(unsigned char *c, unsigned long long clen,
 
     if (!clen) {
         return 0;
-    }
-    if (clen > 64ULL * (1ULL << 32) - 64ULL) {
-        abort();
     }
     (void) sizeof(int[crypto_stream_chacha20_KEYBYTES == 256 / 8 ? 1 : -1]);
     chacha_keysetup(&ctx, k);
