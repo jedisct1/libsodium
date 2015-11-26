@@ -86,8 +86,8 @@ poly1305_init_ext(poly1305_state_internal_t *st,
     _mm_storeu_si128((xmmi *)(void *)&st->hh[8], _mm_setzero_si128());
 
     /* clamp key */
-    t0 = *(uint64_t *)(void *)(key + 0);
-    t1 = *(uint64_t *)(void *)(key + 8);
+    memcpy(&t0, key, 8);
+    memcpy(&t1, key + 8, 8);
     r0 = t0 & 0xffc0fffffff; t0 >>= 44; t0 |= t1 << 20;
     r1 = t0 & 0xfffffc0ffff; t1 >>= 24;
     r2 = t1 & 0x00ffffffc0f;
@@ -101,8 +101,8 @@ poly1305_init_ext(poly1305_state_internal_t *st,
     R[4] = (uint32_t)(( r2 >> 16)              );
 
     /* save pad */
-    st->pad[0] = *(uint64_t *)(void *)(key + 16);
-    st->pad[1] = *(uint64_t *)(void *)(key + 24);
+    memcpy(&st->pad[0], key + 16, 8);
+    memcpy(&st->pad[1], key + 24, 8);
 
     rt0 = r0;
     rt1 = r1;
@@ -586,10 +586,12 @@ poly1305_finish_ext(poly1305_state_internal_t *st, const unsigned char *m,
                          : "flags", "cc");
 #else
     {
-        uint64_t h[2] = { h0, h1 };
-        *((uint128_t *)(void *) h) += *((uint128_t *)(void *) &st->pad[0]);
-        h0 = h[0];
-        h1 = h[1];
+        uint128_t h;
+
+        memcpy(&h, &st->pad[0], 16);
+        h += ((uint128_t) h1 << 64) | h0;
+        h0 = (uint64_t) h;
+        h1 = (uint64_t) (h >> 64);
     }
 #endif
     _mm_storeu_si128((xmmi *)(void *)st + 0, _mm_setzero_si128());
