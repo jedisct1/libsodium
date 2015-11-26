@@ -55,11 +55,11 @@ crypto_onetimeauth_poly1305_donna(unsigned char *out, const unsigned char *m,
                                   unsigned long long inlen,
                                   const unsigned char *key)
 {
-    CRYPTO_ALIGN(64) crypto_onetimeauth_poly1305_state state;
+    CRYPTO_ALIGN(64) poly1305_state_internal_t state;
 
-    poly1305_init((poly1305_state_internal_t *)(void *) &state, key);
-    poly1305_update((poly1305_state_internal_t *)(void *) &state, m, inlen);
-    poly1305_finish((poly1305_state_internal_t *)(void *) &state, out);
+    poly1305_init(&state, key);
+    poly1305_update(&state, m, inlen);
+    poly1305_finish(&state, out);
 
     return 0;
 }
