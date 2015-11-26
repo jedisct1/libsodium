@@ -63,8 +63,7 @@ crypto_generichash_init(crypto_generichash_state *state,
                         const size_t keylen, const size_t outlen)
 {
     return crypto_generichash_blake2b_init
-        ((crypto_generichash_blake2b_state *) state,
-            key, keylen, outlen);
+        ((crypto_generichash_blake2b_state *) state, key, keylen, outlen);
 }
 
 int
