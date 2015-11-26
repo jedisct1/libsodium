@@ -170,7 +170,7 @@ void
 sodium_increment(unsigned char *n, const size_t nlen)
 {
     size_t        i = 0U;
-#if !defined(CPU_UNALIGNED_ACCESS) || !defined(NATIVE_LITTLE_ENDIAN)
+#if !defined(CPU_UNALIGNED_ACCESS) || !defined(NATIVE_LITTLE_ENDIAN) || defined(__EMSCRIPTEN__)
     uint_fast16_t c = 1U;
 #else
     uint_fast64_t c = 1U;
@@ -191,7 +191,7 @@ void
 sodium_add(unsigned char *a, const unsigned char *b, const size_t len)
 {
     size_t        i = 0U;
-#if !defined(CPU_UNALIGNED_ACCESS) || !defined(NATIVE_LITTLE_ENDIAN)
+#if !defined(CPU_UNALIGNED_ACCESS) || !defined(NATIVE_LITTLE_ENDIAN) || defined(__EMSCRIPTEN__)
     uint_fast16_t c = 0U;
 #else
     uint_fast64_t c = 0U;
