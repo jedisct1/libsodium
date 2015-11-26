@@ -46,10 +46,6 @@ typedef unsigned int vec __attribute__((vector_size(16)));
 # define REVV_BE(x) (x)
 #endif
 
-#ifndef REVW_BE
-# define REVW_BE(x) (x)
-#endif
-
 #define BPI (VBPI + 0) /* Blocks computed per loop iteration   */
 
 #define DQROUND_VECTORS(a, b, c, d) \
@@ -83,20 +79,6 @@ typedef unsigned int vec __attribute__((vector_size(16)));
     b = ROTV3(b);                   \
     c = ROTV2(c);                   \
     d = ROTV1(d);
-
-#define QROUND_WORDS(a, b, c, d) \
-    a = a + b;                   \
-    d ^= a;                      \
-    d = d << 16 | d >> 16;       \
-    c = c + d;                   \
-    b ^= c;                      \
-    b = b << 12 | b >> 20;       \
-    a = a + b;                   \
-    d ^= a;                      \
-    d = d << 8 | d >> 24;        \
-    c = c + d;                   \
-    b ^= c;                      \
-    b = b << 7 | b >> 25;
 
 #define WRITE_XOR(in, op, d, v0, v1, v2, v3)           \
     STORE(op + d + 0, LOAD(in + d + 0) ^ REVV_BE(v0)); \
