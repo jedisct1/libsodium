@@ -782,7 +782,7 @@ crypto_aead_aes256gcm_decrypt_afternm(unsigned char *m, unsigned long long *mlen
             return -1;
         }
     }
-    *(uint32_t *) &n2[12] = 0;
+    memset(&n2[12], 0, sizeof (uint32_t));
     COUNTER_INC2(n2);
     LOOPDRND128;
     LOOPDRMD128;
