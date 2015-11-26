@@ -7,8 +7,7 @@ blake2                                 Jean-Philippe Aumasson
                                        Samuel Neves
                                        Zooko Wilcox-O'Hearn
 
-chacha20/ref                           Daniel J. Bernstein
-chacha20/vec                           Ted Krovetz
+chacha20                               Daniel J. Bernstein
 
 salsa20                                Daniel J. Bernstein
 
@@ -70,7 +69,9 @@ crypto_sign/ed25519                    Peter Schwabe
 
 crypto_stream/aes128ctr                Peter Schwabe
 
-crypto_stream/chacha20                 Daniel J. Bernstein
+crypto_stream/chacha20/ref             Daniel J. Bernstein
+
+crypto_stream/chacha20/vec             Ted Krovetz
 
 crypto_stream/salsa20                  Daniel J. Bernstein
 crypto_stream/salsa2012
