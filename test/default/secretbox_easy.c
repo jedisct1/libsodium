@@ -38,21 +38,15 @@ int main(void)
     crypto_secretbox_easy(c, m, 131, nonce, firstkey);
     for (i = 0; i < 131 + crypto_secretbox_MACBYTES; ++i) {
         printf(",0x%02x", (unsigned int)c[i]);
-        if (i % 8 == 7)
-            printf("\n");
     }
     printf("\n");
 
     crypto_secretbox_detached(c, mac, m, 131, nonce, firstkey);
     for (i = 0; i < crypto_secretbox_MACBYTES; ++i) {
         printf(",0x%02x", (unsigned int)mac[i]);
-        if (i % 8 == 7)
-            printf("\n");
     }
     for (i = 0; i < 131; ++i) {
         printf(",0x%02x", (unsigned int)c[i]);
-        if (i % 8 == 7)
-            printf("\n");
     }
     printf("\n");
 
@@ -62,8 +56,6 @@ int main(void)
     crypto_secretbox_easy(c, c + 1, 131, nonce, firstkey);
     for (i = 0; i < 131 + crypto_secretbox_MACBYTES; ++i) {
         printf(",0x%02x", (unsigned int)c[i]);
-        if (i % 8 == 7)
-            printf("\n");
     }
     printf("\n");
 
@@ -71,8 +63,6 @@ int main(void)
     crypto_secretbox_easy(c + 1, c, 131, nonce, firstkey);
     for (i = 0; i < 131 + crypto_secretbox_MACBYTES; ++i) {
         printf(",0x%02x", (unsigned int)c[i + 1]);
-        if (i % 8 == 7)
-            printf("\n");
     }
     printf("\n");
 
@@ -80,12 +70,30 @@ int main(void)
     crypto_secretbox_easy(c, c, 131, nonce, firstkey);
     for (i = 0; i < 131 + crypto_secretbox_MACBYTES; ++i) {
         printf(",0x%02x", (unsigned int)c[i]);
-        if (i % 8 == 7)
-            printf("\n");
     }
     printf("\n");
 
     assert(crypto_secretbox_easy(c, m, SIZE_MAX - 1U, nonce, firstkey) == -1);
+
+    /* Null message */
+    crypto_secretbox_easy(c, c, 0, nonce, firstkey);
+    for (i = 0; i < crypto_secretbox_MACBYTES + 1; ++i) {
+        printf(",0x%02x", (unsigned int)c[i]);
+    }
+    printf("\n");
+    if (crypto_secretbox_open_easy(c, c, crypto_secretbox_MACBYTES,
+                                   nonce, firstkey) != 0) {
+        printf("Null crypto_secretbox_open_easy() failed\n");
+    }
+    for (i = 0; i < crypto_secretbox_MACBYTES + 1; ++i) {
+        printf(",0x%02x", (unsigned int)c[i]);
+    }
+    printf("\n");
+    c[randombytes_uniform(crypto_secretbox_MACBYTES)]++;
+    if (crypto_secretbox_open_easy(c, c, crypto_secretbox_MACBYTES,
+                                   nonce, firstkey) != -1) {
+        printf("Null tampered crypto_secretbox_open_easy() failed\n");
+    }
 
     sodium_free(mac);
     sodium_free(c);
