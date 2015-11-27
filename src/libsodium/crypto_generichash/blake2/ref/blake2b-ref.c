@@ -169,7 +169,7 @@ int blake2b_init( blake2b_state *S, const uint8_t outlen )
 {
   blake2b_param P[1];
 
-  if ( ( !outlen ) || ( outlen > BLAKE2B_OUTBYTES ) ) return -1;
+  if ( ( !outlen ) || ( outlen > BLAKE2B_OUTBYTES ) ) abort();
 
   P->digest_length = outlen;
   P->key_length    = 0;
@@ -190,7 +190,7 @@ int blake2b_init_salt_personal( blake2b_state *S, const uint8_t outlen,
 {
   blake2b_param P[1];
 
-  if ( ( !outlen ) || ( outlen > BLAKE2B_OUTBYTES ) ) return -1;
+  if ( ( !outlen ) || ( outlen > BLAKE2B_OUTBYTES ) ) abort();
 
   P->digest_length = outlen;
   P->key_length    = 0;
@@ -218,9 +218,9 @@ int blake2b_init_key( blake2b_state *S, const uint8_t outlen, const void *key, c
 {
   blake2b_param P[1];
 
-  if ( ( !outlen ) || ( outlen > BLAKE2B_OUTBYTES ) ) return -1;
+  if ( ( !outlen ) || ( outlen > BLAKE2B_OUTBYTES ) ) abort();
 
-  if ( !key || !keylen || keylen > BLAKE2B_KEYBYTES ) return -1;
+  if ( !key || !keylen || keylen > BLAKE2B_KEYBYTES ) abort();
 
   P->digest_length = outlen;
   P->key_length    = keylen;
@@ -234,7 +234,7 @@ int blake2b_init_key( blake2b_state *S, const uint8_t outlen, const void *key, c
   memset( P->salt,     0, sizeof( P->salt ) );
   memset( P->personal, 0, sizeof( P->personal ) );
 
-  if( blake2b_init_param( S, P ) < 0 ) return -1;
+  if( blake2b_init_param( S, P ) < 0 ) abort();
 
   {
     uint8_t block[BLAKE2B_BLOCKBYTES];
@@ -251,9 +251,9 @@ int blake2b_init_key_salt_personal( blake2b_state *S, const uint8_t outlen, cons
 {
   blake2b_param P[1];
 
-  if ( ( !outlen ) || ( outlen > BLAKE2B_OUTBYTES ) ) return -1;
+  if ( ( !outlen ) || ( outlen > BLAKE2B_OUTBYTES ) ) abort();
 
-  if ( !key || !keylen || keylen > BLAKE2B_KEYBYTES ) return -1;
+  if ( !key || !keylen || keylen > BLAKE2B_KEYBYTES ) abort();
 
   P->digest_length = outlen;
   P->key_length    = keylen;
@@ -275,7 +275,7 @@ int blake2b_init_key_salt_personal( blake2b_state *S, const uint8_t outlen, cons
     memset( P->personal, 0, sizeof( P->personal ) );
   }
 
-  if( blake2b_init_param( S, P ) < 0 ) return -1;
+  if( blake2b_init_param( S, P ) < 0 ) abort();
 
   {
     uint8_t block[BLAKE2B_BLOCKBYTES];
@@ -321,7 +321,7 @@ int blake2b_update( blake2b_state *S, const uint8_t *in, uint64_t inlen )
 int blake2b_final( blake2b_state *S, uint8_t *out, uint8_t outlen )
 {
   if( !outlen || outlen > BLAKE2B_OUTBYTES ) {
-    return -1;
+    abort();
   }
   if( S->buflen > BLAKE2B_BLOCKBYTES )
   {
@@ -358,23 +358,23 @@ int blake2b( uint8_t *out, const void *in, const void *key, const uint8_t outlen
   blake2b_state S[1];
 
   /* Verify parameters */
-  if( NULL == in && inlen > 0 ) return -1;
+  if( NULL == in && inlen > 0 ) abort();
 
-  if( NULL == out ) return -1;
+  if( NULL == out ) abort();
 
-  if( !outlen || outlen > BLAKE2B_OUTBYTES ) return -1;
+  if( !outlen || outlen > BLAKE2B_OUTBYTES ) abort();
 
-  if( NULL == key && keylen > 0 ) return -1;
+  if( NULL == key && keylen > 0 ) abort();
 
-  if( keylen > BLAKE2B_KEYBYTES ) return -1;
+  if( keylen > BLAKE2B_KEYBYTES ) abort();
 
   if( keylen > 0 )
   {
-    if( blake2b_init_key( S, outlen, key, keylen ) < 0 ) return -1;
+    if( blake2b_init_key( S, outlen, key, keylen ) < 0 ) abort();
   }
   else
   {
-    if( blake2b_init( S, outlen ) < 0 ) return -1;
+    if( blake2b_init( S, outlen ) < 0 ) abort();
   }
 
   blake2b_update( S, ( const uint8_t * )in, inlen );
@@ -388,23 +388,23 @@ int blake2b_salt_personal( uint8_t *out, const void *in, const void *key, const 
   blake2b_state S[1];
 
   /* Verify parameters */
-  if( NULL == in && inlen > 0 ) return -1;
+  if( NULL == in && inlen > 0 ) abort();
 
-  if( NULL == out ) return -1;
+  if( NULL == out ) abort();
 
-  if( !outlen || outlen > BLAKE2B_OUTBYTES ) return -1;
+  if( !outlen || outlen > BLAKE2B_OUTBYTES ) abort();
 
-  if( NULL == key && keylen > 0 ) return -1;
+  if( NULL == key && keylen > 0 ) abort();
 
-  if( keylen > BLAKE2B_KEYBYTES ) return -1;
+  if( keylen > BLAKE2B_KEYBYTES ) abort();
 
   if( keylen > 0 )
   {
-    if( blake2b_init_key_salt_personal( S, outlen, key, keylen, salt, personal ) < 0 ) return -1;
+    if( blake2b_init_key_salt_personal( S, outlen, key, keylen, salt, personal ) < 0 ) abort();
   }
   else
   {
-    if( blake2b_init_salt_personal( S, outlen, salt, personal ) < 0 ) return -1;
+    if( blake2b_init_salt_personal( S, outlen, salt, personal ) < 0 ) abort();
   }
 
   blake2b_update( S, ( const uint8_t * )in, inlen );
