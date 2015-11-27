@@ -166,7 +166,7 @@ poly1305_blocks(poly1305_state_internal_t *st, const unsigned char *m,
     if (!(st->flags & poly1305_started)) {
         /* H = [Mx,My] */
 
-        /* Note that _mm_loadl_epi64() is turned into a simple MOVQ. So, unaligned accesses are totally fine, even though this intrinsic requires a __m128i input */
+        /* Note that _mm_loadl_epi64() is turned into a simple MOVQ. So, unaligned accesses are totally fine, even though this intrinsic requires a __m128i* input */
         T5 = _mm_unpacklo_epi64(_mm_loadl_epi64((const xmmi *)(const void *)(m + 0)), _mm_loadl_epi64((const xmmi *)(const void *)(m + 16)));
         T6 = _mm_unpacklo_epi64(_mm_loadl_epi64((const xmmi *)(const void *)(m + 8)), _mm_loadl_epi64((const xmmi *)(const void *)(m + 24)));
         H0 = _mm_and_si128(MMASK, T5);
