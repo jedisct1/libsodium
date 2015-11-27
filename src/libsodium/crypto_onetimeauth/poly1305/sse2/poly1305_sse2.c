@@ -57,13 +57,15 @@ typedef struct poly1305_state_internal_t {
 static inline void
 poly1305_block_copy31(unsigned char *dst, const unsigned char *src, unsigned long long bytes)
 {
-    unsigned long long offset = src - dst;
-
-    if (bytes & 16) { _mm_store_si128((xmmi *)(void *)dst, _mm_loadu_si128((xmmi *)(void *)(dst + offset))); dst += 16; }
-    if (bytes &  8) { *(uint64_t *)(void *)dst = *(uint64_t *)(void *)(dst + offset); dst += 8; }
-    if (bytes &  4) { *(uint32_t *)dst = *(uint32_t *)(dst + offset); dst += 4; }
-    if (bytes &  2) { *(uint16_t *)dst = *(uint16_t *)(dst + offset); dst += 2; }
-    if (bytes &  1) { *( unsigned char *)dst = *( unsigned char *)(dst + offset);           }
+    if (bytes & 16) {
+        _mm_store_si128((xmmi *) (void *) dst,
+                        _mm_loadu_si128((const xmmi *) (const void *) src));
+        src += 16; dst += 16;
+    }
+    if (bytes &  8) { memcpy(dst, src, 8); src += 8; dst += 8; }
+    if (bytes &  4) { memcpy(dst, src, 4); src += 4; dst += 4; }
+    if (bytes &  2) { memcpy(dst, src, 2); src += 2; dst += 2; }
+    if (bytes &  1) { *dst = *src; }
 }
 
 static POLY1305_NOINLINE void
