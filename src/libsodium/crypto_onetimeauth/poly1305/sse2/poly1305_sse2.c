@@ -165,8 +165,10 @@ poly1305_blocks(poly1305_state_internal_t *st, const unsigned char *m,
 
     if (!(st->flags & poly1305_started)) {
         /* H = [Mx,My] */
-        T5 = _mm_unpacklo_epi64(_mm_loadl_epi64((xmmi *)(void *)(m + 0)), _mm_loadl_epi64((xmmi *)(void *)(m + 16)));
-        T6 = _mm_unpacklo_epi64(_mm_loadl_epi64((xmmi *)(void *)(m + 8)), _mm_loadl_epi64((xmmi *)(void *)(m + 24)));
+
+        /* Note that _mm_loadl_epi64() is turned into a simple MOVQ. So, unaligned accesses are totally fine, even though this intrinsic requires a __m128i input */
+        T5 = _mm_unpacklo_epi64(_mm_loadl_epi64((const xmmi *)(const void *)(m + 0)), _mm_loadl_epi64((const xmmi *)(const void *)(m + 16)));
+        T6 = _mm_unpacklo_epi64(_mm_loadl_epi64((const xmmi *)(const void *)(m + 8)), _mm_loadl_epi64((const xmmi *)(const void *)(m + 24)));
         H0 = _mm_and_si128(MMASK, T5);
         H1 = _mm_and_si128(MMASK, _mm_srli_epi64(T5, 26));
         T5 = _mm_or_si128(_mm_srli_epi64(T5, 52), _mm_slli_epi64(T6, 12));
@@ -178,9 +180,9 @@ poly1305_blocks(poly1305_state_internal_t *st, const unsigned char *m,
         bytes -= 32;
         st->flags |= poly1305_started;
     } else {
-        T0 = _mm_loadu_si128((xmmi *)(void *)&st->hh[0]);
-        T1 = _mm_loadu_si128((xmmi *)(void *)&st->hh[4]);
-        T2 = _mm_loadu_si128((xmmi *)(void *)&st->hh[8]);
+        T0 = _mm_loadu_si128((const xmmi *)(const void *)&st->hh[0]);
+        T1 = _mm_loadu_si128((const xmmi *)(const void *)&st->hh[4]);
+        T2 = _mm_loadu_si128((const xmmi *)(const void *)&st->hh[8]);
         H0 = _mm_shuffle_epi32(T0, _MM_SHUFFLE(1,1,0,0));
         H1 = _mm_shuffle_epi32(T0, _MM_SHUFFLE(3,3,2,2));
         H2 = _mm_shuffle_epi32(T1, _MM_SHUFFLE(1,1,0,0));
@@ -191,16 +193,16 @@ poly1305_blocks(poly1305_state_internal_t *st, const unsigned char *m,
     if (st->flags & (poly1305_final_r2_r|poly1305_final_r_1)) {
         if (st->flags & poly1305_final_r2_r) {
             /* use [r^2, r] */
-            T2 = _mm_loadu_si128((xmmi *)(void *)&st->R[0]);
+            T2 = _mm_loadu_si128((const xmmi *)(const void *)&st->R[0]);
             T3 = _mm_cvtsi32_si128(st->R[4]);
-            T0 = _mm_loadu_si128((xmmi *)(void *)&st->R2[0]);
+            T0 = _mm_loadu_si128((const xmmi *)(const void *)&st->R2[0]);
             T1 = _mm_cvtsi32_si128(st->R2[4]);
             T4 = _mm_unpacklo_epi32(T0, T2);
             T5 = _mm_unpackhi_epi32(T0, T2);
             R24 = _mm_unpacklo_epi64(T1, T3);
         } else {
             /* use [r^1, 1] */
-            T0 = _mm_loadu_si128((xmmi *)(void *)&st->R[0]);
+            T0 = _mm_loadu_si128((const xmmi *)(const void *)&st->R[0]);
             T1 = _mm_cvtsi32_si128(st->R[4]);
             T2 = _mm_cvtsi32_si128(1);
             T4 = _mm_unpacklo_epi32(T0, T2);
@@ -214,7 +216,7 @@ poly1305_blocks(poly1305_state_internal_t *st, const unsigned char *m,
         R23 = _mm_shuffle_epi32(T5, _MM_SHUFFLE(3,3,2,2));
     } else {
         /* use [r^2, r^2] */
-        T0 = _mm_loadu_si128((xmmi *)(void *)&st->R2[0]);
+        T0 = _mm_loadu_si128((const xmmi *)(const void *)&st->R2[0]);
         T1 = _mm_cvtsi32_si128(st->R2[4]);
         R20 = _mm_shuffle_epi32(T0, _MM_SHUFFLE(0,0,0,0));
         R21 = _mm_shuffle_epi32(T0, _MM_SHUFFLE(1,1,1,1));
@@ -228,7 +230,7 @@ poly1305_blocks(poly1305_state_internal_t *st, const unsigned char *m,
     S24 = _mm_mul_epu32(R24, FIVE);
 
     if (bytes >= 64) {
-        T0 = _mm_loadu_si128((xmmi *)(void *)&st->R4[0]);
+        T0 = _mm_loadu_si128((const xmmi *)(const void *)&st->R4[0]);
         T1 = _mm_cvtsi32_si128(st->R4[4]);
         R40 = _mm_shuffle_epi32(T0, _MM_SHUFFLE(0,0,0,0));
         R41 = _mm_shuffle_epi32(T0, _MM_SHUFFLE(1,1,1,1));
@@ -273,12 +275,12 @@ poly1305_blocks(poly1305_state_internal_t *st, const unsigned char *m,
             v41 = H3; v41 = _mm_mul_epu32(v41, T15); T1 = _mm_add_epi64(T1, v13);
             v14 = H0; v14 = _mm_mul_epu32(v14, T15); T2 = _mm_add_epi64(T2, v22);
             T14 = R42;
-            T5 = _mm_unpacklo_epi64(_mm_loadl_epi64((xmmi *)(void *)(m + 0)), _mm_loadl_epi64((xmmi *)(void *)(m + 16)));
+            T5 = _mm_unpacklo_epi64(_mm_loadl_epi64((const xmmi *)(const void *)(m + 0)), _mm_loadl_epi64((const xmmi *)(const void *)(m + 16)));
             v23 = H1; v23 = _mm_mul_epu32(v23, T15); T3 = _mm_add_epi64(T3, v32);
             v33 = H1; v33 = _mm_mul_epu32(v33, T14); T4 = _mm_add_epi64(T4, v41);
             v42 = H2; v42 = _mm_mul_epu32(v42, T14); T1 = _mm_add_epi64(T1, v14);
             T15 = R43;
-            T6 = _mm_unpacklo_epi64(_mm_loadl_epi64((xmmi *)(void *)(m + 8)), _mm_loadl_epi64((xmmi *)(void *)(m + 24)));
+            T6 = _mm_unpacklo_epi64(_mm_loadl_epi64((const xmmi *)(const void *)(m + 8)), _mm_loadl_epi64((const xmmi *)(const void *)(m + 24)));
             v24 = H0; v24 = _mm_mul_epu32(v24, T14); T2 = _mm_add_epi64(T2, v23);
             v34 = H0; v34 = _mm_mul_epu32(v34, T15); T3 = _mm_add_epi64(T3, v33);
             M0 = _mm_and_si128(MMASK, T5);
@@ -294,8 +296,8 @@ poly1305_blocks(poly1305_state_internal_t *st, const unsigned char *m,
             M4 = _mm_or_si128(_mm_srli_epi64(T6, 40), HIBIT);
 
             /* H += [Mx',My'] */
-            T5 = _mm_loadu_si128((xmmi *)(void *)(m + 32));
-            T6 = _mm_loadu_si128((xmmi *)(void *)(m + 48));
+            T5 = _mm_loadu_si128((const xmmi *)(const void *)(m + 32));
+            T6 = _mm_loadu_si128((const xmmi *)(const void *)(m + 48));
             T7 = _mm_unpacklo_epi32(T5, T6);
             T8 = _mm_unpackhi_epi32(T5, T6);
             M5 = _mm_unpacklo_epi32(T7, _mm_setzero_si128());
@@ -413,8 +415,8 @@ poly1305_blocks(poly1305_state_internal_t *st, const unsigned char *m,
 
         /* H += [Mx,My] */
         if (m) {
-            T5 = _mm_loadu_si128((xmmi *)(void *)(m + 0));
-            T6 = _mm_loadu_si128((xmmi *)(void *)(m + 16));
+            T5 = _mm_loadu_si128((const xmmi *)(const void *)(m + 0));
+            T6 = _mm_loadu_si128((const xmmi *)(const void *)(m + 16));
             T7 = _mm_unpacklo_epi32(T5, T6);
             T8 = _mm_unpackhi_epi32(T5, T6);
             M0 = _mm_unpacklo_epi32(T7, _mm_setzero_si128());
