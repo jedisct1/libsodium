@@ -76,6 +76,7 @@ int main(void)
     assert(crypto_secretbox_easy(c, m, SIZE_MAX - 1U, nonce, firstkey) == -1);
 
     /* Null message */
+
     crypto_secretbox_easy(c, c, 0, nonce, firstkey);
     for (i = 0; i < crypto_secretbox_MACBYTES + 1; ++i) {
         printf(",0x%02x", (unsigned int)c[i]);

@@ -41,10 +41,28 @@ int main(void)
     assert(ret == 0);
     for (i = 0; i < 131 + crypto_box_MACBYTES; ++i) {
         printf(",0x%02x", (unsigned int)c[i]);
-        if (i % 8 == 7)
-            printf("\n");
     }
     printf("\n");
+
+    /* Null message */
+
+    ret = crypto_box_easy(c, c, 0, nonce, bobpk, alicesk);
+    assert(ret == 0);
+    for (i = 0; i < 1 + crypto_box_MACBYTES; ++i) {
+        printf(",0x%02x", (unsigned int)c[i]);
+    }
+    printf("\n");
+    ret = crypto_box_open_easy(c, c, crypto_box_MACBYTES, nonce,
+                               bobpk, alicesk);
+    assert(ret == 0);
+    for (i = 0; i < 1 + crypto_box_MACBYTES; ++i) {
+        printf(",0x%02x", (unsigned int)c[i]);
+    }
+    printf("\n");
+    c[randombytes_uniform(crypto_box_MACBYTES)]++;
+    ret = crypto_box_open_easy(c, c, crypto_box_MACBYTES, nonce,
+                               bobpk, alicesk);
+    assert(ret == -1);
 
     assert(crypto_box_easy(c, m, SIZE_MAX - 1U, nonce, bobpk, alicesk) == -1);
 
