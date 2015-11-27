@@ -2,22 +2,27 @@
 #define TEST_NAME "secretbox_easy2"
 #include "cmptest.h"
 
-static unsigned char m[10000];
-static unsigned char m2[10000];
-static unsigned char c[crypto_secretbox_MACBYTES + 10000];
-static unsigned char nonce[crypto_secretbox_NONCEBYTES];
-static unsigned char k[crypto_secretbox_KEYBYTES];
-static unsigned char mac[crypto_secretbox_MACBYTES];
-
 int main(void)
 {
+    unsigned char *m;
+    unsigned char *m2;
+    unsigned char *c;
+    unsigned char *nonce;
+    unsigned char *k;
+    unsigned char *mac;
     size_t mlen;
     size_t i;
 
-    randombytes_buf(k, sizeof k);
-    mlen = (size_t) randombytes_uniform((uint32_t) sizeof m);
+    mlen = (size_t) randombytes_uniform((uint32_t) 10000) + 1U;
+    m = (unsigned char *) sodium_malloc(mlen);
+    m2 = (unsigned char *) sodium_malloc(mlen);
+    c = (unsigned char *) sodium_malloc(crypto_secretbox_MACBYTES + mlen);
+    nonce = (unsigned char *) sodium_malloc(crypto_secretbox_NONCEBYTES);
+    k = (unsigned char *) sodium_malloc(crypto_secretbox_KEYBYTES);
+    mac = (unsigned char *) sodium_malloc(crypto_secretbox_MACBYTES);
+    randombytes_buf(k, crypto_secretbox_KEYBYTES);
     randombytes_buf(m, (unsigned long long) mlen);
-    randombytes_buf(nonce, sizeof nonce);
+    randombytes_buf(nonce, crypto_secretbox_NONCEBYTES);
     crypto_secretbox_easy(c, m, (unsigned long long) mlen, nonce, k);
     if (crypto_secretbox_open_easy(m2, c,
                                    (unsigned long long) mlen + crypto_secretbox_MACBYTES,
@@ -50,6 +55,13 @@ int main(void)
         printf("crypto_secretbox_open_easy() failed\n");
     }
     printf("%d\n", memcmp(m, c, mlen));
+
+    sodium_free(m);
+    sodium_free(m2);
+    sodium_free(c);
+    sodium_free(nonce);
+    sodium_free(k);
+    sodium_free(mac);
 
     return 0;
 }
