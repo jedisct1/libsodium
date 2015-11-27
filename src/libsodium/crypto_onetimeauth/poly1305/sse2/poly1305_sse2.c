@@ -605,8 +605,8 @@ poly1305_finish_ext(poly1305_state_internal_t *st, const unsigned char *m,
     _mm_storeu_si128((xmmi *)(void *)st + 6, _mm_setzero_si128());
     _mm_storeu_si128((xmmi *)(void *)st + 7, _mm_setzero_si128());
 
-    *(uint64_t *)(void *)(mac + 0) = h0;
-    *(uint64_t *)(void *)(mac + 8) = h1;
+    memcpy(&mac[0], &h0, 8);
+    memcpy(&mac[8], &h1, 8);
 
     sodium_memzero((void *)st, sizeof *st);
 }
