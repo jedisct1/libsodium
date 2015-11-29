@@ -26,8 +26,8 @@ export PATH="${BASEDIR}/usr/bin:$BASEDIR/usr/sbin:$PATH"
 export SDK="${BASEDIR}/SDKs/iPhoneSimulator.sdk"
 
 ## i386 simulator
-export CFLAGS="-O2 -arch i386 -isysroot ${SDK} -mios-simulator-version-min=${IOS_SIMULATOR_VERSION_MIN}"
-export LDFLAGS="-arch i386 -isysroot ${SDK} -mios-simulator-version-min=${IOS_SIMULATOR_VERSION_MIN}"
+export CFLAGS="-O2 -arch i386 -isysroot ${SDK} -mios-simulator-version-min=${IOS_SIMULATOR_VERSION_MIN} -flto"
+export LDFLAGS="-arch i386 -isysroot ${SDK} -mios-simulator-version-min=${IOS_SIMULATOR_VERSION_MIN} -flto"
 
 make distclean > /dev/null
 
@@ -38,8 +38,8 @@ make distclean > /dev/null
 make -j3 install || exit 1
 
 ## x86_64 simulator
-export CFLAGS="-O2 -arch x86_64 -isysroot ${SDK} -mios-simulator-version-min=${IOS_SIMULATOR_VERSION_MIN}"
-export LDFLAGS="-arch x86_64 -isysroot ${SDK} -mios-simulator-version-min=${IOS_SIMULATOR_VERSION_MIN}"
+export CFLAGS="-O2 -arch x86_64 -isysroot ${SDK} -mios-simulator-version-min=${IOS_SIMULATOR_VERSION_MIN} -flto"
+export LDFLAGS="-arch x86_64 -isysroot ${SDK} -mios-simulator-version-min=${IOS_SIMULATOR_VERSION_MIN} -flto"
 
 make distclean > /dev/null
 
@@ -55,8 +55,8 @@ export PATH="${BASEDIR}/usr/bin:$BASEDIR/usr/sbin:$PATH"
 export SDK="${BASEDIR}/SDKs/iPhoneOS.sdk"
 
 ## 32-bit iOS
-export CFLAGS="-Oz -mthumb -arch armv7 -isysroot ${SDK} -mios-version-min=${IOS_VERSION_MIN}"
-export LDFLAGS="-mthumb -arch armv7 -isysroot ${SDK} -mios-version-min=${IOS_VERSION_MIN}"
+export CFLAGS="-O2 -mthumb -arch armv7 -isysroot ${SDK} -mios-version-min=${IOS_VERSION_MIN} -flto"
+export LDFLAGS="-mthumb -arch armv7 -isysroot ${SDK} -mios-version-min=${IOS_VERSION_MIN} -flto"
 
 make distclean > /dev/null
 
@@ -68,8 +68,8 @@ make distclean > /dev/null
 make -j3 install || exit 1
 
 ## 64-bit iOS
-export CFLAGS="-Oz -arch arm64 -isysroot ${SDK} -mios-version-min=${IOS_VERSION_MIN}"
-export LDFLAGS="-arch arm64 -isysroot ${SDK} -mios-version-min=${IOS_VERSION_MIN}"
+export CFLAGS="-O2 -arch arm64 -isysroot ${SDK} -mios-version-min=${IOS_VERSION_MIN} -flto"
+export LDFLAGS="-arch arm64 -isysroot ${SDK} -mios-version-min=${IOS_VERSION_MIN} -flto"
 
 make distclean > /dev/null
 
