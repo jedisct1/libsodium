@@ -17,6 +17,7 @@ int main(void)
     size_t         bin_len;
     unsigned int   i;
     unsigned int   j;
+    int            err;
 
     randombytes_buf(buf1, sizeof buf1);
     memcpy(buf2, buf1, sizeof buf2);
@@ -67,24 +68,29 @@ int main(void)
     printf("dt5: %ld\n", (long) (hex_end - hex));
 
     memset(nonce, 0, sizeof nonce);
-    sodium_increment(nonce, sizeof nonce);
+    err = sodium_increment(nonce, sizeof nonce);
+    printf("%d\n", err);
     printf("%s\n", sodium_bin2hex(nonce_hex, sizeof nonce_hex,
                                   nonce, sizeof nonce));
     memset(nonce, 255, sizeof nonce);
-    sodium_increment(nonce, sizeof nonce);
+    err = sodium_increment(nonce, sizeof nonce);
+    printf("%d\n", err);
     printf("%s\n", sodium_bin2hex(nonce_hex, sizeof nonce_hex,
                                   nonce, sizeof nonce));
     nonce[1] = 1U;
-    sodium_increment(nonce, sizeof nonce);
+    err = sodium_increment(nonce, sizeof nonce);
+    printf("%d\n", err);
     printf("%s\n", sodium_bin2hex(nonce_hex, sizeof nonce_hex,
                                   nonce, sizeof nonce));
     nonce[1] = 0U;
-    sodium_increment(nonce, sizeof nonce);
+    err = sodium_increment(nonce, sizeof nonce);
+    printf("%d\n", err);
     printf("%s\n", sodium_bin2hex(nonce_hex, sizeof nonce_hex,
                                   nonce, sizeof nonce));
     nonce[0] = 255U;
     nonce[2] = 255U;
-    sodium_increment(nonce, sizeof nonce);
+    err = sodium_increment(nonce, sizeof nonce);
+    printf("%d\n", err);
     printf("%s\n", sodium_bin2hex(nonce_hex, sizeof nonce_hex,
                                   nonce, sizeof nonce));
     for (i = 0U; i < 1000U; i++) {
@@ -141,5 +147,10 @@ int main(void)
     if (sodium_compare(buf1, buf2, bin_len) != 0) {
         printf("sodium_add() failed\n");
     }
+    memset(buf_add, 0, sizeof buf_add);
+    buf_add[0] = 1;
+    memset(buf2, 0xff, sizeof buf2);
+    err = sodium_add(buf_add, buf2, sizeof buf_add);
+    printf("%d\n", err);
     return 0;
 }
