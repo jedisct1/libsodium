@@ -166,7 +166,7 @@ sodium_is_zero(const unsigned char *n, const size_t nlen)
     return 1 & ((d - 1) >> 8);
 }
 
-void
+int
 sodium_increment(unsigned char *n, const size_t nlen)
 {
     size_t        i = 0U;
@@ -177,9 +177,14 @@ sodium_increment(unsigned char *n, const size_t nlen)
         n[i] = (unsigned char) c;
         c >>= 8;
     }
+
+    if (c != 0) {
+        return -1;
+    }
+    return 0;
 }
 
-void
+int
 sodium_add(unsigned char *a, const unsigned char *b, const size_t len)
 {
     size_t        i = 0U;
@@ -190,6 +195,11 @@ sodium_add(unsigned char *a, const unsigned char *b, const size_t len)
         a[i] = (unsigned char) c;
         c >>= 8;
     }
+
+    if (c != 0) {
+        return -1;
+    }
+    return 0;
 }
 
 /* Derived from original code by CodesInChaos */
