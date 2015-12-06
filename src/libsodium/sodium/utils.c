@@ -170,11 +170,12 @@ void
 sodium_increment(unsigned char *n, const size_t nlen)
 {
     size_t        i = 0U;
-    uint64_t      t64, t64_2;
-    uint32_t      t32;
     uint_fast16_t c = 1U;
 
 #ifdef HAVE_AMD64_ASM
+    uint64_t      t64, t64_2;
+    uint32_t      t32;
+
     if (nlen == 12U) {
         __asm__ __volatile__("xorq %[t64], %[t64] \n"
                              "xorl %[t32], %[t32] \n"
@@ -214,11 +215,12 @@ void
 sodium_add(unsigned char *a, const unsigned char *b, const size_t len)
 {
     size_t        i = 0U;
-    uint64_t      t64, t64_2, t64_3;
-    uint32_t      t32;
     uint_fast16_t c = 0U;
 
 #ifdef HAVE_AMD64_ASM
+    uint64_t      t64, t64_2, t64_3;
+    uint32_t      t32;
+
     if (len == 12U) {
         __asm__ __volatile__("movq (%[in]), %[t64] \n"
                              "movl 8(%[in]), %[t32] \n"
