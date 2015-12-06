@@ -170,8 +170,39 @@ void
 sodium_increment(unsigned char *n, const size_t nlen)
 {
     size_t        i = 0U;
+    uint64_t      t64, t64_2;
+    uint32_t      t32;
     uint_fast16_t c = 1U;
 
+#ifdef HAVE_AMD64_ASM
+    if (nlen == 12U) {
+        __asm__ __volatile__("xorq %[t64], %[t64] \n"
+                             "xorl %[t32], %[t32] \n"
+                             "stc \n"
+                             "adcq %[t64], (%[out]) \n"
+                             "adcl %[t32], 8(%[out]) \n"
+                             : [t64] "=&r"(t64), [t32] "=&r" (t32)
+                             : [out] "D"(n)
+                             : "memory", "flags", "cc");
+        return;
+    } else if (nlen == 24U) {
+        __asm__ __volatile__("movq $1, %[t64] \n"
+                             "xorq %[t64_2], %[t64_2] \n"
+                             "addq %[t64], (%[out]) \n"
+                             "adcq %[t64_2], 8(%[out]) \n"
+                             "adcq %[t64_2], 16(%[out]) \n"
+                             : [t64] "=&r"(t64), [t64_2] "=&r" (t64_2)
+                             : [out] "D"(n)
+                             : "memory", "flags", "cc");
+        return;
+    } else if (nlen == 8U) {
+        __asm__ __volatile__("incq (%[out]) \n"
+                             :
+                             : [out] "D"(n)
+                             : "memory", "flags", "cc");
+        return;
+    }
+#endif
     for (; i < nlen; i++) {
         c += (uint_fast16_t) n[i];
         n[i] = (unsigned char) c;
@@ -183,8 +214,40 @@ void
 sodium_add(unsigned char *a, const unsigned char *b, const size_t len)
 {
     size_t        i = 0U;
+    uint64_t      t64, t64_2, t64_3;
+    uint32_t      t32;
     uint_fast16_t c = 0U;
 
+#ifdef HAVE_AMD64_ASM
+    if (len == 12U) {
+        __asm__ __volatile__("movq (%[in]), %[t64] \n"
+                             "movl 8(%[in]), %[t32] \n"
+                             "addq %[t64], (%[out]) \n"
+                             "adcl %[t32], 8(%[out]) \n"
+                             : [t64] "=&r"(t64), [t32] "=&r" (t32)
+                             : [in] "S"(b), [out] "D"(a)
+                             : "memory", "flags", "cc");
+        return;
+    } else if (len == 24U) {
+        __asm__ __volatile__("movq (%[in]), %[t64] \n"
+                             "movq 8(%[in]), %[t64_2] \n"
+                             "movq 16(%[in]), %[t64_3] \n"
+                             "addq %[t64], (%[out]) \n"
+                             "adcq %[t64_2], 8(%[out]) \n"
+                             "adcq %[t64_3], 16(%[out]) \n"
+                             : [t64] "=&r"(t64), [t64_2] "=&r"(t64_2), [t64_3] "=&r"(t64_3)
+                             : [in] "S"(b), [out] "D"(a)
+                             : "memory", "flags", "cc");
+        return;
+    } else if (len == 8U) {
+        __asm__ __volatile__("movq (%[in]), %[t64] \n"
+                             "addq %[t64], (%[out]) \n"
+                             : [t64] "=&r"(t64)
+                             : [in] "S"(b), [out] "D"(a)
+                             : "memory", "flags", "cc");
+        return;
+    }
+#endif
     for (; i < len; i++) {
         c += (uint_fast16_t) a[i] + (uint_fast16_t) b[i];
         a[i] = (unsigned char) c;
