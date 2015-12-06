@@ -141,5 +141,42 @@ int main(void)
     if (sodium_compare(buf1, buf2, bin_len) != 0) {
         printf("sodium_add() failed\n");
     }
+
+    assert(sizeof nonce >= 24U);
+    memset(nonce, 0xfe, 24U);
+    memset(nonce, 0xff, 6U);
+    sodium_increment(nonce, 8U);
+    printf("%s\n", sodium_bin2hex(nonce_hex, sizeof nonce_hex,
+                                  nonce, sizeof nonce));
+    memset(nonce, 0xfe, 24U);
+    memset(nonce, 0xff, 10U);
+    sodium_increment(nonce, 12U);
+    printf("%s\n", sodium_bin2hex(nonce_hex, sizeof nonce_hex,
+                                  nonce, sizeof nonce));
+    memset(nonce, 0xff, 22U);
+    sodium_increment(nonce, 24U);
+    printf("%s\n", sodium_bin2hex(nonce_hex, sizeof nonce_hex,
+                                  nonce, sizeof nonce));
+
+
+    assert(sizeof nonce >= 24U);
+    memset(nonce, 0xfe, 24U);
+    memset(nonce, 0xff, 6U);
+    sodium_add(nonce, nonce, 7U);
+    sodium_add(nonce, nonce, 8U);
+    printf("%s\n", sodium_bin2hex(nonce_hex, sizeof nonce_hex,
+                                  nonce, sizeof nonce));
+    memset(nonce, 0xfe, 24U);
+    memset(nonce, 0xff, 10U);
+    sodium_add(nonce, nonce, 11U);
+    sodium_add(nonce, nonce, 12U);
+    printf("%s\n", sodium_bin2hex(nonce_hex, sizeof nonce_hex,
+                                  nonce, sizeof nonce));
+    memset(nonce, 0xff, 22U);
+    sodium_add(nonce, nonce, 23U);
+    sodium_add(nonce, nonce, 24U);
+    printf("%s\n", sodium_bin2hex(nonce_hex, sizeof nonce_hex,
+                                  nonce, sizeof nonce));
+
     return 0;
 }
