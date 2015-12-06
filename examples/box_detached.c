@@ -91,8 +91,10 @@ box_detached(void)
 
     /* encrypt and authenticate the message */
     printf("Encrypting and authenticating with %s\n\n", crypto_box_primitive());
-    crypto_box_detached(ciphertext, mac, message, message_len, nonce,
-                        alice_pk, bob_sk);
+    if (crypto_box_detached(ciphertext, mac, message, message_len, nonce,
+                            alice_pk, bob_sk) != 0) {
+        abort();
+    }
 
     /* send the nonce, the MAC and the ciphertext */
     puts("Bob sends the nonce, the MAC and the ciphertext...\n");

@@ -99,7 +99,9 @@ print_verification(int ret)
 static void
 init(void)
 {
-    sodium_init();
+    if (sodium_init() != 0) {
+        abort();
+    }
     printf("Using libsodium %s\n", sodium_version_string());
 }
 

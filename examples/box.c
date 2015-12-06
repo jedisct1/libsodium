@@ -91,7 +91,9 @@ box(void)
 
     /* encrypt and authenticate the message */
     printf("Encrypting and authenticating with %s\n\n", crypto_box_primitive());
-    crypto_box_easy(ciphertext, message, message_len, nonce, alice_pk, bob_sk);
+    if (crypto_box_easy(ciphertext, message, message_len, nonce, alice_pk, bob_sk) != 0) {
+        abort();
+    }
     ciphertext_len = crypto_box_MACBYTES + message_len;
 
     /* send the nonce and the ciphertext */
