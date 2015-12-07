@@ -7,9 +7,9 @@ static unsigned char alicepk[crypto_box_PUBLICKEYBYTES];
 static unsigned char bobsk[crypto_box_SECRETKEYBYTES];
 static unsigned char bobpk[crypto_box_PUBLICKEYBYTES];
 static unsigned char n[crypto_box_NONCEBYTES];
-static unsigned char m[10000];
-static unsigned char c[10000];
-static unsigned char m2[10000];
+static unsigned char m[1000];
+static unsigned char c[1000];
+static unsigned char m2[1000];
 
 int main(void)
 {
@@ -18,7 +18,7 @@ int main(void)
     int    caught;
     int    ret;
 
-    for (mlen = 0; mlen < 1000 && mlen + crypto_box_ZEROBYTES < sizeof m;
+    for (mlen = 0; mlen < 500 && mlen + crypto_box_ZEROBYTES < sizeof m;
          ++mlen) {
         crypto_box_keypair(alicepk, alicesk);
         crypto_box_keypair(bobpk, bobsk);

@@ -3,14 +3,14 @@
 #include "cmptest.h"
 
 static unsigned char key[32];
-static unsigned char c[10000];
+static unsigned char c[1000];
 static unsigned char a[64];
 
 int main(void)
 {
     int clen;
 
-    for (clen = 0; clen < 10000; ++clen) {
+    for (clen = 0; clen < 1000; ++clen) {
         randombytes_buf(key, sizeof key);
         randombytes_buf(c, clen);
         crypto_auth_hmacsha512(a, c, clen, key);
