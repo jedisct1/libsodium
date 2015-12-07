@@ -7,14 +7,15 @@ export TOTAL_MEMORY=33554432
 export JS_EXPORTS_FLAGS="-s EXPORTED_FUNCTIONS=${EXPORTED_FUNCTIONS}"
 export LDFLAGS="-s TOTAL_MEMORY=${TOTAL_MEMORY} -s RESERVED_FUNCTION_POINTERS=8 -s NO_BROWSER=1 -s NO_DYNAMIC_EXECUTION=1 -s RUNNING_JS_OPTS=1"
 
-rm -f test/browser-js.done test/js.done
-
 if [ "x$1" = "x--browser-tests" ]; then
   export BROWSER_TESTS='yes'
 fi
 
 if [ "x$BROWSER_TESTS" != "x" ]; then
   echo "Tests will be built to be run in a web browser"
+  rm -f test/browser-js.done
+else
+  rm -f test/js.done
 fi
 
 emconfigure ./configure --enable-minimal --disable-shared --prefix="$PREFIX" \
