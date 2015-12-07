@@ -51,10 +51,13 @@ if [ "x$BROWSER_TESTS" != "x" ]; then
   (
     cd test/default && \
     mkdir -p browser && \
+    rm -f browser/tests.txt && \
     for file in *.js; do
-      fgrep -v "#! /usr/bin/env {NODE}" "$file" > "browser/${file}.tmp"
-      chmod -x "browser/${file}.tmp"
-      mv -f "browser/${file}.tmp" "browser/${file}"
+      fgrep -v "#! /usr/bin/env {NODE}" "$file" > "browser/${file}"
+      tname=$(echo "$file" | sed 's/.js$//')
+      cp -f "${tname}.exp" "browser/${tname}.exp"
+      sed "s/{{tname}}/${tname}/" index.html.tpl > "browser/${tname}.html"
+      echo "${tname}.html" >> "browser/tests.txt"
     done
   )
 else
