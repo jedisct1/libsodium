@@ -38,7 +38,7 @@ fi
 echo "Using [${NODE}] as a Javascript runtime"
 
 if [ "x$BROWSER_TESTS" != "x" ]; then
-  echo 'Compiling the test suite for browsers...' && \
+  echo 'Compiling the test suite for web browsers...' && \
     emmake make $MAKE_FLAGS CPPFLAGS="$CPPFLAGS -DBROWSER_TESTS=1" check \
       > /dev/null 2>&1
 else
@@ -47,7 +47,7 @@ else
 fi
 
 if [ "x$BROWSER_TESTS" != "x" ]; then
-  echo 'Creating the test suite for browsers'
+  echo 'Creating the test suite for web browsers'
   (
     cd test/default && \
     mkdir -p browser && \
