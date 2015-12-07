@@ -1080,7 +1080,7 @@ int main(void)
     memset(sig, 0, sizeof sig);
     for (i = 0U; i < (sizeof test_data) / (sizeof test_data[0]); i++) {
 #ifdef BROWSER_TESTS
-        if (i % 64U != 63U) {
+        if (i % 128U != 127U) {
             continue;
         }
 #endif
