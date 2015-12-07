@@ -7,21 +7,24 @@ static unsigned char alicepk[crypto_box_PUBLICKEYBYTES];
 static unsigned char bobsk[crypto_box_SECRETKEYBYTES];
 static unsigned char bobpk[crypto_box_PUBLICKEYBYTES];
 static unsigned char n[crypto_box_NONCEBYTES];
-static unsigned char m[1000];
-static unsigned char c[1000];
-static unsigned char m2[1000];
 
 int main(void)
 {
-    size_t mlen;
-    size_t i;
-    int    caught;
-    int    ret;
+    unsigned char *m;
+    unsigned char *c;
+    unsigned char *m2;
+    size_t         mlen;
+    size_t         mlen_max = 600;
+    size_t         i;
+    int            caught;
+    int            ret;
 
-    for (mlen = 0; mlen < 500 && mlen + crypto_box_ZEROBYTES < sizeof m;
-         ++mlen) {
-        crypto_box_keypair(alicepk, alicesk);
-        crypto_box_keypair(bobpk, bobsk);
+    m = sodium_malloc(mlen_max);
+    c = sodium_malloc(mlen_max);
+    m2 = sodium_malloc(mlen_max);
+    crypto_box_keypair(alicepk, alicesk);
+    crypto_box_keypair(bobpk, bobsk);
+    for (mlen = 0; mlen + crypto_box_ZEROBYTES <= mlen_max; mlen++) {
         randombytes_buf(n, crypto_box_NONCEBYTES);
         randombytes_buf(m + crypto_box_ZEROBYTES, mlen);
         ret = crypto_box(c, m, mlen + crypto_box_ZEROBYTES, n, bobpk, alicesk);
@@ -38,9 +41,13 @@ int main(void)
                     }
                 }
             } else {
-                ++caught;
+                caught++;
             }
         }
     }
+    sodium_free(m);
+    sodium_free(c);
+    sodium_free(m2);
+
     return 0;
 }
