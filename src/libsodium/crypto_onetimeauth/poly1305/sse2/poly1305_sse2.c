@@ -53,6 +53,21 @@ typedef struct poly1305_state_internal_t {
     unsigned char buffer[poly1305_block_size]; /* 32 bytes */
 } poly1305_state_internal_t;   /* 164 bytes total */
 
+/*
+ * _mm_loadl_epi64() is turned into a simple MOVQ. So, unaligned accesses are totally fine, even though this intrinsic requires a __m128i* input.
+ * This confuses dynamic analysis, so force alignment, only in debug mode.
+ */
+#ifdef DEBUG
+static xmmi
+_fakealign_mm_loadl_epi64(const void *m)
+{
+    xmmi tmp;
+    memcpy(&tmp, m, 8);
+    return _mm_loadl_epi64(&tmp);
+}
+# define _mm_loadl_epi64(X) _fakealign_mm_loadl_epi64(X)
+#endif
+
 /* copy 0-31 bytes */
 static inline void
 poly1305_block_copy31(unsigned char *dst, const unsigned char *src, unsigned long long bytes)
@@ -166,7 +181,6 @@ poly1305_blocks(poly1305_state_internal_t *st, const unsigned char *m,
     if (!(st->flags & poly1305_started)) {
         /* H = [Mx,My] */
 
-        /* Note that _mm_loadl_epi64() is turned into a simple MOVQ. So, unaligned accesses are totally fine, even though this intrinsic requires a __m128i* input */
         T5 = _mm_unpacklo_epi64(_mm_loadl_epi64((const xmmi *)(const void *)(m + 0)), _mm_loadl_epi64((const xmmi *)(const void *)(m + 16)));
         T6 = _mm_unpacklo_epi64(_mm_loadl_epi64((const xmmi *)(const void *)(m + 8)), _mm_loadl_epi64((const xmmi *)(const void *)(m + 24)));
         H0 = _mm_and_si128(MMASK, T5);
