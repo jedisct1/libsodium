@@ -19,9 +19,9 @@ int main(void)
     int            faults;
     int            ret;
 
-    m = sodium_malloc(mlen_max);
-    c = sodium_malloc(mlen_max);
-    m2 = sodium_malloc(mlen_max);
+    m = (unsigned char *) sodium_malloc(mlen_max);
+    c = (unsigned char *) sodium_malloc(mlen_max);
+    m2 = (unsigned char *) sodium_malloc(mlen_max);
     crypto_box_keypair(alicepk, alicesk);
     crypto_box_keypair(bobpk, bobsk);
     for (mlen = 0; mlen + crypto_box_ZEROBYTES <= mlen_max; mlen++) {
