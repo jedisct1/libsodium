@@ -9,11 +9,15 @@ export LDFLAGS="-s TOTAL_MEMORY=${TOTAL_MEMORY} -s RESERVED_FUNCTION_POINTERS=8 
 
 rm -f test/js.done
 
+if [ "x$BROWSER_TESTS" != "x" ]; then
+  echo "Tests will be built to be run in a web browser"
+fi
+
 emconfigure ./configure --enable-minimal --disable-shared --prefix="$PREFIX" \
   CFLAGS="-O3" && \
 emmake make clean && \
 emmake make $MAKE_FLAGS install V=1 && \
-emcc -O3 --llvm-lto 1 --memory-init-file 0 $LDFLAGS $JS_EXPORTS_FLAGS \
+emcc -O3 --llvm-lto 1 --memory-init-file 0 $CPPFLAGS $LDFLAGS $JS_EXPORTS_FLAGS \
   "${PREFIX}/lib/libsodium.a" -o "${PREFIX}/lib/libsodium.js" || exit 1
 
 if test "x$NODE" = x; then
@@ -27,25 +31,45 @@ if test "x$NODE" = x; then
 fi
 
 if test "x$NODE" = x; then
-  echo 'node.js not found - test suite skipped.' >&2
+  echo 'node.js not found - test suite skipped' >&2
   exit 1
 fi
 
-echo "Using [${NODE}] as a Javascript runtime."
+echo "Using [${NODE}] as a Javascript runtime"
 
-echo 'Compiling the test suite...' && \
-emmake make $MAKE_FLAGS check > /dev/null 2>&1
+if [ "x$BROWSER_TESTS" != "x" ]; then
+  echo 'Compiling the test suite for browsers...' && \
+    emmake make $MAKE_FLAGS CPPFLAGS="$CPPFLAGS -DBROWSER_TESTS=1" check \
+      > /dev/null 2>&1
+else
+  echo 'Compiling the test suite...' && \
+    emmake make $MAKE_FLAGS check > /dev/null 2>&1
+fi
 
-echo 'Running the test suite.'
-(
-  cd test/default && \
-  for file in *.js; do
-    echo "#! /usr/bin/env ${NODE}" > "${file}.tmp"
-    fgrep -v "#! /usr/bin/env {NODE}" "$file" >> "${file}.tmp"
-    chmod +x "${file}.tmp"
-    mv -f "${file}.tmp" "$file"
-  done
-)
-make $MAKE_FLAGS check || exit 1
+if [ "x$BROWSER_TESTS" != "x" ]; then
+  echo 'Creating the test suite for browsers'
+  (
+    cd test/default && \
+    mkdir -p browser && \
+    for file in *.js; do
+      fgrep -v "#! /usr/bin/env {NODE}" "$file" > "browser/${file}.tmp"
+      chmod -x "browser/${file}.tmp"
+      mv -f "browser/${file}.tmp" "browser/${file}"
+    done
+  )
+else
+  echo 'Running the test suite'
+  (
+    cd test/default && \
+    for file in *.js; do
+      echo "#! /usr/bin/env ${NODE}" > "${file}.tmp"
+      fgrep -v "#! /usr/bin/env {NODE}" "$file" >> "${file}.tmp"
+      chmod +x "${file}.tmp"
+      mv -f "${file}.tmp" "$file"
+    done
+  )
+  make $MAKE_FLAGS check || exit 1
+fi
+
 echo 'Done.'
 touch -r "${PREFIX}/lib/libsodium.js" test/js.done
