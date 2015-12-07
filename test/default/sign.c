@@ -1135,6 +1135,7 @@ int main(void)
             printf("detached signature verification failed: [%u]\n", i);
             continue;
         }
+        printf("%02x%02x%02x%02x... OK\n", sig[0], sig[1], sig[2], sig[3]);
     }
     printf("%u tests\n", i);
 
