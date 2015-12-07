@@ -59,6 +59,7 @@ src/libsodium/*.def
 src/libsodium/include/sodium/version.h
 stamp-*
 test/js.done
+test/default/browser
 test/default/*.res
 test/default/*.trs
 test/default/aead_aes256gcm
@@ -126,3 +127,4 @@ libsodium-android-*
 /bin/
 /obj/
 Vagrantfile
+
