@@ -16,7 +16,7 @@ int main(void)
     size_t         mlen;
     size_t         mlen_max = 600;
     size_t         i;
-    int            caught;
+    int            faults;
     int            ret;
 
     m = sodium_malloc(mlen_max);
@@ -29,8 +29,12 @@ int main(void)
         randombytes_buf(m + crypto_box_ZEROBYTES, mlen);
         ret = crypto_box(c, m, mlen + crypto_box_ZEROBYTES, n, bobpk, alicesk);
         assert(ret == 0);
-        caught = 0;
-        while (caught < 10) {
+#ifdef BROWSER_TESTS
+        faults = 1;
+#else
+        faults = 5;
+#endif
+        while (faults > 0) {
             c[rand() % (mlen + crypto_box_ZEROBYTES)] = rand();
             if (crypto_box_open(m2, c, mlen + crypto_box_ZEROBYTES, n, alicepk,
                                 bobsk) == 0) {
@@ -41,7 +45,7 @@ int main(void)
                     }
                 }
             } else {
-                caught++;
+                faults--;
             }
         }
     }
