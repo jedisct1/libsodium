@@ -7,7 +7,11 @@ export TOTAL_MEMORY=33554432
 export JS_EXPORTS_FLAGS="-s EXPORTED_FUNCTIONS=${EXPORTED_FUNCTIONS}"
 export LDFLAGS="-s TOTAL_MEMORY=${TOTAL_MEMORY} -s RESERVED_FUNCTION_POINTERS=8 -s NO_BROWSER=1 -s NO_DYNAMIC_EXECUTION=1 -s RUNNING_JS_OPTS=1"
 
-rm -f test/js.done
+rm -f test/browser-js.done test/js.done
+
+if [ "x$1" = "x--browser-tests" ]; then
+  export BROWSER_TESTS='yes'
+fi
 
 if [ "x$BROWSER_TESTS" != "x" ]; then
   echo "Tests will be built to be run in a web browser"
@@ -59,6 +63,7 @@ if [ "x$BROWSER_TESTS" != "x" ]; then
       sed "s/{{tname}}/${tname}/" index.html.tpl > "browser/${tname}.html"
       echo "${tname}.html" >> "browser/tests.txt"
     done
+    touch -r "${PREFIX}/lib/libsodium.js" test/browser-js.done
   )
 else
   echo 'Running the test suite'
@@ -72,7 +77,7 @@ else
     done
   )
   make $MAKE_FLAGS check || exit 1
+  touch -r "${PREFIX}/lib/libsodium.js" test/js.done
 fi
 
 echo 'Done.'
-touch -r "${PREFIX}/lib/libsodium.js" test/js.done
