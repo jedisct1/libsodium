@@ -1079,6 +1079,11 @@ int main(void)
 
     memset(sig, 0, sizeof sig);
     for (i = 0U; i < (sizeof test_data) / (sizeof test_data[0]); i++) {
+#ifdef BROWSER_TESTS
+        if (i % 64U != 63U) {
+            continue;
+        }
+#endif
         memcpy(skpk, test_data[i].sk, crypto_sign_SEEDBYTES);
         memcpy(skpk + crypto_sign_SEEDBYTES, test_data[i].pk,
                crypto_sign_PUBLICKEYBYTES);
