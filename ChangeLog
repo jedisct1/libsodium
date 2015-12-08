@@ -1,5 +1,5 @@
 
-* Version 1.0.7 (not released yet)
+* Version 1.0.7
  - More functions whose return value should be checked have been
 tagged with `__attribute__ ((warn_unused_result))`: `crypto_box_easy()`,
 `crypto_box_detached()`, `crypto_box_beforenm()`, `crypto_box()`, and
