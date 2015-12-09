@@ -7,9 +7,6 @@ static unsigned char alicepk[crypto_box_PUBLICKEYBYTES];
 static unsigned char bobsk[crypto_box_SECRETKEYBYTES];
 static unsigned char bobpk[crypto_box_PUBLICKEYBYTES];
 static unsigned char n[crypto_box_NONCEBYTES];
-static unsigned char m[10000];
-static unsigned char c[10000];
-static unsigned char m2[10000];
 
 int main(void)
 {
@@ -17,7 +14,7 @@ int main(void)
     unsigned char *c;
     unsigned char *m2;
     size_t         mlen;
-    size_t         mlen_max = 600;
+    size_t         mlen_max = 1000;
     size_t         i;
     int            ret;
 

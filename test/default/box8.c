@@ -14,7 +14,7 @@ int main(void)
     unsigned char *c;
     unsigned char *m2;
     size_t         mlen;
-    size_t         mlen_max = 600;
+    size_t         mlen_max = 1000;
     size_t         i;
     int            faults;
     int            ret;
