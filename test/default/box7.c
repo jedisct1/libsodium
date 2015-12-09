@@ -13,14 +13,21 @@ static unsigned char m2[10000];
 
 int main(void)
 {
-    size_t mlen;
-    size_t i;
-    int    ret;
+    unsigned char *m;
+    unsigned char *c;
+    unsigned char *m2;
+    size_t         mlen;
+    size_t         mlen_max = 600;
+    size_t         i;
+    int            ret;
 
-    for (mlen = 0; mlen < 1000 && mlen + crypto_box_ZEROBYTES < sizeof m;
-         ++mlen) {
-        crypto_box_keypair(alicepk, alicesk);
-        crypto_box_keypair(bobpk, bobsk);
+    m = (unsigned char *) sodium_malloc(mlen_max);
+    c = (unsigned char *) sodium_malloc(mlen_max);
+    m2 = (unsigned char *) sodium_malloc(mlen_max);
+    memset(m, 0, crypto_box_ZEROBYTES);
+    crypto_box_keypair(alicepk, alicesk);
+    crypto_box_keypair(bobpk, bobsk);
+    for (mlen = 0; mlen + crypto_box_ZEROBYTES <= mlen_max; mlen++) {
         randombytes_buf(n, crypto_box_NONCEBYTES);
         randombytes_buf(m + crypto_box_ZEROBYTES, mlen);
         ret = crypto_box(c, m, mlen + crypto_box_ZEROBYTES, n, bobpk, alicesk);
@@ -37,5 +44,9 @@ int main(void)
             printf("ciphertext fails verification\n");
         }
     }
+    sodium_free(m);
+    sodium_free(c);
+    sodium_free(m2);
+
     return 0;
 }
