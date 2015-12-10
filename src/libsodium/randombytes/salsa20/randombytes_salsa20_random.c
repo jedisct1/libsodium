@@ -50,8 +50,8 @@ BOOLEAN NTAPI RtlGenRandom(PVOID RandomBuffer, ULONG RandomBufferLength);
 #endif
 
 typedef struct Salsa20Random_ {
-    int           random_data_source_fd;
     size_t        rnd32_outleft;
+    int           random_data_source_fd;
     int           initialized;
     int           getrandom_available;
     unsigned char key[crypto_stream_salsa20_KEYBYTES];
@@ -63,8 +63,8 @@ typedef struct Salsa20Random_ {
 } Salsa20Random;
 
 static Salsa20Random stream = {
-    SODIUM_C99(.random_data_source_fd =) -1,
     SODIUM_C99(.rnd32_outleft =) (size_t) 0U,
+    SODIUM_C99(.random_data_source_fd =) -1,
     SODIUM_C99(.initialized =) 0,
     SODIUM_C99(.getrandom_available =) 0
 };
