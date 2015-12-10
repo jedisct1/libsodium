@@ -5,6 +5,7 @@ export PREFIX="$(pwd)/libsodium-win32"
 
 ./configure --prefix="$PREFIX" --exec-prefix="$PREFIX" \
             --host=i686-w64-mingw32 && \
+make clean && \
 make && \
 make check && \
 make install
