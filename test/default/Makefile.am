@@ -27,6 +27,7 @@ EXTRA_DIST = \
 	core5.exp \
 	core6.exp \
 	ed25519_convert.exp \
+	edwards25519sha512batch.exp \
 	generichash.exp \
 	generichash2.exp \
 	generichash3.exp \
@@ -88,6 +89,7 @@ DISTCLEANFILES = \
 	core5.res \
 	core6.res \
 	ed25519_convert.res \
+	edwards25519sha512batch.res \
 	generichash.res \
 	generichash2.res \
 	generichash3.res \
@@ -150,6 +152,7 @@ CLEANFILES = \
 	core5.final \
 	core6.final \
 	ed25519_convert.final \
+	edwards25519sha512batch.final \
 	generichash.final \
 	generichash2.final \
 	generichash3.final \
@@ -207,6 +210,7 @@ CLEANFILES = \
 	core5.nexe \
 	core6.nexe \
 	ed25519_convert.nexe \
+	edwards25519sha512batch.nexe \
 	generichash.nexe \
 	generichash2.nexe \
 	generichash3.nexe \
@@ -277,6 +281,7 @@ TESTS_TARGETS = \
 	core5 \
 	core6 \
 	ed25519_convert \
+	edwards25519sha512batch \
 	generichash \
 	generichash2 \
 	generichash3 \
@@ -396,6 +401,9 @@ core6_LDADD               = $(TESTS_LDADD)
 
 ed25519_convert_SOURCE    = cmptest.h ed25519_convert.c
 ed25519_convert_LDADD     = $(TESTS_LDADD)
+
+edwards25519sha512batch_SOURCE = cmptest.h edwards25519sha512batch.c
+edwards25519sha512batch_LDADD  = $(TESTS_LDADD)
 
 generichash_SOURCE        = cmptest.h generichash.c
 generichash_LDADD         = $(TESTS_LDADD)
