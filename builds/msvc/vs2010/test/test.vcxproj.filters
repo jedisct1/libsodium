@@ -58,6 +58,9 @@
     <ClCompile Include="..\..\..\..\test\default\ed25519_convert.c">
       <Filter>src</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\..\..\test\default\edwards25519sha512batch.c">
+      <Filter>src</Filter>
+    </ClCompile>
     <ClCompile Include="..\..\..\..\test\default\generichash.c">
       <Filter>src</Filter>
     </ClCompile>

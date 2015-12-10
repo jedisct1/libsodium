@@ -133,6 +133,9 @@
     <ClCompile Include="..\..\..\..\test\default\ed25519_convert.c">
       <ExcludedFromBuild>true</ExcludedFromBuild>
     </ClCompile>
+    <ClCompile Include="..\..\..\..\test\default\edwards25519sha512batch.c">
+      <ExcludedFromBuild>true</ExcludedFromBuild>
+    </ClCompile>
     <ClCompile Include="..\..\..\..\test\default\generichash.c">
       <ExcludedFromBuild>true</ExcludedFromBuild>
     </ClCompile>
