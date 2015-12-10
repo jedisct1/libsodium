@@ -107,7 +107,7 @@ int crypto_sign_edwards25519sha512batch_open(unsigned char *m,
         return -1;
     }
     *mlen_p = mlen;
-    memmove(m, sm + 64, mlen);
+    memmove(m, sm + 32, mlen);
 
     return 0;
 }
