@@ -41,8 +41,8 @@ static void test_vector(const char *password, const char *salt, uint64_t N,
         return;
     }
 
-    printf("scrypt('%s', '%s', %llu, %lu, %lu, %lu) =\n", password, salt,
-           (unsigned long long)N, (unsigned long)r, (unsigned long)p,
+    printf("scrypt('%s', '%s', %lu, %lu, %lu, %lu) =\n", password, salt,
+           (unsigned long)N, (unsigned long)r, (unsigned long)p,
            (unsigned long)olen);
 
     for (i = 0; i < olen; ++i) {
