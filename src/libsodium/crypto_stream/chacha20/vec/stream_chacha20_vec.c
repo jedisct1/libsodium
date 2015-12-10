@@ -16,7 +16,7 @@
 
 #define CHACHA_RNDS 20
 
-typedef unsigned int vec __attribute__((vector_size(16)));
+typedef unsigned int vec __attribute__ ((vector_size(16)));
 
 #include <emmintrin.h>
 #include <tmmintrin.h>

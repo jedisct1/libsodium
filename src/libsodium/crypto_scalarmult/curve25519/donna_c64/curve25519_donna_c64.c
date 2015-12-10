@@ -36,7 +36,7 @@ typedef uint64_t limb;
 typedef limb felem[5];
 // This is a special gcc mode for 128-bit integers. It's implemented on 64-bit
 // platforms only as far as I know.
-typedef unsigned uint128_t __attribute__((mode(TI)));
+typedef unsigned uint128_t __attribute__ ((mode(TI)));
 
 /* Sum two numbers: output += in */
 static inline void

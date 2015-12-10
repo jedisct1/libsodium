@@ -50,7 +50,7 @@ static size_t page_size;
 static unsigned char canary[CANARY_SIZE];
 
 #ifdef HAVE_WEAK_SYMBOLS
-__attribute__((weak)) void
+__attribute__ ((weak)) void
 _sodium_dummy_symbol_to_prevent_memzero_lto(void * const pnt, const size_t len)
 {
     (void) pnt;
@@ -83,7 +83,7 @@ sodium_memzero(void * const pnt, const size_t len)
 }
 
 #ifdef HAVE_WEAK_SYMBOLS
-__attribute__((weak)) void
+__attribute__ ((weak)) void
 _sodium_dummy_symbol_to_prevent_memcmp_lto(const unsigned char *b1,
                                            const unsigned char *b2,
                                            const size_t len)
@@ -117,7 +117,7 @@ sodium_memcmp(const void * const b1_, const void * const b2_, size_t len)
 }
 
 #ifdef HAVE_WEAK_SYMBOLS
-__attribute__((weak)) void
+__attribute__ ((weak)) void
 _sodium_dummy_symbol_to_prevent_compare_lto(const unsigned char *b1,
                                             const unsigned char *b2,
                                             const size_t len)
@@ -459,7 +459,7 @@ _page_round(const size_t size)
     return (size + page_mask) & ~page_mask;
 }
 
-static __attribute__((malloc)) unsigned char *
+static __attribute__ ((malloc)) unsigned char *
 _alloc_aligned(const size_t size)
 {
     void *ptr;
@@ -514,13 +514,13 @@ _unprotected_ptr_from_user_ptr(void * const ptr)
 #endif /* HAVE_ALIGNED_MALLOC */
 
 #ifndef HAVE_ALIGNED_MALLOC
-static __attribute__((malloc)) void *
+static __attribute__ ((malloc)) void *
 _sodium_malloc(const size_t size)
 {
     return malloc(size);
 }
 #else
-static __attribute__((malloc)) void *
+static __attribute__ ((malloc)) void *
 _sodium_malloc(const size_t size)
 {
     void          *user_ptr;
@@ -563,7 +563,7 @@ _sodium_malloc(const size_t size)
 }
 #endif /* !HAVE_ALIGNED_MALLOC */
 
-__attribute__((malloc)) void *
+__attribute__ ((malloc)) void *
 sodium_malloc(const size_t size)
 {
     void *ptr;
@@ -576,7 +576,7 @@ sodium_malloc(const size_t size)
     return ptr;
 }
 
-__attribute__((malloc)) void *
+__attribute__ ((malloc)) void *
 sodium_allocarray(size_t count, size_t size)
 {
     size_t total_size;
