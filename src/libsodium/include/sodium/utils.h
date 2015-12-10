@@ -10,10 +10,12 @@
 extern "C" {
 #endif
 
-#if defined(__cplusplus) || !defined(__STDC_VERSION__) || __STDC_VERSION__ < 199901L
-# define SODIUM_C99(X)
-#else
-# define SODIUM_C99(X) X
+#ifndef SODIUM_C99
+# if defined(__cplusplus) || !defined(__STDC_VERSION__) || __STDC_VERSION__ < 199901L
+#  define SODIUM_C99(X)
+# else
+#  define SODIUM_C99(X) X
+# endif
 #endif
 
 SODIUM_EXPORT
