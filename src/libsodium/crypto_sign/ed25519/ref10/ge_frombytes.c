@@ -1,12 +1,12 @@
 #include "ge.h"
 
 static const fe d = {
-#include "d.h"
-} ;
+    -10913610,13857413,-15372611,6949391,114729,-8787816,-6275908,-3247719,-18696448,-12055116
+};
 
 static const fe sqrtm1 = {
-#include "sqrtm1.h"
-} ;
+    -32595792,-7943725,9377950,3500415,12389472,-272473,-25146209,-2005654,326686,11406482
+};
 
 int ge_frombytes_negate_vartime(ge_p3 *h,const unsigned char *s)
 {

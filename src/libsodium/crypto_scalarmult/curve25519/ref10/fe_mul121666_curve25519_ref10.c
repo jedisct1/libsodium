@@ -14,7 +14,7 @@ Postconditions:
    |h| bounded by 1.1*2^25,1.1*2^24,1.1*2^25,1.1*2^24,etc.
 */
 
-void fe_mul121666(fe h,fe f)
+void fe_mul121666(fe h,const fe f)
 {
   crypto_int32 f0 = f[0];
   crypto_int32 f1 = f[1];

@@ -69,8 +69,6 @@ libsodium_la_SOURCES = \
 	crypto_sign/ed25519/ref10/base.h \
 	crypto_sign/ed25519/ref10/base2.h \
 	crypto_sign/ed25519/sign_ed25519_api.c \
-	crypto_sign/ed25519/ref10/d.h \
-	crypto_sign/ed25519/ref10/d2.h \
 	crypto_sign/ed25519/ref10/fe.h \
 	crypto_sign/ed25519/ref10/fe_0.c \
 	crypto_sign/ed25519/ref10/fe_1.c \
@@ -90,18 +88,14 @@ libsodium_la_SOURCES = \
 	crypto_sign/ed25519/ref10/fe_tobytes.c \
 	crypto_sign/ed25519/ref10/ge.h \
 	crypto_sign/ed25519/ref10/ge_add.c \
-	crypto_sign/ed25519/ref10/ge_add.h \
 	crypto_sign/ed25519/ref10/ge_double_scalarmult.c \
 	crypto_sign/ed25519/ref10/ge_frombytes.c \
 	crypto_sign/ed25519/ref10/ge_madd.c \
-	crypto_sign/ed25519/ref10/ge_madd.h \
 	crypto_sign/ed25519/ref10/ge_msub.c \
-	crypto_sign/ed25519/ref10/ge_msub.h \
 	crypto_sign/ed25519/ref10/ge_p1p1_to_p2.c \
 	crypto_sign/ed25519/ref10/ge_p1p1_to_p3.c \
 	crypto_sign/ed25519/ref10/ge_p2_0.c \
 	crypto_sign/ed25519/ref10/ge_p2_dbl.c \
-	crypto_sign/ed25519/ref10/ge_p2_dbl.h \
 	crypto_sign/ed25519/ref10/ge_p3_0.c \
 	crypto_sign/ed25519/ref10/ge_p3_dbl.c \
 	crypto_sign/ed25519/ref10/ge_p3_to_cached.c \
@@ -110,17 +104,13 @@ libsodium_la_SOURCES = \
 	crypto_sign/ed25519/ref10/ge_precomp_0.c \
 	crypto_sign/ed25519/ref10/ge_scalarmult_base.c \
 	crypto_sign/ed25519/ref10/ge_sub.c \
-	crypto_sign/ed25519/ref10/ge_sub.h \
 	crypto_sign/ed25519/ref10/ge_tobytes.c \
 	crypto_sign/ed25519/ref10/keypair.c \
 	crypto_sign/ed25519/ref10/open.c \
-	crypto_sign/ed25519/ref10/pow22523.h \
-	crypto_sign/ed25519/ref10/pow225521.h \
 	crypto_sign/ed25519/ref10/sc.h \
 	crypto_sign/ed25519/ref10/sc_muladd.c \
 	crypto_sign/ed25519/ref10/sc_reduce.c \
 	crypto_sign/ed25519/ref10/sign.c \
-	crypto_sign/ed25519/ref10/sqrtm1.h \
 	crypto_stream/crypto_stream.c \
 	crypto_stream/chacha20/stream_chacha20.c \
 	crypto_stream/chacha20/stream_chacha20.h \
@@ -176,9 +166,7 @@ libsodium_la_SOURCES += \
 	crypto_scalarmult/curve25519/ref10/fe_mul121666_curve25519_ref10.c \
 	crypto_scalarmult/curve25519/ref10/fe_sq_curve25519_ref10.c \
 	crypto_scalarmult/curve25519/ref10/fe_sub_curve25519_ref10.c \
-	crypto_scalarmult/curve25519/ref10/fe_tobytes_curve25519_ref10.c \
-	crypto_scalarmult/curve25519/ref10/montgomery.h \
-	crypto_scalarmult/curve25519/ref10/pow225521.h
+	crypto_scalarmult/curve25519/ref10/fe_tobytes_curve25519_ref10.c
 endif
 
 noinst_HEADERS = \
