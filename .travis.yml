@@ -16,6 +16,13 @@ before_script:
 
 script:
  - ./configure --disable-dependency-tracking
+ - make
+ - sha512sum src/libsodium/.libs/libsodium.so > lib.sum
+ - make clean
+ - make CPPFLAGS='-DSODIUM_C99\(X\)='
+ - sha512sum src/libsodium/.libs/libsodium.so > lib-oldc.sum
+ - cmp lib.sum lib-oldc.sum
+ - make clean
  - make distcheck
  - make distclean
  - ./configure --disable-dependency-tracking --enable-minimal
