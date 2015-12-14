@@ -1,5 +1,7 @@
 #include "fe.h"
 
+#ifndef HAVE_TI_MODE
+
 void fe_invert(fe out,const fe z)
 {
     fe t0;
@@ -64,3 +66,5 @@ void fe_invert(fe out,const fe z)
     }
     fe_mul(out, t1, t0);
 }
+
+#endif

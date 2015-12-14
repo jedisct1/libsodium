@@ -1,4 +1,5 @@
 #include "fe.h"
+#include "crypto_int32.h"
 
 /*
 Preconditions:

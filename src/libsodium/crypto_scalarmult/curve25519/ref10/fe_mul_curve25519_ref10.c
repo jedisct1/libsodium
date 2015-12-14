@@ -1,4 +1,5 @@
 #include "fe.h"
+#include "crypto_int32.h"
 #include "crypto_int64.h"
 
 #ifndef HAVE_TI_MODE
@@ -199,59 +200,59 @@ void fe_mul(fe h,const fe f,const fe g)
     i.e. |h1| <= 1.5*2^58; narrower ranges for h3, h5, h7, h9
   */
 
-  carry0 = (h0 + (crypto_int64) (1<<25)) >> 26; h1 += carry0; h0 -= carry0 << 26;
-  carry4 = (h4 + (crypto_int64) (1<<25)) >> 26; h5 += carry4; h4 -= carry4 << 26;
+  carry0 = (h0 + (crypto_int64) (1L << 25)) >> 26; h1 += carry0; h0 -= carry0 << 26;
+  carry4 = (h4 + (crypto_int64) (1L << 25)) >> 26; h5 += carry4; h4 -= carry4 << 26;
   /* |h0| <= 2^25 */
   /* |h4| <= 2^25 */
   /* |h1| <= 1.51*2^58 */
   /* |h5| <= 1.51*2^58 */
 
-  carry1 = (h1 + (crypto_int64) (1<<24)) >> 25; h2 += carry1; h1 -= carry1 << 25;
-  carry5 = (h5 + (crypto_int64) (1<<24)) >> 25; h6 += carry5; h5 -= carry5 << 25;
+  carry1 = (h1 + (crypto_int64) (1L << 24)) >> 25; h2 += carry1; h1 -= carry1 << 25;
+  carry5 = (h5 + (crypto_int64) (1L << 24)) >> 25; h6 += carry5; h5 -= carry5 << 25;
   /* |h1| <= 2^24; from now on fits into int32 */
   /* |h5| <= 2^24; from now on fits into int32 */
   /* |h2| <= 1.21*2^59 */
   /* |h6| <= 1.21*2^59 */
 
-  carry2 = (h2 + (crypto_int64) (1<<25)) >> 26; h3 += carry2; h2 -= carry2 << 26;
-  carry6 = (h6 + (crypto_int64) (1<<25)) >> 26; h7 += carry6; h6 -= carry6 << 26;
+  carry2 = (h2 + (crypto_int64) (1L << 25)) >> 26; h3 += carry2; h2 -= carry2 << 26;
+  carry6 = (h6 + (crypto_int64) (1L << 25)) >> 26; h7 += carry6; h6 -= carry6 << 26;
   /* |h2| <= 2^25; from now on fits into int32 unchanged */
   /* |h6| <= 2^25; from now on fits into int32 unchanged */
   /* |h3| <= 1.51*2^58 */
   /* |h7| <= 1.51*2^58 */
 
-  carry3 = (h3 + (crypto_int64) (1<<24)) >> 25; h4 += carry3; h3 -= carry3 << 25;
-  carry7 = (h7 + (crypto_int64) (1<<24)) >> 25; h8 += carry7; h7 -= carry7 << 25;
+  carry3 = (h3 + (crypto_int64) (1L << 24)) >> 25; h4 += carry3; h3 -= carry3 << 25;
+  carry7 = (h7 + (crypto_int64) (1L << 24)) >> 25; h8 += carry7; h7 -= carry7 << 25;
   /* |h3| <= 2^24; from now on fits into int32 unchanged */
   /* |h7| <= 2^24; from now on fits into int32 unchanged */
   /* |h4| <= 1.52*2^33 */
   /* |h8| <= 1.52*2^33 */
 
-  carry4 = (h4 + (crypto_int64) (1<<25)) >> 26; h5 += carry4; h4 -= carry4 << 26;
-  carry8 = (h8 + (crypto_int64) (1<<25)) >> 26; h9 += carry8; h8 -= carry8 << 26;
+  carry4 = (h4 + (crypto_int64) (1L << 25)) >> 26; h5 += carry4; h4 -= carry4 << 26;
+  carry8 = (h8 + (crypto_int64) (1L << 25)) >> 26; h9 += carry8; h8 -= carry8 << 26;
   /* |h4| <= 2^25; from now on fits into int32 unchanged */
   /* |h8| <= 2^25; from now on fits into int32 unchanged */
   /* |h5| <= 1.01*2^24 */
   /* |h9| <= 1.51*2^58 */
 
-  carry9 = (h9 + (crypto_int64) (1<<24)) >> 25; h0 += carry9 * 19; h9 -= carry9 << 25;
+  carry9 = (h9 + (crypto_int64) (1L << 24)) >> 25; h0 += carry9 * 19; h9 -= carry9 << 25;
   /* |h9| <= 2^24; from now on fits into int32 unchanged */
   /* |h0| <= 1.8*2^37 */
 
-  carry0 = (h0 + (crypto_int64) (1<<25)) >> 26; h1 += carry0; h0 -= carry0 << 26;
+  carry0 = (h0 + (crypto_int64) (1L << 25)) >> 26; h1 += carry0; h0 -= carry0 << 26;
   /* |h0| <= 2^25; from now on fits into int32 unchanged */
   /* |h1| <= 1.01*2^24 */
 
-  h[0] = h0;
-  h[1] = h1;
-  h[2] = h2;
-  h[3] = h3;
-  h[4] = h4;
-  h[5] = h5;
-  h[6] = h6;
-  h[7] = h7;
-  h[8] = h8;
-  h[9] = h9;
+  h[0] = (crypto_int32) h0;
+  h[1] = (crypto_int32) h1;
+  h[2] = (crypto_int32) h2;
+  h[3] = (crypto_int32) h3;
+  h[4] = (crypto_int32) h4;
+  h[5] = (crypto_int32) h5;
+  h[6] = (crypto_int32) h6;
+  h[7] = (crypto_int32) h7;
+  h[8] = (crypto_int32) h8;
+  h[9] = (crypto_int32) h9;
 }
 
 #endif

@@ -1,4 +1,5 @@
 #include "fe.h"
+#include "crypto_int32.h"
 
 /*
 Replace (f,g) with (g,g) if b == 1;
