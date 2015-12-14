@@ -140,7 +140,7 @@ _sodium_runtime_intel_cpu_features(CPUFeatures * const cpu_features)
     cpu_features->has_avx = 0;
 #if defined(HAVE_AVXINTRIN_H) || \
     (defined(_MSC_VER) && (defined(_M_X64) || defined(_M_AMD64) || defined(_M_IX86)))
-# ifdef HAVE_AMD64_ASM
+# ifdef HAVE_AVX_ASM
     if ((cpu_info[2] & (CPUIDECX_AVX | CPUIDECX_XSAVE | CPUIDECX_OSXSAVE))
         == (CPUIDECX_AVX | CPUIDECX_XSAVE | CPUIDECX_OSXSAVE)) {
         uint32_t eax, edx;
