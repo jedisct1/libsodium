@@ -1,4 +1,6 @@
 
+#include <stddef.h>
+#include <stdint.h>
 #ifdef HAVE_ANDROID_GETCPUFEATURES
 # include <cpu-features.h>
 #endif
@@ -19,13 +21,18 @@ typedef struct CPUFeatures_ {
 
 static CPUFeatures _cpu_features;
 
-#define CPUID_SSE2      0x04000000
-#define CPUIDECX_SSE3   0x00000001
-#define CPUIDECX_SSSE3  0x00000200
-#define CPUIDECX_SSE41  0x00080000
-#define CPUIDECX_AVX    0x10000000
-#define CPUIDECX_PCLMUL 0x00000002
-#define CPUIDECX_AESNI  0x02000000
+#define CPUID_SSE2       0x04000000
+#define CPUIDECX_SSE3    0x00000001
+#define CPUIDECX_SSSE3   0x00000200
+#define CPUIDECX_SSE41   0x00080000
+#define CPUIDECX_AVX     0x10000000
+#define CPUIDECX_PCLMUL  0x00000002
+#define CPUIDECX_AESNI   0x02000000
+#define CPUIDECX_XSAVE   0x04000000
+#define CPUIDECX_OSXSAVE 0x08000000
+
+#define XCR0_SSE         0x00000002
+#define XCR0_AVX         0x00000004
 
 static int
 _sodium_runtime_arm_cpu_features(CPUFeatures * const cpu_features)
@@ -130,11 +137,21 @@ _sodium_runtime_intel_cpu_features(CPUFeatures * const cpu_features)
     cpu_features->has_sse41 = 0;
 #endif
 
+    cpu_features->has_avx = 0;
 #if defined(HAVE_AVXINTRIN_H) || \
     (defined(_MSC_VER) && (defined(_M_X64) || defined(_M_AMD64) || defined(_M_IX86)))
-    cpu_features->has_avx = ((cpu_info[2] & CPUIDECX_AVX) != 0x0);
-#else
-    cpu_features->has_avx = 0;
+# ifdef HAVE_AMD64_ASM
+    if ((cpu_info[2] & (CPUIDECX_AVX | CPUIDECX_XSAVE | CPUIDECX_OSXSAVE))
+        == (CPUIDECX_AVX | CPUIDECX_XSAVE | CPUIDECX_OSXSAVE)) {
+        uint32_t eax, edx;
+        __asm__ __volatile__ (".byte 0x0f, 0x01, 0xd0" /* XGETBV */
+                              : "=a"(eax), "=d"(edx)
+                              : "c"((uint32_t) 0U));
+        if ((eax & (XCR0_SSE | XCR0_AVX)) == (XCR0_SSE | XCR0_AVX)) {
+            cpu_features->has_avx = ((cpu_info[2] & CPUIDECX_AVX) != 0x0);
+        }
+    }
+# endif
 #endif
 
 #if defined(HAVE_WMMINTRIN_H) || \
