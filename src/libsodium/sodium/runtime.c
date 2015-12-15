@@ -140,18 +140,23 @@ _sodium_runtime_intel_cpu_features(CPUFeatures * const cpu_features)
     cpu_features->has_avx = 0;
 #if defined(HAVE_AVXINTRIN_H) || \
     (defined(_MSC_VER) && (defined(_M_X64) || defined(_M_AMD64) || defined(_M_IX86)))
-# ifdef HAVE_AVX_ASM
     if ((cpu_info[2] & (CPUIDECX_AVX | CPUIDECX_XSAVE | CPUIDECX_OSXSAVE))
         == (CPUIDECX_AVX | CPUIDECX_XSAVE | CPUIDECX_OSXSAVE)) {
-        uint32_t eax, edx;
+        uint32_t xcr0 = 0U;
+# ifdef MSC_VER
+        __asm {
+            xor ecx, ecx
+            _asm _emit 0x0f _asm _emit 0x01 _asm _emit 0xd0
+            mov xcr0, eax
+        }
+# elif defined(HAVE_AVX_ASM)
         __asm__ __volatile__ (".byte 0x0f, 0x01, 0xd0" /* XGETBV */
-                              : "=a"(eax), "=d"(edx)
-                              : "c"((uint32_t) 0U));
-        if ((eax & (XCR0_SSE | XCR0_AVX)) == (XCR0_SSE | XCR0_AVX)) {
-            cpu_features->has_avx = ((cpu_info[2] & CPUIDECX_AVX) != 0x0);
+                              : "=a"(xcr0) : "c"((uint32_t) 0U) : "%edx");
+# endif
+        if ((xcr0 & (XCR0_SSE | XCR0_AVX)) == (XCR0_SSE | XCR0_AVX)) {
+            cpu_features->has_avx = 1;
         }
     }
-# endif
 #endif
 
 #if defined(HAVE_WMMINTRIN_H) || \
