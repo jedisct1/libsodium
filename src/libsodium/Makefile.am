@@ -115,21 +115,8 @@ libsodium_la_SOURCES += \
 	crypto_scalarmult/curve25519/donna_c64/curve25519_donna_c64.h
 else
 libsodium_la_SOURCES += \
-	crypto_scalarmult/curve25519/ref10/curve25519_ref10.c \
-	crypto_scalarmult/curve25519/ref10/curve25519_ref10.h \
-	crypto_scalarmult/curve25519/ref10/fe.h \
-	crypto_scalarmult/curve25519/ref10/fe_0_curve25519_ref10.c \
-	crypto_scalarmult/curve25519/ref10/fe_1_curve25519_ref10.c \
-	crypto_scalarmult/curve25519/ref10/fe_add_curve25519_ref10.c \
-	crypto_scalarmult/curve25519/ref10/fe_copy_curve25519_ref10.c \
-	crypto_scalarmult/curve25519/ref10/fe_cswap_curve25519_ref10.c \
-	crypto_scalarmult/curve25519/ref10/fe_frombytes_curve25519_ref10.c \
-	crypto_scalarmult/curve25519/ref10/fe_invert_curve25519_ref10.c \
-	crypto_scalarmult/curve25519/ref10/fe_mul_curve25519_ref10.c \
-	crypto_scalarmult/curve25519/ref10/fe_mul121666_curve25519_ref10.c \
-	crypto_scalarmult/curve25519/ref10/fe_sq_curve25519_ref10.c \
-	crypto_scalarmult/curve25519/ref10/fe_sub_curve25519_ref10.c \
-	crypto_scalarmult/curve25519/ref10/fe_tobytes_curve25519_ref10.c
+	crypto_scalarmult/curve25519/ref10/x25519_ref10.c \
+	crypto_scalarmult/curve25519/ref10/x25519_ref10.h
 endif
 
 noinst_HEADERS = \

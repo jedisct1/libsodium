@@ -11,7 +11,7 @@
 static const crypto_scalarmult_curve25519_implementation *implementation =
     &crypto_scalarmult_curve25519_donna_c64_implementation;
 #else
-# include "ref10/curve25519_ref10.h"
+# include "ref10/x25519_ref10.h"
 static const crypto_scalarmult_curve25519_implementation *implementation =
     &crypto_scalarmult_curve25519_ref10_implementation;
 #endif
