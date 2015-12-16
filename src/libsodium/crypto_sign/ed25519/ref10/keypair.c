@@ -4,10 +4,9 @@
 #include "crypto_sign_ed25519.h"
 #include "crypto_hash_sha512.h"
 #include "crypto_scalarmult_curve25519.h"
-#include "fe.h"
-#include "ge.h"
 #include "randombytes.h"
 #include "utils.h"
+#include "../../../crypto_core/curve25519/ref10/curve25519_ref10.h"
 
 int crypto_sign_ed25519_seed_keypair(unsigned char *pk, unsigned char *sk,
                                      const unsigned char *seed)

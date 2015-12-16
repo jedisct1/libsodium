@@ -21,6 +21,10 @@ libsodium_la_SOURCES = \
 	crypto_box/curve25519xsalsa20poly1305/ref/before_curve25519xsalsa20poly1305.c \
 	crypto_box/curve25519xsalsa20poly1305/ref/box_curve25519xsalsa20poly1305.c \
 	crypto_box/curve25519xsalsa20poly1305/ref/keypair_curve25519xsalsa20poly1305.c \
+	crypto_core/curve25519/ref10/base.h \
+	crypto_core/curve25519/ref10/base2.h \
+	crypto_core/curve25519/ref10/curve25519_ref10.c \
+	crypto_core/curve25519/ref10/curve25519_ref10.h \
 	crypto_core/hsalsa20/ref2/core_hsalsa20.c \
 	crypto_core/hsalsa20/core_hsalsa20_api.c \
 	crypto_core/salsa20/ref/core_salsa20.c \
@@ -66,50 +70,9 @@ libsodium_la_SOURCES = \
 	crypto_shorthash/siphash24/shorthash_siphash24_api.c \
 	crypto_shorthash/siphash24/ref/shorthash_siphash24.c \
 	crypto_sign/crypto_sign.c \
-	crypto_sign/ed25519/ref10/base.h \
-	crypto_sign/ed25519/ref10/base2.h \
 	crypto_sign/ed25519/sign_ed25519_api.c \
-	crypto_sign/ed25519/ref10/fe.h \
-	crypto_sign/ed25519/ref10/fe_0.c \
-	crypto_sign/ed25519/ref10/fe_1.c \
-	crypto_sign/ed25519/ref10/fe_add.c \
-	crypto_sign/ed25519/ref10/fe_cmov.c \
-	crypto_sign/ed25519/ref10/fe_copy.c \
-	crypto_sign/ed25519/ref10/fe_frombytes.c \
-	crypto_sign/ed25519/ref10/fe_invert.c \
-	crypto_sign/ed25519/ref10/fe_isnegative.c \
-	crypto_sign/ed25519/ref10/fe_isnonzero.c \
-	crypto_sign/ed25519/ref10/fe_mul.c \
-	crypto_sign/ed25519/ref10/fe_neg.c \
-	crypto_sign/ed25519/ref10/fe_pow22523.c \
-	crypto_sign/ed25519/ref10/fe_sq.c \
-	crypto_sign/ed25519/ref10/fe_sq2.c \
-	crypto_sign/ed25519/ref10/fe_sub.c \
-	crypto_sign/ed25519/ref10/fe_tobytes.c \
-	crypto_sign/ed25519/ref10/ge.h \
-	crypto_sign/ed25519/ref10/ge_add.c \
-	crypto_sign/ed25519/ref10/ge_double_scalarmult.c \
-	crypto_sign/ed25519/ref10/ge_frombytes.c \
-	crypto_sign/ed25519/ref10/ge_madd.c \
-	crypto_sign/ed25519/ref10/ge_msub.c \
-	crypto_sign/ed25519/ref10/ge_p1p1_to_p2.c \
-	crypto_sign/ed25519/ref10/ge_p1p1_to_p3.c \
-	crypto_sign/ed25519/ref10/ge_p2_0.c \
-	crypto_sign/ed25519/ref10/ge_p2_dbl.c \
-	crypto_sign/ed25519/ref10/ge_p3_0.c \
-	crypto_sign/ed25519/ref10/ge_p3_dbl.c \
-	crypto_sign/ed25519/ref10/ge_p3_to_cached.c \
-	crypto_sign/ed25519/ref10/ge_p3_to_p2.c \
-	crypto_sign/ed25519/ref10/ge_p3_tobytes.c \
-	crypto_sign/ed25519/ref10/ge_precomp_0.c \
-	crypto_sign/ed25519/ref10/ge_scalarmult_base.c \
-	crypto_sign/ed25519/ref10/ge_sub.c \
-	crypto_sign/ed25519/ref10/ge_tobytes.c \
 	crypto_sign/ed25519/ref10/keypair.c \
 	crypto_sign/ed25519/ref10/open.c \
-	crypto_sign/ed25519/ref10/sc.h \
-	crypto_sign/ed25519/ref10/sc_muladd.c \
-	crypto_sign/ed25519/ref10/sc_reduce.c \
 	crypto_sign/ed25519/ref10/sign.c \
 	crypto_stream/crypto_stream.c \
 	crypto_stream/chacha20/stream_chacha20.c \

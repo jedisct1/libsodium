@@ -6,11 +6,9 @@
 #include "crypto_hash_sha512.h"
 #include "crypto_sign_edwards25519sha512batch.h"
 #include "crypto_verify_32.h"
-#include "fe.h"
-#include "ge.h"
 #include "randombytes.h"
-#include "sc.h"
 #include "utils.h"
+#include "../../../crypto_core/curve25519/ref10/curve25519_ref10.h"
 
 int crypto_sign_edwards25519sha512batch_keypair(unsigned char *pk,
                                                 unsigned char *sk)
