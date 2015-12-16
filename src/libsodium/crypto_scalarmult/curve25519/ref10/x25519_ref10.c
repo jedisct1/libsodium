@@ -10,8 +10,6 @@
 #include "../scalarmult_curve25519.h"
 #include "../../../crypto_core/curve25519/ref10/curve25519_ref10.h"
 
-static const unsigned char basepoint[32] = {9};
-
 /*
 Replace (f,g) with (g,f) if b == 1;
 replace (f,g) with (f,g) if b == 0.
@@ -218,11 +216,35 @@ crypto_scalarmult_curve25519_ref10(unsigned char *q,
   return 0;
 }
 
+static void
+edwards_to_montgomery(fe montgomeryX, const fe edwardsY, const fe edwardsZ)
+{
+  fe tempX;
+  fe tempZ;
+
+  fe_add(tempX, edwardsZ, edwardsY);
+  fe_sub(tempZ, edwardsZ, edwardsY);
+  fe_invert(tempZ, tempZ);
+  fe_mul(montgomeryX, tempX, tempZ);
+}
+
 static int
 crypto_scalarmult_curve25519_ref10_base(unsigned char *q,
                                         const unsigned char *n)
 {
-  return crypto_scalarmult_curve25519_ref10(q,n,basepoint);
+  unsigned char e[32];
+  ge_p3 A;
+  fe pk;
+  unsigned int i;
+
+  for (i = 0;i < 32;++i) e[i] = n[i];
+  e[0] &= 248;
+  e[31] &= 127;
+  e[31] |= 64;
+  ge_scalarmult_base(&A, e);
+  edwards_to_montgomery(pk, A.Y, A.Z);
+  fe_tobytes(q, pk);
+  return 0;
 }
 
 struct crypto_scalarmult_curve25519_implementation
