@@ -258,6 +258,124 @@ void fe_frombytes(fe h,const unsigned char *s)
 }
 
 /*
+Preconditions:
+  |h| bounded by 1.1*2^26,1.1*2^25,1.1*2^26,1.1*2^25,etc.
+
+Write p=2^255-19; q=floor(h/p).
+Basic claim: q = floor(2^(-255)(h + 19 2^(-25)h9 + 2^(-1))).
+
+Proof:
+  Have |h|<=p so |q|<=1 so |19^2 2^(-255) q|<1/4.
+  Also have |h-2^230 h9|<2^231 so |19 2^(-255)(h-2^230 h9)|<1/4.
+
+  Write y=2^(-1)-19^2 2^(-255)q-19 2^(-255)(h-2^230 h9).
+  Then 0<y<1.
+
+  Write r=h-pq.
+  Have 0<=r<=p-1=2^255-20.
+  Thus 0<=r+19(2^-255)r<r+19(2^-255)2^255<=2^255-1.
+
+  Write x=r+19(2^-255)r+y.
+  Then 0<x<2^255 so floor(2^(-255)x) = 0 so floor(q+2^(-255)x) = q.
+
+  Have q+2^(-255)x = 2^(-255)(h + 19 2^(-25) h9 + 2^(-1))
+  so floor(2^(-255)(h + 19 2^(-25) h9 + 2^(-1))) = q.
+*/
+
+void fe_tobytes(unsigned char *s,const fe h)
+{
+  crypto_int32 h0 = h[0];
+  crypto_int32 h1 = h[1];
+  crypto_int32 h2 = h[2];
+  crypto_int32 h3 = h[3];
+  crypto_int32 h4 = h[4];
+  crypto_int32 h5 = h[5];
+  crypto_int32 h6 = h[6];
+  crypto_int32 h7 = h[7];
+  crypto_int32 h8 = h[8];
+  crypto_int32 h9 = h[9];
+  crypto_int32 q;
+  crypto_int32 carry0;
+  crypto_int32 carry1;
+  crypto_int32 carry2;
+  crypto_int32 carry3;
+  crypto_int32 carry4;
+  crypto_int32 carry5;
+  crypto_int32 carry6;
+  crypto_int32 carry7;
+  crypto_int32 carry8;
+  crypto_int32 carry9;
+
+  q = (19 * h9 + (((crypto_int32) 1) << 24)) >> 25;
+  q = (h0 + q) >> 26;
+  q = (h1 + q) >> 25;
+  q = (h2 + q) >> 26;
+  q = (h3 + q) >> 25;
+  q = (h4 + q) >> 26;
+  q = (h5 + q) >> 25;
+  q = (h6 + q) >> 26;
+  q = (h7 + q) >> 25;
+  q = (h8 + q) >> 26;
+  q = (h9 + q) >> 25;
+
+  /* Goal: Output h-(2^255-19)q, which is between 0 and 2^255-20. */
+  h0 += 19 * q;
+  /* Goal: Output h-2^255 q, which is between 0 and 2^255-20. */
+
+  carry0 = h0 >> 26; h1 += carry0; h0 -= carry0 << 26;
+  carry1 = h1 >> 25; h2 += carry1; h1 -= carry1 << 25;
+  carry2 = h2 >> 26; h3 += carry2; h2 -= carry2 << 26;
+  carry3 = h3 >> 25; h4 += carry3; h3 -= carry3 << 25;
+  carry4 = h4 >> 26; h5 += carry4; h4 -= carry4 << 26;
+  carry5 = h5 >> 25; h6 += carry5; h5 -= carry5 << 25;
+  carry6 = h6 >> 26; h7 += carry6; h6 -= carry6 << 26;
+  carry7 = h7 >> 25; h8 += carry7; h7 -= carry7 << 25;
+  carry8 = h8 >> 26; h9 += carry8; h8 -= carry8 << 26;
+  carry9 = h9 >> 25;               h9 -= carry9 << 25;
+                  /* h10 = carry9 */
+
+  /*
+  Goal: Output h0+...+2^255 h10-2^255 q, which is between 0 and 2^255-20.
+  Have h0+...+2^230 h9 between 0 and 2^255-1;
+  evidently 2^255 h10-2^255 q = 0.
+  Goal: Output h0+...+2^230 h9.
+  */
+
+  s[0] = h0 >> 0;
+  s[1] = h0 >> 8;
+  s[2] = h0 >> 16;
+  s[3] = (h0 >> 24) | (h1 << 2);
+  s[4] = h1 >> 6;
+  s[5] = h1 >> 14;
+  s[6] = (h1 >> 22) | (h2 << 3);
+  s[7] = h2 >> 5;
+  s[8] = h2 >> 13;
+  s[9] = (h2 >> 21) | (h3 << 5);
+  s[10] = h3 >> 3;
+  s[11] = h3 >> 11;
+  s[12] = (h3 >> 19) | (h4 << 6);
+  s[13] = h4 >> 2;
+  s[14] = h4 >> 10;
+  s[15] = h4 >> 18;
+  s[16] = h5 >> 0;
+  s[17] = h5 >> 8;
+  s[18] = h5 >> 16;
+  s[19] = (h5 >> 24) | (h6 << 1);
+  s[20] = h6 >> 7;
+  s[21] = h6 >> 15;
+  s[22] = (h6 >> 23) | (h7 << 3);
+  s[23] = h7 >> 5;
+  s[24] = h7 >> 13;
+  s[25] = (h7 >> 21) | (h8 << 4);
+  s[26] = h8 >> 4;
+  s[27] = h8 >> 12;
+  s[28] = (h8 >> 20) | (h9 << 6);
+  s[29] = h9 >> 2;
+  s[30] = h9 >> 10;
+  s[31] = h9 >> 18;
+}
+
+/*
 return 1 if f is in {1,3,5,...,q-2}
 return 0 if f is in {0,2,4,...,q-1}
 
@@ -1075,124 +1193,6 @@ void fe_sub(fe h,const fe f,const fe g)
 }
 
 /*
-Preconditions:
-  |h| bounded by 1.1*2^26,1.1*2^25,1.1*2^26,1.1*2^25,etc.
-
-Write p=2^255-19; q=floor(h/p).
-Basic claim: q = floor(2^(-255)(h + 19 2^(-25)h9 + 2^(-1))).
-
-Proof:
-  Have |h|<=p so |q|<=1 so |19^2 2^(-255) q|<1/4.
-  Also have |h-2^230 h9|<2^231 so |19 2^(-255)(h-2^230 h9)|<1/4.
-
-  Write y=2^(-1)-19^2 2^(-255)q-19 2^(-255)(h-2^230 h9).
-  Then 0<y<1.
-
-  Write r=h-pq.
-  Have 0<=r<=p-1=2^255-20.
-  Thus 0<=r+19(2^-255)r<r+19(2^-255)2^255<=2^255-1.
-
-  Write x=r+19(2^-255)r+y.
-  Then 0<x<2^255 so floor(2^(-255)x) = 0 so floor(q+2^(-255)x) = q.
-
-  Have q+2^(-255)x = 2^(-255)(h + 19 2^(-25) h9 + 2^(-1))
-  so floor(2^(-255)(h + 19 2^(-25) h9 + 2^(-1))) = q.
-*/
-
-void fe_tobytes(unsigned char *s,const fe h)
-{
-  crypto_int32 h0 = h[0];
-  crypto_int32 h1 = h[1];
-  crypto_int32 h2 = h[2];
-  crypto_int32 h3 = h[3];
-  crypto_int32 h4 = h[4];
-  crypto_int32 h5 = h[5];
-  crypto_int32 h6 = h[6];
-  crypto_int32 h7 = h[7];
-  crypto_int32 h8 = h[8];
-  crypto_int32 h9 = h[9];
-  crypto_int32 q;
-  crypto_int32 carry0;
-  crypto_int32 carry1;
-  crypto_int32 carry2;
-  crypto_int32 carry3;
-  crypto_int32 carry4;
-  crypto_int32 carry5;
-  crypto_int32 carry6;
-  crypto_int32 carry7;
-  crypto_int32 carry8;
-  crypto_int32 carry9;
-
-  q = (19 * h9 + (((crypto_int32) 1) << 24)) >> 25;
-  q = (h0 + q) >> 26;
-  q = (h1 + q) >> 25;
-  q = (h2 + q) >> 26;
-  q = (h3 + q) >> 25;
-  q = (h4 + q) >> 26;
-  q = (h5 + q) >> 25;
-  q = (h6 + q) >> 26;
-  q = (h7 + q) >> 25;
-  q = (h8 + q) >> 26;
-  q = (h9 + q) >> 25;
-
-  /* Goal: Output h-(2^255-19)q, which is between 0 and 2^255-20. */
-  h0 += 19 * q;
-  /* Goal: Output h-2^255 q, which is between 0 and 2^255-20. */
-
-  carry0 = h0 >> 26; h1 += carry0; h0 -= carry0 << 26;
-  carry1 = h1 >> 25; h2 += carry1; h1 -= carry1 << 25;
-  carry2 = h2 >> 26; h3 += carry2; h2 -= carry2 << 26;
-  carry3 = h3 >> 25; h4 += carry3; h3 -= carry3 << 25;
-  carry4 = h4 >> 26; h5 += carry4; h4 -= carry4 << 26;
-  carry5 = h5 >> 25; h6 += carry5; h5 -= carry5 << 25;
-  carry6 = h6 >> 26; h7 += carry6; h6 -= carry6 << 26;
-  carry7 = h7 >> 25; h8 += carry7; h7 -= carry7 << 25;
-  carry8 = h8 >> 26; h9 += carry8; h8 -= carry8 << 26;
-  carry9 = h9 >> 25;               h9 -= carry9 << 25;
-                  /* h10 = carry9 */
-
-  /*
-  Goal: Output h0+...+2^255 h10-2^255 q, which is between 0 and 2^255-20.
-  Have h0+...+2^230 h9 between 0 and 2^255-1;
-  evidently 2^255 h10-2^255 q = 0.
-  Goal: Output h0+...+2^230 h9.
-  */
-
-  s[0] = h0 >> 0;
-  s[1] = h0 >> 8;
-  s[2] = h0 >> 16;
-  s[3] = (h0 >> 24) | (h1 << 2);
-  s[4] = h1 >> 6;
-  s[5] = h1 >> 14;
-  s[6] = (h1 >> 22) | (h2 << 3);
-  s[7] = h2 >> 5;
-  s[8] = h2 >> 13;
-  s[9] = (h2 >> 21) | (h3 << 5);
-  s[10] = h3 >> 3;
-  s[11] = h3 >> 11;
-  s[12] = (h3 >> 19) | (h4 << 6);
-  s[13] = h4 >> 2;
-  s[14] = h4 >> 10;
-  s[15] = h4 >> 18;
-  s[16] = h5 >> 0;
-  s[17] = h5 >> 8;
-  s[18] = h5 >> 16;
-  s[19] = (h5 >> 24) | (h6 << 1);
-  s[20] = h6 >> 7;
-  s[21] = h6 >> 15;
-  s[22] = (h6 >> 23) | (h7 << 3);
-  s[23] = h7 >> 5;
-  s[24] = h7 >> 13;
-  s[25] = (h7 >> 21) | (h8 << 4);
-  s[26] = h8 >> 4;
-  s[27] = h8 >> 12;
-  s[28] = (h8 >> 20) | (h9 << 6);
-  s[29] = h9 >> 2;
-  s[30] = h9 >> 10;
-  s[31] = h9 >> 18;
-}
-
-/*
 r = p + q
 */
 
@@ -1248,107 +1248,6 @@ static void slide(signed char *r,const unsigned char *a)
 static ge_precomp Bi[8] = {
 #include "base2.h"
 } ;
-
-/*
-r = a * A + b * B
-where a = a[0]+256*a[1]+...+256^31 a[31].
-and b = b[0]+256*b[1]+...+256^31 b[31].
-B is the Ed25519 base point (x,4/5) with x positive.
-*/
-
-void ge_double_scalarmult_vartime(ge_p2 *r,const unsigned char *a,const ge_p3 *A,const unsigned char *b)
-{
-  signed char aslide[256];
-  signed char bslide[256];
-  ge_cached Ai[8]; /* A,3A,5A,7A,9A,11A,13A,15A */
-  ge_p1p1 t;
-  ge_p3 u;
-  ge_p3 A2;
-  int i;
-
-  slide(aslide,a);
-  slide(bslide,b);
-
-  ge_p3_to_cached(&Ai[0],A);
-  ge_p3_dbl(&t,A); ge_p1p1_to_p3(&A2,&t);
-  ge_add(&t,&A2,&Ai[0]); ge_p1p1_to_p3(&u,&t); ge_p3_to_cached(&Ai[1],&u);
-  ge_add(&t,&A2,&Ai[1]); ge_p1p1_to_p3(&u,&t); ge_p3_to_cached(&Ai[2],&u);
-  ge_add(&t,&A2,&Ai[2]); ge_p1p1_to_p3(&u,&t); ge_p3_to_cached(&Ai[3],&u);
-  ge_add(&t,&A2,&Ai[3]); ge_p1p1_to_p3(&u,&t); ge_p3_to_cached(&Ai[4],&u);
-  ge_add(&t,&A2,&Ai[4]); ge_p1p1_to_p3(&u,&t); ge_p3_to_cached(&Ai[5],&u);
-  ge_add(&t,&A2,&Ai[5]); ge_p1p1_to_p3(&u,&t); ge_p3_to_cached(&Ai[6],&u);
-  ge_add(&t,&A2,&Ai[6]); ge_p1p1_to_p3(&u,&t); ge_p3_to_cached(&Ai[7],&u);
-
-  ge_p2_0(r);
-
-  for (i = 255;i >= 0;--i) {
-    if (aslide[i] || bslide[i]) break;
-  }
-
-  for (;i >= 0;--i) {
-    ge_p2_dbl(&t,r);
-
-    if (aslide[i] > 0) {
-      ge_p1p1_to_p3(&u,&t);
-      ge_add(&t,&u,&Ai[aslide[i]/2]);
-    } else if (aslide[i] < 0) {
-      ge_p1p1_to_p3(&u,&t);
-      ge_sub(&t,&u,&Ai[(-aslide[i])/2]);
-    }
-
-    if (bslide[i] > 0) {
-      ge_p1p1_to_p3(&u,&t);
-      ge_madd(&t,&u,&Bi[bslide[i]/2]);
-    } else if (bslide[i] < 0) {
-      ge_p1p1_to_p3(&u,&t);
-      ge_msub(&t,&u,&Bi[(-bslide[i])/2]);
-    }
-
-    ge_p1p1_to_p2(r,&t);
-  }
-}
-
-void ge_scalarmult_vartime(ge_p3 *r,const unsigned char *a,const ge_p3 *A)
-{
-  signed char aslide[256];
-  ge_cached Ai[8];
-  ge_p1p1 t;
-  ge_p3 u;
-  ge_p3 A2;
-  int i;
-
-  slide(aslide,a);
-
-  ge_p3_to_cached(&Ai[0],A);
-  ge_p3_dbl(&t,A); ge_p1p1_to_p3(&A2,&t);
-  ge_add(&t,&A2,&Ai[0]); ge_p1p1_to_p3(&u,&t); ge_p3_to_cached(&Ai[1],&u);
-  ge_add(&t,&A2,&Ai[1]); ge_p1p1_to_p3(&u,&t); ge_p3_to_cached(&Ai[2],&u);
-  ge_add(&t,&A2,&Ai[2]); ge_p1p1_to_p3(&u,&t); ge_p3_to_cached(&Ai[3],&u);
-  ge_add(&t,&A2,&Ai[3]); ge_p1p1_to_p3(&u,&t); ge_p3_to_cached(&Ai[4],&u);
-  ge_add(&t,&A2,&Ai[4]); ge_p1p1_to_p3(&u,&t); ge_p3_to_cached(&Ai[5],&u);
-  ge_add(&t,&A2,&Ai[5]); ge_p1p1_to_p3(&u,&t); ge_p3_to_cached(&Ai[6],&u);
-  ge_add(&t,&A2,&Ai[6]); ge_p1p1_to_p3(&u,&t); ge_p3_to_cached(&Ai[7],&u);
-
-  ge_p3_0(r);
-
-  for (i = 255;i >= 0;--i) {
-    if (aslide[i]) break;
-  }
-
-  for (;i >= 0;--i) {
-    ge_p3_dbl(&t,r);
-
-    if (aslide[i] > 0) {
-      ge_p1p1_to_p3(&u,&t);
-      ge_add(&t,&u,&Ai[aslide[i]/2]);
-    } else if (aslide[i] < 0) {
-      ge_p1p1_to_p3(&u,&t);
-      ge_sub(&t,&u,&Ai[(-aslide[i])/2]);
-    }
-
-   ge_p1p1_to_p3(r,&t);
-  }
-}
 
 static const fe d = {
     -10913610,13857413,-15372611,6949391,114729,-8787816,-6275908,-3247719,-18696448,-12055116
@@ -1497,17 +1396,6 @@ void ge_p3_0(ge_p3 *h)
 }
 
 /*
-r = 2 * p
-*/
-
-void ge_p3_dbl(ge_p1p1 *r,const ge_p3 *p)
-{
-  ge_p2 q;
-  ge_p3_to_p2(&q,p);
-  ge_p2_dbl(r,&q);
-}
-
-/*
 r = p
 */
 
@@ -1545,6 +1433,17 @@ void ge_p3_tobytes(unsigned char *s,const ge_p3 *h)
   fe_mul(y,h->Y,recip);
   fe_tobytes(s,y);
   s[31] ^= fe_isnegative(x) << 7;
+}
+
+/*
+r = 2 * p
+*/
+
+void ge_p3_dbl(ge_p1p1 *r,const ge_p3 *p)
+{
+  ge_p2 q;
+  ge_p3_to_p2(&q,p);
+  ge_p2_dbl(r,&q);
 }
 
 void ge_precomp_0(ge_precomp *h)
@@ -1606,6 +1505,40 @@ static void ge_select(ge_precomp *t,int pos,signed char b)
 }
 
 /*
+r = p - q
+*/
+
+void ge_sub(ge_p1p1 *r,const ge_p3 *p,const ge_cached *q)
+{
+    fe t0;
+
+    fe_add(r->X, p->Y, p->X);
+    fe_sub(r->Y, p->Y, p->X);
+    fe_mul(r->Z, r->X, q->YminusX);
+    fe_mul(r->Y, r->Y, q->YplusX);
+    fe_mul(r->T, q->T2d, p->T);
+    fe_mul(r->X, p->Z, q->Z);
+    fe_add(t0, r->X, r->X);
+    fe_sub(r->X, r->Z, r->Y);
+    fe_add(r->Y, r->Z, r->Y);
+    fe_sub(r->Z, t0, r->T);
+    fe_add(r->T, t0, r->T);
+}
+
+void ge_tobytes(unsigned char *s,const ge_p2 *h)
+{
+  fe recip;
+  fe x;
+  fe y;
+
+  fe_invert(recip,h->Z);
+  fe_mul(x,h->X,recip);
+  fe_mul(y,h->Y,recip);
+  fe_tobytes(s,y);
+  s[31] ^= fe_isnegative(x) << 7;
+}
+
+/*
 h = a * B
 where a = a[0]+256*a[1]+...+256^31 a[31]
 B is the Ed25519 base point (x,4/5) with x positive.
@@ -1613,6 +1546,107 @@ B is the Ed25519 base point (x,4/5) with x positive.
 Preconditions:
   a[31] <= 127
 */
+
+/*
+r = a * A + b * B
+where a = a[0]+256*a[1]+...+256^31 a[31].
+and b = b[0]+256*b[1]+...+256^31 b[31].
+B is the Ed25519 base point (x,4/5) with x positive.
+*/
+
+void ge_double_scalarmult_vartime(ge_p2 *r,const unsigned char *a,const ge_p3 *A,const unsigned char *b)
+{
+  signed char aslide[256];
+  signed char bslide[256];
+  ge_cached Ai[8]; /* A,3A,5A,7A,9A,11A,13A,15A */
+  ge_p1p1 t;
+  ge_p3 u;
+  ge_p3 A2;
+  int i;
+
+  slide(aslide,a);
+  slide(bslide,b);
+
+  ge_p3_to_cached(&Ai[0],A);
+  ge_p3_dbl(&t,A); ge_p1p1_to_p3(&A2,&t);
+  ge_add(&t,&A2,&Ai[0]); ge_p1p1_to_p3(&u,&t); ge_p3_to_cached(&Ai[1],&u);
+  ge_add(&t,&A2,&Ai[1]); ge_p1p1_to_p3(&u,&t); ge_p3_to_cached(&Ai[2],&u);
+  ge_add(&t,&A2,&Ai[2]); ge_p1p1_to_p3(&u,&t); ge_p3_to_cached(&Ai[3],&u);
+  ge_add(&t,&A2,&Ai[3]); ge_p1p1_to_p3(&u,&t); ge_p3_to_cached(&Ai[4],&u);
+  ge_add(&t,&A2,&Ai[4]); ge_p1p1_to_p3(&u,&t); ge_p3_to_cached(&Ai[5],&u);
+  ge_add(&t,&A2,&Ai[5]); ge_p1p1_to_p3(&u,&t); ge_p3_to_cached(&Ai[6],&u);
+  ge_add(&t,&A2,&Ai[6]); ge_p1p1_to_p3(&u,&t); ge_p3_to_cached(&Ai[7],&u);
+
+  ge_p2_0(r);
+
+  for (i = 255;i >= 0;--i) {
+    if (aslide[i] || bslide[i]) break;
+  }
+
+  for (;i >= 0;--i) {
+    ge_p2_dbl(&t,r);
+
+    if (aslide[i] > 0) {
+      ge_p1p1_to_p3(&u,&t);
+      ge_add(&t,&u,&Ai[aslide[i]/2]);
+    } else if (aslide[i] < 0) {
+      ge_p1p1_to_p3(&u,&t);
+      ge_sub(&t,&u,&Ai[(-aslide[i])/2]);
+    }
+
+    if (bslide[i] > 0) {
+      ge_p1p1_to_p3(&u,&t);
+      ge_madd(&t,&u,&Bi[bslide[i]/2]);
+    } else if (bslide[i] < 0) {
+      ge_p1p1_to_p3(&u,&t);
+      ge_msub(&t,&u,&Bi[(-bslide[i])/2]);
+    }
+
+    ge_p1p1_to_p2(r,&t);
+  }
+}
+
+void ge_scalarmult_vartime(ge_p3 *r,const unsigned char *a,const ge_p3 *A)
+{
+  signed char aslide[256];
+  ge_cached Ai[8];
+  ge_p1p1 t;
+  ge_p3 u;
+  ge_p3 A2;
+  int i;
+
+  slide(aslide,a);
+
+  ge_p3_to_cached(&Ai[0],A);
+  ge_p3_dbl(&t,A); ge_p1p1_to_p3(&A2,&t);
+  ge_add(&t,&A2,&Ai[0]); ge_p1p1_to_p3(&u,&t); ge_p3_to_cached(&Ai[1],&u);
+  ge_add(&t,&A2,&Ai[1]); ge_p1p1_to_p3(&u,&t); ge_p3_to_cached(&Ai[2],&u);
+  ge_add(&t,&A2,&Ai[2]); ge_p1p1_to_p3(&u,&t); ge_p3_to_cached(&Ai[3],&u);
+  ge_add(&t,&A2,&Ai[3]); ge_p1p1_to_p3(&u,&t); ge_p3_to_cached(&Ai[4],&u);
+  ge_add(&t,&A2,&Ai[4]); ge_p1p1_to_p3(&u,&t); ge_p3_to_cached(&Ai[5],&u);
+  ge_add(&t,&A2,&Ai[5]); ge_p1p1_to_p3(&u,&t); ge_p3_to_cached(&Ai[6],&u);
+  ge_add(&t,&A2,&Ai[6]); ge_p1p1_to_p3(&u,&t); ge_p3_to_cached(&Ai[7],&u);
+
+  ge_p3_0(r);
+
+  for (i = 255;i >= 0;--i) {
+    if (aslide[i]) break;
+  }
+
+  for (;i >= 0;--i) {
+    ge_p3_dbl(&t,r);
+
+    if (aslide[i] > 0) {
+      ge_p1p1_to_p3(&u,&t);
+      ge_add(&t,&u,&Ai[aslide[i]/2]);
+    } else if (aslide[i] < 0) {
+      ge_p1p1_to_p3(&u,&t);
+      ge_sub(&t,&u,&Ai[(-aslide[i])/2]);
+    }
+
+   ge_p1p1_to_p3(r,&t);
+  }
+}
 
 void ge_scalarmult_base(ge_p3 *h,const unsigned char *a)
 {
@@ -1655,40 +1689,6 @@ void ge_scalarmult_base(ge_p3 *h,const unsigned char *a)
     ge_select(&t,i / 2,e[i]);
     ge_madd(&r,h,&t); ge_p1p1_to_p3(h,&r);
   }
-}
-
-/*
-r = p - q
-*/
-
-void ge_sub(ge_p1p1 *r,const ge_p3 *p,const ge_cached *q)
-{
-    fe t0;
-
-    fe_add(r->X, p->Y, p->X);
-    fe_sub(r->Y, p->Y, p->X);
-    fe_mul(r->Z, r->X, q->YminusX);
-    fe_mul(r->Y, r->Y, q->YplusX);
-    fe_mul(r->T, q->T2d, p->T);
-    fe_mul(r->X, p->Z, q->Z);
-    fe_add(t0, r->X, r->X);
-    fe_sub(r->X, r->Z, r->Y);
-    fe_add(r->Y, r->Z, r->Y);
-    fe_sub(r->Z, t0, r->T);
-    fe_add(r->T, t0, r->T);
-}
-
-void ge_tobytes(unsigned char *s,const ge_p2 *h)
-{
-  fe recip;
-  fe x;
-  fe y;
-
-  fe_invert(recip,h->Z);
-  fe_mul(x,h->X,recip);
-  fe_mul(y,h->Y,recip);
-  fe_tobytes(s,y);
-  s[31] ^= fe_isnegative(x) << 7;
 }
 
 /*
