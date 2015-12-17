@@ -14,6 +14,7 @@
 #include <fcntl.h>
 #include <limits.h>
 #include <stdint.h>
+#include <stdlib.h>
 #include <string.h>
 #ifndef _MSC_VER
 # include <unistd.h>
@@ -86,9 +87,10 @@ sodium_hrtime(void)
 #else
     {
         struct timeval tv;
-        int ret = gettimeofday(&tv, NULL);
-        (void)ret;
-        assert(ret == 0);
+
+        if (gettimeofday(&tv, NULL) != 0) {
+            abort();
+        }
         ts = ((uint64_t) tv.tv_sec) * 1000000U + (uint64_t) tv.tv_usec;
     }
 #endif
