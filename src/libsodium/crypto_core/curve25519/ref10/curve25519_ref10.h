@@ -1,10 +1,11 @@
 #ifndef CURVE25519_REF10_H
 #define CURVE25519_REF10_H
 
-#include "crypto_int32.h"
+#include <stddef.h>
+#include <stdint.h>
 
 #define fe crypto_core_curve25519_ref10_fe
-typedef crypto_int32 fe[10];
+typedef int32_t fe[10];
 
 /*
 fe means field element.
