@@ -15,7 +15,7 @@ static unsigned char a2[crypto_auth_hmacsha512_BYTES];
 int main(void)
 {
     crypto_auth_hmacsha512_state st;
-    int i;
+    size_t i;
 
     assert(crypto_auth_hmacsha512_statebytes() ==
            sizeof(crypto_auth_hmacsha512_state));

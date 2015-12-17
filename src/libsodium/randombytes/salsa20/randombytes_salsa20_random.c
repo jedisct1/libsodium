@@ -86,7 +86,9 @@ sodium_hrtime(void)
 #else
     {
         struct timeval tv;
-        assert(gettimeofday(&tv, NULL) == 0);
+        int ret = gettimeofday(&tv, NULL);
+        (void)ret;
+        assert(ret == 0);
         ts = ((uint64_t) tv.tv_sec) * 1000000U + (uint64_t) tv.tv_usec;
     }
 #endif
