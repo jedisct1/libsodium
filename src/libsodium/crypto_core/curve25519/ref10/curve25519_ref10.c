@@ -233,17 +233,17 @@ void fe_frombytes(fe h,const unsigned char *s)
   crypto_int64 carry8;
   crypto_int64 carry9;
 
-  carry9 = (h9 + (crypto_int64) (1L << 24)) >> 25; h0 += carry9 * 19; h9 -= carry9 << 25;
-  carry1 = (h1 + (crypto_int64) (1L << 24)) >> 25; h2 += carry1; h1 -= carry1 << 25;
-  carry3 = (h3 + (crypto_int64) (1L << 24)) >> 25; h4 += carry3; h3 -= carry3 << 25;
-  carry5 = (h5 + (crypto_int64) (1L << 24)) >> 25; h6 += carry5; h5 -= carry5 << 25;
-  carry7 = (h7 + (crypto_int64) (1L << 24)) >> 25; h8 += carry7; h7 -= carry7 << 25;
+  carry9 = (h9 + (crypto_int64) (1L << 24)) >> 25; h0 += carry9 * 19; h9 -= carry9 * ((crypto_uint64) 1L << 25);
+  carry1 = (h1 + (crypto_int64) (1L << 24)) >> 25; h2 += carry1; h1 -= carry1 * ((crypto_uint64) 1L << 25);
+  carry3 = (h3 + (crypto_int64) (1L << 24)) >> 25; h4 += carry3; h3 -= carry3 * ((crypto_uint64) 1L << 25);
+  carry5 = (h5 + (crypto_int64) (1L << 24)) >> 25; h6 += carry5; h5 -= carry5 * ((crypto_uint64) 1L << 25);
+  carry7 = (h7 + (crypto_int64) (1L << 24)) >> 25; h8 += carry7; h7 -= carry7 * ((crypto_uint64) 1L << 25);
 
-  carry0 = (h0 + (crypto_int64) (1L << 25)) >> 26; h1 += carry0; h0 -= carry0 << 26;
-  carry2 = (h2 + (crypto_int64) (1L << 25)) >> 26; h3 += carry2; h2 -= carry2 << 26;
-  carry4 = (h4 + (crypto_int64) (1L << 25)) >> 26; h5 += carry4; h4 -= carry4 << 26;
-  carry6 = (h6 + (crypto_int64) (1L << 25)) >> 26; h7 += carry6; h6 -= carry6 << 26;
-  carry8 = (h8 + (crypto_int64) (1L << 25)) >> 26; h9 += carry8; h8 -= carry8 << 26;
+  carry0 = (h0 + (crypto_int64) (1L << 25)) >> 26; h1 += carry0; h0 -= carry0 * ((crypto_uint64) 1L << 26);
+  carry2 = (h2 + (crypto_int64) (1L << 25)) >> 26; h3 += carry2; h2 -= carry2 * ((crypto_uint64) 1L << 26);
+  carry4 = (h4 + (crypto_int64) (1L << 25)) >> 26; h5 += carry4; h4 -= carry4 * ((crypto_uint64) 1L << 26);
+  carry6 = (h6 + (crypto_int64) (1L << 25)) >> 26; h7 += carry6; h6 -= carry6 * ((crypto_uint64) 1L << 26);
+  carry8 = (h8 + (crypto_int64) (1L << 25)) >> 26; h9 += carry8; h8 -= carry8 * ((crypto_uint64) 1L << 26);
 
   h[0] = (crypto_int32) h0;
   h[1] = (crypto_int32) h1;
@@ -306,7 +306,7 @@ void fe_tobytes(unsigned char *s,const fe h)
   crypto_int32 carry8;
   crypto_int32 carry9;
 
-  q = (19 * h9 + (((crypto_int32) 1) << 24)) >> 25;
+  q = (19 * h9 + ((crypto_uint32) 1L << 24)) >> 25;
   q = (h0 + q) >> 26;
   q = (h1 + q) >> 25;
   q = (h2 + q) >> 26;
@@ -322,16 +322,16 @@ void fe_tobytes(unsigned char *s,const fe h)
   h0 += 19 * q;
   /* Goal: Output h-2^255 q, which is between 0 and 2^255-20. */
 
-  carry0 = h0 >> 26; h1 += carry0; h0 -= carry0 << 26;
-  carry1 = h1 >> 25; h2 += carry1; h1 -= carry1 << 25;
-  carry2 = h2 >> 26; h3 += carry2; h2 -= carry2 << 26;
-  carry3 = h3 >> 25; h4 += carry3; h3 -= carry3 << 25;
-  carry4 = h4 >> 26; h5 += carry4; h4 -= carry4 << 26;
-  carry5 = h5 >> 25; h6 += carry5; h5 -= carry5 << 25;
-  carry6 = h6 >> 26; h7 += carry6; h6 -= carry6 << 26;
-  carry7 = h7 >> 25; h8 += carry7; h7 -= carry7 << 25;
-  carry8 = h8 >> 26; h9 += carry8; h8 -= carry8 << 26;
-  carry9 = h9 >> 25;               h9 -= carry9 << 25;
+  carry0 = h0 >> 26; h1 += carry0; h0 -= carry0 * ((crypto_uint32) 1L << 26);
+  carry1 = h1 >> 25; h2 += carry1; h1 -= carry1 * ((crypto_uint32) 1L << 25);
+  carry2 = h2 >> 26; h3 += carry2; h2 -= carry2 * ((crypto_uint32) 1L << 26);
+  carry3 = h3 >> 25; h4 += carry3; h3 -= carry3 * ((crypto_uint32) 1L << 25);
+  carry4 = h4 >> 26; h5 += carry4; h4 -= carry4 * ((crypto_uint32) 1L << 26);
+  carry5 = h5 >> 25; h6 += carry5; h5 -= carry5 * ((crypto_uint32) 1L << 25);
+  carry6 = h6 >> 26; h7 += carry6; h6 -= carry6 * ((crypto_uint32) 1L << 26);
+  carry7 = h7 >> 25; h8 += carry7; h7 -= carry7 * ((crypto_uint32) 1L << 25);
+  carry8 = h8 >> 26; h9 += carry8; h8 -= carry8 * ((crypto_uint32) 1L << 26);
+  carry9 = h9 >> 25;               h9 -= carry9 * ((crypto_uint32) 1L << 25);
                   /* h10 = carry9 */
 
   /*
@@ -344,32 +344,32 @@ void fe_tobytes(unsigned char *s,const fe h)
   s[0] = h0 >> 0;
   s[1] = h0 >> 8;
   s[2] = h0 >> 16;
-  s[3] = (h0 >> 24) | (h1 << 2);
+  s[3] = (h0 >> 24) | (h1 * ((crypto_uint32) 1 << 2));
   s[4] = h1 >> 6;
   s[5] = h1 >> 14;
-  s[6] = (h1 >> 22) | (h2 << 3);
+  s[6] = (h1 >> 22) | (h2 * ((crypto_uint32) 1 << 3));
   s[7] = h2 >> 5;
   s[8] = h2 >> 13;
-  s[9] = (h2 >> 21) | (h3 << 5);
+  s[9] = (h2 >> 21) | (h3 * ((crypto_uint32) 1 << 5));
   s[10] = h3 >> 3;
   s[11] = h3 >> 11;
-  s[12] = (h3 >> 19) | (h4 << 6);
+  s[12] = (h3 >> 19) | (h4 * ((crypto_uint32) 1 << 6));
   s[13] = h4 >> 2;
   s[14] = h4 >> 10;
   s[15] = h4 >> 18;
   s[16] = h5 >> 0;
   s[17] = h5 >> 8;
   s[18] = h5 >> 16;
-  s[19] = (h5 >> 24) | (h6 << 1);
+  s[19] = (h5 >> 24) | (h6 * ((crypto_uint32) 1 << 1));
   s[20] = h6 >> 7;
   s[21] = h6 >> 15;
-  s[22] = (h6 >> 23) | (h7 << 3);
+  s[22] = (h6 >> 23) | (h7 * ((crypto_uint32) 1 << 3));
   s[23] = h7 >> 5;
   s[24] = h7 >> 13;
-  s[25] = (h7 >> 21) | (h8 << 4);
+  s[25] = (h7 >> 21) | (h8 * ((crypto_uint32) 1 << 4));
   s[26] = h8 >> 4;
   s[27] = h8 >> 12;
-  s[28] = (h8 >> 20) | (h9 << 6);
+  s[28] = (h8 >> 20) | (h9 * ((crypto_uint32) 1 << 6));
   s[29] = h9 >> 2;
   s[30] = h9 >> 10;
   s[31] = h9 >> 18;
@@ -603,46 +603,46 @@ void fe_mul(fe h,const fe f,const fe g)
     i.e. |h1| <= 1.7*2^59; narrower ranges for h3, h5, h7, h9
   */
 
-  carry0 = (h0 + (crypto_int64) (1L << 25)) >> 26; h1 += carry0; h0 -= carry0 << 26;
-  carry4 = (h4 + (crypto_int64) (1L << 25)) >> 26; h5 += carry4; h4 -= carry4 << 26;
+  carry0 = (h0 + (crypto_int64) (1L << 25)) >> 26; h1 += carry0; h0 -= carry0 * ((crypto_uint64) 1L << 26);
+  carry4 = (h4 + (crypto_int64) (1L << 25)) >> 26; h5 += carry4; h4 -= carry4 * ((crypto_uint64) 1L << 26);
   /* |h0| <= 2^25 */
   /* |h4| <= 2^25 */
   /* |h1| <= 1.71*2^59 */
   /* |h5| <= 1.71*2^59 */
 
-  carry1 = (h1 + (crypto_int64) (1L << 24)) >> 25; h2 += carry1; h1 -= carry1 << 25;
-  carry5 = (h5 + (crypto_int64) (1L << 24)) >> 25; h6 += carry5; h5 -= carry5 << 25;
+  carry1 = (h1 + (crypto_int64) (1L << 24)) >> 25; h2 += carry1; h1 -= carry1 * ((crypto_uint64) 1L << 25);
+  carry5 = (h5 + (crypto_int64) (1L << 24)) >> 25; h6 += carry5; h5 -= carry5 * ((crypto_uint64) 1L << 25);
   /* |h1| <= 2^24; from now on fits into int32 */
   /* |h5| <= 2^24; from now on fits into int32 */
   /* |h2| <= 1.41*2^60 */
   /* |h6| <= 1.41*2^60 */
 
-  carry2 = (h2 + (crypto_int64) (1L << 25)) >> 26; h3 += carry2; h2 -= carry2 << 26;
-  carry6 = (h6 + (crypto_int64) (1L << 25)) >> 26; h7 += carry6; h6 -= carry6 << 26;
+  carry2 = (h2 + (crypto_int64) (1L << 25)) >> 26; h3 += carry2; h2 -= carry2 * ((crypto_uint64) 1L << 26);
+  carry6 = (h6 + (crypto_int64) (1L << 25)) >> 26; h7 += carry6; h6 -= carry6 * ((crypto_uint64) 1L << 26);
   /* |h2| <= 2^25; from now on fits into int32 unchanged */
   /* |h6| <= 2^25; from now on fits into int32 unchanged */
   /* |h3| <= 1.71*2^59 */
   /* |h7| <= 1.71*2^59 */
 
-  carry3 = (h3 + (crypto_int64) (1L << 24)) >> 25; h4 += carry3; h3 -= carry3 << 25;
-  carry7 = (h7 + (crypto_int64) (1L << 24)) >> 25; h8 += carry7; h7 -= carry7 << 25;
+  carry3 = (h3 + (crypto_int64) (1L << 24)) >> 25; h4 += carry3; h3 -= carry3 * ((crypto_uint64) 1L << 25);
+  carry7 = (h7 + (crypto_int64) (1L << 24)) >> 25; h8 += carry7; h7 -= carry7 * ((crypto_uint64) 1L << 25);
   /* |h3| <= 2^24; from now on fits into int32 unchanged */
   /* |h7| <= 2^24; from now on fits into int32 unchanged */
   /* |h4| <= 1.72*2^34 */
   /* |h8| <= 1.41*2^60 */
 
-  carry4 = (h4 + (crypto_int64) (1L << 25)) >> 26; h5 += carry4; h4 -= carry4 << 26;
-  carry8 = (h8 + (crypto_int64) (1L << 25)) >> 26; h9 += carry8; h8 -= carry8 << 26;
+  carry4 = (h4 + (crypto_int64) (1L << 25)) >> 26; h5 += carry4; h4 -= carry4 * ((crypto_uint64) 1L << 26);
+  carry8 = (h8 + (crypto_int64) (1L << 25)) >> 26; h9 += carry8; h8 -= carry8 * ((crypto_uint64) 1L << 26);
   /* |h4| <= 2^25; from now on fits into int32 unchanged */
   /* |h8| <= 2^25; from now on fits into int32 unchanged */
   /* |h5| <= 1.01*2^24 */
   /* |h9| <= 1.71*2^59 */
 
-  carry9 = (h9 + (crypto_int64) (1L << 24)) >> 25; h0 += carry9 * 19; h9 -= carry9 << 25;
+  carry9 = (h9 + (crypto_int64) (1L << 24)) >> 25; h0 += carry9 * 19; h9 -= carry9 * ((crypto_uint64) 1L << 25);
   /* |h9| <= 2^24; from now on fits into int32 unchanged */
   /* |h0| <= 1.1*2^39 */
 
-  carry0 = (h0 + (crypto_int64) (1L << 25)) >> 26; h1 += carry0; h0 -= carry0 << 26;
+  carry0 = (h0 + (crypto_int64) (1L << 25)) >> 26; h1 += carry0; h0 -= carry0 * ((crypto_uint64) 1L << 26);
   /* |h0| <= 2^25; from now on fits into int32 unchanged */
   /* |h1| <= 1.01*2^24 */
 
@@ -818,24 +818,24 @@ void fe_sq(fe h,const fe f)
   crypto_int64 carry8;
   crypto_int64 carry9;
 
-  carry0 = (h0 + (crypto_int64) (1L << 25)) >> 26; h1 += carry0; h0 -= carry0 << 26;
-  carry4 = (h4 + (crypto_int64) (1L << 25)) >> 26; h5 += carry4; h4 -= carry4 << 26;
+  carry0 = (h0 + (crypto_int64) (1L << 25)) >> 26; h1 += carry0; h0 -= carry0 * ((crypto_uint64) 1L << 26);
+  carry4 = (h4 + (crypto_int64) (1L << 25)) >> 26; h5 += carry4; h4 -= carry4 * ((crypto_uint64) 1L << 26);
 
-  carry1 = (h1 + (crypto_int64) (1L << 24)) >> 25; h2 += carry1; h1 -= carry1 << 25;
-  carry5 = (h5 + (crypto_int64) (1L << 24)) >> 25; h6 += carry5; h5 -= carry5 << 25;
+  carry1 = (h1 + (crypto_int64) (1L << 24)) >> 25; h2 += carry1; h1 -= carry1 * ((crypto_uint64) 1L << 25);
+  carry5 = (h5 + (crypto_int64) (1L << 24)) >> 25; h6 += carry5; h5 -= carry5 * ((crypto_uint64) 1L << 25);
 
-  carry2 = (h2 + (crypto_int64) (1L << 25)) >> 26; h3 += carry2; h2 -= carry2 << 26;
-  carry6 = (h6 + (crypto_int64) (1L << 25)) >> 26; h7 += carry6; h6 -= carry6 << 26;
+  carry2 = (h2 + (crypto_int64) (1L << 25)) >> 26; h3 += carry2; h2 -= carry2 * ((crypto_uint64) 1L << 26);
+  carry6 = (h6 + (crypto_int64) (1L << 25)) >> 26; h7 += carry6; h6 -= carry6 * ((crypto_uint64) 1L << 26);
 
-  carry3 = (h3 + (crypto_int64) (1L << 24)) >> 25; h4 += carry3; h3 -= carry3 << 25;
-  carry7 = (h7 + (crypto_int64) (1L << 24)) >> 25; h8 += carry7; h7 -= carry7 << 25;
+  carry3 = (h3 + (crypto_int64) (1L << 24)) >> 25; h4 += carry3; h3 -= carry3 * ((crypto_uint64) 1L << 25);
+  carry7 = (h7 + (crypto_int64) (1L << 24)) >> 25; h8 += carry7; h7 -= carry7 * ((crypto_uint64) 1L << 25);
 
-  carry4 = (h4 + (crypto_int64) (1L << 25)) >> 26; h5 += carry4; h4 -= carry4 << 26;
-  carry8 = (h8 + (crypto_int64) (1L << 25)) >> 26; h9 += carry8; h8 -= carry8 << 26;
+  carry4 = (h4 + (crypto_int64) (1L << 25)) >> 26; h5 += carry4; h4 -= carry4 * ((crypto_uint64) 1L << 26);
+  carry8 = (h8 + (crypto_int64) (1L << 25)) >> 26; h9 += carry8; h8 -= carry8 * ((crypto_uint64) 1L << 26);
 
-  carry9 = (h9 + (crypto_int64) (1L << 24)) >> 25; h0 += carry9 * 19; h9 -= carry9 << 25;
+  carry9 = (h9 + (crypto_int64) (1L << 24)) >> 25; h0 += carry9 * 19; h9 -= carry9 * ((crypto_uint64) 1L << 25);
 
-  carry0 = (h0 + (crypto_int64) (1L << 25)) >> 26; h1 += carry0; h0 -= carry0 << 26;
+  carry0 = (h0 + (crypto_int64) (1L << 25)) >> 26; h1 += carry0; h0 -= carry0 * ((crypto_uint64) 1L << 26);
 
   h[0] = (crypto_int32) h0;
   h[1] = (crypto_int32) h1;
@@ -976,24 +976,24 @@ void fe_sq2(fe h,const fe f)
   h8 += h8;
   h9 += h9;
 
-  carry0 = (h0 + (crypto_int64) (1L << 25)) >> 26; h1 += carry0; h0 -= carry0 << 26;
-  carry4 = (h4 + (crypto_int64) (1L << 25)) >> 26; h5 += carry4; h4 -= carry4 << 26;
+  carry0 = (h0 + (crypto_int64) (1L << 25)) >> 26; h1 += carry0; h0 -= carry0 * ((crypto_uint64) 1L << 26);
+  carry4 = (h4 + (crypto_int64) (1L << 25)) >> 26; h5 += carry4; h4 -= carry4 * ((crypto_uint64) 1L << 26);
 
-  carry1 = (h1 + (crypto_int64) (1L << 24)) >> 25; h2 += carry1; h1 -= carry1 << 25;
-  carry5 = (h5 + (crypto_int64) (1L << 24)) >> 25; h6 += carry5; h5 -= carry5 << 25;
+  carry1 = (h1 + (crypto_int64) (1L << 24)) >> 25; h2 += carry1; h1 -= carry1 * ((crypto_uint64) 1L << 25);
+  carry5 = (h5 + (crypto_int64) (1L << 24)) >> 25; h6 += carry5; h5 -= carry5 * ((crypto_uint64) 1L << 25);
 
-  carry2 = (h2 + (crypto_int64) (1L << 25)) >> 26; h3 += carry2; h2 -= carry2 << 26;
-  carry6 = (h6 + (crypto_int64) (1L << 25)) >> 26; h7 += carry6; h6 -= carry6 << 26;
+  carry2 = (h2 + (crypto_int64) (1L << 25)) >> 26; h3 += carry2; h2 -= carry2 * ((crypto_uint64) 1L << 26);
+  carry6 = (h6 + (crypto_int64) (1L << 25)) >> 26; h7 += carry6; h6 -= carry6 * ((crypto_uint64) 1L << 26);
 
-  carry3 = (h3 + (crypto_int64) (1L << 24)) >> 25; h4 += carry3; h3 -= carry3 << 25;
-  carry7 = (h7 + (crypto_int64) (1L << 24)) >> 25; h8 += carry7; h7 -= carry7 << 25;
+  carry3 = (h3 + (crypto_int64) (1L << 24)) >> 25; h4 += carry3; h3 -= carry3 * ((crypto_uint64) 1L << 25);
+  carry7 = (h7 + (crypto_int64) (1L << 24)) >> 25; h8 += carry7; h7 -= carry7 * ((crypto_uint64) 1L << 25);
 
-  carry4 = (h4 + (crypto_int64) (1L << 25)) >> 26; h5 += carry4; h4 -= carry4 << 26;
-  carry8 = (h8 + (crypto_int64) (1L << 25)) >> 26; h9 += carry8; h8 -= carry8 << 26;
+  carry4 = (h4 + (crypto_int64) (1L << 25)) >> 26; h5 += carry4; h4 -= carry4 * ((crypto_uint64) 1L << 26);
+  carry8 = (h8 + (crypto_int64) (1L << 25)) >> 26; h9 += carry8; h8 -= carry8 * ((crypto_uint64) 1L << 26);
 
-  carry9 = (h9 + (crypto_int64) (1L << 24)) >> 25; h0 += carry9 * 19; h9 -= carry9 << 25;
+  carry9 = (h9 + (crypto_int64) (1L << 24)) >> 25; h0 += carry9 * 19; h9 -= carry9 * ((crypto_uint64) 1L << 25);
 
-  carry0 = (h0 + (crypto_int64) (1L << 25)) >> 26; h1 += carry0; h0 -= carry0 << 26;
+  carry0 = (h0 + (crypto_int64) (1L << 25)) >> 26; h1 += carry0; h0 -= carry0 * ((crypto_uint64) 1L << 26);
 
   h[0] = (crypto_int32) h0;
   h[1] = (crypto_int32) h1;
@@ -1487,7 +1487,7 @@ static void ge_select(ge_precomp *t,int pos,signed char b)
 {
   ge_precomp minust;
   unsigned char bnegative = negative(b);
-  unsigned char babs = b - (((-bnegative) & b) << 1);
+  unsigned char babs = b - (((-bnegative) & b) * ((signed char) 1 << 1));
 
   ge_precomp_0(t);
   cmov(t,&base[pos][0],equal(babs,1));
@@ -1669,7 +1669,7 @@ void ge_scalarmult_base(ge_p3 *h,const unsigned char *a)
     e[i] += carry;
     carry = e[i] + 8;
     carry >>= 4;
-    e[i] -= carry << 4;
+    e[i] -= carry * ((signed char) 1 << 4);
   }
   e[63] += carry;
   /* each e[i] is between -8 and 8 */
@@ -1813,30 +1813,30 @@ void sc_muladd(unsigned char *s,const unsigned char *a,const unsigned char *b,co
   s22 = a11*b11;
   s23 = 0;
 
-  carry0 = (s0 + (1L << 20)) >> 21; s1 += carry0; s0 -= carry0 * (1L << 21);
-  carry2 = (s2 + (1L << 20)) >> 21; s3 += carry2; s2 -= carry2 * (1L << 21);
-  carry4 = (s4 + (1L << 20)) >> 21; s5 += carry4; s4 -= carry4 * (1L << 21);
-  carry6 = (s6 + (1L << 20)) >> 21; s7 += carry6; s6 -= carry6 * (1L << 21);
-  carry8 = (s8 + (1L << 20)) >> 21; s9 += carry8; s8 -= carry8 * (1L << 21);
-  carry10 = (s10 + (1L << 20)) >> 21; s11 += carry10; s10 -= carry10 * (1L << 21);
-  carry12 = (s12 + (1L << 20)) >> 21; s13 += carry12; s12 -= carry12 * (1L << 21);
-  carry14 = (s14 + (1L << 20)) >> 21; s15 += carry14; s14 -= carry14 * (1L << 21);
-  carry16 = (s16 + (1L << 20)) >> 21; s17 += carry16; s16 -= carry16 * (1L << 21);
-  carry18 = (s18 + (1L << 20)) >> 21; s19 += carry18; s18 -= carry18 * (1L << 21);
-  carry20 = (s20 + (1L << 20)) >> 21; s21 += carry20; s20 -= carry20 * (1L << 21);
-  carry22 = (s22 + (1L << 20)) >> 21; s23 += carry22; s22 -= carry22 * (1L << 21);
+  carry0 = (s0 + (crypto_int64) (1L << 20)) >> 21; s1 += carry0; s0 -= carry0 * ((crypto_uint64) 1L << 21);
+  carry2 = (s2 + (crypto_int64) (1L << 20)) >> 21; s3 += carry2; s2 -= carry2 * ((crypto_uint64) 1L << 21);
+  carry4 = (s4 + (crypto_int64) (1L << 20)) >> 21; s5 += carry4; s4 -= carry4 * ((crypto_uint64) 1L << 21);
+  carry6 = (s6 + (crypto_int64) (1L << 20)) >> 21; s7 += carry6; s6 -= carry6 * ((crypto_uint64) 1L << 21);
+  carry8 = (s8 + (crypto_int64) (1L << 20)) >> 21; s9 += carry8; s8 -= carry8 * ((crypto_uint64) 1L << 21);
+  carry10 = (s10 + (crypto_int64) (1L << 20)) >> 21; s11 += carry10; s10 -= carry10 * ((crypto_uint64) 1L << 21);
+  carry12 = (s12 + (crypto_int64) (1L << 20)) >> 21; s13 += carry12; s12 -= carry12 * ((crypto_uint64) 1L << 21);
+  carry14 = (s14 + (crypto_int64) (1L << 20)) >> 21; s15 += carry14; s14 -= carry14 * ((crypto_uint64) 1L << 21);
+  carry16 = (s16 + (crypto_int64) (1L << 20)) >> 21; s17 += carry16; s16 -= carry16 * ((crypto_uint64) 1L << 21);
+  carry18 = (s18 + (crypto_int64) (1L << 20)) >> 21; s19 += carry18; s18 -= carry18 * ((crypto_uint64) 1L << 21);
+  carry20 = (s20 + (crypto_int64) (1L << 20)) >> 21; s21 += carry20; s20 -= carry20 * ((crypto_uint64) 1L << 21);
+  carry22 = (s22 + (crypto_int64) (1L << 20)) >> 21; s23 += carry22; s22 -= carry22 * ((crypto_uint64) 1L << 21);
 
-  carry1 = (s1 + (1L << 20)) >> 21; s2 += carry1; s1 -= carry1 * (1L << 21);
-  carry3 = (s3 + (1L << 20)) >> 21; s4 += carry3; s3 -= carry3 * (1L << 21);
-  carry5 = (s5 + (1L << 20)) >> 21; s6 += carry5; s5 -= carry5 * (1L << 21);
-  carry7 = (s7 + (1L << 20)) >> 21; s8 += carry7; s7 -= carry7 * (1L << 21);
-  carry9 = (s9 + (1L << 20)) >> 21; s10 += carry9; s9 -= carry9 * (1L << 21);
-  carry11 = (s11 + (1L << 20)) >> 21; s12 += carry11; s11 -= carry11 * (1L << 21);
-  carry13 = (s13 + (1L << 20)) >> 21; s14 += carry13; s13 -= carry13 * (1L << 21);
-  carry15 = (s15 + (1L << 20)) >> 21; s16 += carry15; s15 -= carry15 * (1L << 21);
-  carry17 = (s17 + (1L << 20)) >> 21; s18 += carry17; s17 -= carry17 * (1L << 21);
-  carry19 = (s19 + (1L << 20)) >> 21; s20 += carry19; s19 -= carry19 * (1L << 21);
-  carry21 = (s21 + (1L << 20)) >> 21; s22 += carry21; s21 -= carry21 * (1L << 21);
+  carry1 = (s1 + (crypto_int64) (1L << 20)) >> 21; s2 += carry1; s1 -= carry1 * ((crypto_uint64) 1L << 21);
+  carry3 = (s3 + (crypto_int64) (1L << 20)) >> 21; s4 += carry3; s3 -= carry3 * ((crypto_uint64) 1L << 21);
+  carry5 = (s5 + (crypto_int64) (1L << 20)) >> 21; s6 += carry5; s5 -= carry5 * ((crypto_uint64) 1L << 21);
+  carry7 = (s7 + (crypto_int64) (1L << 20)) >> 21; s8 += carry7; s7 -= carry7 * ((crypto_uint64) 1L << 21);
+  carry9 = (s9 + (crypto_int64) (1L << 20)) >> 21; s10 += carry9; s9 -= carry9 * ((crypto_uint64) 1L << 21);
+  carry11 = (s11 + (crypto_int64) (1L << 20)) >> 21; s12 += carry11; s11 -= carry11 * ((crypto_uint64) 1L << 21);
+  carry13 = (s13 + (crypto_int64) (1L << 20)) >> 21; s14 += carry13; s13 -= carry13 * ((crypto_uint64) 1L << 21);
+  carry15 = (s15 + (crypto_int64) (1L << 20)) >> 21; s16 += carry15; s15 -= carry15 * ((crypto_uint64) 1L << 21);
+  carry17 = (s17 + (crypto_int64) (1L << 20)) >> 21; s18 += carry17; s17 -= carry17 * ((crypto_uint64) 1L << 21);
+  carry19 = (s19 + (crypto_int64) (1L << 20)) >> 21; s20 += carry19; s19 -= carry19 * ((crypto_uint64) 1L << 21);
+  carry21 = (s21 + (crypto_int64) (1L << 20)) >> 21; s22 += carry21; s21 -= carry21 * ((crypto_uint64) 1L << 21);
 
   s11 += s23 * 666643;
   s12 += s23 * 470296;
@@ -1880,18 +1880,18 @@ void sc_muladd(unsigned char *s,const unsigned char *a,const unsigned char *b,co
   s10 += s18 * 136657;
   s11 -= s18 * 683901;
 
-  carry6 = (s6 + (1L << 20)) >> 21; s7 += carry6; s6 -= carry6 * (1L << 21);
-  carry8 = (s8 + (1L << 20)) >> 21; s9 += carry8; s8 -= carry8 * (1L << 21);
-  carry10 = (s10 + (1L << 20)) >> 21; s11 += carry10; s10 -= carry10 * (1L << 21);
-  carry12 = (s12 + (1L << 20)) >> 21; s13 += carry12; s12 -= carry12 * (1L << 21);
-  carry14 = (s14 + (1L << 20)) >> 21; s15 += carry14; s14 -= carry14 * (1L << 21);
-  carry16 = (s16 + (1L << 20)) >> 21; s17 += carry16; s16 -= carry16 * (1L << 21);
+  carry6 = (s6 + (crypto_int64) (1L << 20)) >> 21; s7 += carry6; s6 -= carry6 * ((crypto_uint64) 1L << 21);
+  carry8 = (s8 + (crypto_int64) (1L << 20)) >> 21; s9 += carry8; s8 -= carry8 * ((crypto_uint64) 1L << 21);
+  carry10 = (s10 + (crypto_int64) (1L << 20)) >> 21; s11 += carry10; s10 -= carry10 * ((crypto_uint64) 1L << 21);
+  carry12 = (s12 + (crypto_int64) (1L << 20)) >> 21; s13 += carry12; s12 -= carry12 * ((crypto_uint64) 1L << 21);
+  carry14 = (s14 + (crypto_int64) (1L << 20)) >> 21; s15 += carry14; s14 -= carry14 * ((crypto_uint64) 1L << 21);
+  carry16 = (s16 + (crypto_int64) (1L << 20)) >> 21; s17 += carry16; s16 -= carry16 * ((crypto_uint64) 1L << 21);
 
-  carry7 = (s7 + (1L << 20)) >> 21; s8 += carry7; s7 -= carry7 * (1L << 21);
-  carry9 = (s9 + (1L << 20)) >> 21; s10 += carry9; s9 -= carry9 * (1L << 21);
-  carry11 = (s11 + (1L << 20)) >> 21; s12 += carry11; s11 -= carry11 * (1L << 21);
-  carry13 = (s13 + (1L << 20)) >> 21; s14 += carry13; s13 -= carry13 * (1L << 21);
-  carry15 = (s15 + (1L << 20)) >> 21; s16 += carry15; s15 -= carry15 * (1L << 21);
+  carry7 = (s7 + (crypto_int64) (1L << 20)) >> 21; s8 += carry7; s7 -= carry7 * ((crypto_uint64) 1L << 21);
+  carry9 = (s9 + (crypto_int64) (1L << 20)) >> 21; s10 += carry9; s9 -= carry9 * ((crypto_uint64) 1L << 21);
+  carry11 = (s11 + (crypto_int64) (1L << 20)) >> 21; s12 += carry11; s11 -= carry11 * ((crypto_uint64) 1L << 21);
+  carry13 = (s13 + (crypto_int64) (1L << 20)) >> 21; s14 += carry13; s13 -= carry13 * ((crypto_uint64) 1L << 21);
+  carry15 = (s15 + (crypto_int64) (1L << 20)) >> 21; s16 += carry15; s15 -= carry15 * ((crypto_uint64) 1L << 21);
 
   s5 += s17 * 666643;
   s6 += s17 * 470296;
@@ -1936,19 +1936,19 @@ void sc_muladd(unsigned char *s,const unsigned char *a,const unsigned char *b,co
   s5 -= s12 * 683901;
   s12 = 0;
 
-  carry0 = (s0 + (1L << 20)) >> 21; s1 += carry0; s0 -= carry0 * (1L << 21);
-  carry2 = (s2 + (1L << 20)) >> 21; s3 += carry2; s2 -= carry2 * (1L << 21);
-  carry4 = (s4 + (1L << 20)) >> 21; s5 += carry4; s4 -= carry4 * (1L << 21);
-  carry6 = (s6 + (1L << 20)) >> 21; s7 += carry6; s6 -= carry6 * (1L << 21);
-  carry8 = (s8 + (1L << 20)) >> 21; s9 += carry8; s8 -= carry8 * (1L << 21);
-  carry10 = (s10 + (1L << 20)) >> 21; s11 += carry10; s10 -= carry10 * (1L << 21);
+  carry0 = (s0 + (crypto_int64) (1L << 20)) >> 21; s1 += carry0; s0 -= carry0 * ((crypto_uint64) 1L << 21);
+  carry2 = (s2 + (crypto_int64) (1L << 20)) >> 21; s3 += carry2; s2 -= carry2 * ((crypto_uint64) 1L << 21);
+  carry4 = (s4 + (crypto_int64) (1L << 20)) >> 21; s5 += carry4; s4 -= carry4 * ((crypto_uint64) 1L << 21);
+  carry6 = (s6 + (crypto_int64) (1L << 20)) >> 21; s7 += carry6; s6 -= carry6 * ((crypto_uint64) 1L << 21);
+  carry8 = (s8 + (crypto_int64) (1L << 20)) >> 21; s9 += carry8; s8 -= carry8 * ((crypto_uint64) 1L << 21);
+  carry10 = (s10 + (crypto_int64) (1L << 20)) >> 21; s11 += carry10; s10 -= carry10 * ((crypto_uint64) 1L << 21);
 
-  carry1 = (s1 + (1L << 20)) >> 21; s2 += carry1; s1 -= carry1 * (1L << 21);
-  carry3 = (s3 + (1L << 20)) >> 21; s4 += carry3; s3 -= carry3 * (1L << 21);
-  carry5 = (s5 + (1L << 20)) >> 21; s6 += carry5; s5 -= carry5 * (1L << 21);
-  carry7 = (s7 + (1L << 20)) >> 21; s8 += carry7; s7 -= carry7 * (1L << 21);
-  carry9 = (s9 + (1L << 20)) >> 21; s10 += carry9; s9 -= carry9 * (1L << 21);
-  carry11 = (s11 + (1L << 20)) >> 21; s12 += carry11; s11 -= carry11 * (1L << 21);
+  carry1 = (s1 + (crypto_int64) (1L << 20)) >> 21; s2 += carry1; s1 -= carry1 * ((crypto_uint64) 1L << 21);
+  carry3 = (s3 + (crypto_int64) (1L << 20)) >> 21; s4 += carry3; s3 -= carry3 * ((crypto_uint64) 1L << 21);
+  carry5 = (s5 + (crypto_int64) (1L << 20)) >> 21; s6 += carry5; s5 -= carry5 * ((crypto_uint64) 1L << 21);
+  carry7 = (s7 + (crypto_int64) (1L << 20)) >> 21; s8 += carry7; s7 -= carry7 * ((crypto_uint64) 1L << 21);
+  carry9 = (s9 + (crypto_int64) (1L << 20)) >> 21; s10 += carry9; s9 -= carry9 * ((crypto_uint64) 1L << 21);
+  carry11 = (s11 + (crypto_int64) (1L << 20)) >> 21; s12 += carry11; s11 -= carry11 * ((crypto_uint64) 1L << 21);
 
   s0 += s12 * 666643;
   s1 += s12 * 470296;
@@ -1958,18 +1958,18 @@ void sc_muladd(unsigned char *s,const unsigned char *a,const unsigned char *b,co
   s5 -= s12 * 683901;
   s12 = 0;
 
-  carry0 = s0 >> 21; s1 += carry0; s0 -= carry0 * (1L << 21);
-  carry1 = s1 >> 21; s2 += carry1; s1 -= carry1 * (1L << 21);
-  carry2 = s2 >> 21; s3 += carry2; s2 -= carry2 * (1L << 21);
-  carry3 = s3 >> 21; s4 += carry3; s3 -= carry3 * (1L << 21);
-  carry4 = s4 >> 21; s5 += carry4; s4 -= carry4 * (1L << 21);
-  carry5 = s5 >> 21; s6 += carry5; s5 -= carry5 * (1L << 21);
-  carry6 = s6 >> 21; s7 += carry6; s6 -= carry6 * (1L << 21);
-  carry7 = s7 >> 21; s8 += carry7; s7 -= carry7 * (1L << 21);
-  carry8 = s8 >> 21; s9 += carry8; s8 -= carry8 * (1L << 21);
-  carry9 = s9 >> 21; s10 += carry9; s9 -= carry9 * (1L << 21);
-  carry10 = s10 >> 21; s11 += carry10; s10 -= carry10 * (1L << 21);
-  carry11 = s11 >> 21; s12 += carry11; s11 -= carry11 * (1L << 21);
+  carry0 = s0 >> 21; s1 += carry0; s0 -= carry0 * ((crypto_uint64) 1L << 21);
+  carry1 = s1 >> 21; s2 += carry1; s1 -= carry1 * ((crypto_uint64) 1L << 21);
+  carry2 = s2 >> 21; s3 += carry2; s2 -= carry2 * ((crypto_uint64) 1L << 21);
+  carry3 = s3 >> 21; s4 += carry3; s3 -= carry3 * ((crypto_uint64) 1L << 21);
+  carry4 = s4 >> 21; s5 += carry4; s4 -= carry4 * ((crypto_uint64) 1L << 21);
+  carry5 = s5 >> 21; s6 += carry5; s5 -= carry5 * ((crypto_uint64) 1L << 21);
+  carry6 = s6 >> 21; s7 += carry6; s6 -= carry6 * ((crypto_uint64) 1L << 21);
+  carry7 = s7 >> 21; s8 += carry7; s7 -= carry7 * ((crypto_uint64) 1L << 21);
+  carry8 = s8 >> 21; s9 += carry8; s8 -= carry8 * ((crypto_uint64) 1L << 21);
+  carry9 = s9 >> 21; s10 += carry9; s9 -= carry9 * ((crypto_uint64) 1L << 21);
+  carry10 = s10 >> 21; s11 += carry10; s10 -= carry10 * ((crypto_uint64) 1L << 21);
+  carry11 = s11 >> 21; s12 += carry11; s11 -= carry11 * ((crypto_uint64) 1L << 21);
 
   s0 += s12 * 666643;
   s1 += s12 * 470296;
@@ -1978,47 +1978,47 @@ void sc_muladd(unsigned char *s,const unsigned char *a,const unsigned char *b,co
   s4 += s12 * 136657;
   s5 -= s12 * 683901;
 
-  carry0 = s0 >> 21; s1 += carry0; s0 -= carry0 * (1L << 21);
-  carry1 = s1 >> 21; s2 += carry1; s1 -= carry1 * (1L << 21);
-  carry2 = s2 >> 21; s3 += carry2; s2 -= carry2 * (1L << 21);
-  carry3 = s3 >> 21; s4 += carry3; s3 -= carry3 * (1L << 21);
-  carry4 = s4 >> 21; s5 += carry4; s4 -= carry4 * (1L << 21);
-  carry5 = s5 >> 21; s6 += carry5; s5 -= carry5 * (1L << 21);
-  carry6 = s6 >> 21; s7 += carry6; s6 -= carry6 * (1L << 21);
-  carry7 = s7 >> 21; s8 += carry7; s7 -= carry7 * (1L << 21);
-  carry8 = s8 >> 21; s9 += carry8; s8 -= carry8 * (1L << 21);
-  carry9 = s9 >> 21; s10 += carry9; s9 -= carry9 * (1L << 21);
-  carry10 = s10 >> 21; s11 += carry10; s10 -= carry10 * (1L << 21);
+  carry0 = s0 >> 21; s1 += carry0; s0 -= carry0 * ((crypto_uint64) 1L << 21);
+  carry1 = s1 >> 21; s2 += carry1; s1 -= carry1 * ((crypto_uint64) 1L << 21);
+  carry2 = s2 >> 21; s3 += carry2; s2 -= carry2 * ((crypto_uint64) 1L << 21);
+  carry3 = s3 >> 21; s4 += carry3; s3 -= carry3 * ((crypto_uint64) 1L << 21);
+  carry4 = s4 >> 21; s5 += carry4; s4 -= carry4 * ((crypto_uint64) 1L << 21);
+  carry5 = s5 >> 21; s6 += carry5; s5 -= carry5 * ((crypto_uint64) 1L << 21);
+  carry6 = s6 >> 21; s7 += carry6; s6 -= carry6 * ((crypto_uint64) 1L << 21);
+  carry7 = s7 >> 21; s8 += carry7; s7 -= carry7 * ((crypto_uint64) 1L << 21);
+  carry8 = s8 >> 21; s9 += carry8; s8 -= carry8 * ((crypto_uint64) 1L << 21);
+  carry9 = s9 >> 21; s10 += carry9; s9 -= carry9 * ((crypto_uint64) 1L << 21);
+  carry10 = s10 >> 21; s11 += carry10; s10 -= carry10 * ((crypto_uint64) 1L << 21);
 
   s[0] = s0 >> 0;
   s[1] = s0 >> 8;
-  s[2] = (s0 >> 16) | (s1 << 5);
+  s[2] = (s0 >> 16) | (s1 * ((crypto_uint64) 1 << 5));
   s[3] = s1 >> 3;
   s[4] = s1 >> 11;
-  s[5] = (s1 >> 19) | (s2 << 2);
+  s[5] = (s1 >> 19) | (s2 * ((crypto_uint64) 1 << 2));
   s[6] = s2 >> 6;
-  s[7] = (s2 >> 14) | (s3 << 7);
+  s[7] = (s2 >> 14) | (s3 * ((crypto_uint64) 1 << 7));
   s[8] = s3 >> 1;
   s[9] = s3 >> 9;
-  s[10] = (s3 >> 17) | (s4 << 4);
+  s[10] = (s3 >> 17) | (s4 * ((crypto_uint64) 1 << 4));
   s[11] = s4 >> 4;
   s[12] = s4 >> 12;
-  s[13] = (s4 >> 20) | (s5 << 1);
+  s[13] = (s4 >> 20) | (s5 * ((crypto_uint64) 1 << 1));
   s[14] = s5 >> 7;
-  s[15] = (s5 >> 15) | (s6 << 6);
+  s[15] = (s5 >> 15) | (s6 * ((crypto_uint64) 1 << 6));
   s[16] = s6 >> 2;
   s[17] = s6 >> 10;
-  s[18] = (s6 >> 18) | (s7 << 3);
+  s[18] = (s6 >> 18) | (s7 * ((crypto_uint64) 1 << 3));
   s[19] = s7 >> 5;
   s[20] = s7 >> 13;
   s[21] = s8 >> 0;
   s[22] = s8 >> 8;
-  s[23] = (s8 >> 16) | (s9 << 5);
+  s[23] = (s8 >> 16) | (s9 * ((crypto_uint64) 1 << 5));
   s[24] = s9 >> 3;
   s[25] = s9 >> 11;
-  s[26] = (s9 >> 19) | (s10 << 2);
+  s[26] = (s9 >> 19) | (s10 * ((crypto_uint64) 1 << 2));
   s[27] = s10 >> 6;
-  s[28] = (s10 >> 14) | (s11 << 7);
+  s[28] = (s10 >> 14) | (s11 * ((crypto_uint64) 1 << 7));
   s[29] = s11 >> 1;
   s[30] = s11 >> 9;
   s[31] = s11 >> 17;
@@ -2120,18 +2120,18 @@ void sc_reduce(unsigned char *s)
   s10 += s18 * 136657;
   s11 -= s18 * 683901;
 
-  carry6 = (s6 + (1L << 20)) >> 21; s7 += carry6; s6 -= carry6 * (1L << 21);
-  carry8 = (s8 + (1L << 20)) >> 21; s9 += carry8; s8 -= carry8 * (1L << 21);
-  carry10 = (s10 + (1L << 20)) >> 21; s11 += carry10; s10 -= carry10 * (1L << 21);
-  carry12 = (s12 + (1L << 20)) >> 21; s13 += carry12; s12 -= carry12 * (1L << 21);
-  carry14 = (s14 + (1L << 20)) >> 21; s15 += carry14; s14 -= carry14 * (1L << 21);
-  carry16 = (s16 + (1L << 20)) >> 21; s17 += carry16; s16 -= carry16 * (1L << 21);
+    carry6 = (s6 + (crypto_int64) (1L << 20)) >> 21; s7 += carry6; s6 -= carry6 * ((crypto_uint64) 1L << 21);
+  carry8 = (s8 + (crypto_int64) (1L << 20)) >> 21; s9 += carry8; s8 -= carry8 * ((crypto_uint64) 1L << 21);
+  carry10 = (s10 + (crypto_int64) (1L << 20)) >> 21; s11 += carry10; s10 -= carry10 * ((crypto_uint64) 1L << 21);
+  carry12 = (s12 + (crypto_int64) (1L << 20)) >> 21; s13 += carry12; s12 -= carry12 * ((crypto_uint64) 1L << 21);
+  carry14 = (s14 + (crypto_int64) (1L << 20)) >> 21; s15 += carry14; s14 -= carry14 * ((crypto_uint64) 1L << 21);
+  carry16 = (s16 + (crypto_int64) (1L << 20)) >> 21; s17 += carry16; s16 -= carry16 * ((crypto_uint64) 1L << 21);
 
-  carry7 = (s7 + (1L << 20)) >> 21; s8 += carry7; s7 -= carry7 * (1L << 21);
-  carry9 = (s9 + (1L << 20)) >> 21; s10 += carry9; s9 -= carry9 * (1L << 21);
-  carry11 = (s11 + (1L << 20)) >> 21; s12 += carry11; s11 -= carry11 * (1L << 21);
-  carry13 = (s13 + (1L << 20)) >> 21; s14 += carry13; s13 -= carry13 * (1L << 21);
-  carry15 = (s15 + (1L << 20)) >> 21; s16 += carry15; s15 -= carry15 * (1L << 21);
+  carry7 = (s7 + (crypto_int64) (1L << 20)) >> 21; s8 += carry7; s7 -= carry7 * ((crypto_uint64) 1L << 21);
+  carry9 = (s9 + (crypto_int64) (1L << 20)) >> 21; s10 += carry9; s9 -= carry9 * ((crypto_uint64) 1L << 21);
+  carry11 = (s11 + (crypto_int64) (1L << 20)) >> 21; s12 += carry11; s11 -= carry11 * ((crypto_uint64) 1L << 21);
+  carry13 = (s13 + (crypto_int64) (1L << 20)) >> 21; s14 += carry13; s13 -= carry13 * ((crypto_uint64) 1L << 21);
+  carry15 = (s15 + (crypto_int64) (1L << 20)) >> 21; s16 += carry15; s15 -= carry15 * ((crypto_uint64) 1L << 21);
 
   s5 += s17 * 666643;
   s6 += s17 * 470296;
@@ -2176,19 +2176,19 @@ void sc_reduce(unsigned char *s)
   s5 -= s12 * 683901;
   s12 = 0;
 
-  carry0 = (s0 + (1L << 20)) >> 21; s1 += carry0; s0 -= carry0 * (1L << 21);
-  carry2 = (s2 + (1L << 20)) >> 21; s3 += carry2; s2 -= carry2 * (1L << 21);
-  carry4 = (s4 + (1L << 20)) >> 21; s5 += carry4; s4 -= carry4 * (1L << 21);
-  carry6 = (s6 + (1L << 20)) >> 21; s7 += carry6; s6 -= carry6 * (1L << 21);
-  carry8 = (s8 + (1L << 20)) >> 21; s9 += carry8; s8 -= carry8 * (1L << 21);
-  carry10 = (s10 + (1L << 20)) >> 21; s11 += carry10; s10 -= carry10 * (1L << 21);
+  carry0 = (s0 + (crypto_int64) (1L << 20)) >> 21; s1 += carry0; s0 -= carry0 * ((crypto_uint64) 1L << 21);
+  carry2 = (s2 + (crypto_int64) (1L << 20)) >> 21; s3 += carry2; s2 -= carry2 * ((crypto_uint64) 1L << 21);
+  carry4 = (s4 + (crypto_int64) (1L << 20)) >> 21; s5 += carry4; s4 -= carry4 * ((crypto_uint64) 1L << 21);
+  carry6 = (s6 + (crypto_int64) (1L << 20)) >> 21; s7 += carry6; s6 -= carry6 * ((crypto_uint64) 1L << 21);
+  carry8 = (s8 + (crypto_int64) (1L << 20)) >> 21; s9 += carry8; s8 -= carry8 * ((crypto_uint64) 1L << 21);
+  carry10 = (s10 + (crypto_int64) (1L << 20)) >> 21; s11 += carry10; s10 -= carry10 * ((crypto_uint64) 1L << 21);
 
-  carry1 = (s1 + (1L << 20)) >> 21; s2 += carry1; s1 -= carry1 * (1L << 21);
-  carry3 = (s3 + (1L << 20)) >> 21; s4 += carry3; s3 -= carry3 * (1L << 21);
-  carry5 = (s5 + (1L << 20)) >> 21; s6 += carry5; s5 -= carry5 * (1L << 21);
-  carry7 = (s7 + (1L << 20)) >> 21; s8 += carry7; s7 -= carry7 * (1L << 21);
-  carry9 = (s9 + (1L << 20)) >> 21; s10 += carry9; s9 -= carry9 * (1L << 21);
-  carry11 = (s11 + (1L << 20)) >> 21; s12 += carry11; s11 -= carry11 * (1L << 21);
+  carry1 = (s1 + (crypto_int64) (1L << 20)) >> 21; s2 += carry1; s1 -= carry1 * ((crypto_uint64) 1L << 21);
+  carry3 = (s3 + (crypto_int64) (1L << 20)) >> 21; s4 += carry3; s3 -= carry3 * ((crypto_uint64) 1L << 21);
+  carry5 = (s5 + (crypto_int64) (1L << 20)) >> 21; s6 += carry5; s5 -= carry5 * ((crypto_uint64) 1L << 21);
+  carry7 = (s7 + (crypto_int64) (1L << 20)) >> 21; s8 += carry7; s7 -= carry7 * ((crypto_uint64) 1L << 21);
+  carry9 = (s9 + (crypto_int64) (1L << 20)) >> 21; s10 += carry9; s9 -= carry9 * ((crypto_uint64) 1L << 21);
+  carry11 = (s11 + (crypto_int64) (1L << 20)) >> 21; s12 += carry11; s11 -= carry11 * ((crypto_uint64) 1L << 21);
 
   s0 += s12 * 666643;
   s1 += s12 * 470296;
@@ -2198,18 +2198,18 @@ void sc_reduce(unsigned char *s)
   s5 -= s12 * 683901;
   s12 = 0;
 
-  carry0 = s0 >> 21; s1 += carry0; s0 -= carry0 * (1L << 21);
-  carry1 = s1 >> 21; s2 += carry1; s1 -= carry1 * (1L << 21);
-  carry2 = s2 >> 21; s3 += carry2; s2 -= carry2 * (1L << 21);
-  carry3 = s3 >> 21; s4 += carry3; s3 -= carry3 * (1L << 21);
-  carry4 = s4 >> 21; s5 += carry4; s4 -= carry4 * (1L << 21);
-  carry5 = s5 >> 21; s6 += carry5; s5 -= carry5 * (1L << 21);
-  carry6 = s6 >> 21; s7 += carry6; s6 -= carry6 * (1L << 21);
-  carry7 = s7 >> 21; s8 += carry7; s7 -= carry7 * (1L << 21);
-  carry8 = s8 >> 21; s9 += carry8; s8 -= carry8 * (1L << 21);
-  carry9 = s9 >> 21; s10 += carry9; s9 -= carry9 * (1L << 21);
-  carry10 = s10 >> 21; s11 += carry10; s10 -= carry10 * (1L << 21);
-  carry11 = s11 >> 21; s12 += carry11; s11 -= carry11 * (1L << 21);
+  carry0 = s0 >> 21; s1 += carry0; s0 -= carry0 * ((crypto_uint64) 1L << 21);
+  carry1 = s1 >> 21; s2 += carry1; s1 -= carry1 * ((crypto_uint64) 1L << 21);
+  carry2 = s2 >> 21; s3 += carry2; s2 -= carry2 * ((crypto_uint64) 1L << 21);
+  carry3 = s3 >> 21; s4 += carry3; s3 -= carry3 * ((crypto_uint64) 1L << 21);
+  carry4 = s4 >> 21; s5 += carry4; s4 -= carry4 * ((crypto_uint64) 1L << 21);
+  carry5 = s5 >> 21; s6 += carry5; s5 -= carry5 * ((crypto_uint64) 1L << 21);
+  carry6 = s6 >> 21; s7 += carry6; s6 -= carry6 * ((crypto_uint64) 1L << 21);
+  carry7 = s7 >> 21; s8 += carry7; s7 -= carry7 * ((crypto_uint64) 1L << 21);
+  carry8 = s8 >> 21; s9 += carry8; s8 -= carry8 * ((crypto_uint64) 1L << 21);
+  carry9 = s9 >> 21; s10 += carry9; s9 -= carry9 * ((crypto_uint64) 1L << 21);
+  carry10 = s10 >> 21; s11 += carry10; s10 -= carry10 * ((crypto_uint64) 1L << 21);
+  carry11 = s11 >> 21; s12 += carry11; s11 -= carry11 * ((crypto_uint64) 1L << 21);
 
   s0 += s12 * 666643;
   s1 += s12 * 470296;
@@ -2218,47 +2218,47 @@ void sc_reduce(unsigned char *s)
   s4 += s12 * 136657;
   s5 -= s12 * 683901;
 
-  carry0 = s0 >> 21; s1 += carry0; s0 -= carry0 * (1L << 21);
-  carry1 = s1 >> 21; s2 += carry1; s1 -= carry1 * (1L << 21);
-  carry2 = s2 >> 21; s3 += carry2; s2 -= carry2 * (1L << 21);
-  carry3 = s3 >> 21; s4 += carry3; s3 -= carry3 * (1L << 21);
-  carry4 = s4 >> 21; s5 += carry4; s4 -= carry4 * (1L << 21);
-  carry5 = s5 >> 21; s6 += carry5; s5 -= carry5 * (1L << 21);
-  carry6 = s6 >> 21; s7 += carry6; s6 -= carry6 * (1L << 21);
-  carry7 = s7 >> 21; s8 += carry7; s7 -= carry7 * (1L << 21);
-  carry8 = s8 >> 21; s9 += carry8; s8 -= carry8 * (1L << 21);
-  carry9 = s9 >> 21; s10 += carry9; s9 -= carry9 * (1L << 21);
-  carry10 = s10 >> 21; s11 += carry10; s10 -= carry10 * (1L << 21);
+  carry0 = s0 >> 21; s1 += carry0; s0 -= carry0 * ((crypto_uint64) 1L << 21);
+  carry1 = s1 >> 21; s2 += carry1; s1 -= carry1 * ((crypto_uint64) 1L << 21);
+  carry2 = s2 >> 21; s3 += carry2; s2 -= carry2 * ((crypto_uint64) 1L << 21);
+  carry3 = s3 >> 21; s4 += carry3; s3 -= carry3 * ((crypto_uint64) 1L << 21);
+  carry4 = s4 >> 21; s5 += carry4; s4 -= carry4 * ((crypto_uint64) 1L << 21);
+  carry5 = s5 >> 21; s6 += carry5; s5 -= carry5 * ((crypto_uint64) 1L << 21);
+  carry6 = s6 >> 21; s7 += carry6; s6 -= carry6 * ((crypto_uint64) 1L << 21);
+  carry7 = s7 >> 21; s8 += carry7; s7 -= carry7 * ((crypto_uint64) 1L << 21);
+  carry8 = s8 >> 21; s9 += carry8; s8 -= carry8 * ((crypto_uint64) 1L << 21);
+  carry9 = s9 >> 21; s10 += carry9; s9 -= carry9 * ((crypto_uint64) 1L << 21);
+  carry10 = s10 >> 21; s11 += carry10; s10 -= carry10 * ((crypto_uint64) 1L << 21);
 
   s[0] = s0 >> 0;
   s[1] = s0 >> 8;
-  s[2] = (s0 >> 16) | (s1 << 5);
+  s[2] = (s0 >> 16) | (s1 * ((crypto_uint64) 1 << 5));
   s[3] = s1 >> 3;
   s[4] = s1 >> 11;
-  s[5] = (s1 >> 19) | (s2 << 2);
+  s[5] = (s1 >> 19) | (s2 * ((crypto_uint64) 1 << 2));
   s[6] = s2 >> 6;
-  s[7] = (s2 >> 14) | (s3 << 7);
+  s[7] = (s2 >> 14) | (s3 * ((crypto_uint64) 1 << 7));
   s[8] = s3 >> 1;
   s[9] = s3 >> 9;
-  s[10] = (s3 >> 17) | (s4 << 4);
+  s[10] = (s3 >> 17) | (s4 * ((crypto_uint64) 1 << 4));
   s[11] = s4 >> 4;
   s[12] = s4 >> 12;
-  s[13] = (s4 >> 20) | (s5 << 1);
+  s[13] = (s4 >> 20) | (s5 * ((crypto_uint64) 1 << 1));
   s[14] = s5 >> 7;
-  s[15] = (s5 >> 15) | (s6 << 6);
+  s[15] = (s5 >> 15) | (s6 * ((crypto_uint64) 1 << 6));
   s[16] = s6 >> 2;
   s[17] = s6 >> 10;
-  s[18] = (s6 >> 18) | (s7 << 3);
+  s[18] = (s6 >> 18) | (s7 * ((crypto_uint64) 1 << 3));
   s[19] = s7 >> 5;
   s[20] = s7 >> 13;
   s[21] = s8 >> 0;
   s[22] = s8 >> 8;
-  s[23] = (s8 >> 16) | (s9 << 5);
+  s[23] = (s8 >> 16) | (s9 * ((crypto_uint64) 1 << 5));
   s[24] = s9 >> 3;
   s[25] = s9 >> 11;
-  s[26] = (s9 >> 19) | (s10 << 2);
+  s[26] = (s9 >> 19) | (s10 * ((crypto_uint64) 1 << 2));
   s[27] = s10 >> 6;
-  s[28] = (s10 >> 14) | (s11 << 7);
+  s[28] = (s10 >> 14) | (s11 * ((crypto_uint64) 1 << 7));
   s[29] = s11 >> 1;
   s[30] = s11 >> 9;
   s[31] = s11 >> 17;
