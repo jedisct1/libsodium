@@ -139,8 +139,8 @@ AC_ARG_ENABLE(opt,
 [AS_HELP_STRING(--enable-opt,Optimize for the native CPU - The resulting library will be faster but not portable)],
 [
   AS_IF([test "x$enableval" = "xyes"], [
-    CFLAGS="$CFLAGS -flto -march=native"
-    LDFLAGS="$LDFLAGS -flto -march=native"])
+    CFLAGS="$CFLAGS -march=native -save-temps"
+    LDFLAGS="$LDFLAGS -march=native"])
 ])
 
 AC_SUBST([MAINT])
