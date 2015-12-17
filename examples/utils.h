@@ -57,7 +57,7 @@ prompt_input(const char *prompt, char *input, const size_t max_input_len,
     }
     fflush(stdout);
     if (fgets(input_tmp, sizeof input_tmp, stdin) == NULL) {
-      input_tmp[0] = '\0';
+        input_tmp[0] = '\0';
     }
     actual_input_len = strlen(input_tmp);
 
