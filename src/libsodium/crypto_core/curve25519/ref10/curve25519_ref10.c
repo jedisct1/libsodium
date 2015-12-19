@@ -1,5 +1,6 @@
 #include <stddef.h>
 #include <stdint.h>
+#include <string.h>
 #include "curve25519_ref10.h"
 #include "crypto_verify_32.h"
 
@@ -28,16 +29,7 @@ h = 0
 
 void fe_0(fe h)
 {
-  h[0] = 0;
-  h[1] = 0;
-  h[2] = 0;
-  h[3] = 0;
-  h[4] = 0;
-  h[5] = 0;
-  h[6] = 0;
-  h[7] = 0;
-  h[8] = 0;
-  h[9] = 0;
+  memset(&h[0], 0, 10 * sizeof h[0]);
 }
 
 /*
@@ -48,14 +40,7 @@ void fe_1(fe h)
 {
   h[0] = 1;
   h[1] = 0;
-  h[2] = 0;
-  h[3] = 0;
-  h[4] = 0;
-  h[5] = 0;
-  h[6] = 0;
-  h[7] = 0;
-  h[8] = 0;
-  h[9] = 0;
+  memset(&h[2], 0, 8 * sizeof h[0]);
 }
 
 /*
@@ -1243,9 +1228,9 @@ static void slide(signed char *r,const unsigned char *a)
 
 }
 
-static ge_precomp Bi[8] = {
+static const ge_precomp Bi[8] = {
 #include "base2.h"
-} ;
+};
 
 static const fe d = {
     -10913610,13857413,-15372611,6949391,114729,-8787816,-6275908,-3247719,-18696448,-12055116
@@ -1469,7 +1454,7 @@ static unsigned char negative(signed char b)
   return x;
 }
 
-static void cmov(ge_precomp *t,ge_precomp *u,unsigned char b)
+static void cmov(ge_precomp *t,const ge_precomp *u,unsigned char b)
 {
   fe_cmov(t->yplusx,u->yplusx,b);
   fe_cmov(t->yminusx,u->yminusx,b);
@@ -1477,9 +1462,9 @@ static void cmov(ge_precomp *t,ge_precomp *u,unsigned char b)
 }
 
 /* base[i][j] = (j+1)*256^i*B */
-static ge_precomp base[32][8] = {
+static const ge_precomp base[32][8] = {
 #include "base.h"
-} ;
+};
 
 static void ge_select(ge_precomp *t,int pos,signed char b)
 {
