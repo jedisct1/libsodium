@@ -1,4 +1,9 @@
 
+* Version 1.0.8 (not released yet)
+ - Faster scalarmult_base() when using the ref10 implementation.
+ - Handle the case where the CPU supports AVX, but we are running
+on an hypervisor with AVX disabled/not supported.
+
 * Version 1.0.7
  - More functions whose return value should be checked have been
 tagged with `__attribute__ ((warn_unused_result))`: `crypto_box_easy()`,
