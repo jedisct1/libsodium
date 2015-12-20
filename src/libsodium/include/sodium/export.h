@@ -6,7 +6,7 @@
 # ifdef __attribute__
 #  undef __attribute__
 # endif
-# define __attribute__ (a)
+# define __attribute__(a)
 #endif
 
 #ifdef SODIUM_STATIC
