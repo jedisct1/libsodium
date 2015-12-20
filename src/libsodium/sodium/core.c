@@ -8,6 +8,15 @@
 #include "runtime.h"
 #include "utils.h"
 
+#if 1
+# warning This is unstable, untested, development code.
+# warning It might not compile. It might not work as expected.
+# warning It might be totally insecure.
+# warning Do not use this in production.
+# warning Use releases available at https://download.libsodium.org/libsodium/releases/ instead.
+# warning Alternatively, use the "stable" branch in the git repository.
+#endif
+
 static int initialized;
 
 int
