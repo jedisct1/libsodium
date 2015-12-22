@@ -189,6 +189,18 @@
     <ClInclude Include="src\libsodium\crypto_onetimeauth\poly1305\onetimeauth_poly1305.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="src\libsodium\crypto_core\curve25519\ref10\base.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\libsodium\crypto_core\curve25519\ref10\base2.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\libsodium\crypto_core\curve25519\ref10\curve25519_ref10.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\libsodium\crypto_scalarmult\curve25519\ref10\x25519_ref10.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\libsodium\crypto_core\hsalsa20\ref2\core_hsalsa20.c">
@@ -314,118 +326,10 @@
     <ClCompile Include="src\libsodium\crypto_sign\crypto_sign.c">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="src\libsodium\crypto_sign\ed25519\ref10\fe_0.c">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="src\libsodium\crypto_sign\ed25519\ref10\fe_1.c">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="src\libsodium\crypto_sign\ed25519\ref10\fe_add.c">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="src\libsodium\crypto_sign\ed25519\ref10\fe_cmov.c">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="src\libsodium\crypto_sign\ed25519\ref10\fe_copy.c">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="src\libsodium\crypto_sign\ed25519\ref10\fe_frombytes.c">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="src\libsodium\crypto_sign\ed25519\ref10\fe_invert.c">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="src\libsodium\crypto_sign\ed25519\ref10\fe_isnegative.c">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="src\libsodium\crypto_sign\ed25519\ref10\fe_isnonzero.c">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="src\libsodium\crypto_sign\ed25519\ref10\fe_mul.c">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="src\libsodium\crypto_sign\ed25519\ref10\fe_neg.c">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="src\libsodium\crypto_sign\ed25519\ref10\fe_pow22523.c">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="src\libsodium\crypto_sign\ed25519\ref10\fe_sq.c">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="src\libsodium\crypto_sign\ed25519\ref10\fe_sq2.c">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="src\libsodium\crypto_sign\ed25519\ref10\fe_sub.c">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="src\libsodium\crypto_sign\ed25519\ref10\fe_tobytes.c">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="src\libsodium\crypto_sign\ed25519\ref10\ge_add.c">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="src\libsodium\crypto_sign\ed25519\ref10\ge_double_scalarmult.c">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="src\libsodium\crypto_sign\ed25519\ref10\ge_frombytes.c">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="src\libsodium\crypto_sign\ed25519\ref10\ge_madd.c">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="src\libsodium\crypto_sign\ed25519\ref10\ge_msub.c">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="src\libsodium\crypto_sign\ed25519\ref10\ge_p1p1_to_p2.c">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="src\libsodium\crypto_sign\ed25519\ref10\ge_p1p1_to_p3.c">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="src\libsodium\crypto_sign\ed25519\ref10\ge_p2_0.c">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="src\libsodium\crypto_sign\ed25519\ref10\ge_p2_dbl.c">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="src\libsodium\crypto_sign\ed25519\ref10\ge_p3_0.c">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="src\libsodium\crypto_sign\ed25519\ref10\ge_p3_dbl.c">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="src\libsodium\crypto_sign\ed25519\ref10\ge_p3_to_cached.c">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="src\libsodium\crypto_sign\ed25519\ref10\ge_p3_to_p2.c">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="src\libsodium\crypto_sign\ed25519\ref10\ge_p3_tobytes.c">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="src\libsodium\crypto_sign\ed25519\ref10\ge_precomp_0.c">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="src\libsodium\crypto_sign\ed25519\ref10\ge_scalarmult_base.c">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="src\libsodium\crypto_sign\ed25519\ref10\ge_sub.c">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="src\libsodium\crypto_sign\ed25519\ref10\ge_tobytes.c">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="src\libsodium\crypto_sign\ed25519\ref10\keypair.c">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="src\libsodium\crypto_sign\ed25519\ref10\open.c">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="src\libsodium\crypto_sign\ed25519\ref10\sc_muladd.c">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="src\libsodium\crypto_sign\ed25519\ref10\sc_reduce.c">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="src\libsodium\crypto_sign\ed25519\ref10\sign.c">
@@ -572,42 +476,6 @@
     <ClCompile Include="src\libsodium\crypto_stream\chacha20\ref\stream_chacha20_ref.c">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="src\libsodium\crypto_scalarmult\curve25519\ref10\fe_0_curve25519_ref10.c">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="src\libsodium\crypto_scalarmult\curve25519\ref10\fe_1_curve25519_ref10.c">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="src\libsodium\crypto_scalarmult\curve25519\ref10\fe_add_curve25519_ref10.c">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="src\libsodium\crypto_scalarmult\curve25519\ref10\fe_copy_curve25519_ref10.c">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="src\libsodium\crypto_scalarmult\curve25519\ref10\fe_cswap_curve25519_ref10.c">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="src\libsodium\crypto_scalarmult\curve25519\ref10\fe_frombytes_curve25519_ref10.c">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="src\libsodium\crypto_scalarmult\curve25519\ref10\fe_invert_curve25519_ref10.c">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="src\libsodium\crypto_scalarmult\curve25519\ref10\fe_mul_curve25519_ref10.c">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="src\libsodium\crypto_scalarmult\curve25519\ref10\fe_mul121666_curve25519_ref10.c">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="src\libsodium\crypto_scalarmult\curve25519\ref10\fe_sq_curve25519_ref10.c">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="src\libsodium\crypto_scalarmult\curve25519\ref10\fe_sub_curve25519_ref10.c">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="src\libsodium\crypto_scalarmult\curve25519\ref10\fe_tobytes_curve25519_ref10.c">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="src\libsodium\crypto_box\curve25519xsalsa20poly1305\ref\before_curve25519xsalsa20poly1305.c">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -632,9 +500,6 @@
     <ClCompile Include="src\libsodium\crypto_scalarmult\curve25519\donna_c64\curve25519_donna_c64.c">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="src\libsodium\crypto_scalarmult\curve25519\ref10\curve25519_ref10.c">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="src\libsodium\crypto_scalarmult\curve25519\sandy2x\curve25519_sandy2x.c">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -650,10 +515,11 @@
     <ClCompile Include="src\libsodium\crypto_sign\ed25519\ref10\obsolete.c">
       <Filter>Source Files</Filter>
     </ClCompile>
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="src\libsodium\crypto_scalarmult\curve25519\sandy2x\sandy2x.S">
+    <ClCompile Include="src\libsodium\crypto_core\curve25519\ref10\curve25519_ref10.c">
       <Filter>Source Files</Filter>
-    </None>
+    </ClCompile>
+    <ClCompile Include="src\libsodium\crypto_scalarmult\curve25519\ref10\x25519_ref10.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
 </Project>
