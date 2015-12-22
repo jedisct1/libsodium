@@ -45,6 +45,8 @@ sign(void)
     printf("Signing message with %s...\n", crypto_sign_primitive());
     crypto_sign(message_signed, &message_signed_len, message, message_len, sk);
 
+    sodium_memzero(sk, sizeof sk); /* wipe sensitive data */
+
     printf("Signed message:");
     print_hex(message_signed, message_signed_len);
     printf("A %u bytes signature was prepended to the message\n",
@@ -63,8 +65,6 @@ sign(void)
     print_verification(ret);
     if (ret == 0)
         printf("Message: %s\n", message);
-
-    sodium_memzero(sk, sizeof sk); /* wipe sensitive data */
 
     return ret;
 }
