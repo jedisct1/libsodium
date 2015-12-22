@@ -38,6 +38,7 @@ int main(void)
     memset(a, 0, sizeof a);
     crypto_onetimeauth_init(&st, rs);
     crypto_onetimeauth_update(&st, c, 100);
+    crypto_onetimeauth_update(&st, c, 0);
     crypto_onetimeauth_update(&st, c + 100, 31);
     crypto_onetimeauth_final(&st, a);
     for (i = 0; i < 16; ++i) {
