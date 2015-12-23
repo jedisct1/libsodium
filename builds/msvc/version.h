@@ -4,10 +4,10 @@
 
 #include "export.h"
 
-#define SODIUM_VERSION_STRING "1.0.7"
+#define SODIUM_VERSION_STRING "1.0.8"
 
 #define SODIUM_LIBRARY_VERSION_MAJOR 9
-#define SODIUM_LIBRARY_VERSION_MINOR 0
+#define SODIUM_LIBRARY_VERSION_MINOR 1
 
 #ifdef __cplusplus
 extern "C" {
