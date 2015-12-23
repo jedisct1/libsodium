@@ -1,9 +1,11 @@
+*.bc
 *.cmake
 *.dSYM
 *.exp
 *.final
 *.gcda
 *.gcno
+*.i
 *.la
 *.lo
 *.log
@@ -11,6 +13,7 @@
 *.nexe
 *.o
 *.plist
+*.s
 *.scan
 *.sdf
 *.status
