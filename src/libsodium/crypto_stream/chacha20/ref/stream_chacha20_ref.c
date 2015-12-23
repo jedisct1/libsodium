@@ -229,7 +229,7 @@ chacha_encrypt_bytes(chacha_ctx *ctx, const u8 *m, u8 *c, unsigned long long byt
         if (bytes <= 64) {
             if (bytes < 64) {
                 for (i = 0; i < (unsigned int) bytes; ++i) {
-                    ctarget[i] = c[i];
+                    ctarget[i] = c[i]; /* ctarget cannot be NULL */
                 }
             }
             ctx->input[12] = j12;

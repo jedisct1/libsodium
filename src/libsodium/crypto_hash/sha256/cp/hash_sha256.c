@@ -271,7 +271,7 @@ crypto_hash_sha256_update(crypto_hash_sha256_state *state,
         in += 64;
         inlen -= 64;
     }
-    memcpy(state->buf, in, inlen);
+    memcpy(state->buf, in, inlen); /* inlen < 64 */
 
     return 0;
 }
