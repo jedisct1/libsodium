@@ -22,7 +22,10 @@ including Windows (with MingW or Visual Studio, x86 and x64), iOS and Android.
 The documentation is a work-in-progress, and is being written using
 Gitbook:
 
-[libsodium documentation](https://download.libsodium.org/doc/)
+* [libsodium documentation](https://download.libsodium.org/doc/) -
+online, requires Javascript.
+* [offline documentation](https://www.gitbook.com/book/jedisct1/libsodium/details)
+in PDF, MOBI and ePUB formats.
 
 ## Community
 
