@@ -527,7 +527,7 @@ crypto_aead_aes256gcm_encrypt_afternm(unsigned char *c, unsigned long long *clen
     (void) nsec;
     memcpy(H, ctx->H, sizeof H);
     if (mlen > 16ULL * (1ULL << 32)) {
-        abort();
+        abort(); /* LCOV_EXCL_LINE */
     }
     memcpy(&n2[0], npub, 3 * 4);
     n2[3] = 0x01000000;
@@ -646,7 +646,7 @@ crypto_aead_aes256gcm_decrypt_afternm(unsigned char *m, unsigned long long *mlen
 
     (void) nsec;
     if (clen > 16ULL * (1ULL << 32) - 16ULL) {
-        abort();
+        abort(); /* LCOV_EXCL_LINE */
     }
     if (mlen_p != NULL) {
         *mlen_p = 0U;
