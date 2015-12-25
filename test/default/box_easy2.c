@@ -101,6 +101,9 @@ int main(void)
     }
     memset(m2, 0, m2_size);
     ret = crypto_box_detached(c, mac, m, (unsigned long long) mlen,
+                              nonce, small_order_p, bobsk);
+    assert(ret == -1);
+    ret = crypto_box_detached(c, mac, m, (unsigned long long) mlen,
                               nonce, alicepk, bobsk);
     assert(ret == 0);
     if (crypto_box_open_detached(m2, c, mac, (unsigned long long) mlen,
