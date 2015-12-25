@@ -2,6 +2,11 @@
 #define TEST_NAME "box_easy2"
 #include "cmptest.h"
 
+static const unsigned char small_order_p[crypto_box_PUBLICKEYBYTES]
+    = { 0xe0, 0xeb, 0x7a, 0x7c, 0x3b, 0x41, 0xb8, 0xae, 0x16, 0x56, 0xe3,
+        0xfa, 0xf1, 0x9f, 0xc4, 0x6a, 0xda, 0x09, 0x8d, 0xeb, 0x9c, 0x32,
+        0xb1, 0xfd, 0x86, 0x62, 0x05, 0x16, 0x5f, 0x49, 0xb8, 0x00 };
+
 int main(void)
 {
     unsigned char *alicepk;
@@ -67,6 +72,11 @@ int main(void)
                              nonce, alicepk, bobsk) != 0) {
         printf("crypto_box_open_easy() failed\n");
     }
+
+    ret = crypto_box_beforenm(k1, small_order_p, bobsk);
+    assert(ret == -1);
+    ret = crypto_box_beforenm(k2, small_order_p, alicesk);
+    assert(ret == -1);
 
     ret = crypto_box_beforenm(k1, alicepk, bobsk);
     assert(ret == 0);
