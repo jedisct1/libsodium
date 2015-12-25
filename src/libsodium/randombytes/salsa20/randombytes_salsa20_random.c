@@ -89,7 +89,7 @@ sodium_hrtime(void)
         struct timeval tv;
 
         if (gettimeofday(&tv, NULL) != 0) {
-            abort();
+            abort(); /* LCOV_EXCL_LINE */
         }
         ts = ((uint64_t) tv.tv_sec) * 1000000U + (uint64_t) tv.tv_usec;
     }
@@ -108,7 +108,7 @@ safe_read(const int fd, void * const buf_, size_t size)
     assert(size <= SSIZE_MAX);
     do {
         while ((readnb = read(fd, buf, size)) < (ssize_t) 0 &&
-               (errno == EINTR || errno == EAGAIN));  /* LCOV_EXCL_LINE */
+               (errno == EINTR || errno == EAGAIN)); /* LCOV_EXCL_LINE */
         if (readnb < (ssize_t) 0) {
             return readnb; /* LCOV_EXCL_LINE */
         }
@@ -308,7 +308,7 @@ randombytes_salsa20_random_stir(void)
 #endif
     if (crypto_generichash(stream.key, sizeof stream.key, k0, sizeof_k0,
                            hsigma, sizeof hsigma) != 0) {
-        abort();
+        abort(); /* LCOV_EXCL_LINE */
     }
     COMPILER_ASSERT(sizeof stream.key <= sizeof m0);
     randombytes_salsa20_random_rekey(m0);
