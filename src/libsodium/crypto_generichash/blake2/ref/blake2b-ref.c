@@ -321,7 +321,7 @@ int blake2b_update( blake2b_state *S, const uint8_t *in, uint64_t inlen )
 int blake2b_final( blake2b_state *S, uint8_t *out, uint8_t outlen )
 {
   if( !outlen || outlen > BLAKE2B_OUTBYTES ) {
-    abort();
+    abort(); /* LCOV_EXCL_LINE */
   }
   if( S->buflen > BLAKE2B_BLOCKBYTES )
   {
