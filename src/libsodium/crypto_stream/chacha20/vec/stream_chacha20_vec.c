@@ -145,7 +145,7 @@ chacha_encrypt_bytes(chacha_ctx *ctx, const uint8_t *in, uint8_t *out,
     unsigned long long  i;
 
     if (inlen > 64ULL * (1ULL << 32) - 64ULL) {
-        abort();
+        abort(); /* LCOV_EXCL_LINE */
     }
     s0 = LOAD_ALIGNED(chacha_const);
     s1 = ctx->s1;
