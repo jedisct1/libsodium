@@ -23,13 +23,13 @@ static void tv(void)
             "8d220b20c60d7c07ec1fd93c52c31020300c6c1facd77937a597c7a6",
             127,
             "5541fbc995d5c197ba290346d2c559dedf405cf97e5f95482143202f9e74f5c2",
-            155, 6, 7256678, 1 },
+            155, 5, 7256678, 1 },
           { "e125cee61c8cb7778d9e5ad0a6f5d978ce9f84de213a8556d9ffe202020ab4a6ed"
             "9074a4eb3416f9b168f137510f3a30b70b96cbfa219ff99f6c6eaffb15c06b60e0"
             "0cc2890277f0fd3c622115772f7048adaebed86e",
             86,
             "f1192dd5dc2368b9cd421338b22433455ee0a3699f9379a08b9650ea2c126f0d",
-            250, 8, 7849083, 1 },
+            250, 4, 7849083, 1 },
           { "92263cbf6ac376499f68a4289d3bb59e5a22335eba63a32e6410249155b956b6a3"
             "b48d4a44906b18b897127300b375b8f834f1ceffc70880a885f47c33876717e392"
             "be57f7da3ae58da4fd1f43daa7e44bb82d3717af4319349c24cd31e46d295856b0"
@@ -38,7 +38,7 @@ static void tv(void)
             "711f58c8c392016b2fdfc09c64f0f6b6ab7b",
             183,
             "3b840e20e9555e9fb031c4ba1f1747ce25cc1d0ff664be676b9b4a90641ff194",
-            249, 7, 7994791, 1 },
+            249, 3, 7994791, 1 },
           { "027b6d8e8c8c474e9b69c7d9ed4f9971e8e1ce2f6ba95048414c3970f0f09b70e3"
             "b6c5ae05872b3d8678705b7d381829c351a5a9c88c233569b35d6b0b809df44b64"
             "51a9c273f1150e2ef8a0b5437eb701e373474cd44b97ef0248ebce2ca0400e1b53"
@@ -88,7 +88,7 @@ static void tv(void)
             "55a3b4169f22cccb0745a2689407ea1901a0a766eb99",
             220,
             "3d968b2752b8838431165059319f3ff8910b7b8ecb54ea01d3f54769e9d98daf",
-            167, 8, 10784179, 1 },
+            167, 1, 10784179, 1 },
       };
     char          passwd[256];
     unsigned char salt[crypto_pwhash_argon2i_SALTBYTES];
