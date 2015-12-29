@@ -28,6 +28,7 @@ sodium_init(void)
     _sodium_runtime_get_cpu_features();
     randombytes_stir();
     _sodium_alloc_init();
+    _crypto_pwhash_argon2i_pick_best_implementation();
     _crypto_generichash_blake2b_pick_best_implementation();
     _crypto_onetimeauth_poly1305_pick_best_implementation();
     _crypto_scalarmult_curve25519_pick_best_implementation();

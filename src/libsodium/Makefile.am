@@ -62,6 +62,7 @@ libsodium_la_SOURCES = \
 	crypto_pwhash/argon2/blake2b-long.c \
 	crypto_pwhash/argon2/blake2b-long.h \
 	crypto_pwhash/argon2/blamka-round-ref.h \
+	crypto_pwhash/argon2/pwhash_argon2i.c \
 	crypto_pwhash/scryptsalsa208sha256/crypto_scrypt-common.c \
 	crypto_pwhash/scryptsalsa208sha256/crypto_scrypt.h \
 	crypto_pwhash/scryptsalsa208sha256/scrypt_platform.c \

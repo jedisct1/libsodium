@@ -496,11 +496,11 @@ int argon2_pick_best_implementation(void)
 #if (defined(HAVE_EMMINTRIN_H) && defined(HAVE_TMMINTRIN_H)) || \
     (defined(_MSC_VER) && (defined(_M_X64) || defined(_M_AMD64)))
     if (sodium_runtime_has_ssse3()) {
-        fill_segment_fn fill_segment = fill_segment_ssse3;
+        fill_segment = fill_segment_ssse3;
         return 0;
     }
 #endif
-    fill_segment_fn fill_segment = fill_segment_ref;
+    fill_segment = fill_segment_ref;
 
     return 0;
 }
