@@ -87,8 +87,6 @@ int argon2_hash(const uint32_t t_cost, const uint32_t m_cost,
     int result;
     uint8_t *out;
 
-    /* Detect and reject overflowing sizes */
-    /* TODO: This should probably be fixed in the function signature */
     if (pwdlen > UINT32_MAX) {
         return ARGON2_PWD_TOO_LONG;
     }
