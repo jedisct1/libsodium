@@ -101,7 +101,7 @@ void fill_segment_ssse3(const argon2_instance_t *instance,
     uint32_t prev_offset, curr_offset;
     uint32_t starting_index, i;
     __m128i state[64];
-    int data_independent_addressing = (instance->type == Argon2_i);
+    int data_independent_addressing;
 
     /* Pseudo-random values that determine the reference block position */
     uint64_t *pseudo_rands = NULL;
@@ -109,6 +109,8 @@ void fill_segment_ssse3(const argon2_instance_t *instance,
     if (instance == NULL) {
         return;
     }
+
+    data_independent_addressing = (instance->type == Argon2_i);
 
     pseudo_rands =
         (uint64_t *)malloc(sizeof(uint64_t) * instance->segment_length);
