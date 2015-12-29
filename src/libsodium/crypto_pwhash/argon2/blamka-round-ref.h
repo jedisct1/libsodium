@@ -1,5 +1,5 @@
-#ifndef BLAKE_ROUND_MKA_H
-#define BLAKE_ROUND_MKA_H
+#ifndef blamka_round_ref_H
+#define blamka_round_ref_H
 
 #include "argon2-impl.h"
 

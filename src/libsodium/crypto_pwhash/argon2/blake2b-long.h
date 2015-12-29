@@ -1,5 +1,5 @@
-#ifndef blake2_long_H
-#define blake2_long_H
+#ifndef blake2b_long_H
+#define blake2b_long_H
 
 #include <stddef.h>
 

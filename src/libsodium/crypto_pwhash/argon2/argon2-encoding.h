@@ -1,5 +1,6 @@
-#ifndef ENCODING_H
-#define ENCODING_H
+#ifndef argon2_encoding_H
+#define argon2_encoding_H
+
 #include "argon2.h"
 
 int encode_string(char *dst, size_t dst_len, argon2_context *ctx,

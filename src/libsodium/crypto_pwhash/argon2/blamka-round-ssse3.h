@@ -1,5 +1,5 @@
-#ifndef BLAKE_ROUND_MKA_OPT_SSSE3_H
-#define BLAKE_ROUND_MKA_OPT_SSSE3_H
+#ifndef blamka_round_ssse3_H
+#define blamka_round_ssse3_H
 
 #include "argon2-impl.h"
 

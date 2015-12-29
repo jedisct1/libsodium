@@ -10,8 +10,8 @@
  * this software. If not, see
  * <http://creativecommons.org/publicdomain/zero/1.0/>.
  */
-#ifndef ARGON2_H
-#define ARGON2_H
+#ifndef argon2_H
+#define argon2_H
 
 #include <stdint.h>
 #include <stddef.h>

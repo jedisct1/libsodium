@@ -11,8 +11,8 @@
    this software. If not, see <http://creativecommons.org/publicdomain/zero/1.0/>.
 */
 
-#ifndef blake2_impl_H
-#define blake2_impl_H
+#ifndef argon2_impl_H
+#define argon2_impl_H
 
 #include <stdint.h>
 #include <string.h>

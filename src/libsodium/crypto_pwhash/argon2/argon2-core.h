@@ -11,8 +11,8 @@
  * <http://creativecommons.org/publicdomain/zero/1.0/>.
  */
 
-#ifndef ARGON2_CORE_H
-#define ARGON2_CORE_H
+#ifndef argon2_core_H
+#define argon2_core_H
 
 #include "argon2.h"
 
