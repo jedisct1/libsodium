@@ -164,39 +164,6 @@ static void tv2(void)
     } while (++i < (sizeof tests) / (sizeof tests[0]));
 }
 
-static void tv3(void)
-{
-    static struct {
-        const char *passwd;
-        const char *out;
-    } tests[] = {
-          { "^T5H$JYt39n%K*j:W]!1s?vg!:jGi]Ax?..l7[p0v:1jHTpla9;]bUN;?bWyCbtqg "
-            "nrDFal+Jxl3,2`#^tFSu%v_+7iYse8-cCkNf!tD=KrW)",
-            "$argon2i$m=22528,t=10,p=1$i2sXExTHR4py06Nh+P+Kwg$OvfhlngWzaXLI1LnHcQczduSg9u/pk6hhJwKhHEp/dk" },
-          { "K3S=KyH#)36_?]LxeR8QNKw6X=gFb'ai$C%29V* "
-            "tyh^Wo$TN-#Q4qkmtTCf0LLb.^E$0uykkP",
-            "$argon2i$m=23552,t=3,p=1$CIyn4RfRAlEctS1WNr/cWg$yAevM0sQq95wZsvA2LGnGqBNSNOCHmqC2uWTgNw+c5U" }
-      };
-    char *out;
-    char *passwd;
-    size_t i = 0U;
-
-    do {
-        out = (char *) sodium_malloc(strlen(tests[i].out) + 1U);
-        assert(out != NULL);
-        memcpy(out, tests[i].out, strlen(tests[i].out) + 1U);
-        passwd = (char *) sodium_malloc(strlen(tests[i].passwd) + 1U);
-        assert(passwd != NULL);
-        memcpy(passwd, tests[i].passwd, strlen(tests[i].passwd) + 1U);
-        if (crypto_pwhash_argon2i_str_verify
-            (out, passwd, strlen(passwd)) != 0) {
-            printf("pwhash_str failure: [%u]\n", (unsigned int)i);
-        }
-        sodium_free(out);
-        sodium_free(passwd);
-    } while (++i < (sizeof tests) / (sizeof tests[0]));
-}
-
 int main(void)
 {
     char       *str_out;
@@ -206,7 +173,6 @@ int main(void)
 
     tv();
     tv2();
-    tv3();
     salt = (char *) sodium_malloc(crypto_pwhash_argon2i_SALTBYTES);
     str_out = (char *) sodium_malloc(crypto_pwhash_argon2i_STRBYTES);
     str_out2 = (char *) sodium_malloc(crypto_pwhash_argon2i_STRBYTES);
