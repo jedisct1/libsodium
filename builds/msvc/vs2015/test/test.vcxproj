@@ -157,7 +157,7 @@
     <ClCompile Include="..\..\..\..\test\default\onetimeauth7.c">
       <ExcludedFromBuild>true</ExcludedFromBuild>
     </ClCompile>
-    <ClCompile Include="..\..\..\..\test\default\pwhash.c">
+    <ClCompile Include="..\..\..\..\test\default\pwhash_scrypt.c">
       <ExcludedFromBuild>true</ExcludedFromBuild>
     </ClCompile>
     <ClCompile Include="..\..\..\..\test\default\pwhash_scrypt_ll.c">
