@@ -51,6 +51,7 @@ libsodium_la_SOURCES = \
 	crypto_onetimeauth/poly1305/donna/poly1305_donna32.h \
 	crypto_onetimeauth/poly1305/donna/poly1305_donna64.h \
 	crypto_onetimeauth/poly1305/donna/poly1305_donna.c \
+	crypto_pwhash/crypto_pwhash.c \
 	crypto_pwhash/argon2/argon2-core.c \
 	crypto_pwhash/argon2/argon2-core.h \
 	crypto_pwhash/argon2/argon2-encoding.c \

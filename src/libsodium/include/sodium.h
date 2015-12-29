@@ -22,6 +22,7 @@
 #include "sodium/crypto_hash_sha512.h"
 #include "sodium/crypto_onetimeauth.h"
 #include "sodium/crypto_onetimeauth_poly1305.h"
+#include "sodium/crypto_pwhash.h"
 #include "sodium/crypto_pwhash_argon2i.h"
 #include "sodium/crypto_pwhash_scryptsalsa208sha256.h"
 #include "sodium/crypto_scalarmult.h"
