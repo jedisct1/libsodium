@@ -101,7 +101,7 @@ int allocate_memory(block_region **region, uint32_t m_cost) {
     memcpy(&memory, &base, sizeof memory);
 #else
     memory = NULL;
-	if (size + 63 < size) {
+	if (memory_size + 63 < memory_size) {
         base = NULL;
 		errno = ENOMEM;
     } else if ((base = malloc(memory_size + 63)) != NULL) {
