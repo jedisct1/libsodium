@@ -67,7 +67,6 @@ static inline __m128i fBlaMka(__m128i x, __m128i y) {
         B1 = _mm_roti_epi64(B1, -63);                                          \
     } while ((void)0, 0)
 
-#if defined(__SSSE3__)
 #define DIAGONALIZE(A0, B0, C0, D0, A1, B1, C1, D1)                            \
     do {                                                                       \
         __m128i t0 = _mm_alignr_epi8(B1, B0, 8);                               \
@@ -101,34 +100,6 @@ static inline __m128i fBlaMka(__m128i x, __m128i y) {
         D0 = t1;                                                               \
         D1 = t0;                                                               \
     } while ((void)0, 0)
-#else /* SSE2 */
-#define DIAGONALIZE(A0, B0, C0, D0, A1, B1, C1, D1)                            \
-    do {                                                                       \
-        __m128i t0 = D0;                                                       \
-        __m128i t1 = B0;                                                       \
-        D0 = C0;                                                               \
-        C0 = C1;                                                               \
-        C1 = D0;                                                               \
-        D0 = _mm_unpackhi_epi64(D1, _mm_unpacklo_epi64(t0, t0));               \
-        D1 = _mm_unpackhi_epi64(t0, _mm_unpacklo_epi64(D1, D1));               \
-        B0 = _mm_unpackhi_epi64(B0, _mm_unpacklo_epi64(B1, B1));               \
-        B1 = _mm_unpackhi_epi64(B1, _mm_unpacklo_epi64(t1, t1));               \
-    } while ((void)0, 0)
-
-#define UNDIAGONALIZE(A0, B0, C0, D0, A1, B1, C1, D1)                          \
-    do {                                                                       \
-        __m128i t0, t1;                                                        \
-        t0 = C0;                                                               \
-        C0 = C1;                                                               \
-        C1 = t0;                                                               \
-        t0 = B0;                                                               \
-        t1 = D0;                                                               \
-        B0 = _mm_unpackhi_epi64(B1, _mm_unpacklo_epi64(B0, B0));               \
-        B1 = _mm_unpackhi_epi64(t0, _mm_unpacklo_epi64(B1, B1));               \
-        D0 = _mm_unpackhi_epi64(D0, _mm_unpacklo_epi64(D1, D1));               \
-        D1 = _mm_unpackhi_epi64(D1, _mm_unpacklo_epi64(t1, t1));               \
-    } while ((void)0, 0)
-#endif
 
 #define BLAKE2_ROUND(A0, A1, B0, B1, C0, C1, D0, D1)                           \
     do {                                                                       \
