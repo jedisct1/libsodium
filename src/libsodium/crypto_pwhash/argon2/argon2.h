@@ -194,7 +194,7 @@ int argon2_core(argon2_context *context, argon2_type type);
 /**
  * Hashes a password with Argon2i, producing an encoded hash
  * @param t_cost Number of iterations
- * @param m_cost Sets memory usage to 2^m_cost kibibytes
+ * @param m_cost Sets memory usage to m_cost kibibytes
  * @param parallelism Number of threads and compute lanes
  * @param pwd Pointer to password
  * @param pwdlen Password size in bytes
@@ -215,7 +215,7 @@ int argon2i_hash_encoded(const uint32_t t_cost, const uint32_t m_cost,
 /**
  * Hashes a password with Argon2i, producing a raw hash
  * @param t_cost Number of iterations
- * @param m_cost Sets memory usage to 2^m_cost kibibytes
+ * @param m_cost Sets memory usage to m_cost kibibytes
  * @param parallelism Number of threads and compute lanes
  * @param pwd Pointer to password
  * @param pwdlen Password size in bytes
