@@ -50,7 +50,7 @@ int argon2_core(argon2_context *context, argon2_type type) {
     /* Ensure that all segments have equal length */
     memory_blocks = segment_length * (context->lanes * ARGON2_SYNC_POINTS);
 
-    instance.memory = NULL;
+    instance.region = NULL;
     instance.passes = context->t_cost;
     instance.memory_blocks = memory_blocks;
     instance.segment_length = segment_length;

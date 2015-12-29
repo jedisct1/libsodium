@@ -138,7 +138,7 @@ void fill_segment_ssse3(const argon2_instance_t *instance,
         prev_offset = curr_offset - 1;
     }
 
-    memcpy(state, ((instance->memory + prev_offset)->v), ARGON2_BLOCK_SIZE);
+    memcpy(state, ((instance->region->memory + prev_offset)->v), ARGON2_BLOCK_SIZE);
 
     for (i = starting_index; i < instance->segment_length;
          ++i, ++curr_offset, ++prev_offset) {
@@ -152,7 +152,7 @@ void fill_segment_ssse3(const argon2_instance_t *instance,
         if (data_independent_addressing) {
             pseudo_rand = pseudo_rands[i];
         } else {
-            pseudo_rand = instance->memory[prev_offset].v[0];
+            pseudo_rand = instance->region->memory[prev_offset].v[0];
         }
 
         /* 1.2.2 Computing the lane of the reference block */
@@ -172,8 +172,8 @@ void fill_segment_ssse3(const argon2_instance_t *instance,
 
         /* 2 Creating a new block */
         ref_block =
-            instance->memory + instance->lane_length * ref_lane + ref_index;
-        curr_block = instance->memory + curr_offset;
+            instance->region->memory + instance->lane_length * ref_lane + ref_index;
+        curr_block = instance->region->memory + curr_offset;
         fill_block(state, (uint8_t *)ref_block->v, (uint8_t *)curr_block->v);
     }
 

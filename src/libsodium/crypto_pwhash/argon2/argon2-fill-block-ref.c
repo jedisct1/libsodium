@@ -158,7 +158,7 @@ void fill_segment_ref(const argon2_instance_t *instance,
         if (data_independent_addressing) {
             pseudo_rand = pseudo_rands[i];
         } else {
-            pseudo_rand = instance->memory[prev_offset].v[0];
+            pseudo_rand = instance->region->memory[prev_offset].v[0];
         }
 
         /* 1.2.2 Computing the lane of the reference block */
@@ -178,9 +178,9 @@ void fill_segment_ref(const argon2_instance_t *instance,
 
         /* 2 Creating a new block */
         ref_block =
-            instance->memory + instance->lane_length * ref_lane + ref_index;
-        curr_block = instance->memory + curr_offset;
-        fill_block(instance->memory + prev_offset, ref_block, curr_block);
+            instance->region->memory + instance->lane_length * ref_lane + ref_index;
+        curr_block = instance->region->memory + curr_offset;
+        fill_block(instance->region->memory + prev_offset, ref_block, curr_block);
     }
 
     free(pseudo_rands);

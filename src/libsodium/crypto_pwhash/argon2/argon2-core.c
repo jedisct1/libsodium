@@ -11,6 +11,10 @@
  * <http://creativecommons.org/publicdomain/zero/1.0/>.
  */
 
+#ifdef HAVE_SYS_MMAN_H
+# include <sys/mman.h>
+#endif
+#include <errno.h>
 #include <inttypes.h>
 #include <stdio.h>
 #include <stdlib.h>
@@ -23,6 +27,10 @@
 #include "argon2-core.h"
 #include "argon2-impl.h"
 #include "blake2b-long.h"
+
+#if !defined(MAP_ANON) && defined(MAP_ANONYMOUS)
+# define MAP_ANON MAP_ANONYMOUS
+#endif
 
 static fill_segment_fn fill_segment = fill_segment_ref;
 
@@ -57,20 +65,26 @@ static void store_block(void *output, const block *src) {
 }
 
 /***************Memory allocators*****************/
-int allocate_memory(block **memory, uint32_t m_cost) {
-    if (memory != NULL) {
+int allocate_memory(block_region **region, uint32_t m_cost) {
+    if (region != NULL) {
+        block *memory;
         size_t memory_size = sizeof(block) * m_cost;
+
         if (m_cost == 0 ||
             memory_size / m_cost !=
                 sizeof(block)) { /*1. Check for multiplication overflow*/
             return ARGON2_MEMORY_ALLOCATION_ERROR;
         }
-
-        *memory = (block *)malloc(memory_size); /*2. Try to allocate*/
-
-        if (!*memory) {
+        *region = (block_region *)malloc(sizeof(block_region));  /*2. Try to allocate region*/
+        if (!*region) {
             return ARGON2_MEMORY_ALLOCATION_ERROR;
         }
+
+        memory = (block *)malloc(memory_size); /*3. Try to allocate block*/
+        if (!memory) {
+            return ARGON2_MEMORY_ALLOCATION_ERROR;
+        }
+        (*region)->memory = memory;
 
         return ARGON2_OK;
     } else {
@@ -81,26 +95,29 @@ int allocate_memory(block **memory, uint32_t m_cost) {
 /*********Memory functions*/
 
 void clear_memory(argon2_instance_t *instance, int clear) {
-    if (instance->memory != NULL && clear) {
-        sodium_memzero(instance->memory,
+    if (instance->region != NULL && clear) {
+        sodium_memzero(instance->region->memory,
                        sizeof(block) * instance->memory_blocks);
     }
 }
 
-void free_memory(block *memory) { free(memory); }
+void free_memory(block_region *region) {
+    free(region->memory);
+    free(region);
+}
 
 void finalize(const argon2_context *context, argon2_instance_t *instance) {
     if (context != NULL && instance != NULL) {
         block blockhash;
         uint32_t l;
 
-        copy_block(&blockhash, instance->memory + instance->lane_length - 1);
+        copy_block(&blockhash, instance->region->memory + instance->lane_length - 1);
 
         /* XOR the last blocks */
         for (l = 1; l < instance->lanes; ++l) {
             uint32_t last_block_in_lane =
                 l * instance->lane_length + (instance->lane_length - 1);
-            xor_block(&blockhash, instance->memory + last_block_in_lane);
+            xor_block(&blockhash, instance->region->memory + last_block_in_lane);
         }
 
         /* Hash the result */
@@ -120,10 +137,10 @@ void finalize(const argon2_context *context, argon2_instance_t *instance) {
 
         /* Deallocate the memory */
         if (NULL != context->free_cbk) {
-            context->free_cbk((uint8_t *)instance->memory,
+            context->free_cbk((uint8_t *)instance->region->memory,
                               instance->memory_blocks * sizeof(block));
         } else {
-            free_memory(instance->memory);
+            free_memory(instance->region);
         }
     }
 }
@@ -362,13 +379,13 @@ void fill_first_blocks(uint8_t *blockhash, const argon2_instance_t *instance) {
         store32(blockhash + ARGON2_PREHASH_DIGEST_LENGTH + 4, l);
         blake2b_long(blockhash_bytes, ARGON2_BLOCK_SIZE, blockhash,
                      ARGON2_PREHASH_SEED_LENGTH);
-        load_block(&instance->memory[l * instance->lane_length + 0],
+        load_block(&instance->region->memory[l * instance->lane_length + 0],
                    blockhash_bytes);
 
         store32(blockhash + ARGON2_PREHASH_DIGEST_LENGTH, 1);
         blake2b_long(blockhash_bytes, ARGON2_BLOCK_SIZE, blockhash,
                      ARGON2_PREHASH_SEED_LENGTH);
-        load_block(&instance->memory[l * instance->lane_length + 1],
+        load_block(&instance->region->memory[l * instance->lane_length + 1],
                    blockhash_bytes);
     }
     sodium_memzero(blockhash_bytes, ARGON2_BLOCK_SIZE);
@@ -465,9 +482,9 @@ int initialize(argon2_instance_t *instance, argon2_context *context) {
         if (ARGON2_OK != result) {
             return result;
         }
-        memcpy(&(instance->memory), p, sizeof(instance->memory));
+        memcpy(&(instance->region->memory), p, sizeof(instance->region->memory));
     } else {
-        result = allocate_memory(&(instance->memory), instance->memory_blocks);
+        result = allocate_memory(&(instance->region), instance->memory_blocks);
         if (ARGON2_OK != result) {
             return result;
         }

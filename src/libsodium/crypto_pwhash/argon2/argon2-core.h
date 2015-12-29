@@ -48,6 +48,12 @@ enum argon2_core_constants {
  */
 typedef struct block_ { uint64_t v[ARGON2_QWORDS_IN_BLOCK]; } block;
 
+typedef struct block_region_ {
+    void  *base;
+    block *memory;
+	size_t size;
+} block_region;
+
 /*****************Functions that work with the block******************/
 
 /* Initialize each byte of the block with @in */
@@ -66,7 +72,7 @@ void xor_block(block *dst, const block *src);
  * thread
  */
 typedef struct Argon2_instance_t {
-    block *memory;          /* Memory pointer */
+    block_region *region;   /* Memory region pointer */
     uint32_t passes;        /* Number of passes */
     uint32_t memory_blocks; /* Number of blocks in memory */
     uint32_t segment_length;
@@ -102,7 +108,7 @@ typedef struct Argon2_thread_data {
  * @param m_cost number of blocks to allocate in the memory
  * @return ARGON2_OK if @memory is a valid pointer and memory is allocated
  */
-int allocate_memory(block **memory, uint32_t m_cost);
+int allocate_memory(block_region **memory, uint32_t m_cost);
 
 /* Clears memory
  * @param instance pointer to the current instance
@@ -113,7 +119,7 @@ void clear_memory(argon2_instance_t *instance, int clear);
 /* Deallocates memory
  * @param memory pointer to the blocks
  */
-void free_memory(block *memory);
+void free_memory(block_region *memory);
 
 /*
  * Computes absolute position of reference block in the lane following a skewed
