@@ -293,7 +293,8 @@ AS_IF([test "x$EMSCRIPTEN" = "x"],[
 # define __SSE2__
 #endif
 #include <emmintrin.h>
-]], [[ __m128d x = _mm_setzero_pd(); ]])],
+]], [[ __m128d x = _mm_setzero_pd();
+       __m128i y = _mm_set_epi64x(0, 0); ]])],
     [AC_MSG_RESULT(yes)
      AC_DEFINE([HAVE_EMMINTRIN_H], [1], [sse2 is available])
      AX_CHECK_COMPILE_FLAG([-msse2], [CFLAGS_SSE2="-msse2"])],
