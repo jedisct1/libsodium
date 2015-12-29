@@ -91,7 +91,7 @@ static void tv(void)
             167, 1, 10784179, 1 },
       };
     char          passwd[256];
-    unsigned char salt[crypto_pwhash_argon2i_SALTBYTES];
+    unsigned char salt[crypto_pwhash_SALTBYTES];
     unsigned char out[256];
     char          out_hex[256 * 2 + 1];
     size_t        i = 0U;
@@ -102,7 +102,7 @@ static void tv(void)
                        NULL, NULL);
         sodium_hex2bin(salt, sizeof salt, tests[i].salt_hex,
                        strlen(tests[i].salt_hex), NULL, NULL, NULL);
-        if (crypto_pwhash_argon2i(
+        if (crypto_pwhash(
                 out, (unsigned long long) tests[i].outlen,
                 passwd, tests[i].passwdlen,
                 (const unsigned char *) salt, tests[i].opslimit,
@@ -141,7 +141,7 @@ static void tv2(void)
             155, 3, 1397645, 1 },
       };
     char          passwd[256];
-    unsigned char salt[crypto_pwhash_argon2i_SALTBYTES];
+    unsigned char salt[crypto_pwhash_SALTBYTES];
     unsigned char out[256];
     char          out_hex[256 * 2 + 1];
     size_t        i = 0U;
@@ -152,7 +152,7 @@ static void tv2(void)
                        NULL, NULL);
         sodium_hex2bin(salt, sizeof salt, tests[i].salt_hex,
                        strlen(tests[i].salt_hex), NULL, NULL, NULL);
-        if (crypto_pwhash_argon2i(
+        if (crypto_pwhash(
                 out, (unsigned long long) tests[i].outlen,
                 passwd, tests[i].passwdlen,
                 (const unsigned char *) salt, tests[i].opslimit,
@@ -173,46 +173,41 @@ int main(void)
 
     tv();
     tv2();
-    salt = (char *) sodium_malloc(crypto_pwhash_argon2i_SALTBYTES);
-    str_out = (char *) sodium_malloc(crypto_pwhash_argon2i_STRBYTES);
-    str_out2 = (char *) sodium_malloc(crypto_pwhash_argon2i_STRBYTES);
-    memcpy(salt, ">A 16-bytes salt",
-           crypto_pwhash_argon2i_SALTBYTES);
-    if (crypto_pwhash_argon2i_str(str_out, passwd, strlen(passwd),
-                                  OPSLIMIT, MEMLIMIT) != 0) {
+    salt = (char *) sodium_malloc(crypto_pwhash_SALTBYTES);
+    str_out = (char *) sodium_malloc(crypto_pwhash_STRBYTES);
+    str_out2 = (char *) sodium_malloc(crypto_pwhash_STRBYTES);
+    memcpy(salt, ">A 16-bytes salt", crypto_pwhash_SALTBYTES);
+    if (crypto_pwhash_str(str_out, passwd, strlen(passwd),
+                          OPSLIMIT, MEMLIMIT) != 0) {
         printf("pwhash_str failure\n");
     }
-    if (crypto_pwhash_argon2i_str(str_out2, passwd, strlen(passwd),
-                                  OPSLIMIT, MEMLIMIT) != 0) {
+    if (crypto_pwhash_str(str_out2, passwd, strlen(passwd),
+                          OPSLIMIT, MEMLIMIT) != 0) {
         printf("pwhash_str(2) failure\n");
     }
     if (strcmp(str_out, str_out2) == 0) {
         printf("pwhash_str doesn't generate different salts\n");
     }
-    if (crypto_pwhash_argon2i_str_verify(str_out, passwd,
-                                         strlen(passwd)) != 0) {
+    if (crypto_pwhash_str_verify(str_out, passwd, strlen(passwd)) != 0) {
         printf("pwhash_str_verify failure\n");
     }
-    if (crypto_pwhash_argon2i_str_verify(str_out, passwd,
-                                         strlen(passwd)) != 0) {
+    if (crypto_pwhash_str_verify(str_out, passwd, strlen(passwd)) != 0) {
         printf("pwhash_str_verify failure\n");
     }
     str_out[14]++;
-    if (crypto_pwhash_argon2i_str_verify(
-            str_out, passwd, strlen(passwd)) == 0) {
+    if (crypto_pwhash_str_verify(str_out, passwd, strlen(passwd)) == 0) {
         printf("pwhash_str_verify(2) failure\n");
     }
     str_out[14]--;
 
-    assert(str_out[crypto_pwhash_argon2i_STRBYTES - 1U] == 0);
-    assert(crypto_pwhash_argon2i_saltbytes() > 0U);
-    assert(crypto_pwhash_argon2i_strbytes() > 1U);
-    assert(crypto_pwhash_argon2i_strbytes() >
-           strlen(crypto_pwhash_argon2i_strprefix()));
-    assert(crypto_pwhash_argon2i_opslimit_interactive() > 0U);
-    assert(crypto_pwhash_argon2i_memlimit_interactive() > 0U);
-    assert(crypto_pwhash_argon2i_opslimit_sensitive() > 0U);
-    assert(crypto_pwhash_argon2i_memlimit_sensitive() > 0U);
+    assert(str_out[crypto_pwhash_STRBYTES - 1U] == 0);
+    assert(crypto_pwhash_saltbytes() > 0U);
+    assert(crypto_pwhash_strbytes() > 1U);
+    assert(crypto_pwhash_strbytes() > strlen(crypto_pwhash_strprefix()));
+    assert(crypto_pwhash_opslimit_interactive() > 0U);
+    assert(crypto_pwhash_memlimit_interactive() > 0U);
+    assert(crypto_pwhash_opslimit_sensitive() > 0U);
+    assert(crypto_pwhash_memlimit_sensitive() > 0U);
 
     sodium_free(salt);
     sodium_free(str_out);
