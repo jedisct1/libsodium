@@ -173,32 +173,9 @@ static void tv3(void)
           { "^T5H$JYt39n%K*j:W]!1s?vg!:jGi]Ax?..l7[p0v:1jHTpla9;]bUN;?bWyCbtqg "
             "nrDFal+Jxl3,2`#^tFSu%v_+7iYse8-cCkNf!tD=KrW)",
             "$argon2i$m=22528,t=10,p=1$i2sXExTHR4py06Nh+P+Kwg$OvfhlngWzaXLI1LnHcQczduSg9u/pk6hhJwKhHEp/dk" },
-          { "bl72h6#y<':MFRZ>B IA1=NRkCKS%W8`1I.2uQxJN0g)N N aTt^4K!Iw5r "
-            "H6;crDsv^a55j9tsk'/GqweZn;cdk6+F_St6:#*=?ZCD_lw>.",
-            "$argon2i$m=55296,t=3,p=1$vI46D/UykijxgIg6l928Rw$791WzR3L7stwlLZIv6eJr1CWHbR4L0e9tp6I4J5MZAc" },
-          { "Py "
-            ">e.5b+tLo@rL`dC2k@eJ&4eVl!W=JJ4+k&mAt@gt',FS1JjqKW3aq21:]^kna`"
-            "mde7kVkN5NrpKUptu)@4*b&?BE_sJMG1=&@`3GBCV]Wg7xwgo7x3El",
-            "$argon2i$m=32768,t=8,p=1$YsE+8BiiE2RqYp7QcuMJpw$TvmLKq03VJBFDXLtbUhOm+TyySgAXzi7dNT21SWRY7w" },
-          { "2vj;Um]FKOL27oam(:Uo8+UmSTvb1FD*h?jk_,S=;RDgF-$Fjk?]9yvfxe@fN^!NN("
-            "Cuml?+2Raa",
-            "$argon2i$m=28672,t=4,p=1$Koen83S8tAM/TIPy/2+ndw$g5taoOiSre2HKbkodUH/1ap0wdwOwH5F0T23cCLfSwU" },
-          { "CT=[9uUoGav,J`kU+348tA50ue#sL:ABZ3QgF+r[#vh:tTOiL>s8tv%,Jeo]jH/"
-            "_4^i(*jD-_ku[9Ko[=86 06V",
-            "$argon2i$m=26624,t=1,p=1$9/jJcwR3z6Y8ZMt4abl4vQ$zS2+Hiz0HzdOj4zdbffl5FgrM1lWN8bkatHrtod6BGg" },
-          { "J#wNn`hDgOpTHNI.w^1a70%f,.9V_m038H_JIJQln`vdWnn/"
-            "rmILR?9H5g(+`;@H(2VosN9Fgk[WEjaBr'yB9Q19-imNa04[Mk5kvGcSn-TV",
-            "$argon2i$m=45056,t=4,p=1$bxd84vA1esVh3Q59k6rKMw$hMwksuneXVlZ2MN+ibfVIGomTDfBGF8k6BBG9Ick3mI" },
-          { "j4BS38Asa;p)[K+9TY!3YDj<LK-`nLVXQw9%*QfM",
-            "$argon2i$m=43008,t=6,p=1$azJ4t9a3eU7oT7oVHNWeSQ$8PuyUC/uXsnIFzkXiK7Wa/NGMqVzxQbE6MgPI101ANo" },
-          { "M.R>Qw+!qJb]>pP :_.9`dxM9k [eR7Y!yL-3)sNs[R,j_/^ "
-            "TH=5ny'15>6UXWcQW^6D%XCsO[vN[%ReA-`tV1vW(Nt*0KVK#]45P_A",
-            "$argon2i$m=38912,t=5,p=1$FhNucCTljSINyYLzg2ATJg$09y/TogytLYVCBEDfT90O//ejbIuRyaCTcv1tcfwEhA" },
           { "K3S=KyH#)36_?]LxeR8QNKw6X=gFb'ai$C%29V* "
             "tyh^Wo$TN-#Q4qkmtTCf0LLb.^E$0uykkP",
-            "$argon2i$m=23552,t=3,p=1$CIyn4RfRAlEctS1WNr/cWg$yAevM0sQq95wZsvA2LGnGqBNSNOCHmqC2uWTgNw+c5U" },
-          { "Y0!?iQa9M%5ekffW(`",
-            "$argon2i$m=33792,t=9,p=1$W0FAjH3H9bqV4ZNWkcryOA$uglFyolaH+qHrMMl4gpMvI3gtF9OJuQlZbinUpywvMc" }
+            "$argon2i$m=23552,t=3,p=1$CIyn4RfRAlEctS1WNr/cWg$yAevM0sQq95wZsvA2LGnGqBNSNOCHmqC2uWTgNw+c5U" }
       };
     char *out;
     char *passwd;
