@@ -17,10 +17,6 @@
 #include <stddef.h>
 #include <limits.h>
 
-#if defined(__cplusplus)
-extern "C" {
-#endif
-
 /*************************Argon2 input parameter
  * restrictions**************************************************/
 
@@ -279,9 +275,5 @@ int argon2i(argon2_context *context);
  * @return  Zero if successful, a non zero error code otherwise
  */
 int verify_i(argon2_context *context, const char *hash);
-
-#if defined(__cplusplus)
-}
-#endif
 
 #endif
