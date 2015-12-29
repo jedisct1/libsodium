@@ -44,6 +44,18 @@ crypto_pwhash_argon2i_memlimit_interactive(void)
 }
 
 size_t
+crypto_pwhash_argon2i_opslimit_moderate(void)
+{
+    return crypto_pwhash_argon2i_OPSLIMIT_MODERATE;
+}
+
+size_t
+crypto_pwhash_argon2i_memlimit_moderate(void)
+{
+    return crypto_pwhash_argon2i_MEMLIMIT_MODERATE;
+}
+
+size_t
 crypto_pwhash_argon2i_opslimit_sensitive(void)
 {
     return crypto_pwhash_argon2i_OPSLIMIT_SENSITIVE;
