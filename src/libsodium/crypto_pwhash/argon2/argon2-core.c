@@ -66,30 +66,29 @@ static void store_block(void *output, const block *src) {
 
 /***************Memory allocators*****************/
 int allocate_memory(block_region **region, uint32_t m_cost) {
-    if (region != NULL) {
-        block *memory;
-        size_t memory_size = sizeof(block) * m_cost;
+    block *memory;
+    size_t memory_size;
 
-        if (m_cost == 0 ||
-            memory_size / m_cost !=
-                sizeof(block)) { /*1. Check for multiplication overflow*/
-            return ARGON2_MEMORY_ALLOCATION_ERROR;
-        }
-        *region = (block_region *)malloc(sizeof(block_region));  /*2. Try to allocate region*/
-        if (!*region) {
-            return ARGON2_MEMORY_ALLOCATION_ERROR;
-        }
-
-        memory = (block *)malloc(memory_size); /*3. Try to allocate block*/
-        if (!memory) {
-            return ARGON2_MEMORY_ALLOCATION_ERROR;
-        }
-        (*region)->memory = memory;
-
-        return ARGON2_OK;
-    } else {
+    if (region == NULL) {
         return ARGON2_MEMORY_ALLOCATION_ERROR;
     }
+    memory_size = sizeof(block) * m_cost;
+    if (m_cost == 0 ||
+        memory_size / m_cost != sizeof(block)) { /*1. Check for multiplication overflow*/
+        return ARGON2_MEMORY_ALLOCATION_ERROR;
+    }
+    *region = (block_region *)malloc(sizeof(block_region));  /*2. Try to allocate region*/
+    if (!*region) {
+        return ARGON2_MEMORY_ALLOCATION_ERROR;
+    }
+
+    memory = (block *)malloc(memory_size); /*3. Try to allocate block*/
+    if (!memory) {
+        return ARGON2_MEMORY_ALLOCATION_ERROR;
+    }
+    (*region)->memory = memory;
+
+    return ARGON2_OK;
 }
 
 /*********Memory functions*/
