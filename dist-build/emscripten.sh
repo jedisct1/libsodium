@@ -64,7 +64,7 @@ if [ "x$BROWSER_TESTS" != "x" ]; then
       sed "s/{{tname}}/${tname}/" index.html.tpl > "browser/${tname}.html"
       echo "${tname}.html" >> "browser/tests.txt"
     done
-    touch -r "${PREFIX}/lib/libsodium.js" test/browser-js.done
+    touch -r "${PREFIX}/lib/libsodium.js" ../browser-js.done
   )
 else
   echo 'Running the test suite'
