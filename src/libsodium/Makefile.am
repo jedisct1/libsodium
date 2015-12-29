@@ -51,6 +51,17 @@ libsodium_la_SOURCES = \
 	crypto_onetimeauth/poly1305/donna/poly1305_donna32.h \
 	crypto_onetimeauth/poly1305/donna/poly1305_donna64.h \
 	crypto_onetimeauth/poly1305/donna/poly1305_donna.c \
+	crypto_pwhash/argon2/argon2-core.c \
+	crypto_pwhash/argon2/argon2-core.h \
+	crypto_pwhash/argon2/argon2-encoding.c \
+	crypto_pwhash/argon2/argon2-encoding.h \
+	crypto_pwhash/argon2/argon2-fill-block-ref.c \
+	crypto_pwhash/argon2/argon2-impl.h \
+	crypto_pwhash/argon2/argon2.c \
+	crypto_pwhash/argon2/argon2.h \
+	crypto_pwhash/argon2/blake2b-long.c \
+	crypto_pwhash/argon2/blake2b-long.h \
+	crypto_pwhash/argon2/blamka-round-ref.h \
 	crypto_pwhash/scryptsalsa208sha256/crypto_scrypt-common.c \
 	crypto_pwhash/scryptsalsa208sha256/crypto_scrypt.h \
 	crypto_pwhash/scryptsalsa208sha256/scrypt_platform.c \
@@ -224,6 +235,8 @@ libssse3_la_CPPFLAGS = $(libsodium_la_CPPFLAGS) \
 	@CFLAGS_SSE2@ @CFLAGS_SSSE3@
 libssse3_la_SOURCES = \
 	crypto_generichash/blake2/ref/blake2b-compress-ssse3.c \
+	crypto_pwhash/argon2/argon2-fill-block-ssse3.c \
+	crypto_pwhash/argon2/blamka-round-ssse3.h \
 	crypto_stream/chacha20/vec/stream_chacha20_vec.h \
 	crypto_stream/chacha20/vec/stream_chacha20_vec.c
 
