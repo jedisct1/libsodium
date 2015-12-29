@@ -209,7 +209,7 @@ int argon2_verify(const char *encoded, const void *pwd, const size_t pwdlen,
     }
 
     ret = argon2_hash(ctx.t_cost, ctx.m_cost, ctx.threads, pwd, pwdlen, ctx.salt,
-                ctx.saltlen, out, ctx.outlen, NULL, 0, type);
+                      ctx.saltlen, out, ctx.outlen, NULL, 0, type);
 
     free(ctx.ad);
     free(ctx.salt);
