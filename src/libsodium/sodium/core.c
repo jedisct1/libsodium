@@ -2,6 +2,7 @@
 #include "core.h"
 #include "crypto_generichash.h"
 #include "crypto_onetimeauth.h"
+#include "crypto_pwhash_argon2i.h"
 #include "crypto_scalarmult.h"
 #include "crypto_stream_chacha20.h"
 #include "randombytes.h"

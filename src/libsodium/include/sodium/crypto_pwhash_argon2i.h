@@ -75,7 +75,7 @@ int crypto_pwhash_argon2i_str_verify(const char str[crypto_pwhash_argon2i_STRBYT
 
 /* ------------------------------------------------------------------------- */
 
-int  _crypto_pwhash_argon2i_pick_best_implementation(void);
+int _crypto_pwhash_argon2i_pick_best_implementation(void);
 
 #ifdef __cplusplus
 }
