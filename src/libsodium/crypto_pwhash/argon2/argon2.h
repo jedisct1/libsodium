@@ -181,9 +181,6 @@ typedef struct Argon2_Context {
     uint32_t lanes;   /* number of lanes */
     uint32_t threads; /* maximum number of threads */
 
-    allocate_fptr allocate_cbk; /* pointer to memory allocator */
-    deallocate_fptr free_cbk;   /* pointer to memory deallocator */
-
     uint32_t flags; /* array of bool options */
 } argon2_context;
 

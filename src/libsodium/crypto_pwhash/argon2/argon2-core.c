@@ -172,12 +172,7 @@ void finalize(const argon2_context *context, argon2_instance_t *instance) {
         clear_memory(instance, context->flags & ARGON2_FLAG_CLEAR_PASSWORD);
 
         /* Deallocate the memory */
-        if (NULL != context->free_cbk) {
-            context->free_cbk((uint8_t *)instance->region->memory,
-                              instance->memory_blocks * sizeof(block));
-        } else {
-            free_memory(instance->region);
-        }
+        free_memory(instance->region);
     }
 }
 
@@ -393,14 +388,6 @@ int validate_inputs(const argon2_context *context) {
         return ARGON2_THREADS_TOO_MANY;
     }
 
-    if (NULL != context->allocate_cbk && NULL == context->free_cbk) {
-        return ARGON2_FREE_MEMORY_CBK_NULL;
-    }
-
-    if (NULL == context->allocate_cbk && NULL != context->free_cbk) {
-        return ARGON2_ALLOCATE_MEMORY_CBK_NULL;
-    }
-
     return ARGON2_OK;
 }
 
@@ -511,19 +498,9 @@ int initialize(argon2_instance_t *instance, argon2_context *context) {
 
     /* 1. Memory allocation */
 
-    if (NULL != context->allocate_cbk) {
-        uint8_t *p;
-        result = context->allocate_cbk(&p, instance->memory_blocks *
-                                       ARGON2_BLOCK_SIZE);
-        if (ARGON2_OK != result) {
-            return result;
-        }
-        memcpy(&(instance->region->memory), p, sizeof(instance->region->memory));
-    } else {
-        result = allocate_memory(&(instance->region), instance->memory_blocks);
-        if (ARGON2_OK != result) {
-            return result;
-        }
+    result = allocate_memory(&(instance->region), instance->memory_blocks);
+    if (ARGON2_OK != result) {
+        return result;
     }
 
     /* 2. Initial hashing */
