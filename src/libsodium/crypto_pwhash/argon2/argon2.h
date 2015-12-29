@@ -130,10 +130,6 @@ typedef enum Argon2_ErrorCodes {
                                  error code */
 } argon2_error_codes;
 
-/* Memory allocator types --- for external allocation */
-typedef int (*allocate_fptr)(uint8_t **memory, size_t bytes_to_allocate);
-typedef void (*deallocate_fptr)(uint8_t *memory, size_t bytes_to_allocate);
-
 /* Argon2 external data structures */
 
 /*
