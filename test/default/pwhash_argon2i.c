@@ -206,6 +206,8 @@ int main(void)
     assert(crypto_pwhash_strbytes() > strlen(crypto_pwhash_strprefix()));
     assert(crypto_pwhash_opslimit_interactive() > 0U);
     assert(crypto_pwhash_memlimit_interactive() > 0U);
+    assert(crypto_pwhash_opslimit_moderate() > 0U);
+    assert(crypto_pwhash_memlimit_moderate() > 0U);
     assert(crypto_pwhash_opslimit_sensitive() > 0U);
     assert(crypto_pwhash_memlimit_sensitive() > 0U);
 
