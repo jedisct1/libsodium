@@ -201,6 +201,12 @@
     <ClInclude Include="src\libsodium\crypto_scalarmult\curve25519\ref10\x25519_ref10.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="src\libsodium\include\sodium\crypto_pwhash.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\libsodium\include\sodium\crypto_pwhash_argon2i.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\libsodium\crypto_core\hsalsa20\ref2\core_hsalsa20.c">
@@ -519,6 +525,27 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="src\libsodium\crypto_scalarmult\curve25519\ref10\x25519_ref10.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\libsodium\crypto_pwhash\crypto_pwhash.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\libsodium\crypto_pwhash\argon2\argon2.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\libsodium\crypto_pwhash\argon2\argon2-core.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\libsodium\crypto_pwhash\argon2\argon2-encoding.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\libsodium\crypto_pwhash\argon2\argon2-fill-block-ref.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\libsodium\crypto_pwhash\argon2\blake2b-long.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\libsodium\crypto_pwhash\argon2\pwhash_argon2i.c">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

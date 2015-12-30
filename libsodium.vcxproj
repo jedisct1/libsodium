@@ -346,6 +346,8 @@
     <ClInclude Include="src\libsodium\include\sodium\crypto_int64.h" />
     <ClInclude Include="src\libsodium\include\sodium\crypto_onetimeauth.h" />
     <ClInclude Include="src\libsodium\include\sodium\crypto_onetimeauth_poly1305.h" />
+    <ClInclude Include="src\libsodium\include\sodium\crypto_pwhash.h" />
+    <ClInclude Include="src\libsodium\include\sodium\crypto_pwhash_argon2i.h" />
     <ClInclude Include="src\libsodium\include\sodium\crypto_pwhash_scryptsalsa208sha256.h" />
     <ClInclude Include="src\libsodium\include\sodium\crypto_scalarmult.h" />
     <ClInclude Include="src\libsodium\include\sodium\crypto_scalarmult_curve25519.h" />
@@ -423,6 +425,13 @@
     <ClCompile Include="src\libsodium\crypto_onetimeauth\crypto_onetimeauth.c" />
     <ClCompile Include="src\libsodium\crypto_onetimeauth\poly1305\donna\poly1305_donna.c" />
     <ClCompile Include="src\libsodium\crypto_onetimeauth\poly1305\onetimeauth_poly1305.c" />
+    <ClCompile Include="src\libsodium\crypto_pwhash\argon2\argon2-core.c" />
+    <ClCompile Include="src\libsodium\crypto_pwhash\argon2\argon2-encoding.c" />
+    <ClCompile Include="src\libsodium\crypto_pwhash\argon2\argon2-fill-block-ref.c" />
+    <ClCompile Include="src\libsodium\crypto_pwhash\argon2\argon2.c" />
+    <ClCompile Include="src\libsodium\crypto_pwhash\argon2\blake2b-long.c" />
+    <ClCompile Include="src\libsodium\crypto_pwhash\argon2\pwhash_argon2i.c" />
+    <ClCompile Include="src\libsodium\crypto_pwhash\crypto_pwhash.c" />
     <ClCompile Include="src\libsodium\crypto_pwhash\scryptsalsa208sha256\crypto_scrypt-common.c" />
     <ClCompile Include="src\libsodium\crypto_pwhash\scryptsalsa208sha256\nosse\pwhash_scryptsalsa208sha256_nosse.c" />
     <ClCompile Include="src\libsodium\crypto_pwhash\scryptsalsa208sha256\pbkdf2-sha256.c" />
