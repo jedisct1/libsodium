@@ -65,7 +65,14 @@ static void store_block(void *output, const block *src) {
 }
 
 /***************Memory allocators*****************/
-int allocate_memory(block_region **region, uint32_t m_cost) {
+/* Allocates memory to the given pointer
+ * @param memory pointer to the pointer to the memory
+ * @param m_cost number of blocks to allocate in the memory
+ * @return ARGON2_OK if @memory is a valid pointer and memory is allocated
+ */
+static int allocate_memory(block_region **memory, uint32_t m_cost);
+
+static int allocate_memory(block_region **region, uint32_t m_cost) {
     void *base;
     block *memory;
     size_t memory_size;
@@ -122,14 +129,25 @@ int allocate_memory(block_region **region, uint32_t m_cost) {
 
 /*********Memory functions*/
 
-void clear_memory(argon2_instance_t *instance, int clear) {
+/* Clears memory
+ * @param instance pointer to the current instance
+ * @param clear_memory indicates if we clear the memory with zeros.
+ */
+static void clear_memory(argon2_instance_t *instance, int clear);
+
+static void clear_memory(argon2_instance_t *instance, int clear) {
     if (instance->region != NULL && clear) {
         sodium_memzero(instance->region->memory,
                        sizeof(block) * instance->memory_blocks);
     }
 }
 
-void free_memory(block_region *region) {
+/* Deallocates memory
+ * @param memory pointer to the blocks
+ */
+static void free_memory(block_region *memory);
+
+static void free_memory(block_region *region) {
 	if (region->base) {
 #if defined(MAP_ANON) && defined(HAVE_MMAP)
 		if (munmap(region->base, region->size)) {

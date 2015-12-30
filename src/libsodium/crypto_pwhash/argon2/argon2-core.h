@@ -103,24 +103,6 @@ typedef struct Argon2_thread_data {
 /*************************Argon2 core
  * functions**************************************************/
 
-/* Allocates memory to the given pointer
- * @param memory pointer to the pointer to the memory
- * @param m_cost number of blocks to allocate in the memory
- * @return ARGON2_OK if @memory is a valid pointer and memory is allocated
- */
-int allocate_memory(block_region **memory, uint32_t m_cost);
-
-/* Clears memory
- * @param instance pointer to the current instance
- * @param clear_memory indicates if we clear the memory with zeros.
- */
-void clear_memory(argon2_instance_t *instance, int clear);
-
-/* Deallocates memory
- * @param memory pointer to the blocks
- */
-void free_memory(block_region *memory);
-
 /*
  * Computes absolute position of reference block in the lane following a skewed
  * distribution and using a pseudo-random value as input
