@@ -53,12 +53,6 @@ static void tv(void)
             82,
             "39d82eef32010b8b79cc5ba88ed539fbaba741100f2edbeca7cc171ffeabf258",
             190, 1, 5432947, 1 },
-          { "1845e375479537e9dd4f4486d5c91ac72775d66605eeb11a787b78a7745f1fd005"
-            "2d526c67235dbae1b2a4d575a74cb551c8e9096c593a497aee74ba3047d911358e"
-            "de57bc27c9ea1829824348daaab606217cc931dcb6627787bd6e4e5854f0e8",
-            97,
-            "3ee91a805aa62cfbe8dce29a2d9a44373a5006f4a4ce24022aca9cecb29d1473",
-            212, 7, 13101817, 1 },
           { "c7b09aec680e7b42fedd7fc792e78b2f6c1bea8f4a884320b648f81e8cf515e8ba"
             "9dcfb11d43c4aae114c1734aa69ca82d44998365db9c93744fa28b63fd16000e82"
             "61cbbe083e7e2da1e5f696bde0834fe53146d7e0e35e7de9920d041f5a5621aabe"
@@ -67,13 +61,6 @@ static void tv(void)
             156,
             "039c056d933b475032777edbaffac50f143f64c123329ed9cf59e3b65d3f43b6",
             178, 3, 4886999, 1 },
-          { "8f3a06e2fd8711350a517bb12e31f3d3423e8dc0bb14aac8240fca0995938d59bb"
-            "37bd0a7dfc9c9cc0705684b46612e8c8b1d6655fb0f9887562bb9899791a0250d1"
-            "320f945eda48cdc20c233f40a5bb0a7e3ac5ad7250ce684f68fc0b8c9633bfd75a"
-            "ad116525af7bdcdbbdb4e00ab163fd4df08f243f12557e",
-            122,
-            "90631f686a8c3dbc0703ffa353bc1fdf35774568ac62406f98a13ed8f47595fd",
-            55, 1, 15738350, 1 },
           { "b540beb016a5366524d4605156493f9874514a5aa58818cd0c6dfffaa9e90205f1"
             "7b",
             34,
@@ -164,6 +151,39 @@ static void tv2(void)
     } while (++i < (sizeof tests) / (sizeof tests[0]));
 }
 
+static void tv3(void)
+{
+    static struct {
+        const char *passwd;
+        const char *out;
+    } tests[] = {
+        { "",
+          "$argon2i$m=4096,t=1,p=1$ZW1wdHkAAAAAAAAAAAAAAA$iE7ExNH70nzk6SmP9k6JP4lMxhMrGbmK1MP0vAkBPtY" },
+        { "^T5H$JYt39n%K*j:W]!1s?vg!:jGi]Ax?..l7[p0v:1jHTpla9;]bUN;?bWyCbtqg ",
+          "$argon2i$m=4096,t=3,p=2$QmF0dGVyeQAAAAAAAAAAAA$1Qe4etbL4DxBpgRbqvM9MIOhaxjP61lv0xNhegrCvlo" },
+        { "K3S=KyH#)36_?]LxeR8QNKw6X=gFbxai$C%29V*",
+          "$argon2i$m=4096,t=3,p=1$aXRlcmF0aW9ucwAAAAAAAA$kRvT53TswrSAnVxij5BmTfgzas6PcTVh0E4/ewz6Qmk" }
+    };
+    char *out;
+    char *passwd;
+    size_t i = 0U;
+
+    do {
+        out = (char *) sodium_malloc(strlen(tests[i].out) + 1U);
+        assert(out != NULL);
+        memcpy(out, tests[i].out, strlen(tests[i].out) + 1U);
+        passwd = (char *) sodium_malloc(strlen(tests[i].passwd) + 1U);
+        assert(passwd != NULL);
+        memcpy(passwd, tests[i].passwd, strlen(tests[i].passwd) + 1U);
+        if (crypto_pwhash_argon2i_str_verify
+            (out, passwd, strlen(passwd)) != 0) {
+            printf("pwhash_str failure: [%u]\n", (unsigned int)i);
+        }
+        sodium_free(out);
+        sodium_free(passwd);
+    } while (++i < (sizeof tests) / (sizeof tests[0]));
+}
+
 int main(void)
 {
     char       *str_out;
@@ -173,6 +193,7 @@ int main(void)
 
     tv();
     tv2();
+    tv3();
     salt = (char *) sodium_malloc(crypto_pwhash_SALTBYTES);
     str_out = (char *) sodium_malloc(crypto_pwhash_STRBYTES);
     str_out2 = (char *) sodium_malloc(crypto_pwhash_STRBYTES);
