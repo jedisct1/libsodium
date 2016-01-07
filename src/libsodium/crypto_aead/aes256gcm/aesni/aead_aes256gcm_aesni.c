@@ -790,7 +790,7 @@ crypto_aead_aes256gcm_encrypt(unsigned char *c,
                               const unsigned char *npub,
                               const unsigned char *k)
 {
-    crypto_aead_aes256gcm_state ctx;
+    CRYPTO_ALIGN(16) crypto_aead_aes256gcm_state ctx;
 
     crypto_aead_aes256gcm_beforenm(&ctx, k);
 
@@ -810,7 +810,7 @@ crypto_aead_aes256gcm_decrypt(unsigned char *m,
                               const unsigned char *npub,
                               const unsigned char *k)
 {
-    crypto_aead_aes256gcm_state ctx;
+    CRYPTO_ALIGN(16) crypto_aead_aes256gcm_state ctx;
 
     crypto_aead_aes256gcm_beforenm(&ctx, k);
 
