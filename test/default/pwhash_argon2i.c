@@ -209,6 +209,12 @@ int main(void)
     if (strcmp(str_out, str_out2) == 0) {
         printf("pwhash_str doesn't generate different salts\n");
     }
+    if (sodium_is_zero((const unsigned char *) str_out + strlen(str_out),
+                       crypto_pwhash_STRBYTES - strlen(str_out)) != 1 ||
+        sodium_is_zero((const unsigned char *) str_out2 + strlen(str_out2),
+                       crypto_pwhash_STRBYTES - strlen(str_out2)) != 1) {
+        printf("pwhash_str() doesn't properly pad with zeros\n");
+    }
     if (crypto_pwhash_str_verify(str_out, passwd, strlen(passwd)) != 0) {
         printf("pwhash_str_verify failure\n");
     }
