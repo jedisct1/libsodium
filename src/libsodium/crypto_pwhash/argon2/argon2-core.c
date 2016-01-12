@@ -264,11 +264,12 @@ uint32_t index_alpha(const argon2_instance_t *instance,
     return absolute_position;
 }
 
-void fill_memory_blocks(argon2_instance_t *instance) {
+int fill_memory_blocks(argon2_instance_t *instance) {
+    int result;
     uint32_t r, s;
 
     if (instance == NULL || instance->lanes == 0) {
-        return;
+        return ARGON2_OK;
     }
 
     for (r = 0; r < instance->passes; ++r) {
@@ -282,10 +283,14 @@ void fill_memory_blocks(argon2_instance_t *instance) {
                 position.lane = l;
                 position.slice = (uint8_t)s;
                 position.index = 0;
-                fill_segment(instance, position);
+                result = fill_segment(instance, position);
+                if (ARGON2_OK != result) {
+                    return result;
+                }
             }
         }
     }
+    return ARGON2_OK;
 }
 
 int validate_inputs(const argon2_context *context) {

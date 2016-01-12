@@ -179,19 +179,20 @@ void finalize(const argon2_context *context, argon2_instance_t *instance);
  * @param position Current position
  * @pre all block pointers must be valid
  */
-typedef void (*fill_segment_fn)(const argon2_instance_t *instance,
-                                argon2_position_t position);
+typedef int (*fill_segment_fn)(const argon2_instance_t *instance,
+                               argon2_position_t position);
 int argon2_pick_best_implementation(void);
-void fill_segment_ssse3(const argon2_instance_t *instance,
-                        argon2_position_t position);
-void fill_segment_ref(const argon2_instance_t *instance,
-                      argon2_position_t position);
+int fill_segment_ssse3(const argon2_instance_t *instance,
+                       argon2_position_t position);
+int fill_segment_ref(const argon2_instance_t *instance,
+                     argon2_position_t position);
 
 /*
  * Function that fills the entire memory t_cost times based on the first two
  * blocks in each lane
  * @param instance Pointer to the current instance
+ * @return Zero if successful, -1 if memory failed to allocate
  */
-void fill_memory_blocks(argon2_instance_t *instance);
+int fill_memory_blocks(argon2_instance_t *instance);
 
 #endif

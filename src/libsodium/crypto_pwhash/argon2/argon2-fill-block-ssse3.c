@@ -94,8 +94,8 @@ static void generate_addresses(const argon2_instance_t *instance,
     }
 }
 
-void fill_segment_ssse3(const argon2_instance_t *instance,
-                        argon2_position_t position) {
+int fill_segment_ssse3(const argon2_instance_t *instance,
+                       argon2_position_t position) {
     block *ref_block = NULL, *curr_block = NULL;
     uint64_t pseudo_rand, ref_index, ref_lane;
     uint32_t prev_offset, curr_offset;
@@ -107,7 +107,7 @@ void fill_segment_ssse3(const argon2_instance_t *instance,
     uint64_t *pseudo_rands = NULL;
 
     if (instance == NULL) {
-        return;
+        return ARGON2_OK;
     }
 
     data_independent_addressing = (instance->type == Argon2_i);
@@ -115,7 +115,7 @@ void fill_segment_ssse3(const argon2_instance_t *instance,
     pseudo_rands =
         (uint64_t *)malloc(sizeof(uint64_t) * instance->segment_length);
     if (pseudo_rands == NULL) {
-        return;
+        return ARGON2_MEMORY_ALLOCATION_ERROR;
     }
 
     if (data_independent_addressing) {
@@ -180,5 +180,7 @@ void fill_segment_ssse3(const argon2_instance_t *instance,
     }
 
     free(pseudo_rands);
+
+    return ARGON2_OK;
 }
 #endif

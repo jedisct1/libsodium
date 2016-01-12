@@ -69,7 +69,11 @@ int argon2_core(argon2_context *context, argon2_type type) {
     }
 
     /* 4. Filling memory */
-    fill_memory_blocks(&instance);
+    result = fill_memory_blocks(&instance);
+
+    if (ARGON2_OK != result) {
+        return result;
+    }
 
     /* 5. Finalization */
     finalize(context, &instance);
