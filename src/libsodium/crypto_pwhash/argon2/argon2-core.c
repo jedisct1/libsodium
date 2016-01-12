@@ -91,38 +91,38 @@ static int allocate_memory(block_region **region, uint32_t m_cost) {
     }
 
 #if defined(MAP_ANON) && defined(HAVE_MMAP)
-	if ((base = mmap(NULL, memory_size, PROT_READ | PROT_WRITE,
+    if ((base = mmap(NULL, memory_size, PROT_READ | PROT_WRITE,
 # ifdef MAP_NOCORE
                      MAP_ANON | MAP_PRIVATE | MAP_NOCORE,
 # else
                      MAP_ANON | MAP_PRIVATE,
 # endif
                      -1, 0)) == MAP_FAILED) {
-		base = NULL; /* LCOV_EXCL_LINE */
+        base = NULL; /* LCOV_EXCL_LINE */
     }
     memcpy(&memory, &base, sizeof memory);
 #elif defined(HAVE_POSIX_MEMALIGN)
-	if ((errno = posix_memalign((void **) &base, 64, memory_size)) != 0) {
-		base = NULL;
+    if ((errno = posix_memalign((void **) &base, 64, memory_size)) != 0) {
+        base = NULL;
     }
     memcpy(&memory, &base, sizeof memory);
 #else
     memory = NULL;
-	if (memory_size + 63 < memory_size) {
+    if (memory_size + 63 < memory_size) {
         base = NULL;
-		errno = ENOMEM;
+        errno = ENOMEM;
     } else if ((base = malloc(memory_size + 63)) != NULL) {
         uint8_t *aligned = ((uint8_t *) base) + 63;
-		aligned -= (uintptr_t) aligned & 63;
+        aligned -= (uintptr_t) aligned & 63;
         memcpy(&memory, &aligned, sizeof memory);
-	}
+    }
 #endif
     if (!memory) {
         return ARGON2_MEMORY_ALLOCATION_ERROR;
     }
-	(*region)->base = base;
-	(*region)->memory = memory;
-	(*region)->size = base ? memory_size : 0;
+    (*region)->base = base;
+    (*region)->memory = memory;
+    (*region)->size = base ? memory_size : 0;
 
     return ARGON2_OK;
 }
@@ -148,15 +148,15 @@ static void clear_memory(argon2_instance_t *instance, int clear) {
 static void free_memory(block_region *memory);
 
 static void free_memory(block_region *region) {
-	if (region->base) {
+    if (region->base) {
 #if defined(MAP_ANON) && defined(HAVE_MMAP)
-		if (munmap(region->base, region->size)) {
-			return; /* LCOV_EXCL_LINE */
+        if (munmap(region->base, region->size)) {
+            return; /* LCOV_EXCL_LINE */
         }
 #else
-		free(region->base);
+        free(region->base);
 #endif
-	}
+    }
     free(region);
 }
 

@@ -51,7 +51,7 @@ typedef struct block_ { uint64_t v[ARGON2_QWORDS_IN_BLOCK]; } block;
 typedef struct block_region_ {
     void  *base;
     block *memory;
-	size_t size;
+    size_t size;
 } block_region;
 
 /*****************Functions that work with the block******************/
