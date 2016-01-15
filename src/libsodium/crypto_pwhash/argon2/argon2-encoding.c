@@ -2,6 +2,7 @@
 #include <stdlib.h>
 #include <string.h>
 #include <limits.h>
+#include "argon2-core.h"
 #include "argon2-encoding.h"
 
 /*
@@ -304,46 +305,18 @@ int decode_string(argon2_context *ctx, const char *str, argon2_type type) {
     DECIMAL(ctx->lanes);
     ctx->threads = ctx->lanes;
 
-    /*
-     * Both m and t must be no more than 2^32-1. The tests below
-     * use a shift by 30 bits to avoid a direct comparison with
-     * 0xFFFFFFFF, which may trigger a spurious compiler warning
-     * on machines where 'unsigned long' is a 32-bit type.
-     */
-    if (ctx->m_cost < 1 || (ctx->m_cost >> 30) > 3) {
-        return 0;
-    }
-    if (ctx->t_cost < 1 || (ctx->t_cost >> 30) > 3) {
-        return 0;
-    }
-
-    /*
-     * The parallelism p must be between 1 and 255. The memory cost
-     * parameter, expressed in kilobytes, must be at least 8 times
-     * the value of p.
-     */
-    if (ctx->lanes < 1 || ctx->lanes > 255) {
-        return 0;
-    }
-    if (ctx->m_cost < (ctx->lanes << 3)) {
-        return 0;
-    }
-
     CC_opt(",data=", BIN(ctx->ad, maxadlen, ctx->adlen));
     if (*str == 0) {
         return 1;
     }
     CC("$");
     BIN(ctx->salt, maxsaltlen, ctx->saltlen);
-    if (ctx->saltlen < 8) {
-        return 0;
-    }
     if (*str == 0) {
         return 1;
     }
     CC("$");
     BIN(ctx->out, maxoutlen, ctx->outlen);
-    if (ctx->outlen < 12) {
+    if (validate_inputs(ctx) != ARGON2_OK) {
         return 0;
     }
     return *str == 0;
@@ -415,6 +388,10 @@ int encode_string(char *dst, size_t dst_len, argon2_context *ctx,
         SS("$argon2i$m=");
     else
         return 0;
+
+    if (validate_inputs(ctx) != ARGON2_OK) {
+        return 0;
+    }
     SX(ctx->m_cost);
     SS(",t=");
     SX(ctx->t_cost);
