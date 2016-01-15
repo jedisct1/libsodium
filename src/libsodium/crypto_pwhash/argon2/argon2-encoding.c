@@ -293,10 +293,11 @@ int decode_string(argon2_context *ctx, const char *str, argon2_type type) {
     ctx->adlen = 0;
     ctx->saltlen = 0;
     ctx->outlen = 0;
-    if (type == Argon2_i)
+    if (type == Argon2_i) {
         CC("$argon2i");
-    else
+    } else {
         return 0;
+    }
     CC("$m=");
     DECIMAL(ctx->m_cost);
     CC(",t=");
@@ -384,11 +385,11 @@ int encode_string(char *dst, size_t dst_len, argon2_context *ctx,
         dst_len -= sb_len;                                                     \
     } while ((void)0, 0)
 
-    if (type == Argon2_i)
+    if (type == Argon2_i) {
         SS("$argon2i$m=");
-    else
+    } else {
         return 0;
-
+    }
     if (validate_inputs(ctx) != ARGON2_OK) {
         return 0;
     }
@@ -403,15 +404,15 @@ int encode_string(char *dst, size_t dst_len, argon2_context *ctx,
         SB(ctx->ad, ctx->adlen);
     }
 
-    if (ctx->saltlen == 0)
+    if (ctx->saltlen == 0) {
         return 1;
-
+    }
     SS("$");
     SB(ctx->salt, ctx->saltlen);
 
-    if (ctx->outlen == 0)
+    if (ctx->outlen == 0) {
         return 1;
-
+    }
     SS("$");
     SB(ctx->out, ctx->outlen);
     return 1;
