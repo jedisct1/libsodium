@@ -244,6 +244,26 @@ crypto_aead_chacha20poly1305_ietf_decrypt(unsigned char *m,
 }
 
 size_t
+crypto_aead_chacha20poly1305_ietf_keybytes(void) {
+    return crypto_aead_chacha20poly1305_ietf_KEYBYTES;
+}
+
+size_t
+crypto_aead_chacha20poly1305_ietf_npubbytes(void) {
+    return crypto_aead_chacha20poly1305_ietf_NPUBBYTES;
+}
+
+size_t
+crypto_aead_chacha20poly1305_ietf_nsecbytes(void) {
+    return crypto_aead_chacha20poly1305_ietf_NSECBYTES;
+}
+
+size_t
+crypto_aead_chacha20poly1305_ietf_abytes(void) {
+    return crypto_aead_chacha20poly1305_ietf_ABYTES;
+}
+
+size_t
 crypto_aead_chacha20poly1305_keybytes(void) {
     return crypto_aead_chacha20poly1305_KEYBYTES;
 }
@@ -251,11 +271,6 @@ crypto_aead_chacha20poly1305_keybytes(void) {
 size_t
 crypto_aead_chacha20poly1305_npubbytes(void) {
     return crypto_aead_chacha20poly1305_NPUBBYTES;
-}
-
-size_t
-crypto_aead_chacha20poly1305_ietf_npubbytes(void) {
-    return crypto_aead_chacha20poly1305_IETF_NPUBBYTES;
 }
 
 size_t

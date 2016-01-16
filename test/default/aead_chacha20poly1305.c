@@ -127,7 +127,7 @@ tv(void)
 static int
 tv_ietf(void)
 {
-    static unsigned char firstkey[crypto_aead_chacha20poly1305_KEYBYTES]
+    static unsigned char firstkey[crypto_aead_chacha20poly1305_ietf_KEYBYTES]
         = {
             0x80, 0x81, 0x82, 0x83, 0x84, 0x85, 0x86, 0x87,
             0x88, 0x89, 0x8a, 0x8b, 0x8c, 0x8d, 0x8e, 0x8f,
@@ -137,12 +137,12 @@ tv_ietf(void)
 #define MESSAGE "Ladies and Gentlemen of the class of '99: If I could offer you " \
 "only one tip for the future, sunscreen would be it."
     static unsigned char m[114U];
-    static unsigned char nonce[crypto_aead_chacha20poly1305_IETF_NPUBBYTES]
+    static unsigned char nonce[crypto_aead_chacha20poly1305_ietf_NPUBBYTES]
         = { 0x07, 0x00, 0x00, 0x00,
             0x40, 0x41, 0x42, 0x43, 0x44, 0x45, 0x46, 0x47 };
     static unsigned char ad[12U]
         = { 0x50, 0x51, 0x52, 0x53, 0xc0, 0xc1, 0xc2, 0xc3, 0xc4, 0xc5, 0xc6, 0xc7 };
-    static unsigned char c[114U + crypto_aead_chacha20poly1305_ABYTES];
+    static unsigned char c[114U + crypto_aead_chacha20poly1305_ietf_ABYTES];
 
     unsigned char m2[114U];
     unsigned long long clen;
@@ -153,7 +153,7 @@ tv_ietf(void)
     memcpy(m, MESSAGE, sizeof m);
     crypto_aead_chacha20poly1305_ietf_encrypt(c, &clen, m, sizeof m, ad, sizeof ad,
                                               NULL, nonce, firstkey);
-    if (clen != sizeof m + crypto_aead_chacha20poly1305_abytes()) {
+    if (clen != sizeof m + crypto_aead_chacha20poly1305_ietf_abytes()) {
         printf("clen is not properly set\n");
     }
     for (i = 0U; i < sizeof c; ++i) {
@@ -168,7 +168,7 @@ tv_ietf(void)
                                                   sizeof ad, nonce, firstkey) != 0) {
         printf("crypto_aead_chacha20poly1305_ietf_decrypt() failed\n");
     }
-    if (m2len != sizeof c - crypto_aead_chacha20poly1305_abytes()) {
+    if (m2len != sizeof c - crypto_aead_chacha20poly1305_ietf_abytes()) {
         printf("m2len is not properly set\n");
     }
     if (memcmp(m, m2, sizeof m) != 0) {
@@ -186,7 +186,7 @@ tv_ietf(void)
     }
     crypto_aead_chacha20poly1305_ietf_encrypt(c, &clen, m, sizeof m, NULL, 0U, NULL,
                                               nonce, firstkey);
-    if (clen != sizeof m + crypto_aead_chacha20poly1305_abytes()) {
+    if (clen != sizeof m + crypto_aead_chacha20poly1305_ietf_abytes()) {
         printf("clen is not properly set (adlen=0)\n");
     }
     for (i = 0U; i < sizeof c; ++i) {
@@ -200,7 +200,7 @@ tv_ietf(void)
                                                   NULL, 0U, nonce, firstkey) != 0) {
         printf("crypto_aead_chacha20poly1305_ietf_decrypt() failed (adlen=0)\n");
     }
-    if (m2len != sizeof c - crypto_aead_chacha20poly1305_abytes()) {
+    if (m2len != sizeof c - crypto_aead_chacha20poly1305_ietf_abytes()) {
         printf("m2len is not properly set (adlen=0)\n");
     }
     if (memcmp(m, m2, sizeof m) != 0) {
@@ -208,7 +208,7 @@ tv_ietf(void)
     }
 
     if (crypto_aead_chacha20poly1305_ietf_decrypt(
-            m2, &m2len, NULL, c, crypto_aead_chacha20poly1305_ABYTES / 2, NULL,
+            m2, &m2len, NULL, c, crypto_aead_chacha20poly1305_ietf_ABYTES / 2, NULL,
             0U, nonce, firstkey) != -1) {
         printf("crypto_aead_chacha20poly1305_ietf_decrypt() worked with a short "
                "ciphertext\n");
@@ -222,7 +222,7 @@ tv_ietf(void)
     memcpy(c, m, sizeof m);
     crypto_aead_chacha20poly1305_ietf_encrypt(c, &clen, c, sizeof m, NULL, 0U, NULL,
                                               nonce, firstkey);
-    if (clen != sizeof m + crypto_aead_chacha20poly1305_abytes()) {
+    if (clen != sizeof m + crypto_aead_chacha20poly1305_ietf_abytes()) {
         printf("clen is not properly set (adlen=0)\n");
     }
     for (i = 0U; i < sizeof c; ++i) {
@@ -237,16 +237,23 @@ tv_ietf(void)
                                              NULL, 0U, nonce, firstkey) != 0) {
         printf("crypto_aead_chacha20poly1305_ietf_decrypt() failed (adlen=0)\n");
     }
-    if (m2len != sizeof c - crypto_aead_chacha20poly1305_abytes()) {
+    if (m2len != sizeof c - crypto_aead_chacha20poly1305_ietf_abytes()) {
         printf("m2len is not properly set (adlen=0)\n");
     }
     if (memcmp(m, c, sizeof m) != 0) {
         printf("m != c (adlen=0)\n");
     }
 
-    assert(crypto_aead_chacha20poly1305_keybytes() > 0U);
+    assert(crypto_aead_chacha20poly1305_ietf_keybytes() > 0U);
+    assert(crypto_aead_chacha20poly1305_ietf_keybytes() == crypto_aead_chacha20poly1305_keybytes());
     assert(crypto_aead_chacha20poly1305_ietf_npubbytes() > 0U);
-    assert(crypto_aead_chacha20poly1305_nsecbytes() == 0U);
+    assert(crypto_aead_chacha20poly1305_ietf_npubbytes() > crypto_aead_chacha20poly1305_npubbytes());
+    assert(crypto_aead_chacha20poly1305_ietf_nsecbytes() == 0U);
+    assert(crypto_aead_chacha20poly1305_ietf_nsecbytes() == crypto_aead_chacha20poly1305_nsecbytes());
+    assert(crypto_aead_chacha20poly1305_IETF_KEYBYTES  == crypto_aead_chacha20poly1305_ietf_KEYBYTES);
+    assert(crypto_aead_chacha20poly1305_IETF_NSECBYTES == crypto_aead_chacha20poly1305_ietf_NSECBYTES);
+    assert(crypto_aead_chacha20poly1305_IETF_NPUBBYTES == crypto_aead_chacha20poly1305_ietf_NPUBBYTES);
+    assert(crypto_aead_chacha20poly1305_IETF_ABYTES    == crypto_aead_chacha20poly1305_ietf_ABYTES);
 
     return 0;
 }
