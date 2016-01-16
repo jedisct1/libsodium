@@ -20,6 +20,7 @@ main(void)
     size_t        i;
     size_t        j;
 
+    assert(crypto_generichash_blake2b_statebytes() >= sizeof st);
     for (h = 0; h < crypto_generichash_blake2b_KEYBYTES_MAX; ++h) {
         k[h] = (unsigned char) h;
     }
