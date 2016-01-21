@@ -178,6 +178,8 @@ int argon2_verify(const char *encoded, const void *pwd, const size_t pwdlen,
     uint8_t *out;
     int ret;
 
+    memset(&ctx, 0, sizeof ctx);
+
     /* max values, to be updated in decode_string */
     ctx.adlen = 512;
     ctx.saltlen = 512;
