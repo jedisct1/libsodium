@@ -91,15 +91,15 @@ int argon2_hash(const uint32_t t_cost, const uint32_t m_cost,
     int result;
     uint8_t *out;
 
-    if (pwdlen > UINT32_MAX) {
+    if (pwdlen > ARGON2_MAX_PWD_LENGTH) {
         return ARGON2_PWD_TOO_LONG;
     }
 
-    if (hashlen > UINT32_MAX) {
+    if (hashlen > ARGON2_MAX_OUTLEN) {
         return ARGON2_OUTPUT_TOO_LONG;
     }
 
-    if (saltlen > UINT32_MAX) {
+    if (saltlen > ARGON2_MAX_SALT_LENGTH) {
         return ARGON2_SALT_TOO_LONG;
     }
 
