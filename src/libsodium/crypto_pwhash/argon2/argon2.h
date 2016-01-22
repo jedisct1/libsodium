@@ -240,6 +240,7 @@ int argon2_hash(const uint32_t t_cost, const uint32_t m_cost,
 
 /**
  * Verifies a password against an encoded string
+ * Encoded string is restricted as in validate_inputs()
  * @param encoded String encoding parameters, salt, hash
  * @param pwd Pointer to password
  * @pre   Returns ARGON2_OK if successful
