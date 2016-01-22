@@ -3,6 +3,7 @@
  * AES256-GCM, based on original code by Romain Dolbeau
  */
 
+#include <errno.h>
 #include <stdint.h>
 #include <stdlib.h>
 #include <string.h>
@@ -124,8 +125,8 @@ aesni_encrypt1(unsigned char *out, __m128i nv, const __m128i *rkeys)
 }
 
 /** multiple-blocks-at-once AES encryption with AES-NI ;
-    on Haswell, aesenc as a latency of 7 and a througput of 1
-    so the sequence of aesenc should be bubble-free, if you
+    on Haswell, aesenc as a latency of 7 and a throughput of 1
+    so the sequence of aesenc should be bubble-free if you
     have at least 8 blocks. Let's build an arbitratry-sized
     function */
 /* Step 1 : loading the nonce */
@@ -825,6 +826,69 @@ crypto_aead_aes256gcm_is_available(void)
     return sodium_runtime_has_pclmul() & sodium_runtime_has_aesni();
 }
 
+#else
+
+int
+crypto_aead_aes256gcm_encrypt(unsigned char *c, unsigned long long *clen_p,
+                              const unsigned char *m, unsigned long long mlen,
+                              const unsigned char *ad, unsigned long long adlen,
+                              const unsigned char *nsec, const unsigned char *npub,
+                              const unsigned char *k)
+{
+    errno = ENOSYS;
+    return -1;
+}
+
+int
+crypto_aead_aes256gcm_decrypt(unsigned char *m, unsigned long long *mlen_p,
+                              unsigned char *nsec, const unsigned char *c,
+                              unsigned long long clen, const unsigned char *ad,
+                              unsigned long long adlen, const unsigned char *npub,
+                              const unsigned char *k)
+{
+    errno = ENOSYS;
+    return -1;
+}
+
+int
+crypto_aead_aes256gcm_beforenm(crypto_aead_aes256gcm_state *ctx_,
+                               const unsigned char *k)
+{
+    errno = ENOSYS;
+    return -1;
+}
+
+int
+crypto_aead_aes256gcm_encrypt_afternm(unsigned char *c, unsigned long long *clen_p,
+                                      const unsigned char *m, unsigned long long mlen,
+                                      const unsigned char *ad, unsigned long long adlen,
+                                      const unsigned char *nsec, const unsigned char *npub,
+                                      const crypto_aead_aes256gcm_state *ctx_)
+{
+    errno = ENOSYS;
+    return -1;
+}
+
+int
+crypto_aead_aes256gcm_decrypt_afternm(unsigned char *m, unsigned long long *mlen_p,
+                                      unsigned char *nsec,
+                                      const unsigned char *c, unsigned long long clen,
+                                      const unsigned char *ad, unsigned long long adlen,
+                                      const unsigned char *npub,
+                                      const crypto_aead_aes256gcm_state *ctx_)
+{
+    errno = ENOSYS;
+    return -1;
+}
+
+int
+crypto_aead_aes256gcm_is_available(void)
+{
+    return 0;
+}
+
+#endif
+
 size_t
 crypto_aead_aes256gcm_keybytes(void)
 {
@@ -854,13 +918,3 @@ crypto_aead_aes256gcm_statebytes(void)
 {
     return (sizeof(crypto_aead_aes256gcm_state) + (size_t) 15U) & ~(size_t) 15U;
 }
-
-#else
-
-int
-crypto_aead_aes256gcm_is_available(void)
-{
-    return 0;
-}
-
-#endif
