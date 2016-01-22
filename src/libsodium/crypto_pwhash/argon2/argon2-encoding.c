@@ -6,7 +6,7 @@
 #include "argon2-encoding.h"
 
 /*
- * Example code for a decoder and encoder of "hash strings", with Argon2i
+ * Example code for a decoder and encoder of "hash strings", with Argon2
  * parameters.
  *
  * This code comprises three sections:
@@ -18,7 +18,7 @@
  *   the relevant functions are made public (non-static) and be given
  *   reasonable names to avoid collisions with other functions.
  *
- *   -- The second section is specific to Argon2i. It encodes and decodes
+ *   -- The second section is specific to Argon2. It encodes and decodes
  *   the parameters, salts and outputs. It does not compute the hash
  *   itself.
  *
@@ -225,13 +225,13 @@ static const char *decode_decimal(const char *str, unsigned long *v) {
 
 /* ==================================================================== */
 /*
- * Code specific to Argon2i.
+ * Code specific to Argon2.
  *
  * The code below applies the following format:
  *
- *  $argon2i$m=<num>,t=<num>,p=<num>[,keyid=<bin>][,data=<bin>][$<bin>[$<bin>]]
+ *  $argon2<T>$m=<num>,t=<num>,p=<num>[,keyid=<bin>][,data=<bin>][$<bin>[$<bin>]]
  *
- * where <num> is a decimal integer (positive, fits in an 'unsigned long')
+ * where <T> is either 'd' or 'i', <num> is a decimal integer (positive, fits in an 'unsigned long')
  * and <bin> is Base64-encoded data (no '=' padding characters, no newline
  * or whitespace). The "keyid" is a binary identifier for a key (up to 8
  * bytes); "data" is associated data (up to 32 bytes). When the 'keyid'
@@ -248,6 +248,7 @@ static const char *decode_decimal(const char *str, unsigned long *v) {
  * Returned value is 1 on success, 0 on error.
  */
 int decode_string(argon2_context *ctx, const char *str, argon2_type type) {
+    /* check for prefix */
 #define CC(prefix)                                                             \
     do {                                                                       \
         size_t cc_len = strlen(prefix);                                        \
@@ -257,6 +258,7 @@ int decode_string(argon2_context *ctx, const char *str, argon2_type type) {
         str += cc_len;                                                         \
     } while ((void)0, 0)
 
+    /* prefix checking with supplied code */
 #define CC_opt(prefix, code)                                                   \
     do {                                                                       \
         size_t cc_len = strlen(prefix);                                        \
@@ -266,6 +268,7 @@ int decode_string(argon2_context *ctx, const char *str, argon2_type type) {
         }                                                                      \
     } while ((void)0, 0)
 
+    /* Decoding prefix into decimal */
 #define DECIMAL(x)                                                             \
     do {                                                                       \
         unsigned long dec_x;                                                   \
@@ -276,6 +279,7 @@ int decode_string(argon2_context *ctx, const char *str, argon2_type type) {
         (x) = dec_x;                                                           \
     } while ((void)0, 0)
 
+    /* Decoding prefix into binary */
 #define BIN(buf, max_len, len)                                                 \
     do {                                                                       \
         size_t bin_len = (max_len);                                            \
