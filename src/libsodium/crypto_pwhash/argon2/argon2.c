@@ -127,7 +127,7 @@ int argon2_hash(const uint32_t t_cost, const uint32_t m_cost,
     result = argon2_core(&context, type);
 
     if (result != ARGON2_OK) {
-        memset(out, 0x00, hashlen);
+        sodium_memzero(out, hashlen);
         free(out);
         return result;
     }
@@ -140,13 +140,14 @@ int argon2_hash(const uint32_t t_cost, const uint32_t m_cost,
     /* if encoding requested, write it */
     if (encoded && encodedlen) {
         if (!encode_string(encoded, encodedlen, &context, type)) {
-            memset(out, 0x00, hashlen);
-            memset(encoded, 0x00, encodedlen);
+            sodium_memzero(out, hashlen);
+            sodium_memzero(encoded, encodedlen);
             free(out);
             return ARGON2_ENCODING_FAIL;
         }
     }
 
+    sodium_memzero(out, hashlen);
     free(out);
 
     return ARGON2_OK;
