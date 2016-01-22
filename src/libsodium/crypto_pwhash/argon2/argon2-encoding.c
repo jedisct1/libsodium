@@ -248,7 +248,7 @@ static const char *decode_decimal(const char *str, unsigned long *v) {
  * Returned value is 1 on success, 0 on error.
  */
 int decode_string(argon2_context *ctx, const char *str, argon2_type type) {
-    /* check for prefix */
+    /* Prefix checking */
 #define CC(prefix)                                                             \
     do {                                                                       \
         size_t cc_len = strlen(prefix);                                        \
@@ -258,7 +258,7 @@ int decode_string(argon2_context *ctx, const char *str, argon2_type type) {
         str += cc_len;                                                         \
     } while ((void)0, 0)
 
-    /* prefix checking with supplied code */
+    /* Prefix checking with supplied code */
 #define CC_opt(prefix, code)                                                   \
     do {                                                                       \
         size_t cc_len = strlen(prefix);                                        \
@@ -349,16 +349,16 @@ static void u32_to_string(char *str, uint32_t x) {
 }
 
 /*
- * encode an argon2i hash string into the provided buffer. 'dst_len'
+ * Encode an argon2i hash string into the provided buffer. 'dst_len'
  * contains the size, in characters, of the 'dst' buffer; if 'dst_len'
  * is less than the number of required characters (including the
  * terminating 0), then this function returns 0.
  *
- * if pp->output_len is 0, then the hash string will be a salt string
+ * If pp->output_len is 0, then the hash string will be a salt string
  * (no output). if pp->salt_len is also 0, then the string will be a
  * parameter-only string (no salt and no output).
  *
- * on success, 1 is returned.
+ * On success, 1 is returned.
  */
 int encode_string(char *dst, size_t dst_len, argon2_context *ctx,
                   argon2_type type) {
