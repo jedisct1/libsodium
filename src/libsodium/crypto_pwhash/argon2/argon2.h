@@ -189,7 +189,7 @@ typedef enum Argon2_type { Argon2_i = 1 } argon2_type;
  * @param  context  Pointer to the Argon2 internal structure
  * @return Error code if smth is wrong, ARGON2_OK otherwise
  */
-int argon2_core(argon2_context *context, argon2_type type);
+int argon2_ctx(argon2_context *context, argon2_type type);
 
 /**
  * Hashes a password with Argon2i, producing an encoded hash

@@ -19,7 +19,7 @@
 /*************************Argon2 internal
  * constants**************************************************/
 
-enum argon2_core_constants {
+enum argon2_ctx_constants {
     /* Version of the algorithm */
     ARGON2_VERSION_NUMBER = 0x10,
 

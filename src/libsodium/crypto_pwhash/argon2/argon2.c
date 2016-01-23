@@ -24,7 +24,7 @@
 #include "argon2-encoding.h"
 #include "argon2-core.h"
 
-int argon2_core(argon2_context *context, argon2_type type) {
+int argon2_ctx(argon2_context *context, argon2_type type) {
     /* 1. Validate all inputs */
     int result = validate_inputs(context);
     uint32_t memory_blocks, segment_length;
@@ -124,7 +124,7 @@ int argon2_hash(const uint32_t t_cost, const uint32_t m_cost,
     context.threads = parallelism;
     context.flags = ARGON2_DEFAULT_FLAGS;
 
-    result = argon2_core(&context, type);
+    result = argon2_ctx(&context, type);
 
     if (result != ARGON2_OK) {
         sodium_memzero(out, hashlen);
@@ -235,7 +235,7 @@ int argon2i_verify(const char *encoded, const void *pwd, const size_t pwdlen) {
 }
 
 int argon2i(argon2_context *context) {
-    return argon2_core(context, Argon2_i);
+    return argon2_ctx(context, Argon2_i);
 }
 
 int verify_i(argon2_context *context, const char *hash) {
@@ -244,7 +244,7 @@ int verify_i(argon2_context *context, const char *hash) {
         return ARGON2_OUT_PTR_MISMATCH;
     }
 
-    result = argon2_core(context, Argon2_i);
+    result = argon2_ctx(context, Argon2_i);
 
     if (ARGON2_OK != result) {
         return result;
