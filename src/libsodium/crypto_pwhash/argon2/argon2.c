@@ -234,11 +234,11 @@ int argon2i_verify(const char *encoded, const void *pwd, const size_t pwdlen) {
     return argon2_verify(encoded, pwd, pwdlen, Argon2_i);
 }
 
-int argon2i(argon2_context *context) {
+int argon2i_ctx(argon2_context *context) {
     return argon2_ctx(context, Argon2_i);
 }
 
-int verify_i(argon2_context *context, const char *hash) {
+int argon2i_verify_ctx(argon2_context *context, const char *hash) {
     int result;
     if (0 == context->outlen || NULL == hash) {
         return ARGON2_OUT_PTR_MISMATCH;

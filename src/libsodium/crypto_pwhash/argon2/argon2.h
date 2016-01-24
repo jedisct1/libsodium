@@ -259,7 +259,7 @@ int argon2_verify(const char *encoded, const void *pwd, const size_t pwdlen,
  * @param  context  Pointer to current Argon2 context
  * @return  Zero if successful, a non zero error code otherwise
  */
-int argon2i(argon2_context *context);
+int argon2i_ctx(argon2_context *context);
 
 /*
  * Verify if a given password is correct for Argon2i hashing
@@ -268,6 +268,6 @@ int argon2i(argon2_context *context);
  * specified by the context outlen member
  * @return  Zero if successful, a non zero error code otherwise
  */
-int verify_i(argon2_context *context, const char *hash);
+int argon2i_verify_ctx(argon2_context *context, const char *hash);
 
 #endif
