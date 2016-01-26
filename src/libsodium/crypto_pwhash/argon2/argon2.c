@@ -182,6 +182,9 @@ int argon2_verify(const char *encoded, const void *pwd, const size_t pwdlen,
 
     memset(&ctx, 0, sizeof ctx);
 
+    ctx.secret = NULL;
+    ctx.secretlen = 0;
+
     /* max values, to be updated in decode_string */
     encoded_len = strlen(encoded);
     ctx.adlen = encoded_len;
