@@ -73,8 +73,9 @@ sodium_memzero(void * const pnt, const size_t len)
     memset(pnt, 0, len);
     _sodium_dummy_symbol_to_prevent_memzero_lto(pnt, len);
 #else
-    volatile unsigned char *pnt_ = (volatile unsigned char *) pnt;
-    size_t                     i = (size_t) 0U;
+    volatile unsigned char *volatile pnt_ =
+        (volatile unsigned char * volatile) pnt;
+    size_t i = (size_t) 0U;
 
     while (i < len) {
         pnt_[i++] = 0U;
@@ -101,8 +102,10 @@ sodium_memcmp(const void * const b1_, const void * const b2_, size_t len)
     const unsigned char *b1 = (const unsigned char *) b1_;
     const unsigned char *b2 = (const unsigned char *) b2_;
 #else
-    const volatile unsigned char *b1 = (const volatile unsigned char *) b1_;
-    const volatile unsigned char *b2 = (const volatile unsigned char *) b2_;
+    const volatile unsigned char *volatile b1 =
+        (const volatile unsigned char * volatile) b1_;
+    const volatile unsigned char *volatile b2 =
+        (const volatile unsigned char * volatile) b2_;
 #endif
     size_t               i;
     unsigned char        d = (unsigned char) 0U;
@@ -135,8 +138,10 @@ sodium_compare(const unsigned char *b1_, const unsigned char *b2_, size_t len)
     const unsigned char *b1 = b1_;
     const unsigned char *b2 = b2_;
 #else
-    const volatile unsigned char *b1 = (const volatile unsigned char *) b1_;
-    const volatile unsigned char *b2 = (const volatile unsigned char *) b2_;
+    const volatile unsigned char * volatile b1 =
+        (const volatile unsigned char * volatile) b1_;
+    const volatile unsigned char * volatile b2 =
+        (const volatile unsigned char * volatile) b2_;
 #endif
     unsigned char gt = 0U;
     unsigned char eq = 1U;
