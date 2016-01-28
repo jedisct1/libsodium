@@ -59,7 +59,7 @@
  * Some macros for constant-time comparisons. These work over values in
  * the 0..255 range. Returned value is 0x00 on "false", 0xFF on "true".
  */
-#define EQ(x, y) ((((0U-((unsigned)(x) ^ (unsigned)(y))) >> 8) & 0xFF) ^ 0xFF)
+#define EQ(x, y) ((((0U - ((unsigned)(x) ^ (unsigned)(y))) >> 8) & 0xFF) ^ 0xFF)
 #define GT(x, y) ((((unsigned)(y) - (unsigned)(x)) >> 8) & 0xFF)
 #define GE(x, y) (GT(y, x) ^ 0xFF)
 #define LT(x, y) GT(y, x)
@@ -123,11 +123,11 @@ static size_t to_base64(char *dst, size_t dst_len, const void *src,
         acc_len += 8;
         while (acc_len >= 6) {
             acc_len -= 6;
-            *dst++ = (char) b64_byte_to_char((acc >> acc_len) & 0x3F);
+            *dst++ = (char)b64_byte_to_char((acc >> acc_len) & 0x3F);
         }
     }
     if (acc_len > 0) {
-        *dst++ = (char) b64_byte_to_char((acc << (6 - acc_len)) & 0x3F);
+        *dst++ = (char)b64_byte_to_char((acc << (6 - acc_len)) & 0x3F);
     }
     *dst++ = 0;
     return olen;
