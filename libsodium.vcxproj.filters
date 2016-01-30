@@ -548,5 +548,8 @@
     <ClCompile Include="src\libsodium\crypto_pwhash\argon2\pwhash_argon2i.c">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="src\libsodium\crypto_pwhash\argon2\argon2-fill-block-ssse3.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
 </Project>

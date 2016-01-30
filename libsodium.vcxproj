@@ -428,6 +428,7 @@
     <ClCompile Include="src\libsodium\crypto_pwhash\argon2\argon2-core.c" />
     <ClCompile Include="src\libsodium\crypto_pwhash\argon2\argon2-encoding.c" />
     <ClCompile Include="src\libsodium\crypto_pwhash\argon2\argon2-fill-block-ref.c" />
+    <ClCompile Include="src\libsodium\crypto_pwhash\argon2\argon2-fill-block-ssse3.c" />
     <ClCompile Include="src\libsodium\crypto_pwhash\argon2\argon2.c" />
     <ClCompile Include="src\libsodium\crypto_pwhash\argon2\blake2b-long.c" />
     <ClCompile Include="src\libsodium\crypto_pwhash\argon2\pwhash_argon2i.c" />
