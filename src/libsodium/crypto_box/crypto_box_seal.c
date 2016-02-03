@@ -35,9 +35,9 @@ crypto_box_seal(unsigned char *c, const unsigned char *m,
     _crypto_box_seal_nonce(nonce, epk, pk);
     ret = crypto_box_easy(c + crypto_box_PUBLICKEYBYTES, m, mlen,
                           nonce, pk, esk);
-    sodium_memzero(nonce, sizeof nonce);
-    sodium_memzero(epk, sizeof epk);
     sodium_memzero(esk, sizeof esk);
+    sodium_memzero(epk, sizeof epk);
+    sodium_memzero(nonce, sizeof nonce);
 
     return ret;
 }
