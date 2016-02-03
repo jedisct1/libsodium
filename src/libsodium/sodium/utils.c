@@ -345,6 +345,156 @@ sodium_hex2bin(unsigned char * const bin, const size_t bin_maxlen,
     return ret;
 }
 
+/* Derived from original code by Sc00bz */
+char
+sodium_base64_encode6bits(unsigned int src)
+{
+	uint32_t diff = 0x41;
+
+	// if (in > 25) diff += 0x61 - 0x41 - 26; // 6
+	diff += ((25 - src) >> 8) & 6;
+
+	// if (in > 51) diff += 0x30 - 0x61 - 26; // -75
+	diff -= ((51 - src) >> 8) & 75;
+
+	// if (in > 61) diff += 0x2b - 0x30 - 10; // -15
+	diff -= ((61 - src) >> 8) & 15;
+
+	// if (in > 62) diff += 0x2f - 0x2b - 1; // 3
+	diff += ((62 - src) >> 8) & 3;
+
+	return (char) (src + diff);
+}
+
+int
+sodium_base64_encode3bytes(unsigned char dest[4], const unsigned char src[3])
+{
+	unsigned char b0 = src[0];
+	unsigned char b1 = src[1];
+	unsigned char b2 = src[2];
+
+	dest[0] = sodium_base64_encode6bits(              b0 >> 2       );
+	dest[1] = sodium_base64_encode6bits(((b0 << 4) | (b1 >> 4)) & 63);
+	dest[2] = sodium_base64_encode6bits(((b1 << 2) | (b2 >> 6)) & 63);
+	dest[3] = sodium_base64_encode6bits(  b2                    & 63);
+    return 0;
+}
+
+uint8_t
+sodium_base64_decode6bits(unsigned char src)
+{
+	unsigned char ch  = src;
+	int           ret = -1;
+
+	// if (ch > 0x40 && ch < 0x5b) ret += ch - 0x41 + 1; // -64
+	ret += (((0x40 - ch) & (ch - 0x5b)) >> 8) & (ch - 64);
+
+	// if (ch > 0x60 && ch < 0x7b) ret += ch - 0x61 + 26 + 1; // -70
+	ret += (((0x60 - ch) & (ch - 0x7b)) >> 8) & (ch - 70);
+
+	// if (ch > 0x2f && ch < 0x3a) ret += ch - 0x30 + 52 + 1; // 5
+	ret += (((0x2f - ch) & (ch - 0x3a)) >> 8) & (ch + 5);
+
+	// if (ch == 0x2b) ret += 62 + 1;
+	ret += (((0x2a - ch) & (ch - 0x2c)) >> 8) & 63;
+
+	// if (ch == 0x2f) ret += 63 + 1;
+	ret += (((0x2e - ch) & (ch - 0x30)) >> 8) & 64;
+
+	return ret;
+}
+
+uint8_t
+sodium_base64_decode3bytes(unsigned char dest[3], const unsigned char src[4])
+{
+	uint8_t c0 = sodium_base64_decode6bits(src[0]);
+	uint8_t c1 = sodium_base64_decode6bits(src[1]);
+	uint8_t c2 = sodium_base64_decode6bits(src[2]);
+	uint8_t c3 = sodium_base64_decode6bits(src[3]);
+
+	dest[0] = (unsigned char) ((c0 << 2) | (c1 >> 4));
+	dest[1] = (unsigned char) ((c1 << 4) | (c2 >> 2));
+	dest[2] = (unsigned char) ((c2 << 6) |  c3      );
+	return ((c0 | c1 | c2 | c3) >> 8) & 1;
+}
+
+int
+sodium_base64_rfc4648_encode(unsigned char *dest,
+                     const unsigned char *src, size_t srcLen)
+{
+    size_t        i = 0;
+    unsigned char tmp[3] = {0, 0, 0};
+    
+	while(srcLen >= 3) {
+		sodium_base64_encode3bytes(dest, src);
+		dest += 4;
+		src   = src + 3;
+        srcLen -= 3;
+	}
+	if (srcLen > 0) {
+		tmp[0] = 0;
+        tmp[1] = 0;
+        tmp[2] = 0;
+
+		for (i = 0; i < srcLen; i++) {
+			tmp[i] = src[i];
+		}
+		sodium_base64_encode3bytes(dest, tmp);
+		dest[3] = '=';
+		if (srcLen == 1) {
+			dest[2] = '=';
+		}
+		dest += 4;
+	}
+	*dest = 0;
+    return 0;
+}
+
+int
+sodium_base64_rfc4648_decode(unsigned char *dest,
+                     const unsigned char *src, size_t srcLen)
+{
+	int err = 0;
+	size_t        i;
+    unsigned char tmpIn[4] = {'A', 'A', 'A', 'A'};
+    unsigned char tmpOut[3];
+
+	while(srcLen > 4) {
+		err |= sodium_base64_decode3bytes(dest, src);
+		dest  = (uint8_t*) dest + 3;
+		src  += 4;
+        srcLen -= 4;
+	}
+	if (srcLen > 0) {
+		for (i = 0; i < srcLen && src[i] != '='; i++) {
+			tmpIn[i] = src[i];
+		}
+		if (i < 2) {
+			err = 1;
+		}
+		srcLen = i - 1;
+		err |= sodium_base64_decode3bytes(tmpOut, tmpIn);
+		for (i = 0; i < srcLen; i++) {
+			dest[i] = tmpOut[i];
+		}
+	}
+	return err;
+}
+
+int
+sodium_base64_encode(unsigned char *dest,
+                     const unsigned char *src, size_t srcLen)
+{
+    return sodium_base64_rfc4648_encode(dest, src, srcLen);
+}
+
+int
+sodium_base64_decode(unsigned char *dest,
+                     const unsigned char *src, size_t srcLen)
+{
+    return sodium_base64_rfc4648_decode(dest, src, srcLen);
+}
+
 int
 _sodium_alloc_init(void)
 {

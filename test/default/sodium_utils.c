@@ -3,20 +3,23 @@
 
 int main(void)
 {
-    unsigned char  buf_add[1000];
-    unsigned char  buf1[1000];
-    unsigned char  buf2[1000];
-    unsigned char  buf1_rev[1000];
-    unsigned char  buf2_rev[1000];
-    char           buf3[33];
-    unsigned char  buf4[4];
-    unsigned char  nonce[24];
-    char           nonce_hex[49];
-    const char    *hex;
-    const char    *hex_end;
-    size_t         bin_len;
-    unsigned int   i;
-    unsigned int   j;
+    unsigned char        buf_add[1000];
+    unsigned char        buf1[1000];
+    unsigned char        buf2[1000];
+    unsigned char        buf1_rev[1000];
+    unsigned char        buf2_rev[1000];
+    char                 buf3[33];
+    unsigned char        buf4[4];
+    unsigned char        buf5[45];
+    unsigned char        buf6[60];
+    unsigned char        nonce[24];
+    char                 nonce_hex[49];
+    const char          *hex;
+    const char          *hex_end;
+    const unsigned char *base64;
+    size_t               bin_len;
+    unsigned int         i;
+    unsigned int         j;
 
     randombytes_buf(buf1, sizeof buf1);
     memcpy(buf2, buf1, sizeof buf2);
@@ -177,6 +180,18 @@ int main(void)
     sodium_add(nonce, nonce, 24U);
     printf("%s\n", sodium_bin2hex(nonce_hex, sizeof nonce_hex,
                                   nonce, sizeof nonce));
+                              
+    base64 = "RGFuIEJlcm5zdGVpbiwgVGFuamEgTGFuZ2UsIGFuZCBQZXRlciBTY2h3YWJl";
+    if (sodium_base64_decode(buf5, base64, strlen(base64)) != 0) {
+        printf("sodium_base64_decode() basic test failed\n");
+    } else {
+        printf("%s\n", buf5);
+    }
+    if (sodium_base64_encode(buf6, buf5, sizeof buf5) != 0) {
+        printf("sodium_base64_encode() basic test failed\n");
+    } else {
+        printf("%s\n", buf6);
+    }
 
     return 0;
 }
