@@ -19,19 +19,19 @@ size_t crypto_secretbox_xsalsa20poly1305_keybytes(void);
 SODIUM_EXPORT
 size_t crypto_secretbox_xsalsa20poly1305_noncebytes(void);
 
-#define crypto_secretbox_xsalsa20poly1305_ZEROBYTES 32U
+#define crypto_secretbox_xsalsa20poly1305_MACBYTES 16U
 SODIUM_EXPORT
-size_t crypto_secretbox_xsalsa20poly1305_zerobytes(void);
+size_t crypto_secretbox_xsalsa20poly1305_macbytes(void);
 
 #define crypto_secretbox_xsalsa20poly1305_BOXZEROBYTES 16U
 SODIUM_EXPORT
 size_t crypto_secretbox_xsalsa20poly1305_boxzerobytes(void);
 
-#define crypto_secretbox_xsalsa20poly1305_MACBYTES \
-    (crypto_secretbox_xsalsa20poly1305_ZEROBYTES - \
-     crypto_secretbox_xsalsa20poly1305_BOXZEROBYTES)
+#define crypto_secretbox_xsalsa20poly1305_ZEROBYTES \
+    (crypto_secretbox_xsalsa20poly1305_BOXZEROBYTES + \
+     crypto_secretbox_xsalsa20poly1305_MACBYTES)
 SODIUM_EXPORT
-size_t crypto_secretbox_xsalsa20poly1305_macbytes(void);
+size_t crypto_secretbox_xsalsa20poly1305_zerobytes(void);
 
 SODIUM_EXPORT
 int crypto_secretbox_xsalsa20poly1305(unsigned char *c,

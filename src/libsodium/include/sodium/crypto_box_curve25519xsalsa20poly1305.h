@@ -31,19 +31,19 @@ size_t crypto_box_curve25519xsalsa20poly1305_beforenmbytes(void);
 SODIUM_EXPORT
 size_t crypto_box_curve25519xsalsa20poly1305_noncebytes(void);
 
-#define crypto_box_curve25519xsalsa20poly1305_ZEROBYTES 32U
+#define crypto_box_curve25519xsalsa20poly1305_MACBYTES 16U
 SODIUM_EXPORT
-size_t crypto_box_curve25519xsalsa20poly1305_zerobytes(void);
+size_t crypto_box_curve25519xsalsa20poly1305_macbytes(void);
 
 #define crypto_box_curve25519xsalsa20poly1305_BOXZEROBYTES 16U
 SODIUM_EXPORT
 size_t crypto_box_curve25519xsalsa20poly1305_boxzerobytes(void);
 
-#define crypto_box_curve25519xsalsa20poly1305_MACBYTES \
-    (crypto_box_curve25519xsalsa20poly1305_ZEROBYTES - \
-     crypto_box_curve25519xsalsa20poly1305_BOXZEROBYTES)
+#define crypto_box_curve25519xsalsa20poly1305_ZEROBYTES \
+    (crypto_box_curve25519xsalsa20poly1305_BOXZEROBYTES + \
+     crypto_box_curve25519xsalsa20poly1305_MACBYTES)
 SODIUM_EXPORT
-size_t crypto_box_curve25519xsalsa20poly1305_macbytes(void);
+size_t crypto_box_curve25519xsalsa20poly1305_zerobytes(void);
 
 SODIUM_EXPORT
 int crypto_box_curve25519xsalsa20poly1305(unsigned char *c,
