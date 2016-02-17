@@ -27,15 +27,16 @@
  * @param next_block Pointer to the block to be constructed
  * @pre all block pointers must be valid
  */
-static void fill_block(const block *prev_block, const block *ref_block,
-                       block *next_block) {
+static void fill_block_with_xor(const block *prev_block, const block *ref_block,
+                                block *next_block) {
     block blockR, block_tmp;
     unsigned i;
 
     copy_block(&blockR, ref_block);
     xor_block(&blockR, prev_block);
     copy_block(&block_tmp, &blockR);
-
+    xor_block(&block_tmp, next_block); /* Saving the next block contents for XOR over */
+    /* Now blockR = ref_block + prev_block and bloc_tmp = ref_block + prev_block + next_block */
     /* Apply Blake2 on columns of 64-bit words: (0,1,...,15) , then
        (16,17,..31)... finally (112,113,...127) */
     for (i = 0; i < 8; ++i) {
@@ -75,12 +76,11 @@ static void fill_block(const block *prev_block, const block *ref_block,
 static void generate_addresses(const argon2_instance_t *instance,
                                const argon2_position_t *position,
                                uint64_t *pseudo_rands) {
-    block zero_block, input_block, address_block;
+    block zero_block, input_block, address_block, tmp_block;
     uint32_t i;
 
     init_block_value(&zero_block, 0);
     init_block_value(&input_block, 0);
-    init_block_value(&address_block, 0);
 
     if (instance != NULL && position != NULL) {
         input_block.v[0] = position->pass;
@@ -93,8 +93,10 @@ static void generate_addresses(const argon2_instance_t *instance,
         for (i = 0; i < instance->segment_length; ++i) {
             if (i % ARGON2_ADDRESSES_IN_BLOCK == 0) {
                 input_block.v[6]++;
-                fill_block(&zero_block, &input_block, &address_block);
-                fill_block(&zero_block, &address_block, &address_block);
+                init_block_value(&tmp_block, 0);
+                init_block_value(&address_block, 0);
+                fill_block_with_xor(&zero_block, &input_block, &tmp_block);
+                fill_block_with_xor(&zero_block, &tmp_block, &address_block);
             }
 
             pseudo_rands[i] = address_block.v[i % ARGON2_ADDRESSES_IN_BLOCK];
@@ -182,7 +184,7 @@ int fill_segment_ref(const argon2_instance_t *instance,
         ref_block =
             instance->region->memory + instance->lane_length * ref_lane + ref_index;
         curr_block = instance->region->memory + curr_offset;
-        fill_block(instance->region->memory + prev_offset, ref_block, curr_block);
+        fill_block_with_xor(instance->region->memory + prev_offset, ref_block, curr_block);
     }
 
     free(pseudo_rands);

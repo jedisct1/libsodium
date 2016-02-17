@@ -123,6 +123,7 @@ static int allocate_memory(block_region **region, uint32_t m_cost) {
     (*region)->base = base;
     (*region)->memory = memory;
     (*region)->size = base ? memory_size : 0;
+    memset(memory, 0, memory_size);
 
     return ARGON2_OK;
 }
