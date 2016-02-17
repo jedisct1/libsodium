@@ -158,11 +158,11 @@ static void tv3(void)
         const char *out;
     } tests[] = {
         { "",
-          "$argon2i$m=4096,t=1,p=1$ZW1wdHkAAAAAAAAAAAAAAA$iE7ExNH70nzk6SmP9k6JP4lMxhMrGbmK1MP0vAkBPtY" },
+          "$argon2i$m=4096,t=1,p=1$X1NhbHQAAAAAAAAAAAAAAA$bWh++MKN1OiFHKgIWTLvIi1iHicmHH7+Fv3K88ifFfI" },
         { "^T5H$JYt39n%K*j:W]!1s?vg!:jGi]Ax?..l7[p0v:1jHTpla9;]bUN;?bWyCbtqg ",
-          "$argon2i$m=4096,t=3,p=2$QmF0dGVyeQAAAAAAAAAAAA$1Qe4etbL4DxBpgRbqvM9MIOhaxjP61lv0xNhegrCvlo" },
+          "$argon2i$m=4096,t=3,p=2$X1NhbHQAAAAAAAAAAAAAAA$z/QMiU4lQxGsYNc/+K/bizwsA1P11UG2dj/7+aILJ4I" },
         { "K3S=KyH#)36_?]LxeR8QNKw6X=gFbxai$C%29V*",
-          "$argon2i$m=4096,t=3,p=1$aXRlcmF0aW9ucwAAAAAAAA$kRvT53TswrSAnVxij5BmTfgzas6PcTVh0E4/ewz6Qmk" }
+          "$argon2i$m=4096,t=3,p=1$X1NhbHQAAAAAAAAAAAAAAA$fu2Wsecyt+yPnBvSvYN16oP5ozRmkp0ixJ1YL19V3Uo" }
     };
     char *out;
     char *passwd;
