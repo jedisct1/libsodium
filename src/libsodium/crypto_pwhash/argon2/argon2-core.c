@@ -101,17 +101,19 @@ static int allocate_memory(block_region **region, uint32_t m_cost) {
         base = NULL; /* LCOV_EXCL_LINE */
     }
     memcpy(&memory, &base, sizeof memory);
+    memset(memory, 0, memory_size);
 #elif defined(HAVE_POSIX_MEMALIGN)
     if ((errno = posix_memalign((void **) &base, 64, memory_size)) != 0) {
         base = NULL;
     }
     memcpy(&memory, &base, sizeof memory);
+    memset(memory, 0, memory_size);
 #else
     memory = NULL;
     if (memory_size + 63 < memory_size) {
         base = NULL;
         errno = ENOMEM;
-    } else if ((base = malloc(memory_size + 63)) != NULL) {
+    } else if ((base = calloc(memory_size + 63, (size_t) 1U)) != NULL) {
         uint8_t *aligned = ((uint8_t *) base) + 63;
         aligned -= (uintptr_t) aligned & 63;
         memcpy(&memory, &aligned, sizeof memory);
@@ -123,7 +125,6 @@ static int allocate_memory(block_region **region, uint32_t m_cost) {
     (*region)->base = base;
     (*region)->memory = memory;
     (*region)->size = base ? memory_size : 0;
-    memset(memory, 0, memory_size);
 
     return ARGON2_OK;
 }
