@@ -223,14 +223,12 @@ int argon2_verify(const char *encoded, const void *pwd, const size_t pwdlen,
     free(ctx.salt);
 
     if (ret != ARGON2_OK || sodium_memcmp(out, ctx.out, ctx.outlen) != 0) {
-        free(out);
-        free(ctx.out);
-        return ARGON2_DECODING_FAIL;
+        ret = ARGON2_VERIFY_MISMATCH;
     }
     free(out);
     free(ctx.out);
 
-    return ARGON2_OK;
+    return ret;
 }
 
 int argon2i_verify(const char *encoded, const void *pwd, const size_t pwdlen) {
