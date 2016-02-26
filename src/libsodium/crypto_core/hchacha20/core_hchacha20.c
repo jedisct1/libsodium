@@ -5,10 +5,6 @@
 #include "core_hchacha20.h"
 #include "crypto_core_hchacha20.h"
 
-static const unsigned char sigma[16] = {
-    'e', 'x', 'p', 'a', 'n', 'd', ' ', '3', '2', '-', 'b', 'y', 't', 'e', ' ', 'k'
-};
-
 int
 crypto_core_hchacha20(unsigned char *out, const unsigned char *in,
                       const unsigned char *k, const unsigned char *c)
@@ -18,12 +14,16 @@ crypto_core_hchacha20(unsigned char *out, const unsigned char *in,
     uint32_t x8, x9, x10, x11, x12, x13, x14, x15;
 
     if (c == NULL) {
-        c = sigma;
+        x0 = U32C(0x61707865);
+        x1 = U32C(0x3320646e);
+        x2 = U32C(0x79622d32);
+        x3 = U32C(0x6b206574);
+    } else {
+        x0 = U8TO32_LITTLE(c +  0);
+        x1 = U8TO32_LITTLE(c +  4);
+        x2 = U8TO32_LITTLE(c +  8);
+        x3 = U8TO32_LITTLE(c + 12);
     }
-    x0  = U8TO32_LITTLE(c +  0);
-    x1  = U8TO32_LITTLE(c +  4);
-    x2  = U8TO32_LITTLE(c +  8);
-    x3  = U8TO32_LITTLE(c + 12);
     x4  = U8TO32_LITTLE(k +  0);
     x5  = U8TO32_LITTLE(k +  4);
     x6  = U8TO32_LITTLE(k +  8);
