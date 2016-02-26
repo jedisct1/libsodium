@@ -168,6 +168,8 @@ endif
 
 if !MINIMAL
 libsodium_la_SOURCES += \
+	crypto_core/hchacha20/core_hchacha20.c \
+	crypto_core/hchacha20/core_hchacha20.h \
 	crypto_core/salsa2012/ref/core_salsa2012.c \
 	crypto_core/salsa2012/core_salsa2012_api.c \
 	crypto_core/salsa208/ref/core_salsa208.c \

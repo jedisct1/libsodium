@@ -12,6 +12,7 @@
 #include "sodium/crypto_box.h"
 #include "sodium/crypto_box_curve25519xsalsa20poly1305.h"
 #include "sodium/crypto_core_hsalsa20.h"
+#include "sodium/crypto_core_hchacha20.h"
 #include "sodium/crypto_core_salsa20.h"
 #include "sodium/crypto_core_salsa2012.h"
 #include "sodium/crypto_core_salsa208.h"
