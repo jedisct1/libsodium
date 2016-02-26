@@ -9,20 +9,6 @@
 
 #define ROTL32(v, n) (U32V((v) << (n)) | ((v) >> (32 - (n))))
 
-#define U8TO32_LITTLE(p) \
-  (((uint32_t)((p)[0])      ) | \
-   ((uint32_t)((p)[1]) <<  8) | \
-   ((uint32_t)((p)[2]) << 16) | \
-   ((uint32_t)((p)[3]) << 24))
-
-#define U32TO8_LITTLE(p, v) \
-  do { \
-    (p)[0] = U8V((v)      ); \
-    (p)[1] = U8V((v) >>  8); \
-    (p)[2] = U8V((v) >> 16); \
-    (p)[3] = U8V((v) >> 24); \
-  } while (0)
-
 #define ROTATE(v, c) (ROTL32(v, c))
 #define XOR(v, w)    ((v) ^ (w))
 #define PLUS(v, w)   (U32V((v) + (w)))

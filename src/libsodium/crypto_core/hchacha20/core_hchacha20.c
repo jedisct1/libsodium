@@ -1,9 +1,41 @@
 
 #include <stdint.h>
 #include <stdlib.h>
+#include <string.h>
 
 #include "core_hchacha20.h"
 #include "crypto_core_hchacha20.h"
+
+static inline uint32_t
+load32(const void *src)
+{
+#ifdef NATIVE_LITTLE_ENDIAN
+    uint32_t w;
+    memcpy(&w, src, sizeof w);
+    return w;
+#else
+    const uint8_t *p = (const uint8_t *) src;
+    uint32_t w = *p++;
+    w |= (uint32_t)(*p++) <<  8;
+    w |= (uint32_t)(*p++) << 16;
+    w |= (uint32_t)(*p++) << 24;
+    return w;
+#endif
+}
+
+static inline void
+store32(void *dst, uint32_t w)
+{
+#ifdef NATIVE_LITTLE_ENDIAN
+    memcpy(dst, &w, sizeof w);
+#else
+    uint8_t *p = (uint8_t *) dst;
+    *p++ = (uint8_t) w; w >>= 8;
+    *p++ = (uint8_t) w; w >>= 8;
+    *p++ = (uint8_t) w; w >>= 8;
+    *p++ = (uint8_t) w;
+#endif
+}
 
 int
 crypto_core_hchacha20(unsigned char *out, const unsigned char *in,
@@ -19,23 +51,23 @@ crypto_core_hchacha20(unsigned char *out, const unsigned char *in,
         x2 = U32C(0x79622d32);
         x3 = U32C(0x6b206574);
     } else {
-        x0 = U8TO32_LITTLE(c +  0);
-        x1 = U8TO32_LITTLE(c +  4);
-        x2 = U8TO32_LITTLE(c +  8);
-        x3 = U8TO32_LITTLE(c + 12);
+        x0 = load32(c +  0);
+        x1 = load32(c +  4);
+        x2 = load32(c +  8);
+        x3 = load32(c + 12);
     }
-    x4  = U8TO32_LITTLE(k +  0);
-    x5  = U8TO32_LITTLE(k +  4);
-    x6  = U8TO32_LITTLE(k +  8);
-    x7  = U8TO32_LITTLE(k + 12);
-    x8  = U8TO32_LITTLE(k + 16);
-    x9  = U8TO32_LITTLE(k + 20);
-    x10 = U8TO32_LITTLE(k + 24);
-    x11 = U8TO32_LITTLE(k + 28);
-    x12 = U8TO32_LITTLE(in +  0);
-    x13 = U8TO32_LITTLE(in +  4);
-    x14 = U8TO32_LITTLE(in +  8);
-    x15 = U8TO32_LITTLE(in + 12);
+    x4  = load32(k +  0);
+    x5  = load32(k +  4);
+    x6  = load32(k +  8);
+    x7  = load32(k + 12);
+    x8  = load32(k + 16);
+    x9  = load32(k + 20);
+    x10 = load32(k + 24);
+    x11 = load32(k + 28);
+    x12 = load32(in +  0);
+    x13 = load32(in +  4);
+    x14 = load32(in +  8);
+    x15 = load32(in + 12);
 
     for (i = 0; i < 10; i++) {
         QUARTERROUND(x0, x4,  x8, x12);
@@ -48,14 +80,14 @@ crypto_core_hchacha20(unsigned char *out, const unsigned char *in,
         QUARTERROUND(x3, x4,  x9, x14);
     }
 
-    U32TO8_LITTLE(out +  0, x0);
-    U32TO8_LITTLE(out +  4, x1);
-    U32TO8_LITTLE(out +  8, x2);
-    U32TO8_LITTLE(out + 12, x3);
-    U32TO8_LITTLE(out + 16, x12);
-    U32TO8_LITTLE(out + 20, x13);
-    U32TO8_LITTLE(out + 24, x14);
-    U32TO8_LITTLE(out + 28, x15);
+    store32(out +  0, x0);
+    store32(out +  4, x1);
+    store32(out +  8, x2);
+    store32(out + 12, x3);
+    store32(out + 16, x12);
+    store32(out + 20, x13);
+    store32(out + 24, x14);
+    store32(out + 28, x15);
 
     return 0;
 }
