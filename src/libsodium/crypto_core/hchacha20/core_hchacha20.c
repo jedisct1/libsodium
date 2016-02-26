@@ -1,41 +1,9 @@
 
 #include <stdint.h>
 #include <stdlib.h>
-#include <string.h>
 
 #include "core_hchacha20.h"
 #include "crypto_core_hchacha20.h"
-
-static inline uint32_t
-load32(const void *src)
-{
-#ifdef NATIVE_LITTLE_ENDIAN
-    uint32_t w;
-    memcpy(&w, src, sizeof w);
-    return w;
-#else
-    const uint8_t *p = (const uint8_t *) src;
-    uint32_t w = *p++;
-    w |= (uint32_t)(*p++) <<  8;
-    w |= (uint32_t)(*p++) << 16;
-    w |= (uint32_t)(*p++) << 24;
-    return w;
-#endif
-}
-
-static inline void
-store32(void *dst, uint32_t w)
-{
-#ifdef NATIVE_LITTLE_ENDIAN
-    memcpy(dst, &w, sizeof w);
-#else
-    uint8_t *p = (uint8_t *) dst;
-    *p++ = (uint8_t) w; w >>= 8;
-    *p++ = (uint8_t) w; w >>= 8;
-    *p++ = (uint8_t) w; w >>= 8;
-    *p++ = (uint8_t) w;
-#endif
-}
 
 int
 crypto_core_hchacha20(unsigned char *out, const unsigned char *in,
