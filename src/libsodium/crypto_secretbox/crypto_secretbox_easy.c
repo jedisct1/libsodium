@@ -11,10 +11,6 @@
 #include "crypto_stream_salsa20.h"
 #include "utils.h"
 
-static const unsigned char sigma[16] = {
-    'e', 'x', 'p', 'a', 'n', 'd', ' ', '3', '2', '-', 'b', 'y', 't', 'e', ' ', 'k'
-};
-
 int
 crypto_secretbox_detached(unsigned char *c, unsigned char *mac,
                           const unsigned char *m,
@@ -27,7 +23,7 @@ crypto_secretbox_detached(unsigned char *c, unsigned char *mac,
     unsigned long long                i;
     unsigned long long                mlen0;
 
-    crypto_core_hsalsa20(subkey, n, k, sigma);
+    crypto_core_hsalsa20(subkey, n, k, NULL);
 
     if (((uintptr_t) c >= (uintptr_t) m &&
          (uintptr_t) c - (uintptr_t) m < mlen) ||
@@ -93,7 +89,7 @@ crypto_secretbox_open_detached(unsigned char *m, const unsigned char *c,
     unsigned long long i;
     unsigned long long mlen0;
 
-    crypto_core_hsalsa20(subkey, n, k, sigma);
+    crypto_core_hsalsa20(subkey, n, k, NULL);
     crypto_stream_salsa20(block0, crypto_stream_salsa20_KEYBYTES,
                           n + 16, subkey);
     if (crypto_onetimeauth_poly1305_verify(mac, c, clen, block0) != 0) {

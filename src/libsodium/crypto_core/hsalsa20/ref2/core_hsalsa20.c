@@ -8,6 +8,7 @@ Public domain.
 #include "../../sodium/common.h"
 
 #define ROUNDS 20
+#define U32C(v) (v##U)
 
 typedef unsigned int uint32;
 
@@ -26,22 +27,29 @@ int crypto_core_hsalsa20(
   uint32 x0, x1, x2, x3, x4, x5, x6, x7, x8, x9, x10, x11, x12, x13, x14, x15;
   int i;
 
-  x0 = LOAD32_LE(c + 0);
+  if (c == NULL) {
+    x0  = U32C(0x61707865);
+    x5  = U32C(0x3320646e);
+    x10 = U32C(0x79622d32);
+    x15 = U32C(0x6b206574);
+  } else {
+    x0  = LOAD32_LE(c +  0);
+    x5  = LOAD32_LE(c +  4);
+    x10 = LOAD32_LE(c +  8);
+    x15 = LOAD32_LE(c + 12);
+  }
   x1 = LOAD32_LE(k + 0);
   x2 = LOAD32_LE(k + 4);
   x3 = LOAD32_LE(k + 8);
   x4 = LOAD32_LE(k + 12);
-  x5 = LOAD32_LE(c + 4);
-  x6 = LOAD32_LE(in + 0);
-  x7 = LOAD32_LE(in + 4);
-  x8 = LOAD32_LE(in + 8);
-  x9 = LOAD32_LE(in + 12);
-  x10 = LOAD32_LE(c + 8);
   x11 = LOAD32_LE(k + 16);
   x12 = LOAD32_LE(k + 20);
   x13 = LOAD32_LE(k + 24);
   x14 = LOAD32_LE(k + 28);
-  x15 = LOAD32_LE(c + 12);
+  x6 = LOAD32_LE(in + 0);
+  x7 = LOAD32_LE(in + 4);
+  x8 = LOAD32_LE(in + 8);
+  x9 = LOAD32_LE(in + 12);
 
   for (i = ROUNDS;i > 0;i -= 2) {
      x4 ^= rotate( x0+x12, 7);

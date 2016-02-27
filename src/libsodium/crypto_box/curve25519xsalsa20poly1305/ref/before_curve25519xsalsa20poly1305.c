@@ -2,9 +2,6 @@
 #include "crypto_core_hsalsa20.h"
 #include "crypto_scalarmult_curve25519.h"
 
-static const unsigned char sigma[16] = {
-    'e', 'x', 'p', 'a', 'n', 'd', ' ', '3', '2', '-', 'b', 'y', 't', 'e', ' ', 'k'
-};
 static const unsigned char n[16] = {0};
 
 int crypto_box_curve25519xsalsa20poly1305_beforenm(
@@ -17,5 +14,5 @@ int crypto_box_curve25519xsalsa20poly1305_beforenm(
   if (crypto_scalarmult_curve25519(s,sk,pk) != 0) {
       return -1;
   }
-  return crypto_core_hsalsa20(k,n,s,sigma);
+  return crypto_core_hsalsa20(k,n,s,NULL);
 }

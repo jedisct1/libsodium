@@ -44,29 +44,21 @@ typedef struct chacha_ctx chacha_ctx;
   a = PLUS(a,b); d = ROTATE(XOR(d,a), 8); \
   c = PLUS(c,d); b = ROTATE(XOR(b,c), 7);
 
-static const unsigned char sigma[16] = {
-    'e', 'x', 'p', 'a', 'n', 'd', ' ', '3', '2', '-', 'b', 'y', 't', 'e', ' ', 'k'
-};
-
 static void
 chacha_keysetup(chacha_ctx *ctx, const u8 *k)
 {
-    const unsigned char *constants;
-
-    ctx->input[4] = LOAD32_LE(k + 0);
-    ctx->input[5] = LOAD32_LE(k + 4);
-    ctx->input[6] = LOAD32_LE(k + 8);
-    ctx->input[7] = LOAD32_LE(k + 12);
-    k += 16;
-    constants = sigma;
-    ctx->input[8] = LOAD32_LE(k + 0);
-    ctx->input[9] = LOAD32_LE(k + 4);
-    ctx->input[10] = LOAD32_LE(k + 8);
-    ctx->input[11] = LOAD32_LE(k + 12);
-    ctx->input[0] = LOAD32_LE(constants + 0);
-    ctx->input[1] = LOAD32_LE(constants + 4);
-    ctx->input[2] = LOAD32_LE(constants + 8);
-    ctx->input[3] = LOAD32_LE(constants + 12);
+    ctx->input[0]  = U32C(0x61707865);
+    ctx->input[1]  = U32C(0x3320646e);
+    ctx->input[2]  = U32C(0x79622d32);
+    ctx->input[3]  = U32C(0x6b206574);
+    ctx->input[4]  = LOAD32_LE(k +  0);
+    ctx->input[5]  = LOAD32_LE(k +  4);
+    ctx->input[6]  = LOAD32_LE(k +  8);
+    ctx->input[7]  = LOAD32_LE(k + 12);
+    ctx->input[8]  = LOAD32_LE(k + 16);
+    ctx->input[9]  = LOAD32_LE(k + 20);
+    ctx->input[10] = LOAD32_LE(k + 24);
+    ctx->input[11] = LOAD32_LE(k + 28);
 }
 
 static void

@@ -14,10 +14,6 @@ Public domain.
 
 typedef unsigned int uint32;
 
-static const unsigned char sigma[16] = {
-    'e', 'x', 'p', 'a', 'n', 'd', ' ', '3', '2', '-', 'b', 'y', 't', 'e', ' ', 'k'
-};
-
 int crypto_stream_salsa20_xor_ic(
         unsigned char *c,
   const unsigned char *m,unsigned long long mlen,
@@ -41,7 +37,7 @@ int crypto_stream_salsa20_xor_ic(
   }
 
   while (mlen >= 64) {
-    crypto_core_salsa20(block,in,kcopy,sigma);
+    crypto_core_salsa20(block,in,kcopy,NULL);
     for (i = 0;i < 64;++i) c[i] = m[i] ^ block[i];
 
     u = 1;
@@ -57,7 +53,7 @@ int crypto_stream_salsa20_xor_ic(
   }
 
   if (mlen) {
-    crypto_core_salsa20(block,in,kcopy,sigma);
+    crypto_core_salsa20(block,in,kcopy,NULL);
     for (i = 0;i < (unsigned int) mlen;++i) c[i] = m[i] ^ block[i];
   }
   sodium_memzero(block, sizeof block);

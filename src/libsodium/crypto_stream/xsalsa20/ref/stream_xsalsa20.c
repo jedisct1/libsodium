@@ -9,10 +9,6 @@ Public domain.
 #include "crypto_stream_xsalsa20.h"
 #include "utils.h"
 
-static const unsigned char sigma[16] = {
-    'e', 'x', 'p', 'a', 'n', 'd', ' ', '3', '2', '-', 'b', 'y', 't', 'e', ' ', 'k'
-};
-
 int crypto_stream_xsalsa20(
         unsigned char *c,unsigned long long clen,
   const unsigned char *n,
@@ -21,7 +17,7 @@ int crypto_stream_xsalsa20(
 {
   unsigned char subkey[32];
   int ret;
-  crypto_core_hsalsa20(subkey,n,k,sigma);
+  crypto_core_hsalsa20(subkey,n,k,NULL);
   ret = crypto_stream_salsa20(c,clen,n + 16,subkey);
   sodium_memzero(subkey, sizeof subkey);
   return ret;
