@@ -15,9 +15,9 @@ extern "C" {
 #include "crypto_uint64.h"
 #include "fe51_namespace.h"
 
-typedef struct 
+typedef struct
 {
-  crypto_uint64 v[5]; 
+    crypto_uint64 v[5];
 }
 fe51;
 

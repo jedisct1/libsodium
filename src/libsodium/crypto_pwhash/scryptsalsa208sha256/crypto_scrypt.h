@@ -50,13 +50,13 @@
 #define BYTES2CHARS(bytes) ((((bytes) * 8) + 5) / 6)
 
 typedef struct {
-	void * base, * aligned;
-	size_t size;
+    void * base, * aligned;
+    size_t size;
 } escrypt_region_t;
 
 typedef union {
-	uint64_t d[8];
-	uint32_t w[16];
+    uint64_t d[8];
+    uint32_t w[16];
 } escrypt_block_t;
 
 typedef escrypt_region_t escrypt_local_t;

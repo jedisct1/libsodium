@@ -55,12 +55,12 @@ int main(void)
             printf("\n");
     }
     printf("\n");
-    
+
     ret = crypto_box(c, m, 163, nonce, small_order_p, alicesk);
     assert(ret == -1);
 
     memset(c, 0, sizeof c);
-    
+
     ret = crypto_box_beforenm(k, bobpk, alicesk);
     assert(ret == 0);
     crypto_box_afternm(c, m, 163, nonce, k);
@@ -70,7 +70,7 @@ int main(void)
             printf("\n");
     }
     printf("\n");
-    
+
     ret = crypto_box_beforenm(k, small_order_p, alicesk);
     assert(ret == -1);
 
