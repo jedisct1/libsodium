@@ -4,6 +4,7 @@
 
 #include "blake2.h"
 #include "blake2-impl.h"
+#include "../../sodium/common.h"
 
 static const uint64_t blake2b_IV[8] =
 {
@@ -36,7 +37,7 @@ int blake2b_compress_ref( blake2b_state *S, const uint8_t block[BLAKE2B_BLOCKBYT
   int      i;
 
   for( i = 0; i < 16; ++i )
-    m[i] = load64( block + i * sizeof( m[i] ) );
+    m[i] = LOAD64_LE( block + i * sizeof( m[i] ) );
 
   for( i = 0; i < 8; ++i )
     v[i] = S->h[i];

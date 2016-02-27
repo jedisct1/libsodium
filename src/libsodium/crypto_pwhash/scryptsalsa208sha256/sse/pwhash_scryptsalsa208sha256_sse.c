@@ -45,8 +45,8 @@
 #include <string.h>
 
 #include "../pbkdf2-sha256.h"
-#include "../sysendian.h"
 #include "../crypto_scrypt.h"
+#include "../../../sodium/common.h"
 
 #if defined(__XOP__) && defined(DISABLED)
 #define ARX(out, in1, in2, s) \
@@ -239,7 +239,7 @@ smix(uint8_t * B, size_t r, uint32_t N, void * V, void * XY)
 	for (k = 0; k < 2 * r; k++) {
 		for (i = 0; i < 16; i++) {
 			X32[k * 16 + i] =
-			    le32dec(&B[(k * 16 + (i * 5 % 16)) * 4]);
+			    LOAD32_LE(&B[(k * 16 + (i * 5 % 16)) * 4]);
 		}
 	}
 
@@ -289,8 +289,7 @@ smix(uint8_t * B, size_t r, uint32_t N, void * V, void * XY)
 	/* 10: B' <-- X */
 	for (k = 0; k < 2 * r; k++) {
 		for (i = 0; i < 16; i++) {
-			le32enc(&B[(k * 16 + (i * 5 % 16)) * 4],
-			    X32[k * 16 + i]);
+			STORE32_LE(&B[(k * 16 + (i * 5 % 16)) * 4], X32[k * 16 + i]);
 		}
 	}
 }

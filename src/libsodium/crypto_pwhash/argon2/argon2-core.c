@@ -23,6 +23,7 @@
 #include "crypto_generichash_blake2b.h"
 #include "runtime.h"
 #include "utils.h"
+#include "../../sodium/common.h"
 
 #include "argon2-core.h"
 #include "argon2-impl.h"
@@ -53,14 +54,14 @@ void xor_block(block *dst, const block *src) {
 static void load_block(block *dst, const void *input) {
     unsigned i;
     for (i = 0; i < ARGON2_QWORDS_IN_BLOCK; ++i) {
-        dst->v[i] = load64((const uint8_t *)input + i * sizeof(dst->v[i]));
+        dst->v[i] = LOAD64_LE((const uint8_t *)input + i * sizeof(dst->v[i]));
     }
 }
 
 static void store_block(void *output, const block *src) {
     unsigned i;
     for (i = 0; i < ARGON2_QWORDS_IN_BLOCK; ++i) {
-        store64((uint8_t *)output + i * sizeof(src->v[i]), src->v[i]);
+        STORE64_LE((uint8_t *)output + i * sizeof(src->v[i]), src->v[i]);
     }
 }
 
@@ -423,14 +424,14 @@ void fill_first_blocks(uint8_t *blockhash, const argon2_instance_t *instance) {
     uint8_t blockhash_bytes[ARGON2_BLOCK_SIZE];
     for (l = 0; l < instance->lanes; ++l) {
 
-        store32(blockhash + ARGON2_PREHASH_DIGEST_LENGTH, 0);
-        store32(blockhash + ARGON2_PREHASH_DIGEST_LENGTH + 4, l);
+        STORE32_LE(blockhash + ARGON2_PREHASH_DIGEST_LENGTH, 0);
+        STORE32_LE(blockhash + ARGON2_PREHASH_DIGEST_LENGTH + 4, l);
         blake2b_long(blockhash_bytes, ARGON2_BLOCK_SIZE, blockhash,
                      ARGON2_PREHASH_SEED_LENGTH);
         load_block(&instance->region->memory[l * instance->lane_length + 0],
                    blockhash_bytes);
 
-        store32(blockhash + ARGON2_PREHASH_DIGEST_LENGTH, 1);
+        STORE32_LE(blockhash + ARGON2_PREHASH_DIGEST_LENGTH, 1);
         blake2b_long(blockhash_bytes, ARGON2_BLOCK_SIZE, blockhash,
                      ARGON2_PREHASH_SEED_LENGTH);
         load_block(&instance->region->memory[l * instance->lane_length + 1],
@@ -451,26 +452,26 @@ void initial_hash(uint8_t *blockhash, argon2_context *context,
     crypto_generichash_blake2b_init(&BlakeHash, NULL, 0U,
                                     ARGON2_PREHASH_DIGEST_LENGTH);
 
-    store32(&value, context->lanes);
-    crypto_generichash_blake2b_update(&BlakeHash, (const uint8_t *)&value, sizeof(value));
+    STORE32_LE(value, context->lanes);
+    crypto_generichash_blake2b_update(&BlakeHash, value, sizeof(value));
 
-    store32(&value, context->outlen);
-    crypto_generichash_blake2b_update(&BlakeHash, (const uint8_t *)&value, sizeof(value));
+    STORE32_LE(value, context->outlen);
+    crypto_generichash_blake2b_update(&BlakeHash, value, sizeof(value));
 
-    store32(&value, context->m_cost);
-    crypto_generichash_blake2b_update(&BlakeHash, (const uint8_t *)&value, sizeof(value));
+    STORE32_LE(value, context->m_cost);
+    crypto_generichash_blake2b_update(&BlakeHash, value, sizeof(value));
 
-    store32(&value, context->t_cost);
-    crypto_generichash_blake2b_update(&BlakeHash, (const uint8_t *)&value, sizeof(value));
+    STORE32_LE(value, context->t_cost);
+    crypto_generichash_blake2b_update(&BlakeHash, value, sizeof(value));
 
-    store32(&value, ARGON2_VERSION_NUMBER);
-    crypto_generichash_blake2b_update(&BlakeHash, (const uint8_t *)&value, sizeof(value));
+    STORE32_LE(value, ARGON2_VERSION_NUMBER);
+    crypto_generichash_blake2b_update(&BlakeHash, value, sizeof(value));
 
-    store32(&value, (uint32_t)type);
-    crypto_generichash_blake2b_update(&BlakeHash, (const uint8_t *)&value, sizeof(value));
+    STORE32_LE(value, (uint32_t)type);
+    crypto_generichash_blake2b_update(&BlakeHash, value, sizeof(value));
 
-    store32(&value, context->pwdlen);
-    crypto_generichash_blake2b_update(&BlakeHash, (const uint8_t *)&value, sizeof(value));
+    STORE32_LE(value, context->pwdlen);
+    crypto_generichash_blake2b_update(&BlakeHash, value, sizeof(value));
 
     if (context->pwd != NULL) {
         crypto_generichash_blake2b_update(&BlakeHash, (const uint8_t *)context->pwd,
@@ -482,16 +483,16 @@ void initial_hash(uint8_t *blockhash, argon2_context *context,
         }
     }
 
-    store32(&value, context->saltlen);
-    crypto_generichash_blake2b_update(&BlakeHash, (const uint8_t *)&value, sizeof(value));
+    STORE32_LE(value, context->saltlen);
+    crypto_generichash_blake2b_update(&BlakeHash, value, sizeof(value));
 
     if (context->salt != NULL) {
         crypto_generichash_blake2b_update(&BlakeHash, (const uint8_t *)context->salt,
                        context->saltlen);
     }
 
-    store32(&value, context->secretlen);
-    crypto_generichash_blake2b_update(&BlakeHash, (const uint8_t *)&value, sizeof(value));
+    STORE32_LE(value, context->secretlen);
+    crypto_generichash_blake2b_update(&BlakeHash, value, sizeof(value));
 
     if (context->secret != NULL) {
         crypto_generichash_blake2b_update(&BlakeHash, (const uint8_t *)context->secret,
@@ -503,8 +504,8 @@ void initial_hash(uint8_t *blockhash, argon2_context *context,
         }
     }
 
-    store32(&value, context->adlen);
-    crypto_generichash_blake2b_update(&BlakeHash, (const uint8_t *)&value, sizeof(value));
+    STORE32_LE(value, context->adlen);
+    crypto_generichash_blake2b_update(&BlakeHash, value, sizeof(value));
 
     if (context->ad != NULL) {
         crypto_generichash_blake2b_update(&BlakeHash, (const uint8_t *)context->ad,

@@ -5,24 +5,7 @@
 #define COMMON_H
 
 #include "types.h"
-
-#define load32_bigendian crypto_stream_aes128ctr_portable_load32_bigendian
-uint32 load32_bigendian(const unsigned char *x);
-
-#define store32_bigendian crypto_stream_aes128ctr_portable_store32_bigendian
-void store32_bigendian(unsigned char *x,uint32 u);
-
-#define load32_littleendian crypto_stream_aes128ctr_portable_load32_littleendian
-uint32 load32_littleendian(const unsigned char *x);
-
-#define store32_littleendian crypto_stream_aes128ctr_portable_store32_littleendian
-void store32_littleendian(unsigned char *x,uint32 u);
-
-#define load64_littleendian crypto_stream_aes128ctr_portable_load64_littleendian
-uint64 load64_littleendian(const unsigned char *x);
-
-#define store64_littleendian crypto_stream_aes128ctr_portable_store64_littleendian
-void store64_littleendian(unsigned char *x,uint64 u);
+#include "../../sodium/common.h"
 
 /* Macros required only for key expansion */
 

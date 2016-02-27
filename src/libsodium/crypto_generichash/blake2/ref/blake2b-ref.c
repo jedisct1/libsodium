@@ -19,6 +19,7 @@
 #include "blake2.h"
 #include "blake2-impl.h"
 #include "runtime.h"
+#include "../../sodium/common.h"
 
 #ifdef HAVE_TI_MODE
 # if defined(__SIZEOF_INT128__)
@@ -105,13 +106,13 @@ static inline int blake2b_param_set_max_depth( blake2b_param *P, const uint8_t d
 
 static inline int blake2b_param_set_leaf_length( blake2b_param *P, const uint32_t leaf_length )
 {
-  store32( &P->leaf_length, leaf_length );
+  STORE32_LE( P->leaf_length, leaf_length );
   return 0;
 }
 
 static inline int blake2b_param_set_node_offset( blake2b_param *P, const uint64_t node_offset )
 {
-  store64( &P->node_offset, node_offset );
+  STORE64_LE( P->node_offset, node_offset );
   return 0;
 }
 
@@ -160,7 +161,7 @@ int blake2b_init_param( blake2b_state *S, const blake2b_param *P )
 
   /* IV XOR ParamBlock */
   for( i = 0; i < 8; ++i )
-    S->h[i] ^= load64( p + sizeof( S->h[i] ) * i );
+    S->h[i] ^= LOAD64_LE( p + sizeof( S->h[i] ) * i );
 
   return 0;
 }
@@ -175,8 +176,8 @@ int blake2b_init( blake2b_state *S, const uint8_t outlen )
   P->key_length    = 0;
   P->fanout        = 1;
   P->depth         = 1;
-  store32( &P->leaf_length, 0 );
-  store64( &P->node_offset, 0 );
+  STORE32_LE( P->leaf_length, 0 );
+  STORE64_LE( P->node_offset, 0 );
   P->node_depth    = 0;
   P->inner_length  = 0;
   memset( P->reserved, 0, sizeof( P->reserved ) );
@@ -196,8 +197,8 @@ int blake2b_init_salt_personal( blake2b_state *S, const uint8_t outlen,
   P->key_length    = 0;
   P->fanout        = 1;
   P->depth         = 1;
-  store32( &P->leaf_length, 0 );
-  store64( &P->node_offset, 0 );
+  STORE32_LE( P->leaf_length, 0 );
+  STORE64_LE( P->node_offset, 0 );
   P->node_depth    = 0;
   P->inner_length  = 0;
   memset( P->reserved, 0, sizeof( P->reserved ) );
@@ -226,8 +227,8 @@ int blake2b_init_key( blake2b_state *S, const uint8_t outlen, const void *key, c
   P->key_length    = keylen;
   P->fanout        = 1;
   P->depth         = 1;
-  store32( &P->leaf_length, 0 );
-  store64( &P->node_offset, 0 );
+  STORE32_LE( P->leaf_length, 0 );
+  STORE64_LE( P->node_offset, 0 );
   P->node_depth    = 0;
   P->inner_length  = 0;
   memset( P->reserved, 0, sizeof( P->reserved ) );
@@ -259,8 +260,8 @@ int blake2b_init_key_salt_personal( blake2b_state *S, const uint8_t outlen, cons
   P->key_length    = keylen;
   P->fanout        = 1;
   P->depth         = 1;
-  store32( &P->leaf_length, 0 );
-  store64( &P->node_offset, 0 );
+  STORE32_LE( P->leaf_length, 0 );
+  STORE64_LE( P->node_offset, 0 );
   P->node_depth    = 0;
   P->inner_length  = 0;
   memset( P->reserved, 0, sizeof( P->reserved ) );
@@ -345,7 +346,7 @@ int blake2b_final( blake2b_state *S, uint8_t *out, uint8_t outlen )
     int     i;
 
     for( i = 0; i < 8; ++i ) /* Output full hash to temp buffer */
-      store64( buffer + sizeof( S->h[i] ) * i, S->h[i] );
+      STORE64_LE( buffer + sizeof( S->h[i] ) * i, S->h[i] );
     memcpy( out, buffer, outlen );
   }
 #endif

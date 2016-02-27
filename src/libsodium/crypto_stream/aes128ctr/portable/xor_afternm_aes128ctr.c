@@ -88,9 +88,9 @@ int crypto_stream_aes128ctr_xor_afternm(unsigned char *out, const unsigned char 
     if(len < 128) goto partial;
     if(len == 128) goto full;
 
-    tmp = load32_bigendian(np + 12);
+    tmp = LOAD32_BE(np + 12);
     tmp += 8;
-    store32_bigendian(np + 12, tmp);
+    STORE32_BE(np + 12, tmp);
 
     xor2(&xmm8, (const int128 *)(in + 0));
     xor2(&xmm9, (const int128 *)(in + 16));
@@ -121,9 +121,9 @@ int crypto_stream_aes128ctr_xor_afternm(unsigned char *out, const unsigned char 
     lensav = len;
     len >>= 4;
 
-    tmp = load32_bigendian(np + 12);
+    tmp = LOAD32_BE(np + 12);
     tmp += len;
-    store32_bigendian(np + 12, tmp);
+    STORE32_BE(np + 12, tmp);
 
     blp = bl;
     *(int128 *)(blp + 0) = xmm8;
@@ -152,9 +152,9 @@ int crypto_stream_aes128ctr_xor_afternm(unsigned char *out, const unsigned char 
 
     full:
 
-    tmp = load32_bigendian(np + 12);
+    tmp = LOAD32_BE(np + 12);
     tmp += 8;
-    store32_bigendian(np + 12, tmp);
+    STORE32_BE(np + 12, tmp);
 
     xor2(&xmm8, (const int128 *)(in + 0));
     xor2(&xmm9, (const int128 *)(in + 16));

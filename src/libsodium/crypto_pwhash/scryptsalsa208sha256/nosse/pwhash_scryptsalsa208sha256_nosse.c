@@ -35,8 +35,8 @@
 #include <string.h>
 
 #include "../pbkdf2-sha256.h"
-#include "../sysendian.h"
 #include "../crypto_scrypt.h"
+#include "../../../sodium/common.h"
 
 static inline void
 blkcpy_64(escrypt_block_t *dest, const escrypt_block_t *src)
@@ -207,7 +207,7 @@ smix(uint8_t * B, size_t r, uint64_t N, uint32_t * V, uint32_t * XY)
 
 	/* 1: X <-- B */
 	for (k = 0; k < 32 * r; k++)
-		X[k] = le32dec(&B[4 * k]);
+		X[k] = LOAD32_LE(&B[4 * k]);
 
 	/* 2: for i = 0 to N - 1 do */
 	for (i = 0; i < N; i += 2) {
@@ -242,7 +242,7 @@ smix(uint8_t * B, size_t r, uint64_t N, uint32_t * V, uint32_t * XY)
 	}
 	/* 10: B' <-- X */
 	for (k = 0; k < 32 * r; k++)
-		le32enc(&B[4 * k], X[k]);
+		STORE32_LE(&B[4 * k], X[k]);
 }
 
 /**

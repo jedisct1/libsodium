@@ -5,6 +5,7 @@ Public domain.
 */
 
 #include "crypto_core_salsa20.h"
+#include "../../sodium/common.h"
 
 #define ROUNDS 20
 
@@ -13,24 +14,6 @@ typedef unsigned int uint32;
 static uint32 rotate(uint32 u,int c)
 {
   return (u << c) | (u >> (32 - c));
-}
-
-static uint32 load_littleendian(const unsigned char *x)
-{
-  return
-      (uint32) (x[0]) \
-  | (((uint32) (x[1])) << 8) \
-  | (((uint32) (x[2])) << 16) \
-  | (((uint32) (x[3])) << 24)
-  ;
-}
-
-static void store_littleendian(unsigned char *x,uint32 u)
-{
-  x[0] = u; u >>= 8;
-  x[1] = u; u >>= 8;
-  x[2] = u; u >>= 8;
-  x[3] = u;
 }
 
 int crypto_core_salsa20(
@@ -44,22 +27,22 @@ int crypto_core_salsa20(
   uint32 j0, j1, j2, j3, j4, j5, j6, j7, j8, j9, j10, j11, j12, j13, j14, j15;
   int i;
 
-  j0 = x0 = load_littleendian(c + 0);
-  j1 = x1 = load_littleendian(k + 0);
-  j2 = x2 = load_littleendian(k + 4);
-  j3 = x3 = load_littleendian(k + 8);
-  j4 = x4 = load_littleendian(k + 12);
-  j5 = x5 = load_littleendian(c + 4);
-  j6 = x6 = load_littleendian(in + 0);
-  j7 = x7 = load_littleendian(in + 4);
-  j8 = x8 = load_littleendian(in + 8);
-  j9 = x9 = load_littleendian(in + 12);
-  j10 = x10 = load_littleendian(c + 8);
-  j11 = x11 = load_littleendian(k + 16);
-  j12 = x12 = load_littleendian(k + 20);
-  j13 = x13 = load_littleendian(k + 24);
-  j14 = x14 = load_littleendian(k + 28);
-  j15 = x15 = load_littleendian(c + 12);
+  j0 = x0 = LOAD32_LE(c + 0);
+  j1 = x1 = LOAD32_LE(k + 0);
+  j2 = x2 = LOAD32_LE(k + 4);
+  j3 = x3 = LOAD32_LE(k + 8);
+  j4 = x4 = LOAD32_LE(k + 12);
+  j5 = x5 = LOAD32_LE(c + 4);
+  j6 = x6 = LOAD32_LE(in + 0);
+  j7 = x7 = LOAD32_LE(in + 4);
+  j8 = x8 = LOAD32_LE(in + 8);
+  j9 = x9 = LOAD32_LE(in + 12);
+  j10 = x10 = LOAD32_LE(c + 8);
+  j11 = x11 = LOAD32_LE(k + 16);
+  j12 = x12 = LOAD32_LE(k + 20);
+  j13 = x13 = LOAD32_LE(k + 24);
+  j14 = x14 = LOAD32_LE(k + 28);
+  j15 = x15 = LOAD32_LE(c + 12);
 
   for (i = ROUNDS;i > 0;i -= 2) {
      x4 ^= rotate( x0+x12, 7);
@@ -113,22 +96,22 @@ int crypto_core_salsa20(
   x14 += j14;
   x15 += j15;
 
-  store_littleendian(out + 0,x0);
-  store_littleendian(out + 4,x1);
-  store_littleendian(out + 8,x2);
-  store_littleendian(out + 12,x3);
-  store_littleendian(out + 16,x4);
-  store_littleendian(out + 20,x5);
-  store_littleendian(out + 24,x6);
-  store_littleendian(out + 28,x7);
-  store_littleendian(out + 32,x8);
-  store_littleendian(out + 36,x9);
-  store_littleendian(out + 40,x10);
-  store_littleendian(out + 44,x11);
-  store_littleendian(out + 48,x12);
-  store_littleendian(out + 52,x13);
-  store_littleendian(out + 56,x14);
-  store_littleendian(out + 60,x15);
+  STORE32_LE(out + 0,x0);
+  STORE32_LE(out + 4,x1);
+  STORE32_LE(out + 8,x2);
+  STORE32_LE(out + 12,x3);
+  STORE32_LE(out + 16,x4);
+  STORE32_LE(out + 20,x5);
+  STORE32_LE(out + 24,x6);
+  STORE32_LE(out + 28,x7);
+  STORE32_LE(out + 32,x8);
+  STORE32_LE(out + 36,x9);
+  STORE32_LE(out + 40,x10);
+  STORE32_LE(out + 44,x11);
+  STORE32_LE(out + 48,x12);
+  STORE32_LE(out + 52,x13);
+  STORE32_LE(out + 56,x14);
+  STORE32_LE(out + 60,x15);
 
   return 0;
 }

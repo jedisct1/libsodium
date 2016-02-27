@@ -4,6 +4,7 @@
 
 #include "core_hchacha20.h"
 #include "crypto_core_hchacha20.h"
+#include "../../sodium/common.h"
 
 int
 crypto_core_hchacha20(unsigned char *out, const unsigned char *in,
@@ -19,23 +20,23 @@ crypto_core_hchacha20(unsigned char *out, const unsigned char *in,
         x2 = U32C(0x79622d32);
         x3 = U32C(0x6b206574);
     } else {
-        x0 = load32(c +  0);
-        x1 = load32(c +  4);
-        x2 = load32(c +  8);
-        x3 = load32(c + 12);
+        x0 = LOAD32_LE(c +  0);
+        x1 = LOAD32_LE(c +  4);
+        x2 = LOAD32_LE(c +  8);
+        x3 = LOAD32_LE(c + 12);
     }
-    x4  = load32(k +  0);
-    x5  = load32(k +  4);
-    x6  = load32(k +  8);
-    x7  = load32(k + 12);
-    x8  = load32(k + 16);
-    x9  = load32(k + 20);
-    x10 = load32(k + 24);
-    x11 = load32(k + 28);
-    x12 = load32(in +  0);
-    x13 = load32(in +  4);
-    x14 = load32(in +  8);
-    x15 = load32(in + 12);
+    x4  = LOAD32_LE(k +  0);
+    x5  = LOAD32_LE(k +  4);
+    x6  = LOAD32_LE(k +  8);
+    x7  = LOAD32_LE(k + 12);
+    x8  = LOAD32_LE(k + 16);
+    x9  = LOAD32_LE(k + 20);
+    x10 = LOAD32_LE(k + 24);
+    x11 = LOAD32_LE(k + 28);
+    x12 = LOAD32_LE(in +  0);
+    x13 = LOAD32_LE(in +  4);
+    x14 = LOAD32_LE(in +  8);
+    x15 = LOAD32_LE(in + 12);
 
     for (i = 0; i < 10; i++) {
         QUARTERROUND(x0, x4,  x8, x12);
@@ -48,14 +49,14 @@ crypto_core_hchacha20(unsigned char *out, const unsigned char *in,
         QUARTERROUND(x3, x4,  x9, x14);
     }
 
-    store32(out +  0, x0);
-    store32(out +  4, x1);
-    store32(out +  8, x2);
-    store32(out + 12, x3);
-    store32(out + 16, x12);
-    store32(out + 20, x13);
-    store32(out + 24, x14);
-    store32(out + 28, x15);
+    STORE32_LE(out +  0, x0);
+    STORE32_LE(out +  4, x1);
+    STORE32_LE(out +  8, x2);
+    STORE32_LE(out + 12, x3);
+    STORE32_LE(out + 16, x12);
+    STORE32_LE(out + 20, x13);
+    STORE32_LE(out + 24, x14);
+    STORE32_LE(out + 28, x15);
 
     return 0;
 }

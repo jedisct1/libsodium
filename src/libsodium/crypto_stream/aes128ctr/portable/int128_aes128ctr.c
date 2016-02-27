@@ -68,42 +68,42 @@ void rshift32_littleendian(int128 *r, const unsigned int n)
 {
   unsigned char *rp = (unsigned char *)r;
   uint32 t;
-  t = load32_littleendian(rp);
+  t = LOAD32_LE(rp);
   t >>= n;
-  store32_littleendian(rp, t);
-  t = load32_littleendian(rp+4);
+  STORE32_LE(rp, t);
+  t = LOAD32_LE(rp+4);
   t >>= n;
-  store32_littleendian(rp+4, t);
-  t = load32_littleendian(rp+8);
+  STORE32_LE(rp+4, t);
+  t = LOAD32_LE(rp+8);
   t >>= n;
-  store32_littleendian(rp+8, t);
-  t = load32_littleendian(rp+12);
+  STORE32_LE(rp+8, t);
+  t = LOAD32_LE(rp+12);
   t >>= n;
-  store32_littleendian(rp+12, t);
+  STORE32_LE(rp+12, t);
 }
 
 void rshift64_littleendian(int128 *r, const unsigned int n)
 {
   unsigned char *rp = (unsigned char *)r;
   uint64 t;
-  t = load64_littleendian(rp);
+  t = LOAD64_LE(rp);
   t >>= n;
-  store64_littleendian(rp, t);
-  t = load64_littleendian(rp+8);
+  STORE64_LE(rp, t);
+  t = LOAD64_LE(rp+8);
   t >>= n;
-  store64_littleendian(rp+8, t);
+  STORE64_LE(rp+8, t);
 }
 
 void lshift64_littleendian(int128 *r, const unsigned int n)
 {
   unsigned char *rp = (unsigned char *)r;
   uint64 t;
-  t = load64_littleendian(rp);
+  t = LOAD64_LE(rp);
   t <<= n;
-  store64_littleendian(rp, t);
-  t = load64_littleendian(rp+8);
+  STORE64_LE(rp, t);
+  t = LOAD64_LE(rp+8);
   t <<= n;
-  store64_littleendian(rp+8, t);
+  STORE64_LE(rp+8, t);
 }
 
 void toggle(int128 *r)
@@ -116,16 +116,16 @@ void xor_rcon(int128 *r)
 {
   unsigned char *rp = (unsigned char *)r;
   uint32 t;
-  t = load32_littleendian(rp+12);
+  t = LOAD32_LE(rp+12);
   t ^= 0xffffffff;
-  store32_littleendian(rp+12, t);
+  STORE32_LE(rp+12, t);
 }
 
 void add_uint32_big(int128 *r, uint32 x)
 {
   unsigned char *rp = (unsigned char *)r;
   uint32 t;
-  t = load32_littleendian(rp+12);
+  t = LOAD32_LE(rp+12);
   t += x;
-  store32_littleendian(rp+12, t);
+  STORE32_LE(rp+12, t);
 }

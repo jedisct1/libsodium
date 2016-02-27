@@ -5,6 +5,7 @@
 
 #include "crypto_generichash_blake2b.h"
 #include "utils.h"
+#include "../../sodium/common.h"
 
 #include "argon2-impl.h"
 
@@ -19,7 +20,7 @@ int blake2b_long(void *pout, size_t outlen, const void *in, size_t inlen) {
     }
 
     /* Ensure little-endian byte order! */
-    store32(outlen_bytes, (uint32_t)outlen);
+    STORE32_LE(outlen_bytes, (uint32_t)outlen);
 
 #define TRY(statement)                                                         \
     do {                                                                       \

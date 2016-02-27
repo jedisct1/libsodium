@@ -70,7 +70,6 @@ libsodium_la_SOURCES = \
 	crypto_pwhash/scryptsalsa208sha256/pbkdf2-sha256.c \
 	crypto_pwhash/scryptsalsa208sha256/pbkdf2-sha256.h \
 	crypto_pwhash/scryptsalsa208sha256/pwhash_scryptsalsa208sha256.c \
-	crypto_pwhash/scryptsalsa208sha256/sysendian.h \
 	crypto_pwhash/scryptsalsa208sha256/nosse/pwhash_scryptsalsa208sha256_nosse.c \
 	crypto_scalarmult/crypto_scalarmult.c \
 	crypto_scalarmult/curve25519/scalarmult_curve25519.c \
@@ -103,6 +102,7 @@ libsodium_la_SOURCES = \
 	crypto_verify/64/verify_64_api.c \
 	crypto_verify/64/ref/verify_64.c \
 	randombytes/randombytes.c \
+	sodium/common.h \
 	sodium/core.c \
 	sodium/runtime.c \
 	sodium/utils.c \
@@ -179,7 +179,6 @@ libsodium_la_SOURCES += \
 	crypto_stream/aes128ctr/stream_aes128ctr_api.c \
 	crypto_stream/aes128ctr/portable/beforenm_aes128ctr.c \
 	crypto_stream/aes128ctr/portable/common.h \
-	crypto_stream/aes128ctr/portable/common_aes128ctr.c \
 	crypto_stream/aes128ctr/portable/consts.h \
 	crypto_stream/aes128ctr/portable/consts_aes128ctr.c \
 	crypto_stream/aes128ctr/portable/int128.h \
