@@ -12,8 +12,6 @@ Public domain.
 
 #ifndef HAVE_AMD64_ASM
 
-typedef unsigned int uint32;
-
 int crypto_stream_salsa20_xor_ic(
         unsigned char *c,
   const unsigned char *m,unsigned long long mlen,

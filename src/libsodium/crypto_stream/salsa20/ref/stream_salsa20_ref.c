@@ -10,8 +10,6 @@ Public domain.
 
 #ifndef HAVE_AMD64_ASM
 
-typedef unsigned int uint32;
-
 int crypto_stream_salsa20(
         unsigned char *c,unsigned long long clen,
   const unsigned char *n,

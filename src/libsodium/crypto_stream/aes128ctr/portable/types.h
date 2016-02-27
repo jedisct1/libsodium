@@ -1,10 +1,10 @@
 #ifndef TYPES_H
 #define TYPES_H
 
-#include "crypto_uint32.h"
-typedef crypto_uint32 uint32;
+#include <inttypes.h>
+#include <stdlib.h>
 
-#include "crypto_uint64.h"
-typedef crypto_uint64 uint64;
+typedef uint32_t uint32;
+typedef uint64_t uint64;
 
 #endif

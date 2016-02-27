@@ -6,9 +6,10 @@
 #ifndef fe_H
 #define fe_H
 
-#include "crypto_uint64.h"
+#include <stdint.h>
+#include <stdlib.h>
 
-typedef crypto_uint64 fe[10];
+typedef uint64_t fe[10];
 
 /*
 fe means field element.

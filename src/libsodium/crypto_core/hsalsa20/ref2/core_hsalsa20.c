@@ -4,15 +4,16 @@ D. J. Bernstein
 Public domain.
 */
 
+#include <stdint.h>
+#include <stdlib.h>
+
 #include "crypto_core_hsalsa20.h"
 #include "../../sodium/common.h"
 
 #define ROUNDS 20
 #define U32C(v) (v##U)
 
-typedef unsigned int uint32;
-
-static uint32 rotate(uint32 u,int c)
+static uint32_t rotate(uint32_t u,int c)
 {
   return (u << c) | (u >> (32 - c));
 }
@@ -24,7 +25,7 @@ int crypto_core_hsalsa20(
   const unsigned char *c
 )
 {
-  uint32 x0, x1, x2, x3, x4, x5, x6, x7, x8, x9, x10, x11, x12, x13, x14, x15;
+  uint32_t x0, x1, x2, x3, x4, x5, x6, x7, x8, x9, x10, x11, x12, x13, x14, x15;
   int i;
 
   if (c == NULL) {

@@ -1,12 +1,9 @@
 #include "crypto_shorthash_siphash24.h"
-#include "crypto_uint64.h"
-#include "crypto_uint32.h"
-#include "crypto_uint8.h"
 #include "../../sodium/common.h"
 
-typedef crypto_uint64 u64;
-typedef crypto_uint32 u32;
-typedef crypto_uint8   u8;
+typedef uint64_t u64;
+typedef uint32_t u32;
+typedef uint8_t   u8;
 
 #define ROTL(x,b) (u64)( ((x) << (b)) | ( (x) >> (64 - (b))) )
 

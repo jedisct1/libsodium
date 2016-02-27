@@ -8,8 +8,6 @@ Public domain.
 #include "crypto_stream_salsa208.h"
 #include "utils.h"
 
-typedef unsigned int uint32;
-
 int crypto_stream_salsa208(
         unsigned char *c,unsigned long long clen,
   const unsigned char *n,
