@@ -427,9 +427,6 @@
     <ClCompile Include="..\..\..\..\src\libsodium\crypto_pwhash\scryptsalsa208sha256\scrypt_platform.c">
       <Filter>src\crypto_pwhash\scryptsalsa208sha256</Filter>
     </ClCompile>
-    <ClInclude Include="..\..\..\..\src\libsodium\crypto_pwhash\scryptsalsa208sha256\sysendian.h">
-      <Filter>src\crypto_pwhash\scryptsalsa208sha256</Filter>
-    </ClInclude>
     <ClInclude Include="..\..\..\..\src\libsodium\crypto_stream\aes128ctr\portable\types.h">
       <Filter>src\crypto_stream\aes128ctr\portable</Filter>
     </ClInclude>
