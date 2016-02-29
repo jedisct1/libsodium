@@ -11,6 +11,7 @@ Public domain.
 #include "../../sodium/common.h"
 
 #define ROUNDS 12
+#define U32C(v) (v##U)
 
 static uint32_t rotate(uint32_t u,int c)
 {
@@ -28,22 +29,29 @@ int crypto_core_salsa2012(
   uint32_t j0, j1, j2, j3, j4, j5, j6, j7, j8, j9, j10, j11, j12, j13, j14, j15;
   int i;
 
-  j0 = x0 = LOAD32_LE(c + 0);
+  if (c == NULL) {
+    j0 = x0 = U32C(0x61707865);
+    j5 = x5 = U32C(0x3320646e);
+    j10 = x10 = U32C(0x79622d32);
+    j15 = x15 = U32C(0x6b206574);
+  } else {
+    j0 = x0 = LOAD32_LE(c + 0);
+    j5 = x5 = LOAD32_LE(c + 4);
+    j10 = x10 = LOAD32_LE(c + 8);
+    j15 = x15 = LOAD32_LE(c + 12);
+  }
   j1 = x1 = LOAD32_LE(k + 0);
   j2 = x2 = LOAD32_LE(k + 4);
   j3 = x3 = LOAD32_LE(k + 8);
   j4 = x4 = LOAD32_LE(k + 12);
-  j5 = x5 = LOAD32_LE(c + 4);
   j6 = x6 = LOAD32_LE(in + 0);
   j7 = x7 = LOAD32_LE(in + 4);
   j8 = x8 = LOAD32_LE(in + 8);
   j9 = x9 = LOAD32_LE(in + 12);
-  j10 = x10 = LOAD32_LE(c + 8);
   j11 = x11 = LOAD32_LE(k + 16);
   j12 = x12 = LOAD32_LE(k + 20);
   j13 = x13 = LOAD32_LE(k + 24);
   j14 = x14 = LOAD32_LE(k + 28);
-  j15 = x15 = LOAD32_LE(c + 12);
 
   for (i = ROUNDS;i > 0;i -= 2) {
      x4 ^= rotate( x0+x12, 7);
