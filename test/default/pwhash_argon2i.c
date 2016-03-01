@@ -3,8 +3,8 @@
 #include "cmptest.h"
 
 #define OUT_LEN 128
-#define OPSLIMIT 2
-#define MEMLIMIT 10000000
+#define OPSLIMIT 3
+#define MEMLIMIT 5000000
 
 static void tv(void)
 {
@@ -52,7 +52,7 @@ static void tv(void)
             "43ced68642bfb8bbbdd0f50b30118f5e",
             82,
             "39d82eef32010b8b79cc5ba88ed539fbaba741100f2edbeca7cc171ffeabf258",
-            190, 1, 5432947, 1 },
+            190, 3, 1432947, 1 },
           { "c7b09aec680e7b42fedd7fc792e78b2f6c1bea8f4a884320b648f81e8cf515e8ba"
             "9dcfb11d43c4aae114c1734aa69ca82d44998365db9c93744fa28b63fd16000e82"
             "61cbbe083e7e2da1e5f696bde0834fe53146d7e0e35e7de9920d041f5a5621aabe"
@@ -65,7 +65,7 @@ static void tv(void)
             "7b",
             34,
             "44071f6d181561670bda728d43fb79b443bb805afdebaf98622b5165e01b15fb",
-            231, 1, 6631659, 1 },
+            231, 1, 1631659, 1 },
           { "a14975c26c088755a8b715ff2528d647cd343987fcf4aa25e7194a8417fb2b4b3f"
             "7268da9f3182b4cfb22d138b2749d673a47ecc7525dd15a0a3c66046971784bb63"
             "d7eae24cc84f2631712075a10e10a96b0e0ee67c43e01c423cb9c44e5371017e9c"
@@ -75,7 +75,7 @@ static void tv(void)
             "55a3b4169f22cccb0745a2689407ea1901a0a766eb99",
             220,
             "3d968b2752b8838431165059319f3ff8910b7b8ecb54ea01d3f54769e9d98daf",
-            167, 1, 10784179, 1 },
+            167, 3, 1784128, 1 },
       };
     char          passwd[256];
     unsigned char salt[crypto_pwhash_SALTBYTES];
@@ -94,7 +94,8 @@ static void tv(void)
                 passwd, tests[i].passwdlen,
                 (const unsigned char *) salt, tests[i].opslimit,
                 tests[i].memlimit) != 0) {
-            printf("pwhash failure\n");
+            printf("[tv] pwhash failure (maybe intentional): [%u]\n", (unsigned int) i);
+            continue;
         }
         sodium_bin2hex(out_hex, sizeof out_hex, out, tests[i].outlen);
         printf("%s\n", out_hex);
@@ -144,7 +145,8 @@ static void tv2(void)
                 passwd, tests[i].passwdlen,
                 (const unsigned char *) salt, tests[i].opslimit,
                 tests[i].memlimit) != 0) {
-            printf("pwhash failure\n");
+            printf("[tv2] pwhash failure: [%u]\n", (unsigned int) i);
+            continue;
         }
         sodium_bin2hex(out_hex, sizeof out_hex, out, tests[i].outlen);
         printf("%s\n", out_hex);
@@ -159,6 +161,8 @@ static void tv3(void)
     } tests[] = {
         { "",
           "$argon2i$m=4096,t=1,p=1$X1NhbHQAAAAAAAAAAAAAAA$bWh++MKN1OiFHKgIWTLvIi1iHicmHH7+Fv3K88ifFfI" },
+        { "",
+          "$argon2i$m=2048,t=4,p=1$SWkxaUhpY21ISDcrRnYzSw$Mbg/Eck1kpZir5T9io7C64cpffdTBaORgyriLQFgQj8" },
         { "^T5H$JYt39n%K*j:W]!1s?vg!:jGi]Ax?..l7[p0v:1jHTpla9;]bUN;?bWyCbtqg ",
           "$argon2i$m=4096,t=3,p=2$X1NhbHQAAAAAAAAAAAAAAA$z/QMiU4lQxGsYNc/+K/bizwsA1P11UG2dj/7+aILJ4I" },
         { "K3S=KyH#)36_?]LxeR8QNKw6X=gFbxai$C%29V*",
@@ -177,7 +181,8 @@ static void tv3(void)
         memcpy(passwd, tests[i].passwd, strlen(tests[i].passwd) + 1U);
         if (crypto_pwhash_argon2i_str_verify
             (out, passwd, strlen(passwd)) != 0) {
-            printf("pwhash_str failure: [%u]\n", (unsigned int)i);
+            printf("[tv3] pwhash_str failure (maybe intentional): [%u]\n", (unsigned int) i);
+            continue;
         }
         sodium_free(out);
         sodium_free(passwd);
@@ -201,13 +206,15 @@ int main(void)
     if (crypto_pwhash_str(str_out, passwd, strlen(passwd),
                           OPSLIMIT, MEMLIMIT) != 0) {
         printf("pwhash_str failure\n");
+        return 1;
     }
     if (crypto_pwhash_str(str_out2, passwd, strlen(passwd),
                           OPSLIMIT, MEMLIMIT) != 0) {
         printf("pwhash_str(2) failure\n");
+        return 1;
     }
     if (strcmp(str_out, str_out2) == 0) {
-        printf("pwhash_str doesn't generate different salts\n");
+        printf("pwhash_str() doesn't generate different salts\n");
     }
     if (sodium_is_zero((const unsigned char *) str_out + strlen(str_out),
                        crypto_pwhash_STRBYTES - strlen(str_out)) != 1 ||
