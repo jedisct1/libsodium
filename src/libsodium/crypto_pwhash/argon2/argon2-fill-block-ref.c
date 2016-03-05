@@ -160,7 +160,10 @@ int fill_segment_ref(const argon2_instance_t *instance,
         /* 1.2 Computing the index of the reference block */
         /* 1.2.1 Taking pseudo-random value from the previous block */
         if (data_independent_addressing) {
+#pragma warning(push)
+#pragma warning(disable: 6385)
             pseudo_rand = pseudo_rands[i];
+#pragma warning(pop)
         } else {
             pseudo_rand = instance->region->memory[prev_offset].v[0];
         }
