@@ -193,6 +193,7 @@ crypto_pwhash_scryptsalsa208sha256_str_verify(const char str[crypto_pwhash_scryp
     if (escrypt_init_local(&escrypt_local) != 0) {
         return -1; /* LCOV_EXCL_LINE */
     }
+    memset(wanted, 0, sizeof wanted);
     if (escrypt_r(&escrypt_local, (const uint8_t *) passwd, (size_t) passwdlen,
                   (const uint8_t *) str, (uint8_t *) wanted,
                   sizeof wanted) == NULL) {
