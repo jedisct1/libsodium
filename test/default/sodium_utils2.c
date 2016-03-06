@@ -14,6 +14,8 @@
 
 static void segv_handler(int sig)
 {
+    (void) sig;
+
     printf("Intentional segfault / bus error caught\n");
     printf("OK\n");
 #ifdef SIGSEGV
