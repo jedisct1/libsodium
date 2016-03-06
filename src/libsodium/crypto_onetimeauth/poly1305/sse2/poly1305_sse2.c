@@ -88,9 +88,8 @@ poly1305_init_ext(poly1305_state_internal_t *st,
                   const unsigned char key[32], unsigned long long bytes)
 {
     uint32_t *R;
-    uint128_t d[3],m0;
+    uint128_t d[3];
     uint64_t r0,r1,r2;
-    uint32_t rp0,rp1,rp2,rp3,rp4;
     uint64_t rt0,rt1,rt2,st2,c;
     uint64_t t0,t1;
     unsigned long long i;
@@ -170,7 +169,7 @@ poly1305_blocks(poly1305_state_internal_t *st, const unsigned char *m,
     xmmi H0,H1,H2,H3,H4;
     xmmi T0,T1,T2,T3,T4,T5,T6,T7,T8;
     xmmi M0,M1,M2,M3,M4;
-    xmmi M5,M6,M7,M8,M9;
+    xmmi M5,M6,M7,M8;
     xmmi C1,C2;
     xmmi R20,R21,R22,R23,R24,S21,S22,S23,S24;
     xmmi R40,R41,R42,R43,R44,S41,S42,S43,S44;
@@ -569,7 +568,6 @@ poly1305_finish_ext(poly1305_state_internal_t *st, const unsigned char *m,
                     unsigned long long leftover, unsigned char mac[16])
 {
     uint64_t h0,h1,h2;
-    uint64_t t0,t1,c;
 
     if (leftover) {
         CRYPTO_ALIGN(16) unsigned char final[32] = {0};
