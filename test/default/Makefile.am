@@ -512,3 +512,5 @@ LOG_COMPILER = ./nacl-test-wrapper.sh
 endif
 
 verify: check
+
+@VALGRIND_CHECK_RULES@
