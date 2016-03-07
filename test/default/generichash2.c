@@ -13,10 +13,10 @@ main(void)
 
     assert(crypto_generichash_statebytes() >= sizeof st);
     for (h = 0; h < crypto_generichash_KEYBYTES_MAX; ++h)
-        k[h] = h;
+        k[h] = (unsigned char) h;
 
     for (i = 0; i < MAXLEN; ++i) {
-        in[i] = i;
+        in[i] = (unsigned char) i;
         if (crypto_generichash_init(&st, k,
                                     1 + i % crypto_generichash_KEYBYTES_MAX,
                                     1 + i % crypto_generichash_BYTES_MAX) != 0) {
