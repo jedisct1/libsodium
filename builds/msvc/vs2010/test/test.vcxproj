@@ -64,181 +64,69 @@
     <Import Project="$(ProjectDir)$(ProjectName).props" />
   </ImportGroup>
   <ItemGroup>
-    <ClCompile Include="..\..\..\..\test\default\aead_aes256gcm.c">
-      <ExcludedFromBuild>true</ExcludedFromBuild>
-    </ClCompile>
-    <ClCompile Include="..\..\..\..\test\default\aead_chacha20poly1305.c">
-      <ExcludedFromBuild>true</ExcludedFromBuild>
-    </ClCompile>
-    <ClCompile Include="..\..\..\..\test\default\auth.c">
-      <ExcludedFromBuild>true</ExcludedFromBuild>
-    </ClCompile>
-    <ClCompile Include="..\..\..\..\test\default\auth2.c">
-      <ExcludedFromBuild>true</ExcludedFromBuild>
-    </ClCompile>
-    <ClCompile Include="..\..\..\..\test\default\auth3.c">
-      <ExcludedFromBuild>true</ExcludedFromBuild>
-    </ClCompile>
-    <ClCompile Include="..\..\..\..\test\default\auth5.c">
-      <ExcludedFromBuild>true</ExcludedFromBuild>
-    </ClCompile>
-    <ClCompile Include="..\..\..\..\test\default\auth6.c">
-      <ExcludedFromBuild>true</ExcludedFromBuild>
-    </ClCompile>
-    <ClCompile Include="..\..\..\..\test\default\auth7.c">
-      <ExcludedFromBuild>true</ExcludedFromBuild>
-    </ClCompile>
-    <ClCompile Include="..\..\..\..\test\default\box.c">
-      <ExcludedFromBuild>true</ExcludedFromBuild>
-    </ClCompile>
-    <ClCompile Include="..\..\..\..\test\default\box2.c">
-      <ExcludedFromBuild>true</ExcludedFromBuild>
-    </ClCompile>
-    <ClCompile Include="..\..\..\..\test\default\box7.c">
-      <ExcludedFromBuild>true</ExcludedFromBuild>
-    </ClCompile>
-    <ClCompile Include="..\..\..\..\test\default\box8.c">
-      <ExcludedFromBuild>true</ExcludedFromBuild>
-    </ClCompile>
-    <ClCompile Include="..\..\..\..\test\default\box_easy.c">
-      <ExcludedFromBuild>true</ExcludedFromBuild>
-    </ClCompile>
-    <ClCompile Include="..\..\..\..\test\default\box_easy2.c">
-      <ExcludedFromBuild>true</ExcludedFromBuild>
-    </ClCompile>
-    <ClCompile Include="..\..\..\..\test\default\box_seal.c">
-      <ExcludedFromBuild>true</ExcludedFromBuild>
-    </ClCompile>
-    <ClCompile Include="..\..\..\..\test\default\box_seed.c">
-      <ExcludedFromBuild>true</ExcludedFromBuild>
-    </ClCompile>
-    <ClCompile Include="..\..\..\..\test\default\core1.c">
-      <ExcludedFromBuild>true</ExcludedFromBuild>
-    </ClCompile>
-    <ClCompile Include="..\..\..\..\test\default\core2.c">
-      <ExcludedFromBuild>true</ExcludedFromBuild>
-    </ClCompile>
-    <ClCompile Include="..\..\..\..\test\default\core3.c">
-      <ExcludedFromBuild>true</ExcludedFromBuild>
-    </ClCompile>
-    <ClCompile Include="..\..\..\..\test\default\core4.c">
-      <ExcludedFromBuild>true</ExcludedFromBuild>
-    </ClCompile>
-    <ClCompile Include="..\..\..\..\test\default\core5.c">
-      <ExcludedFromBuild>true</ExcludedFromBuild>
-    </ClCompile>
-    <ClCompile Include="..\..\..\..\test\default\core6.c">
-      <ExcludedFromBuild>true</ExcludedFromBuild>
-    </ClCompile>
-    <ClCompile Include="..\..\..\..\test\default\ed25519_convert.c">
-      <ExcludedFromBuild>true</ExcludedFromBuild>
-    </ClCompile>
-    <ClCompile Include="..\..\..\..\test\default\generichash.c">
-      <ExcludedFromBuild>true</ExcludedFromBuild>
-    </ClCompile>
-    <ClCompile Include="..\..\..\..\test\default\generichash2.c">
-      <ExcludedFromBuild>true</ExcludedFromBuild>
-    </ClCompile>
-    <ClCompile Include="..\..\..\..\test\default\generichash3.c">
-      <ExcludedFromBuild>true</ExcludedFromBuild>
-    </ClCompile>
-    <ClCompile Include="..\..\..\..\test\default\hash.c">
-      <ExcludedFromBuild>true</ExcludedFromBuild>
-    </ClCompile>
-    <ClCompile Include="..\..\..\..\test\default\hash3.c">
-      <ExcludedFromBuild>true</ExcludedFromBuild>
-    </ClCompile>
-    <ClCompile Include="..\..\..\..\test\default\onetimeauth.c">
-      <ExcludedFromBuild>true</ExcludedFromBuild>
-    </ClCompile>
-    <ClCompile Include="..\..\..\..\test\default\onetimeauth2.c">
-      <ExcludedFromBuild>true</ExcludedFromBuild>
-    </ClCompile>
-    <ClCompile Include="..\..\..\..\test\default\onetimeauth7.c">
-      <ExcludedFromBuild>true</ExcludedFromBuild>
-    </ClCompile>
-    <ClCompile Include="..\..\..\..\test\default\pwhash_scrypt.c">
-      <ExcludedFromBuild>true</ExcludedFromBuild>
-    </ClCompile>
-    <ClCompile Include="..\..\..\..\test\default\pwhash_scrypt_ll.c">
-      <ExcludedFromBuild>true</ExcludedFromBuild>
-    </ClCompile>
-    <ClCompile Include="..\..\..\..\test\default\randombytes.c">
-      <ExcludedFromBuild>true</ExcludedFromBuild>
-    </ClCompile>
-    <ClCompile Include="..\..\..\..\test\default\scalarmult.c">
-      <ExcludedFromBuild>true</ExcludedFromBuild>
-    </ClCompile>
-    <ClCompile Include="..\..\..\..\test\default\scalarmult2.c">
-      <ExcludedFromBuild>true</ExcludedFromBuild>
-    </ClCompile>
-    <ClCompile Include="..\..\..\..\test\default\scalarmult5.c">
-      <ExcludedFromBuild>true</ExcludedFromBuild>
-    </ClCompile>
-    <ClCompile Include="..\..\..\..\test\default\scalarmult6.c">
-      <ExcludedFromBuild>true</ExcludedFromBuild>
-    </ClCompile>
-    <ClCompile Include="..\..\..\..\test\default\scalarmult7.c">
-      <ExcludedFromBuild>true</ExcludedFromBuild>
-    </ClCompile>
-    <ClCompile Include="..\..\..\..\test\default\secretbox.c">
-      <ExcludedFromBuild>true</ExcludedFromBuild>
-    </ClCompile>
-    <ClCompile Include="..\..\..\..\test\default\secretbox2.c">
-      <ExcludedFromBuild>true</ExcludedFromBuild>
-    </ClCompile>
-    <ClCompile Include="..\..\..\..\test\default\secretbox7.c">
-      <ExcludedFromBuild>true</ExcludedFromBuild>
-    </ClCompile>
-    <ClCompile Include="..\..\..\..\test\default\secretbox8.c">
-      <ExcludedFromBuild>true</ExcludedFromBuild>
-    </ClCompile>
-    <ClCompile Include="..\..\..\..\test\default\secretbox_easy.c">
-      <ExcludedFromBuild>true</ExcludedFromBuild>
-    </ClCompile>
-    <ClCompile Include="..\..\..\..\test\default\secretbox_easy2.c">
-      <ExcludedFromBuild>true</ExcludedFromBuild>
-    </ClCompile>
-    <ClCompile Include="..\..\..\..\test\default\shorthash.c">
-      <ExcludedFromBuild>true</ExcludedFromBuild>
-    </ClCompile>
-    <ClCompile Include="..\..\..\..\test\default\sign.c">
-      <ExcludedFromBuild>true</ExcludedFromBuild>
-    </ClCompile>
-    <ClCompile Include="..\..\..\..\test\default\sodium_core.c">
-      <ExcludedFromBuild>true</ExcludedFromBuild>
-    </ClCompile>
-    <ClCompile Include="..\..\..\..\test\default\sodium_utils.c">
-      <ExcludedFromBuild>true</ExcludedFromBuild>
-    </ClCompile>
-    <ClCompile Include="..\..\..\..\test\default\sodium_utils2.c">
-      <ExcludedFromBuild>true</ExcludedFromBuild>
-    </ClCompile>
-    <ClCompile Include="..\..\..\..\test\default\sodium_utils3.c">
-      <ExcludedFromBuild>true</ExcludedFromBuild>
-    </ClCompile>
-    <ClCompile Include="..\..\..\..\test\default\sodium_version.c">
-      <ExcludedFromBuild>true</ExcludedFromBuild>
-    </ClCompile>
-    <ClCompile Include="..\..\..\..\test\default\stream.c">
-      <ExcludedFromBuild>true</ExcludedFromBuild>
-    </ClCompile>
-    <ClCompile Include="..\..\..\..\test\default\stream2.c">
-      <ExcludedFromBuild>true</ExcludedFromBuild>
-    </ClCompile>
-    <ClCompile Include="..\..\..\..\test\default\stream3.c">
-      <ExcludedFromBuild>true</ExcludedFromBuild>
-    </ClCompile>
-    <ClCompile Include="..\..\..\..\test\default\stream4.c">
-      <ExcludedFromBuild>true</ExcludedFromBuild>
-    </ClCompile>
-    <ClCompile Include="..\..\..\..\test\default\verify1.c">
-      <ExcludedFromBuild>true</ExcludedFromBuild>
-    </ClCompile>
-  </ItemGroup>
-  <ItemGroup>
     <ClInclude Include="..\..\..\..\test\default\cmptest.h" />
     <ClInclude Include="..\..\..\..\test\quirks\quirks.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="..\..\..\..\test\default\aead_aes256gcm.c" />
+    <ClCompile Include="..\..\..\..\test\default\aead_chacha20poly1305.c" />
+    <ClCompile Include="..\..\..\..\test\default\auth.c" />
+    <ClCompile Include="..\..\..\..\test\default\auth2.c" />
+    <ClCompile Include="..\..\..\..\test\default\auth3.c" />
+    <ClCompile Include="..\..\..\..\test\default\auth5.c" />
+    <ClCompile Include="..\..\..\..\test\default\auth6.c" />
+    <ClCompile Include="..\..\..\..\test\default\auth7.c" />
+    <ClCompile Include="..\..\..\..\test\default\box.c" />
+    <ClCompile Include="..\..\..\..\test\default\box2.c" />
+    <ClCompile Include="..\..\..\..\test\default\box7.c" />
+    <ClCompile Include="..\..\..\..\test\default\box8.c" />
+    <ClCompile Include="..\..\..\..\test\default\box_easy.c" />
+    <ClCompile Include="..\..\..\..\test\default\box_easy2.c" />
+    <ClCompile Include="..\..\..\..\test\default\box_seal.c" />
+    <ClCompile Include="..\..\..\..\test\default\box_seed.c" />
+    <ClCompile Include="..\..\..\..\test\default\chacha20.c" />
+    <ClCompile Include="..\..\..\..\test\default\core1.c" />
+    <ClCompile Include="..\..\..\..\test\default\core2.c" />
+    <ClCompile Include="..\..\..\..\test\default\core3.c" />
+    <ClCompile Include="..\..\..\..\test\default\core4.c" />
+    <ClCompile Include="..\..\..\..\test\default\core5.c" />
+    <ClCompile Include="..\..\..\..\test\default\core6.c" />
+    <ClCompile Include="..\..\..\..\test\default\ed25519_convert.c" />
+    <ClCompile Include="..\..\..\..\test\default\generichash.c" />
+    <ClCompile Include="..\..\..\..\test\default\generichash2.c" />
+    <ClCompile Include="..\..\..\..\test\default\generichash3.c" />
+    <ClCompile Include="..\..\..\..\test\default\hash.c" />
+    <ClCompile Include="..\..\..\..\test\default\hash3.c" />
+    <ClCompile Include="..\..\..\..\test\default\onetimeauth.c" />
+    <ClCompile Include="..\..\..\..\test\default\onetimeauth2.c" />
+    <ClCompile Include="..\..\..\..\test\default\onetimeauth7.c" />
+    <ClCompile Include="..\..\..\..\test\default\pwhash_argon2i.c" />
+    <ClCompile Include="..\..\..\..\test\default\pwhash_scrypt.c" />
+    <ClCompile Include="..\..\..\..\test\default\pwhash_scrypt_ll.c" />
+    <ClCompile Include="..\..\..\..\test\default\randombytes.c" />
+    <ClCompile Include="..\..\..\..\test\default\scalarmult.c" />
+    <ClCompile Include="..\..\..\..\test\default\scalarmult2.c" />
+    <ClCompile Include="..\..\..\..\test\default\scalarmult5.c" />
+    <ClCompile Include="..\..\..\..\test\default\scalarmult6.c" />
+    <ClCompile Include="..\..\..\..\test\default\scalarmult7.c" />
+    <ClCompile Include="..\..\..\..\test\default\secretbox.c" />
+    <ClCompile Include="..\..\..\..\test\default\secretbox2.c" />
+    <ClCompile Include="..\..\..\..\test\default\secretbox7.c" />
+    <ClCompile Include="..\..\..\..\test\default\secretbox8.c" />
+    <ClCompile Include="..\..\..\..\test\default\secretbox_easy.c" />
+    <ClCompile Include="..\..\..\..\test\default\secretbox_easy2.c" />
+    <ClCompile Include="..\..\..\..\test\default\shorthash.c" />
+    <ClCompile Include="..\..\..\..\test\default\sign.c" />
+    <ClCompile Include="..\..\..\..\test\default\sodium_core.c" />
+    <ClCompile Include="..\..\..\..\test\default\sodium_utils.c" />
+    <ClCompile Include="..\..\..\..\test\default\sodium_utils2.c" />
+    <ClCompile Include="..\..\..\..\test\default\sodium_utils3.c" />
+    <ClCompile Include="..\..\..\..\test\default\sodium_version.c" />
+    <ClCompile Include="..\..\..\..\test\default\stream.c" />
+    <ClCompile Include="..\..\..\..\test\default\stream2.c" />
+    <ClCompile Include="..\..\..\..\test\default\stream3.c" />
+    <ClCompile Include="..\..\..\..\test\default\stream4.c" />
+    <ClCompile Include="..\..\..\..\test\default\verify1.c" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
 </Project>
