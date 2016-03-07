@@ -1,6 +1,28 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup>
+    <ClInclude Include="..\..\..\..\test\default\cmptest.h">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\test\quirks\quirks.h">
+      <Filter>include</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <Filter Include="src">
+      <UniqueIdentifier>{705beade-aa7f-49c0-900e-4b0cbbdc2f7b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="include">
+      <UniqueIdentifier>{5b5af4b5-c6aa-4b30-bdef-074b1bdc43ea}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="..\..\..\..\test\default\aead_aes256gcm.c">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\test\default\aead_chacha20poly1305.c">
+      <Filter>src</Filter>
+    </ClCompile>
     <ClCompile Include="..\..\..\..\test\default\auth.c">
       <Filter>src</Filter>
     </ClCompile>
@@ -11,6 +33,12 @@
       <Filter>src</Filter>
     </ClCompile>
     <ClCompile Include="..\..\..\..\test\default\auth5.c">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\test\default\auth6.c">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\test\default\auth7.c">
       <Filter>src</Filter>
     </ClCompile>
     <ClCompile Include="..\..\..\..\test\default\box.c">
@@ -35,6 +63,9 @@
       <Filter>src</Filter>
     </ClCompile>
     <ClCompile Include="..\..\..\..\test\default\box8.c">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\test\default\chacha20.c">
       <Filter>src</Filter>
     </ClCompile>
     <ClCompile Include="..\..\..\..\test\default\core1.c">
@@ -82,6 +113,12 @@
     <ClCompile Include="..\..\..\..\test\default\onetimeauth7.c">
       <Filter>src</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\..\..\test\default\pwhash_argon2i.c">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\test\default\pwhash_scrypt.c">
+      <Filter>src</Filter>
+    </ClCompile>
     <ClCompile Include="..\..\..\..\test\default\pwhash_scrypt_ll.c">
       <Filter>src</Filter>
     </ClCompile>
@@ -124,6 +161,9 @@
     <ClCompile Include="..\..\..\..\test\default\shorthash.c">
       <Filter>src</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\..\..\test\default\sign.c">
+      <Filter>src</Filter>
+    </ClCompile>
     <ClCompile Include="..\..\..\..\test\default\sodium_core.c">
       <Filter>src</Filter>
     </ClCompile>
@@ -151,42 +191,8 @@
     <ClCompile Include="..\..\..\..\test\default\stream4.c">
       <Filter>src</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\..\..\test\default\sign.c">
-      <Filter>src</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\..\..\test\default\pwhash_scrypt.c">
-      <Filter>src</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\..\..\test\default\aead_chacha20poly1305.c">
-      <Filter>src</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\..\..\test\default\auth6.c">
-      <Filter>src</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\..\..\test\default\auth7.c">
-      <Filter>src</Filter>
-    </ClCompile>
     <ClCompile Include="..\..\..\..\test\default\verify1.c">
       <Filter>src</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\..\..\test\default\aead_aes256gcm.c">
-      <Filter>src</Filter>
-    </ClCompile>
-  </ItemGroup>
-  <ItemGroup>
-    <ClInclude Include="..\..\..\..\test\default\cmptest.h">
-      <Filter>include</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\..\test\quirks\quirks.h">
-      <Filter>include</Filter>
-    </ClInclude>
-  </ItemGroup>
-  <ItemGroup>
-    <Filter Include="src">
-      <UniqueIdentifier>{705beade-aa7f-49c0-900e-4b0cbbdc2f7b}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="include">
-      <UniqueIdentifier>{5b5af4b5-c6aa-4b30-bdef-074b1bdc43ea}</UniqueIdentifier>
-    </Filter>
   </ItemGroup>
 </Project>
