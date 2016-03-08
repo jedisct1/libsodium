@@ -31,7 +31,7 @@
 #define ARGON2_SYNC_POINTS UINT32_C(4)
 
 /* Minimum and maximum digest size in bytes */
-#define ARGON2_MIN_OUTLEN UINT32_C(4)
+#define ARGON2_MIN_OUTLEN UINT32_C(16)
 #define ARGON2_MAX_OUTLEN UINT32_C(0xFFFFFFFF)
 
 /* Minimum and maximum number of memory blocks (each of BLOCK_SIZE bytes) */
