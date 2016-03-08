@@ -44,7 +44,7 @@ crypto_aead/chacha20poly1305           Frank Denis
 
 crypto_box/curve25519xsalsa20poly1305  Daniel J. Bernstein
 
-crypto_core/hchacha29                  Frank Denis
+crypto_core/hchacha20                  Frank Denis
 
 crypto_core/hsalsa20                   Daniel J. Bernstein
 crypto_core/salsa20
