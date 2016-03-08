@@ -32,7 +32,7 @@ size_t crypto_pwhash_argon2i_opslimit_interactive(void);
 SODIUM_EXPORT
 size_t crypto_pwhash_argon2i_memlimit_interactive(void);
 
-#define crypto_pwhash_argon2i_OPSLIMIT_MODERATE 10ULL
+#define crypto_pwhash_argon2i_OPSLIMIT_MODERATE 6ULL
 SODIUM_EXPORT
 size_t crypto_pwhash_argon2i_opslimit_moderate(void);
 
@@ -40,7 +40,7 @@ size_t crypto_pwhash_argon2i_opslimit_moderate(void);
 SODIUM_EXPORT
 size_t crypto_pwhash_argon2i_memlimit_moderate(void);
 
-#define crypto_pwhash_argon2i_OPSLIMIT_SENSITIVE 32ULL
+#define crypto_pwhash_argon2i_OPSLIMIT_SENSITIVE 8ULL
 SODIUM_EXPORT
 size_t crypto_pwhash_argon2i_opslimit_sensitive(void);
 
