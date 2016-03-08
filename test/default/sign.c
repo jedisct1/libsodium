@@ -1101,10 +1101,17 @@ int main(void)
             continue;
         }
         add_l(sm + 32);
+#ifndef ED25519_COMPAT
+        if (crypto_sign_open(m, &mlen, sm, smlen, test_data[i].pk) != -1) {
+            printf("crypto_sign_open(): signature [%u] is malleable\n", i);
+            continue;
+        }
+#else
         if (crypto_sign_open(m, &mlen, sm, smlen, test_data[i].pk) != 0) {
             printf("crypto_sign_open(): signature [%u] is not malleable\n", i);
             continue;
         }
+#endif
         if (memcmp(test_data[i].m, m, (size_t)mlen) != 0) {
             printf("message verification failure: [%u]\n", i);
             continue;
