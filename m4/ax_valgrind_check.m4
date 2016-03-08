@@ -60,8 +60,8 @@
 AC_DEFUN([AX_VALGRIND_CHECK],[
 	dnl Check for --enable-valgrind
 	AC_ARG_ENABLE([valgrind],
-	              [AS_HELP_STRING([--enable-valgrind], [Whether to enable Valgrind on the unit tests])],
-	              [enable_valgrind=$enableval],[enable_valgrind=])
+	              [AS_HELP_STRING([--enable-valgrind], [Whether to enable Valgrind on the unit tests (requires GNU make)])],
+	              [enable_valgrind=$enableval],[enable_valgrind=no])
 
 	AS_IF([test "$enable_valgrind" != "no"],[
 		# Check for Valgrind.
@@ -180,6 +180,11 @@ MOSTLYCLEANFILES += $(valgrind_log_files)
 .PHONY: check-valgrind check-valgrind-tool
 ']
 
+	AS_IF([test "$enable_valgrind" != "yes"],[
+VALGRIND_CHECK_RULES='
+check-valgrind:
+@echo "Need to use GNU make and reconfigure with --enable-valgrind"'
+])
 	AC_SUBST([VALGRIND_CHECK_RULES])
 	m4_ifdef([_AM_SUBST_NOTMAKE], [_AM_SUBST_NOTMAKE([VALGRIND_CHECK_RULES])])
 ])
