@@ -105,6 +105,7 @@ crypto_pwhash_argon2i_str(char out[crypto_pwhash_argon2i_STRBYTES],
 {
     unsigned char salt[crypto_pwhash_argon2i_SALTBYTES];
 
+    memset(out, 0, crypto_pwhash_argon2i_STRBYTES);
     memlimit /= 1024U;
     if (passwdlen > ARGON2_MAX_PWD_LENGTH ||
         opslimit > ARGON2_MAX_TIME || memlimit > ARGON2_MAX_MEMORY) {
@@ -117,7 +118,6 @@ crypto_pwhash_argon2i_str(char out[crypto_pwhash_argon2i_STRBYTES],
         return -1;
     }
     randombytes_buf(salt, sizeof salt);
-    memset(out, 0, crypto_pwhash_argon2i_STRBYTES);
     if (argon2i_hash_encoded((uint32_t) opslimit, (uint32_t) memlimit,
                              (uint32_t) 1U, passwd, (size_t) passwdlen,
                              salt, sizeof salt, STR_HASHBYTES,
