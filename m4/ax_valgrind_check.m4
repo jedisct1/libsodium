@@ -183,7 +183,7 @@ MOSTLYCLEANFILES += $(valgrind_log_files)
 	AS_IF([test "$enable_valgrind" != "yes"],[
 VALGRIND_CHECK_RULES='
 check-valgrind:
-@echo "Need to use GNU make and reconfigure with --enable-valgrind"'
+	@echo "Need to use GNU make and reconfigure with --enable-valgrind"'
 ])
 	AC_SUBST([VALGRIND_CHECK_RULES])
 	m4_ifdef([_AM_SUBST_NOTMAKE], [_AM_SUBST_NOTMAKE([VALGRIND_CHECK_RULES])])
