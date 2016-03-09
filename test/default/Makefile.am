@@ -36,6 +36,8 @@ EXTRA_DIST = \
 	onetimeauth.exp \
 	onetimeauth2.exp \
 	onetimeauth7.exp \
+	otp.exp \
+	otp2.exp \
 	pwhash_argon2i.exp \
 	pwhash_scrypt.exp \
 	pwhash_scrypt_ll.exp \
@@ -98,6 +100,8 @@ DISTCLEANFILES = \
 	onetimeauth.res \
 	onetimeauth2.res \
 	onetimeauth7.res \
+	otp.res \
+	otp2.res \
 	pwhash_argon2i.res \
 	pwhash_scrypt.res \
 	pwhash_scrypt_ll.res \
@@ -161,6 +165,8 @@ CLEANFILES = \
 	onetimeauth.final \
 	onetimeauth2.final \
 	onetimeauth7.final \
+	otp.final \
+	otp2.final \
 	pwhash_argon2i.final \
 	pwhash_scrypt.final \
 	pwhash_scrypt_ll.final \
@@ -219,6 +225,8 @@ CLEANFILES = \
 	onetimeauth.nexe \
 	onetimeauth2.nexe \
 	onetimeauth7.nexe \
+	otp.nexe \
+	otp2.nexe \
 	pwhash_argon2i.nexe \
 	pwhash_scrypt.nexe \
 	pwhash_scrypt_ll.nexe \
@@ -289,6 +297,8 @@ TESTS_TARGETS = \
 	onetimeauth \
 	onetimeauth2 \
 	onetimeauth7 \
+	otp \
+	otp2 \
 	pwhash_argon2i \
 	pwhash_scrypt \
 	pwhash_scrypt_ll \
@@ -425,6 +435,12 @@ onetimeauth2_LDADD        = $(TESTS_LDADD)
 
 onetimeauth7_SOURCE       = cmptest.h onetimeauth7.c
 onetimeauth7_LDADD        = $(TESTS_LDADD)
+
+otp_SOURCE       	  = cmptest.h otp.c
+otp_LDADD        	  = $(TESTS_LDADD)
+
+otp2_SOURCE       	  = cmptest.h otp2.c
+otp2_LDADD        	  = $(TESTS_LDADD)
 
 pwhash_argon2i_SOURCE     = cmptest.h pwhash_argon2i.c
 pwhash_argon2i_LDADD      = $(TESTS_LDADD)
