@@ -63,12 +63,12 @@ small_order(const unsigned char p[32])
     size_t        i, j;
     unsigned char c;
 
-    for (i = 0U; i < sizeof blacklist / sizeof blacklist[0]; i++) {
-        c = 0U;
+    for (i = 0; i < sizeof blacklist / sizeof blacklist[0]; i++) {
+        c = 0;
         for (j = 0; j < 32; j++) {
             c |= p[j] ^ blacklist[i][j];
         }
-        if (c == 0U) {
+        if (c == 0) {
             return 1;
         }
     }
