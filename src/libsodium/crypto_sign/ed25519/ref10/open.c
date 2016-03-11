@@ -32,7 +32,7 @@ crypto_sign_check_S_lt_l(const unsigned char *S)
 }
 
 static int
-small_order(const unsigned char p[32])
+small_order(const unsigned char R[32])
 {
     CRYPTO_ALIGN(16) static const unsigned char blacklist[][32] = {
         /* 0 (order 4) */
@@ -66,7 +66,7 @@ small_order(const unsigned char p[32])
     for (i = 0; i < sizeof blacklist / sizeof blacklist[0]; i++) {
         c = 0;
         for (j = 0; j < 32; j++) {
-            c |= p[j] ^ blacklist[i][j];
+            c |= R[j] ^ blacklist[i][j];
         }
         if (c == 0) {
             return 1;
