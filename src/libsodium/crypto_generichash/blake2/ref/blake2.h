@@ -7,9 +7,12 @@
    and related and neighboring rights to this software to the public domain
    worldwide. This software is distributed without any warranty.
 
-   You should have received a copy of the CC0 Public Domain Dedication along with
-   this software. If not, see <http://creativecommons.org/publicdomain/zero/1.0/>.
-*/
+   All code is triple-licensed under the
+   [CC0](http://creativecommons.org/publicdomain/zero/1.0), the
+   [OpenSSL Licence](https://www.openssl.org/source/license.html), or
+   the [Apache Public License 2.0](http://www.apache.org/licenses/LICENSE-2.0),
+   at your choosing.
+ */
 
 #ifndef blake2_H
 #define blake2_H
