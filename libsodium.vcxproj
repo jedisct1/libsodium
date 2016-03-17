@@ -347,6 +347,7 @@
     <ClCompile Include="src\libsodium\crypto_core\salsa20\ref\core_salsa20.c" />
     <ClCompile Include="src\libsodium\crypto_generichash\blake2\generichash_blake2_api.c" />
     <ClCompile Include="src\libsodium\crypto_generichash\blake2\ref\blake2b-compress-ref.c" />
+    <ClCompile Include="src\libsodium\crypto_generichash\blake2\ref\blake2b-compress-avx2.c" />
     <ClCompile Include="src\libsodium\crypto_generichash\blake2\ref\blake2b-compress-sse41.c" />
     <ClCompile Include="src\libsodium\crypto_generichash\blake2\ref\blake2b-compress-ssse3.c" />
     <ClCompile Include="src\libsodium\crypto_generichash\blake2\ref\blake2b-ref.c" />

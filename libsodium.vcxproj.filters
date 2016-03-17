@@ -297,6 +297,9 @@
     <ClCompile Include="src\libsodium\crypto_generichash\blake2\ref\blake2b-compress-ref.c">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="src\libsodium\crypto_generichash\blake2\ref\blake2b-compress-avx2.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
     <ClCompile Include="src\libsodium\crypto_generichash\blake2\ref\blake2b-compress-sse41.c">
       <Filter>Source Files</Filter>
     </ClCompile>
