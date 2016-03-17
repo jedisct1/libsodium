@@ -208,7 +208,7 @@ int fill_segment_ssse3(const argon2_instance_t *instance,
         ref_block =
             instance->region->memory + instance->lane_length * ref_lane + ref_index;
         curr_block = instance->region->memory + curr_offset;
-        if (0 != position.pass) {
+        if (position.pass != 0) {
             fill_block_with_xor(state, (uint8_t *)ref_block->v, (uint8_t *)curr_block->v);
         } else {
             fill_block(state, (uint8_t *)ref_block->v, (uint8_t *)curr_block->v);

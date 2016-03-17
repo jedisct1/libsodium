@@ -215,7 +215,7 @@ int fill_segment_ref(const argon2_instance_t *instance,
         ref_block =
             instance->region->memory + instance->lane_length * ref_lane + ref_index;
         curr_block = instance->region->memory + curr_offset;
-        if (0 != position.pass) {
+        if (position.pass != 0) {
             fill_block_with_xor(instance->region->memory + prev_offset, ref_block, curr_block);
         } else {
             fill_block(instance->region->memory + prev_offset, ref_block, curr_block);
