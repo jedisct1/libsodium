@@ -63,6 +63,4 @@
 #define LOAD_MSG_11_3(b0, b1) b0 = _mm_set_epi64x(m0, m1); b1 = _mm_set_epi64x(m5, m11)
 #define LOAD_MSG_11_4(b0, b1) b0 = _mm_set_epi64x(m2, m12); b1 = _mm_set_epi64x(m3, m7)
 
-
 #endif
-

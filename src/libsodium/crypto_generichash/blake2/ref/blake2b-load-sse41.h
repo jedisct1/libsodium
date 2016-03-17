@@ -397,6 +397,4 @@ b0 = _mm_unpacklo_epi64(m6, m1); \
 b1 = _mm_unpackhi_epi64(m3, m1); \
 } while(0)
 
-
 #endif
-
