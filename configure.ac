@@ -357,6 +357,19 @@ AS_IF([test "x$EMSCRIPTEN" = "x"],[
   CFLAGS="$oldcflags"
 
   oldcflags="$CFLAGS"
+  AX_CHECK_COMPILE_FLAG([-mavx2], [CFLAGS="$CFLAGS -mavx2"])
+  AC_MSG_CHECKING(for AVX2 instructions set)
+  AC_COMPILE_IFELSE([AC_LANG_PROGRAM([[
+#pragma GCC target("avx2")
+#include <immintrin.h>
+]], [[ __m256i x = _mm256_abs_epi8(_mm256_setzero_si256()); ]])],
+    [AC_MSG_RESULT(yes)
+     AC_DEFINE([HAVE_AVX2INTRIN_H], [1], [AVX2 is available])
+     AX_CHECK_COMPILE_FLAG([-mavx2], [CFLAGS_AVX="-mavx2"])],
+    [AC_MSG_RESULT(no)])
+  CFLAGS="$oldcflags"
+
+  oldcflags="$CFLAGS"
   AX_CHECK_COMPILE_FLAG([-maes], [CFLAGS="$CFLAGS -maes"])
   AX_CHECK_COMPILE_FLAG([-mpclmul], [CFLAGS="$CFLAGS -mpclmul"])
   AC_MSG_CHECKING(for AESNI instructions set and PCLMULQDQ)

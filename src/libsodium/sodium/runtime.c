@@ -15,6 +15,7 @@ typedef struct CPUFeatures_ {
     int has_ssse3;
     int has_sse41;
     int has_avx;
+    int has_avx2;
     int has_pclmul;
     int has_aesni;
 } CPUFeatures;
@@ -26,6 +27,7 @@ static CPUFeatures _cpu_features;
 #define CPUIDECX_SSSE3   0x00000200
 #define CPUIDECX_SSE41   0x00080000
 #define CPUIDECX_AVX     0x10000000
+#define CPUIDECX_AVX2    0x00000020
 #define CPUIDECX_PCLMUL  0x00000002
 #define CPUIDECX_AESNI   0x02000000
 #define CPUIDECX_XSAVE   0x04000000
@@ -159,6 +161,14 @@ _sodium_runtime_intel_cpu_features(CPUFeatures * const cpu_features)
     }
 #endif
 
+    cpu_features->has_avx2 = 0;
+#if defined(HAVE_AVX2INTRIN_H) || \
+    (defined(_MSC_VER) && (defined(_M_X64) || defined(_M_AMD64) || defined(_M_IX86)))
+    if (cpu_features->has_avx) {
+        cpu_features->has_avx2 = ((cpu_info[2] & CPUIDECX_AVX2) != 0x0);
+    }
+#endif
+
 #if defined(HAVE_WMMINTRIN_H) || \
     (defined(_MSC_VER) && (defined(_M_X64) || defined(_M_AMD64) || defined(_M_IX86)))
     cpu_features->has_pclmul = ((cpu_info[2] & CPUIDECX_PCLMUL) != 0x0);
@@ -211,6 +221,11 @@ sodium_runtime_has_sse41(void) {
 int
 sodium_runtime_has_avx(void) {
     return _cpu_features.has_avx;
+}
+
+int
+sodium_runtime_has_avx2(void) {
+    return _cpu_features.has_avx2;
 }
 
 int
