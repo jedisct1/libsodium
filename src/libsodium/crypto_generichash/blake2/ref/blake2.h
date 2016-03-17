@@ -183,6 +183,7 @@ CRYPTO_ALIGN( 64 ) typedef struct blake2b_state_
   int blake2b_compress_ref( blake2b_state *S, const uint8_t block[BLAKE2B_BLOCKBYTES] );
   int blake2b_compress_ssse3( blake2b_state *S, const uint8_t block[BLAKE2B_BLOCKBYTES] );
   int blake2b_compress_sse41( blake2b_state *S, const uint8_t block[BLAKE2B_BLOCKBYTES] );
+  int blake2b_compress_avx2( blake2b_state *S, const uint8_t block[BLAKE2B_BLOCKBYTES] );
 
 #if defined(__cplusplus)
 }
