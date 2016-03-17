@@ -36,6 +36,7 @@ libsodium_la_SOURCES = \
 	crypto_generichash/blake2/ref/blake2b-compress-ref.c \
 	crypto_generichash/blake2/ref/blake2b-load-sse2.h \
 	crypto_generichash/blake2/ref/blake2b-load-sse41.h \
+	crypto_generichash/blake2/ref/blake2b-load-avx2.h \
 	crypto_generichash/blake2/ref/blake2b-ref.c \
 	crypto_generichash/blake2/ref/blake2b-round.h \
 	crypto_generichash/blake2/ref/generichash_blake2b.c \
@@ -216,8 +217,8 @@ endif
 SUBDIRS = \
 	include
 
-libsodium_la_LIBADD = libaesni.la libsse2.la libssse3.la libsse41.la
-noinst_LTLIBRARIES =  libaesni.la libsse2.la libssse3.la libsse41.la
+libsodium_la_LIBADD = libaesni.la libsse2.la libssse3.la libsse41.la libavx2.la
+noinst_LTLIBRARIES =  libaesni.la libsse2.la libssse3.la libsse41.la libavx2.la
 
 libaesni_la_LDFLAGS = $(libsodium_la_LDFLAGS)
 libaesni_la_CPPFLAGS = $(libsodium_la_CPPFLAGS) \
@@ -238,6 +239,7 @@ libssse3_la_CPPFLAGS = $(libsodium_la_CPPFLAGS) \
 	@CFLAGS_SSE2@ @CFLAGS_SSSE3@
 libssse3_la_SOURCES = \
 	crypto_generichash/blake2/ref/blake2b-compress-ssse3.c \
+	crypto_generichash/blake2/ref/blake2b-compress-ssse3.h \
 	crypto_pwhash/argon2/argon2-fill-block-ssse3.c \
 	crypto_pwhash/argon2/blamka-round-ssse3.h \
 	crypto_stream/chacha20/vec/stream_chacha20_vec.h \
@@ -247,4 +249,12 @@ libsse41_la_LDFLAGS = $(libsodium_la_LDFLAGS)
 libsse41_la_CPPFLAGS = $(libsodium_la_CPPFLAGS) \
 	@CFLAGS_SSE2@ @CFLAGS_SSSE3@ @CFLAGS_SSE41@
 libsse41_la_SOURCES = \
-	crypto_generichash/blake2/ref/blake2b-compress-sse41.c
+	crypto_generichash/blake2/ref/blake2b-compress-sse41.c \
+	crypto_generichash/blake2/ref/blake2b-compress-sse41.h
+
+libavx2_la_LDFLAGS = $(libsodium_la_LDFLAGS)
+libavx2_la_CPPFLAGS = $(libsodium_la_CPPFLAGS) \
+	@CFLAGS_SSE2@ @CFLAGS_SSSE3@ @CFLAGS_SSE41@ @CFLAGS_AVX@ @CFLAGS_AVX2@
+libavx2_la_SOURCES = \
+	crypto_generichash/blake2/ref/blake2b-compress-avx2.c \
+	crypto_generichash/blake2/ref/blake2b-compress-avx2.h
