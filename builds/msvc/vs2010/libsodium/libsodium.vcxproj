@@ -72,6 +72,7 @@
     <ClCompile Include="..\..\..\..\src\libsodium\crypto_core\curve25519\ref10\curve25519_ref10.c" />
     <ClCompile Include="..\..\..\..\src\libsodium\crypto_core\hchacha20\core_hchacha20.c" />
     <ClCompile Include="..\..\..\..\src\libsodium\crypto_generichash\blake2\ref\blake2b-compress-ref.c" />
+    <ClCompile Include="..\..\..\..\src\libsodium\crypto_generichash\blake2\ref\blake2b-compress-avx2.c" />
     <ClCompile Include="..\..\..\..\src\libsodium\crypto_generichash\blake2\ref\blake2b-compress-sse41.c" />
     <ClCompile Include="..\..\..\..\src\libsodium\crypto_generichash\blake2\ref\blake2b-compress-ssse3.c" />
     <ClCompile Include="..\..\..\..\src\libsodium\crypto_onetimeauth\poly1305\donna\poly1305_donna.c" />
@@ -94,7 +95,7 @@
     <ClInclude Include="..\..\..\..\src\libsodium\crypto_core\curve25519\ref10\curve25519_ref10.h" />
     <ClInclude Include="..\..\..\..\src\libsodium\crypto_generichash\blake2\ref\blake2b-load-sse2.h" />
     <ClInclude Include="..\..\..\..\src\libsodium\crypto_generichash\blake2\ref\blake2b-load-sse41.h" />
-    <ClInclude Include="..\..\..\..\src\libsodium\crypto_generichash\blake2\ref\blake2b-round.h" />
+    <ClInclude Include="..\..\..\..\src\libsodium\crypto_generichash\blake2\ref\blake2b-load-avx2.h" />
     <ClInclude Include="..\..\..\..\src\libsodium\crypto_onetimeauth\poly1305\donna\poly1305_donna.h" />
     <ClInclude Include="..\..\..\..\src\libsodium\crypto_onetimeauth\poly1305\donna\poly1305_donna32.h" />
     <ClInclude Include="..\..\..\..\src\libsodium\crypto_onetimeauth\poly1305\donna\poly1305_donna64.h" />
