@@ -212,9 +212,9 @@ uint32_t index_alpha(const argon2_instance_t *instance,
     uint64_t relative_position;
     uint32_t start_position, absolute_position;
 
-    if (0 == position->pass) {
+    if (position->pass == 0) {
         /* First pass */
-        if (0 == position->slice) {
+        if (position->slice == 0) {
             /* First slice */
             reference_area_size =
                 position->index - 1; /* all but the previous */
@@ -253,7 +253,7 @@ uint32_t index_alpha(const argon2_instance_t *instance,
     /* 1.2.5 Computing starting position */
     start_position = 0;
 
-    if (0 != position->pass) {
+    if (position->pass != 0) {
         start_position = (position->slice == ARGON2_SYNC_POINTS - 1)
                              ? 0
                              : (position->slice + 1) * instance->segment_length;
