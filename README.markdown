@@ -30,7 +30,8 @@ in PDF, MOBI and ePUB formats.
 
 ## Integrity Checking
 
-The integrity checking instructions (including the signing key for libsodium) are available in [this section of the documentation](https://download.libsodium.org/doc/installation/index.html#integrity-checking).
+The integrity checking instructions (including the signing key for libsodium)
+are available in the ["installation" section of the documentation](https://download.libsodium.org/doc/installation/index.html#integrity-checking).
 
 ## Community
 
