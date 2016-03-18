@@ -36,6 +36,10 @@ extern "C"
 # endif
 BOOLEAN NTAPI RtlGenRandom(PVOID RandomBuffer, ULONG RandomBufferLength);
 # pragma comment(lib, "advapi32.lib")
+# ifdef __BORLANDC__
+#  define _ftime ftime
+#  define _timeb timeb
+# endif
 #endif
 
 #define SALSA20_RANDOM_BLOCK_SIZE crypto_core_salsa20_OUTPUTBYTES
@@ -77,21 +81,10 @@ sodium_hrtime(void)
 
 #ifdef _WIN32
     {
-#ifdef __BORLANDC__
-	struct timeb tb;
-#else
         struct _timeb tb;
-#endif
-
 # pragma warning(push)
 # pragma warning(disable: 4996)
-
-#ifdef __BORLANDC__
-	ftime(&tb);
-#else
         _ftime(&tb);
-#endif
-
 # pragma warning(pop)
         ts = ((uint64_t) tb.time) * 1000000U + ((uint64_t) tb.millitm) * 1000U;
     }
