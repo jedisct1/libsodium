@@ -156,6 +156,7 @@ int blake2b_init_param( blake2b_state *S, const blake2b_param *P )
   size_t i;
   const uint8_t *p;
 
+  (void) sizeof(int[sizeof *P == 64 ? 1 : -1]);
   blake2b_init0( S );
   p = ( const uint8_t * )( P );
 
