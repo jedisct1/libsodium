@@ -16,7 +16,7 @@
 #include <stdint.h>
 #include <stdlib.h>
 #include <string.h>
-#ifndef _MSC_VER
+#if !defined(_MSC_VER) && !defined(__BORLANDC__)
 # include <unistd.h>
 #endif
 
@@ -77,10 +77,21 @@ sodium_hrtime(void)
 
 #ifdef _WIN32
     {
+#ifdef __BORLANDC__
+	struct timeb tb;
+#else
         struct _timeb tb;
+#endif
+
 # pragma warning(push)
 # pragma warning(disable: 4996)
+
+#ifdef __BORLANDC__
+	ftime(&tb);
+#else
         _ftime(&tb);
+#endif
+
 # pragma warning(pop)
         ts = ((uint64_t) tb.time) * 1000000U + ((uint64_t) tb.millitm) * 1000U;
     }
