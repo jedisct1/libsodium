@@ -12,7 +12,7 @@ static unsigned char nonce[24]
         0xcd, 0x62, 0xbd, 0xa8, 0x75, 0xfc, 0x73, 0xd6,
         0x82, 0x19, 0xe0, 0x03, 0x6b, 0x7a, 0x0b, 0x37 };
 
-// API requires first 32 bytes to be 0
+/* API requires first 32 bytes to be 0 */
 static unsigned char m[163]
     = { 0,    0,    0,    0,    0,    0,    0,    0,    0,    0,    0,    0,
         0,    0,    0,    0,    0,    0,    0,    0,    0,    0,    0,    0,

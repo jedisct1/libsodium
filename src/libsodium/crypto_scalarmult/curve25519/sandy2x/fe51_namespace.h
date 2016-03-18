@@ -12,5 +12,5 @@
 
 #define  fe51_invert       crypto_scalarmult_curve25519_sandy2x_fe51_invert
 
-#endif //ifndef fe51_namespace_H
+#endif /* ifndef fe51_namespace_H */
 

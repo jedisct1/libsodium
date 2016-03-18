@@ -14,5 +14,5 @@ extern void ladder(fe *, const unsigned char *);
 }
 #endif
 
-#endif //ifndef ladder_H
+#endif /* ifndef ladder_H */
 

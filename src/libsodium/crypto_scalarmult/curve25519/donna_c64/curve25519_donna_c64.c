@@ -34,8 +34,7 @@
 typedef uint8_t u8;
 typedef uint64_t limb;
 typedef limb felem[5];
-// This is a special gcc mode for 128-bit integers. It's implemented on 64-bit
-// platforms only as far as I know.
+/* Special gcc mode for 128-bit integers */
 typedef unsigned uint128_t __attribute__ ((mode(TI)));
 
 /* Sum two numbers: output += in */
@@ -315,7 +314,7 @@ fmonty(limb *x2, limb *z2, /* output 2Q */
 
   memcpy(origx, x, 5 * sizeof(limb));
   fsum(x, z);
-  fdifference_backwards(z, origx);  // does x - z
+  fdifference_backwards(z, origx); /* does x - z */
 
   memcpy(origxprime, xprime, sizeof(limb) * 5);
   fsum(xprime, zprime);
@@ -332,19 +331,19 @@ fmonty(limb *x2, limb *z2, /* output 2Q */
   fsquare_times(xx, x, 1);
   fsquare_times(zz, z, 1);
   fmul(x2, xx, zz);
-  fdifference_backwards(zz, xx);  // does zz = xx - zz
+  fdifference_backwards(zz, xx); /* does zz = xx - zz */
   fscalar_product(zzz, zz, 121665);
   fsum(zzz, xx);
   fmul(z2, zz, zzz);
 }
 
-// -----------------------------------------------------------------------------
-// Maybe swap the contents of two limb arrays (@a and @b), each @len elements
-// long. Perform the swap iff @swap is non-zero.
-//
-// This function performs the swap without leaking any side-channel
-// information.
-// -----------------------------------------------------------------------------
+/* -----------------------------------------------------------------------------
+   Maybe swap the contents of two limb arrays (@a and @b), each @len elements
+   long. Perform the swap iff @swap is non-zero.
+
+   This function performs the swap without leaking any side-channel
+   information.
+   ----------------------------------------------------------------------------- */
 static void
 swap_conditional(limb a[5], limb b[5], limb iswap) {
   unsigned i;
@@ -411,17 +410,17 @@ cmult(limb *resultx, limb *resultz, const u8 *n, const limb *q) {
 }
 
 
-// -----------------------------------------------------------------------------
-// Shamelessly copied from djb's code, tightened a little
-// -----------------------------------------------------------------------------
+/* -----------------------------------------------------------------------------
+   Shamelessly copied from djb's code, tightened a little
+   ----------------------------------------------------------------------------- */
 static void
 crecip(felem out, const felem z) {
   felem a,t0,b,c;
 
-  /* 2 */ fsquare_times(a, z, 1); // a = 2
+  /* 2 */ fsquare_times(a, z, 1); /* a = 2 */
   /* 8 */ fsquare_times(t0, a, 2);
-  /* 9 */ fmul(b, t0, z); // b = 9
-  /* 11 */ fmul(a, b, a); // a = 11
+  /* 9 */ fmul(b, t0, z); /* b = 9 */
+  /* 11 */ fmul(a, b, a); /* a = 11 */
   /* 22 */ fsquare_times(t0, a, 1);
   /* 2^5 - 2^0 = 31 */ fmul(b, t0, b);
   /* 2^10 - 2^5 */ fsquare_times(t0, b, 5);

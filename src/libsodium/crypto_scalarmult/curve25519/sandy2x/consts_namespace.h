@@ -16,5 +16,5 @@
 #define subc2 crypto_scalarmult_curve25519_sandy2x_subc2
 #define REDMASK51 crypto_scalarmult_curve25519_sandy2x_REDMASK51
 
-#endif //ifndef consts_namespace_H
+#endif /* ifndef consts_namespace_H */
 

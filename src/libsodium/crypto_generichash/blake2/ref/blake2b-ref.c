@@ -84,7 +84,7 @@ static inline int blake2b_increment_counter( blake2b_state *S, const uint64_t in
   return 0;
 }
 
-// Parameter-related functions
+/* Parameter-related functions */
 #if 0
 static inline int blake2b_param_set_digest_length( blake2b_param *P, const uint8_t digest_length )
 {
@@ -298,19 +298,19 @@ int blake2b_update( blake2b_state *S, const uint8_t *in, uint64_t inlen )
 
     if( inlen > fill )
     {
-      memcpy( S->buf + left, in, fill ); // Fill buffer
+      memcpy( S->buf + left, in, fill ); /* Fill buffer */
       S->buflen += fill;
       blake2b_increment_counter( S, BLAKE2B_BLOCKBYTES );
-      blake2b_compress( S, S->buf ); // Compress
-      memcpy( S->buf, S->buf + BLAKE2B_BLOCKBYTES, BLAKE2B_BLOCKBYTES ); // Shift buffer left
+      blake2b_compress( S, S->buf ); /* Compress */
+      memcpy( S->buf, S->buf + BLAKE2B_BLOCKBYTES, BLAKE2B_BLOCKBYTES ); /* Shift buffer left */
       S->buflen -= BLAKE2B_BLOCKBYTES;
       in += fill;
       inlen -= fill;
     }
-    else // inlen <= fill
+    else /* inlen <= fill */
     {
       memcpy( S->buf + left, in, inlen );
-      S->buflen += inlen; // Be lazy, do not compress
+      S->buflen += inlen; /* Be lazy, do not compress */
       in += inlen;
       inlen -= inlen;
     }
