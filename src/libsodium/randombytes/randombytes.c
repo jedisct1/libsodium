@@ -17,6 +17,10 @@
 # include "randombytes_nativeclient.h"
 #endif
 
+#if defined(random)
+#undef random
+#endif
+
 #ifndef __EMSCRIPTEN__
 #ifdef __native_client__
 static const randombytes_implementation *implementation =
