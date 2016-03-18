@@ -22,6 +22,10 @@
 
 #include <immintrin.h>
 
+#ifndef ENOSYS
+# define ENOSYS ENXIO
+#endif
+
 #if defined(__INTEL_COMPILER) || defined(_bswap64)
 #elif defined(_MSC_VER)
 # define _bswap64(a) _byteswap_uint64(a)

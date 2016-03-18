@@ -23,6 +23,10 @@
 # include <unistd.h>
 #endif
 
+#ifndef ENOSYS
+# define ENOSYS ENXIO
+#endif
+
 #if defined(_WIN32) && (!defined(WINAPI_FAMILY) || WINAPI_FAMILY == WINAPI_FAMILY_DESKTOP_APP)
 # define WINAPI_DESKTOP
 #endif
