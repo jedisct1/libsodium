@@ -34,18 +34,14 @@
 #define blake2b_salt_personal            crypto_generichash_blake2b__blake2b_salt_personal
 #define blake2b_pick_best_implementation crypto_generichash_blake2b__pick_best_implementation
 
-#if defined(__cplusplus)
-extern "C" {
-#endif
-
-  enum blake2b_constant
-  {
-    BLAKE2B_BLOCKBYTES = 128,
-    BLAKE2B_OUTBYTES   = 64,
-    BLAKE2B_KEYBYTES   = 64,
-    BLAKE2B_SALTBYTES  = 16,
-    BLAKE2B_PERSONALBYTES = 16
-  };
+enum blake2b_constant
+{
+  BLAKE2B_BLOCKBYTES = 128,
+  BLAKE2B_OUTBYTES   = 64,
+  BLAKE2B_KEYBYTES   = 64,
+  BLAKE2B_SALTBYTES  = 16,
+  BLAKE2B_PERSONALBYTES = 16
+};
 
 #if defined(__IBMC__) || defined(__SUNPRO_C) || defined(__SUNPRO_CC)
 # pragma pack(1)
@@ -53,42 +49,22 @@ extern "C" {
 # pragma pack(push, 1)
 #endif
 
-  typedef struct blake2b_param_
-  {
-    uint8_t  digest_length;  /*  1 */
-    uint8_t  key_length;     /*  2 */
-    uint8_t  fanout;         /*  3 */
-    uint8_t  depth;          /*  4 */
-    uint8_t  leaf_length[4]; /*  8 */
-    uint8_t  node_offset[8]; /* 16 */
-    uint8_t  node_depth;     /* 17 */
-    uint8_t  inner_length;   /* 18 */
-    uint8_t  reserved[14];   /* 32 */
-    uint8_t  salt[BLAKE2B_SALTBYTES]; /* 48 */
-    uint8_t  personal[BLAKE2B_PERSONALBYTES];  /* 64 */
-  } blake2b_param;
+typedef struct blake2b_param_
+{
+  uint8_t  digest_length;  /*  1 */
+  uint8_t  key_length;     /*  2 */
+  uint8_t  fanout;         /*  3 */
+  uint8_t  depth;          /*  4 */
+  uint8_t  leaf_length[4]; /*  8 */
+  uint8_t  node_offset[8]; /* 16 */
+  uint8_t  node_depth;     /* 17 */
+  uint8_t  inner_length;   /* 18 */
+  uint8_t  reserved[14];   /* 32 */
+  uint8_t  salt[BLAKE2B_SALTBYTES]; /* 48 */
+  uint8_t  personal[BLAKE2B_PERSONALBYTES];  /* 64 */
+} blake2b_param;
 
-#ifndef DEFINE_BLAKE2B_STATE
 typedef crypto_generichash_blake2b_state blake2b_state;
-#else
-CRYPTO_ALIGN( 64 ) typedef struct blake2b_state_
-  {
-    uint64_t h[8];
-    uint64_t t[2];
-    uint64_t f[2];
-    uint8_t  buf[2 * BLAKE2B_BLOCKBYTES];
-    size_t   buflen;
-    uint8_t  last_node;
-  } blake2b_state;
-#endif
-
-  typedef struct blake2bp_state_
-  {
-    blake2b_state S[4][1];
-    blake2b_state R[1];
-    uint8_t buf[4 * BLAKE2B_BLOCKBYTES];
-    size_t  buflen;
-  } blake2bp_state;
 
 #if defined(__IBMC__) || defined(__SUNPRO_C) || defined(__SUNPRO_CC)
 # pragma pack()
@@ -96,40 +72,26 @@ CRYPTO_ALIGN( 64 ) typedef struct blake2b_state_
 # pragma pack(pop)
 #endif
 
-  /* Streaming API */
-  int blake2b_init( blake2b_state *S, const uint8_t outlen );
-  int blake2b_init_salt_personal( blake2b_state *S, const uint8_t outlen,
-                                  const void *personal, const void *salt );
-  int blake2b_init_key( blake2b_state *S, const uint8_t outlen, const void *key, const uint8_t keylen );
-  int blake2b_init_key_salt_personal( blake2b_state *S, const uint8_t outlen, const void *key, const uint8_t keylen,
-                                      const void *salt, const void *personal );
-  int blake2b_init_param( blake2b_state *S, const blake2b_param *P );
-  int blake2b_update( blake2b_state *S, const uint8_t *in, uint64_t inlen );
-  int blake2b_final( blake2b_state *S, uint8_t *out, uint8_t outlen );
+/* Streaming API */
+int blake2b_init( blake2b_state *S, const uint8_t outlen );
+int blake2b_init_salt_personal( blake2b_state *S, const uint8_t outlen,
+                                const void *personal, const void *salt );
+int blake2b_init_key( blake2b_state *S, const uint8_t outlen, const void *key, const uint8_t keylen );
+int blake2b_init_key_salt_personal( blake2b_state *S, const uint8_t outlen, const void *key, const uint8_t keylen,
+                                    const void *salt, const void *personal );
+int blake2b_init_param( blake2b_state *S, const blake2b_param *P );
+int blake2b_update( blake2b_state *S, const uint8_t *in, uint64_t inlen );
+int blake2b_final( blake2b_state *S, uint8_t *out, uint8_t outlen );
 
-  int blake2bp_init( blake2bp_state *S, const uint8_t outlen );
-  int blake2bp_init_key( blake2bp_state *S, const uint8_t outlen, const void *key, const uint8_t keylen );
-  int blake2bp_update( blake2bp_state *S, const uint8_t *in, uint64_t inlen );
-  int blake2bp_final( blake2bp_state *S, uint8_t *out, uint8_t outlen );
+/* Simple API */
+int blake2b( uint8_t *out, const void *in, const void *key, const uint8_t outlen, const uint64_t inlen, uint8_t keylen );
+int blake2b_salt_personal( uint8_t *out, const void *in, const void *key, const uint8_t outlen, const uint64_t inlen, uint8_t keylen, const void *salt, const void *personal );
 
-  /* Simple API */
-  int blake2b( uint8_t *out, const void *in, const void *key, const uint8_t outlen, const uint64_t inlen, uint8_t keylen );
-  int blake2b_salt_personal( uint8_t *out, const void *in, const void *key, const uint8_t outlen, const uint64_t inlen, uint8_t keylen, const void *salt, const void *personal );
-
-  static inline int blake2( uint8_t *out, const void *in, const void *key, const uint8_t outlen, const uint64_t inlen, uint8_t keylen )
-  {
-    return blake2b( out, in, key, outlen, inlen, keylen );
-  }
-
-  typedef int ( *blake2b_compress_fn )( blake2b_state *S, const uint8_t block[BLAKE2B_BLOCKBYTES] );
-  int blake2b_pick_best_implementation(void);
-  int blake2b_compress_ref( blake2b_state *S, const uint8_t block[BLAKE2B_BLOCKBYTES] );
-  int blake2b_compress_ssse3( blake2b_state *S, const uint8_t block[BLAKE2B_BLOCKBYTES] );
-  int blake2b_compress_sse41( blake2b_state *S, const uint8_t block[BLAKE2B_BLOCKBYTES] );
-  int blake2b_compress_avx2( blake2b_state *S, const uint8_t block[BLAKE2B_BLOCKBYTES] );
-
-#if defined(__cplusplus)
-}
-#endif
+typedef int ( *blake2b_compress_fn )( blake2b_state *S, const uint8_t block[BLAKE2B_BLOCKBYTES] );
+int blake2b_pick_best_implementation(void);
+int blake2b_compress_ref( blake2b_state *S, const uint8_t block[BLAKE2B_BLOCKBYTES] );
+int blake2b_compress_ssse3( blake2b_state *S, const uint8_t block[BLAKE2B_BLOCKBYTES] );
+int blake2b_compress_sse41( blake2b_state *S, const uint8_t block[BLAKE2B_BLOCKBYTES] );
+int blake2b_compress_avx2( blake2b_state *S, const uint8_t block[BLAKE2B_BLOCKBYTES] );
 
 #endif
