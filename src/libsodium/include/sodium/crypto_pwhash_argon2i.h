@@ -28,7 +28,7 @@ const char *crypto_pwhash_argon2i_strprefix(void);
 SODIUM_EXPORT
 size_t crypto_pwhash_argon2i_opslimit_interactive(void);
 
-#define crypto_pwhash_argon2i_MEMLIMIT_INTERACTIVE 16777216ULL
+#define crypto_pwhash_argon2i_MEMLIMIT_INTERACTIVE 33554432ULL
 SODIUM_EXPORT
 size_t crypto_pwhash_argon2i_memlimit_interactive(void);
 
