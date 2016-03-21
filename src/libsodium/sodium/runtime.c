@@ -23,15 +23,17 @@ typedef struct CPUFeatures_ {
 static CPUFeatures _cpu_features;
 
 #define CPUID_SSE2       0x04000000
+
 #define CPUIDECX_SSE3    0x00000001
 #define CPUIDECX_SSSE3   0x00000200
 #define CPUIDECX_SSE41   0x00080000
 #define CPUIDECX_AVX     0x10000000
-#define CPUIDECX_AVX2    0x00000020
 #define CPUIDECX_PCLMUL  0x00000002
 #define CPUIDECX_AESNI   0x02000000
 #define CPUIDECX_XSAVE   0x04000000
 #define CPUIDECX_OSXSAVE 0x08000000
+
+#define CPUIDEBX_AVX2    0x00000020
 
 #define XCR0_SSE         0x00000002
 #define XCR0_AVX         0x00000004
@@ -165,7 +167,7 @@ _sodium_runtime_intel_cpu_features(CPUFeatures * const cpu_features)
 #if defined(HAVE_AVX2INTRIN_H) || \
     (defined(_MSC_VER) && (defined(_M_X64) || defined(_M_AMD64) || defined(_M_IX86)))
     if (cpu_features->has_avx) {
-        cpu_features->has_avx2 = ((cpu_info[2] & CPUIDECX_AVX2) != 0x0);
+        cpu_features->has_avx2 = ((cpu_info[1] & CPUIDEBX_AVX2) != 0x0);
     }
 #endif
 
