@@ -11,6 +11,8 @@
 extern "C" {
 #endif
 
+/* -- IETF ChaCha20-Poly1305 construction with a 96-bit nonce and a 32-bit internal counter -- */
+
 #define crypto_aead_chacha20poly1305_ietf_KEYBYTES 32U
 SODIUM_EXPORT
 size_t crypto_aead_chacha20poly1305_ietf_keybytes(void);
@@ -51,6 +53,31 @@ int crypto_aead_chacha20poly1305_ietf_decrypt(unsigned char *m,
                                               const unsigned char *k)
             __attribute__ ((warn_unused_result));
 
+int crypto_aead_chacha20poly1305_ietf_encrypt_detached(unsigned char *c,
+                                                       unsigned char *mac,
+                                                       unsigned long long *maclen_p,
+                                                       const unsigned char *m,
+                                                       unsigned long long mlen,
+                                                       const unsigned char *ad,
+                                                       unsigned long long adlen,
+                                                       const unsigned char *nsec,
+                                                       const unsigned char *npub,
+                                                       const unsigned char *k);
+
+int crypto_aead_chacha20poly1305_ietf_decrypt_detached(unsigned char *m,
+                                                       unsigned long long *mlen_p,
+                                                       unsigned char *nsec,
+                                                       const unsigned char *c,
+                                                       unsigned long long clen,
+                                                       const unsigned char *mac,
+                                                       const unsigned char *ad,
+                                                       unsigned long long adlen,
+                                                       const unsigned char *npub,
+                                                       const unsigned char *k)
+        __attribute__ ((warn_unused_result));
+
+/* -- Original ChaCha20-Poly1305 construction with a 64-bit nonce and a 64-bit internal counter -- */
+
 #define crypto_aead_chacha20poly1305_KEYBYTES 32U
 SODIUM_EXPORT
 size_t crypto_aead_chacha20poly1305_keybytes(void);
@@ -89,6 +116,29 @@ int crypto_aead_chacha20poly1305_decrypt(unsigned char *m,
                                          const unsigned char *npub,
                                          const unsigned char *k)
             __attribute__ ((warn_unused_result));
+
+int crypto_aead_chacha20poly1305_encrypt_detached(unsigned char *c,
+                                                  unsigned char *mac,
+                                                  unsigned long long *maclen_p,
+                                                  const unsigned char *m,
+                                                  unsigned long long mlen,
+                                                  const unsigned char *ad,
+                                                  unsigned long long adlen,
+                                                  const unsigned char *nsec,
+                                                  const unsigned char *npub,
+                                                  const unsigned char *k);
+
+int crypto_aead_chacha20poly1305_decrypt_detached(unsigned char *m,
+                                                  unsigned long long *mlen_p,
+                                                  unsigned char *nsec,
+                                                  const unsigned char *c,
+                                                  unsigned long long clen,
+                                                  const unsigned char *mac,
+                                                  const unsigned char *ad,
+                                                  unsigned long long adlen,
+                                                  const unsigned char *npub,
+                                                  const unsigned char *k)
+        __attribute__ ((warn_unused_result));
 
 /* Aliases */
 
