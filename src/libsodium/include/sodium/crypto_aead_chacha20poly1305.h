@@ -53,6 +53,7 @@ int crypto_aead_chacha20poly1305_ietf_decrypt(unsigned char *m,
                                               const unsigned char *k)
             __attribute__ ((warn_unused_result));
 
+SODIUM_EXPORT
 int crypto_aead_chacha20poly1305_ietf_encrypt_detached(unsigned char *c,
                                                        unsigned char *mac,
                                                        unsigned long long *maclen_p,
@@ -64,6 +65,7 @@ int crypto_aead_chacha20poly1305_ietf_encrypt_detached(unsigned char *c,
                                                        const unsigned char *npub,
                                                        const unsigned char *k);
 
+SODIUM_EXPORT
 int crypto_aead_chacha20poly1305_ietf_decrypt_detached(unsigned char *m,
                                                        unsigned long long *mlen_p,
                                                        unsigned char *nsec,
@@ -117,6 +119,7 @@ int crypto_aead_chacha20poly1305_decrypt(unsigned char *m,
                                          const unsigned char *k)
             __attribute__ ((warn_unused_result));
 
+SODIUM_EXPORT
 int crypto_aead_chacha20poly1305_encrypt_detached(unsigned char *c,
                                                   unsigned char *mac,
                                                   unsigned long long *maclen_p,
@@ -128,6 +131,7 @@ int crypto_aead_chacha20poly1305_encrypt_detached(unsigned char *c,
                                                   const unsigned char *npub,
                                                   const unsigned char *k);
 
+SODIUM_EXPORT
 int crypto_aead_chacha20poly1305_decrypt_detached(unsigned char *m,
                                                   unsigned long long *mlen_p,
                                                   unsigned char *nsec,
