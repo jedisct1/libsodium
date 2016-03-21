@@ -22,21 +22,21 @@ typedef struct CPUFeatures_ {
 
 static CPUFeatures _cpu_features;
 
-#define CPUID_SSE2       0x04000000
+#define CPUID_EBX_AVX2    0x00000020
 
-#define CPUIDECX_SSE3    0x00000001
-#define CPUIDECX_SSSE3   0x00000200
-#define CPUIDECX_SSE41   0x00080000
-#define CPUIDECX_AVX     0x10000000
-#define CPUIDECX_PCLMUL  0x00000002
-#define CPUIDECX_AESNI   0x02000000
-#define CPUIDECX_XSAVE   0x04000000
-#define CPUIDECX_OSXSAVE 0x08000000
+#define CPUID_ECX_SSE3    0x00000001
+#define CPUID_ECX_PCLMUL  0x00000002
+#define CPUID_ECX_SSSE3   0x00000200
+#define CPUID_ECX_SSE41   0x00080000
+#define CPUID_ECX_AESNI   0x02000000
+#define CPUID_ECX_XSAVE   0x04000000
+#define CPUID_ECX_OSXSAVE 0x08000000
+#define CPUID_ECX_AVX     0x10000000
 
-#define CPUIDEBX_AVX2    0x00000020
+#define CPUID_EDX_SSE2    0x04000000
 
-#define XCR0_SSE         0x00000002
-#define XCR0_AVX         0x00000004
+#define XCR0_SSE          0x00000002
+#define XCR0_AVX          0x00000004
 
 static int
 _sodium_runtime_arm_cpu_features(CPUFeatures * const cpu_features)
@@ -115,28 +115,28 @@ _sodium_runtime_intel_cpu_features(CPUFeatures * const cpu_features)
     _cpuid(cpu_info, 0x00000001);
 #if defined(HAVE_EMMINTRIN_H) || \
     (defined(_MSC_VER) && (defined(_M_X64) || defined(_M_AMD64) || defined(_M_IX86)))
-    cpu_features->has_sse2 = ((cpu_info[3] & CPUID_SSE2) != 0x0);
+    cpu_features->has_sse2 = ((cpu_info[3] & CPUID_EDX_SSE2) != 0x0);
 #else
     cpu_features->has_sse2 = 0;
 #endif
 
 #if defined(HAVE_PMMINTRIN_H) || \
     (defined(_MSC_VER) && (defined(_M_X64) || defined(_M_AMD64) || defined(_M_IX86)))
-    cpu_features->has_sse3 = ((cpu_info[2] & CPUIDECX_SSE3) != 0x0);
+    cpu_features->has_sse3 = ((cpu_info[2] & CPUID_ECX_SSE3) != 0x0);
 #else
     cpu_features->has_sse3 = 0;
 #endif
 
 #if defined(HAVE_TMMINTRIN_H) || \
     (defined(_MSC_VER) && (defined(_M_X64) || defined(_M_AMD64) || defined(_M_IX86)))
-    cpu_features->has_ssse3 = ((cpu_info[2] & CPUIDECX_SSSE3) != 0x0);
+    cpu_features->has_ssse3 = ((cpu_info[2] & CPUID_ECX_SSSE3) != 0x0);
 #else
     cpu_features->has_ssse3 = 0;
 #endif
 
 #if defined(HAVE_SMMINTRIN_H) || \
     (defined(_MSC_VER) && (defined(_M_X64) || defined(_M_AMD64) || defined(_M_IX86)))
-    cpu_features->has_sse41 = ((cpu_info[2] & CPUIDECX_SSE41) != 0x0);
+    cpu_features->has_sse41 = ((cpu_info[2] & CPUID_ECX_SSE41) != 0x0);
 #else
     cpu_features->has_sse41 = 0;
 #endif
@@ -144,8 +144,8 @@ _sodium_runtime_intel_cpu_features(CPUFeatures * const cpu_features)
     cpu_features->has_avx = 0;
 #if defined(HAVE_AVXINTRIN_H) || \
     (defined(_MSC_VER) && (defined(_M_X64) || defined(_M_AMD64) || defined(_M_IX86)))
-    if ((cpu_info[2] & (CPUIDECX_AVX | CPUIDECX_XSAVE | CPUIDECX_OSXSAVE))
-        == (CPUIDECX_AVX | CPUIDECX_XSAVE | CPUIDECX_OSXSAVE)) {
+    if ((cpu_info[2] & (CPUID_ECX_AVX | CPUID_ECX_XSAVE | CPUID_ECX_OSXSAVE))
+        == (CPUID_ECX_AVX | CPUID_ECX_XSAVE | CPUID_ECX_OSXSAVE)) {
         uint32_t xcr0 = 0U;
 # ifdef MSC_VER
         __asm {
@@ -167,14 +167,14 @@ _sodium_runtime_intel_cpu_features(CPUFeatures * const cpu_features)
 #if defined(HAVE_AVX2INTRIN_H) || \
     (defined(_MSC_VER) && (defined(_M_X64) || defined(_M_AMD64) || defined(_M_IX86)))
     if (cpu_features->has_avx) {
-        cpu_features->has_avx2 = ((cpu_info[1] & CPUIDEBX_AVX2) != 0x0);
+        cpu_features->has_avx2 = ((cpu_info[1] & CPUID_EBX_AVX2) != 0x0);
     }
 #endif
 
 #if defined(HAVE_WMMINTRIN_H) || \
     (defined(_MSC_VER) && (defined(_M_X64) || defined(_M_AMD64) || defined(_M_IX86)))
-    cpu_features->has_pclmul = ((cpu_info[2] & CPUIDECX_PCLMUL) != 0x0);
-    cpu_features->has_aesni = ((cpu_info[2] & CPUIDECX_AESNI) != 0x0);
+    cpu_features->has_pclmul = ((cpu_info[2] & CPUID_ECX_PCLMUL) != 0x0);
+    cpu_features->has_aesni = ((cpu_info[2] & CPUID_ECX_AESNI) != 0x0);
 #else
     cpu_features->has_pclmul = 0;
     cpu_features->has_aesni = 0;
