@@ -96,7 +96,7 @@ test/default/hash3
 test/default/onetimeauth
 test/default/onetimeauth2
 test/default/onetimeauth7
-test/default/pwhash_argon2i
+test/default/pwhash
 test/default/pwhash_scrypt
 test/default/pwhash_scrypt_ll
 test/default/randombytes
