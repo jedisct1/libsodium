@@ -83,3 +83,8 @@ crypto_pwhash_str_verify(const char str[crypto_pwhash_STRBYTES],
 {
     return crypto_pwhash_argon2i_str_verify(str, passwd, passwdlen);
 }
+
+const char *
+crypto_pwhash_primitive(void) {
+    return crypto_pwhash_PRIMITIVE;
+}

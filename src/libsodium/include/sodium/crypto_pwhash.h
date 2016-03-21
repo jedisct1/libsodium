@@ -71,6 +71,11 @@ int crypto_pwhash_str_verify(const char str[crypto_pwhash_STRBYTES],
                              unsigned long long passwdlen)
             __attribute__ ((warn_unused_result));
 
+#define crypto_pwhash_PRIMITIVE "argon2i"
+SODIUM_EXPORT
+const char *crypto_pwhash_primitive(void)
+            __attribute__ ((warn_unused_result));
+
 #ifdef __cplusplus
 }
 #endif

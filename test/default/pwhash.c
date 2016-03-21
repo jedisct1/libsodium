@@ -242,6 +242,7 @@ int main(void)
     assert(crypto_pwhash_memlimit_moderate() > 0U);
     assert(crypto_pwhash_opslimit_sensitive() > 0U);
     assert(crypto_pwhash_memlimit_sensitive() > 0U);
+    assert(strcmp(crypto_pwhash_primitive(), "argon2i") == 0);
 
     sodium_free(salt);
     sodium_free(str_out);
