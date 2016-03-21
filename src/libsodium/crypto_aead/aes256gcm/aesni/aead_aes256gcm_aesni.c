@@ -642,7 +642,7 @@ crypto_aead_aes256gcm_encrypt_afternm(unsigned char *c, unsigned long long *clen
                                                              ad, adlen,
                                                              nsec, npub, ctx_);
     if (clen_p != NULL) {
-        *clen_p = mlen + 16;
+        *clen_p = mlen + crypto_aead_aes256gcm_ABYTES;
     }
     return ret;
 }
@@ -817,8 +817,8 @@ crypto_aead_aes256gcm_decrypt_afternm(unsigned char *m, unsigned long long *mlen
         return -1;
     }
     return crypto_aead_aes256gcm_decrypt_detached_afternm(m, mlen_p, nsec,
-                                                          c, clen - 16,
-                                                          c + clen - 16,
+                                                          c, clen - crypto_aead_aes256gcm_ABYTES,
+                                                          c + clen - crypto_aead_aes256gcm_ABYTES,
                                                           ad, adlen,
                                                           npub, ctx_);
 }
