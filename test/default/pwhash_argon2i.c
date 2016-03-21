@@ -89,11 +89,10 @@ static void tv(void)
                        NULL, NULL);
         sodium_hex2bin(salt, sizeof salt, tests[i].salt_hex,
                        strlen(tests[i].salt_hex), NULL, NULL, NULL);
-        if (crypto_pwhash(
-                out, (unsigned long long) tests[i].outlen,
-                passwd, tests[i].passwdlen,
-                (const unsigned char *) salt, tests[i].opslimit,
-                tests[i].memlimit) != 0) {
+        if (crypto_pwhash(out, (unsigned long long) tests[i].outlen,
+                          passwd, tests[i].passwdlen,
+                          (const unsigned char *) salt, tests[i].opslimit,
+                          tests[i].memlimit, NULL) != 0) {
             printf("[tv] pwhash failure (maybe intentional): [%u]\n", (unsigned int) i);
             continue;
         }
@@ -140,11 +139,10 @@ static void tv2(void)
                        NULL, NULL);
         sodium_hex2bin(salt, sizeof salt, tests[i].salt_hex,
                        strlen(tests[i].salt_hex), NULL, NULL, NULL);
-        if (crypto_pwhash(
-                out, (unsigned long long) tests[i].outlen,
-                passwd, tests[i].passwdlen,
-                (const unsigned char *) salt, tests[i].opslimit,
-                tests[i].memlimit) != 0) {
+        if (crypto_pwhash(out, (unsigned long long) tests[i].outlen,
+                          passwd, tests[i].passwdlen,
+                          (const unsigned char *) salt, tests[i].opslimit,
+                          tests[i].memlimit, NULL) != 0) {
             printf("[tv2] pwhash failure: [%u]\n", (unsigned int) i);
             continue;
         }
@@ -179,7 +177,7 @@ static void tv3(void)
         passwd = (char *) sodium_malloc(strlen(tests[i].passwd) + 1U);
         assert(passwd != NULL);
         memcpy(passwd, tests[i].passwd, strlen(tests[i].passwd) + 1U);
-        if (crypto_pwhash_argon2i_str_verify
+        if (crypto_pwhash_str_verify
             (out, passwd, strlen(passwd)) != 0) {
             printf("[tv3] pwhash_str failure (maybe intentional): [%u]\n", (unsigned int) i);
             continue;

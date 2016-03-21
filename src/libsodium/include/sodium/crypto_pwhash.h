@@ -49,11 +49,14 @@ size_t crypto_pwhash_opslimit_sensitive(void);
 SODIUM_EXPORT
 size_t crypto_pwhash_memlimit_sensitive(void);
 
+typedef struct crypto_pwhash_options crypto_pwhash_options;
+
 SODIUM_EXPORT
 int crypto_pwhash(unsigned char * const out, unsigned long long outlen,
                   const char * const passwd, unsigned long long passwdlen,
                   const unsigned char * const salt,
-                  unsigned long long opslimit, size_t memlimit)
+                  unsigned long long opslimit, size_t memlimit,
+                  const crypto_pwhash_options *options)
             __attribute__ ((warn_unused_result));
 
 SODIUM_EXPORT

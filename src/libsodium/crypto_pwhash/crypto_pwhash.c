@@ -59,8 +59,10 @@ int
 crypto_pwhash(unsigned char * const out, unsigned long long outlen,
               const char * const passwd, unsigned long long passwdlen,
               const unsigned char * const salt,
-              unsigned long long opslimit, size_t memlimit)
+              unsigned long long opslimit, size_t memlimit,
+              const struct crypto_pwhash_options *options)
 {
+    (void) options;
     return crypto_pwhash_argon2i(out, outlen, passwd, passwdlen, salt,
                                  opslimit, memlimit);
 }
