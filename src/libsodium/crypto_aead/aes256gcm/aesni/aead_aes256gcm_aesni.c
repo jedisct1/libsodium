@@ -629,7 +629,7 @@ crypto_aead_aes256gcm_encrypt_detached_afternm(unsigned char *c,
 }
 
 int
-crypto_aead_aes256gcm_encrypt_afternm(unsigned char *c, unsigned long long *clen,
+crypto_aead_aes256gcm_encrypt_afternm(unsigned char *c, unsigned long long *clen_p,
                                       const unsigned char *m, unsigned long long mlen,
                                       const unsigned char *ad, unsigned long long adlen,
                                       const unsigned char *nsec,
@@ -641,8 +641,8 @@ crypto_aead_aes256gcm_encrypt_afternm(unsigned char *c, unsigned long long *clen
                                                              m, mlen,
                                                              ad, adlen,
                                                              nsec, npub, ctx_);
-    if (clen != NULL) {
-        *clen = mlen + 16;
+    if (clen_p != NULL) {
+        *clen_p = mlen + 16;
     }
     return ret;
 }
