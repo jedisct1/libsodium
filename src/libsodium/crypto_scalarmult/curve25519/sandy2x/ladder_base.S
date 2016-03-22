@@ -4,6 +4,8 @@
 #include "consts_namespace.h"
 .p2align 5
 
+.private_extern ladder_base
+.private_extern _ladder_base
 .globl ladder_base
 .globl _ladder_base
 #ifdef __ELF__

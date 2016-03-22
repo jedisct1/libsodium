@@ -8,6 +8,8 @@
 #include "consts_namespace.h"
 .p2align 5
 
+.private_extern fe51_pack
+.private_extern _fe51_pack
 .globl fe51_pack
 .globl _fe51_pack
 #ifdef __ELF__

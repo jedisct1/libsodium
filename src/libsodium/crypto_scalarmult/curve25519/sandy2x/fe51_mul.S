@@ -7,10 +7,16 @@
 #include "consts_namespace.h"
 .text
 .p2align 5
-.globl _fe51_mul
+.private_extern fe51_mul
+.private_extern _fe51_mul
 .globl fe51_mul
-_fe51_mul:
+.globl _fe51_mul
+#ifdef __ELF__
+.type fe51_mul, @function
+.type _fe51_mul, @function
+#endif
 fe51_mul:
+_fe51_mul:
 mov %rsp,%r11
 and $31,%r11
 add $96,%r11
