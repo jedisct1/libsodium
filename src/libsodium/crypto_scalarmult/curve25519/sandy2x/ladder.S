@@ -4,9 +4,9 @@
 #include "consts_namespace.h"
 .p2align 5
 
-#ifdef HAVE_VISIBILITY
-.private_extern ladder
-.private_extern _ladder
+#ifdef ASM_HIDE_SYMBOL
+ASM_HIDE_SYMBOL ladder
+ASM_HIDE_SYMBOL _ladder
 #endif
 .globl ladder
 .globl _ladder

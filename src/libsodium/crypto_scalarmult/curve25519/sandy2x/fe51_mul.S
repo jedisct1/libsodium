@@ -7,9 +7,9 @@
 #include "consts_namespace.h"
 .text
 .p2align 5
-#ifdef HAVE_VISIBILITY
-.private_extern fe51_mul
-.private_extern _fe51_mul
+#ifdef ASM_HIDE_SYMBOL
+ASM_HIDE_SYMBOL fe51_mul
+ASM_HIDE_SYMBOL _fe51_mul
 #endif
 .globl fe51_mul
 .globl _fe51_mul

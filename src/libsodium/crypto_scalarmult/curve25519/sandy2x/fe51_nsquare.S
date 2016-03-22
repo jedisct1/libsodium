@@ -8,9 +8,9 @@
 #include "consts_namespace.h"
 .p2align 5
 
-#ifdef HAVE_VISIBILITY
-.private_extern fe51_nsquare
-.private_extern _fe51_nsquare
+#ifdef ASM_HIDE_SYMBOL
+ASM_HIDE_SYMBOL fe51_nsquare
+ASM_HIDE_SYMBOL _fe51_nsquare
 #endif
 .globl fe51_nsquare
 .globl _fe51_nsquare

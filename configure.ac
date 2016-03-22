@@ -529,9 +529,9 @@ __asm__ __volatile__ ("xchgl %%ebx, %k1; cpuid; xchgl %%ebx, %k1" :
   ])
 AC_SUBST(HAVE_CPUID_V)
 
-HAVE_VISIBILITY_V=0
+asm_hide_symbol="unsupported"
 AS_IF([test "$enable_asm" != "no"],[
-  AC_MSG_CHECKING(if the private_extern asm directive is supported)
+  AC_MSG_CHECKING(if the .private_extern asm directive is supported)
   AC_COMPILE_IFELSE([AC_LANG_PROGRAM([[ ]], [[
 __asm__ __volatile__ (".private_extern dummy_symbol \n"
                       ".private_extern _dummy_symbol \n"
@@ -543,12 +543,28 @@ __asm__ __volatile__ (".private_extern dummy_symbol \n"
 );
   ]])],
   [AC_MSG_RESULT(yes)
-   AC_DEFINE([HAVE_VISIBILITY], [1], [the private_extern asm directive
-is supported])
-   HAVE_VISIBILITY_V=1],
+   asm_hide_symbol=".private_extern"],
   [AC_MSG_RESULT(no)])
+
+  AC_MSG_CHECKING(if the .hidden asm directive is supported)
+  AC_COMPILE_IFELSE([AC_LANG_PROGRAM([[ ]], [[
+__asm__ __volatile__ (".hidden dummy_symbol \n"
+                      ".hidden _dummy_symbol \n"
+                      ".globl dummy_symbol \n"
+                      ".globl _dummy_symbol \n"
+                      "dummy_symbol: \n"
+                      "_dummy_symbol: \n"
+                      "    nop \n"
+);
+  ]])],
+  [AC_MSG_RESULT(yes)
+   asm_hide_symbol=".hidden"],
+  [AC_MSG_RESULT(no)])
+
+  AS_IF([test "$asm_hide_symbol" != "unsupported"],[
+    AC_DEFINE_UNQUOTED([ASM_HIDE_SYMBOL], [$asm_hide_symbol], [directive to hide symbols])
   ])
-AC_SUBST(HAVE_VISIBILITY_V)
+])
 
 AC_MSG_CHECKING(if weak symbols are supported)
 AC_LINK_IFELSE([AC_LANG_PROGRAM([[
