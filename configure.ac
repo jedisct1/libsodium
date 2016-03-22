@@ -529,6 +529,27 @@ __asm__ __volatile__ ("xchgl %%ebx, %k1; cpuid; xchgl %%ebx, %k1" :
   ])
 AC_SUBST(HAVE_CPUID_V)
 
+HAVE_VISIBILITY_V=0
+AS_IF([test "$enable_asm" != "no"],[
+  AC_MSG_CHECKING(if the private_extern asm directive is supported)
+  AC_COMPILE_IFELSE([AC_LANG_PROGRAM([[ ]], [[
+__asm__ __volatile__ (".private_extern dummy_symbol \n"
+                      ".private_extern _dummy_symbol \n"
+                      ".globl dummy_symbol \n"
+                      ".globl _dummy_symbol \n"
+                      "dummy_symbol: \n"
+                      "_dummy_symbol: \n"
+                      "    nop \n"
+);
+  ]])],
+  [AC_MSG_RESULT(yes)
+   AC_DEFINE([HAVE_VISIBILITY], [1], [the private_extern asm directive
+is supported])
+   HAVE_VISIBILITY_V=1],
+  [AC_MSG_RESULT(no)])
+  ])
+AC_SUBST(HAVE_VISIBILITY_V)
+
 AC_MSG_CHECKING(if weak symbols are supported)
 AC_LINK_IFELSE([AC_LANG_PROGRAM([[
 __attribute__((weak)) void __dummy(void *x) { }

@@ -4,8 +4,10 @@
 #include "consts_namespace.h"
 .p2align 5
 
+#ifdef HAVE_VISIBILITY
 .private_extern ladder
 .private_extern _ladder
+#endif
 .globl ladder
 .globl _ladder
 #ifdef __ELF__

@@ -8,8 +8,10 @@
 #include "consts_namespace.h"
 .p2align 5
 
+#ifdef HAVE_VISIBILITY
 .private_extern fe51_nsquare
 .private_extern _fe51_nsquare
+#endif
 .globl fe51_nsquare
 .globl _fe51_nsquare
 #ifdef __ELF__
