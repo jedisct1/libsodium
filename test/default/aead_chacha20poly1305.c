@@ -16,9 +16,12 @@ tv(void)
     static unsigned char ad[10U]
         = { 0x87, 0xe2, 0x29, 0xd4, 0x50, 0x08, 0x45, 0xa0, 0x79, 0xc0 };
     static unsigned char c[10U + crypto_aead_chacha20poly1305_ABYTES];
+    static unsigned char detached_c[10U];
+    static unsigned char mac[crypto_aead_chacha20poly1305_ABYTES];
 
     unsigned char m2[10U];
     unsigned long long clen;
+    unsigned long long maclen;
     unsigned long long m2len;
     size_t i;
 
@@ -34,9 +37,19 @@ tv(void)
         }
     }
     printf("\n");
+    crypto_aead_chacha20poly1305_encrypt_detached(detached_c, mac, &maclen,
+                                                  m, sizeof m, ad, sizeof ad,
+                                                  NULL, nonce, firstkey);
+    if (maclen != crypto_aead_chacha20poly1305_abytes()) {
+        printf("maclen is not properly set\n");
+    }
+    if (memcmp(detached_c, c, sizeof m) != 0) {
+        printf("detached ciphertext is bogus\n");
+    }
 
-    if (crypto_aead_chacha20poly1305_decrypt(m2, &m2len, NULL, c, sizeof c, ad,
-                                             sizeof ad, nonce, firstkey) != 0) {
+    if (crypto_aead_chacha20poly1305_decrypt(m2, &m2len, NULL, c, sizeof c,
+                                             ad, sizeof ad,
+                                             nonce, firstkey) != 0) {
         printf("crypto_aead_chacha20poly1305_decrypt() failed\n");
     }
     if (m2len != sizeof c - crypto_aead_chacha20poly1305_abytes()) {
@@ -44,6 +57,19 @@ tv(void)
     }
     if (memcmp(m, m2, sizeof m) != 0) {
         printf("m != m2\n");
+    }
+    memset(m2, 0, m2len);
+    if (crypto_aead_chacha20poly1305_decrypt_detached(m2, &m2len, NULL,
+                                                      c, sizeof m, mac,
+                                                      ad, sizeof ad,
+                                                      nonce, firstkey) != 0) {
+        printf("crypto_aead_chacha20poly1305_decrypt_detached() failed\n");
+    }
+    if (m2len != sizeof c - crypto_aead_chacha20poly1305_abytes()) {
+        printf("detached m2len is not properly set\n");
+    }
+    if (memcmp(m, m2, sizeof m) != 0) {
+        printf("detached m != m2\n");
     }
 
     for (i = 0U; i < sizeof c; i++) {
@@ -143,9 +169,12 @@ tv_ietf(void)
     static unsigned char ad[12U]
         = { 0x50, 0x51, 0x52, 0x53, 0xc0, 0xc1, 0xc2, 0xc3, 0xc4, 0xc5, 0xc6, 0xc7 };
     static unsigned char c[114U + crypto_aead_chacha20poly1305_ietf_ABYTES];
+    static unsigned char detached_c[114U];
+    static unsigned char mac[crypto_aead_chacha20poly1305_ietf_ABYTES];
 
     unsigned char m2[114U];
     unsigned long long clen;
+    unsigned long long maclen;
     unsigned long long m2len;
     size_t i;
 
@@ -163,6 +192,15 @@ tv_ietf(void)
         }
     }
     printf("\n");
+    crypto_aead_chacha20poly1305_ietf_encrypt_detached(detached_c, mac, &maclen,
+                                                       m, sizeof m, ad, sizeof ad,
+                                                       NULL, nonce, firstkey);
+    if (maclen != crypto_aead_chacha20poly1305_ietf_abytes()) {
+        printf("maclen is not properly set\n");
+    }
+    if (memcmp(detached_c, c, sizeof m) != 0) {
+        printf("detached ciphertext is bogus\n");
+    }
 
     if (crypto_aead_chacha20poly1305_ietf_decrypt(m2, &m2len, NULL, c, sizeof c, ad,
                                                   sizeof ad, nonce, firstkey) != 0) {
@@ -173,6 +211,19 @@ tv_ietf(void)
     }
     if (memcmp(m, m2, sizeof m) != 0) {
         printf("m != m2\n");
+    }
+    memset(m2, 0, m2len);
+    if (crypto_aead_chacha20poly1305_ietf_decrypt_detached(m2, &m2len, NULL,
+                                                           c, sizeof m, mac,
+                                                           ad, sizeof ad,
+                                                           nonce, firstkey) != 0) {
+        printf("crypto_aead_chacha20poly1305_ietf_decrypt_detached() failed\n");
+    }
+    if (m2len != sizeof c - crypto_aead_chacha20poly1305_ietf_abytes()) {
+        printf("detached m2len is not properly set\n");
+    }
+    if (memcmp(m, m2, sizeof m) != 0) {
+        printf("detached m != m2\n");
     }
 
     for (i = 0U; i < sizeof c; i++) {
