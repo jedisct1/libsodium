@@ -21,10 +21,10 @@ tv(void)
         = { 0xcd, 0x7c, 0xf6, 0x7b, 0xe3, 0x9c, 0x79, 0x4a };
     static const unsigned char ad[ADLEN]
         = { 0x87, 0xe2, 0x29, 0xd4, 0x50, 0x08, 0x45, 0xa0, 0x79, 0xc0 };
-    unsigned char *c = sodium_malloc(CLEN);
-    unsigned char *detached_c = sodium_malloc(MLEN);
-    unsigned char *mac = sodium_malloc(crypto_aead_chacha20poly1305_ABYTES);
-    unsigned char *m2 = sodium_malloc(MLEN);
+    unsigned char *c = (unsigned char *) sodium_malloc(CLEN);
+    unsigned char *detached_c = (unsigned char *) sodium_malloc(MLEN);
+    unsigned char *mac = (unsigned char *) sodium_malloc(crypto_aead_chacha20poly1305_ABYTES);
+    unsigned char *m2 = (unsigned char *) sodium_malloc(MLEN);
     unsigned long long found_clen;
     unsigned long long found_maclen;
     unsigned long long m2len;
@@ -181,16 +181,16 @@ tv_ietf(void)
 #undef  MESSAGE
 #define MESSAGE "Ladies and Gentlemen of the class of '99: If I could offer you " \
 "only one tip for the future, sunscreen would be it."
-    unsigned char *m = sodium_malloc(MLEN);
+    unsigned char *m = (unsigned char *) sodium_malloc(MLEN);
     static const unsigned char nonce[crypto_aead_chacha20poly1305_ietf_NPUBBYTES]
         = { 0x07, 0x00, 0x00, 0x00,
             0x40, 0x41, 0x42, 0x43, 0x44, 0x45, 0x46, 0x47 };
     static const unsigned char ad[ADLEN]
         = { 0x50, 0x51, 0x52, 0x53, 0xc0, 0xc1, 0xc2, 0xc3, 0xc4, 0xc5, 0xc6, 0xc7 };
-    unsigned char *c = sodium_malloc(CLEN);
-    unsigned char *detached_c = sodium_malloc(MLEN);
-    unsigned char *mac = sodium_malloc(crypto_aead_chacha20poly1305_ietf_ABYTES);
-    unsigned char *m2 = sodium_malloc(MLEN);
+    unsigned char *c = (unsigned char *) sodium_malloc(CLEN);
+    unsigned char *detached_c = (unsigned char *) sodium_malloc(MLEN);
+    unsigned char *mac = (unsigned char *) sodium_malloc(crypto_aead_chacha20poly1305_ietf_ABYTES);
+    unsigned char *m2 = (unsigned char *) sodium_malloc(MLEN);
     unsigned long long found_clen;
     unsigned long long found_maclen;
     unsigned long long m2len;
