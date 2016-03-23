@@ -1,4 +1,29 @@
 
+* Version 1.0.9
+ - The Javascript target now includes a "sumo" option containing all
+the symbols of the original C library.
+ - A detached API was added to the ChaCha20-Poly1305 and AES256-GCM
+implementations.
+ - The Argon2i password hashing function was added, and is accessible
+directly and through a new, high-level `crypto_pwhash` API. The scrypt
+function remains available.
+ - A speed-record AVX2 implementation of BLAKE2b was added.
+ - The library can now be compiled using C++Builder.
+ - Countermeasures for Ed25519 signatures malleability have been added
+to match the irtf-cfrg-eddsa draft (note that malleability is irrelevant to
+the standard definition of signature security). Signatures with a small-order
+`R` point are now also rejected.
+ - Some implementations are now slightly faster when using the Clang
+compiler.
+ - The HChaCha20 core function was implemented (`crypto_core_hchacha20()`).
+ - No-op stubs were added for all AES256-GCM public functions even when
+compiled on non-Intel platforms.
+ - `crypt_generichash_blake2b_statebytes()` was added.
+ - New macros were added for the IETF variant of the ChaCha20-Poly1305
+construction.
+ - The library can now be compiled on Minix.
+ - HEASLR is now enabled on MinGW builds.
+
 * Version 1.0.8
  - Handle the case where the CPU supports AVX, but we are running
 on an hypervisor with AVX disabled/not supported.
