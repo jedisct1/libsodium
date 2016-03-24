@@ -240,8 +240,6 @@ crypto_aead_chacha20poly1305_decrypt(unsigned char *m,
                                      const unsigned char *npub,
                                      const unsigned char *k)
 {
-    int ret;
-
     if (clen < crypto_aead_chacha20poly1305_ABYTES) {
         return -1;
     }
