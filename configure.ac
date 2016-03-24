@@ -404,6 +404,10 @@ AC_CHECK_HEADERS([sys/mman.h])
 dnl Checks for typedefs, structures, and compiler characteristics.
 
 AC_C_INLINE
+AS_CASE([$host_cpu],
+  [i*86 | x86_64],
+    [ac_cv_c_bigendian=no]
+)
 AC_C_BIGENDIAN(
   AC_DEFINE(NATIVE_BIG_ENDIAN, 1, [machine is bigendian]),
   AC_DEFINE(NATIVE_LITTLE_ENDIAN, 1, [machine is littleendian]),
