@@ -244,6 +244,29 @@ int main(void)
     assert(crypto_pwhash_memlimit_sensitive() > 0U);
     assert(strcmp(crypto_pwhash_primitive(), "argon2i") == 0);
 
+    assert(crypto_pwhash_opslimit_interactive() == crypto_pwhash_OPSLIMIT_INTERACTIVE);
+    assert(crypto_pwhash_memlimit_interactive() == crypto_pwhash_MEMLIMIT_INTERACTIVE);
+    assert(crypto_pwhash_opslimit_moderate() == crypto_pwhash_OPSLIMIT_MODERATE);
+    assert(crypto_pwhash_memlimit_moderate() == crypto_pwhash_MEMLIMIT_MODERATE);
+    assert(crypto_pwhash_opslimit_sensitive() == crypto_pwhash_OPSLIMIT_SENSITIVE);
+    assert(crypto_pwhash_memlimit_sensitive() == crypto_pwhash_MEMLIMIT_SENSITIVE);
+
+    assert(crypto_pwhash_argon2i_saltbytes() == crypto_pwhash_saltbytes());
+    assert(crypto_pwhash_argon2i_strbytes() == crypto_pwhash_strbytes());
+    assert(strcmp(crypto_pwhash_argon2i_strprefix(), crypto_pwhash_strprefix()) == 0);
+    assert(crypto_pwhash_argon2i_opslimit_interactive() ==
+           crypto_pwhash_opslimit_interactive());
+    assert(crypto_pwhash_argon2i_opslimit_moderate() ==
+           crypto_pwhash_opslimit_moderate());
+    assert(crypto_pwhash_argon2i_opslimit_sensitive() ==
+           crypto_pwhash_opslimit_sensitive());
+    assert(crypto_pwhash_argon2i_memlimit_interactive() ==
+           crypto_pwhash_memlimit_interactive());
+    assert(crypto_pwhash_argon2i_memlimit_moderate() ==
+           crypto_pwhash_memlimit_moderate());
+    assert(crypto_pwhash_argon2i_memlimit_sensitive() ==
+           crypto_pwhash_memlimit_sensitive());
+
     sodium_free(salt);
     sodium_free(str_out);
     sodium_free(str_out2);

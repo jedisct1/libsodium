@@ -547,6 +547,7 @@ int initialize(argon2_instance_t *instance, argon2_context *context) {
 
 int argon2_pick_best_implementation(void)
 {
+/* LCOV_EXCL_START */
 #if (defined(HAVE_EMMINTRIN_H) && defined(HAVE_TMMINTRIN_H)) || \
     (defined(_MSC_VER) && (defined(_M_X64) || defined(_M_AMD64) || defined(_M_IX86)))
     if (sodium_runtime_has_ssse3()) {
@@ -557,4 +558,5 @@ int argon2_pick_best_implementation(void)
     fill_segment = fill_segment_ref;
 
     return 0;
+/* LCOV_EXCL_STOP */
 }

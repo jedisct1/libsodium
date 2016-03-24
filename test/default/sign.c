@@ -1181,6 +1181,14 @@ int main(void)
         printf("detached signature verification should have failed\n");
     }
 
+    memset(sig, 0xff, 32);
+    sig[0] = 0xdb;
+    if (crypto_sign_verify_detached(sig,
+                                    (const unsigned char *)test_data[i].m,
+                                    i, pk) != -1) {
+        printf("detached signature verification should have failed\n");
+    }
+
     if (crypto_sign_keypair(pk, sk) != 0) {
         printf("crypto_sign_keypair() failure\n");
     }
