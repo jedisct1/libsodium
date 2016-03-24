@@ -407,8 +407,8 @@ AC_C_INLINE
 AC_C_BIGENDIAN(
   AC_DEFINE(NATIVE_BIG_ENDIAN, 1, [machine is bigendian]),
   AC_DEFINE(NATIVE_LITTLE_ENDIAN, 1, [machine is littleendian]),
-  AC_MSG_ERROR([unknown endianess]),
-  AC_MSG_ERROR([universal endianess is not supported - compile separately and use lipo(1)])
+  AC_MSG_ERROR([unknown endianness]),
+  AC_MSG_ERROR([universal endianness is not supported - compile separately and use lipo(1)])
 )
 
 AC_MSG_CHECKING(whether __STDC_LIMIT_MACROS is required)
