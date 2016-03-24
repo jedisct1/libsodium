@@ -1366,6 +1366,17 @@ main(void)
         printf("%02x", (unsigned int) out[j]);
     }
     printf("\n");
+
+    assert(crypto_generichash(NULL, 0,
+                              in, (unsigned long long) sizeof in,
+                              k, sizeof k) == -1);
+    assert(crypto_generichash(NULL, crypto_generichash_BYTES_MAX + 1,
+                              in, (unsigned long long) sizeof in,
+                              k, sizeof k) == -1);
+    assert(crypto_generichash(NULL, (unsigned long long) sizeof in,
+                              in, (unsigned long long) sizeof in,
+                              k, crypto_generichash_KEYBYTES_MAX + 1) == -1);
+
     assert(crypto_generichash_bytes_min() > 0U);
     assert(crypto_generichash_bytes_max() > 0U);
     assert(crypto_generichash_bytes() > 0U);
