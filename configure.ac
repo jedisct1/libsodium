@@ -139,7 +139,7 @@ AC_ARG_ENABLE(opt,
 [AS_HELP_STRING(--enable-opt,Optimize for the native CPU - The resulting library will be faster but not portable)],
 [
   AS_IF([test "x$enableval" = "xyes"], [
-    CFLAGS="$CFLAGS -O3 -march=native -save-temps"
+    CFLAGS="$CFLAGS -O3 -march=native"
     LDFLAGS="$LDFLAGS -O3 -march=native"])
 ])
 
@@ -536,7 +536,7 @@ AC_SUBST(HAVE_CPUID_V)
 asm_hide_symbol="unsupported"
 AS_IF([test "$enable_asm" != "no"],[
   AC_MSG_CHECKING(if the .private_extern asm directive is supported)
-  AC_COMPILE_IFELSE([AC_LANG_PROGRAM([[ ]], [[
+  AC_LINK_IFELSE([AC_LANG_PROGRAM([[ ]], [[
 __asm__ __volatile__ (".private_extern dummy_symbol \n"
                       ".private_extern _dummy_symbol \n"
                       ".globl dummy_symbol \n"
@@ -551,7 +551,7 @@ __asm__ __volatile__ (".private_extern dummy_symbol \n"
   [AC_MSG_RESULT(no)])
 
   AC_MSG_CHECKING(if the .hidden asm directive is supported)
-  AC_COMPILE_IFELSE([AC_LANG_PROGRAM([[ ]], [[
+  AC_LINK_IFELSE([AC_LANG_PROGRAM([[ ]], [[
 __asm__ __volatile__ (".hidden dummy_symbol \n"
                       ".hidden _dummy_symbol \n"
                       ".globl dummy_symbol \n"
@@ -562,7 +562,11 @@ __asm__ __volatile__ (".hidden dummy_symbol \n"
 );
   ]])],
   [AC_MSG_RESULT(yes)
-   asm_hide_symbol=".hidden"],
+   AS_IF([test "$asm_hide_symbol" = "unsupported"],
+          [asm_hide_symbol=".hidden"],
+          [AC_MSG_NOTICE([unable to reliably tag symbols as private])
+           asm_hide_symbol="unsupported"])
+  ],
   [AC_MSG_RESULT(no)])
 
   AS_IF([test "$asm_hide_symbol" != "unsupported"],[
