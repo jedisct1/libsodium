@@ -28,6 +28,7 @@
 
 #include "crypto_hash_sha512.h"
 #include "utils.h"
+#include "../../../sodium/common.h"
 
 #include <sys/types.h>
 
@@ -36,43 +37,13 @@
 #include <stdlib.h>
 #include <string.h>
 
-/* Avoid namespace collisions with BSD <sys/endian.h>. */
-#define be64dec _sha512_be64dec
-#define be64enc _sha512_be64enc
-
-static inline uint64_t
-be64dec(const void *pp)
-{
-    const uint8_t *p = (uint8_t const *)pp;
-
-    return ((uint64_t)(p[7]) + ((uint64_t)(p[6]) << 8) +
-            ((uint64_t)(p[5]) << 16) + ((uint64_t)(p[4]) << 24) +
-            ((uint64_t)(p[3]) << 32) + ((uint64_t)(p[2]) << 40) +
-            ((uint64_t)(p[1]) << 48) + ((uint64_t)(p[0]) << 56));
-}
-
-static inline void
-be64enc(void *pp, uint64_t x)
-{
-    uint8_t *p = (uint8_t *)pp;
-
-    p[7] = x & 0xff;
-    p[6] = (x >> 8) & 0xff;
-    p[5] = (x >> 16) & 0xff;
-    p[4] = (x >> 24) & 0xff;
-    p[3] = (x >> 32) & 0xff;
-    p[2] = (x >> 40) & 0xff;
-    p[1] = (x >> 48) & 0xff;
-    p[0] = (x >> 56) & 0xff;
-}
-
 static void
 be64enc_vect(unsigned char *dst, const uint64_t *src, size_t len)
 {
     size_t i;
 
     for (i = 0; i < len / 8; i++) {
-        be64enc(dst + i * 8, src[i]);
+        STORE64_BE(dst + i * 8, src[i]);
     }
 }
 
@@ -82,7 +53,7 @@ be64dec_vect(uint64_t *dst, const unsigned char *src, size_t len)
     size_t i;
 
     for (i = 0; i < len / 8; i++) {
-        dst[i] = be64dec(src + i * 8);
+        dst[i] = LOAD64_BE(src + i * 8);
     }
 }
 
