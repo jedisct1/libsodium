@@ -1,6 +1,6 @@
 
 * Version 1.0.9
- - The Javascript target now includes a "sumo" option containing all
+ - The Javascript target now includes a "sumo" option to include all
 the symbols of the original C library.
  - A detached API was added to the ChaCha20-Poly1305 and AES256-GCM
 implementations.
