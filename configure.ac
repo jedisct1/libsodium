@@ -186,6 +186,22 @@ AX_CHECK_COMPILE_FLAG([-fno-strict-overflow], [CFLAGS="$CFLAGS -fno-strict-overf
   AX_CHECK_COMPILE_FLAG([-fwrapv], [CFLAGS="$CFLAGS -fwrapv"])
 ])
 
+AS_IF([test "$GCC" = "yes" ], [
+  AS_CASE([$host_cpu],
+    [i?86|amd64|x86_64], [
+      AC_COMPILE_IFELSE(
+        [AC_LANG_SOURCE([
+#if !defined(__clang__) && defined(__GNUC__) && ((__GNUC__ << 8) | __GNUC_MINOR__) < 0x403
+# error old gcc
+#endif
+int main(void) { return 0; }
+         ])],,[
+          AX_CHECK_COMPILE_FLAG([-flax-vector-conversions], [CFLAGS="$CFLAGS -flax-vector-conversions"])
+        ])
+      ]
+    )
+  ])
+
 LIBTOOL_OLD_FLAGS="$LIBTOOL_EXTRA_FLAGS"
 LIBTOOL_EXTRA_FLAGS="$LIBTOOL_EXTRA_FLAGS -version-info $SODIUM_LIBRARY_VERSION"
 AC_ARG_ENABLE(soname-versions,
@@ -405,7 +421,7 @@ dnl Checks for typedefs, structures, and compiler characteristics.
 
 AC_C_INLINE
 AS_CASE([$host_cpu],
-  [i*86 | x86_64],
+  [i?86|amd64|x86_64],
     [ac_cv_c_bigendian=no]
 )
 AC_C_BIGENDIAN(
@@ -587,7 +603,7 @@ void f(void *x) { __dummy(x); }
 AC_MSG_CHECKING(if data alignment is required)
 aligned_access_required=yes
 AS_CASE([$host_cpu],
-  [i*86 | x86_64 | powerpc* | s390*],
+  [i?86|amd64|x86_64|powerpc*|s390*],
     [aligned_access_required=no],
   [arm*],
     [AC_COMPILE_IFELSE([AC_LANG_PROGRAM([[
