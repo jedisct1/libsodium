@@ -306,6 +306,16 @@ int main(void)
                                  "passwore", strlen("passwore")) != -1) {
         printf("pwhash_str_verify(invalid(7)) failure\n");
     }
+    if (crypto_pwhash_str_verify("$Argon2i$v=19$m=4096,t=3,p=2$b2RpZHVlamRpc29kaXNrdw"
+                                 "$TNnWIwlu1061JHrnCqIAmjs3huSxYIU+0jWipu7Kc9M",
+                                 "password", strlen("password")) != -1) {
+        printf("pwhash_str_verify(invalid(8)) failure\n");
+    }
+    if (crypto_pwhash_str_verify("$argon2i$v=1$m=4096,t=3,p=2$b2RpZHVlamRpc29kaXNrdw"
+                                 "$TNnWIwlu1061JHrnCqIAmjs3huSxYIU+0jWipu7Kc9M",
+                                 "password", strlen("password")) != -1) {
+        printf("pwhash_str_verify(invalid(9)) failure\n");
+    }
     assert(crypto_pwhash_saltbytes() > 0U);
     assert(crypto_pwhash_strbytes() > 1U);
     assert(crypto_pwhash_strbytes() > strlen(crypto_pwhash_strprefix()));
