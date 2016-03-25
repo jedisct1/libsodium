@@ -7,8 +7,9 @@ implementations.
  - The Argon2i password hashing function was added, and is accessible
 directly and through a new, high-level `crypto_pwhash` API. The scrypt
 function remains available.
- - A speed-record AVX2 implementation of BLAKE2b was added.
- - The library can now be compiled using C++Builder.
+ - A speed-record AVX2 implementation of BLAKE2b was added (thanks to
+Samuel Neves).
+ - The library can now be compiled using C++Builder (thanks to @jcolli44)
  - Countermeasures for Ed25519 signatures malleability have been added
 to match the irtf-cfrg-eddsa draft (note that malleability is irrelevant to
 the standard definition of signature security). Signatures with a small-order
