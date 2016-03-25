@@ -118,7 +118,7 @@ static int allocate_memory(block_region **region, uint32_t m_cost) {
         memcpy(&memory, &aligned, sizeof memory);
     }
 #endif
-    if (!memory) {
+    if (base == NULL) {
         return ARGON2_MEMORY_ALLOCATION_ERROR;
     }
     (*region)->base = base;
