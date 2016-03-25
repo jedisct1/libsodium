@@ -98,6 +98,7 @@ _cpuid(unsigned int cpu_info[4U], const unsigned int cpu_info_type)
                           "0" (cpu_info_type), "2" (0U));
 # endif
 #else
+    (void) cpu_info_type;
     cpu_info[0] = cpu_info[1] = cpu_info[2] = cpu_info[3] = 0;
 #endif
 }

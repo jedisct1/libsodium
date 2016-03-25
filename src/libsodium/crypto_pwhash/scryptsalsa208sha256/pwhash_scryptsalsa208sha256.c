@@ -11,8 +11,8 @@
 #include "utils.h"
 
 #define SETTING_SIZE(saltbytes) \
-    (sizeof "$7$" - 1U) + \
-    (1U /* N_log2 */) + (5U /* r */) + (5U /* p */) + BYTES2CHARS(saltbytes)
+    ((sizeof "$7$" - 1U) + \
+     (1U /* N_log2 */) + (5U /* r */) + (5U /* p */) + BYTES2CHARS(saltbytes))
 
 static int
 pickparams(unsigned long long opslimit, const size_t memlimit,
