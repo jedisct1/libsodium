@@ -248,23 +248,4 @@ int argon2i_verify(const char *encoded, const void *pwd, const size_t pwdlen);
 /* generic function underlying the above ones */
 int argon2_verify(const char *encoded, const void *pwd, const size_t pwdlen,
                   argon2_type type);
-
-/**
- * Argon2i: Version of Argon2 that picks memory blocks
- * independent on the password and salt. Good for side-channels,
- * but worse w.r.t. tradeoff attacks if only one pass is used.
- * @param  context  Pointer to current Argon2 context
- * @return  Zero if successful, a non zero error code otherwise
- */
-int argon2i_ctx(argon2_context *context);
-
-/**
- * Verify if a given password is correct for Argon2i hashing
- * @param  context  Pointer to current Argon2 context
- * @param  hash  The password hash to verify. The length of the hash is
- * specified by the context outlen member
- * @return  Zero if successful, a non zero error code otherwise
- */
-int argon2i_verify_ctx(argon2_context *context, const char *hash);
-
 #endif

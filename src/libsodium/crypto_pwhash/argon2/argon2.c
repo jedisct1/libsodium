@@ -234,22 +234,3 @@ int argon2_verify(const char *encoded, const void *pwd, const size_t pwdlen,
 int argon2i_verify(const char *encoded, const void *pwd, const size_t pwdlen) {
     return argon2_verify(encoded, pwd, pwdlen, Argon2_i);
 }
-
-int argon2i_ctx(argon2_context *context) {
-    return argon2_ctx(context, Argon2_i);
-}
-
-int argon2i_verify_ctx(argon2_context *context, const char *hash) {
-    int result;
-    if (0 == context->outlen || NULL == hash) {
-        return ARGON2_OUT_PTR_MISMATCH;
-    }
-
-    result = argon2_ctx(context, Argon2_i);
-
-    if (ARGON2_OK != result) {
-        return result;
-    }
-
-    return 0 == memcmp(hash, context->out, context->outlen);
-}
