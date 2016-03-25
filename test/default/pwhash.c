@@ -149,6 +149,19 @@ static void tv2(void)
         sodium_bin2hex(out_hex, sizeof out_hex, out, tests[i].outlen);
         printf("%s\n", out_hex);
     } while (++i < (sizeof tests) / (sizeof tests[0]));
+
+    if (crypto_pwhash(out, sizeof out, "password", strlen("password"),
+                      salt, 3, 1, NULL) != -1) {
+        printf("[tv2] pwhash should have failed (1)\n");
+    }
+    if (crypto_pwhash(out, sizeof out, "password", strlen("password"),
+                      salt, 3, 1ULL << 12, NULL) != -1) {
+        printf("[tv2] pwhash should have failed (2)\n");
+    }
+    if (crypto_pwhash(out, sizeof out, "password", strlen("password"),
+                      salt, 2, 1ULL << 12, NULL) != -1) {
+        printf("[tv2] pwhash should have failed (3)\n");
+    }
 }
 
 static void tv3(void)
@@ -158,13 +171,13 @@ static void tv3(void)
         const char *out;
     } tests[] = {
         { "",
-          "$argon2i$v=19,m=4096,t=1,p=1$X1NhbHQAAAAAAAAAAAAAAA$bWh++MKN1OiFHKgIWTLvIi1iHicmHH7+Fv3K88ifFfI" },
+          "$argon2i$v=19$m=4096,t=1,p=1$X1NhbHQAAAAAAAAAAAAAAA$bWh++MKN1OiFHKgIWTLvIi1iHicmHH7+Fv3K88ifFfI" },
         { "",
-          "$argon2i$v=19,m=2048,t=4,p=1$SWkxaUhpY21ISDcrRnYzSw$Mbg/Eck1kpZir5T9io7C64cpffdTBaORgyriLQFgQj8" },
+          "$argon2i$v=19$m=2048,t=4,p=1$SWkxaUhpY21ISDcrRnYzSw$Mbg/Eck1kpZir5T9io7C64cpffdTBaORgyriLQFgQj8" },
         { "^T5H$JYt39n%K*j:W]!1s?vg!:jGi]Ax?..l7[p0v:1jHTpla9;]bUN;?bWyCbtqg ",
-          "$argon2i$v=19,m=4096,t=3,p=2$X1NhbHQAAAAAAAAAAAAAAA$z/QMiU4lQxGsYNc/+K/bizwsA1P11UG2dj/7+aILJ4I" },
+          "$argon2i$v=19$m=4096,t=3,p=2$X1NhbHQAAAAAAAAAAAAAAA$z/QMiU4lQxGsYNc/+K/bizwsA1P11UG2dj/7+aILJ4I" },
         { "K3S=KyH#)36_?]LxeR8QNKw6X=gFbxai$C%29V*",
-          "$argon2i$v=19,m=4096,t=3,p=1$X1NhbHQAAAAAAAAAAAAAAA$fu2Wsecyt+yPnBvSvYN16oP5ozRmkp0ixJ1YL19V3Uo" }
+          "$argon2i$v=19$m=4096,t=3,p=1$X1NhbHQAAAAAAAAAAAAAAA$fu2Wsecyt+yPnBvSvYN16oP5ozRmkp0ixJ1YL19V3Uo" }
     };
     char *out;
     char *passwd;
@@ -221,18 +234,55 @@ int main(void)
         printf("pwhash_str() doesn't properly pad with zeros\n");
     }
     if (crypto_pwhash_str_verify(str_out, passwd, strlen(passwd)) != 0) {
-        printf("pwhash_str_verify failure\n");
-    }
-    if (crypto_pwhash_str_verify(str_out, passwd, strlen(passwd)) != 0) {
-        printf("pwhash_str_verify failure\n");
+        printf("pwhash_str_verify(1) failure\n");
     }
     str_out[14]++;
-    if (crypto_pwhash_str_verify(str_out, passwd, strlen(passwd)) == 0) {
+    if (crypto_pwhash_str_verify(str_out, passwd, strlen(passwd)) != -1) {
         printf("pwhash_str_verify(2) failure\n");
     }
     str_out[14]--;
-
     assert(str_out[crypto_pwhash_STRBYTES - 1U] == 0);
+
+    if (crypto_pwhash_str_verify("$argon2i$m=65536,t=2,p=1c29tZXNhbHQ"
+                                 "$9sTbSlTio3Biev89thdrlKKiCaYsjjYVJxGAL3swxpQ",
+                                 "password", strlen("password")) != -1) {
+        printf("pwhash_str_verify(invalid(1)) failure\n");
+    }
+    if (crypto_pwhash_str_verify("$argon2i$m=65536,t=2,p=1$c29tZXNhbHQ"
+                                 "9sTbSlTio3Biev89thdrlKKiCaYsjjYVJxGAL3swxpQ",
+                                 "password", strlen("password")) != -1) {
+        printf("pwhash_str_verify(invalid(2)) failure\n");
+    }
+    if (crypto_pwhash_str_verify("$argon2i$m=65536,t=2,p=1$c29tZXNhbHQ"
+                                 "$b2G3seW+uPzerwQQC+/E1K50CLLO7YXy0JRcaTuswRo",
+                                 "password", strlen("password")) != -1) {
+        printf("pwhash_str_verify(invalid(3)) failure\n");
+    }
+    if (crypto_pwhash_str_verify("$argon2i$v=19$m=65536,t=2,p=1c29tZXNhbHQ"
+                                 "$wWKIMhR9lyDFvRz9YTZweHKfbftvj+qf+YFY4NeBbtA",
+                                 "password", strlen("password")) != -1) {
+        printf("pwhash_str_verify(invalid(4)) failure\n");
+    }
+    if (crypto_pwhash_str_verify("$argon2i$v=19$m=65536,t=2,p=1$c29tZXNhbHQ"
+                                 "wWKIMhR9lyDFvRz9YTZweHKfbftvj+qf+YFY4NeBbtA",
+                                 "password", strlen("password")) != -1) {
+        printf("pwhash_str_verify(invalid(5)) failure\n");
+    }
+    if (crypto_pwhash_str_verify("$argon2i$v=19$m=65536,t=2,p=1$c29tZXNhbHQ"
+                                 "$8iIuixkI73Js3G1uMbezQXD0b8LG4SXGsOwoQkdAQIM",
+                                 "password", strlen("password")) != -1) {
+        printf("pwhash_str_verify(invalid(6)) failure\n");
+    }
+    if (crypto_pwhash_str_verify("$argon2i$v=19$m=4096,t=3,p=2$b2RpZHVlamRpc29kaXNrdw"
+                                 "$TNnWIwlu1061JHrnCqIAmjs3huSxYIU+0jWipu7Kc9M",
+                                 "password", strlen("password")) != 0) {
+        printf("pwhash_str_verify(valid(7)) failure\n");
+    }
+    if (crypto_pwhash_str_verify("$argon2i$v=19$m=4096,t=3,p=2$b2RpZHVlamRpc29kaXNrdw"
+                                 "$TNnWIwlu1061JHrnCqIAmjs3huSxYIU+0jWipu7Kc9M",
+                                 "passwore", strlen("passwore")) != -1) {
+        printf("pwhash_str_verify(invalid(7)) failure\n");
+    }
     assert(crypto_pwhash_saltbytes() > 0U);
     assert(crypto_pwhash_strbytes() > 1U);
     assert(crypto_pwhash_strbytes() > strlen(crypto_pwhash_strprefix()));

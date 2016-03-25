@@ -229,7 +229,7 @@ static const char *decode_decimal(const char *str, unsigned long *v) {
  *
  * The code below applies the following format:
  *
- *  $argon2<T>$v=<num>,m=<num>,t=<num>,p=<num>[,keyid=<bin>][,data=<bin>][$<bin>[$<bin>]]
+ *  $argon2<T>$v=<num>$m=<num>,t=<num>,p=<num>[,keyid=<bin>][,data=<bin>][$<bin>[$<bin>]]
  *
  * where <T> is either 'd' or 'i', <num> is a decimal integer (positive, fits in an 'unsigned long')
  * and <bin> is Base64-encoded data (no '=' padding characters, no newline
@@ -309,7 +309,7 @@ int decode_string(argon2_context *ctx, const char *str, argon2_type type) {
     if (version != ARGON2_VERSION_NUMBER) {
         return 1;
     }
-    CC(",m=");
+    CC("$m=");
     DECIMAL(ctx->m_cost);
     CC(",t=");
     DECIMAL(ctx->t_cost);
@@ -405,7 +405,7 @@ int encode_string(char *dst, size_t dst_len, argon2_context *ctx,
         return 0;
     }
     SX(ARGON2_VERSION_NUMBER);
-    SS(",m=");
+    SS("$m=");
     SX(ctx->m_cost);
     SS(",t=");
     SX(ctx->t_cost);
