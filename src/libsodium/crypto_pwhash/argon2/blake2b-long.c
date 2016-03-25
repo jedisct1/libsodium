@@ -16,7 +16,7 @@ int blake2b_long(void *pout, size_t outlen, const void *in, size_t inlen) {
     int ret = -1;
 
     if (outlen > UINT32_MAX) {
-        goto fail;
+        goto fail; /* LCOV_EXCL_LINE */
     }
 
     /* Ensure little-endian byte order! */

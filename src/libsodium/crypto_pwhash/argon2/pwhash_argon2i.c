@@ -91,7 +91,7 @@ crypto_pwhash_argon2i(unsigned char * const out,
                          (uint32_t) 1U, passwd, (size_t) passwdlen,
                          salt, (size_t) crypto_pwhash_argon2i_SALTBYTES,
                          out, (size_t) outlen) != ARGON2_OK) {
-        return -1;
+        return -1; /* LCOV_EXCL_LINE */
     }
     return 0;
 }
@@ -122,7 +122,7 @@ crypto_pwhash_argon2i_str(char out[crypto_pwhash_argon2i_STRBYTES],
                              (uint32_t) 1U, passwd, (size_t) passwdlen,
                              salt, sizeof salt, STR_HASHBYTES,
                              out, crypto_pwhash_argon2i_STRBYTES) != ARGON2_OK) {
-        return -1;
+        return -1; /* LCOV_EXCL_LINE */
     }
     return 0;
 }
@@ -136,10 +136,12 @@ crypto_pwhash_argon2i_str_verify(const char str[crypto_pwhash_argon2i_STRBYTES],
         errno = EFBIG;
         return -1;
     }
+/* LCOV_EXCL_START */
     if (passwdlen < ARGON2_MIN_PWD_LENGTH) {
         errno = EINVAL;
         return -1;
     }
+/* LCOV_EXCL_STOP */
     if (argon2i_verify(str, passwd, (size_t) passwdlen) != ARGON2_OK) {
         return -1;
     }

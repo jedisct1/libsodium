@@ -162,6 +162,14 @@ static void tv2(void)
                       salt, 2, 1ULL << 12, NULL) != -1) {
         printf("[tv2] pwhash should have failed (3)\n");
     }
+    if (crypto_pwhash(out, 0x100000000ULL, "password", strlen("password"),
+                      salt, 3, 1ULL << 12, NULL) != -1) {
+        printf("[tv2] pwhash with a long output length should have failed\n");
+    }
+    if (crypto_pwhash(out, sizeof out, "password", 0x100000000ULL,
+                      salt, 3, 1ULL << 12, NULL) != -1) {
+        printf("[tv2] pwhash with a long password length should have failed\n");
+    }
 }
 
 static void tv3(void)
@@ -243,6 +251,21 @@ int main(void)
     str_out[14]--;
     assert(str_out[crypto_pwhash_STRBYTES - 1U] == 0);
 
+    if (crypto_pwhash_str(str_out2, passwd, 0x100000000ULL,
+                          OPSLIMIT, MEMLIMIT) != -1) {
+        printf("pwhash_str() with a large password should have failed\n");
+        return 1;
+    }
+    if (crypto_pwhash_str(str_out2, passwd, strlen(passwd),
+                          1, MEMLIMIT) != -1) {
+        printf("pwhash_str() with a small opslimit should have failed\n");
+        return 1;
+    }
+    if (crypto_pwhash_str_verify("$argon2i$m=65536,t=2,p=1c29tZXNhbHQ"
+                                 "$9sTbSlTio3Biev89thdrlKKiCaYsjjYVJxGAL3swxpQ",
+                                 "password", 0x100000000ULL) != -1) {
+        printf("pwhash_str_verify(invalid(0)) failure\n");
+    }
     if (crypto_pwhash_str_verify("$argon2i$m=65536,t=2,p=1c29tZXNhbHQ"
                                  "$9sTbSlTio3Biev89thdrlKKiCaYsjjYVJxGAL3swxpQ",
                                  "password", strlen("password")) != -1) {
