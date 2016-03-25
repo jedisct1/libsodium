@@ -139,7 +139,7 @@ int argon2_hash(const uint32_t t_cost, const uint32_t m_cost,
 
     /* if encoding requested, write it */
     if (encoded && encodedlen) {
-        if (!encode_string(encoded, encodedlen, &context, type)) {
+        if (encode_string(encoded, encodedlen, &context, type) != ARGON2_OK) {
             sodium_memzero(out, hashlen);
             sodium_memzero(encoded, encodedlen);
             free(out);
@@ -177,6 +177,7 @@ int argon2_verify(const char *encoded, const void *pwd, const size_t pwdlen,
 
     argon2_context ctx;
     uint8_t *out;
+    int decode_result;
     int ret;
     uint32_t encoded_len;
 
@@ -208,12 +209,13 @@ int argon2_verify(const char *encoded, const void *pwd, const size_t pwdlen,
         return ARGON2_MEMORY_ALLOCATION_ERROR;
     }
 
-    if(decode_string(&ctx, encoded, type) != 1) {
+    decode_result = decode_string(&ctx, encoded, type);
+    if (decode_result != ARGON2_OK) {
         free(ctx.ad);
         free(ctx.salt);
         free(ctx.out);
         free(out);
-        return ARGON2_DECODING_FAIL;
+        return decode_result;
     }
 
     ret = argon2_hash(ctx.t_cost, ctx.m_cost, ctx.threads, pwd, pwdlen, ctx.salt,

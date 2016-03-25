@@ -13,7 +13,7 @@
  * (no output). if ctx->saltlen is also 0, then the string will be a
  * parameter-only string (no salt and no output).
  *
- * On success, 1 is returned.
+ * On success, ARGON2_OK is returned.
  *
  * No other parameters are checked
  */
@@ -25,7 +25,7 @@ int encode_string(char *dst, size_t dst_len, argon2_context *ctx,
  * The fields ctx.saltlen, ctx.adlen, ctx.outlen set the maximal salt, ad, out length values
  * that are allowed; invalid input string causes an error
  *
- * Returned value is 1 on success, 0 on error.
+ * Returned value is ARGON2_OK on success.
  */
 int decode_string(argon2_context *ctx, const char *str, argon2_type type);
 
