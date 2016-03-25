@@ -56,7 +56,7 @@ int main(void)
     sodium_free(sodium_malloc(0U));
     sodium_free(NULL);
     for (i = 0U; i < 10000U; i++) {
-        size = randombytes_uniform(100000U);
+        size = 1U + randombytes_uniform(100000U);
         buf = sodium_malloc(size);
         assert(buf != NULL);
         memset(buf, i, size);
@@ -74,7 +74,7 @@ int main(void)
 #ifdef SIGABRT
     signal(SIGABRT, segv_handler);
 #endif
-    size = randombytes_uniform(100000U);
+    size = 1U + randombytes_uniform(100000U);
     buf = sodium_malloc(size);
     assert(buf != NULL);
     sodium_mprotect_readonly(buf);

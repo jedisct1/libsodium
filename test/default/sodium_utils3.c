@@ -44,7 +44,7 @@ int main(void)
 #ifdef SIGABRT
     signal(SIGABRT, segv_handler);
 #endif
-    size = randombytes_uniform(100000U);
+    size = 1U + randombytes_uniform(100000U);
     buf = sodium_malloc(size);
     assert(buf != NULL);
     sodium_mprotect_noaccess(buf);
