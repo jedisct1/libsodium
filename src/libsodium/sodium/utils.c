@@ -526,7 +526,7 @@ _unprotected_ptr_from_user_ptr(void * const ptr)
 static __attribute__ ((malloc)) void *
 _sodium_malloc(const size_t size)
 {
-    return malloc(size);
+    return malloc(size > (size_t) 0U ? size : (size_t) 1U);
 }
 #else
 static __attribute__ ((malloc)) void *
@@ -577,7 +577,7 @@ sodium_malloc(const size_t size)
 {
     void *ptr;
 
-    if (size == (size_t) 0 || (ptr = _sodium_malloc(size)) == NULL) {
+    if ((ptr = _sodium_malloc(size)) == NULL) {
         return NULL;
     }
     memset(ptr, (int) GARBAGE_VALUE, size);

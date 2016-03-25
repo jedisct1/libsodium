@@ -39,7 +39,7 @@ int main(void)
     if (sodium_malloc(SIZE_MAX - 1U) != NULL) {
         return 1;
     }
-    if (sodium_malloc(0U) != NULL) {
+    if (sodium_malloc(0U) == NULL) {
         return 1;
     }
     if (sodium_allocarray(SIZE_MAX / 2U + 1U, SIZE_MAX / 2U) != NULL) {
