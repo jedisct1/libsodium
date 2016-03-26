@@ -12,7 +12,7 @@
 # warning The sodium_utils3 test is expected to fail with address sanitizer
 #endif
 
-static void segv_handler(int sig)
+__attribute__ ((noreturn)) static void segv_handler(int sig)
 {
     (void) sig;
 

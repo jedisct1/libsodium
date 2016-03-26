@@ -1291,7 +1291,7 @@ static struct {
     }
 };
 
-int
+static int
 tv(void)
 {
     unsigned char *expected_out;
