@@ -8,6 +8,7 @@
 #include "../../sodium/common.h"
 
 #include "argon2-impl.h"
+#include "blake2b-long.h"
 
 int blake2b_long(void *pout, size_t outlen, const void *in, size_t inlen) {
     uint8_t *out = (uint8_t *)pout;
