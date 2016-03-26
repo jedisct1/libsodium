@@ -449,7 +449,7 @@ _mprotect_readwrite(void *ptr, size_t size)
 
 #ifdef HAVE_ALIGNED_MALLOC
 
-static void
+__attribute__ ((noreturn)) static void
 _out_of_bounds(void)
 {
 # ifdef SIGSEGV
