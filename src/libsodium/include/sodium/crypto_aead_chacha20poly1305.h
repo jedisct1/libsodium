@@ -67,7 +67,6 @@ int crypto_aead_chacha20poly1305_ietf_encrypt_detached(unsigned char *c,
 
 SODIUM_EXPORT
 int crypto_aead_chacha20poly1305_ietf_decrypt_detached(unsigned char *m,
-                                                       unsigned long long *mlen_p,
                                                        unsigned char *nsec,
                                                        const unsigned char *c,
                                                        unsigned long long clen,
@@ -133,7 +132,6 @@ int crypto_aead_chacha20poly1305_encrypt_detached(unsigned char *c,
 
 SODIUM_EXPORT
 int crypto_aead_chacha20poly1305_decrypt_detached(unsigned char *m,
-                                                  unsigned long long *mlen_p,
                                                   unsigned char *nsec,
                                                   const unsigned char *c,
                                                   unsigned long long clen,

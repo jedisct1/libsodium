@@ -71,7 +71,6 @@ int crypto_aead_aes256gcm_encrypt_detached(unsigned char *c,
 
 SODIUM_EXPORT
 int crypto_aead_aes256gcm_decrypt_detached(unsigned char *m,
-                                           unsigned long long *mlen_p,
                                            unsigned char *nsec,
                                            const unsigned char *c,
                                            unsigned long long clen,
@@ -125,7 +124,6 @@ int crypto_aead_aes256gcm_encrypt_detached_afternm(unsigned char *c,
 
 SODIUM_EXPORT
 int crypto_aead_aes256gcm_decrypt_detached_afternm(unsigned char *m,
-                                                   unsigned long long *mlen_p,
                                                    unsigned char *nsec,
                                                    const unsigned char *c,
                                                    unsigned long long clen,

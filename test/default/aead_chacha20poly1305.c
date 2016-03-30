@@ -66,14 +66,11 @@ tv(void)
         printf("m != m2\n");
     }
     memset(m2, 0, m2len);
-    if (crypto_aead_chacha20poly1305_decrypt_detached(m2, &m2len, NULL,
+    if (crypto_aead_chacha20poly1305_decrypt_detached(m2, NULL,
                                                       c, MLEN, mac,
                                                       ad, ADLEN,
                                                       nonce, firstkey) != 0) {
         printf("crypto_aead_chacha20poly1305_decrypt_detached() failed\n");
-    }
-    if (m2len != MLEN) {
-        printf("detached m2len is not properly set\n");
     }
     if (memcmp(m, m2, MLEN) != 0) {
         printf("detached m != m2\n");
@@ -112,17 +109,24 @@ tv(void)
     if (memcmp(m, m2, MLEN) != 0) {
         printf("m != m2 (adlen=0)\n");
     }
-
+    m2len = 1;
     if (crypto_aead_chacha20poly1305_decrypt(
             m2, &m2len, NULL, c, crypto_aead_chacha20poly1305_ABYTES / 2, NULL,
             0U, nonce, firstkey) != -1) {
         printf("crypto_aead_chacha20poly1305_decrypt() worked with a short "
                "ciphertext\n");
     }
+    if (m2len != 0) {
+        printf("Message length should have been set to zero after a failure\n");
+    }
+    m2len = 1;
     if (crypto_aead_chacha20poly1305_decrypt(m2, &m2len, NULL, c, 0U, NULL, 0U,
                                              nonce, firstkey) != -1) {
         printf("crypto_aead_chacha20poly1305_decrypt() worked with an empty "
                "ciphertext\n");
+    }
+    if (m2len != 0) {
+        printf("Message length should have been set to zero after a failure\n");
     }
 
     memcpy(c, m, MLEN);
@@ -234,14 +238,11 @@ tv_ietf(void)
         printf("m != m2\n");
     }
     memset(m2, 0, m2len);
-    if (crypto_aead_chacha20poly1305_ietf_decrypt_detached(m2, &m2len, NULL,
+    if (crypto_aead_chacha20poly1305_ietf_decrypt_detached(m2, NULL,
                                                            c, MLEN, mac,
                                                            ad, ADLEN,
                                                            nonce, firstkey) != 0) {
         printf("crypto_aead_chacha20poly1305_ietf_decrypt_detached() failed\n");
-    }
-    if (m2len != MLEN) {
-        printf("detached m2len is not properly set\n");
     }
     if (memcmp(m, m2, MLEN) != 0) {
         printf("detached m != m2\n");
@@ -278,17 +279,24 @@ tv_ietf(void)
     if (memcmp(m, m2, MLEN) != 0) {
         printf("m != m2 (adlen=0)\n");
     }
-
+    m2len = 1;
     if (crypto_aead_chacha20poly1305_ietf_decrypt(
             m2, &m2len, NULL, c, crypto_aead_chacha20poly1305_ietf_ABYTES / 2, NULL,
             0U, nonce, firstkey) != -1) {
         printf("crypto_aead_chacha20poly1305_ietf_decrypt() worked with a short "
                "ciphertext\n");
     }
+    if (m2len != 0) {
+        printf("Message length should have been set to zero after a failure\n");
+    }
+    m2len = 1;
     if (crypto_aead_chacha20poly1305_ietf_decrypt(m2, &m2len, NULL, c, 0U, NULL, 0U,
                                                   nonce, firstkey) != -1) {
         printf("crypto_aead_chacha20poly1305_ietf_decrypt() worked with an empty "
                "ciphertext\n");
+    }
+    if (m2len != 0) {
+        printf("Message length should have been set to zero after a failure\n");
     }
 
     memcpy(c, m, MLEN);

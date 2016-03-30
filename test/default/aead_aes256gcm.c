@@ -3167,12 +3167,16 @@ tv(void)
         }
 
         decrypted = (unsigned char *) sodium_malloc(message_len);
+        found_message_len = 1;
         if (crypto_aead_aes256gcm_decrypt(decrypted, &found_message_len,
                                           NULL, ciphertext,
                                           randombytes_uniform(ciphertext_len),
                                           ad, ad_len, nonce, key) != -1) {
             printf("Verification of test vector #%u after truncation succeeded\n",
                    (unsigned int) i);
+        }
+        if (found_message_len != 0) {
+            printf("Message length should have been set to zero after a failure\n");
         }
         if (crypto_aead_aes256gcm_decrypt(decrypted, &found_message_len,
                                           NULL, ciphertext,
@@ -3190,15 +3194,13 @@ tv(void)
         if (memcmp(decrypted, message, message_len) != 0) {
             printf("Incorrect decryption of test vector #%u\n", (unsigned int) i);
         }
-
         memset(decrypted, 0xd0, message_len);
-        if (crypto_aead_aes256gcm_decrypt_detached(decrypted, &found_message_len,
+        if (crypto_aead_aes256gcm_decrypt_detached(decrypted,
                                                    NULL, detached_ciphertext,
                                                    detached_ciphertext_len,
                                                    mac, ad, ad_len, nonce, key) != 0) {
             printf("Detached verification of test vector #%u failed\n", (unsigned int) i);
         }
-        assert((size_t) found_message_len == message_len);
         if (memcmp(decrypted, message, message_len) != 0) {
             printf("Incorrect decryption of test vector #%u\n", (unsigned int) i);
         }
