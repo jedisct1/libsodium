@@ -65,7 +65,7 @@ poly1305_init(poly1305_state_internal_t *st, const unsigned char key[32])
 static void
 poly1305_blocks(poly1305_state_internal_t *st, const unsigned char *m, unsigned long long bytes)
 {
-        const unsigned long long hibit = (st->final) ? 0 : ((unsigned long long)1 << 40); /* 1 << 128 */
+        const unsigned long long hibit = (st->final) ? 0ULL : (1ULL << 40); /* 1 << 128 */
         unsigned long long r0,r1,r2;
         unsigned long long s1,s2;
         unsigned long long h0,h1,h2;
@@ -149,7 +149,7 @@ poly1305_finish(poly1305_state_internal_t *st, unsigned char mac[16])
         /* compute h + -p */
         g0 = h0 + 5; c = (g0 >> 44); g0 &= 0xfffffffffff;
         g1 = h1 + c; c = (g1 >> 44); g1 &= 0xfffffffffff;
-        g2 = h2 + c - ((unsigned long long)1 << 42);
+        g2 = h2 + c - (1ULL << 42);
 
         /* select h if h < p, or h + -p if h >= p */
         c = (g2 >> ((sizeof(unsigned long long) * 8) - 1)) - 1;
