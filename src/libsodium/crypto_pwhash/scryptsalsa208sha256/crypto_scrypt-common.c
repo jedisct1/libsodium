@@ -129,7 +129,7 @@ escrypt_r(escrypt_local_t * local, const uint8_t * passwd, size_t passwdlen,
         return NULL;
     }
     src++;
-    N = (uint64_t)1 << N_log2;
+    N = (uint64_t) 1 << N_log2;
 
     src = decode64_uint32(&r, 30, src);
     if (!src) {
