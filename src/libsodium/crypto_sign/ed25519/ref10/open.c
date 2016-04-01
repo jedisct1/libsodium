@@ -11,9 +11,10 @@
 
 #ifndef ED25519_COMPAT
 static int
-crypto_sign_check_S_lt_l(const unsigned char *S)
+crypto_sign_check_S_lt_L(const unsigned char *S)
 {
-    static const unsigned char l[32] =
+    /* 2^252+27742317777372353535851937790883648493 */
+    static const unsigned char L[32] =
       { 0xed, 0xd3, 0xf5, 0x5c, 0x1a, 0x63, 0x12, 0x58,
         0xd6, 0x9c, 0xf7, 0xa2, 0xde, 0xf9, 0xde, 0x14,
         0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
@@ -24,8 +25,8 @@ crypto_sign_check_S_lt_l(const unsigned char *S)
 
     do {
         i--;
-        c |= ((S[i] - l[i]) >> 8) & n;
-        n &= ((S[i] ^ l[i]) - 1) >> 8;
+        c |= ((S[i] - L[i]) >> 8) & n;
+        n &= ((S[i] ^ L[i]) - 1) >> 8;
     } while (i != 0);
 
     return -(c == 0);
@@ -91,7 +92,7 @@ crypto_sign_ed25519_verify_detached(const unsigned char *sig,
     ge_p2 R;
 
 #ifndef ED25519_COMPAT
-    if (crypto_sign_check_S_lt_l(sig + 32) != 0 ||
+    if (crypto_sign_check_S_lt_L(sig + 32) != 0 ||
         small_order(sig) != 0) {
         return -1;
     }
