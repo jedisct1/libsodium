@@ -180,7 +180,7 @@ static const char *from_base64(void *dst, size_t *dst_len, const char *src) {
      * otherwise, only 0, 2 or 4 bits are buffered. The buffered
      * bits must also all be zero.
      */
-    if (acc_len > 4 || (acc & (((unsigned)1 << acc_len) - 1)) != 0) {
+    if (acc_len > 4 || (acc & ((1U << acc_len) - 1)) != 0) {
         return NULL;
     }
     *dst_len = len;

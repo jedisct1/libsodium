@@ -275,7 +275,7 @@ escrypt_kdf_nosse(escrypt_local_t * local,
         return -1;
     }
 #endif
-    if ((uint64_t)(r) * (uint64_t)(p) >= (1 << 30)) {
+    if ((uint64_t)(r) * (uint64_t)(p) >= ((uint64_t) 1 << 30)) {
         errno = EFBIG;
         return -1;
     }
