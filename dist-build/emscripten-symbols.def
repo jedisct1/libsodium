@@ -184,7 +184,10 @@ _crypto_onetimeauth_statebytes 0 1
 _crypto_onetimeauth_update 0 1
 _crypto_onetimeauth_verify 0 1
 _crypto_pwhash 1 1
+_crypto_pwhash_alg_argon2i13 1 1
+_crypto_pwhash_alg_default 1 1
 _crypto_pwhash_argon2i 0 1
+_crypto_pwhash_argon2i_alg_argon2i13 0 1
 _crypto_pwhash_argon2i_memlimit_interactive 0 1
 _crypto_pwhash_argon2i_memlimit_moderate 0 1
 _crypto_pwhash_argon2i_memlimit_sensitive 0 1
