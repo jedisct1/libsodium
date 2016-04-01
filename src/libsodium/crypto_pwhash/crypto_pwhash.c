@@ -1,5 +1,19 @@
 
+#include <errno.h>
+
 #include "crypto_pwhash.h"
+
+int
+crypto_pwhash_alg_argon2i13(void)
+{
+    return crypto_pwhash_ALG_ARGON2I13;
+}
+
+int
+crypto_pwhash_alg_default(void)
+{
+    return crypto_pwhash_ALG_ARGON2I13;
+}
 
 size_t
 crypto_pwhash_saltbytes(void)
@@ -59,10 +73,12 @@ int
 crypto_pwhash(unsigned char * const out, unsigned long long outlen,
               const char * const passwd, unsigned long long passwdlen,
               const unsigned char * const salt,
-              unsigned long long opslimit, size_t memlimit,
-              const struct crypto_pwhash_options *options)
+              unsigned long long opslimit, size_t memlimit, int alg)
 {
-    (void) options;
+    if (alg != crypto_pwhash_ALG_ARGON2I13) {
+        errno = EINVAL;
+        return -1;
+    }
     return crypto_pwhash_argon2i(out, outlen, passwd, passwdlen, salt,
                                  opslimit, memlimit);
 }

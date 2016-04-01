@@ -13,6 +13,14 @@
 extern "C" {
 #endif
 
+#define crypto_pwhash_ALG_ARGON2I13 1
+SODIUM_EXPORT
+int crypto_pwhash_alg_argon2i13(void);
+
+#define crypto_pwhash_ALG_DEFAULT crypto_pwhash_ALG_ARGON2I13
+SODIUM_EXPORT
+int crypto_pwhash_alg_default(void);
+
 #define crypto_pwhash_SALTBYTES crypto_pwhash_argon2i_SALTBYTES
 SODIUM_EXPORT
 size_t crypto_pwhash_saltbytes(void);
@@ -49,14 +57,11 @@ size_t crypto_pwhash_opslimit_sensitive(void);
 SODIUM_EXPORT
 size_t crypto_pwhash_memlimit_sensitive(void);
 
-typedef struct crypto_pwhash_options crypto_pwhash_options;
-
 SODIUM_EXPORT
 int crypto_pwhash(unsigned char * const out, unsigned long long outlen,
                   const char * const passwd, unsigned long long passwdlen,
                   const unsigned char * const salt,
-                  unsigned long long opslimit, size_t memlimit,
-                  const crypto_pwhash_options *options)
+                  unsigned long long opslimit, size_t memlimit, int alg)
             __attribute__ ((warn_unused_result));
 
 SODIUM_EXPORT

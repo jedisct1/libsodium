@@ -92,7 +92,7 @@ static void tv(void)
         if (crypto_pwhash(out, (unsigned long long) tests[i].outlen,
                           passwd, tests[i].passwdlen,
                           (const unsigned char *) salt, tests[i].opslimit,
-                          tests[i].memlimit, NULL) != 0) {
+                          tests[i].memlimit, crypto_pwhash_alg_default()) != 0) {
             printf("[tv] pwhash failure (maybe intentional): [%u]\n", (unsigned int) i);
             continue;
         }
@@ -142,7 +142,7 @@ static void tv2(void)
         if (crypto_pwhash(out, (unsigned long long) tests[i].outlen,
                           passwd, tests[i].passwdlen,
                           (const unsigned char *) salt, tests[i].opslimit,
-                          tests[i].memlimit, NULL) != 0) {
+                          tests[i].memlimit, crypto_pwhash_alg_default()) != 0) {
             printf("[tv2] pwhash failure: [%u]\n", (unsigned int) i);
             continue;
         }
@@ -151,23 +151,27 @@ static void tv2(void)
     } while (++i < (sizeof tests) / (sizeof tests[0]));
 
     if (crypto_pwhash(out, sizeof out, "password", strlen("password"),
-                      salt, 3, 1, NULL) != -1) {
+                      salt, 3, 1ULL << 12, 0) != -1) {
+        printf("[tv2] pwhash should have failed (0)\n");
+    }
+    if (crypto_pwhash(out, sizeof out, "password", strlen("password"),
+                      salt, 3, 1, crypto_pwhash_alg_default()) != -1) {
         printf("[tv2] pwhash should have failed (1)\n");
     }
     if (crypto_pwhash(out, sizeof out, "password", strlen("password"),
-                      salt, 3, 1ULL << 12, NULL) != -1) {
+                      salt, 3, 1ULL << 12, crypto_pwhash_alg_default()) != -1) {
         printf("[tv2] pwhash should have failed (2)\n");
     }
     if (crypto_pwhash(out, sizeof out, "password", strlen("password"),
-                      salt, 2, 1ULL << 12, NULL) != -1) {
+                      salt, 2, 1ULL << 12, crypto_pwhash_alg_default()) != -1) {
         printf("[tv2] pwhash should have failed (3)\n");
     }
     if (crypto_pwhash(out, 0x100000000ULL, "password", strlen("password"),
-                      salt, 3, 1ULL << 12, NULL) != -1) {
+                      salt, 3, 1ULL << 12, crypto_pwhash_alg_default()) != -1) {
         printf("[tv2] pwhash with a long output length should have failed\n");
     }
     if (crypto_pwhash(out, sizeof out, "password", 0x100000000ULL,
-                      salt, 3, 1ULL << 12, NULL) != -1) {
+                      salt, 3, 1ULL << 12, crypto_pwhash_alg_default()) != -1) {
         printf("[tv2] pwhash with a long password length should have failed\n");
     }
 }
@@ -349,6 +353,8 @@ int main(void)
            crypto_pwhash_memlimit_moderate());
     assert(crypto_pwhash_argon2i_memlimit_sensitive() ==
            crypto_pwhash_memlimit_sensitive());
+    assert(crypto_pwhash_alg_argon2i13() == crypto_pwhash_ALG_ARGON2I13);
+    assert(crypto_pwhash_alg_argon2i13() == crypto_pwhash_alg_default());
 
     sodium_free(salt);
     sodium_free(str_out);
