@@ -353,6 +353,7 @@ int main(void)
            crypto_pwhash_memlimit_moderate());
     assert(crypto_pwhash_argon2i_memlimit_sensitive() ==
            crypto_pwhash_memlimit_sensitive());
+    assert(crypto_pwhash_alg_argon2i13() == crypto_pwhash_argon2i_alg_argon2i13());
     assert(crypto_pwhash_alg_argon2i13() == crypto_pwhash_ALG_ARGON2I13);
     assert(crypto_pwhash_alg_argon2i13() == crypto_pwhash_alg_default());
 

@@ -80,7 +80,7 @@ crypto_pwhash(unsigned char * const out, unsigned long long outlen,
         return -1;
     }
     return crypto_pwhash_argon2i(out, outlen, passwd, passwdlen, salt,
-                                 opslimit, memlimit);
+                                 opslimit, memlimit, alg);
 }
 
 int

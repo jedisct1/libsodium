@@ -12,6 +12,10 @@
 extern "C" {
 #endif
 
+#define crypto_pwhash_argon2i_ALG_ARGON2I13 1
+SODIUM_EXPORT
+int crypto_pwhash_argon2i_alg_argon2i13(void);
+
 #define crypto_pwhash_argon2i_SALTBYTES 16U
 SODIUM_EXPORT
 size_t crypto_pwhash_argon2i_saltbytes(void);
@@ -55,7 +59,7 @@ int crypto_pwhash_argon2i(unsigned char * const out,
                           unsigned long long passwdlen,
                           const unsigned char * const salt,
                           unsigned long long opslimit,
-                          size_t memlimit)
+                          size_t memlimit, int alg)
             __attribute__ ((warn_unused_result));
 
 SODIUM_EXPORT

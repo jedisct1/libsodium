@@ -13,6 +13,12 @@
 
 #define STR_HASHBYTES 32U
 
+int
+crypto_pwhash_argon2i_alg_argon2i13(void)
+{
+    return crypto_pwhash_argon2i_ALG_ARGON2I13;
+}
+
 size_t
 crypto_pwhash_argon2i_saltbytes(void)
 {
@@ -74,8 +80,11 @@ crypto_pwhash_argon2i(unsigned char * const out,
                       unsigned long long passwdlen,
                       const unsigned char * const salt,
                       unsigned long long opslimit,
-                      size_t memlimit)
+                      size_t memlimit, int alg)
 {
+    if (alg != crypto_pwhash_argon2i_ALG_ARGON2I13) {
+        return -1;
+    }
     memlimit /= 1024U;
     if (outlen > ARGON2_MAX_OUTLEN || passwdlen > ARGON2_MAX_PWD_LENGTH ||
         opslimit > ARGON2_MAX_TIME || memlimit > ARGON2_MAX_MEMORY) {

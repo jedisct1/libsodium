@@ -13,7 +13,7 @@
 extern "C" {
 #endif
 
-#define crypto_pwhash_ALG_ARGON2I13 1
+#define crypto_pwhash_ALG_ARGON2I13 crypto_pwhash_argon2i_ALG_ARGON2I13
 SODIUM_EXPORT
 int crypto_pwhash_alg_argon2i13(void);
 
