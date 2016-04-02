@@ -4,6 +4,7 @@
 #include <stddef.h>
 
 #include "crypto_onetimeauth_poly1305.h"
+#include "../onetimeauth_poly1305.h"
 
 extern struct crypto_onetimeauth_poly1305_implementation
     crypto_onetimeauth_poly1305_donna_implementation;
