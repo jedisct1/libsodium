@@ -787,6 +787,7 @@ crypto_aead_aes256gcm_decrypt_detached_afternm(unsigned char *m, unsigned char *
             d |= (mac[i] ^ (T[i] ^ accum[15 - i]));
         }
         if (d != 0) {
+            memset(m, 0, mlen);
             return -1;
         }
     }

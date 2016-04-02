@@ -65,25 +65,22 @@ crypto_aead_chacha20poly1305_encrypt(unsigned char *c,
                                      const unsigned char *npub,
                                      const unsigned char *k)
 {
-    int ret;
+    unsigned long long clen = 0ULL;
+    int                ret;
 
-/* LCOV_EXCL_START */
-#ifdef UINT64_MAX
     if (mlen > UINT64_MAX - crypto_aead_chacha20poly1305_ABYTES) {
-        if (clen_p != NULL) {
-            *clen_p = 0ULL;
-        }
-        return -1;
+        abort(); /* LCOV_EXCL_LINE */
     }
-#endif
-/* LCOV_EXCL_STOP */
     ret = crypto_aead_chacha20poly1305_encrypt_detached(c,
                                                         c + mlen, NULL,
                                                         m, mlen,
                                                         ad, adlen,
                                                         nsec, npub, k);
     if (clen_p != NULL) {
-        *clen_p = mlen + crypto_aead_chacha20poly1305_ABYTES;
+        if (ret == 0) {
+            clen = mlen + crypto_aead_chacha20poly1305_ABYTES;
+        }
+        *clen_p = clen;
     }
     return ret;
 }
@@ -143,25 +140,22 @@ crypto_aead_chacha20poly1305_ietf_encrypt(unsigned char *c,
                                           const unsigned char *npub,
                                           const unsigned char *k)
 {
-    int ret;
+    unsigned long long clen = 0ULL;
+    int                ret;
 
-/* LCOV_EXCL_START */
-#ifdef UINT64_MAX
     if (mlen > UINT64_MAX - crypto_aead_chacha20poly1305_ietf_ABYTES) {
-        if (clen_p != NULL) {
-            *clen_p = 0ULL;
-        }
-        return -1;
+        abort(); /* LCOV_EXCL_LINE */
     }
-#endif
-/* LCOV_EXCL_STOP */
     ret = crypto_aead_chacha20poly1305_ietf_encrypt_detached(c,
                                                              c + mlen, NULL,
                                                              m, mlen,
                                                              ad, adlen,
                                                              nsec, npub, k);
     if (clen_p != NULL) {
-        *clen_p = mlen + crypto_aead_chacha20poly1305_ietf_ABYTES;
+        if (ret == 0) {
+            clen = mlen + crypto_aead_chacha20poly1305_ietf_ABYTES;
+        }
+        *clen_p = clen;
     }
     return ret;
 }
