@@ -1,4 +1,5 @@
 
+#include <stdint.h>
 #include <stdlib.h>
 #include <limits.h>
 #include <string.h>
@@ -9,20 +10,9 @@
 #include "crypto_verify_16.h"
 #include "utils.h"
 
-static unsigned char _pad0[16];
+#include "../../sodium/common.h"
 
-static inline void
-_u64_le_from_ull(unsigned char out[8U], unsigned long long x)
-{
-    out[0] = (unsigned char) (x & 0xff); x >>= 8;
-    out[1] = (unsigned char) (x & 0xff); x >>= 8;
-    out[2] = (unsigned char) (x & 0xff); x >>= 8;
-    out[3] = (unsigned char) (x & 0xff); x >>= 8;
-    out[4] = (unsigned char) (x & 0xff); x >>= 8;
-    out[5] = (unsigned char) (x & 0xff); x >>= 8;
-    out[6] = (unsigned char) (x & 0xff); x >>= 8;
-    out[7] = (unsigned char) (x & 0xff);
-}
+static const unsigned char _pad0[16];
 
 int
 crypto_aead_chacha20poly1305_encrypt_detached(unsigned char *c,
@@ -46,13 +36,13 @@ crypto_aead_chacha20poly1305_encrypt_detached(unsigned char *c,
     sodium_memzero(block0, sizeof block0);
 
     crypto_onetimeauth_poly1305_update(&state, ad, adlen);
-    _u64_le_from_ull(slen, adlen);
+    STORE64_LE(slen, (uint64_t) adlen);
     crypto_onetimeauth_poly1305_update(&state, slen, sizeof slen);
 
     crypto_stream_chacha20_xor_ic(c, m, mlen, npub, 1U, k);
 
     crypto_onetimeauth_poly1305_update(&state, c, mlen);
-    _u64_le_from_ull(slen, mlen);
+    STORE64_LE(slen, (uint64_t) mlen);
     crypto_onetimeauth_poly1305_update(&state, slen, sizeof slen);
 
     crypto_onetimeauth_poly1305_final(&state, mac);
@@ -78,8 +68,8 @@ crypto_aead_chacha20poly1305_encrypt(unsigned char *c,
     int ret;
 
 /* LCOV_EXCL_START */
-#ifdef ULONG_LONG_MAX
-    if (mlen > ULONG_LONG_MAX - crypto_aead_chacha20poly1305_ABYTES) {
+#ifdef UINT64_MAX
+    if (mlen > UINT64_MAX - crypto_aead_chacha20poly1305_ABYTES) {
         if (clen_p != NULL) {
             *clen_p = 0ULL;
         }
@@ -127,10 +117,10 @@ crypto_aead_chacha20poly1305_ietf_encrypt_detached(unsigned char *c,
     crypto_onetimeauth_poly1305_update(&state, c, mlen);
     crypto_onetimeauth_poly1305_update(&state, _pad0, (0x10 - mlen) & 0xf);
 
-    _u64_le_from_ull(slen, adlen);
+    STORE64_LE(slen, (uint64_t) adlen);
     crypto_onetimeauth_poly1305_update(&state, slen, sizeof slen);
 
-    _u64_le_from_ull(slen, mlen);
+    STORE64_LE(slen, (uint64_t) mlen);
     crypto_onetimeauth_poly1305_update(&state, slen, sizeof slen);
 
     crypto_onetimeauth_poly1305_final(&state, mac);
@@ -156,8 +146,8 @@ crypto_aead_chacha20poly1305_ietf_encrypt(unsigned char *c,
     int ret;
 
 /* LCOV_EXCL_START */
-#ifdef ULONG_LONG_MAX
-    if (mlen > ULONG_LONG_MAX - crypto_aead_chacha20poly1305_ietf_ABYTES) {
+#ifdef UINT64_MAX
+    if (mlen > UINT64_MAX - crypto_aead_chacha20poly1305_ietf_ABYTES) {
         if (clen_p != NULL) {
             *clen_p = 0ULL;
         }
@@ -200,12 +190,12 @@ crypto_aead_chacha20poly1305_decrypt_detached(unsigned char *m,
     sodium_memzero(block0, sizeof block0);
 
     crypto_onetimeauth_poly1305_update(&state, ad, adlen);
-    _u64_le_from_ull(slen, adlen);
+    STORE64_LE(slen, (uint64_t) adlen);
     crypto_onetimeauth_poly1305_update(&state, slen, sizeof slen);
 
     mlen = clen;
     crypto_onetimeauth_poly1305_update(&state, c, mlen);
-    _u64_le_from_ull(slen, mlen);
+    STORE64_LE(slen, (uint64_t) mlen);
     crypto_onetimeauth_poly1305_update(&state, slen, sizeof slen);
 
     crypto_onetimeauth_poly1305_final(&state, computed_mac);
@@ -283,10 +273,10 @@ crypto_aead_chacha20poly1305_ietf_decrypt_detached(unsigned char *m,
     crypto_onetimeauth_poly1305_update(&state, c, mlen);
     crypto_onetimeauth_poly1305_update(&state, _pad0, (0x10 - mlen) & 0xf);
 
-    _u64_le_from_ull(slen, adlen);
+    STORE64_LE(slen, (uint64_t) adlen);
     crypto_onetimeauth_poly1305_update(&state, slen, sizeof slen);
 
-    _u64_le_from_ull(slen, mlen);
+    STORE64_LE(slen, (uint64_t) mlen);
     crypto_onetimeauth_poly1305_update(&state, slen, sizeof slen);
 
     crypto_onetimeauth_poly1305_final(&state, computed_mac);
