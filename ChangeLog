@@ -1,12 +1,12 @@
 
 * Version 1.0.9
- - The Javascript target now includes a "sumo" option to include all
+ - The Javascript target now includes a `--sumo` option to include all
 the symbols of the original C library.
  - A detached API was added to the ChaCha20-Poly1305 and AES256-GCM
 implementations.
  - The Argon2i password hashing function was added, and is accessible
 directly and through a new, high-level `crypto_pwhash` API. The scrypt
-function remains available.
+function remains available as well.
  - A speed-record AVX2 implementation of BLAKE2b was added (thanks to
 Samuel Neves).
  - The library can now be compiled using C++Builder (thanks to @jcolli44)
