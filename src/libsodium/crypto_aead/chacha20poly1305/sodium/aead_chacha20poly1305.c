@@ -12,7 +12,7 @@
 
 #include "../../sodium/common.h"
 
-static const unsigned char _pad0[16];
+static const unsigned char _pad0[16] = { 0 };
 
 int
 crypto_aead_chacha20poly1305_encrypt_detached(unsigned char *c,
