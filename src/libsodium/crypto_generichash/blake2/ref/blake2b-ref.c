@@ -86,6 +86,8 @@ static inline int blake2b_increment_counter( blake2b_state *S, const uint64_t in
 
 /* Parameter-related functions */
 #if 0
+/* Redundant: digest length is directly set in blake2b_init(), blake2b_init_salt_personal(),
+ * blake2b_init_key() and blake2b_init_key_salt_personal() */
 static inline int blake2b_param_set_digest_length( blake2b_param *P, const uint8_t digest_length )
 {
   P->digest_length = digest_length;
