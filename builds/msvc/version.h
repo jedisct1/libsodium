@@ -4,7 +4,7 @@
 
 #include "export.h"
 
-#define SODIUM_VERSION_STRING "1.0.9"
+#define SODIUM_VERSION_STRING "1.0.10"
 
 #define SODIUM_LIBRARY_VERSION_MAJOR 9
 #define SODIUM_LIBRARY_VERSION_MINOR 2
