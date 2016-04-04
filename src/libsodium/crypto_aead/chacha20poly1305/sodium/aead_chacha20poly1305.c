@@ -10,7 +10,7 @@
 #include "crypto_verify_16.h"
 #include "utils.h"
 
-#include "../../sodium/common.h"
+#include "../../../sodium/common.h"
 
 static const unsigned char _pad0[16] = { 0 };
 

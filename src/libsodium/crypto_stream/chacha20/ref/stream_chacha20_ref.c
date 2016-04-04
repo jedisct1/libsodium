@@ -13,7 +13,7 @@
 #include "crypto_stream_chacha20.h"
 #include "stream_chacha20_ref.h"
 #include "../stream_chacha20.h"
-#include "../../sodium/common.h"
+#include "../../../sodium/common.h"
 
 struct chacha_ctx {
     uint32_t input[16];

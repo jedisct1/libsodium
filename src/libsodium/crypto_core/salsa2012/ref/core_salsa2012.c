@@ -8,7 +8,7 @@ Public domain.
 #include <stdlib.h>
 
 #include "crypto_core_salsa2012.h"
-#include "../../sodium/common.h"
+#include "../../../sodium/common.h"
 
 #define ROUNDS 12
 #define U32C(v) (v##U)

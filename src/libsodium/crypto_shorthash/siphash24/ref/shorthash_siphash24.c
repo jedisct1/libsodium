@@ -1,5 +1,5 @@
 #include "crypto_shorthash_siphash24.h"
-#include "../../sodium/common.h"
+#include "../../../sodium/common.h"
 
 typedef uint64_t u64;
 typedef uint32_t u32;
