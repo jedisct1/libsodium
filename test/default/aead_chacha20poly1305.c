@@ -111,7 +111,7 @@ tv(void)
     }
     m2len = 1;
     if (crypto_aead_chacha20poly1305_decrypt(
-            m2, &m2len, NULL, c,
+            m2, &m2len, NULL, NULL,
             randombytes_uniform(crypto_aead_chacha20poly1305_ABYTES),
             NULL, 0U, nonce, firstkey) != -1) {
         printf("crypto_aead_chacha20poly1305_decrypt() worked with a short "
@@ -282,7 +282,7 @@ tv_ietf(void)
     }
     m2len = 1;
     if (crypto_aead_chacha20poly1305_ietf_decrypt(
-            m2, &m2len, NULL, c,
+            m2, &m2len, NULL, NULL,
             randombytes_uniform(crypto_aead_chacha20poly1305_ietf_ABYTES),
             NULL, 0U, nonce, firstkey) != -1) {
         printf("crypto_aead_chacha20poly1305_ietf_decrypt() worked with a short "
