@@ -8,7 +8,7 @@
 #include "crypto_verify_32.h"
 #include "randombytes.h"
 #include "utils.h"
-#include "../../../crypto_core/curve25519/ref10/curve25519_ref10.h"
+#include "private/curve25519_ref10.h"
 
 int crypto_sign_edwards25519sha512batch_keypair(unsigned char *pk,
                                                 unsigned char *sk)

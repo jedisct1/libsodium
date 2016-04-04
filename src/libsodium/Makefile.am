@@ -24,7 +24,6 @@ libsodium_la_SOURCES = \
 	crypto_core/curve25519/ref10/base.h \
 	crypto_core/curve25519/ref10/base2.h \
 	crypto_core/curve25519/ref10/curve25519_ref10.c \
-	crypto_core/curve25519/ref10/curve25519_ref10.h \
 	crypto_core/hsalsa20/ref2/core_hsalsa20.c \
 	crypto_core/hsalsa20/core_hsalsa20_api.c \
 	crypto_core/salsa20/ref/core_salsa20.c \
@@ -102,6 +101,7 @@ libsodium_la_SOURCES = \
 	crypto_verify/64/verify_64_api.c \
 	crypto_verify/64/ref/verify_64.c \
 	include/sodium/private/common.h \
+	include/sodium/private/curve25519_ref10.h \
 	randombytes/randombytes.c \
 	sodium/core.c \
 	sodium/runtime.c \
