@@ -23,7 +23,7 @@
 #include "crypto_generichash_blake2b.h"
 #include "runtime.h"
 #include "utils.h"
-#include "../../sodium/common.h"
+#include "private/common.h"
 
 #include "argon2-core.h"
 #include "argon2-impl.h"

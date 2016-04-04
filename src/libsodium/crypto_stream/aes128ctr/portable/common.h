@@ -5,7 +5,7 @@
 #define COMMON_H
 
 #include "types.h"
-#include "../../../sodium/common.h"
+#include "private/common.h"
 
 /* Macros required only for key expansion */
 

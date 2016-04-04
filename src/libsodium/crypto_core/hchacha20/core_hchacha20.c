@@ -4,7 +4,7 @@
 
 #include "core_hchacha20.h"
 #include "crypto_core_hchacha20.h"
-#include "../../sodium/common.h"
+#include "private/common.h"
 
 int
 crypto_core_hchacha20(unsigned char *out, const unsigned char *in,

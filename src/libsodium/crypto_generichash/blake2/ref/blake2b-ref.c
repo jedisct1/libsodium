@@ -19,7 +19,7 @@
 #include "blake2.h"
 #include "blake2-impl.h"
 #include "runtime.h"
-#include "../../../sodium/common.h"
+#include "private/common.h"
 
 #ifdef HAVE_TI_MODE
 # if defined(__SIZEOF_INT128__)

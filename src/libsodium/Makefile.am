@@ -51,7 +51,6 @@ libsodium_la_SOURCES = \
 	crypto_onetimeauth/poly1305/donna/poly1305_donna32.h \
 	crypto_onetimeauth/poly1305/donna/poly1305_donna64.h \
 	crypto_onetimeauth/poly1305/donna/poly1305_donna.c \
-	crypto_pwhash/crypto_pwhash.c \
 	crypto_pwhash/argon2/argon2-core.c \
 	crypto_pwhash/argon2/argon2-core.h \
 	crypto_pwhash/argon2/argon2-encoding.c \
@@ -64,6 +63,7 @@ libsodium_la_SOURCES = \
 	crypto_pwhash/argon2/blake2b-long.h \
 	crypto_pwhash/argon2/blamka-round-ref.h \
 	crypto_pwhash/argon2/pwhash_argon2i.c \
+	crypto_pwhash/crypto_pwhash.c \
 	crypto_pwhash/scryptsalsa208sha256/crypto_scrypt-common.c \
 	crypto_pwhash/scryptsalsa208sha256/crypto_scrypt.h \
 	crypto_pwhash/scryptsalsa208sha256/scrypt_platform.c \
@@ -86,11 +86,11 @@ libsodium_la_SOURCES = \
 	crypto_sign/ed25519/ref10/keypair.c \
 	crypto_sign/ed25519/ref10/open.c \
 	crypto_sign/ed25519/ref10/sign.c \
-	crypto_stream/crypto_stream.c \
 	crypto_stream/chacha20/stream_chacha20.c \
 	crypto_stream/chacha20/stream_chacha20.h \
 	crypto_stream/chacha20/ref/stream_chacha20_ref.h \
 	crypto_stream/chacha20/ref/stream_chacha20_ref.c \
+	crypto_stream/crypto_stream.c \
 	crypto_stream/salsa20/stream_salsa20_api.c \
 	crypto_stream/xsalsa20/stream_xsalsa20_api.c \
 	crypto_stream/xsalsa20/ref/stream_xsalsa20.c \
@@ -101,8 +101,8 @@ libsodium_la_SOURCES = \
 	crypto_verify/32/ref/verify_32.c \
 	crypto_verify/64/verify_64_api.c \
 	crypto_verify/64/ref/verify_64.c \
+	include/sodium/private.h \
 	randombytes/randombytes.c \
-	sodium/common.h \
 	sodium/core.c \
 	sodium/runtime.c \
 	sodium/utils.c \
