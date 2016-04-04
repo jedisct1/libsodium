@@ -4,7 +4,7 @@
 #include "crypto_hash_sha512.h"
 #include "crypto_sign_ed25519.h"
 #include "utils.h"
-#include "../../../crypto_core/curve25519/ref10/curve25519_ref10.h"
+#include "private/curve25519_ref10.h"
 
 int
 crypto_sign_ed25519_detached(unsigned char *sig, unsigned long long *siglen_p,

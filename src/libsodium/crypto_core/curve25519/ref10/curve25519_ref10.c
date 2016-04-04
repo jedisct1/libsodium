@@ -1,8 +1,8 @@
 #include <stddef.h>
 #include <stdint.h>
 #include <string.h>
-#include "curve25519_ref10.h"
 #include "crypto_verify_32.h"
+#include "private/curve25519_ref10.h"
 
 static uint64_t load_3(const unsigned char *in)
 {

@@ -7,7 +7,7 @@
 #include "utils.h"
 #include "x25519_ref10.h"
 #include "../scalarmult_curve25519.h"
-#include "../../../crypto_core/curve25519/ref10/curve25519_ref10.h"
+#include "private/curve25519_ref10.h"
 
 /*
 Replace (f,g) with (g,f) if b == 1;
