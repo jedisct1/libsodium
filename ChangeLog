@@ -1,4 +1,8 @@
 
+* Version 1.0.10
+ - This release only fixes a compilation issue reported with some older
+gcc versions. There are no functional changes over the previous release.
+
 * Version 1.0.9
  - The Javascript target now includes a `--sumo` option to include all
 the symbols of the original C library.

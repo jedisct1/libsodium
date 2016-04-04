@@ -111,8 +111,9 @@ tv(void)
     }
     m2len = 1;
     if (crypto_aead_chacha20poly1305_decrypt(
-            m2, &m2len, NULL, c, crypto_aead_chacha20poly1305_ABYTES / 2, NULL,
-            0U, nonce, firstkey) != -1) {
+            m2, &m2len, NULL, NULL,
+            randombytes_uniform(crypto_aead_chacha20poly1305_ABYTES),
+            NULL, 0U, nonce, firstkey) != -1) {
         printf("crypto_aead_chacha20poly1305_decrypt() worked with a short "
                "ciphertext\n");
     }
@@ -281,8 +282,9 @@ tv_ietf(void)
     }
     m2len = 1;
     if (crypto_aead_chacha20poly1305_ietf_decrypt(
-            m2, &m2len, NULL, c, crypto_aead_chacha20poly1305_ietf_ABYTES / 2, NULL,
-            0U, nonce, firstkey) != -1) {
+            m2, &m2len, NULL, NULL,
+            randombytes_uniform(crypto_aead_chacha20poly1305_ietf_ABYTES),
+            NULL, 0U, nonce, firstkey) != -1) {
         printf("crypto_aead_chacha20poly1305_ietf_decrypt() worked with a short "
                "ciphertext\n");
     }
@@ -314,7 +316,7 @@ tv_ietf(void)
     printf("\n");
 
     if (crypto_aead_chacha20poly1305_ietf_decrypt(c, &m2len, NULL, c, CLEN,
-                                             NULL, 0U, nonce, firstkey) != 0) {
+                                                  NULL, 0U, nonce, firstkey) != 0) {
         printf("crypto_aead_chacha20poly1305_ietf_decrypt() failed (adlen=0)\n");
     }
     if (m2len != MLEN) {
