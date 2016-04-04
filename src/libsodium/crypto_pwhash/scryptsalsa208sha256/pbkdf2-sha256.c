@@ -33,7 +33,7 @@
 #include "crypto_auth_hmacsha256.h"
 #include "pbkdf2-sha256.h"
 #include "utils.h"
-#include "../../sodium/common.h"
+#include "private/common.h"
 
 /**
  * PBKDF2_SHA256(passwd, passwdlen, salt, saltlen, c, buf, dkLen):

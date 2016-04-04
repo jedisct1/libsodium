@@ -46,7 +46,7 @@
 
 #include "../pbkdf2-sha256.h"
 #include "../crypto_scrypt.h"
-#include "../../../sodium/common.h"
+#include "private/common.h"
 
 #if defined(__XOP__) && defined(DISABLED)
 #define ARX(out, in1, in2, s) \

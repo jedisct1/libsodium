@@ -4,7 +4,7 @@
 
 #include "blake2.h"
 #include "blake2-impl.h"
-#include "../../../sodium/common.h"
+#include "private/common.h"
 
 CRYPTO_ALIGN(64) static const uint64_t blake2b_IV[8] =
 {

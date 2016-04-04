@@ -28,7 +28,7 @@
 
 #include "crypto_hash_sha256.h"
 #include "utils.h"
-#include "../../../sodium/common.h"
+#include "private/common.h"
 
 #include <sys/types.h>
 
