@@ -26,12 +26,18 @@ main(void)
         crypto_generichash_update(&st, in, i);
         crypto_generichash_update(&st, in, i);
         crypto_generichash_update(&st, in, i);
-        crypto_generichash_final(&st, out,
-                                 1 + i % crypto_generichash_BYTES_MAX);
+        if (crypto_generichash_final(&st, out,
+                                     1 + i % crypto_generichash_BYTES_MAX) != 0) {
+            printf("crypto_generichash_final() should have returned 0\n");
+        }
         for (j = 0; j < 1 + i % crypto_generichash_BYTES_MAX; ++j) {
             printf("%02x", (unsigned int)out[j]);
         }
         printf("\n");
+        if (crypto_generichash_final(&st, out,
+                                     1 + i % crypto_generichash_BYTES_MAX) != -1) {
+            printf("crypto_generichash_final() should have returned -1\n");
+        }
     }
 
     assert(crypto_generichash_init(&st, k, sizeof k, 0U) == -1);
