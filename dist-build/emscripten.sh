@@ -10,16 +10,16 @@ export EXPORTED_FUNCTIONS="$EXPORTED_FUNCTIONS_STANDARD"
 if [ "x$1" = "x--sumo" ]; then
   export EXPORTED_FUNCTIONS="$EXPORTED_FUNCTIONS_SUMO"
   export PREFIX="$(pwd)/libsodium-js-sumo"
-  export DONE_FILE='test/js-sumo.done'
+  export DONE_FILE="$(pwd)/test/js-sumo.done"
 else
   export PREFIX="$(pwd)/libsodium-js"
-  export DONE_FILE='test/js.done'
+  export DONE_FILE="$(pwd)/test/js.done"
 fi
 export JS_EXPORTS_FLAGS="-s EXPORTED_FUNCTIONS=${EXPORTED_FUNCTIONS}"
 
 if [ "x$1" = "x--browser-tests" ]; then
   export BROWSER_TESTS='yes'
-  export DONE_FILE='test/browser-js.done'
+  export DONE_FILE="$(pwd)/test/browser-js.done"
 fi
 
 if [ "x$BROWSER_TESTS" != "x" ]; then
