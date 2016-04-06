@@ -10,21 +10,22 @@ export EXPORTED_FUNCTIONS="$EXPORTED_FUNCTIONS_STANDARD"
 if [ "x$1" = "x--sumo" ]; then
   export EXPORTED_FUNCTIONS="$EXPORTED_FUNCTIONS_SUMO"
   export PREFIX="$(pwd)/libsodium-js-sumo"
+  export DONE_FILE='test/js-sumo.done'
 else
   export PREFIX="$(pwd)/libsodium-js"
+  export DONE_FILE='test/js.done'
 fi
 export JS_EXPORTS_FLAGS="-s EXPORTED_FUNCTIONS=${EXPORTED_FUNCTIONS}"
 
 if [ "x$1" = "x--browser-tests" ]; then
   export BROWSER_TESTS='yes'
+  export DONE_FILE='test/browser-js.done'
 fi
 
 if [ "x$BROWSER_TESTS" != "x" ]; then
   echo "Tests will be built to be run in a web browser"
-  rm -f test/browser-js.done
-else
-  rm -f test/js.done
 fi
+rm -f "$DONE_FILE"
 
 emconfigure ./configure --enable-minimal --disable-shared --prefix="$PREFIX" \
   CFLAGS="-O3" && \
@@ -72,7 +73,7 @@ if [ "x$BROWSER_TESTS" != "x" ]; then
       sed "s/{{tname}}/${tname}/" index.html.tpl > "browser/${tname}.html"
       echo "${tname}.html" >> "browser/tests.txt"
     done
-    touch -r "${PREFIX}/lib/libsodium.js" ../browser-js.done
+    touch -r "${PREFIX}/lib/libsodium.js" "$DONE_FILE"
   )
 else
   echo 'Running the test suite'
@@ -86,7 +87,7 @@ else
     done
   )
   make $MAKE_FLAGS check || exit 1
-  touch -r "${PREFIX}/lib/libsodium.js" test/js.done
+  touch -r "${PREFIX}/lib/libsodium.js" "$DONE_FILE"
 fi
 
 echo 'Done.'
