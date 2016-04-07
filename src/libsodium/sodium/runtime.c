@@ -173,7 +173,7 @@ _sodium_runtime_intel_cpu_features(CPUFeatures * const cpu_features)
 #endif
 
 #if defined(HAVE_WMMINTRIN_H) || \
-    (defined(_MSC_VER) && (defined(_M_X64) || defined(_M_AMD64) || defined(_M_IX86)))
+    (defined(_MSC_VER) && _MSC_VER >= 1600 && (defined(_M_X64) || defined(_M_AMD64) || defined(_M_IX86)))
     cpu_features->has_pclmul = ((cpu_info[2] & CPUID_ECX_PCLMUL) != 0x0);
     cpu_features->has_aesni = ((cpu_info[2] & CPUID_ECX_AESNI) != 0x0);
 #else
