@@ -299,7 +299,6 @@ int decode_string(argon2_context *ctx, const char *str, argon2_type type) {
     ctx->adlen = 0;
     ctx->saltlen = 0;
     ctx->outlen = 0;
-    ctx->pwdlen = 0;
     if (type == Argon2_i) {
         CC("$argon2i");
     } else {
