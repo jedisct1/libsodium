@@ -14,7 +14,7 @@
 #include "utils.h"
 
 #if defined(HAVE_WMMINTRIN_H) || \
-    (defined(_MSC_VER) && (defined(_M_X64) || defined(_M_AMD64) || defined(_M_IX86)))
+    (defined(_MSC_VER) && _MSC_VER >= 1600 && (defined(_M_X64) || defined(_M_AMD64) || defined(_M_IX86)))
 
 #pragma GCC target("ssse3")
 #pragma GCC target("aes")
