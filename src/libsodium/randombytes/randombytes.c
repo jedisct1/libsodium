@@ -20,17 +20,26 @@
 /* C++Builder defines a "random" macro */
 #undef random
 
-#ifndef __EMSCRIPTEN__
-#ifdef __native_client__
-static const randombytes_implementation *implementation =
-    &randombytes_nativeclient_implementation;
+static const randombytes_implementation *implementation;
+
+#ifdef __EMSCRIPTEN__
+# define RANDOMBYTES_DEFAULT_IMPLEMENTATION NULL
 #else
-static const randombytes_implementation *implementation =
-    &randombytes_sysrandom_implementation;
+# ifdef __native_client__
+#  define RANDOMBYTES_DEFAULT_IMPLEMENTATION &randombytes_nativeclient_implementation;
+# else
+#  define RANDOMBYTES_DEFAULT_IMPLEMENTATION &randombytes_sysrandom_implementation;
+# endif
 #endif
-#else
-static const randombytes_implementation *implementation = NULL;
-#endif
+
+static void
+randombytes_init_if_needed(void)
+{
+    if (implementation == NULL) {
+        implementation = RANDOMBYTES_DEFAULT_IMPLEMENTATION;
+        implementation->stir();
+    }
+}
 
 int
 randombytes_set_implementation(randombytes_implementation *impl)
@@ -44,6 +53,7 @@ const char *
 randombytes_implementation_name(void)
 {
 #ifndef __EMSCRIPTEN__
+    randombytes_init_if_needed();
     return implementation->implementation_name();
 #else
     return "js";
@@ -54,6 +64,7 @@ uint32_t
 randombytes_random(void)
 {
 #ifndef __EMSCRIPTEN__
+    randombytes_init_if_needed();
     return implementation->random();
 #else
     return EM_ASM_INT_V({
@@ -66,9 +77,7 @@ void
 randombytes_stir(void)
 {
 #ifndef __EMSCRIPTEN__
-    if (implementation != NULL && implementation->stir != NULL) {
-        implementation->stir();
-    }
+    randombytes_init_if_needed();
 #else
     EM_ASM({
         if (Module.getRandomValue === undefined) {
@@ -110,11 +119,8 @@ randombytes_uniform(const uint32_t upper_bound)
     uint32_t min;
     uint32_t r;
 
-#ifdef __EMSCRIPTEN__
-    if (implementation != NULL && implementation->uniform != NULL) {
-        return implementation->uniform(upper_bound);
-    }
-#else
+#ifndef __EMSCRIPTEN__
+    randombytes_init_if_needed();
     if (implementation->uniform != NULL) {
         return implementation->uniform(upper_bound);
     }
@@ -134,6 +140,7 @@ void
 randombytes_buf(void * const buf, const size_t size)
 {
 #ifndef __EMSCRIPTEN__
+    randombytes_init_if_needed();
     if (size > (size_t) 0U) {
         implementation->buf(buf, size);
     }
