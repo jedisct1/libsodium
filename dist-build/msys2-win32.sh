@@ -1,6 +1,6 @@
 #! /bin/sh
 
-export CFLAGS="-O3 -fomit-frame-pointer -m32 -march=pentium2 -mtune=nocona"
+export CFLAGS="-O3 -fomit-frame-pointer -m32 -march=pentium3 -mtune=westmere"
 export PREFIX="$(pwd)/libsodium-win32"
 
 make distclean > /dev/null

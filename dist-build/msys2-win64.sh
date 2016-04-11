@@ -1,6 +1,6 @@
 #! /bin/sh
 
-export CFLAGS="-O3 -fomit-frame-pointer -m64 -mtune=nocona"
+export CFLAGS="-O3 -fomit-frame-pointer -m64 -mtune=westmere"
 export PREFIX="$(pwd)/libsodium-win64"
 
 make distclean > /dev/null
