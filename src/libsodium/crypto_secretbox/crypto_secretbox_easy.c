@@ -96,6 +96,9 @@ crypto_secretbox_open_detached(unsigned char *m, const unsigned char *c,
         sodium_memzero(subkey, sizeof subkey);
         return -1;
     }
+    if (m == NULL) {
+        return 0;
+    }
     if (((uintptr_t) c >= (uintptr_t) m &&
          (uintptr_t) c - (uintptr_t) m < clen) ||
         ((uintptr_t) m >= (uintptr_t) c &&

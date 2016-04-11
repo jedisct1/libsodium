@@ -198,6 +198,9 @@ crypto_aead_chacha20poly1305_decrypt_detached(unsigned char *m,
     (void) sizeof(int[sizeof computed_mac == 16U ? 1 : -1]);
     ret = crypto_verify_16(computed_mac, mac);
     sodium_memzero(computed_mac, sizeof computed_mac);
+    if (m == NULL) {
+        return ret;
+    }
     if (ret != 0) {
         memset(m, 0, mlen);
         return -1;
@@ -279,6 +282,9 @@ crypto_aead_chacha20poly1305_ietf_decrypt_detached(unsigned char *m,
     (void) sizeof(int[sizeof computed_mac == 16U ? 1 : -1]);
     ret = crypto_verify_16(computed_mac, mac);
     sodium_memzero(computed_mac, sizeof computed_mac);
+    if (m == NULL) {
+        return ret;
+    }
     if (ret != 0) {
         memset(m, 0, mlen);
         return -1;
