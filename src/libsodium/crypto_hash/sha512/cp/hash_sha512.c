@@ -262,8 +262,9 @@ crypto_hash_sha512_update(crypto_hash_sha512_state *state,
         src += 128;
         inlen -= 128;
     }
-    memcpy(state->buf, src, inlen); /* inlen < 128 */
-
+    if (inlen > 0) {
+        memcpy(state->buf, src, inlen); /* inlen < 128 */
+    }
     return 0;
 }
 
