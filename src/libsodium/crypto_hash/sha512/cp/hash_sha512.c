@@ -232,9 +232,9 @@ crypto_hash_sha512_update(crypto_hash_sha512_state *state,
                           const unsigned char *in,
                           unsigned long long inlen)
 {
+    unsigned long long i;
     uint64_t bitlen[2];
     uint64_t r;
-    const unsigned char *src = in;
 
     r = (state->count[1] >> 3) & 0x7f;
 
@@ -249,21 +249,22 @@ crypto_hash_sha512_update(crypto_hash_sha512_state *state,
     state->count[0] += bitlen[0];
 
     if (inlen < 128 - r) {
-        memcpy(&state->buf[r], src, inlen);
+        memcpy(&state->buf[r], in, inlen);
         return 0;
     }
-    memcpy(&state->buf[r], src, 128 - r);
+    memcpy(&state->buf[r], in, 128 - r);
     SHA512_Transform(state->state, state->buf);
-    src += 128 - r;
+    in += 128 - r;
     inlen -= 128 - r;
 
     while (inlen >= 128) {
-        SHA512_Transform(state->state, src);
-        src += 128;
+        SHA512_Transform(state->state, in);
+        in += 128;
         inlen -= 128;
     }
-    if (inlen > 0) {
-        memcpy(state->buf, src, inlen); /* inlen < 128 */
+    inlen &= 127;
+    for (i = 0; i < inlen; i++) {
+        state->buf[i] = in[i];
     }
     return 0;
 }
