@@ -220,10 +220,14 @@ crypto_hash_sha256_update(crypto_hash_sha256_state *state,
     state->count += (uint64_t)(inlen) << 3;
 
     if (inlen < 64 - r) {
-        memcpy(&state->buf[r], in, inlen);
+        for (i = 0; i < inlen; i++) {
+            state->buf[r + i] = in[i];
+        }
         return 0;
     }
-    memcpy(&state->buf[r], in, 64 - r);
+    for (i = 0; i < 64 - r; i++) {
+        state->buf[r + i] = in[i];
+    }
     SHA256_Transform(state->state, state->buf);
     in += 64 - r;
     inlen -= 64 - r;
