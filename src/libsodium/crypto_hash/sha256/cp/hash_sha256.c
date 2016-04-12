@@ -210,6 +210,7 @@ crypto_hash_sha256_update(crypto_hash_sha256_state *state,
                           const unsigned char *in,
                           unsigned long long inlen)
 {
+    unsigned long long i;
     uint32_t r;
 
     if (inlen <= 0U) {
@@ -232,8 +233,9 @@ crypto_hash_sha256_update(crypto_hash_sha256_state *state,
         in += 64;
         inlen -= 64;
     }
-    if (inlen > 0) {
-        memcpy(state->buf, in, inlen); /* inlen < 64 */
+    inlen &= 63;
+    for (i = 0; i < inlen; i++) {
+        state->buf[i] = in[i];
     }
     return 0;
 }
