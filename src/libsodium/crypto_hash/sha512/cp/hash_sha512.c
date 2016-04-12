@@ -249,10 +249,14 @@ crypto_hash_sha512_update(crypto_hash_sha512_state *state,
     state->count[0] += bitlen[0];
 
     if (inlen < 128 - r) {
-        memcpy(&state->buf[r], in, inlen);
+        for (i = 0; i < inlen; i++) {
+            state->buf[r + i] = in[i];
+        }
         return 0;
     }
-    memcpy(&state->buf[r], in, 128 - r);
+    for (i = 0; i < 128 - r; i++) {
+        state->buf[r + i] = in[i];
+    }
     SHA512_Transform(state->state, state->buf);
     in += 128 - r;
     inlen -= 128 - r;
