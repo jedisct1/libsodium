@@ -1,7 +1,6 @@
 #! /bin/sh
 
-export CFLAGS="-Ofast -fomit-frame-pointer -m64 -mtune=westmere -flto"
-export LDFLAGS="-m64 -flto"
+export CFLAGS="-Ofast -fomit-frame-pointer -m64 -mtune=westmere"
 export PREFIX="$(pwd)/libsodium-win64"
 
 make distclean > /dev/null
