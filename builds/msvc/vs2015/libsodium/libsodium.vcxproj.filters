@@ -769,6 +769,9 @@
     <ClCompile Include="..\..\..\..\src\libsodium\crypto_scalarmult\curve25519\ref10\x25519_ref10.c">
       <Filter>src\crypto_scalarmult\curve25519\ref10</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\..\..\src\libsodium\crypto_pwhash\crypto_pwhash.c">
+      <Filter>src\crypto_pwhash</Filter>
+    </ClCompile>
     <ClCompile Include="..\..\..\..\src\libsodium\crypto_pwhash\argon2\argon2.c">
       <Filter>src\crypto_pwhash\argon2</Filter>
     </ClCompile>

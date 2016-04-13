@@ -772,6 +772,9 @@
     <ClCompile Include="..\..\..\..\src\libsodium\crypto_core\hchacha20\core_hchacha20.c">
       <Filter>src\crypto_core\hchacha20</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\..\..\src\libsodium\crypto_pwhash\crypto_pwhash.c">
+      <Filter>src\crypto_pwhash</Filter>
+    </ClCompile>
     <ClCompile Include="..\..\..\..\src\libsodium\crypto_pwhash\argon2\argon2-core.c">
       <Filter>src\crypto_pwhash\argon2</Filter>
     </ClCompile>
