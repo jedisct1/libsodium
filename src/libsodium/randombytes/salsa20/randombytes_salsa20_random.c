@@ -173,7 +173,7 @@ randombytes_salsa20_random_random_dev_open(void)
 }
 # endif
 
-# ifdef SYS_getrandom
+# if defined(SYS_getrandom) && defined(__NR_getrandom)
 static int
 _randombytes_linux_getrandom(void * const buf, const size_t size)
 {
@@ -221,7 +221,7 @@ randombytes_salsa20_random_init(void)
     errno = errno_save;
 # else
 
-#  ifdef SYS_getrandom
+#  if defined(SYS_getrandom) && defined(__NR_getrandom)
     {
         unsigned char fodder[16];
 
@@ -287,7 +287,7 @@ randombytes_salsa20_random_stir(void)
 
 # ifdef HAVE_SAFE_ARC4RANDOM
     arc4random_buf(m0, sizeof m0);
-# elif defined(SYS_getrandom)
+# elif defined(SYS_getrandom) && defined(__NR_getrandom)
     if (stream.getrandom_available != 0) {
         if (randombytes_linux_getrandom(m0, sizeof m0) != 0) {
             abort(); /* LCOV_EXCL_LINE */
@@ -358,7 +358,7 @@ randombytes_salsa20_random_close(void)
     ret = 0;
 # endif
 
-# ifdef SYS_getrandom
+# if defined(SYS_getrandom) && defined(__NR_getrandom)
     if (stream.getrandom_available != 0) {
         ret = 0;
     }

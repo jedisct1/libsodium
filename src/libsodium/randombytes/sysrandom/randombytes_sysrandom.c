@@ -150,7 +150,7 @@ randombytes_sysrandom_random_dev_open(void)
 /* LCOV_EXCL_STOP */
 }
 
-# ifdef SYS_getrandom
+# if defined(SYS_getrandom) && defined(__NR_getrandom)
 static int
 _randombytes_linux_getrandom(void * const buf, const size_t size)
 {
@@ -191,7 +191,7 @@ randombytes_sysrandom_init(void)
 {
     const int     errno_save = errno;
 
-# ifdef SYS_getrandom
+# if defined(SYS_getrandom) && defined(__NR_getrandom)
     {
         unsigned char fodder[16];
 
@@ -248,7 +248,7 @@ randombytes_sysrandom_close(void)
         stream.initialized = 0;
         ret = 0;
     }
-# ifdef SYS_getrandom
+# if defined(SYS_getrandom) && defined(__NR_getrandom)
     if (stream.getrandom_available != 0) {
         ret = 0;
     }
@@ -271,7 +271,7 @@ randombytes_sysrandom_buf(void * const buf, const size_t size)
     assert(size <= ULONG_LONG_MAX);
 #endif
 #ifndef _WIN32
-# ifdef SYS_getrandom
+# if defined(SYS_getrandom) && defined(__NR_getrandom)
     if (stream.getrandom_available != 0) {
         if (randombytes_linux_getrandom(buf, size) != 0) {
             abort();
