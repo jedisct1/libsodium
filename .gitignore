@@ -1,5 +1,6 @@
 *.bc
 *.cmake
+*.done
 *.dSYM
 *.final
 *.gcda
@@ -60,9 +61,6 @@ src/curvecp/curvecpserver
 src/libsodium/*.def
 src/libsodium/include/sodium/version.h
 stamp-*
-test/browser-js.done
-test/js.done
-test/js-sumo.done
 test/default/browser
 test/default/*.res
 test/default/*.trs
