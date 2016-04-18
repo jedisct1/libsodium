@@ -112,7 +112,7 @@ AC_ARG_WITH(pthreads, AC_HELP_STRING([--with-pthreads],
 
 AS_IF([test "x$withval" = "xyes"], [
   AX_PTHREAD([
-    AC_DEFINE(HAVE_PTHREAD, 1, [Define if you have POSIX threads libraries and header files])
+    AC_DEFINE([HAVE_PTHREAD], [1], [Define if you have POSIX threads libraries and header files])
     LIBS="$PTHREAD_LIBS $LIBS"
     CFLAGS="$CFLAGS $PTHREAD_CFLAGS"
     CC="$PTHREAD_CC"])
