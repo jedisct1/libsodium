@@ -33,6 +33,8 @@ static int randombytes_tests(void)
 
 #ifdef __EMSCRIPTEN__
     assert(strcmp(randombytes_implementation_name(), "js") == 0);
+#elif defined(__native_client__)
+    assert(strcmp(randombytes_implementation_name(), "nativeclient") == 0);
 #else
     assert(strcmp(randombytes_implementation_name(), "sysrandom") == 0);
 #endif

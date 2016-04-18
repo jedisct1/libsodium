@@ -37,7 +37,7 @@ randombytes_init_if_needed(void)
 {
     if (implementation == NULL) {
         implementation = RANDOMBYTES_DEFAULT_IMPLEMENTATION;
-        implementation->stir();
+        randombytes_stir();
     }
 }
 
@@ -78,6 +78,9 @@ randombytes_stir(void)
 {
 #ifndef __EMSCRIPTEN__
     randombytes_init_if_needed();
+    if (implementation->stir != NULL) {
+        implementation->stir();
+    }
 #else
     EM_ASM({
         if (Module.getRandomValue === undefined) {
