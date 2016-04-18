@@ -106,6 +106,18 @@ AC_ARG_ENABLE(minimal,
 ])
 AM_CONDITIONAL([MINIMAL], [test x$enable_minimal = xyes])
 
+AC_ARG_WITH(pthreads, AC_HELP_STRING([--with-pthreads],
+ [use pthreads library, or --without-pthreads to disable threading support.]),
+ [ ], [withval="yes"])
+
+AS_IF([test "x$withval" = "xyes"], [
+  AX_PTHREAD([
+    AC_DEFINE(HAVE_PTHREAD, 1, [Define if you have POSIX threads libraries and header files])
+    LIBS="$PTHREAD_LIBS $LIBS"
+    CFLAGS="$CFLAGS $PTHREAD_CFLAGS"
+    CC="$PTHREAD_CC"])
+])
+
 AC_ARG_WITH(safecode,
 [AS_HELP_STRING(--with-safecode,For maintainers only - please do not use)],
 [AS_IF([test "x$withval" = "xyes"], [

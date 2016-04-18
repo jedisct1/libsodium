@@ -55,7 +55,7 @@ rm -f "$DONE_FILE"
 
 echo
 emconfigure ./configure --enable-minimal --disable-shared --prefix="$PREFIX" \
-  CFLAGS="$CFLAGS" && \
+                        --without-pthreads CFLAGS="$CFLAGS" && \
 emmake make clean
 [ $? = 0 ] || exit 1
 
