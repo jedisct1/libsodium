@@ -83,7 +83,7 @@ static int
 _sodium_crit_enter(void)
 {
     if (InterlockedCompareExchange(&_sodium_lock_initialized,
-                                   1L, 0L) != 0L) {
+                                   1L, 0L) == 0L) {
         InitializeCriticalSection(_sodium_lock);
         InterlockedIncrement(&_sodium_lock_initialized);
     } else {
