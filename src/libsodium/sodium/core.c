@@ -58,7 +58,7 @@ sodium_init(void)
     return 0;
 }
 
-#ifdef HAVE_PTHREAD
+#if defined(HAVE_PTHREAD) && !defined(__EMSCRIPTEN__)
 
 static pthread_mutex_t _sodium_lock = PTHREAD_MUTEX_INITIALIZER;
 
@@ -113,20 +113,16 @@ static volatile int _sodium_lock;
 static int
 _sodium_crit_enter(void)
 {
-    if (__sync_lock_test_and_set(&_sodium_lock, 1) != 0) {
-        for (;;) {
-            if (_sodium_lock == 0U &&
-                __sync_lock_test_and_set(&_sodium_lock, 1) == 0) {
-                break;
-            }
 # ifdef HAVE_NANOSLEEP
-            {
-                struct timespec q;
-                memset(&q, 0, sizeof q);
-                (void) nanosleep(&q, NULL);
-            }
+    struct timespec q;
+    memset(&q, 0, sizeof q);
 # endif
-        }
+    while (__sync_lock_test_and_set(&_sodium_lock, 1) != 0) {
+# ifdef HAVE_NANOSLEEP
+        (void) nanosleep(&q, NULL);
+# elif defined(__x86_64__) || defined(__i386__)
+        __asm__ __volatile__ ("pause");
+# endif
     }
     return 0;
 }
