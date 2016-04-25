@@ -14,14 +14,15 @@
 # include <sys/mman.h>
 #endif
 
-#include "utils.h"
-#include "randombytes.h"
 #ifdef _WIN32
 # include <windows.h>
 # include <wincrypt.h>
 #else
 # include <unistd.h>
 #endif
+
+#include "utils.h"
+#include "randombytes.h"
 
 #ifndef ENOSYS
 # define ENOSYS ENXIO
