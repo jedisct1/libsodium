@@ -331,16 +331,16 @@ mulv(__m128i A, __m128i B)
 #define REDUCE4(rev, H0_, H1_, H2_, H3_, X0_, X1_, X2_, X3_, accv) \
 do { \
     MAKE4(RED_DECL); \
-    __m128i       lo, hi; \
-    __m128i       tmp8, tmp9; \
-    __m128i       H0 = H0_; \
-    __m128i       H1 = H1_; \
-    __m128i       H2 = H2_; \
-    __m128i       H3 = H3_; \
-    __m128i       X0 = X0_; \
-    __m128i       X1 = X1_; \
-    __m128i       X2 = X2_; \
-    __m128i       X3 = X3_; \
+    __m128i lo, hi; \
+    __m128i tmp8, tmp9; \
+    __m128i H0 = H0_; \
+    __m128i H1 = H1_; \
+    __m128i H2 = H2_; \
+    __m128i H3 = H3_; \
+    __m128i X0 = X0_; \
+    __m128i X1 = X1_; \
+    __m128i X2 = X2_; \
+    __m128i X3 = X3_; \
 \
 /* byte-revert the inputs & xor the first one into the accumulator */ \
 \
