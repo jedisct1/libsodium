@@ -117,7 +117,7 @@ libsodium_la_SOURCES += \
 	randombytes/nativeclient/randombytes_nativeclient.c
 else
 libsodium_la_SOURCES += \
-    randombytes/sysrandom/randombytes_sysrandom.c
+	randombytes/sysrandom/randombytes_sysrandom.c
 endif
 
 endif
