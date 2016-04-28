@@ -72,9 +72,13 @@ AC_ARG_ENABLE(asm,
   enable_asm="yes"
 ])
 
-AS_IF([test "x$EMSCRIPTEN" != "x"],[
+AS_IF([test "x$EMSCRIPTEN" != "x"], [
   enable_asm="no"
-  AC_MSG_WARN([compiling to javascript - asm implementations disabled])
+  AC_MSG_WARN([compiling to JavaScript - asm implementations disabled])
+])
+AS_IF([test "$host_os" = "nacl" -o "$host_os" = "pnacl"], [
+  enable_asm="no"
+  AC_MSG_WARN([compiling to Native Client - asm implementations disabled])
 ])
 
 AC_ARG_ENABLE(pie,
