@@ -3,7 +3,7 @@
 export NACL_SDK_ROOT=${NACL_SDK_ROOT-"/opt/nacl_sdk/pepper_49"}
 export NACL_TOOLCHAIN=${NACL_TOOLCHAIN-"${NACL_SDK_ROOT}/toolchain/mac_x86_glibc"}
 export NACL_BIN=${NACL_BIN-"${NACL_TOOLCHAIN}/bin"}
-export PREFIX="$(pwd)/libsodium-nativeclient-x86-64"
+export PREFIX="$(pwd)/libsodium-nativeclient-x86_64"
 export PATH="${NACL_BIN}:$PATH"
 export CFLAGS="-O3 -fomit-frame-pointer -fforce-addr"
 
