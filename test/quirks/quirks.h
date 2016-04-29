@@ -6,6 +6,7 @@
 
 #ifdef __native_client__
 # define memset(dst, c, n) xmemset(dst, c, n)
+
 static void *
 xmemset(void *dst, int c, size_t n)
 {
