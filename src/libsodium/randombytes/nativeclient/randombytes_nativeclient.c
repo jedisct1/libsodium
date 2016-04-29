@@ -15,10 +15,9 @@ randombytes_nativeclient_buf(void * const buf, const size_t size)
 {
     size_t readnb;
 
-    if (nacl_secure_random(buf, size, &readnb) != 0) {
+    if (nacl_secure_random(buf, size, &readnb) != 0 || readnb != size) {
         abort();
     }
-    assert(readnb == size);
 }
 
 static uint32_t
