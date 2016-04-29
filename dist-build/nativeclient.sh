@@ -23,6 +23,3 @@ make distclean > /dev/null
             --prefix="$PREFIX" || exit 1
 
 make -j3 check && make -j3 install || exit 1
-
-# Cleanup
-make distclean > /dev/null
