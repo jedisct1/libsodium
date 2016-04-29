@@ -1,6 +1,6 @@
 #! /bin/sh
 
-export NACL_SDK_ROOT=${NACL_SDK_ROOT-"/opt/nacl_sdk/pepper_45"}
+export NACL_SDK_ROOT=${NACL_SDK_ROOT-"/opt/nacl_sdk/pepper_49"}
 export NACL_TOOLCHAIN=${NACL_TOOLCHAIN-"${NACL_SDK_ROOT}/toolchain/mac_pnacl"}
 export NACL_BIN=${NACL_BIN-"${NACL_TOOLCHAIN}/bin"}
 export PREFIX="$(pwd)/libsodium-nativeclient"
