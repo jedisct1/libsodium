@@ -13,6 +13,7 @@ export NM=${NM-"pnacl-nm"}
 export RANLIB=${RANLIB-"pnacl-ranlib"}
 export PNACL_FINALIZE=${PNACL_FINALIZE-"pnacl-finalize"}
 export PNACL_TRANSLATE=${PNACL_TRANSLATE-"pnacl-translate"}
+export CFLAGS="-O3 -fomit-frame-pointer"
 
 mkdir -p $PREFIX || exit 1
 
