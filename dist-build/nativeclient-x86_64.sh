@@ -13,7 +13,7 @@ make distclean > /dev/null
 
 ./configure --enable-minimal \
             --host=x86_64-nacl \
-            --disable-ssp \
+            --disable-ssp --without-pthreads \
             --prefix="$PREFIX" || exit 1
 
 make -j3 check && make -j3 install || exit 1
