@@ -569,7 +569,7 @@ AM_CONDITIONAL([HAVE_TI_MODE], [test $HAVE_TI_MODE_V = 1])
 AC_SUBST(HAVE_TI_MODE_V)
 
 HAVE_CPUID_V=0
-AS_IF([test "$enable_asm" != "no"],[
+AS_IF([test "$enable_asm" != "no" -o "$host_os" = "nacl"],[
   AC_MSG_CHECKING(for cpuid instruction)
   AC_COMPILE_IFELSE([AC_LANG_PROGRAM([[ ]], [[
 unsigned int cpu_info[4];
@@ -586,7 +586,7 @@ __asm__ __volatile__ ("xchgl %%ebx, %k1; cpuid; xchgl %%ebx, %k1" :
 AC_SUBST(HAVE_CPUID_V)
 
 asm_hide_symbol="unsupported"
-AS_IF([test "$enable_asm" != "no"],[
+AS_IF([test "$enable_asm" != "no" -o "$host_os" = "nacl"],[
   AC_MSG_CHECKING(if the .private_extern asm directive is supported)
   AC_LINK_IFELSE([AC_LANG_PROGRAM([[ ]], [[
 __asm__ __volatile__ (".private_extern dummy_symbol \n"
