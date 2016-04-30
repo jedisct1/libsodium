@@ -17,7 +17,6 @@
 #include <stdio.h>
 #include <limits.h>
 
-
 #include "utils.h"
 
 #include "argon2.h"
