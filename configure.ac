@@ -301,7 +301,7 @@ AC_CHECK_TOOL([AR], [ar], [ar])
 
 dnl Checks for headers
 
-AS_IF([test "x$EMSCRIPTEN" = "x" -a "$host_os" != "nacl" -a "$host_os" != "pnacl"], [
+AS_IF([test "x$EMSCRIPTEN" = "x" -a "$host_os" != "pnacl"], [
 
   AC_MSG_CHECKING(for MMX instructions set)
   oldcflags="$CFLAGS"
@@ -377,6 +377,9 @@ AS_IF([test "x$EMSCRIPTEN" = "x" -a "$host_os" != "nacl" -a "$host_os" != "pnacl
   AX_CHECK_COMPILE_FLAG([-mavx], [CFLAGS="$CFLAGS -mavx"])
   AC_MSG_CHECKING(for AVX instructions set)
   AC_COMPILE_IFELSE([AC_LANG_PROGRAM([[
+#ifdef __native_client__
+# error NativeClient detected - Avoiding AVX opcodes
+#endif
 #pragma GCC target("avx")
 #include <immintrin.h>
 ]], [[ _mm256_zeroall(); ]])],
@@ -390,6 +393,9 @@ AS_IF([test "x$EMSCRIPTEN" = "x" -a "$host_os" != "nacl" -a "$host_os" != "pnacl
   AX_CHECK_COMPILE_FLAG([-mavx2], [CFLAGS="$CFLAGS -mavx2"])
   AC_MSG_CHECKING(for AVX2 instructions set)
   AC_COMPILE_IFELSE([AC_LANG_PROGRAM([[
+#ifdef __native_client__
+# error NativeClient detected - Avoiding AVX2 opcodes
+#endif
 #pragma GCC target("avx2")
 #include <immintrin.h>
 ]], [[ __m256i x = _mm256_abs_epi8(_mm256_setzero_si256()); ]])],
@@ -398,6 +404,9 @@ AS_IF([test "x$EMSCRIPTEN" = "x" -a "$host_os" != "nacl" -a "$host_os" != "pnacl
      AX_CHECK_COMPILE_FLAG([-mavx2], [CFLAGS_AVX="-mavx2"])
      AC_MSG_CHECKING(if _mm256_broadcastsi128_si256 is correctly defined)
      AC_COMPILE_IFELSE([AC_LANG_PROGRAM([[
+#ifdef __native_client__
+# error NativeClient detected - Avoiding AVX2 opcodes
+#endif
 #pragma GCC target("avx2")
 #include <immintrin.h>
      ]], [[ __m256i y = _mm256_broadcastsi128_si256(_mm_setzero_si128()); ]])],
@@ -415,7 +424,7 @@ AS_IF([test "x$EMSCRIPTEN" = "x" -a "$host_os" != "nacl" -a "$host_os" != "pnacl
   AC_MSG_CHECKING(for AESNI instructions set and PCLMULQDQ)
   AC_COMPILE_IFELSE([AC_LANG_PROGRAM([[
 #ifdef __native_client__
-# error NativeClient doesn't properly support aesni for now
+# error NativeClient detected - Avoiding AESNI opcodes
 #endif
 #pragma GCC target("aes")
 #pragma GCC target("pclmul")
