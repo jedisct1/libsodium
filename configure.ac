@@ -301,7 +301,7 @@ AC_CHECK_TOOL([AR], [ar], [ar])
 
 dnl Checks for headers
 
-AS_IF([test "x$EMSCRIPTEN" = "x"],[
+AS_IF([test "x$EMSCRIPTEN" = "x" -a "$host_os" != "nacl" -a "$host_os" != "pnacl"], [
 
   AC_MSG_CHECKING(for MMX instructions set)
   oldcflags="$CFLAGS"
