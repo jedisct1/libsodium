@@ -1,6 +1,8 @@
 
 /*
- * AES256-GCM, based on original code by Romain Dolbeau
+ * AES256-GCM, based on the "Intel Carry-Less Multiplication Instruction and its Usage for Computing
+ * the GCM Mode" paper and reference code, using the aggregated reduction method.
+ * Originally adapted by Romain Dolbeau.
  */
 
 #include <errno.h>
@@ -328,7 +330,7 @@ mulv(__m128i A, __m128i B)
     tmp##a##B = _mm_xor_si128(tmp##a##B, X##a); \
     tmp##a = _mm_clmulepi64_si128(tmp##a, tmp##a##B, 0x00)
 
-#define REDUCE4(rev, H0_, H1_, H2_, H3_, X0_, X1_, X2_, X3_, accv) \
+#define MULREDUCE4(rev, H0_, H1_, H2_, H3_, X0_, X1_, X2_, X3_, accv) \
 do { \
     MAKE4(RED_DECL); \
     __m128i lo, hi; \
@@ -449,8 +451,8 @@ do { \
     MAKE8(XORx); \
     MAKE8(STOREx); \
     accv_ = _mm_load_si128((const __m128i *) accum); \
-    REDUCE4(rev, hv, h2v, h3v, h4v, temp3, temp2, temp1, temp0, accv_); \
-    REDUCE4(rev, hv, h2v, h3v, h4v, temp7, temp6, temp5, temp4, accv_); \
+    MULREDUCE4(rev, hv, h2v, h3v, h4v, temp3, temp2, temp1, temp0, accv_); \
+    MULREDUCE4(rev, hv, h2v, h3v, h4v, temp7, temp6, temp5, temp4, accv_); \
     _mm_store_si128((__m128i *) accum, accv_); \
 } while(0)
 
@@ -466,8 +468,8 @@ do { \
     \
     MAKE8(LOADx); \
     accv_ = _mm_load_si128((const __m128i *) accum); \
-    REDUCE4(rev, hv, h2v, h3v, h4v, in3, in2, in1, in0, accv_); \
-    REDUCE4(rev, hv, h2v, h3v, h4v, in7, in6, in5, in4, accv_); \
+    MULREDUCE4(rev, hv, h2v, h3v, h4v, in3, in2, in1, in0, accv_); \
+    MULREDUCE4(rev, hv, h2v, h3v, h4v, in7, in6, in5, in4, accv_); \
     _mm_store_si128((__m128i *) accum, accv_); \
 } while(0)
 
@@ -553,13 +555,13 @@ crypto_aead_aes256gcm_encrypt_detached_afternm(unsigned char *c,
     H4v = mulv(H3v, Hv);
 
     accv = _mm_setzero_si128();
-    /* unrolled by 4 GCM (by 8 doesn't improve using REDUCE4) */
+    /* unrolled by 4 GCM (by 8 doesn't improve using MULREDUCE4) */
     for (i = 0; i < adlen_rnd64; i += 64) {
         __m128i X4_ = _mm_loadu_si128((const __m128i *) (ad + i + 0));
         __m128i X3_ = _mm_loadu_si128((const __m128i *) (ad + i + 16));
         __m128i X2_ = _mm_loadu_si128((const __m128i *) (ad + i + 32));
         __m128i X1_ = _mm_loadu_si128((const __m128i *) (ad + i + 48));
-        REDUCE4(rev, Hv, H2v, H3v, H4v, X1_, X2_, X3_, X4_, accv);
+        MULREDUCE4(rev, Hv, H2v, H3v, H4v, X1_, X2_, X3_, X4_, accv);
     }
     _mm_store_si128((__m128i *) accum, accv);
 
@@ -700,7 +702,7 @@ crypto_aead_aes256gcm_decrypt_detached_afternm(unsigned char *m, unsigned char *
         __m128i X3_ = _mm_loadu_si128((const __m128i *) (ad + i + 16));
         __m128i X2_ = _mm_loadu_si128((const __m128i *) (ad + i + 32));
         __m128i X1_ = _mm_loadu_si128((const __m128i *) (ad + i + 48));
-        REDUCE4(rev, Hv, H2v, H3v, H4v, X1_, X2_, X3_, X4_, accv);
+        MULREDUCE4(rev, Hv, H2v, H3v, H4v, X1_, X2_, X3_, X4_, accv);
     }
     _mm_store_si128((__m128i *) accum, accv);
 
