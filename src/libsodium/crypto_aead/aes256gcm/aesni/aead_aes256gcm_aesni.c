@@ -129,7 +129,7 @@ aesni_encrypt1(unsigned char *out, __m128i nv, const __m128i *rkeys)
 }
 
 /** multiple-blocks-at-once AES encryption with AES-NI ;
-    on Haswell, aesenc as a latency of 7 and a throughput of 1
+    on Haswell, aesenc has a latency of 7 and a throughput of 1
     so the sequence of aesenc should be bubble-free if you
     have at least 8 blocks. Let's build an arbitratry-sized
     function */
