@@ -51,68 +51,43 @@ typedef struct context {
 } context;
 
 static inline void
-aesni_key256_expand(const unsigned char *key, __m128 *rkeys)
+aesni_key256_expand(const unsigned char *key, __m128i * const rkeys)
 {
-    __m128 key0 = _mm_loadu_ps((const float *) (key + 0));
-    __m128 key1 = _mm_loadu_ps((const float *) (key + 16));
-    __m128 temp0, temp1, temp2, temp4;
-    int    idx = 0;
+    __m128i  X0, X1, X2, X3;
+    int      i = 0;
 
-    rkeys[idx++] = key0;
-    temp0 = key0;
-    temp2 = key1;
-    temp4 = _mm_setzero_ps();
+    X0 = _mm_loadu_si128((const __m128i *) &key[0]);
+    rkeys[i++] = X0;
 
-/* why single precision floating-point rather than integer instructions ?
-     because _mm_shuffle_ps takes two inputs, while _mm_shuffle_epi32 only
-     takes one - it doesn't perform the same computation...
-     _mm_shuffle_ps takes the lower 64 bits of the result from the first
-     operand, and the higher 64 bits of the result from the second operand
-     (in both cases, all four input floats are accessible).
-     I don't like the non-orthogonal naming scheme :-(
+    X2 = _mm_loadu_si128((const __m128i *) &key[16]);
+    rkeys[i++] = X2;
 
-     This is all strongly inspired by the openssl assembly code.
-  */
-#define BLOCK1(IMM)                                                 \
-    temp1 = _mm_castsi128_ps(_mm_aeskeygenassist_si128(_mm_castps_si128(temp2), IMM));\
-    rkeys[idx++] = temp2;                                           \
-    temp4 = _mm_shuffle_ps(temp4, temp0, 0x10);                     \
-    temp0 = _mm_xor_ps(temp0, temp4);                               \
-    temp4 = _mm_shuffle_ps(temp4, temp0, 0x8c);                     \
-    temp0 = _mm_xor_ps(temp0, temp4);                               \
-    temp1 = _mm_shuffle_ps(temp1, temp1, 0xff);                     \
-    temp0 = _mm_xor_ps(temp0, temp1)
+#define EXPAND_KEY_1(S) do { \
+    X1 = _mm_shuffle_epi32(_mm_aeskeygenassist_si128(X2, (S)), 0xff); \
+    X3 = _mm_castps_si128(_mm_shuffle_ps(_mm_castsi128_ps(X3), _mm_castsi128_ps(X0), 0x10)); \
+    X0 = _mm_xor_si128(X0, X3); \
+    X3 = _mm_castps_si128(_mm_shuffle_ps(_mm_castsi128_ps(X3), _mm_castsi128_ps(X0), 0x8c)); \
+    X0 = _mm_xor_si128(_mm_xor_si128(X0, X3), X1); \
+    rkeys[i++] = X0; \
+} while (0)
 
-#define BLOCK2(IMM)                                                 \
-    temp1 = _mm_castsi128_ps(_mm_aeskeygenassist_si128(_mm_castps_si128(temp0), IMM));\
-    rkeys[idx++] = temp0;                                           \
-    temp4 = _mm_shuffle_ps(temp4, temp2, 0x10);                     \
-    temp2 = _mm_xor_ps(temp2, temp4);                               \
-    temp4 = _mm_shuffle_ps(temp4, temp2, 0x8c);                     \
-    temp2 = _mm_xor_ps(temp2, temp4);                               \
-    temp1 = _mm_shuffle_ps(temp1, temp1, 0xaa);                     \
-    temp2 = _mm_xor_ps(temp2, temp1)
+#define EXPAND_KEY_2(S) do { \
+    X1 = _mm_shuffle_epi32(_mm_aeskeygenassist_si128(X0, (S)), 0xaa); \
+    X3 = _mm_castps_si128(_mm_shuffle_ps(_mm_castsi128_ps(X3), _mm_castsi128_ps(X2), 0x10)); \
+    X2 = _mm_xor_si128(X2, X3); \
+    X3 = _mm_castps_si128(_mm_shuffle_ps(_mm_castsi128_ps(X3), _mm_castsi128_ps(X2), 0x8c)); \
+    X2 = _mm_xor_si128(_mm_xor_si128(X2, X3), X1); \
+    rkeys[i++] = X2; \
+} while (0)
 
-    BLOCK1(0x01);
-    BLOCK2(0x01);
-
-    BLOCK1(0x02);
-    BLOCK2(0x02);
-
-    BLOCK1(0x04);
-    BLOCK2(0x04);
-
-    BLOCK1(0x08);
-    BLOCK2(0x08);
-
-    BLOCK1(0x10);
-    BLOCK2(0x10);
-
-    BLOCK1(0x20);
-    BLOCK2(0x20);
-
-    BLOCK1(0x40);
-    rkeys[idx++] = temp0;
+    X3 = _mm_setzero_si128();
+    EXPAND_KEY_1(0x01); EXPAND_KEY_2(0x01);
+    EXPAND_KEY_1(0x02); EXPAND_KEY_2(0x02);
+    EXPAND_KEY_1(0x04); EXPAND_KEY_2(0x04);
+    EXPAND_KEY_1(0x08); EXPAND_KEY_2(0x08);
+    EXPAND_KEY_1(0x10); EXPAND_KEY_2(0x10);
+    EXPAND_KEY_1(0x20); EXPAND_KEY_2(0x20);
+    EXPAND_KEY_1(0x40);
 }
 
 /** single, by-the-book AES encryption with AES-NI */
@@ -504,7 +479,7 @@ crypto_aead_aes256gcm_beforenm(crypto_aead_aes256gcm_state *ctx_,
     unsigned char *H = ctx->H;
 
     (void) sizeof(int[(sizeof *ctx_) >= (sizeof *ctx) ? 1 : -1]);
-    aesni_key256_expand(k, (__m128 *) rkeys);
+    aesni_key256_expand(k, rkeys);
     aesni_encrypt1(H, zero, rkeys);
 
     return 0;
