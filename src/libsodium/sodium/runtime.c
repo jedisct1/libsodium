@@ -168,7 +168,9 @@ _sodium_runtime_intel_cpu_features(CPUFeatures * const cpu_features)
 #if defined(HAVE_AVX2INTRIN_H) || \
     (defined(_MSC_VER) && (defined(_M_X64) || defined(_M_AMD64) || defined(_M_IX86)))
     if (cpu_features->has_avx) {
-        cpu_features->has_avx2 = ((cpu_info[1] & CPUID_EBX_AVX2) != 0x0);
+        unsigned int cpu_info7[4];
+        _cpuid(cpu_info7, 0x00000007);
+        cpu_features->has_avx2 = ((cpu_info7[1] & CPUID_EBX_AVX2) != 0x0);
     }
 #endif
 
