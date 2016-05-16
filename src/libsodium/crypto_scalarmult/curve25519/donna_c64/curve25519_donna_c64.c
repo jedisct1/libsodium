@@ -297,7 +297,7 @@ fcontract(u8 *output, const felem input) {
 /* Input: Q, Q', Q-Q'
  * Output: 2Q, Q+Q'
  *
- *   x2 z3: long form
+ *   x2 z2: long form
  *   x3 z3: long form
  *   x z: short form, destroyed
  *   xprime zprime: short form, destroyed
