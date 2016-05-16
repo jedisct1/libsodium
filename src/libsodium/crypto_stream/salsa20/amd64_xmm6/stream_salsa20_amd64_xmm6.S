@@ -136,6 +136,7 @@ movdqa %xmm1,304(%rsp)
 movdqa %xmm2,320(%rsp)
 movdqa %xmm0,336(%rsp)
 
+.p2align 4
 ._bytesatleast256:
 movq 472(%rsp),%rdx
 mov  %rdx,%rcx
@@ -182,6 +183,7 @@ movdqa 224(%rsp),%xmm13
 movdqa 304(%rsp),%xmm14
 movdqa 352(%rsp),%xmm15
 
+.p2align 4
 ._mainloop1:
 movdqa %xmm1,384(%rsp)
 movdqa %xmm2,400(%rsp)
@@ -425,6 +427,7 @@ movdqa 384(%rsp),%xmm12
 movdqa 400(%rsp),%xmm0
 sub  $2,%rdx
 ja ._mainloop1
+
 paddd 176(%rsp),%xmm12
 paddd 240(%rsp),%xmm7
 paddd 288(%rsp),%xmm10
@@ -687,12 +690,14 @@ add  $256,%rsi
 add  $256,%rdi
 cmp  $256,%r9
 jae ._bytesatleast256
+
 cmp  $0,%r9
 jbe ._done
 
 ._bytesbetween1and255:
 cmp  $64,%r9
 jae ._nocopy
+
 mov  %rdi,%rdx
 leaq 0(%rsp),%rdi
 mov  %r9,%rcx
@@ -709,6 +714,7 @@ movdqa 96(%rsp),%xmm3
 movdqa %xmm1,%xmm4
 mov  $20,%rcx
 
+.p2align 4
 ._mainloop2:
 paddd %xmm0,%xmm4
 movdqa %xmm0,%xmm5
@@ -837,6 +843,7 @@ pxor  %xmm5,%xmm0
 pshufd $0x39,%xmm3,%xmm3
 pxor  %xmm6,%xmm0
 ja ._mainloop2
+
 paddd 112(%rsp),%xmm0
 paddd 64(%rsp),%xmm1
 paddd 80(%rsp),%xmm2
@@ -912,6 +919,7 @@ movq %rcx,472(%rsp)
 cmp  $64,%r9
 ja ._bytesatleast65
 jae ._bytesatleast64
+
 mov  %rdi,%rsi
 mov  %rdx,%rdi
 mov  %r9,%rcx
