@@ -17,6 +17,7 @@ ASM_HIDE_SYMBOL _ladder_base
 ladder_base:
 _ladder_base:
 
+vzeroupper
 mov %rsp,%r11
 and $31,%r11
 add $1568,%r11
