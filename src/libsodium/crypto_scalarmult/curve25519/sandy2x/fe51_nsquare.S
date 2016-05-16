@@ -41,6 +41,8 @@ movq   %r9,16(%rdi)
 movq   %rax,24(%rdi)
 movq   %rsi,32(%rdi)
 mov  %rdx,%rsi
+
+.p2align 4
 ._loop:
 sub  $1,%rsi
 mov  %rcx,%rax
@@ -154,6 +156,7 @@ and  %rdx,%r10
 movq   %r10,32(%rdi)
 cmp  $0,%rsi
 jne ._loop
+
 movq   %rcx,0(%rdi)
 movq   %r8,8(%rdi)
 movq 0(%rsp),%r11
