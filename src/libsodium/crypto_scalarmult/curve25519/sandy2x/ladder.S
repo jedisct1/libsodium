@@ -110,6 +110,8 @@ xorq 16(%rsi),%r8
 xorq 24(%rsi),%r9
 leaq 800(%rsp),%rsi
 mov  $64,%rax
+
+.p2align 4
 ._ladder_small_loop:
 mov  %rdx,%r10
 mov  %rcx,%r11
@@ -136,6 +138,8 @@ sub  $1,%rax
 jne ._ladder_small_loop
 mov  $255,%rdx
 add  $760,%rsi
+
+.p2align 4
 ._ladder_loop:
 sub  $1,%rdx
 vbroadcastss 0(%rsi),%xmm10
