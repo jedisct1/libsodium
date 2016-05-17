@@ -76,8 +76,8 @@ _sodium_crit_leave(void)
 
 #elif defined(_WIN32)
 
-static CRITICAL_SECTION  _sodium_lock;
-static volatile LONG     _sodium_lock_initialized;
+static CRITICAL_SECTION _sodium_lock;
+static volatile LONG    _sodium_lock_initialized;
 
 static int
 _sodium_crit_init(void)
@@ -89,7 +89,7 @@ _sodium_crit_init(void)
         Sleep(0);
     }
 
-    switch(status) {
+    switch (status) {
     case 0L:
         InitializeCriticalSection(&_sodium_lock);
         return InterlockedExchange(&_sodium_lock_initialized, 2L) == 1L ? 0 : -1;
@@ -103,10 +103,11 @@ _sodium_crit_init(void)
 static int
 _sodium_crit_enter(void)
 {
-    if(_sodium_crit_init() != 0) {
+    if (_sodium_crit_init() != 0) {
         return -1;
     }
     EnterCriticalSection(&_sodium_lock);
+
     return 0;
 }
 
@@ -114,6 +115,7 @@ static int
 _sodium_crit_leave(void)
 {
     LeaveCriticalSection(&_sodium_lock);
+
     return 0;
 }
 
