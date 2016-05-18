@@ -50,12 +50,9 @@
 #if defined(HAVE_ALIGNED_MALLOC) && (defined(WINAPI_DESKTOP) || defined(HAVE_MPROTECT))
 # define HAVE_PAGE_PROTECTION
 #endif
-/* FreeBSD defines these with its own names */
-if !defined(MADV_DONTDUMP) && defined(HAVE_MADVISE)
-# define MADV_DONTDUMP  MADV_NOCORE
-#endif
-if !defined(MADV_DODUMP) && defined(HAVE_MADVISE)
-# define MADV_DODUMP  MADV_CORE
+#if !defined(MADV_DODUMP) && defined(MADV_CORE)
+# define MADV_DODUMP   MADV_CORE
+# define MADV_DONTDUMP MADV_NOCORE
 #endif
 
 static size_t page_size;
