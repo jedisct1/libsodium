@@ -19,6 +19,8 @@
 *.status
 *.tar.*
 *~
+.#*
+#*#
 .DS_Store
 .deps
 .dirstamp

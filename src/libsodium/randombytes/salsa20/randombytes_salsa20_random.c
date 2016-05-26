@@ -7,7 +7,6 @@
 #endif
 #ifdef __linux__
 # include <sys/syscall.h>
-# include <poll.h>
 #endif
 
 #include <assert.h>
@@ -129,32 +128,7 @@ safe_read(const int fd, void * const buf_, size_t size)
 #endif
 
 #ifndef _WIN32
-# if defined(__linux__) && !defined(USE_BLOCKING_RANDOM)
-static int
-randombytes_block_on_dev_random(void)
-{
-    struct pollfd pfd;
-    int           fd;
-    int           pret;
-
-    fd = open("/dev/random", O_RDONLY);
-    if (fd == -1) {
-        return 0;
-    }
-    pfd.fd = fd;
-    pfd.events = POLLIN;
-    pfd.revents = 0;
-    do {
-        pret = poll(&pfd, 1, -1);
-    } while (pret < 0 && (errno == EINTR || errno == EAGAIN));
-    if (pret != 1) {
-        (void) close(fd);
-        errno = EIO;
-        return -1;
-    }
-    return close(fd);
-}
-# endif
+# include "../linux-block-on-random.h"
 
 # ifndef HAVE_SAFE_ARC4RANDOM
 static int
