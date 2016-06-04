@@ -67,11 +67,6 @@ m4/lt~obsolete.m4
 man/*.html
 man/Makefile.in
 missing
-src/curvecp/curvecpclient
-src/curvecp/curvecpmakekey
-src/curvecp/curvecpmessage
-src/curvecp/curvecpprintkey
-src/curvecp/curvecpserver
 src/libsodium/*.def
 src/libsodium/include/sodium/version.h
 stamp-*
@@ -143,4 +138,3 @@ android-toolchain-*
 /bin/
 /obj/
 Vagrantfile
-
