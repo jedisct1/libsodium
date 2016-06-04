@@ -1,7 +1,7 @@
 *.bc
 *.cmake
-*.done
 *.dSYM
+*.done
 *.final
 *.gcda
 *.gcno
@@ -24,11 +24,16 @@
 .dirstamp
 .done
 .libs
+/bin/
+/obj/
 Build
 INSTALL
 Makefile
 Makefile.in
+Vagrantfile
 aclocal.m4
+android-toolchain
+android-toolchain-*
 autom4te.cache
 build
 compile
@@ -38,9 +43,7 @@ configure
 configure.lineno
 coverage.info
 depcomp
-android-toolchain
 install-sh
-libtool
 libsodium-*.tar.bz2
 libsodium-*.tar.gz
 libsodium-*.vcproj
@@ -57,6 +60,7 @@ libsodium-osx
 libsodium-win32
 libsodium-win64
 libsodium.pc
+libtool
 ltmain.sh
 m4/argz.m4
 m4/libtool.m4
@@ -70,6 +74,7 @@ missing
 src/libsodium/*.def
 src/libsodium/include/sodium/version.h
 stamp-*
+test-driver
 test/default/browser
 test/default/*.res
 test/default/*.trs
@@ -132,9 +137,4 @@ test/default/stream2
 test/default/stream3
 test/default/stream4
 test/default/verify1
-test-driver
 testing
-android-toolchain-*
-/bin/
-/obj/
-Vagrantfile
