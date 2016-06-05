@@ -1,4 +1,4 @@
 #!/bin/sh
-export TARGET_ARCH=x86_64
+export TARGET_ARCH=westmere
 export CFLAGS="-Os -march=${TARGET_ARCH}"
-ARCH=x86_64 HOST_COMPILER=x86_64-linux-android "$(dirname "$0")/android-build.sh"
+NDK_PLATFORM_COMPAT=android-21 ARCH=x86_64 HOST_COMPILER=x86_64-linux-android "$(dirname "$0")/android-build.sh"

@@ -1,5 +1,12 @@
 #! /bin/sh
 
+if [ -z "$NDK_PLATFORM" ]; then
+  export NDK_PLATFORM="android-24"
+  export NDK_PLATFORM_COMPAT="${NDK_PLATFORM_COMPAT:-android-16}"
+else
+  export NDK_PLATFORM_COMPAT="${NDK_PLATFORM_COMPAT:-${NDK_PLATFORM}}"
+fi
+
 if [ -z "$ANDROID_NDK_HOME" ]; then
     echo "You should probably set ANDROID_NDK_HOME to the directory containing"
     echo "the Android NDK"
@@ -24,14 +31,43 @@ export PATH="${PATH}:${TOOLCHAIN_DIR}/bin"
 
 rm -rf "${TOOLCHAIN_DIR}" "${PREFIX}"
 
-bash $MAKE_TOOLCHAIN --platform="${NDK_PLATFORM:-android-16}" \
-    --arch="$ARCH" --install-dir="$TOOLCHAIN_DIR" && \
+echo "Building for platform [${NDK_PLATFORM}], retaining compatibility with platform [${NDK_PLATFORM_COMPAT}]"
+echo
+
+bash $MAKE_TOOLCHAIN --platform="$NDK_PLATFORM_COMPAT" \
+    --arch="$ARCH" --install-dir="$TOOLCHAIN_DIR" || exit 1
+
 ./configure \
     --disable-soname-versions \
     --enable-minimal \
     --host="${HOST_COMPILER}" \
     --prefix="${PREFIX}" \
-    --with-sysroot="${TOOLCHAIN_DIR}/sysroot" && \
+    --with-sysroot="${TOOLCHAIN_DIR}/sysroot" || exit 1
+
+if [ "$NDK_PLATFORM" != "$NDK_PLATFORM_COMPAT" ]; then
+  egrep '^#define ' config.log | sort -u > config-def-compat.log
+  echo
+  echo "Configuring again for platform [${NDK_PLATFORM}]"
+  echo
+  bash $MAKE_TOOLCHAIN --platform="$NDK_PLATFORM" \
+      --arch="$ARCH" --install-dir="$TOOLCHAIN_DIR" || exit 1
+
+  ./configure \
+      --disable-soname-versions \
+      --enable-minimal \
+      --host="${HOST_COMPILER}" \
+      --prefix="${PREFIX}" \
+      --with-sysroot="${TOOLCHAIN_DIR}/sysroot" || exit 1
+
+  egrep '^#define ' config.log | sort -u > config-def.log
+  if ! cmp config-def.log config-def-compat.log; then
+    echo "Platform [${NDK_PLATFORM}] is not backwards-compatible with [${NDK_PLATFORM_COMPAT}]" >&2
+    diff -u config-def.log config-def-compat.log >&2
+    exit 1
+  fi
+  rm -f config-def.log config-def-compat.log
+fi
+
 make clean && \
 make -j3 install && \
 echo "libsodium has been installed into ${PREFIX}"
