@@ -31,6 +31,7 @@ export PATH="${PATH}:${TOOLCHAIN_DIR}/bin"
 
 rm -rf "${TOOLCHAIN_DIR}" "${PREFIX}"
 
+echo
 echo "Building for platform [${NDK_PLATFORM}], retaining compatibility with platform [${NDK_PLATFORM_COMPAT}]"
 echo
 
