@@ -247,7 +247,7 @@ addmul(unsigned char *c, const unsigned char *a, unsigned int xlen, const unsign
     _mm_storeu_si128((__m128i *) c, tmp21);
 }
 
-/* pure multiplication, for pre-computing  powers of H */
+/* pure multiplication, for pre-computing powers of H */
 static inline __m128i
 mulv(__m128i A, __m128i B)
 {
