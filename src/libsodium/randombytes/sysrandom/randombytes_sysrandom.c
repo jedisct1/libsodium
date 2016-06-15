@@ -27,8 +27,8 @@
 #ifdef _WIN32
 /* `RtlGenRandom` is used over `CryptGenRandom` on Microsoft Windows based systems:
  *  - `CryptGenRandom` requires pulling in `CryptoAPI` which causes unnecessary
- *     memory overhead if no other Cryptography functionally is required.
- *  - `RtlGenRandom` is thus called directly instead. A detailed explaination
+ *     memory overhead if this API is not being used for other purposes
+ *  - `RtlGenRandom` is thus called directly instead. A detailed explanation
  *     can be found here: https://blogs.msdn.microsoft.com/michael_howard/2005/01/14/cryptographically-secure-random-number-on-windows-without-using-cryptoapi/
  */
 # include <windows.h>
