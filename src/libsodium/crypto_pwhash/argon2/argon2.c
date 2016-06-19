@@ -178,7 +178,7 @@ int argon2_verify(const char *encoded, const void *pwd, const size_t pwdlen,
     uint8_t *out;
     int decode_result;
     int ret;
-    uint32_t encoded_len;
+    size_t encoded_len;
 
     memset(&ctx, 0, sizeof ctx);
 
@@ -188,10 +188,13 @@ int argon2_verify(const char *encoded, const void *pwd, const size_t pwdlen,
     ctx.secretlen = 0;
 
     /* max values, to be updated in decode_string */
-    encoded_len = (uint32_t) strlen(encoded);
-    ctx.adlen = encoded_len;
-    ctx.saltlen = encoded_len;
-    ctx.outlen = encoded_len;
+    encoded_len = strlen(encoded);
+    if (encoded_len > UINT32_MAX) {
+        return ARGON2_DECODING_LENGTH_FAIL;
+    }
+    ctx.adlen = (uint32_t) encoded_len;
+    ctx.saltlen = (uint32_t) encoded_len;
+    ctx.outlen = (uint32_t) encoded_len;
 
     ctx.ad = (uint8_t *) malloc(ctx.adlen);
     ctx.salt = (uint8_t *) malloc(ctx.saltlen);
