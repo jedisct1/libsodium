@@ -27,6 +27,7 @@
 #include "randombytes.h"
 #include "randombytes_salsa20_random.h"
 #include "utils.h"
+#include "private/mutex.h"
 
 #ifdef _WIN32
 # include <windows.h>
@@ -297,7 +298,7 @@ randombytes_salsa20_random_rekey(const unsigned char * const mix)
 }
 
 static void
-randombytes_salsa20_random_stir(void)
+randombytes_salsa20_random_stir_unlocked(void)
 {
     /* constant to personalize the hash function */
     const unsigned char hsigma[crypto_generichash_KEYBYTES] = {
@@ -356,17 +357,25 @@ randombytes_salsa20_random_stir(void)
 }
 
 static void
+randombytes_salsa20_random_stir(void)
+{
+    sodium_crit_enter();
+    randombytes_salsa20_random_stir_unlocked();
+    sodium_crit_leave();
+}
+
+static void
 randombytes_salsa20_random_stir_if_needed(void)
 {
 #ifdef HAVE_GETPID
     if (stream.initialized == 0) {
-        randombytes_salsa20_random_stir();
+        randombytes_salsa20_random_stir_unlocked();
     } else if (stream.pid != getpid()) {
         abort();
     }
 #else
     if (stream.initialized == 0) {
-        randombytes_salsa20_random_stir();
+        randombytes_salsa20_random_stir_unlocked();
     }
 #endif
 }
@@ -376,6 +385,7 @@ randombytes_salsa20_random_close(void)
 {
     int ret = -1;
 
+    sodium_crit_enter();
 #ifndef _WIN32
     if (stream.random_data_source_fd != -1 &&
         close(stream.random_data_source_fd) == 0) {
@@ -403,6 +413,8 @@ randombytes_salsa20_random_close(void)
         ret = 0;
     }
 #endif
+    sodium_crit_leave();
+
     return ret;
 }
 
@@ -412,6 +424,7 @@ randombytes_salsa20_random_buf(void * const buf, const size_t size)
     size_t i;
     int    ret;
 
+    sodium_crit_enter();
     randombytes_salsa20_random_stir_if_needed();
     COMPILER_ASSERT(sizeof stream.nonce == crypto_stream_salsa20_NONCEBYTES);
 #ifdef ULONG_LONG_MAX
@@ -427,14 +440,16 @@ randombytes_salsa20_random_buf(void * const buf, const size_t size)
     stream.nonce++;
     crypto_stream_salsa20_xor(stream.key, stream.key, sizeof stream.key,
                               (unsigned char *) &stream.nonce, stream.key);
+    sodium_crit_leave();
 }
 
 static uint32_t
-randombytes_salsa20_random_getword(void)
+randombytes_salsa20_random(void)
 {
     uint32_t val;
     int      ret;
 
+    sodium_crit_enter();
     COMPILER_ASSERT(sizeof stream.rnd32 >= (sizeof stream.key) + (sizeof val));
     COMPILER_ASSERT(((sizeof stream.rnd32) - (sizeof stream.key))
                     % sizeof val == (size_t) 0U);
@@ -453,14 +468,9 @@ randombytes_salsa20_random_getword(void)
     stream.rnd32_outleft -= sizeof val;
     memcpy(&val, &stream.rnd32[stream.rnd32_outleft], sizeof val);
     memset(&stream.rnd32[stream.rnd32_outleft], 0, sizeof val);
+    sodium_crit_leave();
 
     return val;
-}
-
-static uint32_t
-randombytes_salsa20_random(void)
-{
-    return randombytes_salsa20_random_getword();
 }
 
 static const char *
