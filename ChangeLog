@@ -1,4 +1,28 @@
 
+* Version 1.0.11
+ - sodium_init() is now thread-safe, and can be safely called multiple
+times.
+ - Android binaries now properly support 64-bit Android, targeting
+platform 24, but without breaking compatibility with platforms 16 and
+21.
+ - Better support for old gcc versions.
+ - On FreeBSD, core dumps are disabled on regions allocated with
+sodium allocation functions.
+ - AVX2 detection was fixed, resulting in faster Blake2b hashing on
+platforms where it was not properly detected.
+ - The Sandy2x Curve25519 implementation was not as fast as expected
+on some platforms. This has been fixed.
+ - The NativeClient target was improved. Most notably, it now supports
+optimized implementations, and uses pepper_49 by default.
+ - The library can be compiled with recent Emscripten versions.
+Changes have been made to produce smaller code, and the default heap
+size was reduced in the standard version.
+ - The code can now be compiled on SLES11 service pack 4.
+ - Decryption functions can now accept a NULL pointer for the output.
+This checks the MAC without writing the decrypted message.
+ - crypto_generichash_final() now returns -1 if called twice.
+ - Support for Visual Studio 2008 was improved.
+
 * Version 1.0.10
  - This release only fixes a compilation issue reported with some older
 gcc versions. There are no functional changes over the previous release.
