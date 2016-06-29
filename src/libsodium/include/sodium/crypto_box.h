@@ -3,8 +3,8 @@
 
 /*
  * THREAD SAFETY: crypto_box_keypair() is thread-safe,
- * provided that you called sodium_init() once before using any
- * other libsodium function.
+ * provided that sodium_init() was called before.
+ *
  * Other functions are always thread-safe.
  */
 

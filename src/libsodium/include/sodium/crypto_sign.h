@@ -3,8 +3,8 @@
 
 /*
  * THREAD SAFETY: crypto_sign_keypair() is thread-safe,
- * provided that you called sodium_init() once before using any
- * other libsodium function.
+ * provided that sodium_init() was called before.
+ *
  * Other functions, including crypto_sign_seed_keypair() are always thread-safe.
  */
 
