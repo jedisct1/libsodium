@@ -1,5 +1,5 @@
 AC_PREREQ([2.65])
-AC_INIT([libsodium],[1.0.10],
+AC_INIT([libsodium],[1.0.11],
   [https://github.com/jedisct1/libsodium/issues],
   [libsodium],
   [https://github.com/jedisct1/libsodium])
@@ -17,9 +17,9 @@ ISODATE=`date +%Y-%m-%d`
 AC_SUBST(ISODATE)
 
 SODIUM_LIBRARY_VERSION_MAJOR=9
-SODIUM_LIBRARY_VERSION_MINOR=2
+SODIUM_LIBRARY_VERSION_MINOR=3
 DLL_VERSION=8
-SODIUM_LIBRARY_VERSION=19:0:1
+SODIUM_LIBRARY_VERSION=19:1:1
 #                       | | |
 #                +------+ | +---+
 #                |        |     |
