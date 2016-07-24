@@ -7,7 +7,7 @@
 #include <string.h>
 
 #if (defined(HAVE_AVX2INTRIN_H) && defined(HAVE_EMMINTRIN_H) && defined(HAVE_TMMINTRIN_H) && defined(HAVE_SMMINTRIN_H)) || \
-    (defined(_MSC_VER) && (defined(_M_X64) || defined(_M_AMD64)))
+    (defined(_MSC_VER) && (defined(_M_X64) || defined(_M_AMD64)) && _MSC_VER > 1600)
 
 #pragma GCC target("sse2")
 #pragma GCC target("ssse3")
