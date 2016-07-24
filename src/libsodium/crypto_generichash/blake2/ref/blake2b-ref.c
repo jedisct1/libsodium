@@ -429,7 +429,7 @@ blake2b_pick_best_implementation(void)
 {
 /* LCOV_EXCL_START */
 #if (defined(HAVE_AVX2INTRIN_H) && defined(HAVE_TMMINTRIN_H) && defined(HAVE_SMMINTRIN_H)) || \
-    (defined(_MSC_VER) && (defined(_M_X64) || defined(_M_AMD64)) && _MSC_VER > 1600)
+    (defined(_MSC_VER) && (defined(_M_X64) || defined(_M_AMD64)) && _MSC_VER >= 1700)
   if (sodium_runtime_has_avx2()) {
     blake2b_compress = blake2b_compress_avx2;
     return 0;
