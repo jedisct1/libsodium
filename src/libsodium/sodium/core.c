@@ -18,7 +18,7 @@
 #include "utils.h"
 #include "private/mutex.h"
 
-#if !defined(_MSC_VER) && 1
+#if !defined(_MSC_VER) && 0
 # warning *** This is unstable, untested, development code.
 # warning It might not compile. It might not work as expected.
 # warning It might be totally insecure.
