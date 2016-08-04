@@ -398,7 +398,14 @@ AS_IF([test "x$EMSCRIPTEN" = "x" -a "$host_os" != "pnacl"], [
 #endif
 #pragma GCC target("avx2")
 #include <immintrin.h>
-]], [[ __m256i x = _mm256_abs_epi8(_mm256_setzero_si256()); ]])],
+#include <string.h>
+]], [[
+// the code below is intentionally crafted to make sure the compiler
+// can't optimize the AVX2 instructions away.
+__m256i x = _mm256_set1_epi32(0xdeadbeef);
+__m256i y = _mm256_permutevar8x32_epi32(x,x);
+return memcmp(&x, &y, sizeof(x)) != 0;
+]])],
     [AC_MSG_RESULT(yes)
      AC_DEFINE([HAVE_AVX2INTRIN_H], [1], [AVX2 is available])
      AX_CHECK_COMPILE_FLAG([-mavx2], [CFLAGS_AVX2="-mavx2"])
