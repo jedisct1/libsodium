@@ -31,7 +31,8 @@ export LDFLAGS="-arch i386 -isysroot ${SDK} -mios-simulator-version-min=${IOS_SI
 
 make distclean > /dev/null
 
-./configure --disable-shared \
+./configure --host=i686-apple-darwin10 \
+            --disable-shared \
             --enable-minimal \
             --prefix="$SIMULATOR32_PREFIX" || exit 1
 
@@ -43,7 +44,8 @@ export LDFLAGS="-arch x86_64 -isysroot ${SDK} -mios-simulator-version-min=${IOS_
 
 make distclean > /dev/null
 
-./configure --disable-shared \
+./configure --host=x86_64-apple-darwin10 \
+            --disable-shared \
             --enable-minimal \
             --prefix="$SIMULATOR64_PREFIX"
 
