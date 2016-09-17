@@ -14,9 +14,17 @@ export IOS32_PREFIX="$PREFIX/tmp/ios32"
 export IOS64_PREFIX="$PREFIX/tmp/ios64"
 export SIMULATOR32_PREFIX="$PREFIX/tmp/simulator32"
 export SIMULATOR64_PREFIX="$PREFIX/tmp/simulator64"
-export IOS_SIMULATOR_VERSION_MIN=${IOS_SIMULATOR_VERSION_MIN-"5.1.1"}
-export IOS_VERSION_MIN=${IOS_VERSION_MIN-"5.1.1"}
 export XCODEDIR=$(xcode-select -p)
+
+echo 'int main(void) { return 0; }' > conftest.c
+if clang -arch armv7 conftest.c 2> /dev/null; then
+  export IOS_SIMULATOR_VERSION_MIN=${IOS_SIMULATOR_VERSION_MIN-"5.1.1"}
+  export IOS_VERSION_MIN=${IOS_VERSION_MIN-"5.1.1"}
+else
+  export IOS_SIMULATOR_VERSION_MIN=${IOS_SIMULATOR_VERSION_MIN-"6.0.0"}
+  export IOS_VERSION_MIN=${IOS_VERSION_MIN-"6.0.0"}
+fi
+rm -f conftest.c
 
 mkdir -p $SIMULATOR32_PREFIX $SIMULATOR64_PREFIX $IOS32_PREFIX $IOS64_PREFIX || exit 1
 
