@@ -293,6 +293,7 @@ int decode_string(argon2_context *ctx, const char *str, argon2_type type) {
     size_t maxadlen = ctx->adlen;
     size_t maxsaltlen = ctx->saltlen;
     size_t maxoutlen = ctx->outlen;
+    unsigned long val;
     unsigned long version = 0;
     int validation_result;
 
@@ -310,11 +311,23 @@ int decode_string(argon2_context *ctx, const char *str, argon2_type type) {
         return ARGON2_INCORRECT_TYPE;
     }
     CC("$m=");
-    DECIMAL(ctx->m_cost);
+    DECIMAL(val);
+    if (val > UINT32_MAX) {
+        return ARGON2_INCORRECT_TYPE;
+    }
+    ctx->m_cost = (uint32_t) val;
     CC(",t=");
-    DECIMAL(ctx->t_cost);
+    DECIMAL(val);
+    if (val > UINT32_MAX) {
+        return ARGON2_INCORRECT_TYPE;
+    }
+    ctx->t_cost = (uint32_t) val;
     CC(",p=");
-    DECIMAL(ctx->lanes);
+    DECIMAL(val);
+    if (val > UINT32_MAX) {
+        return ARGON2_INCORRECT_TYPE;
+    }
+    ctx->lanes = (uint32_t) val;
     ctx->threads = ctx->lanes;
 
     CC_opt(",data=", BIN(ctx->ad, maxadlen, ctx->adlen));
