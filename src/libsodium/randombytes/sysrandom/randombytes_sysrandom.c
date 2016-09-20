@@ -114,7 +114,7 @@ safe_read(const int fd, void * const buf_, size_t size)
 #endif
 
 #ifndef _WIN32
-# if defined(__linux__) && !defined(USE_BLOCKING_RANDOM)
+# if defined(__linux__) && !defined(USE_BLOCKING_RANDOM) && !defined(NO_BLOCKING_RANDOM_POLL)
 static int
 randombytes_block_on_dev_random(void)
 {
@@ -155,7 +155,7 @@ randombytes_sysrandom_random_dev_open(void)
     const char **      device = devices;
     int                fd;
 
-# if defined(__linux__) && !defined(USE_BLOCKING_RANDOM)
+# if defined(__linux__) && !defined(USE_BLOCKING_RANDOM) && !defined(NO_BLOCKING_RANDOM_POLL)
     if (randombytes_block_on_dev_random() != 0) {
         return -1;
     }
