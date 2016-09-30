@@ -7,41 +7,43 @@
 #include "common.h"
 #include "consts.h"
 
-int crypto_stream_aes128ctr_xor_afternm(unsigned char *out, const unsigned char *in, unsigned long long len, const unsigned char *nonce, const unsigned char *c)
+int crypto_stream_aes128ctr_xor_afternm(unsigned char *out,
+                                        const unsigned char *in,
+                                        unsigned long long len,
+                                        const unsigned char *nonce,
+                                        const unsigned char *c)
 {
+    aes_uint128_t xmm0;
+    aes_uint128_t xmm1;
+    aes_uint128_t xmm2;
+    aes_uint128_t xmm3;
+    aes_uint128_t xmm4;
+    aes_uint128_t xmm5;
+    aes_uint128_t xmm6;
+    aes_uint128_t xmm7;
+    aes_uint128_t xmm8;
+    aes_uint128_t xmm9;
+    aes_uint128_t xmm10;
+    aes_uint128_t xmm11;
+    aes_uint128_t xmm12;
+    aes_uint128_t xmm13;
+    aes_uint128_t xmm14;
+    aes_uint128_t xmm15;
 
-  aes_uint128_t xmm0;
-  aes_uint128_t xmm1;
-  aes_uint128_t xmm2;
-  aes_uint128_t xmm3;
-  aes_uint128_t xmm4;
-  aes_uint128_t xmm5;
-  aes_uint128_t xmm6;
-  aes_uint128_t xmm7;
+    aes_uint128_t nonce_stack;
+    unsigned long long lensav;
+    unsigned char bl[128];
+    unsigned char *blp;
+    unsigned char *np;
+    unsigned char b;
 
-  aes_uint128_t xmm8;
-  aes_uint128_t xmm9;
-  aes_uint128_t xmm10;
-  aes_uint128_t xmm11;
-  aes_uint128_t xmm12;
-  aes_uint128_t xmm13;
-  aes_uint128_t xmm14;
-  aes_uint128_t xmm15;
+    uint32_t tmp;
 
-  aes_uint128_t nonce_stack;
-  unsigned long long lensav;
-  unsigned char bl[128];
-  unsigned char *blp;
-  unsigned char *np;
-  unsigned char b;
+    /* Copy nonce on the stack */
+    copy2(&nonce_stack, (const aes_uint128_t *) (nonce + 0));
+    np = (unsigned char *)&nonce_stack;
 
-  uint32_t tmp;
-
-  /* Copy nonce on the stack */
-  copy2(&nonce_stack, (const aes_uint128_t *) (nonce + 0));
-  np = (unsigned char *)&nonce_stack;
-
-    enc_block:
+enc_block:
 
     xmm0 = *(aes_uint128_t *) (np + 0);
     copy2(&xmm1, &xmm0);
@@ -116,7 +118,7 @@ int crypto_stream_aes128ctr_xor_afternm(unsigned char *out, const unsigned char 
 
     goto enc_block;
 
-    partial:
+partial:
 
     lensav = len;
     len >>= 4;
@@ -135,7 +137,7 @@ int crypto_stream_aes128ctr_xor_afternm(unsigned char *out, const unsigned char 
     *(aes_uint128_t *)(blp + 96) = xmm10;
     *(aes_uint128_t *)(blp + 112) = xmm13;
 
-    bytes:
+bytes:
 
     if(lensav == 0) goto end;
 
@@ -150,7 +152,7 @@ int crypto_stream_aes128ctr_xor_afternm(unsigned char *out, const unsigned char 
 
     goto bytes;
 
-    full:
+full:
 
     tmp = LOAD32_BE(np + 12);
     tmp += 8;
@@ -174,7 +176,7 @@ int crypto_stream_aes128ctr_xor_afternm(unsigned char *out, const unsigned char 
     *(aes_uint128_t *) (out + 96) = xmm10;
     *(aes_uint128_t *) (out + 112) = xmm13;
 
-    end:
+end:
     return 0;
 
 }
