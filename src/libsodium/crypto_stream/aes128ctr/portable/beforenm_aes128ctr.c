@@ -9,23 +9,23 @@
 
 int crypto_stream_aes128ctr_beforenm(unsigned char *c, const unsigned char *k)
 {
-    int128 xmm0;
-    int128 xmm1;
-    int128 xmm2;
-    int128 xmm3;
-    int128 xmm4;
-    int128 xmm5;
-    int128 xmm6;
-    int128 xmm7;
-    int128 xmm8;
-    int128 xmm9;
-    int128 xmm10;
-    int128 xmm11;
-    int128 xmm12;
-    int128 xmm13;
-    int128 xmm14;
-    int128 xmm15;
-    int128 t;
+    aes_uint128_t xmm0;
+    aes_uint128_t xmm1;
+    aes_uint128_t xmm2;
+    aes_uint128_t xmm3;
+    aes_uint128_t xmm4;
+    aes_uint128_t xmm5;
+    aes_uint128_t xmm6;
+    aes_uint128_t xmm7;
+    aes_uint128_t xmm8;
+    aes_uint128_t xmm9;
+    aes_uint128_t xmm10;
+    aes_uint128_t xmm11;
+    aes_uint128_t xmm12;
+    aes_uint128_t xmm13;
+    aes_uint128_t xmm14;
+    aes_uint128_t xmm15;
+    aes_uint128_t t;
 
     bitslicekey0(k, c)
 

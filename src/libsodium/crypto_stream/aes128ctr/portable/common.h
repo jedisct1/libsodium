@@ -32,14 +32,14 @@
   shufb(&b5, EXPB0);\
   shufb(&b0, EXPB0);\
   ;\
-  t0 = *(int128 *)(bskey + 0);\
-  t1 = *(int128 *)(bskey + 16);\
-  t2 = *(int128 *)(bskey + 32);\
-  t3 = *(int128 *)(bskey + 48);\
-  t4 = *(int128 *)(bskey + 64);\
-  t5 = *(int128 *)(bskey + 80);\
-  t6 = *(int128 *)(bskey + 96);\
-  t7 = *(int128 *)(bskey + 112);\
+  t0 = *(aes_uint128_t *)(bskey + 0);\
+  t1 = *(aes_uint128_t *)(bskey + 16);\
+  t2 = *(aes_uint128_t *)(bskey + 32);\
+  t3 = *(aes_uint128_t *)(bskey + 48);\
+  t4 = *(aes_uint128_t *)(bskey + 64);\
+  t5 = *(aes_uint128_t *)(bskey + 80);\
+  t6 = *(aes_uint128_t *)(bskey + 96);\
+  t7 = *(aes_uint128_t *)(bskey + 112);\
   ;\
   xor2(&b0, &t0);\
   xor2(&b1, &t1);\
@@ -104,14 +104,14 @@
   xor2(&b2, &t6);\
   xor2(&b5, &t7);\
   ;\
-  *(int128 *)(bskey + 128) = b0;\
-  *(int128 *)(bskey + 144) = b1;\
-  *(int128 *)(bskey + 160) = b4;\
-  *(int128 *)(bskey + 176) = b6;\
-  *(int128 *)(bskey + 192) = b3;\
-  *(int128 *)(bskey + 208) = b7;\
-  *(int128 *)(bskey + 224) = b2;\
-  *(int128 *)(bskey + 240) = b5;\
+  *(aes_uint128_t *)(bskey + 128) = b0;\
+  *(aes_uint128_t *)(bskey + 144) = b1;\
+  *(aes_uint128_t *)(bskey + 160) = b4;\
+  *(aes_uint128_t *)(bskey + 176) = b6;\
+  *(aes_uint128_t *)(bskey + 192) = b3;\
+  *(aes_uint128_t *)(bskey + 208) = b7;\
+  *(aes_uint128_t *)(bskey + 224) = b2;\
+  *(aes_uint128_t *)(bskey + 240) = b5;\
 
 #define keyexpbs10(b0, b1, b2, b3, b4, b5, b6, b7, t0, t1, t2, t3, t4, t5, t6, t7, bskey) ;\
   toggle(&b0);\
@@ -142,14 +142,14 @@
   shufb(&b2, EXPB0);\
   shufb(&b5, EXPB0);\
   ;\
-  t0 = *(int128 *)(bskey + 9 * 128 +   0);\
-  t1 = *(int128 *)(bskey + 9 * 128 +  16);\
-  t2 = *(int128 *)(bskey + 9 * 128 +  32);\
-  t3 = *(int128 *)(bskey + 9 * 128 +  48);\
-  t4 = *(int128 *)(bskey + 9 * 128 +  64);\
-  t5 = *(int128 *)(bskey + 9 * 128 +  80);\
-  t6 = *(int128 *)(bskey + 9 * 128 +  96);\
-  t7 = *(int128 *)(bskey + 9 * 128 + 112);\
+  t0 = *(aes_uint128_t *)(bskey + 9 * 128 +   0);\
+  t1 = *(aes_uint128_t *)(bskey + 9 * 128 +  16);\
+  t2 = *(aes_uint128_t *)(bskey + 9 * 128 +  32);\
+  t3 = *(aes_uint128_t *)(bskey + 9 * 128 +  48);\
+  t4 = *(aes_uint128_t *)(bskey + 9 * 128 +  64);\
+  t5 = *(aes_uint128_t *)(bskey + 9 * 128 +  80);\
+  t6 = *(aes_uint128_t *)(bskey + 9 * 128 +  96);\
+  t7 = *(aes_uint128_t *)(bskey + 9 * 128 + 112);\
   ;\
   toggle(&t0);\
   toggle(&t1);\
@@ -228,14 +228,14 @@
   shufb(&b6, M0);\
   shufb(&b7, M0);\
   ;\
-  *(int128 *)(bskey + 1280) = b0;\
-  *(int128 *)(bskey + 1296) = b1;\
-  *(int128 *)(bskey + 1312) = b4;\
-  *(int128 *)(bskey + 1328) = b6;\
-  *(int128 *)(bskey + 1344) = b3;\
-  *(int128 *)(bskey + 1360) = b7;\
-  *(int128 *)(bskey + 1376) = b2;\
-  *(int128 *)(bskey + 1392) = b5;\
+  *(aes_uint128_t *)(bskey + 1280) = b0;\
+  *(aes_uint128_t *)(bskey + 1296) = b1;\
+  *(aes_uint128_t *)(bskey + 1312) = b4;\
+  *(aes_uint128_t *)(bskey + 1328) = b6;\
+  *(aes_uint128_t *)(bskey + 1344) = b3;\
+  *(aes_uint128_t *)(bskey + 1360) = b7;\
+  *(aes_uint128_t *)(bskey + 1376) = b2;\
+  *(aes_uint128_t *)(bskey + 1392) = b5;\
 
 
 #define keyexpbs(b0, b1, b2, b3, b4, b5, b6, b7, t0, t1, t2, t3, t4, t5, t6, t7, rcon, i, bskey) \
@@ -264,14 +264,14 @@
   shufb(&b2, EXPB0);\
   shufb(&b5, EXPB0);\
   ;\
-  t0 = *(int128 *)(bskey + (i-1) * 128 +   0);\
-  t1 = *(int128 *)(bskey + (i-1) * 128 +  16);\
-  t2 = *(int128 *)(bskey + (i-1) * 128 +  32);\
-  t3 = *(int128 *)(bskey + (i-1) * 128 +  48);\
-  t4 = *(int128 *)(bskey + (i-1) * 128 +  64);\
-  t5 = *(int128 *)(bskey + (i-1) * 128 +  80);\
-  t6 = *(int128 *)(bskey + (i-1) * 128 +  96);\
-  t7 = *(int128 *)(bskey + (i-1) * 128 + 112);\
+  t0 = *(aes_uint128_t *)(bskey + (i-1) * 128 +   0);\
+  t1 = *(aes_uint128_t *)(bskey + (i-1) * 128 +  16);\
+  t2 = *(aes_uint128_t *)(bskey + (i-1) * 128 +  32);\
+  t3 = *(aes_uint128_t *)(bskey + (i-1) * 128 +  48);\
+  t4 = *(aes_uint128_t *)(bskey + (i-1) * 128 +  64);\
+  t5 = *(aes_uint128_t *)(bskey + (i-1) * 128 +  80);\
+  t6 = *(aes_uint128_t *)(bskey + (i-1) * 128 +  96);\
+  t7 = *(aes_uint128_t *)(bskey + (i-1) * 128 + 112);\
   ;\
   toggle(&t0);\
   toggle(&t1);\
@@ -341,19 +341,19 @@
   xor2(&b2, &t6);\
   xor2(&b5, &t7);\
   ;\
-  *(int128 *)(bskey + i*128 +   0) = b0;\
-  *(int128 *)(bskey + i*128 +  16) = b1;\
-  *(int128 *)(bskey + i*128 +  32) = b4;\
-  *(int128 *)(bskey + i*128 +  48) = b6;\
-  *(int128 *)(bskey + i*128 +  64) = b3;\
-  *(int128 *)(bskey + i*128 +  80) = b7;\
-  *(int128 *)(bskey + i*128 +  96) = b2;\
-  *(int128 *)(bskey + i*128 + 112) = b5;\
+  *(aes_uint128_t *)(bskey + i*128 +   0) = b0;\
+  *(aes_uint128_t *)(bskey + i*128 +  16) = b1;\
+  *(aes_uint128_t *)(bskey + i*128 +  32) = b4;\
+  *(aes_uint128_t *)(bskey + i*128 +  48) = b6;\
+  *(aes_uint128_t *)(bskey + i*128 +  64) = b3;\
+  *(aes_uint128_t *)(bskey + i*128 +  80) = b7;\
+  *(aes_uint128_t *)(bskey + i*128 +  96) = b2;\
+  *(aes_uint128_t *)(bskey + i*128 + 112) = b5;\
 
 /* Macros used in multiple contexts */
 
 #define bitslicekey0(key, bskey) \
-  xmm0 = *(const int128 *) (key + 0);\
+  xmm0 = *(const aes_uint128_t *) (key + 0);\
   shufb(&xmm0, M0);\
   copy2(&xmm1, &xmm0);\
   copy2(&xmm2, &xmm0);\
@@ -365,18 +365,18 @@
   ;\
   bitslice(xmm7, xmm6, xmm5, xmm4, xmm3, xmm2, xmm1, xmm0, t);\
   ;\
-  *(int128 *) (bskey + 0) = xmm0;\
-  *(int128 *) (bskey + 16) = xmm1;\
-  *(int128 *) (bskey + 32) = xmm2;\
-  *(int128 *) (bskey + 48) = xmm3;\
-  *(int128 *) (bskey + 64) = xmm4;\
-  *(int128 *) (bskey + 80) = xmm5;\
-  *(int128 *) (bskey + 96) = xmm6;\
-  *(int128 *) (bskey + 112) = xmm7;\
+  *(aes_uint128_t *) (bskey + 0) = xmm0;\
+  *(aes_uint128_t *) (bskey + 16) = xmm1;\
+  *(aes_uint128_t *) (bskey + 32) = xmm2;\
+  *(aes_uint128_t *) (bskey + 48) = xmm3;\
+  *(aes_uint128_t *) (bskey + 64) = xmm4;\
+  *(aes_uint128_t *) (bskey + 80) = xmm5;\
+  *(aes_uint128_t *) (bskey + 96) = xmm6;\
+  *(aes_uint128_t *) (bskey + 112) = xmm7;\
 
 
 #define bitslicekey10(key, bskey) \
-  xmm0 = *(int128 *) (key + 0);\
+  xmm0 = *(aes_uint128_t *) (key + 0);\
   copy2(xmm1, xmm0);\
   copy2(xmm2, xmm0);\
   copy2(xmm3, xmm0);\
@@ -392,18 +392,18 @@
   toggle(&xmm1);\
   toggle(&xmm0);\
   ;\
-  *(int128 *) (bskey +   0 + 1280) = xmm0;\
-  *(int128 *) (bskey +  16 + 1280) = xmm1;\
-  *(int128 *) (bskey +  32 + 1280) = xmm2;\
-  *(int128 *) (bskey +  48 + 1280) = xmm3;\
-  *(int128 *) (bskey +  64 + 1280) = xmm4;\
-  *(int128 *) (bskey +  80 + 1280) = xmm5;\
-  *(int128 *) (bskey +  96 + 1280) = xmm6;\
-  *(int128 *) (bskey + 112 + 1280) = xmm7;\
+  *(aes_uint128_t *) (bskey +   0 + 1280) = xmm0;\
+  *(aes_uint128_t *) (bskey +  16 + 1280) = xmm1;\
+  *(aes_uint128_t *) (bskey +  32 + 1280) = xmm2;\
+  *(aes_uint128_t *) (bskey +  48 + 1280) = xmm3;\
+  *(aes_uint128_t *) (bskey +  64 + 1280) = xmm4;\
+  *(aes_uint128_t *) (bskey +  80 + 1280) = xmm5;\
+  *(aes_uint128_t *) (bskey +  96 + 1280) = xmm6;\
+  *(aes_uint128_t *) (bskey + 112 + 1280) = xmm7;\
 
 
 #define bitslicekey(i,key,bskey) \
-  xmm0 = *(int128 *) (key + 0);\
+  xmm0 = *(aes_uint128_t *) (key + 0);\
   shufb(&xmm0, M0);\
   copy2(&xmm1, &xmm0);\
   copy2(&xmm2, &xmm0);\
@@ -420,14 +420,14 @@
   toggle(&xmm1);\
   toggle(&xmm0);\
   ;\
-  *(int128 *) (bskey +   0 + 128*i) = xmm0;\
-  *(int128 *) (bskey +  16 + 128*i) = xmm1;\
-  *(int128 *) (bskey +  32 + 128*i) = xmm2;\
-  *(int128 *) (bskey +  48 + 128*i) = xmm3;\
-  *(int128 *) (bskey +  64 + 128*i) = xmm4;\
-  *(int128 *) (bskey +  80 + 128*i) = xmm5;\
-  *(int128 *) (bskey +  96 + 128*i) = xmm6;\
-  *(int128 *) (bskey + 112 + 128*i) = xmm7;\
+  *(aes_uint128_t *) (bskey +   0 + 128*i) = xmm0;\
+  *(aes_uint128_t *) (bskey +  16 + 128*i) = xmm1;\
+  *(aes_uint128_t *) (bskey +  32 + 128*i) = xmm2;\
+  *(aes_uint128_t *) (bskey +  48 + 128*i) = xmm3;\
+  *(aes_uint128_t *) (bskey +  64 + 128*i) = xmm4;\
+  *(aes_uint128_t *) (bskey +  80 + 128*i) = xmm5;\
+  *(aes_uint128_t *) (bskey +  96 + 128*i) = xmm6;\
+  *(aes_uint128_t *) (bskey + 112 + 128*i) = xmm7;\
 
 
 #define bitslice(x0, x1, x2, x3, x4, x5, x6, x7, t) \
@@ -463,21 +463,21 @@
 /* Macros used for encryption (and decryption) */
 
 #define shiftrows(x0, x1, x2, x3, x4, x5, x6, x7, i, M, bskey) \
-        xor2(&x0, (const int128 *)(bskey + 128*(i-1) + 0));\
+        xor2(&x0, (const aes_uint128_t *)(bskey + 128*(i-1) + 0));\
   shufb(&x0, M);\
-        xor2(&x1, (const int128 *)(bskey + 128*(i-1) + 16));\
+        xor2(&x1, (const aes_uint128_t *)(bskey + 128*(i-1) + 16));\
   shufb(&x1, M);\
-        xor2(&x2, (const int128 *)(bskey + 128*(i-1) + 32));\
+        xor2(&x2, (const aes_uint128_t *)(bskey + 128*(i-1) + 32));\
   shufb(&x2, M);\
-        xor2(&x3, (const int128 *)(bskey + 128*(i-1) + 48));\
+        xor2(&x3, (const aes_uint128_t *)(bskey + 128*(i-1) + 48));\
   shufb(&x3, M);\
-        xor2(&x4, (const int128 *)(bskey + 128*(i-1) + 64));\
+        xor2(&x4, (const aes_uint128_t *)(bskey + 128*(i-1) + 64));\
   shufb(&x4, M);\
-        xor2(&x5, (const int128 *)(bskey + 128*(i-1) + 80));\
+        xor2(&x5, (const aes_uint128_t *)(bskey + 128*(i-1) + 80));\
   shufb(&x5, M);\
-        xor2(&x6, (const int128 *)(bskey + 128*(i-1) + 96));\
+        xor2(&x6, (const aes_uint128_t *)(bskey + 128*(i-1) + 96));\
   shufb(&x6, M);\
-        xor2(&x7, (const int128 *)(bskey + 128*(i-1) + 112));\
+        xor2(&x7, (const aes_uint128_t *)(bskey + 128*(i-1) + 112));\
   shufb(&x7, M);\
 
 
@@ -540,14 +540,14 @@
 #define lastround(b0, b1, b2, b3, b4, b5, b6, b7, t0, t1, t2, t3, t4, t5, t6, t7, bskey) \
         shiftrows(b0, b1, b2, b3, b4, b5, b6, b7, 10, SRM0, bskey);\
         sbox(b0, b1, b2, b3, b4, b5, b6, b7, t0, t1, t2, t3, t4, t5, t6, t7);\
-        xor2(&b0,(const int128 *)(bskey + 128*10));\
-        xor2(&b1,(const int128 *)(bskey + 128*10+16));\
-        xor2(&b4,(const int128 *)(bskey + 128*10+32));\
-        xor2(&b6,(const int128 *)(bskey + 128*10+48));\
-        xor2(&b3,(const int128 *)(bskey + 128*10+64));\
-        xor2(&b7,(const int128 *)(bskey + 128*10+80));\
-        xor2(&b2,(const int128 *)(bskey + 128*10+96));\
-        xor2(&b5,(const int128 *)(bskey + 128*10+112));\
+        xor2(&b0,(const aes_uint128_t *)(bskey + 128*10));\
+        xor2(&b1,(const aes_uint128_t *)(bskey + 128*10+16));\
+        xor2(&b4,(const aes_uint128_t *)(bskey + 128*10+32));\
+        xor2(&b6,(const aes_uint128_t *)(bskey + 128*10+48));\
+        xor2(&b3,(const aes_uint128_t *)(bskey + 128*10+64));\
+        xor2(&b7,(const aes_uint128_t *)(bskey + 128*10+80));\
+        xor2(&b2,(const aes_uint128_t *)(bskey + 128*10+96));\
+        xor2(&b5,(const aes_uint128_t *)(bskey + 128*10+112));\
 
 
 #define sbox(b0, b1, b2, b3, b4, b5, b6, b7, t0, t1, t2, t3, s0, s1, s2, s3) \
