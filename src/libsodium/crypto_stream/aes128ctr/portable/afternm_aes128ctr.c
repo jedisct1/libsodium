@@ -9,39 +9,37 @@
 
 int crypto_stream_aes128ctr_afternm(unsigned char *out, unsigned long long len, const unsigned char *nonce, const unsigned char *c)
 {
+    int128 xmm0;
+    int128 xmm1;
+    int128 xmm2;
+    int128 xmm3;
+    int128 xmm4;
+    int128 xmm5;
+    int128 xmm6;
+    int128 xmm7;
+    int128 xmm8;
+    int128 xmm9;
+    int128 xmm10;
+    int128 xmm11;
+    int128 xmm12;
+    int128 xmm13;
+    int128 xmm14;
+    int128 xmm15;
 
-  int128 xmm0;
-  int128 xmm1;
-  int128 xmm2;
-  int128 xmm3;
-  int128 xmm4;
-  int128 xmm5;
-  int128 xmm6;
-  int128 xmm7;
+    int128 nonce_stack;
+    unsigned long long lensav;
+    unsigned char bl[128];
+    unsigned char *blp;
+    unsigned char *np;
+    unsigned char b;
 
-  int128 xmm8;
-  int128 xmm9;
-  int128 xmm10;
-  int128 xmm11;
-  int128 xmm12;
-  int128 xmm13;
-  int128 xmm14;
-  int128 xmm15;
+    uint32_t tmp;
 
-  int128 nonce_stack;
-  unsigned long long lensav;
-  unsigned char bl[128];
-  unsigned char *blp;
-  unsigned char *np;
-  unsigned char b;
+    /* Copy nonce on the stack */
+    copy2(&nonce_stack, (const int128 *) (nonce + 0));
+    np = (unsigned char *)&nonce_stack;
 
-  uint32_t tmp;
-
-  /* Copy nonce on the stack */
-  copy2(&nonce_stack, (const int128 *) (nonce + 0));
-  np = (unsigned char *)&nonce_stack;
-
-    enc_block:
+enc_block:
 
     xmm0 = *(int128 *) (np + 0);
     copy2(&xmm1, &xmm0);
@@ -106,7 +104,7 @@ int crypto_stream_aes128ctr_afternm(unsigned char *out, unsigned long long len, 
 
     goto enc_block;
 
-    partial:
+partial:
 
     lensav = len;
     len >>= 4;
@@ -125,7 +123,7 @@ int crypto_stream_aes128ctr_afternm(unsigned char *out, unsigned long long len, 
     *(int128 *)(blp + 96) = xmm10;
     *(int128 *)(blp + 112) = xmm13;
 
-    bytes:
+bytes:
 
     if(lensav == 0) goto end;
 
@@ -138,7 +136,7 @@ int crypto_stream_aes128ctr_afternm(unsigned char *out, unsigned long long len, 
 
     goto bytes;
 
-    full:
+full:
 
     tmp = LOAD32_BE(np + 12);
     tmp += 8;
@@ -153,7 +151,6 @@ int crypto_stream_aes128ctr_afternm(unsigned char *out, unsigned long long len, 
     *(int128 *) (out + 96) = xmm10;
     *(int128 *) (out + 112) = xmm13;
 
-    end:
+end:
     return 0;
-
 }
