@@ -40,6 +40,7 @@
 #include "sodium/crypto_stream_salsa20.h"
 #include "sodium/crypto_stream_salsa2012.h"
 #include "sodium/crypto_stream_salsa208.h"
+#include "sodium/crypto_stream_xchacha20.h"
 #include "sodium/crypto_stream_xsalsa20.h"
 #include "sodium/crypto_verify_16.h"
 #include "sodium/crypto_verify_32.h"
