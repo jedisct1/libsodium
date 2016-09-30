@@ -35,7 +35,7 @@ int crypto_stream_aes128ctr_xor_afternm(unsigned char *out, const unsigned char 
   unsigned char *np;
   unsigned char b;
 
-  uint32 tmp;
+  uint32_t tmp;
 
   /* Copy nonce on the stack */
   copy2(&nonce_stack, (const int128 *) (nonce + 0));

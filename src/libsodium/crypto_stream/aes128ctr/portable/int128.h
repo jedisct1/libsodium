@@ -51,6 +51,6 @@ void toggle(int128 *r);
 void xor_rcon(int128 *r);
 
 #define add_uint32_big crypto_stream_aes128ctr_portable_add_uint32_big
-void add_uint32_big(int128 *r, uint32 x);
+void add_uint32_big(int128 *r, uint32_t x);
 
 #endif

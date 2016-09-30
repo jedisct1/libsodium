@@ -67,7 +67,7 @@ void shufd(int128 *r, const int128 *x, const unsigned int c)
 void rshift32_littleendian(int128 *r, const unsigned int n)
 {
   unsigned char *rp = (unsigned char *)r;
-  uint32 t;
+  uint32_t t;
   t = LOAD32_LE(rp);
   t >>= n;
   STORE32_LE(rp, t);
@@ -115,16 +115,16 @@ void toggle(int128 *r)
 void xor_rcon(int128 *r)
 {
   unsigned char *rp = (unsigned char *)r;
-  uint32 t;
+  uint32_t t;
   t = LOAD32_LE(rp+12);
   t ^= 0xffffffff;
   STORE32_LE(rp+12, t);
 }
 
-void add_uint32_big(int128 *r, uint32 x)
+void add_uint32_big(int128 *r, uint32_t x)
 {
   unsigned char *rp = (unsigned char *)r;
-  uint32 t;
+  uint32_t t;
   t = LOAD32_LE(rp+12);
   t += x;
   STORE32_LE(rp+12, t);
