@@ -67,14 +67,14 @@ if (UNIX)
     find_library(sodium_LIBRARY_RELEASE NAMES ${${XPREFIX}_LIBRARIES} sodium
         HINTS ${${XPREFIX}_LIBRARY_DIRS}
     )
-    
+
 
 ########################################################################
 # Windows
 elseif (WIN32)
     set(sodium_DIR "$ENV{sodium_DIR}" CACHE FILEPATH "sodium install directory")
     mark_as_advanced(sodium_DIR)
-    
+
     find_path(sodium_INCLUDE_DIR sodium.h
         HINTS ${sodium_DIR}
         PATH_SUFFIXES include
