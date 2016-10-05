@@ -10,6 +10,7 @@ EXTRA_DIST = \
 	THANKS
 
 SUBDIRS = \
+	contrib \
 	dist-build \
 	msvc-scripts \
 	src \
