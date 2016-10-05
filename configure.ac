@@ -696,6 +696,7 @@ AH_VERBATIM([NDEBUG], [/* Always evaluate assert() calls */
 #endif])
 
 AC_CONFIG_FILES([Makefile
+                 contrib/Makefile
                  dist-build/Makefile
                  libsodium.pc
                  libsodium-uninstalled.pc
