@@ -35,7 +35,7 @@ echo
 echo "Building for platform [${NDK_PLATFORM}], retaining compatibility with platform [${NDK_PLATFORM_COMPAT}]"
 echo
 
-bash $MAKE_TOOLCHAIN --platform="$NDK_PLATFORM_COMPAT" \
+bash $MAKE_TOOLCHAIN --force --platform="$NDK_PLATFORM_COMPAT" \
     --arch="$ARCH" --install-dir="$TOOLCHAIN_DIR" || exit 1
 
 ./configure \
@@ -50,7 +50,7 @@ if [ "$NDK_PLATFORM" != "$NDK_PLATFORM_COMPAT" ]; then
   echo
   echo "Configuring again for platform [${NDK_PLATFORM}]"
   echo
-  bash $MAKE_TOOLCHAIN --platform="$NDK_PLATFORM" \
+  bash $MAKE_TOOLCHAIN --force --platform="$NDK_PLATFORM" \
       --arch="$ARCH" --install-dir="$TOOLCHAIN_DIR" || exit 1
 
   ./configure \
