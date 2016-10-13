@@ -11,10 +11,14 @@
 #endif
 
 #include "randombytes.h"
-#include "randombytes_sysrandom.h"
-
-#ifdef __native_client__
-# include "randombytes_nativeclient.h"
+#ifdef RANDOMBYTES_DEFAULT_IMPLEMENTATION
+# include "randombytes_default.h"
+#else
+# ifdef __native_client__
+#  include "randombytes_nativeclient.h"
+# else
+#  include "randombytes_sysrandom.h"
+# endif
 #endif
 
 /* C++Builder defines a "random" macro */
@@ -22,13 +26,15 @@
 
 static const randombytes_implementation *implementation;
 
-#ifdef __EMSCRIPTEN__
-# define RANDOMBYTES_DEFAULT_IMPLEMENTATION NULL
-#else
-# ifdef __native_client__
-#  define RANDOMBYTES_DEFAULT_IMPLEMENTATION &randombytes_nativeclient_implementation;
+#ifndef RANDOMBYTES_DEFAULT_IMPLEMENTATION
+# ifdef __EMSCRIPTEN__
+#  define RANDOMBYTES_DEFAULT_IMPLEMENTATION NULL
 # else
-#  define RANDOMBYTES_DEFAULT_IMPLEMENTATION &randombytes_sysrandom_implementation;
+#  ifdef __native_client__
+#   define RANDOMBYTES_DEFAULT_IMPLEMENTATION &randombytes_nativeclient_implementation;
+#  else
+#   define RANDOMBYTES_DEFAULT_IMPLEMENTATION &randombytes_sysrandom_implementation;
+#  endif
 # endif
 #endif
 
