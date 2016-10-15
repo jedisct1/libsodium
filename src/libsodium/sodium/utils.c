@@ -33,7 +33,7 @@
 #endif
 
 #define CANARY_SIZE 16U
-#define GARBAGE_VALUE 0xd0
+#define GARBAGE_VALUE 0xdb
 
 #ifndef MAP_NOCORE
 # define MAP_NOCORE 0
