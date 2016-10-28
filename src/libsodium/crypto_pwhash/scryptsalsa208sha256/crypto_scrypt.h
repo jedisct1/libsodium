@@ -33,6 +33,13 @@
 #include <stdint.h>
 #include <stddef.h>
 
+#ifdef __cplusplus
+# ifdef __GNUC__
+#  pragma GCC diagnostic ignored "-Wlong-long"
+# endif
+extern "C" {
+#endif
+
 #if SIZE_MAX > 0xffffffffULL
 # define ARCH_BITS 64
 #else
@@ -94,5 +101,9 @@ extern uint8_t * escrypt_gensalt_r(
     uint32_t __N_log2, uint32_t __r, uint32_t __p,
     const uint8_t * __src, size_t __srclen,
     uint8_t * __buf, size_t __buflen);
+
+#ifdef __cplusplus
+}
+#endif
 
 #endif /* !_CRYPTO_SCRYPT_H_ */
