@@ -71,19 +71,19 @@ static inline void
 fscalar_product(felem output, const felem in, const limb scalar) {
   uint128_t a;
 
-  a = ((uint128_t) in[0]) * scalar;
+  a = in[0] * (uint128_t) scalar;
   output[0] = ((limb)a) & 0x7ffffffffffff;
 
-  a = ((uint128_t) in[1]) * scalar + ((limb) (a >> 51));
+  a = in[1] * (uint128_t) scalar + ((limb) (a >> 51));
   output[1] = ((limb)a) & 0x7ffffffffffff;
 
-  a = ((uint128_t) in[2]) * scalar + ((limb) (a >> 51));
+  a = in[2] * (uint128_t) scalar + ((limb) (a >> 51));
   output[2] = ((limb)a) & 0x7ffffffffffff;
 
-  a = ((uint128_t) in[3]) * scalar + ((limb) (a >> 51));
+  a = in[3] * (uint128_t) scalar + ((limb) (a >> 51));
   output[3] = ((limb)a) & 0x7ffffffffffff;
 
-  a = ((uint128_t) in[4]) * scalar + ((limb) (a >> 51));
+  a = in[4] * (uint128_t) scalar + ((limb) (a >> 51));
   output[4] = ((limb)a) & 0x7ffffffffffff;
 
   output[0] += (a >> 51) * 19;
