@@ -117,7 +117,7 @@ else
       mv -f "${file}.tmp" "$file"
     done
   )
-  time make $MAKE_FLAGS check || exit 1
+  make $MAKE_FLAGS check || exit 1
   touch "$DONE_FILE"
 fi
 
