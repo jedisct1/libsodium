@@ -12,9 +12,9 @@
 #endif
 
 typedef union {
-  uint64_t u64[2];
-  uint32_t u32[4];
-  uint8_t  u8[16];
+    uint64_t u64[2];
+    uint32_t u32[4];
+    uint8_t  u8[16];
 } aes_uint128_t;
 
 #define xor2 crypto_stream_aes128ctr_portable_xor2

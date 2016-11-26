@@ -7,6 +7,7 @@ int crypto_stream_aes128ctr(unsigned char *out,
                             const unsigned char *k)
 {
     unsigned char d[crypto_stream_aes128ctr_BEFORENMBYTES];
+
     crypto_stream_aes128ctr_beforenm(d, k);
     crypto_stream_aes128ctr_afternm(out, outlen, n, d);
 
@@ -20,6 +21,7 @@ int crypto_stream_aes128ctr_xor(unsigned char *out,
                                 const unsigned char *k)
 {
     unsigned char d[crypto_stream_aes128ctr_BEFORENMBYTES];
+
     crypto_stream_aes128ctr_beforenm(d, k);
     crypto_stream_aes128ctr_xor_afternm(out, in, inlen, n, d);
 

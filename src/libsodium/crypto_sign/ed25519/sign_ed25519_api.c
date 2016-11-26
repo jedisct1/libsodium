@@ -27,6 +27,7 @@ int
 crypto_sign_ed25519_sk_to_seed(unsigned char *seed, const unsigned char *sk)
 {
     memmove(seed, sk, crypto_sign_ed25519_SEEDBYTES);
+
     return 0;
 }
 
