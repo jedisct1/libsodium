@@ -23,6 +23,40 @@ size_t crypto_secretbox_xchacha20poly1305_noncebytes(void);
 SODIUM_EXPORT
 size_t crypto_secretbox_xchacha20poly1305_macbytes(void);
 
+SODIUM_EXPORT
+int crypto_secretbox_xchacha20poly1305_easy(unsigned char *c,
+                                            const unsigned char *m,
+                                            unsigned long long mlen,
+                                            const unsigned char *n,
+                                            const unsigned char *k);
+
+SODIUM_EXPORT
+int crypto_secretbox_xchacha20poly1305_open_easy(unsigned char *m,
+                                                 const unsigned char *c,
+                                                 unsigned long long clen,
+                                                 const unsigned char *n,
+                                                 const unsigned char *k)
+            __attribute__ ((warn_unused_result));
+
+SODIUM_EXPORT
+int crypto_secretbox_xchacha20poly1305_detached(unsigned char *c,
+                                                unsigned char *mac,
+                                                const unsigned char *m,
+                                                unsigned long long mlen,
+                                                const unsigned char *n,
+                                                const unsigned char *k);
+
+SODIUM_EXPORT
+int crypto_secretbox_xchacha20poly1305_open_detached(unsigned char *m,
+                                                     const unsigned char *c,
+                                                     const unsigned char *mac,
+                                                     unsigned long long clen,
+                                                     const unsigned char *n,
+                                                     const unsigned char *k)
+            __attribute__ ((warn_unused_result));
+
+/* -- NaCl-like interface ; Requires padding -- */
+
 #define crypto_secretbox_xchacha20poly1305_BOXZEROBYTES 16U
 SODIUM_EXPORT
 size_t crypto_secretbox_xchacha20poly1305_boxzerobytes(void);
@@ -45,7 +79,8 @@ int crypto_secretbox_xchacha20poly1305_open(unsigned char *m,
                                             const unsigned char *c,
                                             unsigned long long clen,
                                             const unsigned char *n,
-                                            const unsigned char *k);
+                                            const unsigned char *k)
+            __attribute__ ((warn_unused_result));
 
 #ifdef __cplusplus
 }

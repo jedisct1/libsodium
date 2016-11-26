@@ -176,6 +176,7 @@ libsodium_la_SOURCES += \
 	crypto_core/salsa208/ref/core_salsa208.c \
 	crypto_core/salsa208/core_salsa208_api.c \
 	crypto_secretbox/xchacha20poly1305/secretbox_xchacha20poly1305_api.c \
+	crypto_secretbox/xchacha20poly1305/secretbox_xchacha20poly1305_easy.c \
 	crypto_secretbox/xchacha20poly1305/sodium/secretbox_xchacha20poly1305.c \
 	crypto_sign/ed25519/ref10/obsolete.c \
 	crypto_stream/aes128ctr/portable/afternm_aes128ctr.c \
