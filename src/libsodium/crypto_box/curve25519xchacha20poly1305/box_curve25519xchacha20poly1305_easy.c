@@ -30,9 +30,9 @@ crypto_box_curve25519xchacha20poly1305_detached(unsigned char *c,
     unsigned char k[crypto_box_curve25519xchacha20poly1305_BEFORENMBYTES];
     int           ret;
 
-    (void)sizeof(int[crypto_box_curve25519xchacha20poly1305_BEFORENMBYTES
-                     >= crypto_secretbox_xchacha20poly1305_KEYBYTES ?
-                     1 : -1]);
+    (void) sizeof(int[crypto_box_curve25519xchacha20poly1305_BEFORENMBYTES
+                      >= crypto_secretbox_xchacha20poly1305_KEYBYTES ?
+                      1 : -1]);
     if (crypto_box_curve25519xchacha20poly1305_beforenm(k, pk, sk) != 0) {
         return -1;
     }
