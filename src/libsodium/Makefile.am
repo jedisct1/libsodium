@@ -169,6 +169,12 @@ endif
 
 if !MINIMAL
 libsodium_la_SOURCES += \
+	crypto_box/curve25519xchacha20poly1305/box_curve25519xchacha20poly1305_api.c \
+	crypto_box/curve25519xchacha20poly1305/box_curve25519xchacha20poly1305_easy.c \
+	crypto_box/curve25519xchacha20poly1305/sodium/after_curve25519xchacha20poly1305.c \
+	crypto_box/curve25519xchacha20poly1305/sodium/before_curve25519xchacha20poly1305.c \
+	crypto_box/curve25519xchacha20poly1305/sodium/box_curve25519xchacha20poly1305.c \
+	crypto_box/curve25519xchacha20poly1305/sodium/keypair_curve25519xchacha20poly1305.c \
 	crypto_core/hchacha20/core_hchacha20.c \
 	crypto_core/hchacha20/core_hchacha20.h \
 	crypto_core/salsa2012/ref/core_salsa2012.c \
