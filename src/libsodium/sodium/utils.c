@@ -62,7 +62,7 @@ static unsigned char canary[CANARY_SIZE];
 __attribute__ ((weak)) void
 _sodium_memzero_as_a_weak_symbol_to_prevent_lto(void * const pnt, const size_t len)
 {
-    unsigned char *pnt_ = (unsigned char *) pnt;;
+    unsigned char *pnt_ = (unsigned char *) pnt;
     size_t         i = (size_t) 0U;
 
     while (i < len) {
