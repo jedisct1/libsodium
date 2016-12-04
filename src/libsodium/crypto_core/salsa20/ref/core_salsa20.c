@@ -6,6 +6,7 @@ Public domain.
 
 #include <stdint.h>
 #include <stdlib.h>
+#include <assert.h>
 
 #include "crypto_core_salsa20.h"
 #include "private/common.h"
@@ -13,10 +14,13 @@ Public domain.
 #define ROUNDS 20
 #define U32C(v) (v##U)
 
+
+// Avoids undefined behaviour
 static uint32_t
-rotate(uint32_t u, int c)
+rotate(uint32_t u, uint32_t c)
 {
-    return (u << c) | (u >> (32 - c));
+    assert (c < 32);
+    return (u << c) | (u >> (-c & 31));
 }
 
 int
