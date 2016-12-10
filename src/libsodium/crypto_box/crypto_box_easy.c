@@ -62,7 +62,8 @@ crypto_box_easy(unsigned char *c, const unsigned char *m,
 int
 crypto_box_open_detached_afternm(unsigned char *m, const unsigned char *c,
                                  const unsigned char *mac,
-                                 unsigned long long clen, const unsigned char *n,
+                                 unsigned long long clen,
+                                 const unsigned char *n,
                                  const unsigned char *k)
 {
     return crypto_secretbox_open_detached(m, c, mac, clen, n, k);
