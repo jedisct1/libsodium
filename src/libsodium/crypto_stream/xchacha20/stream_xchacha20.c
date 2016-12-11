@@ -1,6 +1,5 @@
 
 #include <stdlib.h>
-#include <assert.h>
 
 #include "crypto_core_hchacha20.h"
 #include "crypto_stream_chacha20.h"
@@ -23,9 +22,10 @@ crypto_stream_xchacha20(unsigned char *c, unsigned long long clen,
     unsigned char k2[crypto_core_hchacha20_OUTPUTBYTES];
 
     crypto_core_hchacha20(k2, n, k, NULL);
-    assert(crypto_stream_chacha20_KEYBYTES <= sizeof k2);
-    assert(crypto_stream_chacha20_NONCEBYTES ==
-           (sizeof n) - crypto_core_hchacha20_INPUTBYTES);
+    (void) sizeof(int[crypto_stream_chacha20_KEYBYTES <= sizeof k2 ? 1 : -1]);
+    (void) sizeof(int[crypto_stream_chacha20_NONCEBYTES ==
+                      crypto_stream_xchacha20_NONCEBYTES -
+                      crypto_core_hchacha20_INPUTBYTES ? 1 : -1]);
     return crypto_stream_chacha20(c, clen,
                                   n + crypto_core_hchacha20_INPUTBYTES, k2);
 }
