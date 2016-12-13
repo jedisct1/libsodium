@@ -19,6 +19,8 @@
 *.status
 *.tar.*
 *~
+*.VC.db
+*.VC.VC.opendb
 .DS_Store
 .deps
 .dirstamp
