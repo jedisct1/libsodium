@@ -660,6 +660,17 @@ AS_IF([test "x$aligned_access_required" = "xyes"],
   [AC_MSG_RESULT(no)
    AC_DEFINE([CPU_UNALIGNED_ACCESS], [1], [unaligned memory access is supported])])
 
+AC_MSG_CHECKING(if atomic operations are supported)
+AC_LINK_IFELSE([AC_LANG_PROGRAM([[ ]], [[
+static volatile int _sodium_lock;
+__sync_lock_test_and_set(&_sodium_lock, 1);
+__sync_lock_release(&_sodium_lock);
+]]
+)],
+[AC_MSG_RESULT(yes)
+ AC_DEFINE([HAVE_ATOMIC_OPS], [1], [atomic operations are supported])],
+[AC_MSG_RESULT(no)])
+
 dnl Checks for functions and headers
 
 AS_IF([test "x$EMSCRIPTEN" = "x"],[
