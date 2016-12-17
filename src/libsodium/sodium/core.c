@@ -123,7 +123,7 @@ sodium_crit_leave(void)
     return 0;
 }
 
-#elif defined(__GNUC__) && !defined(__EMSCRIPTEN__) && !defined(__native_client__)
+#elif defined(HAVE_ATOMIC_OPS) && !defined(__EMSCRIPTEN__) && !defined(__native_client__)
 
 static volatile int _sodium_lock;
 
