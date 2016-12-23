@@ -12,6 +12,8 @@
 
 #include "private/common.h"
 
+static const unsigned char _pad0[16] = { 0 };
+
 int
 crypto_aead_xchacha20poly1305_encrypt_detached(unsigned char *c,
                                                unsigned char *mac,
@@ -34,12 +36,16 @@ crypto_aead_xchacha20poly1305_encrypt_detached(unsigned char *c,
     sodium_memzero(block0, sizeof block0);
 
     crypto_onetimeauth_poly1305_update(&state, ad, adlen);
-    STORE64_LE(slen, (uint64_t) adlen);
-    crypto_onetimeauth_poly1305_update(&state, slen, sizeof slen);
+    crypto_onetimeauth_poly1305_update(&state, _pad0, (0x10 - adlen) & 0xf);
 
     crypto_stream_xchacha20_xor_ic(c, m, mlen, npub, 1U, k);
 
     crypto_onetimeauth_poly1305_update(&state, c, mlen);
+    crypto_onetimeauth_poly1305_update(&state, _pad0, (0x10 - mlen) & 0xf);
+
+    STORE64_LE(slen, (uint64_t) adlen);
+    crypto_onetimeauth_poly1305_update(&state, slen, sizeof slen);
+
     STORE64_LE(slen, (uint64_t) mlen);
     crypto_onetimeauth_poly1305_update(&state, slen, sizeof slen);
 
