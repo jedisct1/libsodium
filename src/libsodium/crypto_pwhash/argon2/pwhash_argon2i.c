@@ -20,6 +20,30 @@ crypto_pwhash_argon2i_alg_argon2i13(void)
 }
 
 size_t
+crypto_pwhash_argon2i_bytes_min(void)
+{
+    return crypto_pwhash_argon2i_BYTES_MIN;
+}
+
+size_t
+crypto_pwhash_argon2i_bytes_max(void)
+{
+    return crypto_pwhash_argon2i_BYTES_MAX;
+}
+
+size_t
+crypto_pwhash_argon2i_passwd_min(void)
+{
+    return crypto_pwhash_argon2i_PASSWD_MIN;
+}
+
+size_t
+crypto_pwhash_argon2i_passwd_max(void)
+{
+    return crypto_pwhash_argon2i_PASSWD_MAX;
+}
+
+size_t
 crypto_pwhash_argon2i_saltbytes(void)
 {
     return crypto_pwhash_argon2i_SALTBYTES;
@@ -35,6 +59,30 @@ const char *
 crypto_pwhash_argon2i_strprefix(void)
 {
     return crypto_pwhash_argon2i_STRPREFIX;
+}
+
+size_t
+crypto_pwhash_argon2i_opslimit_min(void)
+{
+    return crypto_pwhash_argon2i_OPSLIMIT_MIN;
+}
+
+size_t
+crypto_pwhash_argon2i_opslimit_max(void)
+{
+    return crypto_pwhash_argon2i_OPSLIMIT_MAX;
+}
+
+size_t
+crypto_pwhash_argon2i_memlimit_min(void)
+{
+    return crypto_pwhash_argon2i_MEMLIMIT_MIN;
+}
+
+size_t
+crypto_pwhash_argon2i_memlimit_max(void)
+{
+    return crypto_pwhash_argon2i_MEMLIMIT_MAX;
 }
 
 size_t

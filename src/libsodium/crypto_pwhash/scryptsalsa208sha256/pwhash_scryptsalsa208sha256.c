@@ -52,6 +52,30 @@ pickparams(unsigned long long opslimit, const size_t memlimit,
 }
 
 size_t
+crypto_pwhash_scryptsalsa208sha256_bytes_min(void)
+{
+    return crypto_pwhash_scryptsalsa208sha256_BYTES_MIN;
+}
+
+size_t
+crypto_pwhash_scryptsalsa208sha256_bytes_max(void)
+{
+    return crypto_pwhash_scryptsalsa208sha256_BYTES_MAX;
+}
+
+size_t
+crypto_pwhash_scryptsalsa208sha256_passwd_min(void)
+{
+    return crypto_pwhash_scryptsalsa208sha256_PASSWD_MIN;
+}
+
+size_t
+crypto_pwhash_scryptsalsa208sha256_passwd_max(void)
+{
+    return crypto_pwhash_scryptsalsa208sha256_PASSWD_MAX;
+}
+
+size_t
 crypto_pwhash_scryptsalsa208sha256_saltbytes(void)
 {
     return crypto_pwhash_scryptsalsa208sha256_SALTBYTES;
@@ -67,6 +91,30 @@ const char *
 crypto_pwhash_scryptsalsa208sha256_strprefix(void)
 {
     return crypto_pwhash_scryptsalsa208sha256_STRPREFIX;
+}
+
+size_t
+crypto_pwhash_scryptsalsa208sha256_opslimit_min(void)
+{
+    return crypto_pwhash_scryptsalsa208sha256_OPSLIMIT_MIN;
+}
+
+size_t
+crypto_pwhash_scryptsalsa208sha256_opslimit_max(void)
+{
+    return crypto_pwhash_scryptsalsa208sha256_OPSLIMIT_MAX;
+}
+
+size_t
+crypto_pwhash_scryptsalsa208sha256_memlimit_min(void)
+{
+    return crypto_pwhash_scryptsalsa208sha256_MEMLIMIT_MIN;
+}
+
+size_t
+crypto_pwhash_scryptsalsa208sha256_memlimit_max(void)
+{
+    return crypto_pwhash_scryptsalsa208sha256_MEMLIMIT_MAX;
 }
 
 size_t
