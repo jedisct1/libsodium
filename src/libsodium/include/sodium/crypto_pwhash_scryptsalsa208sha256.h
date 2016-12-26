@@ -13,6 +13,22 @@
 extern "C" {
 #endif
 
+#define crypto_pwhash_scryptsalsa208sha256_BYTES_MIN // XXX
+SODIUM_EXPORT
+size_t crypto_pwhash_scryptsalsa208sha256_bytes_min(void);
+
+#define crypto_pwhash_scryptsalsa208sha256_BYTES_MAX // XXX
+SODIUM_EXPORT
+size_t crypto_pwhash_scryptsalsa208sha256_bytes_max(void);
+
+#define crypto_pwhash_scryptsalsa208sha256_PASSWD_MIN // XXX
+SODIUM_EXPORT
+size_t crypto_pwhash_scryptsalsa208sha256_passwd_min(void);
+
+#define crypto_pwhash_scryptsalsa208sha256_PASSWD_MAX // XXX
+SODIUM_EXPORT
+size_t crypto_pwhash_scryptsalsa208sha256_passwd_max(void);
+
 #define crypto_pwhash_scryptsalsa208sha256_SALTBYTES 32U
 SODIUM_EXPORT
 size_t crypto_pwhash_scryptsalsa208sha256_saltbytes(void);
@@ -24,6 +40,22 @@ size_t crypto_pwhash_scryptsalsa208sha256_strbytes(void);
 #define crypto_pwhash_scryptsalsa208sha256_STRPREFIX "$7$"
 SODIUM_EXPORT
 const char *crypto_pwhash_scryptsalsa208sha256_strprefix(void);
+
+#define crypto_pwhash_scryptsalsa208sha256_OPSLIMIT_MIN 32768
+SODIUM_EXPORT
+size_t crypto_pwhash_scryptsalsa208sha256_opslimit_min(void);
+
+#define crypto_pwhash_scryptsalsa208sha256_OPSLIMIT_MAX // XXX
+SODIUM_EXPORT
+size_t crypto_pwhash_scryptsalsa208sha256_opslimit_max(void);
+
+#define crypto_pwhash_scryptsalsa208sha256_MEMLIMIT_MIN // XXX
+SODIUM_EXPORT
+size_t crypto_pwhash_scryptsalsa208sha256_memlimit_min(void);
+
+#define crypto_pwhash_scryptsalsa208sha256_MEMLIMIT_MAX // XXX
+SODIUM_EXPORT
+size_t crypto_pwhash_scryptsalsa208sha256_memlimit_max(void);
 
 #define crypto_pwhash_scryptsalsa208sha256_OPSLIMIT_INTERACTIVE 524288ULL
 SODIUM_EXPORT

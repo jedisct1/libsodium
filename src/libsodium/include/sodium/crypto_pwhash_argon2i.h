@@ -16,6 +16,22 @@ extern "C" {
 SODIUM_EXPORT
 int crypto_pwhash_argon2i_alg_argon2i13(void);
 
+#define crypto_pwhash_argon2i_BYTES_MIN ARGON2_MIN_OUTLEN
+SODIUM_EXPORT
+size_t crypto_pwhash_argon2i_bytes_min(void);
+
+#define crypto_pwhash_argon2i_BYTES_MAX ARGON2_MAX_OUTLEN
+SODIUM_EXPORT
+size_t crypto_pwhash_argon2i_bytes_max(void);
+
+#define crypto_pwhash_argon2i_PASSWD_MIN ARGON2_MIN_PWD_LENGTH
+SODIUM_EXPORT
+size_t crypto_pwhash_argon2i_passwd_min(void);
+
+#define crypto_pwhash_argon2i_PASSWD_MAX ARGON2_MAX_PWD_LENGTH
+SODIUM_EXPORT
+size_t crypto_pwhash_argon2i_passwd_max(void);
+
 #define crypto_pwhash_argon2i_SALTBYTES 16U
 SODIUM_EXPORT
 size_t crypto_pwhash_argon2i_saltbytes(void);
@@ -27,6 +43,22 @@ size_t crypto_pwhash_argon2i_strbytes(void);
 #define crypto_pwhash_argon2i_STRPREFIX "$argon2i$"
 SODIUM_EXPORT
 const char *crypto_pwhash_argon2i_strprefix(void);
+
+#define crypto_pwhash_argon2i_OPSLIMIT_MIN ARGON2_MIN_TIME
+SODIUM_EXPORT
+size_t crypto_pwhash_argon2i_opslimit_min(void);
+
+#define crypto_pwhash_argon2i_OPSLIMIT_MAX ARGON2_MAX_TIME
+SODIUM_EXPORT
+size_t crypto_pwhash_argon2i_opslimit_max(void);
+
+#define crypto_pwhash_argon2i_MEMLIMIT_MIN ARGON2_MIN_MEMORY
+SODIUM_EXPORT
+size_t crypto_pwhash_argon2i_memlimit_min(void);
+
+#define crypto_pwhash_argon2i_MEMLIMIT_MAX ARGON2_MAX_MEMORY
+SODIUM_EXPORT
+size_t crypto_pwhash_argon2i_memlimit_max(void);
 
 #define crypto_pwhash_argon2i_OPSLIMIT_INTERACTIVE 4ULL
 SODIUM_EXPORT
