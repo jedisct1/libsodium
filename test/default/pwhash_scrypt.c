@@ -330,10 +330,19 @@ int main(void)
     str_out[14]--;
 
     assert(str_out[crypto_pwhash_scryptsalsa208sha256_STRBYTES - 1U] == 0);
+    assert(crypto_pwhash_scryptsalsa208sha256_bytes_min() > 0U);
+    assert(crypto_pwhash_scryptsalsa208sha256_bytes_max() > 0U);
+    assert(crypto_pwhash_scryptsalsa208sha256_passwd_min() > 0U);
+    assert(crypto_pwhash_scryptsalsa208sha256_passwd_max() > 0U);
     assert(crypto_pwhash_scryptsalsa208sha256_saltbytes() > 0U);
     assert(crypto_pwhash_scryptsalsa208sha256_strbytes() > 1U);
     assert(crypto_pwhash_scryptsalsa208sha256_strbytes() >
            strlen(crypto_pwhash_scryptsalsa208sha256_strprefix()));
+
+    assert(crypto_pwhash_scryptsalsa208sha256_opslimit_min() > 0U);
+    assert(crypto_pwhash_scryptsalsa208sha256_opslimit_max() > 0U);
+    assert(crypto_pwhash_scryptsalsa208sha256_memlimit_min() > 0U);
+    assert(crypto_pwhash_scryptsalsa208sha256_memlimit_max() > 0U);
     assert(crypto_pwhash_scryptsalsa208sha256_opslimit_interactive() > 0U);
     assert(crypto_pwhash_scryptsalsa208sha256_memlimit_interactive() > 0U);
     assert(crypto_pwhash_scryptsalsa208sha256_opslimit_sensitive() > 0U);
