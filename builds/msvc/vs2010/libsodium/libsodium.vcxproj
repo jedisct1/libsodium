@@ -102,6 +102,7 @@
     <ClCompile Include="..\..\..\..\src\libsodium\crypto_scalarmult\curve25519\donna_c64\curve25519_donna_c64.c" />
     <ClCompile Include="..\..\..\..\src\libsodium\crypto_scalarmult\curve25519\ref10\x25519_ref10.c" />
     <ClCompile Include="..\..\..\..\src\libsodium\crypto_scalarmult\curve25519\scalarmult_curve25519.c" />
+    <ClCompile Include="..\..\..\..\src\libsodium\crypto_secretbox\xsalsa20poly1305\ref\secretbox_xsalsa20poly1305.c" />
     <ClCompile Include="..\..\..\..\src\libsodium\crypto_sign\ed25519\ref10\keypair.c" />
     <ClCompile Include="..\..\..\..\src\libsodium\crypto_sign\ed25519\ref10\obsolete.c" />
     <ClCompile Include="..\..\..\..\src\libsodium\crypto_sign\ed25519\ref10\open.c" />
@@ -222,7 +223,6 @@
     <ClCompile Include="..\..\..\..\src\libsodium\crypto_secretbox\crypto_secretbox.c" />
     <ClCompile Include="..\..\..\..\src\libsodium\crypto_secretbox\crypto_secretbox_easy.c" />
     <ClCompile Include="..\..\..\..\src\libsodium\crypto_secretbox\xsalsa20poly1305\secretbox_xsalsa20poly1305_api.c" />
-    <ClCompile Include="..\..\..\..\src\libsodium\crypto_secretbox\xsalsa20poly1305\ref\box_xsalsa20poly1305.c" />
     <ClCompile Include="..\..\..\..\src\libsodium\crypto_shorthash\crypto_shorthash.c" />
     <ClCompile Include="..\..\..\..\src\libsodium\crypto_shorthash\siphash24\shorthash_siphash24_api.c" />
     <ClCompile Include="..\..\..\..\src\libsodium\crypto_shorthash\siphash24\ref\shorthash_siphash24.c" />
