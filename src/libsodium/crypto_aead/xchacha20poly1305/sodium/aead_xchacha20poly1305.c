@@ -28,7 +28,8 @@ crypto_aead_xchacha20poly1305_ietf_encrypt_detached(unsigned char *c,
     int           ret;
 
     crypto_core_hchacha20(k2, npub, k, NULL);
-    memcpy(npub2 + 4, npub + crypto_core_hchacha20_INPUTBYTES, crypto_aead_chacha20poly1305_ietf_NPUBBYTES - 4);
+    memcpy(npub2 + 4, npub + crypto_core_hchacha20_INPUTBYTES,
+           crypto_aead_chacha20poly1305_ietf_NPUBBYTES - 4);
     ret = crypto_aead_chacha20poly1305_ietf_encrypt_detached
         (c, mac, maclen_p, m, mlen, ad, adlen, nsec, npub2, k2);
     sodium_memzero(k2, crypto_core_hchacha20_OUTPUTBYTES);
