@@ -36,6 +36,7 @@ AC_SUBST(SODIUM_LIBRARY_VERSION_MINOR)
 AC_SUBST(SODIUM_LIBRARY_VERSION)
 AC_SUBST(DLL_VERSION)
 
+AC_LANG_ASSERT(C)
 LX_CFLAGS=${CFLAGS-NONE}
 
 dnl Path check
@@ -180,19 +181,14 @@ AX_CHECK_COMPILE_FLAG([-fvisibility=hidden],
   [CFLAGS="$CFLAGS -fvisibility=hidden"])
 
 AS_CASE([$host_os], [cygwin*|mingw*|msys|pw32*|cegcc*], [ ], [
-  AX_CHECK_COMPILE_FLAG([-fPIC], [
-    AX_CHECK_LINK_FLAG([-fPIC],
-      [CFLAGS="$CFLAGS -fPIC"]
-    )
-  ])
+  AX_CHECK_COMPILE_FLAG([-fPIC], [CFLAGS="$CFLAGS -fPIC"])
 ])
 
 AS_IF([test "$enable_pie" != "no"],[
   AX_CHECK_COMPILE_FLAG([-fPIE], [
-    AX_CHECK_LINK_FLAG([-fPIE],
-      [AX_CHECK_LINK_FLAG([-pie],
-        [CFLAGS="$CFLAGS -fPIE"
-         LDFLAGS="$LDFLAGS -pie"])
+    AX_CHECK_LINK_FLAG([-pie], [
+      [CFLAGS="$CFLAGS -fPIE"
+       LDFLAGS="$LDFLAGS -pie"]
     ])
   ])
 ])

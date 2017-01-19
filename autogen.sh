@@ -21,7 +21,7 @@ if [ ! -x "`which automake 2>/dev/null`" ] ; then
   exit 1
 fi
 
-if [ -x "`which autoreconf 2>/dev/null`" ] ; then
+if autoreconf --version > /dev/null 2>&1 ; then
   exec autoreconf -ivf
 fi
 

@@ -6,7 +6,11 @@
 # include <sys/time.h>
 #endif
 #ifdef __linux__
-# include <sys/syscall.h>
+# ifdef __dietlibc__
+#  define _LINUX_SOURCE
+# else
+#  include <sys/syscall.h>
+# endif
 # include <poll.h>
 #endif
 
@@ -189,7 +193,7 @@ randombytes_sysrandom_random_dev_open(void)
 /* LCOV_EXCL_STOP */
 }
 
-# if defined(SYS_getrandom) && defined(__NR_getrandom)
+# if defined(__dietlibc__) || (defined(SYS_getrandom) && defined(__NR_getrandom))
 static int
 _randombytes_linux_getrandom(void * const buf, const size_t size)
 {
@@ -197,7 +201,11 @@ _randombytes_linux_getrandom(void * const buf, const size_t size)
 
     assert(size <= 256U);
     do {
+#  ifdef __dietlibc__
+        readnb = getrandom(buf, size, 0);
+#  else
         readnb = syscall(SYS_getrandom, buf, (int) size, 0);
+#  endif
     } while (readnb < 0 && (errno == EINTR || errno == EAGAIN));
 
     return (readnb == (int) size) - 1;

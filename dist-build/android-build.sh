@@ -8,19 +8,19 @@ else
 fi
 
 if [ -z "$ANDROID_NDK_HOME" ]; then
-    echo "You should probably set ANDROID_NDK_HOME to the directory containing"
-    echo "the Android NDK"
-    exit
+  echo "You should probably set ANDROID_NDK_HOME to the directory containing"
+  echo "the Android NDK"
+  exit
 fi
 
 if [ ! -f ./configure ]; then
-	echo "Can't find ./configure. Wrong directory or haven't run autogen.sh?"
-	exit 1
+  echo "Can't find ./configure. Wrong directory or haven't run autogen.sh?"
+  exit 1
 fi
 
 if [ "x$TARGET_ARCH" = 'x' ] || [ "x$ARCH" = 'x' ] || [ "x$HOST_COMPILER" = 'x' ]; then
-    echo "You shouldn't use android-build.sh directly, use android-[arch].sh instead"
-    exit 1
+  echo "You shouldn't use android-build.sh directly, use android-[arch].sh instead"
+  exit 1
 fi
 
 export MAKE_TOOLCHAIN="${ANDROID_NDK_HOME}/build/tools/make-standalone-toolchain.sh"

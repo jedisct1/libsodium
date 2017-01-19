@@ -1,3 +1,3 @@
 
 EXTRA_DIST = \
-	FindSodium.cmake
+	Findsodium.cmake
