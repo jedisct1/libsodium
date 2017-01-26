@@ -1,10 +1,10 @@
 
 #include <string.h>
 #include <time.h>
-#ifdef HAVE_PTHREAD
-# include <pthread.h>
-#elif defined(_WIN32)
+#ifdef _WIN32
 # include <windows.h>
+#elif defined(HAVE_PTHREAD)
+# include <pthread.h>
 #endif
 
 #include "core.h"
@@ -62,23 +62,7 @@ sodium_init(void)
     return 0;
 }
 
-#if defined(HAVE_PTHREAD) && !defined(__EMSCRIPTEN__)
-
-static pthread_mutex_t _sodium_lock = PTHREAD_MUTEX_INITIALIZER;
-
-int
-sodium_crit_enter(void)
-{
-    return pthread_mutex_lock(&_sodium_lock);
-}
-
-int
-sodium_crit_leave(void)
-{
-    return pthread_mutex_unlock(&_sodium_lock);
-}
-
-#elif defined(_WIN32)
+#ifdef _WIN32
 
 static CRITICAL_SECTION _sodium_lock;
 static volatile LONG    _sodium_lock_initialized;
@@ -121,6 +105,22 @@ sodium_crit_leave(void)
     LeaveCriticalSection(&_sodium_lock);
 
     return 0;
+}
+
+#elif defined(HAVE_PTHREAD) && !defined(__EMSCRIPTEN__)
+
+static pthread_mutex_t _sodium_lock = PTHREAD_MUTEX_INITIALIZER;
+
+int
+sodium_crit_enter(void)
+{
+    return pthread_mutex_lock(&_sodium_lock);
+}
+
+int
+sodium_crit_leave(void)
+{
+    return pthread_mutex_unlock(&_sodium_lock);
 }
 
 #elif defined(HAVE_ATOMIC_OPS) && !defined(__EMSCRIPTEN__) && !defined(__native_client__)
