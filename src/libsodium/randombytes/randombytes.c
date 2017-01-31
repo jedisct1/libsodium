@@ -154,7 +154,7 @@ randombytes_buf(void * const buf, const size_t size)
         implementation->buf(buf, size);
     }
 #else
-    unsigned char *p = buf;
+    unsigned char *p = (unsigned char *) buf;
     size_t         i;
 
     for (i = (size_t) 0U; i < size; i++) {
