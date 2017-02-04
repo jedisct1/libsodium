@@ -98,23 +98,6 @@ load64_be(const uint8_t src[8])
 #endif
 }
 
-#define LOAD32_BE(SRC) load32_be(SRC)
-static inline uint32_t
-load32_be(const uint8_t src[4])
-{
-#ifdef NATIVE_BIG_ENDIAN
-    uint32_t w;
-    memcpy(&w, src, sizeof w);
-    return w;
-#else
-    uint32_t w = (uint32_t) src[3];
-    w |= (uint32_t) src[2] <<  8;
-    w |= (uint32_t) src[1] << 16;
-    w |= (uint32_t) src[0] << 24;
-    return w;
-#endif
-}
-
 #define STORE64_BE(DST, W) store64_be((DST), (W))
 static inline void
 store64_be(uint8_t dst[8], uint64_t w)
@@ -130,6 +113,23 @@ store64_be(uint8_t dst[8], uint64_t w)
     dst[2] = (uint8_t) w; w >>= 8;
     dst[1] = (uint8_t) w; w >>= 8;
     dst[0] = (uint8_t) w;
+#endif
+}
+
+#define LOAD32_BE(SRC) load32_be(SRC)
+static inline uint32_t
+load32_be(const uint8_t src[4])
+{
+#ifdef NATIVE_BIG_ENDIAN
+    uint32_t w;
+    memcpy(&w, src, sizeof w);
+    return w;
+#else
+    uint32_t w = (uint32_t) src[3];
+    w |= (uint32_t) src[2] <<  8;
+    w |= (uint32_t) src[1] << 16;
+    w |= (uint32_t) src[0] << 24;
+    return w;
 #endif
 }
 
