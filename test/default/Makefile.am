@@ -62,7 +62,8 @@ EXTRA_DIST = \
 	stream2.exp \
 	stream3.exp \
 	stream4.exp \
-	verify1.exp
+	verify1.exp \
+	xchacha20.exp
 
 DISTCLEANFILES = \
 	aead_aes256gcm.res \
@@ -124,7 +125,8 @@ DISTCLEANFILES = \
 	stream2.res \
 	stream3.res \
 	stream4.res \
-	verify1.res
+	verify1.res \
+	xchacha20.res
 
 if NATIVECLIENT
 CLEANFILES = \
@@ -243,7 +245,8 @@ CLEANFILES = \
 	stream2.nexe \
 	stream3.nexe \
 	stream4.nexe \
-	verify1.nexe
+	verify1.nexe \
+	xchacha20.nexe
 endif
 
 AM_CPPFLAGS = \
@@ -506,6 +509,14 @@ stream4_LDADD             = $(TESTS_LDADD)
 
 verify1_SOURCE            = cmptest.h verify1.c
 verify1_LDADD             = $(TESTS_LDADD)
+
+xchacha20_SOURCE          = cmptest.h xchacha20.c
+xchacha20_LDADD           = $(TESTS_LDADD)
+
+if !MINIMAL
+TESTS_TARGETS += \
+	xchacha20
+endif
 
 if NATIVECLIENT
 LOG_COMPILER = ./nacl-test-wrapper.sh
