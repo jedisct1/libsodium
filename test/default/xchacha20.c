@@ -31,11 +31,11 @@ tv_hchacha20(void)
     unsigned char     *out2;
     int                i;
 
-    constant = sodium_malloc(crypto_core_hchacha20_CONSTBYTES);
-    key = sodium_malloc(crypto_core_hchacha20_KEYBYTES);
-    in = sodium_malloc(crypto_core_hchacha20_INPUTBYTES);
-    out = sodium_malloc(crypto_core_hchacha20_OUTPUTBYTES);
-    out2 = sodium_malloc(crypto_core_hchacha20_OUTPUTBYTES);
+    constant = (unsigned char *) sodium_malloc(crypto_core_hchacha20_CONSTBYTES);
+    key = (unsigned char *) sodium_malloc(crypto_core_hchacha20_KEYBYTES);
+    in = (unsigned char *) sodium_malloc(crypto_core_hchacha20_INPUTBYTES);
+    out = (unsigned char *) sodium_malloc(crypto_core_hchacha20_OUTPUTBYTES);
+    out2 = (unsigned char *) sodium_malloc(crypto_core_hchacha20_OUTPUTBYTES);
     for (i = 0; i < (sizeof tv) / (sizeof tv[0]) + 10; i++) {
         tv = &tvs[i];
         sodium_hex2bin(key, crypto_core_hchacha20_KEYBYTES,
