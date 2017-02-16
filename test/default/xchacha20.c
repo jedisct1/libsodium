@@ -242,8 +242,8 @@ tv_secretbox_xchacha20poly1305(void)
 
     m_len = randombytes_uniform(1000);
     box_len = crypto_secretbox_xchacha20poly1305_ZEROBYTES + m_len;
-    m = sodium_malloc(box_len);
-    out = sodium_malloc(box_len);
+    m = (unsigned char *) sodium_malloc(box_len);
+    out = (unsigned char *) sodium_malloc(box_len);
     randombytes_buf(m + crypto_secretbox_xchacha20poly1305_ZEROBYTES, m_len);
     memset(m, 0, crypto_secretbox_xchacha20poly1305_ZEROBYTES);
     crypto_secretbox_xchacha20poly1305(out, m, box_len, nonce, key);
