@@ -1,3 +1,4 @@
 tv_hchacha20: ok
 tv_stream_xchacha20: ok
 tv_secretbox_xchacha20: ok
+tv_box_xchacha20poly1305: ok

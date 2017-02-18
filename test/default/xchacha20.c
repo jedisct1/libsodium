@@ -278,12 +278,102 @@ tv_secretbox_xchacha20poly1305(void)
     printf("tv_secretbox_xchacha20: ok\n");
 }
 
+static void
+tv_box_xchacha20poly1305(void)
+{
+    char           hex[65];
+    unsigned char *pk;
+    unsigned char *sk;
+    unsigned char *m;
+    unsigned char *m2;
+    unsigned char *mac;
+    unsigned char *nonce;
+    unsigned char *out;
+    unsigned char *pc;
+    unsigned char *seed;
+    size_t         m_len;
+    int            i;
+
+    pk = (unsigned char *) sodium_malloc(crypto_box_curve25519xchacha20poly1305_PUBLICKEYBYTES);
+    sk = (unsigned char *) sodium_malloc(crypto_box_curve25519xchacha20poly1305_SECRETKEYBYTES);
+    nonce = (unsigned char *) sodium_malloc(crypto_box_curve25519xchacha20poly1305_NONCEBYTES);
+    mac = (unsigned char *) sodium_malloc(crypto_box_curve25519xchacha20poly1305_MACBYTES);
+    pc = (unsigned char *) sodium_malloc(crypto_box_curve25519xchacha20poly1305_BEFORENMBYTES);
+    for (i = 0; i < 10; i++) {
+        m_len = (i == 0) ? 0 : randombytes_uniform(150);
+        m = (unsigned char *) sodium_malloc(m_len);
+        m2 = (unsigned char *) sodium_malloc(m_len);
+
+        out = (unsigned char *) sodium_malloc
+            (crypto_box_curve25519xchacha20poly1305_MACBYTES + m_len);
+        randombytes_buf(nonce, crypto_box_curve25519xchacha20poly1305_NONCEBYTES);
+        randombytes_buf(m, m_len);
+        assert(crypto_box_curve25519xchacha20poly1305_keypair(pk, sk) == 0);
+        assert(crypto_box_curve25519xchacha20poly1305_easy(out, m, m_len, nonce,
+                                                           pk, sk) == 0);
+        assert(crypto_box_curve25519xchacha20poly1305_open_easy
+               (m2, out, crypto_box_curve25519xchacha20poly1305_MACBYTES + m_len,
+                nonce, pk, sk) == 0);
+        assert(memcmp(m2, m, m_len) == 0);
+        sodium_free(out);
+
+        out = (unsigned char *) sodium_malloc
+            (crypto_box_curve25519xchacha20poly1305_MACBYTES + m_len);
+        assert(crypto_box_curve25519xchacha20poly1305_beforenm(pc, pk, sk) == 0);
+        assert(crypto_box_curve25519xchacha20poly1305_easy_afternm
+               (out, m, m_len, nonce, pc) == 0);
+        assert(crypto_box_curve25519xchacha20poly1305_open_easy_afternm
+               (m2, out, crypto_box_curve25519xchacha20poly1305_MACBYTES + m_len,
+                nonce, pc) == 0);
+        assert(memcmp(m2, m, m_len) == 0);
+        sodium_free(out);
+
+        out = (unsigned char *) sodium_malloc(m_len);
+        assert(crypto_box_curve25519xchacha20poly1305_detached(out, mac, m, m_len,
+                                                               nonce, pk, sk) == 0);
+        assert(crypto_box_curve25519xchacha20poly1305_open_detached
+               (m2, out, mac, m_len, nonce, pk, sk) == 0);
+        sodium_free(out);
+
+        out = (unsigned char *) sodium_malloc(m_len);
+        assert(crypto_box_curve25519xchacha20poly1305_detached_afternm
+               (out, mac, m, m_len, nonce, pc) == 0);
+        assert(crypto_box_curve25519xchacha20poly1305_open_detached_afternm
+               (m2, out, mac, m_len, nonce, pc) == 0);
+        sodium_free(out);
+
+        sodium_free(m2);
+        sodium_free(m);
+    }
+    sodium_free(pc);
+    sodium_free(mac);
+    sodium_free(nonce);
+
+    seed = (unsigned char *) sodium_malloc
+        (crypto_box_curve25519xchacha20poly1305_SEEDBYTES);
+    for (i = 0; i < crypto_box_curve25519xchacha20poly1305_SEEDBYTES; i++) {
+        seed[i] = i;
+    }
+    crypto_box_curve25519xchacha20poly1305_seed_keypair(pk, sk, seed);
+    sodium_bin2hex(hex, sizeof hex, pk, crypto_box_curve25519xchacha20poly1305_PUBLICKEYBYTES);
+    assert(strcmp(hex, "4701d08488451f545a409fb58ae3e58581ca40ac3f7f114698cd71deac73ca01") == 0);
+    sodium_bin2hex(hex, sizeof hex, sk, crypto_box_curve25519xchacha20poly1305_SECRETKEYBYTES);
+    assert(strcmp(hex, "3d94eea49c580aef816935762be049559d6d1440dede12e6a125f1841fff8e6f") == 0);
+    sodium_free(seed);
+
+    sodium_free(sk);
+    sodium_free(pk);
+
+    printf("tv_box_xchacha20poly1305: ok\n");
+}
+
 int
 main(void)
 {
     tv_hchacha20();
     tv_stream_xchacha20();
     tv_secretbox_xchacha20poly1305();
+    tv_box_xchacha20poly1305();
 
     return 0;
 }
