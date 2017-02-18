@@ -150,3 +150,21 @@ crypto_secretbox_xchacha20poly1305_open_easy(unsigned char *m,
         (m, c + crypto_secretbox_xchacha20poly1305_MACBYTES, c,
          clen - crypto_secretbox_xchacha20poly1305_MACBYTES, n, k);
 }
+
+size_t
+crypto_secretbox_xchacha20poly1305_keybytes(void)
+{
+    return crypto_secretbox_xchacha20poly1305_KEYBYTES;
+}
+
+size_t
+crypto_secretbox_xchacha20poly1305_noncebytes(void)
+{
+    return crypto_secretbox_xchacha20poly1305_NONCEBYTES;
+}
+
+size_t
+crypto_secretbox_xchacha20poly1305_macbytes(void)
+{
+    return crypto_secretbox_xchacha20poly1305_MACBYTES;
+}

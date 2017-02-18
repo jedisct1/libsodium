@@ -16,11 +16,7 @@ libsodium_la_SOURCES = \
 	crypto_box/crypto_box.c \
 	crypto_box/crypto_box_easy.c \
 	crypto_box/crypto_box_seal.c \
-	crypto_box/curve25519xsalsa20poly1305/box_curve25519xsalsa20poly1305_api.c \
-	crypto_box/curve25519xsalsa20poly1305/ref/after_curve25519xsalsa20poly1305.c \
-	crypto_box/curve25519xsalsa20poly1305/ref/before_curve25519xsalsa20poly1305.c \
-	crypto_box/curve25519xsalsa20poly1305/ref/box_curve25519xsalsa20poly1305.c \
-	crypto_box/curve25519xsalsa20poly1305/ref/keypair_curve25519xsalsa20poly1305.c \
+	crypto_box/curve25519xsalsa20poly1305/box_curve25519xsalsa20poly1305.c \
 	crypto_core/curve25519/ref10/base.h \
 	crypto_core/curve25519/ref10/base2.h \
 	crypto_core/curve25519/ref10/curve25519_ref10.c \
@@ -75,8 +71,7 @@ libsodium_la_SOURCES = \
 	crypto_scalarmult/curve25519/scalarmult_curve25519.h \
 	crypto_secretbox/crypto_secretbox.c \
 	crypto_secretbox/crypto_secretbox_easy.c \
-	crypto_secretbox/xsalsa20poly1305/secretbox_xsalsa20poly1305_api.c \
-	crypto_secretbox/xsalsa20poly1305/ref/secretbox_xsalsa20poly1305.c \
+	crypto_secretbox/xsalsa20poly1305/secretbox_xsalsa20poly1305.c \
 	crypto_shorthash/crypto_shorthash.c \
 	crypto_shorthash/siphash24/shorthash_siphash24_api.c \
 	crypto_shorthash/siphash24/ref/shorthash_siphash24.c \
@@ -91,15 +86,8 @@ libsodium_la_SOURCES = \
 	crypto_stream/chacha20/ref/stream_chacha20_ref.c \
 	crypto_stream/crypto_stream.c \
 	crypto_stream/salsa20/stream_salsa20_api.c \
-	crypto_stream/xsalsa20/stream_xsalsa20_api.c \
-	crypto_stream/xsalsa20/ref/stream_xsalsa20.c \
-	crypto_stream/xsalsa20/ref/xor_xsalsa20.c \
-	crypto_verify/16/verify_16_api.c \
-	crypto_verify/16/ref/verify_16.c \
-	crypto_verify/32/verify_32_api.c \
-	crypto_verify/32/ref/verify_32.c \
-	crypto_verify/64/verify_64_api.c \
-	crypto_verify/64/ref/verify_64.c \
+	crypto_stream/xsalsa20/stream_xsalsa20.c \
+	crypto_verify/sodium/verify.c \
 	include/sodium/private/common.h \
 	include/sodium/private/curve25519_ref10.h \
 	include/sodium/private/mutex.h \
@@ -170,18 +158,14 @@ endif
 if !MINIMAL
 libsodium_la_SOURCES += \
 	crypto_aead/xchacha20poly1305/sodium/aead_xchacha20poly1305.c \
-	crypto_box/curve25519xchacha20poly1305/box_curve25519xchacha20poly1305_api.c \
-	crypto_box/curve25519xchacha20poly1305/box_curve25519xchacha20poly1305_easy.c \
-	crypto_box/curve25519xchacha20poly1305/sodium/before_curve25519xchacha20poly1305.c \
-	crypto_box/curve25519xchacha20poly1305/sodium/keypair_curve25519xchacha20poly1305.c \
+	crypto_box/curve25519xchacha20poly1305/box_curve25519xchacha20poly1305.c \
 	crypto_core/hchacha20/core_hchacha20.c \
 	crypto_core/hchacha20/core_hchacha20.h \
 	crypto_core/salsa2012/ref/core_salsa2012.c \
 	crypto_core/salsa2012/core_salsa2012_api.c \
 	crypto_core/salsa208/ref/core_salsa208.c \
 	crypto_core/salsa208/core_salsa208_api.c \
-	crypto_secretbox/xchacha20poly1305/secretbox_xchacha20poly1305_api.c \
-	crypto_secretbox/xchacha20poly1305/secretbox_xchacha20poly1305_easy.c \
+	crypto_secretbox/xchacha20poly1305/secretbox_xchacha20poly1305.c \
 	crypto_sign/ed25519/ref10/obsolete.c \
 	crypto_stream/aes128ctr/portable/afternm_aes128ctr.c \
 	crypto_stream/aes128ctr/stream_aes128ctr_api.c \

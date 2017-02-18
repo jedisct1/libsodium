@@ -1,11 +1,54 @@
 
 #include <limits.h>
 #include <stdint.h>
+#include <string.h>
 #include <stdlib.h>
 
 #include "crypto_box_curve25519xchacha20poly1305.h"
+#include "crypto_core_hchacha20.h"
+#include "crypto_hash_sha512.h"
 #include "crypto_secretbox_xchacha20poly1305.h"
+#include "crypto_scalarmult_curve25519.h"
+#include "randombytes.h"
 #include "utils.h"
+
+int
+crypto_box_curve25519xchacha20poly1305_seed_keypair(unsigned char *pk,
+                                                    unsigned char *sk,
+                                                    const unsigned char *seed)
+{
+    unsigned char hash[64];
+
+    crypto_hash_sha512(hash, seed, 32);
+    memmove(sk, hash, 32);
+    sodium_memzero(hash, sizeof hash);
+
+    return crypto_scalarmult_curve25519_base(pk, sk);
+}
+
+int
+crypto_box_curve25519xchacha20poly1305_keypair(unsigned char *pk,
+                                               unsigned char *sk)
+{
+    randombytes_buf(sk, 32);
+
+    return crypto_scalarmult_curve25519_base(pk, sk);
+}
+
+static const unsigned char n[16] = { 0 };
+
+int
+crypto_box_curve25519xchacha20poly1305_beforenm(unsigned char *k,
+                                                const unsigned char *pk,
+                                                const unsigned char *sk)
+{
+    unsigned char s[32];
+
+    if (crypto_scalarmult_curve25519(s, sk, pk) != 0) {
+        return -1;
+    }
+    return crypto_core_hchacha20(k, n, s, NULL);
+}
 
 int
 crypto_box_curve25519xchacha20poly1305_detached_afternm(unsigned char *c,
@@ -135,4 +178,34 @@ crypto_box_curve25519xchacha20poly1305_open_easy(unsigned char *m,
     return crypto_box_curve25519xchacha20poly1305_open_detached(
         m, c + crypto_box_curve25519xchacha20poly1305_MACBYTES, c,
         clen - crypto_box_curve25519xchacha20poly1305_MACBYTES, n, pk, sk);
+}
+
+size_t
+crypto_box_curve25519xchacha20poly1305_seedbytes(void) {
+    return crypto_box_curve25519xchacha20poly1305_SEEDBYTES;
+}
+
+size_t
+crypto_box_curve25519xchacha20poly1305_publickeybytes(void) {
+    return crypto_box_curve25519xchacha20poly1305_PUBLICKEYBYTES;
+}
+
+size_t
+crypto_box_curve25519xchacha20poly1305_secretkeybytes(void) {
+    return crypto_box_curve25519xchacha20poly1305_SECRETKEYBYTES;
+}
+
+size_t
+crypto_box_curve25519xchacha20poly1305_beforenmbytes(void) {
+    return crypto_box_curve25519xchacha20poly1305_BEFORENMBYTES;
+}
+
+size_t
+crypto_box_curve25519xchacha20poly1305_noncebytes(void) {
+    return crypto_box_curve25519xchacha20poly1305_NONCEBYTES;
+}
+
+size_t
+crypto_box_curve25519xchacha20poly1305_macbytes(void) {
+    return crypto_box_curve25519xchacha20poly1305_MACBYTES;
 }
