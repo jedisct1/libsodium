@@ -81,6 +81,7 @@ test/default/*.res
 test/default/*.trs
 test/default/aead_aes256gcm
 test/default/aead_chacha20poly1305
+test/default/aead_xchacha20poly1305
 test/default/auth
 test/default/auth2
 test/default/auth3
