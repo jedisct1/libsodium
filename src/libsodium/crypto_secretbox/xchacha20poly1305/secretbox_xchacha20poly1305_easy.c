@@ -11,6 +11,8 @@
 #include "crypto_stream_chacha20.h"
 #include "utils.h"
 
+#define crypto_secretbox_xchacha20poly1305_ZEROBYTES 32U
+
 int
 crypto_secretbox_xchacha20poly1305_detached(unsigned char *c,
                                             unsigned char *mac,
