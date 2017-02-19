@@ -25,8 +25,16 @@ typedef struct randombytes_implementation {
     int         (*close)(void);               /* optional */
 } randombytes_implementation;
 
+#define randombytes_SEEDBYTES 32U
+SODIUM_EXPORT
+size_t randombytes_seedbytes(void);
+
 SODIUM_EXPORT
 void randombytes_buf(void * const buf, const size_t size);
+
+SODIUM_EXPORT
+void randombytes_buf_deterministic(void * const buf, const size_t size,
+                                   const unsigned char seed[randombytes_SEEDBYTES]);
 
 SODIUM_EXPORT
 uint32_t randombytes_random(void);

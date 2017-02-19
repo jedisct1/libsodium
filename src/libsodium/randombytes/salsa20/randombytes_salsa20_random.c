@@ -31,6 +31,7 @@
 #include "randombytes.h"
 #include "randombytes_salsa20_random.h"
 #include "utils.h"
+#include "private/common.h"
 
 #ifdef _WIN32
 # include <windows.h>
@@ -49,7 +50,6 @@ BOOLEAN NTAPI RtlGenRandom(PVOID RandomBuffer, ULONG RandomBufferLength);
 
 #define SALSA20_RANDOM_BLOCK_SIZE crypto_core_salsa20_OUTPUTBYTES
 #define HASH_BLOCK_SIZE 128U
-#define COMPILER_ASSERT(X) (void) sizeof(char[(X) ? 1 : -1])
 
 #if defined(__OpenBSD__) || defined(__CloudABI__)
 # define HAVE_SAFE_ARC4RANDOM 1

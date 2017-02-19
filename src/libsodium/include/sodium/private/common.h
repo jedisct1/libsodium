@@ -5,6 +5,8 @@
 #include <stdlib.h>
 #include <string.h>
 
+#define COMPILER_ASSERT(X) (void) sizeof(char[(X) ? 1 : -1])
+
 #define LOAD64_LE(SRC) load64_le(SRC)
 static inline uint64_t
 load64_le(const uint8_t src[8])

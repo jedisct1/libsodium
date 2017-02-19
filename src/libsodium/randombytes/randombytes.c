@@ -10,6 +10,7 @@
 # include <emscripten.h>
 #endif
 
+#include "crypto_stream_chacha20.h"
 #include "randombytes.h"
 #ifdef RANDOMBYTES_DEFAULT_IMPLEMENTATION
 # include "randombytes_default.h"
@@ -20,6 +21,7 @@
 #  include "randombytes_sysrandom.h"
 # endif
 #endif
+#include "private/common.h"
 
 /* C++Builder defines a "random" macro */
 #undef random
@@ -161,6 +163,22 @@ randombytes_buf(void * const buf, const size_t size)
         p[i] = (unsigned char) randombytes_random();
     }
 #endif
+}
+
+void
+randombytes_buf_deterministic(void * const buf, const size_t size,
+                              const unsigned char seed[randombytes_SEEDBYTES])
+{
+    static const unsigned char zero[crypto_stream_chacha20_NONCEBYTES];
+
+    COMPILER_ASSERT(randombytes_SEEDBYTES == crypto_stream_chacha20_KEYBYTES);
+    crypto_stream_chacha20((unsigned char *) buf, size, zero, seed);
+}
+
+size_t
+randombytes_seedbytes(void)
+{
+    return randombytes_SEEDBYTES;
 }
 
 int
