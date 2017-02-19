@@ -25,15 +25,15 @@ libsodium_la_SOURCES = \
 	crypto_core/salsa20/ref/core_salsa20.c \
 	crypto_core/salsa20/core_salsa20_api.c \
 	crypto_generichash/crypto_generichash.c \
-	crypto_generichash/blake2/generichash_blake2_api.c \
-	crypto_generichash/blake2/ref/blake2-impl.h \
-	crypto_generichash/blake2/ref/blake2.h \
-	crypto_generichash/blake2/ref/blake2b-compress-ref.c \
-	crypto_generichash/blake2/ref/blake2b-load-sse2.h \
-	crypto_generichash/blake2/ref/blake2b-load-sse41.h \
-	crypto_generichash/blake2/ref/blake2b-load-avx2.h \
-	crypto_generichash/blake2/ref/blake2b-ref.c \
-	crypto_generichash/blake2/ref/generichash_blake2b.c \
+	crypto_generichash/blake2b/generichash_blake2_api.c \
+	crypto_generichash/blake2b/ref/blake2-impl.h \
+	crypto_generichash/blake2b/ref/blake2.h \
+	crypto_generichash/blake2b/ref/blake2b-compress-ref.c \
+	crypto_generichash/blake2b/ref/blake2b-load-sse2.h \
+	crypto_generichash/blake2b/ref/blake2b-load-sse41.h \
+	crypto_generichash/blake2b/ref/blake2b-load-avx2.h \
+	crypto_generichash/blake2b/ref/blake2b-ref.c \
+	crypto_generichash/blake2b/ref/generichash_blake2b.c \
 	crypto_hash/crypto_hash.c \
 	crypto_hash/sha256/hash_sha256_api.c \
 	crypto_hash/sha256/cp/hash_sha256.c \
@@ -230,8 +230,8 @@ libssse3_la_LDFLAGS = $(libsodium_la_LDFLAGS)
 libssse3_la_CPPFLAGS = $(libsodium_la_CPPFLAGS) \
 	@CFLAGS_SSE2@ @CFLAGS_SSSE3@
 libssse3_la_SOURCES = \
-	crypto_generichash/blake2/ref/blake2b-compress-ssse3.c \
-	crypto_generichash/blake2/ref/blake2b-compress-ssse3.h \
+	crypto_generichash/blake2b/ref/blake2b-compress-ssse3.c \
+	crypto_generichash/blake2b/ref/blake2b-compress-ssse3.h \
 	crypto_pwhash/argon2/argon2-fill-block-ssse3.c \
 	crypto_pwhash/argon2/blamka-round-ssse3.h \
 	crypto_stream/chacha20/vec/stream_chacha20_vec.h \
@@ -241,12 +241,12 @@ libsse41_la_LDFLAGS = $(libsodium_la_LDFLAGS)
 libsse41_la_CPPFLAGS = $(libsodium_la_CPPFLAGS) \
 	@CFLAGS_SSE2@ @CFLAGS_SSSE3@ @CFLAGS_SSE41@
 libsse41_la_SOURCES = \
-	crypto_generichash/blake2/ref/blake2b-compress-sse41.c \
-	crypto_generichash/blake2/ref/blake2b-compress-sse41.h
+	crypto_generichash/blake2b/ref/blake2b-compress-sse41.c \
+	crypto_generichash/blake2b/ref/blake2b-compress-sse41.h
 
 libavx2_la_LDFLAGS = $(libsodium_la_LDFLAGS)
 libavx2_la_CPPFLAGS = $(libsodium_la_CPPFLAGS) \
 	@CFLAGS_SSE2@ @CFLAGS_SSSE3@ @CFLAGS_SSE41@ @CFLAGS_AVX@ @CFLAGS_AVX2@
 libavx2_la_SOURCES = \
-	crypto_generichash/blake2/ref/blake2b-compress-avx2.c \
-	crypto_generichash/blake2/ref/blake2b-compress-avx2.h
+	crypto_generichash/blake2b/ref/blake2b-compress-avx2.c \
+	crypto_generichash/blake2b/ref/blake2b-compress-avx2.h
