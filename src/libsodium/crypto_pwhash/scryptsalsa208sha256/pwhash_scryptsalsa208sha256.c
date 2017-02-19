@@ -155,11 +155,13 @@ crypto_pwhash_scryptsalsa208sha256(unsigned char * const out,
     uint32_t r;
 
     memset(out, 0, outlen);
-    if (passwdlen > SIZE_MAX || outlen > SIZE_MAX) {
+    if (passwdlen > crypto_pwhash_scryptsalsa208sha256_PASSWD_MAX ||
+        outlen > crypto_pwhash_scryptsalsa208sha256_BYTES_MAX) {
         errno = EFBIG; /* LCOV_EXCL_LINE */
         return -1; /* LCOV_EXCL_LINE */
     }
-    if (pickparams(opslimit, memlimit, &N_log2, &p, &r) != 0) {
+    if (outlen < crypto_pwhash_scryptsalsa208sha256_BYTES_MIN ||
+        pickparams(opslimit, memlimit, &N_log2, &p, &r) != 0) {
         errno = EINVAL; /* LCOV_EXCL_LINE */
         return -1; /* LCOV_EXCL_LINE */
     }
@@ -186,11 +188,12 @@ crypto_pwhash_scryptsalsa208sha256_str(char out[crypto_pwhash_scryptsalsa208sha2
     uint32_t        r;
 
     memset(out, 0, crypto_pwhash_scryptsalsa208sha256_STRBYTES);
-    if (passwdlen > SIZE_MAX) {
+    if (passwdlen > crypto_pwhash_scryptsalsa208sha256_PASSWD_MAX) {
         errno = EFBIG; /* LCOV_EXCL_LINE */
         return -1; /* LCOV_EXCL_LINE */
     }
-    if (pickparams(opslimit, memlimit, &N_log2, &p, &r) != 0) {
+    if (passwdlen < crypto_pwhash_scryptsalsa208sha256_PASSWD_MIN ||
+        pickparams(opslimit, memlimit, &N_log2, &p, &r) != 0) {
         errno = EINVAL; /* LCOV_EXCL_LINE */
         return -1; /* LCOV_EXCL_LINE */
     }
