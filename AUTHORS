@@ -13,8 +13,6 @@ blake2                                 Jean-Philippe Aumasson
 
 chacha20                               Daniel J. Bernstein
 
-salsa20                                Daniel J. Bernstein
-
 chacha20poly1305                       Adam Langley
 
 curve25519                             Daniel J. Bernstein
@@ -29,10 +27,12 @@ ed25519                                Daniel J. Bernstein
 
 poly1305                               Daniel J. Bernstein
 
-siphash                                Jean-Philippe Aumasson
-                                       Daniel J. Bernstein
+salsa20                                Daniel J. Bernstein
 
 scrypt                                 Colin Percival
+
+siphash                                Jean-Philippe Aumasson
+                                       Daniel J. Bernstein
 
 Implementors
 ============
@@ -41,10 +41,17 @@ crypto_aead/aes256gcm/aesni            Romain Dolbeau
                                        Frank Denis
 
 crypto_aead/chacha20poly1305           Frank Denis
+crypto_aead/xchacha20poly1305
 
-crypto_core/curve25519                 Daniel J. Bernstein
+crypto_auth/hmacsha256                 Colin Percival
+crypto_auth/hmacsha512
+crypto_auth/hmacsha512256
 
 crypto_box/curve25519xsalsa20poly1305  Daniel J. Bernstein
+
+crypto_box/curve25519xchacha20poly1305 Frank Denis
+
+crypto_core/curve25519                 Daniel J. Bernstein
 
 crypto_core/hchacha20                  Frank Denis
 
@@ -53,13 +60,28 @@ crypto_core/salsa20
 crypto_core/salsa2012
 crypto_core/salsa208
 
+crypto_generichash/blake2b             Jean-Philippe Aumasson
+                                       Christian Winnerlein
+                                       Samuel Neves
+                                       Zooko Wilcox-O'Hearn
+
 crypto_hash/sha256                     Colin Percival
 crypto_hash/sha512
 crypto_hash/sha512256
 
-crypto_auth/hmacsha256                 Colin Percival
-crypto_auth/hmacsha512
-crypto_auth/hmacsha512256
+crypto_kdf/blake2b                     Frank Denis
+
+crypto_onetimeauth/poly1305/donna      Andrew "floodyberry" Moon
+crypto_onetimeauth/poly1305/sse2
+
+crypto_pwhash/argon2                   Samuel Neves
+                                       Dmitry Khovratovich
+                                       Jean-Philippe Aumasson
+                                       Daniel Dinu
+                                       Thomas Pornin
+
+crypto_pwhash/scryptsalsa208sha256     Colin Percival
+                                       Alexander Peslyak
 
 crypto_scalarmult/curve25519/ref10     Daniel J. Bernstein
 
@@ -68,6 +90,11 @@ crypto_scalarmult/curve25519/donna_c64 Adam Langley
 crypto_scalarmult/curve25519/sandy2x   Tung Chou
 
 crypto_secretbox/xsalsa20poly1305      Daniel J. Bernstein
+
+crypto_secretbox/xchacha20poly1305     Frank Denis
+
+crypto_shorthash/siphash24             Jean-Philippe Aumasson
+                                       Daniel J. Bernstein
 
 crypto_sign/ed25519                    Peter Schwabe
                                        Daniel J. Bernstein
@@ -86,23 +113,4 @@ crypto_stream/salsa2012
 crypto_stream/salsa208
 crypto_stream/xsalsa20
 
-crypto_shorthash/siphash24             Jean-Philippe Aumasson
-                                       Daniel J. Bernstein
-
-crypto_generichash/blake2b             Jean-Philippe Aumasson
-                                       Christian Winnerlein
-                                       Samuel Neves
-                                       Zooko Wilcox-O'Hearn
-
-crypto_onetimeauth/poly1305/donna      Andrew "floodyberry" Moon
-
-crypto_onetimeauth/poly1305/sse2       Andrew "floodyberry" Moon
-
-crypto_pwhash/argon2                   Samuel Neves
-                                       Dmitry Khovratovich
-                                       Jean-Philippe Aumasson
-                                       Daniel Dinu
-                                       Thomas Pornin
-
-crypto_pwhash/scryptsalsa208sha256     Colin Percival
-                                       Alexander Peslyak
+crypto_stream/xchacha20                Frank Denis
