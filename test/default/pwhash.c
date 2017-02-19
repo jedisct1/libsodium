@@ -166,9 +166,9 @@ static void tv2(void)
                       salt, 2, 1ULL << 12, crypto_pwhash_alg_default()) != -1) {
         printf("[tv2] pwhash should have failed (3)\n");
     }
-    if (crypto_pwhash(out, 0x100000000ULL, "password", strlen("password"),
+    if (crypto_pwhash(out, 15, "password", strlen("password"),
                       salt, 3, 1ULL << 12, crypto_pwhash_alg_default()) != -1) {
-        printf("[tv2] pwhash with a long output length should have failed\n");
+        printf("[tv2] pwhash with a short output length should have failed\n");
     }
     if (crypto_pwhash(out, sizeof out, "password", 0x100000000ULL,
                       salt, 3, 1ULL << 12, crypto_pwhash_alg_default()) != -1) {

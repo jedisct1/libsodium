@@ -130,6 +130,7 @@ crypto_pwhash_argon2i(unsigned char * const out,
                       unsigned long long opslimit,
                       size_t memlimit, int alg)
 {
+    memset(out, 0, outlen);
     if (alg != crypto_pwhash_argon2i_ALG_ARGON2I13) {
         return -1;
     }
