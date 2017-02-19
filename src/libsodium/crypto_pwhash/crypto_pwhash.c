@@ -16,6 +16,30 @@ crypto_pwhash_alg_default(void)
 }
 
 size_t
+crypto_pwhash_bytes_min(void)
+{
+    return crypto_pwhash_BYTES_MIN;
+}
+
+size_t
+crypto_pwhash_bytes_max(void)
+{
+    return crypto_pwhash_BYTES_MAX;
+}
+
+size_t
+crypto_pwhash_passwd_min(void)
+{
+    return crypto_pwhash_PASSWD_MIN;
+}
+
+size_t
+crypto_pwhash_passwd_max(void)
+{
+    return crypto_pwhash_PASSWD_MAX;
+}
+
+size_t
 crypto_pwhash_saltbytes(void)
 {
     return crypto_pwhash_SALTBYTES;
@@ -31,6 +55,30 @@ const char *
 crypto_pwhash_strprefix(void)
 {
     return crypto_pwhash_STRPREFIX;
+}
+
+size_t
+crypto_pwhash_opslimit_min(void)
+{
+    return crypto_pwhash_OPSLIMIT_MIN;
+}
+
+size_t
+crypto_pwhash_opslimit_max(void)
+{
+    return crypto_pwhash_OPSLIMIT_MAX;
+}
+
+size_t
+crypto_pwhash_memlimit_min(void)
+{
+    return crypto_pwhash_MEMLIMIT_MIN;
+}
+
+size_t
+crypto_pwhash_memlimit_max(void)
+{
+    return crypto_pwhash_MEMLIMIT_MAX;
 }
 
 size_t

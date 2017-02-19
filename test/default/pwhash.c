@@ -320,9 +320,18 @@ int main(void)
                                  "password", strlen("password")) != -1) {
         printf("pwhash_str_verify(invalid(9)) failure\n");
     }
+    assert(crypto_pwhash_bytes_min() > 0U);
+    assert(crypto_pwhash_bytes_max() > 0U);
+    assert(crypto_pwhash_passwd_min() > 0U);
+    assert(crypto_pwhash_passwd_max() > 0U);
     assert(crypto_pwhash_saltbytes() > 0U);
     assert(crypto_pwhash_strbytes() > 1U);
     assert(crypto_pwhash_strbytes() > strlen(crypto_pwhash_strprefix()));
+
+    assert(crypto_pwhash_opslimit_min() > 0U);
+    assert(crypto_pwhash_opslimit_max() > 0U);
+    assert(crypto_pwhash_memlimit_min() > 0U);
+    assert(crypto_pwhash_memlimit_max() > 0U);
     assert(crypto_pwhash_opslimit_interactive() > 0U);
     assert(crypto_pwhash_memlimit_interactive() > 0U);
     assert(crypto_pwhash_opslimit_moderate() > 0U);
@@ -331,6 +340,17 @@ int main(void)
     assert(crypto_pwhash_memlimit_sensitive() > 0U);
     assert(strcmp(crypto_pwhash_primitive(), "argon2i") == 0);
 
+    assert(crypto_pwhash_bytes_min() == crypto_pwhash_BYTES_MIN);
+    assert(crypto_pwhash_bytes_max() == crypto_pwhash_BYTES_MAX);
+    assert(crypto_pwhash_passwd_min() == crypto_pwhash_PASSWD_MIN);
+    assert(crypto_pwhash_passwd_max() == crypto_pwhash_PASSWD_MAX);
+    assert(crypto_pwhash_saltbytes() == crypto_pwhash_SALTBYTES);
+    assert(crypto_pwhash_strbytes() == crypto_pwhash_STRBYTES);
+
+    assert(crypto_pwhash_opslimit_min() == crypto_pwhash_OPSLIMIT_MIN);
+    assert(crypto_pwhash_opslimit_max() == crypto_pwhash_OPSLIMIT_MAX);
+    assert(crypto_pwhash_memlimit_min() == crypto_pwhash_MEMLIMIT_MIN);
+    assert(crypto_pwhash_memlimit_max() == crypto_pwhash_MEMLIMIT_MAX);
     assert(crypto_pwhash_opslimit_interactive() == crypto_pwhash_OPSLIMIT_INTERACTIVE);
     assert(crypto_pwhash_memlimit_interactive() == crypto_pwhash_MEMLIMIT_INTERACTIVE);
     assert(crypto_pwhash_opslimit_moderate() == crypto_pwhash_OPSLIMIT_MODERATE);
@@ -338,9 +358,17 @@ int main(void)
     assert(crypto_pwhash_opslimit_sensitive() == crypto_pwhash_OPSLIMIT_SENSITIVE);
     assert(crypto_pwhash_memlimit_sensitive() == crypto_pwhash_MEMLIMIT_SENSITIVE);
 
+    assert(crypto_pwhash_argon2i_bytes_min() == crypto_pwhash_bytes_min());
+    assert(crypto_pwhash_argon2i_bytes_max() == crypto_pwhash_bytes_max());
+    assert(crypto_pwhash_argon2i_passwd_min() == crypto_pwhash_passwd_min());
+    assert(crypto_pwhash_argon2i_passwd_max() == crypto_pwhash_passwd_max());
     assert(crypto_pwhash_argon2i_saltbytes() == crypto_pwhash_saltbytes());
     assert(crypto_pwhash_argon2i_strbytes() == crypto_pwhash_strbytes());
     assert(strcmp(crypto_pwhash_argon2i_strprefix(), crypto_pwhash_strprefix()) == 0);
+    assert(crypto_pwhash_argon2i_opslimit_min() == crypto_pwhash_opslimit_min());
+    assert(crypto_pwhash_argon2i_opslimit_max() == crypto_pwhash_opslimit_max());
+    assert(crypto_pwhash_argon2i_memlimit_min() == crypto_pwhash_memlimit_min());
+    assert(crypto_pwhash_argon2i_memlimit_max() == crypto_pwhash_memlimit_max());
     assert(crypto_pwhash_argon2i_opslimit_interactive() ==
            crypto_pwhash_opslimit_interactive());
     assert(crypto_pwhash_argon2i_opslimit_moderate() ==
