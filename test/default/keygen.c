@@ -39,7 +39,7 @@ tv_keygen(void)
 
     for (i = 0; i < (sizeof tvs) / (sizeof tvs[0]); i++) {
         tv = &tvs[i];
-        key = sodium_malloc(tv->key_len);
+        key = (unsigned char *) sodium_malloc(tv->key_len);
         key[tv->key_len - 1U] = 0;
         for (j = 0; j < 10000; j++) {
             tv->fn(key);
