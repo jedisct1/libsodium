@@ -5,6 +5,7 @@
 #include <assert.h>
 #include <limits.h>
 #include <stdint.h>
+#include <stdlib.h>
 
 #ifdef __EMSCRIPTEN__
 # include <emscripten.h>
@@ -169,10 +170,14 @@ void
 randombytes_buf_deterministic(void * const buf, const size_t size,
                               const unsigned char seed[randombytes_SEEDBYTES])
 {
-    static const unsigned char zero[crypto_stream_chacha20_NONCEBYTES];
+    static const unsigned char zero[crypto_stream_chacha20_ietf_NONCEBYTES];
 
-    COMPILER_ASSERT(randombytes_SEEDBYTES == crypto_stream_chacha20_KEYBYTES);
-    crypto_stream_chacha20((unsigned char *) buf, size, zero, seed);
+    COMPILER_ASSERT(randombytes_SEEDBYTES == crypto_stream_chacha20_ietf_KEYBYTES);
+    if (size > 0x4000000000ULL) {
+        abort();
+    }
+    crypto_stream_chacha20_ietf((unsigned char *) buf, (unsigned long long) size,
+                                zero, seed);
 }
 
 size_t
