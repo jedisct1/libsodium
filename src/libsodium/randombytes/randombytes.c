@@ -170,7 +170,7 @@ void
 randombytes_buf_deterministic(void * const buf, const size_t size,
                               const unsigned char seed[randombytes_SEEDBYTES])
 {
-    static const unsigned char zero[crypto_stream_chacha20_ietf_NONCEBYTES];
+    static const unsigned char zero[crypto_stream_chacha20_ietf_NONCEBYTES] = { 0 };
 
     COMPILER_ASSERT(randombytes_SEEDBYTES == crypto_stream_chacha20_ietf_KEYBYTES);
     if (size > 0x4000000000ULL) {
