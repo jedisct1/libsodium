@@ -111,6 +111,9 @@ static int randombytes_tests(void)
     randombytes(x, 1U);
     randombytes_close();
 
+    assert(randombytes_SEEDBYTES > 0);
+    assert(randombytes_seedbytes() == randombytes_SEEDBYTES);
+
     return 0;
 }
 
