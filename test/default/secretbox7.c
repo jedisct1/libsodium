@@ -15,7 +15,7 @@ int main(void)
 
     for (mlen = 0; mlen < 1000 && mlen + crypto_secretbox_ZEROBYTES < sizeof m;
          ++mlen) {
-        randombytes_buf(k, crypto_secretbox_KEYBYTES);
+        crypto_secretbox_keygen(k);
         randombytes_buf(n, crypto_secretbox_NONCEBYTES);
         randombytes_buf(m + crypto_secretbox_ZEROBYTES, mlen);
         crypto_secretbox(c, m, mlen + crypto_secretbox_ZEROBYTES, n, k);

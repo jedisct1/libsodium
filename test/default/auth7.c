@@ -11,7 +11,7 @@ int main(void)
     size_t clen;
 
     for (clen = 0; clen < sizeof c; ++clen) {
-        randombytes_buf(key, sizeof key);
+        crypto_auth_keygen(key);
         randombytes_buf(c, clen);
         crypto_auth_hmacsha512(a, c, clen, key);
         if (crypto_auth_hmacsha512_verify(a, c, clen, key) != 0) {

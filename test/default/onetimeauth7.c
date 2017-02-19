@@ -11,7 +11,7 @@ int main(void)
     int clen;
 
     for (clen = 0; clen < 1000; ++clen) {
-        randombytes_buf(key, sizeof key);
+        crypto_onetimeauth_keygen(key);
         randombytes_buf(c, clen);
         crypto_onetimeauth(a, c, clen, key);
         if (crypto_onetimeauth_verify(a, c, clen, key) != 0) {

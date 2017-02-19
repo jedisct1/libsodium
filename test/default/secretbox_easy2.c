@@ -20,7 +20,7 @@ int main(void)
     nonce = (unsigned char *) sodium_malloc(crypto_secretbox_NONCEBYTES);
     k = (unsigned char *) sodium_malloc(crypto_secretbox_KEYBYTES);
     mac = (unsigned char *) sodium_malloc(crypto_secretbox_MACBYTES);
-    randombytes_buf(k, crypto_secretbox_KEYBYTES);
+    crypto_secretbox_keygen(k);
     randombytes_buf(m, (unsigned long long) mlen);
     randombytes_buf(nonce, crypto_secretbox_NONCEBYTES);
     crypto_secretbox_easy(c, m, (unsigned long long) mlen, nonce, k);

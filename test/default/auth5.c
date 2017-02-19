@@ -11,7 +11,7 @@ int main(void)
     size_t clen;
 
     for (clen = 0; clen < 1000; ++clen) {
-        randombytes_buf(key, sizeof key);
+        crypto_auth_keygen(key);
         randombytes_buf(c, clen);
         crypto_auth(a, c, clen, key);
         if (crypto_auth_verify(a, c, clen, key) != 0) {
