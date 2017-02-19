@@ -321,9 +321,8 @@ int main(void)
         printf("pwhash_str_verify(invalid(9)) failure\n");
     }
     assert(crypto_pwhash_bytes_min() > 0U);
-    assert(crypto_pwhash_bytes_max() > 0U);
-    assert(crypto_pwhash_passwd_min() > 0U);
-    assert(crypto_pwhash_passwd_max() > 0U);
+    assert(crypto_pwhash_bytes_max() > crypto_pwhash_bytes_min());
+    assert(crypto_pwhash_passwd_max() > crypto_pwhash_passwd_min());
     assert(crypto_pwhash_saltbytes() > 0U);
     assert(crypto_pwhash_strbytes() > 1U);
     assert(crypto_pwhash_strbytes() > strlen(crypto_pwhash_strprefix()));
