@@ -47,7 +47,11 @@ int crypto_stream_chacha20_xor_ic(unsigned char *c, const unsigned char *m,
 
 /* ChaCha20 with a 96-bit nonce and a 32-bit counter (IETF) */
 
-#define crypto_stream_chacha20_IETF_NONCEBYTES 12U
+#define crypto_stream_chacha20_ietf_KEYBYTES 32U
+SODIUM_EXPORT
+size_t crypto_stream_chacha20_ietf_keybytes(void);
+
+#define crypto_stream_chacha20_ietf_NONCEBYTES 12U
 SODIUM_EXPORT
 size_t crypto_stream_chacha20_ietf_noncebytes(void);
 
@@ -69,6 +73,11 @@ int crypto_stream_chacha20_ietf_xor_ic(unsigned char *c, const unsigned char *m,
 /* ------------------------------------------------------------------------- */
 
 int _crypto_stream_chacha20_pick_best_implementation(void);
+
+/* Aliases */
+
+#define crypto_stream_chacha20_IETF_KEYBYTES crypto_stream_chacha20_ietf_KEYBYTES
+#define crypto_stream_chacha20_IETF_NONCEBYTES crypto_stream_chacha20_ietf_NONCEBYTES
 
 #ifdef __cplusplus
 }

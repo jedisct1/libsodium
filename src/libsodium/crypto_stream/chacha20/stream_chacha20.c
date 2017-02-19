@@ -20,8 +20,13 @@ crypto_stream_chacha20_noncebytes(void) {
 }
 
 size_t
+crypto_stream_chacha20_ietf_keybytes(void) {
+    return crypto_stream_chacha20_ietf_KEYBYTES;
+}
+
+size_t
 crypto_stream_chacha20_ietf_noncebytes(void) {
-    return crypto_stream_chacha20_IETF_NONCEBYTES;
+    return crypto_stream_chacha20_ietf_NONCEBYTES;
 }
 
 int
