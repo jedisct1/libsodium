@@ -1,6 +1,7 @@
 #include "crypto_onetimeauth_poly1305.h"
 #include "crypto_secretbox_xsalsa20poly1305.h"
 #include "crypto_stream_xsalsa20.h"
+#include "randombytes.h"
 
 int
 crypto_secretbox_xsalsa20poly1305(unsigned char *c, const unsigned char *m,
@@ -73,4 +74,10 @@ size_t
 crypto_secretbox_xsalsa20poly1305_macbytes(void)
 {
     return crypto_secretbox_xsalsa20poly1305_MACBYTES;
+}
+
+void
+crypto_secretbox_xsalsa20poly1305_keygen(unsigned char k[crypto_secretbox_xsalsa20poly1305_KEYBYTES])
+{
+    randombytes_buf(k, crypto_secretbox_xsalsa20poly1305_KEYBYTES);
 }

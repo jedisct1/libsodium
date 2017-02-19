@@ -74,6 +74,9 @@ int crypto_aead_xchacha20poly1305_ietf_decrypt_detached(unsigned char *m,
                                                         const unsigned char *k)
         __attribute__ ((warn_unused_result));
 
+SODIUM_EXPORT
+void crypto_aead_xchacha20poly1305_ietf_keygen(unsigned char k[crypto_aead_xchacha20poly1305_ietf_KEYBYTES]);
+
 /* Aliases */
 
 #define crypto_aead_xchacha20poly1305_IETF_KEYBYTES  crypto_aead_xchacha20poly1305_ietf_KEYBYTES

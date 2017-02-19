@@ -48,6 +48,9 @@ int crypto_secretbox_xsalsa20poly1305_open(unsigned char *m,
                                            const unsigned char *k)
             __attribute__ ((warn_unused_result));
 
+SODIUM_EXPORT
+void crypto_secretbox_xsalsa20poly1305_keygen(unsigned char k[crypto_secretbox_xsalsa20poly1305_KEYBYTES]);
+
 #ifdef __cplusplus
 }
 #endif

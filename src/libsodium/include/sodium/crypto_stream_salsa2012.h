@@ -36,6 +36,9 @@ int crypto_stream_salsa2012_xor(unsigned char *c, const unsigned char *m,
                                 unsigned long long mlen, const unsigned char *n,
                                 const unsigned char *k);
 
+SODIUM_EXPORT
+void crypto_stream_salsa2012_keygen(unsigned char k[crypto_stream_salsa2012_KEYBYTES]);
+
 #ifdef __cplusplus
 }
 #endif

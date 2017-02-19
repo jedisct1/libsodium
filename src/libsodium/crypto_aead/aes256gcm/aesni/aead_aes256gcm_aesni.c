@@ -12,6 +12,7 @@
 
 #include "crypto_aead_aes256gcm.h"
 #include "export.h"
+#include "randombytes.h"
 #include "runtime.h"
 #include "utils.h"
 
@@ -1042,4 +1043,10 @@ size_t
 crypto_aead_aes256gcm_statebytes(void)
 {
     return (sizeof(crypto_aead_aes256gcm_state) + (size_t) 15U) & ~(size_t) 15U;
+}
+
+void
+crypto_aead_aes256gcm_keygen(unsigned char k[crypto_aead_aes256gcm_KEYBYTES])
+{
+    randombytes_buf(k, crypto_aead_aes256gcm_KEYBYTES);
 }

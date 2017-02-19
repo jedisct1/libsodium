@@ -56,6 +56,9 @@ int crypto_secretbox_open_detached(unsigned char *m,
                                    const unsigned char *k)
             __attribute__ ((warn_unused_result));
 
+SODIUM_EXPORT
+void crypto_secretbox_keygen(unsigned char k[crypto_secretbox_KEYBYTES]);
+
 /* -- NaCl compatibility interface ; Requires padding -- */
 
 #define crypto_secretbox_ZEROBYTES crypto_secretbox_xsalsa20poly1305_ZEROBYTES

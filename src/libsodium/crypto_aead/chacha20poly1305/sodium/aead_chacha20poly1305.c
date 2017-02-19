@@ -8,6 +8,7 @@
 #include "crypto_onetimeauth_poly1305.h"
 #include "crypto_stream_chacha20.h"
 #include "crypto_verify_16.h"
+#include "randombytes.h"
 #include "utils.h"
 
 #include "private/common.h"
@@ -325,41 +326,61 @@ crypto_aead_chacha20poly1305_ietf_decrypt(unsigned char *m,
 }
 
 size_t
-crypto_aead_chacha20poly1305_ietf_keybytes(void) {
+crypto_aead_chacha20poly1305_ietf_keybytes(void)
+{
     return crypto_aead_chacha20poly1305_ietf_KEYBYTES;
 }
 
 size_t
-crypto_aead_chacha20poly1305_ietf_npubbytes(void) {
+crypto_aead_chacha20poly1305_ietf_npubbytes(void)
+{
     return crypto_aead_chacha20poly1305_ietf_NPUBBYTES;
 }
 
 size_t
-crypto_aead_chacha20poly1305_ietf_nsecbytes(void) {
+crypto_aead_chacha20poly1305_ietf_nsecbytes(void)
+{
     return crypto_aead_chacha20poly1305_ietf_NSECBYTES;
 }
 
 size_t
-crypto_aead_chacha20poly1305_ietf_abytes(void) {
+crypto_aead_chacha20poly1305_ietf_abytes(void)
+{
     return crypto_aead_chacha20poly1305_ietf_ABYTES;
 }
 
+void
+crypto_aead_chacha20poly1305_ietf_keygen(unsigned char k[crypto_aead_chacha20poly1305_ietf_KEYBYTES])
+{
+    randombytes_buf(k, crypto_aead_chacha20poly1305_ietf_KEYBYTES);
+}
+
 size_t
-crypto_aead_chacha20poly1305_keybytes(void) {
+crypto_aead_chacha20poly1305_keybytes(void)
+{
     return crypto_aead_chacha20poly1305_KEYBYTES;
 }
 
 size_t
-crypto_aead_chacha20poly1305_npubbytes(void) {
+crypto_aead_chacha20poly1305_npubbytes(void)
+{
     return crypto_aead_chacha20poly1305_NPUBBYTES;
 }
 
 size_t
-crypto_aead_chacha20poly1305_nsecbytes(void) {
+crypto_aead_chacha20poly1305_nsecbytes(void)
+{
     return crypto_aead_chacha20poly1305_NSECBYTES;
 }
 
 size_t
-crypto_aead_chacha20poly1305_abytes(void) {
+crypto_aead_chacha20poly1305_abytes(void)
+{
     return crypto_aead_chacha20poly1305_ABYTES;
+}
+
+void
+crypto_aead_chacha20poly1305_keygen(unsigned char k[crypto_aead_chacha20poly1305_KEYBYTES])
+{
+    randombytes_buf(k, crypto_aead_chacha20poly1305_KEYBYTES);
 }

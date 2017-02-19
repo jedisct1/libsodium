@@ -1,6 +1,7 @@
 #include "crypto_core_hsalsa20.h"
 #include "crypto_stream_salsa20.h"
 #include "crypto_stream_xsalsa20.h"
+#include "randombytes.h"
 #include "utils.h"
 
 int
@@ -48,4 +49,10 @@ crypto_stream_xsalsa20_keybytes(void) {
 size_t
 crypto_stream_xsalsa20_noncebytes(void) {
     return crypto_stream_xsalsa20_NONCEBYTES;
+}
+
+void
+crypto_stream_xsalsa20_keygen(unsigned char k[crypto_stream_xsalsa20_KEYBYTES])
+{
+    randombytes_buf(k, crypto_stream_xsalsa20_KEYBYTES);
 }

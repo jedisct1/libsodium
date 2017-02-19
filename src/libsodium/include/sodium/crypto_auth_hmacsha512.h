@@ -56,6 +56,9 @@ SODIUM_EXPORT
 int crypto_auth_hmacsha512_final(crypto_auth_hmacsha512_state *state,
                                  unsigned char *out);
 
+SODIUM_EXPORT
+void crypto_auth_hmacsha512_keygen(unsigned char k[crypto_auth_hmacsha512_KEYBYTES]);
+
 #ifdef __cplusplus
 }
 #endif

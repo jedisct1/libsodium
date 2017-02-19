@@ -1,6 +1,7 @@
 
 #include "crypto_onetimeauth_poly1305.h"
 #include "onetimeauth_poly1305.h"
+#include "randombytes.h"
 #include "runtime.h"
 #include "donna/poly1305_donna.h"
 #if defined(HAVE_TI_MODE) && defined(HAVE_EMMINTRIN_H)
@@ -56,6 +57,12 @@ crypto_onetimeauth_poly1305_bytes(void) {
 size_t
 crypto_onetimeauth_poly1305_keybytes(void) {
     return crypto_onetimeauth_poly1305_KEYBYTES;
+}
+
+void
+crypto_onetimeauth_poly1305_keygen(unsigned char k[crypto_onetimeauth_poly1305_KEYBYTES])
+{
+    randombytes_buf(k, crypto_onetimeauth_poly1305_KEYBYTES);
 }
 
 int

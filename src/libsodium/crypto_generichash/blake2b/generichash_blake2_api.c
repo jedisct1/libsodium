@@ -1,4 +1,5 @@
 #include "crypto_generichash_blake2b.h"
+#include "randombytes.h"
 
 size_t
 crypto_generichash_blake2b_bytes_min(void) {
@@ -45,4 +46,10 @@ crypto_generichash_blake2b_statebytes(void)
 {
     return (sizeof(crypto_generichash_blake2b_state) + (size_t) 63U)
         & ~(size_t) 63U;
+}
+
+void
+crypto_generichash_blake2b_keygen(unsigned char k[crypto_generichash_blake2b_KEYBYTES])
+{
+    randombytes_buf(k, crypto_generichash_blake2b_KEYBYTES);
 }

@@ -134,6 +134,9 @@ int crypto_aead_aes256gcm_decrypt_detached_afternm(unsigned char *m,
                                                    const crypto_aead_aes256gcm_state *ctx_)
         __attribute__ ((warn_unused_result));
 
+SODIUM_EXPORT
+void crypto_aead_aes256gcm_keygen(unsigned char k[crypto_aead_aes256gcm_KEYBYTES]);
+
 #ifdef __cplusplus
 }
 #endif

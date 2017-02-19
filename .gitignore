@@ -112,6 +112,7 @@ test/default/generichash3
 test/default/hash
 test/default/hash3
 test/default/kdf
+test/default/keygen
 test/default/onetimeauth
 test/default/onetimeauth2
 test/default/onetimeauth7

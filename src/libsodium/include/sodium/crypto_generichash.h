@@ -64,6 +64,9 @@ SODIUM_EXPORT
 int crypto_generichash_final(crypto_generichash_state *state,
                              unsigned char *out, const size_t outlen);
 
+SODIUM_EXPORT
+void crypto_generichash_keygen(unsigned char k[crypto_generichash_KEYBYTES]);
+
 #ifdef __cplusplus
 }
 #endif

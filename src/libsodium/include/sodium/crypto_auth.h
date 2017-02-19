@@ -34,6 +34,9 @@ int crypto_auth_verify(const unsigned char *h, const unsigned char *in,
                        unsigned long long inlen, const unsigned char *k)
             __attribute__ ((warn_unused_result));
 
+SODIUM_EXPORT
+void crypto_auth_keygen(unsigned char k[crypto_auth_KEYBYTES]);
+
 #ifdef __cplusplus
 }
 #endif

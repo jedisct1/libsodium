@@ -1,5 +1,6 @@
 #include "crypto_stream_chacha20.h"
 #include "stream_chacha20.h"
+#include "randombytes.h"
 #include "runtime.h"
 #include "ref/stream_chacha20_ref.h"
 #if (defined(HAVE_EMMINTRIN_H) && defined(HAVE_TMMINTRIN_H) && defined(__GNUC__))
@@ -75,6 +76,18 @@ crypto_stream_chacha20_ietf_xor(unsigned char *c, const unsigned char *m,
                                 const unsigned char *k)
 {
     return implementation->stream_ietf_xor_ic(c, m, mlen, n, 0U, k);
+}
+
+void
+crypto_stream_chacha20_ietf_keygen(unsigned char k[crypto_stream_chacha20_ietf_KEYBYTES])
+{
+    randombytes_buf(k, crypto_stream_chacha20_ietf_KEYBYTES);
+}
+
+void
+crypto_stream_chacha20_keygen(unsigned char k[crypto_stream_chacha20_KEYBYTES])
+{
+    randombytes_buf(k, crypto_stream_chacha20_KEYBYTES);
 }
 
 int

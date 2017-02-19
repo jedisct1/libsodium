@@ -51,6 +51,9 @@ SODIUM_EXPORT
 int crypto_onetimeauth_final(crypto_onetimeauth_state *state,
                              unsigned char *out);
 
+SODIUM_EXPORT
+void crypto_onetimeauth_keygen(unsigned char k[crypto_onetimeauth_KEYBYTES]);
+
 #ifdef __cplusplus
 }
 #endif

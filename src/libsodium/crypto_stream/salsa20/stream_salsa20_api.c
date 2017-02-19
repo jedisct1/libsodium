@@ -1,12 +1,15 @@
 #include "crypto_stream_salsa20.h"
+#include "randombytes.h"
 
 size_t
-crypto_stream_salsa20_keybytes(void) {
+crypto_stream_salsa20_keybytes(void)
+{
     return crypto_stream_salsa20_KEYBYTES;
 }
 
 size_t
-crypto_stream_salsa20_noncebytes(void) {
+crypto_stream_salsa20_noncebytes(void)
+{
     return crypto_stream_salsa20_NONCEBYTES;
 }
 
@@ -16,4 +19,10 @@ crypto_stream_salsa20_xor(unsigned char *c, const unsigned char *m,
                           const unsigned char *k)
 {
     return crypto_stream_salsa20_xor_ic(c, m, mlen, n, 0U, k);
+}
+
+void
+crypto_stream_salsa20_keygen(unsigned char k[crypto_stream_salsa20_KEYBYTES])
+{
+    randombytes_buf(k, crypto_stream_salsa20_KEYBYTES);
 }

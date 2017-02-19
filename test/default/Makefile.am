@@ -35,6 +35,7 @@ EXTRA_DIST = \
 	hash2.exp \
 	hash3.exp \
 	kdf.exp \
+	keygen.exp \
 	onetimeauth.exp \
 	onetimeauth2.exp \
 	onetimeauth7.exp \
@@ -100,6 +101,7 @@ DISTCLEANFILES = \
 	hash2.res \
 	hash3.res \
 	kdf.res \
+	keygen.res \
 	onetimeauth.res \
 	onetimeauth2.res \
 	onetimeauth7.res \
@@ -166,6 +168,7 @@ CLEANFILES = \
 	hash2.final \
 	hash3.final \
 	kdf.final \
+	keygen.final \
 	onetimeauth.final \
 	onetimeauth2.final \
 	onetimeauth7.final \
@@ -227,6 +230,7 @@ CLEANFILES = \
 	hash2.nexe \
 	hash3.nexe \
 	kdf.nexe \
+	keygen.nexe \
 	onetimeauth.nexe \
 	onetimeauth2.nexe \
 	onetimeauth7.nexe \
@@ -299,6 +303,7 @@ TESTS_TARGETS = \
 	hash \
 	hash3 \
 	kdf \
+	keygen \
 	onetimeauth \
 	onetimeauth2 \
 	onetimeauth7 \
@@ -435,6 +440,9 @@ hash3_LDADD               = $(TESTS_LDADD)
 
 kdf_SOURCE                = cmptest.h kdf.c
 kdf_LDADD                 = $(TESTS_LDADD)
+
+keygen_SOURCE             = cmptest.h keygen.c
+keygen_LDADD              = $(TESTS_LDADD)
 
 onetimeauth_SOURCE        = cmptest.h onetimeauth.c
 onetimeauth_LDADD         = $(TESTS_LDADD)

@@ -1,5 +1,6 @@
 
 #include "crypto_generichash.h"
+#include "randombytes.h"
 
 size_t
 crypto_generichash_bytes_min(void)
@@ -81,4 +82,10 @@ crypto_generichash_final(crypto_generichash_state *state,
 {
     return crypto_generichash_blake2b_final
         ((crypto_generichash_blake2b_state *) state, out, outlen);
+}
+
+void
+crypto_generichash_keygen(unsigned char k[crypto_generichash_KEYBYTES])
+{
+    randombytes_buf(k, crypto_generichash_KEYBYTES);
 }
