@@ -12,8 +12,8 @@ tv_kdf(void)
     uint64_t       i;
 
     context = (char *) sodium_malloc(crypto_kdf_CONTEXTBYTES);
-    memcpy(context, "KDF test", strlen("KDF test"));    
-    master_key = (unsigned char *) sodium_malloc(crypto_kdf_KEYBYTES);   
+    memcpy(context, "KDF test", strlen("KDF test"));
+    master_key = (unsigned char *) sodium_malloc(crypto_kdf_KEYBYTES);
     for (i = 0; i < crypto_kdf_KEYBYTES; i++) {
         master_key[i] = i;
     }
@@ -27,7 +27,7 @@ tv_kdf(void)
     sodium_free(subkey);
 
     for (i = 0; i < crypto_kdf_BYTES_MAX + 2; i++) {
-        subkey = (unsigned char *) sodium_malloc(crypto_kdf_BYTES_MAX);        
+        subkey = (unsigned char *) sodium_malloc(crypto_kdf_BYTES_MAX);
         if (crypto_kdf_blake2b_derive_from_key(subkey, (size_t) i,
                                                i, context, master_key) == 0) {
             sodium_bin2hex(hex, sizeof hex, subkey, (size_t) i);
@@ -36,9 +36,9 @@ tv_kdf(void)
             printf("Failure -- probably expected for output length=%u\n",
                    (unsigned int) i);
         }
-        sodium_free(subkey);        
+        sodium_free(subkey);
     }
-    printf("tv_kdf: ok\n");    
+    printf("tv_kdf: ok\n");
 }
 
 int

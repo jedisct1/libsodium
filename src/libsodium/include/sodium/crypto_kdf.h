@@ -26,7 +26,7 @@ size_t crypto_kdf_bytes_max(void);
 SODIUM_EXPORT
 size_t crypto_kdf_contextbytes(void);
 
-#define crypto_kdf_KEYBYTES crypto_kdf_blake2b_KEYBYTES    
+#define crypto_kdf_KEYBYTES crypto_kdf_blake2b_KEYBYTES
 SODIUM_EXPORT
 size_t crypto_kdf_keybytes(void);
 

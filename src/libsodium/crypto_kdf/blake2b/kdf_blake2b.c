@@ -39,7 +39,7 @@ int crypto_kdf_blake2b_derive_from_key(unsigned char *subkey, size_t subkey_len,
     memcpy(ctx_padded, ctx, crypto_kdf_blake2b_CONTEXTBYTES);
     memset(ctx_padded + crypto_kdf_blake2b_CONTEXTBYTES, 0, sizeof ctx_padded - crypto_kdf_blake2b_CONTEXTBYTES);
     STORE64_LE(salt, subkey_id);
-    memset(salt + 8, 0, (sizeof salt) - 8);    
+    memset(salt + 8, 0, (sizeof salt) - 8);
     if (subkey_len < crypto_kdf_blake2b_BYTES_MIN ||
         subkey_len > crypto_kdf_blake2b_BYTES_MAX) {
         errno = EINVAL;
