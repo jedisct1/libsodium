@@ -121,10 +121,6 @@ randombytes_stir(void)
 #endif
 }
 
-/*
- * randombytes_uniform() derives from OpenBSD's arc4random_uniform()
- * Copyright (c) 2008, Damien Miller <djm@openbsd.org>
- */
 uint32_t
 randombytes_uniform(const uint32_t upper_bound)
 {
