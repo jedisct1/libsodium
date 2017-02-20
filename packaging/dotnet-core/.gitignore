@@ -1,0 +1,5 @@
+build
+cache
+libsodium.*.nupkg
+libsodium.*.nuspec
+Makefile

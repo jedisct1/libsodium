@@ -1,0 +1,19 @@
+<?xml version="1.0"?>
+<package>
+  <metadata>
+    <id>libsodium</id>
+    <version><!-- set by prepare.py --></version>
+    <authors>Frank Denis</authors>
+    <owners>Frank Denis</owners>
+    <requireLicenseAcceptance>true</requireLicenseAcceptance>
+    <licenseUrl>https://raw.githubusercontent.com/jedisct1/libsodium/master/LICENSE</licenseUrl>
+    <projectUrl>https://libsodium.org/</projectUrl>
+    <!--<iconUrl></iconUrl>-->
+    <description>A modern and easy-to-use crypto library, packaged for use with .NET Core</description>
+    <copyright>&#169; 2013-2017 Frank Denis</copyright>
+  </metadata>
+  <files>
+    <file src="../../LICENSE" target="LICENSE" />
+    <!-- additional files added by prepare.py -->
+  </files>
+</package>
