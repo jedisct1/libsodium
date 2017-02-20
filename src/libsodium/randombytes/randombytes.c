@@ -140,7 +140,7 @@ randombytes_uniform(const uint32_t upper_bound)
     if (upper_bound < 2) {
         return 0;
     }
-    min = (uint32_t) (-upper_bound % upper_bound);
+    min = (1U + ~upper_bound) % upper_bound;
     do {
         r = randombytes_random();
     } while (r < min);
