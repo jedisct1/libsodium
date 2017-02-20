@@ -36,7 +36,7 @@ tv_hchacha20(void)
     in = (unsigned char *) sodium_malloc(crypto_core_hchacha20_INPUTBYTES);
     out = (unsigned char *) sodium_malloc(crypto_core_hchacha20_OUTPUTBYTES);
     out2 = (unsigned char *) sodium_malloc(crypto_core_hchacha20_OUTPUTBYTES);
-    for (i = 0; i < (sizeof tv) / (sizeof tv[0]) + 10; i++) {
+    for (i = 0; i < (sizeof tvs) / (sizeof tvs[0]); i++) {
         tv = &tvs[i];
         sodium_hex2bin(key, crypto_core_hchacha20_KEYBYTES,
                        tv->key, strlen(tv->key), NULL, NULL, NULL);
@@ -93,7 +93,7 @@ tv_stream_xchacha20(void)
         { "6a6d3f412fc86c4450fc31f89f64ed46baa3256ffcf8616e8c23a06c422842b6", "6b7773fce3c2546a5db4829f53a9165f41b08faae2fb72d5", "8b23e35b3cdd5f3f75525fc37960ec2b68918e8c046d8a832b9838f1546be662e54feb1203e2" },
         { "d45e56368ebc7ba9be7c55cfd2da0feb633c1d86cab67cd5627514fd20c2b391", "fd37da2db31e0c738754463edadc7dafb0833bd45da497fc", "47950efa8217e3dec437454bd6b6a80a287e2570f0a48b3fa1ea3eb868be3d486f6516606d85e5643becc473b370871ab9ef8e2a728f73b92bd98e6e26ea7c8ff96ec5a9e8de95e1eee9300c" },
         { "aface41a64a9a40cbc604d42bd363523bd762eb717f3e08fe2e0b4611eb4dcf3", "6906e0383b895ab9f1cf3803f42f27c79ad47b681c552c63", "a5fa7c0190792ee17675d52ad7570f1fb0892239c76d6e802c26b5b3544d13151e67513b8aaa1ac5af2d7fd0d5e4216964324838" },
-        { "9d23bd4149cb979ccf3c5c94dd217e9808cb0e50cd0f67812235eaaf601d6232", "c047548266b7c370d33566a2425cbf30d82d1eaf5294109e", "a21209096594de8c5667b1d13ad93f744106d054df210e4782cd396fec692d3515a20bf351eec011a92c367888bc464c32f0807acd6c203a247e0db854148468e9f96bee4cf718d68d5f637cbd5a376457788e6fae90fc31097cfc" }
+        { "9d23bd4149cb979ccf3c5c94dd217e9808cb0e50cd0f67812235eaaf601d6232", "c047548266b7c370d33566a2425cbf30d82d1eaf5294109e", "a21209096594de8c5667b1d13ad93f744106d054df210e4782cd396fec692d3515a20bf351eec011a92c367888bc464c32f0807acd6c203a247e0db854148468e9f96bee4cf718d68d5f637cbd5a376457788e6fae90fc31097cfc" },
     };
     const XChaCha20TV *tv;
     unsigned char     *key;
@@ -106,7 +106,7 @@ tv_stream_xchacha20(void)
     key = (unsigned char *) sodium_malloc(crypto_stream_xchacha20_KEYBYTES);
     nonce = (unsigned char *) sodium_malloc(crypto_stream_xchacha20_NONCEBYTES);
     out = (unsigned char *) sodium_malloc(XCHACHA20_OUT_MAX);
-    for (i = 0; i < (sizeof tv) / (sizeof tv[0]) + 10; i++) {
+    for (i = 0; i < (sizeof tvs) / (sizeof tvs[0]); i++) {
         tv = &tvs[i];
 
         sodium_hex2bin(key, crypto_stream_xchacha20_KEYBYTES,
@@ -117,6 +117,11 @@ tv_stream_xchacha20(void)
                        tv->out, strlen(tv->out), NULL, &out_len, NULL);
         out2 = (unsigned char *) sodium_malloc(out_len);
         crypto_stream_xchacha20(out2, out_len, nonce, key);
+        {
+            char hex[1000];
+            sodium_bin2hex(hex, sizeof hex, out2, out_len);
+            puts(hex);
+        }
         assert(memcmp(out, out2, out_len) == 0);
         crypto_stream_xchacha20_xor(out2, out, out_len, nonce, key);
         assert(sodium_is_zero(out2, out_len));
@@ -193,7 +198,7 @@ tv_secretbox_xchacha20poly1305(void)
         (crypto_secretbox_xchacha20poly1305_KEYBYTES);
     nonce = (unsigned char *) sodium_malloc
         (crypto_secretbox_xchacha20poly1305_NONCEBYTES);
-    for (i = 0; i < (sizeof tv) / (sizeof tv[0]) + 10; i++) {
+    for (i = 0; i < (sizeof tvs) / (sizeof tvs[0]); i++) {
         tv = &tvs[i];
         m_len = strlen(tv->m) / 2;
         m = (unsigned char *) sodium_malloc(m_len);
