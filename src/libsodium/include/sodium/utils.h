@@ -60,6 +60,17 @@ int sodium_hex2bin(unsigned char * const bin, const size_t bin_maxlen,
                    const char * const hex, const size_t hex_len,
                    const char * const ignore, size_t * const bin_len,
                    const char ** const hex_end);
+                   
+
+SODIUM_EXPORT
+int
+sodium_base64_encode(unsigned char *dest,
+                     const unsigned char *src, size_t srcLen);
+
+SODIUM_EXPORT
+int
+sodium_base64_decode(unsigned char * dest,
+                     const unsigned char * src, size_t srcLen);
 
 SODIUM_EXPORT
 int sodium_mlock(void * const addr, const size_t len);
