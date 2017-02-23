@@ -29,8 +29,8 @@
 
 #include "argon2.h"
 #include "argon2-core.h"
-#include "argon2-impl.h"
 #include "blamka-round-ssse3.h"
+#include "private/common.h"
 
 static void fill_block(__m128i *state, const uint8_t *ref_block, uint8_t *next_block) {
     __m128i block_XY[ARGON2_OWORDS_IN_BLOCK];

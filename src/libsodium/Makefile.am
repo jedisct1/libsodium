@@ -46,7 +46,6 @@ libsodium_la_SOURCES = \
 	crypto_pwhash/argon2/argon2-encoding.c \
 	crypto_pwhash/argon2/argon2-encoding.h \
 	crypto_pwhash/argon2/argon2-fill-block-ref.c \
-	crypto_pwhash/argon2/argon2-impl.h \
 	crypto_pwhash/argon2/argon2.c \
 	crypto_pwhash/argon2/argon2.h \
 	crypto_pwhash/argon2/blake2b-long.c \

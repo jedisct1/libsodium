@@ -26,7 +26,6 @@
 #include "private/common.h"
 
 #include "argon2-core.h"
-#include "argon2-impl.h"
 #include "blake2b-long.h"
 
 #if !defined(MAP_ANON) && defined(MAP_ANONYMOUS)
