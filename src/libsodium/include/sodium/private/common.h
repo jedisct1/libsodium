@@ -7,6 +7,11 @@
 
 #define COMPILER_ASSERT(X) (void) sizeof(char[(X) ? 1 : -1])
 
+#define ROTL32(x, b) (uint32_t)(((x) << (b)) | ((x) >> (32 - (b))))
+#define ROTL64(x, b) (uint64_t)(((x) << (b)) | ((x) >> (64 - (b))))
+#define ROTR32(x, b) (uint32_t)(((x) >> (b)) | ((x) << (32 - (b))))
+#define ROTR64(x, b) (uint64_t)(((x) >> (b)) | ((x) << (64 - (b))))
+
 #define LOAD64_LE(SRC) load64_le(SRC)
 static inline uint64_t
 load64_le(const uint8_t src[8])
