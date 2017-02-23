@@ -10,8 +10,8 @@
 static void *
 xmemset(void *dst, int c, size_t n)
 {
-    unsigned char      *dst_ = (unsigned char *) dst;
-    const unsigned char c_ = (unsigned char) c;
+    unsigned char *     dst_ = (unsigned char *) dst;
+    const unsigned char c_   = (unsigned char) c;
     size_t              i;
 
     for (i = 0; i < n; i++) {
@@ -25,7 +25,8 @@ xmemset(void *dst, int c, size_t n)
 # define strcmp(s1, s2) xstrcmp(s1, s2)
 
 static int
-strcmp(const char *s1, const char *s2) {
+strcmp(const char *s1, const char *s2)
+{
     while (*s1 == *s2++) {
         if (*s1++ == 0) {
             return 0;
