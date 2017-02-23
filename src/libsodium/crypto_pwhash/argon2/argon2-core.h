@@ -24,7 +24,7 @@ enum argon2_ctx_constants {
     ARGON2_VERSION_NUMBER = 0x13,
 
     /* Memory block size in bytes */
-    ARGON2_BLOCK_SIZE = 1024,
+    ARGON2_BLOCK_SIZE      = 1024,
     ARGON2_QWORDS_IN_BLOCK = ARGON2_BLOCK_SIZE / 8,
     ARGON2_OWORDS_IN_BLOCK = ARGON2_BLOCK_SIZE / 16,
 
@@ -35,7 +35,7 @@ enum argon2_ctx_constants {
 
     /* Pre-hashing digest length and its extension*/
     ARGON2_PREHASH_DIGEST_LENGTH = 64,
-    ARGON2_PREHASH_SEED_LENGTH = 72
+    ARGON2_PREHASH_SEED_LENGTH   = 72
 };
 
 /*************************Argon2 internal data
@@ -46,10 +46,12 @@ enum argon2_ctx_constants {
  * Memory blocks can be copied, XORed. Internal words can be accessed by [] (no
  * bounds checking).
  */
-typedef struct block_ { uint64_t v[ARGON2_QWORDS_IN_BLOCK]; } block;
+typedef struct block_ {
+    uint64_t v[ARGON2_QWORDS_IN_BLOCK];
+} block;
 
 typedef struct block_region_ {
-    void  *base;
+    void * base;
     block *memory;
     size_t size;
 } block_region;
@@ -72,15 +74,15 @@ void xor_block(block *dst, const block *src);
  * thread
  */
 typedef struct Argon2_instance_t {
-    block_region *region;   /* Memory region pointer */
-    uint32_t passes;        /* Number of passes */
-    uint32_t memory_blocks; /* Number of blocks in memory */
-    uint32_t segment_length;
-    uint32_t lane_length;
-    uint32_t lanes;
-    uint32_t threads;
-    argon2_type type;
-    int print_internals; /* whether to print the memory blocks */
+    block_region *region;        /* Memory region pointer */
+    uint32_t      passes;        /* Number of passes */
+    uint32_t      memory_blocks; /* Number of blocks in memory */
+    uint32_t      segment_length;
+    uint32_t      lane_length;
+    uint32_t      lanes;
+    uint32_t      threads;
+    argon2_type   type;
+    int           print_internals; /* whether to print the memory blocks */
 } argon2_instance_t;
 
 /*
@@ -90,14 +92,14 @@ typedef struct Argon2_instance_t {
 typedef struct Argon2_position_t {
     uint32_t pass;
     uint32_t lane;
-    uint8_t slice;
+    uint8_t  slice;
     uint32_t index;
 } argon2_position_t;
 
 /*Struct that holds the inputs for thread handling FillSegment*/
 typedef struct Argon2_thread_data {
     argon2_instance_t *instance_ptr;
-    argon2_position_t pos;
+    argon2_position_t  pos;
 } argon2_thread_data;
 
 /*************************Argon2 core
@@ -180,12 +182,12 @@ void finalize(const argon2_context *context, argon2_instance_t *instance);
  * @pre all block pointers must be valid
  */
 typedef int (*fill_segment_fn)(const argon2_instance_t *instance,
-                               argon2_position_t position);
+                               argon2_position_t        position);
 int argon2_pick_best_implementation(void);
 int fill_segment_ssse3(const argon2_instance_t *instance,
-                       argon2_position_t position);
+                       argon2_position_t        position);
 int fill_segment_ref(const argon2_instance_t *instance,
-                     argon2_position_t position);
+                     argon2_position_t        position);
 
 /*
  * Function that fills the entire memory t_cost times based on the first two

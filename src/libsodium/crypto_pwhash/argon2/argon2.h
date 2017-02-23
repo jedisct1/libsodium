@@ -6,14 +6,15 @@
  * This work is licensed under a Creative Commons CC0 1.0 License/Waiver.
  *
  * You should have received a copy of the CC0 Public Domain Dedication along
- * with this software. If not, see <http://creativecommons.org/publicdomain/zero/1.0/>.
+ * with this software. If not, see
+ * <http://creativecommons.org/publicdomain/zero/1.0/>.
  */
 #ifndef argon2_H
 #define argon2_H
 
-#include <stdint.h>
-#include <stddef.h>
 #include <limits.h>
+#include <stddef.h>
+#include <stdint.h>
 
 /*
  * Argon2 input parameter restrictions
@@ -38,10 +39,11 @@
 #define ARGON2_MIN_MEMORY (2 * ARGON2_SYNC_POINTS) /* 2 blocks per slice */
 
 #define ARGON2_MIN(a, b) ((a) < (b) ? (a) : (b))
-/* Max memory size is half the addressing space, topping at 2^32 blocks (4 TB) */
-#define ARGON2_MAX_MEMORY_BITS                                                 \
+/* Max memory size is half the addressing space, topping at 2^32 blocks (4 TB)
+ */
+#define ARGON2_MAX_MEMORY_BITS \
     ARGON2_MIN(UINT32_C(32), (sizeof(void *) * CHAR_BIT - 10 - 1))
-#define ARGON2_MAX_MEMORY                                                      \
+#define ARGON2_MAX_MEMORY \
     ARGON2_MIN(UINT32_C(0xFFFFFFFF), UINT64_C(1) << ARGON2_MAX_MEMORY_BITS)
 
 /* Minimum and maximum number of passes */
@@ -76,45 +78,45 @@ typedef enum Argon2_ErrorCodes {
     ARGON2_OUTPUT_PTR_NULL = -1,
 
     ARGON2_OUTPUT_TOO_SHORT = -2,
-    ARGON2_OUTPUT_TOO_LONG = -3,
+    ARGON2_OUTPUT_TOO_LONG  = -3,
 
     ARGON2_PWD_TOO_SHORT = -4,
-    ARGON2_PWD_TOO_LONG = -5,
+    ARGON2_PWD_TOO_LONG  = -5,
 
     ARGON2_SALT_TOO_SHORT = -6,
-    ARGON2_SALT_TOO_LONG = -7,
+    ARGON2_SALT_TOO_LONG  = -7,
 
     ARGON2_AD_TOO_SHORT = -8,
-    ARGON2_AD_TOO_LONG = -9,
+    ARGON2_AD_TOO_LONG  = -9,
 
     ARGON2_SECRET_TOO_SHORT = -10,
-    ARGON2_SECRET_TOO_LONG = -11,
+    ARGON2_SECRET_TOO_LONG  = -11,
 
     ARGON2_TIME_TOO_SMALL = -12,
     ARGON2_TIME_TOO_LARGE = -13,
 
     ARGON2_MEMORY_TOO_LITTLE = -14,
-    ARGON2_MEMORY_TOO_MUCH = -15,
+    ARGON2_MEMORY_TOO_MUCH   = -15,
 
-    ARGON2_LANES_TOO_FEW = -16,
+    ARGON2_LANES_TOO_FEW  = -16,
     ARGON2_LANES_TOO_MANY = -17,
 
-    ARGON2_PWD_PTR_MISMATCH = -18,    /* NULL ptr with non-zero length */
-    ARGON2_SALT_PTR_MISMATCH = -19,   /* NULL ptr with non-zero length */
+    ARGON2_PWD_PTR_MISMATCH    = -18, /* NULL ptr with non-zero length */
+    ARGON2_SALT_PTR_MISMATCH   = -19, /* NULL ptr with non-zero length */
     ARGON2_SECRET_PTR_MISMATCH = -20, /* NULL ptr with non-zero length */
-    ARGON2_AD_PTR_MISMATCH = -21,     /* NULL ptr with non-zero length */
+    ARGON2_AD_PTR_MISMATCH     = -21, /* NULL ptr with non-zero length */
 
     ARGON2_MEMORY_ALLOCATION_ERROR = -22,
 
-    ARGON2_FREE_MEMORY_CBK_NULL = -23,
+    ARGON2_FREE_MEMORY_CBK_NULL     = -23,
     ARGON2_ALLOCATE_MEMORY_CBK_NULL = -24,
 
     ARGON2_INCORRECT_PARAMETER = -25,
-    ARGON2_INCORRECT_TYPE = -26,
+    ARGON2_INCORRECT_TYPE      = -26,
 
     ARGON2_OUT_PTR_MISMATCH = -27,
 
-    ARGON2_THREADS_TOO_FEW = -28,
+    ARGON2_THREADS_TOO_FEW  = -28,
     ARGON2_THREADS_TOO_MANY = -29,
 
     ARGON2_MISSING_ARGS = -30,
@@ -148,9 +150,12 @@ typedef enum Argon2_ErrorCodes {
  * are pre-hashed (and thus not needed anymore), and the entire memory
  *****
  * Simplest situation: you have output array out[8], password is stored in
- * pwd[32], salt is stored in salt[16], you do not have keys nor associated data.
- * You need to spend 1 GB of RAM and you run 5 passes of Argon2 with 4 parallel lanes.
- * You want to erase the password, but you're OK with last pass not being erased.
+ * pwd[32], salt is stored in salt[16], you do not have keys nor associated
+ *data.
+ * You need to spend 1 GB of RAM and you run 5 passes of Argon2 with 4 parallel
+ *lanes.
+ * You want to erase the password, but you're OK with last pass not being
+ *erased.
  * You want to use the default memory allocator.
  * Then you initialize:
  * Argon2_Context(out,8,pwd,32,salt,16,NULL,0,NULL,0,5,1<<20,4,4,NULL,NULL,true,false,false,false).

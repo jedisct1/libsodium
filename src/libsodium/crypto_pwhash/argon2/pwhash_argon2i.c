@@ -5,8 +5,8 @@
 #include <stdint.h>
 #include <string.h>
 
-#include "argon2.h"
 #include "argon2-core.h"
+#include "argon2.h"
 #include "crypto_pwhash_argon2i.h"
 #include "randombytes.h"
 #include "utils.h"
@@ -55,7 +55,7 @@ crypto_pwhash_argon2i_strbytes(void)
     return crypto_pwhash_argon2i_STRBYTES;
 }
 
-const char *
+const char*
 crypto_pwhash_argon2i_strprefix(void)
 {
     return crypto_pwhash_argon2i_STRPREFIX;
@@ -122,13 +122,10 @@ crypto_pwhash_argon2i_memlimit_sensitive(void)
 }
 
 int
-crypto_pwhash_argon2i(unsigned char * const out,
-                      unsigned long long outlen,
-                      const char * const passwd,
-                      unsigned long long passwdlen,
-                      const unsigned char * const salt,
-                      unsigned long long opslimit,
-                      size_t memlimit, int alg)
+crypto_pwhash_argon2i(unsigned char* const out, unsigned long long outlen,
+                      const char* const passwd, unsigned long long passwdlen,
+                      const unsigned char* const salt,
+                      unsigned long long opslimit, size_t memlimit, int alg)
 {
     memset(out, 0, outlen);
     if (alg != crypto_pwhash_argon2i_ALG_ARGON2I13) {
@@ -146,40 +143,39 @@ crypto_pwhash_argon2i(unsigned char * const out,
         return -1;
     }
     if (argon2i_hash_raw((uint32_t) opslimit, (uint32_t) memlimit,
-                         (uint32_t) 1U, passwd, (size_t) passwdlen,
-                         salt, (size_t) crypto_pwhash_argon2i_SALTBYTES,
-                         out, (size_t) outlen) != ARGON2_OK) {
+                         (uint32_t) 1U, passwd, (size_t) passwdlen, salt,
+                         (size_t) crypto_pwhash_argon2i_SALTBYTES, out,
+                         (size_t) outlen) != ARGON2_OK) {
         return -1; /* LCOV_EXCL_LINE */
     }
     return 0;
 }
 
 int
-crypto_pwhash_argon2i_str(char out[crypto_pwhash_argon2i_STRBYTES],
-                          const char * const passwd,
+crypto_pwhash_argon2i_str(char              out[crypto_pwhash_argon2i_STRBYTES],
+                          const char* const passwd,
                           unsigned long long passwdlen,
-                          unsigned long long opslimit,
-                          size_t memlimit)
+                          unsigned long long opslimit, size_t memlimit)
 {
     unsigned char salt[crypto_pwhash_argon2i_SALTBYTES];
 
     memset(out, 0, crypto_pwhash_argon2i_STRBYTES);
     memlimit /= 1024U;
-    if (passwdlen > ARGON2_MAX_PWD_LENGTH ||
-        opslimit > ARGON2_MAX_TIME || memlimit > ARGON2_MAX_MEMORY) {
+    if (passwdlen > ARGON2_MAX_PWD_LENGTH || opslimit > ARGON2_MAX_TIME ||
+        memlimit > ARGON2_MAX_MEMORY) {
         errno = EFBIG;
         return -1;
     }
-    if (passwdlen < ARGON2_MIN_PWD_LENGTH ||
-        opslimit < ARGON2_MIN_TIME || memlimit < ARGON2_MIN_MEMORY) {
+    if (passwdlen < ARGON2_MIN_PWD_LENGTH || opslimit < ARGON2_MIN_TIME ||
+        memlimit < ARGON2_MIN_MEMORY) {
         errno = EINVAL;
         return -1;
     }
     randombytes_buf(salt, sizeof salt);
     if (argon2i_hash_encoded((uint32_t) opslimit, (uint32_t) memlimit,
-                             (uint32_t) 1U, passwd, (size_t) passwdlen,
-                             salt, sizeof salt, STR_HASHBYTES,
-                             out, crypto_pwhash_argon2i_STRBYTES) != ARGON2_OK) {
+                             (uint32_t) 1U, passwd, (size_t) passwdlen, salt,
+                             sizeof salt, STR_HASHBYTES, out,
+                             crypto_pwhash_argon2i_STRBYTES) != ARGON2_OK) {
         return -1; /* LCOV_EXCL_LINE */
     }
     return 0;
@@ -187,19 +183,19 @@ crypto_pwhash_argon2i_str(char out[crypto_pwhash_argon2i_STRBYTES],
 
 int
 crypto_pwhash_argon2i_str_verify(const char str[crypto_pwhash_argon2i_STRBYTES],
-                                 const char * const passwd,
+                                 const char* const  passwd,
                                  unsigned long long passwdlen)
 {
     if (passwdlen > ARGON2_MAX_PWD_LENGTH) {
         errno = EFBIG;
         return -1;
     }
-/* LCOV_EXCL_START */
+    /* LCOV_EXCL_START */
     if (passwdlen < ARGON2_MIN_PWD_LENGTH) {
         errno = EINVAL;
         return -1;
     }
-/* LCOV_EXCL_STOP */
+    /* LCOV_EXCL_STOP */
     if (argon2i_verify(str, passwd, (size_t) passwdlen) != ARGON2_OK) {
         return -1;
     }

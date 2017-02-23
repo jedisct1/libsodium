@@ -22,7 +22,8 @@ int encode_string(char *dst, size_t dst_len, argon2_context *ctx,
 
 /*
  * Decodes an Argon2 hash string into the provided structure 'ctx'.
- * The fields ctx.saltlen, ctx.adlen, ctx.outlen set the maximal salt, ad, out length values
+ * The fields ctx.saltlen, ctx.adlen, ctx.outlen set the maximal salt, ad, out
+ * length values
  * that are allowed; invalid input string causes an error
  *
  * Returned value is ARGON2_OK on success.
