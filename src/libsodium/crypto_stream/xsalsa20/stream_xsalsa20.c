@@ -42,12 +42,14 @@ crypto_stream_xsalsa20_xor(unsigned char *c, const unsigned char *m,
 }
 
 size_t
-crypto_stream_xsalsa20_keybytes(void) {
+crypto_stream_xsalsa20_keybytes(void)
+{
     return crypto_stream_xsalsa20_KEYBYTES;
 }
 
 size_t
-crypto_stream_xsalsa20_noncebytes(void) {
+crypto_stream_xsalsa20_noncebytes(void)
+{
     return crypto_stream_xsalsa20_NONCEBYTES;
 }
 

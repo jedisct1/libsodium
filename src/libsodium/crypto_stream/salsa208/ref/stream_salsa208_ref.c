@@ -39,7 +39,6 @@ crypto_stream_salsa208(unsigned char *c, unsigned long long clen,
             in[i] = u;
             u >>= 8;
         }
-
         clen -= 64;
         c += 64;
     }

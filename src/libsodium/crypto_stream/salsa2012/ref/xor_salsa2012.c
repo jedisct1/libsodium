@@ -42,7 +42,6 @@ crypto_stream_salsa2012_xor(unsigned char *c, const unsigned char *m,
             in[i] = u;
             u >>= 8;
         }
-
         mlen -= 64;
         c += 64;
         m += 64;
