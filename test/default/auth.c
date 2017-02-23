@@ -4,24 +4,28 @@
 
 /* "Test Case 2" from RFC 4231 */
 static unsigned char key[32] = "Jefe";
-static unsigned char c[] = "what do ya want for nothing?";
+static unsigned char c[]     = "what do ya want for nothing?";
 
 /* Hacker manifesto */
-static unsigned char key2[] = "Another one got caught today, it's all over the papers. \"Teenager Arrested in Computer Crime Scandal\", \"Hacker Arrested after Bank Tampering\"... Damn kids. They're all alike.";
+static unsigned char key2[] =
+    "Another one got caught today, it's all over the papers. \"Teenager "
+    "Arrested in Computer Crime Scandal\", \"Hacker Arrested after Bank "
+    "Tampering\"... Damn kids. They're all alike.";
 
 static unsigned char a[crypto_auth_BYTES];
 static unsigned char a2[crypto_auth_hmacsha512_BYTES];
 
-int main(void)
+int
+main(void)
 {
     crypto_auth_hmacsha512_state st;
-    size_t i;
+    size_t                       i;
 
     assert(crypto_auth_hmacsha512_statebytes() ==
            sizeof(crypto_auth_hmacsha512_state));
     crypto_auth(a, c, sizeof c - 1U, key);
     for (i = 0; i < sizeof a; ++i) {
-        printf(",0x%02x", (unsigned int)a[i]);
+        printf(",0x%02x", (unsigned int) a[i]);
         if (i % 8 == 7)
             printf("\n");
     }
@@ -32,7 +36,7 @@ int main(void)
     crypto_auth_hmacsha512_update(&st, c, sizeof c - 2U);
     crypto_auth_hmacsha512_final(&st, a2);
     for (i = 0; i < sizeof a2; ++i) {
-        printf(",0x%02x", (unsigned int)a2[i]);
+        printf(",0x%02x", (unsigned int) a2[i]);
         if (i % 8 == 7)
             printf("\n");
     }
@@ -43,7 +47,7 @@ int main(void)
     crypto_auth_hmacsha512_update(&st, c, sizeof c - 2U);
     crypto_auth_hmacsha512_final(&st, a2);
     for (i = 0; i < sizeof a2; ++i) {
-        printf(",0x%02x", (unsigned int)a2[i]);
+        printf(",0x%02x", (unsigned int) a2[i]);
         if (i % 8 == 7)
             printf("\n");
     }

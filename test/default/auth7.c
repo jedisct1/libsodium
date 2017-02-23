@@ -6,7 +6,8 @@ static unsigned char key[32];
 static unsigned char c[600];
 static unsigned char a[64];
 
-int main(void)
+int
+main(void)
 {
     size_t clen;
 
