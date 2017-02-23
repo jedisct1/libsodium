@@ -8,7 +8,8 @@ static unsigned char bobsk[crypto_box_SECRETKEYBYTES];
 static unsigned char bobpk[crypto_box_PUBLICKEYBYTES];
 static unsigned char n[crypto_box_NONCEBYTES];
 
-int main(void)
+int
+main(void)
 {
     unsigned char *m;
     unsigned char *c;
@@ -18,8 +19,8 @@ int main(void)
     size_t         i;
     int            ret;
 
-    m = (unsigned char *) sodium_malloc(mlen_max);
-    c = (unsigned char *) sodium_malloc(mlen_max);
+    m  = (unsigned char *) sodium_malloc(mlen_max);
+    c  = (unsigned char *) sodium_malloc(mlen_max);
     m2 = (unsigned char *) sodium_malloc(mlen_max);
     memset(m, 0, crypto_box_ZEROBYTES);
     crypto_box_keypair(alicepk, alicesk);

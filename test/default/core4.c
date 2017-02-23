@@ -2,22 +2,21 @@
 #define TEST_NAME "core4"
 #include "cmptest.h"
 
-static unsigned char k[32]
-    = { 1,   2,   3,   4,   5,   6,   7,   8,   9,   10,  11,
-        12,  13,  14,  15,  16,  201, 202, 203, 204, 205, 206,
-        207, 208, 209, 210, 211, 212, 213, 214, 215, 216 };
+static unsigned char k[32] = { 1,   2,   3,   4,   5,   6,   7,   8,
+                               9,   10,  11,  12,  13,  14,  15,  16,
+                               201, 202, 203, 204, 205, 206, 207, 208,
+                               209, 210, 211, 212, 213, 214, 215, 216 };
 
-static unsigned char in[16]
-    = { 101, 102, 103, 104, 105, 106, 107, 108,
-        109, 110, 111, 112, 113, 114, 115, 116 };
+static unsigned char in[16] = { 101, 102, 103, 104, 105, 106, 107, 108,
+                                109, 110, 111, 112, 113, 114, 115, 116 };
 
-static unsigned char c[16]
-    = { 101, 120, 112, 97,  110, 100, 32, 51,
-        50,  45,  98,  121, 116, 101, 32, 107 };
+static unsigned char c[16] = { 101, 120, 112, 97,  110, 100, 32, 51,
+                               50,  45,  98,  121, 116, 101, 32, 107 };
 
 static unsigned char out[64];
 
-int main(void)
+int
+main(void)
 {
     int i;
 
@@ -28,7 +27,7 @@ int main(void)
         } else {
             printf(" ");
         }
-        printf("%3d", (unsigned int)out[i]);
+        printf("%3d", (unsigned int) out[i]);
         if (i % 8 == 7) {
             printf("\n");
         }
