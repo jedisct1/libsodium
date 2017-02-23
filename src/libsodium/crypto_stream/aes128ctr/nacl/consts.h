@@ -3,16 +3,16 @@
 
 #include "int128.h"
 
-#define ROTB crypto_stream_aes128ctr_portable_ROTB
-#define M0 crypto_stream_aes128ctr_portable_M0
-#define EXPB0 crypto_stream_aes128ctr_portable_EXPB0
-#define SWAP32 crypto_stream_aes128ctr_portable_SWAP32
-#define M0SWAP crypto_stream_aes128ctr_portable_M0SWAP
-#define SR crypto_stream_aes128ctr_portable_SR
-#define SRM0 crypto_stream_aes128ctr_portable_SRM0
-#define BS0 crypto_stream_aes128ctr_portable_BS0
-#define BS1 crypto_stream_aes128ctr_portable_BS1
-#define BS2 crypto_stream_aes128ctr_portable_BS2
+#define ROTB crypto_stream_aes128ctr_nacl_ROTB
+#define M0 crypto_stream_aes128ctr_nacl_M0
+#define EXPB0 crypto_stream_aes128ctr_nacl_EXPB0
+#define SWAP32 crypto_stream_aes128ctr_nacl_SWAP32
+#define M0SWAP crypto_stream_aes128ctr_nacl_M0SWAP
+#define SR crypto_stream_aes128ctr_nacl_SR
+#define SRM0 crypto_stream_aes128ctr_nacl_SRM0
+#define BS0 crypto_stream_aes128ctr_nacl_BS0
+#define BS1 crypto_stream_aes128ctr_nacl_BS1
+#define BS2 crypto_stream_aes128ctr_nacl_BS2
 
 extern const unsigned char ROTB[16];
 extern const unsigned char M0[16];
