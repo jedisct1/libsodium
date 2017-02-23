@@ -31,13 +31,13 @@
 #define crypto_scrypt_H
 
 #include <limits.h>
-#include <stdint.h>
 #include <stddef.h>
+#include <stdint.h>
 
 #if SIZE_MAX > 0xffffffffULL
-# define ARCH_BITS 64
+#define ARCH_BITS 64
 #else
-# define ARCH_BITS 32
+#define ARCH_BITS 32
 #endif
 
 #define crypto_pwhash_scryptsalsa208sha256_STRPREFIXBYTES 14
@@ -47,10 +47,10 @@
 #define crypto_pwhash_scryptsalsa208sha256_STRHASHBYTES 32
 #define crypto_pwhash_scryptsalsa208sha256_STRHASHBYTES_ENCODED 43
 
-#define BYTES2CHARS(bytes) ((((bytes) * 8) + 5) / 6)
+#define BYTES2CHARS(bytes) ((((bytes) *8) + 5) / 6)
 
 typedef struct {
-    void * base, * aligned;
+    void * base, *aligned;
     size_t size;
 } escrypt_region_t;
 
@@ -61,39 +61,34 @@ typedef union {
 
 typedef escrypt_region_t escrypt_local_t;
 
-extern int escrypt_init_local(escrypt_local_t * __local);
+extern int escrypt_init_local(escrypt_local_t *__local);
 
-extern int escrypt_free_local(escrypt_local_t * __local);
+extern int escrypt_free_local(escrypt_local_t *__local);
 
-extern void *alloc_region(escrypt_region_t * region, size_t size);
-extern int free_region(escrypt_region_t * region);
+extern void *alloc_region(escrypt_region_t *region, size_t size);
+extern int free_region(escrypt_region_t *region);
 
-typedef int (*escrypt_kdf_t)(escrypt_local_t * __local,
-                             const uint8_t * __passwd, size_t __passwdlen,
-                             const uint8_t * __salt, size_t __saltlen,
-                             uint64_t __N, uint32_t __r, uint32_t __p,
-                             uint8_t * __buf, size_t __buflen);
+typedef int (*escrypt_kdf_t)(escrypt_local_t *__local, const uint8_t *__passwd,
+                             size_t __passwdlen, const uint8_t *__salt,
+                             size_t __saltlen, uint64_t __N, uint32_t __r,
+                             uint32_t __p, uint8_t *__buf, size_t __buflen);
 
-extern int escrypt_kdf_nosse(escrypt_local_t * __local,
-    const uint8_t * __passwd, size_t __passwdlen,
-    const uint8_t * __salt, size_t __saltlen,
-    uint64_t __N, uint32_t __r, uint32_t __p,
-    uint8_t * __buf, size_t __buflen);
+extern int escrypt_kdf_nosse(escrypt_local_t *__local, const uint8_t *__passwd,
+                             size_t __passwdlen, const uint8_t *__salt,
+                             size_t __saltlen, uint64_t __N, uint32_t __r,
+                             uint32_t __p, uint8_t *__buf, size_t __buflen);
 
-extern int escrypt_kdf_sse(escrypt_local_t * __local,
-    const uint8_t * __passwd, size_t __passwdlen,
-    const uint8_t * __salt, size_t __saltlen,
-    uint64_t __N, uint32_t __r, uint32_t __p,
-    uint8_t * __buf, size_t __buflen);
+extern int escrypt_kdf_sse(escrypt_local_t *__local, const uint8_t *__passwd,
+                           size_t __passwdlen, const uint8_t *__salt,
+                           size_t __saltlen, uint64_t __N, uint32_t __r,
+                           uint32_t __p, uint8_t *__buf, size_t __buflen);
 
-extern uint8_t * escrypt_r(escrypt_local_t * __local,
-    const uint8_t * __passwd, size_t __passwdlen,
-    const uint8_t * __setting,
-    uint8_t * __buf, size_t __buflen);
+extern uint8_t *escrypt_r(escrypt_local_t *__local, const uint8_t *__passwd,
+                          size_t __passwdlen, const uint8_t *__setting,
+                          uint8_t *__buf, size_t __buflen);
 
-extern uint8_t * escrypt_gensalt_r(
-    uint32_t __N_log2, uint32_t __r, uint32_t __p,
-    const uint8_t * __src, size_t __srclen,
-    uint8_t * __buf, size_t __buflen);
+extern uint8_t *escrypt_gensalt_r(uint32_t __N_log2, uint32_t __r, uint32_t __p,
+                                  const uint8_t *__src, size_t __srclen,
+                                  uint8_t *__buf, size_t __buflen);
 
 #endif /* !_CRYPTO_SCRYPT_H_ */

@@ -19,7 +19,7 @@
  */
 
 #ifdef HAVE_SYS_MMAN_H
-# include <sys/mman.h>
+#include <sys/mman.h>
 #endif
 #include <errno.h>
 #include <stdlib.h>
@@ -28,26 +28,27 @@
 #include "runtime.h"
 
 #if !defined(MAP_ANON) && defined(MAP_ANONYMOUS)
-# define MAP_ANON MAP_ANONYMOUS
+#define MAP_ANON MAP_ANONYMOUS
 #endif
 
 void *
-alloc_region(escrypt_region_t * region, size_t size)
+alloc_region(escrypt_region_t *region, size_t size)
 {
-    uint8_t * base, * aligned;
+    uint8_t *base, *aligned;
 #if defined(MAP_ANON) && defined(HAVE_MMAP)
     if ((base = (uint8_t *) mmap(NULL, size, PROT_READ | PROT_WRITE,
 #ifdef MAP_NOCORE
-        MAP_ANON | MAP_PRIVATE | MAP_NOCORE,
+                                 MAP_ANON | MAP_PRIVATE | MAP_NOCORE,
 #else
-        MAP_ANON | MAP_PRIVATE,
+                                 MAP_ANON | MAP_PRIVATE,
 #endif
-        -1, 0)) == MAP_FAILED)
+                                 -1, 0)) == MAP_FAILED)
         base = NULL; /* LCOV_EXCL_LINE */
-    aligned = base;
+    aligned  = base;
 #elif defined(HAVE_POSIX_MEMALIGN)
-    if ((errno = posix_memalign((void **) &base, 64, size)) != 0)
+    if ((errno = posix_memalign((void **) &base, 64, size)) != 0) {
         base = NULL;
+    }
     aligned = base;
 #else
     base = aligned = NULL;
@@ -55,46 +56,50 @@ alloc_region(escrypt_region_t * region, size_t size)
         errno = ENOMEM;
     else if ((base = (uint8_t *) malloc(size + 63)) != NULL) {
         aligned = base + 63;
-        aligned -= (uintptr_t)aligned & 63;
+        aligned -= (uintptr_t) aligned & 63;
     }
 #endif
-    region->base = base;
+    region->base    = base;
     region->aligned = aligned;
-    region->size = base ? size : 0;
+    region->size    = base ? size : 0;
+
     return aligned;
 }
 
 static inline void
-init_region(escrypt_region_t * region)
+init_region(escrypt_region_t *region)
 {
     region->base = region->aligned = NULL;
-    region->size = 0;
+    region->size                   = 0;
 }
 
 int
-free_region(escrypt_region_t * region)
+free_region(escrypt_region_t *region)
 {
     if (region->base) {
 #if defined(MAP_ANON) && defined(HAVE_MMAP)
-        if (munmap(region->base, region->size))
+        if (munmap(region->base, region->size)) {
             return -1; /* LCOV_EXCL_LINE */
+        }
 #else
         free(region->base);
 #endif
     }
     init_region(region);
+
     return 0;
 }
 
 int
-escrypt_init_local(escrypt_local_t * local)
+escrypt_init_local(escrypt_local_t *local)
 {
     init_region(local);
+
     return 0;
 }
 
 int
-escrypt_free_local(escrypt_local_t * local)
+escrypt_free_local(escrypt_local_t *local)
 {
     return free_region(local);
 }
