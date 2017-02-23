@@ -2,7 +2,8 @@
 #define TEST_NAME "verify1"
 #include "cmptest.h"
 
-int main(void)
+int
+main(void)
 {
     unsigned char *v16, *v16x;
     unsigned char *v32, *v32x;
@@ -11,11 +12,11 @@ int main(void)
     uint8_t        o;
     int            i;
 
-    v16 = (unsigned char *) sodium_malloc(16);
+    v16  = (unsigned char *) sodium_malloc(16);
     v16x = (unsigned char *) sodium_malloc(16);
-    v32 = (unsigned char *) sodium_malloc(32);
+    v32  = (unsigned char *) sodium_malloc(32);
     v32x = (unsigned char *) sodium_malloc(32);
-    v64 = (unsigned char *) sodium_malloc(64);
+    v64  = (unsigned char *) sodium_malloc(64);
     v64x = (unsigned char *) sodium_malloc(64);
     for (i = 0; i < 10000; i++) {
         randombytes_buf(v16, 16);
