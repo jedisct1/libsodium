@@ -13,12 +13,6 @@ Public domain.
 #define ROUNDS 20
 #define U32C(v) (v##U)
 
-static uint32_t
-rotate(uint32_t u, int c)
-{
-    return (u << c) | (u >> (32 - c));
-}
-
 int
 crypto_core_salsa20(unsigned char *out,
                     const unsigned char *in,
@@ -56,38 +50,38 @@ crypto_core_salsa20(unsigned char *out,
     j14 = x14 = LOAD32_LE(k + 28);
 
     for (i = ROUNDS; i > 0; i -= 2) {
-        x4 ^= rotate(x0 + x12, 7);
-        x8 ^= rotate(x4 + x0, 9);
-        x12 ^= rotate(x8 + x4, 13);
-        x0 ^= rotate(x12 + x8, 18);
-        x9 ^= rotate(x5 + x1, 7);
-        x13 ^= rotate(x9 + x5, 9);
-        x1 ^= rotate(x13 + x9, 13);
-        x5 ^= rotate(x1 + x13, 18);
-        x14 ^= rotate(x10 + x6, 7);
-        x2 ^= rotate(x14 + x10, 9);
-        x6 ^= rotate(x2 + x14, 13);
-        x10 ^= rotate(x6 + x2, 18);
-        x3 ^= rotate(x15 + x11, 7);
-        x7 ^= rotate(x3 + x15, 9);
-        x11 ^= rotate(x7 + x3, 13);
-        x15 ^= rotate(x11 + x7, 18);
-        x1 ^= rotate(x0 + x3, 7);
-        x2 ^= rotate(x1 + x0, 9);
-        x3 ^= rotate(x2 + x1, 13);
-        x0 ^= rotate(x3 + x2, 18);
-        x6 ^= rotate(x5 + x4, 7);
-        x7 ^= rotate(x6 + x5, 9);
-        x4 ^= rotate(x7 + x6, 13);
-        x5 ^= rotate(x4 + x7, 18);
-        x11 ^= rotate(x10 + x9, 7);
-        x8 ^= rotate(x11 + x10, 9);
-        x9 ^= rotate(x8 + x11, 13);
-        x10 ^= rotate(x9 + x8, 18);
-        x12 ^= rotate(x15 + x14, 7);
-        x13 ^= rotate(x12 + x15, 9);
-        x14 ^= rotate(x13 + x12, 13);
-        x15 ^= rotate(x14 + x13, 18);
+        x4 ^= ROTL32(x0 + x12, 7);
+        x8 ^= ROTL32(x4 + x0, 9);
+        x12 ^= ROTL32(x8 + x4, 13);
+        x0 ^= ROTL32(x12 + x8, 18);
+        x9 ^= ROTL32(x5 + x1, 7);
+        x13 ^= ROTL32(x9 + x5, 9);
+        x1 ^= ROTL32(x13 + x9, 13);
+        x5 ^= ROTL32(x1 + x13, 18);
+        x14 ^= ROTL32(x10 + x6, 7);
+        x2 ^= ROTL32(x14 + x10, 9);
+        x6 ^= ROTL32(x2 + x14, 13);
+        x10 ^= ROTL32(x6 + x2, 18);
+        x3 ^= ROTL32(x15 + x11, 7);
+        x7 ^= ROTL32(x3 + x15, 9);
+        x11 ^= ROTL32(x7 + x3, 13);
+        x15 ^= ROTL32(x11 + x7, 18);
+        x1 ^= ROTL32(x0 + x3, 7);
+        x2 ^= ROTL32(x1 + x0, 9);
+        x3 ^= ROTL32(x2 + x1, 13);
+        x0 ^= ROTL32(x3 + x2, 18);
+        x6 ^= ROTL32(x5 + x4, 7);
+        x7 ^= ROTL32(x6 + x5, 9);
+        x4 ^= ROTL32(x7 + x6, 13);
+        x5 ^= ROTL32(x4 + x7, 18);
+        x11 ^= ROTL32(x10 + x9, 7);
+        x8 ^= ROTL32(x11 + x10, 9);
+        x9 ^= ROTL32(x8 + x11, 13);
+        x10 ^= ROTL32(x9 + x8, 18);
+        x12 ^= ROTL32(x15 + x14, 7);
+        x13 ^= ROTL32(x12 + x15, 9);
+        x14 ^= ROTL32(x13 + x12, 13);
+        x15 ^= ROTL32(x14 + x13, 18);
     }
 
     x0 += j0;

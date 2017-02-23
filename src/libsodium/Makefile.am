@@ -20,7 +20,6 @@ libsodium_la_SOURCES = \
 	crypto_core/salsa20/core_salsa20.c \
 	crypto_generichash/crypto_generichash.c \
 	crypto_generichash/blake2b/generichash_blake2.c \
-	crypto_generichash/blake2b/ref/blake2-impl.h \
 	crypto_generichash/blake2b/ref/blake2.h \
 	crypto_generichash/blake2b/ref/blake2b-compress-ref.c \
 	crypto_generichash/blake2b/ref/blake2b-load-sse2.h \

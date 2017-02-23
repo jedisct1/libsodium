@@ -3,7 +3,6 @@
 #include <string.h>
 
 #include "blake2.h"
-#include "blake2-impl.h"
 #include "private/common.h"
 
 CRYPTO_ALIGN(64) static const uint64_t blake2b_IV[8] =
@@ -53,13 +52,13 @@ int blake2b_compress_ref( blake2b_state *S, const uint8_t block[BLAKE2B_BLOCKBYT
 #define G(r,i,a,b,c,d) \
   do { \
     a = a + b + m[blake2b_sigma[r][2*i+0]]; \
-    d = rotr64(d ^ a, 32); \
+    d = ROTR64(d ^ a, 32); \
     c = c + d; \
-    b = rotr64(b ^ c, 24); \
+    b = ROTR64(b ^ c, 24); \
     a = a + b + m[blake2b_sigma[r][2*i+1]]; \
-    d = rotr64(d ^ a, 16); \
+    d = ROTR64(d ^ a, 16); \
     c = c + d; \
-    b = rotr64(b ^ c, 63); \
+    b = ROTR64(b ^ c, 63); \
   } while(0)
 #define ROUND(r)  \
   do { \

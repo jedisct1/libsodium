@@ -17,8 +17,8 @@
 #include <string.h>
 
 #include "blake2.h"
-#include "blake2-impl.h"
 #include "runtime.h"
+#include "utils.h"
 #include "private/common.h"
 
 #ifdef HAVE_TI_MODE
@@ -250,7 +250,7 @@ int blake2b_init_key( blake2b_state *S, const uint8_t outlen, const void *key, c
     memset( block, 0, BLAKE2B_BLOCKBYTES );
     memcpy( block, key, keylen );
     blake2b_update( S, block, BLAKE2B_BLOCKBYTES );
-    secure_zero_memory( block, BLAKE2B_BLOCKBYTES ); /* Burn the key from stack */
+    sodium_memzero( block, BLAKE2B_BLOCKBYTES ); /* Burn the key from stack */
   }
   return 0;
 }
@@ -291,7 +291,7 @@ int blake2b_init_key_salt_personal( blake2b_state *S, const uint8_t outlen, cons
     memset( block, 0, BLAKE2B_BLOCKBYTES );
     memcpy( block, key, keylen );
     blake2b_update( S, block, BLAKE2B_BLOCKBYTES );
-    secure_zero_memory( block, BLAKE2B_BLOCKBYTES ); /* Burn the key from stack */
+    sodium_memzero( block, BLAKE2B_BLOCKBYTES ); /* Burn the key from stack */
   }
   return 0;
 }
