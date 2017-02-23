@@ -154,7 +154,6 @@ libsodium_la_SOURCES += \
 	crypto_aead/xchacha20poly1305/sodium/aead_xchacha20poly1305.c \
 	crypto_box/curve25519xchacha20poly1305/box_curve25519xchacha20poly1305.c \
 	crypto_core/hchacha20/core_hchacha20.c \
-	crypto_core/hchacha20/core_hchacha20.h \
 	crypto_core/salsa2012/core_salsa2012.c \
 	crypto_core/salsa2012/ref/core_salsa2012_ref.c \
 	crypto_core/salsa208/core_salsa208.c \

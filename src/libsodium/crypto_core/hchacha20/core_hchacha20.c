@@ -2,9 +2,16 @@
 #include <stdint.h>
 #include <stdlib.h>
 
-#include "core_hchacha20.h"
 #include "crypto_core_hchacha20.h"
 #include "private/common.h"
+
+#define QUARTERROUND(A, B, C, D)     \
+  do {                               \
+      A += B; D = ROTL32(D ^ A, 16); \
+      C += D; B = ROTL32(B ^ C, 12); \
+      A += B; D = ROTL32(D ^ A,  8); \
+      C += D; B = ROTL32(B ^ C,  7); \
+  } while(0)
 
 int
 crypto_core_hchacha20(unsigned char *out, const unsigned char *in,
@@ -15,10 +22,10 @@ crypto_core_hchacha20(unsigned char *out, const unsigned char *in,
     uint32_t x8, x9, x10, x11, x12, x13, x14, x15;
 
     if (c == NULL) {
-        x0 = U32C(0x61707865);
-        x1 = U32C(0x3320646e);
-        x2 = U32C(0x79622d32);
-        x3 = U32C(0x6b206574);
+        x0 = 0x61707865;
+        x1 = 0x3320646e;
+        x2 = 0x79622d32;
+        x3 = 0x6b206574;
     } else {
         x0 = LOAD32_LE(c +  0);
         x1 = LOAD32_LE(c +  4);
