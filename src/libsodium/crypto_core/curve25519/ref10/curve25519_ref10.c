@@ -4,7 +4,7 @@
 #include "crypto_verify_32.h"
 #include "private/curve25519_ref10.h"
 
-static uint64_t load_3(const unsigned char *in)
+static inline uint64_t load_3(const unsigned char *in)
 {
     uint64_t result;
     result = (uint64_t) in[0];
@@ -14,7 +14,7 @@ static uint64_t load_3(const unsigned char *in)
     return result;
 }
 
-static uint64_t load_4(const unsigned char *in)
+static inline uint64_t load_4(const unsigned char *in)
 {
     uint64_t result;
     result = (uint64_t) in[0];
