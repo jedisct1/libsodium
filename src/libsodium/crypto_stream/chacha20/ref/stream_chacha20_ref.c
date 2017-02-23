@@ -9,48 +9,49 @@
 #include <stdlib.h>
 #include <string.h>
 
-#include "utils.h"
-#include "crypto_stream_chacha20.h"
-#include "stream_chacha20_ref.h"
 #include "../stream_chacha20.h"
+#include "crypto_stream_chacha20.h"
 #include "private/common.h"
+#include "stream_chacha20_ref.h"
+#include "utils.h"
 
 struct chacha_ctx {
     uint32_t input[16];
 };
-
-typedef uint8_t  u8;
-typedef uint32_t u32;
 
 typedef struct chacha_ctx chacha_ctx;
 
 #define U8C(v) (v##U)
 #define U32C(v) (v##U)
 
-#define U8V(v) ((u8)(v) & U8C(0xFF))
-#define U32V(v) ((u32)(v) & U32C(0xFFFFFFFF))
+#define U8V(v) ((uint8_t)(v) &U8C(0xFF))
+#define U32V(v) ((uint32_t)(v) &U32C(0xFFFFFFFF))
 
-#define ROTATE(v,c) (ROTL32(v,c))
-#define XOR(v,w) ((v) ^ (w))
-#define PLUS(v,w) (U32V((v) + (w)))
-#define PLUSONE(v) (PLUS((v),1))
+#define ROTATE(v, c) (ROTL32(v, c))
+#define XOR(v, w) ((v) ^ (w))
+#define PLUS(v, w) (U32V((v) + (w)))
+#define PLUSONE(v) (PLUS((v), 1))
 
-#define QUARTERROUND(a,b,c,d) \
-  a = PLUS(a,b); d = ROTATE(XOR(d,a),16); \
-  c = PLUS(c,d); b = ROTATE(XOR(b,c),12); \
-  a = PLUS(a,b); d = ROTATE(XOR(d,a), 8); \
-  c = PLUS(c,d); b = ROTATE(XOR(b,c), 7);
+#define QUARTERROUND(a, b, c, d) \
+    a = PLUS(a, b);              \
+    d = ROTATE(XOR(d, a), 16);   \
+    c = PLUS(c, d);              \
+    b = ROTATE(XOR(b, c), 12);   \
+    a = PLUS(a, b);              \
+    d = ROTATE(XOR(d, a), 8);    \
+    c = PLUS(c, d);              \
+    b = ROTATE(XOR(b, c), 7);
 
 static void
-chacha_keysetup(chacha_ctx *ctx, const u8 *k)
+chacha_keysetup(chacha_ctx *ctx, const uint8_t *k)
 {
     ctx->input[0]  = U32C(0x61707865);
     ctx->input[1]  = U32C(0x3320646e);
     ctx->input[2]  = U32C(0x79622d32);
     ctx->input[3]  = U32C(0x6b206574);
-    ctx->input[4]  = LOAD32_LE(k +  0);
-    ctx->input[5]  = LOAD32_LE(k +  4);
-    ctx->input[6]  = LOAD32_LE(k +  8);
+    ctx->input[4]  = LOAD32_LE(k + 0);
+    ctx->input[5]  = LOAD32_LE(k + 4);
+    ctx->input[6]  = LOAD32_LE(k + 8);
     ctx->input[7]  = LOAD32_LE(k + 12);
     ctx->input[8]  = LOAD32_LE(k + 16);
     ctx->input[9]  = LOAD32_LE(k + 20);
@@ -59,7 +60,7 @@ chacha_keysetup(chacha_ctx *ctx, const u8 *k)
 }
 
 static void
-chacha_ivsetup(chacha_ctx *ctx, const u8 *iv, const u8 *counter)
+chacha_ivsetup(chacha_ctx *ctx, const uint8_t *iv, const uint8_t *counter)
 {
     ctx->input[12] = counter == NULL ? 0 : LOAD32_LE(counter + 0);
     ctx->input[13] = counter == NULL ? 0 : LOAD32_LE(counter + 4);
@@ -68,7 +69,7 @@ chacha_ivsetup(chacha_ctx *ctx, const u8 *iv, const u8 *counter)
 }
 
 static void
-chacha_ietf_ivsetup(chacha_ctx *ctx, const u8 *iv, const u8 *counter)
+chacha_ietf_ivsetup(chacha_ctx *ctx, const uint8_t *iv, const uint8_t *counter)
 {
     ctx->input[12] = counter == NULL ? 0 : LOAD32_LE(counter);
     ctx->input[13] = LOAD32_LE(iv + 0);
@@ -77,12 +78,15 @@ chacha_ietf_ivsetup(chacha_ctx *ctx, const u8 *iv, const u8 *counter)
 }
 
 static void
-chacha_encrypt_bytes(chacha_ctx *ctx, const u8 *m, u8 *c, unsigned long long bytes)
+chacha_encrypt_bytes(chacha_ctx *ctx, const uint8_t *m, uint8_t *c,
+                     unsigned long long bytes)
 {
-    u32 x0, x1, x2, x3, x4, x5, x6, x7, x8, x9, x10, x11, x12, x13, x14, x15;
-    u32 j0, j1, j2, j3, j4, j5, j6, j7, j8, j9, j10, j11, j12, j13, j14, j15;
-    u8 *ctarget = NULL;
-    u8 tmp[64];
+    uint32_t x0, x1, x2, x3, x4, x5, x6, x7, x8, x9, x10, x11, x12, x13, x14,
+        x15;
+    uint32_t j0, j1, j2, j3, j4, j5, j6, j7, j8, j9, j10, j11, j12, j13, j14,
+        j15;
+    uint8_t *    ctarget = NULL;
+    uint8_t      tmp[64];
     unsigned int i;
 
     if (!bytes) {
@@ -91,16 +95,16 @@ chacha_encrypt_bytes(chacha_ctx *ctx, const u8 *m, u8 *c, unsigned long long byt
     if (bytes > 64ULL * (1ULL << 32) - 64ULL) {
         abort();
     }
-    j0 = ctx->input[0];
-    j1 = ctx->input[1];
-    j2 = ctx->input[2];
-    j3 = ctx->input[3];
-    j4 = ctx->input[4];
-    j5 = ctx->input[5];
-    j6 = ctx->input[6];
-    j7 = ctx->input[7];
-    j8 = ctx->input[8];
-    j9 = ctx->input[9];
+    j0  = ctx->input[0];
+    j1  = ctx->input[1];
+    j2  = ctx->input[2];
+    j3  = ctx->input[3];
+    j4  = ctx->input[4];
+    j5  = ctx->input[5];
+    j6  = ctx->input[6];
+    j7  = ctx->input[7];
+    j8  = ctx->input[8];
+    j9  = ctx->input[9];
     j10 = ctx->input[10];
     j11 = ctx->input[11];
     j12 = ctx->input[12];
@@ -114,20 +118,20 @@ chacha_encrypt_bytes(chacha_ctx *ctx, const u8 *m, u8 *c, unsigned long long byt
             for (i = 0; i < bytes; ++i) {
                 tmp[i] = m[i];
             }
-            m = tmp;
+            m       = tmp;
             ctarget = c;
-            c = tmp;
+            c       = tmp;
         }
-        x0 = j0;
-        x1 = j1;
-        x2 = j2;
-        x3 = j3;
-        x4 = j4;
-        x5 = j5;
-        x6 = j6;
-        x7 = j7;
-        x8 = j8;
-        x9 = j9;
+        x0  = j0;
+        x1  = j1;
+        x2  = j2;
+        x3  = j3;
+        x4  = j4;
+        x5  = j5;
+        x6  = j6;
+        x7  = j7;
+        x8  = j8;
+        x9  = j9;
         x10 = j10;
         x11 = j11;
         x12 = j12;
@@ -144,16 +148,16 @@ chacha_encrypt_bytes(chacha_ctx *ctx, const u8 *m, u8 *c, unsigned long long byt
             QUARTERROUND(x2, x7, x8, x13)
             QUARTERROUND(x3, x4, x9, x14)
         }
-        x0 = PLUS(x0, j0);
-        x1 = PLUS(x1, j1);
-        x2 = PLUS(x2, j2);
-        x3 = PLUS(x3, j3);
-        x4 = PLUS(x4, j4);
-        x5 = PLUS(x5, j5);
-        x6 = PLUS(x6, j6);
-        x7 = PLUS(x7, j7);
-        x8 = PLUS(x8, j8);
-        x9 = PLUS(x9, j9);
+        x0  = PLUS(x0, j0);
+        x1  = PLUS(x1, j1);
+        x2  = PLUS(x2, j2);
+        x3  = PLUS(x3, j3);
+        x4  = PLUS(x4, j4);
+        x5  = PLUS(x5, j5);
+        x6  = PLUS(x6, j6);
+        x7  = PLUS(x7, j7);
+        x8  = PLUS(x8, j8);
+        x9  = PLUS(x9, j9);
         x10 = PLUS(x10, j10);
         x11 = PLUS(x11, j11);
         x12 = PLUS(x12, j12);
@@ -161,16 +165,16 @@ chacha_encrypt_bytes(chacha_ctx *ctx, const u8 *m, u8 *c, unsigned long long byt
         x14 = PLUS(x14, j14);
         x15 = PLUS(x15, j15);
 
-        x0 = XOR(x0, LOAD32_LE(m + 0));
-        x1 = XOR(x1, LOAD32_LE(m + 4));
-        x2 = XOR(x2, LOAD32_LE(m + 8));
-        x3 = XOR(x3, LOAD32_LE(m + 12));
-        x4 = XOR(x4, LOAD32_LE(m + 16));
-        x5 = XOR(x5, LOAD32_LE(m + 20));
-        x6 = XOR(x6, LOAD32_LE(m + 24));
-        x7 = XOR(x7, LOAD32_LE(m + 28));
-        x8 = XOR(x8, LOAD32_LE(m + 32));
-        x9 = XOR(x9, LOAD32_LE(m + 36));
+        x0  = XOR(x0, LOAD32_LE(m + 0));
+        x1  = XOR(x1, LOAD32_LE(m + 4));
+        x2  = XOR(x2, LOAD32_LE(m + 8));
+        x3  = XOR(x3, LOAD32_LE(m + 12));
+        x4  = XOR(x4, LOAD32_LE(m + 16));
+        x5  = XOR(x5, LOAD32_LE(m + 20));
+        x6  = XOR(x6, LOAD32_LE(m + 24));
+        x7  = XOR(x7, LOAD32_LE(m + 28));
+        x8  = XOR(x8, LOAD32_LE(m + 32));
+        x9  = XOR(x9, LOAD32_LE(m + 36));
         x10 = XOR(x10, LOAD32_LE(m + 40));
         x11 = XOR(x11, LOAD32_LE(m + 44));
         x12 = XOR(x12, LOAD32_LE(m + 48));
@@ -210,6 +214,7 @@ chacha_encrypt_bytes(chacha_ctx *ctx, const u8 *m, u8 *c, unsigned long long byt
             }
             ctx->input[12] = j12;
             ctx->input[13] = j13;
+
             return;
         }
         bytes -= 64;
@@ -219,8 +224,8 @@ chacha_encrypt_bytes(chacha_ctx *ctx, const u8 *m, u8 *c, unsigned long long byt
 }
 
 static int
-stream_ref(unsigned char *c, unsigned long long clen,
-           const unsigned char *n, const unsigned char *k)
+stream_ref(unsigned char *c, unsigned long long clen, const unsigned char *n,
+           const unsigned char *k)
 {
     struct chacha_ctx ctx;
 
@@ -258,8 +263,7 @@ stream_ietf_ref(unsigned char *c, unsigned long long clen,
 
 static int
 stream_ref_xor_ic(unsigned char *c, const unsigned char *m,
-                  unsigned long long mlen,
-                  const unsigned char *n, uint64_t ic,
+                  unsigned long long mlen, const unsigned char *n, uint64_t ic,
                   const unsigned char *k)
 {
     struct chacha_ctx ctx;
@@ -271,7 +275,7 @@ stream_ref_xor_ic(unsigned char *c, const unsigned char *m,
         return 0;
     }
     ic_high = U32V(ic >> 32);
-    ic_low = U32V(ic);
+    ic_low  = U32V(ic);
     STORE32_LE(&ic_bytes[0], ic_low);
     STORE32_LE(&ic_bytes[4], ic_high);
     chacha_keysetup(&ctx, k);
@@ -284,9 +288,8 @@ stream_ref_xor_ic(unsigned char *c, const unsigned char *m,
 
 static int
 stream_ietf_ref_xor_ic(unsigned char *c, const unsigned char *m,
-                       unsigned long long mlen,
-                       const unsigned char *n, uint32_t ic,
-                       const unsigned char *k)
+                       unsigned long long mlen, const unsigned char *n,
+                       uint32_t ic, const unsigned char *k)
 {
     struct chacha_ctx ctx;
     uint8_t           ic_bytes[4];
@@ -304,9 +307,9 @@ stream_ietf_ref_xor_ic(unsigned char *c, const unsigned char *m,
 }
 
 struct crypto_stream_chacha20_implementation
-crypto_stream_chacha20_ref_implementation = {
-    SODIUM_C99(.stream =) stream_ref,
-    SODIUM_C99(.stream_ietf =) stream_ietf_ref,
-    SODIUM_C99(.stream_xor_ic =) stream_ref_xor_ic,
-    SODIUM_C99(.stream_ietf_xor_ic =) stream_ietf_ref_xor_ic
-};
+    crypto_stream_chacha20_ref_implementation = {
+        SODIUM_C99(.stream =) stream_ref,
+        SODIUM_C99(.stream_ietf =) stream_ietf_ref,
+        SODIUM_C99(.stream_xor_ic =) stream_ref_xor_ic,
+        SODIUM_C99(.stream_ietf_xor_ic =) stream_ietf_ref_xor_ic
+    };
