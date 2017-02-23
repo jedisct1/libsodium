@@ -35,8 +35,7 @@ crypto_auth_hmacsha256_keygen(unsigned char k[crypto_auth_hmacsha256_KEYBYTES])
 
 int
 crypto_auth_hmacsha256_init(crypto_auth_hmacsha256_state *state,
-                            const unsigned char *key,
-                            size_t keylen)
+                            const unsigned char *key, size_t keylen)
 {
     unsigned char pad[64];
     unsigned char khash[32];
@@ -46,7 +45,7 @@ crypto_auth_hmacsha256_init(crypto_auth_hmacsha256_state *state,
         crypto_hash_sha256_init(&state->ictx);
         crypto_hash_sha256_update(&state->ictx, key, keylen);
         crypto_hash_sha256_final(&state->ictx, khash);
-        key = khash;
+        key    = khash;
         keylen = 32;
     }
     crypto_hash_sha256_init(&state->ictx);
@@ -71,8 +70,7 @@ crypto_auth_hmacsha256_init(crypto_auth_hmacsha256_state *state,
 
 int
 crypto_auth_hmacsha256_update(crypto_auth_hmacsha256_state *state,
-                              const unsigned char *in,
-                              unsigned long long inlen)
+                              const unsigned char *in, unsigned long long inlen)
 {
     crypto_hash_sha256_update(&state->ictx, in, inlen);
 
@@ -81,7 +79,7 @@ crypto_auth_hmacsha256_update(crypto_auth_hmacsha256_state *state,
 
 int
 crypto_auth_hmacsha256_final(crypto_auth_hmacsha256_state *state,
-                             unsigned char *out)
+                             unsigned char *               out)
 {
     unsigned char ihash[32];
 
@@ -116,5 +114,5 @@ crypto_auth_hmacsha256_verify(const unsigned char *h, const unsigned char *in,
     crypto_auth_hmacsha256(correct, in, inlen, k);
 
     return crypto_verify_32(h, correct) | (-(h == correct)) |
-        sodium_memcmp(correct, h, 32);
+           sodium_memcmp(correct, h, 32);
 }
