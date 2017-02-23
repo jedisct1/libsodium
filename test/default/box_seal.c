@@ -2,10 +2,11 @@
 #define TEST_NAME "box_seal"
 #include "cmptest.h"
 
-int main(void)
+int
+main(void)
 {
-    unsigned char pk[crypto_box_PUBLICKEYBYTES];
-    unsigned char sk[crypto_box_SECRETKEYBYTES];
+    unsigned char  pk[crypto_box_PUBLICKEYBYTES];
+    unsigned char  sk[crypto_box_SECRETKEYBYTES];
     unsigned char *c;
     unsigned char *m;
     unsigned char *m2;
@@ -15,9 +16,9 @@ int main(void)
     crypto_box_keypair(pk, sk);
     m_len = (size_t) randombytes_uniform(1000);
     c_len = crypto_box_SEALBYTES + m_len;
-    m = (unsigned char *) sodium_malloc(m_len);
-    m2 = (unsigned char *) sodium_malloc(m_len);
-    c = (unsigned char *) sodium_malloc(c_len);
+    m     = (unsigned char *) sodium_malloc(m_len);
+    m2    = (unsigned char *) sodium_malloc(m_len);
+    c     = (unsigned char *) sodium_malloc(c_len);
     randombytes_buf(m, m_len);
     if (crypto_box_seal(c, m, m_len, pk) != 0) {
         printf("crypto_box_seal() failure\n");
