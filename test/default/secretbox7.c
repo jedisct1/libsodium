@@ -8,7 +8,8 @@ static unsigned char m[10000];
 static unsigned char c[10000];
 static unsigned char m2[10000];
 
-int main(void)
+int
+main(void)
 {
     size_t mlen;
     size_t i;
