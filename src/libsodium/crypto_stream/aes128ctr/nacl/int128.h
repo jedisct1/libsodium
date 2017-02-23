@@ -6,9 +6,9 @@
 #include "common.h"
 
 #ifdef __cplusplus
-# ifdef __GNUC__
-#  pragma GCC diagnostic ignored "-Wlong-long"
-# endif
+#ifdef __GNUC__
+#pragma GCC diagnostic ignored "-Wlong-long"
+#endif
 #endif
 
 typedef union {
@@ -35,13 +35,16 @@ void shufb(aes_uint128_t *r, const unsigned char *l);
 #define shufd crypto_stream_aes128ctr_portable_shufd
 void shufd(aes_uint128_t *r, const aes_uint128_t *x, const unsigned int c);
 
-#define rshift32_littleendian crypto_stream_aes128ctr_portable_rshift32_littleendian
+#define rshift32_littleendian \
+    crypto_stream_aes128ctr_portable_rshift32_littleendian
 void rshift32_littleendian(aes_uint128_t *r, const unsigned int n);
 
-#define rshift64_littleendian crypto_stream_aes128ctr_portable_rshift64_littleendian
+#define rshift64_littleendian \
+    crypto_stream_aes128ctr_portable_rshift64_littleendian
 void rshift64_littleendian(aes_uint128_t *r, const unsigned int n);
 
-#define lshift64_littleendian crypto_stream_aes128ctr_portable_lshift64_littleendian
+#define lshift64_littleendian \
+    crypto_stream_aes128ctr_portable_lshift64_littleendian
 void lshift64_littleendian(aes_uint128_t *r, const unsigned int n);
 
 #define toggle crypto_stream_aes128ctr_portable_toggle

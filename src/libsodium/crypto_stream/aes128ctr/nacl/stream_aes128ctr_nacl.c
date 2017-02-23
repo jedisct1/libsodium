@@ -1,10 +1,9 @@
 
 #include "crypto_stream_aes128ctr.h"
 
-int crypto_stream_aes128ctr(unsigned char *out,
-                            unsigned long long outlen,
-                            const unsigned char *n,
-                            const unsigned char *k)
+int
+crypto_stream_aes128ctr(unsigned char *out, unsigned long long outlen,
+                        const unsigned char *n, const unsigned char *k)
 {
     unsigned char d[crypto_stream_aes128ctr_BEFORENMBYTES];
 
@@ -14,11 +13,10 @@ int crypto_stream_aes128ctr(unsigned char *out,
     return 0;
 }
 
-int crypto_stream_aes128ctr_xor(unsigned char *out,
-                                const unsigned char *in,
-                                unsigned long long inlen,
-                                const unsigned char *n,
-                                const unsigned char *k)
+int
+crypto_stream_aes128ctr_xor(unsigned char *out, const unsigned char *in,
+                            unsigned long long inlen, const unsigned char *n,
+                            const unsigned char *k)
 {
     unsigned char d[crypto_stream_aes128ctr_BEFORENMBYTES];
 
