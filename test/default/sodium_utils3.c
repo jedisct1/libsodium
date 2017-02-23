@@ -9,10 +9,11 @@
 #include "cmptest.h"
 
 #ifdef __SANITIZE_ADDRESS__
-# warning The sodium_utils3 test is expected to fail with address sanitizer
+#warning The sodium_utils3 test is expected to fail with address sanitizer
 #endif
 
-__attribute__ ((noreturn)) static void segv_handler(int sig)
+__attribute__((noreturn)) static void
+segv_handler(int sig)
 {
     (void) sig;
 
@@ -30,9 +31,10 @@ __attribute__ ((noreturn)) static void segv_handler(int sig)
     exit(0);
 }
 
-int main(void)
+int
+main(void)
 {
-    void *buf;
+    void * buf;
     size_t size;
 
 #ifdef SIGSEGV
@@ -45,12 +47,12 @@ int main(void)
     signal(SIGABRT, segv_handler);
 #endif
     size = 1U + randombytes_uniform(100000U);
-    buf = sodium_malloc(size);
+    buf  = sodium_malloc(size);
     assert(buf != NULL);
     sodium_mprotect_noaccess(buf);
     sodium_mprotect_readwrite(buf);
 #ifndef __EMSCRIPTEN__
-    sodium_memzero(((unsigned char *)buf) - 8, 8U);
+    sodium_memzero(((unsigned char *) buf) - 8, 8U);
     sodium_mprotect_readonly(buf);
     sodium_free(buf);
     printf("Underflow not caught\n");
