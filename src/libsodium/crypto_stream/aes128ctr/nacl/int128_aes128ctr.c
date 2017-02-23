@@ -1,3 +1,4 @@
+#include <stdint.h>
 
 #include "common.h"
 #include "int128.h"
@@ -94,7 +95,7 @@ void
 rshift64_littleendian(aes_uint128_t *r, const unsigned int n)
 {
     unsigned char *rp = (unsigned char *) r;
-    uint64         t;
+    uint64_t       t;
 
     t = LOAD64_LE(rp);
     t >>= n;
@@ -108,7 +109,7 @@ void
 lshift64_littleendian(aes_uint128_t *r, const unsigned int n)
 {
     unsigned char *rp = (unsigned char *) r;
-    uint64         t;
+    uint64_t       t;
 
     t = LOAD64_LE(rp);
     t <<= n;

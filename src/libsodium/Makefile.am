@@ -169,7 +169,6 @@ libsodium_la_SOURCES += \
 	crypto_stream/aes128ctr/nacl/int128.h \
 	crypto_stream/aes128ctr/nacl/int128_aes128ctr.c \
 	crypto_stream/aes128ctr/nacl/stream_aes128ctr_nacl.c \
-	crypto_stream/aes128ctr/nacl/types.h \
 	crypto_stream/aes128ctr/nacl/xor_afternm_aes128ctr.c \
 	crypto_stream/aes128ctr/stream_aes128ctr.c \
 	crypto_stream/salsa2012/ref/stream_salsa2012_ref.c \

@@ -14,31 +14,29 @@ crypto_stream_aes128ctr_xor_afternm(unsigned char *out, const unsigned char *in,
                                     const unsigned char *nonce,
                                     const unsigned char *c)
 {
-    aes_uint128_t xmm0;
-    aes_uint128_t xmm1;
-    aes_uint128_t xmm2;
-    aes_uint128_t xmm3;
-    aes_uint128_t xmm4;
-    aes_uint128_t xmm5;
-    aes_uint128_t xmm6;
-    aes_uint128_t xmm7;
-    aes_uint128_t xmm8;
-    aes_uint128_t xmm9;
-    aes_uint128_t xmm10;
-    aes_uint128_t xmm11;
-    aes_uint128_t xmm12;
-    aes_uint128_t xmm13;
-    aes_uint128_t xmm14;
-    aes_uint128_t xmm15;
-
+    aes_uint128_t      xmm0;
+    aes_uint128_t      xmm1;
+    aes_uint128_t      xmm2;
+    aes_uint128_t      xmm3;
+    aes_uint128_t      xmm4;
+    aes_uint128_t      xmm5;
+    aes_uint128_t      xmm6;
+    aes_uint128_t      xmm7;
+    aes_uint128_t      xmm8;
+    aes_uint128_t      xmm9;
+    aes_uint128_t      xmm10;
+    aes_uint128_t      xmm11;
+    aes_uint128_t      xmm12;
+    aes_uint128_t      xmm13;
+    aes_uint128_t      xmm14;
+    aes_uint128_t      xmm15;
     aes_uint128_t      nonce_stack;
     unsigned long long lensav;
     unsigned char      bl[128];
     unsigned char *    blp;
     unsigned char *    np;
     unsigned char      b;
-
-    uint32_t tmp;
+    uint32_t           tmp;
 
     /* Copy nonce on the stack */
     copy2(&nonce_stack, (const aes_uint128_t *) (nonce + 0));
@@ -73,43 +71,37 @@ enc_block:
     shufb(&xmm6, M0SWAP);
     shufb(&xmm7, M0SWAP);
 
-    bitslice(xmm7, xmm6, xmm5, xmm4, xmm3, xmm2, xmm1, xmm0, xmm8)
+    bitslice(xmm7, xmm6, xmm5, xmm4, xmm3, xmm2, xmm1, xmm0, xmm8);
 
-        aesround(1, xmm0, xmm1, xmm2, xmm3, xmm4, xmm5, xmm6, xmm7, xmm8, xmm9,
-                 xmm10, xmm11, xmm12, xmm13, xmm14, xmm15,
-                 c) aesround(2, xmm8, xmm9, xmm10, xmm11, xmm12, xmm13, xmm14,
-                             xmm15, xmm0, xmm1, xmm2, xmm3, xmm4, xmm5, xmm6,
-                             xmm7, c)
-            aesround(3, xmm0, xmm1, xmm2, xmm3, xmm4, xmm5, xmm6, xmm7, xmm8,
-                     xmm9, xmm10, xmm11, xmm12, xmm13, xmm14, xmm15,
-                     c) aesround(4, xmm8, xmm9, xmm10, xmm11, xmm12, xmm13,
-                                 xmm14, xmm15, xmm0, xmm1, xmm2, xmm3, xmm4,
-                                 xmm5, xmm6, xmm7, c)
-                aesround(5, xmm0, xmm1, xmm2, xmm3, xmm4, xmm5, xmm6, xmm7,
-                         xmm8, xmm9, xmm10, xmm11, xmm12, xmm13, xmm14, xmm15,
-                         c) aesround(6, xmm8, xmm9, xmm10, xmm11, xmm12, xmm13,
-                                     xmm14, xmm15, xmm0, xmm1, xmm2, xmm3, xmm4,
-                                     xmm5, xmm6, xmm7, c)
-                    aesround(7, xmm0, xmm1, xmm2, xmm3, xmm4, xmm5, xmm6, xmm7,
-                             xmm8, xmm9, xmm10, xmm11, xmm12, xmm13, xmm14,
-                             xmm15, c)
-                        aesround(8, xmm8, xmm9, xmm10, xmm11, xmm12, xmm13,
-                                 xmm14, xmm15, xmm0, xmm1, xmm2, xmm3, xmm4,
-                                 xmm5, xmm6, xmm7, c)
-                            aesround(9, xmm0, xmm1, xmm2, xmm3, xmm4, xmm5,
-                                     xmm6, xmm7, xmm8, xmm9, xmm10, xmm11,
-                                     xmm12, xmm13, xmm14, xmm15, c)
-                                lastround(xmm8, xmm9, xmm10, xmm11, xmm12,
-                                          xmm13, xmm14, xmm15, xmm0, xmm1, xmm2,
-                                          xmm3, xmm4, xmm5, xmm6, xmm7, c)
+    aesround(1, xmm0, xmm1, xmm2, xmm3, xmm4, xmm5, xmm6, xmm7, xmm8, xmm9,
+             xmm10, xmm11, xmm12, xmm13, xmm14, xmm15, c);
+    aesround(2, xmm8, xmm9, xmm10, xmm11, xmm12, xmm13, xmm14, xmm15, xmm0,
+             xmm1, xmm2, xmm3, xmm4, xmm5, xmm6, xmm7, c);
+    aesround(3, xmm0, xmm1, xmm2, xmm3, xmm4, xmm5, xmm6, xmm7, xmm8, xmm9,
+             xmm10, xmm11, xmm12, xmm13, xmm14, xmm15, c);
+    aesround(4, xmm8, xmm9, xmm10, xmm11, xmm12, xmm13, xmm14, xmm15, xmm0,
+             xmm1, xmm2, xmm3, xmm4, xmm5, xmm6, xmm7, c);
+    aesround(5, xmm0, xmm1, xmm2, xmm3, xmm4, xmm5, xmm6, xmm7, xmm8, xmm9,
+             xmm10, xmm11, xmm12, xmm13, xmm14, xmm15, c);
+    aesround(6, xmm8, xmm9, xmm10, xmm11, xmm12, xmm13, xmm14, xmm15, xmm0,
+             xmm1, xmm2, xmm3, xmm4, xmm5, xmm6, xmm7, c);
+    aesround(7, xmm0, xmm1, xmm2, xmm3, xmm4, xmm5, xmm6, xmm7, xmm8, xmm9,
+             xmm10, xmm11, xmm12, xmm13, xmm14, xmm15, c);
+    aesround(8, xmm8, xmm9, xmm10, xmm11, xmm12, xmm13, xmm14, xmm15, xmm0,
+             xmm1, xmm2, xmm3, xmm4, xmm5, xmm6, xmm7, c);
+    aesround(9, xmm0, xmm1, xmm2, xmm3, xmm4, xmm5, xmm6, xmm7, xmm8, xmm9,
+             xmm10, xmm11, xmm12, xmm13, xmm14, xmm15, c);
+    lastround(xmm8, xmm9, xmm10, xmm11, xmm12, xmm13, xmm14, xmm15, xmm0, xmm1,
+              xmm2, xmm3, xmm4, xmm5, xmm6, xmm7, c);
 
-                                    bitslice(xmm13, xmm10, xmm15, xmm11, xmm14,
-                                             xmm12, xmm9, xmm8, xmm0)
+    bitslice(xmm13, xmm10, xmm15, xmm11, xmm14, xmm12, xmm9, xmm8, xmm0);
 
-                                        if (len < 128) goto partial;
-    if (len == 128)
+    if (len < 128) {
+        goto partial;
+    }
+    if (len == 128) {
         goto full;
-
+    }
     tmp = LOAD32_BE(np + 12);
     tmp += 8;
     STORE32_BE(np + 12, tmp);
@@ -147,7 +139,8 @@ partial:
     tmp += len;
     STORE32_BE(np + 12, tmp);
 
-    blp                            = bl;
+    blp = bl;
+
     *(aes_uint128_t *) (blp + 0)   = xmm8;
     *(aes_uint128_t *) (blp + 16)  = xmm9;
     *(aes_uint128_t *) (blp + 32)  = xmm12;
@@ -159,9 +152,9 @@ partial:
 
 bytes:
 
-    if (lensav == 0)
+    if (lensav == 0) {
         goto end;
-
+    }
     b = blp[0]; /* clang false positive */
     b ^= *(const unsigned char *) (in + 0);
     *(unsigned char *) (out + 0) = b;

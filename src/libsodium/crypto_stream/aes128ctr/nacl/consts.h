@@ -1,5 +1,5 @@
-#ifndef CONSTS_H
-#define CONSTS_H
+#ifndef aes128ctr_nacl_consts_H
+#define aes128ctr_nacl_consts_H
 
 #include "int128.h"
 

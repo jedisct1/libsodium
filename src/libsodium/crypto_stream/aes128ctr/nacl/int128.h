@@ -1,15 +1,9 @@
-#ifndef INT128_H
-#define INT128_H
+#ifndef aes128ctr_nacl_int128_H
+#define aes128ctr_nacl_int128_H
 
 #include <stdint.h>
 
 #include "common.h"
-
-#ifdef __cplusplus
-#ifdef __GNUC__
-#pragma GCC diagnostic ignored "-Wlong-long"
-#endif
-#endif
 
 typedef union {
     uint64_t u64[2];

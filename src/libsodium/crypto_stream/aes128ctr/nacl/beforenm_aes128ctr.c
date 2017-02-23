@@ -29,45 +29,38 @@ crypto_stream_aes128ctr_beforenm(unsigned char *c, const unsigned char *k)
     aes_uint128_t xmm15;
     aes_uint128_t t;
 
-    bitslicekey0(k, c)
+    bitslicekey0(k, c);
 
-        keyexpbs1(xmm0, xmm1, xmm2, xmm3, xmm4, xmm5, xmm6, xmm7, xmm8, xmm9,
-                  xmm10, xmm11, xmm12, xmm13, xmm14, xmm15,
-                  c) keyexpbs(xmm0, xmm1, xmm4, xmm6, xmm3, xmm7, xmm2, xmm5,
-                              xmm8, xmm9, xmm10, xmm11, xmm12, xmm13, xmm14,
-                              xmm15, xor_rcon(&xmm1);
-                              , 2, c)
-            keyexpbs(xmm0, xmm1, xmm3, xmm2, xmm6, xmm5, xmm4, xmm7, xmm8, xmm9,
-                     xmm10, xmm11, xmm12, xmm13, xmm14, xmm15, xor_rcon(&xmm6);
-                     , 3, c) keyexpbs(xmm0, xmm1, xmm6, xmm4, xmm2, xmm7, xmm3,
-                                      xmm5, xmm8, xmm9, xmm10, xmm11, xmm12,
-                                      xmm13, xmm14, xmm15, xor_rcon(&xmm3);
-                                      , 4, c)
+    keyexpbs1(xmm0, xmm1, xmm2, xmm3, xmm4, xmm5, xmm6, xmm7, xmm8, xmm9, xmm10,
+              xmm11, xmm12, xmm13, xmm14, xmm15, c);
+    keyexpbs(xmm0, xmm1, xmm4, xmm6, xmm3, xmm7, xmm2, xmm5, xmm8, xmm9, xmm10,
+             xmm11, xmm12, xmm13, xmm14, xmm15, xor_rcon(&xmm1);
+             , 2, c);
+    keyexpbs(xmm0, xmm1, xmm3, xmm2, xmm6, xmm5, xmm4, xmm7, xmm8, xmm9, xmm10,
+             xmm11, xmm12, xmm13, xmm14, xmm15, xor_rcon(&xmm6);
+             , 3, c);
+    keyexpbs(xmm0, xmm1, xmm6, xmm4, xmm2, xmm7, xmm3, xmm5, xmm8, xmm9, xmm10,
+             xmm11, xmm12, xmm13, xmm14, xmm15, xor_rcon(&xmm3);
+             , 4, c);
 
-                keyexpbs(
-                    xmm0, xmm1, xmm2, xmm3, xmm4, xmm5, xmm6, xmm7, xmm8, xmm9,
-                    xmm10, xmm11, xmm12, xmm13, xmm14, xmm15, xor_rcon(&xmm3);
-                    , 5, c) keyexpbs(xmm0, xmm1, xmm4, xmm6, xmm3, xmm7, xmm2,
-                                     xmm5, xmm8, xmm9, xmm10, xmm11, xmm12,
-                                     xmm13, xmm14, xmm15, xor_rcon(&xmm5);
-                                     , 6, c)
-                    keyexpbs(xmm0, xmm1, xmm3, xmm2, xmm6, xmm5, xmm4, xmm7,
-                             xmm8, xmm9, xmm10, xmm11, xmm12, xmm13, xmm14,
-                             xmm15, xor_rcon(&xmm3);
-                             , 7, c)
-                        keyexpbs(xmm0, xmm1, xmm6, xmm4, xmm2, xmm7, xmm3, xmm5,
-                                 xmm8, xmm9, xmm10, xmm11, xmm12, xmm13, xmm14,
-                                 xmm15, xor_rcon(&xmm7);
-                                 , 8, c)
+    keyexpbs(xmm0, xmm1, xmm2, xmm3, xmm4, xmm5, xmm6, xmm7, xmm8, xmm9, xmm10,
+             xmm11, xmm12, xmm13, xmm14, xmm15, xor_rcon(&xmm3);
+             , 5, c);
+    keyexpbs(xmm0, xmm1, xmm4, xmm6, xmm3, xmm7, xmm2, xmm5, xmm8, xmm9, xmm10,
+             xmm11, xmm12, xmm13, xmm14, xmm15, xor_rcon(&xmm5);
+             , 6, c);
+    keyexpbs(xmm0, xmm1, xmm3, xmm2, xmm6, xmm5, xmm4, xmm7, xmm8, xmm9, xmm10,
+             xmm11, xmm12, xmm13, xmm14, xmm15, xor_rcon(&xmm3);
+             , 7, c);
+    keyexpbs(xmm0, xmm1, xmm6, xmm4, xmm2, xmm7, xmm3, xmm5, xmm8, xmm9, xmm10,
+             xmm11, xmm12, xmm13, xmm14, xmm15, xor_rcon(&xmm7);
+             , 8, c);
 
-                            keyexpbs(xmm0, xmm1, xmm2, xmm3, xmm4, xmm5, xmm6,
-                                     xmm7, xmm8, xmm9, xmm10, xmm11, xmm12,
-                                     xmm13, xmm14, xmm15, xor_rcon(&xmm0);
-                                     xor_rcon(&xmm1); xor_rcon(&xmm6);
-                                     xor_rcon(&xmm3);, 9, c)
-                                keyexpbs10(xmm0, xmm1, xmm4, xmm6, xmm3, xmm7,
-                                           xmm2, xmm5, xmm8, xmm9, xmm10, xmm11,
-                                           xmm12, xmm13, xmm14, xmm15, c)
+    keyexpbs(xmm0, xmm1, xmm2, xmm3, xmm4, xmm5, xmm6, xmm7, xmm8, xmm9, xmm10,
+             xmm11, xmm12, xmm13, xmm14, xmm15, xor_rcon(&xmm0);
+             xor_rcon(&xmm1); xor_rcon(&xmm6); xor_rcon(&xmm3);, 9, c);
+    keyexpbs10(xmm0, xmm1, xmm4, xmm6, xmm3, xmm7, xmm2, xmm5, xmm8, xmm9,
+               xmm10, xmm11, xmm12, xmm13, xmm14, xmm15, c);
 
-                                    return 0;
+    return 0;
 }
