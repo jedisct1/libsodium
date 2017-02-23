@@ -3,8 +3,8 @@
 
 #include "crypto_hash_sha512.h"
 #include "crypto_sign_ed25519.h"
-#include "utils.h"
 #include "private/curve25519_ref10.h"
+#include "utils.h"
 
 int
 crypto_sign_ed25519_detached(unsigned char *sig, unsigned long long *siglen_p,
@@ -12,10 +12,10 @@ crypto_sign_ed25519_detached(unsigned char *sig, unsigned long long *siglen_p,
                              const unsigned char *sk)
 {
     crypto_hash_sha512_state hs;
-    unsigned char az[64];
-    unsigned char nonce[64];
-    unsigned char hram[64];
-    ge_p3 R;
+    unsigned char            az[64];
+    unsigned char            nonce[64];
+    unsigned char            hram[64];
+    ge_p3                    R;
 
     crypto_hash_sha512(az, sk, 32);
     az[0] &= 248;
@@ -57,10 +57,9 @@ crypto_sign_ed25519(unsigned char *sm, unsigned long long *smlen_p,
     unsigned long long siglen;
 
     memmove(sm + crypto_sign_ed25519_BYTES, m, mlen);
-/* LCOV_EXCL_START */
-    if (crypto_sign_ed25519_detached(sm, &siglen,
-                                     sm + crypto_sign_ed25519_BYTES,
-                                     mlen, sk) != 0 ||
+    /* LCOV_EXCL_START */
+    if (crypto_sign_ed25519_detached(
+            sm, &siglen, sm + crypto_sign_ed25519_BYTES, mlen, sk) != 0 ||
         siglen != crypto_sign_ed25519_BYTES) {
         if (smlen_p != NULL) {
             *smlen_p = 0;
@@ -68,7 +67,7 @@ crypto_sign_ed25519(unsigned char *sm, unsigned long long *smlen_p,
         memset(sm, 0, mlen + crypto_sign_ed25519_BYTES);
         return -1;
     }
-/* LCOV_EXCL_STOP */
+    /* LCOV_EXCL_STOP */
 
     if (smlen_p != NULL) {
         *smlen_p = mlen + siglen;

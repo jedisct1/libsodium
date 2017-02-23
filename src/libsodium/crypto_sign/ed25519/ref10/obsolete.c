@@ -6,12 +6,13 @@
 #include "crypto_hash_sha512.h"
 #include "crypto_sign_edwards25519sha512batch.h"
 #include "crypto_verify_32.h"
+#include "private/curve25519_ref10.h"
 #include "randombytes.h"
 #include "utils.h"
-#include "private/curve25519_ref10.h"
 
-int crypto_sign_edwards25519sha512batch_keypair(unsigned char *pk,
-                                                unsigned char *sk)
+int
+crypto_sign_edwards25519sha512batch_keypair(unsigned char *pk,
+                                            unsigned char *sk)
 {
     ge_p3 A;
 
@@ -26,18 +27,19 @@ int crypto_sign_edwards25519sha512batch_keypair(unsigned char *pk,
     return 0;
 }
 
-int crypto_sign_edwards25519sha512batch(unsigned char *sm,
-                                        unsigned long long *smlen_p,
-                                        const unsigned char *m,
-                                        unsigned long long mlen,
-                                        const unsigned char *sk)
+int
+crypto_sign_edwards25519sha512batch(unsigned char *      sm,
+                                    unsigned long long * smlen_p,
+                                    const unsigned char *m,
+                                    unsigned long long   mlen,
+                                    const unsigned char *sk)
 {
     crypto_hash_sha512_state hs;
-    unsigned char nonce[64];
-    unsigned char hram[64];
-    unsigned char sig[64];
-    ge_p3 A;
-    ge_p3 R;
+    unsigned char            nonce[64];
+    unsigned char            hram[64];
+    unsigned char            sig[64];
+    ge_p3                    A;
+    ge_p3                    R;
 
     crypto_hash_sha512_init(&hs);
     crypto_hash_sha512_update(&hs, sk + 32, 32);
@@ -63,21 +65,22 @@ int crypto_sign_edwards25519sha512batch(unsigned char *sm,
     return 0;
 }
 
-int crypto_sign_edwards25519sha512batch_open(unsigned char *m,
-                                             unsigned long long *mlen_p,
-                                             const unsigned char *sm,
-                                             unsigned long long smlen,
-                                             const unsigned char *pk)
+int
+crypto_sign_edwards25519sha512batch_open(unsigned char *      m,
+                                         unsigned long long * mlen_p,
+                                         const unsigned char *sm,
+                                         unsigned long long   smlen,
+                                         const unsigned char *pk)
 {
-    unsigned char h[64];
-    unsigned char t1[32], t2[32];
+    unsigned char      h[64];
+    unsigned char      t1[32], t2[32];
     unsigned long long mlen;
-    ge_cached Ai;
-    ge_p1p1 csa;
-    ge_p2 cs;
-    ge_p3 A;
-    ge_p3 R;
-    ge_p3 cs3;
+    ge_cached          Ai;
+    ge_p1p1            csa;
+    ge_p2              cs;
+    ge_p3              A;
+    ge_p3              R;
+    ge_p3              cs3;
 
     *mlen_p = 0;
     if (smlen < 64 || smlen > SIZE_MAX) {
