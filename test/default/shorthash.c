@@ -4,7 +4,8 @@
 
 #define MAXLEN 64
 
-int main(void)
+int
+main(void)
 {
     unsigned char in[MAXLEN];
     unsigned char out[crypto_shorthash_BYTES];
@@ -28,8 +29,8 @@ int main(void)
     assert(crypto_shorthash_keybytes() > 0);
     assert(strcmp(crypto_shorthash_primitive(), "siphash24") == 0);
     assert(crypto_shorthash_bytes() == crypto_shorthash_siphash24_bytes());
-    assert(crypto_shorthash_keybytes()
-           == crypto_shorthash_siphash24_keybytes());
+    assert(crypto_shorthash_keybytes() ==
+           crypto_shorthash_siphash24_keybytes());
 
     return 0;
 }
