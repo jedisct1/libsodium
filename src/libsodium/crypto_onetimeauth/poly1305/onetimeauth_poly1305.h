@@ -2,6 +2,8 @@
 #ifndef onetimeauth_poly1305_H
 #define onetimeauth_poly1305_H
 
+#include "crypto_onetimeauth_poly1305.h"
+
 typedef struct crypto_onetimeauth_poly1305_implementation {
     int (*onetimeauth)(unsigned char *out, const unsigned char *in,
                        unsigned long long inlen, const unsigned char *k);
