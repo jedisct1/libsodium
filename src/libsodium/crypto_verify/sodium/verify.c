@@ -19,7 +19,8 @@ crypto_verify_16(const unsigned char *x, const unsigned char *y)
 }
 
 size_t
-crypto_verify_16_bytes(void) {
+crypto_verify_16_bytes(void)
+{
     return crypto_verify_16_BYTES;
 }
 
@@ -36,7 +37,8 @@ crypto_verify_32(const unsigned char *x, const unsigned char *y)
 }
 
 size_t
-crypto_verify_32_bytes(void) {
+crypto_verify_32_bytes(void)
+{
     return crypto_verify_32_BYTES;
 }
 
@@ -53,6 +55,7 @@ crypto_verify_64(const unsigned char *x, const unsigned char *y)
 }
 
 size_t
-crypto_verify_64_bytes(void) {
+crypto_verify_64_bytes(void)
+{
     return crypto_verify_64_BYTES;
 }
