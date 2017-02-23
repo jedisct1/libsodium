@@ -5,13 +5,12 @@
 #include "crypto_hash_sha512.h"
 #include "crypto_scalarmult_curve25519.h"
 #include "crypto_secretbox_xsalsa20poly1305.h"
-#include "crypto_scalarmult_curve25519.h"
 #include "randombytes.h"
 #include "utils.h"
 
 int
-crypto_box_curve25519xsalsa20poly1305_seed_keypair(unsigned char *pk,
-                                                   unsigned char *sk,
+crypto_box_curve25519xsalsa20poly1305_seed_keypair(unsigned char *      pk,
+                                                   unsigned char *      sk,
                                                    const unsigned char *seed)
 {
     unsigned char hash[64];
@@ -35,7 +34,7 @@ crypto_box_curve25519xsalsa20poly1305_keypair(unsigned char *pk,
 static const unsigned char n[16] = { 0 };
 
 int
-crypto_box_curve25519xsalsa20poly1305_beforenm(unsigned char *k,
+crypto_box_curve25519xsalsa20poly1305_beforenm(unsigned char *      k,
                                                const unsigned char *pk,
                                                const unsigned char *sk)
 {
@@ -48,9 +47,9 @@ crypto_box_curve25519xsalsa20poly1305_beforenm(unsigned char *k,
 }
 
 int
-crypto_box_curve25519xsalsa20poly1305_afternm(unsigned char *c,
+crypto_box_curve25519xsalsa20poly1305_afternm(unsigned char *      c,
                                               const unsigned char *m,
-                                              unsigned long long mlen,
+                                              unsigned long long   mlen,
                                               const unsigned char *n,
                                               const unsigned char *k)
 {
@@ -58,9 +57,9 @@ crypto_box_curve25519xsalsa20poly1305_afternm(unsigned char *c,
 }
 
 int
-crypto_box_curve25519xsalsa20poly1305_open_afternm(unsigned char *m,
+crypto_box_curve25519xsalsa20poly1305_open_afternm(unsigned char *      m,
                                                    const unsigned char *c,
-                                                   unsigned long long clen,
+                                                   unsigned long long   clen,
                                                    const unsigned char *n,
                                                    const unsigned char *k)
 {
@@ -68,9 +67,8 @@ crypto_box_curve25519xsalsa20poly1305_open_afternm(unsigned char *m,
 }
 
 int
-crypto_box_curve25519xsalsa20poly1305(unsigned char *c,
-                                      const unsigned char *m,
-                                      unsigned long long mlen,
+crypto_box_curve25519xsalsa20poly1305(unsigned char *c, const unsigned char *m,
+                                      unsigned long long   mlen,
                                       const unsigned char *n,
                                       const unsigned char *pk,
                                       const unsigned char *sk)
@@ -88,12 +86,9 @@ crypto_box_curve25519xsalsa20poly1305(unsigned char *c,
 }
 
 int
-crypto_box_curve25519xsalsa20poly1305_open(unsigned char *m,
-                                           const unsigned char *c,
-                                           unsigned long long clen,
-                                           const unsigned char *n,
-                                           const unsigned char *pk,
-                                           const unsigned char *sk)
+crypto_box_curve25519xsalsa20poly1305_open(
+    unsigned char *m, const unsigned char *c, unsigned long long clen,
+    const unsigned char *n, const unsigned char *pk, const unsigned char *sk)
 {
     unsigned char k[crypto_box_curve25519xsalsa20poly1305_BEFORENMBYTES];
     int           ret;
@@ -108,41 +103,49 @@ crypto_box_curve25519xsalsa20poly1305_open(unsigned char *m,
 }
 
 size_t
-crypto_box_curve25519xsalsa20poly1305_seedbytes(void) {
+crypto_box_curve25519xsalsa20poly1305_seedbytes(void)
+{
     return crypto_box_curve25519xsalsa20poly1305_SEEDBYTES;
 }
 
 size_t
-crypto_box_curve25519xsalsa20poly1305_publickeybytes(void) {
+crypto_box_curve25519xsalsa20poly1305_publickeybytes(void)
+{
     return crypto_box_curve25519xsalsa20poly1305_PUBLICKEYBYTES;
 }
 
 size_t
-crypto_box_curve25519xsalsa20poly1305_secretkeybytes(void) {
+crypto_box_curve25519xsalsa20poly1305_secretkeybytes(void)
+{
     return crypto_box_curve25519xsalsa20poly1305_SECRETKEYBYTES;
 }
 
 size_t
-crypto_box_curve25519xsalsa20poly1305_beforenmbytes(void) {
+crypto_box_curve25519xsalsa20poly1305_beforenmbytes(void)
+{
     return crypto_box_curve25519xsalsa20poly1305_BEFORENMBYTES;
 }
 
 size_t
-crypto_box_curve25519xsalsa20poly1305_noncebytes(void) {
+crypto_box_curve25519xsalsa20poly1305_noncebytes(void)
+{
     return crypto_box_curve25519xsalsa20poly1305_NONCEBYTES;
 }
 
 size_t
-crypto_box_curve25519xsalsa20poly1305_zerobytes(void) {
+crypto_box_curve25519xsalsa20poly1305_zerobytes(void)
+{
     return crypto_box_curve25519xsalsa20poly1305_ZEROBYTES;
 }
 
 size_t
-crypto_box_curve25519xsalsa20poly1305_boxzerobytes(void) {
+crypto_box_curve25519xsalsa20poly1305_boxzerobytes(void)
+{
     return crypto_box_curve25519xsalsa20poly1305_BOXZEROBYTES;
 }
 
 size_t
-crypto_box_curve25519xsalsa20poly1305_macbytes(void) {
+crypto_box_curve25519xsalsa20poly1305_macbytes(void)
+{
     return crypto_box_curve25519xsalsa20poly1305_MACBYTES;
 }
