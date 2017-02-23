@@ -3,6 +3,7 @@
 
 #include "crypto_box.h"
 #include "crypto_generichash.h"
+#include "private/common.h"
 #include "utils.h"
 
 static int
@@ -54,7 +55,7 @@ crypto_box_seal_open(unsigned char *m, const unsigned char *c,
     }
     _crypto_box_seal_nonce(nonce, c, pk);
 
-    (void) sizeof(int[crypto_box_PUBLICKEYBYTES < crypto_box_SEALBYTES ? 1 : -1]);
+    COMPILER_ASSERT(crypto_box_PUBLICKEYBYTES < crypto_box_SEALBYTES);
     return crypto_box_open_easy(m, c + crypto_box_PUBLICKEYBYTES,
                                 clen - crypto_box_PUBLICKEYBYTES,
                                 nonce, c, sk);

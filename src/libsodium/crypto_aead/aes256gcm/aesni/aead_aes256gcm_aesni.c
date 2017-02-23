@@ -12,6 +12,7 @@
 
 #include "crypto_aead_aes256gcm.h"
 #include "export.h"
+#include "private/common.h"
 #include "randombytes.h"
 #include "runtime.h"
 #include "utils.h"
@@ -480,7 +481,7 @@ crypto_aead_aes256gcm_beforenm(crypto_aead_aes256gcm_state *ctx_,
     __m128i        zero = _mm_setzero_si128();
     unsigned char *H = ctx->H;
 
-    (void) sizeof(int[(sizeof *ctx_) >= (sizeof *ctx) ? 1 : -1]);
+    COMPILER_ASSERT((sizeof *ctx_) >= (sizeof *ctx));
     aesni_key256_expand(k, rkeys);
     aesni_encrypt1(H, zero, rkeys);
 

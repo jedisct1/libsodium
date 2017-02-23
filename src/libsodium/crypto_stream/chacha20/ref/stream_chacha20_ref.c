@@ -9,11 +9,12 @@
 #include <stdlib.h>
 #include <string.h>
 
-#include "../stream_chacha20.h"
 #include "crypto_stream_chacha20.h"
 #include "private/common.h"
-#include "stream_chacha20_ref.h"
 #include "utils.h"
+
+#include "../stream_chacha20.h"
+#include "stream_chacha20_ref.h"
 
 struct chacha_ctx {
     uint32_t input[16];
@@ -232,7 +233,7 @@ stream_ref(unsigned char *c, unsigned long long clen, const unsigned char *n,
     if (!clen) {
         return 0;
     }
-    (void) sizeof(int[crypto_stream_chacha20_KEYBYTES == 256 / 8 ? 1 : -1]);
+    COMPILER_ASSERT(crypto_stream_chacha20_KEYBYTES == 256 / 8);
     chacha_keysetup(&ctx, k);
     chacha_ivsetup(&ctx, n, NULL);
     memset(c, 0, clen);
@@ -251,7 +252,7 @@ stream_ietf_ref(unsigned char *c, unsigned long long clen,
     if (!clen) {
         return 0;
     }
-    (void) sizeof(int[crypto_stream_chacha20_KEYBYTES == 256 / 8 ? 1 : -1]);
+    COMPILER_ASSERT(crypto_stream_chacha20_KEYBYTES == 256 / 8);
     chacha_keysetup(&ctx, k);
     chacha_ietf_ivsetup(&ctx, n, NULL);
     memset(c, 0, clen);

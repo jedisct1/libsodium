@@ -5,6 +5,7 @@
 
 #include "crypto_box.h"
 #include "crypto_secretbox.h"
+#include "private/common.h"
 #include "utils.h"
 
 int
@@ -24,8 +25,7 @@ crypto_box_detached(unsigned char *c, unsigned char *mac,
     unsigned char k[crypto_box_BEFORENMBYTES];
     int           ret;
 
-    (void) sizeof(int[crypto_box_BEFORENMBYTES >=
-                      crypto_secretbox_KEYBYTES ? 1 : -1]);
+    COMPILER_ASSERT(crypto_box_BEFORENMBYTES >= crypto_secretbox_KEYBYTES);
     if (crypto_box_beforenm(k, pk, sk) != 0) {
         return -1;
     }

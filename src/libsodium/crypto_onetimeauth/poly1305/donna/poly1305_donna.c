@@ -1,6 +1,7 @@
 
 #include "poly1305_donna.h"
 #include "crypto_verify_16.h"
+#include "private/common.h"
 #include "utils.h"
 
 #ifdef HAVE_TI_MODE
@@ -72,10 +73,8 @@ static int
 crypto_onetimeauth_poly1305_donna_init(crypto_onetimeauth_poly1305_state *state,
                                        const unsigned char *              key)
 {
-    (void) sizeof(int[sizeof(crypto_onetimeauth_poly1305_state) >=
-                              sizeof(poly1305_state_internal_t)
-                          ? 1
-                          : -1]);
+    COMPILER_ASSERT(sizeof(crypto_onetimeauth_poly1305_state) >=
+        sizeof(poly1305_state_internal_t));
     poly1305_init((poly1305_state_internal_t *) (void *) state, key);
 
     return 0;
