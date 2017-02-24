@@ -3,12 +3,11 @@
 #include "shorthash_siphash_ref.h"
 
 int
-crypto_shorthash_siphash24(unsigned char *out, const unsigned char *in,
-                           unsigned long long inlen, const unsigned char *k)
+crypto_shorthash_siphashx24(unsigned char *out, const unsigned char *in,
+                            unsigned long long inlen, const unsigned char *k)
 {
-    /* "somepseudorandomlygeneratedbytes" */
     uint64_t       v0 = 0x736f6d6570736575ULL;
-    uint64_t       v1 = 0x646f72616e646f6dULL;
+    uint64_t       v1 = 0x646f72616e646f83ULL;
     uint64_t       v2 = 0x6c7967656e657261ULL;
     uint64_t       v3 = 0x7465646279746573ULL;
     uint64_t       b;
@@ -53,13 +52,20 @@ crypto_shorthash_siphash24(unsigned char *out, const unsigned char *in,
     SIPROUND;
     SIPROUND;
     v0 ^= b;
-    v2 ^= 0xff;
+    v2 ^= 0xee;
     SIPROUND;
     SIPROUND;
     SIPROUND;
     SIPROUND;
     b = v0 ^ v1 ^ v2 ^ v3;
     STORE64_LE(out, b);
+    v1 ^= 0xdd;
+    SIPROUND;
+    SIPROUND;
+    SIPROUND;
+    SIPROUND;
+    b = v0 ^ v1 ^ v2 ^ v3;
+    STORE64_LE(out + 8, b);
 
     return 0;
 }

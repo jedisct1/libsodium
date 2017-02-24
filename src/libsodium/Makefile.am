@@ -69,6 +69,7 @@ libsodium_la_SOURCES = \
 	crypto_shorthash/crypto_shorthash.c \
 	crypto_shorthash/siphash24/shorthash_siphash24.c \
 	crypto_shorthash/siphash24/ref/shorthash_siphash24_ref.c \
+	crypto_shorthash/siphash24/ref/shorthash_siphash_ref.h \
 	crypto_sign/crypto_sign.c \
 	crypto_sign/ed25519/sign_ed25519.c \
 	crypto_sign/ed25519/ref10/keypair.c \
@@ -159,6 +160,8 @@ libsodium_la_SOURCES += \
 	crypto_core/salsa208/core_salsa208.c \
 	crypto_core/salsa208/ref/core_salsa208_ref.c \
 	crypto_secretbox/xchacha20poly1305/secretbox_xchacha20poly1305.c \
+	crypto_shorthash/siphash24/shorthash_siphashx24.c \
+	crypto_shorthash/siphash24/ref/shorthash_siphashx24_ref.c \
 	crypto_sign/ed25519/ref10/obsolete.c \
 	crypto_stream/aes128ctr/nacl/afternm_aes128ctr.c \
 	crypto_stream/aes128ctr/nacl/beforenm_aes128ctr.c \
