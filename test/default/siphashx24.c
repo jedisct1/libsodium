@@ -25,7 +25,7 @@ main(void)
         printf("\n");
     }
     assert(crypto_shorthash_siphashx24_KEYBYTES >= crypto_shorthash_siphash24_KEYBYTES);
-    assert(crypto_shorthash_siphashx24_BYTES > crypto_shorthash_siphash24_BYTES);    
+    assert(crypto_shorthash_siphashx24_BYTES > crypto_shorthash_siphash24_BYTES);
     assert(crypto_shorthash_siphashx24_bytes() == crypto_shorthash_siphashx24_BYTES);
     assert(crypto_shorthash_siphashx24_keybytes() == crypto_shorthash_siphashx24_KEYBYTES);
 
