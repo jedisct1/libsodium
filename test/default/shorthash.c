@@ -16,7 +16,6 @@ main(void)
     for (i = 0; i < crypto_shorthash_KEYBYTES; ++i) {
         k[i] = (unsigned char) i;
     }
-
     for (i = 0; i < MAXLEN; ++i) {
         in[i] = (unsigned char) i;
         crypto_shorthash(out, in, (unsigned long long) i, k);

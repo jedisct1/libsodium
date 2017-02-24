@@ -56,6 +56,7 @@ EXTRA_DIST = \
 	secretbox_easy2.exp \
 	shorthash.exp \
 	sign.exp \
+	siphashx24.exp \
 	sodium_core.exp \
 	sodium_utils.exp \
 	sodium_utils2.exp \
@@ -122,6 +123,7 @@ DISTCLEANFILES = \
 	secretbox_easy2.res \
 	shorthash.res \
 	sign.res \
+	siphashx24.res \
 	sodium_core.res \
 	sodium_utils.res \
 	sodium_utils2.res \
@@ -189,6 +191,7 @@ CLEANFILES = \
 	secretbox_easy2.final \
 	shorthash.final \
 	sign.final \
+	siphashx24.final \
 	sodium_core.final \
 	sodium_utils.final \
 	sodium_version.final \
@@ -251,6 +254,7 @@ CLEANFILES = \
 	secretbox_easy2.nexe \
 	shorthash.nexe \
 	sign.nexe \
+	siphashx24.nexe \
 	sodium_core.nexe \
 	sodium_utils.nexe \
 	sodium_version.nexe \
@@ -504,6 +508,9 @@ shorthash_LDADD           = $(TESTS_LDADD)
 sign_SOURCE               = cmptest.h sign.c
 sign_LDADD                = $(TESTS_LDADD)
 
+siphashx24_SOURCE         = cmptest.h siphashx24.c
+siphashx24_LDADD          = $(TESTS_LDADD)
+
 sodium_core_SOURCE        = cmptest.h sodium_core.c
 sodium_core_LDADD         = $(TESTS_LDADD)
 
@@ -540,6 +547,7 @@ xchacha20_LDADD           = $(TESTS_LDADD)
 if !MINIMAL
 TESTS_TARGETS += \
 	aead_xchacha20poly1305 \
+	siphashx24 \
 	xchacha20
 endif
 

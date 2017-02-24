@@ -133,6 +133,7 @@ test/default/secretbox_easy
 test/default/secretbox_easy2
 test/default/shorthash
 test/default/sign
+test/default/siphashx24
 test/default/sodium_core
 test/default/sodium_utils
 test/default/sodium_utils2
