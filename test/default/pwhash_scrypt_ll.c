@@ -2,62 +2,58 @@
 #define TEST_NAME "pwhash_scrypt_ll"
 #include "cmptest.h"
 
-/* Tarsnap test vectors, see: https://www.tarsnap.com/scrypt/scrypt.pdf */
+static const char *   passwd1 = "";
+static const char *   salt1   = "";
+static const uint64_t N1      = 16U;
+static const uint32_t r1      = 1U;
+static const uint32_t p1      = 1U;
 
-static const char *password1 = "";
-static const char *salt1     = "";
-static uint64_t    N1        = 16U;
-static uint32_t    r1        = 1U;
-static uint32_t    p1        = 1U;
+static const char *   passwd2 = "password";
+static const char *   salt2   = "NaCl";
+static const uint64_t N2      = 1024U;
+static const uint32_t r2      = 8U;
+static const uint32_t p2      = 16U;
 
-static const char *password2 = "password";
-static const char *salt2     = "NaCl";
-static uint64_t    N2        = 1024U;
-static uint32_t    r2        = 8U;
-static uint32_t    p2        = 16U;
-
-static const char *password3 = "pleaseletmein";
-static const char *salt3     = "SodiumChloride";
-static uint64_t    N3        = 16384U;
-static uint32_t    r3        = 8U;
-static uint32_t    p3        = 1U;
+static const char *   passwd3 = "pleaseletmein";
+static const char *   salt3   = "SodiumChloride";
+static const uint64_t N3      = 16384U;
+static const uint32_t r3      = 8U;
+static const uint32_t p3      = 1U;
 
 static void
-test_vector(const char *password, const char *salt, uint64_t N, uint32_t r,
-            uint32_t p)
+tv(const char *passwd, const char *salt, uint64_t N, uint32_t r, uint32_t p)
 {
     uint8_t data[64];
     size_t  i;
-    size_t  olen           = (sizeof data / sizeof data[0]);
-    size_t  passwordLength = strlen(password);
-    size_t  saltLenght     = strlen(salt);
-    int     lineitems      = 0;
-    int     lineitemsLimit = 15;
+    size_t  olen       = (sizeof data / sizeof data[0]);
+    size_t  passwd_len = strlen(passwd);
+    size_t  salt_len   = strlen(salt);
+    int     lineitems  = 0;
 
     if (crypto_pwhash_scryptsalsa208sha256_ll(
-            (const uint8_t *) password, passwordLength, (const uint8_t *) salt,
-            saltLenght, N, r, p, data, olen) != 0) {
-        printf("pwhash_scryptsalsa208sha256_ll([%s],[%s]) failure\n", password,
+            (const uint8_t *) passwd, passwd_len, (const uint8_t *) salt,
+            salt_len, N, r, p, data, olen) != 0) {
+        printf("pwhash_scryptsalsa208sha256_ll([%s],[%s]) failure\n", passwd,
                salt);
         return;
     }
 
-    printf("scrypt('%s', '%s', %lu, %lu, %lu, %lu) =\n", password, salt,
+    printf("scrypt('%s', '%s', %lu, %lu, %lu, %lu) =\n", passwd, salt,
            (unsigned long) N, (unsigned long) r, (unsigned long) p,
            (unsigned long) olen);
 
-    for (i = 0; i < olen; ++i) {
+    for (i = 0; i < olen; i++) {
         printf("%02x%c", data[i], lineitems < lineitemsLimit ? ' ' : '\n');
-        lineitems = lineitems < lineitemsLimit ? lineitems + 1 : 0;
+        lineitems = lineitems < 15 ? lineitems + 1 : 0;
     }
 }
 
 int
 main(void)
 {
-    test_vector(password1, salt1, N1, r1, p1);
-    test_vector(password2, salt2, N2, r2, p2);
-    test_vector(password3, salt3, N3, r3, p3);
+    tv(passwd1, salt1, N1, r1, p1);
+    tv(passwd2, salt2, N2, r2, p2);
+    tv(passwd3, salt3, N3, r3, p3);
 
     return 0;
 }

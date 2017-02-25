@@ -11,7 +11,7 @@ tv(void)
 {
     static struct {
         const char *       passwd_hex;
-        size_t             passwdlen;
+        size_t             passwd_len;
         const char *       salt_hex;
         size_t             outlen;
         unsigned long long opslimit;
@@ -91,7 +91,7 @@ tv(void)
         sodium_hex2bin(salt, sizeof salt, tests[i].salt_hex,
                        strlen(tests[i].salt_hex), NULL, NULL, NULL);
         if (crypto_pwhash(out, (unsigned long long) tests[i].outlen, passwd,
-                          tests[i].passwdlen, (const unsigned char *) salt,
+                          tests[i].passwd_len, (const unsigned char *) salt,
                           tests[i].opslimit, tests[i].memlimit,
                           crypto_pwhash_alg_default()) != 0) {
             printf("[tv] pwhash failure (maybe intentional): [%u]\n",
@@ -108,7 +108,7 @@ tv2(void)
 {
     static struct {
         const char *       passwd_hex;
-        size_t             passwdlen;
+        size_t             passwd_len;
         const char *       salt_hex;
         size_t             outlen;
         unsigned long long opslimit;
@@ -143,7 +143,7 @@ tv2(void)
         sodium_hex2bin(salt, sizeof salt, tests[i].salt_hex,
                        strlen(tests[i].salt_hex), NULL, NULL, NULL);
         if (crypto_pwhash(out, (unsigned long long) tests[i].outlen, passwd,
-                          tests[i].passwdlen, (const unsigned char *) salt,
+                          tests[i].passwd_len, (const unsigned char *) salt,
                           tests[i].opslimit, tests[i].memlimit,
                           crypto_pwhash_alg_default()) != 0) {
             printf("[tv2] pwhash failure: [%u]\n", (unsigned int) i);
