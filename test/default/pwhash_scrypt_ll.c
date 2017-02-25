@@ -30,13 +30,13 @@ test_vector(const char *password, const char *salt, uint64_t N, uint32_t r,
     size_t  i;
     size_t  olen           = (sizeof data / sizeof data[0]);
     size_t  passwordLength = strlen(password);
-    size_t  saltLenght     = strlen(salt);
+    size_t  saltLength     = strlen(salt);
     int     lineitems      = 0;
     int     lineitemsLimit = 15;
 
     if (crypto_pwhash_scryptsalsa208sha256_ll(
             (const uint8_t *) password, passwordLength, (const uint8_t *) salt,
-            saltLenght, N, r, p, data, olen) != 0) {
+            saltLength, N, r, p, data, olen) != 0) {
         printf("pwhash_scryptsalsa208sha256_ll([%s],[%s]) failure\n", password,
                salt);
         return;
