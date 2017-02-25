@@ -22,10 +22,8 @@ struct chacha_ctx {
 
 typedef struct chacha_ctx chacha_ctx;
 
-#define U8C(v) (v##U)
 #define U32C(v) (v##U)
 
-#define U8V(v) ((uint8_t)(v) &U8C(0xFF))
 #define U32V(v) ((uint32_t)(v) &U32C(0xFFFFFFFF))
 
 #define ROTATE(v, c) (ROTL32(v, c))
