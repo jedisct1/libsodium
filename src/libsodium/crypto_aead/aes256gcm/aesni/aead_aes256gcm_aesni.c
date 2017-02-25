@@ -564,7 +564,7 @@ crypto_aead_aes256gcm_encrypt_detached_afternm(unsigned char *c,
         }                                                                                            \
     } while(0)
 
-/* remainder loop, with the slower GCM update to accomodate partial blocks */
+/* remainder loop, with the slower GCM update to accommodate partial blocks */
 #define LOOPRMD128                                           \
     do {                                                     \
         const int iter = 8;                                  \

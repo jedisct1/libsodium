@@ -28,7 +28,7 @@ tv(const char *passwd, const char *salt, uint64_t N, uint32_t r, uint32_t p)
     size_t  olen       = (sizeof data / sizeof data[0]);
     size_t  passwd_len = strlen(passwd);
     size_t  salt_len   = strlen(salt);
-    int     lineitems  = 0;
+    int     line_items  = 0;
 
     if (crypto_pwhash_scryptsalsa208sha256_ll(
             (const uint8_t *) passwd, passwd_len, (const uint8_t *) salt,
@@ -43,8 +43,8 @@ tv(const char *passwd, const char *salt, uint64_t N, uint32_t r, uint32_t p)
            (unsigned long) olen);
 
     for (i = 0; i < olen; i++) {
-        printf("%02x%c", data[i], lineitems < lineitemsLimit ? ' ' : '\n');
-        lineitems = lineitems < 15 ? lineitems + 1 : 0;
+        printf("%02x%c", data[i], line_items < line_itemsLimit ? ' ' : '\n');
+        line_items = line_items < 15 ? line_items + 1 : 0;
     }
 }
 
