@@ -12,7 +12,7 @@
 ########################################################################
 # Tries to find the local libsodium installation.
 #
-# On Windows the sodium_DIR enviroment variable is used as a default
+# On Windows the sodium_DIR environment variable is used as a default
 # hint which can be overridden by setting the corresponding cmake variable.
 #
 # Once done the following variables will be defined:
