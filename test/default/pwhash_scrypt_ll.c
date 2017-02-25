@@ -43,7 +43,7 @@ tv(const char *passwd, const char *salt, uint64_t N, uint32_t r, uint32_t p)
            (unsigned long) olen);
 
     for (i = 0; i < olen; i++) {
-        printf("%02x%c", data[i], line_items < line_itemsLimit ? ' ' : '\n');
+        printf("%02x%c", data[i], line_items < 15 ? ' ' : '\n');
         line_items = line_items < 15 ? line_items + 1 : 0;
     }
 }
