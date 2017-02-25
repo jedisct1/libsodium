@@ -214,7 +214,7 @@ SHA512_Pad(crypto_hash_sha512_state *state)
 int
 crypto_hash_sha512_init(crypto_hash_sha512_state *state)
 {
-    static const uint64_t sha512_initstate[8] = {
+    static const uint64_t sha512_initial_state[8] = {
         0x6a09e667f3bcc908ULL, 0xbb67ae8584caa73bULL,
         0x3c6ef372fe94f82bULL, 0xa54ff53a5f1d36f1ULL,
         0x510e527fade682d1ULL, 0x9b05688c2b3e6c1fULL,
@@ -222,7 +222,7 @@ crypto_hash_sha512_init(crypto_hash_sha512_state *state)
     };
 
     state->count[0] = state->count[1] = (uint64_t) 0U;
-    memcpy(state->state, sha512_initstate, sizeof sha512_initstate);
+    memcpy(state->state, sha512_initial_state, sizeof sha512_initial_state);
 
     return 0;
 }
