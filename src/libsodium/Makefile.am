@@ -80,7 +80,9 @@ libsodium_la_SOURCES = \
 	crypto_stream/chacha20/ref/stream_chacha20_ref.c \
 	crypto_stream/crypto_stream.c \
 	crypto_stream/salsa20/stream_salsa20.c \
+	crypto_stream/salsa20/stream_salsa20.h \
 	crypto_stream/salsa20/ref/stream_salsa20_ref.c \
+	crypto_stream/salsa20/ref/stream_salsa20_ref.h \
 	crypto_stream/xsalsa20/stream_xsalsa20.c \
 	crypto_verify/sodium/verify.c \
 	include/sodium/private/common.h \
@@ -206,6 +208,7 @@ libsse2_la_SOURCES = \
 	crypto_onetimeauth/poly1305/sse2/poly1305_sse2.c \
 	crypto_onetimeauth/poly1305/sse2/poly1305_sse2.h \
 	crypto_stream/salsa20/xmm6int/stream_salsa20_xmm6int.c \
+	crypto_stream/salsa20/xmm6int/stream_salsa20_xmm6int.h \
 	crypto_stream/salsa20/xmm6int/u1.h \
 	crypto_stream/salsa20/xmm6int/u4.h
 
