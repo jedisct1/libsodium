@@ -13,7 +13,7 @@ if (bytes > 0) {
     uint32_t in9;
 
     a0 = diag1;
-    for (i = 0; i < 20; i += 4) {
+    for (i = 0; i < ROUNDS; i += 4) {
         a0    = _mm_add_epi32(a0, diag0);
         a1    = diag0;
         b0    = a0;
