@@ -221,8 +221,11 @@ libssse3_la_SOURCES = \
 	crypto_generichash/blake2b/ref/blake2b-compress-ssse3.h \
 	crypto_pwhash/argon2/argon2-fill-block-ssse3.c \
 	crypto_pwhash/argon2/blamka-round-ssse3.h \
-	crypto_stream/chacha20/vec/chacha20_vec.h \
-	crypto_stream/chacha20/vec/chacha20_vec.c
+	crypto_stream/chacha20/dolbeau/chacha20_dolbeau-ssse3.c \
+	crypto_stream/chacha20/dolbeau/chacha20_dolbeau-ssse3.h \
+	crypto_stream/chacha20/dolbeau/u0.h \
+	crypto_stream/chacha20/dolbeau/u1.h \
+	crypto_stream/chacha20/dolbeau/u4.h
 
 libsse41_la_LDFLAGS = $(libsodium_la_LDFLAGS)
 libsse41_la_CPPFLAGS = $(libsodium_la_CPPFLAGS) \
@@ -239,9 +242,6 @@ libavx2_la_SOURCES = \
 	crypto_generichash/blake2b/ref/blake2b-compress-avx2.h \
 	crypto_stream/chacha20/dolbeau/chacha20_dolbeau-avx2.c \
 	crypto_stream/chacha20/dolbeau/chacha20_dolbeau-avx2.h \
-	crypto_stream/chacha20/dolbeau/u0.h \
-	crypto_stream/chacha20/dolbeau/u1.h \
-	crypto_stream/chacha20/dolbeau/u4.h \
 	crypto_stream/chacha20/dolbeau/u8.h \
 	crypto_stream/salsa20/xmm6int/salsa20_xmm6int-avx2.c \
 	crypto_stream/salsa20/xmm6int/salsa20_xmm6int-avx2.h \

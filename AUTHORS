@@ -104,7 +104,8 @@ crypto_stream/aes128ctr                Peter Schwabe
 
 crypto_stream/chacha20/ref             Daniel J. Bernstein
 
-crypto_stream/chacha20/vec             Ted Krovetz
+crypto_stream/chacha20/dolbeau         Romain Dolbeau
+                                       Daniel J. Bernstein
 
 crypto_stream/salsa20/ref              Daniel J. Bernstein
 
