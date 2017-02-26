@@ -122,6 +122,7 @@ libsodium_la_SOURCES += \
 	crypto_stream/salsa20/xmm6/salsa20_xmm6.c \
 	crypto_stream/salsa20/xmm6/salsa20_xmm6.h
 else
+libsodium_la_SOURCES += \
 	crypto_stream/salsa20/ref/salsa20_ref.c \
 	crypto_stream/salsa20/ref/salsa20_ref.h
 endif
