@@ -4,8 +4,12 @@
 #include "runtime.h"
 #include "stream_salsa20.h"
 
-#include "ref/salsa20_ref.h"
-#ifdef HAVE_EMMINTRIN_H
+#ifdef HAVE_AMD64_ASM
+# include "xmm6/salsa20_xmm6.h"
+#else
+# include "ref/salsa20_ref.h"
+#endif
+#if !defined(HAVE_AMD64_ASM) && defined(HAVE_EMMINTRIN_H)
 # include "xmm6int/salsa20_xmm6int-sse2.h"
 #endif
 #if defined(HAVE_AVX2INTRIN_H) && defined(HAVE_EMMINTRIN_H) && \
@@ -13,9 +17,9 @@
 # include "xmm6int/salsa20_xmm6int-avx2.h"
 #endif
 
-#if defined(HAVE_EMMINTRIN_H) && defined(__x86_64__)
+#if HAVE_AMD64_ASM
 static const crypto_stream_salsa20_implementation *implementation =
-    &crypto_stream_salsa20_xmm6int_sse2_implementation;
+    &crypto_stream_salsa20_xmm6_implementation;
 #else
 static const crypto_stream_salsa20_implementation *implementation =
     &crypto_stream_salsa20_ref_implementation;
@@ -66,8 +70,8 @@ crypto_stream_salsa20_keygen(unsigned char k[crypto_stream_salsa20_KEYBYTES])
 int
 _crypto_stream_salsa20_pick_best_implementation(void)
 {
-#if defined(HAVE_EMMINTRIN_H) && defined(__x86_64__)
-    implementation = &crypto_stream_salsa20_xmm6int_sse2_implementation;
+#ifdef HAVE_AMD64_ASM
+    implementation = &crypto_stream_salsa20_xmm6_implementation;
 #else
     implementation = &crypto_stream_salsa20_ref_implementation;
 #endif
@@ -79,7 +83,7 @@ _crypto_stream_salsa20_pick_best_implementation(void)
         return 0;
     }
 #endif
-#ifdef HAVE_EMMINTRIN_H
+#if !defined(HAVE_AMD64_ASM) && defined(HAVE_EMMINTRIN_H)
     if (sodium_runtime_has_sse2()) {
         implementation = &crypto_stream_salsa20_xmm6int_sse2_implementation;
         return 0;

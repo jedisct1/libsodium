@@ -118,6 +118,13 @@ libsodium_la_SOURCES += \
 	crypto_scalarmult/curve25519/ref10/x25519_ref10.h
 endif
 
+if HAVE_AMD64_ASM
+libsodium_la_SOURCES += \
+	crypto_stream/salsa20/xmm6/salsa20_xmm6-asm.S \
+	crypto_stream/salsa20/xmm6/salsa20_xmm6.c \
+	crypto_stream/salsa20/xmm6/salsa20_xmm6.h
+endif
+
 noinst_HEADERS = \
 	crypto_scalarmult/curve25519/sandy2x/consts.S \
 	crypto_scalarmult/curve25519/sandy2x/fe51_mul.S \
@@ -206,12 +213,16 @@ libsse2_la_CPPFLAGS = $(libsodium_la_CPPFLAGS) \
 libsse2_la_SOURCES = \
 	crypto_pwhash/scryptsalsa208sha256/sse/pwhash_scryptsalsa208sha256_sse.c \
 	crypto_onetimeauth/poly1305/sse2/poly1305_sse2.c \
-	crypto_onetimeauth/poly1305/sse2/poly1305_sse2.h \
+	crypto_onetimeauth/poly1305/sse2/poly1305_sse2.h
+
+if !HAVE_AMD64_ASM
+libsse2_la_SOURCES += \
 	crypto_stream/salsa20/xmm6int/salsa20_xmm6int-sse2.c \
 	crypto_stream/salsa20/xmm6int/salsa20_xmm6int-sse2.h \
 	crypto_stream/salsa20/xmm6int/u0.h \
 	crypto_stream/salsa20/xmm6int/u1.h \
 	crypto_stream/salsa20/xmm6int/u4.h
+endif
 
 libssse3_la_LDFLAGS = $(libsodium_la_LDFLAGS)
 libssse3_la_CPPFLAGS = $(libsodium_la_CPPFLAGS) \
@@ -245,4 +256,7 @@ libavx2_la_SOURCES = \
 	crypto_stream/chacha20/dolbeau/u8.h \
 	crypto_stream/salsa20/xmm6int/salsa20_xmm6int-avx2.c \
 	crypto_stream/salsa20/xmm6int/salsa20_xmm6int-avx2.h \
+	crypto_stream/salsa20/xmm6int/u0.h \
+	crypto_stream/salsa20/xmm6int/u1.h \
+	crypto_stream/salsa20/xmm6int/u4.h
 	crypto_stream/salsa20/xmm6int/u8.h
