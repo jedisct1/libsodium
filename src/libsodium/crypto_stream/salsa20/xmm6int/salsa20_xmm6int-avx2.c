@@ -113,7 +113,7 @@ stream_avx2_xor_ic(unsigned char *c, const unsigned char *m,
         return 0;
     }
     ic_high = (uint32_t) (ic >> 32);
-    ic_low  = (uint32_t) (ic);
+    ic_low  = (uint32_t) ic;
     STORE32_LE(&ic_bytes[0], ic_low);
     STORE32_LE(&ic_bytes[4], ic_high);
     salsa_keysetup(&ctx, k);
