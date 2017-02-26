@@ -3,6 +3,8 @@
 #include <stdlib.h>
 #include <string.h>
 
+#if defined(HAVE_EMMINTRIN_H) && defined(__x86_64__)
+
 #if defined(HAVE_EMMINTRIN_H) || \
     (defined(_MSC_VER) &&        \
      (defined(_M_X64) || defined(_M_AMD64) || defined(_M_IX86)))
@@ -18,7 +20,6 @@
 
 #include "../stream_salsa20.h"
 #include "stream_salsa20_xmm6int.h"
-
 
 #define ROUNDS 20
 
@@ -183,3 +184,5 @@ struct crypto_stream_salsa20_implementation
         SODIUM_C99(.stream =) stream_ref,
         SODIUM_C99(.stream_xor_ic =) stream_ref_xor_ic
     };
+
+#endif
