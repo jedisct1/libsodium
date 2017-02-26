@@ -62,9 +62,6 @@ salsa20_encrypt_bytes(salsa_ctx *ctx, const uint8_t *m, uint8_t *c,
     if (!bytes) {
         return; /* LCOV_EXCL_LINE */
     }
-    if (bytes > 64ULL * (1ULL << 32) - 64ULL) {
-        abort();
-    }
 
 #include "u4.h"
 #include "u1.h"
