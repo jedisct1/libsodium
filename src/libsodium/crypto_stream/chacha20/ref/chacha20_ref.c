@@ -14,7 +14,7 @@
 #include "utils.h"
 
 #include "../stream_chacha20.h"
-#include "stream_chacha20_ref.h"
+#include "chacha20_ref.h"
 
 struct chacha_ctx {
     uint32_t input[16];

@@ -15,7 +15,7 @@
 # include <emmintrin.h>
 
 # include "../stream_salsa20.h"
-# include "stream_salsa20_xmm6int.h"
+# include "salsa20_xmm6int.h"
 
 # define ROUNDS 20
 

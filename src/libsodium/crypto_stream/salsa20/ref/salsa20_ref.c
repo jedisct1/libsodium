@@ -11,7 +11,7 @@ Public domain.
 #include "utils.h"
 
 #include "../stream_salsa20.h"
-#include "stream_salsa20_ref.h"
+#include "salsa20_ref.h"
 
 #if !(defined(HAVE_EMMINTRIN_H) && defined(__x86_64__))
 

@@ -2,9 +2,9 @@
 #include "stream_chacha20.h"
 #include "randombytes.h"
 #include "runtime.h"
-#include "ref/stream_chacha20_ref.h"
+#include "ref/chacha20_ref.h"
 #if (defined(HAVE_EMMINTRIN_H) && defined(HAVE_TMMINTRIN_H) && defined(__GNUC__))
-# include "vec/stream_chacha20_vec.h"
+# include "vec/chacha20_vec.h"
 #endif
 
 static const crypto_stream_chacha20_implementation *implementation =

@@ -9,7 +9,7 @@
 #include "utils.h"
 
 #include "../stream_chacha20.h"
-#include "stream_chacha20_vec.h"
+#include "chacha20_vec.h"
 
 #if (defined(HAVE_EMMINTRIN_H) && defined(HAVE_TMMINTRIN_H) && \
      defined(__GNUC__))

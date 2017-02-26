@@ -4,9 +4,9 @@
 #include "runtime.h"
 #include "stream_salsa20.h"
 
-#include "ref/stream_salsa20_ref.h"
+#include "ref/salsa20_ref.h"
 #ifdef HAVE_EMMINTRIN_H
-# include "xmm6int/stream_salsa20_xmm6int.h"
+# include "xmm6int/salsa20_xmm6int.h"
 #endif
 
 #if defined(HAVE_EMMINTRIN_H) && defined(__x86_64__)
