@@ -22,6 +22,7 @@ while (bytes >= 64) {
 
     uint32_t in8;
     uint32_t in9;
+    int      i;
 
     a0 = diag1;
     for (i = 0; i < 20; i += 4) {

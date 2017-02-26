@@ -28,57 +28,6 @@ static const int TR[16] = {
 };
 
 static void
-salsa20_wordtobyte_tr(uint8_t output[64], const uint32_t input[16])
-{
-    uint32_t x[16];
-    int      i;
-
-    for (i = 0; i < 16; i++) {
-        x[TR[i]] = input[TR[i]];
-    }
-    for (i = 20; i > 0; i -= 2) {
-        x[TR[4]]  ^= ROTL32(x[TR[0]]  + x[TR[12]], 7);
-        x[TR[8]]  ^= ROTL32(x[TR[4]]  + x[TR[0]], 9);
-        x[TR[12]] ^= ROTL32(x[TR[8]]  + x[TR[4]], 13);
-        x[TR[0]]  ^= ROTL32(x[TR[12]] + x[TR[8]], 18);
-        x[TR[9]]  ^= ROTL32(x[TR[5]]  + x[TR[1]], 7);
-        x[TR[13]] ^= ROTL32(x[TR[9]]  + x[TR[5]], 9);
-        x[TR[1]]  ^= ROTL32(x[TR[13]] + x[TR[9]], 13);
-        x[TR[5]]  ^= ROTL32(x[TR[1]]  + x[TR[13]], 18);
-        x[TR[14]] ^= ROTL32(x[TR[10]] + x[TR[6]], 7);
-        x[TR[2]]  ^= ROTL32(x[TR[14]] + x[TR[10]], 9);
-        x[TR[6]]  ^= ROTL32(x[TR[2]]  + x[TR[14]], 13);
-        x[TR[10]] ^= ROTL32(x[TR[6]]  + x[TR[2]], 18);
-        x[TR[3]]  ^= ROTL32(x[TR[15]] + x[TR[11]], 7);
-        x[TR[7]]  ^= ROTL32(x[TR[3]]  + x[TR[15]], 9);
-        x[TR[11]] ^= ROTL32(x[TR[7]]  + x[TR[3]], 13);
-        x[TR[15]] ^= ROTL32(x[TR[11]] + x[TR[7]], 18);
-        x[TR[1]]  ^= ROTL32(x[TR[0]]  + x[TR[3]], 7);
-        x[TR[2]]  ^= ROTL32(x[TR[1]]  + x[TR[0]], 9);
-        x[TR[3]]  ^= ROTL32(x[TR[2]]  + x[TR[1]], 13);
-        x[TR[0]]  ^= ROTL32(x[TR[3]]  + x[TR[2]], 18);
-        x[TR[6]]  ^= ROTL32(x[TR[5]]  + x[TR[4]], 7);
-        x[TR[7]]  ^= ROTL32(x[TR[6]]  + x[TR[5]], 9);
-        x[TR[4]]  ^= ROTL32(x[TR[7]]  + x[TR[6]], 13);
-        x[TR[5]]  ^= ROTL32(x[TR[4]]  + x[TR[7]], 18);
-        x[TR[11]] ^= ROTL32(x[TR[10]] + x[TR[9]], 7);
-        x[TR[8]]  ^= ROTL32(x[TR[11]] + x[TR[10]], 9);
-        x[TR[9]]  ^= ROTL32(x[TR[8]]  + x[TR[11]], 13);
-        x[TR[10]] ^= ROTL32(x[TR[9]]  + x[TR[8]], 18);
-        x[TR[12]] ^= ROTL32(x[TR[15]] + x[TR[14]], 7);
-        x[TR[13]] ^= ROTL32(x[TR[12]] + x[TR[15]], 9);
-        x[TR[14]] ^= ROTL32(x[TR[13]] + x[TR[12]], 13);
-        x[TR[15]] ^= ROTL32(x[TR[14]] + x[TR[13]], 18);
-    }
-    for (i = 0; i < 16; i++) {
-        x[TR[i]] += input[TR[i]];
-    }
-    for (i = 0; i < 16; i++) {
-        STORE32_LE(output + 4 * i, x[TR[i]]);
-    }
-}
-
-static void
 salsa_keysetup(salsa_ctx *ctx, const uint8_t *k)
 {
     ctx->input[TR[1]]  = LOAD32_LE(k + 0);
@@ -108,9 +57,7 @@ static void
 salsa20_encrypt_bytes(salsa_ctx *ctx, const uint8_t *m, uint8_t *c,
                       unsigned long long bytes)
 {
-    uint8_t partialblock[64];
     uint32_t * const x = &ctx->input[0];
-    int     i;
 
     if (!bytes) {
         return; /* LCOV_EXCL_LINE */
@@ -121,14 +68,7 @@ salsa20_encrypt_bytes(salsa_ctx *ctx, const uint8_t *m, uint8_t *c,
 
 #include "u4.h"
 #include "u1.h"
-
-    if (!bytes) {
-        return;
-    }
-    salsa20_wordtobyte_tr(partialblock, x);
-    for (i = 0; i < bytes; i++) {
-        c[i] = m[i] ^ partialblock[i];
-    }
+#include "u0.h"
 }
 
 static int

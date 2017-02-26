@@ -209,6 +209,7 @@ libsse2_la_SOURCES = \
 	crypto_onetimeauth/poly1305/sse2/poly1305_sse2.h \
 	crypto_stream/salsa20/xmm6int/stream_salsa20_xmm6int.c \
 	crypto_stream/salsa20/xmm6int/stream_salsa20_xmm6int.h \
+	crypto_stream/salsa20/xmm6int/u0.h \
 	crypto_stream/salsa20/xmm6int/u1.h \
 	crypto_stream/salsa20/xmm6int/u4.h
 

@@ -8,6 +8,7 @@ if (bytes >= 256) {
 
     uint32_t in8;
     uint32_t in9;
+    int      i;
 
     /* element broadcast immediate for _mm_shuffle_epi32 are in order:
        0x00, 0x55, 0xaa, 0xff */
