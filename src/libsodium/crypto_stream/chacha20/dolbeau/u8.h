@@ -64,67 +64,67 @@
     x_##C = _mm256_add_epi32(x_##C, x_##D); \
     x_##B = VEC8_ROT(_mm256_xor_si256(x_##B, x_##C), 7)
 
-#define VEC8_ROUND_SEQ(a1, b1, c1, d1, A2, B2, C2, D2, a3, b3, c3, d3, a4, b4, \
-                       c4, d4)                                                 \
-    VEC8_LINE1(a1, b1, c1, d1);                                                \
+#define VEC8_ROUND_SEQ(A1, B1, C1, D1, A2, B2, C2, D2, A3, B3, C3, D3, A4, B4, \
+                       C4, D4)                                                 \
+    VEC8_LINE1(A1, B1, C1, D1);                                                \
     VEC8_LINE1(A2, B2, C2, D2);                                                \
-    VEC8_LINE1(a3, b3, c3, d3);                                                \
-    VEC8_LINE1(a4, b4, c4, d4);                                                \
-    VEC8_LINE2(a1, b1, c1, d1);                                                \
+    VEC8_LINE1(A3, B3, C3, D3);                                                \
+    VEC8_LINE1(A4, B4, C4, D4);                                                \
+    VEC8_LINE2(A1, B1, C1, D1);                                                \
     VEC8_LINE2(A2, B2, C2, D2);                                                \
-    VEC8_LINE2(a3, b3, c3, d3);                                                \
-    VEC8_LINE2(a4, b4, c4, d4);                                                \
-    VEC8_LINE3(a1, b1, c1, d1);                                                \
+    VEC8_LINE2(A3, B3, C3, D3);                                                \
+    VEC8_LINE2(A4, B4, C4, D4);                                                \
+    VEC8_LINE3(A1, B1, C1, D1);                                                \
     VEC8_LINE3(A2, B2, C2, D2);                                                \
-    VEC8_LINE3(a3, b3, c3, d3);                                                \
-    VEC8_LINE3(a4, b4, c4, d4);                                                \
-    VEC8_LINE4(a1, b1, c1, d1);                                                \
+    VEC8_LINE3(A3, B3, C3, D3);                                                \
+    VEC8_LINE3(A4, B4, C4, D4);                                                \
+    VEC8_LINE4(A1, B1, C1, D1);                                                \
     VEC8_LINE4(A2, B2, C2, D2);                                                \
-    VEC8_LINE4(a3, b3, c3, d3);                                                \
-    VEC8_LINE4(a4, b4, c4, d4)
+    VEC8_LINE4(A3, B3, C3, D3);                                                \
+    VEC8_LINE4(A4, B4, C4, D4)
 
-#define VEC8_ROUND_HALF(a1, b1, c1, d1, A2, B2, C2, D2, a3, b3, c3, d3, a4, \
-                        b4, c4, d4)                                         \
-    VEC8_LINE1(a1, b1, c1, d1);                                             \
+#define VEC8_ROUND_HALF(A1, B1, C1, D1, A2, B2, C2, D2, A3, B3, C3, D3, A4, \
+                        B4, C4, D4)                                         \
+    VEC8_LINE1(A1, B1, C1, D1);                                             \
     VEC8_LINE1(A2, B2, C2, D2);                                             \
-    VEC8_LINE2(a1, b1, c1, d1);                                             \
+    VEC8_LINE2(A1, B1, C1, D1);                                             \
     VEC8_LINE2(A2, B2, C2, D2);                                             \
-    VEC8_LINE3(a1, b1, c1, d1);                                             \
+    VEC8_LINE3(A1, B1, C1, D1);                                             \
     VEC8_LINE3(A2, B2, C2, D2);                                             \
-    VEC8_LINE4(a1, b1, c1, d1);                                             \
+    VEC8_LINE4(A1, B1, C1, D1);                                             \
     VEC8_LINE4(A2, B2, C2, D2);                                             \
-    VEC8_LINE1(a3, b3, c3, d3);                                             \
-    VEC8_LINE1(a4, b4, c4, d4);                                             \
-    VEC8_LINE2(a3, b3, c3, d3);                                             \
-    VEC8_LINE2(a4, b4, c4, d4);                                             \
-    VEC8_LINE3(a3, b3, c3, d3);                                             \
-    VEC8_LINE3(a4, b4, c4, d4);                                             \
-    VEC8_LINE4(a3, b3, c3, d3);                                             \
-    VEC8_LINE4(a4, b4, c4, d4)
+    VEC8_LINE1(A3, B3, C3, D3);                                             \
+    VEC8_LINE1(A4, B4, C4, D4);                                             \
+    VEC8_LINE2(A3, B3, C3, D3);                                             \
+    VEC8_LINE2(A4, B4, C4, D4);                                             \
+    VEC8_LINE3(A3, B3, C3, D3);                                             \
+    VEC8_LINE3(A4, B4, C4, D4);                                             \
+    VEC8_LINE4(A3, B3, C3, D3);                                             \
+    VEC8_LINE4(A4, B4, C4, D4)
 
-#define VEC8_ROUND_HALFANDHALF(a1, b1, c1, d1, A2, B2, C2, D2, a3, b3, c3, d3, \
-                               a4, b4, c4, d4)                                 \
-    VEC8_LINE1(a1, b1, c1, d1);                                                \
+#define VEC8_ROUND_HALFANDHALF(A1, B1, C1, D1, A2, B2, C2, D2, A3, B3, C3, D3, \
+                               A4, B4, C4, D4)                                 \
+    VEC8_LINE1(A1, B1, C1, D1);                                                \
     VEC8_LINE1(A2, B2, C2, D2);                                                \
-    VEC8_LINE2(a1, b1, c1, d1);                                                \
+    VEC8_LINE2(A1, B1, C1, D1);                                                \
     VEC8_LINE2(A2, B2, C2, D2);                                                \
-    VEC8_LINE1(a3, b3, c3, d3);                                                \
-    VEC8_LINE1(a4, b4, c4, d4);                                                \
-    VEC8_LINE2(a3, b3, c3, d3);                                                \
-    VEC8_LINE2(a4, b4, c4, d4);                                                \
-    VEC8_LINE3(a1, b1, c1, d1);                                                \
+    VEC8_LINE1(A3, B3, C3, D3);                                                \
+    VEC8_LINE1(A4, B4, C4, D4);                                                \
+    VEC8_LINE2(A3, B3, C3, D3);                                                \
+    VEC8_LINE2(A4, B4, C4, D4);                                                \
+    VEC8_LINE3(A1, B1, C1, D1);                                                \
     VEC8_LINE3(A2, B2, C2, D2);                                                \
-    VEC8_LINE4(a1, b1, c1, d1);                                                \
+    VEC8_LINE4(A1, B1, C1, D1);                                                \
     VEC8_LINE4(A2, B2, C2, D2);                                                \
-    VEC8_LINE3(a3, b3, c3, d3);                                                \
-    VEC8_LINE3(a4, b4, c4, d4);                                                \
-    VEC8_LINE4(a3, b3, c3, d3);                                                \
-    VEC8_LINE4(a4, b4, c4, d4)
+    VEC8_LINE3(A3, B3, C3, D3);                                                \
+    VEC8_LINE3(A4, B4, C4, D4);                                                \
+    VEC8_LINE4(A3, B3, C3, D3);                                                \
+    VEC8_LINE4(A4, B4, C4, D4)
 
-#define VEC8_ROUND(a1, b1, c1, d1, A2, B2, C2, D2, a3, b3, c3, d3, a4, b4, c4, \
-                   d4)                                                         \
-    VEC8_ROUND_SEQ(a1, b1, c1, d1, A2, B2, C2, D2, a3, b3, c3, d3, a4, b4, c4, \
-                   d4)
+#define VEC8_ROUND(A1, B1, C1, D1, A2, B2, C2, D2, A3, B3, C3, D3, A4, B4, C4, \
+                   D4)                                                         \
+    VEC8_ROUND_SEQ(A1, B1, C1, D1, A2, B2, C2, D2, A3, B3, C3, D3, A4, B4, C4, \
+                   D4)
 
 if (bytes >= 512) {
     /* constant for shuffling bytes (replacing multiple-of-8 rotates) */
