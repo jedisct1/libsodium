@@ -2,6 +2,12 @@
 #include "crypto_kdf.h"
 #include "randombytes.h"
 
+const char *
+crypto_kdf_primitive(void)
+{
+    return crypto_kdf_PRIMITIVE;
+}
+
 size_t
 crypto_kdf_bytes_min(void)
 {

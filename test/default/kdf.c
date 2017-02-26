@@ -38,6 +38,17 @@ tv_kdf(void)
         }
         sodium_free(subkey);
     }
+
+    assert(strcmp(crypto_kdf_primitive(), crypto_kdf_PRIMITIVE) == 0);
+    assert(crypto_kdf_BYTES_MAX > 0);
+    assert(crypto_kdf_BYTES_MIN <= crypto_kdf_BYTES_MAX);
+    assert(crypto_kdf_bytes_min() == crypto_kdf_BYTES_MIN);
+    assert(crypto_kdf_bytes_max() == crypto_kdf_BYTES_MAX);
+    assert(crypto_kdf_CONTEXTBYTES > 0);
+    assert(crypto_kdf_contextbytes() == crypto_kdf_CONTEXTBYTES);
+    assert(crypto_kdf_KEYBYTES >= 16);
+    assert(crypto_kdf_keybytes() == crypto_kdf_KEYBYTES);
+
     printf("tv_kdf: ok\n");
 }
 
