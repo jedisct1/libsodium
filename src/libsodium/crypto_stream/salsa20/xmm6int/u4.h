@@ -56,7 +56,7 @@ if (bytes >= 256) {
         uint64_t      in89;
 
         in8  = x[8];
-        in9  = x[13]; // see arrays above for the address translation
+        in9  = x[13];
         in89 = ((uint64_t) in8) | (((uint64_t) in9) << 32);
         t8   = _mm_set1_epi64x(in89);
         t9   = _mm_set1_epi64x(in89);
