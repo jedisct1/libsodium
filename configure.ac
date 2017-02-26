@@ -102,6 +102,7 @@ AC_ARG_ENABLE(minimal,
 [
   AS_IF([test "x$enableval" = "xyes"], [
     enable_minimal="yes"
+    AC_DEFINE([MINIMAL], [1], [Define for a minimal build, without deprecated functions and functions that high-level APIs depend on])
   ], [
     enable_minimal="no"
   ])

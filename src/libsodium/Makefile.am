@@ -16,8 +16,7 @@ libsodium_la_SOURCES = \
 	crypto_core/curve25519/ref10/curve25519_ref10.c \
 	crypto_core/hsalsa20/ref2/core_hsalsa20_ref2.c \
 	crypto_core/hsalsa20/core_hsalsa20.c \
-	crypto_core/salsa20/ref/core_salsa20_ref.c \
-	crypto_core/salsa20/core_salsa20.c \
+	crypto_core/salsa/ref/core_salsa_ref.c \
 	crypto_generichash/crypto_generichash.c \
 	crypto_generichash/blake2b/generichash_blake2.c \
 	crypto_generichash/blake2b/ref/blake2.h \
@@ -81,6 +80,7 @@ libsodium_la_SOURCES = \
 	crypto_stream/chacha20/ref/stream_chacha20_ref.c \
 	crypto_stream/crypto_stream.c \
 	crypto_stream/salsa20/stream_salsa20.c \
+	crypto_stream/salsa20/ref/stream_salsa20_ref.c \
 	crypto_stream/xsalsa20/stream_xsalsa20.c \
 	crypto_verify/sodium/verify.c \
 	include/sodium/private/common.h \
@@ -141,24 +141,11 @@ libsodium_la_SOURCES += \
 	crypto_scalarmult/curve25519/sandy2x/sandy2x.S
 endif
 
-if HAVE_AMD64_ASM
-libsodium_la_SOURCES += \
-	crypto_stream/salsa20/amd64_xmm6/stream_salsa20_amd64_xmm6.S
-else
-libsodium_la_SOURCES += \
-	crypto_stream/salsa20/ref/stream_salsa20_ref.c \
-	crypto_stream/salsa20/ref/xor_salsa20_ref.c
-endif
-
 if !MINIMAL
 libsodium_la_SOURCES += \
 	crypto_aead/xchacha20poly1305/sodium/aead_xchacha20poly1305.c \
 	crypto_box/curve25519xchacha20poly1305/box_curve25519xchacha20poly1305.c \
 	crypto_core/hchacha20/core_hchacha20.c \
-	crypto_core/salsa2012/core_salsa2012.c \
-	crypto_core/salsa2012/ref/core_salsa2012_ref.c \
-	crypto_core/salsa208/core_salsa208.c \
-	crypto_core/salsa208/ref/core_salsa208_ref.c \
 	crypto_secretbox/xchacha20poly1305/secretbox_xchacha20poly1305.c \
 	crypto_shorthash/siphash24/shorthash_siphashx24.c \
 	crypto_shorthash/siphash24/ref/shorthash_siphashx24_ref.c \
@@ -174,10 +161,8 @@ libsodium_la_SOURCES += \
 	crypto_stream/aes128ctr/nacl/xor_afternm_aes128ctr.c \
 	crypto_stream/aes128ctr/stream_aes128ctr.c \
 	crypto_stream/salsa2012/ref/stream_salsa2012_ref.c \
-	crypto_stream/salsa2012/ref/xor_salsa2012.c \
 	crypto_stream/salsa2012/stream_salsa2012.c \
 	crypto_stream/salsa208/ref/stream_salsa208_ref.c \
-	crypto_stream/salsa208/ref/xor_salsa208.c \
 	crypto_stream/salsa208/stream_salsa208.c \
 	crypto_stream/xchacha20/stream_xchacha20.c
 endif
@@ -219,7 +204,10 @@ libsse2_la_CPPFLAGS = $(libsodium_la_CPPFLAGS) \
 libsse2_la_SOURCES = \
 	crypto_pwhash/scryptsalsa208sha256/sse/pwhash_scryptsalsa208sha256_sse.c \
 	crypto_onetimeauth/poly1305/sse2/poly1305_sse2.c \
-	crypto_onetimeauth/poly1305/sse2/poly1305_sse2.h
+	crypto_onetimeauth/poly1305/sse2/poly1305_sse2.h \
+	crypto_stream/salsa20/xmm6int/stream_salsa20_xmm6int.c \
+	crypto_stream/salsa20/xmm6int/u1.h \
+	crypto_stream/salsa20/xmm6int/u4.h
 
 libssse3_la_LDFLAGS = $(libsodium_la_LDFLAGS)
 libssse3_la_CPPFLAGS = $(libsodium_la_CPPFLAGS) \

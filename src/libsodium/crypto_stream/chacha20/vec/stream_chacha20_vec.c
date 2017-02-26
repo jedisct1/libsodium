@@ -129,8 +129,8 @@ chacha_keysetup(chacha_ctx *ctx, const uint8_t *k)
 }
 
 static void
-chacha_encrypt_bytes(chacha_ctx *ctx, const uint8_t *in, uint8_t *out,
-                     unsigned long long inlen)
+chacha20_encrypt_bytes(chacha_ctx *ctx, const uint8_t *in, uint8_t *out,
+                       unsigned long long inlen)
 {
     CRYPTO_ALIGN(16)
     unsigned chacha_const[] = { 0x61707865, 0x3320646E, 0x79622D32,
@@ -258,7 +258,7 @@ stream_vec(unsigned char *c, unsigned long long clen, const unsigned char *n,
     chacha_keysetup(&ctx, k);
     chacha_ivsetup(&ctx, n, 0ULL);
     memset(c, 0, clen);
-    chacha_encrypt_bytes(&ctx, c, c, clen);
+    chacha20_encrypt_bytes(&ctx, c, c, clen);
     sodium_memzero(&ctx, sizeof ctx);
 
     return 0;
@@ -277,7 +277,7 @@ stream_ietf_vec(unsigned char *c, unsigned long long clen,
     chacha_keysetup(&ctx, k);
     chacha_ietf_ivsetup(&ctx, n, 0ULL);
     memset(c, 0, clen);
-    chacha_encrypt_bytes(&ctx, c, c, clen);
+    chacha20_encrypt_bytes(&ctx, c, c, clen);
     sodium_memzero(&ctx, sizeof ctx);
 
     return 0;
@@ -295,7 +295,7 @@ stream_vec_xor_ic(unsigned char *c, const unsigned char *m,
     }
     chacha_keysetup(&ctx, k);
     chacha_ivsetup(&ctx, n, ic);
-    chacha_encrypt_bytes(&ctx, m, c, mlen);
+    chacha20_encrypt_bytes(&ctx, m, c, mlen);
     sodium_memzero(&ctx, sizeof ctx);
 
     return 0;
@@ -313,7 +313,7 @@ stream_ietf_vec_xor_ic(unsigned char *c, const unsigned char *m,
     }
     chacha_keysetup(&ctx, k);
     chacha_ietf_ivsetup(&ctx, n, ic);
-    chacha_encrypt_bytes(&ctx, m, c, mlen);
+    chacha20_encrypt_bytes(&ctx, m, c, mlen);
     sodium_memzero(&ctx, sizeof ctx);
 
     return 0;
