@@ -13,6 +13,7 @@
 #include "crypto_pwhash_argon2i.h"
 #include "crypto_scalarmult.h"
 #include "crypto_stream_chacha20.h"
+#include "crypto_stream_salsa20.h"
 #include "randombytes.h"
 #include "runtime.h"
 #include "utils.h"
