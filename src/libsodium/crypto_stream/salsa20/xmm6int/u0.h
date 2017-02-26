@@ -1,16 +1,15 @@
 if (bytes > 0) {
-    uint8_t partialblock[64];
-    int     i;
-
     __m128i diag0 = _mm_loadu_si128((__m128i *) (x + 0));
     __m128i diag1 = _mm_loadu_si128((__m128i *) (x + 4));
     __m128i diag2 = _mm_loadu_si128((__m128i *) (x + 8));
     __m128i diag3 = _mm_loadu_si128((__m128i *) (x + 12));
     __m128i a0, a1, a2, a3, a4, a5, a6, a7;
     __m128i b0, b1, b2, b3, b4, b5, b6, b7;
+    uint8_t partialblock[64];
 
     uint32_t in8;
     uint32_t in9;
+    int      i;
 
     a0 = diag1;
     for (i = 0; i < ROUNDS; i += 4) {
