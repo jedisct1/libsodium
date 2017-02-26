@@ -3,22 +3,8 @@ while (bytes >= 64) {
     __m128i diag1 = _mm_loadu_si128((__m128i *) (x + 4));
     __m128i diag2 = _mm_loadu_si128((__m128i *) (x + 8));
     __m128i diag3 = _mm_loadu_si128((__m128i *) (x + 12));
-    __m128i a0;
-    __m128i a1;
-    __m128i a2;
-    __m128i a3;
-    __m128i a4;
-    __m128i a5;
-    __m128i a6;
-    __m128i a7;
-    __m128i b0;
-    __m128i b1;
-    __m128i b2;
-    __m128i b3;
-    __m128i b4;
-    __m128i b5;
-    __m128i b6;
-    __m128i b7;
+    __m128i a0, a1, a2, a3, a4, a5, a6, a7;
+    __m128i b0, b1, b2, b3, b4, b5, b6, b7;
 
     uint32_t in8;
     uint32_t in9;
