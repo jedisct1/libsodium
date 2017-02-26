@@ -10,7 +10,7 @@ Public domain.
 #include "crypto_stream_salsa20.h"
 #include "utils.h"
 
-#ifndef HAVE_AMD64_ASM
+#if !(defined(HAVE_EMMINTRIN_H) && defined(__x86_64__))
 
 static int
 stream_ref(unsigned char *c, unsigned long long clen,
