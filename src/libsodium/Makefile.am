@@ -81,8 +81,6 @@ libsodium_la_SOURCES = \
 	crypto_stream/crypto_stream.c \
 	crypto_stream/salsa20/stream_salsa20.c \
 	crypto_stream/salsa20/stream_salsa20.h \
-	crypto_stream/salsa20/ref/salsa20_ref.c \
-	crypto_stream/salsa20/ref/salsa20_ref.h \
 	crypto_stream/xsalsa20/stream_xsalsa20.c \
 	crypto_verify/sodium/verify.c \
 	include/sodium/private/common.h \
@@ -123,6 +121,9 @@ libsodium_la_SOURCES += \
 	crypto_stream/salsa20/xmm6/salsa20_xmm6-asm.S \
 	crypto_stream/salsa20/xmm6/salsa20_xmm6.c \
 	crypto_stream/salsa20/xmm6/salsa20_xmm6.h
+else
+	crypto_stream/salsa20/ref/salsa20_ref.c \
+	crypto_stream/salsa20/ref/salsa20_ref.h
 endif
 
 noinst_HEADERS = \

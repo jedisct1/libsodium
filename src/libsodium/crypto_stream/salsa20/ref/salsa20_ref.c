@@ -13,7 +13,7 @@ Public domain.
 #include "../stream_salsa20.h"
 #include "salsa20_ref.h"
 
-#if !(defined(HAVE_EMMINTRIN_H) && defined(__x86_64__))
+#ifndef HAVE_AMD64_ASM
 
 static int
 stream_ref(unsigned char *c, unsigned long long clen, const unsigned char *n,
