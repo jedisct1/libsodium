@@ -3,16 +3,13 @@
 #include <stdlib.h>
 #include <string.h>
 
-#if defined(HAVE_EMMINTRIN_H) && defined(__x86_64__)
-
 #if defined(HAVE_EMMINTRIN_H) || \
     (defined(_MSC_VER) &&        \
      (defined(_M_X64) || defined(_M_AMD64) || defined(_M_IX86)))
-# ifdef __GNUC__
-#  pragma GCC target("sse2")
-# endif
-# include <emmintrin.h>
+#ifdef __GNUC__
+# pragma GCC target("sse2")
 #endif
+#include <emmintrin.h>
 
 #include "crypto_stream_salsa20.h"
 #include "private/common.h"

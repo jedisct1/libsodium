@@ -1,13 +1,19 @@
+#if defined(HAVE_EMMINTRIN_H) || \
+    (defined(_MSC_VER) &&        \
+     (defined(_M_X64) || defined(_M_AMD64) || defined(_M_IX86)))
+# define INCLUDE_SSE2_IMPL
+#endif
+
 #include "crypto_stream_salsa20.h"
 #include "stream_salsa20.h"
 #include "randombytes.h"
 #include "runtime.h"
 #include "ref/stream_salsa20_ref.h"
-#ifdef HAVE_EMMINTRIN_H
+#ifdef INCLUDE_SSE2_IMPL
 # include "xmm6int/stream_salsa20_xmm6int.h"
 #endif
 
-#if defined(HAVE_EMMINTRIN_H) && defined(__x86_64__)
+#if defined(INCLUDE_SSE2_IMPL) && defined(__x86_64__)
 static const crypto_stream_salsa20_implementation *implementation =
     &crypto_stream_salsa20_xmm6int_implementation;
 #else
@@ -60,13 +66,13 @@ crypto_stream_salsa20_keygen(unsigned char k[crypto_stream_salsa20_KEYBYTES])
 int
 _crypto_stream_salsa20_pick_best_implementation(void)
 {
-#if defined(HAVE_EMMINTRIN_H) && defined(__x86_64__)
+#if defined(INCLUDE_SSE2_IMPL) && defined(__x86_64__)
     implementation = &crypto_stream_salsa20_xmm6int_implementation;
 #else
     implementation = &crypto_stream_salsa20_ref_implementation;
 #endif
 
-#ifdef HAVE_EMMINTRIN_H
+#ifdef INCLUDE_SSE2_IMPL
     if (sodium_runtime_has_sse2()) {
         implementation = &crypto_stream_salsa20_xmm6int_implementation;
     }
