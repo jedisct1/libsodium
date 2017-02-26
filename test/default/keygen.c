@@ -10,7 +10,7 @@ typedef struct KeygenTV_ {
 static void
 tv_keygen(void)
 {
-    const static KeygenTV tvs[] = {
+    static const KeygenTV tvs[] = {
         { crypto_auth_keygen, crypto_auth_KEYBYTES },
         { crypto_auth_hmacsha256_keygen, crypto_auth_hmacsha256_KEYBYTES },
         { crypto_aead_aes256gcm_keygen, crypto_aead_aes256gcm_KEYBYTES },
