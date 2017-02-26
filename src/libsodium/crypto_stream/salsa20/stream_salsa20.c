@@ -6,12 +6,16 @@
 
 #include "ref/salsa20_ref.h"
 #ifdef HAVE_EMMINTRIN_H
-# include "xmm6int/salsa20_xmm6int.h"
+# include "xmm6int/salsa20_xmm6int-sse2.h"
+#endif
+#if defined(HAVE_AVX2INTRIN_H) && defined(HAVE_EMMINTRIN_H) && \
+    defined(HAVE_TMMINTRIN_H) && defined(HAVE_SMMINTRIN_H)
+# include "xmm6int/salsa20_xmm6int-avx2.h"
 #endif
 
 #if defined(HAVE_EMMINTRIN_H) && defined(__x86_64__)
 static const crypto_stream_salsa20_implementation *implementation =
-    &crypto_stream_salsa20_xmm6int_implementation;
+    &crypto_stream_salsa20_xmm6int_sse2_implementation;
 #else
 static const crypto_stream_salsa20_implementation *implementation =
     &crypto_stream_salsa20_ref_implementation;
@@ -63,14 +67,22 @@ int
 _crypto_stream_salsa20_pick_best_implementation(void)
 {
 #if defined(HAVE_EMMINTRIN_H) && defined(__x86_64__)
-    implementation = &crypto_stream_salsa20_xmm6int_implementation;
+    implementation = &crypto_stream_salsa20_xmm6int_sse2_implementation;
 #else
     implementation = &crypto_stream_salsa20_ref_implementation;
 #endif
 
+#if defined(HAVE_AVX2INTRIN_H) && defined(HAVE_EMMINTRIN_H) && \
+    defined(HAVE_TMMINTRIN_H) && defined(HAVE_SMMINTRIN_H)
+    if (sodium_runtime_has_avx2()) {
+        implementation = &crypto_stream_salsa20_xmm6int_avx2_implementation;
+        return 0;
+    }
+#endif
 #ifdef HAVE_EMMINTRIN_H
     if (sodium_runtime_has_sse2()) {
-        implementation = &crypto_stream_salsa20_xmm6int_implementation;
+        implementation = &crypto_stream_salsa20_xmm6int_sse2_implementation;
+        return 0;
     }
 #endif
     return 0;

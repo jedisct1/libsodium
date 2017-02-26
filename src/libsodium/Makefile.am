@@ -207,8 +207,8 @@ libsse2_la_SOURCES = \
 	crypto_pwhash/scryptsalsa208sha256/sse/pwhash_scryptsalsa208sha256_sse.c \
 	crypto_onetimeauth/poly1305/sse2/poly1305_sse2.c \
 	crypto_onetimeauth/poly1305/sse2/poly1305_sse2.h \
-	crypto_stream/salsa20/xmm6int/salsa20_xmm6int.c \
-	crypto_stream/salsa20/xmm6int/salsa20_xmm6int.h \
+	crypto_stream/salsa20/xmm6int/salsa20_xmm6int-sse2.c \
+	crypto_stream/salsa20/xmm6int/salsa20_xmm6int-sse2.h \
 	crypto_stream/salsa20/xmm6int/u0.h \
 	crypto_stream/salsa20/xmm6int/u1.h \
 	crypto_stream/salsa20/xmm6int/u4.h
@@ -236,4 +236,7 @@ libavx2_la_CPPFLAGS = $(libsodium_la_CPPFLAGS) \
 	@CFLAGS_SSE2@ @CFLAGS_SSSE3@ @CFLAGS_SSE41@ @CFLAGS_AVX@ @CFLAGS_AVX2@
 libavx2_la_SOURCES = \
 	crypto_generichash/blake2b/ref/blake2b-compress-avx2.c \
-	crypto_generichash/blake2b/ref/blake2b-compress-avx2.h
+	crypto_generichash/blake2b/ref/blake2b-compress-avx2.h \
+	crypto_stream/salsa20/xmm6int/salsa20_xmm6int-avx2.c \
+	crypto_stream/salsa20/xmm6int/salsa20_xmm6int-avx2.h \
+	crypto_stream/salsa20/xmm6int/u8.h
