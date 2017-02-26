@@ -260,5 +260,5 @@ libavx2_la_SOURCES = \
 	crypto_stream/salsa20/xmm6int/salsa20_xmm6int-avx2.h \
 	crypto_stream/salsa20/xmm6int/u0.h \
 	crypto_stream/salsa20/xmm6int/u1.h \
-	crypto_stream/salsa20/xmm6int/u4.h
+	crypto_stream/salsa20/xmm6int/u4.h \
 	crypto_stream/salsa20/xmm6int/u8.h
