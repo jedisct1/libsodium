@@ -1,5 +1,5 @@
 /*
-        poly1305 implementation using 64 bit * 64 bit = 128 bit multiplication
+   poly1305 implementation using 64 bit * 64 bit = 128 bit multiplication
    and 128 bit addition
 */
 
@@ -16,11 +16,11 @@ typedef unsigned uint128_t __attribute__((mode(TI)));
 #define LO(in) (unsigned long long) (in)
 
 #if defined(_MSC_VER)
-#define POLY1305_NOINLINE __declspec(noinline)
+# define POLY1305_NOINLINE __declspec(noinline)
 #elif defined(__GNUC__)
-#define POLY1305_NOINLINE __attribute__((noinline))
+# define POLY1305_NOINLINE __attribute__((noinline))
 #else
-#define POLY1305_NOINLINE
+# define POLY1305_NOINLINE
 #endif
 
 #include "private/common.h"

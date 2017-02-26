@@ -10,27 +10,27 @@
 
 #if defined(HAVE_TI_MODE) && defined(HAVE_EMMINTRIN_H)
 
-#pragma GCC target("sse2")
+# pragma GCC target("sse2")
 
-#include <emmintrin.h>
+# include <emmintrin.h>
 
 typedef __m128i xmmi;
 
-#if defined(__SIZEOF_INT128__)
+# if defined(__SIZEOF_INT128__)
 typedef unsigned __int128 uint128_t;
-#else
+# else
 typedef unsigned uint128_t __attribute__((mode(TI)));
-#endif
+# endif
 
-#if defined(_MSC_VER)
-#define POLY1305_NOINLINE __declspec(noinline)
-#elif defined(__GNUC__)
-#define POLY1305_NOINLINE __attribute__((noinline))
-#else
-#define POLY1305_NOINLINE
-#endif
+# if defined(_MSC_VER)
+#  define POLY1305_NOINLINE __declspec(noinline)
+# elif defined(__GNUC__)
+#  define POLY1305_NOINLINE __attribute__((noinline))
+# else
+#  define POLY1305_NOINLINE
+# endif
 
-#define poly1305_block_size 32
+# define poly1305_block_size 32
 
 enum poly1305_state_flags_t {
     poly1305_started       = 1,
@@ -59,7 +59,7 @@ typedef struct poly1305_state_internal_t {
  * totally fine, even though this intrinsic requires a __m128i* input.
  * This confuses dynamic analysis, so force alignment, only in debug mode.
  */
-#ifdef DEBUG
+# ifdef DEBUG
 static xmmi
 _fakealign_mm_loadl_epi64(const void *m)
 {
@@ -68,7 +68,7 @@ _fakealign_mm_loadl_epi64(const void *m)
 
     return _mm_loadl_epi64(&tmp);
 }
-#define _mm_loadl_epi64(X) _fakealign_mm_loadl_epi64(X)
+# define _mm_loadl_epi64(X) _fakealign_mm_loadl_epi64(X)
 #endif
 
 /* copy 0-31 bytes */

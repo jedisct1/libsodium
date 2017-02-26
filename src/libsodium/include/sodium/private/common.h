@@ -192,4 +192,20 @@ store32_be(uint8_t dst[4], uint32_t w)
 # endif
 #endif
 
+#if defined(_MSC_VER) && \
+    (defined(_M_X64) || defined(_M_AMD64) || defined(_M_IX86))
+# define HAVE_MMINTRIN_H  1
+# define HAVE_EMMINTRIN_H 1
+# define HAVE_PMMINTRIN_H 1
+# define HAVE_TMMINTRIN_H 1
+# define HAVE_SMMINTRIN_H 1
+# define HAVE_AVXINTRIN_H 1
+# if _MSC_VER >= 1600
+#  define HAVE_WMMINTRIN_H 1
+# endif
+# if _MSC_VER >= 1700
+#  define HAVE_AVX2INTRIN_H 1
+# endif
+#endif
+
 #endif

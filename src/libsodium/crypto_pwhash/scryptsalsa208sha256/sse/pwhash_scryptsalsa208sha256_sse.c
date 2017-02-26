@@ -28,40 +28,40 @@
  * online backup system.
  */
 
-#if defined(HAVE_EMMINTRIN_H) || \
-    (defined(_MSC_VER) &&        \
-     (defined(_M_X64) || defined(_M_AMD64) || defined(_M_IX86)))
-#ifdef __GNUC__
-#pragma GCC target("sse2")
-#endif
-#include <emmintrin.h>
-#if defined(__XOP__) && defined(DISABLED)
-#include <x86intrin.h>
-#endif
-
 #include <errno.h>
 #include <limits.h>
 #include <stdint.h>
 #include <stdlib.h>
 #include <string.h>
 
-#include "../crypto_scrypt.h"
-#include "../pbkdf2-sha256.h"
 #include "private/common.h"
 
-#if defined(__XOP__) && defined(DISABLED)
-#define ARX(out, in1, in2, s) \
+#ifdef HAVE_EMMINTRIN_H
+
+# ifdef __GNUC__
+#  pragma GCC target("sse2")
+# endif
+# include <emmintrin.h>
+# if defined(__XOP__) && defined(DISABLED)
+#  include <x86intrin.h>
+# endif
+
+# include "../crypto_scrypt.h"
+# include "../pbkdf2-sha256.h"
+
+# if defined(__XOP__) && defined(DISABLED)
+#  define ARX(out, in1, in2, s) \
     out = _mm_xor_si128(out, _mm_roti_epi32(_mm_add_epi32(in1, in2), s));
-#else
-#define ARX(out, in1, in2, s)                                      \
+# else
+#  define ARX(out, in1, in2, s)                                    \
     {                                                              \
         __m128i T = _mm_add_epi32(in1, in2);                       \
         out       = _mm_xor_si128(out, _mm_slli_epi32(T, s));      \
         out       = _mm_xor_si128(out, _mm_srli_epi32(T, 32 - s)); \
     }
-#endif
+# endif
 
-#define SALSA20_2ROUNDS               \
+# define SALSA20_2ROUNDS              \
     /* Operate on "columns". */       \
     ARX(X1, X0, X3, 7)                \
     ARX(X2, X1, X0, 9)                \
@@ -87,7 +87,7 @@
 /**
  * Apply the salsa20/8 core to the block provided in (X0 ... X3) ^ (Z0 ... Z3).
  */
-#define SALSA20_8_XOR(in, out)                                \
+# define SALSA20_8_XOR(in, out)                               \
     {                                                         \
         __m128i Y0 = X0 = _mm_xor_si128(X0, (in)[0]);         \
         __m128i Y1 = X1 = _mm_xor_si128(X1, (in)[1]);         \
@@ -146,13 +146,13 @@ blockmix_salsa8(const __m128i *Bin, __m128i *Bout, size_t r)
     SALSA20_8_XOR(&Bin[i * 8 + 4], &Bout[(r + i) * 4 + 4])
 }
 
-#define XOR4(in)                     \
+# define XOR4(in)                    \
     X0 = _mm_xor_si128(X0, (in)[0]); \
     X1 = _mm_xor_si128(X1, (in)[1]); \
     X2 = _mm_xor_si128(X2, (in)[2]); \
     X3 = _mm_xor_si128(X3, (in)[3]);
 
-#define XOR4_2(in1, in2)                    \
+# define XOR4_2(in1, in2)                   \
     X0 = _mm_xor_si128((in1)[0], (in2)[0]); \
     X1 = _mm_xor_si128((in1)[1], (in2)[1]); \
     X2 = _mm_xor_si128((in1)[2], (in2)[2]); \
@@ -201,11 +201,11 @@ blockmix_salsa8_xor(const __m128i *Bin1, const __m128i *Bin2, __m128i *Bout,
     return _mm_cvtsi128_si32(X0);
 }
 
-#undef ARX
-#undef SALSA20_2ROUNDS
-#undef SALSA20_8_XOR
-#undef XOR4
-#undef XOR4_2
+# undef ARX
+# undef SALSA20_2ROUNDS
+# undef SALSA20_8_XOR
+# undef XOR4
+# undef XOR4_2
 
 /**
  * integerify(B, r):
@@ -316,12 +316,12 @@ escrypt_kdf_sse(escrypt_local_t *local, const uint8_t *passwd, size_t passwdlen,
     uint32_t  i;
 
 /* Sanity-check parameters. */
-#if SIZE_MAX > UINT32_MAX
+# if SIZE_MAX > UINT32_MAX
     if (buflen > (((uint64_t)(1) << 32) - 1) * 32) {
         errno = EFBIG;
         return -1;
     }
-#endif
+# endif
     if ((uint64_t)(r) * (uint64_t)(p) >= ((uint64_t) 1 << 30)) {
         errno = EFBIG;
         return -1;
@@ -339,9 +339,9 @@ escrypt_kdf_sse(escrypt_local_t *local, const uint8_t *passwd, size_t passwdlen,
         return -1;
     }
     if ((r > SIZE_MAX / 128 / p) ||
-#if SIZE_MAX / 256 <= UINT32_MAX
+# if SIZE_MAX / 256 <= UINT32_MAX
         (r > SIZE_MAX / 256) ||
-#endif
+# endif
         (N > SIZE_MAX / 128 / r)) {
         errno = ENOMEM;
         return -1;

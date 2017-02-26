@@ -1,14 +1,14 @@
 /*
-        poly1305 implementation using 32 bit * 32 bit = 64 bit multiplication
+   poly1305 implementation using 32 bit * 32 bit = 64 bit multiplication
    and 64 bit addition
 */
 
 #if defined(_MSC_VER)
-#define POLY1305_NOINLINE __declspec(noinline)
+# define POLY1305_NOINLINE __declspec(noinline)
 #elif defined(__GNUC__)
-#define POLY1305_NOINLINE __attribute__((noinline))
+# define POLY1305_NOINLINE __attribute__((noinline))
 #else
-#define POLY1305_NOINLINE
+# define POLY1305_NOINLINE
 #endif
 
 #include "private/common.h"

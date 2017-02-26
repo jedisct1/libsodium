@@ -161,9 +161,9 @@ blake2b_init0(blake2b_state *S)
     int i;
     memset(S, 0, sizeof(blake2b_state));
 
-    for (i      = 0; i < 8; ++i)
+    for (i  = 0; i < 8; i++) {
         S->h[i] = blake2b_IV[i];
-
+    }
     return 0;
 }
 
@@ -179,9 +179,9 @@ blake2b_init_param(blake2b_state *S, const blake2b_param *P)
     p = (const uint8_t *) (P);
 
     /* IV XOR ParamBlock */
-    for (i = 0; i < 8; ++i)
+    for (i = 0; i < 8; i++) {
         S->h[i] ^= LOAD64_LE(p + sizeof(S->h[i]) * i);
-
+    }
     return 0;
 }
 
@@ -381,8 +381,9 @@ blake2b_final(blake2b_state *S, uint8_t *out, uint8_t outlen)
         uint8_t buffer[BLAKE2B_OUTBYTES];
         int     i;
 
-        for (i = 0; i < 8; ++i) /* Output full hash to temp buffer */
+        for (i = 0; i < 8; i++) { /* Output full hash to temp buffer */
             STORE64_LE(buffer + sizeof(S->h[i]) * i, S->h[i]);
+        }
         memcpy(out, buffer, outlen);
     }
 #endif
@@ -466,26 +467,21 @@ int
 blake2b_pick_best_implementation(void)
 {
 /* LCOV_EXCL_START */
-#if (defined(HAVE_AVX2INTRIN_H) && defined(HAVE_TMMINTRIN_H) &&     \
-     defined(HAVE_SMMINTRIN_H)) ||                                  \
-    (defined(_MSC_VER) && (defined(_M_X64) || defined(_M_AMD64)) && \
-     _MSC_VER >= 1700)
+#if defined(HAVE_AVX2INTRIN_H) && defined(HAVE_TMMINTRIN_H) && \
+    defined(HAVE_SMMINTRIN_H)
     if (sodium_runtime_has_avx2()) {
         blake2b_compress = blake2b_compress_avx2;
         return 0;
     }
 #endif
-#if (defined(HAVE_EMMINTRIN_H) && defined(HAVE_TMMINTRIN_H) && \
-     defined(HAVE_SMMINTRIN_H)) ||                             \
-    (defined(_MSC_VER) &&                                      \
-     (defined(_M_X64) || defined(_M_AMD64) || defined(_M_IX86)))
+#if defined(HAVE_EMMINTRIN_H) && defined(HAVE_TMMINTRIN_H) && \
+    defined(HAVE_SMMINTRIN_H)
     if (sodium_runtime_has_sse41()) {
         blake2b_compress = blake2b_compress_sse41;
         return 0;
     }
 #endif
-#if (defined(HAVE_EMMINTRIN_H) && defined(HAVE_TMMINTRIN_H)) || \
-    (defined(_MSC_VER) && (defined(_M_X64) || defined(_M_AMD64)))
+#if defined(HAVE_EMMINTRIN_H) && defined(HAVE_TMMINTRIN_H)
     if (sodium_runtime_has_ssse3()) {
         blake2b_compress = blake2b_compress_ssse3;
         return 0;

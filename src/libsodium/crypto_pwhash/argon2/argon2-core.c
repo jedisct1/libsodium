@@ -11,8 +11,9 @@
  * <http://creativecommons.org/publicdomain/zero/1.0/>.
  */
 
+#include <sys/types.h>
 #ifdef HAVE_SYS_MMAN_H
-#include <sys/mman.h>
+# include <sys/mman.h>
 #endif
 #include <errno.h>
 #include <stdint.h>
@@ -29,7 +30,7 @@
 #include "blake2b-long.h"
 
 #if !defined(MAP_ANON) && defined(MAP_ANONYMOUS)
-#define MAP_ANON MAP_ANONYMOUS
+# define MAP_ANON MAP_ANONYMOUS
 #endif
 
 static fill_segment_fn fill_segment = fill_segment_ref;
@@ -589,9 +590,7 @@ int
 argon2_pick_best_implementation(void)
 {
 /* LCOV_EXCL_START */
-#if (defined(HAVE_EMMINTRIN_H) && defined(HAVE_TMMINTRIN_H)) || \
-    (defined(_MSC_VER) &&                                       \
-     (defined(_M_X64) || defined(_M_AMD64) || defined(_M_IX86)))
+#if defined(HAVE_EMMINTRIN_H) && defined(HAVE_TMMINTRIN_H)
     if (sodium_runtime_has_ssse3()) {
         fill_segment = fill_segment_ssse3;
         return 0;

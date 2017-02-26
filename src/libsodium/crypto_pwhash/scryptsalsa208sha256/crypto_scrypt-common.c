@@ -23,6 +23,7 @@
 
 #include "crypto_pwhash_scryptsalsa208sha256.h"
 #include "crypto_scrypt.h"
+#include "private/common.h"
 #include "runtime.h"
 #include "utils.h"
 
@@ -154,9 +155,7 @@ escrypt_r(escrypt_local_t *local, const uint8_t *passwd, size_t passwdlen,
     if (need > buflen || need < saltlen) {
         return NULL;
     }
-#if defined(HAVE_EMMINTRIN_H) || \
-    (defined(_MSC_VER) &&        \
-     (defined(_M_X64) || defined(_M_AMD64) || defined(_M_IX86)))
+#ifdef HAVE_EMMINTRIN_H
     escrypt_kdf =
         sodium_runtime_has_sse2() ? escrypt_kdf_sse : escrypt_kdf_nosse;
 #else

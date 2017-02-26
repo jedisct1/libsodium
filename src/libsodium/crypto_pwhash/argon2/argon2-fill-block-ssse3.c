@@ -15,23 +15,22 @@
 #include <stdlib.h>
 #include <string.h>
 
-#if (defined(HAVE_EMMINTRIN_H) && defined(HAVE_TMMINTRIN_H)) || \
-    (defined(_MSC_VER) &&                                       \
-     (defined(_M_X64) || defined(_M_AMD64) || defined(_M_IX86)))
-
-#pragma GCC target("sse2")
-#pragma GCC target("ssse3")
-
-#ifdef _MSC_VER
-#include <intrin.h> /* for _mm_set_epi64x */
-#endif
-#include <emmintrin.h>
-#include <tmmintrin.h>
-
 #include "argon2-core.h"
 #include "argon2.h"
-#include "blamka-round-ssse3.h"
 #include "private/common.h"
+
+#if defined(HAVE_EMMINTRIN_H) && defined(HAVE_TMMINTRIN_H)
+
+# pragma GCC target("sse2")
+# pragma GCC target("ssse3")
+
+# ifdef _MSC_VER
+#  include <intrin.h> /* for _mm_set_epi64x */
+# endif
+# include <emmintrin.h>
+# include <tmmintrin.h>
+
+# include "blamka-round-ssse3.h"
 
 static void
 fill_block(__m128i *state, const uint8_t *ref_block, uint8_t *next_block)

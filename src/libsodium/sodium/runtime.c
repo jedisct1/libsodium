@@ -8,6 +8,7 @@
 # include <intrin.h>
 #endif
 
+#include "private/common.h"
 #include "runtime.h"
 
 typedef struct CPUFeatures_ {
@@ -119,42 +120,32 @@ _sodium_runtime_intel_cpu_features(CPUFeatures * const cpu_features)
         return -1; /* LCOV_EXCL_LINE */
     }
     _cpuid(cpu_info, 0x00000001);
-#if defined(HAVE_EMMINTRIN_H) || \
-    (defined(_MSC_VER) &&        \
-     (defined(_M_X64) || defined(_M_AMD64) || defined(_M_IX86)))
+#ifdef HAVE_EMMINTRIN_H
     cpu_features->has_sse2 = ((cpu_info[3] & CPUID_EDX_SSE2) != 0x0);
 #else
     cpu_features->has_sse2   = 0;
 #endif
 
-#if defined(HAVE_PMMINTRIN_H) || \
-    (defined(_MSC_VER) &&        \
-     (defined(_M_X64) || defined(_M_AMD64) || defined(_M_IX86)))
+#ifdef HAVE_PMMINTRIN_H
     cpu_features->has_sse3 = ((cpu_info[2] & CPUID_ECX_SSE3) != 0x0);
 #else
     cpu_features->has_sse3   = 0;
 #endif
 
-#if defined(HAVE_TMMINTRIN_H) || \
-    (defined(_MSC_VER) &&        \
-     (defined(_M_X64) || defined(_M_AMD64) || defined(_M_IX86)))
+#ifdef HAVE_TMMINTRIN_H
     cpu_features->has_ssse3 = ((cpu_info[2] & CPUID_ECX_SSSE3) != 0x0);
 #else
     cpu_features->has_ssse3  = 0;
 #endif
 
-#if defined(HAVE_SMMINTRIN_H) || \
-    (defined(_MSC_VER) &&        \
-     (defined(_M_X64) || defined(_M_AMD64) || defined(_M_IX86)))
+#ifdef HAVE_SMMINTRIN_H
     cpu_features->has_sse41 = ((cpu_info[2] & CPUID_ECX_SSE41) != 0x0);
 #else
     cpu_features->has_sse41  = 0;
 #endif
 
     cpu_features->has_avx = 0;
-#if defined(HAVE_AVXINTRIN_H) || \
-    (defined(_MSC_VER) &&        \
-     (defined(_M_X64) || defined(_M_AMD64) || defined(_M_IX86)))
+#ifdef HAVE_AVXINTRIN_H
     if ((cpu_info[2] & (CPUID_ECX_AVX | CPUID_ECX_XSAVE | CPUID_ECX_OSXSAVE)) ==
         (CPUID_ECX_AVX | CPUID_ECX_XSAVE | CPUID_ECX_OSXSAVE)) {
         uint32_t xcr0 = 0U;
@@ -178,9 +169,7 @@ _sodium_runtime_intel_cpu_features(CPUFeatures * const cpu_features)
 #endif
 
     cpu_features->has_avx2 = 0;
-#if defined(HAVE_AVX2INTRIN_H) || \
-    (defined(_MSC_VER) &&         \
-     (defined(_M_X64) || defined(_M_AMD64) || defined(_M_IX86)))
+#ifdef HAVE_AVX2INTRIN_H
     if (cpu_features->has_avx) {
         unsigned int cpu_info7[4];
 
@@ -189,9 +178,7 @@ _sodium_runtime_intel_cpu_features(CPUFeatures * const cpu_features)
     }
 #endif
 
-#if defined(HAVE_WMMINTRIN_H) ||              \
-    (defined(_MSC_VER) && _MSC_VER >= 1600 && \
-     (defined(_M_X64) || defined(_M_AMD64) || defined(_M_IX86)))
+#ifdef HAVE_WMMINTRIN_H
     cpu_features->has_pclmul = ((cpu_info[2] & CPUID_ECX_PCLMUL) != 0x0);
     cpu_features->has_aesni  = ((cpu_info[2] & CPUID_ECX_AESNI) != 0x0);
 #else

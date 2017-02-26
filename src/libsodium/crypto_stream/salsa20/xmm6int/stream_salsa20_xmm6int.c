@@ -3,22 +3,21 @@
 #include <stdlib.h>
 #include <string.h>
 
-#if defined(HAVE_EMMINTRIN_H) || \
-    (defined(_MSC_VER) &&        \
-     (defined(_M_X64) || defined(_M_AMD64) || defined(_M_IX86)))
-#ifdef __GNUC__
-# pragma GCC target("sse2")
-#endif
-#include <emmintrin.h>
-
 #include "crypto_stream_salsa20.h"
 #include "private/common.h"
 #include "utils.h"
 
-#include "../stream_salsa20.h"
-#include "stream_salsa20_xmm6int.h"
+#ifdef HAVE_EMMINTRIN_H
 
-#define ROUNDS 20
+# ifdef __GNUC__
+#  pragma GCC target("sse2")
+# endif
+# include <emmintrin.h>
+
+# include "../stream_salsa20.h"
+# include "stream_salsa20_xmm6int.h"
+
+# define ROUNDS 20
 
 typedef struct salsa_ctx {
     uint32_t input[16];

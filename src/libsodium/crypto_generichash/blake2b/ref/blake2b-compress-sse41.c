@@ -5,10 +5,11 @@
 #include <stdint.h>
 #include <string.h>
 
-#if (defined(HAVE_EMMINTRIN_H) && defined(HAVE_TMMINTRIN_H) && \
-     defined(HAVE_SMMINTRIN_H)) ||                             \
-    (defined(_MSC_VER) &&                                      \
-     (defined(_M_X64) || defined(_M_AMD64) || defined(_M_IX86)))
+#include "blake2.h"
+#include "private/common.h"
+
+#if defined(HAVE_EMMINTRIN_H) && defined(HAVE_TMMINTRIN_H) && \
+    defined(HAVE_SMMINTRIN_H)
 
 #pragma GCC target("sse2")
 #pragma GCC target("ssse3")
@@ -18,9 +19,7 @@
 #include <smmintrin.h>
 #include <tmmintrin.h>
 
-#include "blake2.h"
 #include "blake2b-compress-sse41.h"
-#include "private/common.h"
 
 CRYPTO_ALIGN(64)
 static const uint64_t blake2b_IV[8] = {
