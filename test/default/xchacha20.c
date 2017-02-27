@@ -117,11 +117,6 @@ tv_stream_xchacha20(void)
                        tv->out, strlen(tv->out), NULL, &out_len, NULL);
         out2 = (unsigned char *) sodium_malloc(out_len);
         crypto_stream_xchacha20(out2, out_len, nonce, key);
-        {
-            char hex[1000];
-            sodium_bin2hex(hex, sizeof hex, out2, out_len);
-            puts(hex);
-        }
         assert(memcmp(out, out2, out_len) == 0);
         crypto_stream_xchacha20_xor(out2, out, out_len, nonce, key);
         assert(sodium_is_zero(out2, out_len));
