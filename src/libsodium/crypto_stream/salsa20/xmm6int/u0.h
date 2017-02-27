@@ -7,9 +7,7 @@ if (bytes > 0) {
     __m128i b0, b1, b2, b3, b4, b5, b6, b7;
     uint8_t partialblock[64];
 
-    uint32_t in8;
-    uint32_t in9;
-    int      i;
+    int     i;
 
     a0 = diag1;
     for (i = 0; i < ROUNDS; i += 4) {
