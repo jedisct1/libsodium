@@ -149,7 +149,7 @@ _sodium_runtime_intel_cpu_features(CPUFeatures * const cpu_features)
     if ((cpu_info[2] & (CPUID_ECX_AVX | CPUID_ECX_XSAVE | CPUID_ECX_OSXSAVE)) ==
         (CPUID_ECX_AVX | CPUID_ECX_XSAVE | CPUID_ECX_OSXSAVE)) {
         uint32_t xcr0 = 0U;
-# ifdef MSC_VER
+# ifdef _MSC_VER
         __asm {
             xor ecx, ecx
             _asm _emit 0x0f _asm _emit 0x01 _asm _emit 0xd0
