@@ -99,7 +99,6 @@ static inline void
 aesni_encrypt1(unsigned char *out, __m128i nv, const __m128i *rkeys)
 {
     __m128i temp = _mm_xor_si128(nv, rkeys[0]);
-    int     roundctr;
 
     temp = _mm_aesenc_si128(temp, rkeys[1]);
     temp = _mm_aesenc_si128(temp, rkeys[2]);
