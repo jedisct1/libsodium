@@ -149,7 +149,9 @@ _sodium_runtime_intel_cpu_features(CPUFeatures * const cpu_features)
     if ((cpu_info[2] & (CPUID_ECX_AVX | CPUID_ECX_XSAVE | CPUID_ECX_OSXSAVE)) ==
         (CPUID_ECX_AVX | CPUID_ECX_XSAVE | CPUID_ECX_OSXSAVE)) {
         uint32_t xcr0 = 0U;
-# if defined(_MSC_VER) && defined(_M_IX86)
+# if defined(_MSC_VER) && defined(_XCR_XFEATURE_ENABLED_MASK) && _MSC_FULL_VER >= 160040219
+        xcr0 = (uint32_t) _xgetbv(0);
+# elif defined(_MSC_VER) && defined(_M_IX86)
         __asm {
             xor ecx, ecx
             _asm _emit 0x0f _asm _emit 0x01 _asm _emit 0xd0
