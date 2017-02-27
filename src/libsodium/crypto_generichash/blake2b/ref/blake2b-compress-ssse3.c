@@ -7,8 +7,10 @@
 
 #if defined(HAVE_EMMINTRIN_H) && defined(HAVE_TMMINTRIN_H)
 
-#pragma GCC target("sse2")
-#pragma GCC target("ssse3")
+# ifdef __GNUC__
+#  pragma GCC target("sse2")
+#  pragma GCC target("ssse3")
+# endif
 
 #ifdef _MSC_VER
 # include <intrin.h> /* for _mm_set_epi64x */

@@ -19,9 +19,11 @@
 
 #if defined(HAVE_TMMINTRIN_H) && defined(HAVE_WMMINTRIN_H)
 
-#pragma GCC target("ssse3")
-#pragma GCC target("aes")
-#pragma GCC target("pclmul")
+# ifdef __GNUC__
+#  pragma GCC target("ssse3")
+#  pragma GCC target("aes")
+#  pragma GCC target("pclmul")
+# endif
 
 #include <tmmintrin.h>
 #include <wmmintrin.h>

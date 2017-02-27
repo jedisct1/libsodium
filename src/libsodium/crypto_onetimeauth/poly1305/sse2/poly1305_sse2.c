@@ -10,7 +10,9 @@
 
 #if defined(HAVE_TI_MODE) && defined(HAVE_EMMINTRIN_H)
 
-# pragma GCC target("sse2")
+# ifdef __GNUC__
+#  pragma GCC target("sse2")
+# endif
 
 # include <emmintrin.h>
 

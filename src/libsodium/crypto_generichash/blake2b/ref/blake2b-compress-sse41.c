@@ -11,9 +11,11 @@
 #if defined(HAVE_EMMINTRIN_H) && defined(HAVE_TMMINTRIN_H) && \
     defined(HAVE_SMMINTRIN_H)
 
-#pragma GCC target("sse2")
-#pragma GCC target("ssse3")
-#pragma GCC target("sse4.1")
+# ifdef __GNUC__
+#  pragma GCC target("sse2")
+#  pragma GCC target("ssse3")
+#  pragma GCC target("sse4.1")
+# endif
 
 #include <emmintrin.h>
 #include <smmintrin.h>

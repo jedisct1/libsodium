@@ -12,10 +12,12 @@
 #if defined(HAVE_AVX2INTRIN_H) && defined(HAVE_EMMINTRIN_H) && \
     defined(HAVE_TMMINTRIN_H) && defined(HAVE_SMMINTRIN_H)
 
-#pragma GCC target("sse2")
-#pragma GCC target("ssse3")
-#pragma GCC target("sse4.1")
-#pragma GCC target("avx2")
+# ifdef __GNUC__
+#  pragma GCC target("sse2")
+#  pragma GCC target("ssse3")
+#  pragma GCC target("sse4.1")
+#  pragma GCC target("avx2")
+# endif
 
 #include <emmintrin.h>
 #include <immintrin.h>
