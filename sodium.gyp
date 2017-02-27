@@ -1,8 +1,8 @@
 {
     "target_defaults": {
-        "default_configuration": "Release|win32",
+        "default_configuration": "Release win32",
         "configurations": {
-            "Release|x64": {
+            "Release x64": {
                 "msvs_configuration_platform": "x64",
                 "defines": [
                     "NDEBUG"
@@ -25,7 +25,7 @@
                     }
                 }
             },
-            "Release|win32": {
+            "Release win32": {
                 "msvs_configuration_platform": "win32",
                 "defines": [
                     "NDEBUG"
@@ -48,7 +48,7 @@
                     }
                 }
             },
-            "Debug|x64": {
+            "Debug x64": {
                 "msvs_configuration_platform": "x64",
                 "defines": [
                     "DEBUG",
@@ -66,7 +66,7 @@
                     }
                 }
             },
-            "Debug|win32": {
+            "Debug win32": {
                 "msvs_configuration_platform": "win32",
                 "defines": [
                     "DEBUG",
