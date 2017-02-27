@@ -203,7 +203,7 @@ store32_be(uint8_t dst[4], uint32_t w)
 # if _MSC_VER >= 1600
 #  define HAVE_WMMINTRIN_H 1
 # endif
-# if _MSC_VER >= 1700
+# if _MSC_VER >= 1700 && defined(_M_X64)
 #  define HAVE_AVX2INTRIN_H 1
 # endif
 #endif
