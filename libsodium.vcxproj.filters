@@ -117,9 +117,6 @@
     <ClCompile Include="src\libsodium\crypto_scalarmult\crypto_scalarmult.c">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="src\libsodium\crypto_secretbox\xsalsa20poly1305\ref\box_xsalsa20poly1305.c">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="src\libsodium\crypto_secretbox\crypto_secretbox.c">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -358,6 +355,9 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="src\libsodium\crypto_core\hchacha20\core_hchacha20.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\libsodium\crypto_secretbox\xsalsa20poly1305\ref\secretbox_xsalsa20poly1305.c">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
