@@ -101,10 +101,20 @@ aesni_encrypt1(unsigned char *out, __m128i nv, const __m128i *rkeys)
     __m128i temp = _mm_xor_si128(nv, rkeys[0]);
     int     roundctr;
 
-#pragma unroll(13)
-    for (roundctr = 1; roundctr < 14; roundctr++) {
-        temp = _mm_aesenc_si128(temp, rkeys[roundctr]);
-    }
+    temp = _mm_aesenc_si128(temp, rkeys[1]);
+    temp = _mm_aesenc_si128(temp, rkeys[2]);
+    temp = _mm_aesenc_si128(temp, rkeys[3]);
+    temp = _mm_aesenc_si128(temp, rkeys[4]);
+    temp = _mm_aesenc_si128(temp, rkeys[5]);
+    temp = _mm_aesenc_si128(temp, rkeys[6]);
+    temp = _mm_aesenc_si128(temp, rkeys[7]);
+    temp = _mm_aesenc_si128(temp, rkeys[8]);
+    temp = _mm_aesenc_si128(temp, rkeys[9]);
+    temp = _mm_aesenc_si128(temp, rkeys[10]);
+    temp = _mm_aesenc_si128(temp, rkeys[11]);
+    temp = _mm_aesenc_si128(temp, rkeys[12]);
+    temp = _mm_aesenc_si128(temp, rkeys[13]);
+
     temp = _mm_aesenclast_si128(temp, rkeys[14]);
     _mm_storeu_si128((__m128i *) out, temp);
 }
