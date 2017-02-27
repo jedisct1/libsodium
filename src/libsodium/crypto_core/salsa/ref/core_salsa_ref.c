@@ -18,10 +18,10 @@ crypto_core_salsa(unsigned char *out, const unsigned char *in,
         j15;
     int i;
 
-    x0  = 0x61707865;
-    x5  = 0x3320646e;
-    x10 = 0x79622d32;
-    x15 = 0x6b206574;
+    j0  = x0  = 0x61707865;
+    j5  = x5  = 0x3320646e;
+    j10 = x10 = 0x79622d32;
+    j15 = x15 = 0x6b206574;
     if (c != NULL) {
         j0  = x0  = LOAD32_LE(c + 0);
         j5  = x5  = LOAD32_LE(c + 4);
