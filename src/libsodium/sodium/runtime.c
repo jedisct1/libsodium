@@ -149,9 +149,8 @@ _sodium_runtime_intel_cpu_features(CPUFeatures * const cpu_features)
     if ((cpu_info[2] & (CPUID_ECX_AVX | CPUID_ECX_XSAVE | CPUID_ECX_OSXSAVE)) ==
         (CPUID_ECX_AVX | CPUID_ECX_XSAVE | CPUID_ECX_OSXSAVE)) {
         uint32_t xcr0 = 0U;
-# if defined(HAVE__XGETBV) ||
-        (defined(_MSC_VER) && defined(_XCR_XFEATURE_ENABLED_MASK) &&
-         _MSC_FULL_VER >= 160040219)
+# if defined(HAVE__XGETBV) || \
+        (defined(_MSC_VER) && defined(_XCR_XFEATURE_ENABLED_MASK) && _MSC_FULL_VER >= 160040219)
         xcr0 = (uint32_t) _xgetbv(0);
 # elif defined(_MSC_VER) && defined(_M_IX86)
         __asm {
@@ -165,8 +164,7 @@ _sodium_runtime_intel_cpu_features(CPUFeatures * const cpu_features)
                              : "c"((uint32_t) 0U)
                              : "%edx");
 # endif
-        if ((xcr0 & (XCR0_SSE | XCR0_AVX)) == (XCR0_SSE | XCR0_AVX))
-        {
+        if ((xcr0 & (XCR0_SSE | XCR0_AVX)) == (XCR0_SSE | XCR0_AVX)) {
             cpu_features->has_avx = 1;
         }
     }
