@@ -453,7 +453,7 @@ AC_SUBST(CFLAGS_AVX2)
 AC_SUBST(CFLAGS_AESNI)
 AC_SUBST(CFLAGS_PCLMUL)
 
-AC_CHECK_HEADERS([sys/mman.h])
+AC_CHECK_HEADERS([sys/mman.h intrin.h])
 
 dnl Checks for typedefs, structures, and compiler characteristics.
 

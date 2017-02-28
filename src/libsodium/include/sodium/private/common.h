@@ -225,6 +225,9 @@ sodium__mm_set1_epi64x(int64_t q)
     return _mm_set_epi64x(q, q);
 }
 # endif
+
+#elif defined(HAVE_INTRIN_H)
+# include <intrin.h>
 #endif
 
 #endif
