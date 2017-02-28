@@ -209,6 +209,22 @@ store32_be(uint8_t dst[4], uint32_t w)
 # if _MSC_VER >= 1700 && defined(_M_X64)
 #  define HAVE_AVX2INTRIN_H 1
 # endif
+# if _MSC_VER < 1900 && !defined(_mm_set_epi64x)
+#define _mm_set_epi64x(Q0, Q1) sodium__mm_set_epi64x((Q0), (Q1))
+static inline __m128i
+sodium__mm_set_epi64x(int64_t q1, int64_t q0)
+{
+    union { int64_t as64; int32_t as32[2]; } x0, x1;
+    x0.as64 = q0; x1.as64 = q1;
+    return _mm_set_epi32(x1.as32[1], x1.as32[0], x0.as32[1], x0.as32[0]);
+}
+#define _mm_set1_epi64x(Q) sodium__mm_set1_epi64x(Q)
+static inline __m128i
+sodium__mm_set1_epi64x(int64_t q)
+{
+    return _mm_set_epi64x(q, q);
+}
+# endif
 #endif
 
 #endif
