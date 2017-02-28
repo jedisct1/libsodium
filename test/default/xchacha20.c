@@ -54,7 +54,7 @@ tv_hchacha20(void)
     sodium_hex2bin(out, crypto_core_hchacha20_OUTPUTBYTES,
                    "934d941d78eb9bfc2f0376f7ccd4a11ecf0c6a44104618a9749ef47fe97037a2",
                    crypto_core_hchacha20_OUTPUTBYTES * 2 + 1, NULL, NULL, NULL);
-    tv = &tvs[0];
+
     crypto_core_hchacha20(out2, in, key, constant);
     assert(memcmp(out, out2, crypto_core_hchacha20_OUTPUTBYTES) == 0);
 
@@ -128,7 +128,7 @@ tv_stream_xchacha20(void)
         assert(sodium_is_zero(out, out_len));
         sodium_free(out2);
     }
-    tv = &tvs[0];
+
     out2 = (unsigned char *) sodium_malloc(0);
     crypto_stream_xchacha20(out2, 0, nonce, key);
     crypto_stream_xchacha20_xor(out2, out2, 0, nonce, key);
