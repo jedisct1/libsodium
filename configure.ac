@@ -455,6 +455,13 @@ AC_SUBST(CFLAGS_PCLMUL)
 
 AC_CHECK_HEADERS([sys/mman.h intrin.h])
 
+AC_MSG_CHECKING([if _xgetbv() is available])
+AC_COMPILE_IFELSE(
+  [AC_LANG_PROGRAM([[ #include <intrin.h> ]], [[ (void) _xgetbv(0) ]])],
+  [AC_MSG_RESULT(yes)
+   AC_DEFINE([HAVE__XGETBV], [1], [_xgetbv() is available])],
+  [AC_MSG_RESULT(no)])
+
 dnl Checks for typedefs, structures, and compiler characteristics.
 
 AC_C_INLINE
@@ -675,7 +682,7 @@ AS_IF([test "x$EMSCRIPTEN" = "x"],[
   AC_CHECK_FUNCS([arc4random arc4random_buf])
   AC_CHECK_FUNCS([mmap mlock madvise mprotect explicit_bzero nanosleep])
 ])
-AC_CHECK_FUNCS([posix_memalign getpid _xgetbv])
+AC_CHECK_FUNCS([posix_memalign getpid])
 
 AC_SUBST([LIBTOOL_EXTRA_FLAGS])
 
