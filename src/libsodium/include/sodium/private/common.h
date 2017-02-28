@@ -194,6 +194,9 @@ store32_be(uint8_t dst[4], uint32_t w)
 
 #if defined(_MSC_VER) && \
     (defined(_M_X64) || defined(_M_AMD64) || defined(_M_IX86))
+
+#include <intrin.h>
+
 # define HAVE_MMINTRIN_H  1
 # define HAVE_EMMINTRIN_H 1
 # define HAVE_PMMINTRIN_H 1

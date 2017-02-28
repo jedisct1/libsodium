@@ -12,9 +12,6 @@
 #  pragma GCC target("ssse3")
 # endif
 
-#ifdef _MSC_VER
-# include <intrin.h> /* for _mm_set_epi64x */
-#endif
 #include <emmintrin.h>
 #include <tmmintrin.h>
 
