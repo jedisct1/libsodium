@@ -90,15 +90,14 @@ int sodium_munlock(void * const addr, const size_t len);
  *   a multiple of the required alignment. For this reason, these functions
  *   are designed to store data, such as secret keys and messages.
  *
- * sodium_malloc() can be used to allocate any libsodium data structure,
- * with the exception of crypto_generichash_state.
+ * sodium_malloc() can be used to allocate any libsodium data structure.
  *
  * The crypto_generichash_state structure is packed and its length is
  * either 357 or 361 bytes. For this reason, when using sodium_malloc() to
  * allocate a crypto_generichash_state structure, padding must be added in
- * order to ensure proper alignment:
- * state = sodium_malloc((crypto_generichash_statebytes() + (size_t) 63U)
- *                       & ~(size_t) 63U);
+ * order to ensure proper alignment. crypto_generichash_statebytes()
+ * returns the rounded up structure size, and should be prefered to sizeof():
+ * state = sodium_malloc(crypto_generichash_statebytes());
  */
 
 SODIUM_EXPORT
