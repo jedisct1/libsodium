@@ -151,7 +151,7 @@ static const uint8_t PAD[64] = { 0x80, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
                                  0,    0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 };
 
 static void
-SHA256_Pad(crypto_hash_sha256_state *state, uint32_t tmp32[72])
+SHA256_Pad(crypto_hash_sha256_state *state, uint32_t tmp32[64 + 8])
 {
     uint64_t r;
     uint64_t i;
@@ -190,16 +190,16 @@ int
 crypto_hash_sha256_update(crypto_hash_sha256_state *state,
                           const unsigned char *in, unsigned long long inlen)
 {
-    uint32_t tmp32[72];
-    uint64_t i;
-    uint64_t r;
+    uint32_t           tmp32[64 + 8];
+    unsigned long long i;
+    unsigned long long r;
 
     if (inlen <= 0U) {
         return 0;
     }
-    r = (state->count >> 3) & 0x3f;
-    state->count += (uint64_t)(inlen) << 3;
+    r = (unsigned long long) ((state->count >> 3) & 0x3f);
 
+    state->count += ((uint64_t) inlen) << 3;
     if (inlen < 64 - r) {
         for (i = 0; i < inlen; i++) {
             state->buf[r + i] = in[i];
@@ -230,7 +230,7 @@ crypto_hash_sha256_update(crypto_hash_sha256_state *state,
 int
 crypto_hash_sha256_final(crypto_hash_sha256_state *state, unsigned char *out)
 {
-    uint32_t tmp32[72];
+    uint32_t tmp32[64 + 8];
 
     SHA256_Pad(state, tmp32);
     be32enc_vect(out, state->state, 32);

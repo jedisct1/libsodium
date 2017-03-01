@@ -170,7 +170,7 @@ static const uint8_t PAD[128] = {
 };
 
 static void
-SHA512_Pad(crypto_hash_sha512_state *state, uint64_t tmp64[88])
+SHA512_Pad(crypto_hash_sha512_state *state, uint64_t tmp64[80 + 8])
 {
     uint64_t r;
     uint64_t i;
@@ -210,15 +210,15 @@ int
 crypto_hash_sha512_update(crypto_hash_sha512_state *state,
                           const unsigned char *in, unsigned long long inlen)
 {
-    uint64_t tmp64[88];
-    uint64_t bitlen[2];
-    uint64_t i;
-    uint64_t r;
+    uint64_t           tmp64[80 + 8];
+    uint64_t           bitlen[2];
+    unsigned long long i;
+    unsigned long long r;
 
     if (inlen <= 0U) {
         return 0;
     }
-    r = (state->count[1] >> 3) & 0x7f;
+    r = (unsigned long long) ((state->count[1] >> 3) & 0x7f);
 
     bitlen[1] = ((uint64_t) inlen) << 3;
     bitlen[0] = ((uint64_t) inlen) >> 61;
@@ -256,7 +256,7 @@ crypto_hash_sha512_update(crypto_hash_sha512_state *state,
 int
 crypto_hash_sha512_final(crypto_hash_sha512_state *state, unsigned char *out)
 {
-    uint64_t tmp64[88];
+    uint64_t tmp64[80 + 8];
 
     SHA512_Pad(state, tmp64);
     be64enc_vect(out, state->state, 64);
