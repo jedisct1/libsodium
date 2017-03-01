@@ -1,7 +1,9 @@
 #include "crypto_stream_chacha20.h"
-#include "stream_chacha20.h"
+#include "private/common.h"
 #include "randombytes.h"
 #include "runtime.h"
+#include "stream_chacha20.h"
+
 #include "ref/chacha20_ref.h"
 #if defined(HAVE_AVX2INTRIN_H) && defined(HAVE_EMMINTRIN_H) && \
     defined(HAVE_TMMINTRIN_H) && defined(HAVE_SMMINTRIN_H)
