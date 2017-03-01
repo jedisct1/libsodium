@@ -16,7 +16,7 @@ crypto_box_curve25519xsalsa20poly1305_seed_keypair(unsigned char *      pk,
     unsigned char hash[64];
 
     crypto_hash_sha512(hash, seed, 32);
-    memmove(sk, hash, 32);
+    memcpy(sk, hash, 32);
     sodium_memzero(hash, sizeof hash);
 
     return crypto_scalarmult_curve25519_base(pk, sk);
