@@ -200,8 +200,7 @@ if (bytes >= 512) {
         in12   = x[12];
         in13   = x[13];
         in1213 = ((uint64_t) in12) | (((uint64_t) in13) << 32);
-        x_12   = _mm256_broadcastq_epi64(_mm_cvtsi64_si128(in1213));
-        x_13   = _mm256_broadcastq_epi64(_mm_cvtsi64_si128(in1213));
+        x_12   = x_13 = _mm256_broadcastq_epi64(_mm_cvtsi64_si128(in1213));
 
         t12 = _mm256_add_epi64(addv12, x_12);
         t13 = _mm256_add_epi64(addv13, x_13);

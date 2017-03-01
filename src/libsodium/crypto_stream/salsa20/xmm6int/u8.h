@@ -55,8 +55,7 @@ if (bytes >= 512) {
         in9  = x[13]; /* see arrays above for the address translation */
         in89 = ((uint64_t) in8) | (((uint64_t) in9) << 32);
 
-        z8 = _mm256_broadcastq_epi64(_mm_cvtsi64_si128(in89));
-        z9 = _mm256_broadcastq_epi64(_mm_cvtsi64_si128(in89));
+        z8 = z9 = _mm256_broadcastq_epi64(_mm_cvtsi64_si128(in89));
 
         t8 = _mm256_add_epi64(addv8, z8);
         t9 = _mm256_add_epi64(addv9, z9);
