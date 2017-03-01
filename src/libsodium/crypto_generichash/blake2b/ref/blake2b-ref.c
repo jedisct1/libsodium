@@ -24,11 +24,11 @@
 #include "utils.h"
 
 #ifdef HAVE_TI_MODE
-#if defined(__SIZEOF_INT128__)
+# if defined(__SIZEOF_INT128__)
 typedef unsigned __int128 uint128_t;
-#else
+# else
 typedef unsigned uint128_t __attribute__((mode(TI)));
-#endif
+# endif
 #endif
 
 static blake2b_compress_fn blake2b_compress = blake2b_compress_ref;
