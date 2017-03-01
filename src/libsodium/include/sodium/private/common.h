@@ -197,6 +197,7 @@ store32_be(uint8_t dst[4], uint32_t w)
 
 #include <intrin.h>
 
+# define HAVE_INTRIN_H    1
 # define HAVE_MMINTRIN_H  1
 # define HAVE_EMMINTRIN_H 1
 # define HAVE_PMMINTRIN_H 1
