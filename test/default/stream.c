@@ -16,6 +16,7 @@ static unsigned char nonce[24] = { 0x69, 0x69, 0x6e, 0xe9, 0x55, 0xb6,
 static unsigned char output[4194304];
 
 static unsigned char h[32];
+static char          hex[2 * 64 + 1];
 
 int
 main(void)
@@ -25,22 +26,26 @@ main(void)
     randombytes_buf(output, sizeof output);
     crypto_stream(output, sizeof output, nonce, firstkey);
     crypto_hash_sha256(h, output, sizeof output);
-
-    for (i = 0; i < 32; ++i)
-        printf("%02x", h[i]);
-    printf("\n");
+    sodium_bin2hex(hex, sizeof hex, h, sizeof h);
+    printf("%s\n", hex);
 
     assert(sizeof output > 4000);
 
     crypto_stream_xsalsa20_xor_ic(output, output, 4000, nonce, 0U, firstkey);
-    for (i = 0; i < 4000; ++i)
+    for (i = 0; i < 4000; i++) {
         assert(output[i] == 0);
-
+    }
     crypto_stream_xsalsa20_xor_ic(output, output, 4000, nonce, 1U, firstkey);
     crypto_hash_sha256(h, output, sizeof output);
-    for (i = 0; i < 32; ++i)
-        printf("%02x", h[i]);
-    printf("\n");
+    sodium_bin2hex(hex, sizeof hex, h, sizeof h);
+    printf("%s\n", hex);
+
+    for (i = 0; i < 64; i++) {
+        memset(output, i, 64);
+        crypto_stream(output, (int) (i & 0xff), nonce, firstkey);
+        sodium_bin2hex(hex, sizeof hex, output, 64);
+        printf("%s\n", hex);
+    }
 
     assert(crypto_stream_keybytes() > 0U);
     assert(crypto_stream_noncebytes() > 0U);

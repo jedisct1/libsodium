@@ -46,7 +46,13 @@ void tv(void)
             sodium_free(part);
         }
     } while (++i < (sizeof tests) / (sizeof tests[0]));
-
+    assert(66 <= sizeof out);
+    for (plen = 1U; plen < 66; plen += 3) {
+        memset(out, (int) (plen & 0xff), sizeof out);
+        crypto_stream_chacha20(out, plen, nonce, key);
+        sodium_bin2hex(out_hex, sizeof out_hex, out, sizeof out);
+        printf("[%s]\n", out_hex);
+    }
     randombytes_buf(out, sizeof out);
     crypto_stream_chacha20(out, sizeof out, nonce, key);
     sodium_bin2hex(out_hex, sizeof out_hex, out, sizeof out);
@@ -125,7 +131,13 @@ void tv_ietf(void)
             sodium_free(part);
         }
     } while (++i < (sizeof tests) / (sizeof tests[0]));
-
+    assert(66 <= sizeof out);
+    for (plen = 1U; plen < 66; plen += 3) {
+        memset(out, (int) (plen & 0xff), sizeof out);
+        crypto_stream_chacha20(out, plen, nonce, key);
+        sodium_bin2hex(out_hex, sizeof out_hex, out, sizeof out);
+        printf("[%s]\n", out_hex);
+    }
     randombytes_buf(out, sizeof out);
     crypto_stream_chacha20_ietf(out, sizeof out, nonce, key);
     sodium_bin2hex(out_hex, sizeof out_hex, out, sizeof out);
