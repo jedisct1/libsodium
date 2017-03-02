@@ -15,6 +15,7 @@ libsodium_la_SOURCES = \
 	crypto_core/curve25519/ref10/base.h \
 	crypto_core/curve25519/ref10/base2.h \
 	crypto_core/curve25519/ref10/curve25519_ref10.c \
+	crypto_core/hchacha20/core_hchacha20.c \
 	crypto_core/hsalsa20/ref2/core_hsalsa20_ref2.c \
 	crypto_core/hsalsa20/core_hsalsa20.c \
 	crypto_core/salsa/ref/core_salsa_ref.c \
@@ -156,7 +157,6 @@ endif
 if !MINIMAL
 libsodium_la_SOURCES += \
 	crypto_box/curve25519xchacha20poly1305/box_curve25519xchacha20poly1305.c \
-	crypto_core/hchacha20/core_hchacha20.c \
 	crypto_secretbox/xchacha20poly1305/secretbox_xchacha20poly1305.c \
 	crypto_shorthash/siphash24/shorthash_siphashx24.c \
 	crypto_shorthash/siphash24/ref/shorthash_siphashx24_ref.c \
