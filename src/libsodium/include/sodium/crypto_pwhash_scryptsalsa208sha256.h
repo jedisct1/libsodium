@@ -54,7 +54,7 @@ size_t crypto_pwhash_scryptsalsa208sha256_opslimit_max(void);
 SODIUM_EXPORT
 size_t crypto_pwhash_scryptsalsa208sha256_memlimit_min(void);
 
-#define crypto_pwhash_scryptsalsa208sha256_MEMLIMIT_MAX ((SIZE_MAX >= 68719476736U) ? : 68719476736U : SIZE_MAX)
+#define crypto_pwhash_scryptsalsa208sha256_MEMLIMIT_MAX ((SIZE_MAX >= 68719476736U) ? 68719476736U : SIZE_MAX)
 SODIUM_EXPORT
 size_t crypto_pwhash_scryptsalsa208sha256_memlimit_max(void);
 
