@@ -26,16 +26,16 @@
  *
  */
 
-#include "crypto_hash_sha512.h"
-#include "private/common.h"
-#include "utils.h"
-
-#include <sys/types.h>
-
 #include <limits.h>
 #include <stdint.h>
 #include <stdlib.h>
 #include <string.h>
+
+#include <sys/types.h>
+
+#include "crypto_hash_sha512.h"
+#include "private/common.h"
+#include "utils.h"
 
 static void
 be64enc_vect(unsigned char *dst, const uint64_t *src, size_t len)

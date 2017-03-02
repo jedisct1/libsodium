@@ -2,10 +2,10 @@
 #ifndef randombytes_H
 #define randombytes_H
 
-#include <sys/types.h>
-
 #include <stddef.h>
 #include <stdint.h>
+
+#include <sys/types.h>
 
 #include "export.h"
 

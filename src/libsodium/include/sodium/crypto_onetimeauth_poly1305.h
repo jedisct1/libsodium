@@ -1,9 +1,6 @@
 #ifndef crypto_onetimeauth_poly1305_H
 #define crypto_onetimeauth_poly1305_H
 
-#include <stdlib.h>
-#include "export.h"
-
 #ifdef __cplusplus
 # ifdef __GNUC__
 #  pragma GCC diagnostic ignored "-Wlong-long"
@@ -11,10 +8,13 @@
 extern "C" {
 #endif
 
-#include <sys/types.h>
-
 #include <stdint.h>
 #include <stdio.h>
+#include <stdlib.h>
+
+#include <sys/types.h>
+
+#include "export.h"
 
 typedef CRYPTO_ALIGN(16) struct crypto_onetimeauth_poly1305_state {
     unsigned char opaque[256];

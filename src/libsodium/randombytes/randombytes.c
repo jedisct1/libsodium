@@ -1,11 +1,10 @@
 
-#include <stdlib.h>
-#include <sys/types.h>
-
 #include <assert.h>
 #include <limits.h>
 #include <stdint.h>
 #include <stdlib.h>
+
+#include <sys/types.h>
 
 #ifdef __EMSCRIPTEN__
 # include <emscripten.h>

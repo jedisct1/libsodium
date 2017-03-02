@@ -1,5 +1,16 @@
 
+#include <assert.h>
+#include <errno.h>
+#include <fcntl.h>
+#include <limits.h>
+#include <stdint.h>
 #include <stdlib.h>
+#include <stdlib.h>
+#include <string.h>
+#if !defined(_MSC_VER) && !defined(__BORLANDC__)
+# include <unistd.h>
+#endif
+
 #include <sys/types.h>
 #ifndef _WIN32
 # include <sys/stat.h>
@@ -12,17 +23,6 @@
 #  include <sys/syscall.h>
 # endif
 # include <poll.h>
-#endif
-
-#include <assert.h>
-#include <errno.h>
-#include <fcntl.h>
-#include <limits.h>
-#include <stdint.h>
-#include <stdlib.h>
-#include <string.h>
-#if !defined(_MSC_VER) && !defined(__BORLANDC__)
-# include <unistd.h>
 #endif
 
 #include "crypto_core_salsa20.h"

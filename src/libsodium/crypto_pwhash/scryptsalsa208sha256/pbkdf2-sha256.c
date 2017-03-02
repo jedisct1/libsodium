@@ -25,11 +25,11 @@
  */
 
 #include <limits.h>
-#include <stdlib.h>
-#include <sys/types.h>
-
 #include <stdint.h>
+#include <stdlib.h>
 #include <string.h>
+
+#include <sys/types.h>
 
 #include "crypto_auth_hmacsha256.h"
 #include "pbkdf2-sha256.h"

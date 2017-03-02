@@ -1,4 +1,14 @@
 
+#include <assert.h>
+#include <errno.h>
+#include <fcntl.h>
+#include <limits.h>
+#include <stdint.h>
+#include <string.h>
+#ifndef _WIN32
+# include <unistd.h>
+#endif
+
 #include <stdlib.h>
 #include <sys/types.h>
 #ifndef _WIN32
@@ -12,16 +22,6 @@
 #  include <sys/syscall.h>
 # endif
 # include <poll.h>
-#endif
-
-#include <assert.h>
-#include <errno.h>
-#include <fcntl.h>
-#include <limits.h>
-#include <stdint.h>
-#include <string.h>
-#ifndef _WIN32
-# include <unistd.h>
 #endif
 
 #include "randombytes.h"

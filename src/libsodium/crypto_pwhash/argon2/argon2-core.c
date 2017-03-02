@@ -11,15 +11,16 @@
  * <http://creativecommons.org/publicdomain/zero/1.0/>.
  */
 
-#include <sys/types.h>
-#ifdef HAVE_SYS_MMAN_H
-# include <sys/mman.h>
-#endif
 #include <errno.h>
 #include <stdint.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+
+#include <sys/types.h>
+#ifdef HAVE_SYS_MMAN_H
+# include <sys/mman.h>
+#endif
 
 #include "crypto_generichash_blake2b.h"
 #include "private/common.h"

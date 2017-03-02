@@ -28,9 +28,9 @@
 #ifndef pbkdf2_sha256_H
 #define pbkdf2_sha256_H
 
-#include <sys/types.h>
-
 #include <stdint.h>
+
+#include <sys/types.h>
 
 #include "crypto_auth_hmacsha256.h"
 
