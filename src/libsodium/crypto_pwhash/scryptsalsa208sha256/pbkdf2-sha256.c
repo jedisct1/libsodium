@@ -24,6 +24,7 @@
  * SUCH DAMAGE.
  */
 
+#include <limits.h>
 #include <stdlib.h>
 #include <sys/types.h>
 
@@ -53,9 +54,11 @@ PBKDF2_SHA256(const uint8_t *passwd, size_t passwdlen, const uint8_t *salt,
     int                          k;
     size_t                       clen;
 
+#if SIZE_MAX > 0x1fffffffe0ULL
     if (dkLen > 0x1fffffffe0ULL) {
         abort();
     }
+#endif
     crypto_auth_hmacsha256_init(&PShctx, passwd, passwdlen);
     crypto_auth_hmacsha256_update(&PShctx, salt, saltlen);
 
