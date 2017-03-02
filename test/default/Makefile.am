@@ -279,6 +279,7 @@ AM_LDFLAGS = @TEST_LDFLAGS@
 TESTS_TARGETS = \
 	aead_aes256gcm \
 	aead_chacha20poly1305 \
+	aead_xchacha20poly1305 \
 	auth \
 	auth2 \
 	auth3 \
@@ -546,7 +547,6 @@ xchacha20_LDADD           = $(TESTS_LDADD)
 
 if !MINIMAL
 TESTS_TARGETS += \
-	aead_xchacha20poly1305 \
 	siphashx24 \
 	xchacha20
 endif
