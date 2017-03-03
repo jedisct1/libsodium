@@ -161,7 +161,7 @@ tv_stream_xchacha20(void)
     crypto_stream_xchacha20_xor_ic(out + 128, out + 128, 64, nonce,
                                    (1ULL << 32) + 1, key);
     assert(memcmp(out, out2, 192) == 0);
-    hex = sodium_malloc(192 * 2 + 1);
+    hex = (char *) sodium_malloc(192 * 2 + 1);
     sodium_bin2hex(hex, 192 * 2 + 1, out, 192);
     printf("%s\n", hex);
     sodium_free(hex);
