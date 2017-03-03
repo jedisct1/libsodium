@@ -16,7 +16,7 @@ static unsigned char nonce[24] = { 0x69, 0x69, 0x6e, 0xe9, 0x55, 0xb6,
 static unsigned char output[4194304];
 
 static unsigned char h[32];
-static char          hex[2 * 64 + 1];
+static char          hex[2 * 192 + 1];
 
 int
 main(void)
@@ -46,6 +46,12 @@ main(void)
         sodium_bin2hex(hex, sizeof hex, output, 64);
         printf("%s\n", hex);
     }
+
+    memset(output, 0, 192);
+    crypto_stream_xsalsa20_xor_ic(output, output, 192, nonce,
+                                  (1ULL << 32) - 1ULL, firstkey);
+    sodium_bin2hex(hex, 192 * 2 + 1, output, 192);
+    printf("%s\n", hex);
 
     assert(crypto_stream_keybytes() > 0U);
     assert(crypto_stream_noncebytes() > 0U);

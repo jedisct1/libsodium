@@ -96,6 +96,7 @@ tv_stream_xchacha20(void)
         { "9d23bd4149cb979ccf3c5c94dd217e9808cb0e50cd0f67812235eaaf601d6232", "c047548266b7c370d33566a2425cbf30d82d1eaf5294109e", "a21209096594de8c5667b1d13ad93f744106d054df210e4782cd396fec692d3515a20bf351eec011a92c367888bc464c32f0807acd6c203a247e0db854148468e9f96bee4cf718d68d5f637cbd5a376457788e6fae90fc31097cfc" },
     };
     const XChaCha20TV *tv;
+    char              *hex;
     unsigned char     *key;
     unsigned char     *nonce;
     unsigned char     *out;
@@ -144,6 +145,26 @@ tv_stream_xchacha20(void)
     crypto_stream_xchacha20_xor_ic(out, out, 64, nonce, 1, key);
     crypto_stream_xchacha20_xor(out2, out2, 128, nonce, key);
     assert(memcmp(out, out2 + 64, 64) == 0);
+    sodium_free(out);
+    sodium_free(out2);
+
+    out = (unsigned char *) sodium_malloc(192);
+    out2 = (unsigned char *) sodium_malloc(192);
+    memset(out, 0, 192);
+    memset(out2, 0, 192);
+    crypto_stream_xchacha20_xor_ic(out2, out2, 192, nonce,
+                                   (1ULL << 32) - 1ULL, key);
+    crypto_stream_xchacha20_xor_ic(out, out, 64, nonce,
+                                   (1ULL << 32) - 1ULL, key);
+    crypto_stream_xchacha20_xor_ic(out + 64, out + 64, 64, nonce,
+                                   (1ULL << 32), key);
+    crypto_stream_xchacha20_xor_ic(out + 128, out + 128, 64, nonce,
+                                   (1ULL << 32) + 1, key);
+    assert(memcmp(out, out2, 192) == 0);
+    hex = sodium_malloc(192 * 2 + 1);
+    sodium_bin2hex(hex, 192 * 2 + 1, out, 192);
+    printf("%s\n", hex);
+    sodium_free(hex);
     sodium_free(out);
     sodium_free(out2);
 
