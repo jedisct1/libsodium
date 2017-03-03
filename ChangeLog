@@ -1,6 +1,36 @@
 
+* Version 1.0.12
+ - New constants and related accessors have been added for Scrypt and
+Argon2.
+ - XChaCha20 has been implemented. Like XSalsa20, this construction
+extends the ChaCha20 cipher to accept a 192-bit nonce. This makes it safe
+to use ChaCha20 with random nonces.
+ - `crypto_secretbox`, `crypto_box` and `crypto_aead` now offer
+variants leveraging XChaCha20.
+ - SHA-2 is about 20% faster, which also gives a speed boost to
+signature and signature verification.
+ - AVX2 implementations of Salsa20 and ChaCha20 have been added. They
+are twice as fast as the SSE2 implementations. The speed gain is
+even more significant on Windows, that previously didn't use
+vectorized implementations.
+ - New high-level API: `crypto_kdf`, to easily derive one or more
+sukeys from a master key.
+ - Siphash with a 128-bit output has been implemented, and is
+available as `crypto_shorthash_siphashx_*`.
+ - New `*_keygen()` helpers functions have been added to create secret
+keys for all constructions. This improves code clarity and can prevent keys
+from being partially initialized.
+ - A new `randombytes_buf_deterministic()` function was added to
+deterministically fill a memory region with pseudorandom data. This
+function can especially be useful to write reproducible tests.
+ - AVX2 detection is more reliable.
+ - The pthreads library is not required any more when using MingW.
+ - `contrib/Findsodium.cmake` was added as an example to include
+libsodium in a project using cmake.
+ - Compatibility with gcc 2.x has been restored.
+
 * Version 1.0.11
- - sodium_init() is now thread-safe, and can be safely called multiple
+ - `sodium_init()` is now thread-safe, and can be safely called multiple
 times.
  - Android binaries now properly support 64-bit Android, targeting
 platform 24, but without breaking compatibility with platforms 16 and
