@@ -14,7 +14,7 @@ are twice as fast as the SSE2 implementations. The speed gain is
 even more significant on Windows, that previously didn't use
 vectorized implementations.
  - New high-level API: `crypto_kdf`, to easily derive one or more
-sukeys from a master key.
+subkeys from a master key.
  - Siphash with a 128-bit output has been implemented, and is
 available as `crypto_shorthash_siphashx_*`.
  - New `*_keygen()` helpers functions have been added to create secret
