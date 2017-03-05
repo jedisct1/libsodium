@@ -540,10 +540,10 @@
     <ClInclude Include="src\libsodium\include\sodium\randombytes_sysrandom.h" />
     <ClInclude Include="src\libsodium\include\sodium\runtime.h" />
     <ClInclude Include="src\libsodium\include\sodium\utils.h" />
-    <ClInclude Include="src\libsodium\include\sodium\version.h" />
     <ClInclude Include="src\libsodium\include\sodium\private\common.h" />
     <ClInclude Include="src\libsodium\include\sodium\private\curve25519_ref10.h" />
     <ClInclude Include="src\libsodium\include\sodium\private\mutex.h" />
+    <ClInclude Include="src\libsodium\include\sodium\private\sse2_64_32.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

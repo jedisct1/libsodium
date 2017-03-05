@@ -5,6 +5,7 @@
 
 #include "crypto_stream_salsa20.h"
 #include "private/common.h"
+#include "private/sse2_64_32.h"
 #include "utils.h"
 
 #ifdef HAVE_EMMINTRIN_H

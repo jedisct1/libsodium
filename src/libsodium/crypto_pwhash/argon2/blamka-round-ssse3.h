@@ -2,6 +2,7 @@
 #define blamka_round_ssse3_H
 
 #include "private/common.h"
+#include "private/sse2_64_32.h"
 
 #define r16 \
     (_mm_setr_epi8(2, 3, 4, 5, 6, 7, 0, 1, 10, 11, 12, 13, 14, 15, 8, 9))

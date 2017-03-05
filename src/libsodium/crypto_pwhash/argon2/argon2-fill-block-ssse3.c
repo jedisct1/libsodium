@@ -18,6 +18,7 @@
 #include "argon2-core.h"
 #include "argon2.h"
 #include "private/common.h"
+#include "private/sse2_64_32.h"
 
 #if defined(HAVE_EMMINTRIN_H) && defined(HAVE_TMMINTRIN_H)
 

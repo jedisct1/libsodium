@@ -686,9 +686,6 @@
     <ClInclude Include="src\libsodium\include\sodium\utils.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="src\libsodium\include\sodium\version.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="src\libsodium\include\sodium\private\common.h">
       <Filter>Header Files</Filter>
     </ClInclude>
@@ -696,6 +693,9 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="src\libsodium\include\sodium\private\mutex.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\libsodium\include\sodium\private\sse2_64_32.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

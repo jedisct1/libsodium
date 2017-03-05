@@ -692,9 +692,6 @@
     <ClInclude Include="..\..\..\..\src\libsodium\include\sodium\utils.h">
       <Filter>include\sodium</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\..\..\src\libsodium\include\sodium\version.h">
-      <Filter>include\sodium</Filter>
-    </ClInclude>
     <ClInclude Include="..\..\..\..\src\libsodium\include\sodium\private\common.h">
       <Filter>include\sodium\private</Filter>
     </ClInclude>
@@ -702,6 +699,9 @@
       <Filter>include\sodium\private</Filter>
     </ClInclude>
     <ClInclude Include="..\..\..\..\src\libsodium\include\sodium\private\mutex.h">
+      <Filter>include\sodium\private</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\src\libsodium\include\sodium\private\sse2_64_32.h">
       <Filter>include\sodium\private</Filter>
     </ClInclude>
   </ItemGroup>

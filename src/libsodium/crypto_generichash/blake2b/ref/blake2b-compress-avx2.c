@@ -8,6 +8,7 @@
 
 #include "blake2.h"
 #include "private/common.h"
+#include "private/sse2_64_32.h"
 
 #if defined(HAVE_AVX2INTRIN_H) && defined(HAVE_EMMINTRIN_H) && \
     defined(HAVE_TMMINTRIN_H) && defined(HAVE_SMMINTRIN_H)

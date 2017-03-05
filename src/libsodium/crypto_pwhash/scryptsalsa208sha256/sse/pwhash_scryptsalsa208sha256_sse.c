@@ -35,6 +35,7 @@
 #include <string.h>
 
 #include "private/common.h"
+#include "private/sse2_64_32.h"
 
 #ifdef HAVE_EMMINTRIN_H
 

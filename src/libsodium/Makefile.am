@@ -89,6 +89,7 @@ libsodium_la_SOURCES = \
 	include/sodium/private/common.h \
 	include/sodium/private/curve25519_ref10.h \
 	include/sodium/private/mutex.h \
+	include/sodium/private/sse2_64_32.h \
 	randombytes/randombytes.c \
 	sodium/core.c \
 	sodium/runtime.c \
