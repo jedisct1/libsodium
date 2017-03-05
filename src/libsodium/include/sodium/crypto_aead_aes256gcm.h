@@ -31,6 +31,7 @@ SODIUM_EXPORT
 size_t crypto_aead_aes256gcm_abytes(void);
 
 typedef CRYPTO_ALIGN(16) unsigned char crypto_aead_aes256gcm_state[512];
+
 SODIUM_EXPORT
 size_t crypto_aead_aes256gcm_statebytes(void);
 

@@ -14,6 +14,7 @@ extern "C" {
 #endif
 
 typedef crypto_onetimeauth_poly1305_state crypto_onetimeauth_state;
+
 SODIUM_EXPORT
 size_t  crypto_onetimeauth_statebytes(void);
 

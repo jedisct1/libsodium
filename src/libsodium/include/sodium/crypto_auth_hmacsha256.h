@@ -39,6 +39,7 @@ typedef struct crypto_auth_hmacsha256_state {
     crypto_hash_sha256_state ictx;
     crypto_hash_sha256_state octx;
 } crypto_auth_hmacsha256_state;
+
 SODIUM_EXPORT
 size_t crypto_auth_hmacsha256_statebytes(void);
 

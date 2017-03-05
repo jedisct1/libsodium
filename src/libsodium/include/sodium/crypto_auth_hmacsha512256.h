@@ -34,6 +34,7 @@ int crypto_auth_hmacsha512256_verify(const unsigned char *h,
 /* ------------------------------------------------------------------------- */
 
 typedef crypto_auth_hmacsha512_state crypto_auth_hmacsha512256_state;
+
 SODIUM_EXPORT
 size_t crypto_auth_hmacsha512256_statebytes(void);
 
