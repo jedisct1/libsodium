@@ -1,268 +1,239 @@
 #!/usr/bin/python3
 
-import datetime
-import json
 import os.path
+import re
 import sys
-import xml.etree.ElementTree as ET
 
-#
-# OUTPUT CONFIGURATION
-#
-
-# Package metadata
-NUPKG_ID = 'libsodium'
-NUPKG_VERSION = '1.0.11'
-
-# The names of the libsodium binaries in the package
-LIBSODIUM_DLL   = 'libsodium.dll'
-LIBSODIUM_DYLIB = 'libsodium.dylib'
-LIBSODIUM_SO    = 'libsodium.so'
-
-#
-# INPUT CONFIGURATION
-#
-
-# The archives to download
-WIN_FILE = 'libsodium-1.0.11-msvc.zip'
-DEB_FILE = 'libsodium18_1.0.11-1_amd64.deb'
-RPM_FILE = 'libsodium18-1.0.11-14.1.x86_64.rpm'
-OSX_FILE = 'libsodium-1.0.11.{0}.bottle.tar.gz'
-
-# The URLs of the archives
-OFFICIAL_URL = 'https://download.libsodium.org/libsodium/releases/{0}'
-OPENSUSE_URL = 'http://download.opensuse.org/repositories/home:/nsec/{0}/{1}/{2}'
-HOMEBREW_URL = 'https://bintray.com/homebrew/bottles/download_file?file_path={0}'
-
-# The files within the archives to extract
-WIN_LIB = '{0}/Release/v140/dynamic/libsodium.dll'
-DEB_LIB = './usr/lib/x86_64-linux-gnu/libsodium.so.18.1.1'
-RPM_LIB = './usr/lib64/libsodium.so.18.1.1'
-OSX_LIB = 'libsodium/1.0.11/lib/libsodium.18.dylib'
-
-# Commands to extract a file from an archive
-DEB_EXTRACT = 'ar -p {0} data.tar.xz | tar xJ "{1}"'
-RPM_EXTRACT = 'rpm2cpio {0} | cpio -i "{1}"'
-TAR_EXTRACT = 'tar xzf {0} "{1}"'
-ZIP_EXTRACT = 'unzip {0} "{1}"'
-
-# The inputs
-INPUTS = [
-
-  ( 'win10-x64',
-    WIN_FILE,
-    OFFICIAL_URL.format(WIN_FILE),
-    WIN_LIB.format('x64'),
-    ZIP_EXTRACT,
-    LIBSODIUM_DLL),
-
-  ( 'win10-x86',
-    WIN_FILE,
-    OFFICIAL_URL.format(WIN_FILE),
-    WIN_LIB.format('Win32'),
-    ZIP_EXTRACT,
-    LIBSODIUM_DLL),
-
-  ( 'debian.8-x64',
-    DEB_FILE,
-    OPENSUSE_URL.format('Debian_8.0', 'amd64', DEB_FILE),
-    DEB_LIB,
-    DEB_EXTRACT,
-    LIBSODIUM_SO),
-
-  ( 'ubuntu.14.04-x64',
-    DEB_FILE,
-    OPENSUSE_URL.format('xUbuntu_14.04', 'amd64', DEB_FILE),
-    DEB_LIB,
-    DEB_EXTRACT,
-    LIBSODIUM_SO),
-
-  ( 'ubuntu.16.04-x64',
-    DEB_FILE,
-    OPENSUSE_URL.format('xUbuntu_16.04', 'amd64', DEB_FILE),
-    DEB_LIB,
-    DEB_EXTRACT,
-    LIBSODIUM_SO),
-
-  ( 'ubuntu.16.10-x64',
-    DEB_FILE,
-    OPENSUSE_URL.format('xUbuntu_16.10', 'amd64', DEB_FILE),
-    DEB_LIB,
-    DEB_EXTRACT,
-    LIBSODIUM_SO),
-
-  ( 'centos.7-x64',
-    RPM_FILE,
-    OPENSUSE_URL.format('CentOS_7', 'x86_64', RPM_FILE),
-    RPM_LIB,
-    RPM_EXTRACT,
-    LIBSODIUM_SO),
-
-  ( 'fedora.23-x64',
-    RPM_FILE,
-    OPENSUSE_URL.format('Fedora_23', 'x86_64', RPM_FILE),
-    RPM_LIB,
-    RPM_EXTRACT,
-    LIBSODIUM_SO),
-
-  ( 'fedora.24-x64',
-    RPM_FILE,
-    OPENSUSE_URL.format('Fedora_24', 'x86_64', RPM_FILE),
-    RPM_LIB,
-    RPM_EXTRACT,
-    LIBSODIUM_SO),
-
-  ( 'fedora.25-x64',
-    RPM_FILE,
-    OPENSUSE_URL.format('Fedora_25', 'x86_64', RPM_FILE),
-    RPM_LIB,
-    RPM_EXTRACT,
-    LIBSODIUM_SO),
-
-  ( 'opensuse.42.1-x64',
-    RPM_FILE,
-    OPENSUSE_URL.format('openSUSE_Leap_42.1', 'x86_64', RPM_FILE),
-    RPM_LIB,
-    RPM_EXTRACT,
-    LIBSODIUM_SO),
-
-  ( 'opensuse.42.2-x64',
-    RPM_FILE,
-    OPENSUSE_URL.format('openSUSE_Leap_42.2', 'x86_64', RPM_FILE),
-    RPM_LIB,
-    RPM_EXTRACT,
-    LIBSODIUM_SO),
-
-  ( 'rhel.7-x64',
-    RPM_FILE,
-    OPENSUSE_URL.format('RHEL_7', 'x86_64', RPM_FILE),
-    RPM_LIB,
-    RPM_EXTRACT,
-    LIBSODIUM_SO),
-
-  ( 'osx.10.10-x64',
-    OSX_FILE.format('yosemite'),
-    HOMEBREW_URL.format(OSX_FILE.format('yosemite')),
-    OSX_LIB,
-    TAR_EXTRACT,
-    LIBSODIUM_DYLIB),
-
-  ( 'osx.10.11-x64',
-    OSX_FILE.format('el_capitan'),
-    HOMEBREW_URL.format(OSX_FILE.format('el_capitan')),
-    OSX_LIB,
-    TAR_EXTRACT,
-    LIBSODIUM_DYLIB),
-
-  ( 'osx.10.12-x64',
-    OSX_FILE.format('sierra'),
-    HOMEBREW_URL.format(OSX_FILE.format('sierra')),
-    OSX_LIB,
-    TAR_EXTRACT,
-    LIBSODIUM_DYLIB),
-
+WINDOWS = [
+  # --------------------- ----------------- #
+  # Runtime ID            Platform          #
+  # --------------------- ----------------- #
+  ( 'win10-x64',          'x64'             ),
+  ( 'win10-x86',          'Win32'           ),
+  # --------------------- ----------------- #
 ]
 
-# The version cookie
-COOKIE_FILE = 'version.json'
+MACOS = [
+  # --------------------- ----------------- #
+  # Runtime ID            Codename          #
+  # --------------------- ----------------- #
+  ( 'osx.10.10-x64',      'yosemite'        ),
+  ( 'osx.10.11-x64',      'el_capitan'      ),
+  ( 'osx.10.12-x64',      'sierra'          ),
+  # --------------------- ----------------- #
+]
 
-#
-# INTERMEDIATE FILES
-#
+LINUX = [
+  # --------------------- ------------------
+  # Runtime ID            Docker Image
+  # --------------------- ------------------
+  ( 'alpine.3-x64',       'alpine:3.4'      ),
+  ( 'centos.7-x64',       'centos:7.1.1503' ),
+  ( 'debian.8-x64',       'debian:8.2'      ),
+  ( 'fedora.24-x64',      'fedora:24'       ),
+  ( 'fedora.25-x64',      'fedora:25'       ),
+  ( 'opensuse.42.1-x64',  'opensuse:42.1'   ),
+  ( 'ubuntu.14.04-x64',   'ubuntu:trusty'   ),
+  ( 'ubuntu.16.04-x64',   'ubuntu:xenial'   ),
+  ( 'ubuntu.16.10-x64',   'ubuntu:yakkety'  ),
+  # --------------------- ------------------
+]
 
+EXTRAS = [ 'LICENSE', 'AUTHORS', 'ChangeLog' ]
+
+PROPSFILE = 'libsodium.props'
+MAKEFILE = 'Makefile'
+BUILDDIR = 'build'
 CACHEDIR = 'cache'
-TEMPDIR = 'build'
+TEMPDIR = 'temp'
 
-#
-# DO NOT EDIT BELOW THIS LINE
-#
+PACKAGE = 'libsodium'
+LIBRARY = 'libsodium'
 
-class Item:
-  def __init__(self, input, cachedir, tempdir):
-    rid, archive, url, file, extract, lib = input
+DOCKER = 'sudo docker'
 
-    self.rid = rid
-    self.archive = archive
-    self.url = url
-    self.file = file
-    self.extract = extract
-    self.lib = lib
+class Version:
 
-    self.cachefile = os.path.join(cachedir, rid, archive)
-    self.sourcedir = os.path.join(tempdir, rid)
-    self.sourcefile = os.path.join(tempdir, rid, os.path.normpath(file))
-    self.targetfile = os.path.join('runtimes', rid, 'native', lib)
+  def __init__(self, prefix, suffix):
+    self.prefix = prefix
+    self.suffix = suffix
+    self.version = prefix + '-' + suffix if suffix is not None else prefix
 
-def create_nuspec(template, nuspec, version, items):
-  tree = ET.parse(template)
-  package = tree.getroot()
-  metadata = package.find('metadata')
-  metadata.find('version').text = version
-  files = package.find('files')
-  for item in items:
-    ET.SubElement(files, 'file', src=item.sourcefile, target=item.targetfile).tail = '\n'
-  tree.write(nuspec, 'ascii', '<?xml version="1.0"?>')
+    self.builddir = os.path.join(BUILDDIR, prefix)
+    self.tempdir = os.path.join(TEMPDIR, prefix)
+    self.projfile = os.path.join(self.builddir, '{0}.pkgproj'.format(PACKAGE))
+    self.propsfile = os.path.join(self.builddir, '{0}.props'.format(PACKAGE))
+    self.pkgfile = os.path.join(BUILDDIR, '{0}.{1}.nupkg'.format(PACKAGE, self.version))
 
-def create_makefile(makefile, nupkg, nuspec, items):
-  with open(makefile, 'w') as f:
-    for item in items:
-      f.write('FILES += {0}\n'.format(item.sourcefile))
+class WindowsItem:
+
+  def __init__(self, version, rid, platform):
+    self.url = 'https://download.libsodium.org/libsodium/releases/libsodium-{0}-msvc.zip'.format(version.prefix)
+    self.cachefile = os.path.join(CACHEDIR, re.sub(r'[^A-Za-z0-9.]', '-', self.url))
+    self.packfile = os.path.join(version.builddir, 'runtimes', rid, 'native', LIBRARY + '.dll')
+    self.itemfile = '{0}/Release/v140/dynamic/libsodium.dll'.format(platform)
+    self.tempdir = os.path.join(version.tempdir, rid)
+    self.tempfile = os.path.join(self.tempdir, os.path.normpath(self.itemfile))
+
+  def make(self, f):
     f.write('\n')
-    f.write('{0}: {1} $(FILES)\n\tdotnet nuget pack $<\n'.format(nupkg, nuspec))
-    for item in items:
-      f.write('\n')
-      f.write('{0}:\n\t@mkdir -p $(dir $@)\n\tcurl -f#Lo $@ "{1}"\n'.format(item.cachefile, item.url))
-    for item in items:
-      f.write('\n')
-      f.write('{0}: {1}\n\t@mkdir -p $(dir $@)\n\tcd {2} && {3}\n'.format(
-        item.sourcefile,
-        item.cachefile,
-        item.sourcedir,
-        item.extract.format(os.path.relpath(item.cachefile, item.sourcedir), item.file)))
+    f.write('{0}: {1}\n'.format(self.packfile, self.tempfile))
+    f.write('\t@mkdir -p $(dir $@)\n')
+    f.write('\tcp -f $< $@\n')
+    f.write('\n')
+    f.write('{0}: {1}\n'.format(self.tempfile, self.cachefile))
+    f.write('\t@mkdir -p $(dir $@)\n')
+    f.write('\tcd {0} && unzip -q -DD -o {1} \'{2}\'\n'.format(
+      self.tempdir,
+      os.path.relpath(self.cachefile, self.tempdir),
+      self.itemfile
+    ))
 
-def make_prerelease_version(version, suffix, cookie_file):
-  cookies = dict()
-  if os.path.isfile(cookie_file):
-    with open(cookie_file, 'r') as f:
-      cookies = json.load(f)
-  cookie = cookies.get(suffix, '---').split('-')
-  year, month, day, *rest = datetime.datetime.utcnow().timetuple()
-  major = '{0:03}{1:02}'.format(year * 12 + month - 23956, day)
-  minor = int(cookie[3]) + 1 if cookie[:3] == [version, suffix, major] else 1
-  result = '{0}-{1}-{2}-{3:02}'.format(version, suffix, major, minor)
-  cookies[suffix] = result
-  with open(cookie_file, 'w') as f:
-    json.dump(cookies, f, indent=4, sort_keys=True)
-  return result
+class MacOSItem:
+
+  def __init__(self, version, rid, codename):
+    self.url = 'https://bintray.com/homebrew/bottles/download_file?file_path=libsodium-{0}.{1}.bottle.tar.gz'.format(version.prefix, codename)
+    self.cachefile = os.path.join(CACHEDIR, re.sub(r'[^A-Za-z0-9.]', '-', self.url))
+    self.packfile = os.path.join(version.builddir, 'runtimes', rid, 'native', LIBRARY + '.dylib')
+    self.itemfile = 'libsodium/{0}/lib/libsodium.dylib'.format(version.prefix)
+    self.tempdir = os.path.join(version.tempdir, rid)
+    self.tempfile = os.path.join(self.tempdir, os.path.normpath(self.itemfile))
+
+  def make(self, f):
+    f.write('\n')
+    f.write('{0}: {1}\n'.format(self.packfile, self.tempfile))
+    f.write('\t@mkdir -p $(dir $@)\n')
+    f.write('\tcp -f $< $@\n')
+    f.write('\n')
+    f.write('{0}: {1}\n'.format(self.tempfile, self.cachefile))
+    f.write('\t@mkdir -p $(dir $@)\n')
+    f.write('\tcd {0} && tar xzmf {1} \'{2}\'\n'.format(
+      self.tempdir,
+      os.path.relpath(self.cachefile, self.tempdir),
+      os.path.dirname(self.itemfile)
+    ))
+
+class LinuxItem:
+
+  def __init__(self, version, rid, docker_image):
+    self.url = 'https://download.libsodium.org/libsodium/releases/libsodium-{0}.tar.gz'.format(version.prefix)
+    self.cachefile = os.path.join(CACHEDIR, re.sub(r'[^A-Za-z0-9.]', '-', self.url))
+    self.packfile = os.path.join(version.builddir, 'runtimes', rid, 'native', LIBRARY + '.so')
+    self.docker_image = docker_image
+    self.recipe = rid
+
+  def make(self, f):
+    recipe = self.recipe
+    while not os.path.exists(os.path.join('recipes', recipe)):
+      m = re.fullmatch(r'([^.-]+)((([.][^.-]+)*)[.][^.-]+)?([-].*)?', recipe)
+      if m.group(5) is None:
+        recipe = 'build'
+        break
+      elif m.group(2) is None:
+        recipe = m.group(1)
+      else:
+        recipe = m.group(1) + m.group(3) + m.group(5)
+
+    f.write('\n')
+    f.write('{0}: {1}\n'.format(self.packfile, self.cachefile))
+    f.write('\t@mkdir -p $(dir $@)\n')
+    f.write('\t{0} run --rm '.format(DOCKER) +
+            '-v $(abspath recipes):/io/recipes ' +
+            '-v $(abspath $<):/io/libsodium.tar.gz ' +
+            '-v $(abspath $(dir $@)):/io/output ' +
+            '{0} sh -x -e /io/recipes/{1}\n'.format(self.docker_image, recipe))
+
+class ExtraItem:
+
+  def __init__(self, version, filename):
+    self.url = 'https://download.libsodium.org/libsodium/releases/libsodium-{0}.tar.gz'.format(version.prefix)
+    self.cachefile = os.path.join(CACHEDIR, re.sub(r'[^A-Za-z0-9.]', '-', self.url))
+    self.packfile = os.path.join(version.builddir, filename)
+    self.itemfile = 'libsodium-{0}/{1}'.format(version.prefix, filename)
+    self.tempdir = version.tempdir
+    self.tempfile = os.path.join(self.tempdir, os.path.normpath(self.itemfile))
+
+  def make(self, f):
+    f.write('\n')
+    f.write('{0}: {1}\n'.format(self.packfile, self.tempfile))
+    f.write('\t@mkdir -p $(dir $@)\n')
+    f.write('\tcp -f $< $@\n')
+    f.write('\n')
+    f.write('{0}: {1}\n'.format(self.tempfile, self.cachefile))
+    f.write('\t@mkdir -p $(dir $@)\n')
+    f.write('\tcd {0} && tar xzmf {1} \'{2}\'\n'.format(
+      self.tempdir,
+      os.path.relpath(self.cachefile, self.tempdir),
+      self.itemfile
+    ))
 
 def main(args):
-  if len(args) > 2 or len(args) > 1 and not args[1].isalpha:
-    print('usage: {0} [label]'.format(os.path.basename(args[0])))
-    sys.exit(1)
+  m = re.fullmatch(r'(\d+(?:\.\d+){1,3})(?:-(\w+(?:[_.-]\w+)*))?', args[1]) if len(args) == 2 else None
 
-  version = NUPKG_VERSION
+  if m is None:
+    print('Usage:')
+    print('       python3 prepare.py <version>[-preview-##]')
+    print()
+    print('Examples:')
+    print('       python3 prepare.py 1.0.11-preview-01')
+    print('       python3 prepare.py 1.0.11-preview-02')
+    print('       python3 prepare.py 1.0.11-preview-03')
+    print('       python3 prepare.py 1.0.11')
+    return 1
 
-  if len(args) > 1:
-    suffix = args[1].lower()
-  else:
-    suffix = 'preview'
+  version = Version(m.group(1), m.group(2))
 
-  if suffix != 'release':
-    version = make_prerelease_version(version, suffix, COOKIE_FILE)
-    print('updated', COOKIE_FILE)
+  items = [ WindowsItem(version, rid, platform)   for (rid, platform) in WINDOWS   ] + \
+          [ MacOSItem(version, rid, codename)     for (rid, codename) in MACOS     ] + \
+          [ LinuxItem(version, rid, docker_image) for (rid, docker_image) in LINUX ] + \
+          [ ExtraItem(version, filename)          for filename in EXTRAS           ]
 
-  template = NUPKG_ID + '.nuspec'
-  nuspec = NUPKG_ID + '.' + version + '.nuspec'
-  nupkg = NUPKG_ID + '.' + version + '.nupkg'
+  downloads = {item.cachefile: item.url for item in items}
 
-  tempdir = os.path.join(TEMPDIR, version)
-  items = [Item(input, CACHEDIR, tempdir) for input in INPUTS]
+  with open(MAKEFILE, 'w') as f:
+    f.write('all: {0}\n'.format(version.pkgfile))
 
-  create_nuspec(template, nuspec, version, items)
-  print('created', nuspec)
+    for download in sorted(downloads):
+      f.write('\n')
+      f.write('{0}:\n'.format(download))
+      f.write('\t@mkdir -p $(dir $@)\n')
+      f.write('\tcurl -f#Lo $@ \'{0}\'\n'.format(downloads[download]))
 
-  create_makefile('Makefile', nupkg, nuspec, items)
-  print('created', 'Makefile', 'to make', nupkg)
+    for item in items:
+      item.make(f)
+
+    f.write('\n')
+    f.write('{0}: {1}\n'.format(version.propsfile, PROPSFILE))
+    f.write('\t@mkdir -p $(dir $@)\n')
+    f.write('\tcp -f $< $@\n')
+
+    f.write('\n')
+    f.write('{0}: {1}\n'.format(version.projfile, version.propsfile))
+    f.write('\t@mkdir -p $(dir $@)\n')
+    f.write('\techo \'' +
+            '<Project Sdk="Microsoft.NET.Sdk">' +
+            '<Import Project="{0}" />'.format(os.path.relpath(version.propsfile, os.path.dirname(version.projfile))) +
+            '<PropertyGroup>' +
+            '<VersionPrefix>{0}</VersionPrefix>'.format(version.prefix) +
+            '</PropertyGroup>' +
+            '</Project>\' > $@\n')
+
+    f.write('\n')
+    f.write('{0}:'.format(version.pkgfile))
+    f.write(' \\\n\t\t{0}'.format(version.projfile))
+    f.write(' \\\n\t\t{0}'.format(version.propsfile))
+    for item in items:
+      f.write(' \\\n\t\t{0}'.format(item.packfile))
+    f.write('\n')
+    f.write('\t@mkdir -p $(dir $@)\n')
+    f.write('\t{0} run --rm '.format(DOCKER) +
+            '-v $(abspath recipes):/io/recipes ' +
+            '-v $(abspath $(dir $<)):/io/input ' +
+            '-v $(abspath $(dir $@)):/io/output ' +
+            '{0} sh -x -e /io/recipes/{1} "{2}"\n'.format('microsoft/dotnet:latest', 'pack', version.suffix))
+
+  print('prepared', MAKEFILE, 'to make', version.pkgfile)
+  return 0
 
 if __name__ == '__main__':
-  main(sys.argv)
+  sys.exit(main(sys.argv))
