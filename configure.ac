@@ -301,9 +301,9 @@ dnl Checks for headers
 
 AS_IF([test "x$EMSCRIPTEN" = "x" -a "$host_os" != "pnacl"], [
 
-  AC_MSG_CHECKING(for MMX instructions set)
   oldcflags="$CFLAGS"
   AX_CHECK_COMPILE_FLAG([-mmmx], [CFLAGS="$CFLAGS -mmmx"])
+  AC_MSG_CHECKING(for MMX instructions set)
   AC_COMPILE_IFELSE([AC_LANG_PROGRAM([[
 #pragma GCC target("mmx")
 #include <mmintrin.h>
@@ -314,9 +314,9 @@ AS_IF([test "x$EMSCRIPTEN" = "x" -a "$host_os" != "pnacl"], [
     [AC_MSG_RESULT(no)])
   CFLAGS="$oldcflags"
 
-  AC_MSG_CHECKING(for SSE2 instructions set)
   oldcflags="$CFLAGS"
   AX_CHECK_COMPILE_FLAG([-msse2], [CFLAGS="$CFLAGS -msse2"])
+  AC_MSG_CHECKING(for SSE2 instructions set)
   AC_COMPILE_IFELSE([AC_LANG_PROGRAM([[
 #pragma GCC target("sse2")
 #ifndef __SSE2__
@@ -324,7 +324,7 @@ AS_IF([test "x$EMSCRIPTEN" = "x" -a "$host_os" != "pnacl"], [
 #endif
 #include <emmintrin.h>
 ]], [[ __m128d x = _mm_setzero_pd();
-       __m128i y = _mm_srli_epi64(_mm_setzero_si128(), 26); ]])],
+       __m128i z = _mm_srli_epi64(_mm_setzero_si128(), 26); ]])],
     [AC_MSG_RESULT(yes)
      AC_DEFINE([HAVE_EMMINTRIN_H], [1], [sse2 is available])
      AX_CHECK_COMPILE_FLAG([-msse2], [CFLAGS_SSE2="-msse2"])],
