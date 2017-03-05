@@ -20,6 +20,9 @@ typedef CRYPTO_ALIGN(16) struct crypto_onetimeauth_poly1305_state {
     unsigned char opaque[256];
 } crypto_onetimeauth_poly1305_state;
 
+SODIUM_EXPORT
+size_t crypto_onetimeauth_poly1305_statebytes(void);
+
 #define crypto_onetimeauth_poly1305_BYTES 16U
 SODIUM_EXPORT
 size_t crypto_onetimeauth_poly1305_bytes(void);

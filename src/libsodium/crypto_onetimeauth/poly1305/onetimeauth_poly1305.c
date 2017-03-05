@@ -63,6 +63,12 @@ crypto_onetimeauth_poly1305_keybytes(void)
     return crypto_onetimeauth_poly1305_KEYBYTES;
 }
 
+size_t
+crypto_onetimeauth_poly1305_statebytes(void)
+{
+    return sizeof(crypto_onetimeauth_poly1305_state);
+}
+
 void
 crypto_onetimeauth_poly1305_keygen(
     unsigned char k[crypto_onetimeauth_poly1305_KEYBYTES])
