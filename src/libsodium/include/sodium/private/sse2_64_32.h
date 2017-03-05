@@ -12,6 +12,7 @@
       defined(_M_X64) || defined(_M_AMD64))
 
 # include <emmintrin.h>
+# include <stdint.h>
 
 # ifndef _mm_set_epi64x
 #  define _mm_set_epi64x(Q0, Q1) sodium__mm_set_epi64x((Q0), (Q1))
