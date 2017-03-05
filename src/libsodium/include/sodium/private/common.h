@@ -218,6 +218,8 @@ store32_be(uint8_t dst[4], uint32_t w)
     !(defined(__amd64) || defined(__amd64__) || defined(__x86_64__) || \
       defined(_M_X64) || defined(_M_AMD64))
 
+# include <emmintrin.h>
+
 # ifndef _mm_set_epi64x
 #  define _mm_set_epi64x(Q0, Q1) sodium__mm_set_epi64x((Q0), (Q1))
 static inline __m128i
