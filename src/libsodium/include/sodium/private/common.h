@@ -195,7 +195,7 @@ store32_be(uint8_t dst[4], uint32_t w)
 #if defined(_MSC_VER) && \
     (defined(_M_X64) || defined(_M_AMD64) || defined(_M_IX86))
 
-#include <intrin.h>
+# include <intrin.h>
 
 # define HAVE_INTRIN_H    1
 # define HAVE_MMINTRIN_H  1
@@ -210,8 +210,16 @@ store32_be(uint8_t dst[4], uint32_t w)
 # if _MSC_VER >= 1700 && defined(_M_X64)
 #  define HAVE_AVX2INTRIN_H 1
 # endif
-# if _MSC_VER < 1900 && !defined(_mm_set_epi64x)
-#define _mm_set_epi64x(Q0, Q1) sodium__mm_set_epi64x((Q0), (Q1))
+#elif defined(HAVE_INTRIN_H)
+# include <intrin.h>
+#endif
+
+#if defined(HAVE_EMMINTRIN_H) && \
+    !(defined(__amd64) || defined(__amd64__) || defined(__x86_64__) || \
+      defined(_M_X64) || defined(_M_AMD64))
+
+# ifndef _mm_set_epi64x
+#  define _mm_set_epi64x(Q0, Q1) sodium__mm_set_epi64x((Q0), (Q1))
 static inline __m128i
 sodium__mm_set_epi64x(int64_t q1, int64_t q0)
 {
@@ -219,7 +227,10 @@ sodium__mm_set_epi64x(int64_t q1, int64_t q0)
     x0.as64 = q0; x1.as64 = q1;
     return _mm_set_epi32(x1.as32[1], x1.as32[0], x0.as32[1], x0.as32[0]);
 }
-#define _mm_set1_epi64x(Q) sodium__mm_set1_epi64x(Q)
+# endif
+
+# ifndef _mm_set1_epi64x
+#  define _mm_set1_epi64x(Q) sodium__mm_set1_epi64x(Q)
 static inline __m128i
 sodium__mm_set1_epi64x(int64_t q)
 {
@@ -227,8 +238,17 @@ sodium__mm_set1_epi64x(int64_t q)
 }
 # endif
 
-#elif defined(HAVE_INTRIN_H)
-# include <intrin.h>
+# ifndef _mm_cvtsi64_si128
+#  define _mm_cvtsi64_si128(Q) sodium__mm_cvtsi64_si128(Q)
+static inline __m128i
+sodium__mm_cvtsi64_si128(int64_t q)
+{
+    union { int64_t as64; int32_t as32[2]; } x;
+    x.as64 = q;
+    return _mm_setr_epi32(x.as32[0], x.as32[1], 0, 0);
+}
+# endif
+
 #endif
 
 #endif
