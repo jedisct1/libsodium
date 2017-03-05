@@ -1,5 +1,7 @@
 
 * Version 1.0.12
+ - Ed25519ph was implemented, adding a multi-part signature API
+(`crypto_sign_init()`, `crypto_sign_update()`, `crypto_sign_final_*()`). 
  - New constants and related accessors have been added for Scrypt and
 Argon2.
  - XChaCha20 has been implemented. Like XSalsa20, this construction

@@ -456,6 +456,7 @@
     <ClInclude Include="src\libsodium\crypto_scalarmult\curve25519\sandy2x\ladder_base_namespace.h" />
     <ClInclude Include="src\libsodium\crypto_scalarmult\curve25519\sandy2x\ladder_namespace.h" />
     <ClInclude Include="src\libsodium\crypto_shorthash\siphash24\ref\shorthash_siphash_ref.h" />
+    <ClInclude Include="src\libsodium\crypto_sign\ed25519\ref10\ed25519_ref10.h" />
     <ClInclude Include="src\libsodium\crypto_stream\aes128ctr\nacl\common.h" />
     <ClInclude Include="src\libsodium\crypto_stream\aes128ctr\nacl\consts.h" />
     <ClInclude Include="src\libsodium\crypto_stream\aes128ctr\nacl\int128.h" />

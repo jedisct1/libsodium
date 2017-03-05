@@ -440,6 +440,9 @@
     <ClInclude Include="..\..\..\..\src\libsodium\crypto_shorthash\siphash24\ref\shorthash_siphash_ref.h">
       <Filter>crypto_shorthash\siphash24\ref</Filter>
     </ClInclude>
+    <ClInclude Include="..\..\..\..\src\libsodium\crypto_sign\ed25519\ref10\ed25519_ref10.h">
+      <Filter>crypto_sign\ed25519\ref10</Filter>
+    </ClInclude>
     <ClInclude Include="..\..\..\..\src\libsodium\crypto_stream\aes128ctr\nacl\common.h">
       <Filter>crypto_stream\aes128ctr\nacl</Filter>
     </ClInclude>

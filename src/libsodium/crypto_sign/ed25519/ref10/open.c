@@ -6,6 +6,7 @@
 #include "crypto_hash_sha512.h"
 #include "crypto_sign_ed25519.h"
 #include "crypto_verify_32.h"
+#include "ed25519_ref10.h"
 #include "private/curve25519_ref10.h"
 #include "utils.h"
 
@@ -107,10 +108,11 @@ small_order(const unsigned char R[32])
 #endif
 
 int
-crypto_sign_ed25519_verify_detached(const unsigned char *sig,
-                                    const unsigned char *m,
-                                    unsigned long long   mlen,
-                                    const unsigned char *pk)
+_crypto_sign_ed25519_verify_detached(const unsigned char *sig,
+                                     const unsigned char *m,
+                                     unsigned long long   mlen,
+                                     const unsigned char *pk,
+                                     int prehashed)
 {
     crypto_hash_sha512_state hs;
     unsigned char            h[64];
@@ -138,7 +140,7 @@ crypto_sign_ed25519_verify_detached(const unsigned char *sig,
     if (d == 0) {
         return -1;
     }
-    crypto_hash_sha512_init(&hs);
+    _crypto_sign_ed25519_ref10_hinit(&hs, prehashed);
     crypto_hash_sha512_update(&hs, sig, 32);
     crypto_hash_sha512_update(&hs, pk, 32);
     crypto_hash_sha512_update(&hs, m, mlen);
@@ -150,6 +152,15 @@ crypto_sign_ed25519_verify_detached(const unsigned char *sig,
 
     return crypto_verify_32(rcheck, sig) | (-(rcheck == sig)) |
            sodium_memcmp(sig, rcheck, 32);
+}
+
+int
+crypto_sign_ed25519_verify_detached(const unsigned char *sig,
+                                    const unsigned char *m,
+                                    unsigned long long   mlen,
+                                    const unsigned char *pk)
+{
+    return _crypto_sign_ed25519_verify_detached(sig, m, mlen, pk, 0);
 }
 
 int

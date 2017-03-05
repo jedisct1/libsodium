@@ -1061,21 +1061,23 @@ static void add_l(unsigned char * const S)
 
 int main(void)
 {
-    unsigned char extracted_seed[crypto_sign_ed25519_SEEDBYTES];
-    unsigned char extracted_pk[crypto_sign_ed25519_PUBLICKEYBYTES];
-    unsigned char sig[crypto_sign_BYTES];
-    unsigned char sm[1024 + crypto_sign_BYTES];
-    unsigned char m[1024];
-    unsigned char skpk[crypto_sign_SECRETKEYBYTES];
-    unsigned char pk[crypto_sign_PUBLICKEYBYTES];
-    unsigned char sk[crypto_sign_SECRETKEYBYTES];
-    char          pk_hex[crypto_sign_PUBLICKEYBYTES * 2 + 1];
-    char          sk_hex[crypto_sign_SECRETKEYBYTES * 2 + 1];
+    crypto_sign_state  st;
+    unsigned char      extracted_seed[crypto_sign_ed25519_SEEDBYTES];
+    unsigned char      extracted_pk[crypto_sign_ed25519_PUBLICKEYBYTES];
+    unsigned char      sig[crypto_sign_BYTES];
+    unsigned char      sm[1024 + crypto_sign_BYTES];
+    unsigned char      m[1024];
+    unsigned char      skpk[crypto_sign_SECRETKEYBYTES];
+    unsigned char      pk[crypto_sign_PUBLICKEYBYTES];
+    unsigned char      sk[crypto_sign_SECRETKEYBYTES];
+    char               sig_hex[crypto_sign_BYTES * 2 + 1];
+    char               pk_hex[crypto_sign_PUBLICKEYBYTES * 2 + 1];
+    char               sk_hex[crypto_sign_SECRETKEYBYTES * 2 + 1];
     unsigned long long siglen;
     unsigned long long smlen;
     unsigned long long mlen;
-    unsigned int i;
-    unsigned int j;
+    unsigned int       i;
+    unsigned int       j;
 
     memset(sig, 0, sizeof sig);
     for (i = 0U; i < (sizeof test_data) / (sizeof test_data[0]); i++) {
@@ -1134,7 +1136,7 @@ int main(void)
             continue;
         }
         if (siglen == 0U || siglen > crypto_sign_BYTES) {
-            printf("detached signature has an unexpected length");
+            printf("detached signature has an unexpected length: [%u]\n", i);
             continue;
         }
         if (memcmp(test_data[i].sig, sig, crypto_sign_BYTES) != 0) {
@@ -1189,6 +1191,60 @@ int main(void)
         printf("detached signature verification should have failed\n");
     }
 
+    if (crypto_sign_seed_keypair(pk, sk, keypair_seed) != 0) {
+        printf("crypto_sign_seed_keypair() failure\n");
+        return -1;
+    }
+    crypto_sign_init(&st);
+    crypto_sign_update(&st, (const unsigned char *)test_data[i].m, i);
+    crypto_sign_final_create(&st, sig, NULL, sk);
+    sodium_bin2hex(sig_hex, sizeof sig_hex, sig, sizeof sig);
+    printf("ed25519ph sig: [%s]\n", sig_hex);
+
+    crypto_sign_init(&st);
+    crypto_sign_update(&st, (const unsigned char *)test_data[i].m, i);
+    if (crypto_sign_final_verify(&st, sig, pk) != 0) {
+        printf("ed5519ph verification failed\n");
+    }
+    crypto_sign_init(&st);
+    crypto_sign_update(&st, (const unsigned char *)test_data[i].m, 0);
+    crypto_sign_update(&st, (const unsigned char *)test_data[i].m, i / 2);
+    crypto_sign_update(&st, ((const unsigned char *)test_data[i].m) + i / 2,
+                       i - i / 2);
+    if (crypto_sign_final_verify(&st, sig, pk) != 0) {
+        printf("ed5519ph verification failed\n");
+    }
+    sig[0]++;
+    if (crypto_sign_final_verify(&st, sig, pk) != -1) {
+        printf("ed5519ph verification could be forged\n");
+    }
+    sig[0]--;
+    pk[0]++;
+    if (crypto_sign_final_verify(&st, sig, pk) != -1) {
+        printf("ed5519ph verification could be forged\n");
+    }
+    sodium_hex2bin(sk, crypto_sign_SECRETKEYBYTES,
+                   "833fe62409237b9d62ec77587520911e9a759cec1d19755b7da901b96dca3d42",
+                   2 * crypto_sign_SECRETKEYBYTES , NULL, NULL, NULL);
+    sodium_hex2bin(pk, crypto_sign_PUBLICKEYBYTES,
+                   "ec172b93ad5e563bf4932c70e1245034c35467ef2efd4d64ebf819683467e2bf",
+                   2 * crypto_sign_PUBLICKEYBYTES, NULL, NULL, NULL);
+    memcpy(sk + crypto_sign_SECRETKEYBYTES - crypto_sign_PUBLICKEYBYTES,
+           pk, crypto_sign_PUBLICKEYBYTES);
+    crypto_sign_init(&st);
+    crypto_sign_update(&st, (const unsigned char *) "abc", 3);
+    crypto_sign_final_create(&st, sig, &siglen, sk);
+    if (siglen == 0U || siglen > crypto_sign_BYTES) {
+        printf("ed25519ph signature has an unexpected length\n");
+    }
+    sodium_bin2hex(sig_hex, sizeof sig_hex, sig, sizeof sig);
+    printf("ed25519ph tv sig: [%s]\n", sig_hex);
+
+    crypto_sign_init(&st);
+    crypto_sign_update(&st, (const unsigned char *) "abc", 3);
+    if (crypto_sign_final_verify(&st, sig, pk) != 0) {
+        printf("ed25519ph verification failed\n");
+    }
     if (crypto_sign_keypair(pk, sk) != 0) {
         printf("crypto_sign_keypair() failure\n");
     }
@@ -1222,6 +1278,7 @@ int main(void)
            == crypto_sign_ed25519_publickeybytes());
     assert(crypto_sign_secretkeybytes()
            == crypto_sign_ed25519_secretkeybytes());
+    assert(crypto_sign_statebytes() == crypto_sign_ed25519ph_statebytes());
 
     return 0;
 }

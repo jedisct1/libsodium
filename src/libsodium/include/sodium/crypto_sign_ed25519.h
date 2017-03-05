@@ -2,6 +2,7 @@
 #define crypto_sign_ed25519_H
 
 #include <stddef.h>
+#include "crypto_hash_sha512.h"
 #include "export.h"
 
 #ifdef __cplusplus
@@ -10,6 +11,13 @@
 # endif
 extern "C" {
 #endif
+
+typedef struct crypto_sign_ed25519ph_state {
+    crypto_hash_sha512_state hs;
+} crypto_sign_ed25519ph_state;
+
+SODIUM_EXPORT
+size_t crypto_sign_ed25519ph_statebytes(void);
 
 #define crypto_sign_ed25519_BYTES 64U
 SODIUM_EXPORT
@@ -74,6 +82,26 @@ int crypto_sign_ed25519_sk_to_seed(unsigned char *seed,
 
 SODIUM_EXPORT
 int crypto_sign_ed25519_sk_to_pk(unsigned char *pk, const unsigned char *sk);
+
+SODIUM_EXPORT
+int crypto_sign_ed25519ph_init(crypto_sign_ed25519ph_state *state);
+
+SODIUM_EXPORT
+int crypto_sign_ed25519ph_update(crypto_sign_ed25519ph_state *state,
+                                 const unsigned char *m,
+                                 unsigned long long mlen);
+
+SODIUM_EXPORT
+int crypto_sign_ed25519ph_final_create(crypto_sign_ed25519ph_state *state,
+                                       unsigned char *sig,
+                                       unsigned long long *siglen_p,
+                                       const unsigned char *sk);
+
+SODIUM_EXPORT
+int crypto_sign_ed25519ph_final_verify(crypto_sign_ed25519ph_state *state,
+                                       unsigned char *sig,
+                                       const unsigned char *pk)
+            __attribute__ ((warn_unused_result));
 
 #ifdef __cplusplus
 }
