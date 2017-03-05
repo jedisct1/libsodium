@@ -2,47 +2,40 @@ This directory contains scripts and files to package libsodium for .NET Core.
 
 In .NET Core, it is customary to provide pre-compiled binaries for all platforms
 as NuGet packages. The purpose of the `prepare.py` script in this directory is
-to generate a `Makefile` that downloads pre-compiled libsodium binaries from a
-list of sources and creates a NuGet package that can be uploaded to
-[nuget.org](https://nuget.org/).
+to generate a `Makefile` that downloads and builds libsodium binaries for a
+number of platforms and assembles them in a NuGet package that can be uploaded
+to [nuget.org](https://nuget.org/).
 
-
-#### Sources
-
-The list of sources is located in `prepare.py` and needs to be updated on each
-libsodium release. Currently, libsodium binaries are obtained in the following
-ways:
-
-* For Windows, the binaries are taken from
+* For Windows, binaries are obtained from
   [download.libsodium.org](https://download.libsodium.org/libsodium/releases/).
-* For macOS, the binaries are extracted from the
+* For macOS, binaries are extracted from the
   [Homebrew libsodium bottle](https://bintray.com/homebrew/bottles/libsodium).
-* For Linux, libsodium is compiled on and downloaded from the
-  [openSUSE Build Service](https://build.opensuse.org/package/show/home:nsec/libsodium).
+* For Linux, libsodium is compiled in Docker containers.
+
+See `prepare.py` for the complete list of supported platforms.
+
+The metadata for the NuGet package is located in `libsodium.props`.
 
 
-#### Metadata
+**Making a pre-release**
 
-The metadata for the NuGet package is located in `libsodium.nuspec`. On each
-invocation, the `prepare.py` script generates a new version number and creates a
-`.nuspec` file that contains the metadata from `libsodium.nuspec`, the generated
-version number and the list of binaries.
-
-
-#### Making a release
-
-1. Update `_service` to reflect the current libsodium version.
-2. Download `libsodium.spec` and `libsodium.changes` from
-   [here](https://build.opensuse.org/package/show?project=devel%3Alibraries%3Ac_c%2B%2B&package=libsodium).
-3. Upload `_service`, `libsodium.spec`, `libsodium.changes` and the current
-   `libsodium-{version}.tar.gz` to openSUSE Build Service.
-4. Update the libsodium version, file names and download URLs in `prepare.py`.
-5. Run `./prepare.py` to generate the `Makefile` and
-   `libsodium.{version}.nuspec`.
-6. Run `make` to download the binaries and create `libsodium.{version}.nupkg`.
-   You may need to install `unzip`, `rpm2cpio` and `dotnet-dev` first.
-7. Verify that everything in the `.nupkg` file is in place.
-8. Publish the release by uploading the `.nupkg` file to 
+1. Run `python3 prepare.py 1.0.11-preview-01` to generate the `Makefile`.
+   `1.0.11` is the libsodium version number; `01` is the pre-release
+   number and needs to be incremented for each pre-release.
+2. Take a look at the generated `Makefile`. It uses `sudo` a few times.
+3. Run `make` to download and build the binaries and create the NuGet
+   package. You may need to install `docker`, `make`, `curl`, `tar` and
+   `unzip` first. The NuGet package is output as a `.nupkg` file in the
+   `build` directory.
+4. Grab a cup of coffee. Downloading the Docker images and compiling the
+   Linux binaries takes a while.
+5. Verify that everything in the `.nupkg` file is in place.
+6. Publish the release by uploading the `.nupkg` file to 
    [nuget.org](https://nuget.org/).
-9. Commit the updated `prepare.py` and `version.json` to the libsodium
-   repository.
+
+
+**Making a release**
+
+1. Run `python3 prepare.py 1.0.11` to generate the `Makefile`.
+
+The remaining steps are the same.

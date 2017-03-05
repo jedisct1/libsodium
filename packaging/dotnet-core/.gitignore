@@ -1,5 +1,4 @@
 build
 cache
-libsodium.*.nupkg
-libsodium.*.nuspec
+temp
 Makefile
