@@ -461,6 +461,7 @@ _sodium_hex2bin 1 1
 _sodium_increment 0 0
 _sodium_init 1 1
 _sodium_is_zero 0 0
+_sodium_library_minimal 1 1
 _sodium_library_version_major 1 1
 _sodium_library_version_minor 1 1
 _sodium_malloc 0 0
