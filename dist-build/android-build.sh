@@ -25,6 +25,7 @@ if [ "x$TARGET_ARCH" = 'x' ] || [ "x$ARCH" = 'x' ] || [ "x$HOST_COMPILER" = 'x' 
   exit 1
 fi
 
+export PYTHON2=$(python2 --version > /dev/null 2>&1 && echo python2 || echo python)
 export MAKE_TOOLCHAIN="${ANDROID_NDK_HOME}/build/tools/make_standalone_toolchain.py"
 
 export PREFIX="$(pwd)/libsodium-android-${TARGET_ARCH}"
@@ -38,7 +39,7 @@ echo "Building for platform [${NDK_PLATFORM}], retaining compatibility with plat
 echo
 
 env - PATH="$PATH" \
-    $MAKE_TOOLCHAIN --force --api="$NDK_API_VERSION_COMPAT" \
+    "$PYTHON2" "$MAKE_TOOLCHAIN" --force --api="$NDK_API_VERSION_COMPAT" \
     --unified-headers --arch="$ARCH" --install-dir="$TOOLCHAIN_DIR" || exit 1
 
 ./configure \
@@ -54,7 +55,7 @@ if [ "$NDK_PLATFORM" != "$NDK_PLATFORM_COMPAT" ]; then
   echo "Configuring again for platform [${NDK_PLATFORM}]"
   echo
   env - PATH="$PATH" \
-  $MAKE_TOOLCHAIN --force --api="$NDK_API_VERSION" \
+      "$PYTHON2" "$MAKE_TOOLCHAIN" --force --api="$NDK_API_VERSION" \
       --unified-headers --arch="$ARCH" --install-dir="$TOOLCHAIN_DIR" || exit 1
 
   ./configure \
