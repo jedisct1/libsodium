@@ -16,16 +16,29 @@ if [ -z "$ANDROID_NDK_HOME" ]; then
 fi
 
 if [ ! -f ./configure ]; then
-  echo "Can't find ./configure. Wrong directory or haven't run autogen.sh?"
+  echo "Can't find ./configure. Wrong directory or haven't run autogen.sh?" >&2
   exit 1
 fi
 
 if [ "x$TARGET_ARCH" = 'x' ] || [ "x$ARCH" = 'x' ] || [ "x$HOST_COMPILER" = 'x' ]; then
-  echo "You shouldn't use android-build.sh directly, use android-[arch].sh instead"
+  echo "You shouldn't use android-build.sh directly, use android-[arch].sh instead" >&2
   exit 1
 fi
 
-export PYTHON2=$(python2 --version > /dev/null 2>&1 && echo python2 || echo python)
+if [ "x$PYTHON2" = 'x' ]; then
+  for c in python2 python; do
+    if "$c" --version 2> /dev/null; then
+      PYTHON2="$c"
+      break
+    fi
+  done
+fi
+if [ "x$PYTHON2" = 'x' ]; then
+  echo "Python 2.x is required by the Android compilation toolchain" >&2
+  exit 1
+fi
+
+export PYTHON2
 export MAKE_TOOLCHAIN="${ANDROID_NDK_HOME}/build/tools/make_standalone_toolchain.py"
 
 export PREFIX="$(pwd)/libsodium-android-${TARGET_ARCH}"
