@@ -6,6 +6,8 @@ if [ -z "$NDK_PLATFORM" ]; then
 else
   export NDK_PLATFORM_COMPAT="${NDK_PLATFORM_COMPAT:-${NDK_PLATFORM}}"
 fi
+export NDK_API_VERSION=$(echo "$NDK_PLATFORM" | sed 's/^android-//')
+export NDK_API_VERSION_COMPAT=$(echo "$NDK_PLATFORM_COMPAT" | sed 's/^android-//')
 
 if [ -z "$ANDROID_NDK_HOME" ]; then
   echo "You should probably set ANDROID_NDK_HOME to the directory containing"
@@ -23,7 +25,7 @@ if [ "x$TARGET_ARCH" = 'x' ] || [ "x$ARCH" = 'x' ] || [ "x$HOST_COMPILER" = 'x' 
   exit 1
 fi
 
-export MAKE_TOOLCHAIN="${ANDROID_NDK_HOME}/build/tools/make-standalone-toolchain.sh"
+export MAKE_TOOLCHAIN="${ANDROID_NDK_HOME}/build/tools/make_standalone_toolchain.py"
 
 export PREFIX="$(pwd)/libsodium-android-${TARGET_ARCH}"
 export TOOLCHAIN_DIR="$(pwd)/android-toolchain-${TARGET_ARCH}"
@@ -35,8 +37,9 @@ echo
 echo "Building for platform [${NDK_PLATFORM}], retaining compatibility with platform [${NDK_PLATFORM_COMPAT}]"
 echo
 
-bash $MAKE_TOOLCHAIN --force --platform="$NDK_PLATFORM_COMPAT" \
-    --arch="$ARCH" --install-dir="$TOOLCHAIN_DIR" || exit 1
+env - PATH="$PATH" \
+    $MAKE_TOOLCHAIN --force --api="$NDK_API_VERSION_COMPAT" \
+    --unified-headers --arch="$ARCH" --install-dir="$TOOLCHAIN_DIR" || exit 1
 
 ./configure \
     --disable-soname-versions \
@@ -50,8 +53,9 @@ if [ "$NDK_PLATFORM" != "$NDK_PLATFORM_COMPAT" ]; then
   echo
   echo "Configuring again for platform [${NDK_PLATFORM}]"
   echo
-  bash $MAKE_TOOLCHAIN --force --platform="$NDK_PLATFORM" \
-      --arch="$ARCH" --install-dir="$TOOLCHAIN_DIR" || exit 1
+  env - PATH="$PATH" \
+  $MAKE_TOOLCHAIN --force --api="$NDK_API_VERSION" \
+      --unified-headers --arch="$ARCH" --install-dir="$TOOLCHAIN_DIR" || exit 1
 
   ./configure \
       --disable-soname-versions \
