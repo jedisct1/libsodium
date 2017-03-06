@@ -2,3 +2,4 @@ build
 cache
 temp
 Makefile
+!recipes/*
