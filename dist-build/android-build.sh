@@ -25,20 +25,6 @@ if [ "x$TARGET_ARCH" = 'x' ] || [ "x$ARCH" = 'x' ] || [ "x$HOST_COMPILER" = 'x' 
   exit 1
 fi
 
-if [ "x$PYTHON2" = 'x' ]; then
-  for c in python2 python; do
-    if "$c" --version 2> /dev/null; then
-      PYTHON2="$c"
-      break
-    fi
-  done
-fi
-if [ "x$PYTHON2" = 'x' ]; then
-  echo "Python 2.x is required by the Android compilation toolchain" >&2
-  exit 1
-fi
-
-export PYTHON2
 export MAKE_TOOLCHAIN="${ANDROID_NDK_HOME}/build/tools/make_standalone_toolchain.py"
 
 export PREFIX="$(pwd)/libsodium-android-${TARGET_ARCH}"
@@ -52,7 +38,7 @@ echo "Building for platform [${NDK_PLATFORM}], retaining compatibility with plat
 echo
 
 env - PATH="$PATH" \
-    "$PYTHON2" "$MAKE_TOOLCHAIN" --force --api="$NDK_API_VERSION_COMPAT" \
+    "$MAKE_TOOLCHAIN" --force --api="$NDK_API_VERSION_COMPAT" \
     --unified-headers --arch="$ARCH" --install-dir="$TOOLCHAIN_DIR" || exit 1
 
 ./configure \
@@ -68,7 +54,7 @@ if [ "$NDK_PLATFORM" != "$NDK_PLATFORM_COMPAT" ]; then
   echo "Configuring again for platform [${NDK_PLATFORM}]"
   echo
   env - PATH="$PATH" \
-      "$PYTHON2" "$MAKE_TOOLCHAIN" --force --api="$NDK_API_VERSION" \
+      "$MAKE_TOOLCHAIN" --force --api="$NDK_API_VERSION" \
       --unified-headers --arch="$ARCH" --install-dir="$TOOLCHAIN_DIR" || exit 1
 
   ./configure \
