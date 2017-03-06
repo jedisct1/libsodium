@@ -30,6 +30,7 @@ function can especially be useful to write reproducible tests.
  - `contrib/Findsodium.cmake` was added as an example to include
 libsodium in a project using cmake.
  - Compatibility with gcc 2.x has been restored.
+ - Minimal builds can be checked using `sodium_library_minimal()`.
 
 * Version 1.0.11
  - `sodium_init()` is now thread-safe, and can be safely called multiple

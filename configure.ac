@@ -102,6 +102,7 @@ AC_ARG_ENABLE(minimal,
 [
   AS_IF([test "x$enableval" = "xyes"], [
     enable_minimal="yes"
+    SODIUM_LIBRARY_MINIMAL_DEF="#define SODIUM_LIBRARY_MINIMAL 1"
     AC_DEFINE([MINIMAL], [1], [Define for a minimal build, without deprecated functions and functions that high-level APIs depend on])
   ], [
     enable_minimal="no"
@@ -111,6 +112,7 @@ AC_ARG_ENABLE(minimal,
   enable_minimal="no"
 ])
 AM_CONDITIONAL([MINIMAL], [test x$enable_minimal = xyes])
+AC_SUBST(SODIUM_LIBRARY_MINIMAL_DEF)
 
 AC_ARG_WITH(pthreads, AC_HELP_STRING([--with-pthreads],
  [use pthreads library, or --without-pthreads to disable threading support.]),

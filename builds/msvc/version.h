@@ -22,6 +22,9 @@ int         sodium_library_version_major(void);
 SODIUM_EXPORT
 int         sodium_library_version_minor(void);
 
+SODIUM_EXPORT
+int         sodium_library_minimal(void);
+
 #ifdef __cplusplus
 }
 #endif
