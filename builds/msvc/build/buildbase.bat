@@ -5,6 +5,7 @@ SET solution=%1
 SET version=%2
 SET log=build_%version%.log
 SET tools=Microsoft Visual Studio %version%.0\VC\vcvarsall.bat
+IF %version% == 15 SET tools=Microsoft Visual Studio\2017\Community\VC\Auxiliary\Build\vcvarsall.bat
 SET environment="%programfiles(x86)%\%tools%"
 IF NOT EXIST %environment% SET environment="%programfiles%\%tools%"
 IF NOT EXIST %environment% GOTO no_tools
