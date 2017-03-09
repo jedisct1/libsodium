@@ -31,19 +31,18 @@ crypto_box_curve25519xsalsa20poly1305_keypair(unsigned char *pk,
     return crypto_scalarmult_curve25519_base(pk, sk);
 }
 
-static const unsigned char n[16] = { 0 };
-
 int
 crypto_box_curve25519xsalsa20poly1305_beforenm(unsigned char *      k,
                                                const unsigned char *pk,
                                                const unsigned char *sk)
 {
+    static const unsigned char zero[16] = { 0 };
     unsigned char s[32];
 
     if (crypto_scalarmult_curve25519(s, sk, pk) != 0) {
         return -1;
     }
-    return crypto_core_hsalsa20(k, n, s, NULL);
+    return crypto_core_hsalsa20(k, zero, s, NULL);
 }
 
 int
