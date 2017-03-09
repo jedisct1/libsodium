@@ -165,7 +165,9 @@ void
 randombytes_buf_deterministic(void * const buf, const size_t size,
                               const unsigned char seed[randombytes_SEEDBYTES])
 {
-    static const unsigned char zero[crypto_stream_chacha20_ietf_NONCEBYTES] = { 0 };
+    static const unsigned char nonce[crypto_stream_chacha20_ietf_NONCEBYTES] = {
+        'L', 'i', 'b', 's', 'o', 'd', 'i', 'u', 'm', 'D', 'R', 'G'
+    };
 
     COMPILER_ASSERT(randombytes_SEEDBYTES == crypto_stream_chacha20_ietf_KEYBYTES);
 #if SIZE_MAX > 0x4000000000ULL
@@ -174,7 +176,7 @@ randombytes_buf_deterministic(void * const buf, const size_t size,
     }
 #endif
     crypto_stream_chacha20_ietf((unsigned char *) buf, (unsigned long long) size,
-                                zero, seed);
+                                nonce, seed);
 }
 
 size_t
