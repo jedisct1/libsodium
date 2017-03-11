@@ -181,7 +181,7 @@ required.
  - On Linux, getrandom(2) is being used instead of directly accessing
 /dev/urandom, if the kernel supports this system call.
  - crypto_box_seal() and crypto_box_seal_open() have been added.
- - A solutions for Visual Studio 2015 was added.
+ - Visual Studio 2015 is now supported.
 
 * Version 1.0.2
  - The _easy and _detached APIs now support precalculated keys;
