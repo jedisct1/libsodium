@@ -69,6 +69,8 @@ crypto_hash/sha512256
 
 crypto_kdf/blake2b                     Frank Denis
 
+crypto_kx                              Frank Denis
+
 crypto_onetimeauth/poly1305/donna      Andrew "floodyberry" Moon
 crypto_onetimeauth/poly1305/sse2
 
