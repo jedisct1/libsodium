@@ -422,9 +422,11 @@ randombytes_salsa20_random_buf(void * const buf, const size_t size)
 
     randombytes_salsa20_random_stir_if_needed();
     COMPILER_ASSERT(sizeof stream.nonce == crypto_stream_salsa20_NONCEBYTES);
-#ifdef ULONG_LONG_MAX
+#if defined(ULONG_LONG_MAX) && defined(SIZE_MAX)
+# if SIZE_MAX > ULONG_LONG_MAX
     /* coverity[result_independent_of_operands] */
     assert(size <= ULONG_LONG_MAX);
+# endif
 #endif
     ret = crypto_stream_salsa20((unsigned char *) buf, (unsigned long long) size,
                                 (unsigned char *) &stream.nonce, stream.key);

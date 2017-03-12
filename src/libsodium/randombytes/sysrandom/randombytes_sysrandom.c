@@ -313,9 +313,11 @@ static void
 randombytes_sysrandom_buf(void * const buf, const size_t size)
 {
     randombytes_sysrandom_stir_if_needed();
-#ifdef ULONG_LONG_MAX
+#if defined(ULONG_LONG_MAX) && defined(SIZE_MAX)
+# if SIZE_MAX > ULONG_LONG_MAX
     /* coverity[result_independent_of_operands] */
     assert(size <= ULONG_LONG_MAX);
+# endif
 #endif
 #ifndef _WIN32
 # if defined(SYS_getrandom) && defined(__NR_getrandom)
