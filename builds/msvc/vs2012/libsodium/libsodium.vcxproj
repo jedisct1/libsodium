@@ -262,8 +262,6 @@
     <ClInclude Include="..\..\..\..\src\libsodium\include\sodium\crypto_hash.h" />
     <ClInclude Include="..\..\..\..\src\libsodium\include\sodium\crypto_hash_sha256.h" />
     <ClInclude Include="..\..\..\..\src\libsodium\include\sodium\crypto_hash_sha512.h" />
-    <ClInclude Include="..\..\..\..\src\libsodium\include\sodium\crypto_int32.h" />
-    <ClInclude Include="..\..\..\..\src\libsodium\include\sodium\crypto_int64.h" />
     <ClInclude Include="..\..\..\..\src\libsodium\include\sodium\crypto_kdf.h" />
     <ClInclude Include="..\..\..\..\src\libsodium\include\sodium\crypto_kdf_blake2b.h" />
     <ClInclude Include="..\..\..\..\src\libsodium\include\sodium\crypto_kx.h" />
@@ -290,10 +288,6 @@
     <ClInclude Include="..\..\..\..\src\libsodium\include\sodium\crypto_stream_salsa208.h" />
     <ClInclude Include="..\..\..\..\src\libsodium\include\sodium\crypto_stream_xchacha20.h" />
     <ClInclude Include="..\..\..\..\src\libsodium\include\sodium\crypto_stream_xsalsa20.h" />
-    <ClInclude Include="..\..\..\..\src\libsodium\include\sodium\crypto_uint16.h" />
-    <ClInclude Include="..\..\..\..\src\libsodium\include\sodium\crypto_uint32.h" />
-    <ClInclude Include="..\..\..\..\src\libsodium\include\sodium\crypto_uint64.h" />
-    <ClInclude Include="..\..\..\..\src\libsodium\include\sodium\crypto_uint8.h" />
     <ClInclude Include="..\..\..\..\src\libsodium\include\sodium\crypto_verify_16.h" />
     <ClInclude Include="..\..\..\..\src\libsodium\include\sodium\crypto_verify_32.h" />
     <ClInclude Include="..\..\..\..\src\libsodium\include\sodium\crypto_verify_64.h" />

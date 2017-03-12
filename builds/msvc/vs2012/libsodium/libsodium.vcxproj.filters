@@ -572,12 +572,6 @@
     <ClInclude Include="..\..\..\..\src\libsodium\include\sodium\crypto_hash_sha512.h">
       <Filter>include\sodium</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\..\..\src\libsodium\include\sodium\crypto_int32.h">
-      <Filter>include\sodium</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\..\src\libsodium\include\sodium\crypto_int64.h">
-      <Filter>include\sodium</Filter>
-    </ClInclude>
     <ClInclude Include="..\..\..\..\src\libsodium\include\sodium\crypto_kdf.h">
       <Filter>include\sodium</Filter>
     </ClInclude>
@@ -654,18 +648,6 @@
       <Filter>include\sodium</Filter>
     </ClInclude>
     <ClInclude Include="..\..\..\..\src\libsodium\include\sodium\crypto_stream_xsalsa20.h">
-      <Filter>include\sodium</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\..\src\libsodium\include\sodium\crypto_uint16.h">
-      <Filter>include\sodium</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\..\src\libsodium\include\sodium\crypto_uint32.h">
-      <Filter>include\sodium</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\..\src\libsodium\include\sodium\crypto_uint64.h">
-      <Filter>include\sodium</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\..\src\libsodium\include\sodium\crypto_uint8.h">
       <Filter>include\sodium</Filter>
     </ClInclude>
     <ClInclude Include="..\..\..\..\src\libsodium\include\sodium\crypto_verify_16.h">
