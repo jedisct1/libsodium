@@ -25,7 +25,8 @@ from being partially initialized.
  - A new `randombytes_buf_deterministic()` function was added to
 deterministically fill a memory region with pseudorandom data. This
 function can especially be useful to write reproducible tests.
- - A priminary `crypto_kx_*()` API was added to compute shared session keys.
+ - A preliminary `crypto_kx_*()` API was added to compute shared session
+keys.
  - AVX2 detection is more reliable.
  - The pthreads library is not required any more when using MingW.
  - `contrib/Findsodium.cmake` was added as an example to include
