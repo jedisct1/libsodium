@@ -1,6 +1,10 @@
 
 #include "crypto_stream_aes128ctr.h"
 
+#ifdef __GNUC__
+# pragma GCC diagnostic ignored "-Wdeprecated-declarations"
+#endif
+
 int
 crypto_stream_aes128ctr(unsigned char *out, unsigned long long outlen,
                         const unsigned char *n, const unsigned char *k)
