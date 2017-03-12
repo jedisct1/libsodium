@@ -117,6 +117,9 @@
     <ClCompile Include="..\..\..\..\src\libsodium\crypto_kdf\blake2b\kdf_blake2b.c">
       <Filter>crypto_kdf\blake2b</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\..\..\src\libsodium\crypto_kx\crypto_kx.c">
+      <Filter>crypto_kx</Filter>
+    </ClCompile>
     <ClCompile Include="..\..\..\..\src\libsodium\crypto_onetimeauth\crypto_onetimeauth.c">
       <Filter>crypto_onetimeauth</Filter>
     </ClCompile>
@@ -581,6 +584,9 @@
     <ClInclude Include="..\..\..\..\src\libsodium\include\sodium\crypto_kdf_blake2b.h">
       <Filter>include\sodium</Filter>
     </ClInclude>
+    <ClInclude Include="..\..\..\..\src\libsodium\include\sodium\crypto_kx.h">
+      <Filter>include\sodium</Filter>
+    </ClInclude>
     <ClInclude Include="..\..\..\..\src\libsodium\include\sodium\crypto_onetimeauth.h">
       <Filter>include\sodium</Filter>
     </ClInclude>
@@ -801,6 +807,9 @@
     </Filter>
     <Filter Include="crypto_kdf\blake2b">
       <UniqueIdentifier>{3d42d2a2-b192-33dd-9162-508916414707}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="crypto_kx">
+      <UniqueIdentifier>{898b6bd5-1360-3a34-adcd-0fade7561685}</UniqueIdentifier>
     </Filter>
     <Filter Include="crypto_onetimeauth">
       <UniqueIdentifier>{323c0a15-3c1d-39b2-9ec1-299deb299497}</UniqueIdentifier>

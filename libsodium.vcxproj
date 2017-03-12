@@ -347,6 +347,7 @@
     <ClCompile Include="src\libsodium\crypto_hash\sha512\cp\hash_sha512_cp.c" />
     <ClCompile Include="src\libsodium\crypto_kdf\crypto_kdf.c" />
     <ClCompile Include="src\libsodium\crypto_kdf\blake2b\kdf_blake2b.c" />
+    <ClCompile Include="src\libsodium\crypto_kx\crypto_kx.c" />
     <ClCompile Include="src\libsodium\crypto_onetimeauth\crypto_onetimeauth.c" />
     <ClCompile Include="src\libsodium\crypto_onetimeauth\poly1305\onetimeauth_poly1305.c" />
     <ClCompile Include="src\libsodium\crypto_onetimeauth\poly1305\donna\poly1305_donna.c" />
@@ -503,6 +504,7 @@
     <ClInclude Include="src\libsodium\include\sodium\crypto_int64.h" />
     <ClInclude Include="src\libsodium\include\sodium\crypto_kdf.h" />
     <ClInclude Include="src\libsodium\include\sodium\crypto_kdf_blake2b.h" />
+    <ClInclude Include="src\libsodium\include\sodium\crypto_kx.h" />
     <ClInclude Include="src\libsodium\include\sodium\crypto_onetimeauth.h" />
     <ClInclude Include="src\libsodium\include\sodium\crypto_onetimeauth_poly1305.h" />
     <ClInclude Include="src\libsodium\include\sodium\crypto_pwhash.h" />

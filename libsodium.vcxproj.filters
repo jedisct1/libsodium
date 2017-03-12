@@ -111,6 +111,9 @@
     <ClCompile Include="src\libsodium\crypto_kdf\blake2b\kdf_blake2b.c">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="src\libsodium\crypto_kx\crypto_kx.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
     <ClCompile Include="src\libsodium\crypto_onetimeauth\crypto_onetimeauth.c">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -573,6 +576,9 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="src\libsodium\include\sodium\crypto_kdf_blake2b.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\libsodium\include\sodium\crypto_kx.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="src\libsodium\include\sodium\crypto_onetimeauth.h">
