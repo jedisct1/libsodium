@@ -32,6 +32,8 @@ function can especially be useful to write reproducible tests.
 libsodium in a project using cmake.
  - Compatibility with gcc 2.x has been restored.
  - Minimal builds can be checked using `sodium_library_minimal()`.
+ - The `--enable-opt` compilation switch has become compatible with more
+platforms.
  - Android builds are now using clang on platforms where it is
 available.
 
