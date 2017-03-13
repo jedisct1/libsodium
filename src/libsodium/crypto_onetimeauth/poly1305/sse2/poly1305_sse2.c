@@ -109,7 +109,7 @@ static POLY1305_NOINLINE void
 poly1305_init_ext(poly1305_state_internal_t *st, const unsigned char key[32],
                   unsigned long long bytes)
 {
-    uint32_t *         R;
+    uint32_t          *R;
     uint128_t          d[3];
     uint64_t           r0, r1, r2;
     uint64_t           rt0, rt1, rt2, st2, c;
@@ -880,7 +880,7 @@ poly1305_finish(poly1305_state_internal_t *st, unsigned char mac[16])
 
 static int
 crypto_onetimeauth_poly1305_sse2_init(crypto_onetimeauth_poly1305_state *state,
-                                      const unsigned char *              key)
+                                      const unsigned char *key)
 {
     COMPILER_ASSERT(sizeof(crypto_onetimeauth_poly1305_state) >=
                     sizeof(poly1305_state_internal_t));
@@ -901,7 +901,7 @@ crypto_onetimeauth_poly1305_sse2_update(
 
 static int
 crypto_onetimeauth_poly1305_sse2_final(crypto_onetimeauth_poly1305_state *state,
-                                       unsigned char *                    out)
+                                       unsigned char *out)
 {
     poly1305_finish((poly1305_state_internal_t *) (void *) state, out);
 

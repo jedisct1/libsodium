@@ -33,8 +33,8 @@ crypto_stream_aes128ctr_xor_afternm(unsigned char *out, const unsigned char *in,
     aes_uint128_t      nonce_stack;
     unsigned long long lensav;
     unsigned char      bl[128];
-    unsigned char *    blp;
-    unsigned char *    np;
+    unsigned char     *blp;
+    unsigned char     *np;
     unsigned char      b;
     uint32_t           tmp;
 

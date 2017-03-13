@@ -71,7 +71,7 @@ crypto_onetimeauth_poly1305_donna(unsigned char *out, const unsigned char *m,
 
 static int
 crypto_onetimeauth_poly1305_donna_init(crypto_onetimeauth_poly1305_state *state,
-                                       const unsigned char *              key)
+                                       const unsigned char *key)
 {
     COMPILER_ASSERT(sizeof(crypto_onetimeauth_poly1305_state) >=
         sizeof(poly1305_state_internal_t));

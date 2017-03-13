@@ -91,7 +91,7 @@ argon2_hash(const uint32_t t_cost, const uint32_t m_cost,
 {
     argon2_context context;
     int            result;
-    uint8_t *      out;
+    uint8_t       *out;
 
     if (pwdlen > ARGON2_MAX_PWD_LENGTH) {
         return ARGON2_PWD_TOO_LONG;
@@ -181,7 +181,7 @@ argon2_verify(const char *encoded, const void *pwd, const size_t pwdlen,
               argon2_type type)
 {
     argon2_context ctx;
-    uint8_t *      out;
+    uint8_t       *out;
     int            decode_result;
     int            ret;
     size_t         encoded_len;

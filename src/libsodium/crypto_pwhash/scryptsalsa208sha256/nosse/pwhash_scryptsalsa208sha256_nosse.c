@@ -113,9 +113,9 @@ blkxor(escrypt_block_t *dest, const escrypt_block_t *src, size_t len)
 static void
 salsa20_8(uint32_t B[16])
 {
-    escrypt_block_t X;
-    uint32_t *      x = X.w;
-    size_t          i;
+    escrypt_block_t  X;
+    uint32_t        *x = X.w;
+    size_t           i;
 
     blkcpy_64(&X, (escrypt_block_t *) B);
     for (i = 0; i < 8; i += 2) {

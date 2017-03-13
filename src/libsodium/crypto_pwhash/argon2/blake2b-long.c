@@ -12,10 +12,10 @@
 int
 blake2b_long(void *pout, size_t outlen, const void *in, size_t inlen)
 {
-    uint8_t *                        out = (uint8_t *) pout;
+    uint8_t *out = (uint8_t *) pout;
     crypto_generichash_blake2b_state blake_state;
     uint8_t outlen_bytes[4 /* sizeof(uint32_t) */] = { 0 };
-    int     ret                                    = -1;
+    int     ret = -1;
 
     if (outlen > UINT32_MAX) {
         goto fail; /* LCOV_EXCL_LINE */

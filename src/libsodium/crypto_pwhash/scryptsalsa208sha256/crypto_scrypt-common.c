@@ -113,7 +113,7 @@ escrypt_r(escrypt_local_t *local, const uint8_t *passwd, size_t passwdlen,
     escrypt_kdf_t  escrypt_kdf;
     const uint8_t *src;
     const uint8_t *salt;
-    uint8_t *      dst;
+    uint8_t       *dst;
     size_t         prefixlen;
     size_t         saltlen;
     size_t         need;

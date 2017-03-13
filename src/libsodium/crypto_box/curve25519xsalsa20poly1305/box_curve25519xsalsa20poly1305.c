@@ -9,8 +9,8 @@
 #include "utils.h"
 
 int
-crypto_box_curve25519xsalsa20poly1305_seed_keypair(unsigned char *      pk,
-                                                   unsigned char *      sk,
+crypto_box_curve25519xsalsa20poly1305_seed_keypair(unsigned char *pk,
+                                                   unsigned char *sk,
                                                    const unsigned char *seed)
 {
     unsigned char hash[64];
@@ -32,7 +32,7 @@ crypto_box_curve25519xsalsa20poly1305_keypair(unsigned char *pk,
 }
 
 int
-crypto_box_curve25519xsalsa20poly1305_beforenm(unsigned char *      k,
+crypto_box_curve25519xsalsa20poly1305_beforenm(unsigned char *k,
                                                const unsigned char *pk,
                                                const unsigned char *sk)
 {
@@ -46,9 +46,9 @@ crypto_box_curve25519xsalsa20poly1305_beforenm(unsigned char *      k,
 }
 
 int
-crypto_box_curve25519xsalsa20poly1305_afternm(unsigned char *      c,
+crypto_box_curve25519xsalsa20poly1305_afternm(unsigned char *c,
                                               const unsigned char *m,
-                                              unsigned long long   mlen,
+                                              unsigned long long mlen,
                                               const unsigned char *n,
                                               const unsigned char *k)
 {
@@ -56,9 +56,9 @@ crypto_box_curve25519xsalsa20poly1305_afternm(unsigned char *      c,
 }
 
 int
-crypto_box_curve25519xsalsa20poly1305_open_afternm(unsigned char *      m,
+crypto_box_curve25519xsalsa20poly1305_open_afternm(unsigned char *m,
                                                    const unsigned char *c,
-                                                   unsigned long long   clen,
+                                                   unsigned long long clen,
                                                    const unsigned char *n,
                                                    const unsigned char *k)
 {

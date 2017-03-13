@@ -34,9 +34,9 @@ copy2(aes_uint128_t *r, const aes_uint128_t *x)
 void
 shufb(aes_uint128_t *r, const unsigned char *l)
 {
-    aes_uint128_t t;
-    uint8_t *     ct;
-    uint8_t *     cr;
+    aes_uint128_t  t;
+    uint8_t       *ct;
+    uint8_t       *cr;
 
     copy2(&t, r);
     cr     = r->u8;

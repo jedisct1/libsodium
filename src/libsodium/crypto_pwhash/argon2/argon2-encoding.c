@@ -200,8 +200,8 @@ from_base64(void *dst, size_t *dst_len, const char *src)
 static const char *
 decode_decimal(const char *str, unsigned long *v)
 {
-    const char *  orig;
-    unsigned long acc;
+    const char    *orig;
+    unsigned long  acc;
 
     acc = 0;
     for (orig = str;; str++) {

@@ -14,8 +14,8 @@
 #include "utils.h"
 
 int
-crypto_box_curve25519xchacha20poly1305_seed_keypair(unsigned char *      pk,
-                                                    unsigned char *      sk,
+crypto_box_curve25519xchacha20poly1305_seed_keypair(unsigned char *pk,
+                                                    unsigned char *sk,
                                                     const unsigned char *seed)
 {
     unsigned char hash[64];
@@ -37,7 +37,7 @@ crypto_box_curve25519xchacha20poly1305_keypair(unsigned char *pk,
 }
 
 int
-crypto_box_curve25519xchacha20poly1305_beforenm(unsigned char *      k,
+crypto_box_curve25519xchacha20poly1305_beforenm(unsigned char *k,
                                                 const unsigned char *pk,
                                                 const unsigned char *sk)
 {
@@ -80,9 +80,9 @@ crypto_box_curve25519xchacha20poly1305_detached(
 }
 
 int
-crypto_box_curve25519xchacha20poly1305_easy_afternm(unsigned char *      c,
+crypto_box_curve25519xchacha20poly1305_easy_afternm(unsigned char *c,
                                                     const unsigned char *m,
-                                                    unsigned long long   mlen,
+                                                    unsigned long long mlen,
                                                     const unsigned char *n,
                                                     const unsigned char *k)
 {

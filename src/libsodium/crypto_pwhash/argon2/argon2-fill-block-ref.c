@@ -143,7 +143,7 @@ generate_addresses(const argon2_instance_t *instance,
 int
 fill_segment_ref(const argon2_instance_t *instance, argon2_position_t position)
 {
-    block *   ref_block = NULL, *curr_block = NULL;
+    block    *ref_block = NULL, *curr_block = NULL;
     uint64_t  pseudo_rand, ref_index, ref_lane;
     uint32_t  prev_offset, curr_offset;
     uint32_t  starting_index;
