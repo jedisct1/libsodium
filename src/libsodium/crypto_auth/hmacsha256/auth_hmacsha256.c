@@ -79,7 +79,7 @@ crypto_auth_hmacsha256_update(crypto_auth_hmacsha256_state *state,
 
 int
 crypto_auth_hmacsha256_final(crypto_auth_hmacsha256_state *state,
-                             unsigned char *               out)
+                             unsigned char                *out)
 {
     unsigned char ihash[32];
 

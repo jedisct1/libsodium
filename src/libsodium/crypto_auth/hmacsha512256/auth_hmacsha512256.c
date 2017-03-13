@@ -45,7 +45,7 @@ crypto_auth_hmacsha512256_init(crypto_auth_hmacsha512256_state *state,
 
 int
 crypto_auth_hmacsha512256_update(crypto_auth_hmacsha512256_state *state,
-                                 const unsigned char *            in,
+                                 const unsigned char             *in,
                                  unsigned long long               inlen)
 {
     return crypto_auth_hmacsha512_update((crypto_auth_hmacsha512_state *) state,
@@ -54,7 +54,7 @@ crypto_auth_hmacsha512256_update(crypto_auth_hmacsha512256_state *state,
 
 int
 crypto_auth_hmacsha512256_final(crypto_auth_hmacsha512256_state *state,
-                                unsigned char *                  out)
+                                unsigned char                   *out)
 {
     unsigned char out0[64];
 

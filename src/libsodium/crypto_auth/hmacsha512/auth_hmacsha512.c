@@ -79,7 +79,7 @@ crypto_auth_hmacsha512_update(crypto_auth_hmacsha512_state *state,
 
 int
 crypto_auth_hmacsha512_final(crypto_auth_hmacsha512_state *state,
-                             unsigned char *               out)
+                             unsigned char                *out)
 {
     unsigned char ihash[64];
 
