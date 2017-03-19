@@ -54,7 +54,7 @@ size_t crypto_pwhash_argon2i_opslimit_min(void);
 SODIUM_EXPORT
 size_t crypto_pwhash_argon2i_opslimit_max(void);
 
-#define crypto_pwhash_argon2i_MEMLIMIT_MIN 1U
+#define crypto_pwhash_argon2i_MEMLIMIT_MIN 8192U
 SODIUM_EXPORT
 size_t crypto_pwhash_argon2i_memlimit_min(void);
 
