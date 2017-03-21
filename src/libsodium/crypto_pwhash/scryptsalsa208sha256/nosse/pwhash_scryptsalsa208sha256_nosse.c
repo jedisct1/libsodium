@@ -334,7 +334,7 @@ escrypt_kdf_nosse(escrypt_local_t *local, const uint8_t *passwd,
 
     /* Allocate memory. */
     B_size = (size_t) 128 * r * p;
-    V_size = (size_t) 128 * r * N;
+    V_size = (size_t) 128 * r * (size_t) N;
     need   = B_size + V_size;
     if (need < V_size) {
         errno = ENOMEM;

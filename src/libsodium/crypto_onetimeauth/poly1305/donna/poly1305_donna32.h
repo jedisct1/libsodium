@@ -225,10 +225,10 @@ poly1305_finish(poly1305_state_internal_t *st, unsigned char mac[16])
     f  = (unsigned long long) h3 + st->pad[3] + (f >> 32);
     h3 = (unsigned long) f;
 
-    STORE32_LE(mac + 0, h0);
-    STORE32_LE(mac + 4, h1);
-    STORE32_LE(mac + 8, h2);
-    STORE32_LE(mac + 12, h3);
+    STORE32_LE(mac + 0, (uint32_t) h0);
+    STORE32_LE(mac + 4, (uint32_t) h1);
+    STORE32_LE(mac + 8, (uint32_t) h2);
+    STORE32_LE(mac + 12, (uint32_t) h3);
 
     /* zero out the state */
     sodium_memzero((void *) st, sizeof *st);
