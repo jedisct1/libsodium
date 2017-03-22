@@ -1,10 +1,10 @@
 # ===========================================================================
-#    http://www.gnu.org/software/autoconf-archive/ax_check_link_flag.html
+#    https://www.gnu.org/software/autoconf-archive/ax_check_link_flag.html
 # ===========================================================================
 #
 # SYNOPSIS
 #
-#   AX_CHECK_LINK_FLAG(FLAG, [ACTION-SUCCESS], [ACTION-FAILURE], [EXTRA-FLAGS])
+#   AX_CHECK_LINK_FLAG(FLAG, [ACTION-SUCCESS], [ACTION-FAILURE], [EXTRA-FLAGS], [INPUT])
 #
 # DESCRIPTION
 #
@@ -18,6 +18,8 @@
 #   when the check is done.  The check is thus made with the flags: "LDFLAGS
 #   EXTRA-FLAGS FLAG".  This can for example be used to force the linker to
 #   issue an error when a bad flag is given.
+#
+#   INPUT gives an alternative input source to AC_LINK_IFELSE.
 #
 #   NOTE: Implementation based on AX_CFLAGS_GCC_OPTION. Please keep this
 #   macro in sync with AX_CHECK_{PREPROC,COMPILE}_FLAG.
@@ -38,7 +40,7 @@
 #   Public License for more details.
 #
 #   You should have received a copy of the GNU General Public License along
-#   with this program. If not, see <http://www.gnu.org/licenses/>.
+#   with this program. If not, see <https://www.gnu.org/licenses/>.
 #
 #   As a special exception, the respective Autoconf Macro's copyright owner
 #   gives unlimited permission to copy, distribute and modify the configure
@@ -53,7 +55,7 @@
 #   modified version of the Autoconf Macro, you may extend this special
 #   exception to the GPL to apply to your modified version as well.
 
-#serial 4
+#serial 5
 
 AC_DEFUN([AX_CHECK_LINK_FLAG],
 [AC_PREREQ(2.64)dnl for _AC_LANG_PREFIX and AS_VAR_IF
