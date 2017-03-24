@@ -24,11 +24,11 @@
         <iconUrl>http://upload.wikimedia.org/wikipedia/commons/thumb/7/78/Salt_shaker_on_white_background.jpg/220px-Salt_shaker_on_white_background.jpg</iconUrl>
         <requireLicenseAcceptance>true</requireLicenseAcceptance>
         <developmentDependency>false</developmentDependency>
-        <description>Sodium is a portable, cross-compilable, installable, packageable fork of NaCl (based on the latest released upstream version nacl-20110221), with a compatible API.</description>
+        <description>Sodium is a portable, cross-compilable, installable, packageable fork of NaCl, with a compatible API.</description>
         <summary>Portable fork of NaCl, packaged for Visual Studio 2013 (v120) and CTP_Nov2013 compilers.</summary>
         <releaseNotes>https://raw.github.com/jedisct1/libsodium/master/ChangeLog</releaseNotes>
-        <copyright>(c) 2013-2014, Frank Denis (attribution required)</copyright>
-        <tags>native, NaCl, salt, sodium, libodium, C++</tags>
+        <copyright>(c) 2013-2017, Frank Denis (attribution required)</copyright>
+        <tags>native, NaCl, salt, sodium, libsodium, C++</tags>
         <dependencies>
 .for dependency
             <dependency id="$(id)" version="$(version)" />
