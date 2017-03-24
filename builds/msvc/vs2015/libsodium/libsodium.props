@@ -6,15 +6,15 @@
     <CodeAnalysisRuleSet>AllRules.ruleset</CodeAnalysisRuleSet>
     <RunCodeAnalysis>false</RunCodeAnalysis>
   </PropertyGroup>
-  
+
   <!-- User Interface -->
-  
+
   <ItemGroup Label="BuildOptionsExtension">
     <PropertyPageSchema Include="$(MSBuildThisFileDirectory)$(ProjectName).xml" />
   </ItemGroup>
 
   <!-- Configuration -->
-  
+
   <ItemDefinitionGroup>
     <PreBuildEvent>
       <Command>copy "$(BuildRoot)version.h" "$(RepoRoot)src\libsodium\include\sodium\"</Command>
@@ -35,7 +35,7 @@
   <Target Name="CustomInfo" BeforeTargets="PrepareForBuild">
     <Message Text="Will copy $(BuildRoot)version.h -&gt; $(RepoRoot)src\libsodium\include\sodium\version.h" Importance="high"/>
   </Target>
-  
+
   <Target Name="OptionInfo" BeforeTargets="PrepareForBuild">
     <Message Text="Option-amd64asm   : $(Option-amd64asm)" Importance="high"/>
   </Target>
