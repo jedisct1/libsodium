@@ -1,6 +1,7 @@
 [![Build Status](https://travis-ci.org/jedisct1/libsodium.svg?branch=master)](https://travis-ci.org/jedisct1/libsodium?branch=master)
 [![Windows build status](https://ci.appveyor.com/api/projects/status/fu8s2elx25il98hj?svg=true)](https://ci.appveyor.com/project/jedisct1/libsodium)
 [![Coverity Scan Build Status](https://scan.coverity.com/projects/2397/badge.svg)](https://scan.coverity.com/projects/2397)
+[![Make a donation to support this project](https://img.shields.io/badge/donate-PayPal-green.svg?style=flat)](https://www.paypal.com/cgi-bin/webscr?cmd=_donations&business=paypalrecovery-a@pureftpd.org&lc=US&item_name=Donation+to+the+libsodium+project)
 
 ![libsodium](https://raw.github.com/jedisct1/libsodium/master/logo.png)
 ============
