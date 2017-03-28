@@ -175,10 +175,10 @@ def main(args):
     print('       python3 prepare.py <version>[-preview-##]')
     print()
     print('Examples:')
-    print('       python3 prepare.py 1.0.12-preview-01')
-    print('       python3 prepare.py 1.0.12-preview-02')
-    print('       python3 prepare.py 1.0.12-preview-03')
-    print('       python3 prepare.py 1.0.12')
+    print('       python3 prepare.py 1.0.13-preview-01')
+    print('       python3 prepare.py 1.0.13-preview-02')
+    print('       python3 prepare.py 1.0.13-preview-03')
+    print('       python3 prepare.py 1.0.13')
     return 1
 
   version = Version(m.group(1), m.group(2))

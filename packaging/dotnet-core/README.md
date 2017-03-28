@@ -19,8 +19,8 @@ The metadata for the NuGet package is located in `libsodium.props`.
 
 **Making a pre-release**
 
-1. Run `python3 prepare.py 1.0.12-preview-01` to generate the `Makefile`.
-   `1.0.12` is the libsodium version number; `01` is the pre-release
+1. Run `python3 prepare.py 1.0.13-preview-01` to generate the `Makefile`.
+   `1.0.13` is the libsodium version number; `01` is the pre-release
    number and needs to be incremented for each pre-release.
 2. Take a look at the generated `Makefile`. It uses `sudo` a few times.
 3. Run `make` to download and build the binaries and create the NuGet
@@ -36,6 +36,6 @@ The metadata for the NuGet package is located in `libsodium.props`.
 
 **Making a release**
 
-1. Run `python3 prepare.py 1.0.12` to generate the `Makefile`.
+1. Run `python3 prepare.py 1.0.13` to generate the `Makefile`.
 
 The remaining steps are the same.
