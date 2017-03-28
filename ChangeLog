@@ -1,4 +1,13 @@
 
+* Version 1.0.13
+ - Javascript: the sumo builds now include all symbols. They were
+previously limited to symbols defined in minimal builds.
+ - The public `crypto_pwhash_argon2i_MEMLIMIT_MAX` constant was
+incorrectly defined on 32-bit platforms. This has been fixed.
+ - Version 1.0.12 didn't compile on OpenBSD/i386 using the base gcc
+compiler. This has been fixed.
+ - The Android compilation scripts have been updated for NDK r14b.
+
 * Version 1.0.12
  - Ed25519ph was implemented, adding a multi-part signature API
 (`crypto_sign_init()`, `crypto_sign_update()`, `crypto_sign_final_*()`).
