@@ -1188,10 +1188,10 @@ static void slide(signed char *r,const unsigned char *a)
     int b;
     int k;
 
-    for (i = 0;i < 256;++i)
+    for (i = 0;i < 256;++i) {
         r[i] = 1 & (a[i >> 3] >> (i & 7));
-
-    for (i = 0;i < 256;++i)
+    }
+    for (i = 0;i < 256;++i) {
         if (r[i]) {
             for (b = 1;b <= 6 && i + b < 256;++b) {
                 if (r[i + b]) {
@@ -1206,12 +1206,13 @@ static void slide(signed char *r,const unsigned char *a)
                             }
                             r[k] = 0;
                         }
-                    } else
+                    } else {
                         break;
+                    }
                 }
             }
         }
-
+    }
 }
 
 static const ge_precomp Bi[8] = {
