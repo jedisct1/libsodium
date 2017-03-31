@@ -197,8 +197,10 @@ main(void)
     }
     printf("\n");
     printf("%s\n", sodium_bin2base64(buf3, sizeof buf3, buf1, i));
-    printf("%s\n", sodium_bin2base64(buf3, sizeof buf3, "a", 1U));
-    printf("%s\n", sodium_bin2base64(buf3, sizeof buf3, "BC", 2U));
+    memcpy(buf1, "a", 1U);
+    printf("%s\n", sodium_bin2base64(buf3, sizeof buf3, buf1, 1U));
+    memcpy(buf1, "BC", 2U);
+    printf("%s\n", sodium_bin2base64(buf3, sizeof buf3, buf1, 2U));
     if (sodium_base642bin(buf1, 8U, b64, 64, &bin_len, &b64_end) !=
         -1) {
         printf("sodium_base642bin() overflow\n");
