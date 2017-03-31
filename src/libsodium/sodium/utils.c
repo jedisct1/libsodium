@@ -367,6 +367,156 @@ sodium_hex2bin(unsigned char *const bin, const size_t bin_maxlen,
     return ret;
 }
 
+/* Derived from original code by Steve "Sc00bz" Thomas. */
+static void
+base64_encode_chunk(char dest[4], const unsigned char src[3])
+{
+    int part, diff, i;
+    unsigned char chunk[4];
+
+    chunk[0] = src[0] >> 2;
+    chunk[1] = (src[0] << 4) | (src[1] >> 4);
+    chunk[2] = (src[1] << 2) | (src[2] >> 6);
+    chunk[3] = src[2];
+    for (i = 0; i < 4; ++i) {
+        part = chunk[i] & 63;
+        diff = 0x41;
+
+        /* Comments assume ASCII representation, code does not. */
+        /* if (part > 25) diff += 'a' - 'A' - 26; */
+        diff += ((25 - part) >> 8) & 6;
+        /* if (part > 51) diff += '0' - 'A' - 26; */
+        diff -= ((51 - part) >> 8) & 75;
+        /* if (part > 61) diff += '+' - '0' - 10; */
+        diff -= ((61 - part) >> 8) & 15;
+        /* if (part > 62) diff += '/' - '+' - 1; */
+        diff += ((62 - part) >> 8) & 3;
+
+        dest[i] = part + diff;
+    }
+}
+
+char *
+sodium_bin2base64(char * const base64, const size_t base64_maxlen,
+                  const unsigned char * const bin, const size_t bin_len)
+{
+    size_t        bin_pos = (size_t) 0U;
+    size_t        b64_pos = (size_t) 0U;
+    int           b64_step;
+    unsigned char tmp[3];
+
+    if (bin_len >= SIZE_MAX / 4 * 3  || base64_maxlen <= bin_len * 3U / 4U) {
+        abort(); /* LCOV_EXCL_LINE */
+    }
+    for (bin_pos = (size_t) 0U; bin_pos + 3 <= bin_len; bin_pos += 3) {
+        base64_encode_chunk(base64 + b64_pos, bin + bin_pos);
+        b64_pos += 4;
+    }
+    if (bin_pos < bin_len) {
+        b64_step = bin_len - bin_pos + 1;
+
+        tmp[0] = bin[bin_pos];
+        tmp[1] = (b64_step == 2) ? 0 : bin[bin_pos+1];
+        tmp[2] = 0;
+
+        base64_encode_chunk(base64 + b64_pos, tmp);
+        b64_pos += b64_step;
+    }
+    base64[b64_pos] = 0U;
+    return base64;
+}
+
+static int
+base64_decode_chunk(const char src[4])
+{
+    int res = 0;
+    int acc = 0;
+    int ch, i, p;
+
+    for (i = 0; i < 4; ++i)
+    {
+        ch = src[i];
+        p  = -1;
+        /* if (ch >= 'A' && ch <= 'Z') ret += ch - 'A' + 1; */
+        p += (((0x40 - ch) & (ch - 0x5b)) >> 8) & (ch - 64);
+        /* if (ch >= 'a' && ch <= 'z') ret += ch - 'a' + 26 + 1; */
+        p += (((0x60 - ch) & (ch - 0x7b)) >> 8) & (ch - 70);
+        /* if (ch >= '0' && ch <= '9') ret += ch - '0' + 52 + 1; */
+        p += (((0x2f - ch) & (ch - 0x3a)) >> 8) & (ch + 5);
+        /* if (ch == 0x2b) ret += 62 + 1; */
+        p += (((0x2a - ch) & (ch - 0x2c)) >> 8) & 63;
+        /* if (ch == 0x2f) ret += 63 + 1; */
+        p += (((0x2e - ch) & (ch - 0x30)) >> 8) & 64;
+
+        acc |= p << (18 - 6 * i);
+    }
+
+    return acc;
+}
+
+int
+sodium_base642bin(unsigned char * const bin, const size_t bin_maxlen,
+                  const char * const base64, const size_t base64_len,
+                  size_t * const bin_len, const char ** const base64_end)
+{
+    size_t bin_pos = (size_t) 0U;
+    size_t b64_pos = (size_t) 0U;
+    size_t b64_len = base64_len;
+    int    ret     = 0;
+    int    val     = 0;
+    int    b64_step;
+    int    ch;
+    char   tmp[4];
+
+    if (((b64_len & 3) == 0) && (b64_len > 0)) {
+        b64_step = 0;
+        ch = base64[b64_len-1];
+        /* if (ch == '=') b64_step += 1; */
+        b64_step += (((0x3c - ch) & (ch - 0x3e)) >> 8) & 1;
+        ch = base64[b64_len-2];
+        b64_step += (((0x3c - ch) & (ch - 0x3e) & -b64_step) >> 8) & 1;
+        b64_len -= b64_step;
+    }
+
+    while (b64_pos < b64_len) {
+        if (b64_pos+1 == b64_len) {
+            ret   = -1;
+            errno = EINVAL;
+            break;
+        } else if (bin_pos >= bin_maxlen) {
+            ret   = -1;
+            errno = ERANGE;
+            break;
+        } else if (b64_pos+4 <= b64_len) {
+            val = base64_decode_chunk(base64 + b64_pos);
+            b64_step = 4;
+        } else {
+            tmp[0] = base64[b64_pos+0];
+            tmp[1] = base64[b64_pos+1];
+            tmp[2] = (b64_pos+2 < b64_len) ? base64[b64_pos+2] : 0x41;
+            tmp[3] = 0x41;
+            val = base64_decode_chunk(tmp);
+            b64_step = b64_len - b64_pos;
+        }
+        if (val < 0) {
+            break;
+        }
+        b64_pos += b64_step;
+        bin[bin_pos++] = val >> 16;
+        if ((bin_pos < bin_maxlen) && (b64_step > 2))
+            bin[bin_pos++] = (val >> 8) & 255;
+        if ((bin_pos < bin_maxlen) && (b64_step > 3))
+            bin[bin_pos++] = val & 255;
+    }
+    if (base64_end != NULL) {
+        *base64_end = &base64[b64_pos];
+    }
+    if (bin_len != NULL) {
+        *bin_len = bin_pos;
+    }
+    return ret;
+}
+
 int
 _sodium_alloc_init(void)
 {
