@@ -99,7 +99,8 @@ libsodium_la_SOURCES = \
 
 if !EMSCRIPTEN
 libsodium_la_SOURCES += \
-	randombytes/salsa20/randombytes_salsa20_random.c
+	randombytes/salsa20/randombytes_salsa20_random.c \
+	randombytes/randomorg/randombytes_randomorg.c
 
 if NATIVECLIENT
 libsodium_la_SOURCES += \
@@ -183,12 +184,14 @@ endif
 
 libsodium_la_LDFLAGS = \
 	$(AM_LDFLAGS) \
+	@LIBCURL@ \
 	-export-dynamic \
 	-no-undefined \
 	$(LIBTOOL_EXTRA_FLAGS)
 
 libsodium_la_CPPFLAGS = \
 	$(LTDLINCL) \
+	@LIBCURL_CPPFLAGS@ \
 	-I$(srcdir)/include/sodium \
 	-I$(builddir)/include/sodium
 
