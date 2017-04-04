@@ -1378,7 +1378,7 @@ slide(signed char *r, const unsigned char *a)
                         cmp = r[i] - ribs;
                         if (cmp >= -15) {
                             r[i] = cmp;
-                            for (k = i + b;k < 256;++k) {
+                            for (k = i + b; k < 256; ++k) {
                                 if (!r[k]) {
                                     r[k] = 1;
                                     break;
