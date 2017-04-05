@@ -1372,7 +1372,7 @@ slide(signed char *r, const unsigned char *a)
                     ribs = r[i + b] << b;
                     cmp = r[i] + ribs;
                     if (cmp <= 15) {
-                        r[i] = cmp; 
+                        r[i] = cmp;
                         r[i + b] = 0;
                     } else {
                         cmp = r[i] - ribs;
