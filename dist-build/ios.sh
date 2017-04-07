@@ -11,6 +11,7 @@
 
 export PREFIX="$(pwd)/libsodium-ios"
 export IOS32_PREFIX="$PREFIX/tmp/ios32"
+export IOS32s_PREFIX="$PREFIX/tmp/ios32s"
 export IOS64_PREFIX="$PREFIX/tmp/ios64"
 export SIMULATOR32_PREFIX="$PREFIX/tmp/simulator32"
 export SIMULATOR64_PREFIX="$PREFIX/tmp/simulator64"
@@ -25,7 +26,7 @@ else
   export IOS_VERSION_MIN=${IOS_VERSION_MIN-"5.1.1"}
 fi
 
-mkdir -p $SIMULATOR32_PREFIX $SIMULATOR64_PREFIX $IOS32_PREFIX $IOS64_PREFIX || exit 1
+mkdir -p $SIMULATOR32_PREFIX $SIMULATOR64_PREFIX $IOS32_PREFIX $IOS32s_PREFIX $IOS64_PREFIX || exit 1
 
 # Build for the simulator
 export BASEDIR="${XCODEDIR}/Platforms/iPhoneSimulator.platform/Developer"
@@ -76,6 +77,19 @@ make distclean > /dev/null
 
 make -j3 install || exit 1
 
+## 32-bit armv7s iOS
+export CFLAGS="-O2 -mthumb -arch armv7s -isysroot ${SDK} -mios-version-min=${IOS_VERSION_MIN} -flto"
+export LDFLAGS="-mthumb -arch armv7s -isysroot ${SDK} -mios-version-min=${IOS_VERSION_MIN} -flto"
+
+make distclean > /dev/null
+
+./configure --host=arm-apple-darwin10 \
+            --disable-shared \
+            --enable-minimal \
+            --prefix="$IOS32s_PREFIX" || exit 1
+
+make -j3 install || exit 1
+
 ## 64-bit iOS
 export CFLAGS="-O2 -arch arm64 -isysroot ${SDK} -mios-version-min=${IOS_VERSION_MIN} -flto"
 export LDFLAGS="-arch arm64 -isysroot ${SDK} -mios-version-min=${IOS_VERSION_MIN} -flto"
@@ -96,6 +110,7 @@ lipo -create \
   "$SIMULATOR32_PREFIX/lib/libsodium.a" \
   "$SIMULATOR64_PREFIX/lib/libsodium.a" \
   "$IOS32_PREFIX/lib/libsodium.a" \
+  "$IOS32s_PREFIX/lib/libsodium.a" \
   "$IOS64_PREFIX/lib/libsodium.a" \
   -output "$PREFIX/lib/libsodium.a"
 mv -f -- "$IOS32_PREFIX/include" "$PREFIX/"
