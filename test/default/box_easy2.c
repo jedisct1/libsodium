@@ -29,7 +29,7 @@ main(void)
     size_t         c_size;
     int            ret;
 
-    m2_size = m_size = 1U + randombytes_uniform(1000);
+    m2_size = m_size = 7U + randombytes_uniform(1000);
     c_size           = crypto_box_MACBYTES + m_size;
     m                = (unsigned char *) sodium_malloc(m_size);
     m2               = (unsigned char *) sodium_malloc(m2_size);
