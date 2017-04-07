@@ -7,6 +7,7 @@ incorrectly defined on 32-bit platforms. This has been fixed.
  - Version 1.0.12 didn't compile on OpenBSD/i386 using the base gcc
 compiler. This has been fixed.
  - The Android compilation scripts have been updated for NDK r14b.
+ - armv7s-optimized code was re-added to iOS builds.
 
 * Version 1.0.12
  - Ed25519ph was implemented, adding a multi-part signature API
