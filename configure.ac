@@ -460,7 +460,7 @@ AC_SUBST(CFLAGS_PCLMUL)
 AC_CHECK_HEADERS([sys/mman.h intrin.h])
 
 AC_MSG_CHECKING([if _xgetbv() is available])
-AC_COMPILE_IFELSE(
+AC_LINK_IFELSE(
   [AC_LANG_PROGRAM([[ #include <intrin.h> ]], [[ (void) _xgetbv(0) ]])],
   [AC_MSG_RESULT(yes)
    AC_DEFINE([HAVE__XGETBV], [1], [_xgetbv() is available])],
