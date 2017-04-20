@@ -160,9 +160,10 @@ sodium_compare(const unsigned char *b1_, const unsigned char *b2_, size_t len)
     const volatile unsigned char *volatile b2 =
         (const volatile unsigned char *volatile) b2_;
 #endif
-    unsigned char gt = 0U;
-    unsigned char eq = 1U;
-    size_t        i;
+    size_t                 i;
+    volatile unsigned char gt = 0U;
+    volatile unsigned char eq = 1U;
+    volatile uint16_t      x1, x2;
 
 #if HAVE_WEAK_SYMBOLS
     _sodium_dummy_symbol_to_prevent_compare_lto(b1, b2, len);
@@ -170,8 +171,10 @@ sodium_compare(const unsigned char *b1_, const unsigned char *b2_, size_t len)
     i = len;
     while (i != 0U) {
         i--;
-        gt |= ((b2[i] - b1[i]) >> 8) & eq;
-        eq &= ((b2[i] ^ b1[i]) - 1) >> 8;
+        x1 = b1[i];
+        x2 = b2[i];
+        gt |= ((x2 - x1) >> 8) & eq;
+        eq &= ((x2 ^ x1) - 1) >> 8;
     }
     return (int) (gt + gt + eq) - 1;
 }
