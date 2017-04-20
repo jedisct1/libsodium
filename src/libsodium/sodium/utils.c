@@ -124,8 +124,8 @@ sodium_memcmp(const void *const b1_, const void *const b2_, size_t len)
     const volatile unsigned char *volatile b2 =
         (const volatile unsigned char *volatile) b2_;
 #endif
-    size_t        i;
-    unsigned char d = (unsigned char) 0U;
+    size_t                 i;
+    volatile unsigned char d = (unsigned char) 0U;
 
 #if HAVE_WEAK_SYMBOLS
     _sodium_dummy_symbol_to_prevent_memcmp_lto(b1, b2, len);
