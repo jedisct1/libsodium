@@ -179,6 +179,12 @@ randombytes_sysrandom_random_dev_open(void)
 # if defined(F_SETFD) && defined(FD_CLOEXEC)
                 (void) fcntl(fd, F_SETFD, fcntl(fd, F_GETFD) | FD_CLOEXEC);
 # endif
+# if __linux__
+            if (st.st_rdev != makedev(1, 9)) {
+                errno = EIO;
+                return -1;
+            }
+# endif
                 return fd;
             }
             (void) close(fd);
