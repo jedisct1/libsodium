@@ -1,0 +1,33 @@
+Source: libsodium
+Priority: extra
+Maintainer: Sergey "Shnatsel" Davidoff <shnatsel@gmail.com>
+Build-Depends: debhelper (>= 8.0.0), autotools-dev, pkg-config
+Standards-Version: 3.9.2
+Section: libs
+Homepage: https://github.com/jedisct1/libsodium
+Vcs-Git: https://github.com/jedisct1/libsodium.git
+Vcs-Browser: https://github.com/jedisct1/libsodium
+
+Package: libsodium-dev
+Section: libdevel
+Architecture: any
+Depends: libsodium4 (= ${binary:Version})
+Description: Portable, packageable NaCl-based crypto library (development files)
+ libsodium is a software library for network communication,
+ encryption,decryption, signatures, etc.
+ .
+ libsodium is a portable, cross-compilable, installable, packageable,
+ API-compatible version of NaCl.
+ .
+ This package contains development files for libsodium.
+
+Package: libsodium4
+Section: libs
+Architecture: any
+Depends: ${shlibs:Depends}, ${misc:Depends}
+Description: Portable, packageable NaCl-based crypto library
+ libsodium is a software library for network communication,
+ encryption,decryption, signatures, etc.
+ .
+ libsodium is a portable, cross-compilable, installable, packageable,
+ API-compatible version of NaCl.

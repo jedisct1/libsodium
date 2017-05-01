@@ -1,0 +1,11 @@
+libsodium (0.4.5-0) unstable; urgency=low
+
+  * New upstream release.
+
+ -- Sergey "Shnatsel" Davidoff <shnatsel@gmail.com>  Sun, 03 Nov 2013 00:09:27 +0400
+
+libsodium (0.4.1-0~shnatsel1) unstable; urgency=low
+
+  * Initial release (Closes: #701962)
+
+ -- Sergey "Shnatsel" Davidoff <shnatsel@gmail.com>  Sun, 07 Jul 2013 10:53:56 +0400
