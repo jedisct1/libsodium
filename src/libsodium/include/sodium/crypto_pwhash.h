@@ -89,6 +89,10 @@ size_t crypto_pwhash_opslimit_sensitive(void);
 SODIUM_EXPORT
 size_t crypto_pwhash_memlimit_sensitive(void);
 
+#define crypto_pwhash_MISMATCH crypto_pwhash_argon2i_MISMATCH
+SODIUM_EXPORT
+int crypto_pwhash_mismatch(void);
+
 SODIUM_EXPORT
 int crypto_pwhash(unsigned char * const out, unsigned long long outlen,
                   const char * const passwd, unsigned long long passwdlen,
@@ -118,4 +122,3 @@ const char *crypto_pwhash_primitive(void)
 #endif
 
 #endif
-

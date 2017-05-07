@@ -122,6 +122,12 @@ crypto_pwhash_argon2i_memlimit_sensitive(void)
 }
 
 int
+crypto_pwhash_argon2i_mismatch(void)
+{
+    return crypto_pwhash_argon2i_MISMATCH;
+}
+
+int
 crypto_pwhash_argon2i(unsigned char *const out, unsigned long long outlen,
                       const char *const passwd, unsigned long long passwdlen,
                       const unsigned char *const salt,
@@ -197,6 +203,7 @@ crypto_pwhash_argon2i_str_verify(const char str[crypto_pwhash_argon2i_STRBYTES],
     }
     /* LCOV_EXCL_STOP */
     if (argon2i_verify(str, passwd, (size_t) passwdlen) != ARGON2_OK) {
+        errno = crypto_pwhash_argon2i_MISMATCH;
         return -1;
     }
     return 0;
