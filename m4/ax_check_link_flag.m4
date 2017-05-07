@@ -63,8 +63,8 @@ AS_VAR_PUSHDEF([CACHEVAR],[ax_cv_check_ldflags_$4_$1])dnl
 AC_CACHE_CHECK([whether the linker accepts $1], CACHEVAR, [
   ax_check_save_flags=$LDFLAGS
   LDFLAGS="$LDFLAGS $4 $1"
-  AC_LINK_IFELSE([AC_LANG_PROGRAM([[#include <stdio.h>]],
-  [[char x[42U];if (fgets(x,1000,stdin)) puts(x)]])],
+  AC_LINK_IFELSE([AC_LANG_PROGRAM([[#include <time.h>]],
+  [[time_t x; int fodder = 0; if (fodder > -1000 && time(&x)) return (int) x]])],
     [AS_VAR_SET(CACHEVAR,[yes])],
     [AS_VAR_SET(CACHEVAR,[no])])
   LDFLAGS=$ax_check_save_flags])
