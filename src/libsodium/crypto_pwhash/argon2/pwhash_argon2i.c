@@ -196,18 +196,9 @@ crypto_pwhash_argon2i_str_verify(const char str[crypto_pwhash_argon2i_STRBYTES],
         return -1;
     }
     /* LCOV_EXCL_STOP */
-    switch (argon2i_verify(str, passwd, (size_t) passwdlen)) {
-      case ARGON2_VERIFY_MISMATCH:
-        errno = EINVAL;
-        return -1;
-
-      case ARGON2_MEMORY_ALLOCATION_ERROR:
-        errno = ENOMEM;
-        return -1;
-
-      default:
-        errno = ENOMSG;
-        return -1;
+    if (argon2i_verify(str, passwd, (size_t) passwdlen) == ARGON2_VERIFY_MISMATCH) {
+      errno = EINVAL;
+      return -1;
     }
 
     return 0;
