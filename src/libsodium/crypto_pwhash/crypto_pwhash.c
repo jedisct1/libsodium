@@ -118,12 +118,6 @@ crypto_pwhash_memlimit_sensitive(void)
 }
 
 int
-crypto_pwhash_mismatch(void)
-{
-    return crypto_pwhash_MISMATCH;
-}
-
-int
 crypto_pwhash(unsigned char * const out, unsigned long long outlen,
               const char * const passwd, unsigned long long passwdlen,
               const unsigned char * const salt,
