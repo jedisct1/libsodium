@@ -196,9 +196,11 @@ crypto_pwhash_argon2i_str_verify(const char str[crypto_pwhash_argon2i_STRBYTES],
         return -1;
     }
     /* LCOV_EXCL_STOP */
-    if (argon2i_verify(str, passwd, (size_t) passwdlen) != ARGON2_OK) {
-        return -1;
+    if (argon2i_verify(str, passwd, (size_t) passwdlen) == ARGON2_VERIFY_MISMATCH) {
+      errno = EINVAL;
+      return -1;
     }
+
     return 0;
 }
 
