@@ -254,13 +254,12 @@ main(void)
                        crypto_pwhash_STRBYTES - strlen(str_out2)) != 1) {
         printf("pwhash_str() doesn't properly pad with zeros\n");
     }
-    if (crypto_pwhash_str_verify(str_out, passwd, strlen(passwd)) != 0
-        && errno == EINVAL) {
+    if (crypto_pwhash_str_verify(str_out, passwd, strlen(passwd)) != 0) {
         printf("pwhash_str_verify(1) failure\n");
     }
     str_out[14]++;
-    if (crypto_pwhash_str_verify(str_out, passwd, strlen(passwd)) != -1
-        && errno != EINVAL) {
+    if (crypto_pwhash_str_verify(str_out, passwd, strlen(passwd)) != -1 ||
+        errno != EFBIG) {
         printf("pwhash_str_verify(2) failure\n");
     }
     str_out[14]--;
@@ -278,72 +277,68 @@ main(void)
     }
     if (crypto_pwhash_str_verify("$argon2i$m=65536,t=2,p=1c29tZXNhbHQ"
                                  "$9sTbSlTio3Biev89thdrlKKiCaYsjjYVJxGAL3swxpQ",
-                                 "password", 0x100000000ULL) != -1
-                                 && errno != EINVAL) {
+                                 "password", 0x100000000ULL) != -1 ||
+        errno != EFBIG) {
         printf("pwhash_str_verify(invalid(0)) failure\n");
     }
     if (crypto_pwhash_str_verify("$argon2i$m=65536,t=2,p=1c29tZXNhbHQ"
                                  "$9sTbSlTio3Biev89thdrlKKiCaYsjjYVJxGAL3swxpQ",
-                                 "password", strlen("password")) != -1
-                                 && errno != EINVAL) {
-        printf("pwhash_str_verify(invalid(1)) failure\n");
+                                 "password", strlen("password")) != -1 ||
+        errno != EFBIG) {
+        printf("pwhash_str_verify(invalid(1)) failure %d\n", errno);
     }
     if (crypto_pwhash_str_verify("$argon2i$m=65536,t=2,p=1$c29tZXNhbHQ"
                                  "9sTbSlTio3Biev89thdrlKKiCaYsjjYVJxGAL3swxpQ",
-                                 "password", strlen("password")) != -1
-                                 && errno != EINVAL) {
+                                 "password", strlen("password")) != -1 ||
+        errno != EFBIG) {
         printf("pwhash_str_verify(invalid(2)) failure\n");
     }
     if (crypto_pwhash_str_verify("$argon2i$m=65536,t=2,p=1$c29tZXNhbHQ"
                                  "$b2G3seW+uPzerwQQC+/E1K50CLLO7YXy0JRcaTuswRo",
-                                 "password", strlen("password")) != -1
-                                 && errno != EINVAL) {
+                                 "password", strlen("password")) != -1 ||
+        errno != EFBIG) {
         printf("pwhash_str_verify(invalid(3)) failure\n");
     }
     if (crypto_pwhash_str_verify("$argon2i$v=19$m=65536,t=2,p=1c29tZXNhbHQ"
                                  "$wWKIMhR9lyDFvRz9YTZweHKfbftvj+qf+YFY4NeBbtA",
-                                 "password", strlen("password")) != -1
-                                 && errno != EINVAL) {
+                                 "password", strlen("password")) != -1 ||
+        errno != EFBIG) {
         printf("pwhash_str_verify(invalid(4)) failure\n");
     }
     if (crypto_pwhash_str_verify("$argon2i$v=19$m=65536,t=2,p=1$c29tZXNhbHQ"
                                  "wWKIMhR9lyDFvRz9YTZweHKfbftvj+qf+YFY4NeBbtA",
-                                 "password", strlen("password")) != -1
-                                 && errno != EINVAL) {
+                                 "password", strlen("password")) != -1 ||
+        errno != EFBIG) {
         printf("pwhash_str_verify(invalid(5)) failure\n");
     }
     if (crypto_pwhash_str_verify("$argon2i$v=19$m=65536,t=2,p=1$c29tZXNhbHQ"
                                  "$8iIuixkI73Js3G1uMbezQXD0b8LG4SXGsOwoQkdAQIM",
-                                 "password", strlen("password")) != -1
-                                 && errno != EINVAL) {
+                                 "password", strlen("password")) != -1 ||
+        errno != EFBIG) {
         printf("pwhash_str_verify(invalid(6)) failure\n");
     }
     if (crypto_pwhash_str_verify(
             "$argon2i$v=19$m=4096,t=3,p=2$b2RpZHVlamRpc29kaXNrdw"
             "$TNnWIwlu1061JHrnCqIAmjs3huSxYIU+0jWipu7Kc9M",
-            "password", strlen("password")) != 0
-            && errno == EINVAL) {
+            "password", strlen("password")) != 0) {
         printf("pwhash_str_verify(valid(7)) failure\n");
     }
     if (crypto_pwhash_str_verify(
             "$argon2i$v=19$m=4096,t=3,p=2$b2RpZHVlamRpc29kaXNrdw"
             "$TNnWIwlu1061JHrnCqIAmjs3huSxYIU+0jWipu7Kc9M",
-            "passwore", strlen("passwore")) != -1
-            && errno != EINVAL) {
+            "passwore", strlen("passwore")) != -1 || errno != EINVAL) {
         printf("pwhash_str_verify(invalid(7)) failure\n");
     }
     if (crypto_pwhash_str_verify(
             "$Argon2i$v=19$m=4096,t=3,p=2$b2RpZHVlamRpc29kaXNrdw"
             "$TNnWIwlu1061JHrnCqIAmjs3huSxYIU+0jWipu7Kc9M",
-            "password", strlen("password")) != -1
-            && errno != EINVAL) {
+            "password", strlen("password")) != -1 || errno != EINVAL) {
         printf("pwhash_str_verify(invalid(8)) failure\n");
     }
     if (crypto_pwhash_str_verify(
             "$argon2i$v=1$m=4096,t=3,p=2$b2RpZHVlamRpc29kaXNrdw"
             "$TNnWIwlu1061JHrnCqIAmjs3huSxYIU+0jWipu7Kc9M",
-            "password", strlen("password")) != -1
-            && errno != EINVAL) {
+            "password", strlen("password")) != -1 || errno != EINVAL) {
         printf("pwhash_str_verify(invalid(9)) failure\n");
     }
     assert(crypto_pwhash_bytes_min() > 0U);

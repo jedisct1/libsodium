@@ -186,6 +186,8 @@ crypto_pwhash_argon2i_str_verify(const char str[crypto_pwhash_argon2i_STRBYTES],
                                  const char *const  passwd,
                                  unsigned long long passwdlen)
 {
+    int verify_ret;
+
     if (passwdlen > ARGON2_MAX_PWD_LENGTH) {
         errno = EFBIG;
         return -1;
@@ -196,12 +198,15 @@ crypto_pwhash_argon2i_str_verify(const char str[crypto_pwhash_argon2i_STRBYTES],
         return -1;
     }
     /* LCOV_EXCL_STOP */
-    if (argon2i_verify(str, passwd, (size_t) passwdlen) == ARGON2_VERIFY_MISMATCH) {
-      errno = EINVAL;
-      return -1;
-    }
 
-    return 0;
+    verify_ret = argon2i_verify(str, passwd, (size_t) passwdlen);
+    if (verify_ret == ARGON2_OK) {
+	return 0;
+    }
+    if (verify_ret == ARGON2_VERIFY_MISMATCH) {
+	errno = EINVAL;
+    }
+    return -1;
 }
 
 int
