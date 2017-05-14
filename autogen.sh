@@ -6,20 +6,25 @@ else
   LIBTOOLIZE='libtoolize'
 fi
 
-if [ ! -x "`which $LIBTOOLIZE 2>/dev/null`" ] ; then
+command -v command >/dev/null 2>&1 || {
+  echo "command is required, but wasn't found on this system"
+  exit 1
+}
+
+command -v $LIBTOOLIZE >/dev/null 2>&1 || {
   echo "libtool is required, but wasn't found on this system"
   exit 1
-fi
+}
 
-if [ ! -x "`which autoconf 2>/dev/null`" ] ; then
+command -v autoconf >/dev/null 2>&1 || {
   echo "autoconf is required, but wasn't found on this system"
   exit 1
-fi
+}
 
-if [ ! -x "`which automake 2>/dev/null`" ] ; then
+command -v automake >/dev/null 2>&1 || {
   echo "automake is required, but wasn't found on this system"
   exit 1
-fi
+}
 
 if autoreconf --version > /dev/null 2>&1 ; then
   exec autoreconf -ivf
