@@ -16,7 +16,7 @@ extern "C" {
 
 #include "export.h"
 
-typedef CRYPTO_ALIGN(16) struct crypto_onetimeauth_poly1305_state {
+typedef struct CRYPTO_ALIGN(16) crypto_onetimeauth_poly1305_state {
     unsigned char opaque[256];
 } crypto_onetimeauth_poly1305_state;
 
