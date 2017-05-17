@@ -44,6 +44,7 @@ env - PATH="$PATH" \
     --unified-headers --arch="$ARCH" --install-dir="$TOOLCHAIN_DIR" || exit 1
 
 ./configure \
+    --quiet \
     --disable-soname-versions \
     --enable-minimal \
     --host="${HOST_COMPILER}" \
@@ -60,6 +61,7 @@ if [ "$NDK_PLATFORM" != "$NDK_PLATFORM_COMPAT" ]; then
       --unified-headers --arch="$ARCH" --install-dir="$TOOLCHAIN_DIR" || exit 1
 
   ./configure \
+      --quiet \
       --disable-soname-versions \
       --enable-minimal \
       --host="${HOST_COMPILER}" \
@@ -75,6 +77,6 @@ if [ "$NDK_PLATFORM" != "$NDK_PLATFORM_COMPAT" ]; then
   rm -f config-def.log config-def-compat.log
 fi
 
-make clean && \
-make -j3 install && \
+make --quiet clean && \
+make --quiet -j3 install && \
 echo "libsodium has been installed into ${PREFIX}"
