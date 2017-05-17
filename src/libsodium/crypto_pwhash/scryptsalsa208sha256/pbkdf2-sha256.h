@@ -34,6 +34,13 @@
 
 #include "crypto_auth_hmacsha256.h"
 
+#ifdef __cplusplus
+# ifdef __GNUC__
+#  pragma GCC diagnostic ignored "-Wlong-long"
+# endif
+extern "C" {
+#endif
+
 /**
  * PBKDF2_SHA256(passwd, passwdlen, salt, saltlen, c, buf, dkLen):
  * Compute PBKDF2(passwd, salt, c, dkLen) using HMAC-SHA256 as the PRF, and
@@ -42,4 +49,7 @@
 void PBKDF2_SHA256(const uint8_t *, size_t, const uint8_t *, size_t, uint64_t,
                    uint8_t *, size_t);
 
+#ifdef __cplusplus
+}
+#endif
 #endif /* !_SHA256_H_ */
