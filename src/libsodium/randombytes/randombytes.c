@@ -112,7 +112,9 @@ randombytes_stir(void)
                     randomValueNodeJS();
                     Module.getRandomValue = randomValueNodeJS;
                 } catch (e) {
-                    throw 'No secure random number generator found';
+                    Module.getRandomValue = function(){
+                        throw 'No secure random number generator found';
+                    };
                 }
             }
         }
