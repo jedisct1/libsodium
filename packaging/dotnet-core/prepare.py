@@ -42,6 +42,7 @@ LINUX = [
 EXTRAS = [ 'LICENSE', 'AUTHORS', 'ChangeLog' ]
 
 PROPSFILE = 'libsodium.props'
+DESKTOPTARGETSFILE = 'desktop.targets'
 MAKEFILE = 'Makefile'
 BUILDDIR = 'build'
 CACHEDIR = 'cache'
@@ -64,6 +65,7 @@ class Version:
     self.projfile = os.path.join(self.builddir, '{0}.pkgproj'.format(PACKAGE))
     self.propsfile = os.path.join(self.builddir, '{0}.props'.format(PACKAGE))
     self.pkgfile = os.path.join(BUILDDIR, '{0}.{1}.nupkg'.format(PACKAGE, self.version))
+    self.desktoptargetsfile = os.path.join(self.builddir, 'build', 'net46', '{0}.targets'.format(PACKAGE))
 
 class WindowsItem:
 
@@ -203,6 +205,11 @@ def main(args):
       item.make(f)
 
     f.write('\n')
+    f.write('{0}: {1}\n'.format(version.desktoptargetsfile, DESKTOPTARGETSFILE))
+    f.write('\t@mkdir -p $(dir $@)\n')
+    f.write('\tcp -f $< $@\n')
+
+    f.write('\n')
     f.write('{0}: {1}\n'.format(version.propsfile, PROPSFILE))
     f.write('\t@mkdir -p $(dir $@)\n')
     f.write('\tcp -f $< $@\n')
@@ -222,6 +229,7 @@ def main(args):
     f.write('{0}:'.format(version.pkgfile))
     f.write(' \\\n\t\t{0}'.format(version.projfile))
     f.write(' \\\n\t\t{0}'.format(version.propsfile))
+    f.write(' \\\n\t\t{0}'.format(version.desktoptargetsfile))
     for item in items:
       f.write(' \\\n\t\t{0}'.format(item.packfile))
     f.write('\n')
