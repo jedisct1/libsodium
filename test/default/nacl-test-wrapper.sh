@@ -16,11 +16,13 @@ else
   fi
 fi
 
-command -v command >/dev/null 2>&1 || \
-  { echo "command is required, but wasn't found on this system"; exit 1; }
+command -v command >/dev/null 2>&1 || {
+  echo "command is required, but wasn't found on this system"; exit 1;
+}
 
-command -v python >/dev/null 2>&1 || \
-  { echo >&2 "Python not found. Aborting."; exit 1; }
+command -v python >/dev/null 2>&1 || {
+  echo >&2 "Python not found. Aborting."; exit 1;
+}
 
 SEL_LDR=$(find "$NACL_SDK_ROOT" -name sel_ldr.py | head -n 1)
 if [ -z "$SEL_LDR" ]; then
