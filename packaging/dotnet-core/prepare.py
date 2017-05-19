@@ -238,7 +238,7 @@ def main(args):
             '-v $(abspath recipes):/io/recipes ' +
             '-v $(abspath $(dir $<)):/io/input ' +
             '-v $(abspath $(dir $@)):/io/output ' +
-            '{0} sh -x -e /io/recipes/{1} "{2}"\n'.format('microsoft/dotnet:latest', 'pack', version.suffix))
+            '{0} sh -x -e /io/recipes/{1} "{2}"\n'.format('microsoft/dotnet:latest', 'pack', version.suffix if version.suffix is not None else ''))
 
   print('prepared', MAKEFILE, 'to make', version.pkgfile)
   return 0
