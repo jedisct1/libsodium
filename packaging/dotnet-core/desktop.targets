@@ -1,0 +1,16 @@
+<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+    <ItemGroup>
+        <None Include="$(MSBuildThisFileDirectory)..\..\runtimes\win7-x86\native\libsodium.dll">
+            <Link>x86\libsodium.dll</Link>
+            <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+            <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+            <Visible>false</Visible>
+        </None>
+        <None Include="$(MSBuildThisFileDirectory)..\..\runtimes\win7-x64\native\libsodium.dll">
+            <Link>x64\libsodium.dll</Link>
+            <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+            <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+            <Visible>false</Visible>
+        </None>
+    </ItemGroup>
+</Project>
