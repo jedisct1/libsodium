@@ -1,11 +1,9 @@
 #! /bin/sh
 
 if [ -z "$NDK_PLATFORM" ]; then
-  export NDK_PLATFORM="android-24"
-  export NDK_PLATFORM_COMPAT="${NDK_PLATFORM_COMPAT:-android-16}"
-else
-  export NDK_PLATFORM_COMPAT="${NDK_PLATFORM_COMPAT:-${NDK_PLATFORM}}"
+  export NDK_PLATFORM="android-16"
 fi
+export NDK_PLATFORM_COMPAT="${NDK_PLATFORM_COMPAT:-${NDK_PLATFORM}}"
 export NDK_API_VERSION=$(echo "$NDK_PLATFORM" | sed 's/^android-//')
 export NDK_API_VERSION_COMPAT=$(echo "$NDK_PLATFORM_COMPAT" | sed 's/^android-//')
 
@@ -36,7 +34,11 @@ export CC=${CC:-"${HOST_COMPILER}-clang"}
 rm -rf "${TOOLCHAIN_DIR}" "${PREFIX}"
 
 echo
-echo "Building for platform [${NDK_PLATFORM}], retaining compatibility with platform [${NDK_PLATFORM_COMPAT}]"
+if [ "$NDK_PLATFORM" != "$NDK_PLATFORM_COMPAT" ]; then
+  echo "Building for platform [${NDK_PLATFORM}], retaining compatibility with platform [${NDK_PLATFORM_COMPAT}]"
+else
+  echo "Building for platform [${NDK_PLATFORM}]"
+fi
 echo
 
 env - PATH="$PATH" \
