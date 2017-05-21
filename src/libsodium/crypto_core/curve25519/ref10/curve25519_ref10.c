@@ -48,8 +48,7 @@ void
 fe_1(fe h)
 {
     h[0] = 1;
-    h[1] = 0;
-    memset(&h[2], 0, 8 * sizeof h[0]);
+    memset(&h[1], 0, 9 * sizeof h[0]);
 }
 
 /*
