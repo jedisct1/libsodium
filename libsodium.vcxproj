@@ -545,7 +545,7 @@
   <ItemGroup>
     <ResourceCompile Include="builds\msvc\resource.rc">
       <PreprocessorDefinitions Condition="'$(Configuration)'=='DebugDLL'">_DEBUG;$(Platform);%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <PreprocessorDefinitions Condition="'$(Configuration)'=='ReleaseDLL'">NDEBUG;$(Platform);%(PreprocessorDefinitions)</PreprocessorDefinitions>      
+      <PreprocessorDefinitions Condition="'$(Configuration)'=='ReleaseDLL'">NDEBUG;$(Platform);%(PreprocessorDefinitions)</PreprocessorDefinitions>
     </ResourceCompile>
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

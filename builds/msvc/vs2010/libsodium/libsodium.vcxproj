@@ -181,7 +181,7 @@
     <ClCompile Include="..\..\..\..\src\libsodium\sodium\core.c" />
     <ClCompile Include="..\..\..\..\src\libsodium\sodium\runtime.c" />
     <ClCompile Include="..\..\..\..\src\libsodium\sodium\utils.c" />
-    <ClCompile Include="..\..\..\..\src\libsodium\sodium\version.c" />  
+    <ClCompile Include="..\..\..\..\src\libsodium\sodium\version.c" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\..\..\src\libsodium\crypto_core\curve25519\ref10\base.h" />
@@ -306,8 +306,8 @@
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="..\..\resource.rc">
-       <PreprocessorDefinitions Condition="'$(Configuration)'=='DebugDLL'">_DEBUG;$(Platform);%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <PreprocessorDefinitions Condition="'$(Configuration)'=='ReleaseDLL'">NDEBUG;$(Platform);%(PreprocessorDefinitions)</PreprocessorDefinitions>      
+      <PreprocessorDefinitions Condition="'$(Configuration)'=='DebugDLL'">_DEBUG;$(Platform);%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions Condition="'$(Configuration)'=='ReleaseDLL'">NDEBUG;$(Platform);%(PreprocessorDefinitions)</PreprocessorDefinitions>
     </ResourceCompile>
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
