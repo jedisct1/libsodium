@@ -302,6 +302,13 @@
     <ClInclude Include="..\..\..\..\src\libsodium\include\sodium\private\curve25519_ref10.h" />
     <ClInclude Include="..\..\..\..\src\libsodium\include\sodium\private\mutex.h" />
     <ClInclude Include="..\..\..\..\src\libsodium\include\sodium\private\sse2_64_32.h" />
+    <ClInclude Include="..\..\resource.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <ResourceCompile Include="..\..\resource.rc">
+      <PreprocessorDefinitions Condition="'$(Configuration)'=='DebugDLL'">_DEBUG;$(Platform);%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions Condition="'$(Configuration)'=='ReleaseDLL'">NDEBUG;$(Platform);%(PreprocessorDefinitions)</PreprocessorDefinitions>      
+    </ResourceCompile>
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='DebugDLL|Win32'">
