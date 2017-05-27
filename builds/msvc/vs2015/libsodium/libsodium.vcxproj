@@ -306,8 +306,6 @@
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="..\..\resource.rc">
-      <PreprocessorDefinitions Condition="'$(Configuration)'=='DebugDLL'">_DEBUG;$(Platform);%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <PreprocessorDefinitions Condition="'$(Configuration)'=='ReleaseDLL'">NDEBUG;$(Platform);%(PreprocessorDefinitions)</PreprocessorDefinitions>
     </ResourceCompile>
   </ItemGroup>
 </Project>

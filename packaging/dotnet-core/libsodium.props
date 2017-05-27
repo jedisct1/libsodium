@@ -25,4 +25,9 @@
     <Content Include="runtimes\**\*.*" PackagePath="runtimes\" />
     <Content Include="build\**\*.*" PackagePath="build\" />
   </ItemGroup>
+  <ItemDefinitionGroup>
+    <Link>
+      <AdditionalDependencies>advapi32.lib</AdditionalDependencies>
+    </Link>
+  </ItemDefinitionGroup>
 </Project>
