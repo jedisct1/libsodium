@@ -12,6 +12,9 @@
       these are sometimes required even for 64 bit builds and should never cause harm there.-->
       <PreprocessorDefinitions>WIN32;_WIN32;WIN64;_WIN64;%(PreprocessorDefinitions)</PreprocessorDefinitions>
     </ClCompile>
+    <ResourceCompile>
+      <PreprocessorDefinitions>x64;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+    </ResourceCompile>
     <Link>
       <TargetMachine>MachineX64</TargetMachine>
     </Link>
