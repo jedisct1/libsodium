@@ -310,25 +310,4 @@
       <PreprocessorDefinitions Condition="'$(Configuration)'=='ReleaseDLL'">NDEBUG;$(Platform);%(PreprocessorDefinitions)</PreprocessorDefinitions>
     </ResourceCompile>
   </ItemGroup>
-  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
-  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='DebugDLL|Win32'">
-    <Link>
-      <AdditionalDependencies>advapi32.lib</AdditionalDependencies>
-    </Link>
-  </ItemDefinitionGroup>
-  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='DebugDLL|x64'">
-    <Link>
-      <AdditionalDependencies>advapi32.lib</AdditionalDependencies>
-    </Link>
-  </ItemDefinitionGroup>
-  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='ReleaseDLL|Win32'">
-    <Link>
-      <AdditionalDependencies>advapi32.lib</AdditionalDependencies>
-    </Link>
-  </ItemDefinitionGroup>
-  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='ReleaseDLL|x64'">
-    <Link>
-      <AdditionalDependencies>advapi32.lib</AdditionalDependencies>
-    </Link>
-  </ItemDefinitionGroup>
 </Project>
