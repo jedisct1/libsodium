@@ -9,12 +9,14 @@ main(void)
     unsigned char buf2[1000];
     unsigned char buf1_rev[1000];
     unsigned char buf2_rev[1000];
-    char          buf3[33];
+    char          buf3[65];
     unsigned char buf4[4];
     unsigned char nonce[24];
     char          nonce_hex[49];
     const char *  hex;
     const char *  hex_end;
+    const char *  b64;
+    const char *  b64_end;
     size_t        bin_len;
     unsigned int  i;
     unsigned int  j;
@@ -183,6 +185,51 @@ main(void)
     sodium_add(nonce, nonce, 24U);
     printf("%s\n",
            sodium_bin2hex(nonce_hex, sizeof nonce_hex, nonce, sizeof nonce));
+
+    b64 = "/+9876543210zyxwvutsrqponmlkjihgfedcba"
+        "ZYXWVUTSRQPONMLKJIHGFEDCBA";
+    if (sodium_base642bin(buf1, sizeof buf1, b64, 64, &bin_len, &b64_end) !=
+        0) {
+        printf("sodium_base642bin() with all characters\n");
+    }
+    for (i = 0; i < 48; i += 3) {
+        printf("%02x%02x%02x ", buf1[i+0], buf1[i+1], buf1[i+2]);
+    }
+    printf("\n");
+    printf("%s\n", sodium_bin2base64(buf3, sizeof buf3, buf1, i));
+    memcpy(buf1, "a", 1U);
+    printf("%s\n", sodium_bin2base64(buf3, sizeof buf3, buf1, 1U));
+    memcpy(buf1, "BC", 2U);
+    printf("%s\n", sodium_bin2base64(buf3, sizeof buf3, buf1, 2U));
+    if (sodium_base642bin(buf1, 8U, b64, 64, &bin_len, &b64_end) !=
+        -1) {
+        printf("sodium_base642bin() overflow\n");
+    }
+    printf("du1: %ld %ld\n", (long) (b64_end - b64), (long) bin_len);
+    b64 = "ab_";
+    if (sodium_base642bin(buf1, sizeof buf1, b64, 3U, &bin_len, &b64_end) !=
+        0) {
+        printf("sodium_base642bin() invalid characters\n");
+    }
+    printf("du2: %ld %ld\n", (long) (b64_end - b64), (long) bin_len);
+    b64 = "abcd_";
+    if (sodium_base642bin(buf1, sizeof buf1, b64, 5U, &bin_len, &b64_end) !=
+        -1) {
+        printf("sodium_base642bin() invalid base64 length\n");
+    }
+    printf("du3: %ld %ld\n", (long) (b64_end - b64), (long) bin_len);
+    b64 = "ab==";
+    if (sodium_base642bin(buf1, sizeof buf1, b64, 4U, &bin_len, &b64_end) !=
+        0) {
+        printf("sodium_base642bin() with padding\n");
+    }
+    printf("du4: %ld %ld\n", (long) (b64_end - b64), (long) bin_len);
+    b64 = "abcdefg_";
+    if (sodium_base642bin(buf1, sizeof buf1, b64, 7U, &bin_len, &b64_end) !=
+        0) {
+        printf("sodium_base642bin() three trailing bytes\n");
+    }
+    printf("du5: %ld %ld\n", (long) (b64_end - b64), (long) bin_len);
 
     return 0;
 }
