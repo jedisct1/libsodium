@@ -26,9 +26,9 @@ crypto_secretbox_detached(unsigned char *c, unsigned char *mac,
 
     crypto_core_hsalsa20(subkey, n, k, NULL);
 
-    if (((uintptr_t) c >= (uintptr_t) m &&
+    if (((uintptr_t) c > (uintptr_t) m &&
          (uintptr_t) c - (uintptr_t) m < mlen) ||
-        ((uintptr_t) m >= (uintptr_t) c &&
+        ((uintptr_t) m > (uintptr_t) c &&
          (uintptr_t) m - (uintptr_t) c < mlen)) {
         memmove(c, m, mlen);
         m = c;

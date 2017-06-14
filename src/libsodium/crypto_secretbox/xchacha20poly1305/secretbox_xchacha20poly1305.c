@@ -30,9 +30,9 @@ crypto_secretbox_xchacha20poly1305_detached(unsigned char *c,
 
     crypto_core_hchacha20(subkey, n, k, NULL);
 
-    if (((uintptr_t) c >= (uintptr_t) m &&
+    if (((uintptr_t) c > (uintptr_t) m &&
          (uintptr_t) c - (uintptr_t) m < mlen) ||
-        ((uintptr_t) m >= (uintptr_t) c &&
+        ((uintptr_t) m > (uintptr_t) c &&
          (uintptr_t) m - (uintptr_t) c < mlen)) {
         memmove(c, m, mlen);
         m = c;
