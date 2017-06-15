@@ -61,7 +61,7 @@ AC_ARG_ENABLE(ssp,
 ])
 
 AC_ARG_ENABLE(asm,
-[AS_HELP_STRING(--disable-asm,Disable assembly implementations)],
+[AS_HELP_STRING(--disable-asm,Do not compile assembly code -- This disables all (including non-assembly) platform-specific optimizations on Unix systems)],
 [
   AS_IF([test "x$enableval" = "xno"], [
     enable_asm="no"
