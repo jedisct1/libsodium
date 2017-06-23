@@ -9,7 +9,7 @@
 #include "cmptest.h"
 
 #ifdef __SANITIZE_ADDRESS__
-#warning The sodium_utils3 test is expected to fail with address sanitizer
+# warning The sodium_utils3 test is expected to fail with address sanitizer
 #endif
 
 __attribute__((noreturn)) static void
@@ -51,7 +51,7 @@ main(void)
     assert(buf != NULL);
     sodium_mprotect_noaccess(buf);
     sodium_mprotect_readwrite(buf);
-#ifndef __EMSCRIPTEN__
+#if defined(HAVE_CATCHABLE_SEGV) && !defined(__EMSCRIPTEN__) && !defined(__SANITIZE_ADDRESS__)
     sodium_memzero(((unsigned char *) buf) - 8, 8U);
     sodium_mprotect_readonly(buf);
     sodium_free(buf);
