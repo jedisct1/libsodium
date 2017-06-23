@@ -23,7 +23,7 @@ size_t i;
 
 signal(SIGSEGV, sig);
 signal(SIGBUS, sig);
-#ifndef __SANITIZE_ADDRESS__
+#if !defined(__SANITIZE_ADDRESS__) && !defined(__EMSCRIPTEN__)
 for (i = 0; i < 10000000; i += 1024) { x[-i] = x[i] = (unsigned char) i; }
 #endif
 free((void *) x);
