@@ -18,7 +18,7 @@ AC_DEFUN([AX_CHECK_CATCHABLE_SEGV], [dnl
 #include <stdlib.h>
 static void sig(int _) { exit(0); }
             ]], [[
-volatile unsigned char * volatile x = malloc(8);
+volatile unsigned char * volatile x = (volatile unsigned char *) malloc(8);
 size_t i;
 
 signal(SIGSEGV, sig);
