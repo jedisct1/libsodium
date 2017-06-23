@@ -79,13 +79,20 @@ main(void)
     size = 1U + randombytes_uniform(100000U);
     buf  = sodium_malloc(size);
     assert(buf != NULL);
+
+/* old versions of asan emit a warning because they don't support mlock*() */
+#ifndef __SANITIZE_ADDRESS__
     sodium_mprotect_readonly(buf);
     sodium_mprotect_readwrite(buf);
+#endif
+
 #if defined(HAVE_CATCHABLE_SEGV) && !defined(__EMSCRIPTEN__) && !defined(__SANITIZE_ADDRESS__)
     sodium_memzero(((unsigned char *) buf) + size, 1U);
     sodium_mprotect_noaccess(buf);
     sodium_free(buf);
     printf("Overflow not caught\n");
+#else
+    segv_handler(0);
 #endif
     return 0;
 }
