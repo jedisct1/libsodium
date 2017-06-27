@@ -19,6 +19,12 @@ crypto_pwhash_argon2i_alg_argon2i13(void)
     return crypto_pwhash_argon2i_ALG_ARGON2I13;
 }
 
+int
+crypto_pwhash_argon2i_alg_argon2id13(void)
+{
+    return crypto_pwhash_argon2i_ALG_ARGON2ID13;
+}
+
 size_t
 crypto_pwhash_argon2i_bytes_min(void)
 {
@@ -128,9 +134,6 @@ crypto_pwhash_argon2i(unsigned char *const out, unsigned long long outlen,
                       unsigned long long opslimit, size_t memlimit, int alg)
 {
     memset(out, 0, outlen);
-    if (alg != crypto_pwhash_argon2i_ALG_ARGON2I13) {
-        return -1;
-    }
     memlimit /= 1024U;
     if (outlen > ARGON2_MAX_OUTLEN || passwdlen > ARGON2_MAX_PWD_LENGTH ||
         opslimit > ARGON2_MAX_TIME || memlimit > ARGON2_MAX_MEMORY) {
@@ -142,13 +145,27 @@ crypto_pwhash_argon2i(unsigned char *const out, unsigned long long outlen,
         errno = EINVAL;
         return -1;
     }
-    if (argon2i_hash_raw((uint32_t) opslimit, (uint32_t) memlimit,
-                         (uint32_t) 1U, passwd, (size_t) passwdlen, salt,
-                         (size_t) crypto_pwhash_argon2i_SALTBYTES, out,
-                         (size_t) outlen) != ARGON2_OK) {
-        return -1; /* LCOV_EXCL_LINE */
+    switch (alg) {
+    case crypto_pwhash_argon2i_ALG_ARGON2ID13:
+        if (argon2id_hash_raw((uint32_t) opslimit, (uint32_t) memlimit,
+                              (uint32_t) 1U, passwd, (size_t) passwdlen, salt,
+                              (size_t) crypto_pwhash_argon2i_SALTBYTES, out,
+                              (size_t) outlen) != ARGON2_OK) {
+            return -1; /* LCOV_EXCL_LINE */
+        }
+        return 0;
+    case crypto_pwhash_argon2i_ALG_ARGON2I13:
+        if (argon2i_hash_raw((uint32_t) opslimit, (uint32_t) memlimit,
+                             (uint32_t) 1U, passwd, (size_t) passwdlen, salt,
+                             (size_t) crypto_pwhash_argon2i_SALTBYTES, out,
+                             (size_t) outlen) != ARGON2_OK) {
+            return -1; /* LCOV_EXCL_LINE */
+        }
+        return 0;
+    default:
+        errno = EINVAL;
+        return -1;
     }
-    return 0;
 }
 
 int
@@ -201,10 +218,10 @@ crypto_pwhash_argon2i_str_verify(const char str[crypto_pwhash_argon2i_STRBYTES],
 
     verify_ret = argon2i_verify(str, passwd, (size_t) passwdlen);
     if (verify_ret == ARGON2_OK) {
-	return 0;
+        return 0;
     }
     if (verify_ret == ARGON2_VERIFY_MISMATCH) {
-	errno = EINVAL;
+        errno = EINVAL;
     }
     return -1;
 }

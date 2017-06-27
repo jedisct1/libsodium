@@ -216,6 +216,27 @@ int argon2i_hash_encoded(const uint32_t t_cost, const uint32_t m_cost,
                          char *encoded, const size_t encodedlen);
 
 /**
+ * Hashes a password with Argon2id, producing an encoded hash
+ * @param t_cost Number of iterations
+ * @param m_cost Sets memory usage to m_cost kibibytes
+ * @param parallelism Number of threads and compute lanes
+ * @param pwd Pointer to password
+ * @param pwdlen Password size in bytes
+ * @param salt Pointer to salt
+ * @param saltlen Salt size in bytes
+ * @param hashlen Desired length of the hash in bytes
+ * @param encoded Buffer where to write the encoded hash
+ * @param encodedlen Size of the buffer (thus max size of the encoded hash)
+ * @pre   Different parallelism levels will give different results
+ * @pre   Returns ARGON2_OK if successful
+ */
+int argon2id_hash_encoded(const uint32_t t_cost, const uint32_t m_cost,
+                          const uint32_t parallelism, const void *pwd,
+                          const size_t pwdlen, const void *salt,
+                          const size_t saltlen, const size_t hashlen,
+                          char *encoded, const size_t encodedlen);
+
+/**
  * Hashes a password with Argon2i, producing a raw hash
  * @param t_cost Number of iterations
  * @param m_cost Sets memory usage to m_cost kibibytes
@@ -234,6 +255,25 @@ int argon2i_hash_raw(const uint32_t t_cost, const uint32_t m_cost,
                      const size_t pwdlen, const void *salt,
                      const size_t saltlen, void *hash, const size_t hashlen);
 
+/**
+ * Hashes a password with Argon2id, producing a raw hash
+ * @param t_cost Number of iterations
+ * @param m_cost Sets memory usage to m_cost kibibytes
+ * @param parallelism Number of threads and compute lanes
+ * @param pwd Pointer to password
+ * @param pwdlen Password size in bytes
+ * @param salt Pointer to salt
+ * @param saltlen Salt size in bytes
+ * @param hash Buffer where to write the raw hash
+ * @param hashlen Desired length of the hash in bytes
+ * @pre   Different parallelism levels will give different results
+ * @pre   Returns ARGON2_OK if successful
+ */
+int argon2id_hash_raw(const uint32_t t_cost, const uint32_t m_cost,
+                      const uint32_t parallelism, const void *pwd,
+                      const size_t pwdlen, const void *salt,
+                      const size_t saltlen, void *hash, const size_t hashlen);
+
 /* generic function underlying the above ones */
 int argon2_hash(const uint32_t t_cost, const uint32_t m_cost,
                 const uint32_t parallelism, const void *pwd,
@@ -249,6 +289,15 @@ int argon2_hash(const uint32_t t_cost, const uint32_t m_cost,
  * @pre   Returns ARGON2_OK if successful
  */
 int argon2i_verify(const char *encoded, const void *pwd, const size_t pwdlen);
+
+/**
+ * Verifies a password against an encoded string
+ * Encoded string is restricted as in validate_inputs()
+ * @param encoded String encoding parameters, salt, hash
+ * @param pwd Pointer to password
+ * @pre   Returns ARGON2_OK if successful
+ */
+int argon2id_verify(const char *encoded, const void *pwd, const size_t pwdlen);
 
 /* generic function underlying the above ones */
 int argon2_verify(const char *encoded, const void *pwd, const size_t pwdlen,

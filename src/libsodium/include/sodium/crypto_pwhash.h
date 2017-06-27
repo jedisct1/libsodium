@@ -17,6 +17,10 @@ extern "C" {
 SODIUM_EXPORT
 int crypto_pwhash_alg_argon2i13(void);
 
+#define crypto_pwhash_ALG_ARGON2ID13 crypto_pwhash_argon2i_ALG_ARGON2ID13
+SODIUM_EXPORT
+int crypto_pwhash_alg_argon2id13(void);
+
 #define crypto_pwhash_ALG_DEFAULT crypto_pwhash_ALG_ARGON2I13
 SODIUM_EXPORT
 int crypto_pwhash_alg_default(void);

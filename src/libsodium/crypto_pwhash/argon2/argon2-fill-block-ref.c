@@ -150,7 +150,7 @@ fill_segment_ref(const argon2_instance_t *instance, argon2_position_t position)
     uint32_t  prev_offset, curr_offset;
     uint32_t  starting_index;
     uint32_t  i;
-    int       data_independent_addressing = 1; /* instance->type == Argon2_i */
+    int       data_independent_addressing = 1;
 
     if (instance == NULL) {
         return ARGON2_OK;
