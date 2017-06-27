@@ -10,13 +10,13 @@
 #include "core.h"
 #include "crypto_generichash.h"
 #include "crypto_onetimeauth.h"
-#include "crypto_pwhash_argon2i.h"
 #include "crypto_scalarmult.h"
 #include "crypto_stream_chacha20.h"
 #include "crypto_stream_salsa20.h"
 #include "randombytes.h"
 #include "runtime.h"
 #include "utils.h"
+#include "private/implementations.h"
 #include "private/mutex.h"
 
 #if !defined(_MSC_VER) && 0
@@ -51,7 +51,7 @@ sodium_init(void)
     _sodium_runtime_get_cpu_features();
     randombytes_stir();
     _sodium_alloc_init();
-    _crypto_pwhash_argon2i_pick_best_implementation();
+    _crypto_pwhash_argon2_pick_best_implementation();
     _crypto_generichash_blake2b_pick_best_implementation();
     _crypto_onetimeauth_poly1305_pick_best_implementation();
     _crypto_scalarmult_curve25519_pick_best_implementation();

@@ -146,14 +146,6 @@ crypto_pwhash_argon2i(unsigned char *const out, unsigned long long outlen,
         return -1;
     }
     switch (alg) {
-    case crypto_pwhash_argon2i_ALG_ARGON2ID13:
-        if (argon2id_hash_raw((uint32_t) opslimit, (uint32_t) memlimit,
-                              (uint32_t) 1U, passwd, (size_t) passwdlen, salt,
-                              (size_t) crypto_pwhash_argon2i_SALTBYTES, out,
-                              (size_t) outlen) != ARGON2_OK) {
-            return -1; /* LCOV_EXCL_LINE */
-        }
-        return 0;
     case crypto_pwhash_argon2i_ALG_ARGON2I13:
         if (argon2i_hash_raw((uint32_t) opslimit, (uint32_t) memlimit,
                              (uint32_t) 1U, passwd, (size_t) passwdlen, salt,
@@ -224,10 +216,4 @@ crypto_pwhash_argon2i_str_verify(const char str[crypto_pwhash_argon2i_STRBYTES],
         errno = EINVAL;
     }
     return -1;
-}
-
-int
-_crypto_pwhash_argon2i_pick_best_implementation(void)
-{
-    return argon2_pick_best_implementation();
 }

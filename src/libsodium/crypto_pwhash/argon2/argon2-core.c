@@ -609,3 +609,9 @@ argon2_pick_best_implementation(void)
     return 0;
     /* LCOV_EXCL_STOP */
 }
+
+int
+_crypto_pwhash_argon2_pick_best_implementation(void)
+{
+    return argon2_pick_best_implementation();
+}

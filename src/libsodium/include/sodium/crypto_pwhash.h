@@ -4,6 +4,7 @@
 #include <stddef.h>
 
 #include "crypto_pwhash_argon2i.h"
+#include "crypto_pwhash_argon2id.h"
 #include "export.h"
 
 #ifdef __cplusplus
