@@ -135,6 +135,9 @@
     <ClCompile Include="src\libsodium\crypto_pwhash\argon2\argon2-encoding.c">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="src\libsodium\crypto_pwhash\argon2\argon2-fill-block-avx2.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
     <ClCompile Include="src\libsodium\crypto_pwhash\argon2\argon2-fill-block-ref.c">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -384,6 +387,9 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="src\libsodium\crypto_pwhash\argon2\blake2b-long.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\libsodium\crypto_pwhash\argon2\blamka-round-avx2.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="src\libsodium\crypto_pwhash\argon2\blamka-round-ref.h">

@@ -256,6 +256,8 @@ libavx2_la_CPPFLAGS = $(libsodium_la_CPPFLAGS) \
 libavx2_la_SOURCES = \
 	crypto_generichash/blake2b/ref/blake2b-compress-avx2.c \
 	crypto_generichash/blake2b/ref/blake2b-compress-avx2.h \
+	crypto_pwhash/argon2/argon2-fill-block-avx2.c \
+	crypto_pwhash/argon2/blamka-round-avx2.h \
 	crypto_stream/chacha20/dolbeau/chacha20_dolbeau-avx2.c \
 	crypto_stream/chacha20/dolbeau/chacha20_dolbeau-avx2.h \
 	crypto_stream/chacha20/dolbeau/u8.h \
