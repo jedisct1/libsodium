@@ -20,7 +20,8 @@
 #include "private/common.h"
 #include "private/sse2_64_32.h"
 
-#if defined(HAVE_EMMINTRIN_H) && defined(HAVE_TMMINTRIN_H)
+#if defined(HAVE_AVX2INTRIN_H) && defined(HAVE_EMMINTRIN_H) && \
+    defined(HAVE_TMMINTRIN_H) && defined(HAVE_SMMINTRIN_H)
 
 # ifdef __GNUC__
 #  pragma GCC target("sse2")
@@ -148,13 +149,18 @@ fill_segment_avx2(const argon2_instance_t *instance,
     uint32_t  prev_offset, curr_offset;
     uint32_t  starting_index, i;
     __m256i   state[32];
-    const int data_independent_addressing = 1; /* instance->type == Argon2_i */
+    int       data_independent_addressing = 1;
 
     /* Pseudo-random values that determine the reference block position */
     uint64_t *pseudo_rands = NULL;
 
     if (instance == NULL) {
         return ARGON2_OK;
+    }
+
+    if (instance->type == Argon2_id &&
+        (position.pass != 0 || position.slice >= ARGON2_SYNC_POINTS / 2)) {
+        data_independent_addressing = 0;
     }
 
     pseudo_rands =

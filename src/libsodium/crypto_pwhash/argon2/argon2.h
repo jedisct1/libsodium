@@ -185,7 +185,7 @@ typedef struct Argon2_Context {
 } argon2_context;
 
 /* Argon2 primitive type */
-typedef enum Argon2_type { Argon2_i = 1 } argon2_type;
+typedef enum Argon2_type { Argon2_i = 1, Argon2_id = 2 } argon2_type;
 
 /*
  * Function that performs memory-hard hashing with certain degree of parallelism

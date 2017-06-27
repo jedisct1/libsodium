@@ -148,13 +148,18 @@ fill_segment_ssse3(const argon2_instance_t *instance,
     uint32_t  prev_offset, curr_offset;
     uint32_t  starting_index, i;
     __m128i   state[64];
-    const int data_independent_addressing = 1; /* instance->type == Argon2_i */
+    int       data_independent_addressing = 1;
 
     /* Pseudo-random values that determine the reference block position */
     uint64_t *pseudo_rands = NULL;
 
     if (instance == NULL) {
         return ARGON2_OK;
+    }
+
+    if (instance->type == Argon2_id &&
+        (position.pass != 0 || position.slice >= ARGON2_SYNC_POINTS / 2)) {
+        data_independent_addressing = 0;
     }
 
     pseudo_rands =
