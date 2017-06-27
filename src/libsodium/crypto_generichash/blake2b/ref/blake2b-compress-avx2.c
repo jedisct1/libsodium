@@ -20,12 +20,12 @@
 #  pragma GCC target("avx2")
 # endif
 
-#include <emmintrin.h>
-#include <immintrin.h>
-#include <smmintrin.h>
-#include <tmmintrin.h>
+# include <emmintrin.h>
+# include <immintrin.h>
+# include <smmintrin.h>
+# include <tmmintrin.h>
 
-#include "blake2b-compress-avx2.h"
+# include "blake2b-compress-avx2.h"
 
 CRYPTO_ALIGN(64)
 static const uint64_t blake2b_IV[8] = {

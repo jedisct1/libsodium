@@ -13,10 +13,10 @@
 #  pragma GCC target("ssse3")
 # endif
 
-#include <emmintrin.h>
-#include <tmmintrin.h>
+# include <emmintrin.h>
+# include <tmmintrin.h>
 
-#include "blake2b-compress-ssse3.h"
+# include "blake2b-compress-ssse3.h"
 
 CRYPTO_ALIGN(64)
 static const uint64_t blake2b_IV[8] = {
