@@ -46,10 +46,6 @@ int crypto_stream_salsa20_xor_ic(unsigned char *c, const unsigned char *m,
 SODIUM_EXPORT
 void crypto_stream_salsa20_keygen(unsigned char k[crypto_stream_salsa20_KEYBYTES]);
 
-/* ------------------------------------------------------------------------- */
-
-int _crypto_stream_salsa20_pick_best_implementation(void);
-
 #ifdef __cplusplus
 }
 #endif

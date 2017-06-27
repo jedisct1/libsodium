@@ -25,10 +25,6 @@ int crypto_scalarmult_curve25519(unsigned char *q, const unsigned char *n,
 SODIUM_EXPORT
 int crypto_scalarmult_curve25519_base(unsigned char *q, const unsigned char *n);
 
-/* ------------------------------------------------------------------------- */
-
-int _crypto_scalarmult_curve25519_pick_best_implementation(void);
-
 #ifdef __cplusplus
 }
 #endif

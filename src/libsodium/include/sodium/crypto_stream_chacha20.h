@@ -76,10 +76,6 @@ int crypto_stream_chacha20_ietf_xor_ic(unsigned char *c, const unsigned char *m,
 SODIUM_EXPORT
 void crypto_stream_chacha20_ietf_keygen(unsigned char k[crypto_stream_chacha20_ietf_KEYBYTES]);
 
-/* ------------------------------------------------------------------------- */
-
-int _crypto_stream_chacha20_pick_best_implementation(void);
-
 /* Aliases */
 
 #define crypto_stream_chacha20_IETF_KEYBYTES crypto_stream_chacha20_ietf_KEYBYTES

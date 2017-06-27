@@ -60,10 +60,6 @@ int crypto_onetimeauth_poly1305_final(crypto_onetimeauth_poly1305_state *state,
 SODIUM_EXPORT
 void crypto_onetimeauth_poly1305_keygen(unsigned char k[crypto_onetimeauth_poly1305_KEYBYTES]);
 
-/* ------------------------------------------------------------------------- */
-
-int _crypto_onetimeauth_poly1305_pick_best_implementation(void);
-
 #ifdef __cplusplus
 }
 #endif
