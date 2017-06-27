@@ -119,6 +119,7 @@ generate_addresses(const argon2_instance_t *instance,
                 /* Temporary zero-initialized blocks */
                 __m128i zero_block[ARGON2_OWORDS_IN_BLOCK];
                 __m128i zero2_block[ARGON2_OWORDS_IN_BLOCK];
+
                 memset(zero_block, 0, sizeof(zero_block));
                 memset(zero2_block, 0, sizeof(zero2_block));
                 init_block_value(&address_block, 0);
