@@ -19,12 +19,6 @@ crypto_pwhash_argon2i_alg_argon2i13(void)
     return crypto_pwhash_argon2i_ALG_ARGON2I13;
 }
 
-int
-crypto_pwhash_argon2i_alg_argon2id13(void)
-{
-    return crypto_pwhash_argon2i_ALG_ARGON2ID13;
-}
-
 size_t
 crypto_pwhash_argon2i_bytes_min(void)
 {

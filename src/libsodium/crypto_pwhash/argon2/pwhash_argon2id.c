@@ -14,12 +14,6 @@
 #define STR_HASHBYTES 32U
 
 int
-crypto_pwhash_argon2id_alg_argon2i13(void)
-{
-    return crypto_pwhash_argon2id_ALG_ARGON2I13;
-}
-
-int
 crypto_pwhash_argon2id_alg_argon2id13(void)
 {
     return crypto_pwhash_argon2id_ALG_ARGON2ID13;

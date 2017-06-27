@@ -14,10 +14,6 @@
 extern "C" {
 #endif
 
-#define crypto_pwhash_argon2id_ALG_ARGON2I13 1
-SODIUM_EXPORT
-int crypto_pwhash_argon2id_alg_argon2i13(void);
-
 #define crypto_pwhash_argon2id_ALG_ARGON2ID13 2
 SODIUM_EXPORT
 int crypto_pwhash_argon2id_alg_argon2id13(void);
