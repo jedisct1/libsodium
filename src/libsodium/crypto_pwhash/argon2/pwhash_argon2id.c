@@ -123,9 +123,9 @@ crypto_pwhash_argon2id_memlimit_sensitive(void)
 
 int
 crypto_pwhash_argon2id(unsigned char *const out, unsigned long long outlen,
-                      const char *const passwd, unsigned long long passwdlen,
-                      const unsigned char *const salt,
-                      unsigned long long opslimit, size_t memlimit, int alg)
+                       const char *const passwd, unsigned long long passwdlen,
+                       const unsigned char *const salt,
+                       unsigned long long opslimit, size_t memlimit, int alg)
 {
     memset(out, 0, outlen);
     memlimit /= 1024U;
@@ -156,9 +156,9 @@ crypto_pwhash_argon2id(unsigned char *const out, unsigned long long outlen,
 
 int
 crypto_pwhash_argon2id_str(char out[crypto_pwhash_argon2id_STRBYTES],
-                          const char *const passwd,
-                          unsigned long long passwdlen,
-                          unsigned long long opslimit, size_t memlimit)
+                           const char *const passwd,
+                           unsigned long long passwdlen,
+                           unsigned long long opslimit, size_t memlimit)
 {
     unsigned char salt[crypto_pwhash_argon2id_SALTBYTES];
 
@@ -186,8 +186,8 @@ crypto_pwhash_argon2id_str(char out[crypto_pwhash_argon2id_STRBYTES],
 
 int
 crypto_pwhash_argon2id_str_verify(const char str[crypto_pwhash_argon2id_STRBYTES],
-                                 const char *const  passwd,
-                                 unsigned long long passwdlen)
+                                  const char *const  passwd,
+                                  unsigned long long passwdlen)
 {
     int verify_ret;
 
