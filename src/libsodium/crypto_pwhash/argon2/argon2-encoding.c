@@ -428,9 +428,12 @@ encode_string(char *dst, size_t dst_len, argon2_context *ctx, argon2_type type)
 
     int validation_result;
 
-    if (type == Argon2_i) {
-        SS("$argon2i$v=");
-    } else {
+    switch (type) {
+    case Argon2_id:
+        SS("$argon2id$v="); break;
+    case Argon2_i:
+        SS("$argon2i$v="); break;
+    default:
         return ARGON2_ENCODING_FAIL;
     }
     validation_result = validate_inputs(ctx);
