@@ -41,6 +41,7 @@ EXTRA_DIST = \
 	onetimeauth2.exp \
 	onetimeauth7.exp \
 	pwhash.exp \
+	pwhash_argon2id.exp \
 	pwhash_scrypt.exp \
 	pwhash_scrypt_ll.exp \
 	randombytes.exp \
@@ -109,6 +110,7 @@ DISTCLEANFILES = \
 	onetimeauth2.res \
 	onetimeauth7.res \
 	pwhash.res \
+	pwhash_argon2id.res \
 	pwhash_scrypt.res \
 	pwhash_scrypt_ll.res \
 	randombytes.res \
@@ -178,6 +180,7 @@ CLEANFILES = \
 	onetimeauth2.final \
 	onetimeauth7.final \
 	pwhash.final \
+	pwhash_argon2id.final \
 	pwhash_scrypt.final \
 	pwhash_scrypt_ll.final \
 	randombytes.final \
@@ -242,6 +245,7 @@ CLEANFILES = \
 	onetimeauth2.nexe \
 	onetimeauth7.nexe \
 	pwhash.nexe \
+	pwhash_argon2id.nexe \
 	pwhash_scrypt.nexe \
 	pwhash_scrypt_ll.nexe \
 	randombytes.nexe \
@@ -318,6 +322,7 @@ TESTS_TARGETS = \
 	onetimeauth2 \
 	onetimeauth7 \
 	pwhash \
+	pwhash_argon2id \
 	pwhash_scrypt \
 	pwhash_scrypt_ll \
 	randombytes \
@@ -468,6 +473,9 @@ onetimeauth7_LDADD        = $(TESTS_LDADD)
 
 pwhash_SOURCE             = cmptest.h pwhash.c
 pwhash_LDADD              = $(TESTS_LDADD)
+
+pwhash_argon2id_SOURCE    = cmptest.h pwhash_argon2id.c
+pwhash_argon2id_LDADD     = $(TESTS_LDADD)
 
 pwhash_scrypt_SOURCE      = cmptest.h pwhash_scrypt.c
 pwhash_scrypt_LDADD       = $(TESTS_LDADD)
