@@ -162,6 +162,7 @@ endif
 if !MINIMAL
 libsodium_la_SOURCES += \
 	crypto_box/curve25519xchacha20poly1305/box_curve25519xchacha20poly1305.c \
+	crypto_box/curve25519xchacha20poly1305/box_seal_curve25519xchacha20poly1305.c \
 	crypto_secretbox/xchacha20poly1305/secretbox_xchacha20poly1305.c \
 	crypto_shorthash/siphash24/shorthash_siphashx24.c \
 	crypto_shorthash/siphash24/ref/shorthash_siphashx24_ref.c \

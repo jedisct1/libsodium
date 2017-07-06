@@ -14,6 +14,8 @@ the algorithm and can verify both Argon2i and Argon2id hashed passwords.
 The default algorithm for newly hashed passwords remains Argon2i in
 this version to avoid breaking compatibility with verifiers running
 libsodium <= 1.0.12.
+ - A `crypto_box_curve25519xchacha20poly1305_seal*()` function set was
+implemented.
 
 * Version 1.0.12
  - Ed25519ph was implemented, adding a multi-part signature API
