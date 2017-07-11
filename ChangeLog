@@ -8,6 +8,8 @@ incorrectly defined on 32-bit platforms. This has been fixed.
 compiler. This has been fixed.
  - The Android compilation scripts have been updated for NDK r14b.
  - armv7s-optimized code was re-added to iOS builds.
+ - An AVX2 optimized implementation of the Argon2 round function was
+added.
  - The Argon2id variant of Argon2 has been implemented. The
 high-level `crypto_pwhash_str_verify()` function automatically detects
 the algorithm and can verify both Argon2i and Argon2id hashed passwords.
