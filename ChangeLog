@@ -18,6 +18,7 @@ this version to avoid breaking compatibility with verifiers running
 libsodium <= 1.0.12.
  - A `crypto_box_curve25519xchacha20poly1305_seal*()` function set was
 implemented.
+ - scrypt was removed from minimal builds.
 
 * Version 1.0.12
  - Ed25519ph was implemented, adding a multi-part signature API
