@@ -56,13 +56,6 @@ libsodium_la_SOURCES = \
 	crypto_pwhash/argon2/pwhash_argon2i.c \
 	crypto_pwhash/argon2/pwhash_argon2id.c \
 	crypto_pwhash/crypto_pwhash.c \
-	crypto_pwhash/scryptsalsa208sha256/crypto_scrypt-common.c \
-	crypto_pwhash/scryptsalsa208sha256/crypto_scrypt.h \
-	crypto_pwhash/scryptsalsa208sha256/scrypt_platform.c \
-	crypto_pwhash/scryptsalsa208sha256/pbkdf2-sha256.c \
-	crypto_pwhash/scryptsalsa208sha256/pbkdf2-sha256.h \
-	crypto_pwhash/scryptsalsa208sha256/pwhash_scryptsalsa208sha256.c \
-	crypto_pwhash/scryptsalsa208sha256/nosse/pwhash_scryptsalsa208sha256_nosse.c \
 	crypto_scalarmult/crypto_scalarmult.c \
 	crypto_scalarmult/curve25519/scalarmult_curve25519.c \
 	crypto_scalarmult/curve25519/scalarmult_curve25519.h \
@@ -163,6 +156,13 @@ if !MINIMAL
 libsodium_la_SOURCES += \
 	crypto_box/curve25519xchacha20poly1305/box_curve25519xchacha20poly1305.c \
 	crypto_box/curve25519xchacha20poly1305/box_seal_curve25519xchacha20poly1305.c \
+	crypto_pwhash/scryptsalsa208sha256/crypto_scrypt-common.c \
+	crypto_pwhash/scryptsalsa208sha256/crypto_scrypt.h \
+	crypto_pwhash/scryptsalsa208sha256/scrypt_platform.c \
+	crypto_pwhash/scryptsalsa208sha256/pbkdf2-sha256.c \
+	crypto_pwhash/scryptsalsa208sha256/pbkdf2-sha256.h \
+	crypto_pwhash/scryptsalsa208sha256/pwhash_scryptsalsa208sha256.c \
+	crypto_pwhash/scryptsalsa208sha256/nosse/pwhash_scryptsalsa208sha256_nosse.c \
 	crypto_secretbox/xchacha20poly1305/secretbox_xchacha20poly1305.c \
 	crypto_shorthash/siphash24/shorthash_siphashx24.c \
 	crypto_shorthash/siphash24/ref/shorthash_siphashx24_ref.c \
@@ -219,9 +219,12 @@ libsse2_la_LDFLAGS = $(libsodium_la_LDFLAGS)
 libsse2_la_CPPFLAGS = $(libsodium_la_CPPFLAGS) \
 	@CFLAGS_SSE2@
 libsse2_la_SOURCES = \
-	crypto_pwhash/scryptsalsa208sha256/sse/pwhash_scryptsalsa208sha256_sse.c \
 	crypto_onetimeauth/poly1305/sse2/poly1305_sse2.c \
 	crypto_onetimeauth/poly1305/sse2/poly1305_sse2.h
+if !MINIMAL
+libsse2_la_SOURCES += \
+	crypto_pwhash/scryptsalsa208sha256/sse/pwhash_scryptsalsa208sha256_sse.c
+endif
 
 if !HAVE_AMD64_ASM
 libsse2_la_SOURCES += \

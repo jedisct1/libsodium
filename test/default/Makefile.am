@@ -323,8 +323,6 @@ TESTS_TARGETS = \
 	onetimeauth7 \
 	pwhash \
 	pwhash_argon2id \
-	pwhash_scrypt \
-	pwhash_scrypt_ll \
 	randombytes \
 	scalarmult \
 	scalarmult2 \
@@ -563,6 +561,8 @@ xchacha20_LDADD           = $(TESTS_LDADD)
 
 if !MINIMAL
 TESTS_TARGETS += \
+	pwhash_scrypt \
+	pwhash_scrypt_ll \
 	siphashx24 \
 	xchacha20
 endif
