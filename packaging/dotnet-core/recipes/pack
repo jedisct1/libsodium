@@ -1,5 +1,5 @@
 cp -r /io/input ~/build
 cd ~/build
-dotnet restore
-dotnet pack --version-suffix "$1"
+dotnet restore $1
+dotnet pack $1
 cp *.nupkg /io/output
