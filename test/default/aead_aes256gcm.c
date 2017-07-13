@@ -3145,8 +3145,8 @@ tv(void)
             memcmp(mac, expected_ciphertext + message_len,
                    crypto_aead_aes256gcm_ABYTES) != 0) {
             printf("Detached encryption of test vector #%u failed\n", (unsigned int) i);
-            hex = (char *) sodium_malloc((size_t) found_ciphertext_len * 2 + 1);
-            sodium_bin2hex(hex, (size_t) found_ciphertext_len * 2 + 1,
+            hex = (char *) sodium_malloc((size_t) ciphertext_len * 2 + 1);
+            sodium_bin2hex(hex, (size_t) ciphertext_len * 2 + 1,
                            ciphertext, ciphertext_len);
             printf("Computed: [%s]\n", hex);
             sodium_free(hex);
