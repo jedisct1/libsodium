@@ -19,7 +19,7 @@ libsodium <= 1.0.12.
  - A `crypto_box_curve25519xchacha20poly1305_seal*()` function set was
 implemented.
  - scrypt was removed from minimal builds.
- - libsodium is now available on Nuget.
+ - libsodium is now available on NuGet.
 
 * Version 1.0.12
  - Ed25519ph was implemented, adding a multi-part signature API
