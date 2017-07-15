@@ -7,10 +7,14 @@
 #include "crypto_verify_64.h"
 
 int
-crypto_verify_16(const unsigned char *x, const unsigned char *y)
+crypto_verify_16(const unsigned char *x_, const unsigned char *y_)
 {
-    uint_fast16_t d = 0U;
-    int           i;
+    const volatile unsigned char *volatile x =
+        (const volatile unsigned char *volatile) x_;
+    const volatile unsigned char *volatile y =
+        (const volatile unsigned char *volatile) y_;
+    volatile uint_fast16_t d = 0U;
+    int i;
 
     for (i = 0; i < 16; i++) {
         d |= x[i] ^ y[i];
@@ -25,10 +29,14 @@ crypto_verify_16_bytes(void)
 }
 
 int
-crypto_verify_32(const unsigned char *x, const unsigned char *y)
+crypto_verify_32(const unsigned char *x_, const unsigned char *y_)
 {
-    uint_fast16_t d = 0U;
-    int           i;
+    const volatile unsigned char *volatile x =
+        (const volatile unsigned char *volatile) x_;
+    const volatile unsigned char *volatile y =
+        (const volatile unsigned char *volatile) y_;
+    volatile uint_fast16_t d = 0U;
+    int i;
 
     for (i = 0; i < 32; i++) {
         d |= x[i] ^ y[i];
@@ -43,10 +51,14 @@ crypto_verify_32_bytes(void)
 }
 
 int
-crypto_verify_64(const unsigned char *x, const unsigned char *y)
+crypto_verify_64(const unsigned char *x_, const unsigned char *y_)
 {
-    uint_fast16_t d = 0U;
-    int           i;
+    const volatile unsigned char *volatile x =
+        (const volatile unsigned char *volatile) x_;
+    const volatile unsigned char *volatile y =
+        (const volatile unsigned char *volatile) y_;
+    volatile uint_fast16_t d = 0U;
+    int i;
 
     for (i = 0; i < 64; i++) {
         d |= x[i] ^ y[i];
