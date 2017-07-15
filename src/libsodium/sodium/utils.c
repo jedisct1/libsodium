@@ -165,7 +165,7 @@ sodium_compare(const unsigned char *b1_, const unsigned char *b2_, size_t len)
     size_t                 i;
     volatile unsigned char gt = 0U;
     volatile unsigned char eq = 1U;
-    volatile uint16_t      x1, x2;
+    uint16_t               x1, x2;
 
 #if HAVE_WEAK_SYMBOLS
     _sodium_dummy_symbol_to_prevent_compare_lto(b1, b2, len);
