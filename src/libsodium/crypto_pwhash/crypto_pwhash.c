@@ -1,6 +1,5 @@
 
 #include <errno.h>
-#include <limits.h>
 #include <string.h>
 
 #include "crypto_pwhash.h"
