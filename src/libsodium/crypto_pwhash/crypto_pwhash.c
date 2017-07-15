@@ -5,10 +5,6 @@
 
 #include "crypto_pwhash.h"
 
-#if SIZE_MAX < crypto_pwhash_MEMLIMIT_MAX
-# error Password hashing functions cannot be used on this platform
-#endif
-
 int
 crypto_pwhash_alg_argon2i13(void)
 {
