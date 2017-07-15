@@ -24,9 +24,46 @@ crypto_verify_64_bytes(void)
     return crypto_verify_64_BYTES;
 }
 
+#ifdef HAVE_EMMINTRIN_H
+
+# ifdef __GNUC__
+#  pragma GCC target("sse2")
+# endif
+# include <emmintrin.h>
+
 static inline int
 crypto_verify_n(const unsigned char *x_, const unsigned char *y_,
-                const size_t n)
+                const int n)
+{
+    const    __m128i zero = _mm_setzero_si128();
+    volatile __m128i v1, v2, z;
+    volatile int     m;
+    int              i;
+
+    const volatile __m128i *volatile x =
+        (const volatile __m128i *volatile) (const void *) x_;
+    const volatile __m128i *volatile y =
+        (const volatile __m128i *volatile) (const void *) y_;
+    v1 = _mm_loadu_si128((const __m128i *) &x[0]);
+    v2 = _mm_loadu_si128((const __m128i *) &y[0]);
+    z = _mm_xor_si128(v1, v2);
+    for (i = 1; i < n / 16; i++) {
+        v1 = _mm_loadu_si128((const __m128i *) &x[i]);
+        v2 = _mm_loadu_si128((const __m128i *) &y[i]);
+        z = _mm_or_si128(z, _mm_xor_si128(v1, v2));
+    }
+    m = _mm_movemask_epi8(_mm_cmpeq_epi32(z, zero));
+    v1 = zero; v2 = zero; z = zero;
+    (void) v1; (void) v2; (void) z;
+
+    return ((m + 1) >> 16) - 1;
+}
+
+#else
+
+static inline int
+crypto_verify_n(const unsigned char *x_, const unsigned char *y_,
+                const int n)
 {
     const volatile unsigned char *volatile x =
         (const volatile unsigned char *volatile) x_;
@@ -40,6 +77,8 @@ crypto_verify_n(const unsigned char *x_, const unsigned char *y_,
     }
     return (1 & ((d - 1) >> 8)) - 1;
 }
+
+#endif
 
 int
 crypto_verify_16(const unsigned char *x, const unsigned char *y)
