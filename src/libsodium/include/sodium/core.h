@@ -12,6 +12,12 @@ SODIUM_EXPORT
 int sodium_init(void)
             __attribute__ ((warn_unused_result));
 
+/* ---- */
+
+SODIUM_EXPORT
+void sodium_misuse(const char *err)
+            __attribute__ ((noreturn));
+
 #ifdef __cplusplus
 }
 #endif

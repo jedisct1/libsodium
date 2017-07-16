@@ -24,6 +24,7 @@
 # include <poll.h>
 #endif
 
+#include "core.h"
 #include "randombytes.h"
 #include "randombytes_sysrandom.h"
 #include "utils.h"
@@ -253,7 +254,7 @@ randombytes_sysrandom_init(void)
 
     if ((stream.random_data_source_fd =
          randombytes_sysrandom_random_dev_open()) == -1) {
-        abort(); /* LCOV_EXCL_LINE */
+        sodium_misuse("randombytes_sysrandom_init(): unable to open the random device"); /* LCOV_EXCL_LINE */
     }
     errno = errno_save;
 }
@@ -323,21 +324,21 @@ randombytes_sysrandom_buf(void * const buf, const size_t size)
 # if defined(SYS_getrandom) && defined(__NR_getrandom)
     if (stream.getrandom_available != 0) {
         if (randombytes_linux_getrandom(buf, size) != 0) {
-            abort();
+            sodium_misuse("randombytes_sysrandom_buf(): linux getrandom() failed"); /* LCOV_EXCL_LINE */
         }
         return;
     }
 # endif
     if (stream.random_data_source_fd == -1 ||
         safe_read(stream.random_data_source_fd, buf, size) != (ssize_t) size) {
-        abort(); /* LCOV_EXCL_LINE */
+        sodium_misuse("randombytes_sysrandom_buf(): unable to read the random device"); /* LCOV_EXCL_LINE */
     }
 #else
     if (size > (size_t) 0xffffffff) {
-        abort(); /* LCOV_EXCL_LINE */
+        sodium_misuse("randombytes_sysrandom_buf(): cannot read more than 0xffffffff bytes at a time"); /* LCOV_EXCL_LINE */
     }
     if (! RtlGenRandom((PVOID) buf, (ULONG) size)) {
-        abort(); /* LCOV_EXCL_LINE */
+        sodium_misuse("randombytes_sysrandom_buf(): RtlGenRandom() failed"); /* LCOV_EXCL_LINE */
     }
 #endif
 }

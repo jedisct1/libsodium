@@ -1,4 +1,5 @@
 
+#include <stdlib.h>
 #include <string.h>
 #include <time.h>
 #ifdef _WIN32
@@ -169,3 +170,10 @@ sodium_crit_leave(void)
 }
 
 #endif
+
+void
+sodium_misuse(const char *err)
+{
+    (void) err;
+    abort();
+}
