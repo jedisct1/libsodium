@@ -47,6 +47,9 @@ crypto_kx_client_session_keys(unsigned char rx[crypto_kx_SESSIONKEYBYTES],
     if (tx == NULL) {
         tx = rx;
     }
+    if (rx == NULL) {
+        abort();
+    }
     if (crypto_scalarmult(q, client_sk, server_pk) != 0) {
         return -1;
     }
