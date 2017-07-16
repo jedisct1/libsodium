@@ -481,7 +481,7 @@ _out_of_bounds(void)
 # elif defined(SIGKILL)
     raise(SIGKILL);
 # endif
-    abort();
+    abort(); /* not something we want any higher-level API to catch */
 } /* LCOV_EXCL_LINE */
 
 static inline size_t

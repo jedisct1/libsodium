@@ -354,7 +354,7 @@ randombytes_salsa20_random_stir(void)
 #endif
     if (crypto_generichash(stream.key, sizeof stream.key, k0, sizeof_k0,
                            hsigma, sizeof hsigma) != 0) {
-        abort(); /* LCOV_EXCL_LINE */
+        abort(); /* really abort -- it should never happen */ /* LCOV_EXCL_LINE */
     }
     COMPILER_ASSERT(sizeof stream.key <= sizeof m0);
     randombytes_salsa20_random_rekey(m0);
