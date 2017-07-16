@@ -10,6 +10,7 @@
 #include <stdlib.h>
 #include <string.h>
 
+#include "core.h"
 #include "crypto_aead_aes256gcm.h"
 #include "export.h"
 #include "private/common.h"
@@ -524,7 +525,7 @@ crypto_aead_aes256gcm_encrypt_detached_afternm(unsigned char *c,
     (void) nsec;
     memcpy(H, ctx->H, sizeof H);
     if (mlen > 16ULL * ((1ULL << 32) - 2)) {
-        abort(); /* LCOV_EXCL_LINE */
+        sodium_misuse("crypto_aead_aes256gcm_encrypt_detached_afternm(): message too long"); /* LCOV_EXCL_LINE */
     }
     memcpy(&n2[0], npub, 3 * 4);
     n2[3] = 0x01000000;
@@ -662,7 +663,7 @@ crypto_aead_aes256gcm_decrypt_detached_afternm(unsigned char *m, unsigned char *
 
     (void) nsec;
     if (clen > 16ULL * (1ULL << 32)) {
-        abort(); /* LCOV_EXCL_LINE */
+        sodium_misuse("crypto_aead_aes256gcm_decrypt_detached_afternm(): ciphertext too long"); /* LCOV_EXCL_LINE */
     }
     mlen = clen;
 

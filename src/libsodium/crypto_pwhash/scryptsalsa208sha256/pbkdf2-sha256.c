@@ -31,6 +31,7 @@
 
 #include <sys/types.h>
 
+#include "core.h"
 #include "crypto_auth_hmacsha256.h"
 #include "pbkdf2-sha256.h"
 #include "private/common.h"
@@ -56,7 +57,7 @@ PBKDF2_SHA256(const uint8_t *passwd, size_t passwdlen, const uint8_t *salt,
 
 #if SIZE_MAX > 0x1fffffffe0ULL
     if (dkLen > 0x1fffffffe0ULL) {
-        abort();
+        sodium_misuse("PBKDF2_SHA256(): derived key length is too large"); /* LCOV_EXCL_LINE */
     }
 #endif
     crypto_auth_hmacsha256_init(&PShctx, passwd, passwdlen);
