@@ -25,6 +25,7 @@
 # include <poll.h>
 #endif
 
+#include "core.h"
 #include "crypto_core_salsa20.h"
 #include "crypto_generichash.h"
 #include "crypto_stream_salsa20.h"
@@ -98,7 +99,7 @@ sodium_hrtime(void)
         struct timeval tv;
 
         if (gettimeofday(&tv, NULL) != 0) {
-            abort(); /* LCOV_EXCL_LINE */
+            sodium_misuse("sodium_hrtime(): gettimeofday() failed"); /* LCOV_EXCL_LINE */
         }
         ts = ((uint64_t) tv.tv_sec) * 1000000U + (uint64_t) tv.tv_usec;
     }
@@ -277,7 +278,7 @@ randombytes_salsa20_random_init(void)
 
     if ((stream.random_data_source_fd =
          randombytes_salsa20_random_random_dev_open()) == -1) {
-        abort(); /* LCOV_EXCL_LINE */
+        sodium_misuse("randombytes_salsa20_random_init(): unable to open the random device"); /* LCOV_EXCL_LINE */
     }
     errno = errno_save;
 # endif /* HAVE_SAFE_ARC4RANDOM */
@@ -331,24 +332,24 @@ randombytes_salsa20_random_stir(void)
 # elif defined(SYS_getrandom) && defined(__NR_getrandom)
     if (stream.getrandom_available != 0) {
         if (randombytes_linux_getrandom(m0, sizeof m0) != 0) {
-            abort(); /* LCOV_EXCL_LINE */
+            sodium_misuse("randombytes_salsa20_random_stir(): linux getrandom() failed"); /* LCOV_EXCL_LINE */
         }
     } else if (stream.random_data_source_fd == -1 ||
                safe_read(stream.random_data_source_fd, m0,
                          sizeof m0) != (ssize_t) sizeof m0) {
-        abort(); /* LCOV_EXCL_LINE */
+        sodium_misuse("randombytes_salsa20_random_stir(): unable to read from the random device"); /* LCOV_EXCL_LINE */
     }
 # else
     if (stream.random_data_source_fd == -1 ||
         safe_read(stream.random_data_source_fd, m0,
                   sizeof m0) != (ssize_t) sizeof m0) {
-        abort(); /* LCOV_EXCL_LINE */
+        sodium_misuse("randombytes_salsa20_random_stir(): unable to read from the random device"); /* LCOV_EXCL_LINE */
     }
 # endif
 
 #else /* _WIN32 */
     if (! RtlGenRandom((PVOID) m0, (ULONG) sizeof m0)) {
-        abort(); /* LCOV_EXCL_LINE */
+        sodium_misuse("randombytes_salsa20_random_stir(): RtlGenRandom() failed"); /* LCOV_EXCL_LINE */
     }
 #endif
     if (crypto_generichash(stream.key, sizeof stream.key, k0, sizeof_k0,
@@ -370,7 +371,7 @@ randombytes_salsa20_random_stir_if_needed(void)
     if (stream.initialized == 0) {
         randombytes_salsa20_random_stir();
     } else if (stream.pid != getpid()) {
-        abort();
+        sodium_misuse("randombytes_salsa20_random_stir_if_needed(): stirring is required after fork()"); /* LCOV_EXCL_LINE */
     }
 #else
     if (stream.initialized == 0) {
