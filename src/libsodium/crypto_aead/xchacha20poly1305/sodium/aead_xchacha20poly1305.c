@@ -4,6 +4,7 @@
 #include <limits.h>
 #include <string.h>
 
+#include "core.h"
 #include "crypto_aead_xchacha20poly1305.h"
 #include "crypto_aead_chacha20poly1305.h"
 #include "crypto_core_hchacha20.h"
@@ -53,7 +54,7 @@ crypto_aead_xchacha20poly1305_ietf_encrypt(unsigned char *c,
     int                ret;
 
     if (mlen > UINT64_MAX - crypto_aead_xchacha20poly1305_ietf_ABYTES) {
-        abort(); /* LCOV_EXCL_LINE */
+        sodium_misuse("crypto_aead_xchacha20poly1305_ietf_encrypt(): message too long");
     }
     ret = crypto_aead_xchacha20poly1305_ietf_encrypt_detached
         (c, c + mlen, NULL, m, mlen, ad, adlen, nsec, npub, k);
