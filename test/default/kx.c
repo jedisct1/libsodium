@@ -91,6 +91,24 @@ tv_kx(void)
     sodium_bin2hex(hex, sizeof hex, client_tx, crypto_kx_SESSIONKEYBYTES);
     printf("client_tx: [%s]\n", hex);
 
+    randombytes_buf(client_rx, crypto_kx_SESSIONKEYBYTES);
+    randombytes_buf(client_tx, crypto_kx_SESSIONKEYBYTES);
+    randombytes_buf(server_rx, crypto_kx_SESSIONKEYBYTES);
+    randombytes_buf(server_tx, crypto_kx_SESSIONKEYBYTES);
+    if (crypto_kx_client_session_keys(client_rx, NULL,
+                                      client_pk, client_sk, server_pk) != 0 ||
+        crypto_kx_client_session_keys(NULL, client_tx,
+                                      client_pk, client_sk, server_pk) != 0 ||
+        crypto_kx_server_session_keys(server_rx, NULL,
+                                      server_pk, server_sk, client_pk) != 0 ||
+        crypto_kx_server_session_keys(NULL, server_tx,
+                                      server_pk, server_sk, client_pk) != 0) {
+        printf("failure when one of the pointers happens to be NULL");
+    }
+    assert(memcmp(client_rx, client_tx, crypto_kx_SESSIONKEYBYTES) == 0);
+    assert(memcmp(client_tx, server_rx, crypto_kx_SESSIONKEYBYTES) == 0);
+    assert(memcmp(server_rx, server_tx, crypto_kx_SESSIONKEYBYTES) == 0);
+
     sodium_free(client_rx);
     sodium_free(client_tx);
     sodium_free(server_rx);
