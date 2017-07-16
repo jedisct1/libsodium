@@ -15,6 +15,9 @@ int sodium_init(void)
 /* ---- */
 
 SODIUM_EXPORT
+int sodium_set_misuse_handler(void (*handler)(const char *err));
+
+SODIUM_EXPORT
 void sodium_misuse(const char *err)
             __attribute__ ((noreturn));
 

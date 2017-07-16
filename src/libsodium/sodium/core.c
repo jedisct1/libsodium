@@ -171,9 +171,30 @@ sodium_crit_leave(void)
 
 #endif
 
+static void (*_misuse_handler)(const char *err);
+
 void
 sodium_misuse(const char *err)
 {
-    (void) err;
+    void (*handler)(const char *err);
+
+    if (sodium_crit_enter() == 0) {
+        handler = _misuse_handler;
+        if (sodium_crit_leave() == 0 && handler != NULL) {
+            handler(err);
+        }
+    }
     abort();
+}
+
+int
+sodium_set_misuse_handler(void (*handler)(const char *err))
+{
+    if (sodium_crit_enter() != 0) {
+        return -1;
+    }
+    _misuse_handler = handler;
+    if (sodium_crit_leave() != 0) {
+        return -1;
+    }
 }
