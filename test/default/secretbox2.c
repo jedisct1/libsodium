@@ -46,5 +46,10 @@ main(void)
         }
         printf("\n");
     }
+    assert(crypto_secretbox_open(m, c, 31, nonce, firstkey) == -1);
+    assert(crypto_secretbox_open(m, c, 16, nonce, firstkey) == -1);
+    assert(crypto_secretbox_open(m, c, 1, nonce, firstkey) == -1);
+    assert(crypto_secretbox_open(m, c, 0, nonce, firstkey) == -1);
+
     return 0;
 }

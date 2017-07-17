@@ -157,6 +157,10 @@ tv2(void)
                       1ULL << 12, 0) != -1) {
         printf("[tv2] pwhash should have failed (0)\n");
     }
+    if (crypto_pwhash_argon2i(out, sizeof out, "password", strlen("password"), salt, 3,
+                              1ULL << 12, 0) != -1) {
+        printf("[tv2] pwhash should have failed (0')\n");
+    }
     if (crypto_pwhash(out, sizeof out, "password", strlen("password"), salt, 3,
                       1, crypto_pwhash_alg_default()) != -1) {
         printf("[tv2] pwhash should have failed (1)\n");
@@ -408,6 +412,9 @@ main(void)
            crypto_pwhash_argon2i_alg_argon2i13());
     assert(crypto_pwhash_alg_argon2i13() == crypto_pwhash_ALG_ARGON2I13);
     assert(crypto_pwhash_alg_argon2i13() == crypto_pwhash_alg_default());
+    assert(crypto_pwhash_alg_argon2id13() == crypto_pwhash_ALG_ARGON2ID13);
+    assert(crypto_pwhash_alg_argon2id13() != crypto_pwhash_alg_argon2i13());
+    assert(crypto_pwhash_alg_argon2id13() != crypto_pwhash_alg_default());
 
     sodium_free(salt);
     sodium_free(str_out);

@@ -56,6 +56,8 @@ main(void)
     assert(crypto_onetimeauth_poly1305_bytes() == crypto_onetimeauth_bytes());
     assert(crypto_onetimeauth_poly1305_keybytes() ==
            crypto_onetimeauth_keybytes());
+    assert(crypto_onetimeauth_statebytes() > 0);
+    assert(crypto_onetimeauth_statebytes() == crypto_onetimeauth_poly1305_statebytes());
 
     return 0;
 }

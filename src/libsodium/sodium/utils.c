@@ -68,8 +68,8 @@ __attribute__((weak)) void
 _sodium_dummy_symbol_to_prevent_memzero_lto(void *const  pnt,
                                             const size_t len)
 {
-    (void) pnt;
-    (void) len;
+    (void) pnt; /* LCOV_EXCL_LINE */
+    (void) len; /* LCOV_EXCL_LINE */
 }
 #endif
 

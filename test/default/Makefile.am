@@ -37,6 +37,7 @@ EXTRA_DIST = \
 	kdf.exp \
 	keygen.exp \
 	kx.exp \
+	misuse.exp \
 	onetimeauth.exp \
 	onetimeauth2.exp \
 	onetimeauth7.exp \
@@ -106,6 +107,7 @@ DISTCLEANFILES = \
 	kdf.res \
 	keygen.res \
 	kx.res \
+	misuse.res \
 	onetimeauth.res \
 	onetimeauth2.res \
 	onetimeauth7.res \
@@ -176,6 +178,7 @@ CLEANFILES = \
 	kdf.final \
 	keygen.final \
 	kx.final \
+	misuse.final \
 	onetimeauth.final \
 	onetimeauth2.final \
 	onetimeauth7.final \
@@ -241,6 +244,7 @@ CLEANFILES = \
 	kdf.nexe \
 	keygen.nexe \
 	kx.nexe \
+	misuse.nexe \
 	onetimeauth.nexe \
 	onetimeauth2.nexe \
 	onetimeauth7.nexe \
@@ -318,6 +322,7 @@ TESTS_TARGETS = \
 	kdf \
 	keygen \
 	kx \
+	misuse \
 	onetimeauth \
 	onetimeauth2 \
 	onetimeauth7 \
@@ -459,6 +464,9 @@ keygen_LDADD              = $(TESTS_LDADD)
 
 kx_SOURCE                 = cmptest.h kx.c
 kx_LDADD                  = $(TESTS_LDADD)
+
+misuse_SOURCE             = cmptest.h misuse.c
+misuse_LDADD              = $(TESTS_LDADD)
 
 onetimeauth_SOURCE        = cmptest.h onetimeauth.c
 onetimeauth_LDADD         = $(TESTS_LDADD)

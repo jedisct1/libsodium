@@ -89,5 +89,5 @@ _crypto_stream_salsa20_pick_best_implementation(void)
         return 0;
     }
 #endif
-    return 0;
+    return 0; /* LCOV_EXCL_LINE */
 }

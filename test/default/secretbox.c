@@ -55,6 +55,11 @@ main(void)
     }
     printf("\n");
 
+    assert(crypto_secretbox(c, c, 31, nonce, firstkey) == -1);
+    assert(crypto_secretbox(c, c, 12, nonce, firstkey) == -1);
+    assert(crypto_secretbox(c, c, 1, nonce, firstkey) == -1);
+    assert(crypto_secretbox(c, c, 0, nonce, firstkey) == -1);
+
     assert(crypto_secretbox_keybytes() > 0U);
     assert(crypto_secretbox_noncebytes() > 0U);
     assert(crypto_secretbox_zerobytes() > 0U);

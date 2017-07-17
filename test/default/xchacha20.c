@@ -229,7 +229,8 @@ tv_secretbox_xchacha20poly1305(void)
             (crypto_secretbox_xchacha20poly1305_MACBYTES + m_len);
         sodium_hex2bin(out, crypto_secretbox_xchacha20poly1305_MACBYTES + m_len,
                        tv->out, strlen(tv->out), NULL, NULL, NULL);
-        crypto_secretbox_xchacha20poly1305_easy(out2, m, m_len, nonce, key);
+        assert(crypto_secretbox_xchacha20poly1305_easy(out2, m, m_len, nonce, key) == 0);
+        assert(crypto_secretbox_xchacha20poly1305_easy(out2, m, SIZE_MAX, nonce, key) == -1);
         assert(memcmp(out, out2,
                       crypto_secretbox_xchacha20poly1305_MACBYTES + m_len) == 0);
         n = randombytes_uniform(crypto_secretbox_xchacha20poly1305_MACBYTES + m_len);
@@ -246,9 +247,17 @@ tv_secretbox_xchacha20poly1305(void)
         assert(crypto_secretbox_xchacha20poly1305_open_easy
                (out2, out2, crypto_secretbox_xchacha20poly1305_MACBYTES + m_len,
                 nonce, key) == 0);
+        assert(crypto_secretbox_xchacha20poly1305_open_easy
+               (out2, out2, crypto_secretbox_xchacha20poly1305_MACBYTES - 1,
+                nonce, key) == -1);
+        assert(crypto_secretbox_xchacha20poly1305_open_easy
+               (out2, out2, 0, nonce, key) == -1);
         assert(memcmp(m, out2, m_len) == 0);
         assert(crypto_secretbox_xchacha20poly1305_open_detached
                (out2, out + crypto_secretbox_xchacha20poly1305_MACBYTES, out,
+                m_len, nonce, key) == 0);
+        assert(crypto_secretbox_xchacha20poly1305_open_detached
+               (NULL, out + crypto_secretbox_xchacha20poly1305_MACBYTES, out,
                 m_len, nonce, key) == 0);
         crypto_secretbox_xchacha20poly1305_detached
             (out2 + crypto_secretbox_xchacha20poly1305_MACBYTES, out2, m,
@@ -302,6 +311,8 @@ tv_box_xchacha20poly1305(void)
         assert(crypto_box_curve25519xchacha20poly1305_keypair(pk, sk) == 0);
         assert(crypto_box_curve25519xchacha20poly1305_easy(out, m, m_len, nonce,
                                                            pk, sk) == 0);
+        assert(crypto_box_curve25519xchacha20poly1305_easy(out, m, SIZE_MAX, nonce,
+                                                           pk, sk) == -1);
         assert(crypto_box_curve25519xchacha20poly1305_open_easy
                (m2, out, crypto_box_curve25519xchacha20poly1305_MACBYTES + m_len,
                 nonce, pk, sk) == 0);
@@ -311,6 +322,8 @@ tv_box_xchacha20poly1305(void)
         out = (unsigned char *) sodium_malloc
             (crypto_box_curve25519xchacha20poly1305_MACBYTES + m_len);
         assert(crypto_box_curve25519xchacha20poly1305_beforenm(pc, pk, sk) == 0);
+        assert(crypto_box_curve25519xchacha20poly1305_easy_afternm
+               (out, m, SIZE_MAX, nonce, pc) == -1);
         assert(crypto_box_curve25519xchacha20poly1305_easy_afternm
                (out, m, m_len, nonce, pc) == 0);
         assert(crypto_box_curve25519xchacha20poly1305_open_easy_afternm
@@ -360,6 +373,7 @@ tv_box_xchacha20poly1305(void)
     assert(crypto_box_curve25519xchacha20poly1305_secretkeybytes() == crypto_box_curve25519xchacha20poly1305_SECRETKEYBYTES);
     assert(crypto_box_curve25519xchacha20poly1305_beforenmbytes() == crypto_box_curve25519xchacha20poly1305_BEFORENMBYTES);
     assert(crypto_box_curve25519xchacha20poly1305_noncebytes() == crypto_box_curve25519xchacha20poly1305_NONCEBYTES);
+    assert(crypto_box_curve25519xchacha20poly1305_macbytes() == crypto_box_curve25519xchacha20poly1305_MACBYTES);
 
     printf("tv_box_xchacha20poly1305: ok\n");
 }

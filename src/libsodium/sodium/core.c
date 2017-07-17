@@ -41,11 +41,11 @@ int
 sodium_init(void)
 {
     if (sodium_crit_enter() != 0) {
-        return -1;
+        return -1; /* LCOV_EXCL_LINE */
     }
     if (initialized != 0) {
         if (sodium_crit_leave() != 0) {
-            return -1;
+            return -1; /* LCOV_EXCL_LINE */
         }
         return 1;
     }
@@ -60,7 +60,7 @@ sodium_init(void)
     _crypto_stream_salsa20_pick_best_implementation();
     initialized = 1;
     if (sodium_crit_leave() != 0) {
-        return -1;
+        return -1; /* LCOV_EXCL_LINE */
     }
     return 0;
 }
@@ -95,7 +95,7 @@ int
 sodium_crit_enter(void)
 {
     if (_sodium_crit_init() != 0) {
-        return -1;
+        return -1; /* LCOV_EXCL_LINE */
     }
     EnterCriticalSection(&_sodium_lock);
 
@@ -191,10 +191,10 @@ int
 sodium_set_misuse_handler(void (*handler)(const char *err))
 {
     if (sodium_crit_enter() != 0) {
-        return -1;
+        return -1; /* LCOV_EXCL_LINE */
     }
     _misuse_handler = handler;
     if (sodium_crit_leave() != 0) {
-        return -1;
+        return -1; /* LCOV_EXCL_LINE */
     }
 }

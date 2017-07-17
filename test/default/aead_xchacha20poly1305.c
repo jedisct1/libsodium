@@ -29,6 +29,7 @@ tv(void)
         = { 0x50, 0x51, 0x52, 0x53, 0xc0, 0xc1, 0xc2, 0xc3, 0xc4, 0xc5, 0xc6, 0xc7 };
     unsigned char *c = (unsigned char *) sodium_malloc(CLEN);
     unsigned char *detached_c = (unsigned char *) sodium_malloc(MLEN);
+    unsigned char *key2 = (unsigned char *) sodium_malloc(crypto_aead_xchacha20poly1305_ietf_KEYBYTES);
     unsigned char *mac = (unsigned char *) sodium_malloc(crypto_aead_xchacha20poly1305_ietf_ABYTES);
     unsigned char *m2 = (unsigned char *) sodium_malloc(MLEN);
     unsigned long long found_clen;
@@ -161,8 +162,15 @@ tv(void)
         printf("m != c (adlen=0)\n");
     }
 
+    crypto_aead_xchacha20poly1305_ietf_keygen(key2);
+    if (crypto_aead_xchacha20poly1305_ietf_decrypt(c, &m2len, NULL, c, CLEN,
+                                                  NULL, 0U, nonce, key2) == 0) {
+        printf("crypto_aead_xchacha20poly1305_ietf_decrypt() with a wrong key should have failed\n");
+    }
+
     sodium_free(c);
     sodium_free(detached_c);
+    sodium_free(key2);
     sodium_free(mac);
     sodium_free(m2);
     sodium_free(m);

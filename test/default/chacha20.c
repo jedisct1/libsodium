@@ -172,8 +172,13 @@ main(void)
     tv_ietf();
 
     assert(crypto_stream_chacha20_keybytes() > 0U);
+    assert(crypto_stream_chacha20_keybytes() == crypto_stream_chacha20_KEYBYTES);
     assert(crypto_stream_chacha20_noncebytes() > 0U);
+    assert(crypto_stream_chacha20_noncebytes() == crypto_stream_chacha20_NONCEBYTES);
+    assert(crypto_stream_chacha20_ietf_keybytes() > 0U);
+    assert(crypto_stream_chacha20_ietf_keybytes() == crypto_stream_chacha20_ietf_KEYBYTES);
     assert(crypto_stream_chacha20_ietf_noncebytes() > 0U);
+    assert(crypto_stream_chacha20_ietf_noncebytes() == crypto_stream_chacha20_ietf_NONCEBYTES);
 
     return 0;
 }
