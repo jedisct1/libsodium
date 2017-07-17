@@ -337,6 +337,18 @@ main(void)
             "password", strlen("password")) != -1 || errno != EINVAL) {
         printf("pwhash_str_verify(invalid(9)) failure\n");
     }
+    if (crypto_pwhash_str_verify(
+            "$argon2i$v=1$m=4096,t=3,p=2$b2RpZHVla~=mRpc29kaXNrdw"
+            "$TNnWIwlu1061JHrnCqIAmjs3huSxYIU+0jWipu7Kc9M",
+            "password", strlen("password")) != -1 || errno != EINVAL) {
+        printf("pwhash_str_verify(invalid(10)) failure\n");
+    }
+    if (crypto_pwhash_str_verify(
+            "$argon2i$v=1$m=4096,t=3,p=2$b2RpZHVlamRpc29kaXNrdw"
+            "$TNnWIwlu1061JHrnCqIAmjs3huSxYI~=U+0jWipu7Kc9M",
+            "password", strlen("password")) != -1 || errno != EINVAL) {
+        printf("pwhash_str_verify(invalid(11)) failure\n");
+    }
     assert(crypto_pwhash_bytes_min() > 0U);
     assert(crypto_pwhash_bytes_max() > crypto_pwhash_bytes_min());
     assert(crypto_pwhash_passwd_max() > crypto_pwhash_passwd_min());
