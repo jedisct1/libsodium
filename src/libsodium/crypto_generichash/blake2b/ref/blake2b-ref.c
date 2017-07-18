@@ -388,6 +388,9 @@ blake2b_final(blake2b_state *S, uint8_t *out, uint8_t outlen)
         memcpy(out, buffer, outlen);
     }
 #endif
+    sodium_memzero(S->h, sizeof S->h);
+    sodium_memzero(S->buf, sizeof S->buf);
+
     return 0;
 }
 
