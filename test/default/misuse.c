@@ -33,7 +33,7 @@ sigabrt_handler_1(int sig)
     exit(1);
 }
 
-#if defined(SIGABRT) && !defined(__EMSCRIPTEN__) && !defined(__native_client__)
+#if defined(SIGABRT) && (defined(__APPLE__) || defined(__OpenBSD__))
 int
 main(void)
 {
