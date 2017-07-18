@@ -197,4 +197,5 @@ sodium_set_misuse_handler(void (*handler)(const char *err))
     if (sodium_crit_leave() != 0) {
         return -1; /* LCOV_EXCL_LINE */
     }
+    return 0;
 }
