@@ -15,10 +15,10 @@ int sodium_init(void)
 /* ---- */
 
 SODIUM_EXPORT
-int sodium_set_misuse_handler(void (*handler)(const char *err));
+int sodium_set_misuse_handler(void (*handler)(void));
 
 SODIUM_EXPORT
-void sodium_misuse(const char *err)
+void sodium_misuse(void)
             __attribute__ ((noreturn));
 
 #ifdef __cplusplus

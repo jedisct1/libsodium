@@ -21,12 +21,12 @@ randombytes_nativeclient_buf(void * const buf, const size_t size)
 
     if (nacl_interface_query(NACL_IRT_RANDOM_v0_1, &rand_intf,
                              sizeof rand_intf) != sizeof rand_intf) {
-        sodium_misuse("randombytes_nativeclient_buf(): NaCl IRT_RANDOM API failed");
+        sodium_misuse();
     }
     while (toread > (size_t) 0U) {
         if (rand_intf.get_random_bytes(buf_, size, &readnb) != 0 ||
             readnb > size) {
-            sodium_misuse("randombytes_nativeclient_buf(): NaCl IRT_RANDOM API didn't return the correct amount of bytes");
+            sodium_misuse();
         }
         toread -= readnb;
         buf_ += readnb;

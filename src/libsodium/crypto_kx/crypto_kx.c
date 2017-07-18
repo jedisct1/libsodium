@@ -49,7 +49,7 @@ crypto_kx_client_session_keys(unsigned char rx[crypto_kx_SESSIONKEYBYTES],
         tx = rx;
     }
     if (rx == NULL) {
-        sodium_misuse("crypto_kx_client_session_keys(): no pointers given"); /* LCOV_EXCL_LINE */
+        sodium_misuse(); /* LCOV_EXCL_LINE */
     }
     if (crypto_scalarmult(q, client_sk, server_pk) != 0) {
         return -1;
@@ -90,7 +90,7 @@ crypto_kx_server_session_keys(unsigned char rx[crypto_kx_SESSIONKEYBYTES],
         tx = rx;
     }
     if (rx == NULL) {
-        sodium_misuse("crypto_kx_server_session_keys(): no pointers given"); /* LCOV_EXCL_LINE */
+        sodium_misuse(); /* LCOV_EXCL_LINE */
     }
     if (crypto_scalarmult(q, server_sk, client_pk) != 0) {
         return -1;

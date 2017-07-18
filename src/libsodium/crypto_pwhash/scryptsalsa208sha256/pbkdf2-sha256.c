@@ -57,7 +57,7 @@ PBKDF2_SHA256(const uint8_t *passwd, size_t passwdlen, const uint8_t *salt,
 
 #if SIZE_MAX > 0x1fffffffe0ULL
     if (dkLen > 0x1fffffffe0ULL) {
-        sodium_misuse("PBKDF2_SHA256(): derived key length is too large"); /* LCOV_EXCL_LINE */
+        sodium_misuse(); /* LCOV_EXCL_LINE */
     }
 #endif
     crypto_auth_hmacsha256_init(&PShctx, passwd, passwdlen);

@@ -73,7 +73,7 @@ chacha20_encrypt_bytes(chacha_ctx *ctx, const uint8_t *m, uint8_t *c,
         return; /* LCOV_EXCL_LINE */
     }
     if (bytes > 64ULL * (1ULL << 32) - 64ULL) {
-        sodium_misuse("chacha20_encrypt_bytes(): message too long");
+        sodium_misuse();
     }
 # include "u4.h"
 # include "u1.h"

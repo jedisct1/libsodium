@@ -80,7 +80,7 @@ sodium_memzero(void *const pnt, const size_t len)
     SecureZeroMemory(pnt, len);
 #elif defined(HAVE_MEMSET_S)
     if (len > 0U && memset_s(pnt, (rsize_t) len, 0, (rsize_t) len) != 0) {
-        sodium_misuse("sodium_memzero(): length is more than RSIZE_MAX"); /* LCOV_EXCL_LINE */
+        sodium_misuse(); /* LCOV_EXCL_LINE */
     }
 #elif defined(HAVE_EXPLICIT_BZERO)
     explicit_bzero(pnt, len);
@@ -301,7 +301,7 @@ sodium_bin2hex(char *const hex, const size_t hex_maxlen,
     int          c;
 
     if (bin_len >= SIZE_MAX / 2 || hex_maxlen <= bin_len * 2U) {
-        sodium_misuse("sodium_bin2hex(): invalid length"); /* LCOV_EXCL_LINE */
+        sodium_misuse(); /* LCOV_EXCL_LINE */
     }
     while (i < bin_len) {
         c = bin[i] & 0xf;
@@ -388,7 +388,7 @@ _sodium_alloc_init(void)
     page_size = (size_t) si.dwPageSize;
 # endif
     if (page_size < CANARY_SIZE || page_size < sizeof(size_t)) {
-        sodium_misuse("_sodium_alloc_init(): page size is smaller than the canary size"); /* LCOV_EXCL_LINE */
+        sodium_misuse(); /* LCOV_EXCL_LINE */
     }
 #endif
     randombytes_buf(canary, sizeof canary);
@@ -540,7 +540,7 @@ _unprotected_ptr_from_user_ptr(void *const ptr)
     page_mask = page_size - 1U;
     unprotected_ptr_u = ((uintptr_t) canary_ptr & (uintptr_t) ~page_mask);
     if (unprotected_ptr_u <= page_size * 2U) {
-        sodium_misuse("_unprotected_ptr_from_user_ptr(): invalid pointer (too low)"); /* LCOV_EXCL_LINE */
+        sodium_misuse(); /* LCOV_EXCL_LINE */
     }
     return (unsigned char *) unprotected_ptr_u;
 }
@@ -570,7 +570,7 @@ _sodium_malloc(const size_t size)
         return NULL;
     }
     if (page_size <= sizeof canary || page_size < sizeof unprotected_size) {
-        sodium_misuse("_sodium_malloc(): page size too small"); /* LCOV_EXCL_LINE */
+        sodium_misuse(); /* LCOV_EXCL_LINE */
     }
     size_with_canary = (sizeof canary) + size;
     unprotected_size = _page_round(size_with_canary);

@@ -3,9 +3,9 @@
 #include "cmptest.h"
 
 static void
-misuse_handler(const char *err)
+misuse_handler(void)
 {
-    printf("misuse_handler(): [%s]\n", err);
+    printf("misuse_handler()\n");
     exit(0);
 }
 
@@ -16,7 +16,7 @@ main(void)
     sodium_set_misuse_handler(misuse_handler);
     sodium_set_misuse_handler(NULL);
 
-    printf("%d\n", sodium_init());
+    assert(sodium_init() == 1);
 
     (void) sodium_runtime_has_neon();
     (void) sodium_runtime_has_sse2();
@@ -27,7 +27,7 @@ main(void)
     (void) sodium_runtime_has_aesni();
 
     sodium_set_misuse_handler(misuse_handler);
-    sodium_misuse("TEST");
+    sodium_misuse();
     printf("Misuse handler returned\n");
 
     return 0;

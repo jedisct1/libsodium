@@ -192,7 +192,7 @@ blake2b_init(blake2b_state *S, const uint8_t outlen)
     blake2b_param P[1];
 
     if ((!outlen) || (outlen > BLAKE2B_OUTBYTES)) {
-        sodium_misuse("blake2b_init(): unsupported output length");
+        sodium_misuse();
     }
     P->digest_length = outlen;
     P->key_length    = 0;
@@ -215,7 +215,7 @@ blake2b_init_salt_personal(blake2b_state *S, const uint8_t outlen,
     blake2b_param P[1];
 
     if ((!outlen) || (outlen > BLAKE2B_OUTBYTES)) {
-        sodium_misuse("blake2b_init_salt_personal(): unsupported output length");
+        sodium_misuse();
     }
     P->digest_length = outlen;
     P->key_length    = 0;
@@ -246,10 +246,10 @@ blake2b_init_key(blake2b_state *S, const uint8_t outlen, const void *key,
     blake2b_param P[1];
 
     if ((!outlen) || (outlen > BLAKE2B_OUTBYTES)) {
-        sodium_misuse("blake2b_init_key(): unsupported output length");
+        sodium_misuse();
     }
     if (!key || !keylen || keylen > BLAKE2B_KEYBYTES) {
-        sodium_misuse("blake2b_init_key(): unsupported key length");
+        sodium_misuse();
     }
     P->digest_length = outlen;
     P->key_length    = keylen;
@@ -264,7 +264,7 @@ blake2b_init_key(blake2b_state *S, const uint8_t outlen, const void *key,
     memset(P->personal, 0, sizeof(P->personal));
 
     if (blake2b_init_param(S, P) < 0) {
-        sodium_misuse("blake2b_init_key(): invalid parameters");
+        sodium_misuse();
     }
     {
         uint8_t block[BLAKE2B_BLOCKBYTES];
@@ -284,10 +284,10 @@ blake2b_init_key_salt_personal(blake2b_state *S, const uint8_t outlen,
     blake2b_param P[1];
 
     if ((!outlen) || (outlen > BLAKE2B_OUTBYTES)) {
-        sodium_misuse("blake2b_init_key_salt_personal(): unsupported output length");
+        sodium_misuse();
     }
     if (!key || !keylen || keylen > BLAKE2B_KEYBYTES) {
-        sodium_misuse("blake2b_init_key_salt_personal(): unsupported key length");
+        sodium_misuse();
     }
     P->digest_length = outlen;
     P->key_length    = keylen;
@@ -310,7 +310,7 @@ blake2b_init_key_salt_personal(blake2b_state *S, const uint8_t outlen,
     }
 
     if (blake2b_init_param(S, P) < 0) {
-        sodium_misuse("blake2b_init_key_salt_personal(): invalid parameters");
+        sodium_misuse();
     }
     {
         uint8_t block[BLAKE2B_BLOCKBYTES];
@@ -356,7 +356,7 @@ int
 blake2b_final(blake2b_state *S, uint8_t *out, uint8_t outlen)
 {
     if (!outlen || outlen > BLAKE2B_OUTBYTES) {
-        sodium_misuse("blake2b_final(): unsupported output length");
+        sodium_misuse();
     }
     if (blake2b_is_lastblock(S)) {
         return -1;
@@ -403,27 +403,27 @@ blake2b(uint8_t *out, const void *in, const void *key, const uint8_t outlen,
 
     /* Verify parameters */
     if (NULL == in && inlen > 0) {
-        sodium_misuse("blake2b(): NULL input, but length > 0");
+        sodium_misuse();
     }
     if (NULL == out) {
-        sodium_misuse("blake2b(): NULL output pointer");
+        sodium_misuse();
     }
     if (!outlen || outlen > BLAKE2B_OUTBYTES) {
-        sodium_misuse("blake2b(): unsupported output length");
+        sodium_misuse();
     }
     if (NULL == key && keylen > 0) {
-        sodium_misuse("blake2b(): NULL key, but key length > 0");
+        sodium_misuse();
     }
     if (keylen > BLAKE2B_KEYBYTES) {
-        sodium_misuse("blake2b(): unsupported key length");
+        sodium_misuse();
     }
     if (keylen > 0) {
         if (blake2b_init_key(S, outlen, key, keylen) < 0) {
-            sodium_misuse("blake2b(): invalid parameters");
+            sodium_misuse();
         }
     } else {
         if (blake2b_init(S, outlen) < 0) {
-            sodium_misuse("blake2b(): invalid parameters");
+            sodium_misuse();
         }
     }
 
@@ -441,28 +441,28 @@ blake2b_salt_personal(uint8_t *out, const void *in, const void *key,
 
     /* Verify parameters */
     if (NULL == in && inlen > 0) {
-        sodium_misuse("blake2b_salt_personal(): NULL input, but length > 0");
+        sodium_misuse();
     }
     if (NULL == out) {
-        sodium_misuse("blake2b_salt_personal(): NULL output pointer");
+        sodium_misuse();
     }
     if (!outlen || outlen > BLAKE2B_OUTBYTES) {
-        sodium_misuse("blake2b_salt_personal(): unsupported output length");
+        sodium_misuse();
     }
     if (NULL == key && keylen > 0) {
-        sodium_misuse("blake2b_salt_personal(): NULL key, but key length > 0");
+        sodium_misuse();
     }
     if (keylen > BLAKE2B_KEYBYTES) {
-        sodium_misuse("blake2b_salt_personal(): unsupported key length");
+        sodium_misuse();
     }
     if (keylen > 0) {
         if (blake2b_init_key_salt_personal(S, outlen, key, keylen, salt,
                                            personal) < 0) {
-            sodium_misuse("blake2b_salt_personal(): invalid parameters");
+            sodium_misuse();
         }
     } else {
         if (blake2b_init_salt_personal(S, outlen, salt, personal) < 0) {
-            sodium_misuse("blake2b_salt_personal(): invalid parameters");
+            sodium_misuse();
         }
     }
 

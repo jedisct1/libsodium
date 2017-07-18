@@ -173,7 +173,7 @@ randombytes_buf_deterministic(void * const buf, const size_t size,
     COMPILER_ASSERT(randombytes_SEEDBYTES == crypto_stream_chacha20_ietf_KEYBYTES);
 #if SIZE_MAX > 0x4000000000ULL
     if (size > 0x4000000000ULL) {
-        sodium_misuse("randombytes_buf_deterministic(): length shouldn't exceed 0x4000000000");
+        sodium_misuse();
     }
 #endif
     crypto_stream_chacha20_ietf((unsigned char *) buf, (unsigned long long) size,

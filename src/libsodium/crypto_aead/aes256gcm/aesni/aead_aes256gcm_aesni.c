@@ -525,7 +525,7 @@ crypto_aead_aes256gcm_encrypt_detached_afternm(unsigned char *c,
     (void) nsec;
     memcpy(H, ctx->H, sizeof H);
     if (mlen > 16ULL * ((1ULL << 32) - 2)) {
-        sodium_misuse("crypto_aead_aes256gcm_encrypt_detached_afternm(): message too long"); /* LCOV_EXCL_LINE */
+        sodium_misuse(); /* LCOV_EXCL_LINE */
     }
     memcpy(&n2[0], npub, 3 * 4);
     n2[3] = 0x01000000;
@@ -663,7 +663,7 @@ crypto_aead_aes256gcm_decrypt_detached_afternm(unsigned char *m, unsigned char *
 
     (void) nsec;
     if (clen > 16ULL * (1ULL << 32)) {
-        sodium_misuse("crypto_aead_aes256gcm_decrypt_detached_afternm(): ciphertext too long"); /* LCOV_EXCL_LINE */
+        sodium_misuse(); /* LCOV_EXCL_LINE */
     }
     mlen = clen;
 
