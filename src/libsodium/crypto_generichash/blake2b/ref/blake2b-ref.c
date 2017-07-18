@@ -359,7 +359,6 @@ blake2b_final(blake2b_state *S, uint8_t *out, uint8_t outlen)
         sodium_misuse("blake2b_final(): unsupported output length");
     }
     if (blake2b_is_lastblock(S)) {
-        sodium_memzero(S, sizeof *S);
         return -1;
     }
     if (S->buflen > BLAKE2B_BLOCKBYTES) {
@@ -389,6 +388,9 @@ blake2b_final(blake2b_state *S, uint8_t *out, uint8_t outlen)
         memcpy(out, buffer, outlen);
     }
 #endif
+    sodium_memzero(S->h, sizeof S->h);
+    sodium_memzero(S->buf, sizeof S->buf);
+
     return 0;
 }
 
