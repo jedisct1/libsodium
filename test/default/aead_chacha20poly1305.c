@@ -66,6 +66,10 @@ tv(void)
         printf("m != m2\n");
     }
     memset(m2, 0, m2len);
+    assert(crypto_aead_chacha20poly1305_decrypt_detached(NULL, NULL,
+                                                         c, MLEN, mac,
+                                                         ad, ADLEN,
+                                                         nonce, firstkey) == 0);
     if (crypto_aead_chacha20poly1305_decrypt_detached(m2, NULL,
                                                       c, MLEN, mac,
                                                       ad, ADLEN,
@@ -239,6 +243,10 @@ tv_ietf(void)
         printf("m != m2\n");
     }
     memset(m2, 0, m2len);
+    assert(crypto_aead_chacha20poly1305_ietf_decrypt_detached(NULL, NULL,
+                                                              c, MLEN, mac,
+                                                              ad, ADLEN,
+                                                              nonce, firstkey) == 0);
     if (crypto_aead_chacha20poly1305_ietf_decrypt_detached(m2, NULL,
                                                            c, MLEN, mac,
                                                            ad, ADLEN,

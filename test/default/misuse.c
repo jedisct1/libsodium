@@ -5,10 +5,30 @@
 #include <signal.h>
 
 static void
-sigabrt_handler_3(int sig)
+sigabrt_handler_5(int sig)
 {
     (void) sig;
     exit(0);
+}
+
+static void
+sigabrt_handler_4(int sig)
+{
+    (void) sig;
+    signal(SIGABRT, sigabrt_handler_5);
+    assert(crypto_aead_chacha20poly1305_ietf_encrypt(NULL, NULL, NULL, UINT64_MAX,
+                                                     NULL, 0, NULL, NULL, NULL) == -1);
+    exit(1);
+}
+
+static void
+sigabrt_handler_3(int sig)
+{
+    (void) sig;
+    signal(SIGABRT, sigabrt_handler_4);
+    assert(crypto_aead_chacha20poly1305_encrypt(NULL, NULL, NULL, UINT64_MAX,
+                                                NULL, 0, NULL, NULL, NULL) == -1);
+    exit(1);
 }
 
 static void
