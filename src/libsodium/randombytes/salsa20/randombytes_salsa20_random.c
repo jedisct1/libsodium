@@ -173,7 +173,7 @@ randombytes_salsa20_random_random_dev_open(void)
 #  endif
         "/dev/random", NULL
     };
-    const char **     device = devices;
+    const char      **device = devices;
     int               fd;
 
 # if defined(__linux__) && !defined(USE_BLOCKING_RANDOM) && !defined(NO_BLOCKING_RANDOM_POLL)
