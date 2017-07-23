@@ -33,8 +33,8 @@ crypto_sign_check_S_lt_L(const unsigned char *S)
     return -(c == 0);
 }
 
-static int
-small_order(const unsigned char R[32])
+int
+_crypto_sign_ed25519_small_order(const unsigned char p[32])
 {
     CRYPTO_ALIGN(16)
     static const unsigned char blacklist[][32] = {
@@ -97,7 +97,7 @@ small_order(const unsigned char R[32])
     for (i = 0; i < sizeof blacklist / sizeof blacklist[0]; i++) {
         c = 0;
         for (j = 0; j < 32; j++) {
-            c |= R[j] ^ blacklist[i][j];
+            c |= p[j] ^ blacklist[i][j];
         }
         if (c == 0) {
             return 1;
@@ -123,7 +123,8 @@ _crypto_sign_ed25519_verify_detached(const unsigned char *sig,
     ge_p2                    R;
 
 #ifndef ED25519_COMPAT
-    if (crypto_sign_check_S_lt_L(sig + 32) != 0 || small_order(sig) != 0) {
+    if (crypto_sign_check_S_lt_L(sig + 32) != 0 ||
+        _crypto_sign_ed25519_small_order(sig) != 0) {
         return -1;
     }
 #else
