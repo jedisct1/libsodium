@@ -123,6 +123,7 @@ typedef struct {
 #define ge_scalarmult_base crypto_core_curve25519_ref10_ge_scalarmult_base
 #define ge_double_scalarmult_vartime crypto_core_curve25519_ref10_ge_double_scalarmult_vartime
 #define ge_scalarmult_vartime crypto_core_curve25519_ref10_ge_scalarmult_vartime
+#define ge_mul_l crypto_core_curve25519_ref10_ge_mul_l
 
 extern void ge_tobytes(unsigned char *,const ge_p2 *);
 extern void ge_p3_tobytes(unsigned char *,const ge_p3 *);
@@ -145,6 +146,7 @@ extern void ge_sub(ge_p1p1 *,const ge_p3 *,const ge_cached *);
 extern void ge_scalarmult_base(ge_p3 *,const unsigned char *);
 extern void ge_double_scalarmult_vartime(ge_p2 *,const unsigned char *,const ge_p3 *,const unsigned char *);
 extern void ge_scalarmult_vartime(ge_p3 *,const unsigned char *,const ge_p3 *);
+extern void ge_mul_l(ge_p3 *r, const ge_p3 *A);
 
 /*
  The set of scalars is \Z/l

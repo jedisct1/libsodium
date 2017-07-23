@@ -1913,6 +1913,61 @@ ge_scalarmult_base(ge_p3 *h, const unsigned char *a)
     }
 }
 
+/* multiply by the order of the main subgroup l = 2^252+27742317777372353535851937790883648493 */
+void
+ge_mul_l(ge_p3 *r, const ge_p3 *A)
+{
+    static const signed char aslide[253] = {
+        13, 0, 0, 0, 0, -1, 0, 0, 0, 0, -11, 0, 0, 0, 0, 0, 0, -5, 0, 0, 0, 0, 0, 0, -3, 0, 0, 0, 0, -13, 0, 0, 0, 0, 7, 0, 0, 0, 0, 0, 3, 0, 0, 0, 0, -13, 0, 0, 0, 0, 5, 0, 0, 0, 0, 0, 0, 0, 0, 11, 0, 0, 0, 0, 0, 11, 0, 0, 0, 0, -13, 0, 0, 0, 0, 0, 0, -3, 0, 0, 0, 0, 0, -1, 0, 0, 0, 0, 3, 0, 0, 0, 0, -11, 0, 0, 0, 0, 0, 0, 0, 15, 0, 0, 0, 0, 0, -1, 0, 0, 0, 0, -1, 0, 0, 0, 0, 7, 0, 0, 0, 0, 5, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1
+    };
+    ge_cached   Ai[8];
+    ge_p1p1     t;
+    ge_p3       u;
+    ge_p3       A2;
+    int         i;
+
+    ge_p3_to_cached(&Ai[0], A);
+    ge_p3_dbl(&t, A);
+    ge_p1p1_to_p3(&A2, &t);
+    ge_add(&t, &A2, &Ai[0]);
+    ge_p1p1_to_p3(&u, &t);
+    ge_p3_to_cached(&Ai[1], &u);
+    ge_add(&t, &A2, &Ai[1]);
+    ge_p1p1_to_p3(&u, &t);
+    ge_p3_to_cached(&Ai[2], &u);
+    ge_add(&t, &A2, &Ai[2]);
+    ge_p1p1_to_p3(&u, &t);
+    ge_p3_to_cached(&Ai[3], &u);
+    ge_add(&t, &A2, &Ai[3]);
+    ge_p1p1_to_p3(&u, &t);
+    ge_p3_to_cached(&Ai[4], &u);
+    ge_add(&t, &A2, &Ai[4]);
+    ge_p1p1_to_p3(&u, &t);
+    ge_p3_to_cached(&Ai[5], &u);
+    ge_add(&t, &A2, &Ai[5]);
+    ge_p1p1_to_p3(&u, &t);
+    ge_p3_to_cached(&Ai[6], &u);
+    ge_add(&t, &A2, &Ai[6]);
+    ge_p1p1_to_p3(&u, &t);
+    ge_p3_to_cached(&Ai[7], &u);
+
+    ge_p3_0(r);
+
+    for (i = 252; i >= 0; --i) {
+        ge_p3_dbl(&t, r);
+
+        if (aslide[i] > 0) {
+            ge_p1p1_to_p3(&u, &t);
+            ge_add(&t, &u, &Ai[aslide[i] / 2]);
+        } else if (aslide[i] < 0) {
+            ge_p1p1_to_p3(&u, &t);
+            ge_sub(&t, &u, &Ai[(-aslide[i]) / 2]);
+        }
+
+        ge_p1p1_to_p3(r, &t);
+    }
+}
+
 /*
  Input:
  a[0]+256*a[1]+...+256^31*a[31] = a
