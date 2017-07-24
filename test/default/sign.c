@@ -1191,6 +1191,15 @@ int main(void)
         printf("detached signature verification should have failed\n");
     }
 
+    sodium_hex2bin(pk, crypto_sign_PUBLICKEYBYTES,
+                   "3eee494fb9eac773144e34b0c755affaf33ea782c0722e5ea8b150e61209ab36",
+                   crypto_sign_PUBLICKEYBYTES * 2, NULL, NULL, NULL);
+    if (crypto_sign_verify_detached(sig,
+                                    (const unsigned char *)test_data[i].m,
+                                    i, pk) != -1) {
+        printf("signature with an invalid public key should have failed\n");
+    }
+
     if (crypto_sign_seed_keypair(pk, sk, keypair_seed) != 0) {
         printf("crypto_sign_seed_keypair() failure\n");
         return -1;
