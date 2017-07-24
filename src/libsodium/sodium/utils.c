@@ -63,6 +63,7 @@
 static size_t        page_size;
 static unsigned char canary[CANARY_SIZE];
 
+/* LCOV_EXCL_START */
 #ifdef HAVE_WEAK_SYMBOLS
 __attribute__((weak)) void
 _sodium_dummy_symbol_to_prevent_memzero_lto(void *const  pnt,
@@ -72,6 +73,7 @@ _sodium_dummy_symbol_to_prevent_memzero_lto(void *const  pnt,
     (void) len; /* LCOV_EXCL_LINE */
 }
 #endif
+/* LCOV_EXCL_STOP */
 
 void
 sodium_memzero(void *const pnt, const size_t len)

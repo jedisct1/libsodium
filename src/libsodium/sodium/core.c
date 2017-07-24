@@ -184,8 +184,10 @@ sodium_misuse(void)
             handler();
         }
     }
+/* LCOV_EXCL_START */
     abort();
 }
+/* LCOV_EXCL_STOP */
 
 int
 sodium_set_misuse_handler(void (*handler)(void))
