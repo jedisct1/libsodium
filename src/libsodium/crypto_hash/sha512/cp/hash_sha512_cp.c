@@ -222,9 +222,11 @@ crypto_hash_sha512_update(crypto_hash_sha512_state *state,
 
     bitlen[1] = ((uint64_t) inlen) << 3;
     bitlen[0] = ((uint64_t) inlen) >> 61;
+    /* LCOV_EXCL_START */
     if ((state->count[1] += bitlen[1]) < bitlen[1]) {
         state->count[0]++;
     }
+    /* LCOV_EXCL_STOP */
     state->count[0] += bitlen[0];
     if (inlen < 128 - r) {
         for (i = 0; i < inlen; i++) {

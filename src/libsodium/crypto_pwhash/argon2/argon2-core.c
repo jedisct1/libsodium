@@ -154,12 +154,12 @@ static void clear_memory(argon2_instance_t *instance, int clear);
 static void
 clear_memory(argon2_instance_t *instance, int clear)
 {
+    /* LCOV_EXCL_START */
     if (instance->region != NULL && clear) {
-        /* LCOV_EXCL_START */
         sodium_memzero(instance->region->memory,
                        sizeof(block) * instance->memory_blocks);
-        /* LCOV_EXCL_STOP */
     }
+    /* LCOV_EXCL_STOP */
 }
 
 /* Deallocates memory
@@ -510,10 +510,12 @@ initial_hash(uint8_t *blockhash, argon2_context *context, argon2_type type)
         crypto_generichash_blake2b_update(
             &BlakeHash, (const uint8_t *) context->pwd, context->pwdlen);
 
+        /* LCOV_EXCL_START */
         if (context->flags & ARGON2_FLAG_CLEAR_PASSWORD) {
-            sodium_memzero(context->pwd, context->pwdlen); /* LCOV_EXCL_LINE */
-            context->pwdlen = 0;                           /* LCOV_EXCL_LINE */
+            sodium_memzero(context->pwd, context->pwdlen);
+            context->pwdlen = 0;
         }
+        /* LCOV_EXCL_STOP */
     }
 
     STORE32_LE(value, context->saltlen);
@@ -527,8 +529,8 @@ initial_hash(uint8_t *blockhash, argon2_context *context, argon2_type type)
     STORE32_LE(value, context->secretlen);
     crypto_generichash_blake2b_update(&BlakeHash, value, sizeof(value));
 
+    /* LCOV_EXCL_START */
     if (context->secret != NULL) {
-        /* LCOV_EXCL_START */
         crypto_generichash_blake2b_update(
             &BlakeHash, (const uint8_t *) context->secret, context->secretlen);
 
@@ -536,18 +538,18 @@ initial_hash(uint8_t *blockhash, argon2_context *context, argon2_type type)
             sodium_memzero(context->secret, context->secretlen);
             context->secretlen = 0;
         }
-        /* LCOV_EXCL_STOP */
     }
+    /* LCOV_EXCL_STOP */
 
     STORE32_LE(value, context->adlen);
     crypto_generichash_blake2b_update(&BlakeHash, value, sizeof(value));
 
+    /* LCOV_EXCL_START */    
     if (context->ad != NULL) {
-        /* LCOV_EXCL_START */
         crypto_generichash_blake2b_update(
             &BlakeHash, (const uint8_t *) context->ad, context->adlen);
-        /* LCOV_EXCL_STOP */
     }
+    /* LCOV_EXCL_STOP */
 
     crypto_generichash_blake2b_final(&BlakeHash, blockhash,
                                      ARGON2_PREHASH_DIGEST_LENGTH);

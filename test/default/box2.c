@@ -64,6 +64,8 @@ main(void)
     assert(ret == -1);
 
     memset(m, 0, sizeof m);
+    ret = crypto_box_beforenm(k, small_order_p, bobsk);
+    assert(ret == -1);
     ret = crypto_box_beforenm(k, alicepk, bobsk);
     assert(ret == 0);
     if (crypto_box_open_afternm(m, c, 163, nonce, k) == 0) {
