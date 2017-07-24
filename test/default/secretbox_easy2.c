@@ -40,6 +40,10 @@ main(void)
         }
     }
     crypto_secretbox_detached(c, mac, m, (unsigned long long) mlen, nonce, k);
+    if (crypto_secretbox_open_detached(NULL, c, mac, (unsigned long long) mlen,
+                                       nonce, k) != 0) {
+        printf("crypto_secretbox_open_detached() with a NULL message pointer failed\n");
+    }
     if (crypto_secretbox_open_detached(m2, c, mac, (unsigned long long) mlen,
                                        nonce, k) != 0) {
         printf("crypto_secretbox_open_detached() failed\n");
