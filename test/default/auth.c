@@ -19,6 +19,7 @@ int
 main(void)
 {
     crypto_auth_hmacsha512_state st;
+    crypto_auth_hmacsha256_state st256;
     size_t                       i;
 
     assert(crypto_auth_hmacsha512_statebytes() ==
@@ -53,11 +54,11 @@ main(void)
     }
 
     memset(a2, 0, sizeof a2);
-    crypto_auth_hmacsha256_init(&st, key2, sizeof key2);
-    crypto_auth_hmacsha256_update(&st, NULL, 0U);
-    crypto_auth_hmacsha256_update(&st, c, 1U);
-    crypto_auth_hmacsha256_update(&st, c, sizeof c - 2U);
-    crypto_auth_hmacsha256_final(&st, a2);
+    crypto_auth_hmacsha256_init(&st256, key2, sizeof key2);
+    crypto_auth_hmacsha256_update(&st256, NULL, 0U);
+    crypto_auth_hmacsha256_update(&st256, c, 1U);
+    crypto_auth_hmacsha256_update(&st256, c, sizeof c - 2U);
+    crypto_auth_hmacsha256_final(&st256, a2);
     for (i = 0; i < sizeof a2; ++i) {
         printf(",0x%02x", (unsigned int) a2[i]);
         if (i % 8 == 7)
