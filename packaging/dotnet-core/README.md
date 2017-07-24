@@ -31,15 +31,15 @@ Version numbers for the packages for .NET Core consist of three components:
   It may be necessary to release more than one package for a libsodium version,
   e.g., when adding support for a new platform or if a release contains a broken
   binary. In this case, a package revision number is added as a fourth part to
-  the libsodium version, starting at `1`. For example, `1.0.13` is the initial
-  release of the package for libsodium 1.0.13 and `1.0.13.5` is the fifth
+  the libsodium version, starting at `1`. For example, `1.0.14` is the initial
+  release of the package for libsodium 1.0.14 and `1.0.14.5` is the fifth
   revision (sixth release) of that package.
 * *pre-release label*  
   If a package is a pre-release, a label is appended to the version number in
   `-preview-##` format where `##` is the number of the pre-release, starting at
-  `01`. For example, `1.0.13-preview-01` is the first pre-release of the package
-  for libsodium 1.0.13 and `1.0.13.5-preview-02` the second pre-release of the
-  fifth revision of the package for libsodium 1.0.13.
+  `01`. For example, `1.0.14-preview-01` is the first pre-release of the package
+  for libsodium 1.0.14 and `1.0.14.5-preview-02` the second pre-release of the
+  fifth revision of the package for libsodium 1.0.14.
 
 
 **Making a release**
