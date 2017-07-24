@@ -52,6 +52,17 @@ main(void)
             printf("\n");
     }
 
+    memset(a2, 0, sizeof a2);
+    crypto_auth_hmacsha256_init(&st, key2, sizeof key2);
+    crypto_auth_hmacsha256_update(&st, c, 1U);
+    crypto_auth_hmacsha256_update(&st, c, sizeof c - 2U);
+    crypto_auth_hmacsha256_final(&st, a2);
+    for (i = 0; i < sizeof a2; ++i) {
+        printf(",0x%02x", (unsigned int) a2[i]);
+        if (i % 8 == 7)
+            printf("\n");
+    }
+
     assert(crypto_auth_bytes() > 0U);
     assert(crypto_auth_keybytes() > 0U);
     assert(strcmp(crypto_auth_primitive(), "hmacsha512256") == 0);
