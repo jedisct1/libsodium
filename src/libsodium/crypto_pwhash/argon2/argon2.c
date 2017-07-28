@@ -73,6 +73,7 @@ argon2_ctx(argon2_context *context, argon2_type type)
     result = fill_memory_blocks(&instance);
 
     if (ARGON2_OK != result) {
+        free_instance(&instance, context->flags);
         return result;
     }
 

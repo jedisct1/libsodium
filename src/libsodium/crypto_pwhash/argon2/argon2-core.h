@@ -76,6 +76,7 @@ void xor_block(block *dst, const block *src);
  */
 typedef struct Argon2_instance_t {
     block_region *region;        /* Memory region pointer */
+    uint64_t     *pseudo_rands;
     uint32_t      passes;        /* Number of passes */
     uint32_t      memory_blocks; /* Number of blocks in memory */
     uint32_t      segment_length;
@@ -161,6 +162,11 @@ void fill_first_blocks(uint8_t *blockhash, const argon2_instance_t *instance);
  * will be modified if successful.
  */
 int initialize(argon2_instance_t *instance, argon2_context *context);
+
+/*
+ * Deallocates memory. Used on error path.
+ */
+void free_instance(argon2_instance_t *instance, int flags);
 
 /*
  * XORing the last block of each lane, hashing it, making the tag. Deallocates

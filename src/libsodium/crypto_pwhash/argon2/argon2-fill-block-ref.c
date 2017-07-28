@@ -161,12 +161,7 @@ fill_segment_ref(const argon2_instance_t *instance, argon2_position_t position)
         data_independent_addressing = 0;
     }
 
-    pseudo_rands =
-        (uint64_t *) malloc(sizeof(uint64_t) * (instance->segment_length));
-
-    if (pseudo_rands == NULL) {
-        return ARGON2_MEMORY_ALLOCATION_ERROR;
-    }
+    pseudo_rands = instance->pseudo_rands;
 
     if (data_independent_addressing) {
         generate_addresses(instance, &position, pseudo_rands);
@@ -235,8 +230,6 @@ fill_segment_ref(const argon2_instance_t *instance, argon2_position_t position)
                        curr_block);
         }
     }
-
-    free(pseudo_rands);
 
     return ARGON2_OK;
 }

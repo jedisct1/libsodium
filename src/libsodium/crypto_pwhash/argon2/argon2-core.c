@@ -170,7 +170,7 @@ static void free_memory(block_region *memory);
 static void
 free_memory(block_region *region)
 {
-    if (region->base) {
+    if (region && region->base) {
 #if defined(MAP_ANON) && defined(HAVE_MMAP)
         if (munmap(region->base, region->size)) {
             return; /* LCOV_EXCL_LINE */
@@ -180,6 +180,19 @@ free_memory(block_region *region)
 #endif
     }
     free(region);
+}
+
+void
+free_instance(argon2_instance_t *instance, int flags)
+{
+    /* Clear memory */
+    clear_memory(instance, flags & ARGON2_FLAG_CLEAR_PASSWORD);
+
+    /* Deallocate the memory */
+    free(instance->pseudo_rands);
+    instance->pseudo_rands = NULL;
+    free_memory(instance->region);
+    instance->region = NULL;
 }
 
 void
@@ -212,11 +225,7 @@ finalize(const argon2_context *context, argon2_instance_t *instance)
                            ARGON2_BLOCK_SIZE); /* clear blockhash_bytes */
         }
 
-        /* Clear memory */
-        clear_memory(instance, context->flags & ARGON2_FLAG_CLEAR_PASSWORD);
-
-        /* Deallocate the memory */
-        free_memory(instance->region);
+        free_instance(instance, context->flags);
     }
 }
 
@@ -544,7 +553,7 @@ initial_hash(uint8_t *blockhash, argon2_context *context, argon2_type type)
     STORE32_LE(value, context->adlen);
     crypto_generichash_blake2b_update(&BlakeHash, value, sizeof(value));
 
-    /* LCOV_EXCL_START */    
+    /* LCOV_EXCL_START */
     if (context->ad != NULL) {
         crypto_generichash_blake2b_update(
             &BlakeHash, (const uint8_t *) context->ad, context->adlen);
@@ -561,13 +570,20 @@ initialize(argon2_instance_t *instance, argon2_context *context)
     uint8_t blockhash[ARGON2_PREHASH_SEED_LENGTH];
     int     result = ARGON2_OK;
 
-    if (instance == NULL || context == NULL)
+    if (instance == NULL || context == NULL) {
         return ARGON2_INCORRECT_PARAMETER;
+    }
 
     /* 1. Memory allocation */
 
+    if ((instance->pseudo_rands =
+         malloc(sizeof(uint64_t) * instance->segment_length)) == NULL) {
+        return ARGON2_MEMORY_ALLOCATION_ERROR;
+    }
+
     result = allocate_memory(&(instance->region), instance->memory_blocks);
     if (ARGON2_OK != result) {
+        free_instance(instance, context->flags);
         return result;
     }
 
