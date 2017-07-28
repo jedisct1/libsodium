@@ -140,7 +140,7 @@ generate_addresses(const argon2_instance_t *instance,
     }
 }
 
-int
+void
 fill_segment_avx2(const argon2_instance_t *instance,
                   argon2_position_t        position)
 {
@@ -155,7 +155,7 @@ fill_segment_avx2(const argon2_instance_t *instance,
     uint64_t *pseudo_rands = NULL;
 
     if (instance == NULL) {
-        return ARGON2_OK;
+        return;
     }
 
     if (instance->type == Argon2_id &&
@@ -235,7 +235,5 @@ fill_segment_avx2(const argon2_instance_t *instance,
                        (uint8_t *) curr_block->v);
         }
     }
-
-    return ARGON2_OK;
 }
 #endif

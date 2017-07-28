@@ -140,7 +140,7 @@ generate_addresses(const argon2_instance_t *instance,
     }
 }
 
-int
+void
 fill_segment_ref(const argon2_instance_t *instance, argon2_position_t position)
 {
     block    *ref_block = NULL, *curr_block = NULL;
@@ -153,7 +153,7 @@ fill_segment_ref(const argon2_instance_t *instance, argon2_position_t position)
     int       data_independent_addressing = 1;
 
     if (instance == NULL) {
-        return ARGON2_OK;
+        return;
     }
 
     if (instance->type == Argon2_id &&
@@ -230,6 +230,4 @@ fill_segment_ref(const argon2_instance_t *instance, argon2_position_t position)
                        curr_block);
         }
     }
-
-    return ARGON2_OK;
 }

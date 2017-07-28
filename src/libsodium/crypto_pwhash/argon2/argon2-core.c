@@ -155,9 +155,15 @@ static void
 clear_memory(argon2_instance_t *instance, int clear)
 {
     /* LCOV_EXCL_START */
-    if (instance->region != NULL && clear) {
-        sodium_memzero(instance->region->memory,
-                       sizeof(block) * instance->memory_blocks);
+    if (clear) {
+        if (instance->region != NULL) {
+            sodium_memzero(instance->region->memory,
+                           sizeof(block) * instance->memory_blocks);
+        }
+        if (instance->pseudo_rands != NULL) {
+            sodium_memzero(instance->region->memory,
+                           sizeof(uint64_t) * instance->segment_length);
+        }
     }
     /* LCOV_EXCL_STOP */
 }
@@ -301,14 +307,14 @@ index_alpha(const argon2_instance_t *instance,
     return absolute_position;
 }
 
-int
+void
 fill_memory_blocks(argon2_instance_t *instance)
 {
     int      result;
     uint32_t r, s;
 
     if (instance == NULL || instance->lanes == 0) {
-        return ARGON2_OK; /* LCOV_EXCL_LINE */
+        return; /* LCOV_EXCL_LINE */
     }
 
     for (r = 0; r < instance->passes; ++r) {
@@ -322,14 +328,10 @@ fill_memory_blocks(argon2_instance_t *instance)
                 position.lane  = l;
                 position.slice = (uint8_t) s;
                 position.index = 0;
-                result         = fill_segment(instance, position);
-                if (ARGON2_OK != result) {
-                    return result; /* LCOV_EXCL_LINE */
-                }
+                fill_segment(instance, position);
             }
         }
     }
-    return ARGON2_OK;
 }
 
 int
