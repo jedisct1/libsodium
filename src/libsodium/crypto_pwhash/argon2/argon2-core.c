@@ -192,7 +192,7 @@ void
 free_instance(argon2_instance_t *instance, int flags)
 {
     /* Clear memory */
-    clear_memory(instance, flags & ARGON2_FLAG_CLEAR_PASSWORD);
+    clear_memory(instance, flags & ARGON2_FLAG_CLEAR_MEMORY);
 
     /* Deallocate the memory */
     free(instance->pseudo_rands);
