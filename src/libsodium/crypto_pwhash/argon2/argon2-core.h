@@ -14,6 +14,8 @@
 #ifndef argon2_core_H
 #define argon2_core_H
 
+#include <string.h>
+
 #include "argon2.h"
 
 /*************************Argon2 internal
@@ -60,13 +62,28 @@ typedef struct block_region_ {
 /*****************Functions that work with the block******************/
 
 /* Initialize each byte of the block with @in */
-void init_block_value(block *b, uint8_t in);
+static inline void
+init_block_value(block *b, uint8_t in)
+{
+    memset(b->v, in, sizeof(b->v));
+}
 
 /* Copy block @src to block @dst */
-void copy_block(block *dst, const block *src);
+static inline void
+copy_block(block *dst, const block *src)
+{
+    memcpy(dst->v, src->v, sizeof(uint64_t) * ARGON2_QWORDS_IN_BLOCK);
+}
 
 /* XOR @src onto @dst bytewise */
-void xor_block(block *dst, const block *src);
+static inline void
+xor_block(block *dst, const block *src)
+{
+    int i;
+    for (i = 0; i < ARGON2_QWORDS_IN_BLOCK; ++i) {
+        dst->v[i] ^= src->v[i];
+    }
+}
 
 /*
  * Argon2 instance: memory pointer, number of passes, amount of memory, type,
