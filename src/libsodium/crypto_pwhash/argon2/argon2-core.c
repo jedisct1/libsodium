@@ -578,7 +578,7 @@ initialize(argon2_instance_t *instance, argon2_context *context)
 
     /* 1. Memory allocation */
 
-    if ((instance->pseudo_rands =
+    if ((instance->pseudo_rands = (uint64_t *)
          malloc(sizeof(uint64_t) * instance->segment_length)) == NULL) {
         return ARGON2_MEMORY_ALLOCATION_ERROR;
     }
