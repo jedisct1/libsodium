@@ -87,12 +87,7 @@ sodium_memzero(void *const pnt, const size_t len)
 #elif defined(HAVE_EXPLICIT_BZERO)
     explicit_bzero(pnt, len);
 #elif HAVE_WEAK_SYMBOLS
-    unsigned char *pnt_ = (unsigned char *) pnt;
-    size_t         i    = (size_t) 0U;
-
-    while (i < len) {
-        pnt_[i++] = 0U;
-    }
+    memset(pnt, 0, len);
     _sodium_dummy_symbol_to_prevent_memzero_lto(pnt, len);
 #else
     volatile unsigned char *volatile pnt_ =
