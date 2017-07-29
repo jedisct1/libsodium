@@ -114,6 +114,10 @@ main(void)
                               alicepk, bobsk);
     assert(ret == 0);
     if (crypto_box_open_detached(m2, c, mac, (unsigned long long) mlen, nonce,
+                                 small_order_p, alicesk) != -1) {
+        printf("crypto_box_open_detached() with a weak key passed\n");
+    }
+    if (crypto_box_open_detached(m2, c, mac, (unsigned long long) mlen, nonce,
                                  bobpk, alicesk) != 0) {
         printf("crypto_box_open_detached() failed\n");
     }
