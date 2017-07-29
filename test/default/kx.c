@@ -2,6 +2,12 @@
 #define TEST_NAME "kx"
 #include "cmptest.h"
 
+static const unsigned char small_order_p[crypto_scalarmult_BYTES] = {
+    0xe0, 0xeb, 0x7a, 0x7c, 0x3b, 0x41, 0xb8, 0xae, 0x16, 0x56, 0xe3,
+    0xfa, 0xf1, 0x9f, 0xc4, 0x6a, 0xda, 0x09, 0x8d, 0xeb, 0x9c, 0x32,
+    0xb1, 0xfd, 0x86, 0x62, 0x05, 0x16, 0x5f, 0x49, 0xb8, 0x00
+};
+
 static void
 tv_kx(void)
 {
@@ -33,6 +39,9 @@ tv_kx(void)
     client_rx = (unsigned char *) sodium_malloc(crypto_kx_SESSIONKEYBYTES);
     client_tx = (unsigned char *) sodium_malloc(crypto_kx_SESSIONKEYBYTES);
 
+    assert(crypto_kx_client_session_keys(client_rx, client_tx,
+                                         client_pk, client_sk,
+                                         small_order_p) == -1);
     if (crypto_kx_client_session_keys(client_rx, client_tx,
                                       client_pk, client_sk, server_pk) != 0) {
         printf("crypto_kx_client_session_keys() failed\n");
@@ -41,6 +50,9 @@ tv_kx(void)
     server_rx = (unsigned char *) sodium_malloc(crypto_kx_SESSIONKEYBYTES);
     server_tx = (unsigned char *) sodium_malloc(crypto_kx_SESSIONKEYBYTES);
 
+    assert(crypto_kx_server_session_keys(server_rx, server_tx,
+                                         server_pk, server_sk,
+                                         small_order_p) == -1);
     if (crypto_kx_server_session_keys(server_rx, server_tx,
                                       server_pk, server_sk, client_pk) != 0) {
         printf("crypto_kx_server_session_keys() failed\n");
