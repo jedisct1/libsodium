@@ -18,7 +18,7 @@ extern "C" {
 SODIUM_EXPORT
 size_t crypto_pwhash_scryptsalsa208sha256_bytes_min(void);
 
-#define crypto_pwhash_scryptsalsa208sha256_BYTES_MAX SIZE_MAX
+#define crypto_pwhash_scryptsalsa208sha256_BYTES_MAX (SIZE_MAX > 0x1fffffffe0ULL ? 0x1fffffffe0ULL : SIZE_MAX)
 SODIUM_EXPORT
 size_t crypto_pwhash_scryptsalsa208sha256_bytes_max(void);
 
