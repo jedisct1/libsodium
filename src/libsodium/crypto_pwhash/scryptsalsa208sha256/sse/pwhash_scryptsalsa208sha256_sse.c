@@ -318,10 +318,12 @@ escrypt_kdf_sse(escrypt_local_t *local, const uint8_t *passwd, size_t passwdlen,
 
 /* Sanity-check parameters. */
 # if SIZE_MAX > UINT32_MAX
+/* LCOV_EXCL_START */
     if (buflen > (((uint64_t)(1) << 32) - 1) * 32) {
         errno = EFBIG;
         return -1;
     }
+/* LCOV_EXCL_END */
 # endif
     if ((uint64_t)(r) * (uint64_t)(p) >= ((uint64_t) 1 << 30)) {
         errno = EFBIG;
@@ -339,6 +341,7 @@ escrypt_kdf_sse(escrypt_local_t *local, const uint8_t *passwd, size_t passwdlen,
         errno = EINVAL;
         return -1;
     }
+/* LCOV_EXCL_START */
     if ((r > SIZE_MAX / 128 / p) ||
 # if SIZE_MAX / 256 <= UINT32_MAX
         (r > SIZE_MAX / 256) ||
@@ -347,21 +350,26 @@ escrypt_kdf_sse(escrypt_local_t *local, const uint8_t *passwd, size_t passwdlen,
         errno = ENOMEM;
         return -1;
     }
+/* LCOV_EXCL_END */
 
     /* Allocate memory. */
     B_size = (size_t) 128 * r * p;
     V_size = (size_t) 128 * r * N;
     need   = B_size + V_size;
+/* LCOV_EXCL_START */
     if (need < V_size) {
         errno = ENOMEM;
         return -1;
     }
+/* LCOV_EXCL_END */
     XY_size = (size_t) 256 * r + 64;
     need += XY_size;
+/* LCOV_EXCL_START */
     if (need < XY_size) {
         errno = ENOMEM;
         return -1;
     }
+/* LCOV_EXCL_END */
     if (local->size < need) {
         if (free_region(local)) {
             return -1; /* LCOV_EXCL_LINE */
