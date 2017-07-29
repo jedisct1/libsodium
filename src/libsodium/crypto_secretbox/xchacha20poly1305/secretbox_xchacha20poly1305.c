@@ -34,7 +34,7 @@ crypto_secretbox_xchacha20poly1305_detached(unsigned char *c,
     if (((uintptr_t) c > (uintptr_t) m &&
          (uintptr_t) c - (uintptr_t) m < mlen) ||
         ((uintptr_t) m > (uintptr_t) c &&
-         (uintptr_t) m - (uintptr_t) c < mlen)) {
+         (uintptr_t) m - (uintptr_t) c < mlen)) { /* LCOV_EXCL_LINE */
         memmove(c, m, mlen);
         m = c;
     }
@@ -111,7 +111,7 @@ crypto_secretbox_xchacha20poly1305_open_detached(unsigned char *m,
     if (((uintptr_t) c >= (uintptr_t) m &&
          (uintptr_t) c - (uintptr_t) m < clen) ||
         ((uintptr_t) m >= (uintptr_t) c &&
-         (uintptr_t) m - (uintptr_t) c < clen)) {
+         (uintptr_t) m - (uintptr_t) c < clen)) { /* LCOV_EXCL_LINE */
         memmove(m, c, clen);
         c = m;
     }
