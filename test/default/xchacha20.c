@@ -8,6 +8,12 @@ typedef struct HChaCha20TV_ {
     const char out[crypto_core_hchacha20_OUTPUTBYTES * 2 + 1];
 } HChaCha20TV;
 
+static const unsigned char small_order_p[crypto_scalarmult_BYTES] = {
+    0xe0, 0xeb, 0x7a, 0x7c, 0x3b, 0x41, 0xb8, 0xae, 0x16, 0x56, 0xe3,
+    0xfa, 0xf1, 0x9f, 0xc4, 0x6a, 0xda, 0x09, 0x8d, 0xeb, 0x9c, 0x32,
+    0xb1, 0xfd, 0x86, 0x62, 0x05, 0x16, 0x5f, 0x49, 0xb8, 0x00
+};
+
 static void
 tv_hchacha20(void)
 {
@@ -326,12 +332,16 @@ tv_box_xchacha20poly1305(void)
                                                            pk, sk) == 0);
         assert(crypto_box_curve25519xchacha20poly1305_open_easy
                (m2, out, crypto_box_curve25519xchacha20poly1305_MACBYTES + m_len,
+                nonce, small_order_p, sk) == -1);
+        assert(crypto_box_curve25519xchacha20poly1305_open_easy
+               (m2, out, crypto_box_curve25519xchacha20poly1305_MACBYTES + m_len,
                 nonce, pk, sk) == 0);
         assert(memcmp(m2, m, m_len) == 0);
         sodium_free(out);
 
         out = (unsigned char *) sodium_malloc
             (crypto_box_curve25519xchacha20poly1305_MACBYTES + m_len);
+        assert(crypto_box_curve25519xchacha20poly1305_beforenm(pc, small_order_p, sk) == -1);
         assert(crypto_box_curve25519xchacha20poly1305_beforenm(pc, pk, sk) == 0);
         assert(crypto_box_curve25519xchacha20poly1305_easy_afternm
                (out, m, 0, nonce, pc) == 0);
@@ -351,7 +361,11 @@ tv_box_xchacha20poly1305(void)
 
         out = (unsigned char *) sodium_malloc(m_len);
         assert(crypto_box_curve25519xchacha20poly1305_detached(out, mac, m, m_len,
+                                                               nonce, small_order_p, sk) == -1);
+        assert(crypto_box_curve25519xchacha20poly1305_detached(out, mac, m, m_len,
                                                                nonce, pk, sk) == 0);
+        assert(crypto_box_curve25519xchacha20poly1305_open_detached
+               (m2, out, mac, m_len, nonce, small_order_p, sk) == -1);
         assert(crypto_box_curve25519xchacha20poly1305_open_detached
                (m2, out, mac, m_len, nonce, pk, sk) == 0);
         sodium_free(out);
