@@ -1190,9 +1190,29 @@ int main(void)
                                     i, pk) != -1) {
         printf("detached signature verification should have failed\n");
     }
+    assert(crypto_sign_detached(sig, NULL,
+                                (const unsigned char *)test_data[i].m, i, skpk) == 0);
 
     sodium_hex2bin(pk, crypto_sign_PUBLICKEYBYTES,
                    "3eee494fb9eac773144e34b0c755affaf33ea782c0722e5ea8b150e61209ab36",
+                   crypto_sign_PUBLICKEYBYTES * 2, NULL, NULL, NULL);
+    if (crypto_sign_verify_detached(sig,
+                                    (const unsigned char *)test_data[i].m,
+                                    i, pk) != -1) {
+        printf("signature with an invalid public key should have failed\n");
+    }
+
+    sodium_hex2bin(pk, crypto_sign_PUBLICKEYBYTES,
+                   "0200000000000000000000000000000000000000000000000000000000000000",
+                   crypto_sign_PUBLICKEYBYTES * 2, NULL, NULL, NULL);
+    if (crypto_sign_verify_detached(sig,
+                                    (const unsigned char *)test_data[i].m,
+                                    i, pk) != -1) {
+        printf("signature with an invalid public key should have failed\n");
+    }
+
+    sodium_hex2bin(pk, crypto_sign_PUBLICKEYBYTES,
+                   "0500000000000000000000000000000000000000000000000000000000000000",
                    crypto_sign_PUBLICKEYBYTES * 2, NULL, NULL, NULL);
     if (crypto_sign_verify_detached(sig,
                                     (const unsigned char *)test_data[i].m,
