@@ -24,8 +24,8 @@ size_t crypto_secretbox_xchacha20poly1305_noncebytes(void);
 SODIUM_EXPORT
 size_t crypto_secretbox_xchacha20poly1305_macbytes(void);
 
-#define crypto_secretbox_xchacha20poly1305_BYTES_MAX \
-    (crypto_stream_xchacha20_BYTES_MAX - crypto_secretbox_xchacha20poly1305_MACBYTES)
+#define crypto_secretbox_xchacha20poly1305_MESSAGEBYTES_MAX \
+    (crypto_stream_xchacha20_MESSAGEBYTES_MAX - crypto_secretbox_xchacha20poly1305_MACBYTES)
 
 SODIUM_EXPORT
 int crypto_secretbox_xchacha20poly1305_easy(unsigned char *c,

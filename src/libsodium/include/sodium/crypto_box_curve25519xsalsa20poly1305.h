@@ -48,8 +48,8 @@ size_t crypto_box_curve25519xsalsa20poly1305_boxzerobytes(void);
 SODIUM_EXPORT
 size_t crypto_box_curve25519xsalsa20poly1305_zerobytes(void);
 
-#define crypto_box_curve25519xsalsa20poly1305_BYTES_MAX \
-    (crypto_stream_xsalsa20_BYTES_MAX - crypto_box_curve25519xsalsa20poly1305_ZEROBYTES)
+#define crypto_box_curve25519xsalsa20poly1305_MESSAGEBYTES_MAX \
+    (crypto_stream_xsalsa20_MESSAGEBYTES_MAX - crypto_box_curve25519xsalsa20poly1305_ZEROBYTES)
 
 SODIUM_EXPORT
 int crypto_box_curve25519xsalsa20poly1305(unsigned char *c,

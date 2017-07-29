@@ -30,7 +30,7 @@ size_t crypto_aead_aes256gcm_npubbytes(void);
 SODIUM_EXPORT
 size_t crypto_aead_aes256gcm_abytes(void);
 
-#define crypto_aead_aes256gcm_BYTES_MAX \
+#define crypto_aead_aes256gcm_MESSAGEBYTES_MAX \
     SODIUM_MIN(SODIUM_SIZE_MAX - crypto_aead_aes256gcm_ABYTES, \
                (16ULL * ((1ULL << 32) - 2ULL)) - crypto_aead_aes256gcm_ABYTES)
 

@@ -41,7 +41,7 @@ size_t  crypto_sign_publickeybytes(void);
 SODIUM_EXPORT
 size_t  crypto_sign_secretkeybytes(void);
 
-#define crypto_sign_BYTES_MAX crypto_sign_ed25519_BYTES_MAX
+#define crypto_sign_MESSAGEBYTES_MAX crypto_sign_ed25519_MESSAGEBYTES_MAX
 
 #define crypto_sign_PRIMITIVE "ed25519"
 SODIUM_EXPORT

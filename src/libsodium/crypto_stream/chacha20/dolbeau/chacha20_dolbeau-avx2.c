@@ -77,7 +77,7 @@ chacha20_encrypt_bytes(chacha_ctx *ctx, const uint8_t *m, uint8_t *c,
     if (!bytes) {
         return; /* LCOV_EXCL_LINE */
     }
-    if (bytes > crypto_stream_chacha20_BYTES_MAX) {
+    if (bytes > crypto_stream_chacha20_MESSAGEBYTES_MAX) {
         sodium_misuse();
     }
 # include "u8.h"

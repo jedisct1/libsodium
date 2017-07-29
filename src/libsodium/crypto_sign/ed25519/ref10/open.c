@@ -171,7 +171,7 @@ crypto_sign_ed25519_open(unsigned char *m, unsigned long long *mlen_p,
 {
     unsigned long long mlen;
 
-    if (smlen < 64 || smlen - 64 > crypto_sign_ed25519_BYTES_MAX) {
+    if (smlen < 64 || smlen - 64 > crypto_sign_ed25519_MESSAGEBYTES_MAX) {
         goto badsig;
     }
     mlen = smlen - 64;

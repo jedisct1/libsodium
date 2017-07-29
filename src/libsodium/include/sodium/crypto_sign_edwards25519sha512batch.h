@@ -25,7 +25,7 @@ extern "C" {
 #define crypto_sign_edwards25519sha512batch_BYTES 64U
 #define crypto_sign_edwards25519sha512batch_PUBLICKEYBYTES 32U
 #define crypto_sign_edwards25519sha512batch_SECRETKEYBYTES (32U + 32U)
-#define crypto_sign_edwards25519sha512batch_BYTES_MAX (SODIUM_SIZE_MAX - crypto_sign_edwards25519sha512batch_BYTES)
+#define crypto_sign_edwards25519sha512batch_MESSAGEBYTES_MAX (SODIUM_SIZE_MAX - crypto_sign_edwards25519sha512batch_BYTES)
 
 SODIUM_EXPORT
 int crypto_sign_edwards25519sha512batch(unsigned char *sm,

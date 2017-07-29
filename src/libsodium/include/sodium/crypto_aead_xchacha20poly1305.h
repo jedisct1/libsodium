@@ -27,7 +27,7 @@ size_t crypto_aead_xchacha20poly1305_ietf_npubbytes(void);
 SODIUM_EXPORT
 size_t crypto_aead_xchacha20poly1305_ietf_abytes(void);
 
-#define crypto_aead_xchacha20poly1305_ietf_BYTES_MAX \
+#define crypto_aead_xchacha20poly1305_ietf_MESSAGEBYTES_MAX \
     (SODIUM_SIZE_MAX - crypto_aead_xchacha20poly1305_ietf_ABYTES)
 
 SODIUM_EXPORT
