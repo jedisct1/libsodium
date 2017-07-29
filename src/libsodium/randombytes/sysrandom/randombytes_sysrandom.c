@@ -334,7 +334,8 @@ randombytes_sysrandom_buf(void * const buf, const size_t size)
         sodium_misuse(); /* LCOV_EXCL_LINE */
     }
 #else
-    if (size > (size_t) 0xffffffff) {
+    COMPILER_ASSERT(randombytes_BYTES_MAX <= 0xffffffffUL);
+    if (size > (size_t) 0xffffffffUL) {
         sodium_misuse(); /* LCOV_EXCL_LINE */
     }
     if (! RtlGenRandom((PVOID) buf, (ULONG) size)) {

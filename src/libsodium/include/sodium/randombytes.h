@@ -25,6 +25,8 @@ typedef struct randombytes_implementation {
     int         (*close)(void);               /* optional */
 } randombytes_implementation;
 
+#define randombytes_BYTES_MAX SODIUM_MIN(SODIUM_SIZE_MAX, 0xffffffffUL)
+
 #define randombytes_SEEDBYTES 32U
 SODIUM_EXPORT
 size_t randombytes_seedbytes(void);

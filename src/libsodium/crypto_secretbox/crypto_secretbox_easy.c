@@ -71,7 +71,7 @@ crypto_secretbox_easy(unsigned char *c, const unsigned char *m,
                       unsigned long long mlen, const unsigned char *n,
                       const unsigned char *k)
 {
-    if (mlen > SIZE_MAX - crypto_secretbox_MACBYTES) {
+    if (mlen > crypto_secretbox_BYTES_MAX) {
         return -1;
     }
     return crypto_secretbox_detached(c + crypto_secretbox_MACBYTES,

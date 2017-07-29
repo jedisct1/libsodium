@@ -77,7 +77,7 @@ crypto_secretbox_xchacha20poly1305_easy(unsigned char *c,
                                         const unsigned char *n,
                                         const unsigned char *k)
 {
-    if (mlen > SIZE_MAX - crypto_secretbox_xchacha20poly1305_MACBYTES) {
+    if (mlen > crypto_secretbox_xchacha20poly1305_BYTES_MAX) {
         return -1;
     }
     return crypto_secretbox_xchacha20poly1305_detached

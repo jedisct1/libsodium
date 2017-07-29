@@ -30,6 +30,10 @@ size_t crypto_aead_chacha20poly1305_ietf_npubbytes(void);
 SODIUM_EXPORT
 size_t crypto_aead_chacha20poly1305_ietf_abytes(void);
 
+#define crypto_aead_chacha20poly1305_ietf_BYTES_MAX \
+    SODIUM_MIN(SODIUM_SIZE_MAX - crypto_aead_chacha20poly1305_ietf_ABYTES, \
+               (64ULL * (1ULL << 32) - 64ULL) - crypto_aead_chacha20poly1305_ietf_ABYTES)
+
 SODIUM_EXPORT
 int crypto_aead_chacha20poly1305_ietf_encrypt(unsigned char *c,
                                               unsigned long long *clen_p,
@@ -97,6 +101,9 @@ size_t crypto_aead_chacha20poly1305_npubbytes(void);
 #define crypto_aead_chacha20poly1305_ABYTES 16U
 SODIUM_EXPORT
 size_t crypto_aead_chacha20poly1305_abytes(void);
+
+#define crypto_aead_chacha20poly1305_BYTES_MAX \
+    (SODIUM_SIZE_MAX - crypto_aead_chacha20poly1305_ABYTES)
 
 SODIUM_EXPORT
 int crypto_aead_chacha20poly1305_encrypt(unsigned char *c,

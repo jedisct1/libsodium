@@ -28,6 +28,8 @@ size_t crypto_stream_chacha20_keybytes(void);
 SODIUM_EXPORT
 size_t crypto_stream_chacha20_noncebytes(void);
 
+#define crypto_stream_chacha20_BYTES_MAX SODIUM_SIZE_MAX
+
 /* ChaCha20 with a 64-bit nonce and a 64-bit counter, as originally designed */
 
 SODIUM_EXPORT
@@ -58,6 +60,9 @@ size_t crypto_stream_chacha20_ietf_keybytes(void);
 SODIUM_EXPORT
 size_t crypto_stream_chacha20_ietf_noncebytes(void);
 
+#define crypto_stream_chacha20_ietf_BYTES_MAX \
+    SODIUM_MIN(SODIUM_SIZE_MAX, 64ULL * (1ULL << 32))
+
 SODIUM_EXPORT
 int crypto_stream_chacha20_ietf(unsigned char *c, unsigned long long clen,
                                 const unsigned char *n, const unsigned char *k);
@@ -80,6 +85,7 @@ void crypto_stream_chacha20_ietf_keygen(unsigned char k[crypto_stream_chacha20_i
 
 #define crypto_stream_chacha20_IETF_KEYBYTES crypto_stream_chacha20_ietf_KEYBYTES
 #define crypto_stream_chacha20_IETF_NONCEBYTES crypto_stream_chacha20_ietf_NONCEBYTES
+#define crypto_stream_chacha20_IETF_BYTES_MAX crypto_stream_chacha20_ietf_BYTES_MAX
 
 #ifdef __cplusplus
 }

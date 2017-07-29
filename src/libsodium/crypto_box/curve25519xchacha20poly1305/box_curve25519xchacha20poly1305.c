@@ -86,7 +86,7 @@ crypto_box_curve25519xchacha20poly1305_easy_afternm(unsigned char *c,
                                                     const unsigned char *n,
                                                     const unsigned char *k)
 {
-    if (mlen > SIZE_MAX - crypto_box_curve25519xchacha20poly1305_MACBYTES) {
+    if (mlen > crypto_box_curve25519xchacha20poly1305_BYTES_MAX) {
         return -1;
     }
     return crypto_box_curve25519xchacha20poly1305_detached_afternm(
@@ -98,7 +98,7 @@ crypto_box_curve25519xchacha20poly1305_easy(
     unsigned char *c, const unsigned char *m, unsigned long long mlen,
     const unsigned char *n, const unsigned char *pk, const unsigned char *sk)
 {
-    if (mlen > SIZE_MAX - crypto_box_curve25519xchacha20poly1305_MACBYTES) {
+    if (mlen > crypto_box_curve25519xchacha20poly1305_BYTES_MAX) {
         return -1;
     }
     return crypto_box_curve25519xchacha20poly1305_detached(

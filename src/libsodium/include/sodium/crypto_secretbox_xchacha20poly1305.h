@@ -2,6 +2,7 @@
 #define crypto_secretbox_xchacha20poly1305_H
 
 #include <stddef.h>
+#include "crypto_stream_xchacha20.h"
 #include "export.h"
 
 #ifdef __cplusplus
@@ -22,6 +23,9 @@ size_t crypto_secretbox_xchacha20poly1305_noncebytes(void);
 #define crypto_secretbox_xchacha20poly1305_MACBYTES 16U
 SODIUM_EXPORT
 size_t crypto_secretbox_xchacha20poly1305_macbytes(void);
+
+#define crypto_secretbox_xchacha20poly1305_BYTES_MAX \
+    (crypto_stream_xchacha20_BYTES_MAX - crypto_secretbox_xchacha20poly1305_MACBYTES)
 
 SODIUM_EXPORT
 int crypto_secretbox_xchacha20poly1305_easy(unsigned char *c,

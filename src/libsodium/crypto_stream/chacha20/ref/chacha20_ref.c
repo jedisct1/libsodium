@@ -92,7 +92,7 @@ chacha20_encrypt_bytes(chacha_ctx *ctx, const uint8_t *m, uint8_t *c,
     if (!bytes) {
         return; /* LCOV_EXCL_LINE */
     }
-    if (bytes > 64ULL * (1ULL << 32) - 64ULL) {
+    if (bytes > crypto_stream_chacha20_BYTES_MAX) {
         sodium_misuse();
     }
     j0  = ctx->input[0];

@@ -174,6 +174,7 @@ randombytes_buf_deterministic(void * const buf, const size_t size,
 
     COMPILER_ASSERT(randombytes_SEEDBYTES == crypto_stream_chacha20_ietf_KEYBYTES);
 #if SIZE_MAX > 0x4000000000ULL
+    COMPILER_ASSERT(randombytes_BYTES_MAX <= 0x4000000000ULL);
     if (size > 0x4000000000ULL) {
         sodium_misuse();
     }

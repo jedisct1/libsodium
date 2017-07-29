@@ -31,6 +31,9 @@ size_t crypto_stream_aes128ctr_noncebytes(void);
 SODIUM_EXPORT
 size_t crypto_stream_aes128ctr_beforenmbytes(void);
 
+#define crypto_stream_aes128ctr_SIZE_MAX \
+    SODIUM_MIN(SODIUM_SIZE_MAX, 16ULL * (1ULL << 32))
+
 SODIUM_EXPORT
 int crypto_stream_aes128ctr(unsigned char *out, unsigned long long outlen,
                             const unsigned char *n, const unsigned char *k)

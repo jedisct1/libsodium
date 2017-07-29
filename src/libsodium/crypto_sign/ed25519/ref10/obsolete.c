@@ -83,7 +83,7 @@ crypto_sign_edwards25519sha512batch_open(unsigned char       *m,
     ge_p3              cs3;
 
     *mlen_p = 0;
-    if (smlen < 64 || smlen > SIZE_MAX) {
+    if (smlen < 64 || smlen - 64 > crypto_sign_edwards25519sha512batch_BYTES_MAX) {
         return -1;
     }
     mlen = smlen - 64;

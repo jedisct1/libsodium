@@ -524,7 +524,7 @@ crypto_aead_aes256gcm_encrypt_detached_afternm(unsigned char *c,
 
     (void) nsec;
     memcpy(H, ctx->H, sizeof H);
-    if (mlen > 16ULL * ((1ULL << 32) - 2)) {
+    if (mlen > crypto_aead_aes256gcm_BYTES_MAX) {
         sodium_misuse(); /* LCOV_EXCL_LINE */
     }
     memcpy(&n2[0], npub, 3 * 4);
@@ -662,7 +662,7 @@ crypto_aead_aes256gcm_decrypt_detached_afternm(unsigned char *m, unsigned char *
     CRYPTO_ALIGN(16) unsigned char fb[16];
 
     (void) nsec;
-    if (clen > 16ULL * (1ULL << 32)) {
+    if (clen > crypto_aead_aes256gcm_BYTES_MAX) {
         sodium_misuse(); /* LCOV_EXCL_LINE */
     }
     mlen = clen;

@@ -2,6 +2,7 @@
 #define crypto_box_curve25519xsalsa20poly1305_H
 
 #include <stddef.h>
+#include "crypto_stream_xsalsa20.h"
 #include "export.h"
 
 #ifdef __cplusplus
@@ -10,6 +11,8 @@
 # endif
 extern "C" {
 #endif
+
+/* -- NaCl compatibility interface ; Requires padding -- */
 
 #define crypto_box_curve25519xsalsa20poly1305_SEEDBYTES 32U
 SODIUM_EXPORT
@@ -44,6 +47,9 @@ size_t crypto_box_curve25519xsalsa20poly1305_boxzerobytes(void);
      crypto_box_curve25519xsalsa20poly1305_MACBYTES)
 SODIUM_EXPORT
 size_t crypto_box_curve25519xsalsa20poly1305_zerobytes(void);
+
+#define crypto_box_curve25519xsalsa20poly1305_BYTES_MAX \
+    (crypto_stream_xsalsa20_BYTES_MAX - crypto_box_curve25519xsalsa20poly1305_ZEROBYTES)
 
 SODIUM_EXPORT
 int crypto_box_curve25519xsalsa20poly1305(unsigned char *c,

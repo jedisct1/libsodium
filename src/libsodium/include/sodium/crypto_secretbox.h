@@ -29,6 +29,8 @@ size_t  crypto_secretbox_macbytes(void);
 SODIUM_EXPORT
 const char *crypto_secretbox_primitive(void);
 
+#define crypto_secretbox_BYTES_MAX crypto_secretbox_xsalsa20poly1305_BYTES_MAX
+
 SODIUM_EXPORT
 int crypto_secretbox_easy(unsigned char *c, const unsigned char *m,
                           unsigned long long mlen, const unsigned char *n,
