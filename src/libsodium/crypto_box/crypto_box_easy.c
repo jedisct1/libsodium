@@ -3,6 +3,7 @@
 #include <stdint.h>
 #include <stdlib.h>
 
+#include "core.h"
 #include "crypto_box.h"
 #include "crypto_secretbox.h"
 #include "private/common.h"
