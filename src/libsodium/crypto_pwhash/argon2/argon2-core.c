@@ -83,6 +83,7 @@ allocate_memory(block_region **region, uint32_t m_cost)
     if (!*region) {
         return ARGON2_MEMORY_ALLOCATION_ERROR; /* LCOV_EXCL_LINE */
     }
+    (*region)->base = (*region)->memory = NULL;
 
 #if defined(MAP_ANON) && defined(HAVE_MMAP)
     if ((base = mmap(NULL, memory_size, PROT_READ | PROT_WRITE,
@@ -139,7 +140,7 @@ clear_memory(argon2_instance_t *instance, int clear)
                            sizeof(block) * instance->memory_blocks);
         }
         if (instance->pseudo_rands != NULL) {
-            sodium_memzero(instance->region->memory,
+            sodium_memzero(instance->pseudo_rands,
                            sizeof(uint64_t) * instance->segment_length);
         }
     }
