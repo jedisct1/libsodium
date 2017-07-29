@@ -195,7 +195,7 @@ escrypt_gensalt_r(uint32_t N_log2, uint32_t r, uint32_t p, const uint8_t *src,
         return NULL; /* LCOV_EXCL_LINE */
     }
     if (N_log2 > 63 || ((uint64_t) r * (uint64_t) p >= (1U << 30))) {
-        return NULL;
+        return NULL; /* LCOV_EXCL_LINE */
     }
     dst    = buf;
     *dst++ = '$';
