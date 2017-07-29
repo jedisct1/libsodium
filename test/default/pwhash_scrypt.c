@@ -10,9 +10,9 @@ static void
 tv(void)
 {
     static struct {
-        const char *       passwd_hex;
+        const char        *passwd_hex;
         size_t             passwdlen;
-        const char *       salt_hex;
+        const char        *salt_hex;
         size_t             outlen;
         unsigned long long opslimit;
         size_t             memlimit;
@@ -117,9 +117,9 @@ static void
 tv2(void)
 {
     static struct {
-        const char *       passwd_hex;
+        const char        *passwd_hex;
         size_t             passwdlen;
-        const char *       salt_hex;
+        const char        *salt_hex;
         size_t             outlen;
         unsigned long long opslimit;
         size_t             memlimit;
@@ -286,9 +286,9 @@ tv3(void)
 int
 main(void)
 {
-    char *      str_out;
-    char *      str_out2;
-    char *      salt;
+    char       *str_out;
+    char       *str_out2;
+    char       *salt;
     const char *passwd = "Correct Horse Battery Staple";
 
     tv();
