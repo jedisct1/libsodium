@@ -52,6 +52,11 @@ main(void)
                    64, NULL, NULL, NULL);
     assert(crypto_sign_ed25519_pk_to_curve25519(curve25519_pk, ed25519_pk) == -1);
     sodium_hex2bin(ed25519_pk, crypto_sign_ed25519_PUBLICKEYBYTES,
+                   "0200000000000000000000000000000000000000000000000000000000000000"
+                   "0000000000000000000000000000000000000000000000000000000000000000",
+                   64, NULL, NULL, NULL);
+    assert(crypto_sign_ed25519_pk_to_curve25519(curve25519_pk, ed25519_pk) == -1);
+    sodium_hex2bin(ed25519_pk, crypto_sign_ed25519_PUBLICKEYBYTES,
                    "0500000000000000000000000000000000000000000000000000000000000000"
                    "0000000000000000000000000000000000000000000000000000000000000000",
                    64, NULL, NULL, NULL);
