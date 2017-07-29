@@ -5,6 +5,7 @@
 #include <stdlib.h>
 #include <string.h>
 
+#include "core.h"
 #include "crypto_core_hsalsa20.h"
 #include "crypto_onetimeauth_poly1305.h"
 #include "crypto_secretbox.h"
@@ -72,7 +73,7 @@ crypto_secretbox_easy(unsigned char *c, const unsigned char *m,
                       const unsigned char *k)
 {
     if (mlen > crypto_secretbox_MESSAGEBYTES_MAX) {
-        return -1;
+        sodium_misuse();
     }
     return crypto_secretbox_detached(c + crypto_secretbox_MACBYTES,
                                      c, m, mlen, n, k);

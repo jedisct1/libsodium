@@ -41,7 +41,7 @@ crypto_box_easy_afternm(unsigned char *c, const unsigned char *m,
                         const unsigned char *k)
 {
     if (mlen > crypto_box_MESSAGEBYTES_MAX) {
-        return -1;
+        sodium_misuse();
     }
     return crypto_box_detached_afternm(c + crypto_box_MACBYTES, c, m, mlen, n,
                                        k);
@@ -53,7 +53,7 @@ crypto_box_easy(unsigned char *c, const unsigned char *m,
                 const unsigned char *pk, const unsigned char *sk)
 {
     if (mlen > crypto_box_MESSAGEBYTES_MAX) {
-        return -1;
+        sodium_misuse();
     }
     return crypto_box_detached(c + crypto_box_MACBYTES, c, m, mlen, n,
                                pk, sk);

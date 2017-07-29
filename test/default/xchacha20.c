@@ -234,8 +234,8 @@ tv_secretbox_xchacha20poly1305(void)
             (crypto_secretbox_xchacha20poly1305_MACBYTES + m_len);
         sodium_hex2bin(out, crypto_secretbox_xchacha20poly1305_MACBYTES + m_len,
                        tv->out, strlen(tv->out), NULL, NULL, NULL);
+        assert(crypto_secretbox_xchacha20poly1305_easy(out2, m, 0, nonce, key) == 0);
         assert(crypto_secretbox_xchacha20poly1305_easy(out2, m, m_len, nonce, key) == 0);
-        assert(crypto_secretbox_xchacha20poly1305_easy(out2, m, SIZE_MAX, nonce, key) == -1);
         assert(memcmp(out, out2,
                       crypto_secretbox_xchacha20poly1305_MACBYTES + m_len) == 0);
         n = randombytes_uniform(crypto_secretbox_xchacha20poly1305_MACBYTES + m_len);
@@ -320,10 +320,10 @@ tv_box_xchacha20poly1305(void)
         randombytes_buf(nonce, crypto_box_curve25519xchacha20poly1305_NONCEBYTES);
         randombytes_buf(m, m_len);
         assert(crypto_box_curve25519xchacha20poly1305_keypair(pk, sk) == 0);
+        assert(crypto_box_curve25519xchacha20poly1305_easy(out, m, 0, nonce,
+                                                           pk, sk) == 0);
         assert(crypto_box_curve25519xchacha20poly1305_easy(out, m, m_len, nonce,
                                                            pk, sk) == 0);
-        assert(crypto_box_curve25519xchacha20poly1305_easy(out, m, SIZE_MAX, nonce,
-                                                           pk, sk) == -1);
         assert(crypto_box_curve25519xchacha20poly1305_open_easy
                (m2, out, crypto_box_curve25519xchacha20poly1305_MACBYTES + m_len,
                 nonce, pk, sk) == 0);
@@ -334,7 +334,7 @@ tv_box_xchacha20poly1305(void)
             (crypto_box_curve25519xchacha20poly1305_MACBYTES + m_len);
         assert(crypto_box_curve25519xchacha20poly1305_beforenm(pc, pk, sk) == 0);
         assert(crypto_box_curve25519xchacha20poly1305_easy_afternm
-               (out, m, SIZE_MAX, nonce, pc) == -1);
+               (out, m, 0, nonce, pc) == 0);
         assert(crypto_box_curve25519xchacha20poly1305_easy_afternm
                (out, m, m_len, nonce, pc) == 0);
         assert(crypto_box_curve25519xchacha20poly1305_open_easy_afternm

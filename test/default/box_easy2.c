@@ -88,10 +88,10 @@ main(void)
 
     memset(m2, 0, m2_size);
 
-    if (crypto_box_easy_afternm(c, m, SIZE_MAX - 1U, nonce, k1) == 0) {
+    if (crypto_box_easy_afternm(c, m, 0, nonce, k1) != 0) {
         printf(
-            "crypto_box_easy_afternm() with a short ciphertext should have "
-            "failed\n");
+            "crypto_box_easy_afternm() with a null ciphertext should have "
+            "worked\n");
     }
     crypto_box_easy_afternm(c, m, (unsigned long long) mlen, nonce, k1);
     if (crypto_box_open_easy_afternm(

@@ -64,11 +64,8 @@ main(void)
     }
     printf("\n");
     c[randombytes_uniform(crypto_box_MACBYTES)]++;
-    ret =
-        crypto_box_open_easy(c, c, crypto_box_MACBYTES, nonce, bobpk, alicesk);
+    ret = crypto_box_open_easy(c, c, crypto_box_MACBYTES, nonce, bobpk, alicesk);
     assert(ret == -1);
-
-    assert(crypto_box_easy(c, m, SIZE_MAX - 1U, nonce, bobpk, alicesk) == -1);
 
     return 0;
 }

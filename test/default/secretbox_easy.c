@@ -76,7 +76,7 @@ main(void)
     }
     printf("\n");
 
-    assert(crypto_secretbox_easy(c, m, SIZE_MAX - 1U, nonce, firstkey) == -1);
+    assert(crypto_secretbox_easy(c, m, 0, nonce, firstkey) == 0);
 
     /* Null message */
 
