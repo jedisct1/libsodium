@@ -27,8 +27,10 @@ main(void)
     (void) sodium_runtime_has_aesni();
 
     sodium_set_misuse_handler(misuse_handler);
+#ifdef __EMSCRIPTEN__
     sodium_misuse();
     printf("Misuse handler returned\n");
+#endif
 
     return 0;
 }
