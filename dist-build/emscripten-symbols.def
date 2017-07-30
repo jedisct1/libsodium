@@ -501,6 +501,7 @@ _sodium_library_version_minor 1 1
 _sodium_malloc 0 0
 _sodium_memcmp 0 0
 _sodium_memzero 0 0
+_sodium_misuse 0 0
 _sodium_mlock 0 0
 _sodium_mprotect_noaccess 0 0
 _sodium_mprotect_readonly 0 0
@@ -515,4 +516,5 @@ _sodium_runtime_has_sse2 0 0
 _sodium_runtime_has_sse3 0 0
 _sodium_runtime_has_sse41 0 0
 _sodium_runtime_has_ssse3 0 0
+_sodium_set_misuse_handler 0 0
 _sodium_version_string 1 1
