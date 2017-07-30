@@ -21,6 +21,7 @@ if [ "x$1" = "x--standard" ]; then
   export LDFLAGS="${LDFLAGS} ${LDFLAGS_DIST} -s TOTAL_MEMORY=${TOTAL_MEMORY}"
   export PREFIX="$(pwd)/libsodium-js"
   export DONE_FILE="$(pwd)/js.done"
+  export CONFIG_EXTRA="--enable-minimal"
   export DIST='yes'
 elif [ "x$1" = "x--sumo" ]; then
   echo "Building a sumo distribution in ${PREFIX}"
@@ -55,7 +56,7 @@ export JS_EXPORTS_FLAGS="-s EXPORTED_FUNCTIONS=${EXPORTED_FUNCTIONS}"
 rm -f "$DONE_FILE"
 
 echo
-emconfigure ./configure --enable-minimal --disable-shared --prefix="$PREFIX" \
+emconfigure ./configure $CONFIG_EXTRA --disable-shared --prefix="$PREFIX" \
                         --without-pthreads CFLAGS="$CFLAGS" && \
 emmake make clean
 [ $? = 0 ] || exit 1
