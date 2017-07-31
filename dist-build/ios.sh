@@ -91,8 +91,8 @@ make distclean > /dev/null
 make -j3 install || exit 1
 
 ## 64-bit iOS
-export CFLAGS="-O2 -arch arm64 -isysroot ${SDK} -mios-version-min=${IOS_VERSION_MIN} -flto"
-export LDFLAGS="-arch arm64 -isysroot ${SDK} -mios-version-min=${IOS_VERSION_MIN} -flto"
+export CFLAGS="-O2 -arch arm64 -isysroot ${SDK} -mios-version-min=${IOS_VERSION_MIN} -flto -fembed-bitcode"
+export LDFLAGS="-arch arm64 -isysroot ${SDK} -mios-version-min=${IOS_VERSION_MIN} -flto -fembed-bitcode"
 
 make distclean > /dev/null
 
