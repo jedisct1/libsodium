@@ -64,7 +64,7 @@ emmake make clean
 if [ "$DIST" = yes ]; then
   emmake make $MAKE_FLAGS install && \
   emcc "$CFLAGS" --llvm-lto 1 --memory-init-file 0 $CPPFLAGS $LDFLAGS $JS_EXPORTS_FLAGS \
-    "${PREFIX}/lib/libsodium.a" -o "${PREFIX}/lib/libsodium.js" || exit 1
+    "${PREFIX}/lib/libsodium.a" -o "${PREFIX}/lib/libsodium.html" || exit 1
   touch -r "${PREFIX}/lib/libsodium.js" "$DONE_FILE"
   ls -l "${PREFIX}/lib/libsodium.js"
   exit 0
