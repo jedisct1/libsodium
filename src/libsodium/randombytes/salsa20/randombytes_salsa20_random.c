@@ -29,10 +29,10 @@
 #include "crypto_core_salsa20.h"
 #include "crypto_generichash.h"
 #include "crypto_stream_salsa20.h"
+#include "private/common.h"
 #include "randombytes.h"
 #include "randombytes_salsa20_random.h"
 #include "utils.h"
-#include "private/common.h"
 
 #ifdef _WIN32
 # include <windows.h>
