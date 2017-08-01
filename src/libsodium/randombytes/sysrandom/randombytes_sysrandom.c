@@ -25,6 +25,7 @@
 #endif
 
 #include "core.h"
+#include "private/common.h"
 #include "randombytes.h"
 #include "randombytes_sysrandom.h"
 #include "utils.h"
