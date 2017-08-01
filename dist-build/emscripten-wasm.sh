@@ -88,7 +88,6 @@ else
     echo 'node.js not found - test suite skipped' >&2
     exit 1
   fi
-  export NODE="${NODE} --expose-wasm"
   echo "Using [${NODE}] as a Javascript runtime"
   echo 'Compiling the test suite...' && \
     emmake make $MAKE_FLAGS check > /dev/null 2>&1
