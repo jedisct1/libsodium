@@ -37,9 +37,6 @@ main(void)
     void * buf;
     size_t size;
 
-    assert(sodium_alloc_overhead((size_t) 0U) !=
-           sodium_alloc_overhead((size_t) 65537U));
-
 #ifdef SIGSEGV
     signal(SIGSEGV, segv_handler);
 #endif

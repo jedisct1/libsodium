@@ -120,9 +120,6 @@ int sodium_mprotect_readonly(void *ptr);
 SODIUM_EXPORT
 int sodium_mprotect_readwrite(void *ptr);
 
-SODIUM_EXPORT
-size_t sodium_alloc_overhead(size_t size);
-
 /* -------- */
 
 int _sodium_alloc_init(void);

@@ -702,13 +702,3 @@ sodium_mprotect_readwrite(void *ptr)
 {
     return _sodium_mprotect(ptr, _mprotect_readwrite);
 }
-
-size_t
-sodium_alloc_overhead(size_t size)
-{
-#ifndef HAVE_ALIGNED_MALLOC
-    return unprotected_size == (size_t) 0U;
-#else
-    return _page_round((sizeof canary) + size) + page_size * (size_t) 3U;
-#endif
-}
