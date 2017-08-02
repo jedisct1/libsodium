@@ -130,6 +130,7 @@ elseif (WIN32)
             PATH_SUFFIXES ${_RELEASE_PATH_SUFFIX}
         )
         if (NOT sodium_USE_STATIC_LIBS)
+            set(CMAKE_FIND_LIBRARY_SUFFIXES_BCK ${CMAKE_FIND_LIBRARY_SUFFIXES})
             set(CMAKE_FIND_LIBRARY_SUFFIXES ".dll")
             find_library(sodium_DLL_DEBUG libsodium
                 HINTS ${sodium_DIR}
@@ -139,6 +140,7 @@ elseif (WIN32)
                 HINTS ${sodium_DIR}
                 PATH_SUFFIXES ${_RELEASE_PATH_SUFFIX}
             )
+            set(CMAKE_FIND_LIBRARY_SUFFIXES ${CMAKE_FIND_LIBRARY_SUFFIXES_BCK})
         endif()
 
     elseif(_GCC_COMPATIBLE)
