@@ -95,7 +95,7 @@ if [ "x$BROWSER_TESTS" != "x" ]; then
     rm -f browser-wasm/tests.txt && \
     for file in *.js; do
       tname=$(echo "$file" | sed 's/.js$//')
-      echo "$tname" | egrep -q '[.]asm$' && continue
+      echo "$tname" | egrep -q '[.]asm[.]js$' && continue
       echo "[${tname}]"
       fgrep -v "#! /usr/bin/env ${NODE}" "$file" > "browser-wasm/${file}"
       cp -f "${tname}.exp" "browser-wasm/${tname}.exp" 2> /dev/null
