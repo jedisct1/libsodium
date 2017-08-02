@@ -487,6 +487,7 @@ _randombytes_set_implementation 0 0
 _randombytes_stir 1 1
 _randombytes_uniform 1 1
 _sodium_add 0 0
+_sodium_alloc_overhead 0 0
 _sodium_allocarray 0 0
 _sodium_bin2hex 1 1
 _sodium_compare 0 0
