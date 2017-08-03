@@ -87,6 +87,7 @@ main(void)
     assert(crypto_box_zerobytes() > 0U);
     assert(crypto_box_boxzerobytes() > 0U);
     assert(crypto_box_macbytes() > 0U);
+    assert(crypto_box_messagebytes_max() > 0U);
     assert(strcmp(crypto_box_primitive(), "curve25519xsalsa20poly1305") == 0);
     assert(crypto_box_curve25519xsalsa20poly1305_seedbytes() ==
            crypto_box_seedbytes());
@@ -104,6 +105,8 @@ main(void)
            crypto_box_boxzerobytes());
     assert(crypto_box_curve25519xsalsa20poly1305_macbytes() ==
            crypto_box_macbytes());
+    assert(crypto_box_curve25519xsalsa20poly1305_messagebytes_max() ==
+           crypto_box_messagebytes_max());
 
     return 0;
 }

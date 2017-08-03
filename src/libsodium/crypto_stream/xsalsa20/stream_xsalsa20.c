@@ -53,6 +53,12 @@ crypto_stream_xsalsa20_noncebytes(void)
     return crypto_stream_xsalsa20_NONCEBYTES;
 }
 
+size_t
+crypto_stream_xsalsa20_messagebytes_max(void)
+{
+    return crypto_stream_xsalsa20_MESSAGEBYTES_MAX;
+}
+
 void
 crypto_stream_xsalsa20_keygen(unsigned char k[crypto_stream_xsalsa20_KEYBYTES])
 {

@@ -14,6 +14,12 @@ crypto_stream_noncebytes(void)
     return crypto_stream_NONCEBYTES;
 }
 
+size_t
+crypto_stream_messagebytes_max(void)
+{
+    return crypto_stream_MESSAGEBYTES_MAX;
+}
+
 const char *
 crypto_stream_primitive(void)
 {

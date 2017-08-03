@@ -41,6 +41,7 @@ main(void)
 
     assert(crypto_stream_salsa20_keybytes() > 0U);
     assert(crypto_stream_salsa20_noncebytes() > 0U);
+    assert(crypto_stream_salsa20_messagebytes_max() > 0U);
 
     return 0;
 }

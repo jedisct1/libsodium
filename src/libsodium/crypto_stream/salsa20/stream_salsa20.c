@@ -37,6 +37,12 @@ crypto_stream_salsa20_noncebytes(void)
     return crypto_stream_salsa20_NONCEBYTES;
 }
 
+size_t
+crypto_stream_salsa20_messagebytes_max(void)
+{
+    return crypto_stream_salsa20_MESSAGEBYTES_MAX;
+}
+
 int
 crypto_stream_salsa20(unsigned char *c, unsigned long long clen,
                       const unsigned char *n, const unsigned char *k)

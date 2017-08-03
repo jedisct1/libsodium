@@ -31,6 +31,12 @@ crypto_sign_secretkeybytes(void)
     return crypto_sign_SECRETKEYBYTES;
 }
 
+size_t
+crypto_sign_messagebytes_max(void)
+{
+    return crypto_sign_MESSAGEBYTES_MAX;
+}
+
 const char *
 crypto_sign_primitive(void)
 {

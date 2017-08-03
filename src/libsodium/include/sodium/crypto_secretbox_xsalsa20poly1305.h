@@ -27,6 +27,8 @@ size_t crypto_secretbox_xsalsa20poly1305_macbytes(void);
 /* Only for the libsodium API - The NaCl compatibility API would require BOXZEROBYTES extra bytes */
 #define crypto_secretbox_xsalsa20poly1305_MESSAGEBYTES_MAX \
     (crypto_stream_xsalsa20_MESSAGEBYTES_MAX - crypto_secretbox_xsalsa20poly1305_MACBYTES)
+SODIUM_EXPORT
+size_t crypto_secretbox_xsalsa20poly1305_messagebytes_max(void);
 
 SODIUM_EXPORT
 int crypto_secretbox_xsalsa20poly1305(unsigned char *c,

@@ -76,6 +76,12 @@ crypto_secretbox_xsalsa20poly1305_macbytes(void)
     return crypto_secretbox_xsalsa20poly1305_MACBYTES;
 }
 
+size_t
+crypto_secretbox_xsalsa20poly1305_messagebytes_max(void)
+{
+    return crypto_secretbox_xsalsa20poly1305_MESSAGEBYTES_MAX;
+}
+
 void
 crypto_secretbox_xsalsa20poly1305_keygen(unsigned char k[crypto_secretbox_xsalsa20poly1305_KEYBYTES])
 {

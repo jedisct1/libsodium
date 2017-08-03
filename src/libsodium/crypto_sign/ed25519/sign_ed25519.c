@@ -35,6 +35,12 @@ crypto_sign_ed25519_secretkeybytes(void)
     return crypto_sign_ed25519_SECRETKEYBYTES;
 }
 
+size_t
+crypto_sign_ed25519_messagebytes_max(void)
+{
+    return crypto_sign_ed25519_MESSAGEBYTES_MAX;
+}
+
 int
 crypto_sign_ed25519_sk_to_seed(unsigned char *seed, const unsigned char *sk)
 {
