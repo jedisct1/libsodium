@@ -69,7 +69,7 @@ int main(void)
         }
     }
     ts_end = now();
-    printf("%llu\n", ts_end - ts_start);
+    printf("%llu\n", 1000000ULL * (ts_end - ts_start) / ITERATIONS);
 
     return 0;
 }
