@@ -39,12 +39,14 @@ randombytes_tests(void)
     unsigned int  i;
     uint32_t      n;
 
-#ifdef __EMSCRIPTEN__
+#ifndef BENCHMARKS
+# ifdef __EMSCRIPTEN__
     assert(strcmp(randombytes_implementation_name(), "js") == 0);
-#elif defined(__native_client__)
+# elif defined(__native_client__)
     assert(strcmp(randombytes_implementation_name(), "nativeclient") == 0);
-#else
+# else
     assert(strcmp(randombytes_implementation_name(), "sysrandom") == 0);
+# endif
 #endif
     randombytes(x, 1U);
     do {
@@ -157,6 +159,8 @@ main(void)
     impl_tests();
 #endif
     printf("OK\n");
+
+    randombytes_set_implementation(&randombytes_salsa20_implementation);
 
     return 0;
 }
