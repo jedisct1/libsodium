@@ -1,4 +1,34 @@
 
+* Version 1.0.14
+ - iOS binaries should now be compatible with WatchOS and TVOS.
+ - WebAssembly is now officially supported. Special thanks to
+@facekapow and @pepyakin who helped to make it happen.
+ - Internal consistency checks failing and primitives used with
+dangerous/out-of-bounds/invalid parameters used to call abort(3).
+Now, a custom handler *that doesn't return* can be set with the
+`set_sodium_misuse()` function. This is not a replacement for
+non-fatal, expected runtime errors. This handler will be only
+called in unexpected situations due to potential bugs in the
+library or in language bindings.
+ - `*_MESSAGEBYTES_MAX` macros (and the corresponding
+`_messagebytes_max()` symbols) have been added to represent the
+maximum message size that can be safely handled by a primitive.
+Language bindings are encouraged to check user inputs against
+these maximum lengths.
+ - The test suite has been extended to cover more edge cases.
+ - crypto_sign_ed25519_pk_to_curve25519() now rejects points that are
+not on the curve, or not in the main subgroup.
+ - Further changes to ensure that smart compilers will not optimize
+out code that we don't want to be optimized.
+ - Visual Studio solutions are now included in distribution tarballs.
+ - The `sodium_runtime_has_*` symbols for CPU features detection are
+now defined as weak symbols, i.e. they can be replaced with an
+application-defined implementation. Requested by Facebook to disable
+AVX* when temperature/power consumption is a concern.
+ - `crypto_kx_*()` now aborts if called with no non-NULL pointers to
+store keys to.
+ - SSE2 implementations of `crypto_verify_*()` have been added.
+
 * Version 1.0.13
  - Javascript: the sumo builds now include all symbols. They were
 previously limited to symbols defined in minimal builds.
