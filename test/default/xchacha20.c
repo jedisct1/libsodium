@@ -405,6 +405,7 @@ tv_box_xchacha20poly1305(void)
     assert(crypto_box_curve25519xchacha20poly1305_beforenmbytes() == crypto_box_curve25519xchacha20poly1305_BEFORENMBYTES);
     assert(crypto_box_curve25519xchacha20poly1305_noncebytes() == crypto_box_curve25519xchacha20poly1305_NONCEBYTES);
     assert(crypto_box_curve25519xchacha20poly1305_macbytes() == crypto_box_curve25519xchacha20poly1305_MACBYTES);
+    assert(crypto_box_curve25519xchacha20poly1305_messagebytes_max() == crypto_box_curve25519xchacha20poly1305_MESSAGEBYTES_MAX);
 
     printf("tv_box_xchacha20poly1305: ok\n");
 }

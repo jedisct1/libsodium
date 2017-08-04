@@ -65,6 +65,7 @@ main(void)
     assert(crypto_secretbox_zerobytes() > 0U);
     assert(crypto_secretbox_boxzerobytes() > 0U);
     assert(crypto_secretbox_macbytes() > 0U);
+    assert(crypto_secretbox_messagebytes_max() > 0U);
     assert(strcmp(crypto_secretbox_primitive(), "xsalsa20poly1305") == 0);
     assert(crypto_secretbox_keybytes() ==
            crypto_secretbox_xsalsa20poly1305_keybytes());
@@ -76,6 +77,8 @@ main(void)
            crypto_secretbox_xsalsa20poly1305_boxzerobytes());
     assert(crypto_secretbox_macbytes() ==
            crypto_secretbox_xsalsa20poly1305_macbytes());
+    assert(crypto_secretbox_messagebytes_max() ==
+           crypto_secretbox_xsalsa20poly1305_messagebytes_max());
 
     return 0;
 }

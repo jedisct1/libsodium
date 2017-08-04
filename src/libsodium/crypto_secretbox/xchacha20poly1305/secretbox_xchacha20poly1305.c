@@ -169,3 +169,9 @@ crypto_secretbox_xchacha20poly1305_macbytes(void)
 {
     return crypto_secretbox_xchacha20poly1305_MACBYTES;
 }
+
+size_t
+crypto_secretbox_xchacha20poly1305_messagebytes_max(void)
+{
+    return crypto_secretbox_xchacha20poly1305_MESSAGEBYTES_MAX;
+}

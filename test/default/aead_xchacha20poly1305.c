@@ -179,10 +179,12 @@ tv(void)
     assert(crypto_aead_xchacha20poly1305_ietf_npubbytes() == crypto_aead_xchacha20poly1305_ietf_NPUBBYTES);
     assert(crypto_aead_xchacha20poly1305_ietf_nsecbytes() == 0U);
     assert(crypto_aead_xchacha20poly1305_ietf_nsecbytes() == crypto_aead_xchacha20poly1305_ietf_NSECBYTES);
+    assert(crypto_aead_xchacha20poly1305_ietf_messagebytes_max() == crypto_aead_xchacha20poly1305_ietf_MESSAGEBYTES_MAX);
     assert(crypto_aead_xchacha20poly1305_IETF_KEYBYTES  == crypto_aead_xchacha20poly1305_ietf_KEYBYTES);
     assert(crypto_aead_xchacha20poly1305_IETF_NSECBYTES == crypto_aead_xchacha20poly1305_ietf_NSECBYTES);
     assert(crypto_aead_xchacha20poly1305_IETF_NPUBBYTES == crypto_aead_xchacha20poly1305_ietf_NPUBBYTES);
     assert(crypto_aead_xchacha20poly1305_IETF_ABYTES    == crypto_aead_xchacha20poly1305_ietf_ABYTES);
+    assert(crypto_aead_xchacha20poly1305_IETF_MESSAGEBYTES_MAX == crypto_aead_xchacha20poly1305_ietf_MESSAGEBYTES_MAX);
 
     return 0;
 }

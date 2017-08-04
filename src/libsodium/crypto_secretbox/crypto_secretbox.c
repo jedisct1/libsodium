@@ -32,6 +32,12 @@ crypto_secretbox_macbytes(void)
     return crypto_secretbox_MACBYTES;
 }
 
+size_t
+crypto_secretbox_messagebytes_max(void)
+{
+    return crypto_secretbox_MESSAGEBYTES_MAX;
+}
+
 const char *
 crypto_secretbox_primitive(void)
 {

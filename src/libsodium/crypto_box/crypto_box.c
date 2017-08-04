@@ -49,6 +49,12 @@ crypto_box_macbytes(void)
     return crypto_box_MACBYTES;
 }
 
+size_t
+crypto_box_messagebytes_max(void)
+{
+    return crypto_box_MESSAGEBYTES_MAX;
+}
+
 const char *
 crypto_box_primitive(void)
 {

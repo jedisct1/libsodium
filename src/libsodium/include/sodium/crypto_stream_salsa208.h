@@ -28,6 +28,8 @@ SODIUM_EXPORT
 size_t crypto_stream_salsa208_noncebytes(void);
 
 #define crypto_stream_salsa208_MESSAGEBYTES_MAX SODIUM_SIZE_MAX
+SODIUM_EXPORT
+size_t crypto_stream_salsa208_messagebytes_max(void);
 
 SODIUM_EXPORT
 int crypto_stream_salsa208(unsigned char *c, unsigned long long clen,

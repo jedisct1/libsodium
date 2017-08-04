@@ -30,6 +30,8 @@ SODIUM_EXPORT
 size_t  crypto_stream_noncebytes(void);
 
 #define crypto_stream_MESSAGEBYTES_MAX crypto_stream_xsalsa20_MESSAGEBYTES_MAX
+SODIUM_EXPORT
+size_t  crypto_stream_messagebytes_max(void);
 
 #define crypto_stream_PRIMITIVE "xsalsa20"
 SODIUM_EXPORT

@@ -55,9 +55,11 @@ main(void)
 
     assert(crypto_stream_keybytes() > 0U);
     assert(crypto_stream_noncebytes() > 0U);
+    assert(crypto_stream_messagebytes_max() > 0U);
     assert(strcmp(crypto_stream_primitive(), "xsalsa20") == 0);
     assert(crypto_stream_keybytes() == crypto_stream_xsalsa20_keybytes());
     assert(crypto_stream_noncebytes() == crypto_stream_xsalsa20_noncebytes());
+    assert(crypto_stream_messagebytes_max() == crypto_stream_xsalsa20_messagebytes_max());
 
     return 0;
 }
