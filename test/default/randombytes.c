@@ -139,6 +139,7 @@ impl_tests(void)
     impl.uniform = randombytes_uniform_impl;
     randombytes_close();
     randombytes_set_implementation(&impl);
+    assert(randombytes_uniform(1) == 1);
     assert(randombytes_uniform(v) == v);
     assert(randombytes_uniform(v) == v);
     assert(randombytes_uniform(v) == v);
