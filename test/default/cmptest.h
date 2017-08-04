@@ -34,7 +34,9 @@ int xmain(void);
 
 # include <sys/time.h>
 
-# define ITERATIONS 256
+# ifndef ITERATIONS
+#  define ITERATIONS 128
+# endif
 
 static unsigned long long now(void)
 {
