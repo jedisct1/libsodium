@@ -30,7 +30,53 @@
 
 int xmain(void);
 
-#ifndef BROWSER_TESTS
+#ifdef BENCHMARKS
+
+# include <sys/time.h>
+
+# ifndef ITERATIONS
+#  define ITERATIONS 128
+# endif
+
+static unsigned long long now(void)
+{
+    struct             timeval tp;
+    unsigned long long now;
+
+    if (gettimeofday(&tp, NULL) != 0) {
+        abort();
+    }
+    now = ((unsigned long long) tp.tv_sec * 1000000ULL) +
+        (unsigned long long) tp.tv_usec;
+
+    return now;
+}
+
+int main(void)
+{
+    unsigned long long ts_start;
+    unsigned long long ts_end;
+    unsigned int       i;
+
+    if (sodium_init() != 0) {
+        return 99;
+    }
+    randombytes_set_implementation(&randombytes_salsa20_implementation);
+    ts_start = now();
+    for (i = 0; i < ITERATIONS; i++) {
+        if (xmain() != 0) {
+            abort();
+        }
+    }
+    ts_end = now();
+    printf("%llu\n", 1000000ULL * (ts_end - ts_start) / ITERATIONS);
+
+    return 0;
+}
+
+#define printf(...) do { } while(0)
+
+#elif !defined(BROWSER_TESTS)
 
 FILE *fp_res;
 
