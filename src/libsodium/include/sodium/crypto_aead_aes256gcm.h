@@ -9,9 +9,11 @@
  * This is for ~ 16 KB messages -- Actual figures vary according to
  * message sizes.
  *
- * In addition, repeated nonces would totally destroy the security of this
- * scheme. Nonces should thus come from atomic counters, which can be
- * difficult to set up in a distributed environment.
+ * In addition, nonces are short and repeated nonces would totally destroy
+ * the security of this scheme.
+ *
+ * Nonces should thus come from atomic counters, which can be difficult to
+ * set up in a distributed environment.
  *
  * Unless you absolutely need AES-GCM, use crypto_aead_xchacha20poly1305_ietf_*()
  * instead. It doesn't have any of these limitations.
