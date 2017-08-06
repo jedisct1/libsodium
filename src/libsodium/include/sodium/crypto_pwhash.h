@@ -108,6 +108,12 @@ int crypto_pwhash_str(char out[crypto_pwhash_STRBYTES],
             __attribute__ ((warn_unused_result));
 
 SODIUM_EXPORT
+int crypto_pwhash_str_alg(char out[crypto_pwhash_STRBYTES],
+                          const char * const passwd, unsigned long long passwdlen,
+                          unsigned long long opslimit, size_t memlimit, int alg)
+            __attribute__ ((warn_unused_result));
+
+SODIUM_EXPORT
 int crypto_pwhash_str_verify(const char str[crypto_pwhash_STRBYTES],
                              const char * const passwd,
                              unsigned long long passwdlen)

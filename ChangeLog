@@ -28,6 +28,8 @@ AVX* when temperature/power consumption is a concern.
  - `crypto_kx_*()` now aborts if called with no non-NULL pointers to
 store keys to.
  - SSE2 implementations of `crypto_verify_*()` have been added.
+ - Passwords can be hashed using a specific algorithm with the new
+`crypto_pwhash_str_alg()` function.
 
 * Version 1.0.13
  - Javascript: the sumo builds now include all symbols. They were
