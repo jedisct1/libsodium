@@ -6,7 +6,7 @@
  * use in TLS, safely using AES-GCM in a different context is tricky.
  *
  * No more than ~ 350 GB of input data should be encrypted with a given key.
- * This is for ~ 16 KB messages -- Actual figures vary according to the
+ * This is for ~ 16 KB messages -- Actual figures vary according to
  * message sizes.
  *
  * In addition, repeated nonces would totally destroy the security of this
