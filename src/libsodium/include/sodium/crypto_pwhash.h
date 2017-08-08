@@ -94,6 +94,10 @@ size_t crypto_pwhash_opslimit_sensitive(void);
 SODIUM_EXPORT
 size_t crypto_pwhash_memlimit_sensitive(void);
 
+/*
+ * With this function, do not forget to store all parameters, including the
+ * algorithm identifier in order to produce deterministic output.
+ */
 SODIUM_EXPORT
 int crypto_pwhash(unsigned char * const out, unsigned long long outlen,
                   const char * const passwd, unsigned long long passwdlen,
@@ -101,10 +105,21 @@ int crypto_pwhash(unsigned char * const out, unsigned long long outlen,
                   unsigned long long opslimit, size_t memlimit, int alg)
             __attribute__ ((warn_unused_result));
 
+/*
+ * The output string already includes all the required parameters, including
+ * the algorithm identifier. The string is all that has to be stored in
+ * order to verify a password.
+ */
 SODIUM_EXPORT
 int crypto_pwhash_str(char out[crypto_pwhash_STRBYTES],
                       const char * const passwd, unsigned long long passwdlen,
                       unsigned long long opslimit, size_t memlimit)
+            __attribute__ ((warn_unused_result));
+
+SODIUM_EXPORT
+int crypto_pwhash_str_alg(char out[crypto_pwhash_STRBYTES],
+                          const char * const passwd, unsigned long long passwdlen,
+                          unsigned long long opslimit, size_t memlimit, int alg)
             __attribute__ ((warn_unused_result));
 
 SODIUM_EXPORT

@@ -1,3 +1,6 @@
+Special thanks to people, companies and organizations having written
+libsodium bindings for their favorite programming languages:
+
 @alethia7
 @artemisc
 @carblue
@@ -70,12 +73,17 @@ Tony Garnock-Jones (@tonyg)
 Y. T. Chung (@zonyitoo)
 
 Bytecurry Software
-Cisco
-Coverity, Inc.
 Cryptotronix
+Facebook
 FSF France
 MaidSafe
-OVH
 Paragonie Initiative Enterprises
 Python Cryptographic Authority
 
+(this list may not be complete, if you don't see your name, please
+submit a pull request!)
+
+Also thanks to:
+
+- Coverity, Inc. to provide static analysis.
+- FSF France for providing access to their compilation servers.

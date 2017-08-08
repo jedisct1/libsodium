@@ -1,6 +1,26 @@
 #ifndef crypto_aead_aes256gcm_H
 #define crypto_aead_aes256gcm_H
 
+/*
+ * WARNING: Despite being the most popular AEAD construction due to its
+ * use in TLS, safely using AES-GCM in a different context is tricky.
+ *
+ * No more than ~ 350 GB of input data should be encrypted with a given key.
+ * This is for ~ 16 KB messages -- Actual figures vary according to
+ * message sizes.
+ *
+ * In addition, nonces are short and repeated nonces would totally destroy
+ * the security of this scheme.
+ *
+ * Nonces should thus come from atomic counters, which can be difficult to
+ * set up in a distributed environment.
+ *
+ * Unless you absolutely need AES-GCM, use crypto_aead_xchacha20poly1305_ietf_*()
+ * instead. It doesn't have any of these limitations.
+ * Or, if you don't need to authenticate additional data, just stick to
+ * crypto_secretbox().
+ */
+
 #include <stddef.h>
 #include "export.h"
 

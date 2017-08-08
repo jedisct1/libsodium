@@ -349,6 +349,14 @@ main(void)
             "password", strlen("password")) != -1 || errno != EINVAL) {
         printf("pwhash_str_verify(invalid(11)) failure\n");
     }
+
+    assert(crypto_pwhash_str_alg(str_out, "test", 4, OPSLIMIT, MEMLIMIT,
+                                 crypto_pwhash_ALG_ARGON2I13) == 0);
+    assert(crypto_pwhash_argon2i_str_verify(str_out, "test", 4) == 0);
+    assert(crypto_pwhash_str_alg(str_out, "test", 4, OPSLIMIT, MEMLIMIT,
+                                 crypto_pwhash_ALG_ARGON2ID13) == 0);
+    assert(crypto_pwhash_argon2id_str_verify(str_out, "test", 4) == 0);
+
     assert(crypto_pwhash_bytes_min() > 0U);
     assert(crypto_pwhash_bytes_max() > crypto_pwhash_bytes_min());
     assert(crypto_pwhash_passwd_max() > crypto_pwhash_passwd_min());
