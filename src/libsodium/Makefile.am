@@ -87,6 +87,7 @@ libsodium_la_SOURCES = \
 	include/sodium/private/mutex.h \
 	include/sodium/private/sse2_64_32.h \
 	randombytes/randombytes.c \
+	sodium/codecs.c \
 	sodium/core.c \
 	sodium/runtime.c \
 	sodium/utils.c \
