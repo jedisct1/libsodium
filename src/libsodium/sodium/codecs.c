@@ -86,6 +86,9 @@ sodium_hex2bin(unsigned char *const bin, const size_t bin_maxlen,
     if (hex_end != NULL) {
         *hex_end = &hex[hex_pos];
     }
+    if (ret != 0) {
+        bin_pos = (size_t) 0U;
+    }
     if (bin_len != NULL) {
         *bin_len = bin_pos;
     }
@@ -208,6 +211,7 @@ sodium_bin2base64(char * const b64, const size_t b64_maxlen,
             b64[b64_pos++] = (char) b64_byte_to_char((acc << (6 - acc_len)) & 0x3F);
         }
     }
+    assert(b64_pos <= b64_len);
     while (b64_pos < b64_len) {
         b64[b64_pos++] = '=';
     }
@@ -297,6 +301,9 @@ sodium_base642bin(unsigned char * const bin, const size_t bin_maxlen,
                (((unsigned int) variant) & VARIANT_NO_PADDING_MASK) == 0U) {
         ret = _sodium_base642bin_skip_padding(b64, b64_len, &b64_pos, ignore,
                                                acc_len / 2);
+    }
+    if (ret != 0) {
+        bin_pos = (size_t) 0U;
     }
     if (bin_len != NULL) {
         *bin_len = bin_pos;

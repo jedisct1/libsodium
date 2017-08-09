@@ -117,8 +117,8 @@ main(void)
 
     b64 = "VGhpcyBpcyBhIGpvdXJu" "\n" "ZXkgaW50by" " " "Bzb3VuZA==";
     memset(buf4, '*', sizeof buf4);
-    sodium_base642bin(buf4, sizeof buf4, b64, strlen(b64), "\n\r ", &bin_len,
-                      &b64_end, sodium_base64_VARIANT_ORIGINAL);
+    assert(sodium_base642bin(buf4, sizeof buf4, b64, strlen(b64), "\n\r ", &bin_len,
+                             &b64_end, sodium_base64_VARIANT_ORIGINAL) == -1);
     buf4[bin_len] = 0;
     printf("[%s]\n", (const char *) buf4);
     printf("[%s]\n", b64_end);
