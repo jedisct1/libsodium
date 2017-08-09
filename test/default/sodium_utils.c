@@ -157,10 +157,10 @@ main(void)
         b64_ = (char *) sodium_malloc(b64_len);
         randombytes_buf(bin, bin_len);
         memcpy(buf1, bin, bin_len);
-        b64 = sodium_bin2base64(b64_, b64_len, bin, bin_len,
+        b64 = sodium_bin2base64(b64_, b64_len + 10, bin, bin_len,
                                 sodium_base64_VARIANT_URLSAFE);
         assert(b64 != NULL);
-        assert(sodium_base642bin(bin, bin_len, b64, b64_len,
+        assert(sodium_base642bin(bin, bin_len + 10, b64, b64_len,
                                  NULL, NULL, &b64_end,
                                  sodium_base64_VARIANT_URLSAFE) == 0);
         assert(b64_end == &b64[b64_len - 1]);
