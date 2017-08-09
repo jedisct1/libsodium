@@ -219,7 +219,7 @@ sodium_bin2base64(char * const b64, const size_t b64_maxlen,
 static int
 _sodium_base642bin_skip_padding(const char * const b64, const size_t b64_len,
                                 size_t * const b64_pos_p,
-                                const char * const ignore, int padding_len)
+                                const char * const ignore, size_t padding_len)
 {
     int c;
 
