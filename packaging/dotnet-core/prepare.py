@@ -17,8 +17,6 @@ MACOS = [
   # --------------------- ----------------- #
   # Runtime ID            Codename          #
   # --------------------- ----------------- #
-  ( 'osx.10.10-x64',      'yosemite'        ),
-  ( 'osx.10.11-x64',      'el_capitan'      ),
   ( 'osx.10.12-x64',      'sierra'          ),
   # --------------------- ----------------- #
 ]
@@ -27,15 +25,7 @@ LINUX = [
   # --------------------- ----------------- #
   # Runtime ID            Docker Image      #
   # --------------------- ----------------- #
-  ( 'centos.7-x64',       'centos:7.1.1503' ),
-  ( 'debian.8-x64',       'debian:8.2'      ),
-  ( 'fedora.24-x64',      'fedora:24'       ),
-  ( 'fedora.25-x64',      'fedora:25'       ),
-  ( 'fedora.26-x64',      'fedora:26'       ),
-  ( 'opensuse.42.1-x64',  'opensuse:42.1'   ),
-  ( 'ubuntu.14.04-x64',   'ubuntu:trusty'   ),
-  ( 'ubuntu.16.04-x64',   'ubuntu:xenial'   ),
-  ( 'ubuntu.16.10-x64',   'ubuntu:yakkety'  ),
+  ( 'linux-x64',          'debian:stretch'  ),
   # --------------------- ----------------- #
 ]
 
