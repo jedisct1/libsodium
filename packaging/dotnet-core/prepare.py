@@ -8,8 +8,8 @@ WINDOWS = [
   # --------------------- ----------------- #
   # Runtime ID            Platform          #
   # --------------------- ----------------- #
-  ( 'win7-x64',           'x64'             ),
-  ( 'win7-x86',           'Win32'           ),
+  ( 'win-x64',            'x64'             ),
+  ( 'win-x86',            'Win32'           ),
   # --------------------- ----------------- #
 ]
 
@@ -17,7 +17,7 @@ MACOS = [
   # --------------------- ----------------- #
   # Runtime ID            Codename          #
   # --------------------- ----------------- #
-  ( 'osx.10.12-x64',      'sierra'          ),
+  ( 'osx-x64',            'sierra'          ),
   # --------------------- ----------------- #
 ]
 
@@ -32,7 +32,6 @@ LINUX = [
 EXTRAS = [ 'LICENSE', 'AUTHORS', 'ChangeLog' ]
 
 PROPSFILE = 'libsodium.props'
-DESKTOPTARGETSFILE = 'desktop.targets'
 MAKEFILE = 'Makefile'
 BUILDDIR = 'build'
 CACHEDIR = 'cache'
@@ -54,7 +53,6 @@ class Version:
     self.projfile = os.path.join(self.builddir, '{0}.{1}.pkgproj'.format(PACKAGE, package_version))
     self.propsfile = os.path.join(self.builddir, '{0}.props'.format(PACKAGE))
     self.pkgfile = os.path.join(BUILDDIR, '{0}.{1}.nupkg'.format(PACKAGE, package_version))
-    self.desktoptargetsfile = os.path.join(self.builddir, 'build', 'net46', '{0}.targets'.format(PACKAGE))
 
 class WindowsItem:
 
@@ -203,11 +201,6 @@ def main(args):
       item.make(f)
 
     f.write('\n')
-    f.write('{0}: {1}\n'.format(version.desktoptargetsfile, DESKTOPTARGETSFILE))
-    f.write('\t@mkdir -p $(dir $@)\n')
-    f.write('\tcp -f $< $@\n')
-
-    f.write('\n')
     f.write('{0}: {1}\n'.format(version.propsfile, PROPSFILE))
     f.write('\t@mkdir -p $(dir $@)\n')
     f.write('\tcp -f $< $@\n')
@@ -227,7 +220,6 @@ def main(args):
     f.write('{0}:'.format(version.pkgfile))
     f.write(' \\\n\t\t{0}'.format(version.projfile))
     f.write(' \\\n\t\t{0}'.format(version.propsfile))
-    f.write(' \\\n\t\t{0}'.format(version.desktoptargetsfile))
     for item in items:
       f.write(' \\\n\t\t{0}'.format(item.packfile))
     f.write('\n')
@@ -236,14 +228,14 @@ def main(args):
             '-v $(abspath recipes):/io/recipes ' +
             '-v $(abspath $(dir $<)):/io/input ' +
             '-v $(abspath $(dir $@)):/io/output ' +
-            '{0} sh -x -e /io/recipes/{1} {2}\n'.format('microsoft/dotnet:1.1-sdk', 'pack', os.path.relpath(version.projfile, version.builddir)))
+            '{0} sh -x -e /io/recipes/{1} {2}\n'.format('microsoft/dotnet:2.0-sdk', 'pack', os.path.relpath(version.projfile, version.builddir)))
 
     f.write('\n')
     f.write('test: {0}\n'.format(version.pkgfile))
     f.write('\t{0} run --rm '.format(DOCKER) +
             '-v $(abspath recipes):/io/recipes ' +
             '-v $(abspath $(dir $<)):/io/packages ' +
-            '{0} sh -x -e /io/recipes/{1} "{2}"\n'.format('microsoft/dotnet:1.1-sdk', 'test', version.package_version))
+            '{0} sh -x -e /io/recipes/{1} "{2}"\n'.format('microsoft/dotnet:2.0-sdk', 'test', version.package_version))
 
   print('prepared', MAKEFILE, 'to make', version.pkgfile, 'for libsodium', version.libsodium_version)
   return 0
