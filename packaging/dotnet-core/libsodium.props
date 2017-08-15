@@ -2,7 +2,7 @@
 <Project>
 
   <PropertyGroup>
-    <TargetFrameworks>netstandard1.1;net46</TargetFrameworks>
+    <TargetFramework>netstandard1.1</TargetFramework>
     <DisableImplicitFrameworkReferences>true</DisableImplicitFrameworkReferences>
     <NoBuild>true</NoBuild>
     <IncludeBuildOutput>false</IncludeBuildOutput>
@@ -27,7 +27,6 @@
     <Content Include="AUTHORS" PackagePath="" />
     <Content Include="ChangeLog" PackagePath="" />
     <Content Include="runtimes\**\*.*" PackagePath="runtimes\" />
-    <Content Include="build\**\*.*" PackagePath="build\" />
   </ItemGroup>
 
 </Project>
