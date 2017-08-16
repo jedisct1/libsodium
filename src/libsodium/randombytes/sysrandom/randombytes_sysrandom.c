@@ -42,8 +42,8 @@
  * function `rand_s()` directly depends on it, so touching it would break many
  * applications released since Windows XP.
  *
- * Also note that Rust and BoringSSL (thus, Google Chrome and everything based
- * on Chromium) also depend on it, and that libsodium allows the RNG to be
+ * Also note that Rust, Firefox and BoringSSL (thus, Google Chrome and everything
+ * based on Chromium) also depend on it, and that libsodium allows the RNG to be
  * replaced without patching nor recompiling the library.
  */
 # include <windows.h>
