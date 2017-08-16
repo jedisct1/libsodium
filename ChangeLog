@@ -32,6 +32,8 @@ store keys to.
 `crypto_pwhash_str_alg()` function.
  - Due to popular demand, base64 encoding (`sodium_bin2base64()`) and
 decoding (`sodium_base642bin()`) have been implemented.
+ - A new crypto_secretstream_*() API was added to safely encrypt files and
+multi-part messages.
 
 * Version 1.0.13
  - Javascript: the sumo builds now include all symbols. They were
