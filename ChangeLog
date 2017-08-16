@@ -6,20 +6,21 @@
  - Internal consistency checks failing and primitives used with
 dangerous/out-of-bounds/invalid parameters used to call abort(3).
 Now, a custom handler *that doesn't return* can be set with the
-`set_sodium_misuse()` function. This is not a replacement for
-non-fatal, expected runtime errors. This handler will be only
-called in unexpected situations due to potential bugs in the
-library or in language bindings.
+`set_sodium_misuse()` function. It still aborts by default or if the
+handler ever returns. This is not a replacement for non-fatal,
+expected runtime errors. This handler will be only called in
+unexpected situations due to potential bugs in the library or in
+language bindings.
  - `*_MESSAGEBYTES_MAX` macros (and the corresponding
 `_messagebytes_max()` symbols) have been added to represent the
 maximum message size that can be safely handled by a primitive.
-Language bindings are encouraged to check user inputs against
-these maximum lengths.
+Language bindings are encouraged to check user inputs against these
+maximum lengths.
  - The test suite has been extended to cover more edge cases.
  - crypto_sign_ed25519_pk_to_curve25519() now rejects points that are
 not on the curve, or not in the main subgroup.
- - Further changes to ensure that smart compilers will not optimize
-out code that we don't want to be optimized.
+ - Further changes to ensure that smart compilers will not optimize out
+code that we don't want to be optimized.
  - Visual Studio solutions are now included in distribution tarballs.
  - The `sodium_runtime_has_*` symbols for CPU features detection are
 now defined as weak symbols, i.e. they can be replaced with an
@@ -32,6 +33,8 @@ store keys to.
 `crypto_pwhash_str_alg()` function.
  - Due to popular demand, base64 encoding (`sodium_bin2base64()`) and
 decoding (`sodium_base642bin()`) have been implemented.
+ - A new crypto_secretstream_*() API was added to safely encrypt files
+and multi-part messages.
 
 * Version 1.0.13
  - Javascript: the sumo builds now include all symbols. They were
