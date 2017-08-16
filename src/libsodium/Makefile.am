@@ -62,6 +62,7 @@ libsodium_la_SOURCES = \
 	crypto_secretbox/crypto_secretbox.c \
 	crypto_secretbox/crypto_secretbox_easy.c \
 	crypto_secretbox/xsalsa20poly1305/secretbox_xsalsa20poly1305.c \
+	crypto_secretstream/xchacha20poly1305/secretstream_xchacha20poly1305.c \
 	crypto_shorthash/crypto_shorthash.c \
 	crypto_shorthash/siphash24/shorthash_siphash24.c \
 	crypto_shorthash/siphash24/ref/shorthash_siphash24_ref.c \
