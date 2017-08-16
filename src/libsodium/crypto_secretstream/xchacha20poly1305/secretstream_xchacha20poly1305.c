@@ -95,7 +95,7 @@ crypto_secretstream_xchacha20poly1305_push
         *outlen_p = 0U;
     }
     if (mlen > crypto_secretstream_xchacha20poly1305_MESSAGESBYTES_MAX) {
-        return -1;
+        sodium_misuse();
     }
     crypto_stream_chacha20_ietf(block, sizeof block, state->nonce, state->k);
     crypto_onetimeauth_poly1305_init(&poly1305_state, block);
@@ -171,7 +171,7 @@ crypto_secretstream_xchacha20poly1305_pull
     }
     mlen = inlen - crypto_secretstream_xchacha20poly1305_ABYTES;
     if (mlen > crypto_secretstream_xchacha20poly1305_MESSAGESBYTES_MAX) {
-        return -1;
+        sodium_misuse();
     }
     crypto_stream_chacha20_ietf(block, sizeof block, state->nonce, state->k);
     crypto_onetimeauth_poly1305_init(&poly1305_state, block);
