@@ -6,10 +6,11 @@
  - Internal consistency checks failing and primitives used with
 dangerous/out-of-bounds/invalid parameters used to call abort(3).
 Now, a custom handler *that doesn't return* can be set with the
-`set_sodium_misuse()` function. This is not a replacement for
-non-fatal, expected runtime errors. This handler will be only
-called in unexpected situations due to potential bugs in the
-library or in language bindings.
+`set_sodium_misuse()` function. It still aborts by default or if
+the handler ever returns. This is not a replacement for non-fatal,
+expected runtime errors. This handler will be only called in
+unexpected situations due to potential bugs in the library or in
+language bindings.
  - `*_MESSAGEBYTES_MAX` macros (and the corresponding
 `_messagebytes_max()` symbols) have been added to represent the
 maximum message size that can be safely handled by a primitive.
