@@ -54,16 +54,6 @@ int crypto_secretstream_xchacha20poly1305_init_push
     const unsigned char k[crypto_secretstream_xchacha20poly1305_KEYBYTES]);
 
 SODIUM_EXPORT
-int crypto_secretstream_xchacha20poly1305_init_pull
-   (crypto_secretstream_xchacha20poly1305_state *state,
-    const unsigned char in[crypto_secretstream_xchacha20poly1305_INITBYTES],
-    const unsigned char k[crypto_secretstream_xchacha20poly1305_KEYBYTES]);
-
-SODIUM_EXPORT
-void crypto_secretstream_xchacha20poly1305_rekey
-    (crypto_secretstream_xchacha20poly1305_state *state);
-
-SODIUM_EXPORT
 int crypto_secretstream_xchacha20poly1305_push
    (crypto_secretstream_xchacha20poly1305_state *state,
     unsigned char *out, unsigned long long *outlen_p,
@@ -71,11 +61,21 @@ int crypto_secretstream_xchacha20poly1305_push
     const unsigned char *ad, unsigned long long adlen, unsigned char tag);
 
 SODIUM_EXPORT
+int crypto_secretstream_xchacha20poly1305_init_pull
+   (crypto_secretstream_xchacha20poly1305_state *state,
+    const unsigned char in[crypto_secretstream_xchacha20poly1305_INITBYTES],
+    const unsigned char k[crypto_secretstream_xchacha20poly1305_KEYBYTES]);
+
+SODIUM_EXPORT
 int crypto_secretstream_xchacha20poly1305_pull
    (crypto_secretstream_xchacha20poly1305_state *state,
     unsigned char *m, unsigned long long *mlen_p, unsigned char *tag_p,
     const unsigned char *in, unsigned long long inlen,
     const unsigned char *ad, unsigned long long adlen);
+
+SODIUM_EXPORT
+void crypto_secretstream_xchacha20poly1305_rekey
+    (crypto_secretstream_xchacha20poly1305_state *state);
 
 #ifdef __cplusplus
 }
