@@ -33,8 +33,10 @@ crypto_secretstream_xchacha20poly1305_init_push
     unsigned char out[crypto_secretstream_xchacha20poly1305_INITBYTES],
     const unsigned char k[crypto_secretstream_xchacha20poly1305_KEYBYTES])
 {
-    randombytes_buf(out, crypto_core_hchacha20_INPUTBYTES +
-                    crypto_secretstream_xchacha20poly1305_INONCEBYTES);
+    COMPILER_ASSERT(crypto_secretstream_xchacha20poly1305_INITBYTES ==
+                    crypto_core_hchacha20_INPUTBYTES + crypto_secretstream_xchacha20poly1305_INONCEBYTES);
+
+    randombytes_buf(out, crypto_secretstream_xchacha20poly1305_INITBYTES);
     crypto_core_hchacha20(state->k, out, k, NULL);
     memcpy(state->nonce, out + crypto_core_hchacha20_INPUTBYTES,
            crypto_secretstream_xchacha20poly1305_INONCEBYTES);

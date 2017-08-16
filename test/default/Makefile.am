@@ -57,6 +57,7 @@ EXTRA_DIST = \
 	secretbox8.exp \
 	secretbox_easy.exp \
 	secretbox_easy2.exp \
+	secretstream.exp \
 	shorthash.exp \
 	sign.exp \
 	siphashx24.exp \
@@ -127,6 +128,7 @@ DISTCLEANFILES = \
 	secretbox8.res \
 	secretbox_easy.res \
 	secretbox_easy2.res \
+	secretstream.res \
 	shorthash.res \
 	sign.res \
 	siphashx24.res \
@@ -198,6 +200,7 @@ CLEANFILES = \
 	secretbox8.final \
 	secretbox_easy.final \
 	secretbox_easy2.final \
+	secretstream.final \
 	shorthash.final \
 	sign.final \
 	siphashx24.final \
@@ -264,6 +267,7 @@ CLEANFILES = \
 	secretbox8.nexe \
 	secretbox_easy.nexe \
 	secretbox_easy2.nexe \
+	secretstream.nexe \
 	shorthash.nexe \
 	sign.nexe \
 	siphashx24.nexe \
@@ -340,6 +344,7 @@ TESTS_TARGETS = \
 	secretbox8 \
 	secretbox_easy \
 	secretbox_easy2 \
+	secretstream \
 	shorthash \
 	sign \
 	sodium_core \
@@ -524,6 +529,9 @@ secretbox_easy_LDADD      = $(TESTS_LDADD)
 
 secretbox_easy2_SOURCE    = cmptest.h secretbox_easy2.c
 secretbox_easy2_LDADD     = $(TESTS_LDADD)
+
+secretstream_SOURCE       = cmptest.h secretstream.c
+secretstream_LDADD        = $(TESTS_LDADD)
 
 shorthash_SOURCE          = cmptest.h shorthash.c
 shorthash_LDADD           = $(TESTS_LDADD)
