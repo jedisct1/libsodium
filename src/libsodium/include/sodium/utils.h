@@ -61,6 +61,22 @@ int sodium_hex2bin(unsigned char * const bin, const size_t bin_maxlen,
                    const char * const ignore, size_t * const bin_len,
                    const char ** const hex_end);
 
+#define sodium_base64_VARIANT_ORIGINAL            1
+#define sodium_base64_VARIANT_ORIGINAL_NO_PADDING 3
+#define sodium_base64_VARIANT_URLSAFE             5
+#define sodium_base64_VARIANT_URLSAFE_NO_PADDING  7
+
+SODIUM_EXPORT
+char *sodium_bin2base64(char * const b64, const size_t b64_maxlen,
+                        const unsigned char * const bin, const size_t bin_len,
+                        const int variant);
+
+SODIUM_EXPORT
+int sodium_base642bin(unsigned char * const bin, const size_t bin_maxlen,
+                      const char * const b64, const size_t b64_len,
+                      const char * const ignore, size_t * const bin_len,
+                      const char ** const b64_end, const int variant);
+
 SODIUM_EXPORT
 int sodium_mlock(void * const addr, const size_t len);
 

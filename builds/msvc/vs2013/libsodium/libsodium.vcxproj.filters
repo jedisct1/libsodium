@@ -336,6 +336,9 @@
     <ClCompile Include="..\..\..\..\src\libsodium\randombytes\sysrandom\randombytes_sysrandom.c">
       <Filter>randombytes\sysrandom</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\..\..\src\libsodium\sodium\codecs.c">
+      <Filter>sodium</Filter>
+    </ClCompile>
     <ClCompile Include="..\..\..\..\src\libsodium\sodium\core.c">
       <Filter>sodium</Filter>
     </ClCompile>

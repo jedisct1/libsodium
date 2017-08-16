@@ -36,6 +36,7 @@ SODIUM_EXPORT = \
 	sodium/crypto_secretbox.h \
 	sodium/crypto_secretbox_xchacha20poly1305.h \
 	sodium/crypto_secretbox_xsalsa20poly1305.h \
+	sodium/crypto_secretstream_xchacha20poly1305.h \
 	sodium/crypto_shorthash.h \
 	sodium/crypto_shorthash_siphash24.h \
 	sodium/crypto_sign.h \
