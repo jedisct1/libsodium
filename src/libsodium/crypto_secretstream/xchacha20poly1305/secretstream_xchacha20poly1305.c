@@ -5,8 +5,8 @@
 #include <string.h>
 
 #include "core.h"
-#include "crypto_aead_xchacha20poly1305.h"
 #include "crypto_aead_chacha20poly1305.h"
+#include "crypto_aead_xchacha20poly1305.h"
 #include "crypto_core_hchacha20.h"
 #include "crypto_onetimeauth_poly1305.h"
 #include "crypto_secretstream_xchacha20poly1305.h"
