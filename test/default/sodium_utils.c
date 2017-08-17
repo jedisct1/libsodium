@@ -17,11 +17,15 @@ main(void)
     char          *b64_;
     const char    *b64_end;
     unsigned char *bin;
+    unsigned char *bin_padded;
     const char    *hex;
     const char    *hex_end;
     size_t         b64_len;
-    size_t         bin_len;
+    size_t         bin_len, bin_len2;
     size_t         hex_len;
+    size_t         bin_padded_len;
+    size_t         bin_padded_maxlen;
+    size_t         blocksize;
     unsigned int   i;
     unsigned int   j;
 
@@ -280,6 +284,35 @@ main(void)
     sodium_add(nonce, nonce, 24U);
     printf("%s\n",
            sodium_bin2hex(nonce_hex, sizeof nonce_hex, nonce, sizeof nonce));
+
+    for (i = 0; i < 2000U; i++) {
+        bin_len = randombytes_uniform(200U);
+        bin = sodium_malloc(bin_len);
+        randombytes_buf(bin, bin_len);
+        blocksize = 1U + randombytes_uniform(100U);
+        bin_padded_maxlen = bin_len + (blocksize - bin_len % blocksize);
+        bin_padded = sodium_malloc(bin_padded_maxlen);
+
+        memcpy(bin_padded, bin, bin_len);
+        assert(sodium_pad(&bin_padded_len, bin_padded, bin_len,
+                          blocksize, bin_padded_maxlen - 1U) == -1);
+        assert(sodium_pad(&bin_padded_len, bin_padded, bin_len,
+                          blocksize, bin_padded_maxlen + 1U) == 0);
+        assert(sodium_pad(&bin_padded_len, bin_padded, bin_len,
+                          blocksize, bin_padded_maxlen) == 0);
+        assert(bin_padded_len == bin_padded_maxlen);
+
+        assert(sodium_unpad(&bin_len2, bin_padded, bin_padded_len,
+                            0U) == -1);
+        assert(sodium_unpad(&bin_len2, bin_padded, bin_padded_len,
+                            bin_padded_len + 1U) == -1);
+        assert(sodium_unpad(&bin_len2, bin_padded, bin_padded_len,
+                            blocksize) == 0);
+        assert(bin_len2 == bin_len);
+
+        sodium_free(bin_padded);
+        sodium_free(bin);
+    }
 
     return 0;
 }
