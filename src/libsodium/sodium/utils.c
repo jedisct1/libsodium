@@ -629,7 +629,7 @@ sodium_pad(size_t *padded_buflen_p, unsigned char *buf,
     size_t                  xpadlen;
     size_t                  xpadded_len;
     volatile unsigned char  mask;
-    unsigned char           i_eq_xpad_mask;
+    unsigned char           barrier_mask;
 
     if (blocksize <= 0U) {
         return -1;
@@ -648,9 +648,9 @@ sodium_pad(size_t *padded_buflen_p, unsigned char *buf,
     *padded_buflen_p = xpadded_len + 1U;
     mask = 0U;
     for (i = 0; i < blocksize; i++) {
-        i_eq_xpad_mask = (unsigned char) (((i ^ xpadlen) - 1U) >> 8);
-        tail[-i] = (tail[-i] & mask) | (0x80 & i_eq_xpad_mask);
-        mask |= i_eq_xpad_mask;
+        barrier_mask = (unsigned char) (((i ^ xpadlen) - 1U) >> 8);
+        tail[-i] = (tail[-i] & mask) | (0x80 & barrier_mask);
+        mask |= barrier_mask;
     }
     return 0;
 }
