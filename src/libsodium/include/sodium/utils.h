@@ -138,7 +138,7 @@ int sodium_mprotect_readwrite(void *ptr);
 
 SODIUM_EXPORT
 int sodium_pad(size_t *padded_buflen_p, unsigned char *buf,
-               size_t unpadded_buflen, size_t blocksize);
+               size_t unpadded_buflen, size_t blocksize, size_t max_buflen);
 
 SODIUM_EXPORT
 int sodium_unpad(size_t *unpadded_buflen_p, const unsigned char *buf,

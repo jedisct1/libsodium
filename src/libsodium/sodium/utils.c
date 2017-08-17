@@ -622,7 +622,7 @@ sodium_mprotect_readwrite(void *ptr)
 
 int
 sodium_pad(size_t *padded_buflen_p, unsigned char *buf,
-           size_t unpadded_buflen, size_t blocksize)
+           size_t unpadded_buflen, size_t blocksize, size_t max_buflen)
 {
     unsigned char          *tail;
     size_t                  i;
@@ -644,6 +644,9 @@ sodium_pad(size_t *padded_buflen_p, unsigned char *buf,
         sodium_misuse();
     }
     xpadded_len = unpadded_buflen + xpadlen;
+    if (xpadded_len >= max_buflen) {
+        return -1;
+    }
     tail = &buf[xpadded_len];
     *padded_buflen_p = xpadded_len + 1U;
     mask = 0U;
