@@ -136,6 +136,14 @@ int sodium_mprotect_readonly(void *ptr);
 SODIUM_EXPORT
 int sodium_mprotect_readwrite(void *ptr);
 
+SODIUM_EXPORT
+int sodium_pad(size_t *padded_buflen_p, unsigned char *buf,
+               size_t unpadded_buflen, size_t blocksize);
+
+SODIUM_EXPORT
+int sodium_unpad(size_t *unpadded_buflen_p, const unsigned char *buf,
+                 size_t padded_buflen, size_t blocksize);
+
 /* -------- */
 
 int _sodium_alloc_init(void);

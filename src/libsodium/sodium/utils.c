@@ -619,3 +619,67 @@ sodium_mprotect_readwrite(void *ptr)
 {
     return _sodium_mprotect(ptr, _mprotect_readwrite);
 }
+
+int
+sodium_pad(size_t *padded_buflen_p, unsigned char *buf,
+           size_t unpadded_buflen, size_t blocksize)
+{
+    unsigned char          *tail;
+    size_t                  i;
+    size_t                  xpadlen;
+    size_t                  xpadded_len;
+    volatile unsigned char  mask;
+    unsigned char           i_eq_xpad_mask;
+
+    if (blocksize <= 0U) {
+        return -1;
+    }
+    xpadlen = blocksize - 1U;
+    if ((blocksize & (blocksize - 1U)) == 0U) {
+        xpadlen -= unpadded_buflen & (blocksize - 1U);
+    } else {
+        xpadlen -= unpadded_buflen % blocksize;
+    }
+    if ((size_t) SIZE_MAX - unpadded_buflen <= xpadlen) {
+        sodium_misuse();
+    }
+    xpadded_len = unpadded_buflen + xpadlen;
+    tail = &buf[xpadded_len];
+    *padded_buflen_p = xpadded_len + 1U;
+    mask = 0U;
+    for (i = 0; i < blocksize; i++) {
+        i_eq_xpad_mask = (unsigned char) (((i ^ xpadlen) - 1U) >> 8);
+        tail[-i] = (tail[-i] & mask) | (0x80 & i_eq_xpad_mask);
+        mask |= i_eq_xpad_mask;
+    }
+    return 0;
+}
+
+int
+sodium_unpad(size_t *unpadded_buflen_p, const unsigned char *buf,
+             size_t padded_buflen, size_t blocksize)
+{
+    const unsigned char *tail;
+    unsigned char        acc = 0U;
+    unsigned char        barrier_mask;
+    unsigned char        c;
+    unsigned char        valid = 0U;
+    volatile size_t      pad_len = 0U;
+    size_t               i;
+
+    if (padded_buflen < blocksize || blocksize <= 0U) {
+        return -1;
+    }
+    tail = &buf[padded_buflen - 1U];
+    for (i = 0U; i < blocksize; i++) {
+        c = tail[-i];
+        acc |= c;
+        barrier_mask =
+            ( (~(acc - 1U)) & (pad_len - 1U) & ((c ^ 0x80) - 1U) ) >> 8;
+        pad_len |= i & barrier_mask;
+        valid |= barrier_mask;
+    }
+    *unpadded_buflen_p = padded_buflen - 1U - pad_len;
+
+    return (int) (valid & 1U) - 1;
+}
