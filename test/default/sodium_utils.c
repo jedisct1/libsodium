@@ -289,7 +289,7 @@ main(void)
         bin_len = randombytes_uniform(200U);
         blocksize = 1U + randombytes_uniform(100U);
         bin_padded_maxlen = bin_len + (blocksize - bin_len % blocksize);
-        bin_padded = sodium_malloc(bin_padded_maxlen);
+        bin_padded = (unsigned char *) sodium_malloc(bin_padded_maxlen);
         randombytes_buf(bin_padded, bin_padded_maxlen);
 
         assert(sodium_pad(&bin_padded_len, bin_padded, bin_len,
