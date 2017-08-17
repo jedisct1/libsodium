@@ -297,13 +297,15 @@ main(void)
         assert(sodium_pad(&bin_padded_len, bin_padded, bin_len,
                           blocksize, bin_padded_maxlen + 1U) == 0);
         assert(sodium_pad(&bin_padded_len, bin_padded, bin_len,
+                          0U, bin_padded_maxlen) == -1);
+        assert(sodium_pad(&bin_padded_len, bin_padded, bin_len,
                           blocksize, bin_padded_maxlen) == 0);
         assert(bin_padded_len == bin_padded_maxlen);
 
         assert(sodium_unpad(&bin_len2, bin_padded, bin_padded_len,
-                            0U) == -1);
-        assert(sodium_unpad(&bin_len2, bin_padded, bin_padded_len,
                             bin_padded_len + 1U) == -1);
+        assert(sodium_unpad(&bin_len2, bin_padded, bin_padded_len,
+                            0U) == -1);
         assert(sodium_unpad(&bin_len2, bin_padded, bin_padded_len,
                             blocksize) == 0);
         assert(bin_len2 == bin_len);
