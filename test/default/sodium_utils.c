@@ -287,13 +287,11 @@ main(void)
 
     for (i = 0; i < 2000U; i++) {
         bin_len = randombytes_uniform(200U);
-        bin = sodium_malloc(bin_len);
-        randombytes_buf(bin, bin_len);
         blocksize = 1U + randombytes_uniform(100U);
         bin_padded_maxlen = bin_len + (blocksize - bin_len % blocksize);
         bin_padded = sodium_malloc(bin_padded_maxlen);
+        randombytes_buf(bin_padded, bin_padded_maxlen);
 
-        memcpy(bin_padded, bin, bin_len);
         assert(sodium_pad(&bin_padded_len, bin_padded, bin_len,
                           blocksize, bin_padded_maxlen - 1U) == -1);
         assert(sodium_pad(&bin_padded_len, bin_padded, bin_len,
@@ -311,7 +309,6 @@ main(void)
         assert(bin_len2 == bin_len);
 
         sodium_free(bin_padded);
-        sodium_free(bin);
     }
 
     return 0;
