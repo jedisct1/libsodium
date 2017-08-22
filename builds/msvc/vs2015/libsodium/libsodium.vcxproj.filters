@@ -219,6 +219,9 @@
     <ClCompile Include="..\..\..\..\src\libsodium\crypto_secretbox\xsalsa20poly1305\secretbox_xsalsa20poly1305.c">
       <Filter>crypto_secretbox\xsalsa20poly1305</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\..\..\src\libsodium\crypto_secretstream\xchacha20poly1305\secretstream_xchacha20poly1305.c">
+      <Filter>crypto_secretstream\xchacha20poly1305</Filter>
+    </ClCompile>
     <ClCompile Include="..\..\..\..\src\libsodium\crypto_shorthash\crypto_shorthash.c">
       <Filter>crypto_shorthash</Filter>
     </ClCompile>
@@ -632,6 +635,9 @@
     <ClInclude Include="..\..\..\..\src\libsodium\include\sodium\crypto_secretbox_xsalsa20poly1305.h">
       <Filter>include\sodium</Filter>
     </ClInclude>
+    <ClInclude Include="..\..\..\..\src\libsodium\include\sodium\crypto_secretstream_xchacha20poly1305.h">
+      <Filter>include\sodium</Filter>
+    </ClInclude>
     <ClInclude Include="..\..\..\..\src\libsodium\include\sodium\crypto_shorthash.h">
       <Filter>include\sodium</Filter>
     </ClInclude>
@@ -867,6 +873,12 @@
     </Filter>
     <Filter Include="crypto_secretbox\xsalsa20poly1305">
       <UniqueIdentifier>{8bf11d29-2f5a-3f10-8ae6-82229d19c5b0}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="crypto_secretstream">
+      <UniqueIdentifier>{62f7ae38-4ce6-3976-acc3-47c462db4fbe}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="crypto_secretstream\xchacha20poly1305">
+      <UniqueIdentifier>{e07a28cd-775a-3798-bfdb-97842d3614d6}</UniqueIdentifier>
     </Filter>
     <Filter Include="crypto_shorthash">
       <UniqueIdentifier>{bb073c16-adc8-3cff-80b9-99cf5a28de6c}</UniqueIdentifier>

@@ -210,6 +210,9 @@
     <ClCompile Include="src\libsodium\crypto_secretbox\xsalsa20poly1305\secretbox_xsalsa20poly1305.c">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="src\libsodium\crypto_secretstream\xchacha20poly1305\secretstream_xchacha20poly1305.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
     <ClCompile Include="src\libsodium\crypto_shorthash\crypto_shorthash.c">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -621,6 +624,9 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="src\libsodium\include\sodium\crypto_secretbox_xsalsa20poly1305.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\libsodium\include\sodium\crypto_secretstream_xchacha20poly1305.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="src\libsodium\include\sodium\crypto_shorthash.h">
