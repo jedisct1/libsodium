@@ -1,4 +1,4 @@
-version_h = configure_file(configuration : version_conf, input : 'sodium/version.h.in', output : 'version.h')
+version_h = configure_file(configuration : version_conf, input : 'sodium/version.h.meson-in', output : 'version.h')
 version_dir = include_directories('.')
 install_headers(version_h, subdir : 'sodium')
 
