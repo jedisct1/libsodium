@@ -1,17 +1,17 @@
 project(
 	'libsodium', 'c',
-	version : '1.0.13',
+	version : '1.0.14',
 	license : 'ISC',
 	default_options : ['c_std=c99'],
 )
 
 version_conf = configuration_data()
 version_conf.set('SODIUM_LIBRARY_VERSION_MAJOR', 9)
-version_conf.set('SODIUM_LIBRARY_VERSION_MINOR', 5)
+version_conf.set('SODIUM_LIBRARY_VERSION_MINOR', 6)
 version_conf.set_quoted('SODIUM_VERSION_STRING', meson.project_version())
 
 dll_version = 8
-sodium_library_version = '18.3.0'
+sodium_library_version = '19.4.0'
 
 compiler = meson.get_compiler('c')
 add_project_arguments('-DCONFIGURED__=1', language : 'c')
