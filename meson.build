@@ -149,8 +149,10 @@ cwflags = declare_dependency(compile_args : cwflags)
 
 if not is_emscripten and not is_pnacl
 	mmx = declare_dependency()
+	compiler_args = []
 	if compiler.has_argument('-mmmx')
 		mmx = declare_dependency(compile_args : '-mmmx')
+		compiler_args += '-mmmx'
 	endif
 	has_mmx = compiler.compiles('''
 #pragma GCC target("mmx")
@@ -158,7 +160,7 @@ if not is_emscripten and not is_pnacl
 int main(){
 	__m64 x = _mm_setzero_si64();
 }
-	''', dependency : [mmx])
+	''', args : compiler_args)
 	if has_mmx
 		message('MMX is available')
 		add_project_arguments('-DHAVE_MMINTRIN_H=1', language : 'c')
@@ -167,8 +169,10 @@ int main(){
 	endif
 
 	sse2 = declare_dependency()
+	compiler_args = []
 	if compiler.has_argument('-msse2')
 		sse2 = declare_dependency(compile_args : '-msse2')
+		compiler_args += '-msse2'
 	endif
 	has_sse2 = compiler.compiles('''
 #pragma GCC target("sse2")
@@ -180,7 +184,7 @@ int main(){
 	__m128d x = _mm_setzero_pd();
 	__m128i z = _mm_srli_epi64(_mm_setzero_si128(), 26);
 }
-	''', dependency : [sse2])
+	''', args: compiler_args)
 	if has_sse2
 		message('SSE2 is available')
 		add_project_arguments('-DHAVE_EMMINTRIN_H=1', language : 'c')
@@ -189,8 +193,10 @@ int main(){
 	endif
 
 	sse3 = declare_dependency()
+	compiler_args = []
 	if compiler.has_argument('-msse3')
 		sse3 = declare_dependency(compile_args : '-msse3')
+		compiler_args += '-msse3'
 	endif
 	has_sse3 = compiler.compiles('''
 #pragma GCC target("sse3")
@@ -198,7 +204,7 @@ int main(){
 int main(){
 	__m128 x = _mm_addsub_ps(_mm_cvtpd_ps(_mm_setzero_pd()), _mm_cvtpd_ps(_mm_setzero_pd()));
 }
-	''', dependency : [sse3])
+	''', args: compiler_args)
 	if has_sse3
 		message('SSE3 is available')
 		add_project_arguments('-DHAVE_PMMINTRIN_H=1', language : 'c')
@@ -207,8 +213,10 @@ int main(){
 	endif
 
 	ssse3 = declare_dependency()
+	compiler_args = []
 	if compiler.has_argument('-mssse3')
 		ssse3 = declare_dependency(compile_args : '-mssse3')
+		compiler_args += '-mssse3'
 	endif
 	has_ssse3 = compiler.compiles('''
 #pragma GCC target("ssse3")
@@ -216,7 +224,7 @@ int main(){
 int main(){
 	 __m64 x = _mm_abs_pi32(_m_from_int(0));
 }
-	''', dependency : [ssse3])
+	''', args : compiler_args)
 	if has_ssse3
 		message('SSSE3 is available')
 		add_project_arguments('-DHAVE_TMMINTRIN_H=1', language : 'c')
@@ -225,8 +233,10 @@ int main(){
 	endif
 
 	sse4_1 = declare_dependency()
+	compiler_args = []
 	if compiler.has_argument('-msse4.1')
 		sse4_1 = declare_dependency(compile_args : '-msse4.1')
+		compiler_args += '-msse4.1'
 	endif
 	has_sse4_1 = compiler.compiles('''
 #pragma GCC target("sse4.1")
@@ -234,7 +244,7 @@ int main(){
 int main(){
 	 __m128i x = _mm_minpos_epu16(_mm_setzero_si128());
 }
-	''', dependency : [sse4_1])
+	''', args : compiler_args)
 	if has_sse4_1
 		message('SSE4.1 is available')
 		add_project_arguments('-DHAVE_SMMINTRIN_H=1', language : 'c')
@@ -244,8 +254,10 @@ int main(){
 
 	avx = declare_dependency()
 	if not is_nativeclient
+		compiler_args = []
 		if compiler.has_argument('-mavx')
 			avx = declare_dependency(compile_args : '-mavx')
+			compiler_args += '-mavx'
 		endif
 		has_avx = compiler.compiles('''
 #pragma GCC target("avx")
@@ -253,7 +265,7 @@ int main(){
 int main(){
 	_mm256_zeroall();
 }
-	''', dependency : [avx])
+	''', args : compiler_args)
 		if has_avx
 			message('AVX is available')
 			add_project_arguments('-DHAVE_AVXINTRIN_H=1', language : 'c')
@@ -264,8 +276,10 @@ int main(){
 
 	avx2 = declare_dependency()
 	if not is_nativeclient
+		compiler_args = []
 		if compiler.has_argument('-mavx2')
 			avx2 = declare_dependency(compile_args : '-mavx2')
+			compiler_args += '-mavx2'
 		endif
 		has_avx2 = compiler.compiles('''
 #pragma GCC target("avx2")
@@ -275,7 +289,7 @@ int main(){
 	__m256 y = _mm256_permutevar8x32_ps(x, _mm256_set1_epi32(42));
 	return _mm256_movemask_ps(_mm256_cmp_ps(x, y, _CMP_NEQ_OQ));
 }
-	''', dependency : [avx2])
+	''', args : compiler_args)
 		if has_avx2
 			message('AVX2 is available')
 			add_project_arguments('-DHAVE_AVX2INTRIN_H=1', language : 'c')
@@ -286,7 +300,7 @@ int main(){
 int main(){
 	__m256i y = _mm256_broadcastsi128_si256(_mm_setzero_si128());
 }
-	''', dependency : [avx2])
+	''', args : compiler_args)
 				add_project_arguments('-D_mm256_broadcastsi128_si256=_mm_broadcastsi128_si256', language : 'c')
 			endif
 		else
@@ -296,12 +310,15 @@ int main(){
 
 	aes = declare_dependency()
 	if not is_nativeclient
+		compiler_args = []
 		if compiler.has_argument('-maes')
 			aes = declare_dependency(compile_args : '-maes')
+			compiler_args += '-maes'
 		endif
 		pclmul = declare_dependency()
 		if compiler.has_argument('-mpclmul')
 			pclmul = declare_dependency(compile_args : '-mpclmul')
+			compiler_args += '-mpclmul'
 		endif
 		has_aes = compiler.compiles('''
 #pragma GCC target("aes")
@@ -311,7 +328,7 @@ int main(){
 	__m128i x = _mm_aesimc_si128(_mm_setzero_si128());
 	__m128i y = _mm_clmulepi64_si128(_mm_setzero_si128(), _mm_setzero_si128(), 0);
 }
-		''', dependency : [aes, pclmul])
+		''', args : compiler_args)
 		if has_aes
 			message('AESNI and PCLMULQDQ are available')
 			add_project_arguments('-DHAVE_WMMINTRIN_H=1', language : 'c')
