@@ -133,7 +133,30 @@ if enable_ssp and not is_win_posix and compiler.has_argument('-fstack-protector'
 	add_project_arguments('-fstack-protector', language : 'c')
 endif
 
-# TODO: AX_CHECK_CATCHABLE_SEGV
+test_catchable_segv = compiler.run('''
+#include <signal.h>
+#include <stdlib.h>
+static void sig(int _) { exit(0); }
+int main(){
+	volatile unsigned char * volatile x = (volatile unsigned char *) malloc(8);
+	size_t i;
+
+	signal(SIGSEGV, sig);
+	signal(SIGBUS, sig);
+	#if !defined(__SANITIZE_ADDRESS__) && !defined(__EMSCRIPTEN__)
+	for (i = 0; i < 10000000; i += 1024) { x[-i] = x[i] = (unsigned char) i; }
+	#endif
+	free((void *) x);
+	exit(1);
+}
+''')
+if test_catchable_segv.returncode() == 0
+	message('Segmentation violations can be caught when using the _AC_LANG compiler')
+	add_project_arguments('-DHAVE_CATCHABLE_SEGV=1', language : 'c')
+else
+	message(test_catchable_segv.returncode())
+	message('On this platform, segmentation violations cannot be caught using signal handlers. This is expected if you enabled a tool such as Address Sanitizer (-fsanitize=address), but be aware that using Address Sanitizer may also significantly reduce performance.')
+endif
 
 if not is_emscripten and not is_pnacl
 	mmx = declare_dependency()
