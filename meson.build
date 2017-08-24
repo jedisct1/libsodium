@@ -348,6 +348,21 @@ else
 	add_project_arguments('-DNATIVE_LITTLE_ENDIAN=1', language : 'c')
 endif
 
+is_stdc_limit_macro_required = compiler.compiles('''
+#include <limits.h>
+#include <stdint.h>
+int main(){
+	(void) SIZE_MAX;
+	(void) UINT64_MAX;
+}
+''')
+if not is_stdc_limit_macro_required
+	message('__STDC_LIMIT_MACROS is required')
+	add_project_arguments(['-D__STDC_LIMIT_MACROS', '-D__STDC_CONSTANT_MACROS'], language : 'c')
+else
+	message('__STDC_LIMIT_MACROS is NOT required')
+endif
+
 if compiler.get_id() == 'clang' and host_machine.cpu_family() == 'x86'
 	# clang does not properly handle the 128-bit type on 32-bit systems
 	can_use_128_bits = false
