@@ -181,7 +181,10 @@ if not get_option('minimal')
 	]
 endif
 
-include_dirs = [include_directories('include/sodium')]
+include_dirs = [
+	include_directories('include/sodium'),
+	version_dir,
+]
 dependencies = [threads]
 
 # libaesni
