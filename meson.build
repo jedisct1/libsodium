@@ -2,7 +2,7 @@ project(
 	'libsodium', 'c',
 	version : '1.0.14',
 	license : 'ISC',
-	default_options : ['c_std=c99'],
+	default_options : ['c_std=c99', 'b_staticpic=true', 'warning_level=2'],
 )
 
 version_conf = configuration_data()
@@ -74,7 +74,30 @@ wanted_arguments = [
 	'-Wwrite-strings',
 	'-Wdiv-by-zero',
 	'-Wsometimes-uninitialized',
+	'-Wbad-function-cast',
+	'-Wcast-align',
+	'-Wcast-qual',
+	'-Wduplicated-cond',
+	'-Wfloat-equal',
+	'-Wformat=2',
+	'-Wmissing-declarations',
+	'-Wmissing-prototypes',
+	'-Wnested-externs',
+	'-Wno-type-limits',
+	'-Wno-unknown-pragmas',
+	'-Wnormalized=id',
+	'-Wnull-dereference',
+	'-Wold-style-declaration',
+	'-Wpointer-arith',
+	'-Wredundant-decls',
+	'-Wshorten-64-to-32',
+	'-Wstrict-prototypes',
+	'-Wswitch-enum',
+	'-Wvariable-decl',
 ]
+if compiler.get_id() == 'clang'
+	wanted_arguments += '-Wno-unknown-warning-option'
+endif
 foreach wanted : wanted_arguments
 	if compiler.has_argument(wanted)
 		add_project_arguments(wanted, language : 'c')
@@ -109,41 +132,6 @@ if enable_ssp and not is_win_posix and compiler.has_argument('-fstack-protector'
 	# TODO: Test linker against -fstack-protector
 	add_project_arguments('-fstack-protector', language : 'c')
 endif
-
-cwflags = []
-cwflags_wanted = [
-	'-Wall',
-	'-Wextra',
-	'-Wbad-function-cast',
-	'-Wcast-align',
-	'-Wcast-qual',
-	'-Wduplicated-cond',
-	'-Wfloat-equal',
-	'-Wformat=2',
-	'-Wmissing-declarations',
-	'-Wmissing-prototypes',
-	'-Wnested-externs',
-	'-Wno-type-limits',
-	'-Wno-unknown-pragmas',
-	'-Wnormalized=id',
-	'-Wnull-dereference',
-	'-Wold-style-declaration',
-	'-Wpointer-arith',
-	'-Wredundant-decls',
-	'-Wshorten-64-to-32',
-	'-Wstrict-prototypes',
-	'-Wswitch-enum',
-	'-Wvariable-decl',
-]
-if compiler.get_id() == 'clang'
-	cwflags_wanted += '-Wno-unknown-warning-option'
-endif
-foreach wanted : cwflags_wanted
-	if compiler.has_argument(wanted)
-		cwflags += wanted
-	endif
-endforeach
-cwflags = declare_dependency(compile_args : cwflags)
 
 # TODO: AX_CHECK_CATCHABLE_SEGV
 
