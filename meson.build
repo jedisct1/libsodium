@@ -361,16 +361,16 @@ else
 endif
 
 if compiler.get_id() == 'clang' and host_machine.cpu_family() == 'x86'
-		# clang does not properly handle the 128-bit type on 32-bit systems
-		can_use_128_bits = false
-	elif host_machine.endian() != 'little'
-		# libsodium currently expects a little endian CPU for the 128-bit type
-		can_use_128_bits = false
-	elif is_emscripten
-		# emscripten currently supports only shift operations on integers larger than 64 bits
-		can_use_128_bits = false
-	else
-		can_use_128_bits = compiler.compiles('''
+	# clang does not properly handle the 128-bit type on 32-bit systems
+	can_use_128_bits = false
+elif host_machine.endian() != 'little'
+	# libsodium currently expects a little endian CPU for the 128-bit type
+	can_use_128_bits = false
+elif is_emscripten
+	# emscripten currently supports only shift operations on integers larger than 64 bits
+	can_use_128_bits = false
+else
+	can_use_128_bits = compiler.compiles('''
 #if !defined(__GNUC__) && !defined(__SIZEOF_INT128__)
 # error mode(TI) is a gcc extension, and __int128 is not available
 #endif
@@ -388,13 +388,17 @@ int main(){
 	(void) fcontract;
 }
 		''')
-	endif
-	if can_use_128_bits
-		add_project_arguments('-DHAVE_TI_MODE=1', language : 'c')
-		message('gcc TI mode is available')
-	else
-		message('gcc TI mode is NOT available')
-	endif
+endif
+if can_use_128_bits
+	add_project_arguments('-DHAVE_TI_MODE=1', language : 'c')
+	message('gcc TI mode is available')
+else
+	message('gcc TI mode is NOT available')
+endif
+
+can_use_x86_64_asm = false
+can_use_avx = false
+can_use_cpuid = false
 
 if enable_asm
 	can_use_x86_64_asm = compiler.compiles('''
