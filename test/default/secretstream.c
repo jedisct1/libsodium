@@ -181,8 +181,8 @@ main(void)
            crypto_secretstream_xchacha20poly1305_INITBYTES);
     assert(crypto_secretstream_xchacha20poly1305_keybytes() ==
            crypto_secretstream_xchacha20poly1305_KEYBYTES);
-    assert(crypto_secretstream_xchacha20poly1305_messagesbytes_max() ==
-           crypto_secretstream_xchacha20poly1305_MESSAGESBYTES_MAX);
+    assert(crypto_secretstream_xchacha20poly1305_messagebytes_max() ==
+           crypto_secretstream_xchacha20poly1305_MESSAGEBYTES_MAX);
 
     assert(crypto_secretstream_xchacha20poly1305_tag_message() ==
            crypto_secretstream_xchacha20poly1305_TAG_MESSAGE);

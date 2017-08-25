@@ -96,7 +96,7 @@ crypto_secretstream_xchacha20poly1305_push
     if (outlen_p != NULL) {
         *outlen_p = 0U;
     }
-    if (mlen > crypto_secretstream_xchacha20poly1305_MESSAGESBYTES_MAX) {
+    if (mlen > crypto_secretstream_xchacha20poly1305_MESSAGEBYTES_MAX) {
         sodium_misuse();
     }
     crypto_stream_chacha20_ietf(block, sizeof block, state->nonce, state->k);
@@ -172,7 +172,7 @@ crypto_secretstream_xchacha20poly1305_pull
         return -1;
     }
     mlen = inlen - crypto_secretstream_xchacha20poly1305_ABYTES;
-    if (mlen > crypto_secretstream_xchacha20poly1305_MESSAGESBYTES_MAX) {
+    if (mlen > crypto_secretstream_xchacha20poly1305_MESSAGEBYTES_MAX) {
         sodium_misuse();
     }
     crypto_stream_chacha20_ietf(block, sizeof block, state->nonce, state->k);
@@ -257,9 +257,9 @@ crypto_secretstream_xchacha20poly1305_keybytes(void)
 }
 
 size_t
-crypto_secretstream_xchacha20poly1305_messagesbytes_max(void)
+crypto_secretstream_xchacha20poly1305_messagebytes_max(void)
 {
-    return crypto_secretstream_xchacha20poly1305_MESSAGESBYTES_MAX;
+    return crypto_secretstream_xchacha20poly1305_MESSAGEBYTES_MAX;
 }
 
 unsigned char
