@@ -14,7 +14,7 @@ crypto_stream_salsa208_noncebytes(void)
 }
 
 size_t
-crypto_stream_salsa208_messagebyte_max(void)
+crypto_stream_salsa208_messagebytes_max(void)
 {
     return crypto_stream_salsa208_MESSAGEBYTES_MAX;
 }
