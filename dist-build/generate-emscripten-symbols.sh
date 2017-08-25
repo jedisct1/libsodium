@@ -7,7 +7,7 @@ symbols() {
     SUMO="$1"
     while read symbol standard sumo; do
       found="$standard"
-      if [ "x$SUMO" != "sumo" ]; then
+      if [ "x$SUMO" = "xsumo" ]; then
         found="$sumo"
       fi
       if [ "$found" = "1" ]; then
@@ -35,6 +35,7 @@ symbols() {
   } | \
     sort | \
     {
+      out=''
       while read symbol ; do
         if [ ! -z "$out" ]; then
           out="${out},"
