@@ -235,3 +235,53 @@ crypto_secretstream_xchacha20poly1305_statebytes(void)
 {
     return sizeof(crypto_secretstream_xchacha20poly1305_state);
 }
+
+
+size_t
+crypto_secretstream_xchacha20poly1305_abytes(void)
+{
+    return crypto_secretstream_xchacha20poly1305_ABYTES;
+}
+
+size_t
+crypto_secretstream_xchacha20poly1305_initbytes(void)
+{
+    return crypto_secretstream_xchacha20poly1305_INITBYTES;
+}
+
+
+size_t
+crypto_secretstream_xchacha20poly1305_keybytes(void)
+{
+    return crypto_secretstream_xchacha20poly1305_KEYBYTES;
+}
+
+size_t
+crypto_secretstream_xchacha20poly1305_messagesbytes_max(void)
+{
+    return crypto_secretstream_xchacha20poly1305_MESSAGESBYTES_MAX;
+}
+
+unsigned char
+crypto_secretstream_xchacha20poly1305_tag_message(void)
+{
+    return crypto_secretstream_xchacha20poly1305_TAG_MESSAGE;
+}
+
+unsigned char
+crypto_secretstream_xchacha20poly1305_tag_push(void)
+{
+    return crypto_secretstream_xchacha20poly1305_TAG_PUSH;
+}
+
+unsigned char
+crypto_secretstream_xchacha20poly1305_tag_rekey(void)
+{
+    return crypto_secretstream_xchacha20poly1305_TAG_REKEY;
+}
+
+unsigned char
+crypto_secretstream_xchacha20poly1305_tag_final(void)
+{
+    return crypto_secretstream_xchacha20poly1305_TAG_FINAL;
+}

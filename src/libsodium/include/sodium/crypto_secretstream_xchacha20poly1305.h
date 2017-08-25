@@ -16,23 +16,41 @@ extern "C" {
 
 #define crypto_secretstream_xchacha20poly1305_ABYTES \
     (1U + crypto_aead_xchacha20poly1305_ietf_ABYTES)
+SODIUM_EXPORT
+size_t crypto_secretstream_xchacha20poly1305_abytes(void);
 
 #define crypto_secretstream_xchacha20poly1305_INITBYTES \
     crypto_aead_xchacha20poly1305_ietf_NPUBBYTES
+SODIUM_EXPORT
+size_t crypto_secretstream_xchacha20poly1305_initbytes(void);
 
 #define crypto_secretstream_xchacha20poly1305_KEYBYTES \
     crypto_aead_xchacha20poly1305_ietf_KEYBYTES
+SODIUM_EXPORT
+size_t crypto_secretstream_xchacha20poly1305_keybytes(void);
 
 #define crypto_secretstream_xchacha20poly1305_MESSAGESBYTES_MAX \
     ((1ULL << 32) - 2ULL * 64ULL)
+SODIUM_EXPORT
+size_t crypto_secretstream_xchacha20poly1305_messagesbytes_max(void);
 
 #define crypto_secretstream_xchacha20poly1305_TAG_MESSAGE 0x00
+SODIUM_EXPORT
+unsigned char crypto_secretstream_xchacha20poly1305_tag_message(void);
+
 #define crypto_secretstream_xchacha20poly1305_TAG_PUSH    0x01
+SODIUM_EXPORT
+unsigned char crypto_secretstream_xchacha20poly1305_tag_push(void);
+
 #define crypto_secretstream_xchacha20poly1305_TAG_REKEY   0x02
+SODIUM_EXPORT
+unsigned char crypto_secretstream_xchacha20poly1305_tag_rekey(void);
 
 #define crypto_secretstream_xchacha20poly1305_TAG_FINAL \
     (crypto_secretstream_xchacha20poly1305_TAG_PUSH | \
      crypto_secretstream_xchacha20poly1305_TAG_REKEY)
+SODIUM_EXPORT
+unsigned char crypto_secretstream_xchacha20poly1305_tag_final(void);
 
 typedef struct crypto_secretstream_xchacha20poly1305_state {
     unsigned char k[crypto_stream_chacha20_ietf_KEYBYTES];
