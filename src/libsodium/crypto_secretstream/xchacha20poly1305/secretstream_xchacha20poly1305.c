@@ -34,14 +34,18 @@ crypto_secretstream_xchacha20poly1305_init_push
     const unsigned char k[crypto_secretstream_xchacha20poly1305_KEYBYTES])
 {
     COMPILER_ASSERT(crypto_secretstream_xchacha20poly1305_INITBYTES ==
-                    crypto_core_hchacha20_INPUTBYTES + crypto_secretstream_xchacha20poly1305_INONCEBYTES);
+                    crypto_core_hchacha20_INPUTBYTES +
+                    crypto_secretstream_xchacha20poly1305_INONCEBYTES);
+    COMPILER_ASSERT(sizeof state->nonce ==
+                    crypto_secretstream_xchacha20poly1305_INONCEBYTES +
+                    crypto_secretstream_xchacha20poly1305_COUNTERBYTES);
 
     randombytes_buf(out, crypto_secretstream_xchacha20poly1305_INITBYTES);
     crypto_core_hchacha20(state->k, out, k, NULL);
-    memcpy(state->nonce, out + crypto_core_hchacha20_INPUTBYTES,
+    memset(state->nonce, 0, crypto_secretstream_xchacha20poly1305_COUNTERBYTES);
+    memcpy(state->nonce + crypto_secretstream_xchacha20poly1305_COUNTERBYTES,
+           out + crypto_core_hchacha20_INPUTBYTES,
            crypto_secretstream_xchacha20poly1305_INONCEBYTES);
-    memset(state->nonce + crypto_secretstream_xchacha20poly1305_INONCEBYTES, 0,
-           crypto_secretstream_xchacha20poly1305_COUNTERBYTES);
     memset(state->_pad, 0, sizeof state->_pad);
 
     return 0;
@@ -54,10 +58,10 @@ crypto_secretstream_xchacha20poly1305_init_pull
     const unsigned char k[crypto_secretstream_xchacha20poly1305_KEYBYTES])
 {
     crypto_core_hchacha20(state->k, in, k, NULL);
-    memcpy(state->nonce, in + crypto_core_hchacha20_INPUTBYTES,
+    memset(state->nonce, 0, crypto_secretstream_xchacha20poly1305_COUNTERBYTES);
+    memcpy(state->nonce + crypto_secretstream_xchacha20poly1305_COUNTERBYTES,
+           in + crypto_core_hchacha20_INPUTBYTES,
            crypto_secretstream_xchacha20poly1305_INONCEBYTES);
-    memset(state->nonce + crypto_secretstream_xchacha20poly1305_INONCEBYTES, 0,
-           crypto_secretstream_xchacha20poly1305_COUNTERBYTES);
     memset(state->_pad, 0, sizeof state->_pad);
 
     return 0;
@@ -132,10 +136,10 @@ crypto_secretstream_xchacha20poly1305_push
     for (i = 0U; i < crypto_secretstream_xchacha20poly1305_INONCEBYTES; i++) {
         state->nonce[i] ^= mac[i];
     }
-    sodium_increment(&state->nonce[crypto_secretstream_xchacha20poly1305_INONCEBYTES],
+    sodium_increment(&state->nonce[0],
                      crypto_secretstream_xchacha20poly1305_COUNTERBYTES);
     if ((tag & crypto_secretstream_xchacha20poly1305_TAG_REKEY) != 0 ||
-        sodium_is_zero(&state->nonce[crypto_secretstream_xchacha20poly1305_INONCEBYTES],
+        sodium_is_zero(&state->nonce[0],
                        crypto_secretstream_xchacha20poly1305_COUNTERBYTES)) {
         crypto_secretstream_xchacha20poly1305_rekey(state);
     }
@@ -214,10 +218,10 @@ crypto_secretstream_xchacha20poly1305_pull
     for (i = 0U; i < crypto_secretstream_xchacha20poly1305_INONCEBYTES; i++) {
         state->nonce[i] ^= mac[i];
     }
-    sodium_increment(&state->nonce[crypto_secretstream_xchacha20poly1305_INONCEBYTES],
+    sodium_increment(&state->nonce[0],
                      crypto_secretstream_xchacha20poly1305_COUNTERBYTES);
     if ((tag & crypto_secretstream_xchacha20poly1305_TAG_REKEY) != 0 ||
-        sodium_is_zero(&state->nonce[crypto_secretstream_xchacha20poly1305_INONCEBYTES],
+        sodium_is_zero(&state->nonce[0],
                        crypto_secretstream_xchacha20poly1305_COUNTERBYTES)) {
         crypto_secretstream_xchacha20poly1305_rekey(state);
     }
