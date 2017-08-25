@@ -1,4 +1,3 @@
-
 #include <stdint.h>
 #include <stdlib.h>
 #include <limits.h>
@@ -36,6 +35,8 @@ crypto_secretstream_xchacha20poly1305_init_push
     COMPILER_ASSERT(crypto_secretstream_xchacha20poly1305_INITBYTES ==
                     crypto_core_hchacha20_INPUTBYTES +
                     crypto_secretstream_xchacha20poly1305_INONCEBYTES);
+    COMPILER_ASSERT(crypto_secretstream_xchacha20poly1305_INITBYTES ==
+                    crypto_aead_xchacha20poly1305_ietf_NPUBBYTES);
     COMPILER_ASSERT(sizeof state->nonce ==
                     crypto_secretstream_xchacha20poly1305_INONCEBYTES +
                     crypto_secretstream_xchacha20poly1305_COUNTERBYTES);
