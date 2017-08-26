@@ -241,7 +241,6 @@ crypto_secretstream_xchacha20poly1305_statebytes(void)
     return sizeof(crypto_secretstream_xchacha20poly1305_state);
 }
 
-
 size_t
 crypto_secretstream_xchacha20poly1305_abytes(void)
 {
@@ -253,7 +252,6 @@ crypto_secretstream_xchacha20poly1305_initbytes(void)
 {
     return crypto_secretstream_xchacha20poly1305_INITBYTES;
 }
-
 
 size_t
 crypto_secretstream_xchacha20poly1305_keybytes(void)
