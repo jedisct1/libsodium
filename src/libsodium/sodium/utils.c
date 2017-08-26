@@ -648,7 +648,9 @@ sodium_pad(size_t *padded_buflen_p, unsigned char *buf,
         return -1;
     }
     tail = &buf[xpadded_len];
-    *padded_buflen_p = xpadded_len + 1U;
+    if (padded_buflen_p != NULL) {
+        *padded_buflen_p = xpadded_len + 1U;
+    }
     mask = 0U;
     for (i = 0; i < blocksize; i++) {
         barrier_mask = (unsigned char) (((i ^ xpadlen) - 1U) >> 8);

@@ -294,6 +294,8 @@ main(void)
 
         assert(sodium_pad(&bin_padded_len, bin_padded, bin_len,
                           blocksize, bin_padded_maxlen - 1U) == -1);
+        assert(sodium_pad(NULL, bin_padded, bin_len,
+                          blocksize, bin_padded_maxlen + 1U) == 0);
         assert(sodium_pad(&bin_padded_len, bin_padded, bin_len,
                           blocksize, bin_padded_maxlen + 1U) == 0);
         assert(sodium_pad(&bin_padded_len, bin_padded, bin_len,

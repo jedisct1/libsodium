@@ -174,7 +174,25 @@ main(void)
     sodium_free(k);
     sodium_free(header);
     sodium_free(state);
-    
+
+    assert(crypto_secretstream_xchacha20poly1305_abytes() ==
+           crypto_secretstream_xchacha20poly1305_ABYTES);
+    assert(crypto_secretstream_xchacha20poly1305_initbytes() ==
+           crypto_secretstream_xchacha20poly1305_INITBYTES);
+    assert(crypto_secretstream_xchacha20poly1305_keybytes() ==
+           crypto_secretstream_xchacha20poly1305_KEYBYTES);
+    assert(crypto_secretstream_xchacha20poly1305_messagebytes_max() ==
+           crypto_secretstream_xchacha20poly1305_MESSAGEBYTES_MAX);
+
+    assert(crypto_secretstream_xchacha20poly1305_tag_message() ==
+           crypto_secretstream_xchacha20poly1305_TAG_MESSAGE);
+    assert(crypto_secretstream_xchacha20poly1305_tag_push() ==
+           crypto_secretstream_xchacha20poly1305_TAG_PUSH);
+    assert(crypto_secretstream_xchacha20poly1305_tag_rekey() ==
+           crypto_secretstream_xchacha20poly1305_TAG_REKEY);
+    assert(crypto_secretstream_xchacha20poly1305_tag_final() ==
+           crypto_secretstream_xchacha20poly1305_TAG_FINAL);
+
     printf("OK\n");
 
     return 0;
