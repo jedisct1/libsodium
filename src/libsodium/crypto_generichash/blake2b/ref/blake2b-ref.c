@@ -14,6 +14,7 @@
 */
 
 #include <assert.h>
+#include <stddef.h>
 #include <stdint.h>
 #include <stdlib.h>
 #include <string.h>
@@ -160,11 +161,12 @@ static inline int
 blake2b_init0(blake2b_state *S)
 {
     int i;
-    memset(S, 0, sizeof(blake2b_state));
 
     for (i  = 0; i < 8; i++) {
         S->h[i] = blake2b_IV[i];
     }
+    memset(S->t, 0, offsetof(blake2b_state, last_node) + sizeof(S->last_node)
+           - offsetof(blake2b_state, t));
     return 0;
 }
 
