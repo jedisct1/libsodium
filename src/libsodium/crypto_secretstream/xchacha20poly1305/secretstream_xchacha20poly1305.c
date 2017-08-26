@@ -78,10 +78,10 @@ crypto_secretstream_xchacha20poly1305_rekey
     crypto_stream_chacha20_ietf(new_key_and_inonce, sizeof new_key_and_inonce,
                                 state->nonce, state->k);
     memcpy(state->k, new_key_and_inonce, sizeof state->k);
-    memcpy(state->nonce, new_key_and_inonce + sizeof state->k,
+    memset(state->nonce, 0, crypto_secretstream_xchacha20poly1305_COUNTERBYTES);
+    memcpy(state->nonce + crypto_secretstream_xchacha20poly1305_COUNTERBYTES,
+           new_key_and_inonce + sizeof state->k,
            crypto_secretstream_xchacha20poly1305_INONCEBYTES);
-    memset(state->nonce + crypto_secretstream_xchacha20poly1305_INONCEBYTES, 0,
-           crypto_secretstream_xchacha20poly1305_COUNTERBYTES);
 }
 
 int
