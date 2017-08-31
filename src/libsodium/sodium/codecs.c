@@ -215,7 +215,9 @@ sodium_bin2base64(char * const b64, const size_t b64_maxlen,
     while (b64_pos < b64_len) {
         b64[b64_pos++] = '=';
     }
-    b64[b64_pos++] = 0;
+    do {
+        b64[b64_pos++] = 0U;
+    } while (b64_pos < b64_maxlen);
 
     return b64;
 }
