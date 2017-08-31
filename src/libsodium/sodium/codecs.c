@@ -177,10 +177,7 @@ sodium_bin2base64(char * const b64, const size_t b64_maxlen,
         if ((((unsigned int) variant) & VARIANT_NO_PADDING_MASK) == 0U) {
             b64_len += 4;
         } else {
-            b64_len += 2;
-            if (remainder == 2) {
-                b64_len++;
-            }
+            b64_len += 2 + (remainder >> 1);
         }
     }
     if (b64_maxlen <= b64_len) {
