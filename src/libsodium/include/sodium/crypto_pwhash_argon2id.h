@@ -110,6 +110,11 @@ int crypto_pwhash_argon2id_str_verify(const char str[crypto_pwhash_argon2id_STRB
                                       unsigned long long passwdlen)
             __attribute__ ((warn_unused_result));
 
+SODIUM_EXPORT
+int crypto_pwhash_argon2id_str_needs_rehash(const char str[crypto_pwhash_argon2id_STRBYTES],
+                                            unsigned long long opslimit, size_t memlimit)
+            __attribute__ ((warn_unused_result));
+
 #ifdef __cplusplus
 }
 #endif
