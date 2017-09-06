@@ -9,6 +9,7 @@
 #include "argon2-core.h"
 #include "argon2-encoding.h"
 #include "argon2.h"
+#include "crypto_pwhash.h"
 #include "crypto_pwhash_argon2i.h"
 #include "crypto_pwhash_argon2id.h"
 #include "randombytes.h"
@@ -216,22 +217,22 @@ crypto_pwhash_argon2i_str_verify(const char str[crypto_pwhash_argon2i_STRBYTES],
 }
 
 static int
-crypto_pwhash_argon2_str_needs_rehash(const char *str,
-                                      unsigned long long opslimit,
-                                      size_t memlimit, int type)
+_needs_rehash(const char *str, unsigned long long opslimit, size_t memlimit,
+              int type)
 {
     unsigned char  *fodder;
     argon2_context  ctx;
     size_t          fodder_len;
     int             ret = -1;
 
+    fodder_len = strlen(str);
     memlimit /= 1024U;
-    if (opslimit > UINT32_MAX || memlimit > UINT32_MAX) {
+    if (opslimit > UINT32_MAX || memlimit > UINT32_MAX ||
+        fodder_len >= crypto_pwhash_STRBYTES) {
         errno = EINVAL;
         return -1;
     }
     memset(&ctx, 0, sizeof ctx);
-    fodder_len = strlen(str);
     if ((fodder = (unsigned char *) calloc(fodder_len, 1U)) == NULL) {
         return -1;
     }
@@ -257,12 +258,12 @@ int
 crypto_pwhash_argon2i_str_needs_rehash(const char str[crypto_pwhash_argon2i_STRBYTES],
                                        unsigned long long opslimit, size_t memlimit)
 {
-    return crypto_pwhash_argon2_str_needs_rehash(str, opslimit, memlimit, Argon2_i);
+    return _needs_rehash(str, opslimit, memlimit, Argon2_i);
 }
 
 int
 crypto_pwhash_argon2id_str_needs_rehash(const char str[crypto_pwhash_argon2id_STRBYTES],
                                         unsigned long long opslimit, size_t memlimit)
 {
-    return crypto_pwhash_argon2_str_needs_rehash(str, opslimit, memlimit, Argon2_id);
+    return _needs_rehash(str, opslimit, memlimit, Argon2_id);
 }
