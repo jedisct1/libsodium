@@ -55,7 +55,7 @@ crypto_verify_n(const unsigned char *x_, const unsigned char *y_,
     m = _mm_movemask_epi8(_mm_cmpeq_epi32(z, zero));
     v1 = zero; v2 = zero; z = zero;
 
-    return ((m + 1) >> 16) - 1;
+    return (int) (((uint32_t) m + 1U) >> 16) - 1;
 }
 
 #else
