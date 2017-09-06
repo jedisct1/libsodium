@@ -274,6 +274,7 @@ _crypto_pwhash_argon2i_passwd_max 0 1
 _crypto_pwhash_argon2i_passwd_min 0 1
 _crypto_pwhash_argon2i_saltbytes 0 1
 _crypto_pwhash_argon2i_str 0 1
+_crypto_pwhash_argon2i_str_needs_rehash 0 1
 _crypto_pwhash_argon2i_str_verify 0 1
 _crypto_pwhash_argon2i_strbytes 0 1
 _crypto_pwhash_argon2i_strprefix 0 1
@@ -295,6 +296,7 @@ _crypto_pwhash_argon2id_passwd_max 0 1
 _crypto_pwhash_argon2id_passwd_min 0 1
 _crypto_pwhash_argon2id_saltbytes 0 1
 _crypto_pwhash_argon2id_str 0 1
+_crypto_pwhash_argon2id_str_needs_rehash 0 1
 _crypto_pwhash_argon2id_str_verify 0 1
 _crypto_pwhash_argon2id_strbytes 0 1
 _crypto_pwhash_argon2id_strprefix 0 1
@@ -335,6 +337,7 @@ _crypto_pwhash_scryptsalsa208sha256_strbytes 0 1
 _crypto_pwhash_scryptsalsa208sha256_strprefix 0 1
 _crypto_pwhash_str 0 1
 _crypto_pwhash_str_alg 0 1
+_crypto_pwhash_str_needs_rehash 0 1
 _crypto_pwhash_str_verify 0 1
 _crypto_pwhash_strbytes 0 1
 _crypto_pwhash_strprefix 0 1
