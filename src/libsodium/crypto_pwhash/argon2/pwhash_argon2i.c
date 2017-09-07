@@ -218,7 +218,7 @@ crypto_pwhash_argon2i_str_verify(const char str[crypto_pwhash_argon2i_STRBYTES],
 
 static int
 _needs_rehash(const char *str, unsigned long long opslimit, size_t memlimit,
-              int type)
+              argon2_type type)
 {
     unsigned char  *fodder;
     argon2_context  ctx;
