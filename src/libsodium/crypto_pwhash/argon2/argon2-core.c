@@ -289,7 +289,6 @@ index_alpha(const argon2_instance_t *instance,
 void
 fill_memory_blocks(argon2_instance_t *instance)
 {
-    int      result;
     uint32_t r, s;
 
     if (instance == NULL || instance->lanes == 0) {
