@@ -236,10 +236,10 @@ _needs_rehash(const char *str, unsigned long long opslimit, size_t memlimit,
     if ((fodder = (unsigned char *) calloc(fodder_len, 1U)) == NULL) {
         return -1;
     }
-    ctx.salt    = ctx.pwd    = ctx.salt    = ctx.out    = fodder;
-    ctx.saltlen = ctx.pwdlen = ctx.saltlen = ctx.outlen = (uint32_t) fodder_len;
-    ctx.ad      = ctx.secret    = NULL;
-    ctx.adlen   = ctx.secretlen = 0U;
+    ctx.out    = ctx.pwd       = ctx.salt    = fodder;
+    ctx.outlen = ctx.pwdlen    = ctx.saltlen = (uint32_t) fodder_len;
+    ctx.ad     = ctx.secret    = NULL;
+    ctx.adlen  = ctx.secretlen = 0U;
     if (decode_string(&ctx, str, type) != 0) {
         errno = EINVAL;
         ret = -1;
