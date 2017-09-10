@@ -7,7 +7,7 @@ if (bytes > 0) {
         _mm_set_epi8(14, 13, 12, 15, 10, 9, 8, 11, 6, 5, 4, 7, 2, 1, 0, 3);
     uint8_t partialblock[64];
 
-    int     i;
+    unsigned int i;
 
     x_0 = _mm_loadu_si128((__m128i*) (x + 0));
     x_1 = _mm_loadu_si128((__m128i*) (x + 4));
