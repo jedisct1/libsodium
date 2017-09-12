@@ -105,6 +105,34 @@ decode64_uint32(uint32_t *dst, uint32_t dstbits, const uint8_t *src)
     return src;
 }
 
+const uint8_t *
+escrypt_parse_setting(const uint8_t *setting,
+                      uint32_t *N_log2_p, uint32_t *r_p, uint32_t *p_p)
+{
+    const uint8_t *src;
+
+    if (setting[0] != '$' || setting[1] != '7' || setting[2] != '$') {
+        return NULL;
+    }
+    src = setting + 3;
+
+    if (decode64_one(N_log2_p, *src)) {
+        return NULL;
+    }
+    src++;
+
+    src = decode64_uint32(r_p, 30, src);
+    if (!src) {
+        return NULL;
+    }
+
+    src = decode64_uint32(p_p, 30, src);
+    if (!src) {
+        return NULL;
+    }
+    return src;
+}
+
 uint8_t *
 escrypt_r(escrypt_local_t *local, const uint8_t *passwd, size_t passwdlen,
           const uint8_t *setting, uint8_t *buf, size_t buflen)
@@ -122,25 +150,11 @@ escrypt_r(escrypt_local_t *local, const uint8_t *passwd, size_t passwdlen,
     uint32_t       r;
     uint32_t       p;
 
-    if (setting[0] != '$' || setting[1] != '7' || setting[2] != '$') {
+    src = escrypt_parse_setting(setting, &N_log2, &r, &p);
+    if (!src) {
         return NULL;
     }
-    src = setting + 3;
-
-    if (decode64_one(&N_log2, *src)) {
-        return NULL;
-    }
-    src++;
     N = (uint64_t) 1 << N_log2;
-
-    src = decode64_uint32(&r, 30, src);
-    if (!src) {
-        return NULL;
-    }
-    src = decode64_uint32(&p, 30, src);
-    if (!src) {
-        return NULL;
-    }
     prefixlen = src - setting;
 
     salt = src;

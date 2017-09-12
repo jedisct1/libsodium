@@ -254,3 +254,32 @@ crypto_pwhash_scryptsalsa208sha256_str_verify(
 
     return ret;
 }
+
+int
+crypto_pwhash_scryptsalsa208sha256_str_needs_rehash(
+    const char str[crypto_pwhash_scryptsalsa208sha256_STRBYTES],
+    unsigned long long opslimit, size_t memlimit)
+{
+    uint32_t N_log2, N_log2_;
+    uint32_t p, p_;
+    uint32_t r, r_;
+
+    if (pickparams(opslimit, memlimit, &N_log2, &p, &r) != 0) {
+        errno = EINVAL;
+        return -1;
+    }
+    if (memchr(str, 0, crypto_pwhash_scryptsalsa208sha256_STRBYTES) !=
+        &str[crypto_pwhash_scryptsalsa208sha256_STRBYTES - 1U]) {
+        errno = EINVAL;
+        return -1;
+    }
+    if (escrypt_parse_setting((const uint8_t *) str,
+                              &N_log2_, &r_, &p_) == NULL) {
+        errno = EINVAL;
+        return -1;
+    }
+    if (N_log2 != N_log2_ || r != r_ || p != p_) {
+        return 1;
+    }
+    return 0;
+}

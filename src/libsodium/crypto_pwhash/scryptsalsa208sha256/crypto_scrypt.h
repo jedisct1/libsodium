@@ -91,4 +91,8 @@ extern uint8_t *escrypt_gensalt_r(uint32_t __N_log2, uint32_t __r, uint32_t __p,
                                   const uint8_t *__src, size_t __srclen,
                                   uint8_t *__buf, size_t __buflen);
 
+extern const uint8_t *escrypt_parse_setting(const uint8_t *setting,
+                                            uint32_t *N_log2_p, uint32_t *r_p,
+                                            uint32_t *p_p);
+
 #endif /* !_CRYPTO_SCRYPT_H_ */
