@@ -224,17 +224,14 @@ tv3(void)
     } while (++i < (sizeof tests) / (sizeof tests[0]));
 }
 
-int
-main(void)
+static void
+str_tests(void)
 {
     char       *str_out;
     char       *str_out2;
     char       *salt;
     const char *passwd = "Correct Horse Battery Staple";
 
-    tv();
-    tv2();
-    tv3();
     salt     = (char *) sodium_malloc(crypto_pwhash_SALTBYTES);
     str_out  = (char *) sodium_malloc(crypto_pwhash_STRBYTES);
     str_out2 = (char *) sodium_malloc(crypto_pwhash_STRBYTES);
@@ -242,15 +239,25 @@ main(void)
     if (crypto_pwhash_str(str_out, passwd, strlen(passwd), OPSLIMIT,
                           MEMLIMIT) != 0) {
         printf("pwhash_str failure\n");
-        return 1;
     }
     if (crypto_pwhash_str(str_out2, passwd, strlen(passwd), OPSLIMIT,
                           MEMLIMIT) != 0) {
         printf("pwhash_str(2) failure\n");
-        return 1;
     }
     if (strcmp(str_out, str_out2) == 0) {
         printf("pwhash_str() doesn't generate different salts\n");
+    }
+    if (crypto_pwhash_str_needs_rehash(str_out, OPSLIMIT, MEMLIMIT) != 0) {
+        printf("needs_rehash() false positive\n");
+    }
+    if (crypto_pwhash_str_needs_rehash(str_out, OPSLIMIT, MEMLIMIT / 2) != 1 ||
+        crypto_pwhash_str_needs_rehash(str_out, OPSLIMIT / 2, MEMLIMIT) != 1 ||
+        crypto_pwhash_str_needs_rehash(str_out, OPSLIMIT, MEMLIMIT * 2) != 1 ||
+        crypto_pwhash_str_needs_rehash(str_out, OPSLIMIT * 2, MEMLIMIT) != 1) {
+        printf("needs_rehash() false negative\n");
+    }
+    if (crypto_pwhash_str_needs_rehash(str_out + 1, OPSLIMIT, MEMLIMIT) != -1) {
+        printf("needs_rehash() didn't fail with an invalid hash string\n");
     }
     if (sodium_is_zero((const unsigned char *) str_out + strlen(str_out),
                        crypto_pwhash_STRBYTES - strlen(str_out)) != 1 ||
@@ -271,12 +278,10 @@ main(void)
     if (crypto_pwhash_str(str_out2, passwd, 0x100000000ULL, OPSLIMIT,
                           MEMLIMIT) != -1) {
         printf("pwhash_str() with a large password should have failed\n");
-        return 1;
     }
     if (crypto_pwhash_str(str_out2, passwd, strlen(passwd), 1, MEMLIMIT) !=
         -1) {
         printf("pwhash_str() with a small opslimit should have failed\n");
-        return 1;
     }
     if (crypto_pwhash_str_verify("$argon2i$m=65536,t=2,p=1c29tZXNhbHQ"
                                  "$9sTbSlTio3Biev89thdrlKKiCaYsjjYVJxGAL3swxpQ",
@@ -349,13 +354,47 @@ main(void)
             "password", strlen("password")) != -1 || errno != EINVAL) {
         printf("pwhash_str_verify(invalid(11)) failure\n");
     }
-
     assert(crypto_pwhash_str_alg(str_out, "test", 4, OPSLIMIT, MEMLIMIT,
                                  crypto_pwhash_ALG_ARGON2I13) == 0);
     assert(crypto_pwhash_argon2i_str_verify(str_out, "test", 4) == 0);
+    assert(crypto_pwhash_argon2i_str_needs_rehash(str_out,
+                                                  OPSLIMIT, MEMLIMIT) == 0);
+    assert(crypto_pwhash_argon2i_str_needs_rehash(str_out,
+                                                  OPSLIMIT / 2, MEMLIMIT) == 1);
+    assert(crypto_pwhash_argon2i_str_needs_rehash(str_out,
+                                                  OPSLIMIT, MEMLIMIT / 2) == 1);
+    assert(crypto_pwhash_argon2i_str_needs_rehash(str_out, 0, 0) == 1);
+    assert(crypto_pwhash_argon2id_str_needs_rehash(str_out, 0, 0) == -1);
+    assert(crypto_pwhash_argon2i_str_needs_rehash(str_out + 1,
+                                                  OPSLIMIT, MEMLIMIT) == -1);
+    assert(crypto_pwhash_argon2id_str_needs_rehash(str_out, 0, 0) == -1);
+    assert(crypto_pwhash_argon2id_str_needs_rehash("", OPSLIMIT, MEMLIMIT) == -1);
     assert(crypto_pwhash_str_alg(str_out, "test", 4, OPSLIMIT, MEMLIMIT,
                                  crypto_pwhash_ALG_ARGON2ID13) == 0);
     assert(crypto_pwhash_argon2id_str_verify(str_out, "test", 4) == 0);
+    assert(crypto_pwhash_argon2id_str_needs_rehash(str_out,
+                                                   OPSLIMIT, MEMLIMIT) == 0);
+    assert(crypto_pwhash_argon2id_str_needs_rehash(str_out,
+                                                   OPSLIMIT / 2, MEMLIMIT) == 1);
+    assert(crypto_pwhash_argon2id_str_needs_rehash(str_out,
+                                                   OPSLIMIT, MEMLIMIT / 2) == 1);
+    assert(crypto_pwhash_argon2id_str_needs_rehash(str_out, 0, 0) == 1);
+    assert(crypto_pwhash_argon2i_str_needs_rehash(str_out, 0, 0) == -1);
+    assert(crypto_pwhash_argon2id_str_needs_rehash("", OPSLIMIT, MEMLIMIT) == -1);
+    assert(crypto_pwhash_argon2id_str_needs_rehash(str_out + 1,
+                                                   OPSLIMIT, MEMLIMIT) == -1);
+    sodium_free(salt);
+    sodium_free(str_out);
+    sodium_free(str_out2);
+}
+
+int
+main(void)
+{
+    tv();
+    tv2();
+    tv3();
+    str_tests();
 
     assert(crypto_pwhash_bytes_min() > 0U);
     assert(crypto_pwhash_bytes_max() > crypto_pwhash_bytes_min());
@@ -435,10 +474,6 @@ main(void)
     assert(crypto_pwhash_alg_argon2id13() == crypto_pwhash_ALG_ARGON2ID13);
     assert(crypto_pwhash_alg_argon2id13() != crypto_pwhash_alg_argon2i13());
     assert(crypto_pwhash_alg_argon2id13() != crypto_pwhash_alg_default());
-
-    sodium_free(salt);
-    sodium_free(str_out);
-    sodium_free(str_out2);
 
     printf("OK\n");
 
