@@ -23,6 +23,9 @@ main(void)
     (void) sodium_runtime_has_sse3();
     (void) sodium_runtime_has_ssse3();
     (void) sodium_runtime_has_sse41();
+    (void) sodium_runtime_has_avx();
+    (void) sodium_runtime_has_avx2();
+    (void) sodium_runtime_has_avx512f();
     (void) sodium_runtime_has_pclmul();
     (void) sodium_runtime_has_aesni();
 
