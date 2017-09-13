@@ -40,7 +40,7 @@ enum poly1305_state_flags_t {
     poly1305_final_shift8  = 4,
     poly1305_final_shift16 = 8,
     poly1305_final_r2_r    = 16, /* use [r^2,r] for the final block */
-    poly1305_final_r_1     = 32, /* use [r,1] for the final block */
+    poly1305_final_r_1     = 32  /* use [r,1] for the final block */
 };
 
 typedef struct poly1305_state_internal_t {
