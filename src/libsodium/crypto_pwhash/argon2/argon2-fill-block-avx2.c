@@ -148,7 +148,7 @@ fill_segment_avx2(const argon2_instance_t *instance,
     uint64_t  pseudo_rand, ref_index, ref_lane;
     uint32_t  prev_offset, curr_offset;
     uint32_t  starting_index, i;
-    __m256i   state[32];
+    __m256i   state[ARGON2_HWORDS_IN_BLOCK];
     int       data_independent_addressing = 1;
 
     /* Pseudo-random values that determine the reference block position */
