@@ -434,6 +434,25 @@ return _mm256_movemask_ps(_mm256_cmp_ps(x, y, _CMP_NEQ_OQ));
   CFLAGS="$oldcflags"
 
   oldcflags="$CFLAGS"
+  AX_CHECK_COMPILE_FLAG([-mavx512f], [CFLAGS="$CFLAGS -mavx512f"])
+  AC_MSG_CHECKING(for AVX512F instructions set)
+  AC_COMPILE_IFELSE([AC_LANG_PROGRAM([[
+#ifdef __native_client__
+# error NativeClient detected - Avoiding AVX512F opcodes
+#endif
+#pragma GCC target("avx512f")
+#include <immintrin.h>
+]], [[
+__m512i x = _mm512_setzero_epi32();
+__m512i y = _mm512_permutexvar_epi64(_mm512_setr_epi64(0, 1, 4, 5, 2, 3, 6, 7), x);
+]])],
+    [AC_MSG_RESULT(yes)
+     AC_DEFINE([HAVE_AVX512FINTRIN_H], [1], [AVX512F is available])
+     AX_CHECK_COMPILE_FLAG([-mavx512f], [CFLAGS_AVX512F="-mavx512f"])],
+    [AC_MSG_RESULT(no)])
+  CFLAGS="$oldcflags"
+
+  oldcflags="$CFLAGS"
   AX_CHECK_COMPILE_FLAG([-maes], [CFLAGS="$CFLAGS -maes"])
   AX_CHECK_COMPILE_FLAG([-mpclmul], [CFLAGS="$CFLAGS -mpclmul"])
   AC_MSG_CHECKING(for AESNI instructions set and PCLMULQDQ)
@@ -463,6 +482,7 @@ AC_SUBST(CFLAGS_SSSE3)
 AC_SUBST(CFLAGS_SSE41)
 AC_SUBST(CFLAGS_AVX)
 AC_SUBST(CFLAGS_AVX2)
+AC_SUBST(CFLAGS_AVX512F)
 AC_SUBST(CFLAGS_AESNI)
 AC_SUBST(CFLAGS_PCLMUL)
 

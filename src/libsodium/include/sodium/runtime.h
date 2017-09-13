@@ -30,6 +30,9 @@ SODIUM_EXPORT __attribute__((weak))
 int sodium_runtime_has_avx2(void);
 
 SODIUM_EXPORT __attribute__((weak))
+int sodium_runtime_has_avx512f(void);
+
+SODIUM_EXPORT __attribute__((weak))
 int sodium_runtime_has_pclmul(void);
 
 SODIUM_EXPORT __attribute__((weak))

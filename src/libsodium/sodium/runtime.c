@@ -16,6 +16,7 @@ typedef struct CPUFeatures_ {
     int has_sse41;
     int has_avx;
     int has_avx2;
+    int has_avx512f;
     int has_pclmul;
     int has_aesni;
 } CPUFeatures;
@@ -23,6 +24,7 @@ typedef struct CPUFeatures_ {
 static CPUFeatures _cpu_features;
 
 #define CPUID_EBX_AVX2    0x00000020
+#define CPUID_EBX_AVX512F 0x00010000
 
 #define CPUID_ECX_SSE3    0x00000001
 #define CPUID_ECX_PCLMUL  0x00000002
@@ -176,6 +178,16 @@ _sodium_runtime_intel_cpu_features(CPUFeatures * const cpu_features)
     }
 #endif
 
+    cpu_features->has_avx512f = 0;
+#ifdef HAVE_AVX512FINTRIN_H
+    if (cpu_features->has_avx2) {
+        unsigned int cpu_info7[4];
+
+        _cpuid(cpu_info7, 0x00000007);
+        cpu_features->has_avx512f = ((cpu_info7[1] & CPUID_EBX_AVX512F) != 0x0);
+    }
+#endif
+
 #ifdef HAVE_WMMINTRIN_H
     cpu_features->has_pclmul = ((cpu_info[2] & CPUID_ECX_PCLMUL) != 0x0);
     cpu_features->has_aesni  = ((cpu_info[2] & CPUID_ECX_AESNI) != 0x0);
@@ -239,6 +251,12 @@ int
 sodium_runtime_has_avx2(void)
 {
     return _cpu_features.has_avx2;
+}
+
+int
+sodium_runtime_has_avx512f(void)
+{
+    return _cpu_features.has_avx512f;
 }
 
 int
