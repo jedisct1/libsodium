@@ -79,7 +79,7 @@ randombytes_sysrandom_stir(void)
 static void
 randombytes_sysrandom_buf(void * const buf, const size_t size)
 {
-    return arc4random_buf(buf, size);
+    arc4random_buf(buf, size);
 }
 
 static int
