@@ -75,7 +75,7 @@ void tv(void)
     crypto_stream_chacha20_xor_ic(out, out, sizeof out, nonce, 1U, key);
     sodium_bin2hex(out_hex, sizeof out_hex, out, sizeof out);
     printf("[%s]\n", out_hex);
-};
+}
 
 static
 void tv_ietf(void)
@@ -163,7 +163,7 @@ void tv_ietf(void)
     crypto_stream_chacha20_ietf_xor_ic(out, out, sizeof out, nonce, 1U, key);
     sodium_bin2hex(out_hex, sizeof out_hex, out, sizeof out);
     printf("[%s]\n", out_hex);
-};
+}
 
 int
 main(void)
