@@ -22,7 +22,6 @@ main(void)
     const char    *hex_end;
     size_t         b64_len;
     size_t         bin_len, bin_len2;
-    size_t         hex_len;
     size_t         bin_padded_len;
     size_t         bin_padded_maxlen;
     size_t         blocksize;
