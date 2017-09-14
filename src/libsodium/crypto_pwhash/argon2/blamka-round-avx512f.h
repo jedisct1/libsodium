@@ -6,7 +6,7 @@
 
 #define ror64(x, n) _mm512_ror_epi64((x), (n))
 
-static __m512i
+static inline __m512i
 muladd(__m512i x, __m512i y)
 {
     __m512i z = _mm512_mul_epu32(x, y);
