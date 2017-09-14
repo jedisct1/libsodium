@@ -589,6 +589,13 @@ int
 argon2_pick_best_implementation(void)
 {
 /* LCOV_EXCL_START */
+#if defined(HAVE_AVX512FINTRIN_H) && defined(HAVE_AVX2INTRIN_H) && \
+    defined(HAVE_TMMINTRIN_H) && defined(HAVE_SMMINTRIN_H)
+    if (sodium_runtime_has_avx512f()) {
+        fill_segment = fill_segment_avx512f;
+        return 0;
+    }
+#endif
 #if defined(HAVE_AVX2INTRIN_H) && defined(HAVE_TMMINTRIN_H) && \
     defined(HAVE_SMMINTRIN_H)
     if (sodium_runtime_has_avx2()) {

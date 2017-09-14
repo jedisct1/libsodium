@@ -119,6 +119,7 @@
     <ClCompile Include="..\..\..\..\src\libsodium\crypto_pwhash\argon2\argon2-core.c" />
     <ClCompile Include="..\..\..\..\src\libsodium\crypto_pwhash\argon2\argon2-encoding.c" />
     <ClCompile Include="..\..\..\..\src\libsodium\crypto_pwhash\argon2\argon2-fill-block-avx2.c" />
+    <ClCompile Include="..\..\..\..\src\libsodium\crypto_pwhash\argon2\argon2-fill-block-avx512f.c" />
     <ClCompile Include="..\..\..\..\src\libsodium\crypto_pwhash\argon2\argon2-fill-block-ref.c" />
     <ClCompile Include="..\..\..\..\src\libsodium\crypto_pwhash\argon2\argon2-fill-block-ssse3.c" />
     <ClCompile Include="..\..\..\..\src\libsodium\crypto_pwhash\argon2\argon2.c" />
@@ -208,6 +209,7 @@
     <ClInclude Include="..\..\..\..\src\libsodium\crypto_pwhash\argon2\argon2.h" />
     <ClInclude Include="..\..\..\..\src\libsodium\crypto_pwhash\argon2\blake2b-long.h" />
     <ClInclude Include="..\..\..\..\src\libsodium\crypto_pwhash\argon2\blamka-round-avx2.h" />
+    <ClInclude Include="..\..\..\..\src\libsodium\crypto_pwhash\argon2\blamka-round-avx512f.h" />
     <ClInclude Include="..\..\..\..\src\libsodium\crypto_pwhash\argon2\blamka-round-ref.h" />
     <ClInclude Include="..\..\..\..\src\libsodium\crypto_pwhash\argon2\blamka-round-ssse3.h" />
     <ClInclude Include="..\..\..\..\src\libsodium\crypto_pwhash\scryptsalsa208sha256\crypto_scrypt.h" />
@@ -306,6 +308,7 @@
     <ClInclude Include="..\..\..\..\src\libsodium\include\sodium\randombytes_sysrandom.h" />
     <ClInclude Include="..\..\..\..\src\libsodium\include\sodium\runtime.h" />
     <ClInclude Include="..\..\..\..\src\libsodium\include\sodium\utils.h" />
+    <ClInclude Include="..\..\..\..\src\libsodium\include\sodium\version.h" />
     <ClInclude Include="..\..\..\..\src\libsodium\include\sodium\private\common.h" />
     <ClInclude Include="..\..\..\..\src\libsodium\include\sodium\private\curve25519_ref10.h" />
     <ClInclude Include="..\..\..\..\src\libsodium\include\sodium\private\implementations.h" />

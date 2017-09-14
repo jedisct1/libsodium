@@ -150,6 +150,9 @@
     <ClCompile Include="..\..\..\..\src\libsodium\crypto_pwhash\argon2\argon2-fill-block-avx2.c">
       <Filter>crypto_pwhash\argon2</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\..\..\src\libsodium\crypto_pwhash\argon2\argon2-fill-block-avx512f.c">
+      <Filter>crypto_pwhash\argon2</Filter>
+    </ClCompile>
     <ClCompile Include="..\..\..\..\src\libsodium\crypto_pwhash\argon2\argon2-fill-block-ref.c">
       <Filter>crypto_pwhash\argon2</Filter>
     </ClCompile>
@@ -411,6 +414,9 @@
       <Filter>crypto_pwhash\argon2</Filter>
     </ClInclude>
     <ClInclude Include="..\..\..\..\src\libsodium\crypto_pwhash\argon2\blamka-round-avx2.h">
+      <Filter>crypto_pwhash\argon2</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\src\libsodium\crypto_pwhash\argon2\blamka-round-avx512f.h">
       <Filter>crypto_pwhash\argon2</Filter>
     </ClInclude>
     <ClInclude Include="..\..\..\..\src\libsodium\crypto_pwhash\argon2\blamka-round-ref.h">
@@ -705,6 +711,9 @@
       <Filter>include\sodium</Filter>
     </ClInclude>
     <ClInclude Include="..\..\..\..\src\libsodium\include\sodium\utils.h">
+      <Filter>include\sodium</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\src\libsodium\include\sodium\version.h">
       <Filter>include\sodium</Filter>
     </ClInclude>
     <ClInclude Include="..\..\..\..\src\libsodium\include\sodium\private\common.h">

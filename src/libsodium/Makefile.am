@@ -26,6 +26,7 @@ libsodium_la_SOURCES = \
 	crypto_generichash/blake2b/ref/blake2b-load-sse2.h \
 	crypto_generichash/blake2b/ref/blake2b-load-sse41.h \
 	crypto_generichash/blake2b/ref/blake2b-load-avx2.h \
+	crypto_generichash/blake2b/ref/blake2b-load-avx512f.h \
 	crypto_generichash/blake2b/ref/blake2b-ref.c \
 	crypto_generichash/blake2b/ref/generichash_blake2b.c \
 	crypto_hash/crypto_hash.c \
@@ -208,8 +209,8 @@ endif
 SUBDIRS = \
 	include
 
-libsodium_la_LIBADD = libaesni.la libsse2.la libssse3.la libsse41.la libavx2.la
-noinst_LTLIBRARIES =  libaesni.la libsse2.la libssse3.la libsse41.la libavx2.la
+libsodium_la_LIBADD = libaesni.la libsse2.la libssse3.la libsse41.la libavx2.la libavx512f.la
+noinst_LTLIBRARIES =  libaesni.la libsse2.la libssse3.la libsse41.la libavx2.la libavx512f.la
 
 libaesni_la_LDFLAGS = $(libsodium_la_LDFLAGS)
 libaesni_la_CPPFLAGS = $(libsodium_la_CPPFLAGS) \
@@ -275,3 +276,10 @@ libavx2_la_SOURCES = \
 	crypto_stream/salsa20/xmm6int/u1.h \
 	crypto_stream/salsa20/xmm6int/u4.h \
 	crypto_stream/salsa20/xmm6int/u8.h
+
+libavx512f_la_LDFLAGS = $(libsodium_la_LDFLAGS)
+libavx512f_la_CPPFLAGS = $(libsodium_la_CPPFLAGS) \
+	@CFLAGS_SSE2@ @CFLAGS_SSSE3@ @CFLAGS_SSE41@ @CFLAGS_AVX@ @CFLAGS_AVX2@ @CFLAGS_AVX512F@
+libavx512f_la_SOURCES = \
+	crypto_pwhash/argon2/argon2-fill-block-avx512f.c \
+	crypto_pwhash/argon2/blamka-round-avx512f.h
