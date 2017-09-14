@@ -35,7 +35,7 @@ tv_hchacha20(void)
     unsigned char     *in;
     unsigned char     *out;
     unsigned char     *out2;
-    int                i;
+    size_t             i;
 
     constant = (unsigned char *) sodium_malloc(crypto_core_hchacha20_CONSTBYTES);
     key = (unsigned char *) sodium_malloc(crypto_core_hchacha20_KEYBYTES);
@@ -108,7 +108,7 @@ tv_stream_xchacha20(void)
     unsigned char     *out;
     unsigned char     *out2;
     size_t             out_len;
-    int                i;
+    size_t             i;
 
     key = (unsigned char *) sodium_malloc(crypto_stream_xchacha20_KEYBYTES);
     nonce = (unsigned char *) sodium_malloc(crypto_stream_xchacha20_NONCEBYTES);
@@ -217,7 +217,6 @@ tv_secretbox_xchacha20poly1305(void)
     unsigned char             *out;
     unsigned char             *out2;
     size_t                     m_len;
-    size_t                     out_len;
     size_t                     n;
     int                        i;
 
@@ -386,8 +385,8 @@ tv_box_xchacha20poly1305(void)
 
     seed = (unsigned char *) sodium_malloc
         (crypto_box_curve25519xchacha20poly1305_SEEDBYTES);
-    for (i = 0; i < crypto_box_curve25519xchacha20poly1305_SEEDBYTES; i++) {
-        seed[i] = i;
+    for (i = 0; i <(int)  crypto_box_curve25519xchacha20poly1305_SEEDBYTES; i++) {
+        seed[i] = (unsigned char) i;
     }
     crypto_box_curve25519xchacha20poly1305_seed_keypair(pk, sk, seed);
     sodium_bin2hex(hex, sizeof hex, pk, crypto_box_curve25519xchacha20poly1305_PUBLICKEYBYTES);
