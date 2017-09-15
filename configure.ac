@@ -274,7 +274,7 @@ AX_CHECK_COMPILE_FLAG([$CWFLAGS -Wextra], [CWFLAGS="$CWFLAGS -Wextra"])
 AC_MSG_CHECKING(for clang)
 AC_COMPILE_IFELSE([AC_LANG_PROGRAM([[]], [[
 #ifndef __clang__
-be sad
+#error Not clang
 #endif
 ]])],
   [AC_MSG_RESULT(yes)
@@ -312,7 +312,7 @@ AX_CHECK_LINK_FLAG([-Wl,-z,noexecstack], [LDFLAGS="$LDFLAGS -Wl,-z,noexecstack"]
 AC_MSG_CHECKING(for a broken clang + AVX512 combination)
 AC_COMPILE_IFELSE([AC_LANG_PROGRAM([[]], [[
 #if !(defined(__AVX512F__) && defined(__clang__) && __clang_major__ < 4)
-Not a broken clang + AVX512 combination
+#error Not a broken clang + AVX512 combination
 #endif
 ]])],
   [AC_MSG_RESULT(yes - disabling AVX512 optimizations)
