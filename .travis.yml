@@ -10,17 +10,24 @@ compiler:
  - gcc
  - g++
 
+addons:
+  apt:
+    packages:
+      - tcc
+
 before_script:
  - ./autogen.sh
+ - env CC=tcc CFLAGS='-w' ./configure --disable-dependency-tracking --disable-shared && make -j $(nproc) check && make install
+ - ./test/constcheck.sh
+ - make distclean
 
 script:
  - ./configure --disable-dependency-tracking
- - >
-   if [ "$TRAVIS_OS_NAME" = 'linux' -a "$CC" = 'gcc' ]; then make CFLAGS='-g0' > /dev/null && cp src/libsodium/.libs/libsodium.so lib.so && make clean > /dev/null && make CFLAGS='-g0' CPPFLAGS='-DSODIUM_C99\(X\)=' > /dev/null && cp src/libsodium/.libs/libsodium.so lib-oldc.so && cmp lib.so lib-oldc.so && echo No binary changes && make clean > /dev/null ; fi
- - make distcheck
+ - if [ "$TRAVIS_OS_NAME" = 'linux' -a "$CC" = 'gcc' ]; then make -j $(nproc) CFLAGS='-g0' > /dev/null && cp src/libsodium/.libs/libsodium.so lib.so && make clean > /dev/null && make CFLAGS='-g0' CPPFLAGS='-DSODIUM_C99\(X\)=' > /dev/null && cp src/libsodium/.libs/libsodium.so lib-oldc.so && cmp lib.so lib-oldc.so && echo No binary changes && make clean > /dev/null ; fi
+ - make -j $(nproc) distcheck
  - make distclean > /dev/null
  - ./configure --disable-dependency-tracking --enable-minimal
- - make distcheck
+ - make -j $(nproc) distcheck
  - ( echo '#include <sodium.h>' ; echo 'int main(void) { return sodium_init(); }' ) > /tmp/main.c && gcc -Isrc/libsodium/include -Isrc/libsodium/include/sodium $(find src -name '*.c' -o -name '*.S') /tmp/main.c
 
 env:
