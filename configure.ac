@@ -242,6 +242,15 @@ AS_CASE([$host_os],
     AX_CHECK_LINK_FLAG([-Wl,--nxcompat], [LDFLAGS="$LDFLAGS -Wl,--nxcompat"])
   ])
 
+AS_CASE([$host_os],
+  [cygwin*|mingw*|msys|pw32*|cegcc*], [
+    AX_CHECK_COMPILE_FLAG([-fno-asynchronous-unwind-tables], [
+      AX_CHECK_LINK_FLAG([-fno-asynchronous-unwind-tables],
+        [CFLAGS="$CFLAGS -fno-asynchronous-unwind-tables"]
+      )
+    ])
+])
+
 AS_IF([test "x$enable_ssp" != "xno"],[
 
 AS_CASE([$host_os],
