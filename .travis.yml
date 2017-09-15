@@ -10,12 +10,6 @@ compiler:
  - gcc
  - g++
 
-addons:
-  apt:
-    packages:
-      - tcc
-      - libtcc-dev
-
 before_script:
  - ./autogen.sh
  - env CC=tcc CFLAGS='-w' ./configure --disable-dependency-tracking --disable-shared || cat config.log
@@ -37,6 +31,10 @@ env:
    - secure: "OyX+ypmU5NLRiSsIg1HvaGYvlaHSN2S/0AyCIQt63PNdcG7o1xa9Sv1Tcujr/xuvSvNbchNVEyBvCbNgqp/R8kRRhNPqFo2pxMMjkEKrJQqOm8sjvwMqTV4k6axEq+WwKylQaNJSDq1G9n5J/s7hlVPaiKAjsOPKnMN5ThNAr8o="
 
 addons:
+  apt:
+    packages:
+      - tcc
+      - libtcc-dev
   coverity_scan:
     project:
       name: jedisct1/libsodium
