@@ -163,9 +163,8 @@ crypto_pwhash_str_alg(char out[crypto_pwhash_STRBYTES],
     case crypto_pwhash_ALG_ARGON2ID13:
         return crypto_pwhash_argon2id_str(out, passwd, passwdlen,
                                           opslimit, memlimit);
-    default:
-        sodium_misuse();
     }
+    sodium_misuse();
 }
 
 int
