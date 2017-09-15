@@ -242,6 +242,13 @@ AS_CASE([$host_os],
     AX_CHECK_LINK_FLAG([-Wl,--nxcompat], [LDFLAGS="$LDFLAGS -Wl,--nxcompat"])
   ])
 
+AS_CASE([$host_os],
+  [cygwin*|mingw*|msys|pw32*|cegcc*], [
+    AX_CHECK_COMPILE_FLAG([-mno-avx512f], [
+      [CFLAGS="$CFLAGS -mno-avx512f"]
+    ])
+])
+
 AS_IF([test "x$enable_ssp" != "xno"],[
 
 AS_CASE([$host_os],
@@ -449,7 +456,7 @@ return _mm256_movemask_ps(_mm256_cmp_ps(x, y, _CMP_NEQ_OQ));
   oldcflags="$CFLAGS"
   AX_CHECK_COMPILE_FLAG([-mavx512f], [CFLAGS="$CFLAGS -mavx512f"])
   AC_MSG_CHECKING(for AVX512F instructions set)
-  AC_LINK_IFELSE([AC_LANG_PROGRAM([[
+  AC_COMPILE_IFELSE([AC_LANG_PROGRAM([[
 #ifdef __native_client__
 # error NativeClient detected - Avoiding AVX512F opcodes
 #endif
