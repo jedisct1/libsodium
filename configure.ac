@@ -244,8 +244,8 @@ AS_CASE([$host_os],
 
 AS_CASE([$host_os],
   [cygwin*|mingw*|msys|pw32*|cegcc*], [
-    AX_CHECK_COMPILE_FLAG([-mno-avx512f], [
-      [CFLAGS="$CFLAGS -mno-avx512f"]
+    AX_CHECK_COMPILE_FLAG([-fno-asynchronous-unwind-tables], [
+      [CFLAGS="$CFLAGS -fno-asynchronous-unwind-tables"]
     ])
 ])
 
@@ -459,9 +459,6 @@ return _mm256_movemask_ps(_mm256_cmp_ps(x, y, _CMP_NEQ_OQ));
   AC_COMPILE_IFELSE([AC_LANG_PROGRAM([[
 #ifdef __native_client__
 # error NativeClient detected - Avoiding AVX512F opcodes
-#endif
-#ifdef __MINGW32__
-# error MingW detected - Avoiding AVX512F opcodes
 #endif
 #pragma GCC target("avx512f")
 #include <immintrin.h>
