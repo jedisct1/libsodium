@@ -167,6 +167,9 @@ AC_ARG_ENABLE(opt,
   AS_IF([test "x$enableval" = "xyes"], [
     AX_CHECK_COMPILE_FLAG([-Ofast], [CFLAGS="$CFLAGS -Ofast"])
     AX_CHECK_COMPILE_FLAG([-march=native], [CFLAGS="$CFLAGS -march=native"])
+    AX_CHECK_COMPILE_FLAG([-fno-asynchronous-unwind-tables], [
+      [CFLAGS="$CFLAGS -fno-asynchronous-unwind-tables"]
+    ])
   ])
 ])
 
@@ -245,9 +248,7 @@ AS_CASE([$host_os],
 AS_CASE([$host_os],
   [cygwin*|mingw*|msys|pw32*|cegcc*], [
     AX_CHECK_COMPILE_FLAG([-fno-asynchronous-unwind-tables], [
-      AX_CHECK_LINK_FLAG([-fno-asynchronous-unwind-tables],
-        [CFLAGS="$CFLAGS -fno-asynchronous-unwind-tables"]
-      )
+      [CFLAGS="$CFLAGS -fno-asynchronous-unwind-tables"]
     ])
 ])
 
