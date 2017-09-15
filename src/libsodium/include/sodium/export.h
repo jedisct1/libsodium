@@ -11,6 +11,7 @@
 
 #ifdef SODIUM_STATIC
 # define SODIUM_EXPORT
+# define SODIUM_EXPORT_WEAK
 #else
 # if defined(_MSC_VER)
 #  ifdef SODIUM_DLL_EXPORT
@@ -30,6 +31,11 @@
 #  else
 #   define SODIUM_EXPORT __attribute__ ((visibility ("default")))
 #  endif
+# endif
+# ifdef __ELF__
+#  define SODIUM_EXPORT_WEAK SODIUM_EXPORT __attribute__((weak))
+# else
+#  define SODIUM_EXPORT_WEAK SODIUM_EXPORT
 # endif
 #endif
 
