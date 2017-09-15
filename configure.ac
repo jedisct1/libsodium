@@ -460,6 +460,9 @@ return _mm256_movemask_ps(_mm256_cmp_ps(x, y, _CMP_NEQ_OQ));
 #ifdef __native_client__
 # error NativeClient detected - Avoiding AVX512F opcodes
 #endif
+#ifdef __MINGW32__
+# error MingW detected - Avoiding AVX512F opcodes
+#endif
 #pragma GCC target("avx512f")
 #include <immintrin.h>
 ]], [[
