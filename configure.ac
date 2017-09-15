@@ -167,9 +167,6 @@ AC_ARG_ENABLE(opt,
   AS_IF([test "x$enableval" = "xyes"], [
     AX_CHECK_COMPILE_FLAG([-Ofast], [CFLAGS="$CFLAGS -Ofast"])
     AX_CHECK_COMPILE_FLAG([-march=native], [CFLAGS="$CFLAGS -march=native"])
-    AX_CHECK_COMPILE_FLAG([-fno-asynchronous-unwind-tables], [
-      [CFLAGS="$CFLAGS -fno-asynchronous-unwind-tables"]
-    ])
   ])
 ])
 
@@ -244,13 +241,6 @@ AS_CASE([$host_os],
     AX_CHECK_LINK_FLAG([-Wl,--high-entropy-va], [LDFLAGS="$LDFLAGS -Wl,--high-entropy-va"])
     AX_CHECK_LINK_FLAG([-Wl,--nxcompat], [LDFLAGS="$LDFLAGS -Wl,--nxcompat"])
   ])
-
-AS_CASE([$host_os],
-  [cygwin*|mingw*|msys|pw32*|cegcc*], [
-    AX_CHECK_COMPILE_FLAG([-fno-asynchronous-unwind-tables], [
-      [CFLAGS="$CFLAGS -fno-asynchronous-unwind-tables"]
-    ])
-])
 
 AS_IF([test "x$enable_ssp" != "xno"],[
 
@@ -459,7 +449,7 @@ return _mm256_movemask_ps(_mm256_cmp_ps(x, y, _CMP_NEQ_OQ));
   oldcflags="$CFLAGS"
   AX_CHECK_COMPILE_FLAG([-mavx512f], [CFLAGS="$CFLAGS -mavx512f"])
   AC_MSG_CHECKING(for AVX512F instructions set)
-  AC_COMPILE_IFELSE([AC_LANG_PROGRAM([[
+  AC_LINK_IFELSE([AC_LANG_PROGRAM([[
 #ifdef __native_client__
 # error NativeClient detected - Avoiding AVX512F opcodes
 #endif
