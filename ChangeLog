@@ -37,6 +37,11 @@ decoding (`sodium_base642bin()`) have been implemented.
 and multi-part messages.
  - The `sodium_pad()` and `sodium_unpad()` helper functions have been
 added in order to add & remove padding.
+ - An AVX512 optimized implementation of Argon2 has been added (written
+by Ondrej Mosnáček, thanks!)
+ - The `crypto_pwhash_str_needs_rehash()` function was added to check if
+a password hash string matches the given parameters, or if it needs an
+update.
 
 * Version 1.0.13
  - Javascript: the sumo builds now include all symbols. They were
