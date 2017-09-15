@@ -10,11 +10,12 @@ compiler:
  - gcc
  - g++
 
-before_script:
+install:
  - ./autogen.sh
  - env CC=tcc CFLAGS='-w' ./configure --prefix=/tmp --disable-dependency-tracking --disable-shared || cat config.log
  - make -j $(nproc) && make check && make install
  - env CC=tcc CPPFLAGS='-I/tmp/include' LDFLAGS='-L/tmp/lib' LD_LIBRARY_PATH='/tmp/lib' ./test/constcheck.sh
+ - make uninstall
  - make distclean
 
 script:
