@@ -14,6 +14,7 @@ addons:
   apt:
     packages:
       - tcc
+      - libtcc-dev
 
 before_script:
  - ./autogen.sh
