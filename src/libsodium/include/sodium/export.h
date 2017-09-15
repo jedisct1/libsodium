@@ -32,7 +32,7 @@
 #   define SODIUM_EXPORT __attribute__ ((visibility ("default")))
 #  endif
 # endif
-# ifdef __ELF__
+# if defined(__ELF__) && !defined(SODIUM_DISABLE_WEAK_FUNCTIONS)
 #  define SODIUM_EXPORT_WEAK SODIUM_EXPORT __attribute__((weak))
 # else
 #  define SODIUM_EXPORT_WEAK SODIUM_EXPORT
