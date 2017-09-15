@@ -302,6 +302,19 @@ AX_CHECK_LINK_FLAG([-Wl,-z,relro], [LDFLAGS="$LDFLAGS -Wl,-z,relro"])
 AX_CHECK_LINK_FLAG([-Wl,-z,now], [LDFLAGS="$LDFLAGS -Wl,-z,now"])
 AX_CHECK_LINK_FLAG([-Wl,-z,noexecstack], [LDFLAGS="$LDFLAGS -Wl,-z,noexecstack"])
 
+AC_MSG_CHECKING(for a broken clang + AVX512 combination)
+AC_COMPILE_IFELSE([AC_LANG_PROGRAM([[]], [[
+#if !(defined(__AVX512F__) && defined(__clang__) && __clang_major__ < 4)
+Not a broken clang + AVX512 combination
+#endif
+]])],
+  [AC_MSG_RESULT(yes - disabling AVX512 optimizations)
+   AX_CHECK_COMPILE_FLAG([$CFLAGS -mno-avx512f],
+     [CFLAGS="$CFLAGS -mno-avx512f"])
+  ],
+  [AC_MSG_RESULT(no)
+])
+
 AX_CHECK_CATCHABLE_SEGV
 
 LT_INIT
