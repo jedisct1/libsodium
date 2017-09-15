@@ -47,8 +47,10 @@ main(void)
         do {
             crypto_core_salsa20(output + pos, in, secondkey, c);
             pos += 64;
-        } while (++in[8]);
-    } while (++in[9]);
+            in[8]++;
+        } while (in[8] != 0);
+        in[9]++;
+    } while (in[9] != 0);
 
     crypto_hash_sha256(h, output, output_len);
 
