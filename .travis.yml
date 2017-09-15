@@ -18,7 +18,8 @@ addons:
 
 before_script:
  - ./autogen.sh
- - env CC=tcc CFLAGS='-w' ./configure --disable-dependency-tracking --disable-shared && make -j $(nproc) check && make install
+ - env CC=tcc CFLAGS='-w' ./configure --disable-dependency-tracking --disable-shared || cat config.log
+ - make -j $(nproc) check && make install
  - ./test/constcheck.sh
  - make distclean
 
