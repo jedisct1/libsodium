@@ -13,7 +13,7 @@ for macro in $(egrep -r '#define crypto_.*BYTES(_[A-Z]+)? ' src/libsodium/includ
 done
 echo "return 0; }" >> "$CT"
 
-cc "$CT" -lsodium || exit 1
+${CC:-cc} "$CT" $CPPFLAGS $CFLAGS $LDFLAGS -lsodium || exit 1
 ./a.out || exit 1
 rm -f a.out "$CT"
 

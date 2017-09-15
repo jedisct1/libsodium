@@ -12,9 +12,9 @@ compiler:
 
 before_script:
  - ./autogen.sh
- - env CC=tcc CFLAGS='-w' ./configure --disable-dependency-tracking --disable-shared || cat config.log
+ - env CC=tcc CFLAGS='-w' ./configure --prefix=/tmp --disable-dependency-tracking --disable-shared || cat config.log
  - make -j $(nproc) && make check && make install
- - ./test/constcheck.sh
+ - env CC=tcc CPPFLAGS='-I/tmp/include' LDFLAGS='-L/tmp/lib' LD_LIBRARY_PATH='/tmp/lib' ./test/constcheck.sh
  - make distclean
 
 script:
