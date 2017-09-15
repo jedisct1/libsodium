@@ -2,7 +2,8 @@
 #define TEST_NAME "misuse"
 #include "cmptest.h"
 
-#include <signal.h>
+#if defined(SIGABRT) && (defined(__APPLE__) || defined(__OpenBSD__))
+# include <signal.h>
 
 static void
 sigabrt_handler_6(int sig)
@@ -63,7 +64,6 @@ sigabrt_handler_1(int sig)
     exit(1);
 }
 
-#if defined(SIGABRT) && (defined(__APPLE__) || defined(__OpenBSD__))
 int
 main(void)
 {
