@@ -74,7 +74,7 @@ int crypto_secretstream_xchacha20poly1305_init_push
 SODIUM_EXPORT
 int crypto_secretstream_xchacha20poly1305_push
    (crypto_secretstream_xchacha20poly1305_state *state,
-    unsigned char *out, unsigned long long *outlen_p,
+    unsigned char *c, unsigned long long *clen_p,
     const unsigned char *m, unsigned long long mlen,
     const unsigned char *ad, unsigned long long adlen, unsigned char tag);
 
@@ -88,7 +88,7 @@ SODIUM_EXPORT
 int crypto_secretstream_xchacha20poly1305_pull
    (crypto_secretstream_xchacha20poly1305_state *state,
     unsigned char *m, unsigned long long *mlen_p, unsigned char *tag_p,
-    const unsigned char *in, unsigned long long inlen,
+    const unsigned char *c, unsigned long long clen,
     const unsigned char *ad, unsigned long long adlen);
 
 SODIUM_EXPORT
