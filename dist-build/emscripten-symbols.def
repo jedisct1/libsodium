@@ -385,7 +385,7 @@ _crypto_secretbox_zerobytes 0 1
 _crypto_secretstream_xchacha20poly1305_abytes 1 1
 _crypto_secretstream_xchacha20poly1305_init_pull 1 1
 _crypto_secretstream_xchacha20poly1305_init_push 1 1
-_crypto_secretstream_xchacha20poly1305_initbytes 1 1
+_crypto_secretstream_xchacha20poly1305_headerbytes 1 1
 _crypto_secretstream_xchacha20poly1305_keybytes 1 1
 _crypto_secretstream_xchacha20poly1305_keygen 1 1
 _crypto_secretstream_xchacha20poly1305_messagebytes_max 1 1
@@ -553,6 +553,7 @@ _sodium_pad 1 1
 _sodium_runtime_has_aesni 0 0
 _sodium_runtime_has_avx 0 0
 _sodium_runtime_has_avx2 0 0
+_sodium_runtime_has_avx512f 0 0
 _sodium_runtime_has_neon 0 0
 _sodium_runtime_has_pclmul 0 0
 _sodium_runtime_has_sse2 0 0

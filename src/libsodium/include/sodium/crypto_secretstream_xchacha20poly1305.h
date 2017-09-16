@@ -19,10 +19,10 @@ extern "C" {
 SODIUM_EXPORT
 size_t crypto_secretstream_xchacha20poly1305_abytes(void);
 
-#define crypto_secretstream_xchacha20poly1305_INITBYTES \
+#define crypto_secretstream_xchacha20poly1305_HEADERBYTES \
     crypto_aead_xchacha20poly1305_ietf_NPUBBYTES
 SODIUM_EXPORT
-size_t crypto_secretstream_xchacha20poly1305_initbytes(void);
+size_t crypto_secretstream_xchacha20poly1305_headerbytes(void);
 
 #define crypto_secretstream_xchacha20poly1305_KEYBYTES \
     crypto_aead_xchacha20poly1305_ietf_KEYBYTES
@@ -68,7 +68,7 @@ void crypto_secretstream_xchacha20poly1305_keygen
 SODIUM_EXPORT
 int crypto_secretstream_xchacha20poly1305_init_push
    (crypto_secretstream_xchacha20poly1305_state *state,
-    unsigned char header[crypto_secretstream_xchacha20poly1305_INITBYTES],
+    unsigned char header[crypto_secretstream_xchacha20poly1305_HEADERBYTES],
     const unsigned char k[crypto_secretstream_xchacha20poly1305_KEYBYTES]);
 
 SODIUM_EXPORT
@@ -81,7 +81,7 @@ int crypto_secretstream_xchacha20poly1305_push
 SODIUM_EXPORT
 int crypto_secretstream_xchacha20poly1305_init_pull
    (crypto_secretstream_xchacha20poly1305_state *state,
-    const unsigned char header[crypto_secretstream_xchacha20poly1305_INITBYTES],
+    const unsigned char header[crypto_secretstream_xchacha20poly1305_HEADERBYTES],
     const unsigned char k[crypto_secretstream_xchacha20poly1305_KEYBYTES]);
 
 SODIUM_EXPORT

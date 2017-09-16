@@ -29,19 +29,19 @@ crypto_secretstream_xchacha20poly1305_keygen
 int
 crypto_secretstream_xchacha20poly1305_init_push
    (crypto_secretstream_xchacha20poly1305_state *state,
-    unsigned char out[crypto_secretstream_xchacha20poly1305_INITBYTES],
+    unsigned char out[crypto_secretstream_xchacha20poly1305_HEADERBYTES],
     const unsigned char k[crypto_secretstream_xchacha20poly1305_KEYBYTES])
 {
-    COMPILER_ASSERT(crypto_secretstream_xchacha20poly1305_INITBYTES ==
+    COMPILER_ASSERT(crypto_secretstream_xchacha20poly1305_HEADERBYTES ==
                     crypto_core_hchacha20_INPUTBYTES +
                     crypto_secretstream_xchacha20poly1305_INONCEBYTES);
-    COMPILER_ASSERT(crypto_secretstream_xchacha20poly1305_INITBYTES ==
+    COMPILER_ASSERT(crypto_secretstream_xchacha20poly1305_HEADERBYTES ==
                     crypto_aead_xchacha20poly1305_ietf_NPUBBYTES);
     COMPILER_ASSERT(sizeof state->nonce ==
                     crypto_secretstream_xchacha20poly1305_INONCEBYTES +
                     crypto_secretstream_xchacha20poly1305_COUNTERBYTES);
 
-    randombytes_buf(out, crypto_secretstream_xchacha20poly1305_INITBYTES);
+    randombytes_buf(out, crypto_secretstream_xchacha20poly1305_HEADERBYTES);
     crypto_core_hchacha20(state->k, out, k, NULL);
     memset(state->nonce, 0, crypto_secretstream_xchacha20poly1305_COUNTERBYTES);
     memcpy(state->nonce + crypto_secretstream_xchacha20poly1305_COUNTERBYTES,
@@ -55,7 +55,7 @@ crypto_secretstream_xchacha20poly1305_init_push
 int
 crypto_secretstream_xchacha20poly1305_init_pull
    (crypto_secretstream_xchacha20poly1305_state *state,
-    const unsigned char in[crypto_secretstream_xchacha20poly1305_INITBYTES],
+    const unsigned char in[crypto_secretstream_xchacha20poly1305_HEADERBYTES],
     const unsigned char k[crypto_secretstream_xchacha20poly1305_KEYBYTES])
 {
     crypto_core_hchacha20(state->k, in, k, NULL);
@@ -248,9 +248,9 @@ crypto_secretstream_xchacha20poly1305_abytes(void)
 }
 
 size_t
-crypto_secretstream_xchacha20poly1305_initbytes(void)
+crypto_secretstream_xchacha20poly1305_headerbytes(void)
 {
-    return crypto_secretstream_xchacha20poly1305_INITBYTES;
+    return crypto_secretstream_xchacha20poly1305_HEADERBYTES;
 }
 
 size_t

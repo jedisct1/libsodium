@@ -18,7 +18,7 @@ main(void)
     state = (crypto_secretstream_xchacha20poly1305_state *)
         sodium_malloc(crypto_secretstream_xchacha20poly1305_statebytes());
     header = (unsigned char *)
-        sodium_malloc(crypto_secretstream_xchacha20poly1305_INITBYTES);
+        sodium_malloc(crypto_secretstream_xchacha20poly1305_HEADERBYTES);
 
     m1_len = randombytes_uniform(1000);
     m2_len = randombytes_uniform(1000);
@@ -177,8 +177,8 @@ main(void)
 
     assert(crypto_secretstream_xchacha20poly1305_abytes() ==
            crypto_secretstream_xchacha20poly1305_ABYTES);
-    assert(crypto_secretstream_xchacha20poly1305_initbytes() ==
-           crypto_secretstream_xchacha20poly1305_INITBYTES);
+    assert(crypto_secretstream_xchacha20poly1305_headerbytes() ==
+           crypto_secretstream_xchacha20poly1305_HEADERBYTES);
     assert(crypto_secretstream_xchacha20poly1305_keybytes() ==
            crypto_secretstream_xchacha20poly1305_KEYBYTES);
     assert(crypto_secretstream_xchacha20poly1305_messagebytes_max() ==
