@@ -30,7 +30,7 @@ SODIUM_EXPORT
 size_t crypto_secretstream_xchacha20poly1305_keybytes(void);
 
 #define crypto_secretstream_xchacha20poly1305_MESSAGEBYTES_MAX \
-    ((1ULL << 32) - 2ULL * 64ULL)
+    (((1ULL << 32) - 2ULL) * 64ULL)
 SODIUM_EXPORT
 size_t crypto_secretstream_xchacha20poly1305_messagebytes_max(void);
 
