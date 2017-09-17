@@ -23,8 +23,11 @@ tv_keygen(void)
         { crypto_onetimeauth_poly1305_keygen, crypto_onetimeauth_poly1305_KEYBYTES },
         { crypto_aead_chacha20poly1305_ietf_keygen, crypto_aead_chacha20poly1305_ietf_KEYBYTES },
         { crypto_aead_chacha20poly1305_keygen, crypto_aead_chacha20poly1305_KEYBYTES },
+        { crypto_aead_chacha20poly1305_ietf_keygen, crypto_aead_chacha20poly1305_ietf_KEYBYTES },
+        { crypto_aead_xchacha20poly1305_ietf_keygen, crypto_aead_xchacha20poly1305_ietf_KEYBYTES },
         { crypto_secretbox_xsalsa20poly1305_keygen, crypto_secretbox_xsalsa20poly1305_KEYBYTES },
         { crypto_secretbox_keygen, crypto_secretbox_KEYBYTES },
+        { crypto_secretstream_xchacha20poly1305_keygen, crypto_secretstream_xchacha20poly1305_KEYBYTES },
         { crypto_shorthash_keygen, crypto_shorthash_KEYBYTES },
         { crypto_stream_keygen, crypto_stream_KEYBYTES },
         { crypto_stream_chacha20_keygen, crypto_stream_chacha20_KEYBYTES },
@@ -34,7 +37,7 @@ tv_keygen(void)
     };
     const KeygenTV *tv;
     unsigned char  *key;
-    int             i;
+    size_t          i;
     int             j;
 
     for (i = 0; i < (sizeof tvs) / (sizeof tvs[0]); i++) {
@@ -49,7 +52,7 @@ tv_keygen(void)
         }
         sodium_free(key);
         if (j >= 10000) {
-            printf("Buffer underflow with test vector %d\n", i);
+            printf("Buffer underflow with test vector %u\n", (unsigned int) i);
         }
     }
     printf("tv_keygen: ok\n");
