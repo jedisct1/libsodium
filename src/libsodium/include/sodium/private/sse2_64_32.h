@@ -11,9 +11,6 @@
     !(defined(__amd64) || defined(__amd64__) || defined(__x86_64__) || \
       defined(_M_X64) || defined(_M_AMD64))
 
-# ifndef __SSE2__
-#  define __SSE2__
-# endif
 # include <emmintrin.h>
 # include <stdint.h>
 

@@ -5,7 +5,6 @@
 #include "crypto_verify_16.h"
 #include "crypto_verify_32.h"
 #include "crypto_verify_64.h"
-#include "private/sse2_64_32.h"
 
 size_t
 crypto_verify_16_bytes(void)
