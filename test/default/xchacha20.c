@@ -218,7 +218,7 @@ tv_secretbox_xchacha20poly1305(void)
     unsigned char             *out2;
     size_t                     m_len;
     size_t                     n;
-    int                        i;
+    size_t                     i;
 
     key = (unsigned char *) sodium_malloc
         (crypto_secretbox_xchacha20poly1305_KEYBYTES);
