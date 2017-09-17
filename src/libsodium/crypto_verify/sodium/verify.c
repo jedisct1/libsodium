@@ -24,7 +24,7 @@ crypto_verify_64_bytes(void)
     return crypto_verify_64_BYTES;
 }
 
-#ifdef HAVE_EMMINTRIN_H
+#if defined(HAVE_EMMINTRIN_H) && defined(__SSE2__)
 
 # ifdef __GNUC__
 #  pragma GCC target("sse2")
