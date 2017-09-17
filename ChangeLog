@@ -42,6 +42,9 @@ by Ondrej Mosnáček, thanks!)
  - The `crypto_pwhash_str_needs_rehash()` function was added to check if
 a password hash string matches the given parameters, or if it needs an
 update.
+ - The library can now be compiled with recent versions of
+emscripten/binaryen that don't allow multiple variables declarations
+using a single `var` statement.
 
 * Version 1.0.13
  - Javascript: the sumo builds now include all symbols. They were
