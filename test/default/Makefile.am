@@ -37,6 +37,7 @@ EXTRA_DIST = \
 	kdf.exp \
 	keygen.exp \
 	kx.exp \
+	metamorphic.exp \
 	misuse.exp \
 	onetimeauth.exp \
 	onetimeauth2.exp \
@@ -108,6 +109,7 @@ DISTCLEANFILES = \
 	kdf.res \
 	keygen.res \
 	kx.res \
+	metamorphic.res \
 	misuse.res \
 	onetimeauth.res \
 	onetimeauth2.res \
@@ -180,6 +182,7 @@ CLEANFILES = \
 	kdf.final \
 	keygen.final \
 	kx.final \
+	metamorphic.final \
 	misuse.final \
 	onetimeauth.final \
 	onetimeauth2.final \
@@ -247,6 +250,7 @@ CLEANFILES = \
 	kdf.nexe \
 	keygen.nexe \
 	kx.nexe \
+	metamorphic.nexe \
 	misuse.nexe \
 	onetimeauth.nexe \
 	onetimeauth2.nexe \
@@ -326,6 +330,7 @@ TESTS_TARGETS = \
 	kdf \
 	keygen \
 	kx \
+	metamorphic \
 	misuse \
 	onetimeauth \
 	onetimeauth2 \
@@ -469,6 +474,9 @@ keygen_LDADD              = $(TESTS_LDADD)
 
 kx_SOURCE                 = cmptest.h kx.c
 kx_LDADD                  = $(TESTS_LDADD)
+
+metamorphic_SOURCE        = cmptest.h metamorphic.c
+metamorphic_LDADD         = $(TESTS_LDADD)
 
 misuse_SOURCE             = cmptest.h misuse.c
 misuse_LDADD              = $(TESTS_LDADD)

@@ -114,6 +114,7 @@ test/default/hash3
 test/default/kdf
 test/default/keygen
 test/default/kx
+test/default/metamorphic
 test/default/misuse
 test/default/onetimeauth
 test/default/onetimeauth2
