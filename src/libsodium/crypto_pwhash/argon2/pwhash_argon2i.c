@@ -234,7 +234,7 @@ _needs_rehash(const char *str, unsigned long long opslimit, size_t memlimit,
     }
     memset(&ctx, 0, sizeof ctx);
     if ((fodder = (unsigned char *) calloc(fodder_len, 1U)) == NULL) {
-        return -1;
+        return -1; /* LCOV_EXCL_LINE */
     }
     ctx.out    = ctx.pwd       = ctx.salt    = fodder;
     ctx.outlen = ctx.pwdlen    = ctx.saltlen = (uint32_t) fodder_len;

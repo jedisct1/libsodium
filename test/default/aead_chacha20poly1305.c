@@ -167,6 +167,12 @@ tv(void)
     assert(crypto_aead_chacha20poly1305_keybytes() > 0U);
     assert(crypto_aead_chacha20poly1305_npubbytes() > 0U);
     assert(crypto_aead_chacha20poly1305_nsecbytes() == 0U);
+    assert(crypto_aead_chacha20poly1305_messagebytes_max() > 0U);
+    assert(crypto_aead_chacha20poly1305_messagebytes_max() == crypto_aead_chacha20poly1305_MESSAGEBYTES_MAX);
+    assert(crypto_aead_chacha20poly1305_keybytes() == crypto_aead_chacha20poly1305_KEYBYTES);
+    assert(crypto_aead_chacha20poly1305_nsecbytes() == crypto_aead_chacha20poly1305_NSECBYTES);
+    assert(crypto_aead_chacha20poly1305_npubbytes() == crypto_aead_chacha20poly1305_NPUBBYTES);
+    assert(crypto_aead_chacha20poly1305_abytes() == crypto_aead_chacha20poly1305_ABYTES);
 
     return 0;
 }

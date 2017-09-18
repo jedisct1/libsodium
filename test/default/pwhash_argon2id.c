@@ -248,6 +248,26 @@ main(void)
     if (strcmp(str_out, str_out2) == 0) {
         printf("pwhash_argon2id_str() doesn't generate different salts\n");
     }
+    if (crypto_pwhash_str_needs_rehash(str_out, OPSLIMIT, MEMLIMIT) != 0 ||
+       crypto_pwhash_argon2id_str_needs_rehash(str_out, OPSLIMIT, MEMLIMIT) != 0) {
+        printf("needs_rehash() false positive\n");
+    }
+    if (crypto_pwhash_str_needs_rehash(str_out, OPSLIMIT, MEMLIMIT / 2) != 1 ||
+        crypto_pwhash_str_needs_rehash(str_out, OPSLIMIT / 2, MEMLIMIT) != 1 ||
+        crypto_pwhash_str_needs_rehash(str_out, OPSLIMIT, MEMLIMIT * 2) != 1 ||
+        crypto_pwhash_str_needs_rehash(str_out, OPSLIMIT * 2, MEMLIMIT) != 1) {
+        printf("needs_rehash() false negative\n");
+    }
+    if (crypto_pwhash_argon2id_str_needs_rehash(str_out, OPSLIMIT, MEMLIMIT / 2) != 1 ||
+        crypto_pwhash_argon2id_str_needs_rehash(str_out, OPSLIMIT / 2, MEMLIMIT) != 1 ||
+        crypto_pwhash_argon2id_str_needs_rehash(str_out, OPSLIMIT, MEMLIMIT * 2) != 1 ||
+        crypto_pwhash_argon2id_str_needs_rehash(str_out, OPSLIMIT * 2, MEMLIMIT) != 1) {
+        printf("needs_rehash() false negative\n");
+    }
+    if (crypto_pwhash_str_needs_rehash(str_out + 1, OPSLIMIT, MEMLIMIT) != -1 ||
+        crypto_pwhash_argon2id_str_needs_rehash(str_out + 1, OPSLIMIT, MEMLIMIT) != -1) {
+        printf("needs_rehash() didn't fail with an invalid hash string\n");
+    }
     if (sodium_is_zero((const unsigned char *) str_out + strlen(str_out),
                        crypto_pwhash_argon2id_STRBYTES - strlen(str_out)) != 1 ||
         sodium_is_zero((const unsigned char *) str_out2 + strlen(str_out2),
