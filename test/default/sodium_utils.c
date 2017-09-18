@@ -160,6 +160,14 @@ main(void)
                              sodium_base64_VARIANT_URLSAFE) == -1);
     assert(sodium_base642bin(NULL, (size_t) 10U, "a*", (size_t) 2U, "*", NULL, NULL,
                              sodium_base64_VARIANT_URLSAFE) == -1);
+    assert(sodium_base642bin(NULL, (size_t) 10U, "a==", (size_t) 3U, NULL, NULL, NULL,
+                             sodium_base64_VARIANT_URLSAFE) == -1);
+    assert(sodium_base642bin(NULL, (size_t) 10U, "a=*", (size_t) 3U, NULL, NULL, NULL,
+                             sodium_base64_VARIANT_URLSAFE) == -1);
+    assert(sodium_base642bin(NULL, (size_t) 10U, "a=*", (size_t) 3U, "~", NULL, NULL,
+                             sodium_base64_VARIANT_URLSAFE) == -1);
+    assert(sodium_base642bin(NULL, (size_t) 10U, "a=*", (size_t) 3U, "*", NULL, NULL,
+                             sodium_base64_VARIANT_URLSAFE) == -1);
 
     for (i = 0; i < 1000; i++) {
         assert(sizeof buf1 >= 100);
