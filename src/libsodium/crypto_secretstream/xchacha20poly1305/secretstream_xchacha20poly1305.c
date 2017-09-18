@@ -92,7 +92,8 @@ crypto_secretstream_xchacha20poly1305_rekey
         state->k[i] = new_key_and_inonce[i];
     }
     for (i = 0U; i < crypto_secretstream_xchacha20poly1305_INONCEBYTES; i++) {
-        STATE_INONCE(state)[i] = new_key_and_inonce[crypto_stream_chacha20_ietf_KEYBYTES + i];
+        STATE_INONCE(state)[i] =
+            new_key_and_inonce[crypto_stream_chacha20_ietf_KEYBYTES + i];
     }
     memset(STATE_COUNTER(state), 0,
            crypto_secretstream_xchacha20poly1305_COUNTERBYTES);
