@@ -17,6 +17,10 @@
 #define crypto_secretstream_xchacha20poly1305_COUNTERBYTES  4U
 #define crypto_secretstream_xchacha20poly1305_INONCEBYTES   8U
 
+#define STATE_COUNTER(STATE) ((STATE)->nonce)
+#define STATE_INONCE(STATE)  ((STATE)->nonce + \
+                              crypto_secretstream_xchacha20poly1305_COUNTERBYTES)
+
 static const unsigned char _pad0[16] = { 0 };
 
 void
@@ -43,9 +47,8 @@ crypto_secretstream_xchacha20poly1305_init_push
 
     randombytes_buf(out, crypto_secretstream_xchacha20poly1305_HEADERBYTES);
     crypto_core_hchacha20(state->k, out, k, NULL);
-    memset(state->nonce, 0, crypto_secretstream_xchacha20poly1305_COUNTERBYTES);
-    memcpy(state->nonce + crypto_secretstream_xchacha20poly1305_COUNTERBYTES,
-           out + crypto_core_hchacha20_INPUTBYTES,
+    memset(STATE_COUNTER(state), 0, crypto_secretstream_xchacha20poly1305_COUNTERBYTES);
+    memcpy(STATE_INONCE(state), out + crypto_core_hchacha20_INPUTBYTES,
            crypto_secretstream_xchacha20poly1305_INONCEBYTES);
     memset(state->_pad, 0, sizeof state->_pad);
 
@@ -59,9 +62,8 @@ crypto_secretstream_xchacha20poly1305_init_pull
     const unsigned char k[crypto_secretstream_xchacha20poly1305_KEYBYTES])
 {
     crypto_core_hchacha20(state->k, in, k, NULL);
-    memset(state->nonce, 0, crypto_secretstream_xchacha20poly1305_COUNTERBYTES);
-    memcpy(state->nonce + crypto_secretstream_xchacha20poly1305_COUNTERBYTES,
-           in + crypto_core_hchacha20_INPUTBYTES,
+    memset(STATE_COUNTER(state), 0, crypto_secretstream_xchacha20poly1305_COUNTERBYTES);
+    memcpy(STATE_INONCE(state), in + crypto_core_hchacha20_INPUTBYTES,
            crypto_secretstream_xchacha20poly1305_INONCEBYTES);
     memset(state->_pad, 0, sizeof state->_pad);
 
@@ -78,9 +80,8 @@ crypto_secretstream_xchacha20poly1305_rekey
     crypto_stream_chacha20_ietf(new_key_and_inonce, sizeof new_key_and_inonce,
                                 state->nonce, state->k);
     memcpy(state->k, new_key_and_inonce, sizeof state->k);
-    memset(state->nonce, 0, crypto_secretstream_xchacha20poly1305_COUNTERBYTES);
-    memcpy(state->nonce + crypto_secretstream_xchacha20poly1305_COUNTERBYTES,
-           new_key_and_inonce + sizeof state->k,
+    memset(STATE_COUNTER(state), 0, crypto_secretstream_xchacha20poly1305_COUNTERBYTES);
+    memcpy(STATE_INONCE(state), new_key_and_inonce + sizeof state->k,
            crypto_secretstream_xchacha20poly1305_INONCEBYTES);
 }
 
@@ -135,12 +136,12 @@ crypto_secretstream_xchacha20poly1305_push
     sodium_memzero(&poly1305_state, sizeof poly1305_state);
 
     for (i = 0U; i < crypto_secretstream_xchacha20poly1305_INONCEBYTES; i++) {
-        state->nonce[i] ^= mac[i];
+        STATE_INONCE(state)[i] ^= mac[i];
     }
-    sodium_increment(&state->nonce[0],
+    sodium_increment(STATE_COUNTER(state),
                      crypto_secretstream_xchacha20poly1305_COUNTERBYTES);
     if ((tag & crypto_secretstream_xchacha20poly1305_TAG_REKEY) != 0 ||
-        sodium_is_zero(&state->nonce[0],
+        sodium_is_zero(STATE_COUNTER(state),
                        crypto_secretstream_xchacha20poly1305_COUNTERBYTES)) {
         crypto_secretstream_xchacha20poly1305_rekey(state);
     }
@@ -217,12 +218,12 @@ crypto_secretstream_xchacha20poly1305_pull
 
     crypto_stream_chacha20_ietf_xor_ic(m, c, mlen, state->nonce, 2U, state->k);
     for (i = 0U; i < crypto_secretstream_xchacha20poly1305_INONCEBYTES; i++) {
-        state->nonce[i] ^= mac[i];
+        STATE_INONCE(state)[i] ^= mac[i];
     }
-    sodium_increment(&state->nonce[0],
+    sodium_increment(STATE_COUNTER(state),
                      crypto_secretstream_xchacha20poly1305_COUNTERBYTES);
     if ((tag & crypto_secretstream_xchacha20poly1305_TAG_REKEY) != 0 ||
-        sodium_is_zero(&state->nonce[0],
+        sodium_is_zero(STATE_COUNTER(state),
                        crypto_secretstream_xchacha20poly1305_COUNTERBYTES)) {
         crypto_secretstream_xchacha20poly1305_rekey(state);
     }
