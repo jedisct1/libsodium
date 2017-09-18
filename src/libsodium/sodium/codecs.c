@@ -299,7 +299,7 @@ sodium_base642bin(unsigned char * const bin, const size_t bin_maxlen,
     } else if (ret == 0 &&
                (((unsigned int) variant) & VARIANT_NO_PADDING_MASK) == 0U) {
         ret = _sodium_base642bin_skip_padding(b64, b64_len, &b64_pos, ignore,
-                                               acc_len / 2);
+                                              acc_len / 2);
     }
     if (ret != 0) {
         bin_pos = (size_t) 0U;
