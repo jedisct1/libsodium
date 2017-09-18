@@ -135,6 +135,8 @@ crypto_secretstream_xchacha20poly1305_push
     crypto_onetimeauth_poly1305_final(&poly1305_state, mac);
     sodium_memzero(&poly1305_state, sizeof poly1305_state);
 
+    COMPILER_ASSERT(crypto_onetimeauth_poly1305_BYTES >=
+                    crypto_secretstream_xchacha20poly1305_INONCEBYTES);
     for (i = 0U; i < crypto_secretstream_xchacha20poly1305_INONCEBYTES; i++) {
         STATE_INONCE(state)[i] ^= mac[i];
     }
