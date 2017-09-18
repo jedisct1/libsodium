@@ -76,13 +76,24 @@ crypto_secretstream_xchacha20poly1305_rekey
 {
     unsigned char new_key_and_inonce[crypto_stream_chacha20_ietf_KEYBYTES +
                                      crypto_secretstream_xchacha20poly1305_INONCEBYTES];
+    size_t        i;
 
-    crypto_stream_chacha20_ietf(new_key_and_inonce, sizeof new_key_and_inonce,
-                                state->nonce, state->k);
-    XOR_BUF(state->k, new_key_and_inonce, crypto_stream_chacha20_ietf_KEYBYTES);
-    XOR_BUF(STATE_INONCE(state),
-            new_key_and_inonce + crypto_stream_chacha20_ietf_KEYBYTES,
-            crypto_secretstream_xchacha20poly1305_INONCEBYTES);
+    for (i = 0U; i < crypto_stream_chacha20_ietf_KEYBYTES; i++) {
+        new_key_and_inonce[i] = state->k[i];
+    }
+    for (i = 0U; i < crypto_secretstream_xchacha20poly1305_INONCEBYTES; i++) {
+        new_key_and_inonce[crypto_stream_chacha20_ietf_KEYBYTES + i] =
+            STATE_INONCE(state)[i];
+    }
+    crypto_stream_chacha20_ietf_xor(new_key_and_inonce, new_key_and_inonce,
+                                    sizeof new_key_and_inonce,
+                                    state->nonce, state->k);
+    for (i = 0U; i < crypto_stream_chacha20_ietf_KEYBYTES; i++) {
+        state->k[i] = new_key_and_inonce[i];
+    }
+    for (i = 0U; i < crypto_secretstream_xchacha20poly1305_INONCEBYTES; i++) {
+        STATE_INONCE(state)[i] = new_key_and_inonce[crypto_stream_chacha20_ietf_KEYBYTES + i];
+    }
     memset(STATE_COUNTER(state), 0,
            crypto_secretstream_xchacha20poly1305_COUNTERBYTES);
 }
