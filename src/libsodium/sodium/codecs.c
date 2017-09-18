@@ -271,11 +271,6 @@ sodium_base642bin(unsigned char * const bin, const size_t bin_maxlen,
         }
         if (d == 0xFF) {
             if (ignore != NULL && strchr(ignore, c) != NULL) {
-                if (b64_pos >= b64_len) {
-                    errno = ERANGE;
-                    ret = -1;
-                    break;
-                }
                 b64_pos++;
                 continue;
             }
