@@ -76,17 +76,13 @@ crypto_secretstream_xchacha20poly1305_rekey
 {
     unsigned char new_key_and_inonce[crypto_stream_chacha20_ietf_KEYBYTES +
                                      crypto_secretstream_xchacha20poly1305_INONCEBYTES];
-    size_t        i;
 
     crypto_stream_chacha20_ietf(new_key_and_inonce, sizeof new_key_and_inonce,
                                 state->nonce, state->k);
-    for (i = 0U; i < crypto_stream_chacha20_ietf_KEYBYTES; i++) {
-        state->k[i] ^= new_key_and_inonce[i];
-    }
-    for (i = 0U; i < crypto_secretstream_xchacha20poly1305_INONCEBYTES; i++) {
-        STATE_INONCE(state)[i] ^=
-            new_key_and_inonce[crypto_stream_chacha20_ietf_KEYBYTES + i];
-    }
+    XOR_BUF(state->k, new_key_and_inonce, crypto_stream_chacha20_ietf_KEYBYTES);
+    XOR_BUF(STATE_INONCE(state),
+            new_key_and_inonce + crypto_stream_chacha20_ietf_KEYBYTES,
+            crypto_secretstream_xchacha20poly1305_INONCEBYTES);
     memset(STATE_COUNTER(state), 0,
            crypto_secretstream_xchacha20poly1305_COUNTERBYTES);
 }
@@ -103,7 +99,6 @@ crypto_secretstream_xchacha20poly1305_push
     unsigned char                     slen[8U];
     unsigned char                    *c;
     unsigned char                    *mac;
-    unsigned int                      i;
 
     if (outlen_p != NULL) {
         *outlen_p = 0U;
@@ -143,9 +138,8 @@ crypto_secretstream_xchacha20poly1305_push
 
     COMPILER_ASSERT(crypto_onetimeauth_poly1305_BYTES >=
                     crypto_secretstream_xchacha20poly1305_INONCEBYTES);
-    for (i = 0U; i < crypto_secretstream_xchacha20poly1305_INONCEBYTES; i++) {
-        STATE_INONCE(state)[i] ^= mac[i];
-    }
+    XOR_BUF(STATE_INONCE(state), mac,
+            crypto_secretstream_xchacha20poly1305_INONCEBYTES);
     sodium_increment(STATE_COUNTER(state),
                      crypto_secretstream_xchacha20poly1305_COUNTERBYTES);
     if ((tag & crypto_secretstream_xchacha20poly1305_TAG_REKEY) != 0 ||
@@ -173,7 +167,6 @@ crypto_secretstream_xchacha20poly1305_pull
     const unsigned char              *c;
     const unsigned char              *stored_mac;
     unsigned long long                mlen;
-    unsigned int                      i;
     unsigned char                     tag;
 
     if (mlen_p != NULL) {
@@ -225,9 +218,8 @@ crypto_secretstream_xchacha20poly1305_pull
     }
 
     crypto_stream_chacha20_ietf_xor_ic(m, c, mlen, state->nonce, 2U, state->k);
-    for (i = 0U; i < crypto_secretstream_xchacha20poly1305_INONCEBYTES; i++) {
-        STATE_INONCE(state)[i] ^= mac[i];
-    }
+    XOR_BUF(STATE_INONCE(state), mac,
+            crypto_secretstream_xchacha20poly1305_INONCEBYTES);
     sodium_increment(STATE_COUNTER(state),
                      crypto_secretstream_xchacha20poly1305_COUNTERBYTES);
     if ((tag & crypto_secretstream_xchacha20poly1305_TAG_REKEY) != 0 ||

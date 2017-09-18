@@ -177,6 +177,17 @@ store32_be(uint8_t dst[4], uint32_t w)
 #endif
 }
 
+#define XOR_BUF(OUT, IN, N) xor_buf((OUT), (IN), (N))
+static inline void
+xor_buf(unsigned char *out, const unsigned char *in, size_t n)
+{
+    size_t i;
+
+    for (i = 0; i < n; i++) {
+        out[i] ^= in[i];
+    }
+}
+
 #ifndef __GNUC__
 # ifdef __attribute__
 #  undef __attribute__
