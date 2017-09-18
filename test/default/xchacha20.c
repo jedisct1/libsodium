@@ -184,6 +184,7 @@ tv_stream_xchacha20(void)
 
     assert(crypto_stream_xchacha20_keybytes() == crypto_stream_xchacha20_KEYBYTES);
     assert(crypto_stream_xchacha20_noncebytes() == crypto_stream_xchacha20_NONCEBYTES);
+    assert(crypto_stream_xchacha20_messagebytes_max() == crypto_stream_xchacha20_MESSAGEBYTES_MAX);
 
     printf("tv_stream_xchacha20: ok\n");
 }
@@ -332,6 +333,11 @@ tv_box_xchacha20poly1305(void)
         assert(crypto_box_curve25519xchacha20poly1305_open_easy
                (m2, out, crypto_box_curve25519xchacha20poly1305_MACBYTES + m_len,
                 nonce, small_order_p, sk) == -1);
+        assert(crypto_box_curve25519xchacha20poly1305_open_easy
+               (m2, out, crypto_box_curve25519xchacha20poly1305_MACBYTES - 1,
+                nonce, pk, sk) == -1);
+        assert(crypto_box_curve25519xchacha20poly1305_open_easy
+               (m2, out, 0, nonce, pk, sk) == -1);
         assert(crypto_box_curve25519xchacha20poly1305_open_easy
                (m2, out, crypto_box_curve25519xchacha20poly1305_MACBYTES + m_len,
                 nonce, pk, sk) == 0);
