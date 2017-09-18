@@ -6,12 +6,14 @@ int
 main(void)
 {
     crypto_secretstream_xchacha20poly1305_state *state;
+    unsigned char      *ad;
     unsigned char      *header;
     unsigned char      *k;
     unsigned char      *c1, *c2, *c3;
     unsigned char      *m1, *m2, *m3;
     unsigned char      *m1_, *m2_, *m3_;
     unsigned long long  res_len;
+    size_t              ad_len;
     size_t              m1_len, m2_len, m3_len;
     int                 ret;
     unsigned char       tag;
@@ -21,6 +23,7 @@ main(void)
     header = (unsigned char *)
         sodium_malloc(crypto_secretstream_xchacha20poly1305_HEADERBYTES);
 
+    ad_len = randombytes_uniform(100);
     m1_len = randombytes_uniform(1000);
     m2_len = randombytes_uniform(1000);
     m3_len = randombytes_uniform(1000);
@@ -32,12 +35,15 @@ main(void)
     c3 = (unsigned char *)
         sodium_malloc(m3_len + crypto_secretstream_xchacha20poly1305_ABYTES);
 
+    ad  = (unsigned char *) sodium_malloc(ad_len);
     m1  = (unsigned char *) sodium_malloc(m1_len);
     m2  = (unsigned char *) sodium_malloc(m2_len);
     m3  = (unsigned char *) sodium_malloc(m3_len);
     m1_ = (unsigned char *) sodium_malloc(m1_len);
     m2_ = (unsigned char *) sodium_malloc(m2_len);
     m3_ = (unsigned char *) sodium_malloc(m3_len);
+
+    randombytes_buf(ad, ad_len);
 
     randombytes_buf(m1, m1_len);
     memcpy(m1_, m1, m1_len);
@@ -61,11 +67,11 @@ main(void)
     assert(res_len == m1_len + crypto_secretstream_xchacha20poly1305_ABYTES);
 
     ret = crypto_secretstream_xchacha20poly1305_push
-        (state, c2, NULL, m2, m2_len, NULL, 0, 0);
+        (state, c2, NULL, m2, m2_len, ad, 0, 0);
     assert(ret == 0);
 
     ret = crypto_secretstream_xchacha20poly1305_push
-        (state, c3, NULL, m3, m3_len, NULL, 0,
+        (state, c3, NULL, m3, m3_len, ad, ad_len,
          crypto_secretstream_xchacha20poly1305_TAG_FINAL);
     assert(ret == 0);
 
@@ -92,6 +98,12 @@ main(void)
     ret = crypto_secretstream_xchacha20poly1305_pull
         (state, m3, NULL, &tag,
          c3, m3_len + crypto_secretstream_xchacha20poly1305_ABYTES, NULL, 0);
+    if (ad_len > 0) {
+        assert(ret == -1);
+    }
+    ret = crypto_secretstream_xchacha20poly1305_pull
+        (state, m3, NULL, &tag,
+         c3, m3_len + crypto_secretstream_xchacha20poly1305_ABYTES, ad, ad_len);
     assert(ret == 0);
     assert(tag == crypto_secretstream_xchacha20poly1305_TAG_FINAL);
     assert(memcmp(m3, m3_, m3_len) == 0);
@@ -189,6 +201,7 @@ main(void)
     sodium_free(m3);
     sodium_free(m2);
     sodium_free(m1);
+    sodium_free(ad);
     sodium_free(c3);
     sodium_free(c2);
     sodium_free(c1);
