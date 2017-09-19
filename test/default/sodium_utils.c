@@ -146,8 +146,8 @@ main(void)
     printf("[%s]\n", b64_end);
 
     memset(buf1, '*', sizeof buf1);
-    sodium_base642bin(buf1, sizeof buf1, b64, strlen(b64), "\n\r ", &bin_len,
-                      &b64_end, sodium_base64_VARIANT_ORIGINAL);
+    assert(sodium_base642bin(buf1, sizeof buf1, b64, strlen(b64), "\n\r ", &bin_len,
+                             &b64_end, sodium_base64_VARIANT_ORIGINAL) == 0);
     buf1[bin_len] = 0;
     printf("[%s]\n", (const char *) buf1);
     assert(*b64_end == 0);
