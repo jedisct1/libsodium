@@ -95,10 +95,10 @@ main(void)
     assert(tag == 0);
     assert(memcmp(m2, m2_, m2_len) == 0);
 
-    ret = crypto_secretstream_xchacha20poly1305_pull
-        (state, m3, NULL, &tag,
-         c3, m3_len + crypto_secretstream_xchacha20poly1305_ABYTES, NULL, 0);
     if (ad_len > 0) {
+        ret = crypto_secretstream_xchacha20poly1305_pull
+            (state, m3, NULL, &tag,
+             c3, m3_len + crypto_secretstream_xchacha20poly1305_ABYTES, NULL, 0);
         assert(ret == -1);
     }
     ret = crypto_secretstream_xchacha20poly1305_pull
