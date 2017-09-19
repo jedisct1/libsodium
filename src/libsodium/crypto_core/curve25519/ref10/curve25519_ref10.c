@@ -1804,6 +1804,10 @@ ge_double_scalarmult_vartime(ge_p2 *r, const unsigned char *a, const ge_p3 *A,
     }
 }
 
+#ifndef MINIMAL
+
+/* only used for verification of legacy (edwards25519sha512batch) signatures */
+
 void
 ge_scalarmult_vartime(ge_p3 *r, const unsigned char *a, const ge_p3 *A)
 {
@@ -1862,6 +1866,8 @@ ge_scalarmult_vartime(ge_p3 *r, const unsigned char *a, const ge_p3 *A)
         ge_p1p1_to_p3(r, &t);
     }
 }
+
+#endif
 
 void
 ge_scalarmult_base(ge_p3 *h, const unsigned char *a)
