@@ -6,10 +6,30 @@
 # include <signal.h>
 
 static void
-sigabrt_handler_10(int sig)
+sigabrt_handler_12(int sig)
 {
     (void) sig;
     exit(0);
+}
+
+static void
+sigabrt_handler_11(int sig)
+{
+    (void) sig;
+    signal(SIGABRT, sigabrt_handler_12);
+    assert(crypto_box_easy(NULL, NULL, crypto_stream_xsalsa20_MESSAGEBYTES_MAX,
+                           NULL, NULL, NULL) == -1);
+    exit(1);
+}
+
+static void
+sigabrt_handler_10(int sig)
+{
+    (void) sig;
+    signal(SIGABRT, sigabrt_handler_11);
+    assert(crypto_box_easy_afternm(NULL, NULL, crypto_stream_xsalsa20_MESSAGEBYTES_MAX,
+                                   NULL, NULL) == -1);
+    exit(1);
 }
 
 static void
