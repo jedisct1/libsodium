@@ -99,6 +99,7 @@ test/default/box_easy2
 test/default/box_seal
 test/default/box_seed
 test/default/chacha20
+test/default/codecs
 test/default/core1
 test/default/core2
 test/default/core3

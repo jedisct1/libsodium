@@ -21,6 +21,7 @@ EXTRA_DIST = \
 	box_seal.exp \
 	box_seed.exp \
 	chacha20.exp \
+	codecs.exp \
 	core1.exp \
 	core2.exp \
 	core3.exp \
@@ -93,6 +94,7 @@ DISTCLEANFILES = \
 	box_seal.res \
 	box_seed.res \
 	chacha20.res \
+	codecs.res \
 	core1.res \
 	core2.res \
 	core3.res \
@@ -166,6 +168,7 @@ CLEANFILES = \
 	box_seal.final \
 	box_seed.final \
 	chacha20.final \
+	codecs.final \
 	core1.final \
 	core2.final \
 	core3.final \
@@ -234,6 +237,7 @@ CLEANFILES = \
 	box_seal.nexe \
 	box_seed.nexe \
 	chacha20.nexe \
+	codecs.nexe \
 	core1.nexe \
 	core2.nexe \
 	core3.nexe \
@@ -315,6 +319,7 @@ TESTS_TARGETS = \
 	box_seal \
 	box_seed \
 	chacha20 \
+	codecs \
 	core1 \
 	core2 \
 	core3 \
@@ -429,6 +434,9 @@ box_seed_LDADD            = $(TESTS_LDADD)
 
 chacha20_SOURCE           = cmptest.h chacha20.c
 chacha20_LDADD            = $(TESTS_LDADD)
+
+codecs_SOURCE             = cmptest.h codecs.c
+codecs_LDADD              = $(TESTS_LDADD)
 
 core1_SOURCE              = cmptest.h core1.c
 core1_LDADD               = $(TESTS_LDADD)
