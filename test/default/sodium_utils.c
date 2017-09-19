@@ -169,6 +169,17 @@ main(void)
     assert(sodium_base642bin(NULL, (size_t) 10U, "a=*", (size_t) 3U, "*", NULL, NULL,
                              sodium_base64_VARIANT_URLSAFE) == -1);
 
+    assert(sodium_base642bin(buf1, sizeof buf1, "O1R", (size_t) 3U, NULL, NULL, NULL,
+                             sodium_base64_VARIANT_ORIGINAL_NO_PADDING) == -1);
+    assert(sodium_base642bin(buf1, sizeof buf1, "O1Q", (size_t) 3U, NULL, NULL, NULL,
+                             sodium_base64_VARIANT_ORIGINAL_NO_PADDING) == 0);
+    assert(sodium_base642bin(buf1, sizeof buf1, "O1", (size_t) 2U, NULL, NULL, NULL,
+                             sodium_base64_VARIANT_ORIGINAL_NO_PADDING) == -1);
+    assert(sodium_base642bin(buf1, sizeof buf1, "Ow", (size_t) 2U, NULL, NULL, NULL,
+                             sodium_base64_VARIANT_ORIGINAL_NO_PADDING) == 0);
+    assert(sodium_base642bin(buf1, sizeof buf1, "O", (size_t) 1U, NULL, NULL, NULL,
+                             sodium_base64_VARIANT_ORIGINAL_NO_PADDING) == -1);
+
     for (i = 0; i < 1000; i++) {
         assert(sizeof buf1 >= 100);
         bin_len = (size_t) randombytes_uniform(100);
