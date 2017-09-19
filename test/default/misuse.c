@@ -2,7 +2,7 @@
 #define TEST_NAME "misuse"
 #include "cmptest.h"
 
-#if defined(SIGABRT) && (defined(__APPLE__) || defined(__OpenBSD__))
+#ifdef HAVE_CATCHABLE_ABRT
 # include <signal.h>
 
 static void
