@@ -6,10 +6,19 @@
 # include <signal.h>
 
 static void
-sigabrt_handler_12(int sig)
+sigabrt_handler_13(int sig)
 {
     (void) sig;
     exit(0);
+}
+
+static void
+sigabrt_handler_12(int sig)
+{
+    (void) sig;
+    signal(SIGABRT, sigabrt_handler_13);
+    assert(crypto_pwhash_str_alg(NULL, "", 0U, 1U, 1U, -1) == -1);
+    exit(1);
 }
 
 static void
