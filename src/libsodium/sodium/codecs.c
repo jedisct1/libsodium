@@ -298,6 +298,10 @@ sodium_base642bin(unsigned char * const bin, const size_t bin_maxlen,
     }
     if (ret != 0) {
         bin_pos = (size_t) 0U;
+    } else if (ignore != NULL) {
+        while (b64_pos < b64_len && strchr(ignore, b64[b64_pos]) != NULL) {
+            b64_pos++;
+        }
     }
     if (bin_len != NULL) {
         *bin_len = bin_pos;
