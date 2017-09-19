@@ -6,10 +6,46 @@
 # include <signal.h>
 
 static void
-sigabrt_handler_6(int sig)
+sigabrt_handler_10(int sig)
 {
     (void) sig;
     exit(0);
+}
+
+static void
+sigabrt_handler_9(int sig)
+{
+    (void) sig;
+    signal(SIGABRT, sigabrt_handler_10);
+    assert(sodium_base642bin(NULL, 1, NULL, 1, NULL, NULL, NULL, -1) == -1);
+    exit(1);
+}
+
+static void
+sigabrt_handler_8(int sig)
+{
+    (void) sig;
+    signal(SIGABRT, sigabrt_handler_9);
+    assert(sodium_bin2base64(NULL, 1, NULL, 1, sodium_base64_VARIANT_ORIGINAL) == NULL);
+    exit(1);
+}
+
+static void
+sigabrt_handler_7(int sig)
+{
+    (void) sig;
+    signal(SIGABRT, sigabrt_handler_8);
+    assert(sodium_bin2base64(NULL, 1, NULL, 1, -1) == NULL);
+    exit(1);
+}
+
+static void
+sigabrt_handler_6(int sig)
+{
+    (void) sig;
+    signal(SIGABRT, sigabrt_handler_7);
+    assert(sodium_pad(NULL, NULL, SIZE_MAX, 16, 1) == -1);
+    exit(1);
 }
 
 static void
