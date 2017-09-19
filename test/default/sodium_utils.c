@@ -68,18 +68,37 @@ main(void)
     printf("dt3: %ld\n", (long) (hex_end - hex));
 
     hex = "de:ad:be:eff";
-    if (sodium_hex2bin(buf1, sizeof buf1, hex, 12U, ":", &bin_len, &hex_end) !=
-        0) {
+    if (sodium_hex2bin(buf1, sizeof buf1, hex, 12U, ":",
+                       &bin_len, &hex_end) != -1) {
         printf("sodium_hex2bin() with an odd input length\n");
     }
     printf("dt4: %ld\n", (long) (hex_end - hex));
 
     hex = "de:ad:be:eff";
-    if (sodium_hex2bin(buf1, sizeof buf1, hex, 13U, ":", &bin_len, &hex_end) !=
-        0) {
-        printf("sodium_hex2bin() with an odd input length\n");
+    if (sodium_hex2bin(buf1, sizeof buf1, hex, 13U, ":",
+                       &bin_len, &hex_end) != -1) {
+        printf("sodium_hex2bin() with an odd input length (2)\n");
     }
     printf("dt5: %ld\n", (long) (hex_end - hex));
+
+    hex = "de:ad:be:eff";
+    if (sodium_hex2bin(buf1, sizeof buf1, hex, 12U, ":",
+                       &bin_len, NULL) != -1) {
+        printf("sodium_hex2bin() with an odd input length and no end pointer\n");
+    }
+
+    hex = "de:ad:be:ef*";
+    if (sodium_hex2bin(buf1, sizeof buf1, hex, 12U, ":",
+                       &bin_len, &hex_end) != 0) {
+        printf("sodium_hex2bin() with an extra character and an end pointer\n");
+    }
+    printf("dt6: %ld\n", (long) (hex_end - hex));
+
+    hex = "de:ad:be:ef*";
+    if (sodium_hex2bin(buf1, sizeof buf1, hex, 12U, ":",
+                       &bin_len, NULL) != -1) {
+        printf("sodium_hex2bin() with an extra character and no end pointer\n");
+    }
 
     printf("%s\n",
            sodium_bin2base64(buf3, 31U, (const unsigned char *) "\xfb\xf0\xf1" "0123456789ABCDEFab",
@@ -134,23 +153,33 @@ main(void)
     assert(*b64_end == 0);
 
     memset(buf1, '*', sizeof buf1);
-    sodium_base642bin(buf1, sizeof buf1, b64, strlen(b64), NULL, &bin_len,
-                      &b64_end, sodium_base64_VARIANT_ORIGINAL);
+    assert(sodium_base642bin(buf1, sizeof buf1, b64, strlen(b64), NULL, &bin_len,
+                             &b64_end, sodium_base64_VARIANT_ORIGINAL) == 0);
     buf1[bin_len] = 0;
     printf("[%s]\n", (const char *) buf1);
     printf("[%s]\n", b64_end);
 
     assert(sodium_base642bin(buf1, sizeof buf1, b64, strlen(b64), NULL, NULL,
-                             NULL, sodium_base64_VARIANT_ORIGINAL) == 0);
+                             &b64_end, sodium_base64_VARIANT_ORIGINAL) == 0);
+    assert(sodium_base642bin(buf1, sizeof buf1, b64, strlen(b64), NULL, NULL,
+                             &b64_end, sodium_base64_VARIANT_ORIGINAL_NO_PADDING) == 0);
+    assert(sodium_base642bin(buf1, sizeof buf1, b64, strlen(b64), " \r\n", NULL,
+                             &b64_end, sodium_base64_VARIANT_ORIGINAL_NO_PADDING) == 0);
+    assert(sodium_base642bin(buf1, sizeof buf1, b64, strlen(b64), NULL, NULL,
+                             &b64_end, sodium_base64_VARIANT_URLSAFE_NO_PADDING) == 0);
+    assert(sodium_base642bin(buf1, sizeof buf1, b64, strlen(b64), " \r\n", NULL,
+                             &b64_end, sodium_base64_VARIANT_URLSAFE_NO_PADDING) == 0);
 
     assert(sodium_base642bin(buf1, sizeof buf1, b64, strlen(b64), NULL, NULL,
-                             NULL, sodium_base64_VARIANT_ORIGINAL_NO_PADDING) == 0);
-    assert(sodium_base642bin(buf1, sizeof buf1, b64, strlen(b64), " \r\n", NULL,
-                             NULL, sodium_base64_VARIANT_ORIGINAL_NO_PADDING) == 0);
+                             NULL, sodium_base64_VARIANT_ORIGINAL) == -1);
     assert(sodium_base642bin(buf1, sizeof buf1, b64, strlen(b64), NULL, NULL,
-                             NULL, sodium_base64_VARIANT_URLSAFE_NO_PADDING) == 0);
+                             NULL, sodium_base64_VARIANT_ORIGINAL_NO_PADDING) == -1);
     assert(sodium_base642bin(buf1, sizeof buf1, b64, strlen(b64), " \r\n", NULL,
-                             NULL, sodium_base64_VARIANT_URLSAFE_NO_PADDING) == 0);
+                             NULL, sodium_base64_VARIANT_ORIGINAL_NO_PADDING) == -1);
+    assert(sodium_base642bin(buf1, sizeof buf1, b64, strlen(b64), NULL, NULL,
+                             NULL, sodium_base64_VARIANT_URLSAFE_NO_PADDING) == -1);
+    assert(sodium_base642bin(buf1, sizeof buf1, b64, strlen(b64), " \r\n", NULL,
+                             NULL, sodium_base64_VARIANT_URLSAFE_NO_PADDING) == -1);
 
     assert(sodium_base642bin(NULL, (size_t) 10U, "a=", (size_t) 2U, NULL, NULL, NULL,
                              sodium_base64_VARIANT_URLSAFE) == -1);

@@ -82,12 +82,17 @@ sodium_hex2bin(unsigned char *const bin, const size_t bin_maxlen,
     }
     if (state != 0U) {
         hex_pos--;
-    }
-    if (hex_end != NULL) {
-        *hex_end = &hex[hex_pos];
+        errno = EINVAL;
+        ret = -1;
     }
     if (ret != 0) {
         bin_pos = (size_t) 0U;
+    }
+    if (hex_end != NULL) {
+        *hex_end = &hex[hex_pos];
+    } else if (hex_pos != hex_len) {
+        errno = EINVAL;
+        ret = -1;
     }
     if (bin_len != NULL) {
         *bin_len = bin_pos;
@@ -303,11 +308,14 @@ sodium_base642bin(unsigned char * const bin, const size_t bin_maxlen,
             b64_pos++;
         }
     }
-    if (bin_len != NULL) {
-        *bin_len = bin_pos;
-    }
     if (b64_end != NULL) {
         *b64_end = &b64[b64_pos];
+    } else if (b64_pos != b64_len) {
+        errno = EINVAL;
+        ret = -1;
+    }
+    if (bin_len != NULL) {
+        *bin_len = bin_pos;
     }
     return ret;
 }
