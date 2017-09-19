@@ -20,8 +20,7 @@ including Windows (with MingW or Visual Studio, x86 and x64), iOS and Android.
 
 ## Documentation
 
-The documentation is a work-in-progress, and is being written using
-Gitbook:
+The documentation is available on Gitbook:
 
 * [libsodium documentation](https://download.libsodium.org/doc/) -
 online, requires Javascript.
