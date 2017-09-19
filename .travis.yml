@@ -27,21 +27,7 @@ script:
  - make check
  - ( echo '#include <sodium.h>' ; echo 'int main(void) { return sodium_init(); }' ) > /tmp/main.c && gcc -Isrc/libsodium/include -Isrc/libsodium/include/sodium $(find src -name '*.c' -o -name '*.S') /tmp/main.c
 
-env:
-  global:
-   - secure: "OyX+ypmU5NLRiSsIg1HvaGYvlaHSN2S/0AyCIQt63PNdcG7o1xa9Sv1Tcujr/xuvSvNbchNVEyBvCbNgqp/R8kRRhNPqFo2pxMMjkEKrJQqOm8sjvwMqTV4k6axEq+WwKylQaNJSDq1G9n5J/s7hlVPaiKAjsOPKnMN5ThNAr8o="
-
 addons:
   apt:
     packages:
       - tcc
-
-  coverity_scan:
-    project:
-      name: jedisct1/libsodium
-      version: 1.0.14
-      description: libsodium
-      notification_email: coverityscan@pureftpd.org
-      build_command_prepend: ./autogen.sh ; ./configure
-      build_command: make -j4
-      branch_pattern: coverity_scan
