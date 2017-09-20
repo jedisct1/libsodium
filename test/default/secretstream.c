@@ -6,6 +6,7 @@ int
 main(void)
 {
     crypto_secretstream_xchacha20poly1305_state *state;
+    crypto_secretstream_xchacha20poly1305_state state_copy;
     unsigned char      *ad;
     unsigned char      *header;
     unsigned char      *k;
@@ -194,6 +195,51 @@ main(void)
         (state, m2, NULL, &tag,
          c2, m2_len + crypto_secretstream_xchacha20poly1305_ABYTES, NULL, 0);
     assert(ret == 0);
+
+    /* New stream */
+
+    ret = crypto_secretstream_xchacha20poly1305_init_push(state, header, k);
+    assert(ret == 0);
+
+    ret = crypto_secretstream_xchacha20poly1305_push
+        (state, c1, &res_len, m1, m1_len, NULL, 0,
+         crypto_secretstream_xchacha20poly1305_TAG_PUSH);
+    assert(ret == 0);
+    assert(res_len == m1_len + crypto_secretstream_xchacha20poly1305_ABYTES);
+
+    /* Force a counter overflow, check that the key has been updated
+     * even though the tag was not changed to REKEY */
+
+    memset(state->nonce, 0xff, 4U);
+    state_copy = *state;
+
+    ret = crypto_secretstream_xchacha20poly1305_push
+        (state, c2, NULL, m2, m2_len, ad, 0, 0);
+    assert(ret == 0);
+
+    assert(memcmp(state_copy.k, state->k, sizeof state->k) != 0);
+    assert(memcmp(state_copy.nonce, state->nonce, sizeof state->nonce) != 0);
+    assert(sodium_is_zero(state->nonce, 4U));
+
+    ret = crypto_secretstream_xchacha20poly1305_init_pull(state, header, k);
+    assert(ret == 0);
+
+    ret = crypto_secretstream_xchacha20poly1305_pull
+        (state, m1, &res_len, &tag,
+         c1, m1_len + crypto_secretstream_xchacha20poly1305_ABYTES, NULL, 0);
+    assert(ret == 0);
+    assert(tag == crypto_secretstream_xchacha20poly1305_TAG_PUSH);
+    assert(memcmp(m1, m1_, m1_len) == 0);
+    assert(res_len == m1_len);
+
+    memset(state->nonce, 0xff, 4U);
+
+    ret = crypto_secretstream_xchacha20poly1305_pull
+        (state, m2, NULL, &tag,
+         c2, m2_len + crypto_secretstream_xchacha20poly1305_ABYTES, NULL, 0);
+    assert(ret == 0);
+    assert(tag == 0);
+    assert(memcmp(m2, m2_, m2_len) == 0);
 
     sodium_free(m3_);
     sodium_free(m2_);
