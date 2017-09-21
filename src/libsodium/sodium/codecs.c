@@ -159,6 +159,22 @@ b64_urlsafe_char_to_byte(int c)
 #define VARIANT_NO_PADDING_MASK 0x2U
 #define VARIANT_URLSAFE_MASK    0x4U
 
+static void
+sodium_base64_check_variant(const int variant)
+{
+    if ((((unsigned int) variant) & ~ 0x6U) != 0x1U) {
+        sodium_misuse();
+    }
+}
+
+size_t
+sodium_base64_encoded_len(const size_t bin_len, const int variant)
+{
+    sodium_base64_check_variant(variant);
+
+    return sodium_base64_ENCODED_LEN(bin_len, variant);
+}
+
 char *
 sodium_bin2base64(char * const b64, const size_t b64_maxlen,
                   const unsigned char * const bin, const size_t bin_len,
@@ -172,9 +188,7 @@ sodium_bin2base64(char * const b64, const size_t b64_maxlen,
     size_t       remainder;
     unsigned int acc = 0U;
 
-    if ((((unsigned int) variant) & ~ 0x6U) != 0x1U) {
-        sodium_misuse();
-    }
+    sodium_base64_check_variant(variant);
     nibbles = bin_len / 3;
     remainder = bin_len - 3 * nibbles;
     b64_len = nibbles * 4;
@@ -263,9 +277,7 @@ sodium_base642bin(unsigned char * const bin, const size_t bin_maxlen,
     unsigned int d;
     char         c;
 
-    if ((((unsigned int) variant) & ~ 0x6U) != 0x1U) {
-        sodium_misuse();
-    }
+    sodium_base64_check_variant(variant);
     is_urlsafe = ((unsigned int) variant) & VARIANT_URLSAFE_MASK;
     while (b64_pos < b64_len) {
         c = b64[b64_pos];

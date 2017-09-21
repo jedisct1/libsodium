@@ -206,7 +206,8 @@ main(void)
         assert(sizeof buf1 >= 100);
         bin_len = (size_t) randombytes_uniform(100);
         bin = (unsigned char *) sodium_malloc(bin_len);
-        b64_len = 1 + (bin_len + 2) / 3 * 4;
+        b64_len = (bin_len + 2U) / 3U * 4U + 1U;
+        assert(b64_len == sodium_base64_encoded_len(bin_len, sodium_base64_VARIANT_URLSAFE));
         b64_ = (char *) sodium_malloc(b64_len);
         randombytes_buf(bin, bin_len);
         memcpy(buf1, bin, bin_len);
