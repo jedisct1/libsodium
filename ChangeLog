@@ -19,12 +19,12 @@ maximum lengths.
  - The test suite has been extended to cover more edge cases.
  - crypto_sign_ed25519_pk_to_curve25519() now rejects points that are
 not on the curve, or not in the main subgroup.
- - Further changes to ensure that smart compilers will not optimize out
-code that we don't want to be optimized.
+ - Further changes have been made to ensure that smart compilers will
+not optimize out code that we don't want to be optimized.
  - Visual Studio solutions are now included in distribution tarballs.
  - The `sodium_runtime_has_*` symbols for CPU features detection are
 now defined as weak symbols, i.e. they can be replaced with an
-application-defined implementation. Requested by Facebook to disable
+application-defined implementation. This can be useful to disable
 AVX* when temperature/power consumption is a concern.
  - `crypto_kx_*()` now aborts if called with no non-NULL pointers to
 store keys to.
