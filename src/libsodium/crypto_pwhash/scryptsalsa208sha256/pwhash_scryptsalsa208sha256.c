@@ -27,7 +27,7 @@ pickparams(unsigned long long opslimit, const size_t memlimit,
     }
     *r = 8;
     if (opslimit < memlimit / 32) {
-        *p   = 1;
+        *p = 1;
         maxN = opslimit / (*r * 4);
         for (*N_log2 = 1; *N_log2 < 63; *N_log2 += 1) {
             if ((uint64_t)(1) << *N_log2 > maxN / 2) {
