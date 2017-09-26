@@ -97,6 +97,8 @@ size_t crypto_pwhash_memlimit_sensitive(void);
 /*
  * With this function, do not forget to store all parameters, including the
  * algorithm identifier in order to produce deterministic output.
+ * The crypto_pwhash_* definitions, including crypto_pwhash_ALG_DEFAULT,
+ * may change.
  */
 SODIUM_EXPORT
 int crypto_pwhash(unsigned char * const out, unsigned long long outlen,
