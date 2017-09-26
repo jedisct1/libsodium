@@ -46,6 +46,7 @@ poly1305_init(poly1305_state_internal_t *st, const unsigned char key[32])
     t0 = LOAD64_LE(&key[0]);
     t1 = LOAD64_LE(&key[8]);
 
+    /* wiped after finalization */
     st->r[0] = (t0) &0xffc0fffffff;
     st->r[1] = ((t0 >> 44) | (t1 << 20)) & 0xfffffc0ffff;
     st->r[2] = ((t1 >> 24)) & 0x00ffffffc0f;
