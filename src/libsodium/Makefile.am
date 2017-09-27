@@ -169,16 +169,6 @@ libsodium_la_SOURCES += \
 	crypto_shorthash/siphash24/shorthash_siphashx24.c \
 	crypto_shorthash/siphash24/ref/shorthash_siphashx24_ref.c \
 	crypto_sign/ed25519/ref10/obsolete.c \
-	crypto_stream/aes128ctr/nacl/afternm_aes128ctr.c \
-	crypto_stream/aes128ctr/nacl/beforenm_aes128ctr.c \
-	crypto_stream/aes128ctr/nacl/common.h \
-	crypto_stream/aes128ctr/nacl/consts.h \
-	crypto_stream/aes128ctr/nacl/consts_aes128ctr.c \
-	crypto_stream/aes128ctr/nacl/int128.h \
-	crypto_stream/aes128ctr/nacl/int128_aes128ctr.c \
-	crypto_stream/aes128ctr/nacl/stream_aes128ctr_nacl.c \
-	crypto_stream/aes128ctr/nacl/xor_afternm_aes128ctr.c \
-	crypto_stream/aes128ctr/stream_aes128ctr.c \
 	crypto_stream/salsa2012/ref/stream_salsa2012_ref.c \
 	crypto_stream/salsa2012/stream_salsa2012.c \
 	crypto_stream/salsa208/ref/stream_salsa208_ref.c \

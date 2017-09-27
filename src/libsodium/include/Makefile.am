@@ -43,7 +43,6 @@ SODIUM_EXPORT = \
 	sodium/crypto_sign_ed25519.h \
 	sodium/crypto_sign_edwards25519sha512batch.h \
 	sodium/crypto_stream.h \
-	sodium/crypto_stream_aes128ctr.h \
 	sodium/crypto_stream_chacha20.h \
 	sodium/crypto_stream_salsa20.h \
 	sodium/crypto_stream_salsa2012.h \
