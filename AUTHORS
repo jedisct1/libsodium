@@ -93,6 +93,8 @@ crypto_secretbox/xsalsa20poly1305      Daniel J. Bernstein
 
 crypto_secretbox/xchacha20poly1305     Frank Denis
 
+crypto_secretstream/xchacha20poly1305  Frank Denis
+
 crypto_shorthash/siphash24             Jean-Philippe Aumasson
                                        Daniel J. Bernstein
 
@@ -101,8 +103,6 @@ crypto_sign/ed25519                    Peter Schwabe
                                        Niels Duif
                                        Tanja Lange
                                        Bo-Yin Yang
-
-crypto_stream/aes128ctr                Peter Schwabe
 
 crypto_stream/chacha20/ref             Daniel J. Bernstein
 
