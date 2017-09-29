@@ -49,13 +49,9 @@ symbols() {
 out=$(symbols standard)
 sed s/EXPORTED_FUNCTIONS_STANDARD=\'.*\'/EXPORTED_FUNCTIONS_STANDARD=\'${out}\'/ < emscripten.sh > emscripten.sh.tmp && \
   mv -f emscripten.sh.tmp emscripten.sh
-sed s/EXPORTED_FUNCTIONS_STANDARD=\'.*\'/EXPORTED_FUNCTIONS_STANDARD=\'${out}\'/ < emscripten-wasm.sh > emscripten-wasm.sh.tmp && \
-  mv -f emscripten-wasm.sh.tmp emscripten-wasm.sh
 
 out=$(symbols sumo)
 sed s/EXPORTED_FUNCTIONS_SUMO=\'.*\'/EXPORTED_FUNCTIONS_SUMO=\'${out}\'/ < emscripten.sh > emscripten.sh.tmp && \
   mv -f emscripten.sh.tmp emscripten.sh
-sed s/EXPORTED_FUNCTIONS_SUMO=\'.*\'/EXPORTED_FUNCTIONS_SUMO=\'${out}\'/ < emscripten-wasm.sh > emscripten-wasm.sh.tmp && \
-  mv -f emscripten-wasm.sh.tmp emscripten-wasm.sh
 
-chmod +x emscripten.sh emscripten-wasm.sh
+chmod +x emscripten.sh
