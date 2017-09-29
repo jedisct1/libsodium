@@ -449,14 +449,6 @@ _crypto_sign_statebytes 1 1
 _crypto_sign_update 1 1
 _crypto_sign_verify_detached 1 1
 _crypto_stream 0 1
-_crypto_stream_aes128ctr 0 1
-_crypto_stream_aes128ctr_afternm 0 1
-_crypto_stream_aes128ctr_beforenm 0 1
-_crypto_stream_aes128ctr_beforenmbytes 0 1
-_crypto_stream_aes128ctr_keybytes 0 1
-_crypto_stream_aes128ctr_noncebytes 0 1
-_crypto_stream_aes128ctr_xor 0 1
-_crypto_stream_aes128ctr_xor_afternm 0 1
 _crypto_stream_chacha20 0 1
 _crypto_stream_chacha20_ietf 0 1
 _crypto_stream_chacha20_ietf_keybytes 0 1
