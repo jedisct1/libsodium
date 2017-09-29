@@ -79,7 +79,7 @@ if [ "$DIST" = yes ]; then
     }
     Module.ready = new Promise(function (resolve, reject) {
       Module.onAbort = reject;
-      Module.onRuntimeInitialized = function () { resolve(); };
+      Module.onRuntimeInitialized = resolve;
       $(cat "${PREFIX}/lib/libsodium.wasm.tmp.js")
     }).catch(function () {
       Module.onAbort = undefined;
