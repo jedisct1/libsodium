@@ -63,9 +63,33 @@ emmake make clean
 [ $? = 0 ] || exit 1
 
 if [ "$DIST" = yes ]; then
-  emmake make $MAKE_FLAGS install && \
-  emcc "$CFLAGS" --llvm-lto 1 --memory-init-file 0 $CPPFLAGS $LDFLAGS $JS_EXPORTS_FLAGS \
-    "${PREFIX}/lib/libsodium.a" -o "${PREFIX}/lib/libsodium.js" || exit 1
+  emccLibsodium () {
+    outFile="${1}"
+    shift
+    emcc "$CFLAGS" --llvm-lto 1 $CPPFLAGS $LDFLAGS $JS_EXPORTS_FLAGS ${@} \
+      "${PREFIX}/lib/libsodium.a" -o "${outFile}" || exit 1
+  }
+  emmake make $MAKE_FLAGS install || exit 1
+  emccLibsodium "${PREFIX}/lib/libsodium.asm.tmp.js" -Oz -s RUNNING_JS_OPTS=1 -s NO_EXIT_RUNTIME=1
+  emccLibsodium "${PREFIX}/lib/libsodium.wasm.tmp.js" -O3 -s WASM=1
+
+  cat > "${PREFIX}/lib/libsodium.js" <<- EOM
+    var ModulePromise = new Promise(function (resolve, reject) {
+      if (typeof Module === 'undefined') {
+        var Module = {};
+      }
+      Module.onAbort = reject;
+      Module.onRuntimeInitialized = function () { resolve(Module); };
+      $(cat "${PREFIX}/lib/libsodium.wasm.tmp.js")
+    }).catch(function () {
+      Module.onAbort = undefined;
+      Module.onRuntimeInitialized = undefined;
+      $(cat "${PREFIX}/lib/libsodium.asm.tmp.js" | sed 's|use asm||g')
+      return Module;
+    });
+EOM
+
+  rm "${PREFIX}/lib/libsodium.asm.tmp.js" "${PREFIX}/lib/libsodium.wasm.tmp.js"
   touch -r "${PREFIX}/lib/libsodium.js" "$DONE_FILE"
   ls -l "${PREFIX}/lib/libsodium.js"
   exit 0
