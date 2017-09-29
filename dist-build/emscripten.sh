@@ -77,11 +77,14 @@ if [ "$DIST" = yes ]; then
     if (typeof Module === 'undefined') {
       var Module = {};
     }
+    var _Module = Module;
     Module.ready = new Promise(function (resolve, reject) {
+      var Module = _Module;
       Module.onAbort = reject;
       Module.onRuntimeInitialized = resolve;
       $(cat "${PREFIX}/lib/libsodium.wasm.tmp.js")
     }).catch(function () {
+      var Module = _Module;
       Module.onAbort = undefined;
       Module.onRuntimeInitialized = undefined;
       $(cat "${PREFIX}/lib/libsodium.asm.tmp.js" | sed 's|use asm||g')
