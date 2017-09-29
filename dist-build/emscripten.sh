@@ -74,18 +74,17 @@ if [ "$DIST" = yes ]; then
   emccLibsodium "${PREFIX}/lib/libsodium.wasm.tmp.js" -O3 -s WASM=1
 
   cat > "${PREFIX}/lib/libsodium.js" <<- EOM
-    var ModulePromise = new Promise(function (resolve, reject) {
-      if (typeof Module === 'undefined') {
-        var Module = {};
-      }
+    if (typeof Module === 'undefined') {
+      var Module = {};
+    }
+    Module.ready = new Promise(function (resolve, reject) {
       Module.onAbort = reject;
-      Module.onRuntimeInitialized = function () { resolve(Module); };
+      Module.onRuntimeInitialized = function () { resolve(); };
       $(cat "${PREFIX}/lib/libsodium.wasm.tmp.js")
     }).catch(function () {
       Module.onAbort = undefined;
       Module.onRuntimeInitialized = undefined;
       $(cat "${PREFIX}/lib/libsodium.asm.tmp.js" | sed 's|use asm||g')
-      return Module;
     });
 EOM
 
