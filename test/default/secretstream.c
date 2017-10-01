@@ -219,7 +219,8 @@ main(void)
 
     assert(memcmp(state_copy.k, state->k, sizeof state->k) != 0);
     assert(memcmp(state_copy.nonce, state->nonce, sizeof state->nonce) != 0);
-    assert(sodium_is_zero(state->nonce, 4U));
+    assert(state->nonce[0] == 1U);
+    assert(sodium_is_zero(state->nonce + 1, 3U));
 
     ret = crypto_secretstream_xchacha20poly1305_init_pull(state, header, k);
     assert(ret == 0);
