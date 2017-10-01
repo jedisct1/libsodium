@@ -1,4 +1,21 @@
 
+* Version 1.0.15
+ - The default password hashing algorithm is now Argon2id. The
+`pwhash_str_verify()` function can still verify Argon2i hashes
+without any changes, and `pwhash()` can still compute Argon2i hashes
+as well.
+ - The aes128ctr primitive was removed. It was slow, non-standard, not
+authenticated, and didn't seem to be used by any opensource project.
+ - Argon2id required at least 3 passes like Argon2i, despite a minimum
+of `1` as defined by the `OPSLIMIT_MIN` constant. This has been fixed.
+ - The secretstream construction was slightly changed to be consistent
+with forthcoming variants.
+ - The Javascript and Webassembly versions have been merged, and the
+module now returns a `.ready` promise that will resolve after the
+Webassembly code is loaded and compiled.
+ - Note that due to these incompatible changes, the library version
+major was bumped up.
+
 * Version 1.0.14
  - iOS binaries should now be compatible with WatchOS and TVOS.
  - WebAssembly is now officially supported. Special thanks to
