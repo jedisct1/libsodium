@@ -1,5 +1,5 @@
 
-#define TEST_NAME "pwhash"
+#define TEST_NAME "pwhash_argon2i"
 #include "cmptest.h"
 
 #define OUT_LEN 128
