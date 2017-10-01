@@ -157,7 +157,7 @@ AC_ARG_ENABLE(debug,
       done
       CFLAGS="$nxflags -O0 -g3"
     ])
-    CPPFLAGS="$CPPFLAGS -DDEBUG=1"
+    CPPFLAGS="$CPPFLAGS -DDEBUG=1 -UFORTIFY_SOURCE"
   ])
 ])
 
