@@ -79,7 +79,7 @@ tv(void)
           167, 3, 1784128, 1 },
     };
     char          passwd[256];
-    unsigned char salt[crypto_pwhash_argon2id_SALTBYTES];
+    unsigned char salt[crypto_pwhash_SALTBYTES];
     unsigned char out[256];
     char          out_hex[256 * 2 + 1];
     size_t        i = 0U;
@@ -90,10 +90,10 @@ tv(void)
                        NULL, NULL);
         sodium_hex2bin(salt, sizeof salt, tests[i].salt_hex,
                        strlen(tests[i].salt_hex), NULL, NULL, NULL);
-        if (crypto_pwhash_argon2id(out, (unsigned long long) tests[i].outlen, passwd,
-                                   tests[i].passwd_len, (const unsigned char *) salt,
-                                   tests[i].opslimit, tests[i].memlimit,
-                                   crypto_pwhash_argon2id_alg_argon2id13()) != 0) {
+        if (crypto_pwhash(out, (unsigned long long) tests[i].outlen, passwd,
+                          tests[i].passwd_len, (const unsigned char *) salt,
+                          tests[i].opslimit, tests[i].memlimit,
+                          crypto_pwhash_alg_default()) != 0) {
             printf("[tv] pwhash failure (maybe intentional): [%u]\n",
                    (unsigned int) i);
             continue;
@@ -131,7 +131,7 @@ tv2(void)
           155, 3, 1397645, 1 },
     };
     char          passwd[256];
-    unsigned char salt[crypto_pwhash_argon2id_SALTBYTES];
+    unsigned char salt[crypto_pwhash_SALTBYTES];
     unsigned char out[256];
     char          out_hex[256 * 2 + 1];
     size_t        i = 0U;
@@ -142,10 +142,10 @@ tv2(void)
                        NULL, NULL);
         sodium_hex2bin(salt, sizeof salt, tests[i].salt_hex,
                        strlen(tests[i].salt_hex), NULL, NULL, NULL);
-        if (crypto_pwhash_argon2id(out, (unsigned long long) tests[i].outlen, passwd,
-                                   tests[i].passwd_len, (const unsigned char *) salt,
-                                   tests[i].opslimit, tests[i].memlimit,
-                                   crypto_pwhash_argon2id_alg_argon2id13()) != 0) {
+        if (crypto_pwhash(out, (unsigned long long) tests[i].outlen, passwd,
+                          tests[i].passwd_len, (const unsigned char *) salt,
+                          tests[i].opslimit, tests[i].memlimit,
+                          crypto_pwhash_alg_default()) != 0) {
             printf("[tv2] pwhash failure: [%u]\n", (unsigned int) i);
             continue;
         }
@@ -187,17 +187,17 @@ tv3(void)
         const char *out;
     } tests[] = {
         { "",
-          "$argon2i$v=19$m=4096,t=1,p=1$X1NhbHQAAAAAAAAAAAAAAA$bWh++"
-          "MKN1OiFHKgIWTLvIi1iHicmHH7+Fv3K88ifFfI" },
+          "$argon2id$v=19$m=4096,t=0,p=1$X1NhbHQAAAAAAAAAAAAAAA$bWh++MKN1OiFHKgIWTLvIi1iHicmHH7+Fv3K88ifFfI" },
         { "",
-          "$argon2i$v=19$m=2048,t=4,p=1$SWkxaUhpY21ISDcrRnYzSw$Mbg/"
-          "Eck1kpZir5T9io7C64cpffdTBaORgyriLQFgQj8" },
+          "$argon2id$v=19$m=2048,t=4,p=1$SWkxaUhpY21ISDcrRnYzSw$Mbg/Eck1kpZir5T9io7C64cpffdTBaORgyriLQFgQj8" },
+        { "",
+          "$argon2id$v=19$m=4882,t=2,p=1$bA81arsiXysd3WbTRzmEOw$Nm8QBM+7RH1DXo9rvp5cwKEOOOfD2g6JuxlXihoNcpE" },
         { "^T5H$JYt39n%K*j:W]!1s?vg!:jGi]Ax?..l7[p0v:1jHTpla9;]bUN;?bWyCbtqg ",
-          "$argon2i$v=19$m=4096,t=3,p=2$X1NhbHQAAAAAAAAAAAAAAA$z/QMiU4lQxGsYNc/"
-          "+K/bizwsA1P11UG2dj/7+aILJ4I" },
+          "$argon2id$v=19$m=4096,t=0,p=1$PkEgMTYtYnl0ZXMgc2FsdA$ltB/ue1kPtBMBGfsysMpPigE6hiNEKZ9vs8vLNVDQGA" },
+        { "^T5H$JYt39n%K*j:W]!1s?vg!:jGi]Ax?..l7[p0v:1jHTpla9;]bUN;?bWyCbtqg ",
+          "$argon2id$v=19$m=4096,t=19,p=1$PkEgMTYtYnl0ZXMgc2FsdA$ltB/ue1kPtBMBGfsysMpPigE6hiNEKZ9vs8vLNVDQGA" },
         { "K3S=KyH#)36_?]LxeR8QNKw6X=gFbxai$C%29V*",
-          "$argon2i$v=19$m=4096,t=3,p=1$X1NhbHQAAAAAAAAAAAAAAA$fu2Wsecyt+"
-          "yPnBvSvYN16oP5ozRmkp0ixJ1YL19V3Uo" }
+          "$argon2id$v=19$m=4096,t=1,p=3$PkEgcHJldHR5IGxvbmcgc2FsdA$HUqx5Z1b/ZypnUrvvJ5UC2Q+T6Q1WwASK/Kr9dRbGA0" }
     };
     char   *out;
     char   *passwd;
@@ -210,7 +210,7 @@ tv3(void)
         passwd = (char *) sodium_malloc(strlen(tests[i].passwd) + 1U);
         assert(passwd != NULL);
         memcpy(passwd, tests[i].passwd, strlen(tests[i].passwd) + 1U);
-        if (crypto_pwhash_argon2id_str_verify(out, passwd, strlen(passwd)) != 0) {
+        if (crypto_pwhash_str_verify(out, passwd, strlen(passwd)) != 0) {
             printf("[tv3] pwhash_argon2id_str failure (maybe intentional): [%u]\n",
                    (unsigned int) i);
             continue;
@@ -220,190 +220,277 @@ tv3(void)
     } while (++i < (sizeof tests) / (sizeof tests[0]));
 }
 
-int
-main(void)
+static void
+str_tests(void)
 {
     char       *str_out;
     char       *str_out2;
     char       *salt;
     const char *passwd = "Correct Horse Battery Staple";
 
-    tv();
-    tv2();
-    tv3();
+
     salt     = (char *) sodium_malloc(crypto_pwhash_argon2id_SALTBYTES);
     str_out  = (char *) sodium_malloc(crypto_pwhash_argon2id_STRBYTES);
     str_out2 = (char *) sodium_malloc(crypto_pwhash_argon2id_STRBYTES);
     memcpy(salt, ">A 16-bytes salt", crypto_pwhash_argon2id_SALTBYTES);
-    if (crypto_pwhash_argon2id_str(str_out, passwd, strlen(passwd), OPSLIMIT,
-                                   MEMLIMIT) != 0) {
-        printf("pwhash_argon2id_str failure: %s\n", strerror(errno));
-        return 1;
+    if (crypto_pwhash_str(str_out, passwd, strlen(passwd), OPSLIMIT,
+                          MEMLIMIT) != 0) {
+        printf("pwhash_str failure\n");
     }
-    if (crypto_pwhash_argon2id_str(str_out2, passwd, strlen(passwd), OPSLIMIT,
-                                   MEMLIMIT) != 0) {
-        printf("pwhash_argon2id_str(2) failure\n");
-        return 1;
+    if (crypto_pwhash_str(str_out2, passwd, strlen(passwd), OPSLIMIT,
+                          MEMLIMIT) != 0) {
+        printf("pwhash_str(2) failure\n");
     }
     if (strcmp(str_out, str_out2) == 0) {
-        printf("pwhash_argon2id_str() doesn't generate different salts\n");
+        printf("pwhash_str() doesn't generate different salts\n");
     }
     if (crypto_pwhash_str_needs_rehash(str_out, OPSLIMIT, MEMLIMIT) != 0 ||
-       crypto_pwhash_argon2id_str_needs_rehash(str_out, OPSLIMIT, MEMLIMIT) != 0) {
+        crypto_pwhash_str_needs_rehash(str_out, OPSLIMIT, MEMLIMIT) != 0) {
         printf("needs_rehash() false positive\n");
     }
     if (crypto_pwhash_str_needs_rehash(str_out, OPSLIMIT, MEMLIMIT / 2) != 1 ||
-        crypto_pwhash_str_needs_rehash(str_out, OPSLIMIT / 2, MEMLIMIT) != 1 ||
+        crypto_pwhash_str_needs_rehash(str_out, OPSLIMIT - 1, MEMLIMIT) != 1 ||
         crypto_pwhash_str_needs_rehash(str_out, OPSLIMIT, MEMLIMIT * 2) != 1 ||
-        crypto_pwhash_str_needs_rehash(str_out, OPSLIMIT * 2, MEMLIMIT) != 1) {
-        printf("needs_rehash() false negative\n");
+        crypto_pwhash_str_needs_rehash(str_out, OPSLIMIT + 1, MEMLIMIT) != 1) {
+        printf("needs_rehash() false negative (0)\n");
     }
     if (crypto_pwhash_argon2id_str_needs_rehash(str_out, OPSLIMIT, MEMLIMIT / 2) != 1 ||
-        crypto_pwhash_argon2id_str_needs_rehash(str_out, OPSLIMIT / 2, MEMLIMIT) != 1 ||
+        crypto_pwhash_argon2id_str_needs_rehash(str_out, OPSLIMIT - 1, MEMLIMIT) != 1 ||
         crypto_pwhash_argon2id_str_needs_rehash(str_out, OPSLIMIT, MEMLIMIT * 2) != 1 ||
-        crypto_pwhash_argon2id_str_needs_rehash(str_out, OPSLIMIT * 2, MEMLIMIT) != 1) {
-        printf("needs_rehash() false negative\n");
+        crypto_pwhash_argon2id_str_needs_rehash(str_out, OPSLIMIT + 1, MEMLIMIT) != 1) {
+        printf("needs_rehash() false negative (1)\n");
+    }
+    if (crypto_pwhash_argon2i_str_needs_rehash(str_out, OPSLIMIT, MEMLIMIT / 2) != -1 ||
+        crypto_pwhash_argon2i_str_needs_rehash(str_out, OPSLIMIT - 1, MEMLIMIT) != -1 ||
+        crypto_pwhash_argon2i_str_needs_rehash(str_out, OPSLIMIT, MEMLIMIT * 2) != -1 ||
+        crypto_pwhash_argon2i_str_needs_rehash(str_out, OPSLIMIT + 1, MEMLIMIT) != -1) {
+        printf("needs_rehash() false negative (2)\n");
     }
     if (crypto_pwhash_str_needs_rehash(str_out + 1, OPSLIMIT, MEMLIMIT) != -1 ||
         crypto_pwhash_argon2id_str_needs_rehash(str_out + 1, OPSLIMIT, MEMLIMIT) != -1) {
         printf("needs_rehash() didn't fail with an invalid hash string\n");
     }
     if (sodium_is_zero((const unsigned char *) str_out + strlen(str_out),
-                       crypto_pwhash_argon2id_STRBYTES - strlen(str_out)) != 1 ||
+                       crypto_pwhash_STRBYTES - strlen(str_out)) != 1 ||
         sodium_is_zero((const unsigned char *) str_out2 + strlen(str_out2),
-                       crypto_pwhash_argon2id_STRBYTES - strlen(str_out2)) != 1) {
+                       crypto_pwhash_STRBYTES - strlen(str_out2)) != 1) {
         printf("pwhash_argon2id_str() doesn't properly pad with zeros\n");
     }
     if (crypto_pwhash_argon2id_str_verify(str_out, passwd, strlen(passwd)) != 0) {
         printf("pwhash_argon2id_str_verify(1) failure\n");
     }
     if (crypto_pwhash_str_verify(str_out, passwd, strlen(passwd)) != 0) {
-        printf("pwhash_argon2id_str_verify(1') failure\n");
+        printf("pwhash_str_verify(1') failure\n");
     }
     str_out[14]++;
-    if (crypto_pwhash_argon2id_str_verify(str_out, passwd, strlen(passwd)) != -1) {
+    if (crypto_pwhash_str_verify(str_out, passwd, strlen(passwd)) != -1) {
         printf("pwhash_argon2id_str_verify(2) failure\n");
     }
     str_out[14]--;
     assert(str_out[crypto_pwhash_argon2id_STRBYTES - 1U] == 0);
 
-    if (crypto_pwhash_argon2id_str(str_out2, passwd, 0x100000000ULL, OPSLIMIT,
+    if (crypto_pwhash_str(str_out2, passwd, 0x100000000ULL, OPSLIMIT,
                           MEMLIMIT) != -1) {
-        printf("pwhash_argon2id_str() with a large password should have failed\n");
-        return 1;
+        printf("pwhash_str() with a large password should have failed\n");
     }
-    if (crypto_pwhash_argon2id_str(str_out2, passwd, strlen(passwd), 1, MEMLIMIT) !=
-        0) {
-        printf("pwhash_argon2id_str() with a small opslimit should not have failed\n");
-        return 1;
+    if (crypto_pwhash_str(str_out2, passwd, strlen(passwd), 1, MEMLIMIT) != 0) {
+        printf("pwhash_str() with a small opslimit should not have failed\n");
     }
-    if (crypto_pwhash_argon2id_str(str_out2, passwd, strlen(passwd), 0, MEMLIMIT) !=
-        -1) {
+    if (crypto_pwhash_str(str_out2, passwd, strlen(passwd), 0, MEMLIMIT) != -1) {
         printf("pwhash_argon2id_str() with a null opslimit should have failed\n");
-        return 1;
     }
-    if (crypto_pwhash_argon2id_str_verify("$argon2id$m=65536,t=2,p=1c29tZXNhbHQ"
-                                          "$9sTbSlTio3Biev89thdrlKKiCaYsjjYVJxGAL3swxpQ",
-                                          "password", 0x100000000ULL) != -1) {
-        printf("pwhash_argon2id_str_verify(invalid(0)) failure\n");
+    if (crypto_pwhash_str_verify("$argon2id$m=65536,t=2,p=1c29tZXNhbHQ"
+                                 "$9sTbSlTio3Biev89thdrlKKiCaYsjjYVJxGAL3swxpQ",
+                                 "password", 0x100000000ULL) != -1) {
+        printf("pwhash_str_verify(invalid(0)) failure\n");
     }
-    if (crypto_pwhash_argon2id_str_verify("$argon2id$m=65536,t=2,p=1c29tZXNhbHQ"
-                                          "$9sTbSlTio3Biev89thdrlKKiCaYsjjYVJxGAL3swxpQ",
-                                          "password", strlen("password")) != -1) {
-        printf("pwhash_argon2id_str_verify(invalid(1)) failure %d\n", errno);
+    if (crypto_pwhash_str_verify("$argon2id$m=65536,t=2,p=1c29tZXNhbHQ"
+                                 "$9sTbSlTio3Biev89thdrlKKiCaYsjjYVJxGAL3swxpQ",
+                                 "password", strlen("password")) != -1) {
+        printf("pwhash_str_verify(invalid(1)) failure %d\n", errno);
     }
-    if (crypto_pwhash_argon2id_str_verify("$argon2id$m=65536,t=2,p=1$c29tZXNhbHQ"
-                                          "9sTbSlTio3Biev89thdrlKKiCaYsjjYVJxGAL3swxpQ",
-                                          "password", strlen("password")) != -1) {
-        printf("pwhash_argon2id_str_verify(invalid(2)) failure\n");
+    if (crypto_pwhash_str_verify("$argon2id$m=65536,t=2,p=1$c29tZXNhbHQ"
+                                 "9sTbSlTio3Biev89thdrlKKiCaYsjjYVJxGAL3swxpQ",
+                                 "password", strlen("password")) != -1) {
+        printf("pwhash_str_verify(invalid(2)) failure\n");
     }
-    if (crypto_pwhash_argon2id_str_verify("$argon2id$m=65536,t=2,p=1$c29tZXNhbHQ"
-                                          "$b2G3seW+uPzerwQQC+/E1K50CLLO7YXy0JRcaTuswRo",
-                                          "password", strlen("password")) != -1) {
-        printf("pwhash_argon2id_str_verify(invalid(3)) failure\n");
+    if (crypto_pwhash_str_verify("$argon2id$m=65536,t=2,p=1$c29tZXNhbHQ"
+                                 "$b2G3seW+uPzerwQQC+/E1K50CLLO7YXy0JRcaTuswRo",
+                                 "password", strlen("password")) != -1) {
+        printf("pwhash_str_verify(invalid(3)) failure\n");
     }
-    if (crypto_pwhash_argon2id_str_verify("$argon2id$v=19$m=65536,t=2,p=1c29tZXNhbHQ"
-                                          "$wWKIMhR9lyDFvRz9YTZweHKfbftvj+qf+YFY4NeBbtA",
-                                          "password", strlen("password")) != -1) {
-        printf("pwhash_argon2id_str_verify(invalid(4)) failure\n");
+    if (crypto_pwhash_str_verify("$argon2id$v=19$m=65536,t=2,p=1c29tZXNhbHQ"
+                                 "$wWKIMhR9lyDFvRz9YTZweHKfbftvj+qf+YFY4NeBbtA",
+                                 "password", strlen("password")) != -1) {
+        printf("pwhash_str_verify(invalid(4)) failure\n");
     }
-    if (crypto_pwhash_argon2id_str_verify("$argon2id$v=19$m=65536,t=2,p=1$c29tZXNhbHQ"
-                                          "wWKIMhR9lyDFvRz9YTZweHKfbftvj+qf+YFY4NeBbtA",
-                                          "password", strlen("password")) != -1) {
-        printf("pwhash_argon2id_str_verify(invalid(5)) failure\n");
+    if (crypto_pwhash_str_verify("$argon2id$v=19$m=65536,t=2,p=1$c29tZXNhbHQ"
+                                 "wWKIMhR9lyDFvRz9YTZweHKfbftvj+qf+YFY4NeBbtA",
+                                 "password", strlen("password")) != -1) {
+        printf("pwhash_str_verify(invalid(5)) failure\n");
     }
-    if (crypto_pwhash_argon2id_str_verify("$argon2id$v=19$m=65536,t=2,p=1$c29tZXNhbHQ"
-                                          "$8iIuixkI73Js3G1uMbezQXD0b8LG4SXGsOwoQkdAQIM",
-                                          "password", strlen("password")) != -1) {
-        printf("pwhash_argon2id_str_verify(invalid(6)) failure\n");
+    if (crypto_pwhash_str_verify("$argon2id$v=19$m=65536,t=2,p=1$c29tZXNhbHQ"
+                                 "$8iIuixkI73Js3G1uMbezQXD0b8LG4SXGsOwoQkdAQIM",
+                                 "password", strlen("password")) != -1) {
+        printf("pwhash_str_verify(invalid(6)) failure\n");
     }
     if (crypto_pwhash_str_verify("$argon2id$v=19$m=256,t=3,p=1$MDEyMzQ1Njc"
                                  "$G5ajKFCoUzaXRLdz7UJb5wGkb2Xt+X5/GQjUYtS2+TE",
                                  "password", strlen("password")) != 0) {
-        printf("pwhash_argon2id_str_verify(valid(7)) failure\n");
+        printf("pwhash_str_verify(valid(7)) failure\n");
     }
-    if (crypto_pwhash_argon2id_str_verify("$argon2id$v=19$m=256,t=3,p=1$MDEyMzQ1Njc"
-                                          "$G5ajKFCoUzaXRLdz7UJb5wGkb2Xt+X5/GQjUYtS2+TE",
-                                          "passwore", strlen("passwore")) != -1 || errno != EINVAL) {
-        printf("pwhash_argon2id_str_verify(invalid(7)) failure\n");
+    if (crypto_pwhash_str_verify("$argon2id$v=19$m=256,t=3,p=1$MDEyMzQ1Njc"
+                                 "$G5ajKFCoUzaXRLdz7UJb5wGkb2Xt+X5/GQjUYtS2+TE",
+                                 "passwore", strlen("passwore")) != -1 || errno != EINVAL) {
+        printf("pwhash_str_verify(invalid(7)) failure\n");
     }
-    if (crypto_pwhash_argon2id_str_verify("$Argon2id$v=19$m=256,t=3,p=1$MDEyMzQ1Njc"
-                                          "$G5ajKFCoUzaXRLdz7UJb5wGkb2Xt+X5/GQjUYtS2+TE",
-                                          "password", strlen("password")) != -1 || errno != EINVAL) {
-        printf("pwhash_argon2id_str_verify(invalid(8)) failure\n");
+    if (crypto_pwhash_str_verify("$Argon2id$v=19$m=256,t=3,p=1$MDEyMzQ1Njc"
+                                 "$G5ajKFCoUzaXRLdz7UJb5wGkb2Xt+X5/GQjUYtS2+TE",
+                                 "password", strlen("password")) != -1 || errno != EINVAL) {
+        printf("pwhash_str_verify(invalid(8)) failure\n");
     }
-    if (crypto_pwhash_argon2id_str_verify("$argon2id$v=19$m=256,t=3,p=2$MDEyMzQ1Njc"
-                                          "$G5ajKFCoUzaXRLdz7UJb5wGkb2Xt+X5/GQjUYtS2+TE",
-                                          "password", strlen("password")) != -1 || errno != EINVAL) {
-        printf("pwhash_argon2id_str_verify(invalid(9)) failure\n");
+    if (crypto_pwhash_str_verify("$argon2id$v=19$m=256,t=3,p=2$MDEyMzQ1Njc"
+                                 "$G5ajKFCoUzaXRLdz7UJb5wGkb2Xt+X5/GQjUYtS2+TE",
+                                 "password", strlen("password")) != -1 || errno != EINVAL) {
+        printf("pwhash_str_verify(invalid(9)) failure\n");
     }
-    assert(crypto_pwhash_argon2id_bytes_min() > 0U);
-    assert(crypto_pwhash_argon2id_bytes_max() > crypto_pwhash_argon2id_bytes_min());
-    assert(crypto_pwhash_argon2id_passwd_max() > crypto_pwhash_argon2id_passwd_min());
-    assert(crypto_pwhash_argon2id_saltbytes() > 0U);
-    assert(crypto_pwhash_argon2id_strbytes() > 1U);
-    assert(crypto_pwhash_argon2id_strbytes() > strlen(crypto_pwhash_argon2id_strprefix()));
-
-    assert(crypto_pwhash_argon2id_opslimit_min() > 0U);
-    assert(crypto_pwhash_argon2id_opslimit_max() > 0U);
-    assert(crypto_pwhash_argon2id_memlimit_min() > 0U);
-    assert(crypto_pwhash_argon2id_memlimit_max() > 0U);
-    assert(crypto_pwhash_argon2id_opslimit_interactive() > 0U);
-    assert(crypto_pwhash_argon2id_memlimit_interactive() > 0U);
-    assert(crypto_pwhash_argon2id_opslimit_moderate() > 0U);
-    assert(crypto_pwhash_argon2id_memlimit_moderate() > 0U);
-    assert(crypto_pwhash_argon2id_opslimit_sensitive() > 0U);
-    assert(crypto_pwhash_argon2id_memlimit_sensitive() > 0U);
-
-    assert(crypto_pwhash_argon2id_bytes_min() == crypto_pwhash_argon2id_BYTES_MIN);
-    assert(crypto_pwhash_argon2id_bytes_max() == crypto_pwhash_argon2id_BYTES_MAX);
-    assert(crypto_pwhash_argon2id_passwd_min() == crypto_pwhash_argon2id_PASSWD_MIN);
-    assert(crypto_pwhash_argon2id_passwd_max() == crypto_pwhash_argon2id_PASSWD_MAX);
-    assert(crypto_pwhash_argon2id_saltbytes() == crypto_pwhash_argon2id_SALTBYTES);
-    assert(crypto_pwhash_argon2id_strbytes() == crypto_pwhash_argon2id_STRBYTES);
-
-    assert(crypto_pwhash_argon2id_opslimit_min() == crypto_pwhash_argon2id_OPSLIMIT_MIN);
-    assert(crypto_pwhash_argon2id_opslimit_max() == crypto_pwhash_argon2id_OPSLIMIT_MAX);
-    assert(crypto_pwhash_argon2id_memlimit_min() == crypto_pwhash_argon2id_MEMLIMIT_MIN);
-    assert(crypto_pwhash_argon2id_memlimit_max() == crypto_pwhash_argon2id_MEMLIMIT_MAX);
-    assert(crypto_pwhash_argon2id_opslimit_interactive() ==
-           crypto_pwhash_argon2id_OPSLIMIT_INTERACTIVE);
-    assert(crypto_pwhash_argon2id_memlimit_interactive() ==
-           crypto_pwhash_argon2id_MEMLIMIT_INTERACTIVE);
-    assert(crypto_pwhash_argon2id_opslimit_moderate() ==
-           crypto_pwhash_argon2id_OPSLIMIT_MODERATE);
-    assert(crypto_pwhash_argon2id_memlimit_moderate() ==
-           crypto_pwhash_argon2id_MEMLIMIT_MODERATE);
-    assert(crypto_pwhash_argon2id_opslimit_sensitive() ==
-           crypto_pwhash_argon2id_OPSLIMIT_SENSITIVE);
-    assert(crypto_pwhash_argon2id_memlimit_sensitive() ==
-           crypto_pwhash_argon2id_MEMLIMIT_SENSITIVE);
-
-    assert(crypto_pwhash_argon2id_alg_argon2id13() == crypto_pwhash_argon2id_ALG_ARGON2ID13);
-
+    assert(crypto_pwhash_str_alg(str_out, "test", 4, OPSLIMIT, MEMLIMIT,
+                                 crypto_pwhash_ALG_ARGON2ID13) == 0);
+    assert(crypto_pwhash_argon2id_str_verify(str_out, "test", 4) == 0);
+    assert(crypto_pwhash_argon2id_str_needs_rehash(str_out,
+                                                   OPSLIMIT, MEMLIMIT) == 0);
+    assert(crypto_pwhash_argon2id_str_needs_rehash(str_out,
+                                                   OPSLIMIT / 2, MEMLIMIT) == 1);
+    assert(crypto_pwhash_argon2id_str_needs_rehash(str_out,
+                                                   OPSLIMIT, MEMLIMIT / 2) == 1);
+    assert(crypto_pwhash_argon2id_str_needs_rehash(str_out, 0, 0) == 1);
+    assert(crypto_pwhash_argon2i_str_needs_rehash(str_out, 0, 0) == -1);
+    assert(crypto_pwhash_argon2id_str_needs_rehash(str_out + 1,
+                                                   OPSLIMIT, MEMLIMIT) == -1);
+    assert(crypto_pwhash_argon2i_str_needs_rehash(str_out, 0, 0) == -1);
+    assert(crypto_pwhash_argon2i_str_needs_rehash("", OPSLIMIT, MEMLIMIT) == -1);
+    assert(crypto_pwhash_str_alg(str_out, "test", 4, OPSLIMIT, MEMLIMIT,
+                                 crypto_pwhash_ALG_ARGON2I13) == 0);
+    assert(crypto_pwhash_argon2i_str_verify(str_out, "test", 4) == 0);
+    assert(crypto_pwhash_argon2i_str_needs_rehash(str_out,
+                                                  OPSLIMIT, MEMLIMIT) == 0);
+    assert(crypto_pwhash_argon2i_str_needs_rehash(str_out,
+                                                  OPSLIMIT / 2, MEMLIMIT) == 1);
+    assert(crypto_pwhash_argon2i_str_needs_rehash(str_out,
+                                                  OPSLIMIT, MEMLIMIT / 2) == 1);
+    assert(crypto_pwhash_argon2i_str_needs_rehash(str_out, 0, 0) == 1);
+    assert(crypto_pwhash_argon2id_str_needs_rehash(str_out, 0, 0) == -1);
+    assert(crypto_pwhash_argon2i_str_needs_rehash("", OPSLIMIT, MEMLIMIT) == -1);
+    assert(crypto_pwhash_argon2i_str_needs_rehash(str_out + 1,
+                                                  OPSLIMIT, MEMLIMIT) == -1);
     sodium_free(salt);
     sodium_free(str_out);
     sodium_free(str_out2);
+}
+
+int
+main(void)
+{
+    tv();
+    tv2();
+    tv3();
+    str_tests();
+
+    assert(crypto_pwhash_bytes_min() > 0U);
+    assert(crypto_pwhash_bytes_max() > crypto_pwhash_bytes_min());
+    assert(crypto_pwhash_passwd_max() > crypto_pwhash_passwd_min());
+    assert(crypto_pwhash_saltbytes() > 0U);
+    assert(crypto_pwhash_strbytes() > 1U);
+    assert(crypto_pwhash_strbytes() > strlen(crypto_pwhash_strprefix()));
+
+    assert(crypto_pwhash_opslimit_min() > 0U);
+    assert(crypto_pwhash_opslimit_max() > 0U);
+    assert(crypto_pwhash_memlimit_min() > 0U);
+    assert(crypto_pwhash_memlimit_max() > 0U);
+    assert(crypto_pwhash_opslimit_interactive() > 0U);
+    assert(crypto_pwhash_memlimit_interactive() > 0U);
+    assert(crypto_pwhash_opslimit_moderate() > 0U);
+    assert(crypto_pwhash_memlimit_moderate() > 0U);
+    assert(crypto_pwhash_opslimit_sensitive() > 0U);
+    assert(crypto_pwhash_memlimit_sensitive() > 0U);
+    assert(strcmp(crypto_pwhash_primitive(), "argon2i") == 0);
+
+    assert(crypto_pwhash_bytes_min() == crypto_pwhash_BYTES_MIN);
+    assert(crypto_pwhash_bytes_max() == crypto_pwhash_BYTES_MAX);
+    assert(crypto_pwhash_passwd_min() == crypto_pwhash_PASSWD_MIN);
+    assert(crypto_pwhash_passwd_max() == crypto_pwhash_PASSWD_MAX);
+    assert(crypto_pwhash_saltbytes() == crypto_pwhash_SALTBYTES);
+    assert(crypto_pwhash_strbytes() == crypto_pwhash_STRBYTES);
+
+    assert(crypto_pwhash_opslimit_min() == crypto_pwhash_OPSLIMIT_MIN);
+    assert(crypto_pwhash_opslimit_max() == crypto_pwhash_OPSLIMIT_MAX);
+    assert(crypto_pwhash_memlimit_min() == crypto_pwhash_MEMLIMIT_MIN);
+    assert(crypto_pwhash_memlimit_max() == crypto_pwhash_MEMLIMIT_MAX);
+    assert(crypto_pwhash_opslimit_interactive() ==
+           crypto_pwhash_OPSLIMIT_INTERACTIVE);
+    assert(crypto_pwhash_memlimit_interactive() ==
+           crypto_pwhash_MEMLIMIT_INTERACTIVE);
+    assert(crypto_pwhash_opslimit_moderate() ==
+           crypto_pwhash_OPSLIMIT_MODERATE);
+    assert(crypto_pwhash_memlimit_moderate() ==
+           crypto_pwhash_MEMLIMIT_MODERATE);
+    assert(crypto_pwhash_opslimit_sensitive() ==
+           crypto_pwhash_OPSLIMIT_SENSITIVE);
+    assert(crypto_pwhash_memlimit_sensitive() ==
+           crypto_pwhash_MEMLIMIT_SENSITIVE);
+
+    assert(crypto_pwhash_argon2id_bytes_min() == crypto_pwhash_bytes_min());
+    assert(crypto_pwhash_argon2id_bytes_max() == crypto_pwhash_bytes_max());
+    assert(crypto_pwhash_argon2id_passwd_min() == crypto_pwhash_passwd_min());
+    assert(crypto_pwhash_argon2id_passwd_max() == crypto_pwhash_passwd_max());
+    assert(crypto_pwhash_argon2id_saltbytes() == crypto_pwhash_saltbytes());
+    assert(crypto_pwhash_argon2id_strbytes() == crypto_pwhash_strbytes());
+    assert(strcmp(crypto_pwhash_argon2id_strprefix(),
+                  crypto_pwhash_strprefix()) == 0);
+    assert(crypto_pwhash_argon2id_opslimit_min() ==
+           crypto_pwhash_opslimit_min());
+    assert(crypto_pwhash_argon2id_opslimit_max() ==
+           crypto_pwhash_opslimit_max());
+    assert(crypto_pwhash_argon2id_memlimit_min() ==
+           crypto_pwhash_memlimit_min());
+    assert(crypto_pwhash_argon2id_memlimit_max() ==
+           crypto_pwhash_memlimit_max());
+    assert(crypto_pwhash_argon2id_opslimit_interactive() ==
+           crypto_pwhash_opslimit_interactive());
+    assert(crypto_pwhash_argon2id_opslimit_moderate() ==
+           crypto_pwhash_opslimit_moderate());
+    assert(crypto_pwhash_argon2id_opslimit_sensitive() ==
+           crypto_pwhash_opslimit_sensitive());
+    assert(crypto_pwhash_argon2id_memlimit_interactive() ==
+           crypto_pwhash_memlimit_interactive());
+    assert(crypto_pwhash_argon2id_memlimit_moderate() ==
+           crypto_pwhash_memlimit_moderate());
+    assert(crypto_pwhash_argon2id_memlimit_sensitive() ==
+           crypto_pwhash_memlimit_sensitive());
+    assert(crypto_pwhash_alg_argon2id13() ==
+           crypto_pwhash_argon2id_alg_argon2id13());
+    assert(crypto_pwhash_alg_argon2i13() == crypto_pwhash_ALG_ARGON2I13);
+    assert(crypto_pwhash_alg_argon2i13() != crypto_pwhash_alg_default());
+    assert(crypto_pwhash_alg_argon2id13() == crypto_pwhash_ALG_ARGON2ID13);
+    assert(crypto_pwhash_alg_argon2id13() != crypto_pwhash_alg_argon2i13());
+    assert(crypto_pwhash_alg_argon2id13() == crypto_pwhash_alg_default());
+
+    assert(crypto_pwhash_argon2id(NULL, 0, NULL, 0, NULL,
+                                  crypto_pwhash_argon2id_OPSLIMIT_INTERACTIVE,
+                                  crypto_pwhash_argon2id_MEMLIMIT_INTERACTIVE,
+                                  0) == -1);
+    assert(crypto_pwhash_argon2id(NULL, 0, NULL, 0, NULL,
+                                 crypto_pwhash_argon2id_OPSLIMIT_INTERACTIVE,
+                                 crypto_pwhash_argon2id_MEMLIMIT_INTERACTIVE,
+                                 crypto_pwhash_ALG_ARGON2I13) == -1);
+    assert(crypto_pwhash_argon2i(NULL, 0, NULL, 0, NULL,
+                                 crypto_pwhash_argon2id_OPSLIMIT_INTERACTIVE,
+                                 crypto_pwhash_argon2id_MEMLIMIT_INTERACTIVE,
+                                 0) == -1);
+    assert(crypto_pwhash_argon2i(NULL, 0, NULL, 0, NULL,
+                                 crypto_pwhash_argon2id_OPSLIMIT_INTERACTIVE,
+                                 crypto_pwhash_argon2id_MEMLIMIT_INTERACTIVE,
+                                 crypto_pwhash_ALG_ARGON2ID13) == -1);
 
     printf("OK\n");
 

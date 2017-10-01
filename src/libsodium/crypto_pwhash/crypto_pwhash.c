@@ -20,7 +20,7 @@ crypto_pwhash_alg_argon2id13(void)
 int
 crypto_pwhash_alg_default(void)
 {
-    return crypto_pwhash_ALG_ARGON2I13;
+    return crypto_pwhash_ALG_DEFAULT;
 }
 
 size_t
@@ -149,8 +149,8 @@ crypto_pwhash_str(char out[crypto_pwhash_STRBYTES],
                   const char * const passwd, unsigned long long passwdlen,
                   unsigned long long opslimit, size_t memlimit)
 {
-    return crypto_pwhash_argon2i_str(out, passwd, passwdlen,
-                                     opslimit, memlimit);
+    return crypto_pwhash_argon2id_str(out, passwd, passwdlen,
+                                      opslimit, memlimit);
 }
 
 int

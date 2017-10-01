@@ -22,75 +22,75 @@ int crypto_pwhash_alg_argon2i13(void);
 SODIUM_EXPORT
 int crypto_pwhash_alg_argon2id13(void);
 
-#define crypto_pwhash_ALG_DEFAULT crypto_pwhash_ALG_ARGON2I13
+#define crypto_pwhash_ALG_DEFAULT crypto_pwhash_ALG_ARGON2ID13
 SODIUM_EXPORT
 int crypto_pwhash_alg_default(void);
 
-#define crypto_pwhash_BYTES_MIN crypto_pwhash_argon2i_BYTES_MIN
+#define crypto_pwhash_BYTES_MIN crypto_pwhash_argon2id_BYTES_MIN
 SODIUM_EXPORT
 size_t crypto_pwhash_bytes_min(void);
 
-#define crypto_pwhash_BYTES_MAX crypto_pwhash_argon2i_BYTES_MAX
+#define crypto_pwhash_BYTES_MAX crypto_pwhash_argon2id_BYTES_MAX
 SODIUM_EXPORT
 size_t crypto_pwhash_bytes_max(void);
 
-#define crypto_pwhash_PASSWD_MIN crypto_pwhash_argon2i_PASSWD_MIN
+#define crypto_pwhash_PASSWD_MIN crypto_pwhash_argon2id_PASSWD_MIN
 SODIUM_EXPORT
 size_t crypto_pwhash_passwd_min(void);
 
-#define crypto_pwhash_PASSWD_MAX crypto_pwhash_argon2i_PASSWD_MAX
+#define crypto_pwhash_PASSWD_MAX crypto_pwhash_argon2id_PASSWD_MAX
 SODIUM_EXPORT
 size_t crypto_pwhash_passwd_max(void);
 
-#define crypto_pwhash_SALTBYTES crypto_pwhash_argon2i_SALTBYTES
+#define crypto_pwhash_SALTBYTES crypto_pwhash_argon2id_SALTBYTES
 SODIUM_EXPORT
 size_t crypto_pwhash_saltbytes(void);
 
-#define crypto_pwhash_STRBYTES crypto_pwhash_argon2i_STRBYTES
+#define crypto_pwhash_STRBYTES crypto_pwhash_argon2id_STRBYTES
 SODIUM_EXPORT
 size_t crypto_pwhash_strbytes(void);
 
-#define crypto_pwhash_STRPREFIX crypto_pwhash_argon2i_STRPREFIX
+#define crypto_pwhash_STRPREFIX crypto_pwhash_argon2id_STRPREFIX
 SODIUM_EXPORT
 const char *crypto_pwhash_strprefix(void);
 
-#define crypto_pwhash_OPSLIMIT_MIN crypto_pwhash_argon2i_OPSLIMIT_MIN
+#define crypto_pwhash_OPSLIMIT_MIN crypto_pwhash_argon2id_OPSLIMIT_MIN
 SODIUM_EXPORT
 size_t crypto_pwhash_opslimit_min(void);
 
-#define crypto_pwhash_OPSLIMIT_MAX crypto_pwhash_argon2i_OPSLIMIT_MAX
+#define crypto_pwhash_OPSLIMIT_MAX crypto_pwhash_argon2id_OPSLIMIT_MAX
 SODIUM_EXPORT
 size_t crypto_pwhash_opslimit_max(void);
 
-#define crypto_pwhash_MEMLIMIT_MIN crypto_pwhash_argon2i_MEMLIMIT_MIN
+#define crypto_pwhash_MEMLIMIT_MIN crypto_pwhash_argon2id_MEMLIMIT_MIN
 SODIUM_EXPORT
 size_t crypto_pwhash_memlimit_min(void);
 
-#define crypto_pwhash_MEMLIMIT_MAX crypto_pwhash_argon2i_MEMLIMIT_MAX
+#define crypto_pwhash_MEMLIMIT_MAX crypto_pwhash_argon2id_MEMLIMIT_MAX
 SODIUM_EXPORT
 size_t crypto_pwhash_memlimit_max(void);
 
-#define crypto_pwhash_OPSLIMIT_INTERACTIVE crypto_pwhash_argon2i_OPSLIMIT_INTERACTIVE
+#define crypto_pwhash_OPSLIMIT_INTERACTIVE crypto_pwhash_argon2id_OPSLIMIT_INTERACTIVE
 SODIUM_EXPORT
 size_t crypto_pwhash_opslimit_interactive(void);
 
-#define crypto_pwhash_MEMLIMIT_INTERACTIVE crypto_pwhash_argon2i_MEMLIMIT_INTERACTIVE
+#define crypto_pwhash_MEMLIMIT_INTERACTIVE crypto_pwhash_argon2id_MEMLIMIT_INTERACTIVE
 SODIUM_EXPORT
 size_t crypto_pwhash_memlimit_interactive(void);
 
-#define crypto_pwhash_OPSLIMIT_MODERATE crypto_pwhash_argon2i_OPSLIMIT_MODERATE
+#define crypto_pwhash_OPSLIMIT_MODERATE crypto_pwhash_argon2id_OPSLIMIT_MODERATE
 SODIUM_EXPORT
 size_t crypto_pwhash_opslimit_moderate(void);
 
-#define crypto_pwhash_MEMLIMIT_MODERATE crypto_pwhash_argon2i_MEMLIMIT_MODERATE
+#define crypto_pwhash_MEMLIMIT_MODERATE crypto_pwhash_argon2id_MEMLIMIT_MODERATE
 SODIUM_EXPORT
 size_t crypto_pwhash_memlimit_moderate(void);
 
-#define crypto_pwhash_OPSLIMIT_SENSITIVE crypto_pwhash_argon2i_OPSLIMIT_SENSITIVE
+#define crypto_pwhash_OPSLIMIT_SENSITIVE crypto_pwhash_argon2id_OPSLIMIT_SENSITIVE
 SODIUM_EXPORT
 size_t crypto_pwhash_opslimit_sensitive(void);
 
-#define crypto_pwhash_MEMLIMIT_SENSITIVE crypto_pwhash_argon2i_MEMLIMIT_SENSITIVE
+#define crypto_pwhash_MEMLIMIT_SENSITIVE crypto_pwhash_argon2id_MEMLIMIT_SENSITIVE
 SODIUM_EXPORT
 size_t crypto_pwhash_memlimit_sensitive(void);
 
