@@ -293,8 +293,13 @@ main(void)
         return 1;
     }
     if (crypto_pwhash_argon2id_str(str_out2, passwd, strlen(passwd), 1, MEMLIMIT) !=
+        0) {
+        printf("pwhash_argon2id_str() with a small opslimit should not have failed\n");
+        return 1;
+    }
+    if (crypto_pwhash_argon2id_str(str_out2, passwd, strlen(passwd), 0, MEMLIMIT) !=
         -1) {
-        printf("pwhash_argon2id_str() with a small opslimit should have failed\n");
+        printf("pwhash_argon2id_str() with a null opslimit should have failed\n");
         return 1;
     }
     if (crypto_pwhash_argon2id_str_verify("$argon2id$m=65536,t=2,p=1c29tZXNhbHQ"

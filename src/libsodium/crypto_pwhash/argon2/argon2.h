@@ -47,7 +47,7 @@
     ARGON2_MIN(UINT32_C(0xFFFFFFFF), UINT64_C(1) << ARGON2_MAX_MEMORY_BITS)
 
 /* Minimum and maximum number of passes */
-#define ARGON2_MIN_TIME UINT32_C(3)
+#define ARGON2_MIN_TIME UINT32_C(1)
 #define ARGON2_MAX_TIME UINT32_C(0xFFFFFFFF)
 
 /* Minimum and maximum password length in bytes */

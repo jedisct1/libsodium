@@ -8,6 +8,7 @@
 #include "argon2-core.h"
 #include "argon2.h"
 #include "crypto_pwhash_argon2id.h"
+#include "private/common.h"
 #include "randombytes.h"
 #include "utils.h"
 
@@ -22,30 +23,36 @@ crypto_pwhash_argon2id_alg_argon2id13(void)
 size_t
 crypto_pwhash_argon2id_bytes_min(void)
 {
+    COMPILER_ASSERT(crypto_pwhash_argon2id_BYTES_MIN >= ARGON2_MIN_OUTLEN);
     return crypto_pwhash_argon2id_BYTES_MIN;
 }
 
 size_t
 crypto_pwhash_argon2id_bytes_max(void)
 {
+    COMPILER_ASSERT(crypto_pwhash_argon2id_BYTES_MAX <= ARGON2_MAX_OUTLEN);
     return crypto_pwhash_argon2id_BYTES_MAX;
 }
 
 size_t
 crypto_pwhash_argon2id_passwd_min(void)
 {
+    COMPILER_ASSERT(crypto_pwhash_argon2id_PASSWD_MIN >= ARGON2_MIN_PWD_LENGTH);
     return crypto_pwhash_argon2id_PASSWD_MIN;
 }
 
 size_t
 crypto_pwhash_argon2id_passwd_max(void)
 {
+    COMPILER_ASSERT(crypto_pwhash_argon2id_PASSWD_MAX <= ARGON2_MAX_PWD_LENGTH);
     return crypto_pwhash_argon2id_PASSWD_MAX;
 }
 
 size_t
 crypto_pwhash_argon2id_saltbytes(void)
 {
+    COMPILER_ASSERT(crypto_pwhash_argon2id_SALTBYTES >= ARGON2_MIN_SALT_LENGTH);
+    COMPILER_ASSERT(crypto_pwhash_argon2id_SALTBYTES <= ARGON2_MAX_SALT_LENGTH);
     return crypto_pwhash_argon2id_SALTBYTES;
 }
 
@@ -64,24 +71,28 @@ crypto_pwhash_argon2id_strprefix(void)
 size_t
 crypto_pwhash_argon2id_opslimit_min(void)
 {
+    COMPILER_ASSERT(crypto_pwhash_argon2id_OPSLIMIT_MIN >= ARGON2_MIN_TIME);
     return crypto_pwhash_argon2id_OPSLIMIT_MIN;
 }
 
 size_t
 crypto_pwhash_argon2id_opslimit_max(void)
 {
+    COMPILER_ASSERT(crypto_pwhash_argon2id_OPSLIMIT_MAX <= ARGON2_MAX_TIME);
     return crypto_pwhash_argon2id_OPSLIMIT_MAX;
 }
 
 size_t
 crypto_pwhash_argon2id_memlimit_min(void)
 {
+    COMPILER_ASSERT((crypto_pwhash_argon2id_MEMLIMIT_MIN / 1024U) >= ARGON2_MIN_MEMORY);
     return crypto_pwhash_argon2id_MEMLIMIT_MIN;
 }
 
 size_t
 crypto_pwhash_argon2id_memlimit_max(void)
 {
+    COMPILER_ASSERT((crypto_pwhash_argon2id_MEMLIMIT_MAX / 1024U) <= ARGON2_MAX_MEMORY);
     return crypto_pwhash_argon2id_MEMLIMIT_MAX;
 }
 
@@ -128,20 +139,29 @@ crypto_pwhash_argon2id(unsigned char *const out, unsigned long long outlen,
                        unsigned long long opslimit, size_t memlimit, int alg)
 {
     memset(out, 0, outlen);
-    memlimit /= 1024U;
-    if (outlen > ARGON2_MAX_OUTLEN || passwdlen > ARGON2_MAX_PWD_LENGTH ||
-        opslimit > ARGON2_MAX_TIME || memlimit > ARGON2_MAX_MEMORY) {
+    if (outlen > crypto_pwhash_argon2id_BYTES_MAX) {
         errno = EFBIG;
         return -1;
     }
-    if (outlen < ARGON2_MIN_OUTLEN || passwdlen < ARGON2_MIN_PWD_LENGTH ||
-        opslimit < ARGON2_MIN_TIME || memlimit < ARGON2_MIN_MEMORY) {
+    if (outlen < crypto_pwhash_argon2id_BYTES_MIN) {
+        errno = EINVAL;
+        return -1;
+    }
+    if (passwdlen > crypto_pwhash_argon2id_PASSWD_MAX ||
+        opslimit > crypto_pwhash_argon2id_OPSLIMIT_MAX ||
+        memlimit > crypto_pwhash_argon2id_MEMLIMIT_MAX) {
+        errno = EFBIG;
+        return -1;
+    }
+    if (passwdlen < crypto_pwhash_argon2id_PASSWD_MIN ||
+        opslimit < crypto_pwhash_argon2id_OPSLIMIT_MIN ||
+        memlimit < crypto_pwhash_argon2id_MEMLIMIT_MIN) {
         errno = EINVAL;
         return -1;
     }
     switch (alg) {
     case crypto_pwhash_argon2id_ALG_ARGON2ID13:
-        if (argon2id_hash_raw((uint32_t) opslimit, (uint32_t) memlimit,
+        if (argon2id_hash_raw((uint32_t) opslimit, (uint32_t) (memlimit / 1024U),
                               (uint32_t) 1U, passwd, (size_t) passwdlen, salt,
                               (size_t) crypto_pwhash_argon2id_SALTBYTES, out,
                               (size_t) outlen) != ARGON2_OK) {
@@ -163,19 +183,20 @@ crypto_pwhash_argon2id_str(char out[crypto_pwhash_argon2id_STRBYTES],
     unsigned char salt[crypto_pwhash_argon2id_SALTBYTES];
 
     memset(out, 0, crypto_pwhash_argon2id_STRBYTES);
-    memlimit /= 1024U;
-    if (passwdlen > ARGON2_MAX_PWD_LENGTH || opslimit > ARGON2_MAX_TIME ||
-        memlimit > ARGON2_MAX_MEMORY) {
+    if (passwdlen > crypto_pwhash_argon2id_PASSWD_MAX ||
+        opslimit > crypto_pwhash_argon2id_OPSLIMIT_MAX ||
+        memlimit > crypto_pwhash_argon2id_MEMLIMIT_MAX) {
         errno = EFBIG;
         return -1;
     }
-    if (passwdlen < ARGON2_MIN_PWD_LENGTH || opslimit < ARGON2_MIN_TIME ||
-        memlimit < ARGON2_MIN_MEMORY) {
+    if (passwdlen < crypto_pwhash_argon2id_PASSWD_MIN ||
+        opslimit < crypto_pwhash_argon2id_OPSLIMIT_MIN ||
+        memlimit < crypto_pwhash_argon2id_MEMLIMIT_MIN) {
         errno = EINVAL;
         return -1;
     }
     randombytes_buf(salt, sizeof salt);
-    if (argon2id_hash_encoded((uint32_t) opslimit, (uint32_t) memlimit,
+    if (argon2id_hash_encoded((uint32_t) opslimit, (uint32_t) (memlimit / 1024U),
                               (uint32_t) 1U, passwd, (size_t) passwdlen, salt,
                               sizeof salt, STR_HASHBYTES, out,
                               crypto_pwhash_argon2id_STRBYTES) != ARGON2_OK) {
@@ -191,12 +212,12 @@ crypto_pwhash_argon2id_str_verify(const char str[crypto_pwhash_argon2id_STRBYTES
 {
     int verify_ret;
 
-    if (passwdlen > ARGON2_MAX_PWD_LENGTH) {
+    if (passwdlen > crypto_pwhash_argon2id_PASSWD_MAX) {
         errno = EFBIG;
         return -1;
     }
     /* LCOV_EXCL_START */
-    if (passwdlen < ARGON2_MIN_PWD_LENGTH) {
+    if (passwdlen < crypto_pwhash_argon2id_PASSWD_MIN) {
         errno = EINVAL;
         return -1;
     }
