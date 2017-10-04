@@ -28,9 +28,10 @@ body {
 <h1></h1>
 <section class="test" id="test-res"></section>
 <script>
+var Module = { preRun: function() { performance.mark('bench_start') } };
+
 function runTest(tname) {
-    var xhr, expected, hn, idx = 0, passed = true,
-        Module = { preRun: function() { performance.mark('bench_start') } };
+    var xhr, expected, hn, idx = 0, passed = true;
 
     function outputReceived(e) {
         var found = e.data;
