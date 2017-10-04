@@ -42,8 +42,10 @@ function runTest(tname) {
         document.getElementById('test-res').appendChild(p);
         if (idx >= expected.length) {
             if (passed) {
-                hn.appendChild(document.createTextNode(' - PASSED'));
-                hn.className = 'passed';                    
+                performance.measure('bench', 'bench_start', 'bench_end');
+                let duration = performance.getEntriesByName('bench')[0].duration;
+                hn.appendChild(document.createTextNode(' - PASSED (time: ' + duration + ')'));
+                hn.className = 'passed';
             } else {
                 hn.appendChild(document.createTextNode(' - FAILED'));
                 hn.className = 'err';
@@ -75,6 +77,7 @@ function runTest(tname) {
         var st = document.createElement('script');
         st.src = tname + '.js';
         s.parentNode.insertBefore(st, s);
+        performance.mask('bench_end');
     }
     xhr.send(null);
 }
