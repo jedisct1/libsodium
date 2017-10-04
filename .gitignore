@@ -79,6 +79,7 @@ src/libsodium/include/sodium/version.h
 stamp-*
 test-driver
 test/default/browser
+test/default/*.asm.js
 test/default/*.res
 test/default/*.trs
 test/default/aead_aes256gcm
