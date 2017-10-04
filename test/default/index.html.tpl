@@ -46,7 +46,7 @@ function runTest(tname) {
             if (passed) {
                 performance.mark('bench_end')
                 performance.measure('bench', 'bench_start', 'bench_end');
-                let duration = performance.getEntriesByName('bench')[0].duration;
+                let duration = Math.round(performance.getEntriesByName('bench')[0].duration);
                 hn.appendChild(document.createTextNode(' - PASSED (time: ' + duration + ')'));
                 hn.className = 'passed';
             } else {
