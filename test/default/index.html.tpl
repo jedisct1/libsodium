@@ -28,6 +28,15 @@ body {
 <h1></h1>
 <section class="test" id="test-res"></section>
 <script>
+var performance;
+if (typeof performance !== 'object') {
+  performance = {
+    mark: function() { },
+    measure: function() { },
+    getEntriesByName: function() { return [ -1 ] }
+  };
+}
+
 var Module = { preRun: function() { performance.mark('bench_start') } };
 
 function runTest(tname) {
