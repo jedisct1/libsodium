@@ -29,8 +29,9 @@ body {
 <section class="test" id="test-res"></section>
 <script>
 function runTest(tname) {
-    var xhr, expected, hn, idx = 0, passed = true;
-    
+    var xhr, expected, hn, idx = 0, passed = true,
+        Module = { preRun: function() { performance.mark('bench_start') } };
+
     function outputReceived(e) {
         var found = e.data;
         var p = document.createElement('p');
@@ -42,6 +43,7 @@ function runTest(tname) {
         document.getElementById('test-res').appendChild(p);
         if (idx >= expected.length) {
             if (passed) {
+                performance.mark('bench_end')
                 performance.measure('bench', 'bench_start', 'bench_end');
                 let duration = performance.getEntriesByName('bench')[0].duration;
                 hn.appendChild(document.createTextNode(' - PASSED (time: ' + duration + ')'));
@@ -77,7 +79,6 @@ function runTest(tname) {
         var st = document.createElement('script');
         st.src = tname + '.js';
         s.parentNode.insertBefore(st, s);
-        performance.mask('bench_end');
     }
     xhr.send(null);
 }
