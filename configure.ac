@@ -156,7 +156,7 @@ AC_ARG_ENABLE(debug,
           [-g*], [ ],
           [*], [AS_VAR_APPEND([nxflags], [" $flag"])])
       done
-      CFLAGS="$nxflags -O0 -g3"
+      CFLAGS="$nxflags -O -g3"
     ])
     ENABLE_CWFLAGS=yes
     CPPFLAGS="$CPPFLAGS -DDEBUG=1 -U_FORTIFY_SOURCE"
