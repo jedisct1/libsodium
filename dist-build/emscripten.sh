@@ -78,18 +78,16 @@ if [ "$DIST" = yes ]; then
     if (typeof Module === 'undefined') {
       Module = {};
     }
-    var root = {};
-    if (typeof this === 'object') {
-      root = this.global || this.self || this.window || this;
+    var root = Module;
+    if (root['sodium'] !== 'object') {
+      if (typeof global === 'object') {
+        root = global;
+      } else if (typeof window === 'object') {
+        root = window;
+      }
     }
-    if (typeof global === 'object') {
-      root = global;
-    }
-    if (typeof window === 'object') {
-      root = window;
-    }
-    if (root.sodium && !isNaN(root.sodium.totalMemory)) {
-      Module['TOTAL_MEMORY'] = root.sodium.totalMemory;
+    if (root['sodium'] === 'object' && typeof root['sodium']['totalMemory'] === 'number') {
+      Module['TOTAL_MEMORY'] = root['sodium']['totalMemory'];
     }
     var _Module = Module;
     Module.ready = new Promise(function (resolve, reject) {
