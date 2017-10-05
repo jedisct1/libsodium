@@ -31,9 +31,9 @@ body {
 var performance;
 if (typeof performance !== 'object') {
   performance = {
-    mark: function() { },
-    measure: function() { },
-    getEntriesByName: function() { return [ -1 ] }
+    mark: function(s) { this[s] = new Date() },
+    measure: function(_t, s1, s2) { this.t = this[s2] - this[s1] },
+    getEntriesByName: function() { return [ { duration: this.t } ] }
   };
 }
 
@@ -55,8 +55,8 @@ function runTest(tname) {
             if (passed) {
                 performance.mark('bench_end')
                 performance.measure('bench', 'bench_start', 'bench_end');
-                let duration = Math.round(performance.getEntriesByName('bench')[0].duration);
-                hn.appendChild(document.createTextNode(' - PASSED (time: ' + duration + ')'));
+                var duration = Math.round(performance.getEntriesByName('bench')[0].duration);
+                hn.appendChild(document.createTextNode(' - PASSED (time: ' + duration + ' ms)'));
                 hn.className = 'passed';
             } else {
                 hn.appendChild(document.createTextNode(' - FAILED'));
