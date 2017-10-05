@@ -1,5 +1,6 @@
 #include "crypto_stream_chacha20.h"
 #include "private/common.h"
+#include "private/implementations.h"
 #include "randombytes.h"
 #include "runtime.h"
 #include "stream_chacha20.h"

@@ -1,5 +1,6 @@
 
 #include "crypto_scalarmult_curve25519.h"
+#include "private/implementations.h"
 #include "scalarmult_curve25519.h"
 #include "runtime.h"
 

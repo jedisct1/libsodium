@@ -67,6 +67,9 @@ static unsigned char canary[CANARY_SIZE];
 #ifdef HAVE_WEAK_SYMBOLS
 __attribute__((weak)) void
 _sodium_dummy_symbol_to_prevent_memzero_lto(void *const  pnt,
+                                            const size_t len);
+__attribute__((weak)) void
+_sodium_dummy_symbol_to_prevent_memzero_lto(void *const  pnt,
                                             const size_t len)
 {
     (void) pnt; /* LCOV_EXCL_LINE */
@@ -104,6 +107,10 @@ sodium_memzero(void *const pnt, const size_t len)
 __attribute__((weak)) void
 _sodium_dummy_symbol_to_prevent_memcmp_lto(const unsigned char *b1,
                                            const unsigned char *b2,
+                                           const size_t         len);
+__attribute__((weak)) void
+_sodium_dummy_symbol_to_prevent_memcmp_lto(const unsigned char *b1,
+                                           const unsigned char *b2,
                                            const size_t         len)
 {
     (void) b1;
@@ -137,6 +144,10 @@ sodium_memcmp(const void *const b1_, const void *const b2_, size_t len)
 }
 
 #ifdef HAVE_WEAK_SYMBOLS
+__attribute__((weak)) void
+_sodium_dummy_symbol_to_prevent_compare_lto(const unsigned char *b1,
+                                            const unsigned char *b2,
+                                            const size_t         len);
 __attribute__((weak)) void
 _sodium_dummy_symbol_to_prevent_compare_lto(const unsigned char *b1,
                                             const unsigned char *b2,

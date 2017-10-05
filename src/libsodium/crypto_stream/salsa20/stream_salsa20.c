@@ -1,5 +1,6 @@
 #include "crypto_stream_salsa20.h"
 #include "private/common.h"
+#include "private/implementations.h"
 #include "randombytes.h"
 #include "runtime.h"
 #include "stream_salsa20.h"
