@@ -143,6 +143,7 @@ AC_ARG_WITH(safecode,
   ])
 ])
 
+ENABLE_CWFLAGS=no
 AC_ARG_ENABLE(debug,
 [AS_HELP_STRING(--enable-debug,For maintainers only - please do not use)],
 [
@@ -157,6 +158,7 @@ AC_ARG_ENABLE(debug,
       done
       CFLAGS="$nxflags -O0 -g3"
     ])
+    ENABLE_CWFLAGS=yes
     CPPFLAGS="$CPPFLAGS -DDEBUG=1 -UFORTIFY_SOURCE"
   ])
 ])
@@ -262,14 +264,10 @@ AS_CASE([$host_os],
   ])
 ])
 
-AX_CHECK_COMPILE_FLAG([-Wwrite-strings], [CFLAGS="$CFLAGS -Wwrite-strings"])
-AX_CHECK_COMPILE_FLAG([-Wdiv-by-zero], [CFLAGS="$CFLAGS -Wdiv-by-zero"])
-AX_CHECK_COMPILE_FLAG([-Wsometimes-uninitialized], [CFLAGS="$CFLAGS -Wsometimes-uninitialized"])
-
 AC_ARG_VAR([CWFLAGS], [define to compilation flags for generating extra warnings])
 
-AX_CHECK_COMPILE_FLAG([$CWFLAGS -Wall], [CWFLAGS="$CWFLAGS -Wall"])
-AX_CHECK_COMPILE_FLAG([$CWFLAGS -Wextra], [CWFLAGS="$CWFLAGS -Wextra"])
+AX_CHECK_COMPILE_FLAG([$CFLAGS -Wall], [CWFLAGS="$CFLAGS -Wall"])
+AX_CHECK_COMPILE_FLAG([$CFLAGS -Wextra], [CWFLAGS="$CFLAGS -Wextra"])
 
 AC_MSG_CHECKING(for clang)
 AC_COMPILE_IFELSE([AC_LANG_PROGRAM([[]], [[
@@ -285,13 +283,14 @@ AC_COMPILE_IFELSE([AC_LANG_PROGRAM([[]], [[
 ])
 
 AX_CHECK_COMPILE_FLAG([$CWFLAGS -Wbad-function-cast], [CWFLAGS="$CWFLAGS -Wbad-function-cast"])
-AX_CHECK_COMPILE_FLAG([$CWFLAGS -Wcast-align], [CWFLAGS="$CWFLAGS -Wcast-align"])
 AX_CHECK_COMPILE_FLAG([$CWFLAGS -Wcast-qual], [CWFLAGS="$CWFLAGS -Wcast-qual"])
+AX_CHECK_COMPILE_FLAG([$CWFLAGS -Wdiv-by-zero], [CWFLAGS="$CWFLAGS -Wdiv-by-zero"])
 AX_CHECK_COMPILE_FLAG([$CWFLAGS -Wduplicated-branches], [CWFLAGS="$CWFLAGS -Wduplicated-branches"])
 AX_CHECK_COMPILE_FLAG([$CWFLAGS -Wduplicated-cond], [CWFLAGS="$CWFLAGS -Wduplicated-cond"])
 AX_CHECK_COMPILE_FLAG([$CWFLAGS -Wfloat-equal], [CWFLAGS="$CWFLAGS -Wfloat-equal"])
 AX_CHECK_COMPILE_FLAG([$CWFLAGS -Wformat=2], [CWFLAGS="$CWFLAGS -Wformat=2"])
 AX_CHECK_COMPILE_FLAG([$CWFLAGS -Wlogical-op], [CWFLAGS="$CWFLAGS -Wlogical-op"])
+AX_CHECK_COMPILE_FLAG([$CWFLAGS -Wmaybe-uninitialized], [CWFLAGS="$CWFLAGS -Wmaybe-uninitialized"])
 AX_CHECK_COMPILE_FLAG([$CWFLAGS -Wmisleading-indentation], [CWFLAGS="$CWFLAGS -Wmisleading-indentation"])
 AX_CHECK_COMPILE_FLAG([$CWFLAGS -Wmissing-declarations], [CWFLAGS="$CWFLAGS -Wmissing-declarations"])
 AX_CHECK_COMPILE_FLAG([$CWFLAGS -Wmissing-prototypes], [CWFLAGS="$CWFLAGS -Wmissing-prototypes"])
@@ -305,9 +304,11 @@ AX_CHECK_COMPILE_FLAG([$CWFLAGS -Wpointer-arith], [CWFLAGS="$CWFLAGS -Wpointer-a
 AX_CHECK_COMPILE_FLAG([$CWFLAGS -Wredundant-decls], [CWFLAGS="$CWFLAGS -Wredundant-decls"])
 AX_CHECK_COMPILE_FLAG([$CWFLAGS -Wrestrict], [CWFLAGS="$CWFLAGS -Wrestrict"])
 AX_CHECK_COMPILE_FLAG([$CWFLAGS -Wshorten-64-to-32], [CWFLAGS="$CWFLAGS -Wshorten-64-to-32"])
+AX_CHECK_COMPILE_FLAG([$CWFLAGS -Wsometimes-uninitialized], [CWFLAGS="$CWFLAGS -Wsometimes-uninitialized"])
 AX_CHECK_COMPILE_FLAG([$CWFLAGS -Wstrict-prototypes], [CWFLAGS="$CWFLAGS -Wstrict-prototypes"])
 AX_CHECK_COMPILE_FLAG([$CWFLAGS -Wswitch-enum], [CWFLAGS="$CWFLAGS -Wswitch-enum"])
 AX_CHECK_COMPILE_FLAG([$CWFLAGS -Wvariable-decl], [CWFLAGS="$CWFLAGS -Wvariable-decl"])
+AX_CHECK_COMPILE_FLAG([$CWFLAGS -Wwrite-strings], [CWFLAGS="$CWFLAGS -Wwrite-strings"])
 
 AX_CHECK_LINK_FLAG([-Wl,-z,relro], [LDFLAGS="$LDFLAGS -Wl,-z,relro"])
 AX_CHECK_LINK_FLAG([-Wl,-z,now], [LDFLAGS="$LDFLAGS -Wl,-z,now"])
@@ -768,6 +769,10 @@ AH_VERBATIM([NDEBUG], [/* Always evaluate assert() calls */
 #ifdef NDEBUG
 #/**/undef/**/ NDEBUG
 #endif])
+
+AS_IF([test "x$ENABLE_CWFLAGS" = "xyes"], [
+  CFLAGS="$CFLAGS $CWFLAGS"
+])
 
 AC_CONFIG_FILES([Makefile
                  builds/Makefile
