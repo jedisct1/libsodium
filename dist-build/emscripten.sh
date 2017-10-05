@@ -79,14 +79,14 @@ if [ "$DIST" = yes ]; then
       Module = {};
     }
     var root = Module;
-    if (root['sodium'] !== 'object') {
+    if (typeof root['sodium'] !== 'object') {
       if (typeof global === 'object') {
         root = global;
       } else if (typeof window === 'object') {
         root = window;
       }
     }
-    if (root['sodium'] === 'object' && typeof root['sodium']['totalMemory'] === 'number') {
+    if (typeof root['sodium'] === 'object' && typeof root['sodium']['totalMemory'] === 'number') {
       Module['TOTAL_MEMORY'] = root['sodium']['totalMemory'];
     }
     var _Module = Module;
