@@ -74,12 +74,22 @@ if [ "$DIST" = yes ]; then
   emccLibsodium "${PREFIX}/lib/libsodium.wasm.tmp.js" -O3 -s WASM=1
 
   cat > "${PREFIX}/lib/libsodium.js" <<- EOM
+    var Module;
     if (typeof Module === 'undefined') {
-      var Module = {};
+      Module = {};
     }
-    var root = this.global || this.self || this.window || this;
+    var root = {};
+    if (typeof this === 'object') {
+      root = this.global || this.self || this.window || this;
+    }
+    if (typeof global === 'object') {
+      root = global;
+    }
+    if (typeof window === 'object') {
+      root = window;
+    }
     if (root.sodium && !isNaN(root.sodium.totalMemory)) {
-      Module.TOTAL_MEMORY = root.sodium.totalMemory;
+      Module['TOTAL_MEMORY'] = root.sodium.totalMemory;
     }
     var _Module = Module;
     Module.ready = new Promise(function (resolve, reject) {
