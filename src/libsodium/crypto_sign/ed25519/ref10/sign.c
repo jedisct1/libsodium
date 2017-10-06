@@ -24,7 +24,7 @@ _crypto_sign_ed25519_ref10_hinit(crypto_hash_sha512_state *hs, int prehashed)
     }
 }
 
-static void
+static inline void
 _crypto_sign_ed25519_clamp(unsigned char k[32])
 {
     k[0] &= 248;
