@@ -24,6 +24,46 @@ _crypto_sign_ed25519_ref10_hinit(crypto_hash_sha512_state *hs, int prehashed)
     }
 }
 
+static inline void
+_crypto_sign_ed25519_clamp(unsigned char k[32])
+{
+    k[0] &= 248;
+    k[31] &= 63;
+    k[31] |= 64;
+}
+
+#ifdef ED25519_NONDETERMINISTIC
+/* r = hash(B || empty_labelset || Z || pad1 || k || pad2 || empty_labelset || K || extra || M) (mod q) */
+static void
+_crypto_sign_ed25519_synthetic_r_hv(crypto_hash_sha512_state *hs,
+                                    unsigned char nonce[64],
+                                    unsigned char sk_copy[64],
+                                    const unsigned char sk[64])
+{
+    static const unsigned char B[32] = {
+        0x58, 0x66, 0x66, 0x66, 0x66, 0x66, 0x66, 0x66,
+        0x66, 0x66, 0x66, 0x66, 0x66, 0x66, 0x66, 0x66,
+        0x66, 0x66, 0x66, 0x66, 0x66, 0x66, 0x66, 0x66,
+        0x66, 0x66, 0x66, 0x66, 0x66, 0x66, 0x66, 0x66,
+    };
+    static const unsigned char zeros[16] = { 0x00 };
+    static const unsigned char empty_labelset[3] = { 0x02, 0x00, 0x00 };
+
+    memcpy(sk_copy, sk, 32);
+    _crypto_sign_ed25519_clamp(sk_copy);
+    crypto_hash_sha512_update(hs, B, 32);
+    crypto_hash_sha512_update(hs, empty_labelset, 3);
+    randombytes_buf(nonce, 32);
+    crypto_hash_sha512_update(hs, nonce, 32);
+    crypto_hash_sha512_update(hs, zeros, 16 - (32 + 3 + 32) % 16);
+    crypto_hash_sha512_update(hs, sk_copy, 32);
+    /* empty pad2 */
+    crypto_hash_sha512_update(hs, empty_labelset, 3);
+    crypto_hash_sha512_update(hs, sk + 32, 32);
+    /* empty extra */
+}
+#endif
+
 int
 _crypto_sign_ed25519_detached(unsigned char *sig, unsigned long long *siglen_p,
                               const unsigned char *m, unsigned long long mlen,
@@ -35,17 +75,15 @@ _crypto_sign_ed25519_detached(unsigned char *sig, unsigned long long *siglen_p,
     unsigned char            hram[64];
     ge_p3                    R;
 
-    crypto_hash_sha512(az, sk, 32);
-    az[0] &= 248;
-    az[31] &= 63;
-    az[31] |= 64;
-
-    _crypto_sign_ed25519_ref10_hinit(&hs, prehashed);
 #ifdef ED25519_NONDETERMINISTIC
-    randombytes_buf(nonce, 32);
-    crypto_hash_sha512_update(&hs, nonce, 32);
-#endif
+    _crypto_sign_ed25519_ref10_hinit(&hs, prehashed);
+    _crypto_sign_ed25519_synthetic_r_hv(&hs, nonce, az, sk);
+#else
+    crypto_hash_sha512(az, sk, 32);
+    _crypto_sign_ed25519_clamp(az);
+    _crypto_sign_ed25519_ref10_hinit(&hs, prehashed);
     crypto_hash_sha512_update(&hs, az + 32, 32);
+#endif
     crypto_hash_sha512_update(&hs, m, mlen);
     crypto_hash_sha512_final(&hs, nonce);
 
