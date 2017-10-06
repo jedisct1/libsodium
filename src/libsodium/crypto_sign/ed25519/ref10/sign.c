@@ -92,6 +92,7 @@ _crypto_sign_ed25519_detached(unsigned char *sig, unsigned long long *siglen_p,
     sc_muladd(sig + 32, hram, az, nonce);
 
     sodium_memzero(az, sizeof az);
+    sodium_memzero(nonce, sizeof nonce);
 
     if (siglen_p != NULL) {
         *siglen_p = 64U;
