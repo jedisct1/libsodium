@@ -5,6 +5,7 @@
 #include "crypto_sign_ed25519.h"
 #include "ed25519_ref10.h"
 #include "private/curve25519_ref10.h"
+#include "randombytes.h"
 #include "utils.h"
 
 void
@@ -40,6 +41,10 @@ _crypto_sign_ed25519_detached(unsigned char *sig, unsigned long long *siglen_p,
     az[31] |= 64;
 
     _crypto_sign_ed25519_ref10_hinit(&hs, prehashed);
+#ifdef ED25519_NONDETERMINISTIC
+    randombytes_buf(nonce, 32);
+    crypto_hash_sha512_update(&hs, nonce, 32);
+#endif
     crypto_hash_sha512_update(&hs, az + 32, 32);
     crypto_hash_sha512_update(&hs, m, mlen);
     crypto_hash_sha512_final(&hs, nonce);

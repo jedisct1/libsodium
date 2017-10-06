@@ -1311,5 +1311,9 @@ int main(void)
            == crypto_sign_ed25519_secretkeybytes());
     assert(crypto_sign_statebytes() == crypto_sign_ed25519ph_statebytes());
 
+#ifdef ED25519_NONDETERMINISTIC
+    exit(0);
+#endif
+
     return 0;
 }
