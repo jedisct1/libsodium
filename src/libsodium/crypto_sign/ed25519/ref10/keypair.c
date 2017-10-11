@@ -15,7 +15,11 @@ crypto_sign_ed25519_seed_keypair(unsigned char *pk, unsigned char *sk,
 {
     ge_p3 A;
 
-    crypto_hash_sha512(sk, seed, 32);
+#ifdef ED25519_NONDETERMINISTIC
+    memcpy(sk, seed, crypto_sign_ed25519_SECRETKEYBYTES);
+#else
+    crypto_hash_sha512(sk, seed, crypto_sign_ed25519_SECRETKEYBYTES);
+#endif
     sk[0] &= 248;
     sk[31] &= 63;
     sk[31] |= 64;
@@ -23,8 +27,8 @@ crypto_sign_ed25519_seed_keypair(unsigned char *pk, unsigned char *sk,
     ge_scalarmult_base(&A, sk);
     ge_p3_tobytes(pk, &A);
 
-    memmove(sk, seed, 32);
-    memmove(sk + 32, pk, 32);
+    memmove(sk, seed, crypto_sign_ed25519_SECRETKEYBYTES);
+    memmove(sk + 32, pk, crypto_sign_ed25519_PUBLICKEYBYTES);
 
     return 0;
 }
@@ -76,9 +80,13 @@ crypto_sign_ed25519_sk_to_curve25519(unsigned char *curve25519_sk,
 {
     unsigned char h[crypto_hash_sha512_BYTES];
 
+#ifdef ED25519_NONDETERMINISTIC
+    memcpy(h, ed25519_sk, crypto_sign_ed25519_SECRETKEYBYTES);
+#else
     crypto_hash_sha512(h, ed25519_sk,
                        crypto_sign_ed25519_SECRETKEYBYTES -
                        crypto_sign_ed25519_PUBLICKEYBYTES);
+#endif
     h[0] &= 248;
     h[31] &= 127;
     h[31] |= 64;
