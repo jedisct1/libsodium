@@ -76,7 +76,7 @@ _crypto_sign_ed25519_detached(unsigned char *sig, unsigned long long *siglen_p,
 
 #ifdef ED25519_NONDETERMINISTIC
     memcpy(az, sk, 32);
-    _crypto_sign_ed25519_synthetic_r_hv(&hs, nonce, sk);
+    _crypto_sign_ed25519_synthetic_r_hv(&hs, nonce, az);
 #else
     crypto_hash_sha512(az, sk, 32);
     crypto_hash_sha512_update(&hs, az + 32, 32);
@@ -84,8 +84,6 @@ _crypto_sign_ed25519_detached(unsigned char *sig, unsigned long long *siglen_p,
 
     crypto_hash_sha512_update(&hs, m, mlen);
     crypto_hash_sha512_final(&hs, nonce);
-
-    _crypto_sign_ed25519_clamp(az);
 
     memmove(sig + 32, sk + 32, 32);
 
@@ -99,6 +97,7 @@ _crypto_sign_ed25519_detached(unsigned char *sig, unsigned long long *siglen_p,
     crypto_hash_sha512_final(&hs, hram);
 
     sc_reduce(hram);
+    _crypto_sign_ed25519_clamp(az);
     sc_muladd(sig + 32, hram, az, nonce);
 
     sodium_memzero(az, sizeof az);
