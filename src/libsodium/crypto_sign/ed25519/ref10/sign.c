@@ -36,7 +36,7 @@ _crypto_sign_ed25519_clamp(unsigned char k[32])
 /* r = hash(B || empty_labelset || Z || pad1 || k || pad2 || empty_labelset || K || extra || M) (mod q) */
 static void
 _crypto_sign_ed25519_synthetic_r_hv(crypto_hash_sha512_state *hs,
-                                    unsigned char nonce[64],
+                                    unsigned char Z[32],
                                     const unsigned char sk[32])
 {
     static const unsigned char B[32] = {
@@ -50,8 +50,8 @@ _crypto_sign_ed25519_synthetic_r_hv(crypto_hash_sha512_state *hs,
 
     crypto_hash_sha512_update(hs, B, 32);
     crypto_hash_sha512_update(hs, empty_labelset, 3);
-    randombytes_buf(nonce, 32);
-    crypto_hash_sha512_update(hs, nonce, 32);
+    randombytes_buf(Z, 32);
+    crypto_hash_sha512_update(hs, Z, 32);
     crypto_hash_sha512_update(hs, zeros, 16 - (32 + 3 + 32) % 16);
     crypto_hash_sha512_update(hs, sk, 32);
     /* empty pad2 */
