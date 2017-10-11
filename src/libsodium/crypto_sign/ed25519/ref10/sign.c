@@ -37,7 +37,7 @@ _crypto_sign_ed25519_clamp(unsigned char k[32])
 static void
 _crypto_sign_ed25519_synthetic_r_hv(crypto_hash_sha512_state *hs,
                                     unsigned char Z[32],
-                                    const unsigned char sk[32])
+                                    const unsigned char sk[64])
 {
     static const unsigned char B[32] = {
         0x58, 0x66, 0x66, 0x66, 0x66, 0x66, 0x66, 0x66,
