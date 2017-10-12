@@ -16,9 +16,9 @@ crypto_sign_ed25519_seed_keypair(unsigned char *pk, unsigned char *sk,
     ge_p3 A;
 
 #ifdef ED25519_NONDETERMINISTIC
-    memcpy(sk, seed, crypto_sign_ed25519_SECRETKEYBYTES);
+    memcpy(sk, seed, 32);
 #else
-    crypto_hash_sha512(sk, seed, crypto_sign_ed25519_SECRETKEYBYTES);
+    crypto_hash_sha512(sk, seed, 32);
 #endif
     sk[0] &= 248;
     sk[31] &= 63;
