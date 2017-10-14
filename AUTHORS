@@ -14,6 +14,7 @@ blake2                                 Jean-Philippe Aumasson
 chacha20                               Daniel J. Bernstein
 
 chacha20poly1305                       Adam Langley
+                                       Yoav Nir
 
 curve25519                             Daniel J. Bernstein
 
@@ -41,7 +42,9 @@ crypto_aead/aes256gcm/aesni            Romain Dolbeau
                                        Frank Denis
 
 crypto_aead/chacha20poly1305           Frank Denis
-crypto_aead/xchacha20poly1305
+
+crypto_aead/xchacha20poly1305          Frank Denis
+                                       Jason A. Donenfeld
 
 crypto_auth/hmacsha256                 Colin Percival
 crypto_auth/hmacsha512
@@ -67,7 +70,7 @@ crypto_hash/sha256                     Colin Percival
 crypto_hash/sha512
 crypto_hash/sha512256
 
-crypto_kdf/blake2b                     Frank Denis
+crypto_kdf                             Frank Denis
 
 crypto_kx                              Frank Denis
 
@@ -110,6 +113,7 @@ crypto_stream/chacha20/dolbeau         Romain Dolbeau
                                        Daniel J. Bernstein
 
 crypto_stream/salsa20/ref              Daniel J. Bernstein
+crypto_stream/salsa20/xmm6
 
 crypto_stream/salsa20/xmm6int          Romain Dolbeau
                                        Daniel J. Bernstein
@@ -118,3 +122,13 @@ crypto_stream/salsa2012/ref            Daniel J. Bernstein
 crypto_stream/salsa2008/ref
 
 crypto_stream/xchacha20                Frank Denis
+
+crypto_verify                          Frank Denis
+
+sodium/codecs.c                        Frank Denis
+                                       Thomas Pornin
+                                       Christian Winnerlein
+
+sodium/core.c                          Frank Denis
+sodium/runtime.h
+sodium/utils.c
