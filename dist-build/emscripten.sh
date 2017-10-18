@@ -16,28 +16,28 @@ export CFLAGS="-Os"
 
 echo
 if [ "x$1" = "x--standard" ]; then
-  echo "Building a standard distribution in ${PREFIX}"
   export EXPORTED_FUNCTIONS="$EXPORTED_FUNCTIONS_STANDARD"
   export LDFLAGS="${LDFLAGS} ${LDFLAGS_DIST} -s TOTAL_MEMORY=${TOTAL_MEMORY}"
   export PREFIX="$(pwd)/libsodium-js"
   export DONE_FILE="$(pwd)/js.done"
   export CONFIG_EXTRA="--enable-minimal"
   export DIST='yes'
+  echo "Building a standard distribution in [${PREFIX}]"
 elif [ "x$1" = "x--sumo" ]; then
-  echo "Building a sumo distribution in ${PREFIX}"
   export EXPORTED_FUNCTIONS="$EXPORTED_FUNCTIONS_SUMO"
   export LDFLAGS="${LDFLAGS} ${LDFLAGS_DIST} -s TOTAL_MEMORY=${TOTAL_MEMORY_SUMO}"
   export PREFIX="$(pwd)/libsodium-js-sumo"
   export DONE_FILE="$(pwd)/js-sumo.done"
   export DIST='yes'
+  echo "Building a sumo distribution in [${PREFIX}]"
 elif [ "x$1" = "x--browser-tests" ]; then
-  echo "Building tests for web browsers"
   export EXPORTED_FUNCTIONS="$EXPORTED_FUNCTIONS_SUMO"
   export LDFLAGS="${LDFLAGS} -s TOTAL_MEMORY=${TOTAL_MEMORY_SUMO}"
   export PREFIX="$(pwd)/libsodium-js-tests"
   export DONE_FILE="$(pwd)/js-tests-browser.done"
   export BROWSER_TESTS='yes'
   export DIST='no'
+  echo "Building tests for web browsers in [${PREFIX}]"
 elif [ "x$1" = "x--tests" ]; then
   echo "Building for testing"
   export EXPORTED_FUNCTIONS="$EXPORTED_FUNCTIONS_SUMO"
@@ -45,6 +45,7 @@ elif [ "x$1" = "x--tests" ]; then
   export PREFIX="$(pwd)/libsodium-js-tests"
   export DONE_FILE="$(pwd)/js-tests.done"
   export DIST='no'
+  echo "Building for testing in [${PREFIX}]"
 else
   echo "Usage: $0 <build_type>"
   echo "<build_type> := --standard | --sumo | --browser-tests | --tests"
