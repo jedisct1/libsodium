@@ -1655,31 +1655,35 @@ ge_cmov(ge_precomp *t, const ge_precomp *u, unsigned char b)
     fe_cmov(t->xy2d, u->xy2d, b);
 }
 
-/* base[i][j] = (j+1)*256^i*B */
-static const ge_precomp base[32][8] = {
-#include "base.h"
-};
-
 static void
-ge_select_base(ge_precomp *t, int pos, signed char b)
+ge_select(ge_precomp *t, const ge_precomp precomp[8], const signed char b)
 {
-    ge_precomp    minust;
-    unsigned char bnegative = negative(b);
-    unsigned char babs      = b - (((-bnegative) & b) * ((signed char) 1 << 1));
+    ge_precomp          minust;
+    const unsigned char bnegative = negative(b);
+    const unsigned char babs      = b - (((-bnegative) & b) * ((signed char) 1 << 1));
 
     ge_precomp_0(t);
-    ge_cmov(t, &base[pos][0], equal(babs, 1));
-    ge_cmov(t, &base[pos][1], equal(babs, 2));
-    ge_cmov(t, &base[pos][2], equal(babs, 3));
-    ge_cmov(t, &base[pos][3], equal(babs, 4));
-    ge_cmov(t, &base[pos][4], equal(babs, 5));
-    ge_cmov(t, &base[pos][5], equal(babs, 6));
-    ge_cmov(t, &base[pos][6], equal(babs, 7));
-    ge_cmov(t, &base[pos][7], equal(babs, 8));
+    ge_cmov(t, &precomp[0], equal(babs, 1));
+    ge_cmov(t, &precomp[1], equal(babs, 2));
+    ge_cmov(t, &precomp[2], equal(babs, 3));
+    ge_cmov(t, &precomp[3], equal(babs, 4));
+    ge_cmov(t, &precomp[4], equal(babs, 5));
+    ge_cmov(t, &precomp[5], equal(babs, 6));
+    ge_cmov(t, &precomp[6], equal(babs, 7));
+    ge_cmov(t, &precomp[7], equal(babs, 8));
     fe_copy(minust.yplusx, t->yminusx);
     fe_copy(minust.yminusx, t->yplusx);
     fe_neg(minust.xy2d, t->xy2d);
     ge_cmov(t, &minust, bnegative);
+}
+
+static void
+ge_select_base(ge_precomp *t, const int pos, const signed char b)
+{
+    static const ge_precomp base[32][8] = { /* base[i][j] = (j+1)*256^i*B */
+#include "base.h"
+    };
+    return ge_select(t, base[pos], b);
 }
 
 /*
