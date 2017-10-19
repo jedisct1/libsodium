@@ -1354,7 +1354,7 @@ ge_add(ge_p1p1 *r, const ge_p3 *p, const ge_cached *q)
 }
 
 static void
-slide(signed char *r, const unsigned char *a)
+slide_vartime(signed char *r, const unsigned char *a)
 {
     int i;
     int b;
@@ -1719,19 +1719,12 @@ ge_tobytes(unsigned char *s, const ge_p2 *h)
 }
 
 /*
- h = a * B
- where a = a[0]+256*a[1]+...+256^31 a[31]
- B is the Ed25519 base point (x,4/5) with x positive.
- *
- Preconditions:
- a[31] <= 127
- */
-
-/*
  r = a * A + b * B
  where a = a[0]+256*a[1]+...+256^31 a[31].
  and b = b[0]+256*b[1]+...+256^31 b[31].
  B is the Ed25519 base point (x,4/5) with x positive.
+
+ Only used for signatures verification.
  */
 
 void
@@ -1746,8 +1739,8 @@ ge_double_scalarmult_vartime(ge_p2 *r, const unsigned char *a, const ge_p3 *A,
     ge_p3       A2;
     int         i;
 
-    slide(aslide, a);
-    slide(bslide, b);
+    slide_vartime(aslide, a);
+    slide_vartime(bslide, b);
 
     ge_p3_to_cached(&Ai[0], A);
     ge_p3_dbl(&t, A);
@@ -1777,8 +1770,9 @@ ge_double_scalarmult_vartime(ge_p2 *r, const unsigned char *a, const ge_p3 *A,
     ge_p2_0(r);
 
     for (i = 255; i >= 0; --i) {
-        if (aslide[i] || bslide[i])
+        if (aslide[i] || bslide[i]) {
             break;
+        }
     }
 
     for (; i >= 0; --i) {
@@ -1818,7 +1812,7 @@ ge_scalarmult_vartime(ge_p3 *r, const unsigned char *a, const ge_p3 *A)
     ge_p3       A2;
     int         i;
 
-    slide(aslide, a);
+    slide_vartime(aslide, a);
 
     ge_p3_to_cached(&Ai[0], A);
     ge_p3_dbl(&t, A);
@@ -1868,6 +1862,15 @@ ge_scalarmult_vartime(ge_p3 *r, const unsigned char *a, const ge_p3 *A)
 }
 
 #endif
+
+/*
+ h = a * B (with precomputation)
+ where a = a[0]+256*a[1]+...+256^31 a[31]
+ B is the Ed25519 base point (x,4/5) with x positive.
+ *
+ Preconditions:
+ a[31] <= 127
+ */
 
 void
 ge_scalarmult_base(ge_p3 *h, const unsigned char *a)
