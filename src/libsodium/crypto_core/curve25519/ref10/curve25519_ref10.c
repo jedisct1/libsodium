@@ -1395,10 +1395,6 @@ slide_vartime(signed char *r, const unsigned char *a)
     }
 }
 
-static const ge_precomp Bi[8] = {
-#include "base2.h"
-};
-
 /* 37095705934669439343138083508754565189542113879843219016388785533085940283555
  */
 static const fe d = { -10913610, 13857413, -15372611, 6949391,   114729,
@@ -1735,6 +1731,9 @@ void
 ge_double_scalarmult_vartime(ge_p2 *r, const unsigned char *a, const ge_p3 *A,
                              const unsigned char *b)
 {
+    static const ge_precomp Bi[8] = {
+#include "base2.h"
+    };
     signed char aslide[256];
     signed char bslide[256];
     ge_cached   Ai[8]; /* A,3A,5A,7A,9A,11A,13A,15A */
