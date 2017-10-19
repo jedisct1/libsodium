@@ -10,13 +10,41 @@
 #include "utils.h"
 
 int
+crypto_sign_ed25519_scalarmult(unsigned char *q, const unsigned char *n,
+                               const unsigned char *p)
+{
+    unsigned char *t = q;
+    ge_p3          Q;
+    ge_p3          P;
+    ge_p3          pl;
+
+    if (_crypto_sign_ed25519_small_order(p) ||
+        ge_frombytes_negate_vartime(&P, p) != 0) {
+        return -1;
+    }
+    ge_mul_l(&pl, &P);
+    if (fe_isnonzero(pl.X)) {
+        return -1;
+    }
+    memmove(t, n, 32);
+    t[0] &= 248;
+    t[31] &= 63;
+    t[31] |= 64;
+    ge_scalarmult(&Q, t, &P);
+    ge_p3_tobytes(q, &Q);
+    q[31] ^= 0x80;
+
+    return 0;
+}
+
+int
 crypto_sign_ed25519_seed_keypair(unsigned char *pk, unsigned char *sk,
                                  const unsigned char *seed)
 {
     ge_p3 A;
 
 #ifdef ED25519_NONDETERMINISTIC
-    memcpy(sk, seed, 32);
+    memmove(sk, seed, 32);
 #else
     crypto_hash_sha512(sk, seed, 32);
 #endif

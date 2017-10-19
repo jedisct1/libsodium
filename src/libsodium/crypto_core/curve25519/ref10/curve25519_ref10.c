@@ -1572,6 +1572,23 @@ ge_p3_to_cached(ge_cached *r, const ge_p3 *p)
     fe_mul(r->T2d, p->T, d2);
 }
 
+static void
+ge_p3_to_precomp(ge_precomp *pi, const ge_p3 *p)
+{
+    fe recip;
+    fe x;
+    fe y;
+    fe xy;
+
+    fe_invert(recip, p->Z);
+    fe_mul(x, p->X, recip);
+    fe_mul(y, p->Y, recip);
+    fe_add(pi->yplusx, y, x);
+    fe_sub(pi->yminusx, y, x);
+    fe_mul(xy, x, y);
+    fe_mul(pi->xy2d, xy, d2);
+}
+
 /*
  r = p
  */
@@ -1867,10 +1884,104 @@ ge_scalarmult_vartime(ge_p3 *r, const unsigned char *a, const ge_p3 *A)
 #endif
 
 /*
+ h = a * p
+ where a = a[0]+256*a[1]+...+256^31 a[31]
+
+ Preconditions:
+ a[31] <= 127
+
+ p is public
+ */
+
+void
+ge_scalarmult(ge_p3 *h, const unsigned char *a, const ge_p3 *p)
+{
+    signed char e[64];
+    signed char carry;
+    ge_p1p1     r;
+    ge_p2       s;
+    ge_p1p1     t2, t3, t4, t5, t6, t7, t8;
+    ge_p3       p2, p3, p4, p5, p6, p7, p8;
+    ge_precomp  pi[8];
+    ge_precomp  t;
+    int         i;
+
+    ge_p3_to_precomp(&pi[1 - 1], p);   /* p */
+
+    ge_p3_dbl(&t2, p);
+    ge_p1p1_to_p3(&p2, &t2);
+    ge_p3_to_precomp(&pi[2 - 1], &p2); /* 2p = 2*p */
+
+    ge_madd(&t3, p, &pi[2 - 1]);
+    ge_p1p1_to_p3(&p3, &t3);
+    ge_p3_to_precomp(&pi[3 - 1], &p3); /* 3p = 2p+p */
+
+    ge_p3_dbl(&t4, &p2);
+    ge_p1p1_to_p3(&p4, &t4);
+    ge_p3_to_precomp(&pi[4 - 1], &p4); /* 4p = 2*2p */
+
+    ge_madd(&t5, p, &pi[4 - 1]);
+    ge_p1p1_to_p3(&p5, &t5);
+    ge_p3_to_precomp(&pi[5 - 1], &p5); /* 5p = 4p+p */
+
+    ge_p3_dbl(&t6, &p3);
+    ge_p1p1_to_p3(&p6, &t6);
+    ge_p3_to_precomp(&pi[6 - 1], &p6); /* 6p = 2*3p */
+
+    ge_madd(&t7, p, &pi[6 - 1]);
+    ge_p1p1_to_p3(&p7, &t7);
+    ge_p3_to_precomp(&pi[7 - 1], &p7); /* 7p = 6p+p */
+
+    ge_p3_dbl(&t8, &p4);
+    ge_p1p1_to_p3(&p8, &t8);
+    ge_p3_to_precomp(&pi[8 - 1], &p8); /* 8p = 2*4p */
+
+    for (i = 0; i < 32; ++i) {
+        e[2 * i + 0] = (a[i] >> 0) & 15;
+        e[2 * i + 1] = (a[i] >> 4) & 15;
+    }
+    /* each e[i] is between 0 and 15 */
+    /* e[63] is between 0 and 7 */
+
+    carry = 0;
+    for (i = 0; i < 63; ++i) {
+        e[i] += carry;
+        carry = e[i] + 8;
+        carry >>= 4;
+        e[i] -= carry * ((signed char) 1 << 4);
+    }
+    e[63] += carry;
+    /* each e[i] is between -8 and 8 */
+
+    ge_p3_0(h);
+
+    for (i = 63; i != 0; i--) {
+        ge_select(&t, pi, e[i]);
+        ge_madd(&r, h, &t);
+
+        ge_p1p1_to_p2(&s, &r);
+        ge_p2_dbl(&r, &s);
+        ge_p1p1_to_p2(&s, &r);
+        ge_p2_dbl(&r, &s);
+        ge_p1p1_to_p2(&s, &r);
+        ge_p2_dbl(&r, &s);
+        ge_p1p1_to_p2(&s, &r);
+        ge_p2_dbl(&r, &s);
+
+        ge_p1p1_to_p3(h, &r);  /* *16 */
+    }
+    ge_select(&t, pi, e[i]);
+    ge_madd(&r, h, &t);
+
+    ge_p1p1_to_p3(h, &r);
+}
+
+/*
  h = a * B (with precomputation)
  where a = a[0]+256*a[1]+...+256^31 a[31]
- B is the Ed25519 base point (x,4/5) with x positive.
- *
+ B is the Ed25519 base point (x,4/5) with x positive
+ (as bytes: 0x5866666666666666666666666666666666666666666666666666666666666666)
+
  Preconditions:
  a[31] <= 127
  */

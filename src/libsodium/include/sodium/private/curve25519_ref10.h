@@ -100,6 +100,7 @@ typedef struct {
 #define ge_p1p1_to_p2 crypto_core_curve25519_ref10_ge_p1p1_to_p2
 
 #define ge_add crypto_core_curve25519_ref10_ge_add
+#define ge_scalarmult crypto_core_curve25519_ref10_ge_scalarmult
 #define ge_scalarmult_base crypto_core_curve25519_ref10_ge_scalarmult_base
 #define ge_double_scalarmult_vartime crypto_core_curve25519_ref10_ge_double_scalarmult_vartime
 #define ge_scalarmult_vartime crypto_core_curve25519_ref10_ge_scalarmult_vartime
@@ -115,6 +116,7 @@ extern void ge_p1p1_to_p2(ge_p2 *,const ge_p1p1 *);
 extern void ge_add(ge_p1p1 *,const ge_p3 *,const ge_cached *);
 extern void ge_scalarmult_base(ge_p3 *,const unsigned char *);
 extern void ge_double_scalarmult_vartime(ge_p2 *,const unsigned char *,const ge_p3 *,const unsigned char *);
+extern void ge_scalarmult(ge_p3 *,const unsigned char *,const ge_p3 *);
 extern void ge_scalarmult_vartime(ge_p3 *,const unsigned char *,const ge_p3 *);
 extern void ge_mul_l(ge_p3 *r, const ge_p3 *A);
 
