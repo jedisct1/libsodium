@@ -1679,7 +1679,7 @@ ge_select_base(ge_precomp *t, const int pos, const signed char b)
     static const ge_precomp base[32][8] = { /* base[i][j] = (j+1)*256^i*B */
 #include "base.h"
     };
-    return ge_select(t, base[pos], b);
+    ge_select(t, base[pos], b);
 }
 
 /*
