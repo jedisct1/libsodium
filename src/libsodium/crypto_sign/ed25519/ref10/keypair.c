@@ -16,7 +16,7 @@ crypto_sign_ed25519_seed_keypair(unsigned char *pk, unsigned char *sk,
     ge_p3 A;
 
 #ifdef ED25519_NONDETERMINISTIC
-    memcpy(sk, seed, 32);
+    memmove(sk, seed, 32);
 #else
     crypto_hash_sha512(sk, seed, 32);
 #endif
