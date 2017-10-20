@@ -16,6 +16,6 @@ int _crypto_sign_ed25519_verify_detached(const unsigned char *sig,
                                          const unsigned char *pk,
                                          int prehashed);
 
-int _crypto_sign_ed25519_small_order(const unsigned char p[32]);
+int _crypto_sign_ed25519_small_order(const unsigned char p[32], unsigned char neg);
 
 #endif
