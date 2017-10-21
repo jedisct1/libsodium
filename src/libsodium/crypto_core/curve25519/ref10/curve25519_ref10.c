@@ -439,8 +439,8 @@ fe_isnegative(const fe f)
 }
 
 /*
- return 1 if f == 0
- return 0 if f != 0
+ return -1 if f == 0
+ return  0 if f != 0
  *
  Preconditions:
  |f| bounded by 1.1*2^26,1.1*2^25,1.1*2^26,1.1*2^25,etc.
