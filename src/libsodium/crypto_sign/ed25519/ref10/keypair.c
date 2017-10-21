@@ -16,14 +16,10 @@ crypto_sign_ed25519_scalarmult(unsigned char *q, const unsigned char *n,
     unsigned char *t = q;
     ge_p3          Q;
     ge_p3          P;
-    ge_p3          pl;
 
-    if (_crypto_sign_ed25519_small_order(p, 1) ||
-        ge_frombytes_negate_vartime(&P, p) != 0) {
-        return -1;
-    }
-    ge_mul_l(&pl, &P);
-    if (fe_isnonzero(pl.X)) {
+    if (ge_has_small_order(p, 1) != 0 ||
+        ge_frombytes_negate_vartime(&P, p) != 0 ||
+        ge_is_on_main_subgroup(&P) == 0) {
         return -1;
     }
     memmove(t, n, 32);
@@ -79,16 +75,12 @@ crypto_sign_ed25519_pk_to_curve25519(unsigned char *curve25519_pk,
                                      const unsigned char *ed25519_pk)
 {
     ge_p3 A;
-    ge_p3 pl;
     fe    x;
     fe    one_minus_y;
 
-    if (_crypto_sign_ed25519_small_order(ed25519_pk, 1) ||
-        ge_frombytes_negate_vartime(&A, ed25519_pk) != 0) {
-        return -1;
-    }
-    ge_mul_l(&pl, &A);
-    if (fe_isnonzero(pl.X)) {
+    if (ge_has_small_order(ed25519_pk, 1) != 0 ||
+        ge_frombytes_negate_vartime(&A, ed25519_pk) != 0 ||
+        ge_is_on_main_subgroup(&A) == 0) {
         return -1;
     }
     fe_1(one_minus_y);
