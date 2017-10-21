@@ -419,6 +419,7 @@ _crypto_sign_ed25519_messagebytes_max 0 0
 _crypto_sign_ed25519_open 0 1
 _crypto_sign_ed25519_pk_to_curve25519 1 1
 _crypto_sign_ed25519_publickeybytes 0 1
+_crypto_sign_ed25519_scalarmult 0 0
 _crypto_sign_ed25519_secretkeybytes 0 1
 _crypto_sign_ed25519_seed_keypair 0 1
 _crypto_sign_ed25519_seedbytes 0 1
