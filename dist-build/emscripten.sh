@@ -59,7 +59,9 @@ rm -f "$DONE_FILE"
 echo
 
 emconfigure ./configure $CONFIG_EXTRA --disable-shared --prefix="$PREFIX" \
-                        --without-pthreads CFLAGS="$CFLAGS" && \
+                        --without-pthreads \
+                        --disable-ssp --disable-asm --disable-pie \
+                        CFLAGS="$CFLAGS" && \
 emmake make clean
 [ $? = 0 ] || exit 1
 
