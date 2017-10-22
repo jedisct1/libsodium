@@ -17,7 +17,7 @@ crypto_sign_ed25519_scalarmult(unsigned char *q, const unsigned char *n,
     ge_p3          Q;
     ge_p3          P;
 
-    if (ge_has_small_order(p, 1) != 0 ||
+    if (ge_has_small_order(p) != 0 ||
         ge_frombytes_negate_vartime(&P, p) != 0 ||
         ge_is_on_main_subgroup(&P) == 0) {
         return -1;
@@ -78,7 +78,7 @@ crypto_sign_ed25519_pk_to_curve25519(unsigned char *curve25519_pk,
     fe    x;
     fe    one_minus_y;
 
-    if (ge_has_small_order(ed25519_pk, 1) != 0 ||
+    if (ge_has_small_order(ed25519_pk) != 0 ||
         ge_frombytes_negate_vartime(&A, ed25519_pk) != 0 ||
         ge_is_on_main_subgroup(&A) == 0) {
         return -1;

@@ -122,7 +122,7 @@ extern void ge_scalarmult(ge_p3 *,const unsigned char *,const ge_p3 *);
 extern void ge_scalarmult_vartime(ge_p3 *,const unsigned char *,const ge_p3 *);
 extern int ge_is_on_curve(const ge_p3 *p);
 extern int ge_is_on_main_subgroup(const ge_p3 *p);
-extern int ge_has_small_order(const unsigned char s[32], unsigned char neg);
+extern int ge_has_small_order(const unsigned char s[32]);
 
 /*
  The set of scalars is \Z/l
