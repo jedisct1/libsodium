@@ -17,7 +17,7 @@ crypto_sign_ed25519_scalarmult(unsigned char *q, const unsigned char *n,
     ge_p3          Q;
     ge_p3          P;
 
-    if (ge_has_small_order(p) != 0 ||
+    if (ge_is_canonical(p) != 0 || ge_has_small_order(p) != 0 ||
         ge_frombytes_negate_vartime(&P, p) != 0 ||
         ge_is_on_main_subgroup(&P) == 0) {
         return -1;

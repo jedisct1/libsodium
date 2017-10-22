@@ -26,8 +26,7 @@ _crypto_sign_ed25519_verify_detached(const unsigned char *sig,
     ge_p2                    R;
 
 #ifndef ED25519_COMPAT
-    if (sc_is_less_than_L(sig + 32) == 0 ||
-        ge_has_small_order(sig) != 0) {
+    if (sc_is_canonical(sig + 32) == 0 || ge_has_small_order(sig) != 0) {
         return -1;
     }
 #else

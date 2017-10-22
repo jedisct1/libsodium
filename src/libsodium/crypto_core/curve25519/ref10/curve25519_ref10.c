@@ -2127,7 +2127,7 @@ ge_is_on_main_subgroup(const ge_p3 *p)
 }
 
 int
-ge_is_less_than_p(const unsigned char *s)
+ge_is_canonical(const unsigned char *s)
 {
     unsigned char c;
     unsigned char d;
@@ -3018,7 +3018,7 @@ sc_reduce(unsigned char *s)
 }
 
 int
-sc_is_less_than_L(const unsigned char *s)
+sc_is_canonical(const unsigned char *s)
 {
     /* 2^252+27742317777372353535851937790883648493 */
     static const unsigned char L[32] = {
