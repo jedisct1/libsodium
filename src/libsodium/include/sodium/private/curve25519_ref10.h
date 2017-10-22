@@ -104,6 +104,7 @@ typedef struct {
 #define ge_scalarmult_base crypto_core_curve25519_ref10_ge_scalarmult_base
 #define ge_double_scalarmult_vartime crypto_core_curve25519_ref10_ge_double_scalarmult_vartime
 #define ge_scalarmult_vartime crypto_core_curve25519_ref10_ge_scalarmult_vartime
+#define ge_is_on_curve crypto_core_curve25519_ref10_ge_is_on_curve
 #define ge_is_on_main_subgroup crypto_core_curve25519_ref10_ge_is_on_main_subgroup
 #define ge_has_small_order crypto_core_curve25519_ref10_ge_has_small_order
 
@@ -119,6 +120,7 @@ extern void ge_scalarmult_base(ge_p3 *,const unsigned char *);
 extern void ge_double_scalarmult_vartime(ge_p2 *,const unsigned char *,const ge_p3 *,const unsigned char *);
 extern void ge_scalarmult(ge_p3 *,const unsigned char *,const ge_p3 *);
 extern void ge_scalarmult_vartime(ge_p3 *,const unsigned char *,const ge_p3 *);
+extern int ge_is_on_curve(const ge_p3 *p);
 extern int ge_is_on_main_subgroup(const ge_p3 *p);
 extern int ge_has_small_order(const unsigned char s[32], unsigned char neg);
 

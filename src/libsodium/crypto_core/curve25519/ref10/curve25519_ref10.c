@@ -2092,6 +2092,31 @@ ge_mul_l(ge_p3 *r, const ge_p3 *A)
 }
 
 int
+ge_is_on_curve(const ge_p3 *p)
+{
+    fe x2;
+    fe y2;
+    fe z2;
+    fe z4;
+    fe t0;
+    fe t1;
+
+    fe_sq(x2, p->X);
+    fe_sq(y2, p->Y);
+    fe_sq(z2, p->Z);
+    fe_sub(t0, y2, x2);
+    fe_mul(t0, t0, z2);
+
+    fe_mul(t1, x2, y2);
+    fe_mul(t1, t1, d);
+    fe_sq(z4, z2);
+    fe_add(t1, t1, z4);
+    fe_sub(t0, t0, t1);
+
+    return fe_iszero(t0);
+}
+
+int
 ge_is_on_main_subgroup(const ge_p3 *p)
 {
     ge_p3 pl;
