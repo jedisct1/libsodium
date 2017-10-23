@@ -29,13 +29,12 @@
 
 #include "../scalarmult_curve25519.h"
 #include "curve25519_donna_c64.h"
+#include "private/common.h"
 #include "utils.h"
 
 typedef uint8_t u8;
 typedef uint64_t limb;
 typedef limb felem[5];
-/* Special gcc mode for 128-bit integers */
-typedef unsigned uint128_t __attribute__((mode(TI)));
 
 /* Sum two numbers: output += in */
 static inline void

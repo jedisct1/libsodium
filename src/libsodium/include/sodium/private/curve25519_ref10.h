@@ -18,7 +18,7 @@ typedef int32_t fe[10];
 #define fe_frombytes crypto_core_curve25519_ref10_fe_frombytes
 #define fe_tobytes crypto_core_curve25519_ref10_fe_tobytes
 #define fe_copy crypto_core_curve25519_ref10_fe_copy
-#define fe_isnonzero crypto_core_curve25519_ref10_fe_isnonzero
+#define fe_iszero crypto_core_curve25519_ref10_fe_iszero
 #define fe_0 crypto_core_curve25519_ref10_fe_0
 #define fe_1 crypto_core_curve25519_ref10_fe_1
 #define fe_add crypto_core_curve25519_ref10_fe_add
@@ -31,7 +31,7 @@ extern void fe_frombytes(fe,const unsigned char *);
 extern void fe_tobytes(unsigned char *,const fe);
 
 extern void fe_copy(fe,const fe);
-extern int fe_isnonzero(const fe);
+extern int fe_iszero(const fe);
 extern void fe_0(fe);
 extern void fe_1(fe);
 extern void fe_add(fe,const fe,const fe);
@@ -100,10 +100,14 @@ typedef struct {
 #define ge_p1p1_to_p2 crypto_core_curve25519_ref10_ge_p1p1_to_p2
 
 #define ge_add crypto_core_curve25519_ref10_ge_add
+#define ge_scalarmult crypto_core_curve25519_ref10_ge_scalarmult
 #define ge_scalarmult_base crypto_core_curve25519_ref10_ge_scalarmult_base
 #define ge_double_scalarmult_vartime crypto_core_curve25519_ref10_ge_double_scalarmult_vartime
 #define ge_scalarmult_vartime crypto_core_curve25519_ref10_ge_scalarmult_vartime
-#define ge_mul_l crypto_core_curve25519_ref10_ge_mul_l
+#define ge_is_canonical crypto_core_curve25519_ref10_ge_is_canonical
+#define ge_is_on_curve crypto_core_curve25519_ref10_ge_is_on_curve
+#define ge_is_on_main_subgroup crypto_core_curve25519_ref10_ge_is_on_main_subgroup
+#define ge_has_small_order crypto_core_curve25519_ref10_ge_has_small_order
 
 extern void ge_tobytes(unsigned char *,const ge_p2 *);
 extern void ge_p3_tobytes(unsigned char *,const ge_p3 *);
@@ -115,8 +119,12 @@ extern void ge_p1p1_to_p2(ge_p2 *,const ge_p1p1 *);
 extern void ge_add(ge_p1p1 *,const ge_p3 *,const ge_cached *);
 extern void ge_scalarmult_base(ge_p3 *,const unsigned char *);
 extern void ge_double_scalarmult_vartime(ge_p2 *,const unsigned char *,const ge_p3 *,const unsigned char *);
+extern void ge_scalarmult(ge_p3 *,const unsigned char *,const ge_p3 *);
 extern void ge_scalarmult_vartime(ge_p3 *,const unsigned char *,const ge_p3 *);
-extern void ge_mul_l(ge_p3 *r, const ge_p3 *A);
+extern int ge_is_canonical(const unsigned char *s);
+extern int ge_is_on_curve(const ge_p3 *p);
+extern int ge_is_on_main_subgroup(const ge_p3 *p);
+extern int ge_has_small_order(const unsigned char s[32]);
 
 /*
  The set of scalars is \Z/l
@@ -125,8 +133,10 @@ extern void ge_mul_l(ge_p3 *r, const ge_p3 *A);
 
 #define sc_reduce crypto_core_curve25519_ref10_sc_reduce
 #define sc_muladd crypto_core_curve25519_ref10_sc_muladd
+#define sc_is_canonical crypto_core_curve25519_ref10_sc_is_canonical
 
 extern void sc_reduce(unsigned char *);
 extern void sc_muladd(unsigned char *,const unsigned char *,const unsigned char *,const unsigned char *);
+extern int sc_is_canonical(const unsigned char *s);
 
 #endif

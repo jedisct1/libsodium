@@ -165,6 +165,7 @@ libsodium_la_SOURCES += \
 	crypto_pwhash/scryptsalsa208sha256/pbkdf2-sha256.h \
 	crypto_pwhash/scryptsalsa208sha256/pwhash_scryptsalsa208sha256.c \
 	crypto_pwhash/scryptsalsa208sha256/nosse/pwhash_scryptsalsa208sha256_nosse.c \
+	crypto_scalarmult/ed25519/ref10/scalarmult_ed25519_ref10.c \
 	crypto_secretbox/xchacha20poly1305/secretbox_xchacha20poly1305.c \
 	crypto_shorthash/siphash24/shorthash_siphashx24.c \
 	crypto_shorthash/siphash24/ref/shorthash_siphashx24_ref.c \

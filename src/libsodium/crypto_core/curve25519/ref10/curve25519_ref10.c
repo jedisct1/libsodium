@@ -3,7 +3,9 @@
 #include <string.h>
 
 #include "crypto_verify_32.h"
+#include "private/common.h"
 #include "private/curve25519_ref10.h"
+#include "utils.h"
 
 static inline uint64_t
 load_3(const unsigned char *in)
@@ -441,21 +443,19 @@ fe_isnegative(const fe f)
 /*
  return 1 if f == 0
  return 0 if f != 0
- *
+
  Preconditions:
  |f| bounded by 1.1*2^26,1.1*2^25,1.1*2^26,1.1*2^25,etc.
  */
 
-static unsigned char zero[32];
-
 int
-fe_isnonzero(const fe f)
+fe_iszero(const fe f)
 {
     unsigned char s[32];
 
     fe_tobytes(s, f);
 
-    return crypto_verify_32(s, zero);
+    return sodium_is_zero(s, 32);
 }
 
 /*
@@ -1354,7 +1354,7 @@ ge_add(ge_p1p1 *r, const ge_p3 *p, const ge_cached *q)
 }
 
 static void
-slide(signed char *r, const unsigned char *a)
+slide_vartime(signed char *r, const unsigned char *a)
 {
     int i;
     int b;
@@ -1395,10 +1395,6 @@ slide(signed char *r, const unsigned char *a)
     }
 }
 
-static const ge_precomp Bi[8] = {
-#include "base2.h"
-};
-
 /* 37095705934669439343138083508754565189542113879843219016388785533085940283555
  */
 static const fe d = { -10913610, 13857413, -15372611, 6949391,   114729,
@@ -1437,9 +1433,9 @@ ge_frombytes_negate_vartime(ge_p3 *h, const unsigned char *s)
     fe_sq(vxx, h->X);
     fe_mul(vxx, vxx, v);
     fe_sub(check, vxx, u); /* vx^2-u */
-    if (fe_isnonzero(check)) {
+    if (fe_iszero(check) == 0) {
         fe_add(check, vxx, u); /* vx^2+u */
-        if (fe_isnonzero(check)) {
+        if (fe_iszero(check) == 0) {
             return -1;
         }
         fe_mul(h->X, h->X, sqrtm1);
@@ -1576,6 +1572,23 @@ ge_p3_to_cached(ge_cached *r, const ge_p3 *p)
     fe_mul(r->T2d, p->T, d2);
 }
 
+static void
+ge_p3_to_precomp(ge_precomp *pi, const ge_p3 *p)
+{
+    fe recip;
+    fe x;
+    fe y;
+    fe xy;
+
+    fe_invert(recip, p->Z);
+    fe_mul(x, p->X, recip);
+    fe_mul(y, p->Y, recip);
+    fe_add(pi->yplusx, y, x);
+    fe_sub(pi->yminusx, y, x);
+    fe_mul(xy, x, y);
+    fe_mul(pi->xy2d, xy, d2);
+}
+
 /*
  r = p
  */
@@ -1648,38 +1661,42 @@ negative(signed char b)
 }
 
 static void
-cmov(ge_precomp *t, const ge_precomp *u, unsigned char b)
+ge_cmov(ge_precomp *t, const ge_precomp *u, unsigned char b)
 {
     fe_cmov(t->yplusx, u->yplusx, b);
     fe_cmov(t->yminusx, u->yminusx, b);
     fe_cmov(t->xy2d, u->xy2d, b);
 }
 
-/* base[i][j] = (j+1)*256^i*B */
-static const ge_precomp base[32][8] = {
-#include "base.h"
-};
-
 static void
-ge_select(ge_precomp *t, int pos, signed char b)
+ge_select(ge_precomp *t, const ge_precomp precomp[8], const signed char b)
 {
-    ge_precomp    minust;
-    unsigned char bnegative = negative(b);
-    unsigned char babs      = b - (((-bnegative) & b) * ((signed char) 1 << 1));
+    ge_precomp          minust;
+    const unsigned char bnegative = negative(b);
+    const unsigned char babs      = b - (((-bnegative) & b) * ((signed char) 1 << 1));
 
     ge_precomp_0(t);
-    cmov(t, &base[pos][0], equal(babs, 1));
-    cmov(t, &base[pos][1], equal(babs, 2));
-    cmov(t, &base[pos][2], equal(babs, 3));
-    cmov(t, &base[pos][3], equal(babs, 4));
-    cmov(t, &base[pos][4], equal(babs, 5));
-    cmov(t, &base[pos][5], equal(babs, 6));
-    cmov(t, &base[pos][6], equal(babs, 7));
-    cmov(t, &base[pos][7], equal(babs, 8));
+    ge_cmov(t, &precomp[0], equal(babs, 1));
+    ge_cmov(t, &precomp[1], equal(babs, 2));
+    ge_cmov(t, &precomp[2], equal(babs, 3));
+    ge_cmov(t, &precomp[3], equal(babs, 4));
+    ge_cmov(t, &precomp[4], equal(babs, 5));
+    ge_cmov(t, &precomp[5], equal(babs, 6));
+    ge_cmov(t, &precomp[6], equal(babs, 7));
+    ge_cmov(t, &precomp[7], equal(babs, 8));
     fe_copy(minust.yplusx, t->yminusx);
     fe_copy(minust.yminusx, t->yplusx);
     fe_neg(minust.xy2d, t->xy2d);
-    cmov(t, &minust, bnegative);
+    ge_cmov(t, &minust, bnegative);
+}
+
+static void
+ge_select_base(ge_precomp *t, const int pos, const signed char b)
+{
+    static const ge_precomp base[32][8] = { /* base[i][j] = (j+1)*256^i*B */
+#include "base.h"
+    };
+    ge_select(t, base[pos], b);
 }
 
 /*
@@ -1719,25 +1736,21 @@ ge_tobytes(unsigned char *s, const ge_p2 *h)
 }
 
 /*
- h = a * B
- where a = a[0]+256*a[1]+...+256^31 a[31]
- B is the Ed25519 base point (x,4/5) with x positive.
- *
- Preconditions:
- a[31] <= 127
- */
-
-/*
  r = a * A + b * B
  where a = a[0]+256*a[1]+...+256^31 a[31].
  and b = b[0]+256*b[1]+...+256^31 b[31].
  B is the Ed25519 base point (x,4/5) with x positive.
+
+ Only used for signatures verification.
  */
 
 void
 ge_double_scalarmult_vartime(ge_p2 *r, const unsigned char *a, const ge_p3 *A,
                              const unsigned char *b)
 {
+    static const ge_precomp Bi[8] = {
+#include "base2.h"
+    };
     signed char aslide[256];
     signed char bslide[256];
     ge_cached   Ai[8]; /* A,3A,5A,7A,9A,11A,13A,15A */
@@ -1746,8 +1759,8 @@ ge_double_scalarmult_vartime(ge_p2 *r, const unsigned char *a, const ge_p3 *A,
     ge_p3       A2;
     int         i;
 
-    slide(aslide, a);
-    slide(bslide, b);
+    slide_vartime(aslide, a);
+    slide_vartime(bslide, b);
 
     ge_p3_to_cached(&Ai[0], A);
     ge_p3_dbl(&t, A);
@@ -1777,8 +1790,9 @@ ge_double_scalarmult_vartime(ge_p2 *r, const unsigned char *a, const ge_p3 *A,
     ge_p2_0(r);
 
     for (i = 255; i >= 0; --i) {
-        if (aslide[i] || bslide[i])
+        if (aslide[i] || bslide[i]) {
             break;
+        }
     }
 
     for (; i >= 0; --i) {
@@ -1818,7 +1832,7 @@ ge_scalarmult_vartime(ge_p3 *r, const unsigned char *a, const ge_p3 *A)
     ge_p3       A2;
     int         i;
 
-    slide(aslide, a);
+    slide_vartime(aslide, a);
 
     ge_p3_to_cached(&Ai[0], A);
     ge_p3_dbl(&t, A);
@@ -1869,6 +1883,109 @@ ge_scalarmult_vartime(ge_p3 *r, const unsigned char *a, const ge_p3 *A)
 
 #endif
 
+/*
+ h = a * p
+ where a = a[0]+256*a[1]+...+256^31 a[31]
+
+ Preconditions:
+ a[31] <= 127
+
+ p is public
+ */
+
+void
+ge_scalarmult(ge_p3 *h, const unsigned char *a, const ge_p3 *p)
+{
+    signed char e[64];
+    signed char carry;
+    ge_p1p1     r;
+    ge_p2       s;
+    ge_p1p1     t2, t3, t4, t5, t6, t7, t8;
+    ge_p3       p2, p3, p4, p5, p6, p7, p8;
+    ge_precomp  pi[8];
+    ge_precomp  t;
+    int         i;
+
+    ge_p3_to_precomp(&pi[1 - 1], p);   /* p */
+
+    ge_p3_dbl(&t2, p);
+    ge_p1p1_to_p3(&p2, &t2);
+    ge_p3_to_precomp(&pi[2 - 1], &p2); /* 2p = 2*p */
+
+    ge_madd(&t3, p, &pi[2 - 1]);
+    ge_p1p1_to_p3(&p3, &t3);
+    ge_p3_to_precomp(&pi[3 - 1], &p3); /* 3p = 2p+p */
+
+    ge_p3_dbl(&t4, &p2);
+    ge_p1p1_to_p3(&p4, &t4);
+    ge_p3_to_precomp(&pi[4 - 1], &p4); /* 4p = 2*2p */
+
+    ge_madd(&t5, p, &pi[4 - 1]);
+    ge_p1p1_to_p3(&p5, &t5);
+    ge_p3_to_precomp(&pi[5 - 1], &p5); /* 5p = 4p+p */
+
+    ge_p3_dbl(&t6, &p3);
+    ge_p1p1_to_p3(&p6, &t6);
+    ge_p3_to_precomp(&pi[6 - 1], &p6); /* 6p = 2*3p */
+
+    ge_madd(&t7, p, &pi[6 - 1]);
+    ge_p1p1_to_p3(&p7, &t7);
+    ge_p3_to_precomp(&pi[7 - 1], &p7); /* 7p = 6p+p */
+
+    ge_p3_dbl(&t8, &p4);
+    ge_p1p1_to_p3(&p8, &t8);
+    ge_p3_to_precomp(&pi[8 - 1], &p8); /* 8p = 2*4p */
+
+    for (i = 0; i < 32; ++i) {
+        e[2 * i + 0] = (a[i] >> 0) & 15;
+        e[2 * i + 1] = (a[i] >> 4) & 15;
+    }
+    /* each e[i] is between 0 and 15 */
+    /* e[63] is between 0 and 7 */
+
+    carry = 0;
+    for (i = 0; i < 63; ++i) {
+        e[i] += carry;
+        carry = e[i] + 8;
+        carry >>= 4;
+        e[i] -= carry * ((signed char) 1 << 4);
+    }
+    e[63] += carry;
+    /* each e[i] is between -8 and 8 */
+
+    ge_p3_0(h);
+
+    for (i = 63; i != 0; i--) {
+        ge_select(&t, pi, e[i]);
+        ge_madd(&r, h, &t);
+
+        ge_p1p1_to_p2(&s, &r);
+        ge_p2_dbl(&r, &s);
+        ge_p1p1_to_p2(&s, &r);
+        ge_p2_dbl(&r, &s);
+        ge_p1p1_to_p2(&s, &r);
+        ge_p2_dbl(&r, &s);
+        ge_p1p1_to_p2(&s, &r);
+        ge_p2_dbl(&r, &s);
+
+        ge_p1p1_to_p3(h, &r);  /* *16 */
+    }
+    ge_select(&t, pi, e[i]);
+    ge_madd(&r, h, &t);
+
+    ge_p1p1_to_p3(h, &r);
+}
+
+/*
+ h = a * B (with precomputation)
+ where a = a[0]+256*a[1]+...+256^31 a[31]
+ B is the Ed25519 base point (x,4/5) with x positive
+ (as bytes: 0x5866666666666666666666666666666666666666666666666666666666666666)
+
+ Preconditions:
+ a[31] <= 127
+ */
+
 void
 ge_scalarmult_base(ge_p3 *h, const unsigned char *a)
 {
@@ -1898,7 +2015,7 @@ ge_scalarmult_base(ge_p3 *h, const unsigned char *a)
 
     ge_p3_0(h);
     for (i = 1; i < 64; i += 2) {
-        ge_select(&t, i / 2, e[i]);
+        ge_select_base(&t, i / 2, e[i]);
         ge_madd(&r, h, &t);
         ge_p1p1_to_p3(h, &r);
     }
@@ -1913,14 +2030,14 @@ ge_scalarmult_base(ge_p3 *h, const unsigned char *a)
     ge_p1p1_to_p3(h, &r);
 
     for (i = 0; i < 64; i += 2) {
-        ge_select(&t, i / 2, e[i]);
+        ge_select_base(&t, i / 2, e[i]);
         ge_madd(&r, h, &t);
         ge_p1p1_to_p3(h, &r);
     }
 }
 
 /* multiply by the order of the main subgroup l = 2^252+27742317777372353535851937790883648493 */
-void
+static void
 ge_mul_l(ge_p3 *r, const ge_p3 *A)
 {
     static const signed char aslide[253] = {
@@ -1972,6 +2089,110 @@ ge_mul_l(ge_p3 *r, const ge_p3 *A)
 
         ge_p1p1_to_p3(r, &t);
     }
+}
+
+int
+ge_is_on_curve(const ge_p3 *p)
+{
+    fe x2;
+    fe y2;
+    fe z2;
+    fe z4;
+    fe t0;
+    fe t1;
+
+    fe_sq(x2, p->X);
+    fe_sq(y2, p->Y);
+    fe_sq(z2, p->Z);
+    fe_sub(t0, y2, x2);
+    fe_mul(t0, t0, z2);
+
+    fe_mul(t1, x2, y2);
+    fe_mul(t1, t1, d);
+    fe_sq(z4, z2);
+    fe_add(t1, t1, z4);
+    fe_sub(t0, t0, t1);
+
+    return fe_iszero(t0);
+}
+
+int
+ge_is_on_main_subgroup(const ge_p3 *p)
+{
+    ge_p3 pl;
+
+    ge_mul_l(&pl, p);
+
+    return fe_iszero(pl.X);
+}
+
+int
+ge_is_canonical(const unsigned char *s)
+{
+    unsigned char c;
+    unsigned char d;
+    unsigned int  i;
+
+    c = (s[31] & 0x7f) ^ 0x7f;
+    for (i = 30; i > 0; i--) {
+        c |= s[i] ^ 0xff;
+    }
+    c = (((unsigned int) c) - 1U) >> 8;
+    d = (0xed - 1U - (unsigned int) s[0]) >> 8;
+
+    return 1 - (c & d & 1);
+}
+
+int
+ge_has_small_order(const unsigned char s[32])
+{
+    CRYPTO_ALIGN(16)
+    static const unsigned char blacklist[][32] = {
+        /* 0 (order 4) */
+        { 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
+          0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
+          0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00 },
+        /* 1 (order 1) */
+        { 0x01, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
+          0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
+          0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00 },
+        /* 2707385501144840649318225287225658788936804267575313519463743609750303402022
+           (order 8) */
+        { 0x26, 0xe8, 0x95, 0x8f, 0xc2, 0xb2, 0x27, 0xb0, 0x45, 0xc3, 0xf4,
+          0x89, 0xf2, 0xef, 0x98, 0xf0, 0xd5, 0xdf, 0xac, 0x05, 0xd3, 0xc6,
+          0x33, 0x39, 0xb1, 0x38, 0x02, 0x88, 0x6d, 0x53, 0xfc, 0x05 },
+        /* 55188659117513257062467267217118295137698188065244968500265048394206261417927
+           (order 8) */
+        { 0xc7, 0x17, 0x6a, 0x70, 0x3d, 0x4d, 0xd8, 0x4f, 0xba, 0x3c, 0x0b,
+          0x76, 0x0d, 0x10, 0x67, 0x0f, 0x2a, 0x20, 0x53, 0xfa, 0x2c, 0x39,
+          0xcc, 0xc6, 0x4e, 0xc7, 0xfd, 0x77, 0x92, 0xac, 0x03, 0x7a },
+        /* p-1 (order 2) */
+        { 0xec, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff,
+          0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff,
+          0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0x7f },
+        /* p (=0, order 4) */
+        { 0xed, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff,
+          0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff,
+          0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0x7f },
+        /* p+1 (=1, order 1) */
+        { 0xee, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff,
+          0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff,
+          0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0x7f }
+    };
+    size_t        i, j;
+    unsigned char c;
+
+    for (i = 0; i < sizeof blacklist / sizeof blacklist[0]; i++) {
+        c = 0;
+        for (j = 0; j < 31; j++) {
+            c |= s[j] ^ blacklist[i][j];
+        }
+        c |= (s[j] & 0x7f) ^ blacklist[i][j];
+        if (c == 0) {
+            return 1;
+        }
+    }
+    return 0;
 }
 
 /*
@@ -2794,4 +3015,26 @@ sc_reduce(unsigned char *s)
     s[29] = s11 >> 1;
     s[30] = s11 >> 9;
     s[31] = s11 >> 17;
+}
+
+int
+sc_is_canonical(const unsigned char *s)
+{
+    /* 2^252+27742317777372353535851937790883648493 */
+    static const unsigned char L[32] = {
+        0xed, 0xd3, 0xf5, 0x5c, 0x1a, 0x63, 0x12, 0x58, 0xd6, 0x9c, 0xf7,
+        0xa2, 0xde, 0xf9, 0xde, 0x14, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
+        0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x10
+    };
+    unsigned char c = 0;
+    unsigned char n = 1;
+    unsigned int  i = 32;
+
+    do {
+        i--;
+        c |= ((s[i] - L[i]) >> 8) & n;
+        n &= ((s[i] ^ L[i]) - 1) >> 8;
+    } while (i != 0);
+
+    return (c != 0);
 }

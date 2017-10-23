@@ -7,6 +7,14 @@
 
 #define COMPILER_ASSERT(X) (void) sizeof(char[(X) ? 1 : -1])
 
+#ifdef HAVE_TI_MODE
+# if defined(__SIZEOF_INT128__)
+typedef unsigned __int128 uint128_t;
+# else
+typedef unsigned uint128_t __attribute__((mode(TI)));
+# endif
+#endif
+
 #define ROTL32(X, B) rotl32((X), (B))
 static inline uint32_t
 rotl32(const uint32_t x, const int b)
