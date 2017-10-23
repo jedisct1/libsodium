@@ -364,6 +364,7 @@
     <ClCompile Include="src\libsodium\crypto_shorthash\siphash24\ref\shorthash_siphashx24_ref.c" />
     <ClCompile Include="src\libsodium\crypto_shorthash\siphash24\ref\shorthash_siphash24_ref.c" />
     <ClCompile Include="src\libsodium\crypto_scalarmult\crypto_scalarmult.c" />
+    <ClCompile Include="src\libsodium\crypto_scalarmult\ed25519\ref10\scalarmult_ed25519_ref10.c" />
     <ClCompile Include="src\libsodium\crypto_scalarmult\curve25519\scalarmult_curve25519.c" />
     <ClCompile Include="src\libsodium\crypto_scalarmult\curve25519\sandy2x\curve25519_sandy2x.c" />
     <ClCompile Include="src\libsodium\crypto_scalarmult\curve25519\sandy2x\fe_frombytes_sandy2x.c" />
@@ -486,6 +487,7 @@
     <ClInclude Include="src\libsodium\include\sodium\crypto_generichash.h" />
     <ClInclude Include="src\libsodium\include\sodium\crypto_secretbox_xsalsa20poly1305.h" />
     <ClInclude Include="src\libsodium\include\sodium\crypto_secretbox.h" />
+    <ClInclude Include="src\libsodium\include\sodium\crypto_scalarmult_ed25519.h" />
     <ClInclude Include="src\libsodium\include\sodium\crypto_box_curve25519xsalsa20poly1305.h" />
     <ClInclude Include="src\libsodium\include\sodium\crypto_generichash_blake2b.h" />
     <ClInclude Include="src\libsodium\include\sodium\crypto_sign_edwards25519sha512batch.h" />

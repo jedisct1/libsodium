@@ -171,6 +171,9 @@
     <ClCompile Include="..\..\..\..\src\libsodium\crypto_scalarmult\crypto_scalarmult.c">
       <Filter>crypto_scalarmult</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\..\..\src\libsodium\crypto_scalarmult\ed25519\ref10\scalarmult_ed25519_ref10.c">
+      <Filter>crypto_scalarmult\ed25519\ref10</Filter>
+    </ClCompile>
     <ClCompile Include="..\..\..\..\src\libsodium\crypto_scalarmult\curve25519\scalarmult_curve25519.c">
       <Filter>crypto_scalarmult\curve25519</Filter>
     </ClCompile>
@@ -533,6 +536,9 @@
     <ClInclude Include="..\..\..\..\src\libsodium\include\sodium\crypto_secretbox.h">
       <Filter>include\sodium</Filter>
     </ClInclude>
+    <ClInclude Include="..\..\..\..\src\libsodium\include\sodium\crypto_scalarmult_ed25519.h">
+      <Filter>include\sodium</Filter>
+    </ClInclude>
     <ClInclude Include="..\..\..\..\src\libsodium\include\sodium\crypto_box_curve25519xsalsa20poly1305.h">
       <Filter>include\sodium</Filter>
     </ClInclude>
@@ -840,6 +846,12 @@
     </Filter>
     <Filter Include="crypto_scalarmult\curve25519\sandy2x">
       <UniqueIdentifier>{5d2fb1a2-f063-32db-a81a-41f79e36fd23}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="crypto_scalarmult\ed25519">
+      <UniqueIdentifier>{7bec6074-fbc7-330b-9e18-7dc3e868569a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="crypto_scalarmult\ed25519\ref10">
+      <UniqueIdentifier>{834d4827-81e4-3de3-baa1-a216763f11d6}</UniqueIdentifier>
     </Filter>
     <Filter Include="crypto_secretbox">
       <UniqueIdentifier>{b9b02bee-5c1f-36d2-b97d-983f865a4cc6}</UniqueIdentifier>

@@ -33,6 +33,7 @@
 #include "sodium/crypto_pwhash_argon2i.h"
 #include "sodium/crypto_scalarmult.h"
 #include "sodium/crypto_scalarmult_curve25519.h"
+#include "sodium/crypto_scalarmult_ed25519.h"
 #include "sodium/crypto_secretbox.h"
 #include "sodium/crypto_secretbox_xsalsa20poly1305.h"
 #include "sodium/crypto_secretstream_xchacha20poly1305.h"

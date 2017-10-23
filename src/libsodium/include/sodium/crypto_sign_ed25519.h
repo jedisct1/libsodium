@@ -88,11 +88,6 @@ SODIUM_EXPORT
 int crypto_sign_ed25519_sk_to_pk(unsigned char *pk, const unsigned char *sk);
 
 SODIUM_EXPORT
-int crypto_sign_ed25519_scalarmult(unsigned char *q, const unsigned char *n,
-                                   const unsigned char *p)
-            __attribute__ ((warn_unused_result));
-
-SODIUM_EXPORT
 int crypto_sign_ed25519ph_init(crypto_sign_ed25519ph_state *state);
 
 SODIUM_EXPORT
