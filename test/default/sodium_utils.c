@@ -9,7 +9,6 @@ main(void)
     unsigned char  buf2[1000];
     unsigned char  buf1_rev[1000];
     unsigned char  buf2_rev[1000];
-    char           buf3[33];
     unsigned char  nonce[24];
     char           nonce_hex[49];
     unsigned char *bin_padded;
