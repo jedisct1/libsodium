@@ -18,7 +18,7 @@ typedef int32_t fe[10];
 #define fe_frombytes crypto_core_curve25519_ref10_fe_frombytes
 #define fe_tobytes crypto_core_curve25519_ref10_fe_tobytes
 #define fe_copy crypto_core_curve25519_ref10_fe_copy
-#define fe_isnonzero crypto_core_curve25519_ref10_fe_isnonzero
+#define fe_iszero crypto_core_curve25519_ref10_fe_iszero
 #define fe_0 crypto_core_curve25519_ref10_fe_0
 #define fe_1 crypto_core_curve25519_ref10_fe_1
 #define fe_add crypto_core_curve25519_ref10_fe_add
@@ -31,7 +31,7 @@ extern void fe_frombytes(fe,const unsigned char *);
 extern void fe_tobytes(unsigned char *,const fe);
 
 extern void fe_copy(fe,const fe);
-extern int fe_isnonzero(const fe);
+extern int fe_iszero(const fe);
 extern void fe_0(fe);
 extern void fe_1(fe);
 extern void fe_add(fe,const fe,const fe);
