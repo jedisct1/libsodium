@@ -23,7 +23,7 @@ static inline void
 _crypto_scalarmult_ed25519_clamp(unsigned char k[32])
 {
     k[0] &= 248;
-    k[31] &= 63;
+    k[31] &= 127;
     k[31] |= 64;
 }
 
