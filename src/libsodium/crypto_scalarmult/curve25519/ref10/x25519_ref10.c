@@ -177,25 +177,25 @@ crypto_scalarmult_curve25519_ref10(unsigned char *q,
                                    const unsigned char *n,
                                    const unsigned char *p)
 {
-    unsigned char e[32];
-    unsigned int  i;
-    fe            x1;
-    fe            x2;
-    fe            z2;
-    fe            x3;
-    fe            z3;
-    fe            tmp0;
-    fe            tmp1;
-    int           pos;
-    unsigned int  swap;
-    unsigned int  b;
+    unsigned char *t = q;
+    unsigned int   i;
+    fe             x1;
+    fe             x2;
+    fe             z2;
+    fe             x3;
+    fe             z3;
+    fe             tmp0;
+    fe             tmp1;
+    int            pos;
+    unsigned int   swap;
+    unsigned int   b;
 
-    for (i = 0; i < 32; ++i) {
-        e[i] = n[i];
+    for (i = 0; i < 32; i++) {
+        t[i] = n[i];
     }
-    e[0] &= 248;
-    e[31] &= 127;
-    e[31] |= 64;
+    t[0] &= 248;
+    t[31] &= 127;
+    t[31] |= 64;
     fe_frombytes(x1, p);
     fe_1(x2);
     fe_0(z2);
@@ -204,7 +204,7 @@ crypto_scalarmult_curve25519_ref10(unsigned char *q,
 
     swap = 0;
     for (pos = 254; pos >= 0; --pos) {
-        b = e[pos / 8] >> (pos & 7);
+        b = t[pos / 8] >> (pos & 7);
         b &= 1;
         swap ^= b;
         fe_cswap(x2, x3, swap);
@@ -255,18 +255,18 @@ static int
 crypto_scalarmult_curve25519_ref10_base(unsigned char *q,
                                         const unsigned char *n)
 {
-    unsigned char e[32];
-    ge_p3         A;
-    fe            pk;
-    unsigned int  i;
+    unsigned char *t = q;
+    ge_p3          A;
+    fe             pk;
+    unsigned int   i;
 
-    for (i = 0; i < 32; ++i) {
-        e[i] = n[i];
+    for (i = 0; i < 32; i++) {
+        t[i] = n[i];
     }
-    e[0] &= 248;
-    e[31] &= 127;
-    e[31] |= 64;
-    ge_scalarmult_base(&A, e);
+    t[0] &= 248;
+    t[31] &= 127;
+    t[31] |= 64;
+    ge_scalarmult_base(&A, t);
     edwards_to_montgomery(pk, A.Y, A.Z);
     fe_tobytes(q, pk);
 

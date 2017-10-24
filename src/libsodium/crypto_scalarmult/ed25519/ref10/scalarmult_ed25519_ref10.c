@@ -3,6 +3,7 @@
 
 #include "crypto_scalarmult_ed25519.h"
 #include "private/curve25519_ref10.h"
+#include "utils.h"
 
 static int
 _crypto_scalarmult_ed25519_is_inf(const unsigned char s[32])
@@ -31,10 +32,10 @@ int
 crypto_scalarmult_ed25519(unsigned char *q, const unsigned char *n,
                           const unsigned char *p)
 {
-    unsigned char t[32];
-    ge_p3         Q;
-    ge_p3         P;
-    unsigned int  i;
+    unsigned char *t = q;
+    ge_p3          Q;
+    ge_p3          P;
+    unsigned int   i;
 
     if (ge_is_canonical(p) == 0 || ge_has_small_order(p) != 0 ||
         ge_frombytes_negate_vartime(&P, p) != 0 ||
@@ -59,9 +60,9 @@ int
 crypto_scalarmult_ed25519_base(unsigned char *q,
                                const unsigned char *n)
 {
-    unsigned char t[32];
-    ge_p3         Q;
-    unsigned int  i;
+    unsigned char *t = q;
+    ge_p3          Q;
+    unsigned int   i;
 
     for (i = 0; i < 32; ++i) {
         t[i] = n[i];
