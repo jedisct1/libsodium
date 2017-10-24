@@ -172,10 +172,10 @@ static const uint8_t PAD[128] = {
 static void
 SHA512_Pad(crypto_hash_sha512_state *state, uint64_t tmp64[80 + 8])
 {
-    uint64_t r;
-    uint64_t i;
+    unsigned int r;
+    unsigned int i;
 
-    r = (state->count[1] >> 3) & 0x7f;
+    r = (unsigned int) ((state->count[1] >> 3) & 0x7f);
     if (r < 112) {
         for (i = 0; i < 112 - r; i++) {
             state->buf[r + i] = PAD[i];
