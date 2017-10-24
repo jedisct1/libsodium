@@ -289,6 +289,8 @@ blake2b_update(blake2b_state *S, const uint8_t *in, uint64_t inlen)
 int
 blake2b_final(blake2b_state *S, uint8_t *out, uint8_t outlen)
 {
+    unsigned char buffer[BLAKE2B_OUTBYTES];
+
     if (!outlen || outlen > BLAKE2B_OUTBYTES) {
         sodium_misuse();
     }
@@ -309,19 +311,17 @@ blake2b_final(blake2b_state *S, uint8_t *out, uint8_t outlen)
            2 * BLAKE2B_BLOCKBYTES - S->buflen); /* Padding */
     blake2b_compress(S, S->buf);
 
-#ifdef NATIVE_LITTLE_ENDIAN
-    memcpy(out, &S->h[0], outlen);
-#else
-    {
-        uint8_t buffer[BLAKE2B_OUTBYTES];
-        int     i;
+    COMPILER_ASSERT(sizeof buffer == 64U);
+    STORE64_LE(buffer + 8 * 0, S->h[0]);
+    STORE64_LE(buffer + 8 * 1, S->h[1]);
+    STORE64_LE(buffer + 8 * 2, S->h[2]);
+    STORE64_LE(buffer + 8 * 3, S->h[3]);
+    STORE64_LE(buffer + 8 * 4, S->h[4]);
+    STORE64_LE(buffer + 8 * 5, S->h[5]);
+    STORE64_LE(buffer + 8 * 6, S->h[6]);
+    STORE64_LE(buffer + 8 * 7, S->h[7]);
+    memcpy(out, buffer, outlen);
 
-        for (i = 0; i < 8; i++) { /* Output full hash to temp buffer */
-            STORE64_LE(buffer + sizeof(S->h[i]) * i, S->h[i]);
-        }
-        memcpy(out, buffer, outlen);
-    }
-#endif
     sodium_memzero(S->h, sizeof S->h);
     sodium_memzero(S->buf, sizeof S->buf);
 
