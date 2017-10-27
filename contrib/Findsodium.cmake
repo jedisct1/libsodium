@@ -32,7 +32,9 @@ if (CMAKE_C_COMPILER_ID STREQUAL "GNU"
 endif()
 
 # static library option
-option(sodium_USE_STATIC_LIBS "enable to statically link against sodium")
+if (NOT DEFINED sodium_USE_STATIC_LIBS)
+    option(sodium_USE_STATIC_LIBS "enable to statically link against sodium" OFF)
+endif()
 if(NOT (sodium_USE_STATIC_LIBS EQUAL sodium_USE_STATIC_LIBS_LAST))
     unset(sodium_LIBRARY CACHE)
     unset(sodium_LIBRARY_DEBUG CACHE)
@@ -53,6 +55,11 @@ if (UNIX)
     endif()
 
     if(sodium_USE_STATIC_LIBS)
+        # if pkgconfig for libsodium doesn't provide
+        # static lib info, then override PKG_STATIC here..
+        if (NOT DEFINED sodium_PKG_STATIC_LIBRARIES)
+            set(sodium_PKG_STATIC_LIBRARIES libsodium.a)
+        endif()
         set(XPREFIX sodium_PKG_STATIC)
     else()
         set(XPREFIX sodium_PKG)
