@@ -96,7 +96,7 @@ if (bytes >= 512) {
         z4  = orig4;
         z8  = orig8;
 
-        for (i = 0; i < 20; i += 2) {
+        for (i = 0; i < ROUNDS; i += 2) {
             /* the inner loop is a direct translation (regexp search/replace)
              * from the amd64-xmm6 ASM */
             __m256i r0, r1, r2, r3, r4, r5, r6, r7, r8, r9, r10, r11, r12, r13,
