@@ -501,29 +501,27 @@ crecip(felem out, const felem z)
     /* 2^255 - 21 */ fmul(out, t0, a);
 }
 
-static const unsigned char basepoint[32] = { 9 };
-
 static int
-crypto_scalarmult_curve25519_donna_c64(unsigned char *mypublic,
-                                       const unsigned char *secret,
-                                       const unsigned char *basepoint)
+crypto_scalarmult_curve25519_donna_c64(unsigned char *q,
+                                       const unsigned char *n,
+                                       const unsigned char *p)
 {
-    limb    bp[5], x[5], z[5], zmone[5];
-    uint8_t e[32];
-    int     i;
+    limb           bp[5], x[5], z[5], zmone[5];
+    unsigned char *t = q;
+    int            i;
 
     for (i = 0; i < 32; ++i) {
-        e[i] = secret[i];
+        t[i] = n[i];
     }
-    e[0] &= 248;
-    e[31] &= 127;
-    e[31] |= 64;
+    t[0] &= 248;
+    t[31] &= 127;
+    t[31] |= 64;
 
-    fexpand(bp, basepoint);
-    cmult(x, z, e, bp);
+    fexpand(bp, p);
+    cmult(x, z, t, bp);
     crecip(zmone, z);
     fmul(z, x, zmone);
-    fcontract(mypublic, z);
+    fcontract(q, z);
 
     return 0;
 }
@@ -532,6 +530,8 @@ static int
 crypto_scalarmult_curve25519_donna_c64_base(unsigned char *q,
                                             const unsigned char *n)
 {
+    static const unsigned char basepoint[32] = { 9 };
+
     return crypto_scalarmult_curve25519_donna_c64(q, n, basepoint);
 }
 

@@ -21,7 +21,7 @@ crypto_sign_ed25519_seed_keypair(unsigned char *pk, unsigned char *sk,
     crypto_hash_sha512(sk, seed, 32);
 #endif
     sk[0] &= 248;
-    sk[31] &= 63;
+    sk[31] &= 127;
     sk[31] |= 64;
 
     ge_scalarmult_base(&A, sk);

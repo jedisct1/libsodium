@@ -21,7 +21,6 @@ _crypto_sign_ed25519_verify_detached(const unsigned char *sig,
     unsigned char            h[64];
     unsigned char            rcheck[32];
     unsigned int             i;
-    unsigned char            d = 0;
     ge_p3                    A;
     ge_p2                    R;
 
@@ -29,18 +28,15 @@ _crypto_sign_ed25519_verify_detached(const unsigned char *sig,
     if (sc_is_canonical(sig + 32) == 0 || ge_has_small_order(sig) != 0) {
         return -1;
     }
+    if (ge_is_canonical(pk) == 0) {
+        return -1;
+    }
 #else
     if (sig[63] & 224) {
         return -1;
     }
 #endif
-    if (ge_frombytes_negate_vartime(&A, pk) != 0) {
-        return -1;
-    }
-    for (i = 0; i < 32; ++i) {
-        d |= pk[i];
-    }
-    if (d == 0) {
+    if (ge_has_small_order(pk) != 0 || ge_frombytes_negate_vartime(&A, pk) != 0) {
         return -1;
     }
     _crypto_sign_ed25519_ref10_hinit(&hs, prehashed);

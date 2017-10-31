@@ -19,7 +19,7 @@ crypto_sign_edwards25519sha512batch_keypair(unsigned char *pk,
     randombytes_buf(sk, 32);
     crypto_hash_sha512(sk, sk, 32);
     sk[0] &= 248;
-    sk[31] &= 63;
+    sk[31] &= 127;
     sk[31] |= 64;
     ge_scalarmult_base(&A, sk);
     ge_p3_tobytes(pk, &A);
@@ -90,14 +90,14 @@ crypto_sign_edwards25519sha512batch_open(unsigned char       *m,
     if (sm[smlen - 1] & 224) {
         return -1;
     }
-    if (ge_frombytes_negate_vartime(&A, pk) != 0 ||
-        ge_frombytes_negate_vartime(&R, sm) != 0) {
+    if (ge_has_small_order(pk) != 0 || ge_frombytes_negate_vartime(&A, pk) != 0 ||
+        ge_has_small_order(sm) != 0 || ge_frombytes_negate_vartime(&R, sm) != 0) {
         return -1;
     }
     ge_p3_to_cached(&Ai, &A);
     crypto_hash_sha512(h, sm, mlen + 32);
     sc_reduce(h);
-    ge_scalarmult_vartime(&cs3, h, &R);
+    ge_scalarmult(&cs3, h, &R);
     ge_add(&csa, &cs3, &Ai);
     ge_p1p1_to_p2(&cs, &csa);
     ge_tobytes(t1, &cs);

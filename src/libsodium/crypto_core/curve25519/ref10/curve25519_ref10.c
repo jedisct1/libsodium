@@ -1405,13 +1405,16 @@ static const fe sqrtm1 = { -32595792, -7943725,  9377950,  3500415, 12389472,
                            -272473,   -25146209, -2005654, 326686,  11406482 };
 
 int
-ge_frombytes_negate_vartime(ge_p3 *h, const unsigned char *s)
+ge_frombytes(ge_p3 *h, const unsigned char *s)
 {
-    fe u;
-    fe v;
-    fe v3;
-    fe vxx;
-    fe check;
+    fe  u;
+    fe  v;
+    fe  v3;
+    fe  vxx;
+    fe  m_root_check, p_root_check;
+    fe  negx;
+    fe  x_sqrtm1;
+    int has_m_root, has_p_root;
 
     fe_frombytes(h->Y, s);
     fe_1(h->Z);
@@ -1432,10 +1435,52 @@ ge_frombytes_negate_vartime(ge_p3 *h, const unsigned char *s)
 
     fe_sq(vxx, h->X);
     fe_mul(vxx, vxx, v);
-    fe_sub(check, vxx, u); /* vx^2-u */
-    if (fe_iszero(check) == 0) {
-        fe_add(check, vxx, u); /* vx^2+u */
-        if (fe_iszero(check) == 0) {
+    fe_sub(m_root_check, vxx, u); /* vx^2-u */
+    fe_add(p_root_check, vxx, u); /* vx^2+u */
+    has_m_root = fe_iszero(m_root_check);
+    has_p_root = fe_iszero(p_root_check);
+    fe_mul(x_sqrtm1, h->X, sqrtm1); /* x*sqrt(-1) */
+    fe_cmov(h->X, x_sqrtm1, 1 - has_m_root);
+
+    fe_neg(negx, h->X);
+    fe_cmov(h->X, negx, fe_isnegative(h->X) ^ (s[31] >> 7));
+    fe_mul(h->T, h->X, h->Y);
+
+    return (has_m_root | has_p_root) - 1;
+}
+
+int
+ge_frombytes_negate_vartime(ge_p3 *h, const unsigned char *s)
+{
+    fe u;
+    fe v;
+    fe v3;
+    fe vxx;
+    fe m_root_check, p_root_check;
+
+    fe_frombytes(h->Y, s);
+    fe_1(h->Z);
+    fe_sq(u, h->Y);
+    fe_mul(v, u, d);
+    fe_sub(u, u, h->Z); /* u = y^2-1 */
+    fe_add(v, v, h->Z); /* v = dy^2+1 */
+
+    fe_sq(v3, v);
+    fe_mul(v3, v3, v); /* v3 = v^3 */
+    fe_sq(h->X, v3);
+    fe_mul(h->X, h->X, v);
+    fe_mul(h->X, h->X, u); /* x = uv^7 */
+
+    fe_pow22523(h->X, h->X); /* x = (uv^7)^((q-5)/8) */
+    fe_mul(h->X, h->X, v3);
+    fe_mul(h->X, h->X, u); /* x = uv^3(uv^7)^((q-5)/8) */
+
+    fe_sq(vxx, h->X);
+    fe_mul(vxx, vxx, v);
+    fe_sub(m_root_check, vxx, u); /* vx^2-u */
+    if (fe_iszero(m_root_check) == 0) {
+        fe_add(p_root_check, vxx, u); /* vx^2+u */
+        if (fe_iszero(p_root_check) == 0) {
             return -1;
         }
         fe_mul(h->X, h->X, sqrtm1);
@@ -1817,71 +1862,6 @@ ge_double_scalarmult_vartime(ge_p2 *r, const unsigned char *a, const ge_p3 *A,
         ge_p1p1_to_p2(r, &t);
     }
 }
-
-#ifndef MINIMAL
-
-/* only used for verification of legacy (edwards25519sha512batch) signatures */
-
-void
-ge_scalarmult_vartime(ge_p3 *r, const unsigned char *a, const ge_p3 *A)
-{
-    signed char aslide[256];
-    ge_cached   Ai[8];
-    ge_p1p1     t;
-    ge_p3       u;
-    ge_p3       A2;
-    int         i;
-
-    slide_vartime(aslide, a);
-
-    ge_p3_to_cached(&Ai[0], A);
-    ge_p3_dbl(&t, A);
-    ge_p1p1_to_p3(&A2, &t);
-    ge_add(&t, &A2, &Ai[0]);
-    ge_p1p1_to_p3(&u, &t);
-    ge_p3_to_cached(&Ai[1], &u);
-    ge_add(&t, &A2, &Ai[1]);
-    ge_p1p1_to_p3(&u, &t);
-    ge_p3_to_cached(&Ai[2], &u);
-    ge_add(&t, &A2, &Ai[2]);
-    ge_p1p1_to_p3(&u, &t);
-    ge_p3_to_cached(&Ai[3], &u);
-    ge_add(&t, &A2, &Ai[3]);
-    ge_p1p1_to_p3(&u, &t);
-    ge_p3_to_cached(&Ai[4], &u);
-    ge_add(&t, &A2, &Ai[4]);
-    ge_p1p1_to_p3(&u, &t);
-    ge_p3_to_cached(&Ai[5], &u);
-    ge_add(&t, &A2, &Ai[5]);
-    ge_p1p1_to_p3(&u, &t);
-    ge_p3_to_cached(&Ai[6], &u);
-    ge_add(&t, &A2, &Ai[6]);
-    ge_p1p1_to_p3(&u, &t);
-    ge_p3_to_cached(&Ai[7], &u);
-
-    ge_p3_0(r);
-
-    for (i = 255; i >= 0; --i) {
-        if (aslide[i])
-            break;
-    }
-
-    for (; i >= 0; --i) {
-        ge_p3_dbl(&t, r);
-
-        if (aslide[i] > 0) {
-            ge_p1p1_to_p3(&u, &t);
-            ge_add(&t, &u, &Ai[aslide[i] / 2]);
-        } else if (aslide[i] < 0) {
-            ge_p1p1_to_p3(&u, &t);
-            ge_sub(&t, &u, &Ai[(-aslide[i]) / 2]);
-        }
-
-        ge_p1p1_to_p3(r, &t);
-    }
-}
-
-#endif
 
 /*
  h = a * p
