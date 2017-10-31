@@ -38,8 +38,7 @@ crypto_scalarmult_ed25519(unsigned char *q, const unsigned char *n,
     unsigned int   i;
 
     if (ge_is_canonical(p) == 0 || ge_has_small_order(p) != 0 ||
-        ge_frombytes_negate_vartime(&P, p) != 0 ||
-        ge_is_on_main_subgroup(&P) == 0) {
+        ge_frombytes(&P, p) != 0 || ge_is_on_main_subgroup(&P) == 0) {
         return -1;
     }
     for (i = 0; i < 32; ++i) {
@@ -51,8 +50,6 @@ crypto_scalarmult_ed25519(unsigned char *q, const unsigned char *n,
     if (_crypto_scalarmult_ed25519_is_inf(q) != 0) {
         return -1;
     }
-    q[31] ^= 0x80;
-
     return 0;
 }
 
