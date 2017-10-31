@@ -69,38 +69,90 @@ fe_1(fe h)
 void
 fe_add(fe h, const fe f, const fe g)
 {
-    int32_t f0 = f[0];
-    int32_t f1 = f[1];
-    int32_t f2 = f[2];
-    int32_t f3 = f[3];
-    int32_t f4 = f[4];
-    int32_t f5 = f[5];
-    int32_t f6 = f[6];
-    int32_t f7 = f[7];
-    int32_t f8 = f[8];
-    int32_t f9 = f[9];
+    int32_t h0 = f[0] + g[0];
+    int32_t h1 = f[1] + g[1];
+    int32_t h2 = f[2] + g[2];
+    int32_t h3 = f[3] + g[3];
+    int32_t h4 = f[4] + g[4];
+    int32_t h5 = f[5] + g[5];
+    int32_t h6 = f[6] + g[6];
+    int32_t h7 = f[7] + g[7];
+    int32_t h8 = f[8] + g[8];
+    int32_t h9 = f[9] + g[9];
 
-    int32_t g0 = g[0];
-    int32_t g1 = g[1];
-    int32_t g2 = g[2];
-    int32_t g3 = g[3];
-    int32_t g4 = g[4];
-    int32_t g5 = g[5];
-    int32_t g6 = g[6];
-    int32_t g7 = g[7];
-    int32_t g8 = g[8];
-    int32_t g9 = g[9];
+    h[0] = h0;
+    h[1] = h1;
+    h[2] = h2;
+    h[3] = h3;
+    h[4] = h4;
+    h[5] = h5;
+    h[6] = h6;
+    h[7] = h7;
+    h[8] = h8;
+    h[9] = h9;
+}
 
-    int32_t h0 = f0 + g0;
-    int32_t h1 = f1 + g1;
-    int32_t h2 = f2 + g2;
-    int32_t h3 = f3 + g3;
-    int32_t h4 = f4 + g4;
-    int32_t h5 = f5 + g5;
-    int32_t h6 = f6 + g6;
-    int32_t h7 = f7 + g7;
-    int32_t h8 = f8 + g8;
-    int32_t h9 = f9 + g9;
+/*
+ h = f - g
+ Can overlap h with f or g.
+ *
+ Preconditions:
+ |f| bounded by 1.1*2^25,1.1*2^24,1.1*2^25,1.1*2^24,etc.
+ |g| bounded by 1.1*2^25,1.1*2^24,1.1*2^25,1.1*2^24,etc.
+ *
+ Postconditions:
+ |h| bounded by 1.1*2^26,1.1*2^25,1.1*2^26,1.1*2^25,etc.
+ */
+
+void
+fe_sub(fe h, const fe f, const fe g)
+{
+    int32_t h0 = f[0] - g[0];
+    int32_t h1 = f[1] - g[1];
+    int32_t h2 = f[2] - g[2];
+    int32_t h3 = f[3] - g[3];
+    int32_t h4 = f[4] - g[4];
+    int32_t h5 = f[5] - g[5];
+    int32_t h6 = f[6] - g[6];
+    int32_t h7 = f[7] - g[7];
+    int32_t h8 = f[8] - g[8];
+    int32_t h9 = f[9] - g[9];
+
+    h[0] = h0;
+    h[1] = h1;
+    h[2] = h2;
+    h[3] = h3;
+    h[4] = h4;
+    h[5] = h5;
+    h[6] = h6;
+    h[7] = h7;
+    h[8] = h8;
+    h[9] = h9;
+}
+
+/*
+ h = -f
+ *
+ Preconditions:
+ |f| bounded by 1.1*2^25,1.1*2^24,1.1*2^25,1.1*2^24,etc.
+ *
+ Postconditions:
+ |h| bounded by 1.1*2^25,1.1*2^24,1.1*2^25,1.1*2^24,etc.
+ */
+
+static void
+fe_neg(fe h, const fe f)
+{
+    int32_t h0 = -f[0];
+    int32_t h1 = -f[1];
+    int32_t h2 = -f[2];
+    int32_t h3 = -f[3];
+    int32_t h4 = -f[4];
+    int32_t h5 = -f[5];
+    int32_t h6 = -f[6];
+    int32_t h7 = -f[7];
+    int32_t h8 = -f[8];
+    int32_t h9 = -f[9];
 
     h[0] = h0;
     h[1] = h1;
@@ -135,27 +187,16 @@ fe_cmov(fe f, const fe g, unsigned int b)
     int32_t f8 = f[8];
     int32_t f9 = f[9];
 
-    int32_t g0 = g[0];
-    int32_t g1 = g[1];
-    int32_t g2 = g[2];
-    int32_t g3 = g[3];
-    int32_t g4 = g[4];
-    int32_t g5 = g[5];
-    int32_t g6 = g[6];
-    int32_t g7 = g[7];
-    int32_t g8 = g[8];
-    int32_t g9 = g[9];
-
-    int32_t x0 = f0 ^ g0;
-    int32_t x1 = f1 ^ g1;
-    int32_t x2 = f2 ^ g2;
-    int32_t x3 = f3 ^ g3;
-    int32_t x4 = f4 ^ g4;
-    int32_t x5 = f5 ^ g5;
-    int32_t x6 = f6 ^ g6;
-    int32_t x7 = f7 ^ g7;
-    int32_t x8 = f8 ^ g8;
-    int32_t x9 = f9 ^ g9;
+    int32_t x0 = f0 ^ g[0];
+    int32_t x1 = f1 ^ g[1];
+    int32_t x2 = f2 ^ g[2];
+    int32_t x3 = f3 ^ g[3];
+    int32_t x4 = f4 ^ g[4];
+    int32_t x5 = f5 ^ g[5];
+    int32_t x6 = f6 ^ g[6];
+    int32_t x7 = f7 ^ g[7];
+    int32_t x8 = f8 ^ g[8];
+    int32_t x9 = f9 ^ g[9];
 
     b = (unsigned int) (-(int) b);
     x0 &= b;
@@ -750,53 +791,6 @@ fe_mul(fe h, const fe f, const fe g)
 }
 
 /*
- h = -f
- *
- Preconditions:
- |f| bounded by 1.1*2^25,1.1*2^24,1.1*2^25,1.1*2^24,etc.
- *
- Postconditions:
- |h| bounded by 1.1*2^25,1.1*2^24,1.1*2^25,1.1*2^24,etc.
- */
-
-static void
-fe_neg(fe h, const fe f)
-{
-    int32_t f0 = f[0];
-    int32_t f1 = f[1];
-    int32_t f2 = f[2];
-    int32_t f3 = f[3];
-    int32_t f4 = f[4];
-    int32_t f5 = f[5];
-    int32_t f6 = f[6];
-    int32_t f7 = f[7];
-    int32_t f8 = f[8];
-    int32_t f9 = f[9];
-
-    int32_t h0 = -f0;
-    int32_t h1 = -f1;
-    int32_t h2 = -f2;
-    int32_t h3 = -f3;
-    int32_t h4 = -f4;
-    int32_t h5 = -f5;
-    int32_t h6 = -f6;
-    int32_t h7 = -f7;
-    int32_t h8 = -f8;
-    int32_t h9 = -f9;
-
-    h[0] = h0;
-    h[1] = h1;
-    h[2] = h2;
-    h[3] = h3;
-    h[4] = h4;
-    h[5] = h5;
-    h[6] = h6;
-    h[7] = h7;
-    h[8] = h8;
-    h[9] = h9;
-}
-
-/*
  h = f * f
  Can overlap h with f.
  *
@@ -805,10 +799,6 @@ fe_neg(fe h, const fe f)
  *
  Postconditions:
  |h| bounded by 1.01*2^25,1.01*2^24,1.01*2^25,1.01*2^24,etc.
- */
-
-/*
- See fe_mul.c for discussion of implementation strategy.
  */
 
 void
@@ -981,10 +971,6 @@ fe_sq(fe h, const fe f)
  *
  Postconditions:
  |h| bounded by 1.01*2^25,1.01*2^24,1.01*2^25,1.01*2^24,etc.
- */
-
-/*
- See fe_mul.c for discussion of implementation strategy.
  */
 
 static void
@@ -1273,65 +1259,6 @@ fe_pow22523(fe out, const fe z)
 }
 
 /*
- h = f - g
- Can overlap h with f or g.
- *
- Preconditions:
- |f| bounded by 1.1*2^25,1.1*2^24,1.1*2^25,1.1*2^24,etc.
- |g| bounded by 1.1*2^25,1.1*2^24,1.1*2^25,1.1*2^24,etc.
- *
- Postconditions:
- |h| bounded by 1.1*2^26,1.1*2^25,1.1*2^26,1.1*2^25,etc.
- */
-
-void
-fe_sub(fe h, const fe f, const fe g)
-{
-    int32_t f0 = f[0];
-    int32_t f1 = f[1];
-    int32_t f2 = f[2];
-    int32_t f3 = f[3];
-    int32_t f4 = f[4];
-    int32_t f5 = f[5];
-    int32_t f6 = f[6];
-    int32_t f7 = f[7];
-    int32_t f8 = f[8];
-    int32_t f9 = f[9];
-    int32_t g0 = g[0];
-    int32_t g1 = g[1];
-    int32_t g2 = g[2];
-    int32_t g3 = g[3];
-    int32_t g4 = g[4];
-    int32_t g5 = g[5];
-    int32_t g6 = g[6];
-    int32_t g7 = g[7];
-    int32_t g8 = g[8];
-    int32_t g9 = g[9];
-
-    int32_t h0 = f0 - g0;
-    int32_t h1 = f1 - g1;
-    int32_t h2 = f2 - g2;
-    int32_t h3 = f3 - g3;
-    int32_t h4 = f4 - g4;
-    int32_t h5 = f5 - g5;
-    int32_t h6 = f6 - g6;
-    int32_t h7 = f7 - g7;
-    int32_t h8 = f8 - g8;
-    int32_t h9 = f9 - g9;
-
-    h[0] = h0;
-    h[1] = h1;
-    h[2] = h2;
-    h[3] = h3;
-    h[4] = h4;
-    h[5] = h5;
-    h[6] = h6;
-    h[7] = h7;
-    h[8] = h8;
-    h[9] = h9;
-}
-
-/*
  r = p + q
  */
 
@@ -1395,8 +1322,7 @@ slide_vartime(signed char *r, const unsigned char *a)
     }
 }
 
-/* 37095705934669439343138083508754565189542113879843219016388785533085940283555
- */
+/* 37095705934669439343138083508754565189542113879843219016388785533085940283555 */
 static const fe d = { -10913610, 13857413, -15372611, 6949391,   114729,
                       -8787816,  -6275908, -3247719,  -18696448, -12055116 };
 
