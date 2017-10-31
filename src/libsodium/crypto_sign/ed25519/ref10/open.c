@@ -28,13 +28,15 @@ _crypto_sign_ed25519_verify_detached(const unsigned char *sig,
     if (sc_is_canonical(sig + 32) == 0 || ge_has_small_order(sig) != 0) {
         return -1;
     }
+    if (ge_is_canonical(pk) == 0) {
+        return -1;
+    }
 #else
     if (sig[63] & 224) {
         return -1;
     }
 #endif
-    if (ge_is_canonical(pk) == 0 || ge_has_small_order(pk) != 0 ||
-        ge_frombytes_negate_vartime(&A, pk) != 0) {
+    if (ge_has_small_order(pk) != 0 || ge_frombytes_negate_vartime(&A, pk) != 0) {
         return -1;
     }
     _crypto_sign_ed25519_ref10_hinit(&hs, prehashed);
