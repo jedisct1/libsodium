@@ -90,8 +90,8 @@ crypto_sign_edwards25519sha512batch_open(unsigned char       *m,
     if (sm[smlen - 1] & 224) {
         return -1;
     }
-    if (ge_frombytes_negate_vartime(&A, pk) != 0 || ge_has_small_order(pk) != 0 ||
-        ge_frombytes_negate_vartime(&R, sm) != 0 || ge_has_small_order(sm) != 0) {
+    if (ge_has_small_order(pk) != 0 || ge_frombytes_negate_vartime(&A, pk) != 0 ||
+        ge_has_small_order(sm) != 0 || ge_frombytes_negate_vartime(&R, sm) != 0) {
         return -1;
     }
     ge_p3_to_cached(&Ai, &A);
