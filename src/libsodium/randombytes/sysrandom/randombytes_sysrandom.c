@@ -55,7 +55,7 @@ BOOLEAN NTAPI RtlGenRandom(PVOID RandomBuffer, ULONG RandomBufferLength);
 # pragma comment(lib, "advapi32.lib")
 #endif
 
-#if defined(__OpenBSD__) || defined(__CloudABI__)
+#if defined(__OpenBSD__) || defined(__FreeBSD__) || defined(__CloudABI__)
 # define HAVE_SAFE_ARC4RANDOM 1
 #endif
 
@@ -88,7 +88,7 @@ randombytes_sysrandom_close(void)
     return 0;
 }
 
-#else /* __OpenBSD__ */
+#else /* __OpenBSD__, __FreeBSD__, __CloudABI__ */
 
 typedef struct SysRandom_ {
     int random_data_source_fd;
@@ -364,7 +364,7 @@ randombytes_sysrandom(void)
     return r;
 }
 
-#endif /* __OpenBSD__ */
+#endif /* __OpenBSD__, __FreeBSD__, __CloudABI__ */
 
 static const char *
 randombytes_sysrandom_implementation_name(void)
