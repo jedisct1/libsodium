@@ -178,9 +178,10 @@ sodium_misuse(void)
 {
     void (*handler)(void);
 
+    sodium_crit_leave();
     if (sodium_crit_enter() == 0) {
         handler = _misuse_handler;
-        if (sodium_crit_leave() == 0 && handler != NULL) {
+        if (handler != NULL) {
             handler();
         }
     }
