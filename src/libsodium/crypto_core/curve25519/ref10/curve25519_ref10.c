@@ -176,6 +176,8 @@ fe_neg(fe h, const fe f)
 static void
 fe_cmov(fe f, const fe g, unsigned int b)
 {
+    const uint32_t mask = (uint32_t) (-(int32_t) b);
+
     int32_t f0 = f[0];
     int32_t f1 = f[1];
     int32_t f2 = f[2];
@@ -198,17 +200,16 @@ fe_cmov(fe f, const fe g, unsigned int b)
     int32_t x8 = f8 ^ g[8];
     int32_t x9 = f9 ^ g[9];
 
-    b = (unsigned int) (-(int) b);
-    x0 &= b;
-    x1 &= b;
-    x2 &= b;
-    x3 &= b;
-    x4 &= b;
-    x5 &= b;
-    x6 &= b;
-    x7 &= b;
-    x8 &= b;
-    x9 &= b;
+    x0 &= mask;
+    x1 &= mask;
+    x2 &= mask;
+    x3 &= mask;
+    x4 &= mask;
+    x5 &= mask;
+    x6 &= mask;
+    x7 &= mask;
+    x8 &= mask;
+    x9 &= mask;
     f[0] = f0 ^ x0;
     f[1] = f1 ^ x1;
     f[2] = f2 ^ x2;
