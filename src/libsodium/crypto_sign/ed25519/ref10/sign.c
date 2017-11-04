@@ -45,16 +45,16 @@ _crypto_sign_ed25519_synthetic_r_hv(crypto_hash_sha512_state *hs,
         0x66, 0x66, 0x66, 0x66, 0x66, 0x66, 0x66, 0x66,
         0x66, 0x66, 0x66, 0x66, 0x66, 0x66, 0x66, 0x66,
     };
-    static const unsigned char zeros[16] = { 0x00 };
+    static const unsigned char zeros[128] = { 0x00 };
     static const unsigned char empty_labelset[3] = { 0x02, 0x00, 0x00 };
 
     crypto_hash_sha512_update(hs, B, 32);
     crypto_hash_sha512_update(hs, empty_labelset, 3);
     randombytes_buf(Z, 32);
     crypto_hash_sha512_update(hs, Z, 32);
-    crypto_hash_sha512_update(hs, zeros, 16 - (32 + 3 + 32) % 16);
+    crypto_hash_sha512_update(hs, zeros, 128 - (32 + 3 + 32) % 128);
     crypto_hash_sha512_update(hs, sk, 32);
-    /* empty pad2 */
+    crypto_hash_sha512_update(hs, zeros, 128 - 32 % 128);
     crypto_hash_sha512_update(hs, empty_labelset, 3);
     crypto_hash_sha512_update(hs, sk + 32, 32);
     /* empty extra */
