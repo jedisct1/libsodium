@@ -544,6 +544,9 @@
     <ClInclude Include="src\libsodium\crypto_core\curve25519\ref10\fe_25_5\fe.h" />
     <ClInclude Include="src\libsodium\crypto_core\curve25519\ref10\fe_25_5\base2.h" />
     <ClInclude Include="src\libsodium\crypto_core\curve25519\ref10\fe_25_5\base.h" />
+    <ClInclude Include="src\libsodium\crypto_core\curve25519\ref10\fe_51\fe.h" />
+    <ClInclude Include="src\libsodium\crypto_core\curve25519\ref10\fe_51\base2.h" />
+    <ClInclude Include="src\libsodium\crypto_core\curve25519\ref10\fe_51\base.h" />
     <ClInclude Include="builds\msvc\resource.h" />
   </ItemGroup>
   <ItemGroup>

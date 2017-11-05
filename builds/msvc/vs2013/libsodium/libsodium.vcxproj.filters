@@ -707,6 +707,15 @@
     <ClInclude Include="..\..\..\..\src\libsodium\crypto_core\curve25519\ref10\fe_25_5\base.h">
       <Filter>crypto_core\curve25519\ref10\fe_25_5</Filter>
     </ClInclude>
+    <ClInclude Include="..\..\..\..\src\libsodium\crypto_core\curve25519\ref10\fe_51\fe.h">
+      <Filter>crypto_core\curve25519\ref10\fe_51</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\src\libsodium\crypto_core\curve25519\ref10\fe_51\base2.h">
+      <Filter>crypto_core\curve25519\ref10\fe_51</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\src\libsodium\crypto_core\curve25519\ref10\fe_51\base.h">
+      <Filter>crypto_core\curve25519\ref10\fe_51</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="crypto_aead">
@@ -762,6 +771,9 @@
     </Filter>
     <Filter Include="crypto_core\curve25519\ref10\fe_25_5">
       <UniqueIdentifier>{e1a65ae7-b847-3441-bb23-e3eebbd63e9c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="crypto_core\curve25519\ref10\fe_51">
+      <UniqueIdentifier>{b346bbaa-bfda-3fab-a0fe-ea02d7e61193}</UniqueIdentifier>
     </Filter>
     <Filter Include="crypto_core\hchacha20">
       <UniqueIdentifier>{8b704d11-af1f-30c0-9981-479da6d88dc3}</UniqueIdentifier>

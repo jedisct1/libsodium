@@ -32,7 +32,11 @@ load_4(const unsigned char *in)
     return result;
 }
 
-#include "fe_25_5/fe.h"
+#ifdef HAVE_TI_MODE
+# include "fe_51/fe.h"
+#else
+# include "fe_25_5/fe.h"
+#endif
 
 void
 fe_invert(fe out, const fe z)
@@ -540,7 +544,11 @@ static void
 ge_select_base(ge_precomp *t, const int pos, const signed char b)
 {
     static const ge_precomp base[32][8] = { /* base[i][j] = (j+1)*256^i*B */
-#include "fe_25_5/base.h"
+#ifdef HAVE_TI_MODE
+# include "fe_51/base.h"
+#else
+# include "fe_25_5/base.h"
+#endif
     };
     ge_select(t, base[pos], b);
 }
@@ -595,7 +603,11 @@ ge_double_scalarmult_vartime(ge_p2 *r, const unsigned char *a, const ge_p3 *A,
                              const unsigned char *b)
 {
     static const ge_precomp Bi[8] = {
-#include "fe_25_5/base2.h"
+#ifdef HAVE_TI_MODE
+# include "fe_51/base2.h"
+#else
+# include "fe_25_5/base2.h"
+#endif
     };
     signed char aslide[256];
     signed char bslide[256];
