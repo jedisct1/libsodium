@@ -109,14 +109,14 @@ endif
 if HAVE_TI_MODE
 libsodium_la_SOURCES += \
 	crypto_core/curve25519/ref10/fe_51/base.h \
-	crypto_core/curve25519/ref10/fe_51/base2_25_5.h \
+	crypto_core/curve25519/ref10/fe_51/base2.h \
 	crypto_core/curve25519/ref10/fe_51/fe.h \
 	crypto_scalarmult/curve25519/donna_c64/curve25519_donna_c64.c \
 	crypto_scalarmult/curve25519/donna_c64/curve25519_donna_c64.h
 else
 libsodium_la_SOURCES += \
 	crypto_core/curve25519/ref10/fe_25_5/base.h \
-	crypto_core/curve25519/ref10/fe_25_5/base2_25_5.h \
+	crypto_core/curve25519/ref10/fe_25_5/base2.h \
 	crypto_core/curve25519/ref10/fe_25_5/fe.h \
 	crypto_scalarmult/curve25519/ref10/x25519_ref10.c \
 	crypto_scalarmult/curve25519/ref10/x25519_ref10.h
