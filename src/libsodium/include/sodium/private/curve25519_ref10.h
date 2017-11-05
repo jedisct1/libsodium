@@ -5,7 +5,11 @@
 #include <stdint.h>
 
 #define fe crypto_core_curve25519_ref10_fe
+#ifdef HAVE_TI_MODE
+typedef uint64_t fe[5];
+#else
 typedef int32_t fe[10];
+#endif
 
 /*
  fe means field element.

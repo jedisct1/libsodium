@@ -12,8 +12,6 @@ libsodium_la_SOURCES = \
 	crypto_box/crypto_box_easy.c \
 	crypto_box/crypto_box_seal.c \
 	crypto_box/curve25519xsalsa20poly1305/box_curve25519xsalsa20poly1305.c \
-	crypto_core/curve25519/ref10/base.h \
-	crypto_core/curve25519/ref10/base2.h \
 	crypto_core/curve25519/ref10/curve25519_ref10.c \
 	crypto_core/hchacha20/core_hchacha20.c \
 	crypto_core/hsalsa20/ref2/core_hsalsa20_ref2.c \
@@ -110,10 +108,16 @@ endif
 
 if HAVE_TI_MODE
 libsodium_la_SOURCES += \
+	crypto_core/curve25519/ref10/fe_51/base.h \
+	crypto_core/curve25519/ref10/fe_51/base2_25_5.h \
+	crypto_core/curve25519/ref10/fe_51/fe.h \
 	crypto_scalarmult/curve25519/donna_c64/curve25519_donna_c64.c \
 	crypto_scalarmult/curve25519/donna_c64/curve25519_donna_c64.h
 else
 libsodium_la_SOURCES += \
+	crypto_core/curve25519/ref10/fe_25_5/base.h \
+	crypto_core/curve25519/ref10/fe_25_5/base2_25_5.h \
+	crypto_core/curve25519/ref10/fe_25_5/fe.h \
 	crypto_scalarmult/curve25519/ref10/x25519_ref10.c \
 	crypto_scalarmult/curve25519/ref10/x25519_ref10.h
 endif

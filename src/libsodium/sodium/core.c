@@ -1,4 +1,5 @@
 
+#include <assert.h>
 #include <stdlib.h>
 #include <string.h>
 #include <time.h>
@@ -36,6 +37,7 @@
 #endif
 
 static volatile int initialized;
+static volatile int locked;
 
 int
 sodium_init(void)
@@ -98,6 +100,8 @@ sodium_crit_enter(void)
         return -1; /* LCOV_EXCL_LINE */
     }
     EnterCriticalSection(&_sodium_lock);
+    assert(locked == 0);
+    locked = 1;
 
     return 0;
 }
@@ -105,6 +109,13 @@ sodium_crit_enter(void)
 int
 sodium_crit_leave(void)
 {
+    if (locked == 0) {
+# ifdef EPERM
+        errno = EPERM;
+# endif
+        return -1;
+    }
+    locked = 0;
     LeaveCriticalSection(&_sodium_lock);
 
     return 0;
@@ -117,12 +128,28 @@ static pthread_mutex_t _sodium_lock = PTHREAD_MUTEX_INITIALIZER;
 int
 sodium_crit_enter(void)
 {
-    return pthread_mutex_lock(&_sodium_lock);
+    int ret;
+
+    if ((ret = pthread_mutex_lock(&_sodium_lock)) == 0) {
+        assert(locked == 0);
+        locked = 1;
+    }
+    return ret;
 }
 
 int
 sodium_crit_leave(void)
 {
+    int ret;
+
+    if (locked == 0) {
+# ifdef EPERM
+        errno = EPERM;
+# endif
+        return -1;
+    }
+    locked = 0;
+
     return pthread_mutex_unlock(&_sodium_lock);
 }
 
@@ -178,9 +205,10 @@ sodium_misuse(void)
 {
     void (*handler)(void);
 
+    (void) sodium_crit_leave();
     if (sodium_crit_enter() == 0) {
         handler = _misuse_handler;
-        if (sodium_crit_leave() == 0 && handler != NULL) {
+        if (handler != NULL) {
             handler();
         }
     }

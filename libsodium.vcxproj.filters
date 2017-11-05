@@ -689,10 +689,22 @@
     <ClInclude Include="src\libsodium\crypto_stream\salsa20\xmm6\salsa20_xmm6.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="src\libsodium\crypto_core\curve25519\ref10\base2.h">
+    <ClInclude Include="src\libsodium\crypto_core\curve25519\ref10\fe_25_5\fe.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="src\libsodium\crypto_core\curve25519\ref10\base.h">
+    <ClInclude Include="src\libsodium\crypto_core\curve25519\ref10\fe_25_5\base2.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\libsodium\crypto_core\curve25519\ref10\fe_25_5\base.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\libsodium\crypto_core\curve25519\ref10\fe_51\fe.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\libsodium\crypto_core\curve25519\ref10\fe_51\base2.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\libsodium\crypto_core\curve25519\ref10\fe_51\base.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
