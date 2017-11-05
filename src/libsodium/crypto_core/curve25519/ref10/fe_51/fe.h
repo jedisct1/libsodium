@@ -139,6 +139,7 @@ fe_cmov(fe f, const fe g, unsigned int b)
     x2 &= mask;
     x3 &= mask;
     x4 &= mask;
+
     f[0] = f0 ^ x0;
     f[1] = f1 ^ x1;
     f[2] = f2 ^ x2;
