@@ -266,8 +266,8 @@ fe_mont_y(fe x2,     fe z2,     /* output 2Q */
 }
 
 /* -----------------------------------------------------------------------------
-   Maybe swap the contents of two uint64_t arrays (@a and @b), each @len elements
-   long. Perform the swap iff @swap is non-zero.
+   Maybe swap the contents of two uint64_t arrays (f and g), each 5 elements
+   long. Perform the swap iff b is non-zero.
 
    This function performs the swap without leaking any side-channel
    information.
