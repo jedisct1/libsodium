@@ -192,29 +192,30 @@ slide_vartime(signed char *r, const unsigned char *a)
         r[i] = 1 & (a[i >> 3] >> (i & 7));
     }
     for (i = 0; i < 256; ++i) {
-        if (r[i]) {
-            for (b = 1; b <= 6 && i + b < 256; ++b) {
-                if (r[i + b]) {
-                    ribs = r[i + b] << b;
-                    cmp = r[i] + ribs;
-                    if (cmp <= 15) {
-                        r[i] = cmp;
-                        r[i + b] = 0;
-                    } else {
-                        cmp = r[i] - ribs;
-                        if (cmp >= -15) {
-                            r[i] = cmp;
-                            for (k = i + b; k < 256; ++k) {
-                                if (!r[k]) {
-                                    r[k] = 1;
-                                    break;
-                                }
-                                r[k] = 0;
-                            }
-                        } else {
-                            break;
-                        }
+        if (! r[i]) {
+            continue;
+        }
+        for (b = 1; b <= 6 && i + b < 256; ++b) {
+            if (! r[i + b]) {
+                continue;
+            }
+            ribs = r[i + b] << b;
+            cmp = r[i] + ribs;
+            if (cmp <= 15) {
+                r[i] = cmp;
+                r[i + b] = 0;
+            } else {
+                cmp = r[i] - ribs;
+                if (cmp < -15) {
+                    break;
+                }
+                r[i] = cmp;
+                for (k = i + b; k < 256; ++k) {
+                    if (! r[k]) {
+                        r[k] = 1;
+                        break;
                     }
+                    r[k] = 0;
                 }
             }
         }
