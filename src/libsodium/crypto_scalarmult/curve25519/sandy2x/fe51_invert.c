@@ -9,7 +9,8 @@
 
 #define fe51_square(x, y) fe51_nsquare(x, y, 1)
 
-void fe51_invert(fe51 *r, const fe51 *x)
+void
+fe51_invert(fe51 *r, const fe51 *x)
 {
     fe51 z2;
     fe51 z9;

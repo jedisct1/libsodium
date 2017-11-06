@@ -139,11 +139,61 @@ fe_cmov(fe f, const fe g, unsigned int b)
     x2 &= mask;
     x3 &= mask;
     x4 &= mask;
+
     f[0] = f0 ^ x0;
     f[1] = f1 ^ x1;
     f[2] = f2 ^ x2;
     f[3] = f3 ^ x3;
     f[4] = f4 ^ x4;
+}
+
+/*
+Replace (f,g) with (g,f) if b == 1;
+replace (f,g) with (f,g) if b == 0.
+
+Preconditions: b in {0,1}.
+*/
+
+void
+fe_cswap(fe f, fe g, unsigned int b)
+{
+    const uint64_t mask = (uint64_t) (-(int64_t) b);
+
+    uint64_t f0 = f[0];
+    uint64_t f1 = f[1];
+    uint64_t f2 = f[2];
+    uint64_t f3 = f[3];
+    uint64_t f4 = f[4];
+
+    uint64_t g0 = g[0];
+    uint64_t g1 = g[1];
+    uint64_t g2 = g[2];
+    uint64_t g3 = g[3];
+    uint64_t g4 = g[4];
+
+    uint64_t x0 = f0 ^ g0;
+    uint64_t x1 = f1 ^ g1;
+    uint64_t x2 = f2 ^ g2;
+    uint64_t x3 = f3 ^ g3;
+    uint64_t x4 = f4 ^ g4;
+
+    x0 &= mask;
+    x1 &= mask;
+    x2 &= mask;
+    x3 &= mask;
+    x4 &= mask;
+
+    f[0] = f0 ^ x0;
+    f[1] = f1 ^ x1;
+    f[2] = f2 ^ x2;
+    f[3] = f3 ^ x3;
+    f[4] = f4 ^ x4;
+
+    g[0] = g0 ^ x0;
+    g[1] = g1 ^ x1;
+    g[2] = g2 ^ x2;
+    g[3] = g3 ^ x3;
+    g[4] = g4 ^ x4;
 }
 
 /*
@@ -566,4 +616,32 @@ fe_sq2(fe h, const fe f)
     h[2] = r02;
     h[3] = r03;
     h[4] = r04;
+}
+
+void
+fe_scalar_product(fe h, const fe f, uint32_t n)
+{
+    const uint64_t mask = 0x7ffffffffffffULL;
+    uint128_t a;
+    uint128_t sn = (uint128_t) n;
+    uint64_t  h0, h1, h2, h3, h4;
+
+    a  = f[0] * sn;
+    h0 = ((uint64_t) a) & mask;
+    a  = f[1] * sn + ((uint64_t) (a >> 51));
+    h1 = ((uint64_t) a) & mask;
+    a  = f[2] * sn + ((uint64_t) (a >> 51));
+    h2 = ((uint64_t) a) & mask;
+    a  = f[3] * sn + ((uint64_t) (a >> 51));
+    h3 = ((uint64_t) a) & mask;
+    a  = f[4] * sn + ((uint64_t) (a >> 51));
+    h4 = ((uint64_t) a) & mask;
+
+    h0 += (a >> 51) * 19ULL;
+
+    h[0] = h0;
+    h[1] = h1;
+    h[2] = h2;
+    h[3] = h3;
+    h[4] = h4;
 }

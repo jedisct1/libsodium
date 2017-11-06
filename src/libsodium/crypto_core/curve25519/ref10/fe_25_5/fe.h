@@ -1,16 +1,18 @@
 /* 37095705934669439343138083508754565189542113879843219016388785533085940283555 */
-static const fe d = { -10913610, 13857413, -15372611, 6949391,   114729,
-                      -8787816,  -6275908, -3247719,  -18696448, -12055116 };
+static const fe d = {
+    -10913610, 13857413, -15372611, 6949391,   114729, -8787816,  -6275908, -3247719,  -18696448, -12055116
+};
 
 /* 2 * d =
  * 16295367250680780974490674513165176452449235426866156013048779062215315747161
  */
-static const fe d2 = { -21827239, -5839606,  -30745221, 13898782, 229458,
-                       15978800,  -12551817, -6495438,  29715968, 9444199 };
+static const fe d2 = {
+    -21827239, -5839606,  -30745221, 13898782, 229458, 15978800,  -12551817, -6495438,  29715968, 9444199 };
 
 /* sqrt(-1) */
-static const fe sqrtm1 = { -32595792, -7943725,  9377950,  3500415, 12389472,
-                           -272473,   -25146209, -2005654, 326686,  11406482 };
+static const fe sqrtm1 = {
+    -32595792, -7943725,  9377950,  3500415, 12389472, -272473,   -25146209, -2005654, 326686,  11406482
+};
 
 /*
  h = 0
@@ -190,6 +192,7 @@ fe_cmov(fe f, const fe g, unsigned int b)
     x7 &= mask;
     x8 &= mask;
     x9 &= mask;
+
     f[0] = f0 ^ x0;
     f[1] = f1 ^ x1;
     f[2] = f2 ^ x2;
@@ -200,6 +203,78 @@ fe_cmov(fe f, const fe g, unsigned int b)
     f[7] = f7 ^ x7;
     f[8] = f8 ^ x8;
     f[9] = f9 ^ x9;
+}
+
+void
+fe_cswap(fe f, fe g, unsigned int b)
+{
+    const uint32_t mask = (uint32_t) (-(int64_t) b);
+
+    int32_t f0 = f[0];
+    int32_t f1 = f[1];
+    int32_t f2 = f[2];
+    int32_t f3 = f[3];
+    int32_t f4 = f[4];
+    int32_t f5 = f[5];
+    int32_t f6 = f[6];
+    int32_t f7 = f[7];
+    int32_t f8 = f[8];
+    int32_t f9 = f[9];
+
+    int32_t g0 = g[0];
+    int32_t g1 = g[1];
+    int32_t g2 = g[2];
+    int32_t g3 = g[3];
+    int32_t g4 = g[4];
+    int32_t g5 = g[5];
+    int32_t g6 = g[6];
+    int32_t g7 = g[7];
+    int32_t g8 = g[8];
+    int32_t g9 = g[9];
+
+    int32_t x0 = f0 ^ g0;
+    int32_t x1 = f1 ^ g1;
+    int32_t x2 = f2 ^ g2;
+    int32_t x3 = f3 ^ g3;
+    int32_t x4 = f4 ^ g4;
+    int32_t x5 = f5 ^ g5;
+    int32_t x6 = f6 ^ g6;
+    int32_t x7 = f7 ^ g7;
+    int32_t x8 = f8 ^ g8;
+    int32_t x9 = f9 ^ g9;
+
+    x0 &= mask;
+    x1 &= mask;
+    x2 &= mask;
+    x3 &= mask;
+    x4 &= mask;
+    x5 &= mask;
+    x6 &= mask;
+    x7 &= mask;
+    x8 &= mask;
+    x9 &= mask;
+
+    f[0] = f0 ^ x0;
+    f[1] = f1 ^ x1;
+    f[2] = f2 ^ x2;
+    f[3] = f3 ^ x3;
+    f[4] = f4 ^ x4;
+    f[5] = f5 ^ x5;
+    f[6] = f6 ^ x6;
+    f[7] = f7 ^ x7;
+    f[8] = f8 ^ x8;
+    f[9] = f9 ^ x9;
+
+    g[0] = g0 ^ x0;
+    g[1] = g1 ^ x1;
+    g[2] = g2 ^ x2;
+    g[3] = g3 ^ x3;
+    g[4] = g4 ^ x4;
+    g[5] = g5 ^ x5;
+    g[6] = g6 ^ x6;
+    g[7] = g7 ^ x7;
+    g[8] = g8 ^ x8;
+    g[9] = g9 ^ x9;
 }
 
 /*
@@ -308,53 +383,43 @@ fe_frombytes(fe h, const unsigned char *s)
 /*
  Preconditions:
  |h| bounded by 1.1*2^26,1.1*2^25,1.1*2^26,1.1*2^25,etc.
- *
+
  Write p=2^255-19; q=floor(h/p).
  Basic claim: q = floor(2^(-255)(h + 19 2^(-25)h9 + 2^(-1))).
- *
+
  Proof:
  Have |h|<=p so |q|<=1 so |19^2 2^(-255) q|<1/4.
  Also have |h-2^230 h9|<2^231 so |19 2^(-255)(h-2^230 h9)|<1/4.
- *
+
  Write y=2^(-1)-19^2 2^(-255)q-19 2^(-255)(h-2^230 h9).
  Then 0<y<1.
- *
+
  Write r=h-pq.
  Have 0<=r<=p-1=2^255-20.
  Thus 0<=r+19(2^-255)r<r+19(2^-255)2^255<=2^255-1.
- *
+
  Write x=r+19(2^-255)r+y.
  Then 0<x<2^255 so floor(2^(-255)x) = 0 so floor(q+2^(-255)x) = q.
- *
+
  Have q+2^(-255)x = 2^(-255)(h + 19 2^(-25) h9 + 2^(-1))
  so floor(2^(-255)(h + 19 2^(-25) h9 + 2^(-1))) = q.
- */
-
-void
-fe_tobytes(unsigned char *s, const fe h)
+*/
+static void
+fe_reduce(fe h, const fe f)
 {
-    int32_t h0 = h[0];
-    int32_t h1 = h[1];
-    int32_t h2 = h[2];
-    int32_t h3 = h[3];
-    int32_t h4 = h[4];
-    int32_t h5 = h[5];
-    int32_t h6 = h[6];
-    int32_t h7 = h[7];
-    int32_t h8 = h[8];
-    int32_t h9 = h[9];
+    int32_t h0 = f[0];
+    int32_t h1 = f[1];
+    int32_t h2 = f[2];
+    int32_t h3 = f[3];
+    int32_t h4 = f[4];
+    int32_t h5 = f[5];
+    int32_t h6 = f[6];
+    int32_t h7 = f[7];
+    int32_t h8 = f[8];
+    int32_t h9 = f[9];
 
     int32_t q;
-    int32_t carry0;
-    int32_t carry1;
-    int32_t carry2;
-    int32_t carry3;
-    int32_t carry4;
-    int32_t carry5;
-    int32_t carry6;
-    int32_t carry7;
-    int32_t carry8;
-    int32_t carry9;
+    int32_t carry0, carry1, carry2, carry3, carry4, carry5, carry6, carry7, carry8, carry9;
 
     q = (19 * h9 + ((uint32_t) 1L << 24)) >> 25;
     q = (h0 + q) >> 26;
@@ -401,47 +466,65 @@ fe_tobytes(unsigned char *s, const fe h)
     h8 -= carry8 * ((uint32_t) 1L << 26);
     carry9 = h9 >> 25;
     h9 -= carry9 * ((uint32_t) 1L << 25);
-    /* h10 = carry9 */
 
-    /*
-     Goal: Output h0+...+2^255 h10-2^255 q, which is between 0 and 2^255-20.
-     Have h0+...+2^230 h9 between 0 and 2^255-1;
-     evidently 2^255 h10-2^255 q = 0.
-     Goal: Output h0+...+2^230 h9.
-     */
+    h[0] = h0;
+    h[1] = h1;
+    h[2] = h2;
+    h[3] = h3;
+    h[4] = h4;
+    h[5] = h5;
+    h[6] = h6;
+    h[7] = h7;
+    h[8] = h8;
+    h[9] = h9;
+}
 
-    s[0]  = h0 >> 0;
-    s[1]  = h0 >> 8;
-    s[2]  = h0 >> 16;
-    s[3]  = (h0 >> 24) | (h1 * ((uint32_t) 1 << 2));
-    s[4]  = h1 >> 6;
-    s[5]  = h1 >> 14;
-    s[6]  = (h1 >> 22) | (h2 * ((uint32_t) 1 << 3));
-    s[7]  = h2 >> 5;
-    s[8]  = h2 >> 13;
-    s[9]  = (h2 >> 21) | (h3 * ((uint32_t) 1 << 5));
-    s[10] = h3 >> 3;
-    s[11] = h3 >> 11;
-    s[12] = (h3 >> 19) | (h4 * ((uint32_t) 1 << 6));
-    s[13] = h4 >> 2;
-    s[14] = h4 >> 10;
-    s[15] = h4 >> 18;
-    s[16] = h5 >> 0;
-    s[17] = h5 >> 8;
-    s[18] = h5 >> 16;
-    s[19] = (h5 >> 24) | (h6 * ((uint32_t) 1 << 1));
-    s[20] = h6 >> 7;
-    s[21] = h6 >> 15;
-    s[22] = (h6 >> 23) | (h7 * ((uint32_t) 1 << 3));
-    s[23] = h7 >> 5;
-    s[24] = h7 >> 13;
-    s[25] = (h7 >> 21) | (h8 * ((uint32_t) 1 << 4));
-    s[26] = h8 >> 4;
-    s[27] = h8 >> 12;
-    s[28] = (h8 >> 20) | (h9 * ((uint32_t) 1 << 6));
-    s[29] = h9 >> 2;
-    s[30] = h9 >> 10;
-    s[31] = h9 >> 18;
+/*
+ Goal: Output h0+...+2^255 h10-2^255 q, which is between 0 and 2^255-20.
+ Have h0+...+2^230 h9 between 0 and 2^255-1;
+ evidently 2^255 h10-2^255 q = 0.
+
+ Goal: Output h0+...+2^230 h9.
+ */
+
+void
+fe_tobytes(unsigned char *s, const fe h)
+{
+    fe t;
+
+    fe_reduce(t, h);
+    s[0]  = t[0] >> 0;
+    s[1]  = t[0] >> 8;
+    s[2]  = t[0] >> 16;
+    s[3]  = (t[0] >> 24) | (t[1] * ((uint32_t) 1 << 2));
+    s[4]  = t[1] >> 6;
+    s[5]  = t[1] >> 14;
+    s[6]  = (t[1] >> 22) | (t[2] * ((uint32_t) 1 << 3));
+    s[7]  = t[2] >> 5;
+    s[8]  = t[2] >> 13;
+    s[9]  = (t[2] >> 21) | (t[3] * ((uint32_t) 1 << 5));
+    s[10] = t[3] >> 3;
+    s[11] = t[3] >> 11;
+    s[12] = (t[3] >> 19) | (t[4] * ((uint32_t) 1 << 6));
+    s[13] = t[4] >> 2;
+    s[14] = t[4] >> 10;
+    s[15] = t[4] >> 18;
+    s[16] = t[5] >> 0;
+    s[17] = t[5] >> 8;
+    s[18] = t[5] >> 16;
+    s[19] = (t[5] >> 24) | (t[6] * ((uint32_t) 1 << 1));
+    s[20] = t[6] >> 7;
+    s[21] = t[6] >> 15;
+    s[22] = (t[6] >> 23) | (t[7] * ((uint32_t) 1 << 3));
+    s[23] = t[7] >> 5;
+    s[24] = t[7] >> 13;
+    s[25] = (t[7] >> 21) | (t[8] * ((uint32_t) 1 << 4));
+    s[26] = t[8] >> 4;
+    s[27] = t[8] >> 12;
+    s[28] = (t[8] >> 20) | (t[9] * ((uint32_t) 1 << 6));
+    s[29] = t[9] >> 2;
+    s[30] = t[9] >> 10;
+    s[31] = t[9] >> 18;
 }
 
 /*
@@ -1113,6 +1196,77 @@ fe_sq2(fe h, const fe f)
     carry0 = (h0 + (int64_t)(1L << 25)) >> 26;
     h1 += carry0;
     h0 -= carry0 * ((uint64_t) 1L << 26);
+
+    h[0] = (int32_t) h0;
+    h[1] = (int32_t) h1;
+    h[2] = (int32_t) h2;
+    h[3] = (int32_t) h3;
+    h[4] = (int32_t) h4;
+    h[5] = (int32_t) h5;
+    h[6] = (int32_t) h6;
+    h[7] = (int32_t) h7;
+    h[8] = (int32_t) h8;
+    h[9] = (int32_t) h9;
+}
+
+void
+fe_scalar_product(fe h, const fe f, uint32_t n)
+{
+    int64_t sn = (int64_t) n;
+    int32_t f0 = f[0];
+    int32_t f1 = f[1];
+    int32_t f2 = f[2];
+    int32_t f3 = f[3];
+    int32_t f4 = f[4];
+    int32_t f5 = f[5];
+    int32_t f6 = f[6];
+    int32_t f7 = f[7];
+    int32_t f8 = f[8];
+    int32_t f9 = f[9];
+    int64_t h0 = f0 * sn;
+    int64_t h1 = f1 * sn;
+    int64_t h2 = f2 * sn;
+    int64_t h3 = f3 * sn;
+    int64_t h4 = f4 * sn;
+    int64_t h5 = f5 * sn;
+    int64_t h6 = f6 * sn;
+    int64_t h7 = f7 * sn;
+    int64_t h8 = f8 * sn;
+    int64_t h9 = f9 * sn;
+    int64_t carry0, carry1, carry2, carry3, carry4, carry5, carry6, carry7,
+            carry8, carry9;
+
+    carry9 = (h9 + ((int64_t) 1 << 24)) >> 25;
+    h0 += carry9 * 19;
+    h9 -= carry9 * ((int64_t) 1 << 25);
+    carry1 = (h1 + ((int64_t) 1 << 24)) >> 25;
+    h2 += carry1;
+    h1 -= carry1 * ((int64_t) 1 << 25);
+    carry3 = (h3 + ((int64_t) 1 << 24)) >> 25;
+    h4 += carry3;
+    h3 -= carry3 * ((int64_t) 1 << 25);
+    carry5 = (h5 + ((int64_t) 1 << 24)) >> 25;
+    h6 += carry5;
+    h5 -= carry5 * ((int64_t) 1 << 25);
+    carry7 = (h7 + ((int64_t) 1 << 24)) >> 25;
+    h8 += carry7;
+    h7 -= carry7 * ((int64_t) 1 << 25);
+
+    carry0 = (h0 + ((int64_t) 1 << 25)) >> 26;
+    h1 += carry0;
+    h0 -= carry0 * ((int64_t) 1 << 26);
+    carry2 = (h2 + ((int64_t) 1 << 25)) >> 26;
+    h3 += carry2;
+    h2 -= carry2 * ((int64_t) 1 << 26);
+    carry4 = (h4 + ((int64_t) 1 << 25)) >> 26;
+    h5 += carry4;
+    h4 -= carry4 * ((int64_t) 1 << 26);
+    carry6 = (h6 + ((int64_t) 1 << 25)) >> 26;
+    h7 += carry6;
+    h6 -= carry6 * ((int64_t) 1 << 26);
+    carry8 = (h8 + ((int64_t) 1 << 25)) >> 26;
+    h9 += carry8;
+    h8 -= carry8 * ((int64_t) 1 << 26);
 
     h[0] = (int32_t) h0;
     h[1] = (int32_t) h1;

@@ -55,6 +55,8 @@ libsodium_la_SOURCES = \
 	crypto_pwhash/argon2/pwhash_argon2id.c \
 	crypto_pwhash/crypto_pwhash.c \
 	crypto_scalarmult/crypto_scalarmult.c \
+	crypto_scalarmult/curve25519/ref10/x25519_ref10.c \
+	crypto_scalarmult/curve25519/ref10/x25519_ref10.h \
 	crypto_scalarmult/curve25519/scalarmult_curve25519.c \
 	crypto_scalarmult/curve25519/scalarmult_curve25519.h \
 	crypto_secretbox/crypto_secretbox.c \
@@ -110,16 +112,12 @@ if HAVE_TI_MODE
 libsodium_la_SOURCES += \
 	crypto_core/curve25519/ref10/fe_51/base.h \
 	crypto_core/curve25519/ref10/fe_51/base2.h \
-	crypto_core/curve25519/ref10/fe_51/fe.h \
-	crypto_scalarmult/curve25519/donna_c64/curve25519_donna_c64.c \
-	crypto_scalarmult/curve25519/donna_c64/curve25519_donna_c64.h
+	crypto_core/curve25519/ref10/fe_51/fe.h
 else
 libsodium_la_SOURCES += \
 	crypto_core/curve25519/ref10/fe_25_5/base.h \
 	crypto_core/curve25519/ref10/fe_25_5/base2.h \
-	crypto_core/curve25519/ref10/fe_25_5/fe.h \
-	crypto_scalarmult/curve25519/ref10/x25519_ref10.c \
-	crypto_scalarmult/curve25519/ref10/x25519_ref10.h
+	crypto_core/curve25519/ref10/fe_25_5/fe.h
 endif
 
 if HAVE_AMD64_ASM
