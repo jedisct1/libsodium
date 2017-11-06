@@ -2,8 +2,6 @@
 #include <stddef.h>
 #include <stdint.h>
 
-#ifndef HAVE_TI_MODE
-
 #include "../scalarmult_curve25519.h"
 #include "private/curve25519_ref10.h"
 #include "utils.h"
@@ -115,5 +113,3 @@ struct crypto_scalarmult_curve25519_implementation
         SODIUM_C99(.mult =) crypto_scalarmult_curve25519_ref10,
         SODIUM_C99(.mult_base =) crypto_scalarmult_curve25519_ref10_base
     };
-
-#endif
