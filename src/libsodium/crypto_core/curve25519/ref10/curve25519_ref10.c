@@ -38,6 +38,12 @@ load_4(const unsigned char *in)
     return result;
 }
 
+#ifdef HAVE_TI_MODE
+# include "fe_51/fe.h"
+#else
+# include "fe_25_5/fe.h"
+#endif
+
 void
 fe_invert(fe out, const fe z)
 {

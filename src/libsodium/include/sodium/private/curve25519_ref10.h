@@ -12,12 +12,21 @@
 #define fe fe25519
 
 #ifdef HAVE_TI_MODE
+typedef uint64_t fe[5];
+#else
+typedef int32_t fe[10];
+#endif
+
+void fe_invert(fe out, const fe z);
+void fe_frombytes(fe h, const unsigned char *s);
+void fe_tobytes(unsigned char *s, const fe h);
+
+#ifdef HAVE_TI_MODE
 # include "curve25519_ref10_fe_51.h"
 #else
 # include "curve25519_ref10_fe_25_5.h"
 #endif
 
-void fe_invert(fe out, const fe z);
 
 /*
  ge means group element.

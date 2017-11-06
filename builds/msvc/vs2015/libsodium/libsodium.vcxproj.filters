@@ -698,6 +698,9 @@
     <ClInclude Include="..\..\..\..\src\libsodium\crypto_core\curve25519\ref10\fe_25_5\constants.h">
       <Filter>crypto_core\curve25519\ref10\fe_25_5</Filter>
     </ClInclude>
+    <ClInclude Include="..\..\..\..\src\libsodium\crypto_core\curve25519\ref10\fe_25_5\fe.h">
+      <Filter>crypto_core\curve25519\ref10\fe_25_5</Filter>
+    </ClInclude>
     <ClInclude Include="..\..\..\..\src\libsodium\crypto_core\curve25519\ref10\fe_25_5\base2.h">
       <Filter>crypto_core\curve25519\ref10\fe_25_5</Filter>
     </ClInclude>
@@ -705,6 +708,9 @@
       <Filter>crypto_core\curve25519\ref10\fe_25_5</Filter>
     </ClInclude>
     <ClInclude Include="..\..\..\..\src\libsodium\crypto_core\curve25519\ref10\fe_51\constants.h">
+      <Filter>crypto_core\curve25519\ref10\fe_51</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\src\libsodium\crypto_core\curve25519\ref10\fe_51\fe.h">
       <Filter>crypto_core\curve25519\ref10\fe_51</Filter>
     </ClInclude>
     <ClInclude Include="..\..\..\..\src\libsodium\crypto_core\curve25519\ref10\fe_51\base2.h">
