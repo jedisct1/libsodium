@@ -12,25 +12,12 @@
 #define fe fe25519
 
 #ifdef HAVE_TI_MODE
-typedef uint64_t fe[5];
+# include "curve25519_ref10_fe_51.h"
 #else
-typedef int32_t fe[10];
+# include "curve25519_ref10_fe_25_5.h"
 #endif
 
-void fe_frombytes(fe,const unsigned char *);
-void fe_tobytes(unsigned char *,const fe);
-
-void fe_copy(fe,const fe);
-int  fe_iszero(const fe);
-void fe_0(fe);
-void fe_1(fe);
-void fe_add(fe,const fe,const fe);
-void fe_sub(fe,const fe,const fe);
-void fe_mul(fe,const fe,const fe);
-void fe_sq(fe,const fe);
-void fe_invert(fe,const fe);
-void fe_cswap(fe f, fe g, unsigned int b);
-void fe_scalar_product(fe h, const fe f, uint32_t n);
+void fe_invert(fe out, const fe z);
 
 /*
  ge means group element.

@@ -7,6 +7,12 @@
 #include "private/curve25519_ref10.h"
 #include "utils.h"
 
+#ifdef HAVE_TI_MODE
+# include "fe_51/constants.h"
+#else
+# include "fe_25_5/constants.h"
+#endif
+
 static inline uint64_t
 load_3(const unsigned char *in)
 {
@@ -31,12 +37,6 @@ load_4(const unsigned char *in)
 
     return result;
 }
-
-#ifdef HAVE_TI_MODE
-# include "fe_51/fe.h"
-#else
-# include "fe_25_5/fe.h"
-#endif
 
 void
 fe_invert(fe out, const fe z)

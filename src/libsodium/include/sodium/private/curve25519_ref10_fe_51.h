@@ -1,25 +1,15 @@
-/* 37095705934669439343138083508754565189542113879843219016388785533085940283555 */
-static const fe d = {
-    929955233495203, 466365720129213, 1662059464998953, 2033849074728123, 1442794654840575
-};
+#include <string.h>
 
-/* 2 * d =
- * 16295367250680780974490674513165176452449235426866156013048779062215315747161
- */
-static const fe d2 = {
-    1859910466990425, 932731440258426, 1072319116312658, 1815898335770999, 633789495995903
-};
+#include "private/common.h"
+#include "utils.h"
 
-/* sqrt(-1) */
-static const fe sqrtm1 = {
-    1718705420411056, 234908883556509, 2233514472574048, 2117202627021982, 765476049583133
-};
+typedef uint64_t fe[5];
 
 /*
  h = 0
  */
 
-void
+static inline void
 fe_0(fe h)
 {
     memset(&h[0], 0, 5 * sizeof h[0]);
@@ -29,7 +19,7 @@ fe_0(fe h)
  h = 1
  */
 
-void
+static inline void
 fe_1(fe h)
 {
     h[0] = 1;
@@ -41,7 +31,7 @@ fe_1(fe h)
  Can overlap h with f or g.
  */
 
-void
+static inline void
 fe_add(fe h, const fe f, const fe g)
 {
     uint64_t h0 = f[0] + g[0];
@@ -61,7 +51,7 @@ fe_add(fe h, const fe f, const fe g)
  h = f - g
  */
 
-void
+static void
 fe_sub(fe h, const fe f, const fe g)
 {
     const uint64_t mask = 0x7ffffffffffffULL;
@@ -101,7 +91,7 @@ fe_sub(fe h, const fe f, const fe g)
  h = -f
  */
 
-static void
+static inline void
 fe_neg(fe h, const fe f)
 {
     fe zero;
@@ -154,7 +144,7 @@ replace (f,g) with (f,g) if b == 0.
 Preconditions: b in {0,1}.
 */
 
-void
+static void
 fe_cswap(fe f, fe g, unsigned int b)
 {
     const uint64_t mask = (uint64_t) (-(int64_t) b);
@@ -200,7 +190,7 @@ fe_cswap(fe f, fe g, unsigned int b)
  h = f
  */
 
-void
+static inline void
 fe_copy(fe h, const fe f)
 {
     uint64_t f0 = f[0];
@@ -220,7 +210,7 @@ fe_copy(fe h, const fe f)
  Ignores top bit of h.
  */
 
-void
+static void
 fe_frombytes(fe h, const unsigned char *s)
 {
     const uint64_t mask = 0x7ffffffffffffULL;
@@ -316,7 +306,7 @@ fe_reduce(fe h, const fe f)
     h[4] = t[4];
 }
 
-void
+static void
 fe_tobytes(unsigned char *s, const fe h)
 {
     fe       t;
@@ -338,7 +328,7 @@ fe_tobytes(unsigned char *s, const fe h)
  return 0 if f is in {0,2,4,...,q-1}
  */
 
-static int
+static inline int
 fe_isnegative(const fe f)
 {
     unsigned char s[32];
@@ -353,7 +343,7 @@ fe_isnegative(const fe f)
  return 0 if f != 0
  */
 
-int
+static inline int
 fe_iszero(const fe f)
 {
     unsigned char s[32];
@@ -368,7 +358,7 @@ fe_iszero(const fe f)
  Can overlap h with f or g.
  */
 
-void
+static void
 fe_mul(fe h, const fe f, const fe g)
 {
     const uint64_t mask = 0x7ffffffffffffULL;
@@ -459,7 +449,7 @@ fe_mul(fe h, const fe f, const fe g)
  Can overlap h with f.
  */
 
-void
+static void
 fe_sq(fe h, const fe f)
 {
     const uint64_t mask = 0x7ffffffffffffULL;
@@ -618,7 +608,7 @@ fe_sq2(fe h, const fe f)
     h[4] = r04;
 }
 
-void
+static void
 fe_scalar_product(fe h, const fe f, uint32_t n)
 {
     const uint64_t mask = 0x7ffffffffffffULL;

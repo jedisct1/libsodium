@@ -1,24 +1,15 @@
-/* 37095705934669439343138083508754565189542113879843219016388785533085940283555 */
-static const fe d = {
-    -10913610, 13857413, -15372611, 6949391,   114729, -8787816,  -6275908, -3247719,  -18696448, -12055116
-};
+#include <string.h>
 
-/* 2 * d =
- * 16295367250680780974490674513165176452449235426866156013048779062215315747161
- */
-static const fe d2 = {
-    -21827239, -5839606,  -30745221, 13898782, 229458, 15978800,  -12551817, -6495438,  29715968, 9444199 };
+#include "private/common.h"
+#include "utils.h"
 
-/* sqrt(-1) */
-static const fe sqrtm1 = {
-    -32595792, -7943725,  9377950,  3500415, 12389472, -272473,   -25146209, -2005654, 326686,  11406482
-};
+typedef int32_t fe[10];
 
 /*
  h = 0
  */
 
-void
+static inline void
 fe_0(fe h)
 {
     memset(&h[0], 0, 10 * sizeof h[0]);
@@ -28,7 +19,7 @@ fe_0(fe h)
  h = 1
  */
 
-void
+static inline void
 fe_1(fe h)
 {
     h[0] = 1;
@@ -48,7 +39,7 @@ fe_1(fe h)
  |h| bounded by 1.1*2^26,1.1*2^25,1.1*2^26,1.1*2^25,etc.
  */
 
-void
+static inline void
 fe_add(fe h, const fe f, const fe g)
 {
     int32_t h0 = f[0] + g[0];
@@ -86,7 +77,7 @@ fe_add(fe h, const fe f, const fe g)
  |h| bounded by 1.1*2^26,1.1*2^25,1.1*2^26,1.1*2^25,etc.
  */
 
-void
+static void
 fe_sub(fe h, const fe f, const fe g)
 {
     int32_t h0 = f[0] - g[0];
@@ -122,7 +113,7 @@ fe_sub(fe h, const fe f, const fe g)
  |h| bounded by 1.1*2^25,1.1*2^24,1.1*2^25,1.1*2^24,etc.
  */
 
-static void
+static inline void
 fe_neg(fe h, const fe f)
 {
     int32_t h0 = -f[0];
@@ -205,7 +196,7 @@ fe_cmov(fe f, const fe g, unsigned int b)
     f[9] = f9 ^ x9;
 }
 
-void
+static void
 fe_cswap(fe f, fe g, unsigned int b)
 {
     const uint32_t mask = (uint32_t) (-(int64_t) b);
@@ -281,7 +272,7 @@ fe_cswap(fe f, fe g, unsigned int b)
  h = f
  */
 
-void
+static inline void
 fe_copy(fe h, const fe f)
 {
     int32_t f0 = f[0];
@@ -311,7 +302,7 @@ fe_copy(fe h, const fe f)
  Ignores top bit of h.
  */
 
-void
+static void
 fe_frombytes(fe h, const unsigned char *s)
 {
     int64_t h0 = load_4(s);
@@ -487,7 +478,7 @@ fe_reduce(fe h, const fe f)
  Goal: Output h0+...+2^230 h9.
  */
 
-void
+static void
 fe_tobytes(unsigned char *s, const fe h)
 {
     fe t;
@@ -530,12 +521,12 @@ fe_tobytes(unsigned char *s, const fe h)
 /*
  return 1 if f is in {1,3,5,...,q-2}
  return 0 if f is in {0,2,4,...,q-1}
- *
+
  Preconditions:
  |f| bounded by 1.1*2^26,1.1*2^25,1.1*2^26,1.1*2^25,etc.
  */
 
-static int
+static inline int
 fe_isnegative(const fe f)
 {
     unsigned char s[32];
@@ -553,7 +544,7 @@ fe_isnegative(const fe f)
  |f| bounded by 1.1*2^26,1.1*2^25,1.1*2^26,1.1*2^25,etc.
  */
 
-int
+static inline int
 fe_iszero(const fe f)
 {
     unsigned char s[32];
@@ -595,7 +586,7 @@ fe_iszero(const fe f)
  With tighter constraints on inputs can squeeze carries into int32.
  */
 
-void
+static void
 fe_mul(fe h, const fe f, const fe g)
 {
     int32_t f0 = f[0];
@@ -865,7 +856,7 @@ fe_mul(fe h, const fe f, const fe g)
  |h| bounded by 1.01*2^25,1.01*2^24,1.01*2^25,1.01*2^24,etc.
  */
 
-void
+static void
 fe_sq(fe h, const fe f)
 {
     int32_t f0 = f[0];
@@ -1209,7 +1200,7 @@ fe_sq2(fe h, const fe f)
     h[9] = (int32_t) h9;
 }
 
-void
+static void
 fe_scalar_product(fe h, const fe f, uint32_t n)
 {
     int64_t sn = (int64_t) n;

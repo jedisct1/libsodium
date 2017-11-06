@@ -112,12 +112,14 @@ if HAVE_TI_MODE
 libsodium_la_SOURCES += \
 	crypto_core/curve25519/ref10/fe_51/base.h \
 	crypto_core/curve25519/ref10/fe_51/base2.h \
-	crypto_core/curve25519/ref10/fe_51/fe.h
+	crypto_core/curve25519/ref10/fe_51/constants.h \
+	include/sodium/private/curve25519_ref10_fe_51.h
 else
 libsodium_la_SOURCES += \
 	crypto_core/curve25519/ref10/fe_25_5/base.h \
 	crypto_core/curve25519/ref10/fe_25_5/base2.h \
-	crypto_core/curve25519/ref10/fe_25_5/fe.h
+	crypto_core/curve25519/ref10/fe_25_5/constants.h \
+	include/sodium/private/curve25519_ref10_fe_25_5.h
 endif
 
 if HAVE_AMD64_ASM
