@@ -8,7 +8,7 @@
  */
 
 static inline void
-fe_0(fe h)
+fe25519_0(fe25519 h)
 {
     memset(&h[0], 0, 10 * sizeof h[0]);
 }
@@ -18,7 +18,7 @@ fe_0(fe h)
  */
 
 static inline void
-fe_1(fe h)
+fe25519_1(fe25519 h)
 {
     h[0] = 1;
     h[1] = 0;
@@ -38,7 +38,7 @@ fe_1(fe h)
  */
 
 static inline void
-fe_add(fe h, const fe f, const fe g)
+fe25519_add(fe25519 h, const fe25519 f, const fe25519 g)
 {
     int32_t h0 = f[0] + g[0];
     int32_t h1 = f[1] + g[1];
@@ -76,7 +76,7 @@ fe_add(fe h, const fe f, const fe g)
  */
 
 static void
-fe_sub(fe h, const fe f, const fe g)
+fe25519_sub(fe25519 h, const fe25519 f, const fe25519 g)
 {
     int32_t h0 = f[0] - g[0];
     int32_t h1 = f[1] - g[1];
@@ -112,7 +112,7 @@ fe_sub(fe h, const fe f, const fe g)
  */
 
 static inline void
-fe_neg(fe h, const fe f)
+fe25519_neg(fe25519 h, const fe25519 f)
 {
     int32_t h0 = -f[0];
     int32_t h1 = -f[1];
@@ -145,7 +145,7 @@ fe_neg(fe h, const fe f)
  */
 
 static void
-fe_cmov(fe f, const fe g, unsigned int b)
+fe25519_cmov(fe25519 f, const fe25519 g, unsigned int b)
 {
     const uint32_t mask = (uint32_t) (-(int32_t) b);
 
@@ -195,7 +195,7 @@ fe_cmov(fe f, const fe g, unsigned int b)
 }
 
 static void
-fe_cswap(fe f, fe g, unsigned int b)
+fe25519_cswap(fe25519 f, fe25519 g, unsigned int b)
 {
     const uint32_t mask = (uint32_t) (-(int64_t) b);
 
@@ -271,7 +271,7 @@ fe_cswap(fe f, fe g, unsigned int b)
  */
 
 static inline void
-fe_copy(fe h, const fe f)
+fe25519_copy(fe25519 h, const fe25519 f)
 {
     int32_t f0 = f[0];
     int32_t f1 = f[1];
@@ -305,11 +305,11 @@ fe_copy(fe h, const fe f)
  */
 
 static inline int
-fe_isnegative(const fe f)
+fe25519_isnegative(const fe25519 f)
 {
     unsigned char s[32];
 
-    fe_tobytes(s, f);
+    fe25519_tobytes(s, f);
 
     return s[0] & 1;
 }
@@ -323,11 +323,11 @@ fe_isnegative(const fe f)
  */
 
 static inline int
-fe_iszero(const fe f)
+fe25519_iszero(const fe25519 f)
 {
     unsigned char s[32];
 
-    fe_tobytes(s, f);
+    fe25519_tobytes(s, f);
 
     return sodium_is_zero(s, 32);
 }
@@ -365,7 +365,7 @@ fe_iszero(const fe f)
  */
 
 static void
-fe_mul(fe h, const fe f, const fe g)
+fe25519_mul(fe25519 h, const fe25519 f, const fe25519 g)
 {
     int32_t f0 = f[0];
     int32_t f1 = f[1];
@@ -635,7 +635,7 @@ fe_mul(fe h, const fe f, const fe g)
  */
 
 static void
-fe_sq(fe h, const fe f)
+fe25519_sq(fe25519 h, const fe25519 f)
 {
     int32_t f0 = f[0];
     int32_t f1 = f[1];
@@ -807,7 +807,7 @@ fe_sq(fe h, const fe f)
  */
 
 static void
-fe_sq2(fe h, const fe f)
+fe25519_sq2(fe25519 h, const fe25519 f)
 {
     int32_t f0 = f[0];
     int32_t f1 = f[1];
@@ -979,7 +979,7 @@ fe_sq2(fe h, const fe f)
 }
 
 static void
-fe_scalar_product(fe h, const fe f, uint32_t n)
+fe25519_scalar_product(fe25519 h, const fe25519 f, uint32_t n)
 {
     int64_t sn = (int64_t) n;
     int32_t f0 = f[0];

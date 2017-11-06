@@ -21,14 +21,15 @@ _crypto_sign_ed25519_verify_detached(const unsigned char *sig,
     unsigned char            h[64];
     unsigned char            rcheck[32];
     unsigned int             i;
-    ge_p3                    A;
-    ge_p2                    R;
+    ge25519_p3               A;
+    ge25519_p2               R;
 
 #ifndef ED25519_COMPAT
-    if (sc_is_canonical(sig + 32) == 0 || ge_has_small_order(sig) != 0) {
+    if (sc25519_is_canonical(sig + 32) == 0 ||
+        ge25519_has_small_order(sig) != 0) {
         return -1;
     }
-    if (ge_is_canonical(pk) == 0) {
+    if (ge25519_is_canonical(pk) == 0) {
         return -1;
     }
 #else
@@ -36,7 +37,8 @@ _crypto_sign_ed25519_verify_detached(const unsigned char *sig,
         return -1;
     }
 #endif
-    if (ge_has_small_order(pk) != 0 || ge_frombytes_negate_vartime(&A, pk) != 0) {
+    if (ge25519_has_small_order(pk) != 0 ||
+        ge25519_frombytes_negate_vartime(&A, pk) != 0) {
         return -1;
     }
     _crypto_sign_ed25519_ref10_hinit(&hs, prehashed);
@@ -44,10 +46,10 @@ _crypto_sign_ed25519_verify_detached(const unsigned char *sig,
     crypto_hash_sha512_update(&hs, pk, 32);
     crypto_hash_sha512_update(&hs, m, mlen);
     crypto_hash_sha512_final(&hs, h);
-    sc_reduce(h);
+    sc25519_reduce(h);
 
-    ge_double_scalarmult_vartime(&R, h, &A, sig + 32);
-    ge_tobytes(rcheck, &R);
+    ge25519_double_scalarmult_vartime(&R, h, &A, sig + 32);
+    ge25519_tobytes(rcheck, &R);
 
     return crypto_verify_32(rcheck, sig) | (-(rcheck == sig)) |
            sodium_memcmp(sig, rcheck, 32);
