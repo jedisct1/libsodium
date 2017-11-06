@@ -73,22 +73,35 @@ typedef struct {
     fe25519 T2d;
 } ge25519_cached;
 
-void ge25519_tobytes(unsigned char *,const ge25519_p2 *);
-void ge25519_p3_tobytes(unsigned char *,const ge25519_p3 *);
-int ge25519_frombytes(ge25519_p3 *,const unsigned char *);
-int ge25519_frombytes_negate_vartime(ge25519_p3 *,const unsigned char *);
+void ge25519_tobytes(unsigned char *s, const ge25519_p2 *h);
 
-void ge25519_p3_to_cached(ge25519_cached *,const ge25519_p3 *);
-void ge25519_p1p1_to_p2(ge25519_p2 *,const ge25519_p1p1 *);
+void ge25519_p3_tobytes(unsigned char *s, const ge25519_p3 *h);
 
-void ge25519_add(ge25519_p1p1 *,const ge25519_p3 *,const ge25519_cached *);
-void ge25519_scalarmult_base(ge25519_p3 *,const unsigned char *);
-void ge25519_double_scalarmult_vartime(ge25519_p2 *,const unsigned char *,const ge25519_p3 *,const unsigned char *);
-void ge25519_scalarmult(ge25519_p3 *,const unsigned char *,const ge25519_p3 *);
-void ge25519_scalarmult_vartime(ge25519_p3 *,const unsigned char *,const ge25519_p3 *);
+int ge25519_frombytes(ge25519_p3 *h, const unsigned char *s);
+
+int ge25519_frombytes_negate_vartime(ge25519_p3 *h, const unsigned char *s);
+
+void ge25519_p3_to_cached(ge25519_cached *r, const ge25519_p3 *p);
+
+void ge25519_p1p1_to_p2(ge25519_p2 *r, const ge25519_p1p1 *p);
+
+void ge25519_add(ge25519_p1p1 *r, const ge25519_p3 *p, const ge25519_cached *q);
+
+void ge25519_scalarmult_base(ge25519_p3 *h, const unsigned char *a);
+
+void ge25519_double_scalarmult_vartime(ge25519_p2 *r, const unsigned char *a,
+                                       const ge25519_p3 *A,
+                                       const unsigned char *b);
+
+void ge25519_scalarmult(ge25519_p3 *h, const unsigned char *a,
+                        const ge25519_p3 *p);
+
 int ge25519_is_canonical(const unsigned char *s);
+
 int ge25519_is_on_curve(const ge25519_p3 *p);
+
 int ge25519_is_on_main_subgroup(const ge25519_p3 *p);
+
 int ge25519_has_small_order(const unsigned char s[32]);
 
 /*
@@ -96,8 +109,11 @@ int ge25519_has_small_order(const unsigned char s[32]);
  where l = 2^252 + 27742317777372353535851937790883648493.
  */
 
-void sc25519_reduce(unsigned char *);
-void sc25519_muladd(unsigned char *,const unsigned char *,const unsigned char *,const unsigned char *);
+void sc25519_reduce(unsigned char *s);
+
+void sc25519_muladd(unsigned char *s, const unsigned char *a,
+                    const unsigned char *b, const unsigned char *c);
+
 int sc25519_is_canonical(const unsigned char *s);
 
 #endif

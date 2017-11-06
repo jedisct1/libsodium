@@ -1006,8 +1006,8 @@ ge25519_has_small_order(const unsigned char s[32])
  */
 
 void
-sc25519_muladd(unsigned char *s, const unsigned char *a, const unsigned char *b,
-          const unsigned char *c)
+sc25519_muladd(unsigned char *s, const unsigned char *a,
+               const unsigned char *b, const unsigned char *c)
 {
     int64_t a0  = 2097151 & load_3(a);
     int64_t a1  = 2097151 & (load_4(a + 2) >> 5);
