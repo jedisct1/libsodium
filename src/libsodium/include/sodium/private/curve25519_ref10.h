@@ -4,20 +4,17 @@
 #include <stddef.h>
 #include <stdint.h>
 
+/*
+ fe means field element.
+ Here the field is \Z/(2^255-19).
+ */
+
 #define fe crypto_core_curve25519_ref10_fe
 #ifdef HAVE_TI_MODE
 typedef uint64_t fe[5];
 #else
 typedef int32_t fe[10];
 #endif
-
-/*
- fe means field element.
- Here the field is \Z/(2^255-19).
- An element t, entries t[0]...t[9], represents the integer
- t[0]+2^26 t[1]+2^51 t[2]+2^77 t[3]+2^102 t[4]+...+2^230 t[9].
- Bounds on each t[i] vary depending on context.
- */
 
 #define fe_frombytes crypto_core_curve25519_ref10_fe_frombytes
 #define fe_tobytes crypto_core_curve25519_ref10_fe_tobytes
