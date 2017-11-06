@@ -70,7 +70,7 @@ _crypto_sign_ed25519_detached(unsigned char *sig, unsigned long long *siglen_p,
     unsigned char            az[64];
     unsigned char            nonce[64];
     unsigned char            hram[64];
-    ge_p3                    R;
+    ge25519_p3               R;
 
     _crypto_sign_ed25519_ref10_hinit(&hs, prehashed);
 
@@ -88,8 +88,8 @@ _crypto_sign_ed25519_detached(unsigned char *sig, unsigned long long *siglen_p,
     memmove(sig + 32, sk + 32, 32);
 
     sc_reduce(nonce);
-    ge_scalarmult_base(&R, nonce);
-    ge_p3_tobytes(sig, &R);
+    ge25519_scalarmult_base(&R, nonce);
+    ge25519_p3_tobytes(sig, &R);
 
     _crypto_sign_ed25519_ref10_hinit(&hs, prehashed);
     crypto_hash_sha512_update(&hs, sig, 64);

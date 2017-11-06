@@ -33,20 +33,20 @@ crypto_scalarmult_ed25519(unsigned char *q, const unsigned char *n,
                           const unsigned char *p)
 {
     unsigned char *t = q;
-    ge_p3          Q;
-    ge_p3          P;
+    ge25519_p3     Q;
+    ge25519_p3     P;
     unsigned int   i;
 
-    if (ge_is_canonical(p) == 0 || ge_has_small_order(p) != 0 ||
-        ge_frombytes(&P, p) != 0 || ge_is_on_main_subgroup(&P) == 0) {
+    if (ge25519_is_canonical(p) == 0 || ge25519_has_small_order(p) != 0 ||
+        ge25519_frombytes(&P, p) != 0 || ge25519_is_on_main_subgroup(&P) == 0) {
         return -1;
     }
     for (i = 0; i < 32; ++i) {
         t[i] = n[i];
     }
     _crypto_scalarmult_ed25519_clamp(t);
-    ge_scalarmult(&Q, t, &P);
-    ge_p3_tobytes(q, &Q);
+    ge25519_scalarmult(&Q, t, &P);
+    ge25519_p3_tobytes(q, &Q);
     if (_crypto_scalarmult_ed25519_is_inf(q) != 0) {
         return -1;
     }
@@ -58,15 +58,15 @@ crypto_scalarmult_ed25519_base(unsigned char *q,
                                const unsigned char *n)
 {
     unsigned char *t = q;
-    ge_p3          Q;
+    ge25519_p3     Q;
     unsigned int   i;
 
     for (i = 0; i < 32; ++i) {
         t[i] = n[i];
     }
     _crypto_scalarmult_ed25519_clamp(t);
-    ge_scalarmult_base(&Q, t);
-    ge_p3_tobytes(q, &Q);
+    ge25519_scalarmult_base(&Q, t);
+    ge25519_p3_tobytes(q, &Q);
     if (sodium_is_zero(t, 32) != 0) {
         return -1;
     }

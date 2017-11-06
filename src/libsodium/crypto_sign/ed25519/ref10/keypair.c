@@ -13,7 +13,7 @@ int
 crypto_sign_ed25519_seed_keypair(unsigned char *pk, unsigned char *sk,
                                  const unsigned char *seed)
 {
-    ge_p3 A;
+    ge25519_p3 A;
 
 #ifdef ED25519_NONDETERMINISTIC
     memmove(sk, seed, 32);
@@ -24,8 +24,8 @@ crypto_sign_ed25519_seed_keypair(unsigned char *pk, unsigned char *sk,
     sk[31] &= 127;
     sk[31] |= 64;
 
-    ge_scalarmult_base(&A, sk);
-    ge_p3_tobytes(pk, &A);
+    ge25519_scalarmult_base(&A, sk);
+    ge25519_p3_tobytes(pk, &A);
 
     memmove(sk, seed, 32);
     memmove(sk + 32, pk, 32);
@@ -50,13 +50,13 @@ int
 crypto_sign_ed25519_pk_to_curve25519(unsigned char *curve25519_pk,
                                      const unsigned char *ed25519_pk)
 {
-    ge_p3   A;
-    fe25519 x;
-    fe25519 one_minus_y;
+    ge25519_p3 A;
+    fe25519    x;
+    fe25519    one_minus_y;
 
-    if (ge_has_small_order(ed25519_pk) != 0 ||
-        ge_frombytes_negate_vartime(&A, ed25519_pk) != 0 ||
-        ge_is_on_main_subgroup(&A) == 0) {
+    if (ge25519_has_small_order(ed25519_pk) != 0 ||
+        ge25519_frombytes_negate_vartime(&A, ed25519_pk) != 0 ||
+        ge25519_is_on_main_subgroup(&A) == 0) {
         return -1;
     }
     fe25519_1(one_minus_y);

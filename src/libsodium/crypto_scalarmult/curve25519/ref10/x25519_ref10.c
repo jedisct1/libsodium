@@ -91,7 +91,7 @@ crypto_scalarmult_curve25519_ref10_base(unsigned char *q,
                                         const unsigned char *n)
 {
     unsigned char *t = q;
-    ge_p3          A;
+    ge25519_p3     A;
     fe25519        pk;
     unsigned int   i;
 
@@ -101,7 +101,7 @@ crypto_scalarmult_curve25519_ref10_base(unsigned char *q,
     t[0] &= 248;
     t[31] &= 127;
     t[31] |= 64;
-    ge_scalarmult_base(&A, t);
+    ge25519_scalarmult_base(&A, t);
     edwards_to_montgomery(pk, A.Y, A.Z);
     fe25519_tobytes(q, pk);
 
