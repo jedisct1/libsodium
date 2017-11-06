@@ -9,6 +9,8 @@
  Here the field is \Z/(2^255-19).
  */
 
+#define fe fe25519
+
 #ifdef HAVE_TI_MODE
 typedef uint64_t fe[5];
 #else
@@ -44,12 +46,14 @@ void fe_scalar_product(fe h, const fe f, uint32_t n);
  ge_precomp (Duif): (y+x,y-x,2dxy)
  */
 
+#define ge_p2 ge25519_p2
 typedef struct {
     fe X;
     fe Y;
     fe Z;
 } ge_p2;
 
+#define ge_p3 ge25519_p3
 typedef struct {
     fe X;
     fe Y;
@@ -57,6 +61,7 @@ typedef struct {
     fe T;
 } ge_p3;
 
+#define ge_p1p1 ge25519_p1p1
 typedef struct {
     fe X;
     fe Y;
@@ -64,12 +69,14 @@ typedef struct {
     fe T;
 } ge_p1p1;
 
+#define ge_precomp ge25519_precomp
 typedef struct {
     fe yplusx;
     fe yminusx;
     fe xy2d;
 } ge_precomp;
 
+#define ge_cached ge25519_cached
 typedef struct {
     fe YplusX;
     fe YminusX;
