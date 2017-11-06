@@ -131,7 +131,6 @@
     <ClCompile Include="..\..\..\..\src\libsodium\crypto_scalarmult\curve25519\sandy2x\curve25519_sandy2x.c" />
     <ClCompile Include="..\..\..\..\src\libsodium\crypto_scalarmult\curve25519\sandy2x\fe_frombytes_sandy2x.c" />
     <ClCompile Include="..\..\..\..\src\libsodium\crypto_scalarmult\curve25519\sandy2x\fe51_invert.c" />
-    <ClCompile Include="..\..\..\..\src\libsodium\crypto_scalarmult\curve25519\donna_c64\curve25519_donna_c64.c" />
     <ClCompile Include="..\..\..\..\src\libsodium\crypto_scalarmult\curve25519\ref10\x25519_ref10.c" />
     <ClCompile Include="..\..\..\..\src\libsodium\crypto_onetimeauth\crypto_onetimeauth.c" />
     <ClCompile Include="..\..\..\..\src\libsodium\crypto_onetimeauth\poly1305\onetimeauth_poly1305.c" />
@@ -199,7 +198,6 @@
     <ClInclude Include="..\..\..\..\src\libsodium\include\sodium\crypto_core_hchacha20.h" />
     <ClInclude Include="..\..\..\..\src\libsodium\include\sodium\crypto_hash_sha512.h" />
     <ClInclude Include="..\..\..\..\src\libsodium\include\sodium\core.h" />
-    <ClInclude Include="..\..\..\..\src\libsodium\include\sodium\version.h" />
     <ClInclude Include="..\..\..\..\src\libsodium\include\sodium\export.h" />
     <ClInclude Include="..\..\..\..\src\libsodium\include\sodium\randombytes_salsa20_random.h" />
     <ClInclude Include="..\..\..\..\src\libsodium\include\sodium\crypto_core_salsa20.h" />
@@ -256,7 +254,9 @@
     <ClInclude Include="..\..\..\..\src\libsodium\include\sodium\private\curve25519_ref10.h" />
     <ClInclude Include="..\..\..\..\src\libsodium\include\sodium\private\sse2_64_32.h" />
     <ClInclude Include="..\..\..\..\src\libsodium\include\sodium\private\common.h" />
+    <ClInclude Include="..\..\..\..\src\libsodium\include\sodium\private\curve25519_ref10_fe_25_5.h" />
     <ClInclude Include="..\..\..\..\src\libsodium\include\sodium\private\mutex.h" />
+    <ClInclude Include="..\..\..\..\src\libsodium\include\sodium\private\curve25519_ref10_fe_51.h" />
     <ClInclude Include="..\..\..\..\src\libsodium\include\sodium\private\implementations.h" />
     <ClInclude Include="..\..\..\..\src\libsodium\crypto_pwhash\argon2\blamka-round-ref.h" />
     <ClInclude Include="..\..\..\..\src\libsodium\crypto_pwhash\argon2\blamka-round-avx2.h" />
@@ -279,7 +279,6 @@
     <ClInclude Include="..\..\..\..\src\libsodium\crypto_scalarmult\curve25519\sandy2x\curve25519_sandy2x.h" />
     <ClInclude Include="..\..\..\..\src\libsodium\crypto_scalarmult\curve25519\sandy2x\fe51_namespace.h" />
     <ClInclude Include="..\..\..\..\src\libsodium\crypto_scalarmult\curve25519\sandy2x\ladder_base.h" />
-    <ClInclude Include="..\..\..\..\src\libsodium\crypto_scalarmult\curve25519\donna_c64\curve25519_donna_c64.h" />
     <ClInclude Include="..\..\..\..\src\libsodium\crypto_scalarmult\curve25519\ref10\x25519_ref10.h" />
     <ClInclude Include="..\..\..\..\src\libsodium\crypto_onetimeauth\poly1305\onetimeauth_poly1305.h" />
     <ClInclude Include="..\..\..\..\src\libsodium\crypto_onetimeauth\poly1305\donna\poly1305_donna.h" />
@@ -303,10 +302,10 @@
     <ClInclude Include="..\..\..\..\src\libsodium\crypto_stream\salsa20\xmm6int\u8.h" />
     <ClInclude Include="..\..\..\..\src\libsodium\crypto_stream\salsa20\xmm6int\salsa20_xmm6int-sse2.h" />
     <ClInclude Include="..\..\..\..\src\libsodium\crypto_stream\salsa20\xmm6\salsa20_xmm6.h" />
-    <ClInclude Include="..\..\..\..\src\libsodium\crypto_core\curve25519\ref10\fe_25_5\fe.h" />
+    <ClInclude Include="..\..\..\..\src\libsodium\crypto_core\curve25519\ref10\fe_25_5\constants.h" />
     <ClInclude Include="..\..\..\..\src\libsodium\crypto_core\curve25519\ref10\fe_25_5\base2.h" />
     <ClInclude Include="..\..\..\..\src\libsodium\crypto_core\curve25519\ref10\fe_25_5\base.h" />
-    <ClInclude Include="..\..\..\..\src\libsodium\crypto_core\curve25519\ref10\fe_51\fe.h" />
+    <ClInclude Include="..\..\..\..\src\libsodium\crypto_core\curve25519\ref10\fe_51\constants.h" />
     <ClInclude Include="..\..\..\..\src\libsodium\crypto_core\curve25519\ref10\fe_51\base2.h" />
     <ClInclude Include="..\..\..\..\src\libsodium\crypto_core\curve25519\ref10\fe_51\base.h" />
     <ClInclude Include="..\..\resource.h" />
