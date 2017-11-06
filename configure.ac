@@ -146,7 +146,7 @@ AC_ARG_WITH(safecode,
 AC_ARG_WITH(ctgrind,
 [AS_HELP_STRING(--with-ctgrind,For maintainers only - please do not use)],
 [AS_IF([test "x$withval" = "xyes"], [
-    AC_CHECK_LIB(ctgrind, ct_poison, [LIBS="$LIBS -lctgrind"])
+    AC_CHECK_LIB(ctgrind, ct_poison)
   ])
 ])
 
