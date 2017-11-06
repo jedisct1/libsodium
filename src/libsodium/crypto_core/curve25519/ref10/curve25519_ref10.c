@@ -605,8 +605,8 @@ ge25519_tobytes(unsigned char *s, const ge25519_p2 *h)
  */
 
 void
-ge25519_double_scalarmult_vartime(ge25519_p2 *r, const unsigned char *a, const ge25519_p3 *A,
-                             const unsigned char *b)
+ge25519_double_scalarmult_vartime(ge25519_p2 *r, const unsigned char *a,
+                                  const ge25519_p3 *A, const unsigned char *b)
 {
     static const ge25519_precomp Bi[8] = {
 #ifdef HAVE_TI_MODE
@@ -1006,7 +1006,7 @@ ge25519_has_small_order(const unsigned char s[32])
  */
 
 void
-sc_muladd(unsigned char *s, const unsigned char *a, const unsigned char *b,
+sc25519_muladd(unsigned char *s, const unsigned char *a, const unsigned char *b,
           const unsigned char *c)
 {
     int64_t a0  = 2097151 & load_3(a);
@@ -1493,7 +1493,7 @@ sc_muladd(unsigned char *s, const unsigned char *a, const unsigned char *b,
  */
 
 void
-sc_reduce(unsigned char *s)
+sc25519_reduce(unsigned char *s)
 {
     int64_t s0  = 2097151 & load_3(s);
     int64_t s1  = 2097151 & (load_4(s + 2) >> 5);
@@ -1817,7 +1817,7 @@ sc_reduce(unsigned char *s)
 }
 
 int
-sc_is_canonical(const unsigned char *s)
+sc25519_is_canonical(const unsigned char *s)
 {
     /* 2^252+27742317777372353535851937790883648493 */
     static const unsigned char L[32] = {

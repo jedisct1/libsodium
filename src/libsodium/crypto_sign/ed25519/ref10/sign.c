@@ -87,7 +87,7 @@ _crypto_sign_ed25519_detached(unsigned char *sig, unsigned long long *siglen_p,
 
     memmove(sig + 32, sk + 32, 32);
 
-    sc_reduce(nonce);
+    sc25519_reduce(nonce);
     ge25519_scalarmult_base(&R, nonce);
     ge25519_p3_tobytes(sig, &R);
 
@@ -96,9 +96,9 @@ _crypto_sign_ed25519_detached(unsigned char *sig, unsigned long long *siglen_p,
     crypto_hash_sha512_update(&hs, m, mlen);
     crypto_hash_sha512_final(&hs, hram);
 
-    sc_reduce(hram);
+    sc25519_reduce(hram);
     _crypto_sign_ed25519_clamp(az);
-    sc_muladd(sig + 32, hram, az, nonce);
+    sc25519_muladd(sig + 32, hram, az, nonce);
 
     sodium_memzero(az, sizeof az);
     sodium_memzero(nonce, sizeof nonce);

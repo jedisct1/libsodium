@@ -96,8 +96,8 @@ int ge25519_has_small_order(const unsigned char s[32]);
  where l = 2^252 + 27742317777372353535851937790883648493.
  */
 
-void sc_reduce(unsigned char *);
-void sc_muladd(unsigned char *,const unsigned char *,const unsigned char *,const unsigned char *);
-int sc_is_canonical(const unsigned char *s);
+void sc25519_reduce(unsigned char *);
+void sc25519_muladd(unsigned char *,const unsigned char *,const unsigned char *,const unsigned char *);
+int sc25519_is_canonical(const unsigned char *s);
 
 #endif

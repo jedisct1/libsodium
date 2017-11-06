@@ -47,15 +47,15 @@ crypto_sign_edwards25519sha512batch(unsigned char       *sm,
     crypto_hash_sha512_final(&hs, nonce);
     ge25519_scalarmult_base(&A, sk);
     ge25519_p3_tobytes(sig + 32, &A);
-    sc_reduce(nonce);
+    sc25519_reduce(nonce);
     ge25519_scalarmult_base(&R, nonce);
     ge25519_p3_tobytes(sig, &R);
     crypto_hash_sha512_init(&hs);
     crypto_hash_sha512_update(&hs, sig, 32);
     crypto_hash_sha512_update(&hs, m, mlen);
     crypto_hash_sha512_final(&hs, hram);
-    sc_reduce(hram);
-    sc_muladd(sig + 32, hram, nonce, sk);
+    sc25519_reduce(hram);
+    sc25519_muladd(sig + 32, hram, nonce, sk);
     sodium_memzero(hram, sizeof hram);
     memmove(sm + 32, m, (size_t) mlen);
     memcpy(sm, sig, 32);
@@ -98,7 +98,7 @@ crypto_sign_edwards25519sha512batch_open(unsigned char       *m,
     }
     ge25519_p3_to_cached(&Ai, &A);
     crypto_hash_sha512(h, sm, mlen + 32);
-    sc_reduce(h);
+    sc25519_reduce(h);
     ge25519_scalarmult(&cs3, h, &R);
     ge25519_add(&csa, &cs3, &Ai);
     ge25519_p1p1_to_p2(&cs, &csa);
