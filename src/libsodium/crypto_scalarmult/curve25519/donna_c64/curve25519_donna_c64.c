@@ -64,27 +64,6 @@ fe_sub_backwards(fe out, const fe in)
     out[4] = in[4] + two54m8   - out[4];
 }
 
-/* Multiply a number by a scalar: output = in * scalar */
-static inline void
-fe_scalar_product(fe output, const fe in, const uint64_t scalar)
-{
-    const uint64_t mask = 0x7ffffffffffffULL;
-    uint128_t a;
-
-    a = in[0] * (uint128_t) scalar;
-    output[0] = ((uint64_t) a) & mask;
-    a = in[1] * (uint128_t) scalar + ((uint64_t) (a >> 51));
-    output[1] = ((uint64_t) a) & mask;
-    a = in[2] * (uint128_t) scalar + ((uint64_t) (a >> 51));
-    output[2] = ((uint64_t) a) & mask;
-    a = in[3] * (uint128_t) scalar + ((uint64_t) (a >> 51));
-    output[3] = ((uint64_t) a) & mask;
-    a = in[4] * (uint128_t) scalar + ((uint64_t) (a >> 51));
-    output[4] = ((uint64_t) a) & mask;
-
-    output[0] += (a >> 51) * 19ULL;
-}
-
 /* Multiply two numbers: output = in2 * in
  *
  * output must be distinct to both inputs. The inputs are reduced coefficient
@@ -265,27 +244,6 @@ fe_mont_y(fe x2,     fe z2,     /* output 2Q */
     fe_mul_restrict(z2, zz, zzz);
 }
 
-/* -----------------------------------------------------------------------------
-   Maybe swap the contents of two uint64_t arrays (f and g), each 5 elements
-   long. Perform the swap iff b is non-zero.
-
-   This function performs the swap without leaking any side-channel
-   information.
-   -----------------------------------------------------------------------------
-   */
-static void
-swap_conditional(fe f, fe g, unsigned int b)
-{
-    const uint64_t mask = (uint64_t) (-(int64_t) b);
-    unsigned int   i;
-
-    for (i = 0; i < 5; i++) {
-        const uint64_t x = mask & (f[i] ^ g[i]);
-        f[i] ^= x;
-        g[i] ^= x;
-    }
-}
-
 /* Calculates nQ where Q is the x-coordinate of a point on the curve
  *
  *   resultx/resultz: the x coordinate of the resulting curve point (short form)
@@ -309,11 +267,11 @@ cmult(fe resultx, fe resultz, const uint8_t *n, const fe q)
         for (j = 0; j < 8; ++j) {
             const unsigned int bit = byte >> 7;
 
-            swap_conditional(nqx, nqpqx, bit);
-            swap_conditional(nqz, nqpqz, bit);
+            fe_cswap(nqx, nqpqx, bit);
+            fe_cswap(nqz, nqpqz, bit);
             fe_mont_y(nqx2, nqz2, nqpqx2, nqpqz2, nqx, nqz, nqpqx, nqpqz, q);
-            swap_conditional(nqx2, nqpqx2, bit);
-            swap_conditional(nqz2, nqpqz2, bit);
+            fe_cswap(nqx2, nqpqx2, bit);
+            fe_cswap(nqz2, nqpqz2, bit);
 
             t = nqx;
             nqx = nqx2;

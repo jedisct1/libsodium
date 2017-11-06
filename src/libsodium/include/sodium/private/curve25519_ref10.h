@@ -30,12 +30,14 @@ typedef int32_t fe[10];
 #define fe_mul crypto_core_curve25519_ref10_fe_mul
 #define fe_sq crypto_core_curve25519_ref10_fe_sq
 #define fe_invert crypto_core_curve25519_ref10_fe_invert
+#define fe_cswap crypto_core_curve25519_fe_cswap
+#define fe_scalar_product crypto_core_curve25519_fe_scalar_product
 
 extern void fe_frombytes(fe,const unsigned char *);
 extern void fe_tobytes(unsigned char *,const fe);
 
 extern void fe_copy(fe,const fe);
-extern int fe_iszero(const fe);
+extern int  fe_iszero(const fe);
 extern void fe_0(fe);
 extern void fe_1(fe);
 extern void fe_add(fe,const fe,const fe);
@@ -43,6 +45,8 @@ extern void fe_sub(fe,const fe,const fe);
 extern void fe_mul(fe,const fe,const fe);
 extern void fe_sq(fe,const fe);
 extern void fe_invert(fe,const fe);
+extern void fe_cswap(fe f, fe g, unsigned int b);
+extern void fe_scalar_product(fe h, const fe f, uint32_t n);
 
 /*
  ge means group element.
