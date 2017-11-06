@@ -9,17 +9,15 @@
  Here the field is \Z/(2^255-19).
  */
 
-#define fe fe25519
-
 #ifdef HAVE_TI_MODE
-typedef uint64_t fe[5];
+typedef uint64_t fe25519[5];
 #else
-typedef int32_t fe[10];
+typedef int32_t fe25519[10];
 #endif
 
-void fe_invert(fe out, const fe z);
-void fe_frombytes(fe h, const unsigned char *s);
-void fe_tobytes(unsigned char *s, const fe h);
+void fe25519_invert(fe25519 out, const fe25519 z);
+void fe25519_frombytes(fe25519 h, const unsigned char *s);
+void fe25519_tobytes(unsigned char *s, const fe25519 h);
 
 #ifdef HAVE_TI_MODE
 # include "curve25519_ref10_fe_51.h"
@@ -30,11 +28,11 @@ void fe_tobytes(unsigned char *s, const fe h);
 
 /*
  ge means group element.
- *
- Here the group is the set of pairs (x,y) of field elements (see fe.h)
+
+ Here the group is the set of pairs (x,y) of field elements
  satisfying -x^2 + y^2 = 1 + d x^2y^2
  where d = -121665/121666.
- *
+
  Representations:
  ge_p2 (projective): (X:Y:Z) satisfying x=X/Z, y=Y/Z
  ge_p3 (extended): (X:Y:Z:T) satisfying x=X/Z, y=Y/Z, XY=ZT
@@ -44,40 +42,40 @@ void fe_tobytes(unsigned char *s, const fe h);
 
 #define ge_p2 ge25519_p2
 typedef struct {
-    fe X;
-    fe Y;
-    fe Z;
+    fe25519 X;
+    fe25519 Y;
+    fe25519 Z;
 } ge_p2;
 
 #define ge_p3 ge25519_p3
 typedef struct {
-    fe X;
-    fe Y;
-    fe Z;
-    fe T;
+    fe25519 X;
+    fe25519 Y;
+    fe25519 Z;
+    fe25519 T;
 } ge_p3;
 
 #define ge_p1p1 ge25519_p1p1
 typedef struct {
-    fe X;
-    fe Y;
-    fe Z;
-    fe T;
+    fe25519 X;
+    fe25519 Y;
+    fe25519 Z;
+    fe25519 T;
 } ge_p1p1;
 
 #define ge_precomp ge25519_precomp
 typedef struct {
-    fe yplusx;
-    fe yminusx;
-    fe xy2d;
+    fe25519 yplusx;
+    fe25519 yminusx;
+    fe25519 xy2d;
 } ge_precomp;
 
 #define ge_cached ge25519_cached
 typedef struct {
-    fe YplusX;
-    fe YminusX;
-    fe Z;
-    fe T2d;
+    fe25519 YplusX;
+    fe25519 YminusX;
+    fe25519 Z;
+    fe25519 T2d;
 } ge_cached;
 
 void ge_tobytes(unsigned char *,const ge_p2 *);

@@ -3,7 +3,7 @@
  */
 
 void
-fe_frombytes(fe h, const unsigned char *s)
+fe25519_frombytes(fe25519 h, const unsigned char *s)
 {
     int64_t h0 = load_4(s);
     int64_t h1 = load_3(s + 4) << 6;
@@ -97,7 +97,7 @@ fe_frombytes(fe h, const unsigned char *s)
 */
 
 static void
-fe_reduce(fe h, const fe f)
+fe25519_reduce(fe25519 h, const fe25519 f)
 {
     int32_t h0 = f[0];
     int32_t h1 = f[1];
@@ -180,11 +180,11 @@ fe_reduce(fe h, const fe f)
  */
 
 void
-fe_tobytes(unsigned char *s, const fe h)
+fe25519_tobytes(unsigned char *s, const fe25519 h)
 {
-    fe t;
+    fe25519 t;
 
-    fe_reduce(t, h);
+    fe25519_reduce(t, h);
     s[0]  = t[0] >> 0;
     s[1]  = t[0] >> 8;
     s[2]  = t[0] >> 16;
