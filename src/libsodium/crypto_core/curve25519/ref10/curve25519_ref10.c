@@ -7,12 +7,6 @@
 #include "private/curve25519_ref10.h"
 #include "utils.h"
 
-#ifdef HAVE_TI_MODE
-# include "fe_51/constants.h"
-#else
-# include "fe_25_5/constants.h"
-#endif
-
 static inline uint64_t
 load_3(const unsigned char *in)
 {
@@ -38,9 +32,20 @@ load_4(const unsigned char *in)
     return result;
 }
 
+/*
+ * Field arithmetic:
+ * Use 5*51 bit limbs on 64-bit systems with support for 128 bit arithmetic,
+ * and 10*25.5 bit limbs elsewhere.
+ *
+ * Functions used elsewhere that are candidates for inlining are defined
+ * via "private/curve25519_ref10.h".
+ */
+
 #ifdef HAVE_TI_MODE
+# include "fe_51/constants.h"
 # include "fe_51/fe.h"
 #else
+# include "fe_25_5/constants.h"
 # include "fe_25_5/fe.h"
 #endif
 
