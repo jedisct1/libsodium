@@ -233,4 +233,14 @@ xor_buf(unsigned char *out, const unsigned char *in, size_t n)
 # include <intrin.h>
 #endif
 
+#ifdef HAVE_LIBCTGRIND
+extern void ct_poison  (const void *, size_t);
+extern void ct_unpoison(const void *, size_t);
+# define POISON(X, L)   ct_poison((X), (L))
+# define UNPOISON(X, L) ct_unpoison((X), (L))
+#else
+# define POISON(X, L)   (void) 0
+# define UNPOISON(X, L) (void) 0
+#endif
+
 #endif
