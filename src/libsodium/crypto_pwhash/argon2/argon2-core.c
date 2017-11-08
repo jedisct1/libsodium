@@ -288,27 +288,25 @@ index_alpha(const argon2_instance_t *instance,
 }
 
 void
-fill_memory_blocks(argon2_instance_t *instance)
+fill_memory_blocks(argon2_instance_t *instance, uint32_t pass)
 {
-    uint32_t r, s;
+    uint32_t s;
 
     if (instance == NULL || instance->lanes == 0) {
         return; /* LCOV_EXCL_LINE */
     }
 
-    for (r = 0; r < instance->passes; ++r) {
-        for (s = 0; s < ARGON2_SYNC_POINTS; ++s) {
-            uint32_t l;
+    for (s = 0; s < ARGON2_SYNC_POINTS; ++s) {
+        uint32_t l;
 
-            for (l = 0; l < instance->lanes; ++l) {
-                argon2_position_t position;
+        for (l = 0; l < instance->lanes; ++l) {
+            argon2_position_t position;
 
-                position.pass  = r;
-                position.lane  = l;
-                position.slice = (uint8_t) s;
-                position.index = 0;
-                fill_segment(instance, position);
-            }
+            position.pass  = pass;
+            position.lane  = l;
+            position.slice = (uint8_t) s;
+            position.index = 0;
+            fill_segment(instance, position);
         }
     }
 }

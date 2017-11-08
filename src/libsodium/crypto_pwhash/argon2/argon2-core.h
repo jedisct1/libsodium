@@ -96,6 +96,7 @@ typedef struct Argon2_instance_t {
     block_region *region;        /* Memory region pointer */
     uint64_t     *pseudo_rands;
     uint32_t      passes;        /* Number of passes */
+    uint32_t      current_pass;
     uint32_t      memory_blocks; /* Number of blocks in memory */
     uint32_t      segment_length;
     uint32_t      lane_length;
@@ -224,6 +225,6 @@ void fill_segment_ref(const argon2_instance_t *instance,
  * @param instance Pointer to the current instance
  * @return Zero if successful, -1 if memory failed to allocate
  */
-void fill_memory_blocks(argon2_instance_t *instance);
+void fill_memory_blocks(argon2_instance_t *instance, uint32_t pass);
 
 #endif

@@ -29,6 +29,7 @@ argon2_ctx(argon2_context *context, argon2_type type)
     /* 1. Validate all inputs */
     int               result = validate_inputs(context);
     uint32_t          memory_blocks, segment_length;
+    uint32_t          pass;
     argon2_instance_t instance;
 
     if (ARGON2_OK != result) {
@@ -53,6 +54,7 @@ argon2_ctx(argon2_context *context, argon2_type type)
 
     instance.region         = NULL;
     instance.passes         = context->t_cost;
+    instance.current_pass   = ~ 0U;
     instance.memory_blocks  = memory_blocks;
     instance.segment_length = segment_length;
     instance.lane_length    = segment_length * ARGON2_SYNC_POINTS;
@@ -70,7 +72,9 @@ argon2_ctx(argon2_context *context, argon2_type type)
     }
 
     /* 4. Filling memory */
-    fill_memory_blocks(&instance);
+    for (pass = 0; pass < instance.passes; pass++) {
+        fill_memory_blocks(&instance, pass);
+    }
 
     /* 5. Finalization */
     finalize(context, &instance);
