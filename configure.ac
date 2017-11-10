@@ -744,6 +744,7 @@ __sync_lock_release(&_sodium_lock);
 
 dnl Checks for functions and headers
 
+AC_FUNC_ALLOCA
 AS_IF([test "x$EMSCRIPTEN" = "x"],[
   AC_CHECK_FUNCS([arc4random arc4random_buf])
   AC_CHECK_FUNCS([mmap mlock madvise mprotect memset_s explicit_bzero nanosleep])
