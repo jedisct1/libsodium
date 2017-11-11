@@ -2,7 +2,7 @@
 #include <string.h>
 
 #include "crypto_scalarmult_ed25519.h"
-#include "private/curve25519_ref10.h"
+#include "private/ed25519_ref10.h"
 #include "utils.h"
 
 static int
