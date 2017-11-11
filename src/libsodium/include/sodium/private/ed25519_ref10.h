@@ -1,5 +1,5 @@
-#ifndef curve25519_ref10_H
-#define curve25519_ref10_H
+#ifndef ed25519_ref10_H
+#define ed25519_ref10_H
 
 #include <stddef.h>
 #include <stdint.h>
@@ -20,9 +20,9 @@ void fe25519_frombytes(fe25519 h, const unsigned char *s);
 void fe25519_tobytes(unsigned char *s, const fe25519 h);
 
 #ifdef HAVE_TI_MODE
-# include "curve25519_ref10_fe_51.h"
+# include "ed25519_ref10_fe_51.h"
 #else
-# include "curve25519_ref10_fe_25_5.h"
+# include "ed25519_ref10_fe_25_5.h"
 #endif
 
 

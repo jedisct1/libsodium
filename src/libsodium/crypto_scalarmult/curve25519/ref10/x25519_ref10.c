@@ -3,7 +3,7 @@
 #include <stdint.h>
 
 #include "../scalarmult_curve25519.h"
-#include "private/curve25519_ref10.h"
+#include "private/ed25519_ref10.h"
 #include "utils.h"
 #include "x25519_ref10.h"
 
