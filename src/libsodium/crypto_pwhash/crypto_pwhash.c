@@ -24,6 +24,12 @@ crypto_pwhash_alg_default(void)
 }
 
 size_t
+crypto_pwhash_bytes(void)
+{
+    return crypto_pwhash_BYTES;
+}
+
+size_t
 crypto_pwhash_bytes_min(void)
 {
     return crypto_pwhash_BYTES_MIN;

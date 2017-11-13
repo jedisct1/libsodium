@@ -25,6 +25,12 @@ crypto_pwhash_argon2i_alg_argon2i13(void)
 }
 
 size_t
+crypto_pwhash_argon2i_bytes(void)
+{
+    return crypto_pwhash_argon2i_BYTES;
+}
+
+size_t
 crypto_pwhash_argon2i_bytes_min(void)
 {
     COMPILER_ASSERT(crypto_pwhash_argon2i_BYTES_MIN >= ARGON2_MIN_OUTLEN);
