@@ -9,6 +9,9 @@ extern "C" {
 #endif
 
 SODIUM_EXPORT
+int crypto_core_ed25519_is_valid_point(const unsigned char *p);
+
+SODIUM_EXPORT
 int crypto_core_ed25519_add(unsigned char *r,
                             const unsigned char *p, const unsigned char *q);
 
