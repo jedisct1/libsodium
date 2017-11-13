@@ -375,7 +375,7 @@ ge25519_p1p1_to_p2(ge25519_p2 *r, const ge25519_p1p1 *p)
  r = p
  */
 
-static void
+void
 ge25519_p1p1_to_p3(ge25519_p3 *r, const ge25519_p1p1 *p)
 {
     fe25519_mul(r->X, p->X, p->T);
@@ -569,7 +569,7 @@ ge25519_select_base(ge25519_precomp *t, const int pos, const signed char b)
  r = p - q
  */
 
-static void
+void
 ge25519_sub(ge25519_p1p1 *r, const ge25519_p3 *p, const ge25519_cached *q)
 {
     fe25519 t0;

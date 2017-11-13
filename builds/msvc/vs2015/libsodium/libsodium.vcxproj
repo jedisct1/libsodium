@@ -180,6 +180,7 @@
     <ClCompile Include="..\..\..\..\src\libsodium\crypto_core\hchacha20\core_hchacha20.c" />
     <ClCompile Include="..\..\..\..\src\libsodium\crypto_core\hsalsa20\core_hsalsa20.c" />
     <ClCompile Include="..\..\..\..\src\libsodium\crypto_core\hsalsa20\ref2\core_hsalsa20_ref2.c" />
+    <ClCompile Include="..\..\..\..\src\libsodium\crypto_core\ed25519\core_ed25519.c" />
     <ClCompile Include="..\..\..\..\src\libsodium\crypto_core\ed25519\ref10\ed25519_ref10.c" />
   </ItemGroup>
   <ItemGroup>
@@ -198,6 +199,7 @@
     <ClInclude Include="..\..\..\..\src\libsodium\include\sodium\crypto_core_hchacha20.h" />
     <ClInclude Include="..\..\..\..\src\libsodium\include\sodium\crypto_hash_sha512.h" />
     <ClInclude Include="..\..\..\..\src\libsodium\include\sodium\core.h" />
+    <ClInclude Include="..\..\..\..\src\libsodium\include\sodium\version.h" />
     <ClInclude Include="..\..\..\..\src\libsodium\include\sodium\export.h" />
     <ClInclude Include="..\..\..\..\src\libsodium\include\sodium\randombytes_salsa20_random.h" />
     <ClInclude Include="..\..\..\..\src\libsodium\include\sodium\crypto_core_salsa20.h" />
@@ -243,6 +245,7 @@
     <ClInclude Include="..\..\..\..\src\libsodium\include\sodium\crypto_onetimeauth.h" />
     <ClInclude Include="..\..\..\..\src\libsodium\include\sodium\crypto_verify_64.h" />
     <ClInclude Include="..\..\..\..\src\libsodium\include\sodium\crypto_box_curve25519xchacha20poly1305.h" />
+    <ClInclude Include="..\..\..\..\src\libsodium\include\sodium\crypto_core_ed25519.h" />
     <ClInclude Include="..\..\..\..\src\libsodium\include\sodium\crypto_pwhash_argon2i.h" />
     <ClInclude Include="..\..\..\..\src\libsodium\include\sodium\crypto_generichash.h" />
     <ClInclude Include="..\..\..\..\src\libsodium\include\sodium\crypto_secretbox_xsalsa20poly1305.h" />
