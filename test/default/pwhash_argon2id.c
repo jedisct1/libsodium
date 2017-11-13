@@ -396,6 +396,8 @@ main(void)
     tv3();
     str_tests();
 
+    assert(crypto_pwhash_bytes() > 0U);
+    assert(crypto_pwhash_bytes() < crypto_pwhash_bytes_max());
     assert(crypto_pwhash_bytes_min() > 0U);
     assert(crypto_pwhash_bytes_max() > crypto_pwhash_bytes_min());
     assert(crypto_pwhash_passwd_max() > crypto_pwhash_passwd_min());
@@ -415,6 +417,7 @@ main(void)
     assert(crypto_pwhash_memlimit_sensitive() > 0U);
     assert(strcmp(crypto_pwhash_primitive(), "argon2i") == 0);
 
+    assert(crypto_pwhash_bytes() == crypto_pwhash_BYTES);
     assert(crypto_pwhash_bytes_min() == crypto_pwhash_BYTES_MIN);
     assert(crypto_pwhash_bytes_max() == crypto_pwhash_BYTES_MAX);
     assert(crypto_pwhash_passwd_min() == crypto_pwhash_PASSWD_MIN);
@@ -439,6 +442,7 @@ main(void)
     assert(crypto_pwhash_memlimit_sensitive() ==
            crypto_pwhash_MEMLIMIT_SENSITIVE);
 
+    assert(crypto_pwhash_argon2id_bytes() == crypto_pwhash_bytes());
     assert(crypto_pwhash_argon2id_bytes_min() == crypto_pwhash_bytes_min());
     assert(crypto_pwhash_argon2id_bytes_max() == crypto_pwhash_bytes_max());
     assert(crypto_pwhash_argon2id_passwd_min() == crypto_pwhash_passwd_min());

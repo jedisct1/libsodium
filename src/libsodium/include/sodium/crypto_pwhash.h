@@ -26,6 +26,10 @@ int crypto_pwhash_alg_argon2id13(void);
 SODIUM_EXPORT
 int crypto_pwhash_alg_default(void);
 
+#define crypto_pwhash_BYTES crypto_pwhash_argon2id_BYTES
+SODIUM_EXPORT
+size_t crypto_pwhash_bytes(void);
+
 #define crypto_pwhash_BYTES_MIN crypto_pwhash_argon2id_BYTES_MIN
 SODIUM_EXPORT
 size_t crypto_pwhash_bytes_min(void);

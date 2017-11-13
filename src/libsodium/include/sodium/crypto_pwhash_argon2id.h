@@ -18,6 +18,10 @@ extern "C" {
 SODIUM_EXPORT
 int crypto_pwhash_argon2id_alg_argon2id13(void);
 
+#define crypto_pwhash_argon2id_BYTES 32U
+SODIUM_EXPORT
+size_t crypto_pwhash_argon2id_bytes(void);
+
 #define crypto_pwhash_argon2id_BYTES_MIN 16U
 SODIUM_EXPORT
 size_t crypto_pwhash_argon2id_bytes_min(void);
