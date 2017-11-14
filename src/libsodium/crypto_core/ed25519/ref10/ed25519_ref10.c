@@ -1,5 +1,6 @@
 #include <stddef.h>
 #include <stdint.h>
+#include <stdlib.h>
 #include <string.h>
 
 #include "crypto_verify_32.h"
@@ -1960,7 +1961,9 @@ ge25519_from_uniform(unsigned char s[32], const unsigned char r[32])
 
     /* recover x */
     s[31] |= x_sign;
-    ge25519_frombytes(&p3, s);
+    if (ge25519_frombytes(&p3, s) != 0) {
+        abort();
+    }
 
     /* multiply by the cofactor */
     ge25519_p3_dbl(&p1, &p3);
