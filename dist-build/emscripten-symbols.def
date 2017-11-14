@@ -143,8 +143,10 @@ _crypto_box_secretkeybytes 1 1
 _crypto_box_seed_keypair 1 1
 _crypto_box_seedbytes 1 1
 _crypto_box_zerobytes 0 1
+_crypto_core_ed25519_from_uniform 0 1
 _crypto_core_ed25519_add 0 1
 _crypto_core_ed25519_sub 0 1
+_crypto_core_ed25519_is_valid_point 0 1
 _crypto_core_hchacha20 1 1
 _crypto_core_hchacha20_constbytes 1 1
 _crypto_core_hchacha20_inputbytes 1 1

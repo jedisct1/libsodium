@@ -108,6 +108,8 @@ int ge25519_is_on_main_subgroup(const ge25519_p3 *p);
 
 int ge25519_has_small_order(const unsigned char s[32]);
 
+void ge25519_from_uniform(unsigned char s[32], const unsigned char r[32]);
+
 /*
  The set of scalars is \Z/l
  where l = 2^252 + 27742317777372353535851937790883648493.
