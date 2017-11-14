@@ -1956,9 +1956,10 @@ ge25519_from_uniform(unsigned char s[32], const unsigned char r[32])
         fe25519_invert(x_plus_one_inv, x_plus_one);
         fe25519_mul(yed, x_minus_one, x_plus_one_inv);
         fe25519_tobytes(s, yed);
-        s[31] |= x_sign;
     }
+
     /* recover x */
+    s[31] |= x_sign;
     ge25519_frombytes(&p3, s);
 
     /* multiply by the cofactor */
