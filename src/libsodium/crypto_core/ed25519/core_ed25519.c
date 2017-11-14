@@ -13,9 +13,9 @@ crypto_core_ed25519_is_valid_point(const unsigned char *p)
         ge25519_frombytes(&p_p3, p) != 0 ||
         ge25519_is_on_curve(&p_p3) == 0 ||
         ge25519_is_on_main_subgroup(&p_p3) == 0) {
-        return -1;
+        return 0;
     }
-    return 0;
+    return 1;
 }
 
 int
@@ -56,4 +56,12 @@ crypto_core_ed25519_sub(unsigned char *r,
     ge25519_p3_tobytes(r, &r_p3);
 
     return 0;
+}
+
+int
+crypto_core_ed25519_from_uniform(unsigned char *p, const unsigned char *r)
+{
+    ge25519_from_uniform(p, r);
+
+    return - ge25519_has_small_order(p);
 }
