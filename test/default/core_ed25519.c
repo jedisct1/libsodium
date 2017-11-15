@@ -98,6 +98,13 @@ main(void)
     p[0] = 9;
     assert(crypto_core_ed25519_is_valid_point(p) == 1);
 
+    memcpy(p2, p, crypto_core_ed25519_BYTES);
+    add_P(p2);
+    crypto_core_ed25519_add(p3, p2, p2);
+    crypto_core_ed25519_sub(p3, p3, p2);
+    assert(memcmp(p2, p, crypto_core_ed25519_BYTES) != 0);
+    assert(memcmp(p3, p, crypto_core_ed25519_BYTES) == 0);
+
     sodium_free(sc);
     sodium_free(p3);
     sodium_free(p2);
