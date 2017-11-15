@@ -1,10 +1,11 @@
 #include <stddef.h>
 #include <stdint.h>
+#include <stdlib.h>
 #include <string.h>
 
 #include "crypto_verify_32.h"
 #include "private/common.h"
-#include "private/curve25519_ref10.h"
+#include "private/ed25519_ref10.h"
 #include "utils.h"
 
 static inline uint64_t
@@ -375,7 +376,7 @@ ge25519_p1p1_to_p2(ge25519_p2 *r, const ge25519_p1p1 *p)
  r = p
  */
 
-static void
+void
 ge25519_p1p1_to_p3(ge25519_p3 *r, const ge25519_p1p1 *p)
 {
     fe25519_mul(r->X, p->X, p->T);
@@ -569,7 +570,7 @@ ge25519_select_base(ge25519_precomp *t, const int pos, const signed char b)
  r = p - q
  */
 
-static void
+void
 ge25519_sub(ge25519_p1p1 *r, const ge25519_p3 *p, const ge25519_cached *q)
 {
     fe25519 t0;
@@ -1842,4 +1843,135 @@ sc25519_is_canonical(const unsigned char *s)
     } while (i != 0);
 
     return (c != 0);
+}
+
+static void
+chi25519(fe25519 out, const fe25519 z)
+{
+    fe25519 t0, t1, t2, t3;
+    int     i;
+
+    fe25519_sq(t0, z);
+    fe25519_mul(t1, t0, z);
+    fe25519_sq(t0, t1);
+    fe25519_sq(t2, t0);
+    fe25519_sq(t2, t2);
+    fe25519_mul(t2, t2, t0);
+    fe25519_mul(t1, t2, z);
+    fe25519_sq(t2, t1);
+
+    for (i = 1; i < 5; i++) {
+        fe25519_sq(t2, t2);
+    }
+    fe25519_mul(t1, t2, t1);
+    fe25519_sq(t2, t1);
+    for (i = 1; i < 10; i++) {
+        fe25519_sq(t2, t2);
+    }
+    fe25519_mul(t2, t2, t1);
+    fe25519_sq(t3, t2);
+    for (i = 1; i < 20; i++) {
+        fe25519_sq(t3, t3);
+    }
+    fe25519_mul(t2, t3, t2);
+    fe25519_sq(t2, t2);
+    for (i = 1; i < 10; i++) {
+        fe25519_sq(t2, t2);
+    }
+    fe25519_mul(t1, t2, t1);
+    fe25519_sq(t2, t1);
+    for (i = 1; i < 50; i++) {
+        fe25519_sq(t2, t2);
+    }
+    fe25519_mul(t2, t2, t1);
+    fe25519_sq(t3, t2);
+    for (i = 1; i < 100; i++) {
+        fe25519_sq(t3, t3);
+    }
+    fe25519_mul(t2, t3, t2);
+    fe25519_sq(t2, t2);
+    for (i = 1; i < 50; i++) {
+        fe25519_sq(t2, t2);
+    }
+    fe25519_mul(t1, t2, t1);
+    fe25519_sq(t1, t1);
+    for (i = 1; i < 4; i++) {
+        fe25519_sq(t1, t1);
+    }
+    fe25519_mul(out, t1, t0);
+}
+
+void
+ge25519_from_uniform(unsigned char s[32], const unsigned char r[32])
+{
+    fe25519       e;
+    fe25519       negx;
+    fe25519       rr2;
+    fe25519       x, x2, x3;
+    ge25519_p3    p3;
+    ge25519_p1p1  p1;
+    ge25519_p2    p2;
+    unsigned int  e_is_minus_1;
+    unsigned char x_sign;
+
+    memcpy(s, r, 32);
+    x_sign = s[31] & 0x80;
+    s[31] &= 0x7f;
+
+    fe25519_frombytes(rr2, s);
+
+    /* elligator */
+    fe25519_sq2(rr2, rr2);
+    rr2[0]++;
+    fe25519_invert(rr2, rr2);
+    fe25519_mul(x, curve25519_A, rr2);
+    fe25519_neg(x, x);
+
+    fe25519_sq(x2, x);
+    fe25519_mul(x3, x, x2);
+    fe25519_add(e, x3, x);
+    fe25519_mul(x2, x2, curve25519_A);
+    fe25519_add(e, x2, e);
+
+    chi25519(e, e);
+
+    fe25519_tobytes(s, e);
+    e_is_minus_1 = s[1] & 1;
+    fe25519_neg(negx, x);
+    fe25519_cmov(x, negx, e_is_minus_1);
+    fe25519_0(x2);
+    fe25519_cmov(x2, curve25519_A, e_is_minus_1);
+    fe25519_sub(x, x, x2);
+
+    /* yed = (x-1)/(x+1) */
+    {
+        fe25519 one;
+        fe25519 x_plus_one;
+        fe25519 x_plus_one_inv;
+        fe25519 x_minus_one;
+        fe25519 yed;
+
+        fe25519_1(one);
+        fe25519_add(x_plus_one, x, one);
+        fe25519_sub(x_minus_one, x, one);
+        fe25519_invert(x_plus_one_inv, x_plus_one);
+        fe25519_mul(yed, x_minus_one, x_plus_one_inv);
+        fe25519_tobytes(s, yed);
+    }
+
+    /* recover x */
+    s[31] |= x_sign;
+    if (ge25519_frombytes(&p3, s) != 0) {
+        abort();
+    }
+
+    /* multiply by the cofactor */
+    ge25519_p3_dbl(&p1, &p3);
+    ge25519_p1p1_to_p2(&p2, &p1);
+    ge25519_p2_dbl(&p1, &p2);
+    ge25519_p1p1_to_p2(&p2, &p1);
+    ge25519_p2_dbl(&p1, &p2);
+    ge25519_p1p1_to_p3(&p3, &p1);
+
+    ge25519_p3_tobytes(s, &p3);
 }

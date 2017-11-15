@@ -12,7 +12,7 @@ libsodium_la_SOURCES = \
 	crypto_box/crypto_box_easy.c \
 	crypto_box/crypto_box_seal.c \
 	crypto_box/curve25519xsalsa20poly1305/box_curve25519xsalsa20poly1305.c \
-	crypto_core/curve25519/ref10/curve25519_ref10.c \
+	crypto_core/ed25519/ref10/ed25519_ref10.c \
 	crypto_core/hchacha20/core_hchacha20.c \
 	crypto_core/hsalsa20/ref2/core_hsalsa20_ref2.c \
 	crypto_core/hsalsa20/core_hsalsa20.c \
@@ -69,10 +69,10 @@ libsodium_la_SOURCES = \
 	crypto_shorthash/siphash24/ref/shorthash_siphash_ref.h \
 	crypto_sign/crypto_sign.c \
 	crypto_sign/ed25519/sign_ed25519.c \
-	crypto_sign/ed25519/ref10/ed25519_ref10.h \
 	crypto_sign/ed25519/ref10/keypair.c \
 	crypto_sign/ed25519/ref10/open.c \
 	crypto_sign/ed25519/ref10/sign.c \
+	crypto_sign/ed25519/ref10/sign_ed25519_ref10.h \
 	crypto_stream/chacha20/stream_chacha20.c \
 	crypto_stream/chacha20/stream_chacha20.h \
 	crypto_stream/chacha20/ref/chacha20_ref.h \
@@ -83,7 +83,7 @@ libsodium_la_SOURCES = \
 	crypto_stream/xsalsa20/stream_xsalsa20.c \
 	crypto_verify/sodium/verify.c \
 	include/sodium/private/common.h \
-	include/sodium/private/curve25519_ref10.h \
+	include/sodium/private/ed25519_ref10.h \
 	include/sodium/private/implementations.h \
 	include/sodium/private/mutex.h \
 	include/sodium/private/sse2_64_32.h \
@@ -110,18 +110,18 @@ endif
 
 if HAVE_TI_MODE
 libsodium_la_SOURCES += \
-	crypto_core/curve25519/ref10/fe_51/base.h \
-	crypto_core/curve25519/ref10/fe_51/base2.h \
-	crypto_core/curve25519/ref10/fe_51/constants.h \
-	crypto_core/curve25519/ref10/fe_51/fe.h \
-	include/sodium/private/curve25519_ref10_fe_51.h
+	crypto_core/ed25519/ref10/fe_51/base.h \
+	crypto_core/ed25519/ref10/fe_51/base2.h \
+	crypto_core/ed25519/ref10/fe_51/constants.h \
+	crypto_core/ed25519/ref10/fe_51/fe.h \
+	include/sodium/private/ed25519_ref10_fe_51.h
 else
 libsodium_la_SOURCES += \
-	crypto_core/curve25519/ref10/fe_25_5/base.h \
-	crypto_core/curve25519/ref10/fe_25_5/base2.h \
-	crypto_core/curve25519/ref10/fe_25_5/constants.h \
-	crypto_core/curve25519/ref10/fe_25_5/fe.h \
-	include/sodium/private/curve25519_ref10_fe_25_5.h
+	crypto_core/ed25519/ref10/fe_25_5/base.h \
+	crypto_core/ed25519/ref10/fe_25_5/base2.h \
+	crypto_core/ed25519/ref10/fe_25_5/constants.h \
+	crypto_core/ed25519/ref10/fe_25_5/fe.h \
+	include/sodium/private/ed25519_ref10_fe_25_5.h
 endif
 
 if HAVE_AMD64_ASM
@@ -164,6 +164,7 @@ if !MINIMAL
 libsodium_la_SOURCES += \
 	crypto_box/curve25519xchacha20poly1305/box_curve25519xchacha20poly1305.c \
 	crypto_box/curve25519xchacha20poly1305/box_seal_curve25519xchacha20poly1305.c \
+	crypto_core/ed25519/core_ed25519.c \
 	crypto_pwhash/scryptsalsa208sha256/crypto_scrypt-common.c \
 	crypto_pwhash/scryptsalsa208sha256/crypto_scrypt.h \
 	crypto_pwhash/scryptsalsa208sha256/scrypt_platform.c \

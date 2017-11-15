@@ -6,7 +6,7 @@
 #include "crypto_hash_sha512.h"
 #include "crypto_sign_edwards25519sha512batch.h"
 #include "crypto_verify_32.h"
-#include "private/curve25519_ref10.h"
+#include "private/ed25519_ref10.h"
 #include "randombytes.h"
 #include "utils.h"
 

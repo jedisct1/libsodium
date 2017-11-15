@@ -3,8 +3,8 @@
 
 #include "crypto_hash_sha512.h"
 #include "crypto_sign_ed25519.h"
-#include "ed25519_ref10.h"
-#include "private/curve25519_ref10.h"
+#include "sign_ed25519_ref10.h"
+#include "private/ed25519_ref10.h"
 #include "randombytes.h"
 #include "utils.h"
 

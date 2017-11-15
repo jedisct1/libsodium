@@ -1,5 +1,5 @@
-#ifndef curve25519_ref10_H
-#define curve25519_ref10_H
+#ifndef ed25519_ref10_H
+#define ed25519_ref10_H
 
 #include <stddef.h>
 #include <stdint.h>
@@ -20,9 +20,9 @@ void fe25519_frombytes(fe25519 h, const unsigned char *s);
 void fe25519_tobytes(unsigned char *s, const fe25519 h);
 
 #ifdef HAVE_TI_MODE
-# include "curve25519_ref10_fe_51.h"
+# include "ed25519_ref10_fe_51.h"
 #else
-# include "curve25519_ref10_fe_25_5.h"
+# include "ed25519_ref10_fe_25_5.h"
 #endif
 
 
@@ -85,7 +85,11 @@ void ge25519_p3_to_cached(ge25519_cached *r, const ge25519_p3 *p);
 
 void ge25519_p1p1_to_p2(ge25519_p2 *r, const ge25519_p1p1 *p);
 
+void ge25519_p1p1_to_p3(ge25519_p3 *r, const ge25519_p1p1 *p);
+
 void ge25519_add(ge25519_p1p1 *r, const ge25519_p3 *p, const ge25519_cached *q);
+
+void ge25519_sub(ge25519_p1p1 *r, const ge25519_p3 *p, const ge25519_cached *q);
 
 void ge25519_scalarmult_base(ge25519_p3 *h, const unsigned char *a);
 
@@ -103,6 +107,8 @@ int ge25519_is_on_curve(const ge25519_p3 *p);
 int ge25519_is_on_main_subgroup(const ge25519_p3 *p);
 
 int ge25519_has_small_order(const unsigned char s[32]);
+
+void ge25519_from_uniform(unsigned char s[32], const unsigned char r[32]);
 
 /*
  The set of scalars is \Z/l
