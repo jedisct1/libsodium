@@ -22,6 +22,7 @@ EXTRA_DIST = \
 	box_seed.exp \
 	chacha20.exp \
 	codecs.exp \
+	core_ed25519.exp \
 	core1.exp \
 	core2.exp \
 	core3.exp \
@@ -95,6 +96,7 @@ DISTCLEANFILES = \
 	box_seed.res \
 	chacha20.res \
 	codecs.res \
+	core_ed25519.res \
 	core1.res \
 	core2.res \
 	core3.res \
@@ -169,6 +171,7 @@ CLEANFILES = \
 	box_seed.final \
 	chacha20.final \
 	codecs.final \
+	core_ed25519.final \
 	core1.final \
 	core2.final \
 	core3.final \
@@ -238,6 +241,7 @@ CLEANFILES = \
 	box_seed.nexe \
 	chacha20.nexe \
 	codecs.nexe \
+	core_ed25519.nexe \
 	core1.nexe \
 	core2.nexe \
 	core3.nexe \
@@ -438,6 +442,9 @@ chacha20_LDADD            = $(TESTS_LDADD)
 codecs_SOURCE             = cmptest.h codecs.c
 codecs_LDADD              = $(TESTS_LDADD)
 
+core_ed25519_SOURCE       = cmptest.h core_ed25519.c
+core_ed25519_LDADD        = $(TESTS_LDADD)
+
 core1_SOURCE              = cmptest.h core1.c
 core1_LDADD               = $(TESTS_LDADD)
 
@@ -593,6 +600,7 @@ xchacha20_LDADD           = $(TESTS_LDADD)
 
 if !MINIMAL
 TESTS_TARGETS += \
+	core_ed25519 \
 	pwhash_scrypt \
 	pwhash_scrypt_ll \
 	siphashx24 \
