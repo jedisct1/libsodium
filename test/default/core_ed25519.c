@@ -83,8 +83,6 @@ main(void)
     }
 
     assert(crypto_core_ed25519_is_valid_point(p) == 1);
-    add_P(p);
-    assert(crypto_core_ed25519_is_valid_point(p) == 0);
 
     memset(p, 0, crypto_core_ed25519_BYTES);
     assert(crypto_core_ed25519_is_valid_point(p) == 0);
