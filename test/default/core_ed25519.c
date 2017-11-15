@@ -10,8 +10,8 @@ main(void)
     unsigned char *sc;
     int            i, j;
 
-    h = sodium_malloc(crypto_core_ed25519_UNIFORMBYTES);
-    p = sodium_malloc(crypto_core_ed25519_BYTES);
+    h = (unsigned char *) sodium_malloc(crypto_core_ed25519_UNIFORMBYTES);
+    p = (unsigned char *) sodium_malloc(crypto_core_ed25519_BYTES);
     for (i = 0; i < 1000; i++) {
         randombytes_buf(h, crypto_core_ed25519_UNIFORMBYTES);
         if (crypto_core_ed25519_from_uniform(p, h) != 0) {
@@ -22,8 +22,8 @@ main(void)
         }
     }
 
-    p2 = sodium_malloc(crypto_core_ed25519_BYTES);
-    p3 = sodium_malloc(crypto_core_ed25519_BYTES);
+    p2 = (unsigned char *) sodium_malloc(crypto_core_ed25519_BYTES);
+    p3 = (unsigned char *) sodium_malloc(crypto_core_ed25519_BYTES);
     randombytes_buf(h, crypto_core_ed25519_UNIFORMBYTES);
     crypto_core_ed25519_from_uniform(p2, h);
 
@@ -44,7 +44,7 @@ main(void)
     if (memcmp(p, p3, crypto_core_ed25519_BYTES) != 0) {
         printf("crypto_core_add() or crypto_core_sub() failed\n");
     }
-    sc = sodium_malloc(crypto_scalarmult_ed25519_SCALARBYTES);
+    sc = (unsigned char *) sodium_malloc(crypto_scalarmult_ed25519_SCALARBYTES);
     memset(sc, 0, crypto_scalarmult_ed25519_SCALARBYTES);
     sc[0] = 8;
     memcpy(p2, p, crypto_core_ed25519_BYTES);
