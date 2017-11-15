@@ -50,6 +50,7 @@ EXTRA_DIST = \
 	pwhash_scrypt_ll.exp \
 	randombytes.exp \
 	scalarmult.exp \
+	scalarmult_ed25519.exp \
 	scalarmult2.exp \
 	scalarmult5.exp \
 	scalarmult6.exp \
@@ -124,6 +125,7 @@ DISTCLEANFILES = \
 	pwhash_scrypt_ll.res \
 	randombytes.res \
 	scalarmult.res \
+	scalarmult_ed25519.res \
 	scalarmult2.res \
 	scalarmult5.res \
 	scalarmult6.res \
@@ -199,6 +201,7 @@ CLEANFILES = \
 	pwhash_scrypt_ll.final \
 	randombytes.final \
 	scalarmult.final \
+	scalarmult_ed25519.final \
 	scalarmult2.final \
 	scalarmult5.final \
 	scalarmult6.final \
@@ -269,6 +272,7 @@ CLEANFILES = \
 	pwhash_scrypt_ll.nexe \
 	randombytes.nexe \
 	scalarmult.nexe \
+	scalarmult_ed25519.nexe \
 	scalarmult2.nexe \
 	scalarmult5.nexe \
 	scalarmult6.nexe \
@@ -523,6 +527,9 @@ randombytes_LDADD         = $(TESTS_LDADD)
 scalarmult_SOURCE         = cmptest.h scalarmult.c
 scalarmult_LDADD          = $(TESTS_LDADD)
 
+scalarmult_ed25519_SOURCE = cmptest.h scalarmult_ed25519.c
+scalarmult_ed25519_LDADD  = $(TESTS_LDADD)
+
 scalarmult2_SOURCE        = cmptest.h scalarmult2.c
 scalarmult2_LDADD         = $(TESTS_LDADD)
 
@@ -603,6 +610,7 @@ TESTS_TARGETS += \
 	core_ed25519 \
 	pwhash_scrypt \
 	pwhash_scrypt_ll \
+	scalarmult_ed25519 \
 	siphashx24 \
 	xchacha20
 endif
