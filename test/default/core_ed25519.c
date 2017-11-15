@@ -1,6 +1,26 @@
 #define TEST_NAME "core_ed25519"
 #include "cmptest.h"
 
+static void
+add_P(unsigned char * const S)
+{
+    static const unsigned char P[32] = {
+        0xed, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff,
+        0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff,
+        0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff,
+        0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0x7f
+    };
+    unsigned char c = 0U;
+    unsigned int  i;
+    unsigned int  s;
+
+    for (i = 0U; i < 32U; i++) {
+        s = S[i] + P[i] + c;
+        S[i] = (unsigned char) s;
+        c = (s >> 8) & 1;
+    }
+}
+
 int
 main(void)
 {
@@ -63,6 +83,8 @@ main(void)
     }
 
     assert(crypto_core_ed25519_is_valid_point(p) == 1);
+    add_P(p);
+    assert(crypto_core_ed25519_is_valid_point(p) == 0);
 
     memset(p, 0, crypto_core_ed25519_BYTES);
     assert(crypto_core_ed25519_is_valid_point(p) == 0);
@@ -75,6 +97,13 @@ main(void)
 
     p[0] = 9;
     assert(crypto_core_ed25519_is_valid_point(p) == 1);
+
+    memcpy(p2, p, crypto_core_ed25519_BYTES);
+    add_P(p2);
+    crypto_core_ed25519_add(p3, p2, p2);
+    crypto_core_ed25519_sub(p3, p3, p2);
+    assert(memcmp(p2, p, crypto_core_ed25519_BYTES) != 0);
+    assert(memcmp(p3, p, crypto_core_ed25519_BYTES) == 0);
 
     sodium_free(sc);
     sodium_free(p3);
