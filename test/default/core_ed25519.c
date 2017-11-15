@@ -1,6 +1,24 @@
-
 #define TEST_NAME "core_ed25519"
 #include "cmptest.h"
+
+static void
+add_l(unsigned char * const S)
+{
+    static const unsigned char l[32] =
+      { 0xed, 0xd3, 0xf5, 0x5c, 0x1a, 0x63, 0x12, 0x58,
+        0xd6, 0x9c, 0xf7, 0xa2, 0xde, 0xf9, 0xde, 0x14,
+        0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
+        0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x10 };
+    unsigned char c = 0U;
+    unsigned int  i;
+    unsigned int  s;
+
+    for (i = 0U; i < 32U; i++) {
+        s = S[i] + l[i] + c;
+        S[i] = (unsigned char) s;
+        c = (s >> 8) & 1;
+    }
+}
 
 int
 main(void)
@@ -62,6 +80,22 @@ main(void)
     if (memcmp(p2, p3, crypto_core_ed25519_BYTES) != 0) {
         printf("crypto_scalarmult_ed25519() is inconsistent with crypto_core_ed25519_add()\n");
     }
+
+    assert(crypto_core_ed25519_is_valid_point(p) == 1);
+    add_l(p);
+    assert(crypto_core_ed25519_is_valid_point(p) == 0);
+
+    memset(p, 0, crypto_core_ed25519_BYTES);
+    assert(crypto_core_ed25519_is_valid_point(p) == 0);
+
+    p[0] = 1;
+    assert(crypto_core_ed25519_is_valid_point(p) == 0);
+
+    p[0] = 2;
+    assert(crypto_core_ed25519_is_valid_point(p) == 0);
+
+    p[0] = 9;
+    assert(crypto_core_ed25519_is_valid_point(p) == 1);
 
     sodium_free(sc);
     sodium_free(p3);
