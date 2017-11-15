@@ -42,6 +42,9 @@ main(void)
     sodium_free(p);
     sodium_free(n);
 
+    assert(crypto_scalarmult_ed25519_BYTES == crypto_scalarmult_ed25519_bytes());
+    assert(crypto_scalarmult_ed25519_SCALARBYTES == crypto_scalarmult_ed25519_scalarbytes());
+
     printf("OK\n");
 
     return 0;
