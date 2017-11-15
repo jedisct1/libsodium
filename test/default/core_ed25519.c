@@ -105,6 +105,7 @@ main(void)
 
     assert(crypto_core_ed25519_BYTES == crypto_core_ed25519_bytes());
     assert(crypto_core_ed25519_UNIFORMBYTES == crypto_core_ed25519_uniformbytes());
+    assert(crypto_core_ed25519_UNIFORMBYTES >= crypto_core_ed25519_BYTES);
 
     printf("OK\n");
 
