@@ -54,7 +54,7 @@ crypto_box/curve25519xsalsa20poly1305  Daniel J. Bernstein
 
 crypto_box/curve25519xchacha20poly1305 Frank Denis
 
-crypto_core/curve25519                 Daniel J. Bernstein
+crypto_core/ed25519                    Daniel J. Bernstein
                                        Adam Langley
 
 crypto_core/hchacha20                  Frank Denis
