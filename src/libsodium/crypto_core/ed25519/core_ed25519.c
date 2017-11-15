@@ -65,3 +65,15 @@ crypto_core_ed25519_from_uniform(unsigned char *p, const unsigned char *r)
 
     return - ge25519_has_small_order(p);
 }
+
+size_t
+crypto_core_ed25519_bytes(void)
+{
+    return crypto_core_ed25519_BYTES;
+}
+
+size_t
+crypto_core_ed25519_uniformbytes(void)
+{
+    return crypto_core_ed25519_UNIFORMBYTES;
+}

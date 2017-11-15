@@ -9,7 +9,12 @@ extern "C" {
 #endif
 
 #define crypto_core_ed25519_BYTES 32
+SODIUM_EXPORT
+size_t crypto_core_ed25519_bytes(void);
+
 #define crypto_core_ed25519_UNIFORMBYTES 32
+SODIUM_EXPORT
+size_t crypto_core_ed25519_uniformbytes(void);
 
 SODIUM_EXPORT
 int crypto_core_ed25519_is_valid_point(const unsigned char *p);

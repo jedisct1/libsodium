@@ -103,6 +103,9 @@ main(void)
     sodium_free(p);
     sodium_free(h);
 
+    assert(crypto_core_ed25519_BYTES == crypto_core_ed25519_bytes());
+    assert(crypto_core_ed25519_UNIFORMBYTES == crypto_core_ed25519_uniformbytes());
+
     printf("OK\n");
 
     return 0;
