@@ -985,20 +985,24 @@ ge25519_has_small_order(const unsigned char s[32])
           0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff,
           0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0x7f }
     };
+    unsigned char c[7] = { 0 };
+    unsigned int  k;
     size_t        i, j;
-    unsigned char c;
 
-    for (i = 0; i < sizeof blacklist / sizeof blacklist[0]; i++) {
-        c = 0;
-        for (j = 0; j < 31; j++) {
-            c |= s[j] ^ blacklist[i][j];
-        }
-        c |= (s[j] & 0x7f) ^ blacklist[i][j];
-        if (c == 0) {
-            return 1;
+    COMPILER_ASSERT(7 == sizeof blacklist / sizeof blacklist[0]);
+    for (j = 0; j < 31; j++) {
+        for (i = 0; i < sizeof blacklist / sizeof blacklist[0]; i++) {
+            c[i] |= s[j] ^ blacklist[i][j];
         }
     }
-    return 0;
+    for (i = 0; i < sizeof blacklist / sizeof blacklist[0]; i++) {
+        c[i] |= (s[j] & 0x7f) ^ blacklist[i][j];
+    }
+    k = 0;
+    for (i = 0; i < sizeof blacklist / sizeof blacklist[0]; i++) {
+        k |= (c[i] - 1);
+    }
+    return (int) ((k >> 8) & 1);
 }
 
 /*
