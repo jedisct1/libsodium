@@ -58,6 +58,7 @@
 
 #ifndef SODIUM_LIBRARY_MINIMAL
 # include "sodium/crypto_box_curve25519xchacha20poly1305.h"
+# include "sodium/crypto_core_curve25519.h"
 # include "sodium/crypto_core_ed25519.h"
 # include "sodium/crypto_scalarmult_ed25519.h"
 # include "sodium/crypto_secretbox_xchacha20poly1305.h"
