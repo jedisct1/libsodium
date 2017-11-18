@@ -339,6 +339,9 @@
     <ClCompile Include="..\..\..\..\src\libsodium\crypto_core\ed25519\ref10\ed25519_ref10.c">
       <Filter>crypto_core\ed25519\ref10</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\..\..\src\libsodium\crypto_core\curve25519\core_curve25519.c">
+      <Filter>crypto_core\curve25519</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\..\..\src\libsodium\crypto_generichash\blake2b\ref\blake2b-load-sse2.h">
@@ -381,6 +384,9 @@
       <Filter>include\sodium</Filter>
     </ClInclude>
     <ClInclude Include="..\..\..\..\src\libsodium\include\sodium\crypto_hash_sha512.h">
+      <Filter>include\sodium</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\src\libsodium\include\sodium\crypto_core_curve25519.h">
       <Filter>include\sodium</Filter>
     </ClInclude>
     <ClInclude Include="..\..\..\..\src\libsodium\include\sodium\core.h">
@@ -771,6 +777,9 @@
     </Filter>
     <Filter Include="crypto_core">
       <UniqueIdentifier>{73194d5d-588a-342f-bee6-f28b4486f20b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="crypto_core\curve25519">
+      <UniqueIdentifier>{028a752d-1880-3283-9acb-79a5d3162d12}</UniqueIdentifier>
     </Filter>
     <Filter Include="crypto_core\ed25519">
       <UniqueIdentifier>{7c5e6f81-e4ce-3018-a776-a1f125072d73}</UniqueIdentifier>

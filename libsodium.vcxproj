@@ -420,6 +420,7 @@
     <ClCompile Include="src\libsodium\crypto_core\hsalsa20\ref2\core_hsalsa20_ref2.c" />
     <ClCompile Include="src\libsodium\crypto_core\ed25519\core_ed25519.c" />
     <ClCompile Include="src\libsodium\crypto_core\ed25519\ref10\ed25519_ref10.c" />
+    <ClCompile Include="src\libsodium\crypto_core\curve25519\core_curve25519.c" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\libsodium\crypto_generichash\blake2b\ref\blake2b-load-sse2.h" />
@@ -436,6 +437,7 @@
     <ClInclude Include="src\libsodium\include\sodium\utils.h" />
     <ClInclude Include="src\libsodium\include\sodium\crypto_core_hchacha20.h" />
     <ClInclude Include="src\libsodium\include\sodium\crypto_hash_sha512.h" />
+    <ClInclude Include="src\libsodium\include\sodium\crypto_core_curve25519.h" />
     <ClInclude Include="src\libsodium\include\sodium\core.h" />
     <ClInclude Include="src\libsodium\include\sodium\export.h" />
     <ClInclude Include="src\libsodium\include\sodium\randombytes_salsa20_random.h" />
