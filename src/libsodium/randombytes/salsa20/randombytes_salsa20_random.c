@@ -64,7 +64,11 @@ BOOLEAN NTAPI RtlGenRandom(PVOID RandomBuffer, ULONG RandomBufferLength);
 #endif
 
 #ifndef TLS
-# define TLS
+# ifdef _WIN32
+#  define TLS __declspec(thread)
+# else
+#  define TLS
+# endif
 #endif
 
 typedef struct Salsa20RandomGlobal_ {
