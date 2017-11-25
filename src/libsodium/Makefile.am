@@ -94,20 +94,6 @@ libsodium_la_SOURCES = \
 	sodium/utils.c \
 	sodium/version.c
 
-if !EMSCRIPTEN
-libsodium_la_SOURCES += \
-	randombytes/salsa20/randombytes_salsa20_random.c
-
-if NATIVECLIENT
-libsodium_la_SOURCES += \
-	randombytes/nativeclient/randombytes_nativeclient.c
-else
-libsodium_la_SOURCES += \
-	randombytes/sysrandom/randombytes_sysrandom.c
-endif
-
-endif
-
 if HAVE_TI_MODE
 libsodium_la_SOURCES += \
 	crypto_core/ed25519/ref10/fe_51/base.h \
@@ -185,6 +171,8 @@ libsodium_la_SOURCES += \
 	crypto_stream/xchacha20/stream_xchacha20.c
 endif
 
+randombytes_salsa20_randombytes_salsa20_random_CFLAGS = @CFLAGS_RDRAND@
+
 libsodium_la_LDFLAGS = \
 	$(AM_LDFLAGS) \
 	-export-dynamic \
@@ -208,7 +196,27 @@ SUBDIRS = \
 	include
 
 libsodium_la_LIBADD = libaesni.la libsse2.la libssse3.la libsse41.la libavx2.la libavx512f.la
-noinst_LTLIBRARIES =  libaesni.la libsse2.la libssse3.la libsse41.la libavx2.la libavx512f.la
+noinst_LTLIBRARIES  = libaesni.la libsse2.la libssse3.la libsse41.la libavx2.la libavx512f.la
+
+librdrand_la_LDFLAGS = $(libsodium_la_LDFLAGS)
+librdrand_la_CPPFLAGS = $(libsodium_la_CPPFLAGS) \
+	@CFLAGS_RDRAND@
+librdrand_la_SOURCES = \
+	randombytes/salsa20/randombytes_salsa20_random.c
+
+if !EMSCRIPTEN
+libsodium_la_LIBADD += librdrand.la
+noinst_LTLIBRARIES  += librdrand.la
+
+if NATIVECLIENT
+libsodium_la_SOURCES += \
+	randombytes/nativeclient/randombytes_nativeclient.c
+else
+libsodium_la_SOURCES += \
+	randombytes/sysrandom/randombytes_sysrandom.c
+endif
+
+endif
 
 libaesni_la_LDFLAGS = $(libsodium_la_LDFLAGS)
 libaesni_la_CPPFLAGS = $(libsodium_la_CPPFLAGS) \

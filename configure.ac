@@ -506,6 +506,23 @@ __m512i y = _mm512_permutexvar_epi64(_mm512_setr_epi64(0, 1, 4, 5, 2, 3, 6, 7), 
     [AC_MSG_RESULT(no)])
   CFLAGS="$oldcflags"
 
+  oldcflags="$CFLAGS"
+  AX_CHECK_COMPILE_FLAG([-mrdrnd], [CFLAGS="$CFLAGS -mrdrnd"])
+  AC_MSG_CHECKING(for RDRAND)
+  AC_COMPILE_IFELSE([AC_LANG_PROGRAM([[
+#ifdef __native_client__
+# error NativeClient detected - Avoiding RDRAND opcodes
+#endif
+#pragma GCC target("rdrnd")
+#include <immintrin.h>
+]], [[ unsigned long long x; _rdrand64_step(&x); ]])],
+    [AC_MSG_RESULT(yes)
+     AC_DEFINE([HAVE_RDRAND], [1], [rdrand is available])
+     AX_CHECK_COMPILE_FLAG([-mrdrnd], [CFLAGS_RDRAND="-mrdrnd"])
+     ],
+    [AC_MSG_RESULT(no)])
+  CFLAGS="$oldcflags"
+
 ])
 
 AC_SUBST(CFLAGS_MMX)
@@ -518,6 +535,7 @@ AC_SUBST(CFLAGS_AVX2)
 AC_SUBST(CFLAGS_AVX512F)
 AC_SUBST(CFLAGS_AESNI)
 AC_SUBST(CFLAGS_PCLMUL)
+AC_SUBST(CFLAGS_RDRAND)
 
 AC_CHECK_HEADERS([sys/mman.h intrin.h])
 
