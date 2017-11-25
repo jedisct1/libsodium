@@ -330,6 +330,10 @@ randombytes_salsa20_random_stir(void)
         randombytes_salsa20_random_init();
         global.initialized = 1;
     }
+#ifdef HAVE_GETPID
+    global.pid = getpid();
+#endif
+
 #ifndef _WIN32
 
 # ifdef HAVE_SAFE_ARC4RANDOM
@@ -361,9 +365,6 @@ randombytes_salsa20_random_stir(void)
     crypto_stream_salsa20(stream.key, sizeof stream.key,
                           m0 + crypto_stream_salsa20_KEYBYTES, m0);
     sodium_memzero(m0, sizeof m0);
-#ifdef HAVE_GETPID
-    global.pid = getpid();
-#endif
     stream.initialized = 1;
 }
 
