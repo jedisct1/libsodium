@@ -295,7 +295,7 @@ randombytes_salsa20_random_init(void)
 #endif
 
 static void
-randombytes_salsa20_random_rekey(const unsigned char * const mix)
+randombytes_salsa20_random_xorkey(const unsigned char * const mix)
 {
     unsigned char *key = stream.key;
     size_t         i;
@@ -357,7 +357,7 @@ randombytes_salsa20_random_stir(void)
         abort(); /* really abort -- it should never happen */ /* LCOV_EXCL_LINE */
     }
     COMPILER_ASSERT(sizeof stream.key <= sizeof m0);
-    randombytes_salsa20_random_rekey(m0);
+    randombytes_salsa20_random_xorkey(m0);
     sodium_memzero(m0, sizeof m0);
 #ifdef HAVE_GETPID
     stream.pid = getpid();
@@ -458,7 +458,8 @@ randombytes_salsa20_random(void)
                                     stream.key);
         assert(ret == 0);
         stream.rnd32_outleft = (sizeof stream.rnd32) - (sizeof stream.key);
-        randombytes_salsa20_random_rekey(&stream.rnd32[stream.rnd32_outleft]);
+        randombytes_salsa20_random_xorkey(&stream.rnd32[stream.rnd32_outleft]);
+        memset(&stream.rnd32[stream.rnd32_outleft], 0, sizeof stream.key);
         stream.nonce++;
     }
     stream.rnd32_outleft -= sizeof val;
