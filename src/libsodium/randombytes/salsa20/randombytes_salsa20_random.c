@@ -27,7 +27,6 @@
 
 #include "core.h"
 #include "crypto_core_salsa20.h"
-#include "crypto_generichash.h"
 #include "crypto_stream_salsa20.h"
 #include "private/common.h"
 #include "randombytes.h"
@@ -50,7 +49,6 @@ BOOLEAN NTAPI RtlGenRandom(PVOID RandomBuffer, ULONG RandomBufferLength);
 #endif
 
 #define SALSA20_RANDOM_BLOCK_SIZE crypto_core_salsa20_OUTPUTBYTES
-#define HASH_BLOCK_SIZE 128U
 
 #if defined(__OpenBSD__) || defined(__CloudABI__)
 # define HAVE_SAFE_ARC4RANDOM 1
@@ -308,16 +306,8 @@ randombytes_salsa20_random_xorkey(const unsigned char * const mix)
 static void
 randombytes_salsa20_random_stir(void)
 {
-    /* constant to personalize the hash function */
-    const unsigned char hsigma[crypto_generichash_KEYBYTES] = {
-        0x54, 0x68, 0x69, 0x73, 0x49, 0x73, 0x4a, 0x75,
-        0x73, 0x74, 0x41, 0x54, 0x68, 0x69, 0x72, 0x74,
-        0x79, 0x54, 0x77, 0x6f, 0x42, 0x79, 0x74, 0x65,
-        0x73, 0x53, 0x65, 0x65, 0x64, 0x2e, 0x2e, 0x2e
-    };
-    unsigned char  m0[crypto_stream_salsa20_KEYBYTES + HASH_BLOCK_SIZE];
-    unsigned char *k0 = m0 + crypto_stream_salsa20_KEYBYTES;
-    size_t         sizeof_k0 = sizeof m0 - crypto_stream_salsa20_KEYBYTES;
+    unsigned char  m0[crypto_stream_salsa20_KEYBYTES +
+                      crypto_stream_salsa20_NONCEBYTES];
 
     memset(stream.rnd32, 0, sizeof stream.rnd32);
     stream.rnd32_outleft = (size_t) 0U;
@@ -352,12 +342,9 @@ randombytes_salsa20_random_stir(void)
         sodium_misuse(); /* LCOV_EXCL_LINE */
     }
 #endif
-    if (crypto_generichash(stream.key, sizeof stream.key, k0, sizeof_k0,
-                           hsigma, sizeof hsigma) != 0) {
-        abort(); /* really abort -- it should never happen */ /* LCOV_EXCL_LINE */
-    }
-    COMPILER_ASSERT(sizeof stream.key <= sizeof m0);
-    randombytes_salsa20_random_xorkey(m0);
+
+    crypto_stream_salsa20(stream.key, sizeof stream.key,
+                          m0 + crypto_stream_salsa20_KEYBYTES, m0);
     sodium_memzero(m0, sizeof m0);
 #ifdef HAVE_GETPID
     stream.pid = getpid();
