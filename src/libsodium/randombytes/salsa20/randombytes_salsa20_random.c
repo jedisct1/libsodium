@@ -63,26 +63,32 @@ BOOLEAN NTAPI RtlGenRandom(PVOID RandomBuffer, ULONG RandomBufferLength);
 # define SSIZE_MAX (SIZE_MAX / 2 - 1)
 #endif
 
-typedef struct Salsa20Random_ {
-    size_t        rnd32_outleft;
-    int           random_data_source_fd;
+typedef struct Salsa20RandomGlobal_ {
     int           initialized;
+    int           random_data_source_fd;
     int           getrandom_available;
     int           rdrand_available;
-    unsigned char key[crypto_stream_salsa20_KEYBYTES];
-    unsigned char rnd32[16U * SALSA20_RANDOM_BLOCK_SIZE];
-    uint64_t      nonce;
 #ifdef HAVE_GETPID
     pid_t         pid;
 #endif
+} Salsa20RandomGlobal;
+
+typedef struct Salsa20Random_ {
+    int           initialized;
+    size_t        rnd32_outleft;
+    unsigned char key[crypto_stream_salsa20_KEYBYTES];
+    unsigned char rnd32[16U * SALSA20_RANDOM_BLOCK_SIZE];
+    uint64_t      nonce;
 } Salsa20Random;
 
-static Salsa20Random stream = {
-    SODIUM_C99(.rnd32_outleft =) (size_t) 0U,
-    SODIUM_C99(.random_data_source_fd =) -1,
+static Salsa20RandomGlobal global = {
     SODIUM_C99(.initialized =) 0,
-    SODIUM_C99(.getrandom_available =) 0,
-    SODIUM_C99(.rdrand_available =) 0
+    SODIUM_C99(.random_data_source_fd =) -1
+};
+
+static Salsa20Random stream = {
+    SODIUM_C99(.initialized =) 0,
+    SODIUM_C99(.rnd32_outleft =) (size_t) 0U
 };
 
 static uint64_t
@@ -262,7 +268,7 @@ randombytes_salsa20_random_init(void)
     const int errno_save = errno;
 
     stream.nonce = sodium_hrtime();
-    stream.rdrand_available = sodium_runtime_has_rdrand();
+    global.rdrand_available = sodium_runtime_has_rdrand();
     assert(stream.nonce != (uint64_t) 0U);
 
 # ifdef HAVE_SAFE_ARC4RANDOM
@@ -274,15 +280,15 @@ randombytes_salsa20_random_init(void)
         unsigned char fodder[16];
 
         if (randombytes_linux_getrandom(fodder, sizeof fodder) == 0) {
-            stream.getrandom_available = 1;
+            global.getrandom_available = 1;
             errno = errno_save;
             return;
         }
-        stream.getrandom_available = 0;
+        global.getrandom_available = 0;
     }
 #  endif /* SYS_getrandom */
 
-    if ((stream.random_data_source_fd =
+    if ((global.random_data_source_fd =
          randombytes_salsa20_random_random_dev_open()) == -1) {
         sodium_misuse(); /* LCOV_EXCL_LINE */
     }
@@ -296,8 +302,8 @@ static void
 randombytes_salsa20_random_init(void)
 {
     stream.nonce = sodium_hrtime();
-    stream.rdrand_available = sodium_runtime_has_rdrand();
     assert(stream.nonce != (uint64_t) 0U);
+    global.rdrand_available = sodium_runtime_has_rdrand();
 }
 #endif
 
@@ -315,32 +321,32 @@ randombytes_salsa20_random_xorkey(const unsigned char * const mix)
 static void
 randombytes_salsa20_random_stir(void)
 {
-    unsigned char  m0[crypto_stream_salsa20_KEYBYTES +
-                      crypto_stream_salsa20_NONCEBYTES];
+    unsigned char m0[crypto_stream_salsa20_KEYBYTES +
+                     crypto_stream_salsa20_NONCEBYTES];
 
     memset(stream.rnd32, 0, sizeof stream.rnd32);
     stream.rnd32_outleft = (size_t) 0U;
-    if (stream.initialized == 0) {
+    if (global.initialized == 0) {
         randombytes_salsa20_random_init();
-        stream.initialized = 1;
+        global.initialized = 1;
     }
 #ifndef _WIN32
 
 # ifdef HAVE_SAFE_ARC4RANDOM
     arc4random_buf(m0, sizeof m0);
 # elif defined(SYS_getrandom) && defined(__NR_getrandom)
-    if (stream.getrandom_available != 0) {
+    if (global.getrandom_available != 0) {
         if (randombytes_linux_getrandom(m0, sizeof m0) != 0) {
             sodium_misuse(); /* LCOV_EXCL_LINE */
         }
-    } else if (stream.random_data_source_fd == -1 ||
-               safe_read(stream.random_data_source_fd, m0,
+    } else if (global.random_data_source_fd == -1 ||
+               safe_read(global.random_data_source_fd, m0,
                          sizeof m0) != (ssize_t) sizeof m0) {
         sodium_misuse(); /* LCOV_EXCL_LINE */
     }
 # else
-    if (stream.random_data_source_fd == -1 ||
-        safe_read(stream.random_data_source_fd, m0,
+    if (global.random_data_source_fd == -1 ||
+        safe_read(global.random_data_source_fd, m0,
                   sizeof m0) != (ssize_t) sizeof m0) {
         sodium_misuse(); /* LCOV_EXCL_LINE */
     }
@@ -356,8 +362,9 @@ randombytes_salsa20_random_stir(void)
                           m0 + crypto_stream_salsa20_KEYBYTES, m0);
     sodium_memzero(m0, sizeof m0);
 #ifdef HAVE_GETPID
-    stream.pid = getpid();
+    global.pid = getpid();
 #endif
+    stream.initialized = 1;
 }
 
 static void
@@ -366,7 +373,7 @@ randombytes_salsa20_random_stir_if_needed(void)
 #ifdef HAVE_GETPID
     if (stream.initialized == 0) {
         randombytes_salsa20_random_stir();
-    } else if (stream.pid != getpid()) {
+    } else if (global.pid != getpid()) {
         sodium_misuse(); /* LCOV_EXCL_LINE */
     }
 #else
@@ -382,12 +389,12 @@ randombytes_salsa20_random_close(void)
     int ret = -1;
 
 #ifndef _WIN32
-    if (stream.random_data_source_fd != -1 &&
-        close(stream.random_data_source_fd) == 0) {
-        stream.random_data_source_fd = -1;
-        stream.initialized = 0;
+    if (global.random_data_source_fd != -1 &&
+        close(global.random_data_source_fd) == 0) {
+        global.random_data_source_fd = -1;
+        global.initialized = 0;
 # ifdef HAVE_GETPID
-        stream.pid = (pid_t) 0;
+        global.pid = (pid_t) 0;
 # endif
         ret = 0;
     }
@@ -397,17 +404,20 @@ randombytes_salsa20_random_close(void)
 # endif
 
 # if defined(SYS_getrandom) && defined(__NR_getrandom)
-    if (stream.getrandom_available != 0) {
+    if (global.getrandom_available != 0) {
         ret = 0;
     }
 # endif
 
 #else /* _WIN32 */
-    if (stream.initialized != 0) {
-        stream.initialized = 0;
+    if (global.initialized != 0) {
+        global.initialized = 0;
         ret = 0;
     }
 #endif
+
+    sodium_memzero(&stream, sizeof stream);
+
     return ret;
 }
 
@@ -418,7 +428,7 @@ randombytes_salsa20_random_xorhwrand(void)
 #ifdef HAVE_RDRAND
     unsigned int r;
 
-    if (stream.rdrand_available == 0) {
+    if (global.rdrand_available == 0) {
         return;
     }
     (void) _rdrand32_step(&r);
