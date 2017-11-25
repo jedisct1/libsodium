@@ -128,7 +128,7 @@ sodium_stackzero(const size_t len)
 {
 #ifdef HAVE_ALLOCA
     sodium_memzero(alloca(len), len);
-#elif __STDC_VERSION__ >= 199901L
+#elif HAVE_C_VARARRAYS
     unsigned char fodder[len];
     sodium_memzero(fodder, len);
 #endif
