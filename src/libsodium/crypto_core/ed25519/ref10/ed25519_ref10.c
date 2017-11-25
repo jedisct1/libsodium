@@ -108,7 +108,7 @@ fe25519_invert(fe25519 out, const fe25519 z)
     fe25519_mul(out, t1, t0);
 }
 
-void
+static void
 fe25519_pow22523(fe25519 out, const fe25519 z)
 {
     fe25519 t0;
