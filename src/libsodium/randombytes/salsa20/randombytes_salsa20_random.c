@@ -63,6 +63,10 @@ BOOLEAN NTAPI RtlGenRandom(PVOID RandomBuffer, ULONG RandomBufferLength);
 # define SSIZE_MAX (SIZE_MAX / 2 - 1)
 #endif
 
+#ifndef TLS
+# define TLS
+#endif
+
 typedef struct Salsa20RandomGlobal_ {
     int           initialized;
     int           random_data_source_fd;
@@ -86,7 +90,7 @@ static Salsa20RandomGlobal global = {
     SODIUM_C99(.random_data_source_fd =) -1
 };
 
-static Salsa20Random stream = {
+static TLS Salsa20Random stream = {
     SODIUM_C99(.initialized =) 0,
     SODIUM_C99(.rnd32_outleft =) (size_t) 0U
 };

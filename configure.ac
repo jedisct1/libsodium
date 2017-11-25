@@ -336,6 +336,8 @@ AC_COMPILE_IFELSE([AC_LANG_PROGRAM([[]], [[
 
 AX_CHECK_CATCHABLE_SEGV
 AX_CHECK_CATCHABLE_ABRT
+AX_TLS([AC_MSG_RESULT(thread local storage is supported)],
+       [AC_MSG_RESULT(thread local storage is not supported)])
 
 LT_INIT
 AC_SUBST(LIBTOOL_DEPS)
