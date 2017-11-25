@@ -24,6 +24,10 @@
 # endif
 # include <poll.h>
 #endif
+#ifdef HAVE_RDRAND
+# pragma GCC target("rdrnd")
+# include <immintrin.h>
+#endif
 
 #include "core.h"
 #include "crypto_core_salsa20.h"
@@ -31,6 +35,7 @@
 #include "private/common.h"
 #include "randombytes.h"
 #include "randombytes_salsa20_random.h"
+#include "runtime.h"
 #include "utils.h"
 
 #ifdef _WIN32
@@ -63,6 +68,7 @@ typedef struct Salsa20Random_ {
     int           random_data_source_fd;
     int           initialized;
     int           getrandom_available;
+    int           rdrand_available;
     unsigned char key[crypto_stream_salsa20_KEYBYTES];
     unsigned char rnd32[16U * SALSA20_RANDOM_BLOCK_SIZE];
     uint64_t      nonce;
@@ -75,7 +81,8 @@ static Salsa20Random stream = {
     SODIUM_C99(.rnd32_outleft =) (size_t) 0U,
     SODIUM_C99(.random_data_source_fd =) -1,
     SODIUM_C99(.initialized =) 0,
-    SODIUM_C99(.getrandom_available =) 0
+    SODIUM_C99(.getrandom_available =) 0,
+    SODIUM_C99(.rdrand_available =) 0
 };
 
 static uint64_t
@@ -255,6 +262,7 @@ randombytes_salsa20_random_init(void)
     const int errno_save = errno;
 
     stream.nonce = sodium_hrtime();
+    stream.rdrand_available = sodium_runtime_has_rdrand();
     assert(stream.nonce != (uint64_t) 0U);
 
 # ifdef HAVE_SAFE_ARC4RANDOM
@@ -288,6 +296,7 @@ static void
 randombytes_salsa20_random_init(void)
 {
     stream.nonce = sodium_hrtime();
+    stream.rdrand_available = sodium_runtime_has_rdrand();
     assert(stream.nonce != (uint64_t) 0U);
 }
 #endif
@@ -402,6 +411,22 @@ randombytes_salsa20_random_close(void)
     return ret;
 }
 
+/* RDRAND is only used to mitigate prediction if a key is compromised */
+static void
+randombytes_salsa20_random_xorhwrand(void)
+{
+#ifdef HAVE_RDRAND
+    unsigned int r;
+
+    if (stream.rdrand_available == 0) {
+        return;
+    }
+    (void) _rdrand32_step(&r);
+    * (uint32_t *) (void *)
+        &stream.key[crypto_stream_salsa20_KEYBYTES - 4] ^= (uint32_t) r;
+#endif
+}
+
 static void
 randombytes_salsa20_random_buf(void * const buf, const size_t size)
 {
@@ -422,6 +447,7 @@ randombytes_salsa20_random_buf(void * const buf, const size_t size)
     for (i = 0U; i < sizeof size; i++) {
         stream.key[i] ^= ((const unsigned char *) (const void *) &size)[i];
     }
+    randombytes_salsa20_random_xorhwrand();
     stream.nonce++;
     crypto_stream_salsa20_xor(stream.key, stream.key, sizeof stream.key,
                               (unsigned char *) &stream.nonce, stream.key);
@@ -445,6 +471,7 @@ randombytes_salsa20_random(void)
                                     stream.key);
         assert(ret == 0);
         stream.rnd32_outleft = (sizeof stream.rnd32) - (sizeof stream.key);
+        randombytes_salsa20_random_xorhwrand();
         randombytes_salsa20_random_xorkey(&stream.rnd32[stream.rnd32_outleft]);
         memset(&stream.rnd32[stream.rnd32_outleft], 0, sizeof stream.key);
         stream.nonce++;
