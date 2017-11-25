@@ -20,7 +20,6 @@ _crypto_sign_ed25519_verify_detached(const unsigned char *sig,
     crypto_hash_sha512_state hs;
     unsigned char            h[64];
     unsigned char            rcheck[32];
-    unsigned int             i;
     ge25519_p3               A;
     ge25519_p2               R;
 
