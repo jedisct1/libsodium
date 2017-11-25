@@ -17,6 +17,7 @@ typedef int32_t fe25519[10];
 
 void fe25519_invert(fe25519 out, const fe25519 z);
 void fe25519_frombytes(fe25519 h, const unsigned char *s);
+void fe25519_pow22523(fe25519 out, const fe25519 z);
 void fe25519_tobytes(unsigned char *s, const fe25519 h);
 
 #ifdef HAVE_TI_MODE
