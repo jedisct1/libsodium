@@ -127,10 +127,11 @@ AC_ARG_WITH(pthreads, AC_HELP_STRING([--with-pthreads],
 AS_IF([test "x$withval" = "xyes"], [
   AX_PTHREAD([
     AC_DEFINE([HAVE_PTHREAD], [1], [Define if you have POSIX threads libraries and header files])
+    with_threads="yes"
     LIBS="$PTHREAD_LIBS $LIBS"
     CFLAGS="$CFLAGS $PTHREAD_CFLAGS"
     CC="$PTHREAD_CC"])
-])
+], [with_threads="no"])
 
 AC_ARG_WITH(safecode,
 [AS_HELP_STRING(--with-safecode,For maintainers only - please do not use)],
@@ -336,8 +337,10 @@ AC_COMPILE_IFELSE([AC_LANG_PROGRAM([[]], [[
 
 AX_CHECK_CATCHABLE_SEGV
 AX_CHECK_CATCHABLE_ABRT
-AX_TLS([AC_MSG_RESULT(thread local storage is supported)],
-       [AC_MSG_RESULT(thread local storage is not supported)])
+
+AS_IF([test "x$with_threads" = "xyes"], [
+  AX_TLS([AC_MSG_RESULT(thread local storage is supported)],
+         [AC_MSG_RESULT(thread local storage is not supported)]) ])
 
 LT_INIT
 AC_SUBST(LIBTOOL_DEPS)
