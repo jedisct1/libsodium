@@ -204,9 +204,7 @@ randombytes_salsa20_random_random_dev_open(void)
         fd = open(*device, O_RDONLY);
         if (fd != -1) {
             if (fstat(fd, &st) == 0 &&
-# ifdef __COMPCERT__
-                1
-# elif defined(S_ISNAM)
+# if defined(S_ISNAM)
                 (S_ISNAM(st.st_mode) || S_ISCHR(st.st_mode))
 # else
                 S_ISCHR(st.st_mode)
