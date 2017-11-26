@@ -62,6 +62,13 @@ BOOLEAN NTAPI RtlGenRandom(PVOID RandomBuffer, ULONG RandomBufferLength);
 #ifndef SSIZE_MAX
 # define SSIZE_MAX (SIZE_MAX / 2 - 1)
 #endif
+#ifndef S_ISNAM
+# ifdef __COMPCERT__
+#  define S_ISNAM(X) 1
+# else
+#  define S_ISNAM(X) 0
+# endif
+#endif
 
 #ifndef TLS
 # ifdef _WIN32
@@ -99,34 +106,53 @@ static TLS Salsa20Random stream = {
     SODIUM_C99(.rnd32_outleft =) (size_t) 0U
 };
 
+
+/*
+ * Get a high-resolution timestamp, as a uint64_t value
+ */
+
+#ifdef _WIN32
 static uint64_t
 sodium_hrtime(void)
 {
-    uint64_t ts;
-
-#ifdef _WIN32
-    {
-        struct _timeb tb;
+    struct _timeb tb;
 # pragma warning(push)
 # pragma warning(disable: 4996)
-        _ftime(&tb);
+    _ftime(&tb);
 # pragma warning(pop)
-        ts = ((uint64_t) tb.time) * 1000000U + ((uint64_t) tb.millitm) * 1000U;
-    }
-#else
-    {
-        struct timeval tv;
-
-        if (gettimeofday(&tv, NULL) != 0) {
-            sodium_misuse(); /* LCOV_EXCL_LINE */
-        }
-        ts = ((uint64_t) tv.tv_sec) * 1000000U + (uint64_t) tv.tv_usec;
-    }
-#endif
-    return ts;
+    return ((uint64_t) tb.time) * 1000000U + ((uint64_t) tb.millitm) * 1000U;
 }
 
-#ifndef _WIN32
+#else /* _WIN32 */
+
+static uint64_t
+sodium_hrtime(void)
+{
+    struct   timeval tv;
+
+    if (gettimeofday(&tv, NULL) != 0) {
+        sodium_misuse(); /* LCOV_EXCL_LINE */
+    }
+    return ((uint64_t) tv.tv_sec) * 1000000U + (uint64_t) tv.tv_usec;
+}
+#endif
+
+/*
+ * Initialize the entropy source
+ */
+
+#ifdef _WIN32
+
+static void
+randombytes_salsa20_random_init(void)
+{
+    stream.nonce = sodium_hrtime();
+    assert(stream.nonce != (uint64_t) 0U);
+    global.rdrand_available = sodium_runtime_has_rdrand();
+}
+
+#else /* _WIN32 */
+
 static ssize_t
 safe_read(const int fd, void * const buf_, size_t size)
 {
@@ -150,9 +176,7 @@ safe_read(const int fd, void * const buf_, size_t size)
 
     return (ssize_t) (buf - (unsigned char *) buf_);
 }
-#endif
 
-#ifndef _WIN32
 # if defined(__linux__) && !defined(USE_BLOCKING_RANDOM) && !defined(NO_BLOCKING_RANDOM_POLL)
 static int
 randombytes_block_on_dev_random(void)
@@ -203,13 +227,7 @@ randombytes_salsa20_random_random_dev_open(void)
     do {
         fd = open(*device, O_RDONLY);
         if (fd != -1) {
-            if (fstat(fd, &st) == 0 &&
-# if defined(S_ISNAM)
-                (S_ISNAM(st.st_mode) || S_ISCHR(st.st_mode))
-# else
-                S_ISCHR(st.st_mode)
-# endif
-               ) {
+            if (fstat(fd, &st) == 0 && (S_ISNAM(st.st_mode) || S_ISCHR(st.st_mode))) {
 #  if defined(F_SETFD) && defined(FD_CLOEXEC)
                 (void) fcntl(fd, F_SETFD, fcntl(fd, F_GETFD) | FD_CLOEXEC);
 #  endif
@@ -302,27 +320,11 @@ randombytes_salsa20_random_init(void)
 # endif /* HAVE_SAFE_ARC4RANDOM */
 }
 
-#else /* _WIN32 */
+#endif /* _WIN32 */
 
-static void
-randombytes_salsa20_random_init(void)
-{
-    stream.nonce = sodium_hrtime();
-    assert(stream.nonce != (uint64_t) 0U);
-    global.rdrand_available = sodium_runtime_has_rdrand();
-}
-#endif
-
-static void
-randombytes_salsa20_random_xorkey(const unsigned char * const mix)
-{
-    unsigned char *key = stream.key;
-    size_t         i;
-
-    for (i = (size_t) 0U; i < sizeof stream.key; i++) {
-        key[i] ^= mix[i];
-    }
-}
+/*
+ * (Re)seed the generator using the entropy source
+ */
 
 static void
 randombytes_salsa20_random_stir(void)
@@ -374,6 +376,10 @@ randombytes_salsa20_random_stir(void)
     stream.initialized = 1;
 }
 
+/*
+ * Reseed the generator if it hasn't been initialized yet
+ */
+
 static void
 randombytes_salsa20_random_stir_if_needed(void)
 {
@@ -390,12 +396,30 @@ randombytes_salsa20_random_stir_if_needed(void)
 #endif
 }
 
+/*
+ * Close the stream, free global resources
+ */
+
+#ifdef _WIN32
 static int
 randombytes_salsa20_random_close(void)
 {
     int ret = -1;
 
-#ifndef _WIN32
+    if (global.initialized != 0) {
+        global.initialized = 0;
+        ret = 0;
+    }
+    sodium_memzero(&stream, sizeof stream);
+
+    return ret;
+}
+#else
+static int
+randombytes_salsa20_random_close(void)
+{
+    int ret = -1;
+
     if (global.random_data_source_fd != -1 &&
         close(global.random_data_source_fd) == 0) {
         global.random_data_source_fd = -1;
@@ -416,19 +440,16 @@ randombytes_salsa20_random_close(void)
     }
 # endif
 
-#else /* _WIN32 */
-    if (global.initialized != 0) {
-        global.initialized = 0;
-        ret = 0;
-    }
-#endif
-
     sodium_memzero(&stream, sizeof stream);
 
     return ret;
 }
+#endif
 
-/* RDRAND is only used to mitigate prediction if a key is compromised */
+/*
+ * RDRAND is only used to mitigate prediction if a key is compromised
+ */
+
 static void
 randombytes_salsa20_random_xorhwrand(void)
 {
@@ -443,6 +464,25 @@ randombytes_salsa20_random_xorhwrand(void)
         &stream.key[crypto_stream_salsa20_KEYBYTES - 4] ^= (uint32_t) r;
 #endif
 }
+
+/*
+ * XOR the key with another same-length secret
+ */
+
+static inline void
+randombytes_salsa20_random_xorkey(const unsigned char * const mix)
+{
+    unsigned char *key = stream.key;
+    size_t         i;
+
+    for (i = (size_t) 0U; i < sizeof stream.key; i++) {
+        key[i] ^= mix[i];
+    }
+}
+
+/*
+ * Put `size` random bytes into `buf` and overwrite the key
+ */
 
 static void
 randombytes_salsa20_random_buf(void * const buf, const size_t size)
@@ -469,6 +509,12 @@ randombytes_salsa20_random_buf(void * const buf, const size_t size)
     crypto_stream_salsa20_xor(stream.key, stream.key, sizeof stream.key,
                               (unsigned char *) &stream.nonce, stream.key);
 }
+
+/*
+ * Pop a 32-bit value from the random pool
+ *
+ * Overwrite the key after the pool gets refilled.
+ */
 
 static uint32_t
 randombytes_salsa20_random(void)
