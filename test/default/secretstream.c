@@ -113,7 +113,7 @@ main(void)
 
     ret = crypto_secretstream_xchacha20poly1305_pull
         (state, m3, NULL, &tag,
-         c3, m3_len + crypto_secretstream_xchacha20poly1305_ABYTES, NULL, 0);
+         c3, m3_len + crypto_secretstream_xchacha20poly1305_ABYTES, ad, ad_len);
     assert(ret == -1);
 
     /* previous without a tag */
