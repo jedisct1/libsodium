@@ -76,7 +76,7 @@ typedef crypto_generichash_blake2b_state blake2b_state;
 /* Streaming API */
 int blake2b_init(blake2b_state *S, const uint8_t outlen);
 int blake2b_init_salt_personal(blake2b_state *S, const uint8_t outlen,
-                               const void *personal, const void *salt);
+                               const void *salt, const void *personal);
 int blake2b_init_key(blake2b_state *S, const uint8_t outlen, const void *key,
                      const uint8_t keylen);
 int blake2b_init_key_salt_personal(blake2b_state *S, const uint8_t outlen,
