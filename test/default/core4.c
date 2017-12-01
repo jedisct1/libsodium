@@ -27,7 +27,7 @@ main(void)
         } else {
             printf(" ");
         }
-        printf("%3d", (unsigned int) out[i]);
+        printf("%3u", (unsigned int) out[i]);
         if (i % 8 == 7) {
             printf("\n");
         }
