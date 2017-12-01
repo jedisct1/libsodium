@@ -1966,7 +1966,7 @@ ge25519_from_uniform(unsigned char s[32], const unsigned char r[32])
     /* recover x */
     s[31] |= x_sign;
     if (ge25519_frombytes(&p3, s) != 0) {
-        abort();
+        abort(); /* LCOV_EXCL_LINE */
     }
 
     /* multiply by the cofactor */
