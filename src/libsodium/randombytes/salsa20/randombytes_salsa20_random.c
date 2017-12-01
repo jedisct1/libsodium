@@ -453,16 +453,18 @@ randombytes_salsa20_random_close(void)
 static void
 randombytes_salsa20_random_xorhwrand(void)
 {
+/* LCOV_EXCL_START */
 #ifdef HAVE_RDRAND
     unsigned int r;
 
     if (global.rdrand_available == 0) {
-        return; /* LCOV_EXCL_LINE */
+        return;
     }
     (void) _rdrand32_step(&r);
     * (uint32_t *) (void *)
         &stream.key[crypto_stream_salsa20_KEYBYTES - 4] ^= (uint32_t) r;
 #endif
+/* LCOV_EXCL_STOP */
 }
 
 /*
