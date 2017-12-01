@@ -120,6 +120,21 @@ main(void)
     assert(memcmp(p2, p, crypto_core_ed25519_BYTES) != 0);
     assert(memcmp(p3, p, crypto_core_ed25519_BYTES) == 0);
 
+    p[0] = 2;
+    assert(crypto_core_ed25519_add(p3, p2, p) == -1);
+    assert(crypto_core_ed25519_add(p3, p2, non_canonical_p) == 0);
+    assert(crypto_core_ed25519_add(p3, p2, non_canonical_invalid_p) == -1);
+    assert(crypto_core_ed25519_add(p3, p, p3) == -1);
+    assert(crypto_core_ed25519_add(p3, non_canonical_p, p3) == 0);
+    assert(crypto_core_ed25519_add(p3, non_canonical_invalid_p, p3) == -1);
+
+    assert(crypto_core_ed25519_sub(p3, p2, p) == -1);
+    assert(crypto_core_ed25519_sub(p3, p2, non_canonical_p) == 0);
+    assert(crypto_core_ed25519_sub(p3, p2, non_canonical_invalid_p) == -1);
+    assert(crypto_core_ed25519_sub(p3, p, p3) == -1);
+    assert(crypto_core_ed25519_sub(p3, non_canonical_p, p3) == 0);
+    assert(crypto_core_ed25519_sub(p3, non_canonical_invalid_p, p3) == -1);
+
     sodium_free(sc);
     sodium_free(p3);
     sodium_free(p2);
