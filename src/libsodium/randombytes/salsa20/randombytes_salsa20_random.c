@@ -457,7 +457,7 @@ randombytes_salsa20_random_xorhwrand(void)
     unsigned int r;
 
     if (global.rdrand_available == 0) {
-        return;
+        return; /* LCOV_EXCL_LINE */
     }
     (void) _rdrand32_step(&r);
     * (uint32_t *) (void *)
