@@ -820,6 +820,7 @@ ge25519_scalarmult_base(ge25519_p3 *h, const unsigned char *a)
     /* each e[i] is between -8 and 8 */
 
     ge25519_p3_0(h);
+
     for (i = 1; i < 64; i += 2) {
         ge25519_select_base(&t, i / 2, e[i]);
         ge25519_madd(&r, h, &t);
