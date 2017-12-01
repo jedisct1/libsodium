@@ -244,7 +244,7 @@ tv_secretbox_xchacha20poly1305(void)
         assert(crypto_secretbox_xchacha20poly1305_easy(out2, m, m_len, nonce, key) == 0);
         assert(memcmp(out, out2,
                       crypto_secretbox_xchacha20poly1305_MACBYTES + m_len) == 0);
-        n = randombytes_uniform(crypto_secretbox_xchacha20poly1305_MACBYTES + m_len);
+        n = randombytes_uniform(crypto_secretbox_xchacha20poly1305_MACBYTES + (uint32_t) m_len);
         assert(crypto_secretbox_xchacha20poly1305_open_easy
                (out2, out2, crypto_secretbox_xchacha20poly1305_MACBYTES - 1,
                 nonce, key) == -1);
