@@ -38,7 +38,11 @@ static void
 sigabrt_handler_12(int sig)
 {
     (void) sig;
+# ifdef SODIUM_LIBRARY_MINIMAL
+    signal(SIGABRT, sigabrt_handler_15);
+# else
     signal(SIGABRT, sigabrt_handler_13);
+# endif
     assert(crypto_pwhash_str_alg(NULL, "", 0U, 1U, 1U, -1) == -1);
     exit(1);
 }
