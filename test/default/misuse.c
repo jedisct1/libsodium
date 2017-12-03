@@ -6,10 +6,32 @@
 # include <signal.h>
 
 static void
-sigabrt_handler_13(int sig)
+sigabrt_handler_15(int sig)
 {
     (void) sig;
     exit(0);
+}
+
+static void
+sigabrt_handler_14(int sig)
+{
+    (void) sig;
+    signal(SIGABRT, sigabrt_handler_15);
+    assert(crypto_box_curve25519xchacha20poly1305_easy
+           (NULL, NULL, crypto_stream_xchacha20_MESSAGEBYTES_MAX - 1,
+            NULL, NULL, NULL) == -1);
+    exit(1);
+}
+
+static void
+sigabrt_handler_13(int sig)
+{
+    (void) sig;
+    signal(SIGABRT, sigabrt_handler_14);
+    assert(crypto_box_curve25519xchacha20poly1305_easy_afternm
+           (NULL, NULL, crypto_stream_xchacha20_MESSAGEBYTES_MAX - 1,
+            NULL, NULL) == -1);
+    exit(1);
 }
 
 static void
