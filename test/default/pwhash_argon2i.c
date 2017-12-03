@@ -256,7 +256,11 @@ str_tests(void)
         crypto_pwhash_argon2i_str_needs_rehash(str_out, OPSLIMIT * 2, MEMLIMIT) != 1) {
         printf("needs_rehash() false negative\n");
     }
-    if (crypto_pwhash_argon2i_str_needs_rehash(str_out + 1, OPSLIMIT, MEMLIMIT) != -1) {
+    if (crypto_pwhash_str_needs_rehash(str_out, OPSLIMIT, MEMLIMIT / 2) != 1) {
+        printf("pwhash_str_needs_rehash() didn't handle argon2i\n");
+    }
+    if (crypto_pwhash_str_needs_rehash(str_out + 1, OPSLIMIT, MEMLIMIT) != -1 ||
+        crypto_pwhash_argon2i_str_needs_rehash(str_out + 1, OPSLIMIT, MEMLIMIT) != -1) {
         printf("needs_rehash() didn't fail with an invalid hash string\n");
     }
     if (sodium_is_zero((const unsigned char *) str_out + strlen(str_out),
