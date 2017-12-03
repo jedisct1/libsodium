@@ -67,7 +67,7 @@ crypto_scalarmult_ed25519_base(unsigned char *q,
     _crypto_scalarmult_ed25519_clamp(t);
     ge25519_scalarmult_base(&Q, t);
     ge25519_p3_tobytes(q, &Q);
-    if (sodium_is_zero(t, 32) != 0) {
+    if (sodium_is_zero(n, 32) != 0) {
         return -1;
     }
     return 0;
