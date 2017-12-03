@@ -12,6 +12,7 @@ sigabrt_handler_15(int sig)
     exit(0);
 }
 
+# ifndef SODIUM_LIBRARY_MINIMAL
 static void
 sigabrt_handler_14(int sig)
 {
@@ -33,6 +34,7 @@ sigabrt_handler_13(int sig)
             NULL, NULL) == -1);
     exit(1);
 }
+# endif
 
 static void
 sigabrt_handler_12(int sig)
