@@ -3170,7 +3170,7 @@ tv(void)
         found_message_len = 1;
         if (crypto_aead_aes256gcm_decrypt(decrypted, &found_message_len,
                                           NULL, ciphertext,
-                                          randombytes_uniform(ciphertext_len),
+                                          randombytes_uniform((uint32_t) ciphertext_len),
                                           ad, ad_len, nonce, key) != -1) {
             printf("Verification of test vector #%u after truncation succeeded\n",
                    (unsigned int) i);
