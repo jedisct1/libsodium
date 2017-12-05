@@ -172,5 +172,7 @@ main(void)
         sodium_free(bin_padded);
     }
 
+    sodium_stackzero(512);
+
     return 0;
 }
