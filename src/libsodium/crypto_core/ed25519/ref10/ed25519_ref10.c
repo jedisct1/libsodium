@@ -422,6 +422,15 @@ ge25519_p3_0(ge25519_p3 *h)
     fe25519_0(h->T);
 }
 
+static void
+ge25519_cached_0(ge25519_cached *h)
+{
+    fe25519_1(h->YplusX);
+    fe25519_1(h->YminusX);
+    fe25519_1(h->Z);
+    fe25519_0(h->T2d);
+}
+
 /*
  r = p
  */
@@ -532,6 +541,15 @@ ge25519_cmov(ge25519_precomp *t, const ge25519_precomp *u, unsigned char b)
 }
 
 static void
+ge25519_cmov_cached(ge25519_cached *t, const ge25519_cached *u, unsigned char b)
+{
+    fe25519_cmov(t->YplusX, u->YplusX, b);
+    fe25519_cmov(t->YminusX, u->YminusX, b);
+    fe25519_cmov(t->Z, u->Z, b);
+    fe25519_cmov(t->T2d, u->T2d, b);
+}
+
+static void
 ge25519_select(ge25519_precomp *t, const ge25519_precomp precomp[8], const signed char b)
 {
     ge25519_precomp     minust;
@@ -554,21 +572,16 @@ ge25519_select(ge25519_precomp *t, const ge25519_precomp precomp[8], const signe
 }
 
 static void
-ge25519_cached_0(ge25519_cached *h)
+ge25519_select_base(ge25519_precomp *t, const int pos, const signed char b)
 {
-    fe25519_1(h->YplusX);
-    fe25519_1(h->YminusX);
-    fe25519_1(h->Z);
-    fe25519_0(h->T2d);
-}
-
-static void
-ge25519_cmov_cached(ge25519_cached *t, const ge25519_cached *u, unsigned char b)
-{
-    fe25519_cmov(t->YplusX, u->YplusX, b);
-    fe25519_cmov(t->YminusX, u->YminusX, b);
-    fe25519_cmov(t->Z, u->Z, b);
-    fe25519_cmov(t->T2d, u->T2d, b);
+    static const ge25519_precomp base[32][8] = { /* base[i][j] = (j+1)*256^i*B */
+#ifdef HAVE_TI_MODE
+# include "fe_51/base.h"
+#else
+# include "fe_25_5/base.h"
+#endif
+    };
+    ge25519_select(t, base[pos], b);
 }
 
 static void
@@ -592,19 +605,6 @@ ge25519_select_cached(ge25519_cached *t, const ge25519_cached cached[8], const s
     fe25519_copy(minust.Z, t->Z);
     fe25519_neg(minust.T2d, t->T2d);
     ge25519_cmov_cached(t, &minust, bnegative);
-}
-
-static void
-ge25519_select_base(ge25519_precomp *t, const int pos, const signed char b)
-{
-    static const ge25519_precomp base[32][8] = { /* base[i][j] = (j+1)*256^i*B */
-#ifdef HAVE_TI_MODE
-# include "fe_51/base.h"
-#else
-# include "fe_25_5/base.h"
-#endif
-    };
-    ge25519_select(t, base[pos], b);
 }
 
 /*
