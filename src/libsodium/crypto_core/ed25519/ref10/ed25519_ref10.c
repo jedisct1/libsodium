@@ -675,26 +675,34 @@ ge25519_double_scalarmult_vartime(ge25519_p2 *r, const unsigned char *a,
     slide_vartime(bslide, b);
 
     ge25519_p3_to_cached(&Ai[0], A);
+
     ge25519_p3_dbl(&t, A);
     ge25519_p1p1_to_p3(&A2, &t);
+
     ge25519_add(&t, &A2, &Ai[0]);
     ge25519_p1p1_to_p3(&u, &t);
     ge25519_p3_to_cached(&Ai[1], &u);
+
     ge25519_add(&t, &A2, &Ai[1]);
     ge25519_p1p1_to_p3(&u, &t);
     ge25519_p3_to_cached(&Ai[2], &u);
+
     ge25519_add(&t, &A2, &Ai[2]);
     ge25519_p1p1_to_p3(&u, &t);
     ge25519_p3_to_cached(&Ai[3], &u);
+
     ge25519_add(&t, &A2, &Ai[3]);
     ge25519_p1p1_to_p3(&u, &t);
     ge25519_p3_to_cached(&Ai[4], &u);
+
     ge25519_add(&t, &A2, &Ai[4]);
     ge25519_p1p1_to_p3(&u, &t);
     ge25519_p3_to_cached(&Ai[5], &u);
+
     ge25519_add(&t, &A2, &Ai[5]);
     ge25519_p1p1_to_p3(&u, &t);
     ge25519_p3_to_cached(&Ai[6], &u);
+
     ge25519_add(&t, &A2, &Ai[6]);
     ge25519_p1p1_to_p3(&u, &t);
     ge25519_p3_to_cached(&Ai[7], &u);
