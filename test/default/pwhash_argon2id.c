@@ -177,6 +177,8 @@ tv2(void)
                                1ULL << 12, crypto_pwhash_argon2id_alg_argon2id13()) != -1) {
         printf("[tv2] pwhash with a long password length should have failed\n");
     }
+    assert(crypto_pwhash_argon2id(out, sizeof out, "password", strlen("password"), salt,
+                                  OPSLIMIT, MEMLIMIT, crypto_pwhash_alg_argon2i13()) == -1);
 }
 
 static void
