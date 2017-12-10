@@ -2,7 +2,7 @@
 * Version 1.0.16
  - Signatures computations and verifications are now way faster on
 64-bit platforms with compilers supporting 128-bit arithmetic (gcc,
-clang, icc).
+clang, icc). This includes the WebAssembly target.
  - New low-level APIs for computations over edwards25519:
 `crypto_scalarmult_ed25519()`, `crypto_scalarmult_ed25519_base()`,
 `crypto_core_ed25519_is_valid_point()`, `crypto_core_ed25519_add()`,
