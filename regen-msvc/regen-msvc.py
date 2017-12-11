@@ -74,7 +74,7 @@ dirs = list(dirs)
 dirs.sort()
 for dir in dirs:
     dir = dir.replace("/", "\\")
-    uid = uuid.uuid3(uuid.UUID(bytes=b'LibSodiumMSVCUID'), dir)    
+    uid = uuid.uuid3(uuid.UUID(bytes=b'LibSodiumMSVCUID'), dir)
     fd = fd + "    <Filter Include=\"{}\">\r\n".format(dir)
     fd = fd + \
         "      <UniqueIdentifier>{{{}}}</UniqueIdentifier>\r\n".format(uid)
