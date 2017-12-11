@@ -22,6 +22,7 @@ default.
 support for thread-local storage, optionally mixes bits from RDRAND.
  - CMAKE: static library detection on Unix systems has been improved
 (thanks to @BurningEnlightenment, @nibua-r, @mellery451)
+ - Argon2 and scrypt are slightly faster on Linux.
 
 * Version 1.0.15
  - The default password hashing algorithm is now Argon2id. The
