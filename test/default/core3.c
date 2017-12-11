@@ -94,16 +94,6 @@ main(void)
         printf("%02x", h[i]);
     }
     printf("\n");
-
-    assert(crypto_core_salsa2012_outputbytes() == crypto_core_salsa2012_OUTPUTBYTES);
-    assert(crypto_core_salsa2012_inputbytes() == crypto_core_salsa2012_INPUTBYTES);
-    assert(crypto_core_salsa2012_keybytes() == crypto_core_salsa2012_KEYBYTES);
-    assert(crypto_core_salsa2012_constbytes() == crypto_core_salsa2012_CONSTBYTES);
-
-    assert(crypto_core_salsa208_outputbytes() == crypto_core_salsa208_OUTPUTBYTES);
-    assert(crypto_core_salsa208_inputbytes() == crypto_core_salsa208_INPUTBYTES);
-    assert(crypto_core_salsa208_keybytes() == crypto_core_salsa208_KEYBYTES);
-    assert(crypto_core_salsa208_constbytes() == crypto_core_salsa208_CONSTBYTES);
 #else
     printf("a4e3147dddd2ba7775939b50208a22eb3277d4e4bad8a1cfbc999c6bd392b638\n"
            "017421baa9959cbe894bd003ec87938254f47c1e757eb66cf89c353d0c2b68de\n");
