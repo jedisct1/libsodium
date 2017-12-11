@@ -34,6 +34,12 @@
 #if !defined(MAP_ANON) && defined(MAP_ANONYMOUS)
 # define MAP_ANON MAP_ANONYMOUS
 #endif
+#ifndef MAP_NOCORE
+# define MAP_NOCORE 0
+#endif
+#ifndef MAP_POPULATE
+# define MAP_POPULATE 0
+#endif
 
 static fill_segment_fn fill_segment = fill_segment_ref;
 
@@ -88,11 +94,7 @@ allocate_memory(block_region **region, uint32_t m_cost)
 
 #if defined(MAP_ANON) && defined(HAVE_MMAP)
     if ((base = mmap(NULL, memory_size, PROT_READ | PROT_WRITE,
-#ifdef MAP_NOCORE
-                     MAP_ANON | MAP_PRIVATE | MAP_NOCORE,
-#else
-                     MAP_ANON | MAP_PRIVATE,
-#endif
+                     MAP_ANON | MAP_PRIVATE | MAP_NOCORE | MAP_POPULATE,
                      -1, 0)) == MAP_FAILED) {
         base = NULL; /* LCOV_EXCL_LINE */
     }                /* LCOV_EXCL_LINE */
