@@ -203,7 +203,7 @@ blake2b_init_key(blake2b_state *S, const uint8_t outlen, const void *key,
     {
         uint8_t block[BLAKE2B_BLOCKBYTES];
         memset(block, 0, BLAKE2B_BLOCKBYTES);
-        memcpy(block, key, keylen);
+        memcpy(block, key, keylen); /* keylen cannot be 0 */
         blake2b_update(S, block, BLAKE2B_BLOCKBYTES);
         sodium_memzero(block, BLAKE2B_BLOCKBYTES); /* Burn the key from stack */
     }
@@ -249,7 +249,7 @@ blake2b_init_key_salt_personal(blake2b_state *S, const uint8_t outlen,
     {
         uint8_t block[BLAKE2B_BLOCKBYTES];
         memset(block, 0, BLAKE2B_BLOCKBYTES);
-        memcpy(block, key, keylen);
+        memcpy(block, key, keylen); /* keylen cannot be 0 */
         blake2b_update(S, block, BLAKE2B_BLOCKBYTES);
         sodium_memzero(block, BLAKE2B_BLOCKBYTES); /* Burn the key from stack */
     }
@@ -320,7 +320,7 @@ blake2b_final(blake2b_state *S, uint8_t *out, uint8_t outlen)
     STORE64_LE(buffer + 8 * 5, S->h[5]);
     STORE64_LE(buffer + 8 * 6, S->h[6]);
     STORE64_LE(buffer + 8 * 7, S->h[7]);
-    memcpy(out, buffer, outlen);
+    memcpy(out, buffer, outlen); /* outlen <= BLAKE2B_OUTBYTES (64) */
 
     sodium_memzero(S->h, sizeof S->h);
     sodium_memzero(S->buf, sizeof S->buf);
