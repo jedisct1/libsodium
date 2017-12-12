@@ -43,10 +43,18 @@ main(void)
 
     memset(n, 0, crypto_scalarmult_ed25519_SCALARBYTES);
     if (crypto_scalarmult_ed25519_base(q, n) != -1) {
+        printf("crypto_scalarmult_ed25519_base(0) failed\n");
+    }
+    if (crypto_scalarmult_ed25519(q2, n, p) != -1) {
+        printf("crypto_scalarmult_ed25519(0) passed\n");
+    }
+
+    n[0] = 1;
+    if (crypto_scalarmult_ed25519_base(q, n) != 0) {
         printf("crypto_scalarmult_ed25519_base() failed\n");
     }
     if (crypto_scalarmult_ed25519(q2, n, p) != 0) {
-        printf("crypto_scalarmult_ed25519() failed\n");
+        printf("crypto_scalarmult_ed25519() passed\n");
     }
 
     if (crypto_scalarmult_ed25519(q, n, non_canonical_p) != -1) {
