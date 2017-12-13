@@ -8,6 +8,11 @@
 #include "utils.h"
 #include "x25519_ref10.h"
 
+/*
+ * Reject small order points early to mitigate the implications of
+ * unexpected optimizations that would affect the ref10 code.
+ * See https://eprint.iacr.org/2017/806.pdf for reference.
+ */
 static int
 has_small_order(const unsigned char s[32])
 {
