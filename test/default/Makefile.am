@@ -22,6 +22,7 @@ EXTRA_DIST = \
 	box_seed.exp \
 	chacha20.exp \
 	codecs.exp \
+	core_ed25519.exp \
 	core1.exp \
 	core2.exp \
 	core3.exp \
@@ -49,6 +50,7 @@ EXTRA_DIST = \
 	pwhash_scrypt_ll.exp \
 	randombytes.exp \
 	scalarmult.exp \
+	scalarmult_ed25519.exp \
 	scalarmult2.exp \
 	scalarmult5.exp \
 	scalarmult6.exp \
@@ -95,6 +97,7 @@ DISTCLEANFILES = \
 	box_seed.res \
 	chacha20.res \
 	codecs.res \
+	core_ed25519.res \
 	core1.res \
 	core2.res \
 	core3.res \
@@ -122,6 +125,7 @@ DISTCLEANFILES = \
 	pwhash_scrypt_ll.res \
 	randombytes.res \
 	scalarmult.res \
+	scalarmult_ed25519.res \
 	scalarmult2.res \
 	scalarmult5.res \
 	scalarmult6.res \
@@ -169,6 +173,7 @@ CLEANFILES = \
 	box_seed.final \
 	chacha20.final \
 	codecs.final \
+	core_ed25519.final \
 	core1.final \
 	core2.final \
 	core3.final \
@@ -196,6 +201,7 @@ CLEANFILES = \
 	pwhash_scrypt_ll.final \
 	randombytes.final \
 	scalarmult.final \
+	scalarmult_ed25519.final \
 	scalarmult2.final \
 	scalarmult5.final \
 	scalarmult6.final \
@@ -238,6 +244,7 @@ CLEANFILES = \
 	box_seed.nexe \
 	chacha20.nexe \
 	codecs.nexe \
+	core_ed25519.nexe \
 	core1.nexe \
 	core2.nexe \
 	core3.nexe \
@@ -265,6 +272,7 @@ CLEANFILES = \
 	pwhash_scrypt_ll.nexe \
 	randombytes.nexe \
 	scalarmult.nexe \
+	scalarmult_ed25519.nexe \
 	scalarmult2.nexe \
 	scalarmult5.nexe \
 	scalarmult6.nexe \
@@ -438,6 +446,9 @@ chacha20_LDADD            = $(TESTS_LDADD)
 codecs_SOURCE             = cmptest.h codecs.c
 codecs_LDADD              = $(TESTS_LDADD)
 
+core_ed25519_SOURCE       = cmptest.h core_ed25519.c
+core_ed25519_LDADD        = $(TESTS_LDADD)
+
 core1_SOURCE              = cmptest.h core1.c
 core1_LDADD               = $(TESTS_LDADD)
 
@@ -516,6 +527,9 @@ randombytes_LDADD         = $(TESTS_LDADD)
 scalarmult_SOURCE         = cmptest.h scalarmult.c
 scalarmult_LDADD          = $(TESTS_LDADD)
 
+scalarmult_ed25519_SOURCE = cmptest.h scalarmult_ed25519.c
+scalarmult_ed25519_LDADD  = $(TESTS_LDADD)
+
 scalarmult2_SOURCE        = cmptest.h scalarmult2.c
 scalarmult2_LDADD         = $(TESTS_LDADD)
 
@@ -593,8 +607,10 @@ xchacha20_LDADD           = $(TESTS_LDADD)
 
 if !MINIMAL
 TESTS_TARGETS += \
+	core_ed25519 \
 	pwhash_scrypt \
 	pwhash_scrypt_ll \
+	scalarmult_ed25519 \
 	siphashx24 \
 	xchacha20
 endif

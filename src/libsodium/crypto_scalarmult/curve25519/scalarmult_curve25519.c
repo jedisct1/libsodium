@@ -1,20 +1,15 @@
 
 #include "crypto_scalarmult_curve25519.h"
+#include "private/implementations.h"
 #include "scalarmult_curve25519.h"
 #include "runtime.h"
 
 #ifdef HAVE_AVX_ASM
 # include "sandy2x/curve25519_sandy2x.h"
 #endif
-#ifdef HAVE_TI_MODE
-# include "donna_c64/curve25519_donna_c64.h"
-static const crypto_scalarmult_curve25519_implementation *implementation =
-    &crypto_scalarmult_curve25519_donna_c64_implementation;
-#else
-# include "ref10/x25519_ref10.h"
+#include "ref10/x25519_ref10.h"
 static const crypto_scalarmult_curve25519_implementation *implementation =
     &crypto_scalarmult_curve25519_ref10_implementation;
-#endif
 
 int
 crypto_scalarmult_curve25519(unsigned char *q, const unsigned char *n,
@@ -53,11 +48,8 @@ crypto_scalarmult_curve25519_scalarbytes(void)
 int
 _crypto_scalarmult_curve25519_pick_best_implementation(void)
 {
-#ifdef HAVE_TI_MODE
-    implementation = &crypto_scalarmult_curve25519_donna_c64_implementation;
-#else
     implementation = &crypto_scalarmult_curve25519_ref10_implementation;
-#endif
+
 #ifdef HAVE_AVX_ASM
     if (sodium_runtime_has_avx()) {
         implementation = &crypto_scalarmult_curve25519_sandy2x_implementation;

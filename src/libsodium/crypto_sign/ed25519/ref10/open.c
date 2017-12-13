@@ -6,85 +6,9 @@
 #include "crypto_hash_sha512.h"
 #include "crypto_sign_ed25519.h"
 #include "crypto_verify_32.h"
-#include "ed25519_ref10.h"
-#include "private/curve25519_ref10.h"
+#include "sign_ed25519_ref10.h"
+#include "private/ed25519_ref10.h"
 #include "utils.h"
-
-#ifndef ED25519_COMPAT
-static int
-crypto_sign_check_S_lt_L(const unsigned char *S)
-{
-    /* 2^252+27742317777372353535851937790883648493 */
-    static const unsigned char L[32] = {
-        0xed, 0xd3, 0xf5, 0x5c, 0x1a, 0x63, 0x12, 0x58, 0xd6, 0x9c, 0xf7,
-        0xa2, 0xde, 0xf9, 0xde, 0x14, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
-        0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x10
-    };
-    unsigned char c = 0;
-    unsigned char n = 1;
-    unsigned int  i = 32;
-
-    do {
-        i--;
-        c |= ((S[i] - L[i]) >> 8) & n;
-        n &= ((S[i] ^ L[i]) - 1) >> 8;
-    } while (i != 0);
-
-    return -(c == 0);
-}
-
-int
-_crypto_sign_ed25519_small_order(const unsigned char s[32])
-{
-    CRYPTO_ALIGN(16)
-    static const unsigned char blacklist[][32] = {
-        /* 0 (order 4) */
-        { 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
-          0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
-          0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00 },
-        /* 1 (order 1) */
-        { 0x01, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
-          0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
-          0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00 },
-        /* 2707385501144840649318225287225658788936804267575313519463743609750303402022
-           (order 8) */
-        { 0x26, 0xe8, 0x95, 0x8f, 0xc2, 0xb2, 0x27, 0xb0, 0x45, 0xc3, 0xf4,
-          0x89, 0xf2, 0xef, 0x98, 0xf0, 0xd5, 0xdf, 0xac, 0x05, 0xd3, 0xc6,
-          0x33, 0x39, 0xb1, 0x38, 0x02, 0x88, 0x6d, 0x53, 0xfc, 0x05 },
-        /* 55188659117513257062467267217118295137698188065244968500265048394206261417927
-           (order 8) */
-        { 0xc7, 0x17, 0x6a, 0x70, 0x3d, 0x4d, 0xd8, 0x4f, 0xba, 0x3c, 0x0b,
-          0x76, 0x0d, 0x10, 0x67, 0x0f, 0x2a, 0x20, 0x53, 0xfa, 0x2c, 0x39,
-          0xcc, 0xc6, 0x4e, 0xc7, 0xfd, 0x77, 0x92, 0xac, 0x03, 0x7a },
-        /* p-1 (order 2) */
-        { 0xec, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff,
-          0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff,
-          0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0x7f },
-        /* p (=0, order 4) */
-        { 0xed, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff,
-          0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff,
-          0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0x7f },
-        /* p+1 (=1, order 1) */
-        { 0xee, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff,
-          0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff,
-          0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0x7f }
-    };
-    size_t        i, j;
-    unsigned char c;
-
-    for (i = 0; i < sizeof blacklist / sizeof blacklist[0]; i++) {
-        c = 0;
-        for (j = 0; j < 31; j++) {
-            c |= s[j] ^ blacklist[i][j];
-        }
-        c |= (s[j] & 0x7f) ^ blacklist[i][j];
-        if (c == 0) {
-            return 1;
-        }
-    }
-    return 0;
-}
-#endif
 
 int
 _crypto_sign_ed25519_verify_detached(const unsigned char *sig,
@@ -96,14 +20,15 @@ _crypto_sign_ed25519_verify_detached(const unsigned char *sig,
     crypto_hash_sha512_state hs;
     unsigned char            h[64];
     unsigned char            rcheck[32];
-    unsigned int             i;
-    unsigned char            d = 0;
-    ge_p3                    A;
-    ge_p2                    R;
+    ge25519_p3               A;
+    ge25519_p2               R;
 
 #ifndef ED25519_COMPAT
-    if (crypto_sign_check_S_lt_L(sig + 32) != 0 ||
-        _crypto_sign_ed25519_small_order(sig) != 0) {
+    if (sc25519_is_canonical(sig + 32) == 0 ||
+        ge25519_has_small_order(sig) != 0) {
+        return -1;
+    }
+    if (ge25519_is_canonical(pk) == 0) {
         return -1;
     }
 #else
@@ -111,13 +36,8 @@ _crypto_sign_ed25519_verify_detached(const unsigned char *sig,
         return -1;
     }
 #endif
-    if (ge_frombytes_negate_vartime(&A, pk) != 0) {
-        return -1;
-    }
-    for (i = 0; i < 32; ++i) {
-        d |= pk[i];
-    }
-    if (d == 0) {
+    if (ge25519_has_small_order(pk) != 0 ||
+        ge25519_frombytes_negate_vartime(&A, pk) != 0) {
         return -1;
     }
     _crypto_sign_ed25519_ref10_hinit(&hs, prehashed);
@@ -125,10 +45,10 @@ _crypto_sign_ed25519_verify_detached(const unsigned char *sig,
     crypto_hash_sha512_update(&hs, pk, 32);
     crypto_hash_sha512_update(&hs, m, mlen);
     crypto_hash_sha512_final(&hs, h);
-    sc_reduce(h);
+    sc25519_reduce(h);
 
-    ge_double_scalarmult_vartime(&R, h, &A, sig + 32);
-    ge_tobytes(rcheck, &R);
+    ge25519_double_scalarmult_vartime(&R, h, &A, sig + 32);
+    ge25519_tobytes(rcheck, &R);
 
     return crypto_verify_32(rcheck, sig) | (-(rcheck == sig)) |
            sodium_memcmp(sig, rcheck, 32);

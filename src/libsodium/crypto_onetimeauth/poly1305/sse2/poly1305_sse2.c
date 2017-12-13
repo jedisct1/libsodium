@@ -19,12 +19,6 @@
 
 typedef __m128i xmmi;
 
-# if defined(__SIZEOF_INT128__)
-typedef unsigned __int128 uint128_t;
-# else
-typedef unsigned uint128_t __attribute__((mode(TI)));
-# endif
-
 # if defined(_MSC_VER)
 #  define POLY1305_NOINLINE __declspec(noinline)
 # elif defined(__GNUC__)

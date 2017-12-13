@@ -1,5 +1,5 @@
 AC_PREREQ([2.65])
-AC_INIT([libsodium],[1.0.15],
+AC_INIT([libsodium],[1.0.16],
   [https://github.com/jedisct1/libsodium/issues],
   [libsodium],
   [https://github.com/jedisct1/libsodium])
@@ -17,9 +17,9 @@ ISODATE=`date +%Y-%m-%d`
 AC_SUBST(ISODATE)
 
 SODIUM_LIBRARY_VERSION_MAJOR=10
-SODIUM_LIBRARY_VERSION_MINOR=0
+SODIUM_LIBRARY_VERSION_MINOR=1
 DLL_VERSION=8
-SODIUM_LIBRARY_VERSION=23:0:0
+SODIUM_LIBRARY_VERSION=24:0:1
 #                       | | |
 #                +------+ | +---+
 #                |        |     |
@@ -127,10 +127,11 @@ AC_ARG_WITH(pthreads, AC_HELP_STRING([--with-pthreads],
 AS_IF([test "x$withval" = "xyes"], [
   AX_PTHREAD([
     AC_DEFINE([HAVE_PTHREAD], [1], [Define if you have POSIX threads libraries and header files])
+    with_threads="yes"
     LIBS="$PTHREAD_LIBS $LIBS"
     CFLAGS="$CFLAGS $PTHREAD_CFLAGS"
     CC="$PTHREAD_CC"])
-])
+], [with_threads="no"])
 
 AC_ARG_WITH(safecode,
 [AS_HELP_STRING(--with-safecode,For maintainers only - please do not use)],
@@ -143,6 +144,14 @@ AC_ARG_WITH(safecode,
   ])
 ])
 
+AC_ARG_WITH(ctgrind,
+[AS_HELP_STRING(--with-ctgrind,For maintainers only - please do not use)],
+[AS_IF([test "x$withval" = "xyes"], [
+    AC_CHECK_LIB(ctgrind, ct_poison)
+  ])
+])
+
+ENABLE_CWFLAGS=no
 AC_ARG_ENABLE(debug,
 [AS_HELP_STRING(--enable-debug,For maintainers only - please do not use)],
 [
@@ -155,9 +164,10 @@ AC_ARG_ENABLE(debug,
           [-g*], [ ],
           [*], [AS_VAR_APPEND([nxflags], [" $flag"])])
       done
-      CFLAGS="$nxflags -O0 -g3"
+      CFLAGS="$nxflags -O -g3"
     ])
-    CPPFLAGS="$CPPFLAGS -DDEBUG=1 -UFORTIFY_SOURCE"
+    ENABLE_CWFLAGS=yes
+    CPPFLAGS="$CPPFLAGS -DDEBUG=1 -U_FORTIFY_SOURCE"
   ])
 ])
 
@@ -166,6 +176,7 @@ AC_ARG_ENABLE(opt,
 [
   AS_IF([test "x$enableval" = "xyes"], [
     AX_CHECK_COMPILE_FLAG([-Ofast], [CFLAGS="$CFLAGS -Ofast"])
+    AX_CHECK_COMPILE_FLAG([-fomit-frame-pointer], [CFLAGS="$CFLAGS -fomit-frame-pointer"])
     AX_CHECK_COMPILE_FLAG([-march=native], [CFLAGS="$CFLAGS -march=native"])
   ])
 ])
@@ -179,6 +190,7 @@ dnl Checks
 AC_PROG_CC_C99
 AM_PROG_AS
 AC_USE_SYSTEM_EXTENSIONS
+AC_C_VARARRAYS
 
 AC_CHECK_DEFINE([__native_client__], [NATIVECLIENT="yes"], [])
 
@@ -262,14 +274,10 @@ AS_CASE([$host_os],
   ])
 ])
 
-AX_CHECK_COMPILE_FLAG([-Wwrite-strings], [CFLAGS="$CFLAGS -Wwrite-strings"])
-AX_CHECK_COMPILE_FLAG([-Wdiv-by-zero], [CFLAGS="$CFLAGS -Wdiv-by-zero"])
-AX_CHECK_COMPILE_FLAG([-Wsometimes-uninitialized], [CFLAGS="$CFLAGS -Wsometimes-uninitialized"])
-
 AC_ARG_VAR([CWFLAGS], [define to compilation flags for generating extra warnings])
 
-AX_CHECK_COMPILE_FLAG([$CWFLAGS -Wall], [CWFLAGS="$CWFLAGS -Wall"])
-AX_CHECK_COMPILE_FLAG([$CWFLAGS -Wextra], [CWFLAGS="$CWFLAGS -Wextra"])
+AX_CHECK_COMPILE_FLAG([$CFLAGS -Wall], [CWFLAGS="$CFLAGS -Wall"])
+AX_CHECK_COMPILE_FLAG([$CFLAGS -Wextra], [CWFLAGS="$CFLAGS -Wextra"])
 
 AC_MSG_CHECKING(for clang)
 AC_COMPILE_IFELSE([AC_LANG_PROGRAM([[]], [[
@@ -285,11 +293,15 @@ AC_COMPILE_IFELSE([AC_LANG_PROGRAM([[]], [[
 ])
 
 AX_CHECK_COMPILE_FLAG([$CWFLAGS -Wbad-function-cast], [CWFLAGS="$CWFLAGS -Wbad-function-cast"])
-AX_CHECK_COMPILE_FLAG([$CWFLAGS -Wcast-align], [CWFLAGS="$CWFLAGS -Wcast-align"])
 AX_CHECK_COMPILE_FLAG([$CWFLAGS -Wcast-qual], [CWFLAGS="$CWFLAGS -Wcast-qual"])
+AX_CHECK_COMPILE_FLAG([$CWFLAGS -Wdiv-by-zero], [CWFLAGS="$CWFLAGS -Wdiv-by-zero"])
+AX_CHECK_COMPILE_FLAG([$CWFLAGS -Wduplicated-branches], [CWFLAGS="$CWFLAGS -Wduplicated-branches"])
 AX_CHECK_COMPILE_FLAG([$CWFLAGS -Wduplicated-cond], [CWFLAGS="$CWFLAGS -Wduplicated-cond"])
 AX_CHECK_COMPILE_FLAG([$CWFLAGS -Wfloat-equal], [CWFLAGS="$CWFLAGS -Wfloat-equal"])
 AX_CHECK_COMPILE_FLAG([$CWFLAGS -Wformat=2], [CWFLAGS="$CWFLAGS -Wformat=2"])
+AX_CHECK_COMPILE_FLAG([$CWFLAGS -Wlogical-op], [CWFLAGS="$CWFLAGS -Wlogical-op"])
+AX_CHECK_COMPILE_FLAG([$CWFLAGS -Wmaybe-uninitialized], [CWFLAGS="$CWFLAGS -Wmaybe-uninitialized"])
+AX_CHECK_COMPILE_FLAG([$CWFLAGS -Wmisleading-indentation], [CWFLAGS="$CWFLAGS -Wmisleading-indentation"])
 AX_CHECK_COMPILE_FLAG([$CWFLAGS -Wmissing-declarations], [CWFLAGS="$CWFLAGS -Wmissing-declarations"])
 AX_CHECK_COMPILE_FLAG([$CWFLAGS -Wmissing-prototypes], [CWFLAGS="$CWFLAGS -Wmissing-prototypes"])
 AX_CHECK_COMPILE_FLAG([$CWFLAGS -Wnested-externs], [CWFLAGS="$CWFLAGS -Wnested-externs"])
@@ -300,10 +312,13 @@ AX_CHECK_COMPILE_FLAG([$CWFLAGS -Wnull-dereference], [CWFLAGS="$CWFLAGS -Wnull-d
 AX_CHECK_COMPILE_FLAG([$CWFLAGS -Wold-style-declaration], [CWFLAGS="$CWFLAGS -Wold-style-declaration"])
 AX_CHECK_COMPILE_FLAG([$CWFLAGS -Wpointer-arith], [CWFLAGS="$CWFLAGS -Wpointer-arith"])
 AX_CHECK_COMPILE_FLAG([$CWFLAGS -Wredundant-decls], [CWFLAGS="$CWFLAGS -Wredundant-decls"])
+AX_CHECK_COMPILE_FLAG([$CWFLAGS -Wrestrict], [CWFLAGS="$CWFLAGS -Wrestrict"])
 AX_CHECK_COMPILE_FLAG([$CWFLAGS -Wshorten-64-to-32], [CWFLAGS="$CWFLAGS -Wshorten-64-to-32"])
+AX_CHECK_COMPILE_FLAG([$CWFLAGS -Wsometimes-uninitialized], [CWFLAGS="$CWFLAGS -Wsometimes-uninitialized"])
 AX_CHECK_COMPILE_FLAG([$CWFLAGS -Wstrict-prototypes], [CWFLAGS="$CWFLAGS -Wstrict-prototypes"])
 AX_CHECK_COMPILE_FLAG([$CWFLAGS -Wswitch-enum], [CWFLAGS="$CWFLAGS -Wswitch-enum"])
 AX_CHECK_COMPILE_FLAG([$CWFLAGS -Wvariable-decl], [CWFLAGS="$CWFLAGS -Wvariable-decl"])
+AX_CHECK_COMPILE_FLAG([$CWFLAGS -Wwrite-strings], [CWFLAGS="$CWFLAGS -Wwrite-strings"])
 
 AX_CHECK_LINK_FLAG([-Wl,-z,relro], [LDFLAGS="$LDFLAGS -Wl,-z,relro"])
 AX_CHECK_LINK_FLAG([-Wl,-z,now], [LDFLAGS="$LDFLAGS -Wl,-z,now"])
@@ -324,6 +339,10 @@ AC_COMPILE_IFELSE([AC_LANG_PROGRAM([[]], [[
 
 AX_CHECK_CATCHABLE_SEGV
 AX_CHECK_CATCHABLE_ABRT
+
+AS_IF([test "x$with_threads" = "xyes"], [
+  AX_TLS([AC_MSG_RESULT(thread local storage is supported)],
+         [AC_MSG_RESULT(thread local storage is not supported)]) ])
 
 LT_INIT
 AC_SUBST(LIBTOOL_DEPS)
@@ -494,6 +513,23 @@ __m512i y = _mm512_permutexvar_epi64(_mm512_setr_epi64(0, 1, 4, 5, 2, 3, 6, 7), 
     [AC_MSG_RESULT(no)])
   CFLAGS="$oldcflags"
 
+  oldcflags="$CFLAGS"
+  AX_CHECK_COMPILE_FLAG([-mrdrnd], [CFLAGS="$CFLAGS -mrdrnd"])
+  AC_MSG_CHECKING(for RDRAND)
+  AC_COMPILE_IFELSE([AC_LANG_PROGRAM([[
+#ifdef __native_client__
+# error NativeClient detected - Avoiding RDRAND opcodes
+#endif
+#pragma GCC target("rdrnd")
+#include <immintrin.h>
+]], [[ unsigned long long x; _rdrand64_step(&x); ]])],
+    [AC_MSG_RESULT(yes)
+     AC_DEFINE([HAVE_RDRAND], [1], [rdrand is available])
+     AX_CHECK_COMPILE_FLAG([-mrdrnd], [CFLAGS_RDRAND="-mrdrnd"])
+     ],
+    [AC_MSG_RESULT(no)])
+  CFLAGS="$oldcflags"
+
 ])
 
 AC_SUBST(CFLAGS_MMX)
@@ -506,6 +542,7 @@ AC_SUBST(CFLAGS_AVX2)
 AC_SUBST(CFLAGS_AVX512F)
 AC_SUBST(CFLAGS_AESNI)
 AC_SUBST(CFLAGS_PCLMUL)
+AC_SUBST(CFLAGS_RDRAND)
 
 AC_CHECK_HEADERS([sys/mman.h intrin.h])
 
@@ -732,6 +769,7 @@ __sync_lock_release(&_sodium_lock);
 
 dnl Checks for functions and headers
 
+AC_FUNC_ALLOCA
 AS_IF([test "x$EMSCRIPTEN" = "x"],[
   AC_CHECK_FUNCS([arc4random arc4random_buf])
   AC_CHECK_FUNCS([mmap mlock madvise mprotect memset_s explicit_bzero nanosleep])
@@ -764,6 +802,10 @@ AH_VERBATIM([NDEBUG], [/* Always evaluate assert() calls */
 #ifdef NDEBUG
 #/**/undef/**/ NDEBUG
 #endif])
+
+AS_IF([test "x$ENABLE_CWFLAGS" = "xyes"], [
+  CFLAGS="$CFLAGS $CWFLAGS"
+])
 
 AC_CONFIG_FILES([Makefile
                  builds/Makefile

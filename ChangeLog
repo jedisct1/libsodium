@@ -1,4 +1,29 @@
 
+* Version 1.0.16
+ - Signatures computations and verifications are now way faster on
+64-bit platforms with compilers supporting 128-bit arithmetic (gcc,
+clang, icc). This includes the WebAssembly target.
+ - New low-level APIs for computations over edwards25519:
+`crypto_scalarmult_ed25519()`, `crypto_scalarmult_ed25519_base()`,
+`crypto_core_ed25519_is_valid_point()`, `crypto_core_ed25519_add()`,
+`crypto_core_ed25519_sub()` and `crypto_core_ed25519_from_uniform()`
+(elligator representative to point).
+ - `crypto_sign_open()`, `crypto_sign_verify_detached() and
+`crypto_sign_edwards25519sha512batch_open` now reject public keys in
+non-canonical form in addition to low-order points.
+ - The library can be built with `ED25519_NONDETERMINISTIC` defined in
+order to use synthetic nonces for EdDSA. This is disabled by default.
+ - Webassembly: `crypto_pwhash_*()` functions are now included in
+non-sumo builds.
+ - `sodium_stackzero()` was added to wipe content off the stack.
+ - Android: support new SDKs where unified headers have become the
+default.
+ - The Salsa20-based PRNG example is now thread-safe on platforms with
+support for thread-local storage, optionally mixes bits from RDRAND.
+ - CMAKE: static library detection on Unix systems has been improved
+(thanks to @BurningEnlightenment, @nibua-r, @mellery451)
+ - Argon2 and scrypt are slightly faster on Linux.
+
 * Version 1.0.15
  - The default password hashing algorithm is now Argon2id. The
 `pwhash_str_verify()` function can still verify Argon2i hashes

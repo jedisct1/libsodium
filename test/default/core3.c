@@ -27,6 +27,7 @@ main(void)
     size_t         pos = 0;
     int            i;
 
+    pos = 0;
     secondkey = (unsigned char *) sodium_malloc(32);
     memcpy(secondkey, SECONDKEY, 32);
     noncesuffix = (unsigned char *) sodium_malloc(8);
@@ -59,6 +60,45 @@ main(void)
     }
     printf("\n");
 
+#ifndef SODIUM_LIBRARY_MINIMAL
+    pos = 0;
+    do {
+        do {
+            crypto_core_salsa2012(output + pos, in, secondkey, c);
+            pos += 64;
+            in[8]++;
+        } while (in[8] != 0);
+        in[9]++;
+    } while (in[9] != 0);
+
+    crypto_hash_sha256(h, output, output_len);
+
+    for (i = 0; i < 32; ++i) {
+        printf("%02x", h[i]);
+    }
+    printf("\n");
+
+    pos = 0;
+    do {
+        do {
+            crypto_core_salsa208(output + pos, in, secondkey, c);
+            pos += 64;
+            in[8]++;
+        } while (in[8] != 0);
+        in[9]++;
+    } while (in[9] != 0);
+
+    crypto_hash_sha256(h, output, output_len);
+
+    for (i = 0; i < 32; ++i) {
+        printf("%02x", h[i]);
+    }
+    printf("\n");
+#else
+    printf("a4e3147dddd2ba7775939b50208a22eb3277d4e4bad8a1cfbc999c6bd392b638\n"
+           "017421baa9959cbe894bd003ec87938254f47c1e757eb66cf89c353d0c2b68de\n");
+#endif
+
     sodium_free(h);
     sodium_free(output);
     sodium_free(in);
@@ -66,10 +106,10 @@ main(void)
     sodium_free(noncesuffix);
     sodium_free(secondkey);
 
-    assert(crypto_core_salsa20_outputbytes() > 0U);
-    assert(crypto_core_salsa20_inputbytes() > 0U);
-    assert(crypto_core_salsa20_keybytes() > 0U);
-    assert(crypto_core_salsa20_constbytes() > 0U);
+    assert(crypto_core_salsa20_outputbytes() == crypto_core_salsa20_OUTPUTBYTES);
+    assert(crypto_core_salsa20_inputbytes() == crypto_core_salsa20_INPUTBYTES);
+    assert(crypto_core_salsa20_keybytes() == crypto_core_salsa20_KEYBYTES);
+    assert(crypto_core_salsa20_constbytes() == crypto_core_salsa20_CONSTBYTES);
 
     return 0;
 }

@@ -7,6 +7,14 @@
 
 #define COMPILER_ASSERT(X) (void) sizeof(char[(X) ? 1 : -1])
 
+#ifdef HAVE_TI_MODE
+# if defined(__SIZEOF_INT128__)
+typedef unsigned __int128 uint128_t;
+# else
+typedef unsigned uint128_t __attribute__((mode(TI)));
+# endif
+#endif
+
 #define ROTL32(X, B) rotl32((X), (B))
 static inline uint32_t
 rotl32(const uint32_t x, const int b)
@@ -223,6 +231,16 @@ xor_buf(unsigned char *out, const unsigned char *in, size_t n)
 # endif
 #elif defined(HAVE_INTRIN_H)
 # include <intrin.h>
+#endif
+
+#ifdef HAVE_LIBCTGRIND
+extern void ct_poison  (const void *, size_t);
+extern void ct_unpoison(const void *, size_t);
+# define POISON(X, L)   ct_poison((X), (L))
+# define UNPOISON(X, L) ct_unpoison((X), (L))
+#else
+# define POISON(X, L)   (void) 0
+# define UNPOISON(X, L) (void) 0
 #endif
 
 #endif

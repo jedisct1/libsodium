@@ -4,8 +4,8 @@
 #include "crypto_hash_sha512.h"
 #include "crypto_scalarmult_curve25519.h"
 #include "crypto_sign_ed25519.h"
-#include "ed25519_ref10.h"
-#include "private/curve25519_ref10.h"
+#include "sign_ed25519_ref10.h"
+#include "private/ed25519_ref10.h"
 #include "randombytes.h"
 #include "utils.h"
 
@@ -13,7 +13,7 @@ int
 crypto_sign_ed25519_seed_keypair(unsigned char *pk, unsigned char *sk,
                                  const unsigned char *seed)
 {
-    ge_p3 A;
+    ge25519_p3 A;
 
 #ifdef ED25519_NONDETERMINISTIC
     memmove(sk, seed, 32);
@@ -21,11 +21,11 @@ crypto_sign_ed25519_seed_keypair(unsigned char *pk, unsigned char *sk,
     crypto_hash_sha512(sk, seed, 32);
 #endif
     sk[0] &= 248;
-    sk[31] &= 63;
+    sk[31] &= 127;
     sk[31] |= 64;
 
-    ge_scalarmult_base(&A, sk);
-    ge_p3_tobytes(pk, &A);
+    ge25519_scalarmult_base(&A, sk);
+    ge25519_p3_tobytes(pk, &A);
 
     memmove(sk, seed, 32);
     memmove(sk + 32, pk, 32);
@@ -50,26 +50,22 @@ int
 crypto_sign_ed25519_pk_to_curve25519(unsigned char *curve25519_pk,
                                      const unsigned char *ed25519_pk)
 {
-    ge_p3 A;
-    ge_p3 pl;
-    fe    x;
-    fe    one_minus_y;
+    ge25519_p3 A;
+    fe25519    x;
+    fe25519    one_minus_y;
 
-    if (_crypto_sign_ed25519_small_order(ed25519_pk) ||
-        ge_frombytes_negate_vartime(&A, ed25519_pk) != 0) {
+    if (ge25519_has_small_order(ed25519_pk) != 0 ||
+        ge25519_frombytes_negate_vartime(&A, ed25519_pk) != 0 ||
+        ge25519_is_on_main_subgroup(&A) == 0) {
         return -1;
     }
-    ge_mul_l(&pl, &A);
-    if (fe_isnonzero(pl.X)) {
-        return -1;
-    }
-    fe_1(one_minus_y);
-    fe_sub(one_minus_y, one_minus_y, A.Y);
-    fe_invert(one_minus_y, one_minus_y);
-    fe_1(x);
-    fe_add(x, x, A.Y);
-    fe_mul(x, x, one_minus_y);
-    fe_tobytes(curve25519_pk, x);
+    fe25519_1(one_minus_y);
+    fe25519_sub(one_minus_y, one_minus_y, A.Y);
+    fe25519_invert(one_minus_y, one_minus_y);
+    fe25519_1(x);
+    fe25519_add(x, x, A.Y);
+    fe25519_mul(x, x, one_minus_y);
+    fe25519_tobytes(curve25519_pk, x);
 
     return 0;
 }

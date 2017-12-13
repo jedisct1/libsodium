@@ -54,8 +54,6 @@ main(void)
 
     ret = crypto_scalarmult(k, bobsk, small_order_p);
     assert(ret == -1);
-    sodium_bin2hex(hex, sizeof hex, k, crypto_scalarmult_BYTES);
-    printf("%s\n", hex);
 
     sodium_free(bobpk);
     sodium_free(alicepk);

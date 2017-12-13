@@ -25,14 +25,6 @@
 #include "runtime.h"
 #include "utils.h"
 
-#ifdef HAVE_TI_MODE
-# if defined(__SIZEOF_INT128__)
-typedef unsigned __int128 uint128_t;
-# else
-typedef unsigned uint128_t __attribute__((mode(TI)));
-# endif
-#endif
-
 static blake2b_compress_fn blake2b_compress = blake2b_compress_ref;
 
 static const uint64_t blake2b_IV[8] = {
@@ -49,13 +41,6 @@ blake2b_set_lastnode(blake2b_state *S)
     return 0;
 }
 /* LCOV_EXCL_STOP */
-#if 0
-static inline int blake2b_clear_lastnode( blake2b_state *S )
-{
-  S->f[1] = 0;
-  return 0;
-}
-#endif
 
 static inline int
 blake2b_is_lastblock(const blake2b_state *S)
@@ -72,15 +57,7 @@ blake2b_set_lastblock(blake2b_state *S)
     S->f[0] = -1;
     return 0;
 }
-#if 0
-static inline int blake2b_clear_lastblock( blake2b_state *S )
-{
-  if( S->last_node ) blake2b_clear_lastnode( S );
 
-  S->f[0] = 0;
-  return 0;
-}
-#endif
 static inline int
 blake2b_increment_counter(blake2b_state *S, const uint64_t inc)
 {
@@ -97,51 +74,6 @@ blake2b_increment_counter(blake2b_state *S, const uint64_t inc)
 }
 
 /* Parameter-related functions */
-#if 0
-/* Redundant: digest length is directly set in blake2b_init(), blake2b_init_salt_personal(),
- * blake2b_init_key() and blake2b_init_key_salt_personal() */
-static inline int blake2b_param_set_digest_length( blake2b_param *P, const uint8_t digest_length )
-{
-  P->digest_length = digest_length;
-  return 0;
-}
-
-static inline int blake2b_param_set_fanout( blake2b_param *P, const uint8_t fanout )
-{
-  P->fanout = fanout;
-  return 0;
-}
-
-static inline int blake2b_param_set_max_depth( blake2b_param *P, const uint8_t depth )
-{
-  P->depth = depth;
-  return 0;
-}
-
-static inline int blake2b_param_set_leaf_length( blake2b_param *P, const uint32_t leaf_length )
-{
-  STORE32_LE( P->leaf_length, leaf_length );
-  return 0;
-}
-
-static inline int blake2b_param_set_node_offset( blake2b_param *P, const uint64_t node_offset )
-{
-  STORE64_LE( P->node_offset, node_offset );
-  return 0;
-}
-
-static inline int blake2b_param_set_node_depth( blake2b_param *P, const uint8_t node_depth )
-{
-  P->node_depth = node_depth;
-  return 0;
-}
-
-static inline int blake2b_param_set_inner_length( blake2b_param *P, const uint8_t inner_length )
-{
-  P->inner_length = inner_length;
-  return 0;
-}
-#endif
 static inline int
 blake2b_param_set_salt(blake2b_param *P, const uint8_t salt[BLAKE2B_SALTBYTES])
 {
@@ -271,7 +203,7 @@ blake2b_init_key(blake2b_state *S, const uint8_t outlen, const void *key,
     {
         uint8_t block[BLAKE2B_BLOCKBYTES];
         memset(block, 0, BLAKE2B_BLOCKBYTES);
-        memcpy(block, key, keylen);
+        memcpy(block, key, keylen); /* keylen cannot be 0 */
         blake2b_update(S, block, BLAKE2B_BLOCKBYTES);
         sodium_memzero(block, BLAKE2B_BLOCKBYTES); /* Burn the key from stack */
     }
@@ -317,7 +249,7 @@ blake2b_init_key_salt_personal(blake2b_state *S, const uint8_t outlen,
     {
         uint8_t block[BLAKE2B_BLOCKBYTES];
         memset(block, 0, BLAKE2B_BLOCKBYTES);
-        memcpy(block, key, keylen);
+        memcpy(block, key, keylen); /* keylen cannot be 0 */
         blake2b_update(S, block, BLAKE2B_BLOCKBYTES);
         sodium_memzero(block, BLAKE2B_BLOCKBYTES); /* Burn the key from stack */
     }
@@ -357,6 +289,8 @@ blake2b_update(blake2b_state *S, const uint8_t *in, uint64_t inlen)
 int
 blake2b_final(blake2b_state *S, uint8_t *out, uint8_t outlen)
 {
+    unsigned char buffer[BLAKE2B_OUTBYTES];
+
     if (!outlen || outlen > BLAKE2B_OUTBYTES) {
         sodium_misuse();
     }
@@ -377,19 +311,17 @@ blake2b_final(blake2b_state *S, uint8_t *out, uint8_t outlen)
            2 * BLAKE2B_BLOCKBYTES - S->buflen); /* Padding */
     blake2b_compress(S, S->buf);
 
-#ifdef NATIVE_LITTLE_ENDIAN
-    memcpy(out, &S->h[0], outlen);
-#else
-    {
-        uint8_t buffer[BLAKE2B_OUTBYTES];
-        int     i;
+    COMPILER_ASSERT(sizeof buffer == 64U);
+    STORE64_LE(buffer + 8 * 0, S->h[0]);
+    STORE64_LE(buffer + 8 * 1, S->h[1]);
+    STORE64_LE(buffer + 8 * 2, S->h[2]);
+    STORE64_LE(buffer + 8 * 3, S->h[3]);
+    STORE64_LE(buffer + 8 * 4, S->h[4]);
+    STORE64_LE(buffer + 8 * 5, S->h[5]);
+    STORE64_LE(buffer + 8 * 6, S->h[6]);
+    STORE64_LE(buffer + 8 * 7, S->h[7]);
+    memcpy(out, buffer, outlen); /* outlen <= BLAKE2B_OUTBYTES (64) */
 
-        for (i = 0; i < 8; i++) { /* Output full hash to temp buffer */
-            STORE64_LE(buffer + sizeof(S->h[i]) * i, S->h[i]);
-        }
-        memcpy(out, buffer, outlen);
-    }
-#endif
     sodium_memzero(S->h, sizeof S->h);
     sodium_memzero(S->buf, sizeof S->buf);
 

@@ -28,6 +28,7 @@ main(void)
     (void) sodium_runtime_has_avx512f();
     (void) sodium_runtime_has_pclmul();
     (void) sodium_runtime_has_aesni();
+    (void) sodium_runtime_has_rdrand();
 
     sodium_set_misuse_handler(misuse_handler);
 #ifndef __EMSCRIPTEN__

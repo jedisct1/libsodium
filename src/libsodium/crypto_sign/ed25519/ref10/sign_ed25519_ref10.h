@@ -1,5 +1,5 @@
-#ifndef ed25519_ref10_H
-#define ed25519_ref10_H
+#ifndef sign_ed25519_ref10_H
+#define sign_ed25519_ref10_H
 
 void _crypto_sign_ed25519_ref10_hinit(crypto_hash_sha512_state *hs,
                                       int prehashed);
@@ -15,7 +15,4 @@ int _crypto_sign_ed25519_verify_detached(const unsigned char *sig,
                                          unsigned long long   mlen,
                                          const unsigned char *pk,
                                          int prehashed);
-
-int _crypto_sign_ed25519_small_order(const unsigned char p[32]);
-
 #endif

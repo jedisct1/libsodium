@@ -2,174 +2,50 @@
 #include <stddef.h>
 #include <stdint.h>
 
-#ifndef HAVE_TI_MODE
-
 #include "../scalarmult_curve25519.h"
-#include "private/curve25519_ref10.h"
+#include "export.h"
+#include "private/ed25519_ref10.h"
 #include "utils.h"
 #include "x25519_ref10.h"
 
 /*
-Replace (f,g) with (g,f) if b == 1;
-replace (f,g) with (f,g) if b == 0.
-
-Preconditions: b in {0,1}.
-*/
-
-static void
-fe_cswap(fe f, fe g, unsigned int b)
+ * Reject small order points early to mitigate the implications of
+ * unexpected optimizations that would affect the ref10 code.
+ * See https://eprint.iacr.org/2017/806.pdf for reference.
+ */
+static int
+has_small_order(const unsigned char s[32])
 {
-    int32_t f0 = f[0];
-    int32_t f1 = f[1];
-    int32_t f2 = f[2];
-    int32_t f3 = f[3];
-    int32_t f4 = f[4];
-    int32_t f5 = f[5];
-    int32_t f6 = f[6];
-    int32_t f7 = f[7];
-    int32_t f8 = f[8];
-    int32_t f9 = f[9];
-    int32_t g0 = g[0];
-    int32_t g1 = g[1];
-    int32_t g2 = g[2];
-    int32_t g3 = g[3];
-    int32_t g4 = g[4];
-    int32_t g5 = g[5];
-    int32_t g6 = g[6];
-    int32_t g7 = g[7];
-    int32_t g8 = g[8];
-    int32_t g9 = g[9];
-    int32_t x0 = f0 ^ g0;
-    int32_t x1 = f1 ^ g1;
-    int32_t x2 = f2 ^ g2;
-    int32_t x3 = f3 ^ g3;
-    int32_t x4 = f4 ^ g4;
-    int32_t x5 = f5 ^ g5;
-    int32_t x6 = f6 ^ g6;
-    int32_t x7 = f7 ^ g7;
-    int32_t x8 = f8 ^ g8;
-    int32_t x9 = f9 ^ g9;
+    CRYPTO_ALIGN(16)
+    static const unsigned char blacklist[][32] = {
+        { 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00 },
+        { 0x01, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00 },
+        { 0xe0, 0xeb, 0x7a, 0x7c, 0x3b, 0x41, 0xb8, 0xae, 0x16, 0x56, 0xe3, 0xfa, 0xf1, 0x9f, 0xc4, 0x6a, 0xda, 0x09, 0x8d, 0xeb, 0x9c, 0x32, 0xb1, 0xfd, 0x86, 0x62, 0x05, 0x16, 0x5f, 0x49, 0xb8, 0x00 },
+        { 0x5f, 0x9c, 0x95, 0xbc, 0xa3, 0x50, 0x8c, 0x24, 0xb1, 0xd0, 0xb1, 0x55, 0x9c, 0x83, 0xef, 0x5b, 0x04, 0x44, 0x5c, 0xc4, 0x58, 0x1c, 0x8e, 0x86, 0xd8, 0x22, 0x4e, 0xdd, 0xd0, 0x9f, 0x11, 0x57 },
+        { 0xec, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0x7f },
+        { 0xed, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0x7f },
+        { 0xee, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0x7f },
+        { 0xcd, 0xeb, 0x7a, 0x7c, 0x3b, 0x41, 0xb8, 0xae, 0x16, 0x56, 0xe3, 0xfa, 0xf1, 0x9f, 0xc4, 0x6a, 0xda, 0x09, 0x8d, 0xeb, 0x9c, 0x32, 0xb1, 0xfd, 0x86, 0x62, 0x05, 0x16, 0x5f, 0x49, 0xb8, 0x80 },
+        { 0x4c, 0x9c, 0x95, 0xbc, 0xa3, 0x50, 0x8c, 0x24, 0xb1, 0xd0, 0xb1, 0x55, 0x9c, 0x83, 0xef, 0x5b, 0x04, 0x44, 0x5c, 0xc4, 0x58, 0x1c, 0x8e, 0x86, 0xd8, 0x22, 0x4e, 0xdd, 0xd0, 0x9f, 0x11, 0xd7 },
+        { 0xd9, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff },
+        { 0xda, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff },
+        { 0xdb, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff }
+    };
+    unsigned char c[12] = { 0 };
+    unsigned int  k;
+    size_t        i, j;
 
-    b = (unsigned int)(-(int)b);
-    x0 &= b;
-    x1 &= b;
-    x2 &= b;
-    x3 &= b;
-    x4 &= b;
-    x5 &= b;
-    x6 &= b;
-    x7 &= b;
-    x8 &= b;
-    x9 &= b;
-    f[0] = f0 ^ x0;
-    f[1] = f1 ^ x1;
-    f[2] = f2 ^ x2;
-    f[3] = f3 ^ x3;
-    f[4] = f4 ^ x4;
-    f[5] = f5 ^ x5;
-    f[6] = f6 ^ x6;
-    f[7] = f7 ^ x7;
-    f[8] = f8 ^ x8;
-    f[9] = f9 ^ x9;
-    g[0] = g0 ^ x0;
-    g[1] = g1 ^ x1;
-    g[2] = g2 ^ x2;
-    g[3] = g3 ^ x3;
-    g[4] = g4 ^ x4;
-    g[5] = g5 ^ x5;
-    g[6] = g6 ^ x6;
-    g[7] = g7 ^ x7;
-    g[8] = g8 ^ x8;
-    g[9] = g9 ^ x9;
-}
-
-/*
-h = f * 121666
-Can overlap h with f.
-
-Preconditions:
-   |f| bounded by 1.1*2^26,1.1*2^25,1.1*2^26,1.1*2^25,etc.
-
-Postconditions:
-   |h| bounded by 1.1*2^25,1.1*2^24,1.1*2^25,1.1*2^24,etc.
-*/
-
-static void
-fe_mul121666(fe h, const fe f)
-{
-    int32_t f0 = f[0];
-    int32_t f1 = f[1];
-    int32_t f2 = f[2];
-    int32_t f3 = f[3];
-    int32_t f4 = f[4];
-    int32_t f5 = f[5];
-    int32_t f6 = f[6];
-    int32_t f7 = f[7];
-    int32_t f8 = f[8];
-    int32_t f9 = f[9];
-    int64_t h0 = f0 * (int64_t)121666;
-    int64_t h1 = f1 * (int64_t)121666;
-    int64_t h2 = f2 * (int64_t)121666;
-    int64_t h3 = f3 * (int64_t)121666;
-    int64_t h4 = f4 * (int64_t)121666;
-    int64_t h5 = f5 * (int64_t)121666;
-    int64_t h6 = f6 * (int64_t)121666;
-    int64_t h7 = f7 * (int64_t)121666;
-    int64_t h8 = f8 * (int64_t)121666;
-    int64_t h9 = f9 * (int64_t)121666;
-    int64_t carry0;
-    int64_t carry1;
-    int64_t carry2;
-    int64_t carry3;
-    int64_t carry4;
-    int64_t carry5;
-    int64_t carry6;
-    int64_t carry7;
-    int64_t carry8;
-    int64_t carry9;
-
-    carry9 = (h9 + ((int64_t)1 << 24)) >> 25;
-    h0 += carry9 * 19;
-    h9 -= carry9 * ((int64_t)1 << 25);
-    carry1 = (h1 + ((int64_t)1 << 24)) >> 25;
-    h2 += carry1;
-    h1 -= carry1 * ((int64_t)1 << 25);
-    carry3 = (h3 + ((int64_t)1 << 24)) >> 25;
-    h4 += carry3;
-    h3 -= carry3 * ((int64_t)1 << 25);
-    carry5 = (h5 + ((int64_t)1 << 24)) >> 25;
-    h6 += carry5;
-    h5 -= carry5 * ((int64_t)1 << 25);
-    carry7 = (h7 + ((int64_t)1 << 24)) >> 25;
-    h8 += carry7;
-    h7 -= carry7 * ((int64_t)1 << 25);
-
-    carry0 = (h0 + ((int64_t)1 << 25)) >> 26;
-    h1 += carry0;
-    h0 -= carry0 * ((int64_t)1 << 26);
-    carry2 = (h2 + ((int64_t)1 << 25)) >> 26;
-    h3 += carry2;
-    h2 -= carry2 * ((int64_t)1 << 26);
-    carry4 = (h4 + ((int64_t)1 << 25)) >> 26;
-    h5 += carry4;
-    h4 -= carry4 * ((int64_t)1 << 26);
-    carry6 = (h6 + ((int64_t)1 << 25)) >> 26;
-    h7 += carry6;
-    h6 -= carry6 * ((int64_t)1 << 26);
-    carry8 = (h8 + ((int64_t)1 << 25)) >> 26;
-    h9 += carry8;
-    h8 -= carry8 * ((int64_t)1 << 26);
-
-    h[0] = (int32_t) h0;
-    h[1] = (int32_t) h1;
-    h[2] = (int32_t) h2;
-    h[3] = (int32_t) h3;
-    h[4] = (int32_t) h4;
-    h[5] = (int32_t) h5;
-    h[6] = (int32_t) h6;
-    h[7] = (int32_t) h7;
-    h[8] = (int32_t) h8;
-    h[9] = (int32_t) h9;
+    COMPILER_ASSERT(12 == sizeof blacklist / sizeof blacklist[0]);
+    for (j = 0; j < 32; j++) {
+        for (i = 0; i < sizeof blacklist / sizeof blacklist[0]; i++) {
+            c[i] |= s[j] ^ blacklist[i][j];
+        }
+    }
+    k = 0;
+    for (i = 0; i < sizeof blacklist / sizeof blacklist[0]; i++) {
+        k |= (c[i] - 1);
+    }
+    return (int) ((k >> 8) & 1);
 }
 
 static int
@@ -177,98 +53,101 @@ crypto_scalarmult_curve25519_ref10(unsigned char *q,
                                    const unsigned char *n,
                                    const unsigned char *p)
 {
-    unsigned char e[32];
-    unsigned int  i;
-    fe            x1;
-    fe            x2;
-    fe            z2;
-    fe            x3;
-    fe            z3;
-    fe            tmp0;
-    fe            tmp1;
-    int           pos;
-    unsigned int  swap;
-    unsigned int  b;
+    unsigned char *t = q;
+    unsigned int   i;
+    fe25519        x1;
+    fe25519        x2;
+    fe25519        z2;
+    fe25519        x3;
+    fe25519        z3;
+    fe25519        tmp0;
+    fe25519        tmp1;
+    int            pos;
+    unsigned int   swap;
+    unsigned int   b;
 
-    for (i = 0; i < 32; ++i) {
-        e[i] = n[i];
+    if (has_small_order(p)) {
+        return -1;
     }
-    e[0] &= 248;
-    e[31] &= 127;
-    e[31] |= 64;
-    fe_frombytes(x1, p);
-    fe_1(x2);
-    fe_0(z2);
-    fe_copy(x3, x1);
-    fe_1(z3);
+    for (i = 0; i < 32; i++) {
+        t[i] = n[i];
+    }
+    t[0] &= 248;
+    t[31] &= 127;
+    t[31] |= 64;
+    fe25519_frombytes(x1, p);
+    fe25519_1(x2);
+    fe25519_0(z2);
+    fe25519_copy(x3, x1);
+    fe25519_1(z3);
 
     swap = 0;
     for (pos = 254; pos >= 0; --pos) {
-        b = e[pos / 8] >> (pos & 7);
+        b = t[pos / 8] >> (pos & 7);
         b &= 1;
         swap ^= b;
-        fe_cswap(x2, x3, swap);
-        fe_cswap(z2, z3, swap);
+        fe25519_cswap(x2, x3, swap);
+        fe25519_cswap(z2, z3, swap);
         swap = b;
-        fe_sub(tmp0, x3, z3);
-        fe_sub(tmp1, x2, z2);
-        fe_add(x2, x2, z2);
-        fe_add(z2, x3, z3);
-        fe_mul(z3, tmp0, x2);
-        fe_mul(z2, z2, tmp1);
-        fe_sq(tmp0, tmp1);
-        fe_sq(tmp1, x2);
-        fe_add(x3, z3, z2);
-        fe_sub(z2, z3, z2);
-        fe_mul(x2, tmp1, tmp0);
-        fe_sub(tmp1, tmp1, tmp0);
-        fe_sq(z2, z2);
-        fe_mul121666(z3, tmp1);
-        fe_sq(x3, x3);
-        fe_add(tmp0, tmp0, z3);
-        fe_mul(z3, x1, z2);
-        fe_mul(z2, tmp1, tmp0);
+        fe25519_sub(tmp0, x3, z3);
+        fe25519_sub(tmp1, x2, z2);
+        fe25519_add(x2, x2, z2);
+        fe25519_add(z2, x3, z3);
+        fe25519_mul(z3, tmp0, x2);
+        fe25519_mul(z2, z2, tmp1);
+        fe25519_sq(tmp0, tmp1);
+        fe25519_sq(tmp1, x2);
+        fe25519_add(x3, z3, z2);
+        fe25519_sub(z2, z3, z2);
+        fe25519_mul(x2, tmp1, tmp0);
+        fe25519_sub(tmp1, tmp1, tmp0);
+        fe25519_sq(z2, z2);
+        fe25519_scalar_product(z3, tmp1, 121666);
+        fe25519_sq(x3, x3);
+        fe25519_add(tmp0, tmp0, z3);
+        fe25519_mul(z3, x1, z2);
+        fe25519_mul(z2, tmp1, tmp0);
     }
-    fe_cswap(x2, x3, swap);
-    fe_cswap(z2, z3, swap);
+    fe25519_cswap(x2, x3, swap);
+    fe25519_cswap(z2, z3, swap);
 
-    fe_invert(z2, z2);
-    fe_mul(x2, x2, z2);
-    fe_tobytes(q, x2);
+    fe25519_invert(z2, z2);
+    fe25519_mul(x2, x2, z2);
+    fe25519_tobytes(q, x2);
 
     return 0;
 }
 
 static void
-edwards_to_montgomery(fe montgomeryX, const fe edwardsY, const fe edwardsZ)
+edwards_to_montgomery(fe25519 montgomeryX, const fe25519 edwardsY, const fe25519 edwardsZ)
 {
-    fe tempX;
-    fe tempZ;
+    fe25519 tempX;
+    fe25519 tempZ;
 
-    fe_add(tempX, edwardsZ, edwardsY);
-    fe_sub(tempZ, edwardsZ, edwardsY);
-    fe_invert(tempZ, tempZ);
-    fe_mul(montgomeryX, tempX, tempZ);
+    fe25519_add(tempX, edwardsZ, edwardsY);
+    fe25519_sub(tempZ, edwardsZ, edwardsY);
+    fe25519_invert(tempZ, tempZ);
+    fe25519_mul(montgomeryX, tempX, tempZ);
 }
 
 static int
 crypto_scalarmult_curve25519_ref10_base(unsigned char *q,
                                         const unsigned char *n)
 {
-    unsigned char e[32];
-    ge_p3         A;
-    fe            pk;
-    unsigned int  i;
+    unsigned char *t = q;
+    ge25519_p3     A;
+    fe25519        pk;
+    unsigned int   i;
 
-    for (i = 0; i < 32; ++i) {
-        e[i] = n[i];
+    for (i = 0; i < 32; i++) {
+        t[i] = n[i];
     }
-    e[0] &= 248;
-    e[31] &= 127;
-    e[31] |= 64;
-    ge_scalarmult_base(&A, e);
+    t[0] &= 248;
+    t[31] &= 127;
+    t[31] |= 64;
+    ge25519_scalarmult_base(&A, t);
     edwards_to_montgomery(pk, A.Y, A.Z);
-    fe_tobytes(q, pk);
+    fe25519_tobytes(q, pk);
 
     return 0;
 }
@@ -278,5 +157,3 @@ struct crypto_scalarmult_curve25519_implementation
         SODIUM_C99(.mult =) crypto_scalarmult_curve25519_ref10,
         SODIUM_C99(.mult_base =) crypto_scalarmult_curve25519_ref10_base
     };
-
-#endif

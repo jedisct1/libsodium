@@ -28,7 +28,13 @@
 #include "runtime.h"
 
 #if !defined(MAP_ANON) && defined(MAP_ANONYMOUS)
-#define MAP_ANON MAP_ANONYMOUS
+# define MAP_ANON MAP_ANONYMOUS
+#endif
+#ifndef MAP_NOCORE
+# define MAP_NOCORE 0
+#endif
+#ifndef MAP_POPULATE
+# define MAP_POPULATE 0
 #endif
 
 void *
@@ -37,13 +43,10 @@ alloc_region(escrypt_region_t *region, size_t size)
     uint8_t *base, *aligned;
 #if defined(MAP_ANON) && defined(HAVE_MMAP)
     if ((base = (uint8_t *) mmap(NULL, size, PROT_READ | PROT_WRITE,
-#ifdef MAP_NOCORE
-                                 MAP_ANON | MAP_PRIVATE | MAP_NOCORE,
-#else
-                                 MAP_ANON | MAP_PRIVATE,
-#endif
-                                 -1, 0)) == MAP_FAILED)
+                                 MAP_ANON | MAP_PRIVATE | MAP_NOCORE | MAP_POPULATE,
+                                 -1, 0)) == MAP_FAILED) {
         base = NULL; /* LCOV_EXCL_LINE */
+    }                /* LCOV_EXCL_LINE */
     aligned  = base;
 #elif defined(HAVE_POSIX_MEMALIGN)
     if ((errno = posix_memalign((void **) &base, 64, size)) != 0) {

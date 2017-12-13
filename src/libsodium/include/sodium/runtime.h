@@ -38,6 +38,9 @@ int sodium_runtime_has_pclmul(void);
 SODIUM_EXPORT_WEAK
 int sodium_runtime_has_aesni(void);
 
+SODIUM_EXPORT_WEAK
+int sodium_runtime_has_rdrand(void);
+
 /* ------------------------------------------------------------------------- */
 
 int _sodium_runtime_get_cpu_features(void);

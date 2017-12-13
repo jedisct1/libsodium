@@ -3,8 +3,8 @@
 
 #include "crypto_hash_sha512.h"
 #include "crypto_sign_ed25519.h"
-#include "ed25519_ref10.h"
-#include "private/curve25519_ref10.h"
+#include "sign_ed25519_ref10.h"
+#include "private/ed25519_ref10.h"
 #include "randombytes.h"
 #include "utils.h"
 
@@ -28,7 +28,7 @@ static inline void
 _crypto_sign_ed25519_clamp(unsigned char k[32])
 {
     k[0] &= 248;
-    k[31] &= 63;
+    k[31] &= 127;
     k[31] |= 64;
 }
 
@@ -70,7 +70,7 @@ _crypto_sign_ed25519_detached(unsigned char *sig, unsigned long long *siglen_p,
     unsigned char            az[64];
     unsigned char            nonce[64];
     unsigned char            hram[64];
-    ge_p3                    R;
+    ge25519_p3               R;
 
     _crypto_sign_ed25519_ref10_hinit(&hs, prehashed);
 
@@ -87,18 +87,18 @@ _crypto_sign_ed25519_detached(unsigned char *sig, unsigned long long *siglen_p,
 
     memmove(sig + 32, sk + 32, 32);
 
-    sc_reduce(nonce);
-    ge_scalarmult_base(&R, nonce);
-    ge_p3_tobytes(sig, &R);
+    sc25519_reduce(nonce);
+    ge25519_scalarmult_base(&R, nonce);
+    ge25519_p3_tobytes(sig, &R);
 
     _crypto_sign_ed25519_ref10_hinit(&hs, prehashed);
     crypto_hash_sha512_update(&hs, sig, 64);
     crypto_hash_sha512_update(&hs, m, mlen);
     crypto_hash_sha512_final(&hs, hram);
 
-    sc_reduce(hram);
+    sc25519_reduce(hram);
     _crypto_sign_ed25519_clamp(az);
-    sc_muladd(sig + 32, hram, az, nonce);
+    sc25519_muladd(sig + 32, hram, az, nonce);
 
     sodium_memzero(az, sizeof az);
     sodium_memzero(nonce, sizeof nonce);

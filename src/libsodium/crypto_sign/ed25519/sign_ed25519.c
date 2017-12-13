@@ -3,7 +3,7 @@
 
 #include "crypto_hash_sha512.h"
 #include "crypto_sign_ed25519.h"
-#include "ref10/ed25519_ref10.h"
+#include "ref10/sign_ed25519_ref10.h"
 
 size_t
 crypto_sign_ed25519ph_statebytes(void)

@@ -291,6 +291,7 @@ tv_secretbox_xchacha20poly1305(void)
     assert(crypto_secretbox_xchacha20poly1305_keybytes() == crypto_secretbox_xchacha20poly1305_KEYBYTES);
     assert(crypto_secretbox_xchacha20poly1305_noncebytes() == crypto_secretbox_xchacha20poly1305_NONCEBYTES);
     assert(crypto_secretbox_xchacha20poly1305_macbytes() == crypto_secretbox_xchacha20poly1305_MACBYTES);
+    assert(crypto_secretbox_xchacha20poly1305_messagebytes_max() == crypto_secretbox_xchacha20poly1305_MESSAGEBYTES_MAX);
 
     printf("tv_secretbox_xchacha20: ok\n");
 }

@@ -94,8 +94,10 @@ host_triplet = @host@
 check_PROGRAMS = $(am__EXEEXT_3)
 TESTS = $(am__EXEEXT_3)
 @MINIMAL_FALSE@am__append_2 = \
+@MINIMAL_FALSE@	core_ed25519 \
 @MINIMAL_FALSE@	pwhash_scrypt \
 @MINIMAL_FALSE@	pwhash_scrypt_ll \
+@MINIMAL_FALSE@	scalarmult_ed25519 \
 @MINIMAL_FALSE@	siphashx24 \
 @MINIMAL_FALSE@	xchacha20
 
@@ -106,7 +108,7 @@ am__aclocal_m4_deps = $(top_srcdir)/m4/ax_check_catchable_abrt.m4 \
 	$(top_srcdir)/m4/ax_check_compile_flag.m4 \
 	$(top_srcdir)/m4/ax_check_define.m4 \
 	$(top_srcdir)/m4/ax_check_link_flag.m4 \
-	$(top_srcdir)/m4/ax_pthread.m4 \
+	$(top_srcdir)/m4/ax_pthread.m4 $(top_srcdir)/m4/ax_tls.m4 \
 	$(top_srcdir)/m4/ax_valgrind_check.m4 \
 	$(top_srcdir)/m4/ld-output-def.m4 $(top_srcdir)/m4/libtool.m4 \
 	$(top_srcdir)/m4/ltoptions.m4 $(top_srcdir)/m4/ltsugar.m4 \
@@ -121,8 +123,10 @@ CONFIG_CLEAN_VPATH_FILES =
 @EMSCRIPTEN_FALSE@@NATIVECLIENT_FALSE@am__EXEEXT_1 =  \
 @EMSCRIPTEN_FALSE@@NATIVECLIENT_FALSE@	sodium_utils2$(EXEEXT) \
 @EMSCRIPTEN_FALSE@@NATIVECLIENT_FALSE@	sodium_utils3$(EXEEXT)
-@MINIMAL_FALSE@am__EXEEXT_2 = pwhash_scrypt$(EXEEXT) \
-@MINIMAL_FALSE@	pwhash_scrypt_ll$(EXEEXT) siphashx24$(EXEEXT) \
+@MINIMAL_FALSE@am__EXEEXT_2 = core_ed25519$(EXEEXT) \
+@MINIMAL_FALSE@	pwhash_scrypt$(EXEEXT) \
+@MINIMAL_FALSE@	pwhash_scrypt_ll$(EXEEXT) \
+@MINIMAL_FALSE@	scalarmult_ed25519$(EXEEXT) siphashx24$(EXEEXT) \
 @MINIMAL_FALSE@	xchacha20$(EXEEXT)
 am__EXEEXT_3 = aead_aes256gcm$(EXEEXT) aead_chacha20poly1305$(EXEEXT) \
 	aead_xchacha20poly1305$(EXEEXT) auth$(EXEEXT) auth2$(EXEEXT) \
@@ -226,6 +230,9 @@ core5_DEPENDENCIES = $(TESTS_LDADD)
 core6_SOURCES = core6.c
 core6_OBJECTS = core6.$(OBJEXT)
 core6_DEPENDENCIES = $(TESTS_LDADD)
+core_ed25519_SOURCES = core_ed25519.c
+core_ed25519_OBJECTS = core_ed25519.$(OBJEXT)
+core_ed25519_DEPENDENCIES = $(TESTS_LDADD)
 ed25519_convert_SOURCES = ed25519_convert.c
 ed25519_convert_OBJECTS = ed25519_convert.$(OBJEXT)
 ed25519_convert_DEPENDENCIES = $(TESTS_LDADD)
@@ -298,6 +305,9 @@ scalarmult6_DEPENDENCIES = $(TESTS_LDADD)
 scalarmult7_SOURCES = scalarmult7.c
 scalarmult7_OBJECTS = scalarmult7.$(OBJEXT)
 scalarmult7_DEPENDENCIES = $(TESTS_LDADD)
+scalarmult_ed25519_SOURCES = scalarmult_ed25519.c
+scalarmult_ed25519_OBJECTS = scalarmult_ed25519.$(OBJEXT)
+scalarmult_ed25519_DEPENDENCIES = $(TESTS_LDADD)
 secretbox_SOURCES = secretbox.c
 secretbox_OBJECTS = secretbox.$(OBJEXT)
 secretbox_DEPENDENCIES = $(TESTS_LDADD)
@@ -399,34 +409,34 @@ SOURCES = aead_aes256gcm.c aead_chacha20poly1305.c \
 	aead_xchacha20poly1305.c auth.c auth2.c auth3.c auth5.c \
 	auth6.c auth7.c box.c box2.c box7.c box8.c box_easy.c \
 	box_easy2.c box_seal.c box_seed.c chacha20.c codecs.c core1.c \
-	core2.c core3.c core4.c core5.c core6.c ed25519_convert.c \
-	generichash.c generichash2.c generichash3.c hash.c hash3.c \
-	kdf.c keygen.c kx.c metamorphic.c misuse.c onetimeauth.c \
-	onetimeauth2.c onetimeauth7.c pwhash_argon2i.c \
+	core2.c core3.c core4.c core5.c core6.c core_ed25519.c \
+	ed25519_convert.c generichash.c generichash2.c generichash3.c \
+	hash.c hash3.c kdf.c keygen.c kx.c metamorphic.c misuse.c \
+	onetimeauth.c onetimeauth2.c onetimeauth7.c pwhash_argon2i.c \
 	pwhash_argon2id.c pwhash_scrypt.c pwhash_scrypt_ll.c \
 	randombytes.c scalarmult.c scalarmult2.c scalarmult5.c \
-	scalarmult6.c scalarmult7.c secretbox.c secretbox2.c \
-	secretbox7.c secretbox8.c secretbox_easy.c secretbox_easy2.c \
-	secretstream.c shorthash.c sign.c siphashx24.c sodium_core.c \
-	sodium_utils.c sodium_utils2.c sodium_utils3.c \
-	sodium_version.c stream.c stream2.c stream3.c stream4.c \
-	verify1.c xchacha20.c
+	scalarmult6.c scalarmult7.c scalarmult_ed25519.c secretbox.c \
+	secretbox2.c secretbox7.c secretbox8.c secretbox_easy.c \
+	secretbox_easy2.c secretstream.c shorthash.c sign.c \
+	siphashx24.c sodium_core.c sodium_utils.c sodium_utils2.c \
+	sodium_utils3.c sodium_version.c stream.c stream2.c stream3.c \
+	stream4.c verify1.c xchacha20.c
 DIST_SOURCES = aead_aes256gcm.c aead_chacha20poly1305.c \
 	aead_xchacha20poly1305.c auth.c auth2.c auth3.c auth5.c \
 	auth6.c auth7.c box.c box2.c box7.c box8.c box_easy.c \
 	box_easy2.c box_seal.c box_seed.c chacha20.c codecs.c core1.c \
-	core2.c core3.c core4.c core5.c core6.c ed25519_convert.c \
-	generichash.c generichash2.c generichash3.c hash.c hash3.c \
-	kdf.c keygen.c kx.c metamorphic.c misuse.c onetimeauth.c \
-	onetimeauth2.c onetimeauth7.c pwhash_argon2i.c \
+	core2.c core3.c core4.c core5.c core6.c core_ed25519.c \
+	ed25519_convert.c generichash.c generichash2.c generichash3.c \
+	hash.c hash3.c kdf.c keygen.c kx.c metamorphic.c misuse.c \
+	onetimeauth.c onetimeauth2.c onetimeauth7.c pwhash_argon2i.c \
 	pwhash_argon2id.c pwhash_scrypt.c pwhash_scrypt_ll.c \
 	randombytes.c scalarmult.c scalarmult2.c scalarmult5.c \
-	scalarmult6.c scalarmult7.c secretbox.c secretbox2.c \
-	secretbox7.c secretbox8.c secretbox_easy.c secretbox_easy2.c \
-	secretstream.c shorthash.c sign.c siphashx24.c sodium_core.c \
-	sodium_utils.c sodium_utils2.c sodium_utils3.c \
-	sodium_version.c stream.c stream2.c stream3.c stream4.c \
-	verify1.c xchacha20.c
+	scalarmult6.c scalarmult7.c scalarmult_ed25519.c secretbox.c \
+	secretbox2.c secretbox7.c secretbox8.c secretbox_easy.c \
+	secretbox_easy2.c secretstream.c shorthash.c sign.c \
+	siphashx24.c sodium_core.c sodium_utils.c sodium_utils2.c \
+	sodium_utils3.c sodium_version.c stream.c stream2.c stream3.c \
+	stream4.c verify1.c xchacha20.c
 am__can_run_installinfo = \
   case $$AM_UPDATE_INFO_DIR in \
     n|no|NO) false;; \
@@ -660,6 +670,7 @@ am__DIST_COMMON = $(srcdir)/Makefile.in \
 	$(top_srcdir)/build-aux/test-driver
 DISTFILES = $(DIST_COMMON) $(DIST_SOURCES) $(TEXINFOS) $(EXTRA_DIST)
 ACLOCAL = @ACLOCAL@
+ALLOCA = @ALLOCA@
 AMTAR = @AMTAR@
 AM_DEFAULT_VERBOSITY = @AM_DEFAULT_VERBOSITY@
 AR = @AR@
@@ -680,6 +691,7 @@ CFLAGS_AVX2 = @CFLAGS_AVX2@
 CFLAGS_AVX512F = @CFLAGS_AVX512F@
 CFLAGS_MMX = @CFLAGS_MMX@
 CFLAGS_PCLMUL = @CFLAGS_PCLMUL@
+CFLAGS_RDRAND = @CFLAGS_RDRAND@
 CFLAGS_SSE2 = @CFLAGS_SSE2@
 CFLAGS_SSE3 = @CFLAGS_SSE3@
 CFLAGS_SSE41 = @CFLAGS_SSE41@
@@ -839,6 +851,7 @@ EXTRA_DIST = \
 	box_seed.exp \
 	chacha20.exp \
 	codecs.exp \
+	core_ed25519.exp \
 	core1.exp \
 	core2.exp \
 	core3.exp \
@@ -866,6 +879,7 @@ EXTRA_DIST = \
 	pwhash_scrypt_ll.exp \
 	randombytes.exp \
 	scalarmult.exp \
+	scalarmult_ed25519.exp \
 	scalarmult2.exp \
 	scalarmult5.exp \
 	scalarmult6.exp \
@@ -912,6 +926,7 @@ DISTCLEANFILES = \
 	box_seed.res \
 	chacha20.res \
 	codecs.res \
+	core_ed25519.res \
 	core1.res \
 	core2.res \
 	core3.res \
@@ -939,6 +954,7 @@ DISTCLEANFILES = \
 	pwhash_scrypt_ll.res \
 	randombytes.res \
 	scalarmult.res \
+	scalarmult_ed25519.res \
 	scalarmult2.res \
 	scalarmult5.res \
 	scalarmult6.res \
@@ -985,6 +1001,7 @@ DISTCLEANFILES = \
 @NATIVECLIENT_TRUE@	box_seed.final \
 @NATIVECLIENT_TRUE@	chacha20.final \
 @NATIVECLIENT_TRUE@	codecs.final \
+@NATIVECLIENT_TRUE@	core_ed25519.final \
 @NATIVECLIENT_TRUE@	core1.final \
 @NATIVECLIENT_TRUE@	core2.final \
 @NATIVECLIENT_TRUE@	core3.final \
@@ -1012,6 +1029,7 @@ DISTCLEANFILES = \
 @NATIVECLIENT_TRUE@	pwhash_scrypt_ll.final \
 @NATIVECLIENT_TRUE@	randombytes.final \
 @NATIVECLIENT_TRUE@	scalarmult.final \
+@NATIVECLIENT_TRUE@	scalarmult_ed25519.final \
 @NATIVECLIENT_TRUE@	scalarmult2.final \
 @NATIVECLIENT_TRUE@	scalarmult5.final \
 @NATIVECLIENT_TRUE@	scalarmult6.final \
@@ -1054,6 +1072,7 @@ DISTCLEANFILES = \
 @NATIVECLIENT_TRUE@	box_seed.nexe \
 @NATIVECLIENT_TRUE@	chacha20.nexe \
 @NATIVECLIENT_TRUE@	codecs.nexe \
+@NATIVECLIENT_TRUE@	core_ed25519.nexe \
 @NATIVECLIENT_TRUE@	core1.nexe \
 @NATIVECLIENT_TRUE@	core2.nexe \
 @NATIVECLIENT_TRUE@	core3.nexe \
@@ -1081,6 +1100,7 @@ DISTCLEANFILES = \
 @NATIVECLIENT_TRUE@	pwhash_scrypt_ll.nexe \
 @NATIVECLIENT_TRUE@	randombytes.nexe \
 @NATIVECLIENT_TRUE@	scalarmult.nexe \
+@NATIVECLIENT_TRUE@	scalarmult_ed25519.nexe \
 @NATIVECLIENT_TRUE@	scalarmult2.nexe \
 @NATIVECLIENT_TRUE@	scalarmult5.nexe \
 @NATIVECLIENT_TRUE@	scalarmult6.nexe \
@@ -1167,6 +1187,8 @@ chacha20_SOURCE = cmptest.h chacha20.c
 chacha20_LDADD = $(TESTS_LDADD)
 codecs_SOURCE = cmptest.h codecs.c
 codecs_LDADD = $(TESTS_LDADD)
+core_ed25519_SOURCE = cmptest.h core_ed25519.c
+core_ed25519_LDADD = $(TESTS_LDADD)
 core1_SOURCE = cmptest.h core1.c
 core1_LDADD = $(TESTS_LDADD)
 core2_SOURCE = cmptest.h core2.c
@@ -1219,6 +1241,8 @@ randombytes_SOURCE = cmptest.h randombytes.c
 randombytes_LDADD = $(TESTS_LDADD)
 scalarmult_SOURCE = cmptest.h scalarmult.c
 scalarmult_LDADD = $(TESTS_LDADD)
+scalarmult_ed25519_SOURCE = cmptest.h scalarmult_ed25519.c
+scalarmult_ed25519_LDADD = $(TESTS_LDADD)
 scalarmult2_SOURCE = cmptest.h scalarmult2.c
 scalarmult2_LDADD = $(TESTS_LDADD)
 scalarmult5_SOURCE = cmptest.h scalarmult5.c
@@ -1413,6 +1437,10 @@ core6$(EXEEXT): $(core6_OBJECTS) $(core6_DEPENDENCIES) $(EXTRA_core6_DEPENDENCIE
 	@rm -f core6$(EXEEXT)
 	$(AM_V_CCLD)$(LINK) $(core6_OBJECTS) $(core6_LDADD) $(LIBS)
 
+core_ed25519$(EXEEXT): $(core_ed25519_OBJECTS) $(core_ed25519_DEPENDENCIES) $(EXTRA_core_ed25519_DEPENDENCIES) 
+	@rm -f core_ed25519$(EXEEXT)
+	$(AM_V_CCLD)$(LINK) $(core_ed25519_OBJECTS) $(core_ed25519_LDADD) $(LIBS)
+
 ed25519_convert$(EXEEXT): $(ed25519_convert_OBJECTS) $(ed25519_convert_DEPENDENCIES) $(EXTRA_ed25519_convert_DEPENDENCIES) 
 	@rm -f ed25519_convert$(EXEEXT)
 	$(AM_V_CCLD)$(LINK) $(ed25519_convert_OBJECTS) $(ed25519_convert_LDADD) $(LIBS)
@@ -1508,6 +1536,10 @@ scalarmult6$(EXEEXT): $(scalarmult6_OBJECTS) $(scalarmult6_DEPENDENCIES) $(EXTRA
 scalarmult7$(EXEEXT): $(scalarmult7_OBJECTS) $(scalarmult7_DEPENDENCIES) $(EXTRA_scalarmult7_DEPENDENCIES) 
 	@rm -f scalarmult7$(EXEEXT)
 	$(AM_V_CCLD)$(LINK) $(scalarmult7_OBJECTS) $(scalarmult7_LDADD) $(LIBS)
+
+scalarmult_ed25519$(EXEEXT): $(scalarmult_ed25519_OBJECTS) $(scalarmult_ed25519_DEPENDENCIES) $(EXTRA_scalarmult_ed25519_DEPENDENCIES) 
+	@rm -f scalarmult_ed25519$(EXEEXT)
+	$(AM_V_CCLD)$(LINK) $(scalarmult_ed25519_OBJECTS) $(scalarmult_ed25519_LDADD) $(LIBS)
 
 secretbox$(EXEEXT): $(secretbox_OBJECTS) $(secretbox_DEPENDENCIES) $(EXTRA_secretbox_DEPENDENCIES) 
 	@rm -f secretbox$(EXEEXT)
@@ -1624,6 +1656,7 @@ distclean-compile:
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/core4.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/core5.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/core6.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/core_ed25519.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/ed25519_convert.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/generichash.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/generichash2.Po@am__quote@
@@ -1648,6 +1681,7 @@ distclean-compile:
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/scalarmult5.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/scalarmult6.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/scalarmult7.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/scalarmult_ed25519.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/secretbox.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/secretbox2.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/secretbox7.Po@am__quote@
@@ -2355,6 +2389,13 @@ sodium_utils3.log: sodium_utils3$(EXEEXT)
 	--log-file $$b.log --trs-file $$b.trs \
 	$(am__common_driver_flags) $(AM_LOG_DRIVER_FLAGS) $(LOG_DRIVER_FLAGS) -- $(LOG_COMPILE) \
 	"$$tst" $(AM_TESTS_FD_REDIRECT)
+core_ed25519.log: core_ed25519$(EXEEXT)
+	@p='core_ed25519$(EXEEXT)'; \
+	b='core_ed25519'; \
+	$(am__check_pre) $(LOG_DRIVER) --test-name "$$f" \
+	--log-file $$b.log --trs-file $$b.trs \
+	$(am__common_driver_flags) $(AM_LOG_DRIVER_FLAGS) $(LOG_DRIVER_FLAGS) -- $(LOG_COMPILE) \
+	"$$tst" $(AM_TESTS_FD_REDIRECT)
 pwhash_scrypt.log: pwhash_scrypt$(EXEEXT)
 	@p='pwhash_scrypt$(EXEEXT)'; \
 	b='pwhash_scrypt'; \
@@ -2365,6 +2406,13 @@ pwhash_scrypt.log: pwhash_scrypt$(EXEEXT)
 pwhash_scrypt_ll.log: pwhash_scrypt_ll$(EXEEXT)
 	@p='pwhash_scrypt_ll$(EXEEXT)'; \
 	b='pwhash_scrypt_ll'; \
+	$(am__check_pre) $(LOG_DRIVER) --test-name "$$f" \
+	--log-file $$b.log --trs-file $$b.trs \
+	$(am__common_driver_flags) $(AM_LOG_DRIVER_FLAGS) $(LOG_DRIVER_FLAGS) -- $(LOG_COMPILE) \
+	"$$tst" $(AM_TESTS_FD_REDIRECT)
+scalarmult_ed25519.log: scalarmult_ed25519$(EXEEXT)
+	@p='scalarmult_ed25519$(EXEEXT)'; \
+	b='scalarmult_ed25519'; \
 	$(am__check_pre) $(LOG_DRIVER) --test-name "$$f" \
 	--log-file $$b.log --trs-file $$b.trs \
 	$(am__common_driver_flags) $(AM_LOG_DRIVER_FLAGS) $(LOG_DRIVER_FLAGS) -- $(LOG_COMPILE) \

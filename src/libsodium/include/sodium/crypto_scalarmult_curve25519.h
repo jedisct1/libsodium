@@ -17,6 +17,14 @@ size_t crypto_scalarmult_curve25519_bytes(void);
 SODIUM_EXPORT
 size_t crypto_scalarmult_curve25519_scalarbytes(void);
 
+/*
+ * NOTE: Do not use the result of this function directly.
+ *
+ * Hash the result with the public keys in order to compute a shared
+ * secret key: H(q || client_pk || server_pk)
+ *
+ * Or unless this is not an option, use the crypto_kx() API instead.
+ */
 SODIUM_EXPORT
 int crypto_scalarmult_curve25519(unsigned char *q, const unsigned char *n,
                                  const unsigned char *p)

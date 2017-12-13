@@ -171,6 +171,9 @@
     <ClCompile Include="..\..\..\..\src\libsodium\crypto_scalarmult\crypto_scalarmult.c">
       <Filter>crypto_scalarmult</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\..\..\src\libsodium\crypto_scalarmult\ed25519\ref10\scalarmult_ed25519_ref10.c">
+      <Filter>crypto_scalarmult\ed25519\ref10</Filter>
+    </ClCompile>
     <ClCompile Include="..\..\..\..\src\libsodium\crypto_scalarmult\curve25519\scalarmult_curve25519.c">
       <Filter>crypto_scalarmult\curve25519</Filter>
     </ClCompile>
@@ -182,9 +185,6 @@
     </ClCompile>
     <ClCompile Include="..\..\..\..\src\libsodium\crypto_scalarmult\curve25519\sandy2x\fe51_invert.c">
       <Filter>crypto_scalarmult\curve25519\sandy2x</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\..\..\src\libsodium\crypto_scalarmult\curve25519\donna_c64\curve25519_donna_c64.c">
-      <Filter>crypto_scalarmult\curve25519\donna_c64</Filter>
     </ClCompile>
     <ClCompile Include="..\..\..\..\src\libsodium\crypto_scalarmult\curve25519\ref10\x25519_ref10.c">
       <Filter>crypto_scalarmult\curve25519\ref10</Filter>
@@ -333,8 +333,11 @@
     <ClCompile Include="..\..\..\..\src\libsodium\crypto_core\hsalsa20\ref2\core_hsalsa20_ref2.c">
       <Filter>crypto_core\hsalsa20\ref2</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\..\..\src\libsodium\crypto_core\curve25519\ref10\curve25519_ref10.c">
-      <Filter>crypto_core\curve25519\ref10</Filter>
+    <ClCompile Include="..\..\..\..\src\libsodium\crypto_core\ed25519\core_ed25519.c">
+      <Filter>crypto_core\ed25519</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\src\libsodium\crypto_core\ed25519\ref10\ed25519_ref10.c">
+      <Filter>crypto_core\ed25519\ref10</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -359,7 +362,7 @@
     <ClInclude Include="..\..\..\..\src\libsodium\crypto_generichash\blake2b\ref\blake2b-compress-sse41.h">
       <Filter>crypto_generichash\blake2b\ref</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\..\..\src\libsodium\crypto_sign\ed25519\ref10\ed25519_ref10.h">
+    <ClInclude Include="..\..\..\..\src\libsodium\crypto_sign\ed25519\ref10\sign_ed25519_ref10.h">
       <Filter>crypto_sign\ed25519\ref10</Filter>
     </ClInclude>
     <ClInclude Include="..\..\..\..\src\libsodium\include\sodium.h">
@@ -381,9 +384,6 @@
       <Filter>include\sodium</Filter>
     </ClInclude>
     <ClInclude Include="..\..\..\..\src\libsodium\include\sodium\core.h">
-      <Filter>include\sodium</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\..\src\libsodium\include\sodium\version.h">
       <Filter>include\sodium</Filter>
     </ClInclude>
     <ClInclude Include="..\..\..\..\src\libsodium\include\sodium\export.h">
@@ -521,6 +521,9 @@
     <ClInclude Include="..\..\..\..\src\libsodium\include\sodium\crypto_box_curve25519xchacha20poly1305.h">
       <Filter>include\sodium</Filter>
     </ClInclude>
+    <ClInclude Include="..\..\..\..\src\libsodium\include\sodium\crypto_core_ed25519.h">
+      <Filter>include\sodium</Filter>
+    </ClInclude>
     <ClInclude Include="..\..\..\..\src\libsodium\include\sodium\crypto_pwhash_argon2i.h">
       <Filter>include\sodium</Filter>
     </ClInclude>
@@ -533,6 +536,9 @@
     <ClInclude Include="..\..\..\..\src\libsodium\include\sodium\crypto_secretbox.h">
       <Filter>include\sodium</Filter>
     </ClInclude>
+    <ClInclude Include="..\..\..\..\src\libsodium\include\sodium\crypto_scalarmult_ed25519.h">
+      <Filter>include\sodium</Filter>
+    </ClInclude>
     <ClInclude Include="..\..\..\..\src\libsodium\include\sodium\crypto_box_curve25519xsalsa20poly1305.h">
       <Filter>include\sodium</Filter>
     </ClInclude>
@@ -542,7 +548,13 @@
     <ClInclude Include="..\..\..\..\src\libsodium\include\sodium\crypto_sign_edwards25519sha512batch.h">
       <Filter>include\sodium</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\..\..\src\libsodium\include\sodium\private\curve25519_ref10.h">
+    <ClInclude Include="..\..\..\..\src\libsodium\include\sodium\private\ed25519_ref10.h">
+      <Filter>include\sodium\private</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\src\libsodium\include\sodium\private\ed25519_ref10_fe_25_5.h">
+      <Filter>include\sodium\private</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\src\libsodium\include\sodium\private\ed25519_ref10_fe_51.h">
       <Filter>include\sodium\private</Filter>
     </ClInclude>
     <ClInclude Include="..\..\..\..\src\libsodium\include\sodium\private\sse2_64_32.h">
@@ -620,9 +632,6 @@
     <ClInclude Include="..\..\..\..\src\libsodium\crypto_scalarmult\curve25519\sandy2x\ladder_base.h">
       <Filter>crypto_scalarmult\curve25519\sandy2x</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\..\..\src\libsodium\crypto_scalarmult\curve25519\donna_c64\curve25519_donna_c64.h">
-      <Filter>crypto_scalarmult\curve25519\donna_c64</Filter>
-    </ClInclude>
     <ClInclude Include="..\..\..\..\src\libsodium\crypto_scalarmult\curve25519\ref10\x25519_ref10.h">
       <Filter>crypto_scalarmult\curve25519\ref10</Filter>
     </ClInclude>
@@ -692,11 +701,29 @@
     <ClInclude Include="..\..\..\..\src\libsodium\crypto_stream\salsa20\xmm6\salsa20_xmm6.h">
       <Filter>crypto_stream\salsa20\xmm6</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\..\..\src\libsodium\crypto_core\curve25519\ref10\base2.h">
-      <Filter>crypto_core\curve25519\ref10</Filter>
+    <ClInclude Include="..\..\..\..\src\libsodium\crypto_core\ed25519\ref10\fe_25_5\constants.h">
+      <Filter>crypto_core\ed25519\ref10\fe_25_5</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\..\..\src\libsodium\crypto_core\curve25519\ref10\base.h">
-      <Filter>crypto_core\curve25519\ref10</Filter>
+    <ClInclude Include="..\..\..\..\src\libsodium\crypto_core\ed25519\ref10\fe_25_5\fe.h">
+      <Filter>crypto_core\ed25519\ref10\fe_25_5</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\src\libsodium\crypto_core\ed25519\ref10\fe_25_5\base2.h">
+      <Filter>crypto_core\ed25519\ref10\fe_25_5</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\src\libsodium\crypto_core\ed25519\ref10\fe_25_5\base.h">
+      <Filter>crypto_core\ed25519\ref10\fe_25_5</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\src\libsodium\crypto_core\ed25519\ref10\fe_51\constants.h">
+      <Filter>crypto_core\ed25519\ref10\fe_51</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\src\libsodium\crypto_core\ed25519\ref10\fe_51\fe.h">
+      <Filter>crypto_core\ed25519\ref10\fe_51</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\src\libsodium\crypto_core\ed25519\ref10\fe_51\base2.h">
+      <Filter>crypto_core\ed25519\ref10\fe_51</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\src\libsodium\crypto_core\ed25519\ref10\fe_51\base.h">
+      <Filter>crypto_core\ed25519\ref10\fe_51</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -745,11 +772,17 @@
     <Filter Include="crypto_core">
       <UniqueIdentifier>{73194d5d-588a-342f-bee6-f28b4486f20b}</UniqueIdentifier>
     </Filter>
-    <Filter Include="crypto_core\curve25519">
-      <UniqueIdentifier>{028a752d-1880-3283-9acb-79a5d3162d12}</UniqueIdentifier>
+    <Filter Include="crypto_core\ed25519">
+      <UniqueIdentifier>{7c5e6f81-e4ce-3018-a776-a1f125072d73}</UniqueIdentifier>
     </Filter>
-    <Filter Include="crypto_core\curve25519\ref10">
-      <UniqueIdentifier>{ff5842af-bbd1-3a87-9939-c36522a38fb8}</UniqueIdentifier>
+    <Filter Include="crypto_core\ed25519\ref10">
+      <UniqueIdentifier>{76990c08-d692-367f-b286-c728a8cad6bf}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="crypto_core\ed25519\ref10\fe_25_5">
+      <UniqueIdentifier>{bf04f786-7862-3bde-aeba-ed82ee59ca22}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="crypto_core\ed25519\ref10\fe_51">
+      <UniqueIdentifier>{98b6126a-3725-3707-a4cc-ff3af657cba0}</UniqueIdentifier>
     </Filter>
     <Filter Include="crypto_core\hchacha20">
       <UniqueIdentifier>{8b704d11-af1f-30c0-9981-479da6d88dc3}</UniqueIdentifier>
@@ -832,14 +865,17 @@
     <Filter Include="crypto_scalarmult\curve25519">
       <UniqueIdentifier>{77f5a2e9-2ef1-3a72-b63c-88e8e4b92678}</UniqueIdentifier>
     </Filter>
-    <Filter Include="crypto_scalarmult\curve25519\donna_c64">
-      <UniqueIdentifier>{efbb62f1-d4cc-3dc6-b73b-aa1b1379f7a8}</UniqueIdentifier>
-    </Filter>
     <Filter Include="crypto_scalarmult\curve25519\ref10">
       <UniqueIdentifier>{6c9c7c30-0808-3fad-8a88-944d7645e5d5}</UniqueIdentifier>
     </Filter>
     <Filter Include="crypto_scalarmult\curve25519\sandy2x">
       <UniqueIdentifier>{5d2fb1a2-f063-32db-a81a-41f79e36fd23}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="crypto_scalarmult\ed25519">
+      <UniqueIdentifier>{7bec6074-fbc7-330b-9e18-7dc3e868569a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="crypto_scalarmult\ed25519\ref10">
+      <UniqueIdentifier>{834d4827-81e4-3de3-baa1-a216763f11d6}</UniqueIdentifier>
     </Filter>
     <Filter Include="crypto_secretbox">
       <UniqueIdentifier>{b9b02bee-5c1f-36d2-b97d-983f865a4cc6}</UniqueIdentifier>

@@ -21,6 +21,9 @@ extern "C" {
 SODIUM_EXPORT
 void sodium_memzero(void * const pnt, const size_t len);
 
+SODIUM_EXPORT
+void sodium_stackzero(const size_t len);
+
 /*
  * WARNING: sodium_memcmp() must be used to verify if two secret keys
  * are equal, in constant time.

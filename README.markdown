@@ -16,7 +16,8 @@ Its goal is to provide all of the core operations needed to build
 higher-level cryptographic tools.
 
 Sodium supports a variety of compilers and operating systems,
-including Windows (with MingW or Visual Studio, x86 and x64), iOS and Android.
+including Windows (with MingW or Visual Studio, x86 and x64), iOS, Android,
+as well as Javascript and Webassembly.
 
 ## Documentation
 

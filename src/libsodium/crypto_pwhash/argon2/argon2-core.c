@@ -24,6 +24,7 @@
 
 #include "crypto_generichash_blake2b.h"
 #include "private/common.h"
+#include "private/implementations.h"
 #include "runtime.h"
 #include "utils.h"
 
@@ -32,6 +33,12 @@
 
 #if !defined(MAP_ANON) && defined(MAP_ANONYMOUS)
 # define MAP_ANON MAP_ANONYMOUS
+#endif
+#ifndef MAP_NOCORE
+# define MAP_NOCORE 0
+#endif
+#ifndef MAP_POPULATE
+# define MAP_POPULATE 0
 #endif
 
 static fill_segment_fn fill_segment = fill_segment_ref;
@@ -87,11 +94,7 @@ allocate_memory(block_region **region, uint32_t m_cost)
 
 #if defined(MAP_ANON) && defined(HAVE_MMAP)
     if ((base = mmap(NULL, memory_size, PROT_READ | PROT_WRITE,
-#ifdef MAP_NOCORE
-                     MAP_ANON | MAP_PRIVATE | MAP_NOCORE,
-#else
-                     MAP_ANON | MAP_PRIVATE,
-#endif
+                     MAP_ANON | MAP_PRIVATE | MAP_NOCORE | MAP_POPULATE,
                      -1, 0)) == MAP_FAILED) {
         base = NULL; /* LCOV_EXCL_LINE */
     }                /* LCOV_EXCL_LINE */
@@ -214,100 +217,24 @@ finalize(const argon2_context *context, argon2_instance_t *instance)
     }
 }
 
-uint32_t
-index_alpha(const argon2_instance_t *instance,
-            const argon2_position_t *position, uint32_t pseudo_rand,
-            int same_lane)
-{
-    /*
-     * Pass 0:
-     *      This lane : all already finished segments plus already constructed
-     * blocks in this segment
-     *      Other lanes : all already finished segments
-     * Pass 1+:
-     *      This lane : (SYNC_POINTS - 1) last segments plus already constructed
-     * blocks in this segment
-     *      Other lanes : (SYNC_POINTS - 1) last segments
-     */
-    uint32_t reference_area_size;
-    uint64_t relative_position;
-    uint32_t start_position, absolute_position;
-
-    if (position->pass == 0) {
-        /* First pass */
-        if (position->slice == 0) {
-            /* First slice */
-            reference_area_size =
-                position->index - 1; /* all but the previous */
-        } else {
-            if (same_lane) {
-                /* The same lane => add current segment */
-                reference_area_size =
-                    position->slice * instance->segment_length +
-                    position->index - 1;
-            } else {
-                reference_area_size =
-                    position->slice * instance->segment_length +
-                    ((position->index == 0) ? (-1) : 0);
-            }
-        }
-    } else {
-        /* Second pass */
-        if (same_lane) {
-            reference_area_size = instance->lane_length -
-                                  instance->segment_length + position->index -
-                                  1;
-        } else {
-            reference_area_size = instance->lane_length -
-                                  instance->segment_length +
-                                  ((position->index == 0) ? (-1) : 0);
-        }
-    }
-
-    /* 1.2.4. Mapping pseudo_rand to 0..<reference_area_size-1> and produce
-     * relative position */
-    relative_position = pseudo_rand;
-    relative_position = relative_position * relative_position >> 32;
-    relative_position = reference_area_size - 1 -
-                        (reference_area_size * relative_position >> 32);
-
-    /* 1.2.5 Computing starting position */
-    start_position = 0;
-
-    if (position->pass != 0) {
-        start_position = (position->slice == ARGON2_SYNC_POINTS - 1)
-                             ? 0
-                             : (position->slice + 1) * instance->segment_length;
-    }
-
-    /* 1.2.6. Computing absolute position */
-    absolute_position = (start_position + relative_position) %
-                        instance->lane_length; /* absolute position */
-    return absolute_position;
-}
-
 void
-fill_memory_blocks(argon2_instance_t *instance)
+fill_memory_blocks(argon2_instance_t *instance, uint32_t pass)
 {
-    uint32_t r, s;
+    argon2_position_t position;
+    uint32_t l;
+    uint32_t s;
 
     if (instance == NULL || instance->lanes == 0) {
         return; /* LCOV_EXCL_LINE */
     }
 
-    for (r = 0; r < instance->passes; ++r) {
-        for (s = 0; s < ARGON2_SYNC_POINTS; ++s) {
-            uint32_t l;
-
-            for (l = 0; l < instance->lanes; ++l) {
-                argon2_position_t position;
-
-                position.pass  = r;
-                position.lane  = l;
-                position.slice = (uint8_t) s;
-                position.index = 0;
-                fill_segment(instance, position);
-            }
+    position.pass = pass;
+    for (s = 0; s < ARGON2_SYNC_POINTS; ++s) {
+        position.slice = (uint8_t) s;
+        for (l = 0; l < instance->lanes; ++l) {
+            position.lane  = l;
+            position.index = 0;
+            fill_segment(instance, position);
         }
     }
 }
