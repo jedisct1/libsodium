@@ -204,6 +204,7 @@ tv3(void)
     char   *out;
     char   *passwd;
     size_t  i = 0U;
+    int     ret;
 
     do {
         out = (char *) sodium_malloc(strlen(tests[i].out) + 1U);
@@ -212,13 +213,13 @@ tv3(void)
         passwd = (char *) sodium_malloc(strlen(tests[i].passwd) + 1U);
         assert(passwd != NULL);
         memcpy(passwd, tests[i].passwd, strlen(tests[i].passwd) + 1U);
-        if (crypto_pwhash_str_verify(out, passwd, strlen(passwd)) != 0) {
-            printf("[tv3] pwhash_argon2id_str failure (maybe intentional): [%u]\n",
-                   (unsigned int) i);
-            continue;
-        }
+        ret = crypto_pwhash_str_verify(out, passwd, strlen(passwd));
         sodium_free(out);
         sodium_free(passwd);
+        if (ret != 0) {
+            printf("[tv3] pwhash_argon2id_str failure (maybe intentional): [%u]\n",
+                   (unsigned int) i);
+        }
     } while (++i < (sizeof tests) / (sizeof tests[0]));
 }
 
@@ -229,7 +230,6 @@ str_tests(void)
     char       *str_out2;
     char       *salt;
     const char *passwd = "Correct Horse Battery Staple";
-
 
     salt     = (char *) sodium_malloc(crypto_pwhash_argon2id_SALTBYTES);
     str_out  = (char *) sodium_malloc(crypto_pwhash_argon2id_STRBYTES);

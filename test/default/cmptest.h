@@ -93,6 +93,23 @@ static __attribute__((malloc)) void *mempool_allocarray(size_t count, size_t siz
     return mempool_alloc(count * size);
 }
 
+static int mempool_free_all(void)
+{
+    size_t i;
+    int    ret = 0;
+
+    for (i = 0U; i < mempool_idx; i++) {
+        if ((mempool[i].size & (size_t) 0x80000000) == (size_t) 0x0) {
+            ret = -1;
+        }
+        free(mempool[i].pnt);
+        mempool[i].pnt = NULL;
+    }
+    mempool_idx = (size_t) 0U;
+
+    return ret;
+}
+
 #define sodium_malloc(X)        mempool_alloc(X)
 #define sodium_free(X)          mempool_free(X)
 #define sodium_allocarray(X, Y) mempool_allocarray((X), (Y))
@@ -129,7 +146,10 @@ int main(void)
     }
     ts_end = now();
     printf("%llu\n", 1000000ULL * (ts_end - ts_start) / ITERATIONS);
-
+    if (mempool_free_all() != 0) {
+        fprintf(stderr, "** memory leaks detected **\n");
+        return 99;
+    }
     return 0;
 }
 
