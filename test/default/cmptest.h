@@ -67,7 +67,7 @@ static __attribute__((malloc)) void *mempool_alloc(size_t size)
         return NULL;
     }
     mempool[mempool_idx].size = size;
-    return mempool[mempool_idx++].pnt = malloc(size);
+    return (mempool[mempool_idx++].pnt = (void *) malloc(size));
 }
 
 static void mempool_free(void *pnt)
