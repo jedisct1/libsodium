@@ -35,8 +35,8 @@ mm_generichash(void)
         randombytes_buf(m, mlen);
 
         crypto_generichash_init(&st, k, klen, hlen);
-        l1 = randombytes_uniform((uint32_t) mlen);
-        l2 = randombytes_uniform((uint32_t) (mlen - l1));
+        l1 = randombytes_uniform(mlen);
+        l2 = randombytes_uniform(mlen - l1);
         crypto_generichash_update(&st, m, l1);
         crypto_generichash_update(&st, m + l1, l2);
         crypto_generichash_update(&st, m + l1 + l2, mlen - l1 - l2);
@@ -75,8 +75,8 @@ mm_onetimeauth(void)
         randombytes_buf(m, mlen);
 
         crypto_onetimeauth_init(&st, k);
-        l1 = randombytes_uniform((uint32_t) mlen);
-        l2 = randombytes_uniform((uint32_t) (mlen - l1));
+        l1 = randombytes_uniform(mlen);
+        l2 = randombytes_uniform(mlen - l1);
         crypto_onetimeauth_update(&st, m, l1);
         crypto_onetimeauth_update(&st, m + l1, l2);
         crypto_onetimeauth_update(&st, m + l1 + l2, mlen - l1 - l2);
@@ -115,8 +115,8 @@ mm_hmacsha256(void)
         randombytes_buf(m, mlen);
 
         crypto_auth_hmacsha256_init(&st, k, crypto_auth_hmacsha256_KEYBYTES);
-        l1 = randombytes_uniform((uint32_t) mlen);
-        l2 = randombytes_uniform((uint32_t) (mlen - l1));
+        l1 = randombytes_uniform(mlen);
+        l2 = randombytes_uniform(mlen - l1);
         crypto_auth_hmacsha256_update(&st, m, l1);
         crypto_auth_hmacsha256_update(&st, m + l1, l2);
         crypto_auth_hmacsha256_update(&st, m + l1 + l2, mlen - l1 - l2);
@@ -155,8 +155,8 @@ mm_hmacsha512(void)
         randombytes_buf(m, mlen);
 
         crypto_auth_hmacsha512_init(&st, k, crypto_auth_hmacsha512_KEYBYTES);
-        l1 = randombytes_uniform((uint32_t) mlen);
-        l2 = randombytes_uniform((uint32_t) (mlen - l1));
+        l1 = randombytes_uniform(mlen);
+        l2 = randombytes_uniform(mlen - l1);
         crypto_auth_hmacsha512_update(&st, m, l1);
         crypto_auth_hmacsha512_update(&st, m + l1, l2);
         crypto_auth_hmacsha512_update(&st, m + l1 + l2, mlen - l1 - l2);

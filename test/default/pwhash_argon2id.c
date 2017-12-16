@@ -121,14 +121,14 @@ tv2(void)
           "8d220b20c60d7c07ec1fd93c52c31020300c6c1facd77937a597c7a6",
           127,
           "5541fbc995d5c197ba290346d2c559dedf405cf97e5f95482143202f9e74f5c2",
-          155, 4, 397645, 1 },
+          155, 4, 1397645, 1 },
         { "a347ae92bce9f80f6f595a4480fc9c2fe7e7d7148d371e9487d75f5c23008ffae0"
           "65577a928febd9b1973a5a95073acdbeb6a030cfc0d79caa2dc5cd011cef02c08d"
           "a232d76d52dfbca38ca8dcbd665b17d1665f7cf5fe59772ec909733b24de97d6f5"
           "8d220b20c60d7c07ec1fd93c52c31020300c6c1facd77937a597c7a6",
           127,
           "5541fbc995d5c197ba290346d2c559dedf405cf97e5f95482143202f9e74f5c2",
-          155, 3, 397645, 1 },
+          155, 3, 1397645, 1 },
     };
     char          passwd[256];
     unsigned char salt[crypto_pwhash_SALTBYTES];
@@ -177,8 +177,6 @@ tv2(void)
                                1ULL << 12, crypto_pwhash_argon2id_alg_argon2id13()) != -1) {
         printf("[tv2] pwhash with a long password length should have failed\n");
     }
-    assert(crypto_pwhash_argon2id(out, sizeof out, "password", strlen("password"), salt,
-                                  OPSLIMIT, MEMLIMIT, crypto_pwhash_alg_argon2i13()) == -1);
 }
 
 static void
@@ -267,9 +265,6 @@ str_tests(void)
         crypto_pwhash_argon2i_str_needs_rehash(str_out, OPSLIMIT, MEMLIMIT * 2) != -1 ||
         crypto_pwhash_argon2i_str_needs_rehash(str_out, OPSLIMIT + 1, MEMLIMIT) != -1) {
         printf("needs_rehash() false negative (2)\n");
-    }
-    if (crypto_pwhash_str_needs_rehash(str_out, OPSLIMIT, MEMLIMIT / 2) != 1) {
-        printf("pwhash_str_needs_rehash() didn't handle argon2id\n");
     }
     if (crypto_pwhash_str_needs_rehash(str_out + 1, OPSLIMIT, MEMLIMIT) != -1 ||
         crypto_pwhash_argon2id_str_needs_rehash(str_out + 1, OPSLIMIT, MEMLIMIT) != -1) {

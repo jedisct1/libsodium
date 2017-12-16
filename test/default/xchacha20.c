@@ -244,7 +244,7 @@ tv_secretbox_xchacha20poly1305(void)
         assert(crypto_secretbox_xchacha20poly1305_easy(out2, m, m_len, nonce, key) == 0);
         assert(memcmp(out, out2,
                       crypto_secretbox_xchacha20poly1305_MACBYTES + m_len) == 0);
-        n = randombytes_uniform(crypto_secretbox_xchacha20poly1305_MACBYTES + (uint32_t) m_len);
+        n = randombytes_uniform(crypto_secretbox_xchacha20poly1305_MACBYTES + m_len);
         assert(crypto_secretbox_xchacha20poly1305_open_easy
                (out2, out2, crypto_secretbox_xchacha20poly1305_MACBYTES - 1,
                 nonce, key) == -1);
@@ -291,7 +291,6 @@ tv_secretbox_xchacha20poly1305(void)
     assert(crypto_secretbox_xchacha20poly1305_keybytes() == crypto_secretbox_xchacha20poly1305_KEYBYTES);
     assert(crypto_secretbox_xchacha20poly1305_noncebytes() == crypto_secretbox_xchacha20poly1305_NONCEBYTES);
     assert(crypto_secretbox_xchacha20poly1305_macbytes() == crypto_secretbox_xchacha20poly1305_MACBYTES);
-    assert(crypto_secretbox_xchacha20poly1305_messagebytes_max() == crypto_secretbox_xchacha20poly1305_MESSAGEBYTES_MAX);
 
     printf("tv_secretbox_xchacha20: ok\n");
 }
