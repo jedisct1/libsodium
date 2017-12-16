@@ -573,15 +573,11 @@ sodium_malloc(const size_t size)
 __attribute__((malloc)) void *
 sodium_allocarray(size_t count, size_t size)
 {
-    size_t total_size;
-
     if (count > (size_t) 0U && size >= (size_t) SIZE_MAX / count) {
         errno = ENOMEM;
         return NULL;
     }
-    total_size = count * size;
-
-    return sodium_malloc(total_size);
+    return sodium_malloc(count * size);
 }
 
 #ifndef HAVE_ALIGNED_MALLOC
