@@ -43,6 +43,60 @@ int xmain(void);
 #  define ITERATIONS 128
 # endif
 
+struct {
+    void   *pnt;
+    size_t  size;
+} mempool[1024];
+
+static size_t mempool_idx;
+
+static __attribute__((malloc)) void *mempool_alloc(size_t size)
+{
+    size_t i;
+    if (size >= (size_t) 0x80000000 - (size_t) 0x00000fff) {
+        return NULL;
+    }
+    size = (size + (size_t) 0x00000fff) & ~ (size_t) 0x00000fff;
+    for (i = 0U; i < mempool_idx; i++) {
+        if (mempool[i].size >= (size | (size_t) 0x80000000)) {
+            mempool[i].size &= ~ (size_t) 0x80000000;
+            return mempool[i].pnt;
+        }
+    }
+    if (mempool_idx >= sizeof mempool / sizeof mempool[0]) {
+        return NULL;
+    }
+    mempool[mempool_idx].size = size;
+    return (mempool[mempool_idx++].pnt = (void *) malloc(size));
+}
+
+static void mempool_free(void *pnt)
+{
+    size_t i;
+    for (i = 0U; i < mempool_idx; i++) {
+        if (mempool[i].pnt == pnt) {
+            if ((mempool[i].size & (size_t) 0x80000000) != (size_t) 0x0) {
+                break;
+            }
+            mempool[i].size |= (size_t) 0x80000000;
+            return;
+        }
+    }
+    abort();
+}
+
+static __attribute__((malloc)) void *mempool_allocarray(size_t count, size_t size)
+{
+    if (count > (size_t) 0U && size >= (size_t) SIZE_MAX / count) {
+        return NULL;
+    }
+    return mempool_alloc(count * size);
+}
+
+#define sodium_malloc(X)        mempool_alloc(X)
+#define sodium_free(X)          mempool_free(X)
+#define sodium_allocarray(X, Y) mempool_allocarray((X), (Y))
+
 static unsigned long long now(void)
 {
     struct             timeval tp;
