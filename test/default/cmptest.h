@@ -79,6 +79,7 @@ int main(void)
     return 0;
 }
 
+#undef  printf
 #define printf(...) do { } while(0)
 
 #elif !defined(BROWSER_TESTS)
