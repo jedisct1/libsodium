@@ -25,7 +25,7 @@
 # ifdef HAVE_ALLOCA_H
 #  include <alloca.h>
 # elif !defined(alloca)
-#  if defined(__GNUC__)
+#  if defined(__clang__) || defined(__GNUC__)
 #   define alloca __builtin_alloca
 #  elif defined _AIX
 #   define alloca __alloca

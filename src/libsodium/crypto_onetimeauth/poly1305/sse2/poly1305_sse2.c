@@ -21,7 +21,7 @@ typedef __m128i xmmi;
 
 # if defined(_MSC_VER)
 #  define POLY1305_NOINLINE __declspec(noinline)
-# elif defined(__GNUC__)
+# elif defined(__clang__) || defined(__GNUC__)
 #  define POLY1305_NOINLINE __attribute__((noinline))
 # else
 #  define POLY1305_NOINLINE
