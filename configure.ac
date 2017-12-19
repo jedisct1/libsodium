@@ -635,7 +635,7 @@ AC_SUBST(HAVE_AVX_ASM_V)
 AC_MSG_CHECKING(for 128-bit arithmetic)
 HAVE_TI_MODE_V=0
 AC_COMPILE_IFELSE([AC_LANG_PROGRAM([[
-#if !defined(__GNUC__) && !defined(__SIZEOF_INT128__)
+#if !defined(__clang__) && !defined(__GNUC__) && !defined(__SIZEOF_INT128__)
 # error mode(TI) is a gcc extension, and __int128 is not available
 #endif
 #if defined(__clang__) && !defined(__x86_64__) && !defined(__ARM_NEON)
