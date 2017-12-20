@@ -113,7 +113,7 @@ EOM
 fi
 
 if test "x$NODE" = x; then
-  for candidate in node nodejs; do
+  for candidate in /usr/local/bin/node /usr/local/bin/nodejs /usr/bin/node /usr/bin/nodejs node nodejs; do
     case $($candidate --version 2>&1) in #(
       v*)
         NODE=$candidate
