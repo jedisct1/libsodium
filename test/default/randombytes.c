@@ -161,7 +161,9 @@ main(void)
 #endif
     printf("OK\n");
 
+#ifndef __EMSCRIPTEN__
     randombytes_set_implementation(&randombytes_salsa20_implementation);
+#endif
 
     return 0;
 }
