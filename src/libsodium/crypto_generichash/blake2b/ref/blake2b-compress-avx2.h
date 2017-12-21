@@ -2,9 +2,6 @@
 #ifndef blake2b_compress_avx2_H
 #define blake2b_compress_avx2_H
 
-#define LOAD128(p) _mm_load_si128((__m128i *) (p))
-#define STORE128(p, r) _mm_store_si128((__m128i *) (p), r)
-
 #define LOADU128(p) _mm_loadu_si128((__m128i *) (p))
 #define STOREU128(p, r) _mm_storeu_si128((__m128i *) (p), r)
 
