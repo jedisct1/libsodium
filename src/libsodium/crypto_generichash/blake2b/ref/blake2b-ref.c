@@ -51,9 +51,9 @@ blake2b_is_lastblock(const blake2b_state *S)
 static inline int
 blake2b_set_lastblock(blake2b_state *S)
 {
-    if (S->last_node)
+    if (S->last_node) {
         blake2b_set_lastnode(S);
-
+    }
     S->f[0] = -1;
     return 0;
 }
