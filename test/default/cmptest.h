@@ -86,7 +86,7 @@ int main(void)
 
 #elif !defined(BROWSER_TESTS)
 
-FILE *fp_res;
+static FILE *fp_res;
 
 int main(void)
 {
