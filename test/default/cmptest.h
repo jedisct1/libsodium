@@ -66,7 +66,9 @@ int main(void)
     if (sodium_init() != 0) {
         return 99;
     }
+#ifndef __EMSCRIPTEN__
     randombytes_set_implementation(&randombytes_salsa20_implementation);
+#endif
     ts_start = now();
     for (i = 0; i < ITERATIONS; i++) {
         if (xmain() != 0) {
