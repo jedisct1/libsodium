@@ -66,6 +66,10 @@ int main(void)
     if (sodium_init() != 0) {
         return 99;
     }
+#ifdef __EMSCRIPTEN__
+    (void) fopen("/dev/null", "r");
+#endif
+
 #ifndef __EMSCRIPTEN__
     randombytes_set_implementation(&randombytes_salsa20_implementation);
 #endif
