@@ -41,28 +41,6 @@ main(void)
             printf("crypto_generichash_final() should have returned -1\n");
         }
     }
-    sodium_free(st);
-
-    /* unaligned state */
-    st = sodium_malloc(crypto_generichash_statebytes() + 1U);
-    i = 0;
-    if (crypto_generichash_init(st, k,
-                                crypto_generichash_KEYBYTES_MAX,
-                                crypto_generichash_BYTES_MAX) != 0) {
-        printf("crypto_generichash_init(2)\n");
-        return 1;
-    }
-    crypto_generichash_update(st, in, i);
-    crypto_generichash_update(st, in, i);
-    crypto_generichash_update(st, in, i);
-    if (crypto_generichash_final(st, out,
-                                 crypto_generichash_BYTES_MAX) != 0) {
-        printf("crypto_generichash_final(2) should have returned 0\n");
-    }
-    for (j = 0; j < crypto_generichash_BYTES_MAX; ++j) {
-        printf("%02x", (unsigned int) out[j]);
-    }
-    printf("\n");
 
     assert(crypto_generichash_init(st, k, sizeof k, 0U) == -1);
     assert(crypto_generichash_init(st, k, sizeof k,

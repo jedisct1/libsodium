@@ -41,6 +41,10 @@ size_t  crypto_generichash_keybytes(void);
 SODIUM_EXPORT
 const char *crypto_generichash_primitive(void);
 
+/*
+ * Important when writing bindings for other programming languages:
+ * the state address *must* be 64-bytes aligned.
+ */
 typedef crypto_generichash_blake2b_state crypto_generichash_state;
 
 SODIUM_EXPORT
