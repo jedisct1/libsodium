@@ -42,6 +42,7 @@ elif [ "x$1" = "x--browser-tests" ]; then
 elif [ "x$1" = "x--tests" ]; then
   echo "Building for testing"
   export EXPORTED_FUNCTIONS="$EXPORTED_FUNCTIONS_SUMO"
+  export CPPFLAGS="${CPPFLAGS} -DBENCHMARKS -DITERATIONS=10"
   export LDFLAGS="${LDFLAGS} -s TOTAL_MEMORY=${TOTAL_MEMORY_TESTS}"
   export PREFIX="$(pwd)/libsodium-js-tests"
   export DONE_FILE="$(pwd)/js-tests.done"
