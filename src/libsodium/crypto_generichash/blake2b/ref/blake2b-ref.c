@@ -333,7 +333,7 @@ int
 blake2b(uint8_t *out, const void *in, const void *key, const uint8_t outlen,
         const uint64_t inlen, uint8_t keylen)
 {
-    blake2b_state S[1];
+    CRYPTO_ALIGN(64) blake2b_state S[1];
 
     /* Verify parameters */
     if (NULL == in && inlen > 0) {
@@ -371,7 +371,7 @@ blake2b_salt_personal(uint8_t *out, const void *in, const void *key,
                       const uint8_t outlen, const uint64_t inlen,
                       uint8_t keylen, const void *salt, const void *personal)
 {
-    blake2b_state S[1];
+    CRYPTO_ALIGN(64) blake2b_state S[1];
 
     /* Verify parameters */
     if (NULL == in && inlen > 0) {
