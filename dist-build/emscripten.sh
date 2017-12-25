@@ -54,7 +54,7 @@ else
   echo
   exit 1
 fi
-export JS_EXPORTS_FLAGS="-s EXPORTED_FUNCTIONS=${EXPORTED_FUNCTIONS} -s EXTRA_EXPORTED_RUNTIME_METHODS=[\"Pointer_stringify\"]"
+export JS_EXPORTS_FLAGS="-s EXPORTED_FUNCTIONS=${EXPORTED_FUNCTIONS} -s EXTRA_EXPORTED_RUNTIME_METHODS=[\"Pointer_stringify\",\"_malloc\",\"_free\"]"
 
 rm -f "$DONE_FILE"
 
