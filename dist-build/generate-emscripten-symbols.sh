@@ -35,7 +35,7 @@ symbols() {
   } | \
     sort | \
     {
-      out=''
+      out='"_malloc","_free"'
       while read symbol ; do
         if [ ! -z "$out" ]; then
           out="${out},"
