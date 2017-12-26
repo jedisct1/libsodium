@@ -644,10 +644,6 @@ AC_COMPILE_IFELSE([AC_LANG_PROGRAM([[
 #ifndef NATIVE_LITTLE_ENDIAN
 # error libsodium currently expects a little endian CPU for the 128-bit type
 #endif
-#ifdef __EMSCRIPTEN__
-# error emscripten currently supports only shift operations on integers \
-#       larger than 64 bits
-#endif
 #include <stddef.h>
 #include <stdint.h>
 #if defined(__SIZEOF_INT128__)
@@ -657,6 +653,8 @@ typedef unsigned uint128_t __attribute__((mode(TI)));
 #endif
 void fcontract(uint128_t *t) {
   *t += 0x8000000000000 - 1;
+  *t *= *t;
+  *t >>= 84;
 }
 ]], [[
 (void) fcontract;
