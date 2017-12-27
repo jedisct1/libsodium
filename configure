@@ -18239,7 +18239,7 @@ HAVE_TI_MODE_V=0
 cat confdefs.h - <<_ACEOF >conftest.$ac_ext
 /* end confdefs.h.  */
 
-#if !defined(__GNUC__) && !defined(__SIZEOF_INT128__)
+#if !defined(__clang__) && !defined(__GNUC__) && !defined(__SIZEOF_INT128__)
 # error mode(TI) is a gcc extension, and __int128 is not available
 #endif
 #if defined(__clang__) && !defined(__x86_64__) && !defined(__ARM_NEON)
