@@ -9,7 +9,7 @@ export TOTAL_MEMORY_SUMO=83886080
 export TOTAL_MEMORY_TESTS=167772160
 export LDFLAGS="-s RESERVED_FUNCTION_POINTERS=8"
 export LDFLAGS="${LDFLAGS} -s SINGLE_FILE=1"
-export LDFLAGS="${LDFLAGS} -s NO_DYNAMIC_EXECUTION=1 -s ASSERTIONS=0"
+export LDFLAGS="${LDFLAGS} -s ASSERTIONS=0"
 export LDFLAGS="${LDFLAGS} -s AGGRESSIVE_VARIABLE_ELIMINATION=1 -s ALIASING_FUNCTION_POINTERS=1"
 export LDFLAGS="${LDFLAGS} -s FUNCTION_POINTER_ALIGNMENT=1 -s DISABLE_EXCEPTION_CATCHING=1"
 export LDFLAGS="${LDFLAGS} -s ELIMINATE_DUPLICATE_FUNCTIONS=1"
@@ -72,11 +72,11 @@ if [ "$DIST" = yes ]; then
   emccLibsodium () {
     outFile="${1}"
     shift
-    emcc "$CFLAGS" --llvm-lto 1 $CPPFLAGS $LDFLAGS $JS_EXPORTS_FLAGS ${@} \
+    emcc "$CFLAGS" --closure 1 --llvm-lto 1 $CPPFLAGS $LDFLAGS $JS_EXPORTS_FLAGS ${@} \
       "${PREFIX}/lib/libsodium.a" -o "${outFile}" || exit 1
   }
   emmake make $MAKE_FLAGS install || exit 1
-  emccLibsodium "${PREFIX}/lib/libsodium.asm.tmp.js" -Oz -s RUNNING_JS_OPTS=1 -s NO_EXIT_RUNTIME=1
+  emccLibsodium "${PREFIX}/lib/libsodium.asm.tmp.js" -Oz -s RUNNING_JS_OPTS=1
   emccLibsodium "${PREFIX}/lib/libsodium.wasm.tmp.js" -O3 -s WASM=1
 
   cat > "${PREFIX}/lib/libsodium.js" <<- EOM

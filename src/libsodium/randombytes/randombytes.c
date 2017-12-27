@@ -107,7 +107,7 @@ randombytes_stir(void)
                 try {
                     var crypto = require('crypto');
                     var randomValueNodeJS = function() {
-                        var buf = crypto.randomBytes(4);
+                        var buf = crypto['randomBytes'](4);
                         return (buf[0] << 24 | buf[1] << 16 | buf[2] << 8 | buf[3]) >>> 0;
                     };
                     randomValueNodeJS();
