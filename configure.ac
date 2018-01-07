@@ -654,7 +654,7 @@ AC_COMPILE_IFELSE([AC_LANG_PROGRAM([[
 #if !defined(__clang__) && !defined(__GNUC__) && !defined(__SIZEOF_INT128__)
 # error mode(TI) is a gcc extension, and __int128 is not available
 #endif
-#if defined(__clang__) && !defined(__x86_64__) && !defined(__ARM_NEON)
+#if defined(__clang__) && !defined(__x86_64__) && !defined(__aarch64__)
 # error clang does not properly handle the 128-bit type on 32-bit systems
 #endif
 #ifndef NATIVE_LITTLE_ENDIAN
