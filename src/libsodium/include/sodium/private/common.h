@@ -196,7 +196,7 @@ xor_buf(unsigned char *out, const unsigned char *in, size_t n)
     }
 }
 
-#if !defined(__clang__) && !defined(__GNUC__)
+#if !defined(__clang__) && !defined(__GNUC__) && !defined(__SUNPRO_C)
 # ifdef __attribute__
 #  undef __attribute__
 # endif

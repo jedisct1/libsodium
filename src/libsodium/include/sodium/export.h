@@ -2,7 +2,7 @@
 #ifndef sodium_export_H
 #define sodium_export_H
 
-#if !defined(__clang__) && !defined(__GNUC__)
+#if !defined(__clang__) && !defined(__GNUC__) && !defined(__SUNPRO_C)
 # ifdef __attribute__
 #  undef __attribute__
 # endif
