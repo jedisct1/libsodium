@@ -72,7 +72,7 @@ if [ "$DIST" = yes ]; then
   emccLibsodium () {
     outFile="${1}"
     shift
-    emcc "$CFLAGS" --closure 1 --llvm-lto 1 $CPPFLAGS $LDFLAGS $JS_EXPORTS_FLAGS ${@} \
+    emcc "$CFLAGS" --llvm-lto 1 $CPPFLAGS $LDFLAGS $JS_EXPORTS_FLAGS ${@} \
       "${PREFIX}/lib/libsodium.a" -o "${outFile}" || exit 1
   }
   emmake make $MAKE_FLAGS install || exit 1
