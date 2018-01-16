@@ -28,7 +28,8 @@ _crypto_sign_ed25519_verify_detached(const unsigned char *sig,
         ge25519_has_small_order(sig) != 0) {
         return -1;
     }
-    if (ge25519_is_canonical(pk) == 0) {
+    if (ge25519_is_canonical(pk) == 0 ||
+        ge25519_has_small_order(pk) != 0) {
         return -1;
     }
 #else
@@ -36,8 +37,7 @@ _crypto_sign_ed25519_verify_detached(const unsigned char *sig,
         return -1;
     }
 #endif
-    if (ge25519_has_small_order(pk) != 0 ||
-        ge25519_frombytes_negate_vartime(&A, pk) != 0) {
+    if (ge25519_frombytes_negate_vartime(&A, pk) != 0) {
         return -1;
     }
     _crypto_sign_ed25519_ref10_hinit(&hs, prehashed);
