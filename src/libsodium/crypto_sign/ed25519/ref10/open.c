@@ -23,17 +23,17 @@ _crypto_sign_ed25519_verify_detached(const unsigned char *sig,
     ge25519_p3               A;
     ge25519_p2               R;
 
-#ifndef ED25519_COMPAT
+#ifdef ED25519_COMPAT
+    if (sig[63] & 224) {
+        return -1;
+    }
+#else
     if (sc25519_is_canonical(sig + 32) == 0 ||
         ge25519_has_small_order(sig) != 0) {
         return -1;
     }
     if (ge25519_is_canonical(pk) == 0 ||
         ge25519_has_small_order(pk) != 0) {
-        return -1;
-    }
-#else
-    if (sig[63] & 224) {
         return -1;
     }
 #endif
