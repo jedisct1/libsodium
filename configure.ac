@@ -202,9 +202,6 @@ AC_CHECK_DEFINE([_FORTIFY_SOURCE], [], [
 AX_CHECK_COMPILE_FLAG([-fvisibility=hidden],
   [CFLAGS="$CFLAGS -fvisibility=hidden"])
 
-AX_CHECK_COMPILE_FLAG([-mretpoline],
-  [CFLAGS="$CFLAGS -mretpoline"])
-
 AS_CASE([$host_os], [cygwin*|mingw*|msys|pw32*|cegcc*], [ ], [
   AX_CHECK_COMPILE_FLAG([-fPIC], [CFLAGS="$CFLAGS -fPIC"])
 ])
@@ -326,7 +323,6 @@ AX_CHECK_COMPILE_FLAG([$CWFLAGS -Wwrite-strings], [CWFLAGS="$CWFLAGS -Wwrite-str
 AX_CHECK_LINK_FLAG([-Wl,-z,relro], [LDFLAGS="$LDFLAGS -Wl,-z,relro"])
 AX_CHECK_LINK_FLAG([-Wl,-z,now], [LDFLAGS="$LDFLAGS -Wl,-z,now"])
 AX_CHECK_LINK_FLAG([-Wl,-z,noexecstack], [LDFLAGS="$LDFLAGS -Wl,-z,noexecstack"])
-AX_CHECK_LINK_FLAG([-Wl,-z,retpolineplt], [LDFLAGS="$LDFLAGS -Wl,-z,retpolineplt"])
 
 AC_MSG_CHECKING(for a broken clang + AVX512 combination)
 AC_COMPILE_IFELSE([AC_LANG_PROGRAM([[]], [[
