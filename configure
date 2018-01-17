@@ -6800,43 +6800,6 @@ else
 fi
 
 
-{ $as_echo "$as_me:${as_lineno-$LINENO}: checking whether C compiler accepts -mretpoline" >&5
-$as_echo_n "checking whether C compiler accepts -mretpoline... " >&6; }
-if ${ax_cv_check_cflags___mretpoline+:} false; then :
-  $as_echo_n "(cached) " >&6
-else
-
-  ax_check_save_flags=$CFLAGS
-  CFLAGS="$CFLAGS  -mretpoline"
-  cat confdefs.h - <<_ACEOF >conftest.$ac_ext
-/* end confdefs.h.  */
-#include <time.h>
-int
-main ()
-{
-time_t x; int fodder = 0; if (fodder > -1000 && time(&x)) return (int) x
-  ;
-  return 0;
-}
-_ACEOF
-if ac_fn_c_try_link "$LINENO"; then :
-  ax_cv_check_cflags___mretpoline=yes
-else
-  ax_cv_check_cflags___mretpoline=no
-fi
-rm -f core conftest.err conftest.$ac_objext \
-    conftest$ac_exeext conftest.$ac_ext
-  CFLAGS=$ax_check_save_flags
-fi
-{ $as_echo "$as_me:${as_lineno-$LINENO}: result: $ax_cv_check_cflags___mretpoline" >&5
-$as_echo "$ax_cv_check_cflags___mretpoline" >&6; }
-if test "x$ax_cv_check_cflags___mretpoline" = xyes; then :
-  CFLAGS="$CFLAGS -mretpoline"
-else
-  :
-fi
-
-
 case $host_os in #(
   cygwin*|mingw*|msys|pw32*|cegcc*) :
       ;; #(
@@ -8679,42 +8642,6 @@ fi
 $as_echo "$ax_cv_check_ldflags___Wl__z_noexecstack" >&6; }
 if test "x$ax_cv_check_ldflags___Wl__z_noexecstack" = xyes; then :
   LDFLAGS="$LDFLAGS -Wl,-z,noexecstack"
-else
-  :
-fi
-
-{ $as_echo "$as_me:${as_lineno-$LINENO}: checking whether the linker accepts -Wl,-z,retpolineplt" >&5
-$as_echo_n "checking whether the linker accepts -Wl,-z,retpolineplt... " >&6; }
-if ${ax_cv_check_ldflags___Wl__z_retpolineplt+:} false; then :
-  $as_echo_n "(cached) " >&6
-else
-
-  ax_check_save_flags=$LDFLAGS
-  LDFLAGS="$LDFLAGS  -Wl,-z,retpolineplt"
-  cat confdefs.h - <<_ACEOF >conftest.$ac_ext
-/* end confdefs.h.  */
-#include <time.h>
-int
-main ()
-{
-time_t x; int fodder = 0; if (fodder > -1000 && time(&x)) return (int) x
-  ;
-  return 0;
-}
-_ACEOF
-if ac_fn_c_try_link "$LINENO"; then :
-  ax_cv_check_ldflags___Wl__z_retpolineplt=yes
-else
-  ax_cv_check_ldflags___Wl__z_retpolineplt=no
-fi
-rm -f core conftest.err conftest.$ac_objext \
-    conftest$ac_exeext conftest.$ac_ext
-  LDFLAGS=$ax_check_save_flags
-fi
-{ $as_echo "$as_me:${as_lineno-$LINENO}: result: $ax_cv_check_ldflags___Wl__z_retpolineplt" >&5
-$as_echo "$ax_cv_check_ldflags___Wl__z_retpolineplt" >&6; }
-if test "x$ax_cv_check_ldflags___Wl__z_retpolineplt" = xyes; then :
-  LDFLAGS="$LDFLAGS -Wl,-z,retpolineplt"
 else
   :
 fi
