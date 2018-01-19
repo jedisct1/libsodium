@@ -4,6 +4,7 @@
 
 #include <stddef.h>
 #include <stdint.h>
+#include <limits.h>
 
 #if !defined(__clang__) && !defined(__GNUC__)
 # ifdef __attribute__
