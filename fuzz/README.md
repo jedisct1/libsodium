@@ -1,3 +1,5 @@
 # Fuzzing
 
-These fuzzers are built primarily to be run on Google's OSS-Fuzz using libFuzzer.
+The fuzz tests that are currently available primarily target libFuzzer.
+
+But, we can build the specific fuzz tests themselves to test that they do not rot.
