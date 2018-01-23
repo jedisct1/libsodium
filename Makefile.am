@@ -15,10 +15,10 @@ SUBDIRS = \
 	dist-build \
 	msvc-scripts \
 	src \
-	test \
-	fuzz
+	test
 
 pkgconfigdir = $(libdir)/pkgconfig
 pkgconfig_DATA = @PACKAGE_NAME@.pc
 
 DISTCLEANFILES = $(pkgconfig_DATA)
+
