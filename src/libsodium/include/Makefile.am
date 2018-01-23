@@ -54,7 +54,6 @@ SODIUM_EXPORT = \
 	sodium/crypto_verify_16.h \
 	sodium/crypto_verify_32.h \
 	sodium/crypto_verify_64.h \
-	sodium/export.h \
 	sodium/randombytes.h \
 	sodium/randombytes_salsa20_random.h \
 	sodium/randombytes_sysrandom.h \
@@ -67,9 +66,11 @@ SODIUM_EXPORT += \
 endif
 
 EXTRA_SRC = $(SODIUM_EXPORT) \
+	sodium/export.h.in \
 	sodium/version.h.in
 
 nobase_include_HEADERS = $(SODIUM_EXPORT)
 
 nobase_nodist_include_HEADERS = \
+	sodium/export.h \
 	sodium/version.h

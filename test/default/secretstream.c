@@ -13,7 +13,7 @@ main(void)
     unsigned char      *c1, *c2, *c3, *csave;
     unsigned char      *m1, *m2, *m3;
     unsigned char      *m1_, *m2_, *m3_;
-    unsigned long long  res_len;
+    sodium_size_t       res_len;
     size_t              ad_len;
     size_t              m1_len, m2_len, m3_len;
     int                 ret;

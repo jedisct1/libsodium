@@ -29,9 +29,9 @@ crypto_sign_edwards25519sha512batch_keypair(unsigned char *pk,
 
 int
 crypto_sign_edwards25519sha512batch(unsigned char       *sm,
-                                    unsigned long long  *smlen_p,
+                                    sodium_size_t       *smlen_p,
                                     const unsigned char *m,
-                                    unsigned long long   mlen,
+                                    sodium_size_t        mlen,
                                     const unsigned char *sk)
 {
     crypto_hash_sha512_state hs;
@@ -67,14 +67,14 @@ crypto_sign_edwards25519sha512batch(unsigned char       *sm,
 
 int
 crypto_sign_edwards25519sha512batch_open(unsigned char       *m,
-                                         unsigned long long  *mlen_p,
+                                         sodium_size_t       *mlen_p,
                                          const unsigned char *sm,
-                                         unsigned long long   smlen,
+                                         sodium_size_t        smlen,
                                          const unsigned char *pk)
 {
     unsigned char      h[64];
     unsigned char      t1[32], t2[32];
-    unsigned long long mlen;
+    sodium_size_t      mlen;
     ge25519_cached     Ai;
     ge25519_p1p1       csa;
     ge25519_p2         cs;

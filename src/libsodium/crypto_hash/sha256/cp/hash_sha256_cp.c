@@ -188,16 +188,16 @@ crypto_hash_sha256_init(crypto_hash_sha256_state *state)
 
 int
 crypto_hash_sha256_update(crypto_hash_sha256_state *state,
-                          const unsigned char *in, unsigned long long inlen)
+                          const unsigned char *in, sodium_size_t inlen)
 {
-    uint32_t           tmp32[64 + 8];
-    unsigned long long i;
-    unsigned long long r;
+    uint32_t      tmp32[64 + 8];
+    sodium_size_t i;
+    sodium_size_t r;
 
     if (inlen <= 0U) {
         return 0;
     }
-    r = (unsigned long long) ((state->count >> 3) & 0x3f);
+    r = (sodium_size_t) ((state->count >> 3) & 0x3f);
 
     state->count += ((uint64_t) inlen) << 3;
     if (inlen < 64 - r) {
@@ -242,7 +242,7 @@ crypto_hash_sha256_final(crypto_hash_sha256_state *state, unsigned char *out)
 
 int
 crypto_hash_sha256(unsigned char *out, const unsigned char *in,
-                   unsigned long long inlen)
+                   sodium_size_t inlen)
 {
     crypto_hash_sha256_state state;
 

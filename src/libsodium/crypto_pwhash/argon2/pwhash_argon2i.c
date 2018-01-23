@@ -137,10 +137,10 @@ crypto_pwhash_argon2i_memlimit_sensitive(void)
 }
 
 int
-crypto_pwhash_argon2i(unsigned char *const out, unsigned long long outlen,
-                      const char *const passwd, unsigned long long passwdlen,
+crypto_pwhash_argon2i(unsigned char *const out, sodium_size_t outlen,
+                      const char *const passwd, sodium_size_t passwdlen,
                       const unsigned char *const salt,
-                      unsigned long long opslimit, size_t memlimit, int alg)
+                      sodium_size_t opslimit, size_t memlimit, int alg)
 {
     memset(out, 0, outlen);
     if (outlen > crypto_pwhash_argon2i_BYTES_MAX) {
@@ -181,8 +181,8 @@ crypto_pwhash_argon2i(unsigned char *const out, unsigned long long outlen,
 int
 crypto_pwhash_argon2i_str(char out[crypto_pwhash_argon2i_STRBYTES],
                           const char *const passwd,
-                          unsigned long long passwdlen,
-                          unsigned long long opslimit, size_t memlimit)
+                          sodium_size_t passwdlen,
+                          sodium_size_t opslimit, size_t memlimit)
 {
     unsigned char salt[crypto_pwhash_argon2i_SALTBYTES];
 
@@ -212,7 +212,7 @@ crypto_pwhash_argon2i_str(char out[crypto_pwhash_argon2i_STRBYTES],
 int
 crypto_pwhash_argon2i_str_verify(const char str[crypto_pwhash_argon2i_STRBYTES],
                                  const char *const  passwd,
-                                 unsigned long long passwdlen)
+                                 sodium_size_t passwdlen)
 {
     int verify_ret;
 
@@ -238,7 +238,7 @@ crypto_pwhash_argon2i_str_verify(const char str[crypto_pwhash_argon2i_STRBYTES],
 }
 
 static int
-_needs_rehash(const char *str, unsigned long long opslimit, size_t memlimit,
+_needs_rehash(const char *str, sodium_size_t opslimit, size_t memlimit,
               argon2_type type)
 {
     unsigned char  *fodder;
@@ -277,14 +277,14 @@ _needs_rehash(const char *str, unsigned long long opslimit, size_t memlimit,
 
 int
 crypto_pwhash_argon2i_str_needs_rehash(const char str[crypto_pwhash_argon2i_STRBYTES],
-                                       unsigned long long opslimit, size_t memlimit)
+                                       sodium_size_t opslimit, size_t memlimit)
 {
     return _needs_rehash(str, opslimit, memlimit, Argon2_i);
 }
 
 int
 crypto_pwhash_argon2id_str_needs_rehash(const char str[crypto_pwhash_argon2id_STRBYTES],
-                                        unsigned long long opslimit, size_t memlimit)
+                                        sodium_size_t opslimit, size_t memlimit)
 {
     return _needs_rehash(str, opslimit, memlimit, Argon2_id);
 }

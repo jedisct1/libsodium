@@ -48,7 +48,7 @@ crypto_box_curve25519xsalsa20poly1305_beforenm(unsigned char *k,
 int
 crypto_box_curve25519xsalsa20poly1305_afternm(unsigned char *c,
                                               const unsigned char *m,
-                                              unsigned long long mlen,
+                                              sodium_size_t mlen,
                                               const unsigned char *n,
                                               const unsigned char *k)
 {
@@ -58,7 +58,7 @@ crypto_box_curve25519xsalsa20poly1305_afternm(unsigned char *c,
 int
 crypto_box_curve25519xsalsa20poly1305_open_afternm(unsigned char *m,
                                                    const unsigned char *c,
-                                                   unsigned long long clen,
+                                                   sodium_size_t clen,
                                                    const unsigned char *n,
                                                    const unsigned char *k)
 {
@@ -67,7 +67,7 @@ crypto_box_curve25519xsalsa20poly1305_open_afternm(unsigned char *m,
 
 int
 crypto_box_curve25519xsalsa20poly1305(unsigned char *c, const unsigned char *m,
-                                      unsigned long long   mlen,
+                                      sodium_size_t mlen,
                                       const unsigned char *n,
                                       const unsigned char *pk,
                                       const unsigned char *sk)
@@ -86,7 +86,7 @@ crypto_box_curve25519xsalsa20poly1305(unsigned char *c, const unsigned char *m,
 
 int
 crypto_box_curve25519xsalsa20poly1305_open(
-    unsigned char *m, const unsigned char *c, unsigned long long clen,
+    unsigned char *m, const unsigned char *c, sodium_size_t clen,
     const unsigned char *n, const unsigned char *pk, const unsigned char *sk)
 {
     unsigned char k[crypto_box_curve25519xsalsa20poly1305_BEFORENMBYTES];

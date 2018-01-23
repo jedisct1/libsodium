@@ -70,7 +70,7 @@ crypto_auth_hmacsha512_init(crypto_auth_hmacsha512_state *state,
 
 int
 crypto_auth_hmacsha512_update(crypto_auth_hmacsha512_state *state,
-                              const unsigned char *in, unsigned long long inlen)
+                              const unsigned char *in, sodium_size_t inlen)
 {
     crypto_hash_sha512_update(&state->ictx, in, inlen);
 
@@ -94,7 +94,7 @@ crypto_auth_hmacsha512_final(crypto_auth_hmacsha512_state *state,
 
 int
 crypto_auth_hmacsha512(unsigned char *out, const unsigned char *in,
-                       unsigned long long inlen, const unsigned char *k)
+                       sodium_size_t inlen, const unsigned char *k)
 {
     crypto_auth_hmacsha512_state state;
 
@@ -107,7 +107,7 @@ crypto_auth_hmacsha512(unsigned char *out, const unsigned char *in,
 
 int
 crypto_auth_hmacsha512_verify(const unsigned char *h, const unsigned char *in,
-                              unsigned long long inlen, const unsigned char *k)
+                              sodium_size_t inlen, const unsigned char *k)
 {
     unsigned char correct[64];
 

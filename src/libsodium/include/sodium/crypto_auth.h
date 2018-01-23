@@ -7,7 +7,7 @@
 #include "export.h"
 
 #ifdef __cplusplus
-# ifdef __GNUC__
+# if defined(__GNUC__) && !defined(SODIUM_LIBRARY_SIZE_T)
 #  pragma GCC diagnostic ignored "-Wlong-long"
 # endif
 extern "C" {
@@ -27,11 +27,11 @@ const char *crypto_auth_primitive(void);
 
 SODIUM_EXPORT
 int crypto_auth(unsigned char *out, const unsigned char *in,
-                unsigned long long inlen, const unsigned char *k);
+                sodium_size_t inlen, const unsigned char *k);
 
 SODIUM_EXPORT
 int crypto_auth_verify(const unsigned char *h, const unsigned char *in,
-                       unsigned long long inlen, const unsigned char *k)
+                       sodium_size_t inlen, const unsigned char *k)
             __attribute__ ((warn_unused_result));
 
 SODIUM_EXPORT

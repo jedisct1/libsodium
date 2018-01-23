@@ -9,7 +9,7 @@ crypto_hash_bytes(void)
 
 int
 crypto_hash(unsigned char *out, const unsigned char *in,
-            unsigned long long inlen)
+            sodium_size_t inlen)
 {
     return crypto_hash_sha512(out, in, inlen);
 }

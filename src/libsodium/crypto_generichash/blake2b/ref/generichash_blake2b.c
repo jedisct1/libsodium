@@ -9,7 +9,7 @@
 
 int
 crypto_generichash_blake2b(unsigned char *out, size_t outlen,
-                           const unsigned char *in, unsigned long long inlen,
+                           const unsigned char *in, sodium_size_t inlen,
                            const unsigned char *key, size_t keylen)
 {
     if (outlen <= 0U || outlen > BLAKE2B_OUTBYTES ||
@@ -26,7 +26,7 @@ crypto_generichash_blake2b(unsigned char *out, size_t outlen,
 int
 crypto_generichash_blake2b_salt_personal(
     unsigned char *out, size_t outlen, const unsigned char *in,
-    unsigned long long inlen, const unsigned char *key, size_t keylen,
+    sodium_size_t inlen, const unsigned char *key, size_t keylen,
     const unsigned char *salt, const unsigned char *personal)
 {
     if (outlen <= 0U || outlen > BLAKE2B_OUTBYTES ||
@@ -91,7 +91,7 @@ crypto_generichash_blake2b_init_salt_personal(
 int
 crypto_generichash_blake2b_update(crypto_generichash_blake2b_state *state,
                                   const unsigned char *in,
-                                  unsigned long long inlen)
+                                  sodium_size_t inlen)
 {
     return blake2b_update(state, (const uint8_t *) in, (uint64_t) inlen);
 }

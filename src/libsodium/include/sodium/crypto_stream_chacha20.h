@@ -14,7 +14,7 @@
 #include "export.h"
 
 #ifdef __cplusplus
-# ifdef __GNUC__
+# if defined(__GNUC__) && !defined(SODIUM_LIBRARY_SIZE_T)
 #  pragma GCC diagnostic ignored "-Wlong-long"
 # endif
 extern "C" {
@@ -35,17 +35,17 @@ size_t crypto_stream_chacha20_messagebytes_max(void);
 /* ChaCha20 with a 64-bit nonce and a 64-bit counter, as originally designed */
 
 SODIUM_EXPORT
-int crypto_stream_chacha20(unsigned char *c, unsigned long long clen,
+int crypto_stream_chacha20(unsigned char *c, sodium_size_t clen,
                            const unsigned char *n, const unsigned char *k);
 
 SODIUM_EXPORT
 int crypto_stream_chacha20_xor(unsigned char *c, const unsigned char *m,
-                               unsigned long long mlen, const unsigned char *n,
+                               sodium_size_t mlen, const unsigned char *n,
                                const unsigned char *k);
 
 SODIUM_EXPORT
 int crypto_stream_chacha20_xor_ic(unsigned char *c, const unsigned char *m,
-                                  unsigned long long mlen,
+                                  sodium_size_t mlen,
                                   const unsigned char *n, uint64_t ic,
                                   const unsigned char *k);
 
@@ -68,17 +68,17 @@ SODIUM_EXPORT
 size_t crypto_stream_chacha20_ietf_messagebytes_max(void);
 
 SODIUM_EXPORT
-int crypto_stream_chacha20_ietf(unsigned char *c, unsigned long long clen,
+int crypto_stream_chacha20_ietf(unsigned char *c, sodium_size_t clen,
                                 const unsigned char *n, const unsigned char *k);
 
 SODIUM_EXPORT
 int crypto_stream_chacha20_ietf_xor(unsigned char *c, const unsigned char *m,
-                                    unsigned long long mlen, const unsigned char *n,
+                                    sodium_size_t mlen, const unsigned char *n,
                                     const unsigned char *k);
 
 SODIUM_EXPORT
 int crypto_stream_chacha20_ietf_xor_ic(unsigned char *c, const unsigned char *m,
-                                       unsigned long long mlen,
+                                       sodium_size_t mlen,
                                        const unsigned char *n, uint32_t ic,
                                        const unsigned char *k);
 

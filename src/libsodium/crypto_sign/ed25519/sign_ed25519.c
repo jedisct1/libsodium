@@ -66,7 +66,7 @@ crypto_sign_ed25519ph_init(crypto_sign_ed25519ph_state *state)
 
 int
 crypto_sign_ed25519ph_update(crypto_sign_ed25519ph_state *state,
-                             const unsigned char *m, unsigned long long mlen)
+                             const unsigned char *m, sodium_size_t mlen)
 {
     return crypto_hash_sha512_update(&state->hs, m, mlen);
 }
@@ -74,7 +74,7 @@ crypto_sign_ed25519ph_update(crypto_sign_ed25519ph_state *state,
 int
 crypto_sign_ed25519ph_final_create(crypto_sign_ed25519ph_state *state,
                                    unsigned char               *sig,
-                                   unsigned long long          *siglen_p,
+                                   sodium_size_t               *siglen_p,
                                    const unsigned char         *sk)
 {
     unsigned char ph[crypto_hash_sha512_BYTES];

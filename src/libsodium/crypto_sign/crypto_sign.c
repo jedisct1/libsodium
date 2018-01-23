@@ -57,24 +57,24 @@ crypto_sign_keypair(unsigned char *pk, unsigned char *sk)
 }
 
 int
-crypto_sign(unsigned char *sm, unsigned long long *smlen_p,
-            const unsigned char *m, unsigned long long mlen,
+crypto_sign(unsigned char *sm, sodium_size_t *smlen_p,
+            const unsigned char *m, sodium_size_t mlen,
             const unsigned char *sk)
 {
     return crypto_sign_ed25519(sm, smlen_p, m, mlen, sk);
 }
 
 int
-crypto_sign_open(unsigned char *m, unsigned long long *mlen_p,
-                 const unsigned char *sm, unsigned long long smlen,
+crypto_sign_open(unsigned char *m, sodium_size_t *mlen_p,
+                 const unsigned char *sm, sodium_size_t smlen,
                  const unsigned char *pk)
 {
     return crypto_sign_ed25519_open(m, mlen_p, sm, smlen, pk);
 }
 
 int
-crypto_sign_detached(unsigned char *sig, unsigned long long *siglen_p,
-                     const unsigned char *m, unsigned long long mlen,
+crypto_sign_detached(unsigned char *sig, sodium_size_t *siglen_p,
+                     const unsigned char *m, sodium_size_t mlen,
                      const unsigned char *sk)
 {
     return crypto_sign_ed25519_detached(sig, siglen_p, m, mlen, sk);
@@ -82,7 +82,7 @@ crypto_sign_detached(unsigned char *sig, unsigned long long *siglen_p,
 
 int
 crypto_sign_verify_detached(const unsigned char *sig, const unsigned char *m,
-                            unsigned long long mlen, const unsigned char *pk)
+                            sodium_size_t mlen, const unsigned char *pk)
 {
     return crypto_sign_ed25519_verify_detached(sig, m, mlen, pk);
 }
@@ -95,14 +95,14 @@ crypto_sign_init(crypto_sign_state *state)
 
 int
 crypto_sign_update(crypto_sign_state *state, const unsigned char *m,
-                   unsigned long long mlen)
+                   sodium_size_t mlen)
 {
     return crypto_sign_ed25519ph_update(state, m, mlen);
 }
 
 int
 crypto_sign_final_create(crypto_sign_state *state, unsigned char *sig,
-                         unsigned long long *siglen_p, const unsigned char *sk)
+                         sodium_size_t *siglen_p, const unsigned char *sk)
 {
     return crypto_sign_ed25519ph_final_create(state, sig, siglen_p, sk);
 }

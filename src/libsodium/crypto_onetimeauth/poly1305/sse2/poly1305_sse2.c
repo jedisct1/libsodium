@@ -47,9 +47,9 @@ typedef struct poly1305_state_internal_t {
     uint32_t           R4[5];                       /*  20 bytes  */
     uint64_t           pad[2];                      /*  16 bytes  */
     uint64_t           flags;                       /*   8 bytes  */
-    unsigned long long leftover;                    /* 8 bytes */
+    sodium_size_t      leftover;                    /* 4 or 8 bytes */
     unsigned char      buffer[poly1305_block_size]; /* 32 bytes */
-} poly1305_state_internal_t;                        /* 164 bytes total */
+} poly1305_state_internal_t;                        /* 160 or 164 bytes total */
 
 /*
  * _mm_loadl_epi64() is turned into a simple MOVQ. So, unaligned accesses are
@@ -71,7 +71,7 @@ _fakealign_mm_loadl_epi64(const void *m)
 /* copy 0-31 bytes */
 static inline void
 poly1305_block_copy31(unsigned char *dst, const unsigned char *src,
-                      unsigned long long bytes)
+                      sodium_size_t bytes)
 {
     if (bytes & 16) {
         _mm_store_si128((xmmi *) (void *) dst,
@@ -101,17 +101,17 @@ poly1305_block_copy31(unsigned char *dst, const unsigned char *src,
 
 static POLY1305_NOINLINE void
 poly1305_init_ext(poly1305_state_internal_t *st, const unsigned char key[32],
-                  unsigned long long bytes)
+                  sodium_size_t bytes)
 {
-    uint32_t          *R;
-    uint128_t          d[3];
-    uint64_t           r0, r1, r2;
-    uint64_t           rt0, rt1, rt2, st2, c;
-    uint64_t           t0, t1;
-    unsigned long long i;
+    uint32_t     *R;
+    uint128_t     d[3];
+    uint64_t      r0, r1, r2;
+    uint64_t      rt0, rt1, rt2, st2, c;
+    uint64_t      t0, t1;
+    sodium_size_t i;
 
     if (!bytes) {
-        bytes = ~(unsigned long long) 0;
+        bytes = ~(sodium_size_t) 0;
     }
     /* H = 0 */
     _mm_storeu_si128((xmmi *) (void *) &st->H.hh[0], _mm_setzero_si128());
@@ -194,7 +194,7 @@ poly1305_init_ext(poly1305_state_internal_t *st, const unsigned char key[32],
 
 static POLY1305_NOINLINE void
 poly1305_blocks(poly1305_state_internal_t *st, const unsigned char *m,
-                unsigned long long bytes)
+                sodium_size_t bytes)
 {
     CRYPTO_ALIGN(64)
     xmmi HIBIT =
@@ -757,13 +757,13 @@ poly1305_blocks(poly1305_state_internal_t *st, const unsigned char *m,
 
 static void
 poly1305_update(poly1305_state_internal_t *st, const unsigned char *m,
-                unsigned long long bytes)
+                sodium_size_t bytes)
 {
-    unsigned long long i;
+    sodium_size_t i;
 
     /* handle leftover */
     if (st->leftover) {
-        unsigned long long want = (poly1305_block_size - st->leftover);
+        sodium_size_t want = (poly1305_block_size - st->leftover);
 
         if (want > bytes) {
             want = bytes;
@@ -783,7 +783,7 @@ poly1305_update(poly1305_state_internal_t *st, const unsigned char *m,
 
     /* process full blocks */
     if (bytes >= poly1305_block_size) {
-        unsigned long long want = (bytes & ~(poly1305_block_size - 1));
+        sodium_size_t want = (bytes & ~(poly1305_block_size - 1));
 
         poly1305_blocks(st, m, want);
         m += want;
@@ -801,7 +801,7 @@ poly1305_update(poly1305_state_internal_t *st, const unsigned char *m,
 
 static POLY1305_NOINLINE void
 poly1305_finish_ext(poly1305_state_internal_t *st, const unsigned char *m,
-                    unsigned long long leftover, unsigned char mac[16])
+                    sodium_size_t leftover, unsigned char mac[16])
 {
     uint64_t h0, h1, h2;
 
@@ -886,7 +886,7 @@ crypto_onetimeauth_poly1305_sse2_init(crypto_onetimeauth_poly1305_state *state,
 static int
 crypto_onetimeauth_poly1305_sse2_update(
     crypto_onetimeauth_poly1305_state *state, const unsigned char *in,
-    unsigned long long inlen)
+    sodium_size_t inlen)
 {
     poly1305_update((poly1305_state_internal_t *) (void *) state, in, inlen);
 
@@ -904,11 +904,11 @@ crypto_onetimeauth_poly1305_sse2_final(crypto_onetimeauth_poly1305_state *state,
 
 static int
 crypto_onetimeauth_poly1305_sse2(unsigned char *out, const unsigned char *m,
-                                 unsigned long long   inlen,
+                                 sodium_size_t inlen,
                                  const unsigned char *key)
 {
     CRYPTO_ALIGN(64) poly1305_state_internal_t st;
-    unsigned long long                         blocks;
+    sodium_size_t                              blocks;
 
     poly1305_init_ext(&st, key, inlen);
     blocks = inlen & ~31;
@@ -925,7 +925,7 @@ crypto_onetimeauth_poly1305_sse2(unsigned char *out, const unsigned char *m,
 static int
 crypto_onetimeauth_poly1305_sse2_verify(const unsigned char *h,
                                         const unsigned char *in,
-                                        unsigned long long   inlen,
+                                        sodium_size_t        inlen,
                                         const unsigned char *k)
 {
     unsigned char correct[16];

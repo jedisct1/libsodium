@@ -65,7 +65,7 @@ chacha_ietf_ivsetup(chacha_ctx *ctx, const uint8_t *iv, const uint8_t *counter)
 
 static void
 chacha20_encrypt_bytes(chacha_ctx *ctx, const uint8_t *m, uint8_t *c,
-                       unsigned long long bytes)
+                       sodium_size_t bytes)
 {
     uint32_t * const x = &ctx->input[0];
 
@@ -81,7 +81,7 @@ chacha20_encrypt_bytes(chacha_ctx *ctx, const uint8_t *m, uint8_t *c,
 }
 
 static int
-stream_ref(unsigned char *c, unsigned long long clen, const unsigned char *n,
+stream_ref(unsigned char *c, sodium_size_t clen, const unsigned char *n,
            const unsigned char *k)
 {
     struct chacha_ctx ctx;
@@ -100,7 +100,7 @@ stream_ref(unsigned char *c, unsigned long long clen, const unsigned char *n,
 }
 
 static int
-stream_ietf_ref(unsigned char *c, unsigned long long clen,
+stream_ietf_ref(unsigned char *c, sodium_size_t clen,
                 const unsigned char *n, const unsigned char *k)
 {
     struct chacha_ctx ctx;
@@ -120,7 +120,7 @@ stream_ietf_ref(unsigned char *c, unsigned long long clen,
 
 static int
 stream_ref_xor_ic(unsigned char *c, const unsigned char *m,
-                  unsigned long long mlen, const unsigned char *n, uint64_t ic,
+                  sodium_size_t mlen, const unsigned char *n, uint64_t ic,
                   const unsigned char *k)
 {
     struct chacha_ctx ctx;
@@ -145,7 +145,7 @@ stream_ref_xor_ic(unsigned char *c, const unsigned char *m,
 
 static int
 stream_ietf_ref_xor_ic(unsigned char *c, const unsigned char *m,
-                       unsigned long long mlen, const unsigned char *n,
+                       sodium_size_t mlen, const unsigned char *n,
                        uint32_t ic, const unsigned char *k)
 {
     struct chacha_ctx ctx;

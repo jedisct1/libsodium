@@ -3089,9 +3089,9 @@ tv(void)
     unsigned char      *mac;
     unsigned char      *nonce;
     char               *hex;
-    unsigned long long  found_ciphertext_len;
-    unsigned long long  found_mac_len;
-    unsigned long long  found_message_len;
+    sodium_size_t       found_ciphertext_len;
+    sodium_size_t       found_mac_len;
+    sodium_size_t       found_message_len;
     size_t              ad_len;
     size_t              ciphertext_len;
     size_t              detached_ciphertext_len;

@@ -208,17 +208,17 @@ crypto_hash_sha512_init(crypto_hash_sha512_state *state)
 
 int
 crypto_hash_sha512_update(crypto_hash_sha512_state *state,
-                          const unsigned char *in, unsigned long long inlen)
+                          const unsigned char *in, sodium_size_t inlen)
 {
-    uint64_t           tmp64[80 + 8];
-    uint64_t           bitlen[2];
-    unsigned long long i;
-    unsigned long long r;
+    uint64_t      tmp64[80 + 8];
+    uint64_t      bitlen[2];
+    sodium_size_t i;
+    sodium_size_t r;
 
     if (inlen <= 0U) {
         return 0;
     }
-    r = (unsigned long long) ((state->count[1] >> 3) & 0x7f);
+    r = (sodium_size_t) ((state->count[1] >> 3) & 0x7f);
 
     bitlen[1] = ((uint64_t) inlen) << 3;
     bitlen[0] = ((uint64_t) inlen) >> 61;
@@ -270,7 +270,7 @@ crypto_hash_sha512_final(crypto_hash_sha512_state *state, unsigned char *out)
 
 int
 crypto_hash_sha512(unsigned char *out, const unsigned char *in,
-                   unsigned long long inlen)
+                   sodium_size_t inlen)
 {
     crypto_hash_sha512_state state;
 

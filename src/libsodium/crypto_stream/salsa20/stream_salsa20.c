@@ -45,7 +45,7 @@ crypto_stream_salsa20_messagebytes_max(void)
 }
 
 int
-crypto_stream_salsa20(unsigned char *c, unsigned long long clen,
+crypto_stream_salsa20(unsigned char *c, sodium_size_t clen,
                       const unsigned char *n, const unsigned char *k)
 {
     return implementation->stream(c, clen, n, k);
@@ -53,7 +53,7 @@ crypto_stream_salsa20(unsigned char *c, unsigned long long clen,
 
 int
 crypto_stream_salsa20_xor_ic(unsigned char *c, const unsigned char *m,
-                             unsigned long long mlen,
+                             sodium_size_t mlen,
                              const unsigned char *n, uint64_t ic,
                              const unsigned char *k)
 {
@@ -62,7 +62,7 @@ crypto_stream_salsa20_xor_ic(unsigned char *c, const unsigned char *m,
 
 int
 crypto_stream_salsa20_xor(unsigned char *c, const unsigned char *m,
-                          unsigned long long mlen, const unsigned char *n,
+                          sodium_size_t mlen, const unsigned char *n,
                           const unsigned char *k)
 {
     return implementation->stream_xor_ic(c, m, mlen, n, 0U, k);

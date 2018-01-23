@@ -8,7 +8,7 @@
 #include "export.h"
 
 #ifdef __cplusplus
-# ifdef __GNUC__
+# if defined(__GNUC__) && !defined(SODIUM_LIBRARY_SIZE_T)
 #  pragma GCC diagnostic ignored "-Wlong-long"
 # endif
 extern "C" {
@@ -101,10 +101,10 @@ size_t crypto_pwhash_memlimit_sensitive(void);
  * may change.
  */
 SODIUM_EXPORT
-int crypto_pwhash(unsigned char * const out, unsigned long long outlen,
-                  const char * const passwd, unsigned long long passwdlen,
+int crypto_pwhash(unsigned char * const out, sodium_size_t outlen,
+                  const char * const passwd, sodium_size_t passwdlen,
                   const unsigned char * const salt,
-                  unsigned long long opslimit, size_t memlimit, int alg)
+                  sodium_size_t opslimit, size_t memlimit, int alg)
             __attribute__ ((warn_unused_result));
 
 /*
@@ -114,25 +114,25 @@ int crypto_pwhash(unsigned char * const out, unsigned long long outlen,
  */
 SODIUM_EXPORT
 int crypto_pwhash_str(char out[crypto_pwhash_STRBYTES],
-                      const char * const passwd, unsigned long long passwdlen,
-                      unsigned long long opslimit, size_t memlimit)
+                      const char * const passwd, sodium_size_t passwdlen,
+                      sodium_size_t opslimit, size_t memlimit)
             __attribute__ ((warn_unused_result));
 
 SODIUM_EXPORT
 int crypto_pwhash_str_alg(char out[crypto_pwhash_STRBYTES],
-                          const char * const passwd, unsigned long long passwdlen,
-                          unsigned long long opslimit, size_t memlimit, int alg)
+                          const char * const passwd, sodium_size_t passwdlen,
+                          sodium_size_t opslimit, size_t memlimit, int alg)
             __attribute__ ((warn_unused_result));
 
 SODIUM_EXPORT
 int crypto_pwhash_str_verify(const char str[crypto_pwhash_STRBYTES],
                              const char * const passwd,
-                             unsigned long long passwdlen)
+                             sodium_size_t passwdlen)
             __attribute__ ((warn_unused_result));
 
 SODIUM_EXPORT
 int crypto_pwhash_str_needs_rehash(const char str[crypto_pwhash_STRBYTES],
-                                   unsigned long long opslimit, size_t memlimit)
+                                   sodium_size_t opslimit, size_t memlimit)
             __attribute__ ((warn_unused_result));
 
 #define crypto_pwhash_PRIMITIVE "argon2i"

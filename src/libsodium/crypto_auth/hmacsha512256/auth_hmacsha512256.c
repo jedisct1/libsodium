@@ -46,7 +46,7 @@ crypto_auth_hmacsha512256_init(crypto_auth_hmacsha512256_state *state,
 int
 crypto_auth_hmacsha512256_update(crypto_auth_hmacsha512256_state *state,
                                  const unsigned char             *in,
-                                 unsigned long long               inlen)
+                                 sodium_size_t                    inlen)
 {
     return crypto_auth_hmacsha512_update((crypto_auth_hmacsha512_state *) state,
                                          in, inlen);
@@ -66,7 +66,7 @@ crypto_auth_hmacsha512256_final(crypto_auth_hmacsha512256_state *state,
 
 int
 crypto_auth_hmacsha512256(unsigned char *out, const unsigned char *in,
-                          unsigned long long inlen, const unsigned char *k)
+                          sodium_size_t inlen, const unsigned char *k)
 {
     crypto_auth_hmacsha512256_state state;
 
@@ -81,7 +81,7 @@ crypto_auth_hmacsha512256(unsigned char *out, const unsigned char *in,
 int
 crypto_auth_hmacsha512256_verify(const unsigned char *h,
                                  const unsigned char *in,
-                                 unsigned long long   inlen,
+                                 sodium_size_t        inlen,
                                  const unsigned char *k)
 {
     unsigned char correct[32];

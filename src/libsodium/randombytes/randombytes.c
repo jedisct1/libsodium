@@ -179,7 +179,7 @@ randombytes_buf_deterministic(void * const buf, const size_t size,
         sodium_misuse();
     }
 #endif
-    crypto_stream_chacha20_ietf((unsigned char *) buf, (unsigned long long) size,
+    crypto_stream_chacha20_ietf((unsigned char *) buf, (sodium_size_t) size,
                                 nonce, seed);
 }
 
@@ -199,7 +199,7 @@ randombytes_close(void)
 }
 
 void
-randombytes(unsigned char * const buf, const unsigned long long buf_len)
+randombytes(unsigned char * const buf, const sodium_size_t buf_len)
 {
     assert(buf_len <= SIZE_MAX);
     randombytes_buf(buf, (size_t) buf_len);

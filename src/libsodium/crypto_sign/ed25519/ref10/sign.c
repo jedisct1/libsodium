@@ -62,8 +62,8 @@ _crypto_sign_ed25519_synthetic_r_hv(crypto_hash_sha512_state *hs,
 #endif
 
 int
-_crypto_sign_ed25519_detached(unsigned char *sig, unsigned long long *siglen_p,
-                              const unsigned char *m, unsigned long long mlen,
+_crypto_sign_ed25519_detached(unsigned char *sig, sodium_size_t *siglen_p,
+                              const unsigned char *m, sodium_size_t mlen,
                               const unsigned char *sk, int prehashed)
 {
     crypto_hash_sha512_state hs;
@@ -110,19 +110,19 @@ _crypto_sign_ed25519_detached(unsigned char *sig, unsigned long long *siglen_p,
 }
 
 int
-crypto_sign_ed25519_detached(unsigned char *sig, unsigned long long *siglen_p,
-                             const unsigned char *m, unsigned long long mlen,
+crypto_sign_ed25519_detached(unsigned char *sig, sodium_size_t *siglen_p,
+                             const unsigned char *m, sodium_size_t mlen,
                              const unsigned char *sk)
 {
     return _crypto_sign_ed25519_detached(sig, siglen_p, m, mlen, sk, 0);
 }
 
 int
-crypto_sign_ed25519(unsigned char *sm, unsigned long long *smlen_p,
-                    const unsigned char *m, unsigned long long mlen,
+crypto_sign_ed25519(unsigned char *sm, sodium_size_t *smlen_p,
+                    const unsigned char *m, sodium_size_t mlen,
                     const unsigned char *sk)
 {
-    unsigned long long siglen;
+    sodium_size_t siglen;
 
     memmove(sm + crypto_sign_ed25519_BYTES, m, mlen);
     /* LCOV_EXCL_START */

@@ -2,7 +2,7 @@
 #define crypto_onetimeauth_poly1305_H
 
 #ifdef __cplusplus
-# ifdef __GNUC__
+# if defined(__GNUC__) && !defined(SODIUM_LIBRARY_SIZE_T)
 #  pragma GCC diagnostic ignored "-Wlong-long"
 # endif
 extern "C" {
@@ -34,13 +34,13 @@ size_t crypto_onetimeauth_poly1305_keybytes(void);
 SODIUM_EXPORT
 int crypto_onetimeauth_poly1305(unsigned char *out,
                                 const unsigned char *in,
-                                unsigned long long inlen,
+                                sodium_size_t inlen,
                                 const unsigned char *k);
 
 SODIUM_EXPORT
 int crypto_onetimeauth_poly1305_verify(const unsigned char *h,
                                        const unsigned char *in,
-                                       unsigned long long inlen,
+                                       sodium_size_t inlen,
                                        const unsigned char *k)
             __attribute__ ((warn_unused_result));
 
@@ -51,7 +51,7 @@ int crypto_onetimeauth_poly1305_init(crypto_onetimeauth_poly1305_state *state,
 SODIUM_EXPORT
 int crypto_onetimeauth_poly1305_update(crypto_onetimeauth_poly1305_state *state,
                                        const unsigned char *in,
-                                       unsigned long long inlen);
+                                       sodium_size_t inlen);
 
 SODIUM_EXPORT
 int crypto_onetimeauth_poly1305_final(crypto_onetimeauth_poly1305_state *state,

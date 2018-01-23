@@ -16,11 +16,11 @@
      BYTES2CHARS(saltbytes))
 
 static int
-pickparams(unsigned long long opslimit, const size_t memlimit,
+pickparams(sodium_size_t opslimit, const size_t memlimit,
            uint32_t *const N_log2, uint32_t *const p, uint32_t *const r)
 {
-    unsigned long long maxN;
-    unsigned long long maxrp;
+    sodium_size_t maxN;
+    sodium_size_t maxrp;
 
     if (opslimit < 32768) {
         opslimit = 32768;
@@ -144,11 +144,11 @@ crypto_pwhash_scryptsalsa208sha256_memlimit_sensitive(void)
 
 int
 crypto_pwhash_scryptsalsa208sha256(unsigned char *const       out,
-                                   unsigned long long         outlen,
+                                   sodium_size_t              outlen,
                                    const char *const          passwd,
-                                   unsigned long long         passwdlen,
+                                   sodium_size_t              passwdlen,
                                    const unsigned char *const salt,
-                                   unsigned long long opslimit, size_t memlimit)
+                                   sodium_size_t opslimit, size_t memlimit)
 {
     uint32_t N_log2;
     uint32_t p;
@@ -174,8 +174,8 @@ crypto_pwhash_scryptsalsa208sha256(unsigned char *const       out,
 int
 crypto_pwhash_scryptsalsa208sha256_str(
     char              out[crypto_pwhash_scryptsalsa208sha256_STRBYTES],
-    const char *const passwd, unsigned long long passwdlen,
-    unsigned long long opslimit, size_t memlimit)
+    const char *const passwd, sodium_size_t passwdlen,
+    sodium_size_t opslimit, size_t memlimit)
 {
     uint8_t salt[crypto_pwhash_scryptsalsa208sha256_STRSALTBYTES];
     char    setting[crypto_pwhash_scryptsalsa208sha256_STRSETTINGBYTES + 1U];
@@ -228,7 +228,7 @@ crypto_pwhash_scryptsalsa208sha256_str(
 int
 crypto_pwhash_scryptsalsa208sha256_str_verify(
     const char        str[crypto_pwhash_scryptsalsa208sha256_STRBYTES],
-    const char *const passwd, unsigned long long passwdlen)
+    const char *const passwd, sodium_size_t passwdlen)
 {
     char            wanted[crypto_pwhash_scryptsalsa208sha256_STRBYTES];
     escrypt_local_t escrypt_local;
@@ -258,7 +258,7 @@ crypto_pwhash_scryptsalsa208sha256_str_verify(
 int
 crypto_pwhash_scryptsalsa208sha256_str_needs_rehash(
     const char str[crypto_pwhash_scryptsalsa208sha256_STRBYTES],
-    unsigned long long opslimit, size_t memlimit)
+    sodium_size_t opslimit, size_t memlimit)
 {
     uint32_t N_log2, N_log2_;
     uint32_t p, p_;

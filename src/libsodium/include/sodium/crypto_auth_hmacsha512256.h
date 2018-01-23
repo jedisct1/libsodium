@@ -6,7 +6,7 @@
 #include "export.h"
 
 #ifdef __cplusplus
-# ifdef __GNUC__
+# if defined(__GNUC__) && !defined(SODIUM_LIBRARY_SIZE_T)
 #  pragma GCC diagnostic ignored "-Wlong-long"
 # endif
 extern "C" {
@@ -22,12 +22,12 @@ size_t crypto_auth_hmacsha512256_keybytes(void);
 
 SODIUM_EXPORT
 int crypto_auth_hmacsha512256(unsigned char *out, const unsigned char *in,
-                              unsigned long long inlen,const unsigned char *k);
+                              sodium_size_t inlen,const unsigned char *k);
 
 SODIUM_EXPORT
 int crypto_auth_hmacsha512256_verify(const unsigned char *h,
                                      const unsigned char *in,
-                                     unsigned long long inlen,
+                                     sodium_size_t inlen,
                                      const unsigned char *k)
             __attribute__ ((warn_unused_result));
 
@@ -46,7 +46,7 @@ int crypto_auth_hmacsha512256_init(crypto_auth_hmacsha512256_state *state,
 SODIUM_EXPORT
 int crypto_auth_hmacsha512256_update(crypto_auth_hmacsha512256_state *state,
                                      const unsigned char *in,
-                                     unsigned long long inlen);
+                                     sodium_size_t inlen);
 
 SODIUM_EXPORT
 int crypto_auth_hmacsha512256_final(crypto_auth_hmacsha512256_state *state,

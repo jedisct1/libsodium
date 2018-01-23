@@ -16,7 +16,7 @@ static const crypto_onetimeauth_poly1305_implementation *implementation =
 
 int
 crypto_onetimeauth_poly1305(unsigned char *out, const unsigned char *in,
-                            unsigned long long inlen, const unsigned char *k)
+                            sodium_size_t inlen, const unsigned char *k)
 {
     return implementation->onetimeauth(out, in, inlen, k);
 }
@@ -24,7 +24,7 @@ crypto_onetimeauth_poly1305(unsigned char *out, const unsigned char *in,
 int
 crypto_onetimeauth_poly1305_verify(const unsigned char *h,
                                    const unsigned char *in,
-                                   unsigned long long   inlen,
+                                   sodium_size_t        inlen,
                                    const unsigned char *k)
 {
     return implementation->onetimeauth_verify(h, in, inlen, k);
@@ -40,7 +40,7 @@ crypto_onetimeauth_poly1305_init(crypto_onetimeauth_poly1305_state *state,
 int
 crypto_onetimeauth_poly1305_update(crypto_onetimeauth_poly1305_state *state,
                                    const unsigned char *in,
-                                   unsigned long long inlen)
+                                   sodium_size_t inlen)
 {
     return implementation->onetimeauth_update(state, in, inlen);
 }

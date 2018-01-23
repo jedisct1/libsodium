@@ -22,7 +22,7 @@ _crypto_box_seal_nonce(unsigned char *nonce,
 
 int
 crypto_box_seal(unsigned char *c, const unsigned char *m,
-                unsigned long long mlen, const unsigned char *pk)
+                sodium_size_t mlen, const unsigned char *pk)
 {
     unsigned char nonce[crypto_box_NONCEBYTES];
     unsigned char epk[crypto_box_PUBLICKEYBYTES];
@@ -45,7 +45,7 @@ crypto_box_seal(unsigned char *c, const unsigned char *m,
 
 int
 crypto_box_seal_open(unsigned char *m, const unsigned char *c,
-                     unsigned long long clen,
+                     sodium_size_t clen,
                      const unsigned char *pk, const unsigned char *sk)
 {
     unsigned char nonce[crypto_box_NONCEBYTES];

@@ -10,7 +10,7 @@
 #include "export.h"
 
 #ifdef __cplusplus
-# ifdef __GNUC__
+# if defined(__GNUC__) && !defined(SODIUM_LIBRARY_SIZE_T)
 #  pragma GCC diagnostic ignored "-Wlong-long"
 # endif
 extern "C" {
@@ -59,7 +59,7 @@ const char *randombytes_implementation_name(void);
 /* -- NaCl compatibility interface -- */
 
 SODIUM_EXPORT
-void randombytes(unsigned char * const buf, const unsigned long long buf_len);
+void randombytes(unsigned char * const buf, const sodium_size_t buf_len);
 
 #ifdef __cplusplus
 }

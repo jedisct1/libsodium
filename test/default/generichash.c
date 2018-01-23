@@ -1318,7 +1318,7 @@ tv(void)
         sodium_hex2bin(in, in_len, tests[i].in_hex, strlen(tests[i].in_hex),
                        NULL, NULL, NULL);
         crypto_generichash(out, crypto_generichash_BYTES_MAX,
-                           in, (unsigned long long) in_len,
+                           in, (sodium_size_t) in_len,
                            key, crypto_generichash_KEYBYTES_MAX);
         if (memcmp(out, expected_out, crypto_generichash_BYTES_MAX) != 0) {
             printf("Test vector #%u failed\n", (unsigned int) i);
@@ -1351,7 +1351,7 @@ main(void)
     for (i = 0; i < MAXLEN; ++i) {
         in[i] = (unsigned char) i;
         crypto_generichash(out, 1 + i % crypto_generichash_BYTES_MAX, in,
-                           (unsigned long long) i, k,
+                           (sodium_size_t) i, k,
                            1 + i % crypto_generichash_KEYBYTES_MAX);
         for (j = 0; j < 1 + i % crypto_generichash_BYTES_MAX; ++j) {
             printf("%02x", (unsigned int) out[j]);
@@ -1361,20 +1361,20 @@ main(void)
 
     memset(out, 0, sizeof out);
     crypto_generichash(out, crypto_generichash_BYTES_MAX, in,
-                       (unsigned long long) i, k, 0U);
+                       (sodium_size_t) i, k, 0U);
     for (j = 0; j < crypto_generichash_BYTES_MAX; ++j) {
         printf("%02x", (unsigned int) out[j]);
     }
     printf("\n");
 
     assert(crypto_generichash(NULL, 0,
-                              in, (unsigned long long) sizeof in,
+                              in, (sodium_size_t) sizeof in,
                               k, sizeof k) == -1);
     assert(crypto_generichash(NULL, crypto_generichash_BYTES_MAX + 1,
-                              in, (unsigned long long) sizeof in,
+                              in, (sodium_size_t) sizeof in,
                               k, sizeof k) == -1);
-    assert(crypto_generichash(NULL, (unsigned long long) sizeof in,
-                              in, (unsigned long long) sizeof in,
+    assert(crypto_generichash(NULL, (sodium_size_t) sizeof in,
+                              in, (sodium_size_t) sizeof in,
                               k, crypto_generichash_KEYBYTES_MAX + 1) == -1);
 
     assert(crypto_generichash_bytes_min() > 0U);

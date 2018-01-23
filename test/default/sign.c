@@ -1078,9 +1078,9 @@ int main(void)
     char               sig_hex[crypto_sign_BYTES * 2 + 1];
     char               pk_hex[crypto_sign_PUBLICKEYBYTES * 2 + 1];
     char               sk_hex[crypto_sign_SECRETKEYBYTES * 2 + 1];
-    unsigned long long siglen;
-    unsigned long long smlen;
-    unsigned long long mlen;
+    sodium_size_t      siglen;
+    sodium_size_t      smlen;
+    sodium_size_t      mlen;
     unsigned int       i;
     unsigned int       j;
 

@@ -7,7 +7,7 @@
 #include "export.h"
 
 #ifdef __cplusplus
-# ifdef __GNUC__
+# if defined(__GNUC__) && !defined(SODIUM_LIBRARY_SIZE_T)
 #  pragma GCC diagnostic ignored "-Wlong-long"
 # endif
 extern "C" {
@@ -35,19 +35,19 @@ size_t crypto_secretbox_messagebytes_max(void);
 
 SODIUM_EXPORT
 int crypto_secretbox_easy(unsigned char *c, const unsigned char *m,
-                          unsigned long long mlen, const unsigned char *n,
+                          sodium_size_t mlen, const unsigned char *n,
                           const unsigned char *k);
 
 SODIUM_EXPORT
 int crypto_secretbox_open_easy(unsigned char *m, const unsigned char *c,
-                               unsigned long long clen, const unsigned char *n,
+                               sodium_size_t clen, const unsigned char *n,
                                const unsigned char *k)
             __attribute__ ((warn_unused_result));
 
 SODIUM_EXPORT
 int crypto_secretbox_detached(unsigned char *c, unsigned char *mac,
                               const unsigned char *m,
-                              unsigned long long mlen,
+                              sodium_size_t mlen,
                               const unsigned char *n,
                               const unsigned char *k);
 
@@ -55,7 +55,7 @@ SODIUM_EXPORT
 int crypto_secretbox_open_detached(unsigned char *m,
                                    const unsigned char *c,
                                    const unsigned char *mac,
-                                   unsigned long long clen,
+                                   sodium_size_t clen,
                                    const unsigned char *n,
                                    const unsigned char *k)
             __attribute__ ((warn_unused_result));
@@ -75,12 +75,12 @@ size_t  crypto_secretbox_boxzerobytes(void);
 
 SODIUM_EXPORT
 int crypto_secretbox(unsigned char *c, const unsigned char *m,
-                     unsigned long long mlen, const unsigned char *n,
+                     sodium_size_t mlen, const unsigned char *n,
                      const unsigned char *k);
 
 SODIUM_EXPORT
 int crypto_secretbox_open(unsigned char *m, const unsigned char *c,
-                          unsigned long long clen, const unsigned char *n,
+                          sodium_size_t clen, const unsigned char *n,
                           const unsigned char *k)
             __attribute__ ((warn_unused_result));
 

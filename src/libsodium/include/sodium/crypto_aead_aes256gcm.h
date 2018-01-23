@@ -25,7 +25,7 @@
 #include "export.h"
 
 #ifdef __cplusplus
-# ifdef __GNUC__
+# if defined(__GNUC__) && !defined(SODIUM_LIBRARY_SIZE_T)
 #  pragma GCC diagnostic ignored "-Wlong-long"
 # endif
 extern "C" {
@@ -63,23 +63,23 @@ size_t crypto_aead_aes256gcm_statebytes(void);
 
 SODIUM_EXPORT
 int crypto_aead_aes256gcm_encrypt(unsigned char *c,
-                                  unsigned long long *clen_p,
+                                  sodium_size_t *clen_p,
                                   const unsigned char *m,
-                                  unsigned long long mlen,
+                                  sodium_size_t mlen,
                                   const unsigned char *ad,
-                                  unsigned long long adlen,
+                                  sodium_size_t adlen,
                                   const unsigned char *nsec,
                                   const unsigned char *npub,
                                   const unsigned char *k);
 
 SODIUM_EXPORT
 int crypto_aead_aes256gcm_decrypt(unsigned char *m,
-                                  unsigned long long *mlen_p,
+                                  sodium_size_t *mlen_p,
                                   unsigned char *nsec,
                                   const unsigned char *c,
-                                  unsigned long long clen,
+                                  sodium_size_t clen,
                                   const unsigned char *ad,
-                                  unsigned long long adlen,
+                                  sodium_size_t adlen,
                                   const unsigned char *npub,
                                   const unsigned char *k)
             __attribute__ ((warn_unused_result));
@@ -87,11 +87,11 @@ int crypto_aead_aes256gcm_decrypt(unsigned char *m,
 SODIUM_EXPORT
 int crypto_aead_aes256gcm_encrypt_detached(unsigned char *c,
                                            unsigned char *mac,
-                                           unsigned long long *maclen_p,
+                                           sodium_size_t *maclen_p,
                                            const unsigned char *m,
-                                           unsigned long long mlen,
+                                           sodium_size_t mlen,
                                            const unsigned char *ad,
-                                           unsigned long long adlen,
+                                           sodium_size_t adlen,
                                            const unsigned char *nsec,
                                            const unsigned char *npub,
                                            const unsigned char *k);
@@ -100,10 +100,10 @@ SODIUM_EXPORT
 int crypto_aead_aes256gcm_decrypt_detached(unsigned char *m,
                                            unsigned char *nsec,
                                            const unsigned char *c,
-                                           unsigned long long clen,
+                                           sodium_size_t clen,
                                            const unsigned char *mac,
                                            const unsigned char *ad,
-                                           unsigned long long adlen,
+                                           sodium_size_t adlen,
                                            const unsigned char *npub,
                                            const unsigned char *k)
         __attribute__ ((warn_unused_result));
@@ -116,23 +116,23 @@ int crypto_aead_aes256gcm_beforenm(crypto_aead_aes256gcm_state *ctx_,
 
 SODIUM_EXPORT
 int crypto_aead_aes256gcm_encrypt_afternm(unsigned char *c,
-                                          unsigned long long *clen_p,
+                                          sodium_size_t *clen_p,
                                           const unsigned char *m,
-                                          unsigned long long mlen,
+                                          sodium_size_t mlen,
                                           const unsigned char *ad,
-                                          unsigned long long adlen,
+                                          sodium_size_t adlen,
                                           const unsigned char *nsec,
                                           const unsigned char *npub,
                                           const crypto_aead_aes256gcm_state *ctx_);
 
 SODIUM_EXPORT
 int crypto_aead_aes256gcm_decrypt_afternm(unsigned char *m,
-                                          unsigned long long *mlen_p,
+                                          sodium_size_t *mlen_p,
                                           unsigned char *nsec,
                                           const unsigned char *c,
-                                          unsigned long long clen,
+                                          sodium_size_t clen,
                                           const unsigned char *ad,
-                                          unsigned long long adlen,
+                                          sodium_size_t adlen,
                                           const unsigned char *npub,
                                           const crypto_aead_aes256gcm_state *ctx_)
             __attribute__ ((warn_unused_result));
@@ -140,11 +140,11 @@ int crypto_aead_aes256gcm_decrypt_afternm(unsigned char *m,
 SODIUM_EXPORT
 int crypto_aead_aes256gcm_encrypt_detached_afternm(unsigned char *c,
                                                    unsigned char *mac,
-                                                   unsigned long long *maclen_p,
+                                                   sodium_size_t *maclen_p,
                                                    const unsigned char *m,
-                                                   unsigned long long mlen,
+                                                   sodium_size_t mlen,
                                                    const unsigned char *ad,
-                                                   unsigned long long adlen,
+                                                   sodium_size_t adlen,
                                                    const unsigned char *nsec,
                                                    const unsigned char *npub,
                                                    const crypto_aead_aes256gcm_state *ctx_);
@@ -153,10 +153,10 @@ SODIUM_EXPORT
 int crypto_aead_aes256gcm_decrypt_detached_afternm(unsigned char *m,
                                                    unsigned char *nsec,
                                                    const unsigned char *c,
-                                                   unsigned long long clen,
+                                                   sodium_size_t clen,
                                                    const unsigned char *mac,
                                                    const unsigned char *ad,
-                                                   unsigned long long adlen,
+                                                   sodium_size_t adlen,
                                                    const unsigned char *npub,
                                                    const crypto_aead_aes256gcm_state *ctx_)
         __attribute__ ((warn_unused_result));
