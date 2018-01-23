@@ -16,7 +16,7 @@
 #include "export.h"
 
 #ifdef __cplusplus
-# ifdef __GNUC__
+# if defined(__GNUC__) && !defined(SODIUM_LIBRARY_SIZE_T)
 #  pragma GCC diagnostic ignored "-Wlong-long"
 # endif
 extern "C" {
@@ -29,17 +29,17 @@ extern "C" {
 
 SODIUM_EXPORT
 int crypto_sign_edwards25519sha512batch(unsigned char *sm,
-                                        unsigned long long *smlen_p,
+                                        sodium_size_t *smlen_p,
                                         const unsigned char *m,
-                                        unsigned long long mlen,
+                                        sodium_size_t mlen,
                                         const unsigned char *sk)
        __attribute__ ((deprecated));
 
 SODIUM_EXPORT
 int crypto_sign_edwards25519sha512batch_open(unsigned char *m,
-                                             unsigned long long *mlen_p,
+                                             sodium_size_t *mlen_p,
                                              const unsigned char *sm,
-                                             unsigned long long smlen,
+                                             sodium_size_t smlen,
                                              const unsigned char *pk)
        __attribute__ ((deprecated));
 

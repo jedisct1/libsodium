@@ -26,7 +26,7 @@ crypto_stream_xchacha20_messagebytes_max(void)
 }
 
 int
-crypto_stream_xchacha20(unsigned char *c, unsigned long long clen,
+crypto_stream_xchacha20(unsigned char *c, sodium_size_t clen,
                         const unsigned char *n, const unsigned char *k)
 {
     unsigned char k2[crypto_core_hchacha20_OUTPUTBYTES];
@@ -43,7 +43,7 @@ crypto_stream_xchacha20(unsigned char *c, unsigned long long clen,
 
 int
 crypto_stream_xchacha20_xor_ic(unsigned char *c, const unsigned char *m,
-                               unsigned long long mlen, const unsigned char *n,
+                               sodium_size_t mlen, const unsigned char *n,
                                uint64_t ic, const unsigned char *k)
 {
     unsigned char k2[crypto_core_hchacha20_OUTPUTBYTES];
@@ -55,7 +55,7 @@ crypto_stream_xchacha20_xor_ic(unsigned char *c, const unsigned char *m,
 
 int
 crypto_stream_xchacha20_xor(unsigned char *c, const unsigned char *m,
-                            unsigned long long mlen, const unsigned char *n,
+                            sodium_size_t mlen, const unsigned char *n,
                             const unsigned char *k)
 {
     return crypto_stream_xchacha20_xor_ic(c, m, mlen, n, 0U, k);

@@ -14,7 +14,7 @@
 #include "export.h"
 
 #ifdef __cplusplus
-# ifdef __GNUC__
+# if defined(__GNUC__) && !defined(SODIUM_LIBRARY_SIZE_T)
 #  pragma GCC diagnostic ignored "-Wlong-long"
 # endif
 extern "C" {
@@ -57,25 +57,25 @@ SODIUM_EXPORT
 int crypto_sign_keypair(unsigned char *pk, unsigned char *sk);
 
 SODIUM_EXPORT
-int crypto_sign(unsigned char *sm, unsigned long long *smlen_p,
-                const unsigned char *m, unsigned long long mlen,
+int crypto_sign(unsigned char *sm, sodium_size_t *smlen_p,
+                const unsigned char *m, sodium_size_t mlen,
                 const unsigned char *sk);
 
 SODIUM_EXPORT
-int crypto_sign_open(unsigned char *m, unsigned long long *mlen_p,
-                     const unsigned char *sm, unsigned long long smlen,
+int crypto_sign_open(unsigned char *m, sodium_size_t *mlen_p,
+                     const unsigned char *sm, sodium_size_t smlen,
                      const unsigned char *pk)
             __attribute__ ((warn_unused_result));
 
 SODIUM_EXPORT
-int crypto_sign_detached(unsigned char *sig, unsigned long long *siglen_p,
-                         const unsigned char *m, unsigned long long mlen,
+int crypto_sign_detached(unsigned char *sig, sodium_size_t *siglen_p,
+                         const unsigned char *m, sodium_size_t mlen,
                          const unsigned char *sk);
 
 SODIUM_EXPORT
 int crypto_sign_verify_detached(const unsigned char *sig,
                                 const unsigned char *m,
-                                unsigned long long mlen,
+                                sodium_size_t mlen,
                                 const unsigned char *pk)
             __attribute__ ((warn_unused_result));
 
@@ -84,11 +84,11 @@ int crypto_sign_init(crypto_sign_state *state);
 
 SODIUM_EXPORT
 int crypto_sign_update(crypto_sign_state *state,
-                       const unsigned char *m, unsigned long long mlen);
+                       const unsigned char *m, sodium_size_t mlen);
 
 SODIUM_EXPORT
 int crypto_sign_final_create(crypto_sign_state *state, unsigned char *sig,
-                             unsigned long long *siglen_p,
+                             sodium_size_t *siglen_p,
                              const unsigned char *sk);
 
 SODIUM_EXPORT

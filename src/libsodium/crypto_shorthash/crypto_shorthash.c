@@ -22,7 +22,7 @@ crypto_shorthash_primitive(void)
 
 int
 crypto_shorthash(unsigned char *out, const unsigned char *in,
-                 unsigned long long inlen, const unsigned char *k)
+                 sodium_size_t inlen, const unsigned char *k)
 {
     return crypto_shorthash_siphash24(out, in, inlen, k);
 }

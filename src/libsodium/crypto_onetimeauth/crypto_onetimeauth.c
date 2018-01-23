@@ -22,14 +22,14 @@ crypto_onetimeauth_keybytes(void)
 
 int
 crypto_onetimeauth(unsigned char *out, const unsigned char *in,
-                   unsigned long long inlen, const unsigned char *k)
+                   sodium_size_t inlen, const unsigned char *k)
 {
     return crypto_onetimeauth_poly1305(out, in, inlen, k);
 }
 
 int
 crypto_onetimeauth_verify(const unsigned char *h, const unsigned char *in,
-                          unsigned long long inlen, const unsigned char *k)
+                          sodium_size_t inlen, const unsigned char *k)
 {
     return crypto_onetimeauth_poly1305_verify(h, in, inlen, k);
 }
@@ -45,7 +45,7 @@ crypto_onetimeauth_init(crypto_onetimeauth_state *state,
 int
 crypto_onetimeauth_update(crypto_onetimeauth_state *state,
                           const unsigned char *in,
-                          unsigned long long inlen)
+                          sodium_size_t inlen)
 {
     return crypto_onetimeauth_poly1305_update
         ((crypto_onetimeauth_poly1305_state *) state, in, inlen);

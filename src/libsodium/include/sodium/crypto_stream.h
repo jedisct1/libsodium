@@ -15,7 +15,7 @@
 #include "export.h"
 
 #ifdef __cplusplus
-# ifdef __GNUC__
+# if defined(__GNUC__) && !defined(SODIUM_LIBRARY_SIZE_T)
 #  pragma GCC diagnostic ignored "-Wlong-long"
 # endif
 extern "C" {
@@ -38,12 +38,12 @@ SODIUM_EXPORT
 const char *crypto_stream_primitive(void);
 
 SODIUM_EXPORT
-int crypto_stream(unsigned char *c, unsigned long long clen,
+int crypto_stream(unsigned char *c, sodium_size_t clen,
                   const unsigned char *n, const unsigned char *k);
 
 SODIUM_EXPORT
 int crypto_stream_xor(unsigned char *c, const unsigned char *m,
-                      unsigned long long mlen, const unsigned char *n,
+                      sodium_size_t mlen, const unsigned char *n,
                       const unsigned char *k);
 
 SODIUM_EXPORT

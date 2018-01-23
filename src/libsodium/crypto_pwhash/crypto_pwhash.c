@@ -126,10 +126,10 @@ crypto_pwhash_memlimit_sensitive(void)
 }
 
 int
-crypto_pwhash(unsigned char * const out, unsigned long long outlen,
-              const char * const passwd, unsigned long long passwdlen,
+crypto_pwhash(unsigned char * const out, sodium_size_t outlen,
+              const char * const passwd, sodium_size_t passwdlen,
               const unsigned char * const salt,
-              unsigned long long opslimit, size_t memlimit, int alg)
+              sodium_size_t opslimit, size_t memlimit, int alg)
 {
     switch (alg) {
     case crypto_pwhash_ALG_ARGON2I13:
@@ -146,8 +146,8 @@ crypto_pwhash(unsigned char * const out, unsigned long long outlen,
 
 int
 crypto_pwhash_str(char out[crypto_pwhash_STRBYTES],
-                  const char * const passwd, unsigned long long passwdlen,
-                  unsigned long long opslimit, size_t memlimit)
+                  const char * const passwd, sodium_size_t passwdlen,
+                  sodium_size_t opslimit, size_t memlimit)
 {
     return crypto_pwhash_argon2id_str(out, passwd, passwdlen,
                                       opslimit, memlimit);
@@ -155,8 +155,8 @@ crypto_pwhash_str(char out[crypto_pwhash_STRBYTES],
 
 int
 crypto_pwhash_str_alg(char out[crypto_pwhash_STRBYTES],
-                      const char * const passwd, unsigned long long passwdlen,
-                      unsigned long long opslimit, size_t memlimit, int alg)
+                      const char * const passwd, sodium_size_t passwdlen,
+                      sodium_size_t opslimit, size_t memlimit, int alg)
 {
     switch (alg) {
     case crypto_pwhash_ALG_ARGON2I13:
@@ -173,7 +173,7 @@ crypto_pwhash_str_alg(char out[crypto_pwhash_STRBYTES],
 int
 crypto_pwhash_str_verify(const char str[crypto_pwhash_STRBYTES],
                          const char * const passwd,
-                         unsigned long long passwdlen)
+                         sodium_size_t passwdlen)
 {
     if (strncmp(str, crypto_pwhash_argon2id_STRPREFIX,
                 sizeof crypto_pwhash_argon2id_STRPREFIX - 1) == 0) {
@@ -190,7 +190,7 @@ crypto_pwhash_str_verify(const char str[crypto_pwhash_STRBYTES],
 
 int
 crypto_pwhash_str_needs_rehash(const char str[crypto_pwhash_STRBYTES],
-                               unsigned long long opslimit, size_t memlimit)
+                               sodium_size_t opslimit, size_t memlimit)
 {
     if (strncmp(str, crypto_pwhash_argon2id_STRPREFIX,
                 sizeof crypto_pwhash_argon2id_STRPREFIX - 1) == 0) {

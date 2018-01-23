@@ -120,6 +120,14 @@ AC_ARG_ENABLE(minimal,
 AM_CONDITIONAL([MINIMAL], [test x$enable_minimal = xyes])
 AC_SUBST(SODIUM_LIBRARY_MINIMAL_DEF)
 
+AC_ARG_ENABLE(size_t,
+[AS_HELP_STRING(--enable-size_t,
+  [Use size_t for all length parameters instead of unsigned long long.])])
+AS_IF([test "x$enable_size_t" = "xyes"], [
+  SODIUM_LIBRARY_SIZE_T_DEF="#define SODIUM_LIBRARY_SIZE_T 1"
+])
+AC_SUBST(SODIUM_LIBRARY_SIZE_T_DEF)
+
 AC_ARG_WITH(pthreads, AC_HELP_STRING([--with-pthreads],
  [use pthreads library, or --without-pthreads to disable threading support.]),
  [ ], [withval="yes"])

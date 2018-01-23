@@ -4,7 +4,7 @@
 
 int
 crypto_shorthash_siphashx24(unsigned char *out, const unsigned char *in,
-                            unsigned long long inlen, const unsigned char *k)
+                            sodium_size_t inlen, const unsigned char *k)
 {
     uint64_t       v0 = 0x736f6d6570736575ULL;
     uint64_t       v1 = 0x646f72616e646f83ULL;

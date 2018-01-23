@@ -8,7 +8,7 @@
 #include "export.h"
 
 #ifdef __cplusplus
-# ifdef __GNUC__
+# if defined(__GNUC__) && !defined(SODIUM_LIBRARY_SIZE_T)
 #  pragma GCC diagnostic ignored "-Wlong-long"
 # endif
 extern "C" {
@@ -78,26 +78,26 @@ size_t crypto_pwhash_scryptsalsa208sha256_memlimit_sensitive(void);
 
 SODIUM_EXPORT
 int crypto_pwhash_scryptsalsa208sha256(unsigned char * const out,
-                                       unsigned long long outlen,
+                                       sodium_size_t outlen,
                                        const char * const passwd,
-                                       unsigned long long passwdlen,
+                                       sodium_size_t passwdlen,
                                        const unsigned char * const salt,
-                                       unsigned long long opslimit,
+                                       sodium_size_t opslimit,
                                        size_t memlimit)
             __attribute__ ((warn_unused_result));
 
 SODIUM_EXPORT
 int crypto_pwhash_scryptsalsa208sha256_str(char out[crypto_pwhash_scryptsalsa208sha256_STRBYTES],
                                            const char * const passwd,
-                                           unsigned long long passwdlen,
-                                           unsigned long long opslimit,
+                                           sodium_size_t passwdlen,
+                                           sodium_size_t opslimit,
                                            size_t memlimit)
             __attribute__ ((warn_unused_result));
 
 SODIUM_EXPORT
 int crypto_pwhash_scryptsalsa208sha256_str_verify(const char str[crypto_pwhash_scryptsalsa208sha256_STRBYTES],
                                                   const char * const passwd,
-                                                  unsigned long long passwdlen)
+                                                  sodium_size_t passwdlen)
             __attribute__ ((warn_unused_result));
 
 SODIUM_EXPORT
@@ -109,7 +109,7 @@ int crypto_pwhash_scryptsalsa208sha256_ll(const uint8_t * passwd, size_t passwdl
 
 SODIUM_EXPORT
 int crypto_pwhash_scryptsalsa208sha256_str_needs_rehash(const char str[crypto_pwhash_scryptsalsa208sha256_STRBYTES],
-                                                        unsigned long long opslimit,
+                                                        sodium_size_t opslimit,
                                                         size_t memlimit)
             __attribute__ ((warn_unused_result));
 

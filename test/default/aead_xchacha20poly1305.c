@@ -32,9 +32,9 @@ tv(void)
     unsigned char *key2 = (unsigned char *) sodium_malloc(crypto_aead_xchacha20poly1305_ietf_KEYBYTES);
     unsigned char *mac = (unsigned char *) sodium_malloc(crypto_aead_xchacha20poly1305_ietf_ABYTES);
     unsigned char *m2 = (unsigned char *) sodium_malloc(MLEN);
-    unsigned long long found_clen;
-    unsigned long long found_maclen;
-    unsigned long long m2len;
+    sodium_size_t found_clen;
+    sodium_size_t found_maclen;
+    sodium_size_t m2len;
     size_t i;
 
     assert(sizeof MESSAGE - 1U == MLEN);

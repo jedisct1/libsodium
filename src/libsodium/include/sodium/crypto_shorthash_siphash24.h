@@ -5,7 +5,7 @@
 #include "export.h"
 
 #ifdef __cplusplus
-# ifdef __GNUC__
+# if defined(__GNUC__) && !defined(SODIUM_LIBRARY_SIZE_T)
 #  pragma GCC diagnostic ignored "-Wlong-long"
 # endif
 extern "C" {
@@ -23,7 +23,7 @@ size_t crypto_shorthash_siphash24_keybytes(void);
 
 SODIUM_EXPORT
 int crypto_shorthash_siphash24(unsigned char *out, const unsigned char *in,
-                               unsigned long long inlen, const unsigned char *k);
+                               sodium_size_t inlen, const unsigned char *k);
 
 #ifndef SODIUM_LIBRARY_MINIMAL
 /* -- 128-bit output -- */
@@ -38,7 +38,7 @@ size_t crypto_shorthash_siphashx24_keybytes(void);
 
 SODIUM_EXPORT
 int crypto_shorthash_siphashx24(unsigned char *out, const unsigned char *in,
-                                unsigned long long inlen, const unsigned char *k);
+                                sodium_size_t inlen, const unsigned char *k);
 #endif
 
 #ifdef __cplusplus

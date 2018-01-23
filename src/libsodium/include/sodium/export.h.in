@@ -51,7 +51,15 @@
 #endif
 
 #define SODIUM_MIN(A, B) ((A) < (B) ? (A) : (B))
-#define SODIUM_SIZE_MAX SODIUM_MIN(UINT64_MAX, SIZE_MAX)
+
+@SODIUM_LIBRARY_SIZE_T_DEF@
+#ifdef SODIUM_LIBRARY_SIZE_T
+  typedef size_t  sodium_size_t;
+# define SODIUM_SIZE_MAX SIZE_MAX
+#else
+  typedef unsigned long long  sodium_size_t;
+# define SODIUM_SIZE_MAX SODIUM_MIN(UINT64_MAX, SIZE_MAX)
+#endif
 
 @SODIUM_LIBRARY_MINIMAL_DEF@
 

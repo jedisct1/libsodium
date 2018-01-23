@@ -15,14 +15,14 @@
 
 #define poly1305_block_size 16
 
-/* 17 + sizeof(unsigned long long) + 14*sizeof(unsigned long) */
+/* 17 + sizeof(sodium_size_t) + 14*sizeof(unsigned long) */
 typedef struct poly1305_state_internal_t {
-    unsigned long      r[5];
-    unsigned long      h[5];
-    unsigned long      pad[4];
-    unsigned long long leftover;
-    unsigned char      buffer[poly1305_block_size];
-    unsigned char      final;
+    unsigned long r[5];
+    unsigned long h[5];
+    unsigned long pad[4];
+    sodium_size_t leftover;
+    unsigned char buffer[poly1305_block_size];
+    unsigned char final;
 } poly1305_state_internal_t;
 
 static void
@@ -54,7 +54,7 @@ poly1305_init(poly1305_state_internal_t *st, const unsigned char key[32])
 
 static void
 poly1305_blocks(poly1305_state_internal_t *st, const unsigned char *m,
-                unsigned long long bytes)
+                sodium_size_t bytes)
 {
     const unsigned long hibit = (st->final) ? 0UL : (1UL << 24); /* 1 << 128 */
     unsigned long       r0, r1, r2, r3, r4;
@@ -146,7 +146,7 @@ poly1305_finish(poly1305_state_internal_t *st, unsigned char mac[16])
 
     /* process the remaining block */
     if (st->leftover) {
-        unsigned long long i = st->leftover;
+        sodium_size_t i = st->leftover;
 
         st->buffer[i++] = 1;
         for (; i < poly1305_block_size; i++) {

@@ -16,14 +16,14 @@
 int
 crypto_secretbox_detached(unsigned char *c, unsigned char *mac,
                           const unsigned char *m,
-                          unsigned long long mlen, const unsigned char *n,
+                          sodium_size_t mlen, const unsigned char *n,
                           const unsigned char *k)
 {
     crypto_onetimeauth_poly1305_state state;
     unsigned char                     block0[64U];
     unsigned char                     subkey[crypto_stream_salsa20_KEYBYTES];
-    unsigned long long                i;
-    unsigned long long                mlen0;
+    sodium_size_t                     i;
+    sodium_size_t                     mlen0;
 
     crypto_core_hsalsa20(subkey, n, k, NULL);
 
@@ -69,7 +69,7 @@ crypto_secretbox_detached(unsigned char *c, unsigned char *mac,
 
 int
 crypto_secretbox_easy(unsigned char *c, const unsigned char *m,
-                      unsigned long long mlen, const unsigned char *n,
+                      sodium_size_t mlen, const unsigned char *n,
                       const unsigned char *k)
 {
     if (mlen > crypto_secretbox_MESSAGEBYTES_MAX) {
@@ -82,14 +82,14 @@ crypto_secretbox_easy(unsigned char *c, const unsigned char *m,
 int
 crypto_secretbox_open_detached(unsigned char *m, const unsigned char *c,
                                const unsigned char *mac,
-                               unsigned long long clen,
+                               sodium_size_t clen,
                                const unsigned char *n,
                                const unsigned char *k)
 {
-    unsigned char      block0[64U];
-    unsigned char      subkey[crypto_stream_salsa20_KEYBYTES];
-    unsigned long long i;
-    unsigned long long mlen0;
+    unsigned char block0[64U];
+    unsigned char subkey[crypto_stream_salsa20_KEYBYTES];
+    sodium_size_t i;
+    sodium_size_t mlen0;
 
     crypto_core_hsalsa20(subkey, n, k, NULL);
     crypto_stream_salsa20(block0, crypto_stream_salsa20_KEYBYTES,
@@ -132,7 +132,7 @@ crypto_secretbox_open_detached(unsigned char *m, const unsigned char *c,
 
 int
 crypto_secretbox_open_easy(unsigned char *m, const unsigned char *c,
-                           unsigned long long clen, const unsigned char *n,
+                           sodium_size_t clen, const unsigned char *n,
                            const unsigned char *k)
 {
     if (clen < crypto_secretbox_MACBYTES) {

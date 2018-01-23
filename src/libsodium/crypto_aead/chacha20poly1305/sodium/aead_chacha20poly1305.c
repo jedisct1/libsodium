@@ -19,11 +19,11 @@ static const unsigned char _pad0[16] = { 0 };
 int
 crypto_aead_chacha20poly1305_encrypt_detached(unsigned char *c,
                                               unsigned char *mac,
-                                              unsigned long long *maclen_p,
+                                              sodium_size_t *maclen_p,
                                               const unsigned char *m,
-                                              unsigned long long mlen,
+                                              sodium_size_t mlen,
                                               const unsigned char *ad,
-                                              unsigned long long adlen,
+                                              sodium_size_t adlen,
                                               const unsigned char *nsec,
                                               const unsigned char *npub,
                                               const unsigned char *k)
@@ -58,16 +58,16 @@ crypto_aead_chacha20poly1305_encrypt_detached(unsigned char *c,
 
 int
 crypto_aead_chacha20poly1305_encrypt(unsigned char *c,
-                                     unsigned long long *clen_p,
+                                     sodium_size_t *clen_p,
                                      const unsigned char *m,
-                                     unsigned long long mlen,
+                                     sodium_size_t mlen,
                                      const unsigned char *ad,
-                                     unsigned long long adlen,
+                                     sodium_size_t adlen,
                                      const unsigned char *nsec,
                                      const unsigned char *npub,
                                      const unsigned char *k)
 {
-    unsigned long long clen = 0ULL;
+    sodium_size_t      clen = 0;
     int                ret;
 
     if (mlen > crypto_aead_chacha20poly1305_MESSAGEBYTES_MAX) {
@@ -90,11 +90,11 @@ crypto_aead_chacha20poly1305_encrypt(unsigned char *c,
 int
 crypto_aead_chacha20poly1305_ietf_encrypt_detached(unsigned char *c,
                                                    unsigned char *mac,
-                                                   unsigned long long *maclen_p,
+                                                   sodium_size_t *maclen_p,
                                                    const unsigned char *m,
-                                                   unsigned long long mlen,
+                                                   sodium_size_t mlen,
                                                    const unsigned char *ad,
-                                                   unsigned long long adlen,
+                                                   sodium_size_t adlen,
                                                    const unsigned char *nsec,
                                                    const unsigned char *npub,
                                                    const unsigned char *k)
@@ -133,16 +133,16 @@ crypto_aead_chacha20poly1305_ietf_encrypt_detached(unsigned char *c,
 
 int
 crypto_aead_chacha20poly1305_ietf_encrypt(unsigned char *c,
-                                          unsigned long long *clen_p,
+                                          sodium_size_t *clen_p,
                                           const unsigned char *m,
-                                          unsigned long long mlen,
+                                          sodium_size_t mlen,
                                           const unsigned char *ad,
-                                          unsigned long long adlen,
+                                          sodium_size_t adlen,
                                           const unsigned char *nsec,
                                           const unsigned char *npub,
                                           const unsigned char *k)
 {
-    unsigned long long clen = 0ULL;
+    sodium_size_t      clen = 0;
     int                ret;
 
     if (mlen > crypto_aead_chacha20poly1305_ietf_MESSAGEBYTES_MAX) {
@@ -166,10 +166,10 @@ int
 crypto_aead_chacha20poly1305_decrypt_detached(unsigned char *m,
                                               unsigned char *nsec,
                                               const unsigned char *c,
-                                              unsigned long long clen,
+                                              sodium_size_t clen,
                                               const unsigned char *mac,
                                               const unsigned char *ad,
-                                              unsigned long long adlen,
+                                              sodium_size_t adlen,
                                               const unsigned char *npub,
                                               const unsigned char *k)
 {
@@ -177,7 +177,7 @@ crypto_aead_chacha20poly1305_decrypt_detached(unsigned char *m,
     unsigned char                     block0[64U];
     unsigned char                     slen[8U];
     unsigned char                     computed_mac[crypto_aead_chacha20poly1305_ABYTES];
-    unsigned long long                mlen;
+    sodium_size_t                     mlen;
     int                               ret;
 
     (void) nsec;
@@ -214,16 +214,16 @@ crypto_aead_chacha20poly1305_decrypt_detached(unsigned char *m,
 
 int
 crypto_aead_chacha20poly1305_decrypt(unsigned char *m,
-                                     unsigned long long *mlen_p,
+                                     sodium_size_t *mlen_p,
                                      unsigned char *nsec,
                                      const unsigned char *c,
-                                     unsigned long long clen,
+                                     sodium_size_t clen,
                                      const unsigned char *ad,
-                                     unsigned long long adlen,
+                                     sodium_size_t adlen,
                                      const unsigned char *npub,
                                      const unsigned char *k)
 {
-    unsigned long long mlen = 0ULL;
+    sodium_size_t      mlen = 0;
     int                ret = -1;
 
     if (clen >= crypto_aead_chacha20poly1305_ABYTES) {
@@ -246,10 +246,10 @@ int
 crypto_aead_chacha20poly1305_ietf_decrypt_detached(unsigned char *m,
                                                    unsigned char *nsec,
                                                    const unsigned char *c,
-                                                   unsigned long long clen,
+                                                   sodium_size_t clen,
                                                    const unsigned char *mac,
                                                    const unsigned char *ad,
-                                                   unsigned long long adlen,
+                                                   sodium_size_t adlen,
                                                    const unsigned char *npub,
                                                    const unsigned char *k)
 {
@@ -257,7 +257,7 @@ crypto_aead_chacha20poly1305_ietf_decrypt_detached(unsigned char *m,
     unsigned char                     block0[64U];
     unsigned char                     slen[8U];
     unsigned char                     computed_mac[crypto_aead_chacha20poly1305_ietf_ABYTES];
-    unsigned long long                mlen;
+    sodium_size_t                     mlen;
     int                               ret;
 
     (void) nsec;
@@ -298,16 +298,16 @@ crypto_aead_chacha20poly1305_ietf_decrypt_detached(unsigned char *m,
 
 int
 crypto_aead_chacha20poly1305_ietf_decrypt(unsigned char *m,
-                                          unsigned long long *mlen_p,
+                                          sodium_size_t *mlen_p,
                                           unsigned char *nsec,
                                           const unsigned char *c,
-                                          unsigned long long clen,
+                                          sodium_size_t clen,
                                           const unsigned char *ad,
-                                          unsigned long long adlen,
+                                          sodium_size_t adlen,
                                           const unsigned char *npub,
                                           const unsigned char *k)
 {
-    unsigned long long mlen = 0ULL;
+    sodium_size_t      mlen = 0;
     int                ret = -1;
 
     if (clen >= crypto_aead_chacha20poly1305_ietf_ABYTES) {

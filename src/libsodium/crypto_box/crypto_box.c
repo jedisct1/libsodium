@@ -83,7 +83,7 @@ crypto_box_beforenm(unsigned char *k, const unsigned char *pk,
 
 int
 crypto_box_afternm(unsigned char *c, const unsigned char *m,
-                   unsigned long long mlen, const unsigned char *n,
+                   sodium_size_t mlen, const unsigned char *n,
                    const unsigned char *k)
 {
     return crypto_box_curve25519xsalsa20poly1305_afternm(c, m, mlen, n, k);
@@ -91,7 +91,7 @@ crypto_box_afternm(unsigned char *c, const unsigned char *m,
 
 int
 crypto_box_open_afternm(unsigned char *m, const unsigned char *c,
-                        unsigned long long clen, const unsigned char *n,
+                        sodium_size_t clen, const unsigned char *n,
                         const unsigned char *k)
 {
     return crypto_box_curve25519xsalsa20poly1305_open_afternm(m, c, clen, n, k);
@@ -99,7 +99,7 @@ crypto_box_open_afternm(unsigned char *m, const unsigned char *c,
 
 int
 crypto_box(unsigned char *c, const unsigned char *m,
-           unsigned long long mlen, const unsigned char *n,
+           sodium_size_t mlen, const unsigned char *n,
            const unsigned char *pk, const unsigned char *sk)
 {
     return crypto_box_curve25519xsalsa20poly1305(c, m, mlen, n, pk, sk);
@@ -107,7 +107,7 @@ crypto_box(unsigned char *c, const unsigned char *m,
 
 int
 crypto_box_open(unsigned char *m, const unsigned char *c,
-                unsigned long long clen, const unsigned char *n,
+                sodium_size_t clen, const unsigned char *n,
                 const unsigned char *pk, const unsigned char *sk)
 {
     return crypto_box_curve25519xsalsa20poly1305_open(m, c, clen, n, pk, sk);

@@ -14,7 +14,7 @@ tv(void)
         size_t             passwdlen;
         const char        *salt_hex;
         size_t             outlen;
-        unsigned long long opslimit;
+        sodium_size_t      opslimit;
         size_t             memlimit;
     } tests[] = {
         { "a347ae92bce9f80f6f595a4480fc9c2fe7e7d7148d371e9487d75f5c23008ffae0"
@@ -103,7 +103,7 @@ tv(void)
         sodium_hex2bin(salt, sizeof salt, tests[i].salt_hex,
                        strlen(tests[i].salt_hex), NULL, NULL, NULL);
         if (crypto_pwhash_scryptsalsa208sha256(
-                out, (unsigned long long) tests[i].outlen, passwd,
+                out, (sodium_size_t) tests[i].outlen, passwd,
                 tests[i].passwdlen, (const unsigned char *) salt,
                 tests[i].opslimit, tests[i].memlimit) != 0) {
             printf("pwhash failure\n");
@@ -121,7 +121,7 @@ tv2(void)
         size_t             passwdlen;
         const char        *salt_hex;
         size_t             outlen;
-        unsigned long long opslimit;
+        sodium_size_t      opslimit;
         size_t             memlimit;
     } tests[] = {
         { "a347ae92bce9f80f6f595a4480fc9c2fe7e7d7148d371e9487d75f5c23008ffae0"
@@ -152,7 +152,7 @@ tv2(void)
         sodium_hex2bin(salt, sizeof salt, tests[i].salt_hex,
                        strlen(tests[i].salt_hex), NULL, NULL, NULL);
         if (crypto_pwhash_scryptsalsa208sha256(
-                out, (unsigned long long) tests[i].outlen, passwd,
+                out, (sodium_size_t) tests[i].outlen, passwd,
                 tests[i].passwdlen, (const unsigned char *) salt,
                 tests[i].opslimit, tests[i].memlimit) != 0) {
             printf("pwhash failure\n");

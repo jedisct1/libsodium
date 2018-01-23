@@ -56,7 +56,7 @@ salsa_ivsetup(salsa_ctx *ctx, const uint8_t *iv, const uint8_t *counter)
 
 static void
 salsa20_encrypt_bytes(salsa_ctx *ctx, const uint8_t *m, uint8_t *c,
-                      unsigned long long bytes)
+                      sodium_size_t bytes)
 {
     uint32_t * const x = &ctx->input[0];
 
@@ -70,7 +70,7 @@ salsa20_encrypt_bytes(salsa_ctx *ctx, const uint8_t *m, uint8_t *c,
 }
 
 static int
-stream_sse2(unsigned char *c, unsigned long long clen, const unsigned char *n,
+stream_sse2(unsigned char *c, sodium_size_t clen, const unsigned char *n,
             const unsigned char *k)
 {
     struct salsa_ctx ctx;
@@ -90,7 +90,7 @@ stream_sse2(unsigned char *c, unsigned long long clen, const unsigned char *n,
 
 static int
 stream_sse2_xor_ic(unsigned char *c, const unsigned char *m,
-                   unsigned long long mlen, const unsigned char *n, uint64_t ic,
+                   sodium_size_t mlen, const unsigned char *n, uint64_t ic,
                    const unsigned char *k)
 {
     struct salsa_ctx ctx;

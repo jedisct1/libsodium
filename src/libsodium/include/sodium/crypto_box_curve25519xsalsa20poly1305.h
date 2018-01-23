@@ -6,7 +6,7 @@
 #include "export.h"
 
 #ifdef __cplusplus
-# ifdef __GNUC__
+# if defined(__GNUC__) && !defined(SODIUM_LIBRARY_SIZE_T)
 #  pragma GCC diagnostic ignored "-Wlong-long"
 # endif
 extern "C" {
@@ -72,7 +72,7 @@ size_t crypto_box_curve25519xsalsa20poly1305_zerobytes(void);
 SODIUM_EXPORT
 int crypto_box_curve25519xsalsa20poly1305(unsigned char *c,
                                           const unsigned char *m,
-                                          unsigned long long mlen,
+                                          sodium_size_t mlen,
                                           const unsigned char *n,
                                           const unsigned char *pk,
                                           const unsigned char *sk)
@@ -81,7 +81,7 @@ int crypto_box_curve25519xsalsa20poly1305(unsigned char *c,
 SODIUM_EXPORT
 int crypto_box_curve25519xsalsa20poly1305_open(unsigned char *m,
                                                const unsigned char *c,
-                                               unsigned long long clen,
+                                               sodium_size_t clen,
                                                const unsigned char *n,
                                                const unsigned char *pk,
                                                const unsigned char *sk)
@@ -90,14 +90,14 @@ int crypto_box_curve25519xsalsa20poly1305_open(unsigned char *m,
 SODIUM_EXPORT
 int crypto_box_curve25519xsalsa20poly1305_afternm(unsigned char *c,
                                                   const unsigned char *m,
-                                                  unsigned long long mlen,
+                                                  sodium_size_t mlen,
                                                   const unsigned char *n,
                                                   const unsigned char *k);
 
 SODIUM_EXPORT
 int crypto_box_curve25519xsalsa20poly1305_open_afternm(unsigned char *m,
                                                        const unsigned char *c,
-                                                       unsigned long long clen,
+                                                       sodium_size_t clen,
                                                        const unsigned char *n,
                                                        const unsigned char *k)
             __attribute__ ((warn_unused_result));

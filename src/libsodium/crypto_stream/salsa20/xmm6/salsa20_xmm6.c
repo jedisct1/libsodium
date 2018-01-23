@@ -11,11 +11,11 @@
 #ifdef __cplusplus
 extern "C" {
 #endif
-extern int stream_salsa20_xmm6(unsigned char *c, unsigned long long clen,
+extern int stream_salsa20_xmm6(unsigned char *c, sodium_size_t clen,
                                const unsigned char *n, const unsigned char *k);
 
 extern int stream_salsa20_xmm6_xor_ic(unsigned char *c, const unsigned char *m,
-                                      unsigned long long mlen,
+                                      sodium_size_t mlen,
                                       const unsigned char *n,
                                       uint64_t ic, const unsigned char *k);
 #ifdef __cplusplus

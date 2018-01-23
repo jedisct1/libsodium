@@ -27,7 +27,7 @@ crypto_stream_primitive(void)
 }
 
 int
-crypto_stream(unsigned char *c, unsigned long long clen,
+crypto_stream(unsigned char *c, sodium_size_t clen,
               const unsigned char *n, const unsigned char *k)
 {
     return crypto_stream_xsalsa20(c, clen, n, k);
@@ -36,7 +36,7 @@ crypto_stream(unsigned char *c, unsigned long long clen,
 
 int
 crypto_stream_xor(unsigned char *c, const unsigned char *m,
-                  unsigned long long mlen, const unsigned char *n,
+                  sodium_size_t mlen, const unsigned char *n,
                   const unsigned char *k)
 {
     return crypto_stream_xsalsa20_xor(c, m, mlen, n, k);

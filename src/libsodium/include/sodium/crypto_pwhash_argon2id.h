@@ -8,7 +8,7 @@
 #include "export.h"
 
 #ifdef __cplusplus
-# ifdef __GNUC__
+# if defined(__GNUC__) && !defined(SODIUM_LIBRARY_SIZE_T)
 #  pragma GCC diagnostic ignored "-Wlong-long"
 # endif
 extern "C" {
@@ -89,30 +89,30 @@ size_t crypto_pwhash_argon2id_memlimit_sensitive(void);
 
 SODIUM_EXPORT
 int crypto_pwhash_argon2id(unsigned char * const out,
-                           unsigned long long outlen,
+                           sodium_size_t outlen,
                            const char * const passwd,
-                           unsigned long long passwdlen,
+                           sodium_size_t passwdlen,
                            const unsigned char * const salt,
-                           unsigned long long opslimit, size_t memlimit,
+                           sodium_size_t opslimit, size_t memlimit,
                            int alg)
             __attribute__ ((warn_unused_result));
 
 SODIUM_EXPORT
 int crypto_pwhash_argon2id_str(char out[crypto_pwhash_argon2id_STRBYTES],
                                const char * const passwd,
-                               unsigned long long passwdlen,
-                               unsigned long long opslimit, size_t memlimit)
+                               sodium_size_t passwdlen,
+                               sodium_size_t opslimit, size_t memlimit)
             __attribute__ ((warn_unused_result));
 
 SODIUM_EXPORT
 int crypto_pwhash_argon2id_str_verify(const char str[crypto_pwhash_argon2id_STRBYTES],
                                       const char * const passwd,
-                                      unsigned long long passwdlen)
+                                      sodium_size_t passwdlen)
             __attribute__ ((warn_unused_result));
 
 SODIUM_EXPORT
 int crypto_pwhash_argon2id_str_needs_rehash(const char str[crypto_pwhash_argon2id_STRBYTES],
-                                            unsigned long long opslimit, size_t memlimit)
+                                            sodium_size_t opslimit, size_t memlimit)
             __attribute__ ((warn_unused_result));
 
 #ifdef __cplusplus

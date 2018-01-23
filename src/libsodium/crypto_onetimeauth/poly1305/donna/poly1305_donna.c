@@ -13,13 +13,13 @@
 
 static void
 poly1305_update(poly1305_state_internal_t *st, const unsigned char *m,
-                unsigned long long bytes)
+                sodium_size_t bytes)
 {
-    unsigned long long i;
+    sodium_size_t i;
 
     /* handle leftover */
     if (st->leftover) {
-        unsigned long long want = (poly1305_block_size - st->leftover);
+        sodium_size_t want = (poly1305_block_size - st->leftover);
 
         if (want > bytes) {
             want = bytes;
@@ -39,7 +39,7 @@ poly1305_update(poly1305_state_internal_t *st, const unsigned char *m,
 
     /* process full blocks */
     if (bytes >= poly1305_block_size) {
-        unsigned long long want = (bytes & ~(poly1305_block_size - 1));
+        sodium_size_t want = (bytes & ~(poly1305_block_size - 1));
 
         poly1305_blocks(st, m, want);
         m += want;
@@ -57,7 +57,7 @@ poly1305_update(poly1305_state_internal_t *st, const unsigned char *m,
 
 static int
 crypto_onetimeauth_poly1305_donna(unsigned char *out, const unsigned char *m,
-                                  unsigned long long   inlen,
+                                  sodium_size_t inlen,
                                   const unsigned char *key)
 {
     CRYPTO_ALIGN(64) poly1305_state_internal_t state;
@@ -83,7 +83,7 @@ crypto_onetimeauth_poly1305_donna_init(crypto_onetimeauth_poly1305_state *state,
 static int
 crypto_onetimeauth_poly1305_donna_update(
     crypto_onetimeauth_poly1305_state *state, const unsigned char *in,
-    unsigned long long inlen)
+    sodium_size_t inlen)
 {
     poly1305_update((poly1305_state_internal_t *) (void *) state, in, inlen);
 
@@ -102,7 +102,7 @@ crypto_onetimeauth_poly1305_donna_final(
 static int
 crypto_onetimeauth_poly1305_donna_verify(const unsigned char *h,
                                          const unsigned char *in,
-                                         unsigned long long   inlen,
+                                         sodium_size_t        inlen,
                                          const unsigned char *k)
 {
     unsigned char correct[16];

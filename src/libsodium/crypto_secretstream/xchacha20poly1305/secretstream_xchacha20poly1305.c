@@ -110,9 +110,9 @@ crypto_secretstream_xchacha20poly1305_rekey
 int
 crypto_secretstream_xchacha20poly1305_push
    (crypto_secretstream_xchacha20poly1305_state *state,
-    unsigned char *out, unsigned long long *outlen_p,
-    const unsigned char *m, unsigned long long mlen,
-    const unsigned char *ad, unsigned long long adlen, unsigned char tag)
+    unsigned char *out, sodium_size_t *outlen_p,
+    const unsigned char *m, sodium_size_t mlen,
+    const unsigned char *ad, sodium_size_t adlen, unsigned char tag)
 {
     crypto_onetimeauth_poly1305_state poly1305_state;
     unsigned char                     block[64U];
@@ -176,9 +176,9 @@ crypto_secretstream_xchacha20poly1305_push
 int
 crypto_secretstream_xchacha20poly1305_pull
    (crypto_secretstream_xchacha20poly1305_state *state,
-    unsigned char *m, unsigned long long *mlen_p, unsigned char *tag_p,
-    const unsigned char *in, unsigned long long inlen,
-    const unsigned char *ad, unsigned long long adlen)
+    unsigned char *m, sodium_size_t *mlen_p, unsigned char *tag_p,
+    const unsigned char *in, sodium_size_t inlen,
+    const unsigned char *ad, sodium_size_t adlen)
 {
     crypto_onetimeauth_poly1305_state poly1305_state;
     unsigned char                     block[64U];
@@ -186,7 +186,7 @@ crypto_secretstream_xchacha20poly1305_pull
     unsigned char                     mac[crypto_onetimeauth_poly1305_BYTES];
     const unsigned char              *c;
     const unsigned char              *stored_mac;
-    unsigned long long                mlen;
+    sodium_size_t                     mlen;
     unsigned char                     tag;
 
     if (mlen_p != NULL) {

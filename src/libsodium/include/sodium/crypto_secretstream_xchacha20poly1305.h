@@ -8,7 +8,7 @@
 #include "export.h"
 
 #ifdef __cplusplus
-# ifdef __GNUC__
+# if defined(__GNUC__) && !defined(SODIUM_LIBRARY_SIZE_T)
 #  pragma GCC diagnostic ignored "-Wlong-long"
 # endif
 extern "C" {
@@ -74,9 +74,9 @@ int crypto_secretstream_xchacha20poly1305_init_push
 SODIUM_EXPORT
 int crypto_secretstream_xchacha20poly1305_push
    (crypto_secretstream_xchacha20poly1305_state *state,
-    unsigned char *c, unsigned long long *clen_p,
-    const unsigned char *m, unsigned long long mlen,
-    const unsigned char *ad, unsigned long long adlen, unsigned char tag);
+    unsigned char *c, sodium_size_t *clen_p,
+    const unsigned char *m, sodium_size_t mlen,
+    const unsigned char *ad, sodium_size_t adlen, unsigned char tag);
 
 SODIUM_EXPORT
 int crypto_secretstream_xchacha20poly1305_init_pull
@@ -87,9 +87,9 @@ int crypto_secretstream_xchacha20poly1305_init_pull
 SODIUM_EXPORT
 int crypto_secretstream_xchacha20poly1305_pull
    (crypto_secretstream_xchacha20poly1305_state *state,
-    unsigned char *m, unsigned long long *mlen_p, unsigned char *tag_p,
-    const unsigned char *c, unsigned long long clen,
-    const unsigned char *ad, unsigned long long adlen);
+    unsigned char *m, sodium_size_t *mlen_p, unsigned char *tag_p,
+    const unsigned char *c, sodium_size_t clen,
+    const unsigned char *ad, sodium_size_t adlen);
 
 SODIUM_EXPORT
 void crypto_secretstream_xchacha20poly1305_rekey

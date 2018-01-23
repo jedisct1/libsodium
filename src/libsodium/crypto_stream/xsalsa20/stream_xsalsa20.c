@@ -5,7 +5,7 @@
 #include "utils.h"
 
 int
-crypto_stream_xsalsa20(unsigned char *c, unsigned long long clen,
+crypto_stream_xsalsa20(unsigned char *c, sodium_size_t clen,
                        const unsigned char *n, const unsigned char *k)
 {
     unsigned char subkey[32];
@@ -20,7 +20,7 @@ crypto_stream_xsalsa20(unsigned char *c, unsigned long long clen,
 
 int
 crypto_stream_xsalsa20_xor_ic(unsigned char *c, const unsigned char *m,
-                              unsigned long long mlen, const unsigned char *n,
+                              sodium_size_t mlen, const unsigned char *n,
                               uint64_t ic, const unsigned char *k)
 {
     unsigned char subkey[32];
@@ -35,7 +35,7 @@ crypto_stream_xsalsa20_xor_ic(unsigned char *c, const unsigned char *m,
 
 int
 crypto_stream_xsalsa20_xor(unsigned char *c, const unsigned char *m,
-                           unsigned long long mlen, const unsigned char *n,
+                           sodium_size_t mlen, const unsigned char *n,
                            const unsigned char *k)
 {
     return crypto_stream_xsalsa20_xor_ic(c, m, mlen, n, 0ULL, k);

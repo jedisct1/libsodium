@@ -14,7 +14,7 @@ tv(void)
         size_t             passwd_len;
         const char *       salt_hex;
         size_t             outlen;
-        unsigned long long opslimit;
+        sodium_size_t      opslimit;
         size_t             memlimit;
         unsigned int       lanes;
     } tests[] = {
@@ -90,7 +90,7 @@ tv(void)
                        NULL, NULL);
         sodium_hex2bin(salt, sizeof salt, tests[i].salt_hex,
                        strlen(tests[i].salt_hex), NULL, NULL, NULL);
-        if (crypto_pwhash(out, (unsigned long long) tests[i].outlen, passwd,
+        if (crypto_pwhash(out, (sodium_size_t) tests[i].outlen, passwd,
                           tests[i].passwd_len, (const unsigned char *) salt,
                           tests[i].opslimit, tests[i].memlimit,
                           crypto_pwhash_alg_default()) != 0) {
@@ -111,7 +111,7 @@ tv2(void)
         size_t             passwd_len;
         const char *       salt_hex;
         size_t             outlen;
-        unsigned long long opslimit;
+        sodium_size_t      opslimit;
         size_t             memlimit;
         unsigned int       lanes;
     } tests[] = {
@@ -142,7 +142,7 @@ tv2(void)
                        NULL, NULL);
         sodium_hex2bin(salt, sizeof salt, tests[i].salt_hex,
                        strlen(tests[i].salt_hex), NULL, NULL, NULL);
-        if (crypto_pwhash(out, (unsigned long long) tests[i].outlen, passwd,
+        if (crypto_pwhash(out, (sodium_size_t) tests[i].outlen, passwd,
                           tests[i].passwd_len, (const unsigned char *) salt,
                           tests[i].opslimit, tests[i].memlimit,
                           crypto_pwhash_alg_default()) != 0) {
@@ -154,7 +154,7 @@ tv2(void)
     } while (++i < (sizeof tests) / (sizeof tests[0]));
 
     if (crypto_pwhash_argon2id(out, sizeof out, "password", strlen("password"), salt, 3,
-                               1ULL << 12, 0) != -1) {
+                               1UL << 12, 0) != -1) {
         printf("[tv2] pwhash should have failed (0)\n");
     }
     if (crypto_pwhash_argon2id(out, sizeof out, "password", strlen("password"), salt, 3,
@@ -162,21 +162,23 @@ tv2(void)
         printf("[tv2] pwhash should have failed (1)\n");
     }
     if (crypto_pwhash_argon2id(out, sizeof out, "password", strlen("password"), salt, 3,
-                               1ULL << 12, crypto_pwhash_argon2id_alg_argon2id13()) != -1) {
+                               1UL << 12, crypto_pwhash_argon2id_alg_argon2id13()) != -1) {
         printf("[tv2] pwhash should have failed (2)\n");
     }
     if (crypto_pwhash_argon2id(out, sizeof out, "password", strlen("password"), salt, 2,
-                               1ULL << 12, crypto_pwhash_argon2id_alg_argon2id13()) != -1) {
+                               1UL << 12, crypto_pwhash_argon2id_alg_argon2id13()) != -1) {
         printf("[tv2] pwhash should have failed (3)\n");
     }
     if (crypto_pwhash_argon2id(out, 15, "password", strlen("password"), salt, 3,
-                               1ULL << 12, crypto_pwhash_argon2id_alg_argon2id13()) != -1) {
+                               1UL << 12, crypto_pwhash_argon2id_alg_argon2id13()) != -1) {
         printf("[tv2] pwhash with a short output length should have failed\n");
     }
+#if (SODIUM_SIZE_MAX >= 0x100000000ULL) || !defined(SODIUM_LIBRARY_SIZE_T)
     if (crypto_pwhash_argon2id(out, sizeof out, "password", 0x100000000ULL, salt, 3,
-                               1ULL << 12, crypto_pwhash_argon2id_alg_argon2id13()) != -1) {
+                               1UL << 12, crypto_pwhash_argon2id_alg_argon2id13()) != -1) {
         printf("[tv2] pwhash with a long password length should have failed\n");
     }
+#endif
     assert(crypto_pwhash_argon2id(out, sizeof out, "password", strlen("password"), salt,
                                   OPSLIMIT, MEMLIMIT, crypto_pwhash_alg_argon2i13()) == -1);
 }
@@ -294,21 +296,25 @@ str_tests(void)
     str_out[14]--;
     assert(str_out[crypto_pwhash_argon2id_STRBYTES - 1U] == 0);
 
+#if (SODIUM_SIZE_MAX >= 0x100000000ULL) || !defined(SODIUM_LIBRARY_SIZE_T)
     if (crypto_pwhash_str(str_out2, passwd, 0x100000000ULL, OPSLIMIT,
                           MEMLIMIT) != -1) {
         printf("pwhash_str() with a large password should have failed\n");
     }
+#endif
     if (crypto_pwhash_str(str_out2, passwd, strlen(passwd), 1, MEMLIMIT) != 0) {
         printf("pwhash_str() with a small opslimit should not have failed\n");
     }
     if (crypto_pwhash_str(str_out2, passwd, strlen(passwd), 0, MEMLIMIT) != -1) {
         printf("pwhash_argon2id_str() with a null opslimit should have failed\n");
     }
+#if (SODIUM_SIZE_MAX >= 0x100000000ULL) || !defined(SODIUM_LIBRARY_SIZE_T)
     if (crypto_pwhash_str_verify("$argon2id$m=65536,t=2,p=1c29tZXNhbHQ"
                                  "$9sTbSlTio3Biev89thdrlKKiCaYsjjYVJxGAL3swxpQ",
                                  "password", 0x100000000ULL) != -1) {
         printf("pwhash_str_verify(invalid(0)) failure\n");
     }
+#endif
     if (crypto_pwhash_str_verify("$argon2id$m=65536,t=2,p=1c29tZXNhbHQ"
                                  "$9sTbSlTio3Biev89thdrlKKiCaYsjjYVJxGAL3swxpQ",
                                  "password", strlen("password")) != -1) {

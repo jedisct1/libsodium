@@ -13,7 +13,7 @@
 int
 _crypto_sign_ed25519_verify_detached(const unsigned char *sig,
                                      const unsigned char *m,
-                                     unsigned long long   mlen,
+                                     sodium_size_t        mlen,
                                      const unsigned char *pk,
                                      int prehashed)
 {
@@ -57,18 +57,18 @@ _crypto_sign_ed25519_verify_detached(const unsigned char *sig,
 int
 crypto_sign_ed25519_verify_detached(const unsigned char *sig,
                                     const unsigned char *m,
-                                    unsigned long long   mlen,
+                                    sodium_size_t        mlen,
                                     const unsigned char *pk)
 {
     return _crypto_sign_ed25519_verify_detached(sig, m, mlen, pk, 0);
 }
 
 int
-crypto_sign_ed25519_open(unsigned char *m, unsigned long long *mlen_p,
-                         const unsigned char *sm, unsigned long long smlen,
+crypto_sign_ed25519_open(unsigned char *m, sodium_size_t *mlen_p,
+                         const unsigned char *sm, sodium_size_t smlen,
                          const unsigned char *pk)
 {
-    unsigned long long mlen;
+    sodium_size_t mlen;
 
     if (smlen < 64 || smlen - 64 > crypto_sign_ed25519_MESSAGEBYTES_MAX) {
         goto badsig;

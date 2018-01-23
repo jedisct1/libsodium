@@ -11,7 +11,7 @@ Public domain.
 #include "utils.h"
 
 int
-crypto_stream_salsa208(unsigned char *c, unsigned long long clen,
+crypto_stream_salsa208(unsigned char *c, sodium_size_t clen,
                        const unsigned char *n, const unsigned char *k)
 {
     unsigned char in[16];
@@ -57,7 +57,7 @@ crypto_stream_salsa208(unsigned char *c, unsigned long long clen,
 
 int
 crypto_stream_salsa208_xor(unsigned char *c, const unsigned char *m,
-                           unsigned long long mlen, const unsigned char *n,
+                           sodium_size_t mlen, const unsigned char *n,
                            const unsigned char *k)
 {
     unsigned char in[16];

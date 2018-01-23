@@ -18,7 +18,7 @@ main(void)
     }
     for (i = 0; i < MAXLEN; ++i) {
         in[i] = (unsigned char) i;
-        crypto_shorthash(out, in, (unsigned long long) i, k);
+        crypto_shorthash(out, in, (sodium_size_t) i, k);
         for (j = 0; j < crypto_shorthash_BYTES; ++j) {
             printf("%02x", (unsigned int) out[j]);
         }
