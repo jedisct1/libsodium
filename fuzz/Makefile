@@ -5,6 +5,8 @@ LIB_FUZZING_ENGINE ?= standalone_fuzz_taget_runner.o
 # You may add extra compiler flags like this:
 CXXFLAGS += -std=c++11
 
+SODIUM_INCLUDE = ../include
+
 clean:
 	rm -fv *.a *.o *_fuzzer
 
@@ -22,11 +24,9 @@ libsodium.a:
 	cd .. && ./configure --enable-static && $(MAKE) clean && $(MAKE) -j$(nproc) all
 
 secret_key_auth_fuzzer: secret_key_auth_fuzzer.cc libsodium.a standalone_fuzz_taget_runner.o
-	${CXX} ${CXXFLAGS} $< ${PREFIX}/libsodium.a ${LIB_FUZZING_ENGINE} -o $@
-	zip -q -r do_stuff_fuzzer_seed_corpus.zip do_stuff_test_data
+	${CXX} ${CXXFLAGS} ${SODIUM_INCLUDE} libsodium.a -l${LIB_FUZZING_ENGINE} -o $@
 
 secretbox_easy_fuzzer: secretbox_easy_fuzzer.cc libsodium.a standalone_fuzz_taget_runner.o
-	${CXX} ${CXXFLAGS} $< ${PREFIX}/libsodium.a ${LIB_FUZZING_ENGINE} -o $@
-	zip -q -r do_stuff_fuzzer_seed_corpus.zip do_stuff_test_data
+	${CXX} ${CXXFLAGS} ${SODIUM_INCLUDE} libsodium.a -l${LIB_FUZZING_ENGINE} -o $@
 
 standalone_runner.o: standalone_runner.cc
