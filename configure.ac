@@ -830,6 +830,7 @@ AC_CONFIG_FILES([Makefile
                  src/Makefile
                  src/libsodium/Makefile
                  src/libsodium/include/Makefile
+                 src/libsodium/include/sodium/export.h
                  src/libsodium/include/sodium/version.h
                  test/default/Makefile
                  test/Makefile
