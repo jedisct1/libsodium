@@ -202,6 +202,9 @@ AC_CHECK_DEFINE([_FORTIFY_SOURCE], [], [
 AX_CHECK_COMPILE_FLAG([-fvisibility=hidden],
   [CFLAGS="$CFLAGS -fvisibility=hidden"])
 
+AX_CHECK_COMPILE_FLAG([-mfunction-return=thunk -mindirect-branch=thunk],
+  [CFLAGS="$CFLAGS -mfunction-return=thunk -mindirect-branch=thunk"])
+
 AS_CASE([$host_os], [cygwin*|mingw*|msys|pw32*|cegcc*], [ ], [
   AX_CHECK_COMPILE_FLAG([-fPIC], [CFLAGS="$CFLAGS -fPIC"])
 ])
