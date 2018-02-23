@@ -119,6 +119,39 @@ AC_ARG_ENABLE(minimal,
 ])
 AM_CONDITIONAL([MINIMAL], [test x$enable_minimal = xyes])
 AC_SUBST(SODIUM_LIBRARY_MINIMAL_DEF)
+AC_ARG_ENABLE(sgx,
+[AS_HELP_STRING(--enable-sgx,[Build for Intel SGX])]],
+[
+  AS_IF([test "x$enableval" = "xyes"], [
+    sgx_build="yes"
+    AC_DEFINE([SGX], [1], [SGX build])
+    AC_MSG_NOTICE([Compiling to SGX])
+
+    AS_IF([test "x$enable_pie" = "xno"],
+           [AC_MSG_ERROR([SGX build requires position independent executables])
+    ])
+
+    AS_IF([test "x$SGX_SDK" = "x"], [
+           AC_MSG_ERROR([SGX_SDK not set.])
+    ], [
+           AC_MSG_NOTICE([SGX_SDK: ${SGX_SDK}])
+    ])
+    
+    SGX_INC_PATH="-I${SGX_SDK}/include -I${SGX_SDK}/include/tlibc -I${SGX_SDK}/include/libcxx"
+   
+    AC_SUBST(SGX_INC_PATH)
+        
+    AX_CHECK_COMPILE_FLAG([-nostdinc ${SGX_INC_PATH}], [CFLAGS="$CFLAGS -nostdinc ${SGX_INC_PATH}"])
+
+    AX_CHECK_COMPILE_FLAG([-ffunction-sections -fdata-sections],
+        AX_CHECK_LINK_FLAG([-ffunction-sections -fdata-sections],
+            [CFLAGS="$CFLAGS -ffunction-sections -fdata-sections"])
+    )
+    
+  ],[
+    sgx_build="no"
+  ])
+])
 
 AC_ARG_WITH(pthreads, AC_HELP_STRING([--with-pthreads],
  [use pthreads library, or --without-pthreads to disable threading support.]),
@@ -180,41 +213,6 @@ AC_ARG_ENABLE(opt,
     AX_CHECK_COMPILE_FLAG([-march=native], [CFLAGS="$CFLAGS -march=native"])
   ])
 ])
-
-AC_ARG_ENABLE(sgx,
-[AS_HELP_STRING(--enable-sgx,[Build for Intel SGX])]],
-[
-  AS_IF([test "x$enableval" = "xyes"], [
-    sgx_build="yes"
-    AC_DEFINE([SGX], [1], [SGX build])
-    AC_MSG_NOTICE([Compiling to SGX])
-
-    AS_IF([test "x$enable_pie" = "xno"],
-           [AC_MSG_ERROR([SGX build requires position independent executables])
-    ])
-
-    AS_IF([test "x$SGX_SDK" == "x"], [
-           AC_MSG_ERROR([SGX_SDK not set.])
-    ], [
-           AC_MSG_NOTICE([SGX_SDK: ${SGX_SDK}])
-    ])
-    
-    SGX_INC_PATH="-I${SGX_SDK}/include -I${SGX_SDK}/include/tlibc -I${SGX_SDK}/include/libcxx"
-   
-    AC_SUBST(SGX_INC_PATH)
-        
-    AX_CHECK_COMPILE_FLAG([-nostdinc ${SGX_INC_PATH}], [CFLAGS="$CFLAGS -nostdinc ${SGX_INC_PATH}"])
-
-    AX_CHECK_COMPILE_FLAG([-ffunction-sections -fdata-sections],
-        AX_CHECK_LINK_FLAG([-ffunction-sections -fdata-sections],
-            [CFLAGS="$CFLAGS -ffunction-sections -fdata-sections"])
-    )
-    
-  ],[
-    sgx_build="no"
-  ])
-])
-
 
 AC_SUBST([MAINT])
 
