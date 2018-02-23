@@ -8,6 +8,9 @@
 #elif defined(HAVE_PTHREAD)
 # include <pthread.h>
 #endif
+#ifdef SGX
+#include <sgx_thread.h>
+#endif
 
 #include "core.h"
 #include "crypto_generichash.h"
@@ -151,6 +154,38 @@ sodium_crit_leave(void)
     locked = 0;
 
     return pthread_mutex_unlock(&_sodium_lock);
+}
+
+#elif defined(SGX)
+
+static sgx_thread_mutex_t global_mutex = SGX_THREAD_MUTEX_INITIALIZER;
+
+int
+sodium_crit_enter(void)
+{
+    int ret;
+
+    if ((ret = sgx_thread_mutex_lock(&global_mutex)) == 0) {
+        assert(locked == 0);
+        locked = 1;
+    }
+    return ret;
+}
+
+int
+sodium_crit_leave(void)
+{
+    int ret;
+
+    if (locked == 0) {
+# ifdef EPERM
+        errno = EPERM;
+# endif
+        return -1;
+    }
+    locked = 0;
+
+    return sgx_thread_mutex_unlock(&global_mutex);
 }
 
 #elif defined(HAVE_ATOMIC_OPS) && !defined(__EMSCRIPTEN__) && !defined(__native_client__)
