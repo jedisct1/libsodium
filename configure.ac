@@ -588,7 +588,10 @@ AC_SUBST(CFLAGS_AESNI)
 AC_SUBST(CFLAGS_PCLMUL)
 AC_SUBST(CFLAGS_RDRAND)
 
-AC_CHECK_HEADERS([sys/mman.h intrin.h])
+AC_CHECK_HEADER([intrin.h])
+AS_IF([test "$sgx_build" = "no"],[
+    AC_CHECK_HEADERS([sys/mman.h signal.h])
+])
 
 AC_MSG_CHECKING([if _xgetbv() is available])
 AC_LINK_IFELSE(

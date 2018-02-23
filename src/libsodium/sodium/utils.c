@@ -4,11 +4,14 @@
 #include <assert.h>
 #include <errno.h>
 #include <limits.h>
-#include <signal.h>
 #include <stddef.h>
 #include <stdint.h>
 #include <stdlib.h>
 #include <string.h>
+
+#ifdef HAVE_SIGNAL_H
+# include <signal.h>
+#endif
 
 #ifdef HAVE_SYS_MMAN_H
 # include <sys/mman.h>
