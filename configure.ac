@@ -309,6 +309,11 @@ AS_CASE([$host_os],
   [*], [
     AX_CHECK_COMPILE_FLAG([-fstack-protector], [
       AX_CHECK_LINK_FLAG([-fstack-protector],
+      AX_CHECK_COMPILE_FLAG([-fstack-protector-strong],
+        AX_CHECK_LINK_FLAG([-fstack-protector-strong],
+            [CFLAGS="$CFLAGS -fstack-protector-strong"],
+            [CFLAGS="$CFLAGS -fstack-protector"]),
+        ),
         [CFLAGS="$CFLAGS -fstack-protector"]
       )
     ])
