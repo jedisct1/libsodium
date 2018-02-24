@@ -1,7 +1,9 @@
 
 #include <assert.h>
 #include <errno.h>
-#include <fcntl.h>
+#ifndef SGX
+# include <fcntl.h>
+#endif
 #include <limits.h>
 #include <stdint.h>
 #include <string.h>
@@ -10,19 +12,24 @@
 #endif
 
 #include <stdlib.h>
-#include <sys/types.h>
-#ifndef _WIN32
-# include <sys/stat.h>
-# include <sys/time.h>
-#endif
-#ifdef __linux__
-# ifdef __dietlibc__
-#  define _LINUX_SOURCE
-# else
-#  include <sys/syscall.h>
+
+#ifdef SGX
+# include "sgx_trts.h"
+#else
+# include <sys/types.h>
+# ifndef _WIN32
+#  include <sys/stat.h>
+#  include <sys/time.h>
 # endif
-# include <poll.h>
-#endif
+# ifdef __linux__
+#  ifdef __dietlibc__
+#   define _LINUX_SOURCE
+#  else
+#   include <sys/syscall.h>
+#  endif
+#  include <poll.h>
+# endif
+#endif /* SGX */
 
 #include "core.h"
 #include "private/common.h"
@@ -102,7 +109,7 @@ static SysRandom stream = {
     SODIUM_C99(.getrandom_available =) 0
 };
 
-#ifndef _WIN32
+#if !defined(_WIN32) && !defined(SGX)
 static ssize_t
 safe_read(const int fd, void * const buf_, size_t size)
 {
@@ -128,7 +135,7 @@ safe_read(const int fd, void * const buf_, size_t size)
 }
 #endif
 
-#ifndef _WIN32
+#if !defined(_WIN32) && !defined(SGX)
 # if defined(__linux__) && !defined(USE_BLOCKING_RANDOM) && !defined(NO_BLOCKING_RANDOM_POLL)
 static int
 randombytes_block_on_dev_random(void)
@@ -299,7 +306,7 @@ randombytes_sysrandom_close(void)
 {
     int ret = -1;
 
-#ifndef _WIN32
+#if !defined(_WIN32) && !defined(SGX)
     if (stream.random_data_source_fd != -1 &&
         close(stream.random_data_source_fd) == 0) {
         stream.random_data_source_fd = -1;
@@ -330,7 +337,7 @@ randombytes_sysrandom_buf(void * const buf, const size_t size)
     assert(size <= ULONG_LONG_MAX);
 # endif
 #endif
-#ifndef _WIN32
+#if !defined(_WIN32) && !defined(SGX)
 # if defined(SYS_getrandom) && defined(__NR_getrandom)
     if (stream.getrandom_available != 0) {
         if (randombytes_linux_getrandom(buf, size) != 0) {
@@ -341,6 +348,17 @@ randombytes_sysrandom_buf(void * const buf, const size_t size)
 # endif
     if (stream.random_data_source_fd == -1 ||
         safe_read(stream.random_data_source_fd, buf, size) != (ssize_t) size) {
+        sodium_misuse(); /* LCOV_EXCL_LINE */
+    }
+#elif defined(SGX)
+    /* Use SGX API's to generate the random bytes 
+     * WARNING: SGX documentation states that, in simulation mode,
+     * the sgx_read_rand function generates a pseudo-random sequence.
+    */
+    
+    #warning Insecure in SGX simulation mode
+    
+    if (sgx_read_rand(buf, size) != SGX_SUCCESS) {
         sodium_misuse(); /* LCOV_EXCL_LINE */
     }
 #else
