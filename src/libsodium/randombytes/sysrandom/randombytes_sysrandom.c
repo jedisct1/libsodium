@@ -354,7 +354,7 @@ randombytes_sysrandom_buf(void * const buf, const size_t size)
     /* Use SGX API's to generate the random bytes 
      * WARNING: SGX documentation states that, in simulation mode,
      * the sgx_read_rand function generates a pseudo-random sequence.
-    */
+     */
     
     #warning Insecure in SGX simulation mode
     
