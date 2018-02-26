@@ -384,7 +384,7 @@ randombytes_salsa20_random_stir(void)
        sodium_misuse(); /* LCOV_EXCL_LINE */
     }  
     
-#elif defined(_WIN32)
+#elif !defined(_WIN32)
 
 # ifdef HAVE_SAFE_ARC4RANDOM
     arc4random_buf(stream.key, sizeof stream.key);
