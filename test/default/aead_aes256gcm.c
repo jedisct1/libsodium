@@ -1,6 +1,10 @@
 
 #define TEST_NAME "aead_aes256gcm"
+#ifndef SGX
 #include "cmptest.h"
+#else
+#include "test_enclave.h"
+#endif
 
 static struct {
     const char *key_hex;

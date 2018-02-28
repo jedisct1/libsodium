@@ -374,6 +374,8 @@ TESTS_TARGETS = \
 	stream4 \
 	verify1
 
+if !SGX
+
 if !EMSCRIPTEN
 if !NATIVECLIENT
 TESTS_TARGETS += \
@@ -617,6 +619,73 @@ endif
 
 if NATIVECLIENT
 LOG_COMPILER = ./nacl-test-wrapper.sh
+endif
+
+
+else # SGX
+
+SGX_EDGER8R := sgx_edger8r
+SGX_ENCLAVE_SIGNER := sgx_sign
+
+SGX_LIBRARY_PATH := $(SGX_SDK)/lib64
+
+
+# SUFFIXES = .edl _u.c _t.c
+# .edl_u.c:
+#     $(SGX_EDGER8R) --use-prefix --untrusted $< --search-path $(SGX_SDK)/include
+#
+# .edl_t.c:
+#     $(SGX_EDGER8R) --use-prefix --trusted $< --search-path $(SGX_SDK)/include
+
+enclave_private.pem:
+
+enclave_config.xml:
+
+enclave.edl:
+
+enclave_t.c: enclave.edl
+	$(SGX_EDGER8R) --use-prefix --trusted enclave.edl --search-path $(SGX_SDK)/include
+
+enclave_u.c: enclave.edl
+	$(SGX_EDGER8R) --use-prefix --untrusted enclave.edl --search-path $(SGX_SDK)/include
+
+
+# ifneq ($(SGX_MODE), HW)
+ Trts_Library_Name := sgx_trts_sim
+ Service_Library_Name := sgx_tservice_sim
+# else
+ # Trts_Library_Name := sgx_trts
+ # Service_Library_Name := sgx_tservice
+# endif
+Crypto_Library_Name := sgx_tcrypto
+
+ENCLAVE_LINK_FLAGS := -Wl,--no-undefined -nostdlib -nodefaultlibs -nostartfiles -L$(SGX_LIBRARY_PATH) \
+	-Wl,--whole-archive -l$(Trts_Library_Name) -Wl,--no-whole-archive \
+	-Wl,--start-group -lsgx_tstdc -l$(Crypto_Library_Name) -l$(Service_Library_Name) -Wl,-Bstatic -Wl,--end-group \
+	-Wl,-Bstatic -Wl,-Bsymbolic -Wl,--no-undefined \
+	-Wl,-pie,-eenclave_entry -Wl,--export-dynamic  \
+	-Wl,--defsym,__ImageBase=0 -Wl,--gc-sections
+
+
+
+aead_aes256gcm_enclave.so: enclave_t.o test_enclave.h aead_aes256gcm.o ${top_builddir}/src/libsodium/.libs/libsodium.a
+	$(CC) $^ -o $@ $(CFLAGS) $(AM_CPPFLAGS) $(ENCLAVE_LINK_FLAGS)
+
+
+aead_aes256gcm_enclave.signed.so: aead_aes256gcm_enclave.so enclave_config.xml enclave_private.pem
+	@$(SGX_ENCLAVE_SIGNER) sign -key enclave_private.pem -enclave aead_aes256gcm_enclave.so -out $@ -config enclave_config.xml
+	@echo "SIGN =>  $@"
+
+
+check_PROGRAMS = aead_aes256gcm_enclave.signed.so
+
+# check_LTLIBRARIES = aead_aes256gcm_enclave.la
+# aead_aes256gcm_enclave_la_LDFLAGS = $(AM_LDFLAGS) -module -shared -avoid-version -rpath $(abs_builddir) $(ENCLAVE_LINK_FLAGS)
+# aead_aes256gcm_enclave_la_SOURCES = enclave_t.c test_enclave.h aead_aes256gcm.c
+# aead_aes256gcm_enclave_la_LIBADD = $(TESTS_LDADD)
+# aead_aes256gcm_enclave_la_CFLAGS = $(AM_CFLAGS)
+
+
 endif
 
 verify: check

@@ -137,7 +137,7 @@ AC_ARG_ENABLE(sgx,
            AC_MSG_NOTICE([SGX_SDK: ${SGX_SDK}])
     ])
     
-    SGX_INC_PATH="-I${SGX_SDK}/include -I${SGX_SDK}/include/tlibc -I${SGX_SDK}/include/libcxx"
+    SGX_INC_PATH="-I${SGX_SDK}/include -I${SGX_SDK}/include/tlibc"
    
     AC_SUBST(SGX_INC_PATH)
         
@@ -152,6 +152,9 @@ AC_ARG_ENABLE(sgx,
     sgx_build="no"
   ])
 ])
+
+AM_CONDITIONAL([SGX], [test "$sgx_build" = "yes"])
+
 
 AC_ARG_WITH(pthreads, AC_HELP_STRING([--with-pthreads],
  [use pthreads library, or --without-pthreads to disable threading support.]),

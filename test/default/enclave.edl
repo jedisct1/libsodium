@@ -1,0 +1,24 @@
+enclave {
+    
+    /* Import OCALL for the threading function.
+     */
+    
+    from "sgx_tstdc.edl" import sgx_thread_wait_untrusted_event_ocall, sgx_thread_set_untrusted_event_ocall, sgx_thread_setwait_untrusted_events_ocall, sgx_thread_set_multiple_untrusted_events_ocall;
+
+    /* 
+     * run_test - run the target test inside the enclave.
+     */
+    trusted {    
+        public void run_test([out] int* return_code);
+    };
+    
+    /* 
+     * ocall_print_string - invokes OCALL to display string buffer inside the enclave.
+     *  [in]: copy the string buffer to App outside.
+     *  [string]: specifies 'str' is a NULL terminated buffer.
+     */
+    untrusted {
+        void ocall_print_string([in, string] const char *str);
+    };
+
+};
