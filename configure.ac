@@ -419,6 +419,10 @@ dnl Checks for headers
 AS_IF([test "x$EMSCRIPTEN" = "x" -a "$host_os" != "pnacl"], [
 
   oldcflags="$CFLAGS"
+  
+  old_CPPFLAGS="$CPPFLAGS"
+  CPPFLAGS="$CPPFLAGS $SGX_CPPFLAGS"
+  
   AX_CHECK_COMPILE_FLAG([-mmmx], [CFLAGS="$CFLAGS -mmmx"])
   AC_MSG_CHECKING(for MMX instructions set)
   AC_COMPILE_IFELSE([AC_LANG_PROGRAM([[
@@ -594,7 +598,10 @@ __m512i y = _mm512_permutexvar_epi64(_mm512_setr_epi64(0, 1, 4, 5, 2, 3, 6, 7), 
     [AC_MSG_RESULT(no)])
   CFLAGS="$oldcflags"
 
+  CPPFLAGS="$old_CPPFLAGS"
+
 ])
+
 
 AC_SUBST(CFLAGS_MMX)
 AC_SUBST(CFLAGS_SSE2)
