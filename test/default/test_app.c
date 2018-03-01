@@ -28,7 +28,10 @@
 #ifndef TEST_SRCDIR
 # define TEST_SRCDIR "."
 #endif
-#define TEST_NAME "aead_aes256gcm"
+
+#ifndef TEST_NAME
+# error "TEST_NAME must be defined in the compiler options"
+#endif
 #define ENCLAVE_FILENAME TEST_NAME "_enclave.signed.so"
 #define TOKEN_FILENAME TEST_NAME "_enclave.token"
 #define TEST_NAME_RES TEST_NAME ".res"

@@ -456,10 +456,84 @@ endif
 
 
 if SGX
-aead_aes256gcm_SOURCES                 = enclave_u.h enclave_u.c test_app.c
+TEST_APP_SOURCE = enclave_u.h enclave_u.c test_app.c
+
+aead_aes256gcm_SOURCES          = $(TEST_APP_SOURCE)
+aead_chacha20poly1305_SOURCES   = $(TEST_APP_SOURCE)
+aead_xchacha20poly1305_SOURCES  = $(TEST_APP_SOURCE)
+auth_SOURCES                    = $(TEST_APP_SOURCE)
+auth2_SOURCES                   = $(TEST_APP_SOURCE)
+auth3_SOURCES                   = $(TEST_APP_SOURCE)
+auth5_SOURCES                   = $(TEST_APP_SOURCE)
+auth6_SOURCES                   = $(TEST_APP_SOURCE)
+auth7_SOURCES                   = $(TEST_APP_SOURCE)
+box_SOURCES                     = $(TEST_APP_SOURCE)
+box2_SOURCES                    = $(TEST_APP_SOURCE)
+box7_SOURCES                    = $(TEST_APP_SOURCE)
+box8_SOURCES                    = $(TEST_APP_SOURCE)
+box_easy_SOURCES                = $(TEST_APP_SOURCE)
+box_easy2_SOURCES               = $(TEST_APP_SOURCE)
+box_seal_SOURCES                = $(TEST_APP_SOURCE)
+box_seed_SOURCES                = $(TEST_APP_SOURCE)
+chacha20_SOURCES                = $(TEST_APP_SOURCE)
+codecs_SOURCES                  = $(TEST_APP_SOURCE)
+core_ed25519_SOURCES            = $(TEST_APP_SOURCE)
+core1_SOURCES                   = $(TEST_APP_SOURCE)
+core2_SOURCES                   = $(TEST_APP_SOURCE)
+core3_SOURCES                   = $(TEST_APP_SOURCE)
+core4_SOURCES                   = $(TEST_APP_SOURCE)
+core5_SOURCES                   = $(TEST_APP_SOURCE)
+core6_SOURCES                   = $(TEST_APP_SOURCE)
+ed25519_convert_SOURCES         = $(TEST_APP_SOURCE)
+generichash_SOURCES             = $(TEST_APP_SOURCE)
+generichash2_SOURCES            = $(TEST_APP_SOURCE)
+generichash3_SOURCES            = $(TEST_APP_SOURCE)
+hash_SOURCES                    = $(TEST_APP_SOURCE)
+hash3_SOURCES                   = $(TEST_APP_SOURCE)
+kdf_SOURCES                     = $(TEST_APP_SOURCE)
+keygen_SOURCES                  = $(TEST_APP_SOURCE)
+kx_SOURCES                      = $(TEST_APP_SOURCE)
+metamorphic_SOURCES             = $(TEST_APP_SOURCE)
+misuse_SOURCES                  = $(TEST_APP_SOURCE)
+onetimeauth_SOURCES             = $(TEST_APP_SOURCE)
+onetimeauth2_SOURCES            = $(TEST_APP_SOURCE)
+onetimeauth7_SOURCES            = $(TEST_APP_SOURCE)
+pwhash_argon2i_SOURCES          = $(TEST_APP_SOURCE)
+pwhash_argon2id_SOURCES         = $(TEST_APP_SOURCE)
+pwhash_scrypt_SOURCES           = $(TEST_APP_SOURCE)
+pwhash_scrypt_ll_SOURCES        = $(TEST_APP_SOURCE)
+randombytes_SOURCES             = $(TEST_APP_SOURCE)
+scalarmult_SOURCES              = $(TEST_APP_SOURCE)
+scalarmult_ed25519_SOURCES      = $(TEST_APP_SOURCE)
+scalarmult2_SOURCES             = $(TEST_APP_SOURCE)
+scalarmult5_SOURCES             = $(TEST_APP_SOURCE)
+scalarmult6_SOURCES             = $(TEST_APP_SOURCE)
+scalarmult7_SOURCES             = $(TEST_APP_SOURCE)
+secretbox_SOURCES               = $(TEST_APP_SOURCE)
+secretbox2_SOURCES              = $(TEST_APP_SOURCE)
+secretbox7_SOURCES              = $(TEST_APP_SOURCE)
+secretbox8_SOURCES              = $(TEST_APP_SOURCE)
+secretbox_easy_SOURCES          = $(TEST_APP_SOURCE)
+secretbox_easy2_SOURCES         = $(TEST_APP_SOURCE)
+secretstream_SOURCES            = $(TEST_APP_SOURCE)
+shorthash_SOURCES               = $(TEST_APP_SOURCE)
+sign_SOURCES                    = $(TEST_APP_SOURCE)
+siphashx24_SOURCES              = $(TEST_APP_SOURCE)
+sodium_core_SOURCES             = $(TEST_APP_SOURCE)
+sodium_utils_SOURCES            = $(TEST_APP_SOURCE)
+sodium_utils2_SOURCES           = $(TEST_APP_SOURCE)
+sodium_utils3_SOURCES           = $(TEST_APP_SOURCE)
+sodium_version_SOURCES          = $(TEST_APP_SOURCE)
+stream_SOURCES                  = $(TEST_APP_SOURCE)
+stream2_SOURCES                 = $(TEST_APP_SOURCE)
+stream3_SOURCES                 = $(TEST_APP_SOURCE)
+stream4_SOURCES                 = $(TEST_APP_SOURCE)
+verify1_SOURCES                 = $(TEST_APP_SOURCE)
+xchacha20_SOURCES               = $(TEST_APP_SOURCE)
 else
 aead_aes256gcm_SOURCES          = cmptest.h aead_aes256gcm.c
 aead_chacha20poly1305_SOURCES   = cmptest.h aead_chacha20poly1305.c
+aead_xchacha20poly1305_SOURCES  = cmptest.h aead_xchacha20poly1305.c
 auth_SOURCES                    = cmptest.h auth.c
 auth2_SOURCES                   = cmptest.h auth2.c
 auth3_SOURCES                   = cmptest.h auth3.c
@@ -532,291 +606,291 @@ xchacha20_SOURCES               = cmptest.h xchacha20.c
 endif
 
 aead_aes256gcm_LDADD                  = $(TESTS_LDADD)
-aead_aes256gcm_CPPFLAGS               = $(TESTS_CPPFLAGS)
+aead_aes256gcm_CPPFLAGS               = $(TESTS_CPPFLAGS) -DTEST_NAME=\"aead_aes256gcm\" -DTEST_NAME=\"aead_aes256gcm\"
 aead_aes256gcm_LDFLAGS                = $(TESTS_LINK_FLAGS)
 
 aead_chacha20poly1305_LDADD           = $(TESTS_LDADD)
-aead_chacha20poly1305_CPPFLAGS        = $(TESTS_CPPFLAGS)
+aead_chacha20poly1305_CPPFLAGS        = $(TESTS_CPPFLAGS) -DTEST_NAME=\"aead_chacha20poly1305\" -DTEST_NAME=\"aead_chacha20poly1305\"
 aead_chacha20poly1305_LDFLAGS         = $(TESTS_LINK_FLAGS)
 
 aead_xchacha20poly1305_LDADD           = $(TESTS_LDADD)
-aead_xchacha20poly1305_CPPFLAGS        = $(TESTS_CPPFLAGS)
+aead_xchacha20poly1305_CPPFLAGS        = $(TESTS_CPPFLAGS) -DTEST_NAME=\"aead_xchacha20poly1305\"
 aead_xchacha20poly1305_LDFLAGS         = $(TESTS_LINK_FLAGS)
 
 auth_LDADD           = $(TESTS_LDADD)
-auth_CPPFLAGS        = $(TESTS_CPPFLAGS)
+auth_CPPFLAGS        = $(TESTS_CPPFLAGS) -DTEST_NAME=\"auth\"
 auth_LDFLAGS         = $(TESTS_LINK_FLAGS)
 
 auth2_LDADD           = $(TESTS_LDADD)
-auth2_CPPFLAGS        = $(TESTS_CPPFLAGS)
+auth2_CPPFLAGS        = $(TESTS_CPPFLAGS) -DTEST_NAME=\"auth2\"
 auth2_LDFLAGS         = $(TESTS_LINK_FLAGS)
 
 auth3_LDADD           = $(TESTS_LDADD)
-auth3_CPPFLAGS        = $(TESTS_CPPFLAGS)
+auth3_CPPFLAGS        = $(TESTS_CPPFLAGS) -DTEST_NAME=\"auth3\"
 auth3_LDFLAGS         = $(TESTS_LINK_FLAGS)
 
 auth5_LDADD           = $(TESTS_LDADD)
-auth5_CPPFLAGS        = $(TESTS_CPPFLAGS)
+auth5_CPPFLAGS        = $(TESTS_CPPFLAGS) -DTEST_NAME=\"auth5\"
 auth5_LDFLAGS         = $(TESTS_LINK_FLAGS)
 
 auth6_LDADD           = $(TESTS_LDADD)
-auth6_CPPFLAGS        = $(TESTS_CPPFLAGS)
+auth6_CPPFLAGS        = $(TESTS_CPPFLAGS) -DTEST_NAME=\"auth6\"
 auth6_LDFLAGS         = $(TESTS_LINK_FLAGS)
 
 auth7_LDADD           = $(TESTS_LDADD)
-auth7_CPPFLAGS        = $(TESTS_CPPFLAGS)
+auth7_CPPFLAGS        = $(TESTS_CPPFLAGS) -DTEST_NAME=\"auth7\"
 auth7_LDFLAGS         = $(TESTS_LINK_FLAGS)
 
 box_LDADD           = $(TESTS_LDADD)
-box_CPPFLAGS        = $(TESTS_CPPFLAGS)
+box_CPPFLAGS        = $(TESTS_CPPFLAGS) -DTEST_NAME=\"box\"
 box_LDFLAGS         = $(TESTS_LINK_FLAGS)
 
 box2_LDADD           = $(TESTS_LDADD)
-box2_CPPFLAGS        = $(TESTS_CPPFLAGS)
+box2_CPPFLAGS        = $(TESTS_CPPFLAGS) -DTEST_NAME=\"box2\"
 box2_LDFLAGS         = $(TESTS_LINK_FLAGS)
 
 box7_LDADD           = $(TESTS_LDADD)
-box7_CPPFLAGS        = $(TESTS_CPPFLAGS)
+box7_CPPFLAGS        = $(TESTS_CPPFLAGS) -DTEST_NAME=\"box7\"
 box7_LDFLAGS         = $(TESTS_LINK_FLAGS)
 
 box8_LDADD           = $(TESTS_LDADD)
-box8_CPPFLAGS        = $(TESTS_CPPFLAGS)
+box8_CPPFLAGS        = $(TESTS_CPPFLAGS) -DTEST_NAME=\"box8\"
 box8_LDFLAGS         = $(TESTS_LINK_FLAGS)
 
 box_easy_LDADD           = $(TESTS_LDADD)
-box_easy_CPPFLAGS        = $(TESTS_CPPFLAGS)
+box_easy_CPPFLAGS        = $(TESTS_CPPFLAGS) -DTEST_NAME=\"box_easy\"
 box_easy_LDFLAGS         = $(TESTS_LINK_FLAGS)
 
 box_easy2_LDADD           = $(TESTS_LDADD)
-box_easy2_CPPFLAGS        = $(TESTS_CPPFLAGS)
+box_easy2_CPPFLAGS        = $(TESTS_CPPFLAGS) -DTEST_NAME=\"box_easy2\"
 box_easy2_LDFLAGS         = $(TESTS_LINK_FLAGS)
 
 box_seal_LDADD           = $(TESTS_LDADD)
-box_seal_CPPFLAGS        = $(TESTS_CPPFLAGS)
+box_seal_CPPFLAGS        = $(TESTS_CPPFLAGS) -DTEST_NAME=\"box_seal\"
 box_seal_LDFLAGS         = $(TESTS_LINK_FLAGS)
 
 box_seed_LDADD           = $(TESTS_LDADD)
-box_seed_CPPFLAGS        = $(TESTS_CPPFLAGS)
+box_seed_CPPFLAGS        = $(TESTS_CPPFLAGS) -DTEST_NAME=\"box_seed\"
 box_seed_LDFLAGS         = $(TESTS_LINK_FLAGS)
 
 chacha20_LDADD           = $(TESTS_LDADD)
-chacha20_CPPFLAGS        = $(TESTS_CPPFLAGS)
+chacha20_CPPFLAGS        = $(TESTS_CPPFLAGS) -DTEST_NAME=\"chacha20\"
 chacha20_LDFLAGS         = $(TESTS_LINK_FLAGS)
 
 codecs_LDADD           = $(TESTS_LDADD)
-codecs_CPPFLAGS        = $(TESTS_CPPFLAGS)
+codecs_CPPFLAGS        = $(TESTS_CPPFLAGS) -DTEST_NAME=\"codecs\"
 codecs_LDFLAGS         = $(TESTS_LINK_FLAGS)
 
 core_ed25519_LDADD           = $(TESTS_LDADD)
-core_ed25519_CPPFLAGS        = $(TESTS_CPPFLAGS)
+core_ed25519_CPPFLAGS        = $(TESTS_CPPFLAGS) -DTEST_NAME=\"core_ed25519\"
 core_ed25519_LDFLAGS         = $(TESTS_LINK_FLAGS)
 
 core1_LDADD           = $(TESTS_LDADD)
-core1_CPPFLAGS        = $(TESTS_CPPFLAGS)
+core1_CPPFLAGS        = $(TESTS_CPPFLAGS) -DTEST_NAME=\"core1\"
 core1_LDFLAGS         = $(TESTS_LINK_FLAGS)
 
 core2_LDADD           = $(TESTS_LDADD)
-core2_CPPFLAGS        = $(TESTS_CPPFLAGS)
+core2_CPPFLAGS        = $(TESTS_CPPFLAGS) -DTEST_NAME=\"core2\"
 core2_LDFLAGS         = $(TESTS_LINK_FLAGS)
 
 core3_LDADD           = $(TESTS_LDADD)
-core3_CPPFLAGS        = $(TESTS_CPPFLAGS)
+core3_CPPFLAGS        = $(TESTS_CPPFLAGS) -DTEST_NAME=\"core3\"
 core3_LDFLAGS         = $(TESTS_LINK_FLAGS)
 
 core4_LDADD           = $(TESTS_LDADD)
-core4_CPPFLAGS        = $(TESTS_CPPFLAGS)
+core4_CPPFLAGS        = $(TESTS_CPPFLAGS) -DTEST_NAME=\"core4\"
 core4_LDFLAGS         = $(TESTS_LINK_FLAGS)
 
 core5_LDADD           = $(TESTS_LDADD)
-core5_CPPFLAGS        = $(TESTS_CPPFLAGS)
+core5_CPPFLAGS        = $(TESTS_CPPFLAGS) -DTEST_NAME=\"core5\"
 core5_LDFLAGS         = $(TESTS_LINK_FLAGS)
 
 core6_LDADD           = $(TESTS_LDADD)
-core6_CPPFLAGS        = $(TESTS_CPPFLAGS)
+core6_CPPFLAGS        = $(TESTS_CPPFLAGS) -DTEST_NAME=\"core6\"
 core6_LDFLAGS         = $(TESTS_LINK_FLAGS)
 
 ed25519_convert_LDADD           = $(TESTS_LDADD)
-ed25519_convert_CPPFLAGS        = $(TESTS_CPPFLAGS)
+ed25519_convert_CPPFLAGS        = $(TESTS_CPPFLAGS) -DTEST_NAME=\"ed25519_convert\"
 ed25519_convert_LDFLAGS         = $(TESTS_LINK_FLAGS)
 
 generichash_LDADD           = $(TESTS_LDADD)
-generichash_CPPFLAGS        = $(TESTS_CPPFLAGS)
+generichash_CPPFLAGS        = $(TESTS_CPPFLAGS) -DTEST_NAME=\"generichash\"
 generichash_LDFLAGS         = $(TESTS_LINK_FLAGS)
 
 generichash2_LDADD           = $(TESTS_LDADD)
-generichash2_CPPFLAGS        = $(TESTS_CPPFLAGS)
+generichash2_CPPFLAGS        = $(TESTS_CPPFLAGS) -DTEST_NAME=\"generichash2\"
 generichash2_LDFLAGS         = $(TESTS_LINK_FLAGS)
 
 generichash3_LDADD           = $(TESTS_LDADD)
-generichash3_CPPFLAGS        = $(TESTS_CPPFLAGS)
+generichash3_CPPFLAGS        = $(TESTS_CPPFLAGS) -DTEST_NAME=\"generichash3\"
 generichash3_LDFLAGS         = $(TESTS_LINK_FLAGS)
 
 hash_LDADD           = $(TESTS_LDADD)
-hash_CPPFLAGS        = $(TESTS_CPPFLAGS)
+hash_CPPFLAGS        = $(TESTS_CPPFLAGS) -DTEST_NAME=\"hash\"
 hash_LDFLAGS         = $(TESTS_LINK_FLAGS)
 
 hash3_LDADD           = $(TESTS_LDADD)
-hash3_CPPFLAGS        = $(TESTS_CPPFLAGS)
+hash3_CPPFLAGS        = $(TESTS_CPPFLAGS) -DTEST_NAME=\"hash3\"
 hash3_LDFLAGS         = $(TESTS_LINK_FLAGS)
 
 kdf_LDADD           = $(TESTS_LDADD)
-kdf_CPPFLAGS        = $(TESTS_CPPFLAGS)
+kdf_CPPFLAGS        = $(TESTS_CPPFLAGS) -DTEST_NAME=\"kdf\"
 kdf_LDFLAGS         = $(TESTS_LINK_FLAGS)
 
 keygen_LDADD           = $(TESTS_LDADD)
-keygen_CPPFLAGS        = $(TESTS_CPPFLAGS)
+keygen_CPPFLAGS        = $(TESTS_CPPFLAGS) -DTEST_NAME=\"keygen\"
 keygen_LDFLAGS         = $(TESTS_LINK_FLAGS)
 
 kx_LDADD           = $(TESTS_LDADD)
-kx_CPPFLAGS        = $(TESTS_CPPFLAGS)
+kx_CPPFLAGS        = $(TESTS_CPPFLAGS) -DTEST_NAME=\"kx\"
 kx_LDFLAGS         = $(TESTS_LINK_FLAGS)
 
 metamorphic_LDADD           = $(TESTS_LDADD)
-metamorphic_CPPFLAGS        = $(TESTS_CPPFLAGS)
+metamorphic_CPPFLAGS        = $(TESTS_CPPFLAGS) -DTEST_NAME=\"metamorphic\"
 metamorphic_LDFLAGS         = $(TESTS_LINK_FLAGS)
 
 misuse_LDADD           = $(TESTS_LDADD)
-misuse_CPPFLAGS        = $(TESTS_CPPFLAGS)
+misuse_CPPFLAGS        = $(TESTS_CPPFLAGS) -DTEST_NAME=\"misuse\"
 misuse_LDFLAGS         = $(TESTS_LINK_FLAGS)
 
 onetimeauth_LDADD           = $(TESTS_LDADD)
-onetimeauth_CPPFLAGS        = $(TESTS_CPPFLAGS)
+onetimeauth_CPPFLAGS        = $(TESTS_CPPFLAGS) -DTEST_NAME=\"onetimeauth\"
 onetimeauth_LDFLAGS         = $(TESTS_LINK_FLAGS)
 
 onetimeauth2_LDADD           = $(TESTS_LDADD)
-onetimeauth2_CPPFLAGS        = $(TESTS_CPPFLAGS)
+onetimeauth2_CPPFLAGS        = $(TESTS_CPPFLAGS) -DTEST_NAME=\"onetimeauth2\"
 onetimeauth2_LDFLAGS         = $(TESTS_LINK_FLAGS)
 
 onetimeauth7_LDADD           = $(TESTS_LDADD)
-onetimeauth7_CPPFLAGS        = $(TESTS_CPPFLAGS)
+onetimeauth7_CPPFLAGS        = $(TESTS_CPPFLAGS) -DTEST_NAME=\"onetimeauth7\"
 onetimeauth7_LDFLAGS         = $(TESTS_LINK_FLAGS)
 
 pwhash_argon2i_LDADD           = $(TESTS_LDADD)
-pwhash_argon2i_CPPFLAGS        = $(TESTS_CPPFLAGS)
+pwhash_argon2i_CPPFLAGS        = $(TESTS_CPPFLAGS) -DTEST_NAME=\"pwhash_argon2i\"
 pwhash_argon2i_LDFLAGS         = $(TESTS_LINK_FLAGS)
 
 pwhash_argon2id_LDADD           = $(TESTS_LDADD)
-pwhash_argon2id_CPPFLAGS        = $(TESTS_CPPFLAGS)
+pwhash_argon2id_CPPFLAGS        = $(TESTS_CPPFLAGS) -DTEST_NAME=\"pwhash_argon2id\"
 pwhash_argon2id_LDFLAGS         = $(TESTS_LINK_FLAGS)
 
 pwhash_scrypt_LDADD           = $(TESTS_LDADD)
-pwhash_scrypt_CPPFLAGS        = $(TESTS_CPPFLAGS)
+pwhash_scrypt_CPPFLAGS        = $(TESTS_CPPFLAGS) -DTEST_NAME=\"pwhash_scrypt\"
 pwhash_scrypt_LDFLAGS         = $(TESTS_LINK_FLAGS)
 
 pwhash_scrypt_ll_LDADD           = $(TESTS_LDADD)
-pwhash_scrypt_ll_CPPFLAGS        = $(TESTS_CPPFLAGS)
+pwhash_scrypt_ll_CPPFLAGS        = $(TESTS_CPPFLAGS) -DTEST_NAME=\"pwhash_scrypt_ll\"
 pwhash_scrypt_ll_LDFLAGS         = $(TESTS_LINK_FLAGS)
 
 randombytes_LDADD           = $(TESTS_LDADD)
-randombytes_CPPFLAGS        = $(TESTS_CPPFLAGS)
+randombytes_CPPFLAGS        = $(TESTS_CPPFLAGS) -DTEST_NAME=\"randombytes\"
 randombytes_LDFLAGS         = $(TESTS_LINK_FLAGS)
 
 scalarmult_LDADD           = $(TESTS_LDADD)
-scalarmult_CPPFLAGS        = $(TESTS_CPPFLAGS)
+scalarmult_CPPFLAGS        = $(TESTS_CPPFLAGS) -DTEST_NAME=\"scalarmult\"
 scalarmult_LDFLAGS         = $(TESTS_LINK_FLAGS)
 
 scalarmult_ed25519_LDADD           = $(TESTS_LDADD)
-scalarmult_ed25519_CPPFLAGS        = $(TESTS_CPPFLAGS)
+scalarmult_ed25519_CPPFLAGS        = $(TESTS_CPPFLAGS) -DTEST_NAME=\"scalarmult_ed25519\"
 scalarmult_ed25519_LDFLAGS         = $(TESTS_LINK_FLAGS)
 
 scalarmult2_LDADD           = $(TESTS_LDADD)
-scalarmult2_CPPFLAGS        = $(TESTS_CPPFLAGS)
+scalarmult2_CPPFLAGS        = $(TESTS_CPPFLAGS) -DTEST_NAME=\"scalarmult2\"
 scalarmult2_LDFLAGS         = $(TESTS_LINK_FLAGS)
 
 scalarmult5_LDADD           = $(TESTS_LDADD)
-scalarmult5_CPPFLAGS        = $(TESTS_CPPFLAGS)
+scalarmult5_CPPFLAGS        = $(TESTS_CPPFLAGS) -DTEST_NAME=\"scalarmult5\"
 scalarmult5_LDFLAGS         = $(TESTS_LINK_FLAGS)
 
 scalarmult6_LDADD           = $(TESTS_LDADD)
-scalarmult6_CPPFLAGS        = $(TESTS_CPPFLAGS)
+scalarmult6_CPPFLAGS        = $(TESTS_CPPFLAGS) -DTEST_NAME=\"scalarmult6\"
 scalarmult6_LDFLAGS         = $(TESTS_LINK_FLAGS)
 
 scalarmult7_LDADD           = $(TESTS_LDADD)
-scalarmult7_CPPFLAGS        = $(TESTS_CPPFLAGS)
+scalarmult7_CPPFLAGS        = $(TESTS_CPPFLAGS) -DTEST_NAME=\"scalarmult7\"
 scalarmult7_LDFLAGS         = $(TESTS_LINK_FLAGS)
 
 secretbox_LDADD           = $(TESTS_LDADD)
-secretbox_CPPFLAGS        = $(TESTS_CPPFLAGS)
+secretbox_CPPFLAGS        = $(TESTS_CPPFLAGS) -DTEST_NAME=\"secretbox\"
 secretbox_LDFLAGS         = $(TESTS_LINK_FLAGS)
 
 secretbox2_LDADD           = $(TESTS_LDADD)
-secretbox2_CPPFLAGS        = $(TESTS_CPPFLAGS)
+secretbox2_CPPFLAGS        = $(TESTS_CPPFLAGS) -DTEST_NAME=\"secretbox2\"
 secretbox2_LDFLAGS         = $(TESTS_LINK_FLAGS)
 
 secretbox7_LDADD           = $(TESTS_LDADD)
-secretbox7_CPPFLAGS        = $(TESTS_CPPFLAGS)
+secretbox7_CPPFLAGS        = $(TESTS_CPPFLAGS) -DTEST_NAME=\"secretbox7\"
 secretbox7_LDFLAGS         = $(TESTS_LINK_FLAGS)
 
 secretbox8_LDADD           = $(TESTS_LDADD)
-secretbox8_CPPFLAGS        = $(TESTS_CPPFLAGS)
+secretbox8_CPPFLAGS        = $(TESTS_CPPFLAGS) -DTEST_NAME=\"secretbox8\"
 secretbox8_LDFLAGS         = $(TESTS_LINK_FLAGS)
 
 secretbox_easy_LDADD           = $(TESTS_LDADD)
-secretbox_easy_CPPFLAGS        = $(TESTS_CPPFLAGS)
+secretbox_easy_CPPFLAGS        = $(TESTS_CPPFLAGS) -DTEST_NAME=\"secretbox_easy\"
 secretbox_easy_LDFLAGS         = $(TESTS_LINK_FLAGS)
 
 secretbox_easy2_LDADD           = $(TESTS_LDADD)
-secretbox_easy2_CPPFLAGS        = $(TESTS_CPPFLAGS)
+secretbox_easy2_CPPFLAGS        = $(TESTS_CPPFLAGS) -DTEST_NAME=\"secretbox_easy2\"
 secretbox_easy2_LDFLAGS         = $(TESTS_LINK_FLAGS)
 
 secretstream_LDADD           = $(TESTS_LDADD)
-secretstream_CPPFLAGS        = $(TESTS_CPPFLAGS)
+secretstream_CPPFLAGS        = $(TESTS_CPPFLAGS) -DTEST_NAME=\"secretstream\"
 secretstream_LDFLAGS         = $(TESTS_LINK_FLAGS)
 
 shorthash_LDADD           = $(TESTS_LDADD)
-shorthash_CPPFLAGS        = $(TESTS_CPPFLAGS)
+shorthash_CPPFLAGS        = $(TESTS_CPPFLAGS) -DTEST_NAME=\"shorthash\"
 shorthash_LDFLAGS         = $(TESTS_LINK_FLAGS)
 
 sign_LDADD           = $(TESTS_LDADD)
-sign_CPPFLAGS        = $(TESTS_CPPFLAGS)
+sign_CPPFLAGS        = $(TESTS_CPPFLAGS) -DTEST_NAME=\"sign\"
 sign_LDFLAGS         = $(TESTS_LINK_FLAGS)
 
 siphashx24_LDADD           = $(TESTS_LDADD)
-siphashx24_CPPFLAGS        = $(TESTS_CPPFLAGS)
+siphashx24_CPPFLAGS        = $(TESTS_CPPFLAGS) -DTEST_NAME=\"siphashx24\"
 siphashx24_LDFLAGS         = $(TESTS_LINK_FLAGS)
 
 sodium_core_LDADD           = $(TESTS_LDADD)
-sodium_core_CPPFLAGS        = $(TESTS_CPPFLAGS)
+sodium_core_CPPFLAGS        = $(TESTS_CPPFLAGS) -DTEST_NAME=\"sodium_core\"
 sodium_core_LDFLAGS         = $(TESTS_LINK_FLAGS)
 
 sodium_utils_LDADD           = $(TESTS_LDADD)
-sodium_utils_CPPFLAGS        = $(TESTS_CPPFLAGS)
+sodium_utils_CPPFLAGS        = $(TESTS_CPPFLAGS) -DTEST_NAME=\"sodium_utils\"
 sodium_utils_LDFLAGS         = $(TESTS_LINK_FLAGS)
 
 sodium_utils2_LDADD           = $(TESTS_LDADD)
-sodium_utils2_CPPFLAGS        = $(TESTS_CPPFLAGS)
+sodium_utils2_CPPFLAGS        = $(TESTS_CPPFLAGS) -DTEST_NAME=\"sodium_utils2\"
 sodium_utils2_LDFLAGS         = $(TESTS_LINK_FLAGS)
 
 sodium_utils3_LDADD           = $(TESTS_LDADD)
-sodium_utils3_CPPFLAGS        = $(TESTS_CPPFLAGS)
+sodium_utils3_CPPFLAGS        = $(TESTS_CPPFLAGS) -DTEST_NAME=\"sodium_utils3\"
 sodium_utils3_LDFLAGS         = $(TESTS_LINK_FLAGS)
 
 sodium_version_LDADD           = $(TESTS_LDADD)
-sodium_version_CPPFLAGS        = $(TESTS_CPPFLAGS)
+sodium_version_CPPFLAGS        = $(TESTS_CPPFLAGS) -DTEST_NAME=\"sodium_version\"
 sodium_version_LDFLAGS         = $(TESTS_LINK_FLAGS)
 
 stream_LDADD           = $(TESTS_LDADD)
-stream_CPPFLAGS        = $(TESTS_CPPFLAGS)
+stream_CPPFLAGS        = $(TESTS_CPPFLAGS) -DTEST_NAME=\"stream\"
 stream_LDFLAGS         = $(TESTS_LINK_FLAGS)
 
 stream2_LDADD           = $(TESTS_LDADD)
-stream2_CPPFLAGS        = $(TESTS_CPPFLAGS)
+stream2_CPPFLAGS        = $(TESTS_CPPFLAGS) -DTEST_NAME=\"stream2\"
 stream2_LDFLAGS         = $(TESTS_LINK_FLAGS)
 
 stream3_LDADD           = $(TESTS_LDADD)
-stream3_CPPFLAGS        = $(TESTS_CPPFLAGS)
+stream3_CPPFLAGS        = $(TESTS_CPPFLAGS) -DTEST_NAME=\"stream3\"
 stream3_LDFLAGS         = $(TESTS_LINK_FLAGS)
 
 stream4_LDADD           = $(TESTS_LDADD)
-stream4_CPPFLAGS        = $(TESTS_CPPFLAGS)
+stream4_CPPFLAGS        = $(TESTS_CPPFLAGS) -DTEST_NAME=\"stream4\"
 stream4_LDFLAGS         = $(TESTS_LINK_FLAGS)
 
 verify1_LDADD           = $(TESTS_LDADD)
-verify1_CPPFLAGS        = $(TESTS_CPPFLAGS)
+verify1_CPPFLAGS        = $(TESTS_CPPFLAGS) -DTEST_NAME=\"verify1\"
 verify1_LDFLAGS         = $(TESTS_LINK_FLAGS)
 
 xchacha20_LDADD           = $(TESTS_LDADD)
-xchacha20_CPPFLAGS        = $(TESTS_CPPFLAGS)
+xchacha20_CPPFLAGS        = $(TESTS_CPPFLAGS) -DTEST_NAME=\"xchacha20\"
 xchacha20_LDFLAGS         = $(TESTS_LINK_FLAGS)
 
 if NATIVECLIENT
