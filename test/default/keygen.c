@@ -1,6 +1,10 @@
 
 #define TEST_NAME "keygen"
+#ifndef SGX
 #include "cmptest.h"
+#else
+#include "test_enclave.h"
+#endif
 
 typedef struct KeygenTV_ {
     void (*fn)(unsigned char *k);

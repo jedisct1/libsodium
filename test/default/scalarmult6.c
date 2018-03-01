@@ -1,6 +1,10 @@
 
 #define TEST_NAME "scalarmult6"
+#ifndef SGX
 #include "cmptest.h"
+#else
+#include "test_enclave.h"
+#endif
 
 static unsigned char bobsk_[crypto_scalarmult_SCALARBYTES] = {
     0x5d, 0xab, 0x08, 0x7e, 0x62, 0x4a, 0x8a, 0x4b, 0x79, 0xe1, 0x7f,

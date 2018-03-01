@@ -1,6 +1,10 @@
 
 #define TEST_NAME "box_seed"
+#ifndef SGX
 #include "cmptest.h"
+#else
+#include "test_enclave.h"
+#endif
 
 static unsigned char seed[32] = { 0x77, 0x07, 0x6d, 0x0a, 0x73, 0x18, 0xa5,
                                   0x7d, 0x3c, 0x16, 0xc1, 0x72, 0x51, 0xb2,

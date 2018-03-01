@@ -245,20 +245,20 @@ int SGX_CDECL main(int argc, char *argv[])
         return 99;
     }
 
-    return 0;
-
     /* Initialize the enclave */
     if(initialize_enclave() < 0){
         return 99; 
     }
+    printf("Successful enclave initialization.\n");
  
-    if(test() != 0){
-        return 99;
-    }
+    int ret = test();
     
     /* Destroy the enclave */
     sgx_destroy_enclave(global_eid);
     
+    if(ret != 0){
+        return 99;
+    }
     
     rewind(fp_res);
     if ((fp_out = fopen(TEST_NAME_OUT, "r")) == NULL) {

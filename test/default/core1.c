@@ -1,6 +1,10 @@
 
 #define TEST_NAME "core1"
+#ifndef SGX
 #include "cmptest.h"
+#else
+#include "test_enclave.h"
+#endif
 
 static unsigned char shared[32] = { 0x4a, 0x5d, 0x9d, 0x5b, 0xa4, 0xce, 0x2d,
                                     0xe1, 0x72, 0x8e, 0x3b, 0xf4, 0x80, 0x35,

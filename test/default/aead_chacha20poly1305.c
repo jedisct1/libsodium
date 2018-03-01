@@ -1,6 +1,10 @@
 
 #define TEST_NAME "aead_chacha20poly1305"
+#ifndef SGX
 #include "cmptest.h"
+#else
+#include "test_enclave.h"
+#endif
 
 static int
 tv(void)

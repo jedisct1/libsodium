@@ -1,6 +1,10 @@
 
 #define TEST_NAME "auth6"
+#ifndef SGX
 #include "cmptest.h"
+#else
+#include "test_enclave.h"
+#endif
 
 /* "Test Case 2" from RFC 4231 */
 static unsigned char key[32] = "Jefe";

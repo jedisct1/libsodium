@@ -1,6 +1,10 @@
 
 #define TEST_NAME "hash"
+#ifndef SGX
 #include "cmptest.h"
+#else
+#include "test_enclave.h"
+#endif
 
 static unsigned char x[] = "testing\n";
 static unsigned char x2[] =

@@ -1,6 +1,10 @@
 
 #define TEST_NAME "box7"
+#ifndef SGX
 #include "cmptest.h"
+#else
+#include "test_enclave.h"
+#endif
 
 static unsigned char alicesk[crypto_box_SECRETKEYBYTES];
 static unsigned char alicepk[crypto_box_PUBLICKEYBYTES];

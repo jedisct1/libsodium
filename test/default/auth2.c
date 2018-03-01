@@ -1,7 +1,11 @@
 /* "Test Case AUTH256-4" from RFC 4868 */
 
 #define TEST_NAME "auth2"
+#ifndef SGX
 #include "cmptest.h"
+#else
+#include "test_enclave.h"
+#endif
 
 static unsigned char key[32] = {
     0x01, 0x02, 0x03, 0x04, 0x05, 0x06, 0x07, 0x08, 0x09, 0x0a, 0x0b,

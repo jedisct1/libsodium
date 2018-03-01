@@ -1,6 +1,10 @@
 
 #define TEST_NAME "xchacha20"
+#ifndef SGX
 #include "cmptest.h"
+#else
+#include "test_enclave.h"
+#endif
 
 typedef struct HChaCha20TV_ {
     const char key[crypto_core_hchacha20_KEYBYTES * 2 + 1];

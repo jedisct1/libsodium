@@ -1,6 +1,10 @@
 
 #define TEST_NAME "ed25519_convert"
+#ifndef SGX
 #include "cmptest.h"
+#else
+#include "test_enclave.h"
+#endif
 
 static const unsigned char keypair_seed[crypto_sign_ed25519_SEEDBYTES] = {
     0x42, 0x11, 0x51, 0xa4, 0x59, 0xfa, 0xea, 0xde, 0x3d, 0x24, 0x71,

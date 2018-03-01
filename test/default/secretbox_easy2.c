@@ -1,6 +1,10 @@
 
 #define TEST_NAME "secretbox_easy2"
+#ifndef SGX
 #include "cmptest.h"
+#else
+#include "test_enclave.h"
+#endif
 
 int
 main(void)

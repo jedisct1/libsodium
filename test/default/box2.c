@@ -1,6 +1,10 @@
 
 #define TEST_NAME "box2"
+#ifndef SGX
 #include "cmptest.h"
+#else
+#include "test_enclave.h"
+#endif
 
 static unsigned char bobsk[32] = { 0x5d, 0xab, 0x08, 0x7e, 0x62, 0x4a, 0x8a,
                                    0x4b, 0x79, 0xe1, 0x7f, 0x8b, 0x83, 0x80,

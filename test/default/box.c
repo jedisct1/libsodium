@@ -1,6 +1,10 @@
 
 #define TEST_NAME "box"
+#ifndef SGX
 #include "cmptest.h"
+#else
+#include "test_enclave.h"
+#endif
 
 static const unsigned char alicesk[32] = {
     0x77, 0x07, 0x6d, 0x0a, 0x73, 0x18, 0xa5, 0x7d, 0x3c, 0x16, 0xc1,

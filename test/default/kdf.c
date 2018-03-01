@@ -1,6 +1,10 @@
 
 #define TEST_NAME "kdf"
+#ifndef SGX
 #include "cmptest.h"
+#else
+#include "test_enclave.h"
+#endif
 
 static void
 tv_kdf(void)

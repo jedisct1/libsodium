@@ -1,6 +1,10 @@
 
 #define TEST_NAME "auth5"
+#ifndef SGX
 #include "cmptest.h"
+#else
+#include "test_enclave.h"
+#endif
 
 static unsigned char key[32];
 static unsigned char c[1000];

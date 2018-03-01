@@ -1,6 +1,10 @@
 
 #define TEST_NAME "metamorphic"
+#ifndef SGX
 #include "cmptest.h"
+#else
+#include "test_enclave.h"
+#endif
 
 #define MAXLEN 512
 #define MAX_ITER 1000

@@ -1,6 +1,10 @@
 
 #define TEST_NAME "scalarmult7"
+#ifndef SGX
 #include "cmptest.h"
+#else
+#include "test_enclave.h"
+#endif
 
 static unsigned char p1[32] = {
     0x72, 0x20, 0xf0, 0x09, 0x89, 0x30, 0xa7, 0x54, 0x74, 0x8b, 0x7d,

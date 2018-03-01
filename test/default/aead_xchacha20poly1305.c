@@ -6,6 +6,7 @@
 #include "test_enclave.h"
 #endif
 
+
 static int
 tv(void)
 {

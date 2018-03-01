@@ -1,6 +1,10 @@
 
 #define TEST_NAME "kx"
+#ifndef SGX
 #include "cmptest.h"
+#else
+#include "test_enclave.h"
+#endif
 
 static const unsigned char small_order_p[crypto_scalarmult_BYTES] = {
     0xe0, 0xeb, 0x7a, 0x7c, 0x3b, 0x41, 0xb8, 0xae, 0x16, 0x56, 0xe3,

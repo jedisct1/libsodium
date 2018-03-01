@@ -1,6 +1,10 @@
 
 #define TEST_NAME "secretstream"
+#ifndef SGX
 #include "cmptest.h"
+#else
+#include "test_enclave.h"
+#endif
 
 int
 main(void)

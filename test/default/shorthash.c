@@ -1,6 +1,10 @@
 
 #define TEST_NAME "shorthash"
+#ifndef SGX
 #include "cmptest.h"
+#else
+#include "test_enclave.h"
+#endif
 
 #define MAXLEN 64
 

@@ -1,6 +1,10 @@
 
 #define TEST_NAME "pwhash_scrypt"
+#ifndef SGX
 #include "cmptest.h"
+#else
+#include "test_enclave.h"
+#endif
 
 #define OUT_LEN 128
 #define OPSLIMIT 1000000

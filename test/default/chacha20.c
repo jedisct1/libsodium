@@ -1,6 +1,10 @@
 
 #define TEST_NAME "chacha20"
+#ifndef SGX
 #include "cmptest.h"
+#else
+#include "test_enclave.h"
+#endif
 
 static
 void tv(void)

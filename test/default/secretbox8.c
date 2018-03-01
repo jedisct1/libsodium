@@ -1,6 +1,10 @@
 
 #define TEST_NAME "secretbox8"
+#ifndef SGX
 #include "cmptest.h"
+#else
+#include "test_enclave.h"
+#endif
 
 static unsigned char k[crypto_secretbox_KEYBYTES];
 static unsigned char n[crypto_secretbox_NONCEBYTES];

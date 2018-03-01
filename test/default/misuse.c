@@ -1,6 +1,10 @@
 
 #define TEST_NAME "misuse"
+#ifndef SGX
 #include "cmptest.h"
+#else
+#include "test_enclave.h"
+#endif
 
 #ifdef HAVE_CATCHABLE_ABRT
 # include <signal.h>

@@ -1,6 +1,10 @@
 
 #define TEST_NAME "sodium_core"
+#ifndef SGX
 #include "cmptest.h"
+#else
+#include "test_enclave.h"
+#endif
 
 static void
 misuse_handler(void)

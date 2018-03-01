@@ -6,7 +6,11 @@
 #include <signal.h>
 
 #define TEST_NAME "sodium_utils3"
+#ifndef SGX
 #include "cmptest.h"
+#else
+#include "test_enclave.h"
+#endif
 
 #ifdef __SANITIZE_ADDRESS__
 # warning The sodium_utils3 test is expected to fail with address sanitizer

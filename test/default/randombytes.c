@@ -1,6 +1,10 @@
 
 #define TEST_NAME "randombytes"
+#ifndef SGX
 #include "cmptest.h"
+#else
+#include "test_enclave.h"
+#endif
 
 static unsigned char      x[65536];
 static unsigned long long freq[256];

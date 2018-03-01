@@ -1,6 +1,10 @@
 
 #define TEST_NAME "generichash"
+#ifndef SGX
 #include "cmptest.h"
+#else
+#include "test_enclave.h"
+#endif
 
 #define MAXLEN 64
 

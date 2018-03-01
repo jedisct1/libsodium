@@ -1,6 +1,10 @@
 
 #define TEST_NAME "pwhash_scrypt_ll"
+#ifndef SGX
 #include "cmptest.h"
+#else
+#include "test_enclave.h"
+#endif
 
 static const char *   passwd1 = "";
 static const char *   salt1   = "";

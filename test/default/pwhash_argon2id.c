@@ -1,6 +1,10 @@
 
 #define TEST_NAME "pwhash_argon2id"
+#ifndef SGX
 #include "cmptest.h"
+#else
+#include "test_enclave.h"
+#endif
 
 #define OUT_LEN 128
 #define OPSLIMIT 3
