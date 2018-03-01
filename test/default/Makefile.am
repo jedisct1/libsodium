@@ -643,16 +643,18 @@ enclave_config.xml:
 
 enclave.edl:
 
-enclave_t.c: enclave.edl
+enclave_t.c enclave_t.h: enclave.edl
 	$(SGX_EDGER8R) --use-prefix --trusted enclave.edl --search-path $(SGX_SDK)/include
 
-enclave_u.c: enclave.edl
+enclave_u.c enclave_u.h: enclave.edl
 	$(SGX_EDGER8R) --use-prefix --untrusted enclave.edl --search-path $(SGX_SDK)/include
 
 
 # ifneq ($(SGX_MODE), HW)
  Trts_Library_Name := sgx_trts_sim
  Service_Library_Name := sgx_tservice_sim
+ Urts_Library_Name := sgx_urts_sim
+ Uae_Service_Library_Name := sgx_uae_service_sim
 # else
  # Trts_Library_Name := sgx_trts
  # Service_Library_Name := sgx_tservice
@@ -669,22 +671,24 @@ ENCLAVE_LINK_FLAGS := -Wl,--no-undefined -nostdlib -nodefaultlibs -nostartfiles 
 
 
 aead_aes256gcm_enclave.so: enclave_t.o test_enclave.h aead_aes256gcm.o ${top_builddir}/src/libsodium/.libs/libsodium.a
-	$(CC) $^ -o $@ $(CFLAGS) $(AM_CPPFLAGS) $(ENCLAVE_LINK_FLAGS)
-
+	@$(CC) $^ -o $@ $(CFLAGS) $(AM_CPPFLAGS) $(SGX_CPPFLAGS) $(ENCLAVE_LINK_FLAGS)
+	@echo "CC  $@"
 
 aead_aes256gcm_enclave.signed.so: aead_aes256gcm_enclave.so enclave_config.xml enclave_private.pem
-	@$(SGX_ENCLAVE_SIGNER) sign -key enclave_private.pem -enclave aead_aes256gcm_enclave.so -out $@ -config enclave_config.xml
-	@echo "SIGN =>  $@"
+	@$(SGX_ENCLAVE_SIGNER) sign -key enclave_private.pem -enclave aead_aes256gcm_enclave.so -out $@ -config enclave_config.xml 1> /dev/null
+	@echo "SIGN   $@"
+
+TEST_CFLAGS := 
+
+aead_aes256gcm_SOURCES                 = enclave_u.h enclave_u.c test_app.c
+aead_aes256gcm_CPPFLAGS               = -I$(SGX_SDK)/include
+aead_aes256gcm_LDFLAGS                = -L$(SGX_LIBRARY_PATH)  -l$(Uae_Service_Library_Name) -l$(Urts_Library_Name) -lpthread
+aead_aes256gcm_LDADD                  = $(TESTS_LDADD)
 
 
-check_PROGRAMS = aead_aes256gcm_enclave.signed.so
+check_PROGRAMS = aead_aes256gcm_enclave.signed.so aead_aes256gcm
 
-# check_LTLIBRARIES = aead_aes256gcm_enclave.la
-# aead_aes256gcm_enclave_la_LDFLAGS = $(AM_LDFLAGS) -module -shared -avoid-version -rpath $(abs_builddir) $(ENCLAVE_LINK_FLAGS)
-# aead_aes256gcm_enclave_la_SOURCES = enclave_t.c test_enclave.h aead_aes256gcm.c
-# aead_aes256gcm_enclave_la_LIBADD = $(TESTS_LDADD)
-# aead_aes256gcm_enclave_la_CFLAGS = $(AM_CFLAGS)
-
+TESTS = aead_aes256gcm
 
 endif
 
