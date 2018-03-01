@@ -199,6 +199,7 @@ noinst_LTLIBRARIES  = libaesni.la libsse2.la libssse3.la libsse41.la libavx2.la 
 
 librdrand_la_LDFLAGS = $(libsodium_la_LDFLAGS)
 librdrand_la_CPPFLAGS = $(libsodium_la_CPPFLAGS) \
+	@SGX_CPPFLAGS@ \
 	@CFLAGS_RDRAND@
 librdrand_la_SOURCES = \
 	randombytes/salsa20/randombytes_salsa20_random.c

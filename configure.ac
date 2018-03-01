@@ -119,6 +119,15 @@ AC_ARG_ENABLE(minimal,
 ])
 AM_CONDITIONAL([MINIMAL], [test x$enable_minimal = xyes])
 AC_SUBST(SODIUM_LIBRARY_MINIMAL_DEF)
+
+# If --enable-sgx is set, the library is built to be included in an enclave.
+# The issue is that the flags that we will need to build the test applications
+# are different from the one used by to compile enclaves.
+
+old_CPPFLAGS="$CPPFLAGS"
+
+SGX_CPPFLAGS=""
+
 AC_ARG_ENABLE(sgx,
 [AS_HELP_STRING(--enable-sgx,[Build for Intel SGX])]],
 [
@@ -138,20 +147,25 @@ AC_ARG_ENABLE(sgx,
     ])
     
     SGX_INC_PATH="-I${SGX_SDK}/include -I${SGX_SDK}/include/tlibc"
-   
+    
     AC_SUBST(SGX_INC_PATH)
         
-    AX_CHECK_COMPILE_FLAG([-nostdinc ${SGX_INC_PATH}], [CFLAGS="$CFLAGS -nostdinc ${SGX_INC_PATH}"])
+    AX_CHECK_COMPILE_FLAG([-nostdinc ${SGX_INC_PATH}], [
+    CPPFLAGS="$CPPFLAGS -nostdinc ${SGX_INC_PATH}"
+    SGX_CPPFLAGS="-nostdinc ${SGX_INC_PATH}"])
 
     AX_CHECK_COMPILE_FLAG([-ffunction-sections -fdata-sections],
         AX_CHECK_LINK_FLAG([-ffunction-sections -fdata-sections],
             [CFLAGS="$CFLAGS -ffunction-sections -fdata-sections"])
     )
     
+    
   ],[
     sgx_build="no"
   ])
 ])
+
+AC_SUBST(SGX_CPPFLAGS)
 
 AM_CONDITIONAL([SGX], [test "$sgx_build" = "yes"])
 
@@ -186,6 +200,9 @@ AC_ARG_WITH(ctgrind,
     AC_CHECK_LIB(ctgrind, ct_poison)
   ])
 ])
+
+# undo the changes to CPPFLAGS
+CPPFLAGS="$old_CPPFLAGS"
 
 ENABLE_CWFLAGS=no
 AC_ARG_ENABLE(debug,
