@@ -32,14 +32,15 @@ void printf_enc(const char *fmt, ...)
 }
 
 
-int rand();
+int rand_sgx();
 
-int rand()
+int rand_sgx()
 {
     int ret;
     if (sgx_read_rand((unsigned char*)&ret, sizeof ret) != SGX_SUCCESS) {
         printf_enc("Error when reading rdrand in the SGX enclave\n");
     }
+    return ret;
 }
 
 int xmain(void);
@@ -56,5 +57,6 @@ void run_test(int* return_code)
 
 #define main xmain
 #define printf printf_enc
+#define rand rand_sgx
 
 #endif /* !_TEST_ENCLAVE_H_ */
