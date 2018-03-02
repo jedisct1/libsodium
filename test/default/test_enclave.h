@@ -40,7 +40,10 @@ int rand_sgx()
     if (sgx_read_rand((unsigned char*)&ret, sizeof ret) != SGX_SUCCESS) {
         printf_enc("Error when reading rdrand in the SGX enclave\n");
     }
-    return ret;
+    // rand() has to return something between 0 and RAND_MAX
+    // the following line does that, with a 2^-32 bias (on 0)
+    // this is acceptable here as rand() is only used for testing
+    return (ret>=0) ? ret : -ret;
 }
 
 int xmain(void);
@@ -57,6 +60,11 @@ void run_test(int* return_code)
 
 #define main xmain
 #define printf printf_enc
+
 #define rand rand_sgx
+#ifdef RAND_MAX
+# undef RAND_MAX
+#endif
+#define RAND_MAX INT_MAX
 
 #endif /* !_TEST_ENCLAVE_H_ */
