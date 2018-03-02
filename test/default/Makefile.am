@@ -306,6 +306,10 @@ AM_CPPFLAGS = \
 	-I$(top_builddir)/src/libsodium/include/sodium \
 	-I$(top_srcdir)/test/quirks
 
+if SGX
+AM_CPPFLAGS += $(SGX_CPPFLAGS)
+endif
+
 AM_LDFLAGS = @TEST_LDFLAGS@
 
 TESTS_TARGETS = \
@@ -394,7 +398,102 @@ TESTS_TARGETS += \
 	xchacha20
 endif
 
-check_PROGRAMS = $(TESTS_TARGETS)
+if SGX
+ENCLAVES = \
+	aead_aes256gcm_enclave.signed.so     \
+    aead_chacha20poly1305_enclave.signed.so \
+    aead_xchacha20poly1305_enclave.signed.so \
+    auth_enclave.signed.so \
+    auth2_enclave.signed.so \
+    auth3_enclave.signed.so \
+    auth5_enclave.signed.so \
+    auth6_enclave.signed.so \
+    auth7_enclave.signed.so \
+    box_enclave.signed.so \
+    box2_enclave.signed.so \
+    box7_enclave.signed.so \
+    box8_enclave.signed.so \
+    box_easy_enclave.signed.so \
+    box_easy2_enclave.signed.so \
+    box_seal_enclave.signed.so \
+    box_seed_enclave.signed.so \
+    chacha20_enclave.signed.so \
+    codecs_enclave.signed.so \
+    core1_enclave.signed.so \
+    core2_enclave.signed.so \
+    core3_enclave.signed.so \
+    core4_enclave.signed.so \
+    core5_enclave.signed.so \
+    core6_enclave.signed.so \
+    ed25519_convert_enclave.signed.so \
+    generichash_enclave.signed.so \
+    generichash2_enclave.signed.so \
+    generichash3_enclave.signed.so \
+    hash_enclave.signed.so \
+    hash3_enclave.signed.so \
+    kdf_enclave.signed.so \
+    keygen_enclave.signed.so \
+    kx_enclave.signed.so \
+    metamorphic_enclave.signed.so \
+    misuse_enclave.signed.so \
+    onetimeauth_enclave.signed.so \
+    onetimeauth2_enclave.signed.so \
+    onetimeauth7_enclave.signed.so \
+    pwhash_argon2i_enclave.signed.so \
+    pwhash_argon2id_enclave.signed.so \
+    randombytes_enclave.signed.so \
+    scalarmult_enclave.signed.so \
+    scalarmult2_enclave.signed.so \
+    scalarmult5_enclave.signed.so \
+    scalarmult6_enclave.signed.so \
+    scalarmult7_enclave.signed.so \
+    secretbox_enclave.signed.so \
+    secretbox2_enclave.signed.so \
+    secretbox7_enclave.signed.so \
+    secretbox8_enclave.signed.so \
+    secretbox_easy_enclave.signed.so \
+    secretbox_easy2_enclave.signed.so \
+    secretstream_enclave.signed.so \
+    shorthash_enclave.signed.so \
+    sign_enclave.signed.so \
+    sodium_core_enclave.signed.so \
+    sodium_utils_enclave.signed.so \
+    sodium_version_enclave.signed.so \
+    stream_enclave.signed.so \
+    stream2_enclave.signed.so \
+    stream3_enclave.signed.so \
+    stream4_enclave.signed.so \
+    verify1_enclave.signed.so \
+    core_ed25519_enclave.signed.so \
+    pwhash_scrypt_enclave.signed.so \
+    pwhash_scrypt_ll_enclave.signed.so \
+    scalarmult_ed25519_enclave.signed.so \
+    siphashx24_enclave.signed.so \
+    xchacha20_enclave.signed.so
+
+
+# if !EMSCRIPTEN
+# if !NATIVECLIENT
+# TESTS_TARGETS += \
+#     sodium_utils2.signed.so \
+#     sodium_utils3.signed.so
+# endif
+# endif
+
+# if !MINIMAL
+# TESTS_TARGETS += \
+#     core_ed25519_enclave.signed.so \
+#     pwhash_scrypt_enclave.signed.so \
+#     pwhash_scrypt_ll_enclave.signed.so \
+#     scalarmult_ed25519_enclave.signed.so \
+#     siphashx24_enclave.signed.so \
+#     xchacha20_enclave.signed.so
+# endif
+
+endif
+
+check_PROGRAMS = $(TESTS_TARGETS) 
+check_SCRIPTS = $(ENCLAVES)
 
 TESTS = $(TESTS_TARGETS)
 
@@ -440,15 +539,574 @@ ENCLAVE_LINK_FLAGS := -Wl,--no-undefined -nostdlib -nodefaultlibs -nostartfiles 
 	-Wl,-pie,-eenclave_entry -Wl,--export-dynamic  \
 	-Wl,--defsym,__ImageBase=0 -Wl,--gc-sections
 
-
-
-aead_aes256gcm_enclave.so: enclave_t.o test_enclave.h aead_aes256gcm.o ${top_builddir}/src/libsodium/.libs/libsodium.a
+aead_aes256gcm_enclave.so: aead_aes256gcm.o enclave_t.o test_enclave.h  ${top_builddir}/src/libsodium/.libs/libsodium.a
 	@$(CC) $^ -o $@ $(CFLAGS) $(AM_CPPFLAGS) $(SGX_CPPFLAGS) $(ENCLAVE_LINK_FLAGS)
 	@echo "CC  $@"
 
 aead_aes256gcm_enclave.signed.so: aead_aes256gcm_enclave.so enclave_config.xml enclave_private.pem
-	@$(SGX_ENCLAVE_SIGNER) sign -key enclave_private.pem -enclave aead_aes256gcm_enclave.so -out $@ -config enclave_config.xml 1> /dev/null
+	@$(SGX_ENCLAVE_SIGNER) sign -key enclave_private.pem -enclave $< -out $@ -config enclave_config.xml 1> /dev/null
 	@echo "SIGN   $@"
+
+aead_chacha20poly1305_enclave.so: aead_chacha20poly1305.o enclave_t.o test_enclave.h  ${top_builddir}/src/libsodium/.libs/libsodium.a
+	@$(CC) $^ -o $@ $(CFLAGS) $(AM_CPPFLAGS) $(SGX_CPPFLAGS) $(ENCLAVE_LINK_FLAGS)
+	@echo "CC  $@"
+
+aead_chacha20poly1305_enclave.signed.so: aead_chacha20poly1305_enclave.so enclave_config.xml enclave_private.pem
+	@$(SGX_ENCLAVE_SIGNER) sign -key enclave_private.pem -enclave $< -out $@ -config enclave_config.xml 1> /dev/null
+	@echo "SIGN   $@"
+
+aead_xchacha20poly1305_enclave.so: aead_xchacha20poly1305.o enclave_t.o test_enclave.h  ${top_builddir}/src/libsodium/.libs/libsodium.a
+	@$(CC) $^ -o $@ $(CFLAGS) $(AM_CPPFLAGS) $(SGX_CPPFLAGS) $(ENCLAVE_LINK_FLAGS)
+	@echo "CC  $@"
+
+aead_xchacha20poly1305_enclave.signed.so: aead_xchacha20poly1305_enclave.so enclave_config.xml enclave_private.pem
+	@$(SGX_ENCLAVE_SIGNER) sign -key enclave_private.pem -enclave $< -out $@ -config enclave_config.xml 1> /dev/null
+	@echo "SIGN   $@"
+
+auth_enclave.so: auth.o enclave_t.o test_enclave.h  ${top_builddir}/src/libsodium/.libs/libsodium.a
+	@$(CC) $^ -o $@ $(CFLAGS) $(AM_CPPFLAGS) $(SGX_CPPFLAGS) $(ENCLAVE_LINK_FLAGS)
+	@echo "CC  $@"
+
+auth_enclave.signed.so: auth_enclave.so enclave_config.xml enclave_private.pem
+	@$(SGX_ENCLAVE_SIGNER) sign -key enclave_private.pem -enclave $< -out $@ -config enclave_config.xml 1> /dev/null
+	@echo "SIGN   $@"
+
+auth2_enclave.so: auth2.o enclave_t.o test_enclave.h  ${top_builddir}/src/libsodium/.libs/libsodium.a
+	@$(CC) $^ -o $@ $(CFLAGS) $(AM_CPPFLAGS) $(SGX_CPPFLAGS) $(ENCLAVE_LINK_FLAGS)
+	@echo "CC  $@"
+
+auth2_enclave.signed.so: auth2_enclave.so enclave_config.xml enclave_private.pem
+	@$(SGX_ENCLAVE_SIGNER) sign -key enclave_private.pem -enclave $< -out $@ -config enclave_config.xml 1> /dev/null
+	@echo "SIGN   $@"
+
+auth3_enclave.so: auth3.o enclave_t.o test_enclave.h  ${top_builddir}/src/libsodium/.libs/libsodium.a
+	@$(CC) $^ -o $@ $(CFLAGS) $(AM_CPPFLAGS) $(SGX_CPPFLAGS) $(ENCLAVE_LINK_FLAGS)
+	@echo "CC  $@"
+
+auth3_enclave.signed.so: auth3_enclave.so enclave_config.xml enclave_private.pem
+	@$(SGX_ENCLAVE_SIGNER) sign -key enclave_private.pem -enclave $< -out $@ -config enclave_config.xml 1> /dev/null
+	@echo "SIGN   $@"
+
+auth5_enclave.so: auth5.o enclave_t.o test_enclave.h  ${top_builddir}/src/libsodium/.libs/libsodium.a
+	@$(CC) $^ -o $@ $(CFLAGS) $(AM_CPPFLAGS) $(SGX_CPPFLAGS) $(ENCLAVE_LINK_FLAGS)
+	@echo "CC  $@"
+
+auth5_enclave.signed.so: auth5_enclave.so enclave_config.xml enclave_private.pem
+	@$(SGX_ENCLAVE_SIGNER) sign -key enclave_private.pem -enclave $< -out $@ -config enclave_config.xml 1> /dev/null
+	@echo "SIGN   $@"
+
+auth6_enclave.so: auth6.o enclave_t.o test_enclave.h  ${top_builddir}/src/libsodium/.libs/libsodium.a
+	@$(CC) $^ -o $@ $(CFLAGS) $(AM_CPPFLAGS) $(SGX_CPPFLAGS) $(ENCLAVE_LINK_FLAGS)
+	@echo "CC  $@"
+
+auth6_enclave.signed.so: auth6_enclave.so enclave_config.xml enclave_private.pem
+	@$(SGX_ENCLAVE_SIGNER) sign -key enclave_private.pem -enclave $< -out $@ -config enclave_config.xml 1> /dev/null
+	@echo "SIGN   $@"
+
+auth7_enclave.so: auth7.o enclave_t.o test_enclave.h  ${top_builddir}/src/libsodium/.libs/libsodium.a
+	@$(CC) $^ -o $@ $(CFLAGS) $(AM_CPPFLAGS) $(SGX_CPPFLAGS) $(ENCLAVE_LINK_FLAGS)
+	@echo "CC  $@"
+
+auth7_enclave.signed.so: auth7_enclave.so enclave_config.xml enclave_private.pem
+	@$(SGX_ENCLAVE_SIGNER) sign -key enclave_private.pem -enclave $< -out $@ -config enclave_config.xml 1> /dev/null
+	@echo "SIGN   $@"
+
+box_enclave.so: box.o enclave_t.o test_enclave.h  ${top_builddir}/src/libsodium/.libs/libsodium.a
+	@$(CC) $^ -o $@ $(CFLAGS) $(AM_CPPFLAGS) $(SGX_CPPFLAGS) $(ENCLAVE_LINK_FLAGS)
+	@echo "CC  $@"
+
+box_enclave.signed.so: box_enclave.so enclave_config.xml enclave_private.pem
+	@$(SGX_ENCLAVE_SIGNER) sign -key enclave_private.pem -enclave $< -out $@ -config enclave_config.xml 1> /dev/null
+	@echo "SIGN   $@"
+
+box2_enclave.so: box2.o enclave_t.o test_enclave.h  ${top_builddir}/src/libsodium/.libs/libsodium.a
+	@$(CC) $^ -o $@ $(CFLAGS) $(AM_CPPFLAGS) $(SGX_CPPFLAGS) $(ENCLAVE_LINK_FLAGS)
+	@echo "CC  $@"
+
+box2_enclave.signed.so: box2_enclave.so enclave_config.xml enclave_private.pem
+	@$(SGX_ENCLAVE_SIGNER) sign -key enclave_private.pem -enclave $< -out $@ -config enclave_config.xml 1> /dev/null
+	@echo "SIGN   $@"
+
+box7_enclave.so: box7.o enclave_t.o test_enclave.h  ${top_builddir}/src/libsodium/.libs/libsodium.a
+	@$(CC) $^ -o $@ $(CFLAGS) $(AM_CPPFLAGS) $(SGX_CPPFLAGS) $(ENCLAVE_LINK_FLAGS)
+	@echo "CC  $@"
+
+box7_enclave.signed.so: box7_enclave.so enclave_config.xml enclave_private.pem
+	@$(SGX_ENCLAVE_SIGNER) sign -key enclave_private.pem -enclave $< -out $@ -config enclave_config.xml 1> /dev/null
+	@echo "SIGN   $@"
+
+box8_enclave.so: box8.o enclave_t.o test_enclave.h  ${top_builddir}/src/libsodium/.libs/libsodium.a
+	@$(CC) $^ -o $@ $(CFLAGS) $(AM_CPPFLAGS) $(SGX_CPPFLAGS) $(ENCLAVE_LINK_FLAGS)
+	@echo "CC  $@"
+
+box8_enclave.signed.so: box8_enclave.so enclave_config.xml enclave_private.pem
+	@$(SGX_ENCLAVE_SIGNER) sign -key enclave_private.pem -enclave $< -out $@ -config enclave_config.xml 1> /dev/null
+	@echo "SIGN   $@"
+
+box_easy_enclave.so: box_easy.o enclave_t.o test_enclave.h  ${top_builddir}/src/libsodium/.libs/libsodium.a
+	@$(CC) $^ -o $@ $(CFLAGS) $(AM_CPPFLAGS) $(SGX_CPPFLAGS) $(ENCLAVE_LINK_FLAGS)
+	@echo "CC  $@"
+
+box_easy_enclave.signed.so: box_easy_enclave.so enclave_config.xml enclave_private.pem
+	@$(SGX_ENCLAVE_SIGNER) sign -key enclave_private.pem -enclave $< -out $@ -config enclave_config.xml 1> /dev/null
+	@echo "SIGN   $@"
+
+box_easy2_enclave.so: box_easy2.o enclave_t.o test_enclave.h  ${top_builddir}/src/libsodium/.libs/libsodium.a
+	@$(CC) $^ -o $@ $(CFLAGS) $(AM_CPPFLAGS) $(SGX_CPPFLAGS) $(ENCLAVE_LINK_FLAGS)
+	@echo "CC  $@"
+
+box_easy2_enclave.signed.so: box_easy2_enclave.so enclave_config.xml enclave_private.pem
+	@$(SGX_ENCLAVE_SIGNER) sign -key enclave_private.pem -enclave $< -out $@ -config enclave_config.xml 1> /dev/null
+	@echo "SIGN   $@"
+
+box_seal_enclave.so: box_seal.o enclave_t.o test_enclave.h  ${top_builddir}/src/libsodium/.libs/libsodium.a
+	@$(CC) $^ -o $@ $(CFLAGS) $(AM_CPPFLAGS) $(SGX_CPPFLAGS) $(ENCLAVE_LINK_FLAGS)
+	@echo "CC  $@"
+
+box_seal_enclave.signed.so: box_seal_enclave.so enclave_config.xml enclave_private.pem
+	@$(SGX_ENCLAVE_SIGNER) sign -key enclave_private.pem -enclave $< -out $@ -config enclave_config.xml 1> /dev/null
+	@echo "SIGN   $@"
+
+box_seed_enclave.so: box_seed.o enclave_t.o test_enclave.h  ${top_builddir}/src/libsodium/.libs/libsodium.a
+	@$(CC) $^ -o $@ $(CFLAGS) $(AM_CPPFLAGS) $(SGX_CPPFLAGS) $(ENCLAVE_LINK_FLAGS)
+	@echo "CC  $@"
+
+box_seed_enclave.signed.so: box_seed_enclave.so enclave_config.xml enclave_private.pem
+	@$(SGX_ENCLAVE_SIGNER) sign -key enclave_private.pem -enclave $< -out $@ -config enclave_config.xml 1> /dev/null
+	@echo "SIGN   $@"
+
+chacha20_enclave.so: chacha20.o enclave_t.o test_enclave.h  ${top_builddir}/src/libsodium/.libs/libsodium.a
+	@$(CC) $^ -o $@ $(CFLAGS) $(AM_CPPFLAGS) $(SGX_CPPFLAGS) $(ENCLAVE_LINK_FLAGS)
+	@echo "CC  $@"
+
+chacha20_enclave.signed.so: chacha20_enclave.so enclave_config.xml enclave_private.pem
+	@$(SGX_ENCLAVE_SIGNER) sign -key enclave_private.pem -enclave $< -out $@ -config enclave_config.xml 1> /dev/null
+	@echo "SIGN   $@"
+
+codecs_enclave.so: codecs.o enclave_t.o test_enclave.h  ${top_builddir}/src/libsodium/.libs/libsodium.a
+	@$(CC) $^ -o $@ $(CFLAGS) $(AM_CPPFLAGS) $(SGX_CPPFLAGS) $(ENCLAVE_LINK_FLAGS)
+	@echo "CC  $@"
+
+codecs_enclave.signed.so: codecs_enclave.so enclave_config.xml enclave_private.pem
+	@$(SGX_ENCLAVE_SIGNER) sign -key enclave_private.pem -enclave $< -out $@ -config enclave_config.xml 1> /dev/null
+	@echo "SIGN   $@"
+
+core1_enclave.so: core1.o enclave_t.o test_enclave.h  ${top_builddir}/src/libsodium/.libs/libsodium.a
+	@$(CC) $^ -o $@ $(CFLAGS) $(AM_CPPFLAGS) $(SGX_CPPFLAGS) $(ENCLAVE_LINK_FLAGS)
+	@echo "CC  $@"
+
+core1_enclave.signed.so: core1_enclave.so enclave_config.xml enclave_private.pem
+	@$(SGX_ENCLAVE_SIGNER) sign -key enclave_private.pem -enclave $< -out $@ -config enclave_config.xml 1> /dev/null
+	@echo "SIGN   $@"
+
+core2_enclave.so: core2.o enclave_t.o test_enclave.h  ${top_builddir}/src/libsodium/.libs/libsodium.a
+	@$(CC) $^ -o $@ $(CFLAGS) $(AM_CPPFLAGS) $(SGX_CPPFLAGS) $(ENCLAVE_LINK_FLAGS)
+	@echo "CC  $@"
+
+core2_enclave.signed.so: core2_enclave.so enclave_config.xml enclave_private.pem
+	@$(SGX_ENCLAVE_SIGNER) sign -key enclave_private.pem -enclave $< -out $@ -config enclave_config.xml 1> /dev/null
+	@echo "SIGN   $@"
+
+core3_enclave.so: core3.o enclave_t.o test_enclave.h  ${top_builddir}/src/libsodium/.libs/libsodium.a
+	@$(CC) $^ -o $@ $(CFLAGS) $(AM_CPPFLAGS) $(SGX_CPPFLAGS) $(ENCLAVE_LINK_FLAGS)
+	@echo "CC  $@"
+
+core3_enclave.signed.so: core3_enclave.so enclave_config.xml enclave_private.pem
+	@$(SGX_ENCLAVE_SIGNER) sign -key enclave_private.pem -enclave $< -out $@ -config enclave_config.xml 1> /dev/null
+	@echo "SIGN   $@"
+
+core4_enclave.so: core4.o enclave_t.o test_enclave.h  ${top_builddir}/src/libsodium/.libs/libsodium.a
+	@$(CC) $^ -o $@ $(CFLAGS) $(AM_CPPFLAGS) $(SGX_CPPFLAGS) $(ENCLAVE_LINK_FLAGS)
+	@echo "CC  $@"
+
+core4_enclave.signed.so: core4_enclave.so enclave_config.xml enclave_private.pem
+	@$(SGX_ENCLAVE_SIGNER) sign -key enclave_private.pem -enclave $< -out $@ -config enclave_config.xml 1> /dev/null
+	@echo "SIGN   $@"
+
+core5_enclave.so: core5.o enclave_t.o test_enclave.h  ${top_builddir}/src/libsodium/.libs/libsodium.a
+	@$(CC) $^ -o $@ $(CFLAGS) $(AM_CPPFLAGS) $(SGX_CPPFLAGS) $(ENCLAVE_LINK_FLAGS)
+	@echo "CC  $@"
+
+core5_enclave.signed.so: core5_enclave.so enclave_config.xml enclave_private.pem
+	@$(SGX_ENCLAVE_SIGNER) sign -key enclave_private.pem -enclave $< -out $@ -config enclave_config.xml 1> /dev/null
+	@echo "SIGN   $@"
+
+core6_enclave.so: core6.o enclave_t.o test_enclave.h  ${top_builddir}/src/libsodium/.libs/libsodium.a
+	@$(CC) $^ -o $@ $(CFLAGS) $(AM_CPPFLAGS) $(SGX_CPPFLAGS) $(ENCLAVE_LINK_FLAGS)
+	@echo "CC  $@"
+
+core6_enclave.signed.so: core6_enclave.so enclave_config.xml enclave_private.pem
+	@$(SGX_ENCLAVE_SIGNER) sign -key enclave_private.pem -enclave $< -out $@ -config enclave_config.xml 1> /dev/null
+	@echo "SIGN   $@"
+
+ed25519_convert_enclave.so: ed25519_convert.o enclave_t.o test_enclave.h  ${top_builddir}/src/libsodium/.libs/libsodium.a
+	@$(CC) $^ -o $@ $(CFLAGS) $(AM_CPPFLAGS) $(SGX_CPPFLAGS) $(ENCLAVE_LINK_FLAGS)
+	@echo "CC  $@"
+
+ed25519_convert_enclave.signed.so: ed25519_convert_enclave.so enclave_config.xml enclave_private.pem
+	@$(SGX_ENCLAVE_SIGNER) sign -key enclave_private.pem -enclave $< -out $@ -config enclave_config.xml 1> /dev/null
+	@echo "SIGN   $@"
+
+generichash_enclave.so: generichash.o enclave_t.o test_enclave.h  ${top_builddir}/src/libsodium/.libs/libsodium.a
+	@$(CC) $^ -o $@ $(CFLAGS) $(AM_CPPFLAGS) $(SGX_CPPFLAGS) $(ENCLAVE_LINK_FLAGS)
+	@echo "CC  $@"
+
+generichash_enclave.signed.so: generichash_enclave.so enclave_config.xml enclave_private.pem
+	@$(SGX_ENCLAVE_SIGNER) sign -key enclave_private.pem -enclave $< -out $@ -config enclave_config.xml 1> /dev/null
+	@echo "SIGN   $@"
+
+generichash2_enclave.so: generichash2.o enclave_t.o test_enclave.h  ${top_builddir}/src/libsodium/.libs/libsodium.a
+	@$(CC) $^ -o $@ $(CFLAGS) $(AM_CPPFLAGS) $(SGX_CPPFLAGS) $(ENCLAVE_LINK_FLAGS)
+	@echo "CC  $@"
+
+generichash2_enclave.signed.so: generichash2_enclave.so enclave_config.xml enclave_private.pem
+	@$(SGX_ENCLAVE_SIGNER) sign -key enclave_private.pem -enclave $< -out $@ -config enclave_config.xml 1> /dev/null
+	@echo "SIGN   $@"
+
+generichash3_enclave.so: generichash3.o enclave_t.o test_enclave.h  ${top_builddir}/src/libsodium/.libs/libsodium.a
+	@$(CC) $^ -o $@ $(CFLAGS) $(AM_CPPFLAGS) $(SGX_CPPFLAGS) $(ENCLAVE_LINK_FLAGS)
+	@echo "CC  $@"
+
+generichash3_enclave.signed.so: generichash3_enclave.so enclave_config.xml enclave_private.pem
+	@$(SGX_ENCLAVE_SIGNER) sign -key enclave_private.pem -enclave $< -out $@ -config enclave_config.xml 1> /dev/null
+	@echo "SIGN   $@"
+
+hash_enclave.so: hash.o enclave_t.o test_enclave.h  ${top_builddir}/src/libsodium/.libs/libsodium.a
+	@$(CC) $^ -o $@ $(CFLAGS) $(AM_CPPFLAGS) $(SGX_CPPFLAGS) $(ENCLAVE_LINK_FLAGS)
+	@echo "CC  $@"
+
+hash_enclave.signed.so: hash_enclave.so enclave_config.xml enclave_private.pem
+	@$(SGX_ENCLAVE_SIGNER) sign -key enclave_private.pem -enclave $< -out $@ -config enclave_config.xml 1> /dev/null
+	@echo "SIGN   $@"
+
+hash3_enclave.so: hash3.o enclave_t.o test_enclave.h  ${top_builddir}/src/libsodium/.libs/libsodium.a
+	@$(CC) $^ -o $@ $(CFLAGS) $(AM_CPPFLAGS) $(SGX_CPPFLAGS) $(ENCLAVE_LINK_FLAGS)
+	@echo "CC  $@"
+
+hash3_enclave.signed.so: hash3_enclave.so enclave_config.xml enclave_private.pem
+	@$(SGX_ENCLAVE_SIGNER) sign -key enclave_private.pem -enclave $< -out $@ -config enclave_config.xml 1> /dev/null
+	@echo "SIGN   $@"
+
+kdf_enclave.so: kdf.o enclave_t.o test_enclave.h  ${top_builddir}/src/libsodium/.libs/libsodium.a
+	@$(CC) $^ -o $@ $(CFLAGS) $(AM_CPPFLAGS) $(SGX_CPPFLAGS) $(ENCLAVE_LINK_FLAGS)
+	@echo "CC  $@"
+
+kdf_enclave.signed.so: kdf_enclave.so enclave_config.xml enclave_private.pem
+	@$(SGX_ENCLAVE_SIGNER) sign -key enclave_private.pem -enclave $< -out $@ -config enclave_config.xml 1> /dev/null
+	@echo "SIGN   $@"
+
+keygen_enclave.so: keygen.o enclave_t.o test_enclave.h  ${top_builddir}/src/libsodium/.libs/libsodium.a
+	@$(CC) $^ -o $@ $(CFLAGS) $(AM_CPPFLAGS) $(SGX_CPPFLAGS) $(ENCLAVE_LINK_FLAGS)
+	@echo "CC  $@"
+
+keygen_enclave.signed.so: keygen_enclave.so enclave_config.xml enclave_private.pem
+	@$(SGX_ENCLAVE_SIGNER) sign -key enclave_private.pem -enclave $< -out $@ -config enclave_config.xml 1> /dev/null
+	@echo "SIGN   $@"
+
+kx_enclave.so: kx.o enclave_t.o test_enclave.h  ${top_builddir}/src/libsodium/.libs/libsodium.a
+	@$(CC) $^ -o $@ $(CFLAGS) $(AM_CPPFLAGS) $(SGX_CPPFLAGS) $(ENCLAVE_LINK_FLAGS)
+	@echo "CC  $@"
+
+kx_enclave.signed.so: kx_enclave.so enclave_config.xml enclave_private.pem
+	@$(SGX_ENCLAVE_SIGNER) sign -key enclave_private.pem -enclave $< -out $@ -config enclave_config.xml 1> /dev/null
+	@echo "SIGN   $@"
+
+metamorphic_enclave.so: metamorphic.o enclave_t.o test_enclave.h  ${top_builddir}/src/libsodium/.libs/libsodium.a
+	@$(CC) $^ -o $@ $(CFLAGS) $(AM_CPPFLAGS) $(SGX_CPPFLAGS) $(ENCLAVE_LINK_FLAGS)
+	@echo "CC  $@"
+
+metamorphic_enclave.signed.so: metamorphic_enclave.so enclave_config.xml enclave_private.pem
+	@$(SGX_ENCLAVE_SIGNER) sign -key enclave_private.pem -enclave $< -out $@ -config enclave_config.xml 1> /dev/null
+	@echo "SIGN   $@"
+
+misuse_enclave.so: misuse.o enclave_t.o test_enclave.h  ${top_builddir}/src/libsodium/.libs/libsodium.a
+	@$(CC) $^ -o $@ $(CFLAGS) $(AM_CPPFLAGS) $(SGX_CPPFLAGS) $(ENCLAVE_LINK_FLAGS)
+	@echo "CC  $@"
+
+misuse_enclave.signed.so: misuse_enclave.so enclave_config.xml enclave_private.pem
+	@$(SGX_ENCLAVE_SIGNER) sign -key enclave_private.pem -enclave $< -out $@ -config enclave_config.xml 1> /dev/null
+	@echo "SIGN   $@"
+
+onetimeauth_enclave.so: onetimeauth.o enclave_t.o test_enclave.h  ${top_builddir}/src/libsodium/.libs/libsodium.a
+	@$(CC) $^ -o $@ $(CFLAGS) $(AM_CPPFLAGS) $(SGX_CPPFLAGS) $(ENCLAVE_LINK_FLAGS)
+	@echo "CC  $@"
+
+onetimeauth_enclave.signed.so: onetimeauth_enclave.so enclave_config.xml enclave_private.pem
+	@$(SGX_ENCLAVE_SIGNER) sign -key enclave_private.pem -enclave $< -out $@ -config enclave_config.xml 1> /dev/null
+	@echo "SIGN   $@"
+
+onetimeauth2_enclave.so: onetimeauth2.o enclave_t.o test_enclave.h  ${top_builddir}/src/libsodium/.libs/libsodium.a
+	@$(CC) $^ -o $@ $(CFLAGS) $(AM_CPPFLAGS) $(SGX_CPPFLAGS) $(ENCLAVE_LINK_FLAGS)
+	@echo "CC  $@"
+
+onetimeauth2_enclave.signed.so: onetimeauth2_enclave.so enclave_config.xml enclave_private.pem
+	@$(SGX_ENCLAVE_SIGNER) sign -key enclave_private.pem -enclave $< -out $@ -config enclave_config.xml 1> /dev/null
+	@echo "SIGN   $@"
+
+onetimeauth7_enclave.so: onetimeauth7.o enclave_t.o test_enclave.h  ${top_builddir}/src/libsodium/.libs/libsodium.a
+	@$(CC) $^ -o $@ $(CFLAGS) $(AM_CPPFLAGS) $(SGX_CPPFLAGS) $(ENCLAVE_LINK_FLAGS)
+	@echo "CC  $@"
+
+onetimeauth7_enclave.signed.so: onetimeauth7_enclave.so enclave_config.xml enclave_private.pem
+	@$(SGX_ENCLAVE_SIGNER) sign -key enclave_private.pem -enclave $< -out $@ -config enclave_config.xml 1> /dev/null
+	@echo "SIGN   $@"
+
+pwhash_argon2i_enclave.so: pwhash_argon2i.o enclave_t.o test_enclave.h  ${top_builddir}/src/libsodium/.libs/libsodium.a
+	@$(CC) $^ -o $@ $(CFLAGS) $(AM_CPPFLAGS) $(SGX_CPPFLAGS) $(ENCLAVE_LINK_FLAGS)
+	@echo "CC  $@"
+
+pwhash_argon2i_enclave.signed.so: pwhash_argon2i_enclave.so enclave_config.xml enclave_private.pem
+	@$(SGX_ENCLAVE_SIGNER) sign -key enclave_private.pem -enclave $< -out $@ -config enclave_config.xml 1> /dev/null
+	@echo "SIGN   $@"
+
+pwhash_argon2id_enclave.so: pwhash_argon2id.o enclave_t.o test_enclave.h  ${top_builddir}/src/libsodium/.libs/libsodium.a
+	@$(CC) $^ -o $@ $(CFLAGS) $(AM_CPPFLAGS) $(SGX_CPPFLAGS) $(ENCLAVE_LINK_FLAGS)
+	@echo "CC  $@"
+
+pwhash_argon2id_enclave.signed.so: pwhash_argon2id_enclave.so enclave_config.xml enclave_private.pem
+	@$(SGX_ENCLAVE_SIGNER) sign -key enclave_private.pem -enclave $< -out $@ -config enclave_config.xml 1> /dev/null
+	@echo "SIGN   $@"
+
+randombytes_enclave.so: randombytes.o enclave_t.o test_enclave.h  ${top_builddir}/src/libsodium/.libs/libsodium.a
+	@$(CC) $^ -o $@ $(CFLAGS) $(AM_CPPFLAGS) $(SGX_CPPFLAGS) $(ENCLAVE_LINK_FLAGS)
+	@echo "CC  $@"
+
+randombytes_enclave.signed.so: randombytes_enclave.so enclave_config.xml enclave_private.pem
+	@$(SGX_ENCLAVE_SIGNER) sign -key enclave_private.pem -enclave $< -out $@ -config enclave_config.xml 1> /dev/null
+	@echo "SIGN   $@"
+
+scalarmult_enclave.so: scalarmult.o enclave_t.o test_enclave.h  ${top_builddir}/src/libsodium/.libs/libsodium.a
+	@$(CC) $^ -o $@ $(CFLAGS) $(AM_CPPFLAGS) $(SGX_CPPFLAGS) $(ENCLAVE_LINK_FLAGS)
+	@echo "CC  $@"
+
+scalarmult_enclave.signed.so: scalarmult_enclave.so enclave_config.xml enclave_private.pem
+	@$(SGX_ENCLAVE_SIGNER) sign -key enclave_private.pem -enclave $< -out $@ -config enclave_config.xml 1> /dev/null
+	@echo "SIGN   $@"
+
+scalarmult2_enclave.so: scalarmult2.o enclave_t.o test_enclave.h  ${top_builddir}/src/libsodium/.libs/libsodium.a
+	@$(CC) $^ -o $@ $(CFLAGS) $(AM_CPPFLAGS) $(SGX_CPPFLAGS) $(ENCLAVE_LINK_FLAGS)
+	@echo "CC  $@"
+
+scalarmult2_enclave.signed.so: scalarmult2_enclave.so enclave_config.xml enclave_private.pem
+	@$(SGX_ENCLAVE_SIGNER) sign -key enclave_private.pem -enclave $< -out $@ -config enclave_config.xml 1> /dev/null
+	@echo "SIGN   $@"
+
+scalarmult5_enclave.so: scalarmult5.o enclave_t.o test_enclave.h  ${top_builddir}/src/libsodium/.libs/libsodium.a
+	@$(CC) $^ -o $@ $(CFLAGS) $(AM_CPPFLAGS) $(SGX_CPPFLAGS) $(ENCLAVE_LINK_FLAGS)
+	@echo "CC  $@"
+
+scalarmult5_enclave.signed.so: scalarmult5_enclave.so enclave_config.xml enclave_private.pem
+	@$(SGX_ENCLAVE_SIGNER) sign -key enclave_private.pem -enclave $< -out $@ -config enclave_config.xml 1> /dev/null
+	@echo "SIGN   $@"
+
+scalarmult6_enclave.so: scalarmult6.o enclave_t.o test_enclave.h  ${top_builddir}/src/libsodium/.libs/libsodium.a
+	@$(CC) $^ -o $@ $(CFLAGS) $(AM_CPPFLAGS) $(SGX_CPPFLAGS) $(ENCLAVE_LINK_FLAGS)
+	@echo "CC  $@"
+
+scalarmult6_enclave.signed.so: scalarmult6_enclave.so enclave_config.xml enclave_private.pem
+	@$(SGX_ENCLAVE_SIGNER) sign -key enclave_private.pem -enclave $< -out $@ -config enclave_config.xml 1> /dev/null
+	@echo "SIGN   $@"
+
+scalarmult7_enclave.so: scalarmult7.o enclave_t.o test_enclave.h  ${top_builddir}/src/libsodium/.libs/libsodium.a
+	@$(CC) $^ -o $@ $(CFLAGS) $(AM_CPPFLAGS) $(SGX_CPPFLAGS) $(ENCLAVE_LINK_FLAGS)
+	@echo "CC  $@"
+
+scalarmult7_enclave.signed.so: scalarmult7_enclave.so enclave_config.xml enclave_private.pem
+	@$(SGX_ENCLAVE_SIGNER) sign -key enclave_private.pem -enclave $< -out $@ -config enclave_config.xml 1> /dev/null
+	@echo "SIGN   $@"
+
+secretbox_enclave.so: secretbox.o enclave_t.o test_enclave.h  ${top_builddir}/src/libsodium/.libs/libsodium.a
+	@$(CC) $^ -o $@ $(CFLAGS) $(AM_CPPFLAGS) $(SGX_CPPFLAGS) $(ENCLAVE_LINK_FLAGS)
+	@echo "CC  $@"
+
+secretbox_enclave.signed.so: secretbox_enclave.so enclave_config.xml enclave_private.pem
+	@$(SGX_ENCLAVE_SIGNER) sign -key enclave_private.pem -enclave $< -out $@ -config enclave_config.xml 1> /dev/null
+	@echo "SIGN   $@"
+
+secretbox2_enclave.so: secretbox2.o enclave_t.o test_enclave.h  ${top_builddir}/src/libsodium/.libs/libsodium.a
+	@$(CC) $^ -o $@ $(CFLAGS) $(AM_CPPFLAGS) $(SGX_CPPFLAGS) $(ENCLAVE_LINK_FLAGS)
+	@echo "CC  $@"
+
+secretbox2_enclave.signed.so: secretbox2_enclave.so enclave_config.xml enclave_private.pem
+	@$(SGX_ENCLAVE_SIGNER) sign -key enclave_private.pem -enclave $< -out $@ -config enclave_config.xml 1> /dev/null
+	@echo "SIGN   $@"
+
+secretbox7_enclave.so: secretbox7.o enclave_t.o test_enclave.h  ${top_builddir}/src/libsodium/.libs/libsodium.a
+	@$(CC) $^ -o $@ $(CFLAGS) $(AM_CPPFLAGS) $(SGX_CPPFLAGS) $(ENCLAVE_LINK_FLAGS)
+	@echo "CC  $@"
+
+secretbox7_enclave.signed.so: secretbox7_enclave.so enclave_config.xml enclave_private.pem
+	@$(SGX_ENCLAVE_SIGNER) sign -key enclave_private.pem -enclave $< -out $@ -config enclave_config.xml 1> /dev/null
+	@echo "SIGN   $@"
+
+secretbox8_enclave.so: secretbox8.o enclave_t.o test_enclave.h  ${top_builddir}/src/libsodium/.libs/libsodium.a
+	@$(CC) $^ -o $@ $(CFLAGS) $(AM_CPPFLAGS) $(SGX_CPPFLAGS) $(ENCLAVE_LINK_FLAGS)
+	@echo "CC  $@"
+
+secretbox8_enclave.signed.so: secretbox8_enclave.so enclave_config.xml enclave_private.pem
+	@$(SGX_ENCLAVE_SIGNER) sign -key enclave_private.pem -enclave $< -out $@ -config enclave_config.xml 1> /dev/null
+	@echo "SIGN   $@"
+
+secretbox_easy_enclave.so: secretbox_easy.o enclave_t.o test_enclave.h  ${top_builddir}/src/libsodium/.libs/libsodium.a
+	@$(CC) $^ -o $@ $(CFLAGS) $(AM_CPPFLAGS) $(SGX_CPPFLAGS) $(ENCLAVE_LINK_FLAGS)
+	@echo "CC  $@"
+
+secretbox_easy_enclave.signed.so: secretbox_easy_enclave.so enclave_config.xml enclave_private.pem
+	@$(SGX_ENCLAVE_SIGNER) sign -key enclave_private.pem -enclave $< -out $@ -config enclave_config.xml 1> /dev/null
+	@echo "SIGN   $@"
+
+secretbox_easy2_enclave.so: secretbox_easy2.o enclave_t.o test_enclave.h  ${top_builddir}/src/libsodium/.libs/libsodium.a
+	@$(CC) $^ -o $@ $(CFLAGS) $(AM_CPPFLAGS) $(SGX_CPPFLAGS) $(ENCLAVE_LINK_FLAGS)
+	@echo "CC  $@"
+
+secretbox_easy2_enclave.signed.so: secretbox_easy2_enclave.so enclave_config.xml enclave_private.pem
+	@$(SGX_ENCLAVE_SIGNER) sign -key enclave_private.pem -enclave $< -out $@ -config enclave_config.xml 1> /dev/null
+	@echo "SIGN   $@"
+
+secretstream_enclave.so: secretstream.o enclave_t.o test_enclave.h  ${top_builddir}/src/libsodium/.libs/libsodium.a
+	@$(CC) $^ -o $@ $(CFLAGS) $(AM_CPPFLAGS) $(SGX_CPPFLAGS) $(ENCLAVE_LINK_FLAGS)
+	@echo "CC  $@"
+
+secretstream_enclave.signed.so: secretstream_enclave.so enclave_config.xml enclave_private.pem
+	@$(SGX_ENCLAVE_SIGNER) sign -key enclave_private.pem -enclave $< -out $@ -config enclave_config.xml 1> /dev/null
+	@echo "SIGN   $@"
+
+shorthash_enclave.so: shorthash.o enclave_t.o test_enclave.h  ${top_builddir}/src/libsodium/.libs/libsodium.a
+	@$(CC) $^ -o $@ $(CFLAGS) $(AM_CPPFLAGS) $(SGX_CPPFLAGS) $(ENCLAVE_LINK_FLAGS)
+	@echo "CC  $@"
+
+shorthash_enclave.signed.so: shorthash_enclave.so enclave_config.xml enclave_private.pem
+	@$(SGX_ENCLAVE_SIGNER) sign -key enclave_private.pem -enclave $< -out $@ -config enclave_config.xml 1> /dev/null
+	@echo "SIGN   $@"
+
+sign_enclave.so: sign.o enclave_t.o test_enclave.h  ${top_builddir}/src/libsodium/.libs/libsodium.a
+	@$(CC) $^ -o $@ $(CFLAGS) $(AM_CPPFLAGS) $(SGX_CPPFLAGS) $(ENCLAVE_LINK_FLAGS)
+	@echo "CC  $@"
+
+sign_enclave.signed.so: sign_enclave.so enclave_config.xml enclave_private.pem
+	@$(SGX_ENCLAVE_SIGNER) sign -key enclave_private.pem -enclave $< -out $@ -config enclave_config.xml 1> /dev/null
+	@echo "SIGN   $@"
+
+sodium_core_enclave.so: sodium_core.o enclave_t.o test_enclave.h  ${top_builddir}/src/libsodium/.libs/libsodium.a
+	@$(CC) $^ -o $@ $(CFLAGS) $(AM_CPPFLAGS) $(SGX_CPPFLAGS) $(ENCLAVE_LINK_FLAGS)
+	@echo "CC  $@"
+
+sodium_core_enclave.signed.so: sodium_core_enclave.so enclave_config.xml enclave_private.pem
+	@$(SGX_ENCLAVE_SIGNER) sign -key enclave_private.pem -enclave $< -out $@ -config enclave_config.xml 1> /dev/null
+	@echo "SIGN   $@"
+
+sodium_utils_enclave.so: sodium_utils.o enclave_t.o test_enclave.h  ${top_builddir}/src/libsodium/.libs/libsodium.a
+	@$(CC) $^ -o $@ $(CFLAGS) $(AM_CPPFLAGS) $(SGX_CPPFLAGS) $(ENCLAVE_LINK_FLAGS)
+	@echo "CC  $@"
+
+sodium_utils_enclave.signed.so: sodium_utils_enclave.so enclave_config.xml enclave_private.pem
+	@$(SGX_ENCLAVE_SIGNER) sign -key enclave_private.pem -enclave $< -out $@ -config enclave_config.xml 1> /dev/null
+	@echo "SIGN   $@"
+
+sodium_version_enclave.so: sodium_version.o enclave_t.o test_enclave.h  ${top_builddir}/src/libsodium/.libs/libsodium.a
+	@$(CC) $^ -o $@ $(CFLAGS) $(AM_CPPFLAGS) $(SGX_CPPFLAGS) $(ENCLAVE_LINK_FLAGS)
+	@echo "CC  $@"
+
+sodium_version_enclave.signed.so: sodium_version_enclave.so enclave_config.xml enclave_private.pem
+	@$(SGX_ENCLAVE_SIGNER) sign -key enclave_private.pem -enclave $< -out $@ -config enclave_config.xml 1> /dev/null
+	@echo "SIGN   $@"
+
+stream_enclave.so: stream.o enclave_t.o test_enclave.h  ${top_builddir}/src/libsodium/.libs/libsodium.a
+	@$(CC) $^ -o $@ $(CFLAGS) $(AM_CPPFLAGS) $(SGX_CPPFLAGS) $(ENCLAVE_LINK_FLAGS)
+	@echo "CC  $@"
+
+stream_enclave.signed.so: stream_enclave.so enclave_config.xml enclave_private.pem
+	@$(SGX_ENCLAVE_SIGNER) sign -key enclave_private.pem -enclave $< -out $@ -config enclave_config.xml 1> /dev/null
+	@echo "SIGN   $@"
+
+stream2_enclave.so: stream2.o enclave_t.o test_enclave.h  ${top_builddir}/src/libsodium/.libs/libsodium.a
+	@$(CC) $^ -o $@ $(CFLAGS) $(AM_CPPFLAGS) $(SGX_CPPFLAGS) $(ENCLAVE_LINK_FLAGS)
+	@echo "CC  $@"
+
+stream2_enclave.signed.so: stream2_enclave.so enclave_config.xml enclave_private.pem
+	@$(SGX_ENCLAVE_SIGNER) sign -key enclave_private.pem -enclave $< -out $@ -config enclave_config.xml 1> /dev/null
+	@echo "SIGN   $@"
+
+stream3_enclave.so: stream3.o enclave_t.o test_enclave.h  ${top_builddir}/src/libsodium/.libs/libsodium.a
+	@$(CC) $^ -o $@ $(CFLAGS) $(AM_CPPFLAGS) $(SGX_CPPFLAGS) $(ENCLAVE_LINK_FLAGS)
+	@echo "CC  $@"
+
+stream3_enclave.signed.so: stream3_enclave.so enclave_config.xml enclave_private.pem
+	@$(SGX_ENCLAVE_SIGNER) sign -key enclave_private.pem -enclave $< -out $@ -config enclave_config.xml 1> /dev/null
+	@echo "SIGN   $@"
+
+stream4_enclave.so: stream4.o enclave_t.o test_enclave.h  ${top_builddir}/src/libsodium/.libs/libsodium.a
+	@$(CC) $^ -o $@ $(CFLAGS) $(AM_CPPFLAGS) $(SGX_CPPFLAGS) $(ENCLAVE_LINK_FLAGS)
+	@echo "CC  $@"
+
+stream4_enclave.signed.so: stream4_enclave.so enclave_config.xml enclave_private.pem
+	@$(SGX_ENCLAVE_SIGNER) sign -key enclave_private.pem -enclave $< -out $@ -config enclave_config.xml 1> /dev/null
+	@echo "SIGN   $@"
+
+verify1_enclave.so: verify1.o enclave_t.o test_enclave.h  ${top_builddir}/src/libsodium/.libs/libsodium.a
+	@$(CC) $^ -o $@ $(CFLAGS) $(AM_CPPFLAGS) $(SGX_CPPFLAGS) $(ENCLAVE_LINK_FLAGS)
+	@echo "CC  $@"
+
+verify1_enclave.signed.so: verify1_enclave.so enclave_config.xml enclave_private.pem
+	@$(SGX_ENCLAVE_SIGNER) sign -key enclave_private.pem -enclave $< -out $@ -config enclave_config.xml 1> /dev/null
+	@echo "SIGN   $@"
+
+core_ed25519_enclave.so: core_ed25519.o enclave_t.o test_enclave.h  ${top_builddir}/src/libsodium/.libs/libsodium.a
+	@$(CC) $^ -o $@ $(CFLAGS) $(AM_CPPFLAGS) $(SGX_CPPFLAGS) $(ENCLAVE_LINK_FLAGS)
+	@echo "CC  $@"
+
+core_ed25519_enclave.signed.so: core_ed25519_enclave.so enclave_config.xml enclave_private.pem
+	@$(SGX_ENCLAVE_SIGNER) sign -key enclave_private.pem -enclave $< -out $@ -config enclave_config.xml 1> /dev/null
+	@echo "SIGN   $@"
+
+pwhash_scrypt_enclave.so: pwhash_scrypt.o enclave_t.o test_enclave.h  ${top_builddir}/src/libsodium/.libs/libsodium.a
+	@$(CC) $^ -o $@ $(CFLAGS) $(AM_CPPFLAGS) $(SGX_CPPFLAGS) $(ENCLAVE_LINK_FLAGS)
+	@echo "CC  $@"
+
+pwhash_scrypt_enclave.signed.so: pwhash_scrypt_enclave.so enclave_config.xml enclave_private.pem
+	@$(SGX_ENCLAVE_SIGNER) sign -key enclave_private.pem -enclave $< -out $@ -config enclave_config.xml 1> /dev/null
+	@echo "SIGN   $@"
+
+pwhash_scrypt_ll_enclave.so: pwhash_scrypt_ll.o enclave_t.o test_enclave.h  ${top_builddir}/src/libsodium/.libs/libsodium.a
+	@$(CC) $^ -o $@ $(CFLAGS) $(AM_CPPFLAGS) $(SGX_CPPFLAGS) $(ENCLAVE_LINK_FLAGS)
+	@echo "CC  $@"
+
+pwhash_scrypt_ll_enclave.signed.so: pwhash_scrypt_ll_enclave.so enclave_config.xml enclave_private.pem
+	@$(SGX_ENCLAVE_SIGNER) sign -key enclave_private.pem -enclave $< -out $@ -config enclave_config.xml 1> /dev/null
+	@echo "SIGN   $@"
+
+scalarmult_ed25519_enclave.so: scalarmult_ed25519.o enclave_t.o test_enclave.h  ${top_builddir}/src/libsodium/.libs/libsodium.a
+	@$(CC) $^ -o $@ $(CFLAGS) $(AM_CPPFLAGS) $(SGX_CPPFLAGS) $(ENCLAVE_LINK_FLAGS)
+	@echo "CC  $@"
+
+scalarmult_ed25519_enclave.signed.so: scalarmult_ed25519_enclave.so enclave_config.xml enclave_private.pem
+	@$(SGX_ENCLAVE_SIGNER) sign -key enclave_private.pem -enclave $< -out $@ -config enclave_config.xml 1> /dev/null
+	@echo "SIGN   $@"
+
+siphashx24_enclave.so: siphashx24.o enclave_t.o test_enclave.h  ${top_builddir}/src/libsodium/.libs/libsodium.a
+	@$(CC) $^ -o $@ $(CFLAGS) $(AM_CPPFLAGS) $(SGX_CPPFLAGS) $(ENCLAVE_LINK_FLAGS)
+	@echo "CC  $@"
+
+siphashx24_enclave.signed.so: siphashx24_enclave.so enclave_config.xml enclave_private.pem
+	@$(SGX_ENCLAVE_SIGNER) sign -key enclave_private.pem -enclave $< -out $@ -config enclave_config.xml 1> /dev/null
+	@echo "SIGN   $@"
+
+xchacha20_enclave.so: xchacha20.o enclave_t.o test_enclave.h  ${top_builddir}/src/libsodium/.libs/libsodium.a
+	@$(CC) $^ -o $@ $(CFLAGS) $(AM_CPPFLAGS) $(SGX_CPPFLAGS) $(ENCLAVE_LINK_FLAGS)
+	@echo "CC  $@"
+
+xchacha20_enclave.signed.so: xchacha20_enclave.so enclave_config.xml enclave_private.pem
+	@$(SGX_ENCLAVE_SIGNER) sign -key enclave_private.pem -enclave $< -out $@ -config enclave_config.xml 1> /dev/null
+	@echo "SIGN   $@"
+
+#
+# %.so: %.o enclave_t.o test_enclave.h  ${top_builddir}/src/libsodium/.libs/libsodium.a
+#     @$(CC) $^ -o $@ $(CFLAGS) $(AM_CPPFLAGS) $(SGX_CPPFLAGS) $(ENCLAVE_LINK_FLAGS)
+#     @echo "CC  $@"
+#
+# %.signed.so: %.so enclave_config.xml enclave_private.pem
+#     @$(SGX_ENCLAVE_SIGNER) sign -key enclave_private.pem -enclave $< -out $@ -config enclave_config.xml 1> /dev/null
+#     @echo "SIGN   $@"
 
 TESTS_CPPFLAGS = -I$(SGX_SDK)/include
 TESTS_LINK_FLAGS = -L$(SGX_LIBRARY_PATH)  -l$(Uae_Service_Library_Name) -l$(Urts_Library_Name) -lpthread
