@@ -472,16 +472,16 @@ ENCLAVES = \
     xchacha20_enclave.signed.so
 
 
-# if !EMSCRIPTEN
-# if !NATIVECLIENT
-# TESTS_TARGETS += \
-#     sodium_utils2.signed.so \
-#     sodium_utils3.signed.so
-# endif
-# endif
+if !EMSCRIPTEN
+if !NATIVECLIENT
+ENCLAVES += \
+    sodium_utils2_enclave.signed.so \
+    sodium_utils3_enclave.signed.so
+endif
+endif
 
 # if !MINIMAL
-# TESTS_TARGETS += \
+# ENCLAVES += \
 #     core_ed25519_enclave.signed.so \
 #     pwhash_scrypt_enclave.signed.so \
 #     pwhash_scrypt_ll_enclave.signed.so \
@@ -1000,6 +1000,22 @@ sodium_utils_enclave.so: sodium_utils.o enclave_t.o test_enclave.h  ${top_buildd
 	@echo "CC  $@"
 
 sodium_utils_enclave.signed.so: sodium_utils_enclave.so enclave_config.xml enclave_private.pem
+	@$(SGX_ENCLAVE_SIGNER) sign -key enclave_private.pem -enclave $< -out $@ -config enclave_config.xml 1> /dev/null
+	@echo "SIGN   $@"
+
+sodium_utils2_enclave.so: sodium_utils2.o enclave_t.o test_enclave.h  ${top_builddir}/src/libsodium/.libs/libsodium.a
+	@$(CC) $^ -o $@ $(CFLAGS) $(AM_CPPFLAGS) $(SGX_CPPFLAGS) $(ENCLAVE_LINK_FLAGS)
+	@echo "CC  $@"
+
+sodium_utils2_enclave.signed.so: sodium_utils2_enclave.so enclave_config.xml enclave_private.pem
+	@$(SGX_ENCLAVE_SIGNER) sign -key enclave_private.pem -enclave $< -out $@ -config enclave_config.xml 1> /dev/null
+	@echo "SIGN   $@"
+
+sodium_utils3_enclave.so: sodium_utils3.o enclave_t.o test_enclave.h  ${top_builddir}/src/libsodium/.libs/libsodium.a
+	@$(CC) $^ -o $@ $(CFLAGS) $(AM_CPPFLAGS) $(SGX_CPPFLAGS) $(ENCLAVE_LINK_FLAGS)
+	@echo "CC  $@"
+
+sodium_utils3_enclave.signed.so: sodium_utils3_enclave.so enclave_config.xml enclave_private.pem
 	@$(SGX_ENCLAVE_SIGNER) sign -key enclave_private.pem -enclave $< -out $@ -config enclave_config.xml 1> /dev/null
 	@echo "SIGN   $@"
 

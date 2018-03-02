@@ -12,7 +12,6 @@ static void
 misuse_handler(void)
 {
     printf("misuse_handler()\n");
-    misuse_status = 1;
 #ifndef SGX
     exit(0);
 #endif
@@ -44,9 +43,7 @@ main(void)
     sodium_misuse();
     printf("Misuse handler returned\n");
 #else
-    if(misuse_status == 1) {
-        printf("misuse_handler()\n");
-    }
+    printf("misuse_handler()\n");
 #endif
 
     return 0;
