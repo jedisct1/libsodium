@@ -6,11 +6,16 @@
 #include "test_enclave.h"
 #endif
 
+int misuse_status = 0;
+
 static void
 misuse_handler(void)
 {
     printf("misuse_handler()\n");
+    misuse_status = 1;
+#ifndef SGX
     exit(0);
+#endif
 }
 
 int
@@ -35,11 +40,13 @@ main(void)
     (void) sodium_runtime_has_rdrand();
 
     sodium_set_misuse_handler(misuse_handler);
-#ifndef __EMSCRIPTEN__
+#if !defined(__EMSCRIPTEN__) && !defined(SGX)
     sodium_misuse();
     printf("Misuse handler returned\n");
 #else
-    printf("misuse_handler()\n");
+    if(misuse_status == 1) {
+        printf("misuse_handler()\n");
+    }
 #endif
 
     return 0;

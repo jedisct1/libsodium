@@ -11,6 +11,7 @@
 #include <stdarg.h>
 
 #include "enclave_t.h"  /* print_string */
+#include "sgx_trts.h"
 
 #include "sodium.h"
 
@@ -30,6 +31,16 @@ void printf_enc(const char *fmt, ...)
     ocall_print_string(buf);
 }
 
+
+int rand();
+
+int rand()
+{
+    int ret;
+    if (sgx_read_rand((unsigned char*)&ret, sizeof ret) != SGX_SUCCESS) {
+        printf_enc("Error when reading rdrand in the SGX enclave\n");
+    }
+}
 
 int xmain(void);
 
