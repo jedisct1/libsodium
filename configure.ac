@@ -163,6 +163,9 @@ AC_ARG_ENABLE(sgx,
   ],[
     sgx_build="no"
   ])
+],
+[
+    sgx_build="no"
 ])
 
 AC_SUBST(SGX_CPPFLAGS)
