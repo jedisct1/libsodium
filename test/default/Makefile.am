@@ -1,6 +1,10 @@
 
 EXTRA_DIST = \
 	cmptest.h \
+	test_enclave.h \
+	enclave_private.pem \
+	enclave_config.xml \
+	enclave.edl \
 	wintest.bat \
 	pre.js.inc \
 	aead_aes256gcm.exp \
