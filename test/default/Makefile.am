@@ -449,15 +449,18 @@ enclave_u.c enclave_u.h: enclave.edl
 	$(SGX_EDGER8R) --use-prefix --untrusted enclave.edl --search-path $(SGX_SDK)/include
 
 
-# ifneq ($(SGX_MODE), HW)
+ifneq ($(SGX_MODE), HW)
  Trts_Library_Name := sgx_trts_sim
  Service_Library_Name := sgx_tservice_sim
  Urts_Library_Name := sgx_urts_sim
  Uae_Service_Library_Name := sgx_uae_service_sim
-# else
- # Trts_Library_Name := sgx_trts
- # Service_Library_Name := sgx_tservice
-# endif
+else
+ Trts_Library_Name := sgx_trts
+ Service_Library_Name := sgx_tservice
+ Urts_Library_Name := sgx_urts
+ Uae_Service_Library_Name := sgx_uae_service
+endif
+
 Crypto_Library_Name := sgx_tcrypto
 
 ENCLAVE_LINK_FLAGS := -Wl,--no-undefined -nostdlib -nodefaultlibs -nostartfiles -L$(SGX_LIBRARY_PATH) \
