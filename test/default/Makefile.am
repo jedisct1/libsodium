@@ -406,6 +406,18 @@ if SGX
 ENCLAVES = $(TESTS_TARGETS:%=%_enclave.signed.so)
 UNSIG_ENCLAVES = $(TESTS_TARGETS:%=%_enclave.so)
 
+SGX_CLEANFILES = $(ENCLAVES) $(UNSIG_ENCLAVES) \
+    enclave_t.c \
+    enclave_t.h \
+    enclave_u.c \
+    enclave_u.h 
+    
+if NATIVECLIENT
+    CLEANFILES += $(SGX_CLEANFILES)
+else
+    CLEANFILES = $(SGX_CLEANFILES)
+endif
+
 # ENCLAVES = \
 #     aead_aes256gcm_enclave.signed.so     \
 #     aead_chacha20poly1305_enclave.signed.so \
