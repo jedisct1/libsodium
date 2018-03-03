@@ -561,12 +561,12 @@ ENCLAVE_LINK_FLAGS := -Wl,--no-undefined -nostdlib -nodefaultlibs -nostartfiles 
 SUFFIXES = .signed.so .so _enclave.so
 
 .so.signed.so:
+	@echo "  SIGN    " $@
 	@$(SGX_ENCLAVE_SIGNER) sign -key enclave_private.pem -enclave $< -out $@ -config enclave_config.xml 1> /dev/null
-	@echo "SIGN   $@"
 
 .o_enclave.so: 
+	@echo "  CC      " $@
 	@$(CC) $^ -o $@ $(CFLAGS) $(AM_CPPFLAGS) $(SGX_CPPFLAGS) $(ENCLAVE_LINK_FLAGS)
-	@echo "CC  $@"
 
 $(UNSIG_ENCLAVES) : ${top_builddir}/src/libsodium/.libs/libsodium.a test_enclave.h enclave_t.h enclave_t.o
 
