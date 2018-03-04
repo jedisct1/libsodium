@@ -431,10 +431,17 @@ TESTS_LDADD = \
 TESTS_CPPFLAGS = $(AM_CPPFLAGS)
 else
 
-SGX_EDGER8R := sgx_edger8r
-SGX_ENCLAVE_SIGNER := sgx_sign
 
-SGX_LIBRARY_PATH := $(SGX_SDK)/lib64
+if AMD64_BUILD
+    SGX_LIBRARY_PATH := $(SGX_SDK)/lib64
+    SGX_ENCLAVE_SIGNER := $(SGX_SDK)/bin/x64/sgx_sign
+    SGX_EDGER8R := $(SGX_SDK)/bin/x64/sgx_edger8r
+else
+    SGX_LIBRARY_PATH := $(SGX_SDK)/lib
+    SGX_ENCLAVE_SIGNER := $(SGX_SDK)/bin/x86/sgx_sign
+    SGX_EDGER8R := $(SGX_SDK)/bin/x86/sgx_edger8r
+endif
+
 
 enclave_private.pem:
 
@@ -449,7 +456,7 @@ enclave_u.c enclave_u.h: enclave.edl
 	$(SGX_EDGER8R) --use-prefix --untrusted enclave.edl --search-path $(SGX_SDK)/include
 
 
-ifneq ($(SGX_MODE), HW)
+if !SGX_HW
  Trts_Library_Name := sgx_trts_sim
  Service_Library_Name := sgx_tservice_sim
  Urts_Library_Name := sgx_urts_sim
