@@ -1,4 +1,4 @@
-#! /bin/sh
+#!/bin/bash
 
 set -e
 
@@ -15,7 +15,7 @@ symbols() {
       else
         eval "defined_${symbol}=no"
       fi
-    done < emscripten-symbols.def
+    done < <(python3 -c "import json; print('\n'.join(['{} {} {}'.format(name, int(value[0]), int(value[1])) for name, value in json.load(open('emscripten-symbols.json')).items()]))")
 
     nm /usr/local/lib/libsodium.23.dylib | \
     fgrep ' T _' | \
