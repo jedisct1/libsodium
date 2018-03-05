@@ -5,17 +5,19 @@ set -e
 symbols() {
   {
     SUMO="$1"
-    while read symbol standard sumo; do
-      found="$standard"
-      if [ "x$SUMO" = "xsumo" ]; then
-        found="$sumo"
-      fi
-      if [ "$found" = "1" ]; then
-        eval "defined_${symbol}=yes"
-      else
-        eval "defined_${symbol}=no"
-      fi
-    done < emscripten-symbols.def
+    python3 -c "import json; print('\\n'.join(['{} {} {}'.format(name, int(value[0]), int(value[1])) for name, value in json.load(open('emscripten-symbols.json')).items()]))" | {
+      while read symbol standard sumo; do
+        found="$standard"
+        if [ "x$SUMO" = "xsumo" ]; then
+          found="$sumo"
+        fi
+        if [ "$found" = "1" ]; then
+          eval "defined_${symbol}=yes"
+        else
+          eval "defined_${symbol}=no"
+        fi
+      done
+    }
 
     nm /usr/local/lib/libsodium.23.dylib | \
     fgrep ' T _' | \
