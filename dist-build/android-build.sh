@@ -45,9 +45,15 @@ env - PATH="$PATH" \
     "$MAKE_TOOLCHAIN" --force --api="$NDK_API_VERSION_COMPAT" \
     --arch="$ARCH" --install-dir="$TOOLCHAIN_DIR" || exit 1
 
+if [ -z "$LIBSODIUM_FULL_BUILD" ]; then
+  export LIBSODIUM_ENABLE_MINIMAL_FLAG="--enable-minimal"
+else
+  export LIBSODIUM_ENABLE_MINIMAL_FLAG=""
+fi
+
 ./configure \
     --disable-soname-versions \
-    --enable-minimal \
+    ${LIBSODIUM_ENABLE_MINIMAL_FLAG} \
     --host="${HOST_COMPILER}" \
     --prefix="${PREFIX}" \
     --with-sysroot="${TOOLCHAIN_DIR}/sysroot" || exit 1
@@ -63,7 +69,7 @@ if [ "$NDK_PLATFORM" != "$NDK_PLATFORM_COMPAT" ]; then
 
   ./configure \
       --disable-soname-versions \
-      --enable-minimal \
+      ${LIBSODIUM_ENABLE_MINIMAL_FLAG} \
       --host="${HOST_COMPILER}" \
       --prefix="${PREFIX}" \
       --with-sysroot="${TOOLCHAIN_DIR}/sysroot" || exit 1
