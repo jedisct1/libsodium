@@ -34,9 +34,9 @@ export LDFLAGS="-arch i386 -isysroot ${SDK} -mios-simulator-version-min=${IOS_SI
 make distclean > /dev/null
 
 if [ -z "$LIBSODIUM_FULL_BUILD" ]; then
-  export LIBSODIUM_ENABLE_MINIMAL_FLAG=""
-else
   export LIBSODIUM_ENABLE_MINIMAL_FLAG="--enable-minimal"
+else
+  export LIBSODIUM_ENABLE_MINIMAL_FLAG=""
 fi
 
 ./configure --host=i686-apple-darwin10 \

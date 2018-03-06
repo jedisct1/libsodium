@@ -46,9 +46,9 @@ env - PATH="$PATH" \
     --arch="$ARCH" --install-dir="$TOOLCHAIN_DIR" || exit 1
 
 if [ -z "$LIBSODIUM_FULL_BUILD" ]; then
-  export LIBSODIUM_ENABLE_MINIMAL_FLAG=""
-else
   export LIBSODIUM_ENABLE_MINIMAL_FLAG="--enable-minimal"
+else
+  export LIBSODIUM_ENABLE_MINIMAL_FLAG=""
 fi
 
 ./configure \
