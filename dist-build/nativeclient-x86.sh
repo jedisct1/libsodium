@@ -11,7 +11,11 @@ mkdir -p $PREFIX || exit 1
 
 make distclean > /dev/null
 
-./configure --enable-minimal \
+if [ -z "$LIBSODIUM_ENABLE_MINIMAL_FLAG" ]; then
+  export LIBSODIUM_ENABLE_MINIMAL_FLAG="--enable-minimal"
+fi
+
+./configure ${LIBSODIUM_ENABLE_MINIMAL_FLAG} \
             --host=i686-nacl \
             --disable-ssp --without-pthreads \
             --prefix="$PREFIX" || exit 1

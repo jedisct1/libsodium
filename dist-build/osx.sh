@@ -11,7 +11,11 @@ export LDFLAGS="-arch x86_64 -mmacosx-version-min=${OSX_VERSION_MIN} -march=${OS
 
 make distclean > /dev/null
 
-./configure --enable-minimal \
+if [ -z "$LIBSODIUM_ENABLE_MINIMAL_FLAG" ]; then
+  export LIBSODIUM_ENABLE_MINIMAL_FLAG="--enable-minimal"
+fi
+
+./configure ${LIBSODIUM_ENABLE_MINIMAL_FLAG} \
             --prefix="$PREFIX" || exit 1
 
 make -j3 check && make -j3 install || exit 1

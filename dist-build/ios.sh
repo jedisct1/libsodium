@@ -33,9 +33,13 @@ export LDFLAGS="-arch i386 -isysroot ${SDK} -mios-simulator-version-min=${IOS_SI
 
 make distclean > /dev/null
 
+if [ -z "$LIBSODIUM_ENABLE_MINIMAL_FLAG" ]; then
+  export LIBSODIUM_ENABLE_MINIMAL_FLAG="--enable-minimal"
+fi
+
 ./configure --host=i686-apple-darwin10 \
             --disable-shared \
-            --enable-minimal \
+            ${LIBSODIUM_ENABLE_MINIMAL_FLAG} \
             --prefix="$SIMULATOR32_PREFIX" || exit 1
 
 make -j3 install || exit 1
@@ -48,7 +52,7 @@ make distclean > /dev/null
 
 ./configure --host=x86_64-apple-darwin10 \
             --disable-shared \
-            --enable-minimal \
+            ${LIBSODIUM_ENABLE_MINIMAL_FLAG} \
             --prefix="$SIMULATOR64_PREFIX"
 
 make -j3 install || exit 1
@@ -66,7 +70,7 @@ make distclean > /dev/null
 
 ./configure --host=arm-apple-darwin10 \
             --disable-shared \
-            --enable-minimal \
+            ${LIBSODIUM_ENABLE_MINIMAL_FLAG} \
             --prefix="$IOS32_PREFIX" || exit 1
 
 make -j3 install || exit 1
@@ -79,7 +83,7 @@ make distclean > /dev/null
 
 ./configure --host=arm-apple-darwin10 \
             --disable-shared \
-            --enable-minimal \
+            ${LIBSODIUM_ENABLE_MINIMAL_FLAG} \
             --prefix="$IOS32s_PREFIX" || exit 1
 
 make -j3 install || exit 1
@@ -92,7 +96,7 @@ make distclean > /dev/null
 
 ./configure --host=arm-apple-darwin10 \
             --disable-shared \
-            --enable-minimal \
+            ${LIBSODIUM_ENABLE_MINIMAL_FLAG} \
             --prefix="$IOS64_PREFIX" || exit 1
 
 make -j3 install || exit 1
