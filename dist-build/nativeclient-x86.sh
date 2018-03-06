@@ -11,12 +11,9 @@ mkdir -p $PREFIX || exit 1
 
 make distclean > /dev/null
 
-if [ -z "$LIBSODIUM_FULL_BUILD" ]; then
-  export LIBSODIUM_ENABLE_MINIMAL_FLAG=""
-else
+if [ -z "$LIBSODIUM_ENABLE_MINIMAL_FLAG" ]; then
   export LIBSODIUM_ENABLE_MINIMAL_FLAG="--enable-minimal"
 fi
-
 
 ./configure ${LIBSODIUM_ENABLE_MINIMAL_FLAG} \
             --host=i686-nacl \

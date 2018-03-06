@@ -11,9 +11,7 @@ export LDFLAGS="-arch x86_64 -mmacosx-version-min=${OSX_VERSION_MIN} -march=${OS
 
 make distclean > /dev/null
 
-if [ -z "$LIBSODIUM_FULL_BUILD" ]; then
-  export LIBSODIUM_ENABLE_MINIMAL_FLAG=""
-else
+if [ -z "$LIBSODIUM_ENABLE_MINIMAL_FLAG" ]; then
   export LIBSODIUM_ENABLE_MINIMAL_FLAG="--enable-minimal"
 fi
 
