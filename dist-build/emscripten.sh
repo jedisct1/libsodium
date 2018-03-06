@@ -99,7 +99,15 @@ if [ "$DIST" = yes ]; then
     Module.ready = new Promise(function (resolve, reject) {
       var Module = _Module;
       Module.onAbort = reject;
-      Module.onRuntimeInitialized = resolve;
+      Module.onRuntimeInitialized = function () {
+        try {
+          /* Test arbitrary wasm function */
+          Module._crypto_stream_chacha20_keybytes();
+          resolve();
+        } catch (err) {
+          reject(err);
+        }
+      };
       $(cat "${PREFIX}/lib/libsodium.wasm.tmp.js")
     }).catch(function () {
       var Module = _Module;
