@@ -11,7 +11,9 @@ mkdir -p $PREFIX || exit 1
 
 make distclean > /dev/null
 
-if [ -z "$LIBSODIUM_ENABLE_MINIMAL_FLAG" ]; then
+if [ -z "$LIBSODIUM_FULL_BUILD" ]; then
+  export LIBSODIUM_ENABLE_MINIMAL_FLAG=""
+else
   export LIBSODIUM_ENABLE_MINIMAL_FLAG="--enable-minimal"
 fi
 
