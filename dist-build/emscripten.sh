@@ -102,7 +102,7 @@ if [ "$DIST" = yes ]; then
       Module.onRuntimeInitialized = function () {
         try {
           /* Test arbitrary wasm function */
-          Module._crypto_stream_chacha20_keybytes();
+          Module._crypto_secretbox_keybytes();
           resolve();
         } catch (err) {
           reject(err);
