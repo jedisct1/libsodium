@@ -22,4 +22,8 @@ fi
             --disable-ssp --without-pthreads \
             --prefix="$PREFIX" || exit 1
 
-make -j3 check && make -j3 install || exit 1
+
+NPROCESSORS=$(getconf _NPROCESSORS_ONLN)
+PROCESSORS=${NPROCESSORS:-3}
+
+make -j${PROCESSORS} check && make -j${PROCESSORS} install || exit 1
