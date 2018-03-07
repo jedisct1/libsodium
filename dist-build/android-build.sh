@@ -84,7 +84,7 @@ if [ "$NDK_PLATFORM" != "$NDK_PLATFORM_COMPAT" ]; then
 fi
 
 
-NPROCESSORS=$(getconf _NPROCESSORS_ONLN)
+NPROCESSORS=$(getconf _NPROCESSORS_ONLN 2>/dev/null)
 PROCESSORS=${NPROCESSORS:-3}
 
 make clean && \

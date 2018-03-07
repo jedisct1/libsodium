@@ -31,7 +31,7 @@ fi
             --prefix="$PREFIX" || exit 1
 
 
-NPROCESSORS=$(getconf _NPROCESSORS_ONLN)
+NPROCESSORS=$(getconf _NPROCESSORS_ONLN 2>/dev/null)
 PROCESSORS=${NPROCESSORS:-3}
 
 make -j${PROCESSORS} check && make -j${PROCESSORS} install || exit 1
