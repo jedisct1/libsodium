@@ -45,9 +45,12 @@ env - PATH="$PATH" \
     "$MAKE_TOOLCHAIN" --force --api="$NDK_API_VERSION_COMPAT" \
     --arch="$ARCH" --install-dir="$TOOLCHAIN_DIR" || exit 1
 
+if [ -z "$LIBSODIUM_ANDROID_CONFIGURE_FLAGS" ]; then
+  export LIBSODIUM_ANDROID_CONFIGURE_FLAGS="--disable-soname-versions --enable-minimal"
+fi
+
 ./configure \
-    --disable-soname-versions \
-    --enable-minimal \
+    ${LIBSODIUM_ANDROID_CONFIGURE_FLAGS} \
     --host="${HOST_COMPILER}" \
     --prefix="${PREFIX}" \
     --with-sysroot="${TOOLCHAIN_DIR}/sysroot" || exit 1
@@ -62,8 +65,7 @@ if [ "$NDK_PLATFORM" != "$NDK_PLATFORM_COMPAT" ]; then
       --arch="$ARCH" --install-dir="$TOOLCHAIN_DIR" || exit 1
 
   ./configure \
-      --disable-soname-versions \
-      --enable-minimal \
+      ${LIBSODIUM_ANDROID_CONFIGURE_FLAGS} \
       --host="${HOST_COMPILER}" \
       --prefix="${PREFIX}" \
       --with-sysroot="${TOOLCHAIN_DIR}/sysroot" || exit 1
