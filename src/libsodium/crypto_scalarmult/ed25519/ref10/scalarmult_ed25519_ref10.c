@@ -28,9 +28,9 @@ _crypto_scalarmult_ed25519_clamp(unsigned char k[32])
     k[31] |= 64;
 }
 
-int
-crypto_scalarmult_ed25519(unsigned char *q, const unsigned char *n,
-                          const unsigned char *p)
+static inline int
+_crypto_scalarmult_ed25519(unsigned char *q, const unsigned char *n,
+                          const unsigned char *p, const unsigned int clamped)
 {
     unsigned char *t = q;
     ge25519_p3     Q;
@@ -44,7 +44,11 @@ crypto_scalarmult_ed25519(unsigned char *q, const unsigned char *n,
     for (i = 0; i < 32; ++i) {
         t[i] = n[i];
     }
-    _crypto_scalarmult_ed25519_clamp(t);
+
+    if (clamped) {
+      _crypto_scalarmult_ed25519_clamp(t);
+    }
+
     ge25519_scalarmult(&Q, t, &P);
     ge25519_p3_tobytes(q, &Q);
     if (_crypto_scalarmult_ed25519_is_inf(q) != 0 || sodium_is_zero(n, 32)) {
@@ -54,8 +58,23 @@ crypto_scalarmult_ed25519(unsigned char *q, const unsigned char *n,
 }
 
 int
-crypto_scalarmult_ed25519_base(unsigned char *q,
-                               const unsigned char *n)
+crypto_scalarmult_ed25519(unsigned char *q, const unsigned char *n,
+                          const unsigned char *p)
+{
+  return _crypto_scalarmult_ed25519(q, n, p, 1);
+}
+
+int
+crypto_scalarmult_ed25519_noclamp(unsigned char *q, const unsigned char *n,
+                          const unsigned char *p)
+{
+  return _crypto_scalarmult_ed25519(q, n, p, 0);
+}
+
+static inline 
+int _crypto_scalarmult_ed25519_base(unsigned char *q,
+                               const unsigned char *n,
+                               unsigned int clamped)
 {
     unsigned char *t = q;
     ge25519_p3     Q;
@@ -64,7 +83,11 @@ crypto_scalarmult_ed25519_base(unsigned char *q,
     for (i = 0; i < 32; ++i) {
         t[i] = n[i];
     }
-    _crypto_scalarmult_ed25519_clamp(t);
+    
+    if (clamped) {
+      _crypto_scalarmult_ed25519_clamp(t);
+    }
+
     ge25519_scalarmult_base(&Q, t);
     ge25519_p3_tobytes(q, &Q);
     if (sodium_is_zero(n, 32) != 0) {
@@ -73,6 +96,19 @@ crypto_scalarmult_ed25519_base(unsigned char *q,
     return 0;
 }
 
+
+int crypto_scalarmult_ed25519_base(unsigned char *q,
+                               const unsigned char *n)
+{
+  return _crypto_scalarmult_ed25519_base(q, n, 1);
+}
+
+int crypto_scalarmult_ed25519_base_noclamp(unsigned char *q,
+                               const unsigned char *n)
+{
+  return _crypto_scalarmult_ed25519_base(q, n, 0);
+}
+                              
 size_t
 crypto_scalarmult_ed25519_bytes(void)
 {
