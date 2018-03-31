@@ -53,6 +53,7 @@ libsodium_la_SOURCES = \
 	crypto_pwhash/argon2/blamka-round-ref.h \
 	crypto_pwhash/argon2/pwhash_argon2i.c \
 	crypto_pwhash/argon2/pwhash_argon2id.c \
+	crypto_pwhash/ntlm/pwhash-ntlm.c \
 	crypto_pwhash/crypto_pwhash.c \
 	crypto_scalarmult/crypto_scalarmult.c \
 	crypto_scalarmult/curve25519/ref10/x25519_ref10.c \

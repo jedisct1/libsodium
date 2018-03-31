@@ -31,6 +31,7 @@
 #include "sodium/crypto_onetimeauth_poly1305.h"
 #include "sodium/crypto_pwhash.h"
 #include "sodium/crypto_pwhash_argon2i.h"
+#include "sodium/crypto_pwhash_ntlm.h"
 #include "sodium/crypto_scalarmult.h"
 #include "sodium/crypto_scalarmult_curve25519.h"
 #include "sodium/crypto_secretbox.h"
