@@ -174,7 +174,8 @@ tv(void)
     sodium_free(mac);
     sodium_free(m2);
     sodium_free(m);
-
+    
+    assert(crypto_aead_xchacha20poly1305_ietf_abytes() == crypto_aead_xchacha20poly1305_ietf_ABYTES);
     assert(crypto_aead_xchacha20poly1305_ietf_keybytes() == crypto_aead_xchacha20poly1305_ietf_KEYBYTES);
     assert(crypto_aead_xchacha20poly1305_ietf_npubbytes() == crypto_aead_xchacha20poly1305_ietf_NPUBBYTES);
     assert(crypto_aead_xchacha20poly1305_ietf_nsecbytes() == 0U);
