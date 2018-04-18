@@ -7,19 +7,19 @@ export EXPORTED_RUNTIME_METHODS='["Pointer_stringify","getValue","setValue"]'
 export TOTAL_MEMORY=16777216
 export TOTAL_MEMORY_SUMO=83886080
 export TOTAL_MEMORY_TESTS=167772160
-export LDFLAGS="-s RESERVED_FUNCTION_POINTERS=8"
-export LDFLAGS="${LDFLAGS} -s SINGLE_FILE=1"
-export LDFLAGS="${LDFLAGS} -s ASSERTIONS=0"
-export LDFLAGS="${LDFLAGS} -s AGGRESSIVE_VARIABLE_ELIMINATION=1 -s ALIASING_FUNCTION_POINTERS=1"
-export LDFLAGS="${LDFLAGS} -s DISABLE_EXCEPTION_CATCHING=1"
-export LDFLAGS="${LDFLAGS} -s ELIMINATE_DUPLICATE_FUNCTIONS=1"
-export LDFLAGS_DIST="-s NO_FILESYSTEM=1"
+export LIBSODIUM_LDFLAGS="-s RESERVED_FUNCTION_POINTERS=8"
+export LIBSODIUM_LDFLAGS="${LIBSODIUM_LDFLAGS} -s SINGLE_FILE=1"
+export LIBSODIUM_LDFLAGS="${LIBSODIUM_LDFLAGS} -s ASSERTIONS=0"
+export LIBSODIUM_LDFLAGS="${LIBSODIUM_LDFLAGS} -s AGGRESSIVE_VARIABLE_ELIMINATION=1 -s ALIASING_FUNCTION_POINTERS=1"
+export LIBSODIUM_LDFLAGS="${LIBSODIUM_LDFLAGS} -s DISABLE_EXCEPTION_CATCHING=1"
+export LIBSODIUM_LDFLAGS="${LIBSODIUM_LDFLAGS} -s ELIMINATE_DUPLICATE_FUNCTIONS=1"
+export LIBSODIUM_LDFLAGS_DIST="-s NO_FILESYSTEM=1"
 export CFLAGS="-Os"
 
 echo
 if [ "x$1" = "x--standard" ]; then
   export EXPORTED_FUNCTIONS="$EXPORTED_FUNCTIONS_STANDARD"
-  export LDFLAGS="${LDFLAGS} ${LDFLAGS_DIST} -s TOTAL_MEMORY=${TOTAL_MEMORY}"
+  export LIBSODIUM_LDFLAGS="${LIBSODIUM_LDFLAGS} ${LIBSODIUM_LDFLAGS_DIST} -s TOTAL_MEMORY=${TOTAL_MEMORY}"
   export PREFIX="$(pwd)/libsodium-js"
   export DONE_FILE="$(pwd)/js.done"
   export CONFIG_EXTRA="--enable-minimal"
@@ -27,14 +27,14 @@ if [ "x$1" = "x--standard" ]; then
   echo "Building a standard distribution in [${PREFIX}]"
 elif [ "x$1" = "x--sumo" ]; then
   export EXPORTED_FUNCTIONS="$EXPORTED_FUNCTIONS_SUMO"
-  export LDFLAGS="${LDFLAGS} ${LDFLAGS_DIST} -s TOTAL_MEMORY=${TOTAL_MEMORY_SUMO}"
+  export LIBSODIUM_LDFLAGS="${LIBSODIUM_LDFLAGS} ${LIBSODIUM_LDFLAGS_DIST} -s TOTAL_MEMORY=${TOTAL_MEMORY_SUMO}"
   export PREFIX="$(pwd)/libsodium-js-sumo"
   export DONE_FILE="$(pwd)/js-sumo.done"
   export DIST='yes'
   echo "Building a sumo distribution in [${PREFIX}]"
 elif [ "x$1" = "x--browser-tests" ]; then
   export EXPORTED_FUNCTIONS="$EXPORTED_FUNCTIONS_SUMO"
-  export LDFLAGS="${LDFLAGS} -s TOTAL_MEMORY=${TOTAL_MEMORY_TESTS}"
+  export LIBSODIUM_LDFLAGS="${LIBSODIUM_LDFLAGS} -s TOTAL_MEMORY=${TOTAL_MEMORY_TESTS}"
   export PREFIX="$(pwd)/libsodium-js-tests"
   export DONE_FILE="$(pwd)/js-tests-browser.done"
   export BROWSER_TESTS='yes'
@@ -44,7 +44,7 @@ elif [ "x$1" = "x--tests" ]; then
   echo "Building for testing"
   export EXPORTED_FUNCTIONS="$EXPORTED_FUNCTIONS_SUMO"
   export CPPFLAGS="${CPPFLAGS} -DBENCHMARKS -DITERATIONS=10"
-  export LDFLAGS="${LDFLAGS} -s TOTAL_MEMORY=${TOTAL_MEMORY_TESTS}"
+  export LIBSODIUM_LDFLAGS="${LIBSODIUM_LDFLAGS} -s TOTAL_MEMORY=${TOTAL_MEMORY_TESTS}"
   export PREFIX="$(pwd)/libsodium-js-tests"
   export DONE_FILE="$(pwd)/js-tests.done"
   export DIST='no'
@@ -72,7 +72,7 @@ if [ "$DIST" = yes ]; then
   emccLibsodium () {
     outFile="${1}"
     shift
-    emcc "$CFLAGS" --llvm-lto 1 $CPPFLAGS $LDFLAGS $JS_EXPORTS_FLAGS ${@} \
+    emcc "$CFLAGS" --llvm-lto 1 $CPPFLAGS $LIBSODIUM_LDFLAGS $JS_EXPORTS_FLAGS ${@} \
       "${PREFIX}/lib/libsodium.a" -o "${outFile}" || exit 1
   }
   emmake make $MAKE_FLAGS install || exit 1
