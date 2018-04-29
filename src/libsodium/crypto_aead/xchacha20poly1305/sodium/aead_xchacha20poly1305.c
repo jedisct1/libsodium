@@ -53,7 +53,7 @@ crypto_aead_xchacha20poly1305_ietf_encrypt(unsigned char *c,
     unsigned long long clen = 0ULL;
     int                ret;
 
-    if (mlen > UINT64_MAX - crypto_aead_xchacha20poly1305_ietf_ABYTES) {
+    if (mlen > crypto_aead_xchacha20poly1305_ietf_MESSAGEBYTES_MAX) {
         sodium_misuse();
     }
     ret = crypto_aead_xchacha20poly1305_ietf_encrypt_detached
