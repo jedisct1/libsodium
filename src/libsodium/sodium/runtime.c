@@ -109,6 +109,9 @@ _cpuid(unsigned int cpu_info[4U], const unsigned int cpu_info_type)
 #endif
 }
 
+#ifdef _MSC_VER
+#pragma optimize( "", off )
+#endif
 static int
 _sodium_runtime_intel_cpu_features(CPUFeatures * const cpu_features)
 {
@@ -206,6 +209,9 @@ _sodium_runtime_intel_cpu_features(CPUFeatures * const cpu_features)
 
     return 0;
 }
+#ifdef _MSC_VER
+#pragma optimize( "", on )
+#endif
 
 int
 _sodium_runtime_get_cpu_features(void)
