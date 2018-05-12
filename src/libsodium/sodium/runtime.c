@@ -153,10 +153,21 @@ _sodium_runtime_intel_cpu_features(CPUFeatures * const cpu_features)
         (defined(_MSC_VER) && defined(_XCR_XFEATURE_ENABLED_MASK) && _MSC_FULL_VER >= 160040219)
         xcr0 = (uint32_t) _xgetbv(0);
 # elif defined(_MSC_VER) && defined(_M_IX86)
+        /*
+         * Visual Studio documentation states that eax/ecx/edx don't need to
+         * be preserved in inline assembly code. But that doesn't seem to
+         * always hold true on Visual Studio 2010.
+         */
         __asm {
+            push eax
+            push ecx
+            push edx
             xor ecx, ecx
             _asm _emit 0x0f _asm _emit 0x01 _asm _emit 0xd0
             mov xcr0, eax
+            pop edx
+            pop ecx
+            pop eax
         }
 # elif defined(HAVE_AVX_ASM)
         __asm__ __volatile__(".byte 0x0f, 0x01, 0xd0" /* XGETBV */
