@@ -184,20 +184,20 @@ AC_SUBST(SGX_CPPFLAGS)
 AM_CONDITIONAL([SGX], [test "$sgx_build" = "yes"])
 AM_CONDITIONAL([AMD64_BUILD], [test "$host_cpu" = "x86_64"])
 
-AC_ARG_ENABLE(sgx_hw_test,
+AC_ARG_ENABLE(sgx_hw_tests,
 [AS_HELP_STRING(--enable-sgx-hw-tests,
   [Compile the test programs for SGX in hardware mode when --enable-sgx is set])],
 [
   AS_IF([test "x$enableval" = "xyes"], [
-    enable_sgx_hw_test="yes"
+    enable_sgx_hw_tests="yes"
   ], [
-    enable_sgx_hw_test="no"
+    enable_sgx_hw_tests="no"
   ])
 ],
 [
-  enable_sgx_hw_test="no"
+  enable_sgx_hw_tests="no"
 ])
-AM_CONDITIONAL([SGX_HW], [test x$enable_sgx_hw_test = xyes])
+AM_CONDITIONAL([SGX_HW], [test x$enable_sgx_hw_tests = xyes])
 
 AC_ARG_WITH(pthreads, AC_HELP_STRING([--with-pthreads],
  [use pthreads library, or --without-pthreads to disable threading support.]),
