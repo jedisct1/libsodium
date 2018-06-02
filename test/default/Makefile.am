@@ -497,6 +497,9 @@ endif
 
 
 if SGX
+
+test_app.c : enclave_u.h
+
 TEST_APP_SOURCE = test_app.c 
 ENCLAVE_APP_SOURCE = enclave_u.h enclave_u.c
 
