@@ -222,12 +222,33 @@ void ocall_print_string(const char *str)
     fprintf(fp_res, "%s", str);
 }
 
+void ocall_log_string(const char *str)
+{
+    printf("%s", str);
+    fflush(stdout);
+}
 
 int test()
 {
     int ret;
-    enclave_run_test(global_eid, &ret);
-    
+
+    printf("Call the test enclave.\n");
+
+    sgx_status_t status = SGX_ERROR_UNEXPECTED;
+    status = enclave_run_test(global_eid, &ret);
+
+    printf("Test enclave completed. Return code: %d\n", ret);
+
+    if (status != SGX_SUCCESS)
+    {
+        printf("Enclave call failed.\n");
+        printf("Error code: %d\n", status);
+        print_error_message(status);
+        return 99;
+    }else{
+        printf("Enclave call was successful.\n");
+    }
+
     return ret;
 }
 
@@ -245,6 +266,7 @@ int SGX_CDECL main(int argc, char *argv[])
         return 99;
     }
 
+    printf("Start enclave initialization.\n");
     /* Initialize the enclave */
     if(initialize_enclave() < 0){
         return 99; 
@@ -253,9 +275,11 @@ int SGX_CDECL main(int argc, char *argv[])
  
     int ret = test();
     
+    printf("Start enclave destruction.\n");
     /* Destroy the enclave */
     sgx_destroy_enclave(global_eid);
-    
+    printf("Enclave destructed!.\n");
+ 
     if(ret != 0){
         return 99;
     }
@@ -267,6 +291,7 @@ int SGX_CDECL main(int argc, char *argv[])
     }
     do {
         if ((c = fgetc(fp_res)) != fgetc(fp_out)) {
+            printf("Enclave destructed!.\n");
             return 99;
         }
     } while (c != EOF);

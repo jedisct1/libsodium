@@ -13,7 +13,8 @@ enclave {
     };
     
     /* 
-     * ocall_print_string - invokes OCALL to display string buffer inside the enclave.
+     * ocall_print_string - invokes OCALL to print a string buffer 
+     *                      coming from the enclave to the test's .res file.
      *  [in]: copy the string buffer to App outside.
      *  [string]: specifies 'str' is a NULL terminated buffer.
      */
@@ -21,4 +22,13 @@ enclave {
         void ocall_print_string([in, string] const char *str);
     };
 
+    /* 
+     * ocall_log_string - invokes OCALL to log string buffer inside the enclave.
+     *                    This will print the string in the test's .log file.
+     *  [in]: copy the string buffer to App outside.
+     *  [string]: specifies 'str' is a NULL terminated buffer.
+     */
+    untrusted {
+        void ocall_log_string([in, string] const char *str);
+    };
 };

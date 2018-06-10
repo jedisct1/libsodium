@@ -31,6 +31,18 @@ void printf_enc(const char *fmt, ...)
     ocall_print_string(buf);
 }
 
+#undef  printf
+#define printf printf_enc
+
+void log_string(const char *fmt, ...)
+{
+    char buf[BUFSIZ] = {'\0'};
+    va_list ap;
+    va_start(ap, fmt);
+    vsnprintf(buf, BUFSIZ, fmt, ap);
+    va_end(ap);
+    ocall_log_string(buf);
+}
 
 int rand_sgx();
 
@@ -39,6 +51,7 @@ int rand_sgx()
     int ret;
     if (sgx_read_rand((unsigned char*)&ret, sizeof ret) != SGX_SUCCESS) {
         printf_enc("Error when reading rdrand in the SGX enclave\n");
+        log_string("Enclave: Error when reading rdrand in the SGX enclave\n");
     }
     // rand() has to return something between 0 and RAND_MAX
     // the following line does that, with a 2^-32 bias (on 0)
@@ -50,18 +63,29 @@ int xmain(void);
 
 void run_test(int* return_code)
 {
+    log_string("Enclave: run_test().\n");
+    log_string("Enclave: Initialize libsodium.\n");
     if (sodium_init() != 0) {
+        log_string("Enclave: libsodium's init failed.\n");
         *return_code = 99;
-    }
-    if (xmain() != 0) {
-        *return_code = 99;
+    }else{
+        log_string("Enclave: libsodium's init succeeded.\n");
+        log_string("Enclave: call the test function.\n");
+        if (xmain() != 0) {
+            log_string("Enclave: test failed.\n");
+            *return_code = 99;
+        }else{
+            log_string("Enclave: test succeeded.\n");
+        }
     }
 }
 
 #define main xmain
-#define printf printf_enc
 
+
+#undef rand
 #define rand rand_sgx
+
 #ifdef RAND_MAX
 # undef RAND_MAX
 #endif
