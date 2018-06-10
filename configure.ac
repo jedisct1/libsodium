@@ -129,7 +129,7 @@ old_CPPFLAGS="$CPPFLAGS"
 SGX_CPPFLAGS=""
 
 AC_ARG_ENABLE(sgx,
-[AS_HELP_STRING(--enable-sgx,[Build for Intel SGX])]],
+[AS_HELP_STRING(--enable-sgx,[Build for Intel SGX])],
 [
   AS_IF([test "x$enableval" = "xyes"], [
 
@@ -190,6 +190,7 @@ AC_ARG_ENABLE(sgx_hw_tests,
 [
   AS_IF([test "x$enableval" = "xyes"], [
     enable_sgx_hw_tests="yes"
+    CFLAGS="$CFLAGS -DNDEBUG -DEDEBUG -UDEBUG"
   ], [
     enable_sgx_hw_tests="no"
   ])
