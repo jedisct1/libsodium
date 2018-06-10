@@ -225,7 +225,7 @@ void ocall_print_string(const char *str)
 void ocall_log_string(const char *str)
 {
     printf("%s", str);
-    fflush(stdout);
+    fflush(stdout); // be sure things get printed immediately when logging
 }
 
 int test()
