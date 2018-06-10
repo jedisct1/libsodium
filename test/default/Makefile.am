@@ -386,9 +386,12 @@ TESTS_TARGETS = \
 
 if !EMSCRIPTEN
 if !NATIVECLIENT
-TESTS_TARGETS += \
-	sodium_utils2 \
-	sodium_utils3
+TESTS_TARGETS += sodium_utils2
+
+if !SGX
+	TESTS_TARGETS += sodium_utils3
+endif
+
 endif
 endif
 
