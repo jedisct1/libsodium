@@ -597,7 +597,7 @@ int *pnt = &a;
 __asm__ __volatile__ ("" : : "r"(pnt) : "memory");
 ]])],
   [AC_MSG_RESULT(yes)
-   AC_DEFINE([HAVE_INLINE_ASM], [1], [inline asm code can be used])]
+   AC_DEFINE([HAVE_INLINE_ASM], [1], [inline asm code can be used])],
   [AC_MSG_RESULT(no)]
 )
 
