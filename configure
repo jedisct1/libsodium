@@ -1488,9 +1488,10 @@ Optional Features:
   --disable-dependency-tracking
                           speeds up one-time build
   --disable-ssp           Do not compile with -fstack-protector
-  --disable-asm           Do not compile assembly code -- This disables all
-                          (including non-assembly) platform-specific
-                          optimizations on Unix systems
+  --disable-asm           Do not compile assembly code -- As a side effect,
+                          this disables CPU-specific implementations on
+                          non-Windows platforms. Only for use with targets
+                          such as WebAssembly and NativeClient.
   --disable-pie           Do not produce position independent executables
   --enable-blocking-random
                           Enable this switch only if /dev/urandom is totally
