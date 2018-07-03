@@ -88,6 +88,9 @@ AS_IF([test "$host_os" = "nacl" -o "$host_os" = "pnacl"], [
   AC_MSG_WARN([compiling to Native Client - asm implementations disabled])
 ])
 
+AS_IF([test "x$enable_asm" = "xno"], [WITH_ASM=0], [WITH_ASM=1])
+AM_CONDITIONAL([WITH_ASM], [test "x$WITH_ASM" != "x0"])
+
 AC_ARG_ENABLE(pie,
 [AS_HELP_STRING(--disable-pie,Do not produce position independent executables)],
  enable_pie=$enableval, enable_pie="maybe")
@@ -599,7 +602,7 @@ __asm__ __volatile__ ("" : : "r"(pnt) : "memory");
 )
 
 HAVE_AMD64_ASM_V=0
-AS_IF([test "$enable_asm" != "no"],[
+AS_IF([test "x$WITH_ASM" != "x0"],[
   AC_MSG_CHECKING(whether we can use x86_64 asm code)
   AC_COMPILE_IFELSE([AC_LANG_PROGRAM([[
   ]], [[
@@ -628,7 +631,7 @@ AM_CONDITIONAL([HAVE_AMD64_ASM], [test $HAVE_AMD64_ASM_V = 1])
 AC_SUBST(HAVE_AMD64_ASM_V)
 
 HAVE_AVX_ASM_V=0
-AS_IF([test "$enable_asm" != "no"],[
+AS_IF([test "x$WITH_ASM" != "x0"],[
   AC_MSG_CHECKING(whether we can assemble AVX opcodes)
   AC_COMPILE_IFELSE([AC_LANG_PROGRAM([[
   ]], [[
@@ -688,26 +691,29 @@ AM_CONDITIONAL([HAVE_TI_MODE], [test $HAVE_TI_MODE_V = 1])
 AC_SUBST(HAVE_TI_MODE_V)
 
 HAVE_CPUID_V=0
-AS_IF([test "$enable_asm" != "no" -o "$host_alias" = "x86_64-nacl"],[
-  AC_MSG_CHECKING(for cpuid instruction)
-  AC_COMPILE_IFELSE([AC_LANG_PROGRAM([[ ]], [[
+AS_IF([test "x$WITH_ASM" != "x0"],
+  AS_IF(["$host_alias" = "x86_64-nacl"],[
+    AC_MSG_CHECKING(for cpuid instruction)
+    AC_COMPILE_IFELSE([AC_LANG_PROGRAM([[ ]], [[
 unsigned int cpu_info[4];
 __asm__ __volatile__ ("xchgl %%ebx, %k1; cpuid; xchgl %%ebx, %k1" :
                       "=a" (cpu_info[0]), "=&r" (cpu_info[1]),
                       "=c" (cpu_info[2]), "=d" (cpu_info[3]) :
                       "0" (0U), "2" (0U));
-  ]])],
-  [AC_MSG_RESULT(yes)
-   AC_DEFINE([HAVE_CPUID], [1], [cpuid instruction is available])
-   HAVE_CPUID_V=1],
-  [AC_MSG_RESULT(no)])
+    ]])],
+    [AC_MSG_RESULT(yes)
+     AC_DEFINE([HAVE_CPUID], [1], [cpuid instruction is available])
+     HAVE_CPUID_V=1],
+    [AC_MSG_RESULT(no)])
   ])
+])
 AC_SUBST(HAVE_CPUID_V)
 
 asm_hide_symbol="unsupported"
-AS_IF([test "$enable_asm" != "no" -o "$host_os" = "nacl"],[
-  AC_MSG_CHECKING(if the .private_extern asm directive is supported)
-  AC_LINK_IFELSE([AC_LANG_PROGRAM([[ ]], [[
+AS_IF([test "x$WITH_ASM" != "x0"],
+  AS_IF(["$host_os" = "nacl"],[
+    AC_MSG_CHECKING(if the .private_extern asm directive is supported)
+    AC_LINK_IFELSE([AC_LANG_PROGRAM([[ ]], [[
 __asm__ __volatile__ (".private_extern dummy_symbol \n"
                       ".private_extern _dummy_symbol \n"
                       ".globl dummy_symbol \n"
@@ -716,13 +722,13 @@ __asm__ __volatile__ (".private_extern dummy_symbol \n"
                       "_dummy_symbol: \n"
                       "    nop \n"
 );
-  ]])],
-  [AC_MSG_RESULT(yes)
-   asm_hide_symbol=".private_extern"],
-  [AC_MSG_RESULT(no)])
+    ]])],
+    [AC_MSG_RESULT(yes)
+     asm_hide_symbol=".private_extern"],
+    [AC_MSG_RESULT(no)])
 
-  AC_MSG_CHECKING(if the .hidden asm directive is supported)
-  AC_LINK_IFELSE([AC_LANG_PROGRAM([[ ]], [[
+    AC_MSG_CHECKING(if the .hidden asm directive is supported)
+    AC_LINK_IFELSE([AC_LANG_PROGRAM([[ ]], [[
 __asm__ __volatile__ (".hidden dummy_symbol \n"
                       ".hidden _dummy_symbol \n"
                       ".globl dummy_symbol \n"
@@ -731,17 +737,18 @@ __asm__ __volatile__ (".hidden dummy_symbol \n"
                       "_dummy_symbol: \n"
                       "    nop \n"
 );
-  ]])],
-  [AC_MSG_RESULT(yes)
-   AS_IF([test "$asm_hide_symbol" = "unsupported"],
-          [asm_hide_symbol=".hidden"],
-          [AC_MSG_NOTICE([unable to reliably tag symbols as private])
-           asm_hide_symbol="unsupported"])
-  ],
-  [AC_MSG_RESULT(no)])
+    ]])],
+    [AC_MSG_RESULT(yes)
+     AS_IF([test "$asm_hide_symbol" = "unsupported"],
+       [asm_hide_symbol=".hidden"],
+       [AC_MSG_NOTICE([unable to reliably tag symbols as private])
+        asm_hide_symbol="unsupported"])
+    ],
+    [AC_MSG_RESULT(no)])
 
-  AS_IF([test "$asm_hide_symbol" != "unsupported"],[
-    AC_DEFINE_UNQUOTED([ASM_HIDE_SYMBOL], [$asm_hide_symbol], [directive to hide symbols])
+    AS_IF([test "$asm_hide_symbol" != "unsupported"],[
+      AC_DEFINE_UNQUOTED([ASM_HIDE_SYMBOL], [$asm_hide_symbol], [directive to hide symbols])
+    ])
   ])
 ])
 
