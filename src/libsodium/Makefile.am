@@ -217,6 +217,7 @@ endif
 
 endif
 
+if WITH_ASM
 libaesni_la_LDFLAGS = $(libsodium_la_LDFLAGS)
 libaesni_la_CPPFLAGS = $(libsodium_la_CPPFLAGS) \
 	@CFLAGS_SSE2@ @CFLAGS_SSSE3@ @CFLAGS_AESNI@ @CFLAGS_PCLMUL@
@@ -288,3 +289,4 @@ libavx512f_la_CPPFLAGS = $(libsodium_la_CPPFLAGS) \
 libavx512f_la_SOURCES = \
 	crypto_pwhash/argon2/argon2-fill-block-avx512f.c \
 	crypto_pwhash/argon2/blamka-round-avx512f.h
+endif  ##WITH_ASM
