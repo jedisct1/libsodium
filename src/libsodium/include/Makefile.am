@@ -28,6 +28,7 @@ SODIUM_EXPORT = \
 	sodium/crypto_kx.h \
 	sodium/crypto_onetimeauth.h \
 	sodium/crypto_onetimeauth_poly1305.h \
+	sodium/crypto_pwbox.h \
 	sodium/crypto_pwhash.h \
 	sodium/crypto_pwhash_argon2i.h \
 	sodium/crypto_pwhash_argon2id.h \
