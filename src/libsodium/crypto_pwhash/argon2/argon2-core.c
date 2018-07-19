@@ -67,7 +67,7 @@ store_block(void *output, const block *src)
  * @param m_cost number of blocks to allocate in the memory
  * @return ARGON2_OK if @memory is a valid pointer and memory is allocated
  */
-static int allocate_memory(block_region **memory, uint32_t m_cost);
+static int allocate_memory(block_region **region, uint32_t m_cost);
 
 static int
 allocate_memory(block_region **region, uint32_t m_cost)
@@ -153,7 +153,7 @@ clear_memory(argon2_instance_t *instance, int clear)
 /* Deallocates memory
  * @param memory pointer to the blocks
  */
-static void free_memory(block_region *memory);
+static void free_memory(block_region *region);
 
 static void
 free_memory(block_region *region)
