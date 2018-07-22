@@ -52,6 +52,17 @@ pickparams(unsigned long long opslimit, const size_t memlimit,
     return 0;
 }
 
+static size_t
+sodium_strnlen(const char *str, size_t maxlen)
+{
+    size_t i = 0U;
+
+    while (i < maxlen && str[i] != 0) {
+        i++;
+    }
+    return i;
+}
+
 size_t
 crypto_pwhash_scryptsalsa208sha256_bytes_min(void)
 {
@@ -234,7 +245,7 @@ crypto_pwhash_scryptsalsa208sha256_str_verify(
     escrypt_local_t escrypt_local;
     int             ret = -1;
 
-    if (strnlen(str, crypto_pwhash_scryptsalsa208sha256_STRBYTES) !=
+    if (sodium_strnlen(str, crypto_pwhash_scryptsalsa208sha256_STRBYTES) !=
         crypto_pwhash_scryptsalsa208sha256_STRBYTES - 1U) {
         return -1;
     }
@@ -268,7 +279,7 @@ crypto_pwhash_scryptsalsa208sha256_str_needs_rehash(
         errno = EINVAL;
         return -1;
     }
-    if (strnlen(str, crypto_pwhash_scryptsalsa208sha256_STRBYTES) !=
+    if (sodium_strnlen(str, crypto_pwhash_scryptsalsa208sha256_STRBYTES) !=
         crypto_pwhash_scryptsalsa208sha256_STRBYTES - 1U) {
         errno = EINVAL;
         return -1;
