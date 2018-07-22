@@ -234,8 +234,8 @@ crypto_pwhash_scryptsalsa208sha256_str_verify(
     escrypt_local_t escrypt_local;
     int             ret = -1;
 
-    if (memchr(str, 0, crypto_pwhash_scryptsalsa208sha256_STRBYTES) !=
-        &str[crypto_pwhash_scryptsalsa208sha256_STRBYTES - 1U]) {
+    if (strnlen(str, crypto_pwhash_scryptsalsa208sha256_STRBYTES) !=
+        crypto_pwhash_scryptsalsa208sha256_STRBYTES - 1U) {
         return -1;
     }
     if (escrypt_init_local(&escrypt_local) != 0) {
@@ -268,8 +268,8 @@ crypto_pwhash_scryptsalsa208sha256_str_needs_rehash(
         errno = EINVAL;
         return -1;
     }
-    if (memchr(str, 0, crypto_pwhash_scryptsalsa208sha256_STRBYTES) !=
-        &str[crypto_pwhash_scryptsalsa208sha256_STRBYTES - 1U]) {
+    if (strnlen(str, crypto_pwhash_scryptsalsa208sha256_STRBYTES) !=
+        crypto_pwhash_scryptsalsa208sha256_STRBYTES - 1U) {
         errno = EINVAL;
         return -1;
     }
