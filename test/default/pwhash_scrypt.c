@@ -277,14 +277,19 @@ tv3(void)
     char * out;
     char * passwd;
     size_t i = 0U;
+    int out_size;
+    int pass_size;
+    int min_size = crypto_pwhash_scryptsalsa208sha256_STRBYTES;
 
     do {
-        out = (char *) sodium_malloc(strlen(tests[i].out) + 1U);
+        out_size = strlen(tests[i].out) + 1U;
+        pass_size = strlen(tests[i].passwd) + 1U;
+        out = (char *) sodium_malloc((out_size > min_size) ? out_size : min_size);
         assert(out != NULL);
-        memcpy(out, tests[i].out, strlen(tests[i].out) + 1U);
-        passwd = (char *) sodium_malloc(strlen(tests[i].passwd) + 1U);
+        memcpy(out, tests[i].out, out_size);
+        passwd = (char *) sodium_malloc(pass_size);
         assert(passwd != NULL);
-        memcpy(passwd, tests[i].passwd, strlen(tests[i].passwd) + 1U);
+        memcpy(passwd, tests[i].passwd, pass_size);
         if (crypto_pwhash_scryptsalsa208sha256_str_verify(
                 out, passwd, strlen(passwd)) != 0) {
             printf("pwhash_str failure: [%u]\n", (unsigned int) i);
