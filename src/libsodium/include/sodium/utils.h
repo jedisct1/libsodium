@@ -26,7 +26,7 @@ void sodium_stackzero(const size_t len);
 
 /*
  * WARNING: sodium_memcmp() must be used to verify if two secret keys
- * are equal, in constant time.
+ * are equal.
  * It returns 0 if the keys are equal, and -1 if they differ.
  * This function is not designed for lexicographical comparisons.
  */
