@@ -217,7 +217,6 @@ xor_buf(unsigned char *out, const unsigned char *in, size_t n)
 # include <intrin.h>
 
 # define HAVE_INTRIN_H    1
-# define HAVE_MMINTRIN_H  1
 # define HAVE_EMMINTRIN_H 1
 # define HAVE_PMMINTRIN_H 1
 # define HAVE_TMMINTRIN_H 1
