@@ -1,5 +1,7 @@
 @ECHO OFF
 
+setlocal enableDelayedExpansion
+
 if "%1" == "" (
   echo "Usage: wintest.bat <Release | ReleaseDLL | Debug | DebugDLL"
 	goto :END
@@ -45,7 +47,7 @@ FOR %%f in (*.c) DO (
 		goto :END
 	)
 	%%f.exe
-	if errorlevel 1 ( 
+	if !errorlevel! neq 0 ( 
 		echo %%f failed
 	) else (
 		echo %%f ok
