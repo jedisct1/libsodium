@@ -108,12 +108,16 @@ if [ "$DIST" = yes ]; then
           reject(err);
         }
       };
+      Module.useBackupModule = function () {
+        var Module = _Module;
+        Module.onAbort = undefined;
+        Module.onRuntimeInitialized = undefined;
+        Module.useBackupModule = undefined;
+        $(cat "${PREFIX}/lib/libsodium.asm.tmp.js" | sed 's|use asm||g')
+      };
       $(cat "${PREFIX}/lib/libsodium.wasm.tmp.js")
     }).catch(function () {
-      var Module = _Module;
-      Module.onAbort = undefined;
-      Module.onRuntimeInitialized = undefined;
-      $(cat "${PREFIX}/lib/libsodium.asm.tmp.js" | sed 's|use asm||g')
+      _Module.useBackupModule();
     });
 EOM
 
