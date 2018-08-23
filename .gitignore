@@ -1,5 +1,4 @@
 *.bc
-*.cmake
 *.dSYM
 *.done
 *.final
