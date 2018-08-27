@@ -144,7 +144,7 @@ main(void)
 
     for (i = 0; i < 2000U; i++) {
         bin_len = randombytes_uniform(200U);
-        blocksize = 1U + randombytes_uniform(100U);
+        blocksize = 1U + randombytes_uniform(500U);
         bin_padded_maxlen = bin_len + (blocksize - bin_len % blocksize);
         bin_padded = (unsigned char *) sodium_malloc(bin_padded_maxlen);
         randombytes_buf(bin_padded, bin_padded_maxlen);
