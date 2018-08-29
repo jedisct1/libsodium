@@ -55,6 +55,7 @@ EXTRA_DIST = \
 	scalarmult5.exp \
 	scalarmult6.exp \
 	scalarmult7.exp \
+	scalarmult8.exp \
 	secretbox.exp \
 	secretbox2.exp \
 	secretbox7.exp \
@@ -130,6 +131,7 @@ DISTCLEANFILES = \
 	scalarmult5.res \
 	scalarmult6.res \
 	scalarmult7.res \
+	scalarmult8.res \
 	secretbox.res \
 	secretbox2.res \
 	secretbox7.res \
@@ -206,6 +208,7 @@ CLEANFILES = \
 	scalarmult5.final \
 	scalarmult6.final \
 	scalarmult7.final \
+	scalarmult8.final \
 	secretbox.final \
 	secretbox2.final \
 	secretbox7.final \
@@ -277,6 +280,7 @@ CLEANFILES = \
 	scalarmult5.nexe \
 	scalarmult6.nexe \
 	scalarmult7.nexe \
+	scalarmult8.nexe \
 	secretbox.nexe \
 	secretbox2.nexe \
 	secretbox7.nexe \
@@ -356,6 +360,7 @@ TESTS_TARGETS = \
 	scalarmult5 \
 	scalarmult6 \
 	scalarmult7 \
+	scalarmult8 \
 	secretbox \
 	secretbox2 \
 	secretbox7 \
@@ -541,6 +546,9 @@ scalarmult6_LDADD         = $(TESTS_LDADD)
 
 scalarmult7_SOURCE        = cmptest.h scalarmult7.c
 scalarmult7_LDADD         = $(TESTS_LDADD)
+
+scalarmult8_SOURCE        = cmptest.h scalarmult8.c
+scalarmult8_LDADD         = $(TESTS_LDADD)
 
 secretbox_SOURCE          = cmptest.h secretbox.c
 secretbox_LDADD           = $(TESTS_LDADD)
