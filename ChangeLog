@@ -1,4 +1,18 @@
 
+* Version 1.0.17
+ - Bug fix: `sodium_pad()` didn't properly support block sizes >= 256 bytes.
+ - JS/WebAssembly: some old iOS versions can't instantiate the WebAssembly
+module; fall back to Javascript on these.
+ - JS/WebAssembly: compatibility with newer Emscripten versions.
+ - Bug fix: `crypto_pwhash_scryptsalsa208sha256_str_verify()` and
+`crypto_pwhash_scryptsalsa208sha256_str_needs_rehash()` didn't return
+`EINVAL` on input strings with a short length, unlike their high-level
+counterpart.
+ - Added a workaround for Visual Studio 2010 bug causing CPU features
+not to be detected.
+ - The library now enables compilation with retpoline by default.
+ - Portability improvements.
+
 * Version 1.0.16
  - Signatures computations and verifications are now way faster on
 64-bit platforms with compilers supporting 128-bit arithmetic (gcc,
