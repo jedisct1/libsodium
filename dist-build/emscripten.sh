@@ -109,9 +109,9 @@ if [ "$DIST" = yes ]; then
       };
       Module.useBackupModule = function () {
         var Module = _Module;
-        Module.onAbort = undefined;
-        Module.onRuntimeInitialized = undefined;
-        Module.useBackupModule = undefined;
+        Object.keys(Module).forEach(function(k) {
+          delete Module[k];
+        });
         $(cat "${PREFIX}/lib/libsodium.asm.tmp.js" | sed 's|use asm||g')
       };
       $(cat "${PREFIX}/lib/libsodium.wasm.tmp.js")
