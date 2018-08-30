@@ -4,6 +4,7 @@ EXTRA_DIST = \
 	wintest.bat \
 	pre.js.inc \
 	aead_aes256gcm.exp \
+	aead_aes256gcm2.exp \
 	aead_chacha20poly1305.exp \
 	aead_xchacha20poly1305.exp \
 	auth.exp \
@@ -80,6 +81,7 @@ EXTRA_DIST = \
 
 DISTCLEANFILES = \
 	aead_aes256gcm.res \
+	aead_aes256gcm2.res \
 	aead_chacha20poly1305.res \
 	aead_xchacha20poly1305.res \
 	auth.res \
@@ -157,6 +159,7 @@ DISTCLEANFILES = \
 if NATIVECLIENT
 CLEANFILES = \
 	aead_aes256gcm.final \
+	aead_aes256gcm2.final \
 	aead_chacha20poly1305.final \
 	aead_xchacha20poly1305.final \
 	auth.final \
@@ -229,6 +232,7 @@ CLEANFILES = \
 	verify1.final \
 	xchacha20.final \
 	aead_aes256gcm.nexe \
+	aead_aes256gcm2.nexe \
 	aead_chacha20poly1305.nexe \
 	aead_xchacha20poly1305.nexe \
 	auth.nexe \
@@ -314,6 +318,7 @@ AM_LDFLAGS = @TEST_LDFLAGS@
 
 TESTS_TARGETS = \
 	aead_aes256gcm \
+	aead_aes256gcm2 \
 	aead_chacha20poly1305 \
 	aead_xchacha20poly1305 \
 	auth \
@@ -396,6 +401,9 @@ TESTS_LDADD = \
 
 aead_aes256gcm_SOURCE                 = cmptest.h aead_aes256gcm.c
 aead_aes256gcm_LDADD                  = $(TESTS_LDADD)
+
+aead_aes256gcm2_SOURCE                = cmptest.h aead_aes256gcm2.c
+aead_aes256gcm2_LDADD                 = $(TESTS_LDADD)
 
 aead_chacha20poly1305_SOURCE          = cmptest.h aead_chacha20poly1305.c
 aead_chacha20poly1305_LDADD           = $(TESTS_LDADD)

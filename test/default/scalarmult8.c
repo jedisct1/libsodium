@@ -3,9 +3,9 @@
 #include "cmptest.h"
 
 typedef struct TestData_ {
-    const char  pk[crypto_scalarmult_BYTES * 2 + 1];
-    const char  sk[crypto_scalarmult_SCALARBYTES * 2 + 1];
-    const char  shared[crypto_scalarmult_BYTES * 2 + 1];
+    const char  pk_hex[crypto_scalarmult_BYTES * 2 + 1];
+    const char  sk_hex[crypto_scalarmult_SCALARBYTES * 2 + 1];
+    const char  shared_hex[crypto_scalarmult_BYTES * 2 + 1];
     const char *outcome;
 } TestData;
 
@@ -545,11 +545,11 @@ main(void)
     int           res;
 
     for (i = 0U; i < (sizeof test_data) / (sizeof test_data[0]); i++) {
-        sodium_hex2bin(sk, crypto_scalarmult_SCALARBYTES, test_data[i].sk,
+        sodium_hex2bin(sk, crypto_scalarmult_SCALARBYTES, test_data[i].sk_hex,
                        crypto_scalarmult_SCALARBYTES * 2, NULL, NULL, NULL);
-        sodium_hex2bin(pk, crypto_scalarmult_BYTES, test_data[i].pk,
+        sodium_hex2bin(pk, crypto_scalarmult_BYTES, test_data[i].pk_hex,
                        crypto_scalarmult_BYTES * 2, NULL, NULL, NULL);
-        sodium_hex2bin(shared, crypto_scalarmult_BYTES, test_data[i].shared,
+        sodium_hex2bin(shared, crypto_scalarmult_BYTES, test_data[i].shared_hex,
                        crypto_scalarmult_BYTES * 2, NULL, NULL, NULL);
         randombytes_buf(shared2, crypto_scalarmult_BYTES);
         res = crypto_scalarmult(shared2, sk, pk);
@@ -563,7 +563,7 @@ main(void)
             }
             if (memcmp(shared, shared2, crypto_scalarmult_BYTES) != 0) {
                 printf("*** test case %u succeeded, but shared key is not %s\n",
-                       i, test_data[i].shared);
+                       i, test_data[i].outcome);
             }
         } else {
             if (strcmp(test_data[i].outcome, "acceptable") == 0) {
