@@ -95,10 +95,10 @@ if [ "$DIST" = yes ]; then
       Module['TOTAL_MEMORY'] = root['sodium']['totalMemory'];
     }
     var _Module = Module;
-    Module.ready = new Promise(function (resolve, reject) {
+    Module.ready = new Promise(function(resolve, reject) {
       var Module = _Module;
       Module.onAbort = reject;
-      Module.onRuntimeInitialized = function () {
+      Module.onRuntimeInitialized = function() {
         try {
           /* Test arbitrary wasm function */
           Module._crypto_secretbox_keybytes();
@@ -107,7 +107,7 @@ if [ "$DIST" = yes ]; then
           reject(err);
         }
       };
-      Module.useBackupModule = function () {
+      Module.useBackupModule = function() {
         var Module = _Module;
         Module.onAbort = undefined;
         Module.onRuntimeInitialized = undefined;
@@ -115,7 +115,7 @@ if [ "$DIST" = yes ]; then
         $(cat "${PREFIX}/lib/libsodium.asm.tmp.js" | sed 's|use asm||g')
       };
       $(cat "${PREFIX}/lib/libsodium.wasm.tmp.js")
-    }).catch(function () {
+    }).catch(function() {
       _Module.useBackupModule();
     });
 EOM
