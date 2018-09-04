@@ -6,6 +6,7 @@ EXTRA_DIST = \
 	aead_aes256gcm.exp \
 	aead_aes256gcm2.exp \
 	aead_chacha20poly1305.exp \
+	aead_chacha20poly13052.exp \
 	aead_xchacha20poly1305.exp \
 	auth.exp \
 	auth2.exp \
@@ -83,6 +84,7 @@ DISTCLEANFILES = \
 	aead_aes256gcm.res \
 	aead_aes256gcm2.res \
 	aead_chacha20poly1305.res \
+	aead_chacha20poly13052.res \
 	aead_xchacha20poly1305.res \
 	auth.res \
 	auth2.res \
@@ -161,6 +163,7 @@ CLEANFILES = \
 	aead_aes256gcm.final \
 	aead_aes256gcm2.final \
 	aead_chacha20poly1305.final \
+	aead_chacha20poly13052.final \
 	aead_xchacha20poly1305.final \
 	auth.final \
 	auth2.final \
@@ -234,6 +237,7 @@ CLEANFILES = \
 	aead_aes256gcm.nexe \
 	aead_aes256gcm2.nexe \
 	aead_chacha20poly1305.nexe \
+	aead_chacha20poly13052.nexe \
 	aead_xchacha20poly1305.nexe \
 	auth.nexe \
 	auth2.nexe \
@@ -320,6 +324,7 @@ TESTS_TARGETS = \
 	aead_aes256gcm \
 	aead_aes256gcm2 \
 	aead_chacha20poly1305 \
+	aead_chacha20poly13052 \
 	aead_xchacha20poly1305 \
 	auth \
 	auth2 \
@@ -407,6 +412,9 @@ aead_aes256gcm2_LDADD                 = $(TESTS_LDADD)
 
 aead_chacha20poly1305_SOURCE          = cmptest.h aead_chacha20poly1305.c
 aead_chacha20poly1305_LDADD           = $(TESTS_LDADD)
+
+aead_chacha20poly13052_SOURCE         = cmptest.h aead_chacha20poly13052.c
+aead_chacha20poly13052_LDADD          = $(TESTS_LDADD)
 
 aead_xchacha20poly1305_SOURCE         = cmptest.h aead_xchacha20poly1305.c
 aead_xchacha20poly1305_LDADD          = $(TESTS_LDADD)
