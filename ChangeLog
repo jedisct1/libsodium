@@ -12,6 +12,7 @@ counterpart.
 not to be detected.
  - The library now enables compilation with retpoline by default.
  - Portability improvements.
+ - Test vectors from Project Wycheproof have been added.
 
 * Version 1.0.16
  - Signatures computations and verifications are now way faster on
