@@ -105,7 +105,7 @@ void tv_ietf(void)
             1U },
           { "000102030405060708090a0b0c0d0e0f101112131415161718191a1b1c1d1e1f",
             "000000090000004a00000000",
-            0xffffffff }};
+            0xfeffffff }};
     unsigned char  key[crypto_stream_chacha20_KEYBYTES];
     unsigned char  nonce[crypto_stream_chacha20_IETF_NONCEBYTES];
     unsigned char *part;

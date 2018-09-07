@@ -12,6 +12,7 @@
 #include "randombytes.h"
 #include "utils.h"
 
+#include "private/chacha20_ietf_ext.h"
 #include "private/common.h"
 
 #define crypto_secretstream_xchacha20poly1305_COUNTERBYTES  4U
@@ -136,13 +137,13 @@ crypto_secretstream_xchacha20poly1305_push
     memset(block, 0, sizeof block);
     block[0] = tag;
 
-    crypto_stream_chacha20_ietf_xor_ic(block, block, sizeof block,
-                                       state->nonce, 1U, state->k);
+    crypto_stream_chacha20_ietf_ext_xor_ic(block, block, sizeof block,
+                                           state->nonce, 1U, state->k);
     crypto_onetimeauth_poly1305_update(&poly1305_state, block, sizeof block);
     out[0] = block[0];
 
     c = out + (sizeof tag);
-    crypto_stream_chacha20_ietf_xor_ic(c, m, mlen, state->nonce, 2U, state->k);
+    crypto_stream_chacha20_ietf_ext_xor_ic(c, m, mlen, state->nonce, 2U, state->k);
     crypto_onetimeauth_poly1305_update(&poly1305_state, c, mlen);
     crypto_onetimeauth_poly1305_update
         (&poly1305_state, _pad0, (0x10 - (sizeof block) + mlen) & 0xf);
@@ -212,8 +213,8 @@ crypto_secretstream_xchacha20poly1305_pull
 
     memset(block, 0, sizeof block);
     block[0] = in[0];
-    crypto_stream_chacha20_ietf_xor_ic(block, block, sizeof block,
-                                       state->nonce, 1U, state->k);
+    crypto_stream_chacha20_ietf_ext_xor_ic(block, block, sizeof block,
+                                           state->nonce, 1U, state->k);
     tag = block[0];
     block[0] = in[0];
     crypto_onetimeauth_poly1305_update(&poly1305_state, block, sizeof block);
@@ -237,7 +238,7 @@ crypto_secretstream_xchacha20poly1305_pull
         return -1;
     }
 
-    crypto_stream_chacha20_ietf_xor_ic(m, c, mlen, state->nonce, 2U, state->k);
+    crypto_stream_chacha20_ietf_ext_xor_ic(m, c, mlen, state->nonce, 2U, state->k);
     XOR_BUF(STATE_INONCE(state), mac,
             crypto_secretstream_xchacha20poly1305_INONCEBYTES);
     sodium_increment(STATE_COUNTER(state),

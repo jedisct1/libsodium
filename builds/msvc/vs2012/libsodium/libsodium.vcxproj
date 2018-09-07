@@ -259,6 +259,7 @@
     <ClInclude Include="..\..\..\..\src\libsodium\include\sodium\private\sse2_64_32.h" />
     <ClInclude Include="..\..\..\..\src\libsodium\include\sodium\private\common.h" />
     <ClInclude Include="..\..\..\..\src\libsodium\include\sodium\private\mutex.h" />
+    <ClInclude Include="..\..\..\..\src\libsodium\include\sodium\private\chacha20_ietf_ext.h" />
     <ClInclude Include="..\..\..\..\src\libsodium\include\sodium\private\implementations.h" />
     <ClInclude Include="..\..\..\..\src\libsodium\crypto_pwhash\argon2\blamka-round-ref.h" />
     <ClInclude Include="..\..\..\..\src\libsodium\crypto_pwhash\argon2\blamka-round-avx2.h" />

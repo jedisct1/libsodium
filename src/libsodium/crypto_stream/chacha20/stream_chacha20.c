@@ -1,4 +1,5 @@
 #include "crypto_stream_chacha20.h"
+#include "core.h"
 #include "private/common.h"
 #include "private/implementations.h"
 #include "randombytes.h"
@@ -77,6 +78,19 @@ crypto_stream_chacha20_ietf_xor_ic(unsigned char *c, const unsigned char *m,
                                    unsigned long long mlen,
                                    const unsigned char *n, uint32_t ic,
                                    const unsigned char *k)
+{
+    if ((unsigned long long) ic >
+        crypto_stream_chacha20_ietf_MESSAGEBYTES_MAX / 64ULL - (mlen + 63ULL) / 64ULL) {
+        sodium_misuse();
+    }
+    return implementation->stream_ietf_xor_ic(c, m, mlen, n, ic, k);
+}
+
+int
+crypto_stream_chacha20_ietf_ext_xor_ic(unsigned char *c, const unsigned char *m,
+                                       unsigned long long mlen,
+                                       const unsigned char *n, uint32_t ic,
+                                       const unsigned char *k)
 {
     return implementation->stream_ietf_xor_ic(c, m, mlen, n, ic, k);
 }
