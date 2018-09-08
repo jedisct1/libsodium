@@ -36,7 +36,7 @@ _encrypt_detached(unsigned char *c,
     unsigned char                     slen[8U];
 
     (void) nsec;
-    crypto_stream_chacha20_ietf(block0, sizeof block0, npub, k);
+    crypto_stream_chacha20_ietf_ext(block0, sizeof block0, npub, k);
     crypto_onetimeauth_poly1305_init(&state, block0);
     sodium_memzero(block0, sizeof block0);
 
@@ -82,7 +82,7 @@ _decrypt_detached(unsigned char *m,
     int                               ret;
 
     (void) nsec;
-    crypto_stream_chacha20_ietf(block0, sizeof block0, npub, k);
+    crypto_stream_chacha20_ietf_ext(block0, sizeof block0, npub, k);
     crypto_onetimeauth_poly1305_init(&state, block0);
     sodium_memzero(block0, sizeof block0);
 

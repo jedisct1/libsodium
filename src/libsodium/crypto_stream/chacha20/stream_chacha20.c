@@ -54,14 +54,10 @@ int
 crypto_stream_chacha20(unsigned char *c, unsigned long long clen,
                        const unsigned char *n, const unsigned char *k)
 {
+    if (clen > crypto_stream_chacha20_MESSAGEBYTES_MAX) {
+        sodium_misuse();
+    }
     return implementation->stream(c, clen, n, k);
-}
-
-int
-crypto_stream_chacha20_ietf(unsigned char *c, unsigned long long clen,
-                            const unsigned char *n, const unsigned char *k)
-{
-    return implementation->stream_ietf(c, clen, n, k);
 }
 
 int
@@ -70,7 +66,65 @@ crypto_stream_chacha20_xor_ic(unsigned char *c, const unsigned char *m,
                               const unsigned char *n, uint64_t ic,
                               const unsigned char *k)
 {
+    if (mlen > crypto_stream_chacha20_MESSAGEBYTES_MAX) {
+        sodium_misuse();
+    }
     return implementation->stream_xor_ic(c, m, mlen, n, ic, k);
+}
+
+int
+crypto_stream_chacha20_xor(unsigned char *c, const unsigned char *m,
+                           unsigned long long mlen, const unsigned char *n,
+                           const unsigned char *k)
+{
+    if (mlen > crypto_stream_chacha20_MESSAGEBYTES_MAX) {
+        sodium_misuse();
+    }
+    return implementation->stream_xor_ic(c, m, mlen, n, 0U, k);
+}
+
+int
+crypto_stream_chacha20_ietf_ext(unsigned char *c, unsigned long long clen,
+                                const unsigned char *n, const unsigned char *k)
+{
+    if (clen > crypto_stream_chacha20_MESSAGEBYTES_MAX) {
+        sodium_misuse();
+    }
+    return implementation->stream_ietf_ext(c, clen, n, k);
+}
+
+int
+crypto_stream_chacha20_ietf_ext_xor_ic(unsigned char *c, const unsigned char *m,
+                                       unsigned long long mlen,
+                                       const unsigned char *n, uint32_t ic,
+                                       const unsigned char *k)
+{
+    if (mlen > crypto_stream_chacha20_MESSAGEBYTES_MAX) {
+        sodium_misuse();
+    }
+    return implementation->stream_ietf_ext_xor_ic(c, m, mlen, n, ic, k);
+}
+
+static int
+crypto_stream_chacha20_ietf_ext_xor(unsigned char *c, const unsigned char *m,
+                                    unsigned long long mlen, const unsigned char *n,
+                                    const unsigned char *k)
+{
+    if (mlen > crypto_stream_chacha20_MESSAGEBYTES_MAX) {
+        sodium_misuse();
+    }
+    return implementation->stream_ietf_ext_xor_ic(c, m, mlen, n, 0U, k);
+}
+
+int
+crypto_stream_chacha20_ietf(unsigned char *c, unsigned long long clen,
+                            const unsigned char *n, const unsigned char *k)
+{
+    if (clen >
+        crypto_stream_chacha20_ietf_MESSAGEBYTES_MAX / 64ULL - (clen + 63ULL) / 64ULL) {
+        sodium_misuse();
+    }
+    return crypto_stream_chacha20_ietf_ext(c, clen, n, k);
 }
 
 int
@@ -83,24 +137,7 @@ crypto_stream_chacha20_ietf_xor_ic(unsigned char *c, const unsigned char *m,
         crypto_stream_chacha20_ietf_MESSAGEBYTES_MAX / 64ULL - (mlen + 63ULL) / 64ULL) {
         sodium_misuse();
     }
-    return implementation->stream_ietf_xor_ic(c, m, mlen, n, ic, k);
-}
-
-int
-crypto_stream_chacha20_ietf_ext_xor_ic(unsigned char *c, const unsigned char *m,
-                                       unsigned long long mlen,
-                                       const unsigned char *n, uint32_t ic,
-                                       const unsigned char *k)
-{
-    return implementation->stream_ietf_xor_ic(c, m, mlen, n, ic, k);
-}
-
-int
-crypto_stream_chacha20_xor(unsigned char *c, const unsigned char *m,
-                           unsigned long long mlen, const unsigned char *n,
-                           const unsigned char *k)
-{
-    return implementation->stream_xor_ic(c, m, mlen, n, 0U, k);
+    return crypto_stream_chacha20_ietf_ext_xor_ic(c, m, mlen, n, ic, k);
 }
 
 int
@@ -108,7 +145,11 @@ crypto_stream_chacha20_ietf_xor(unsigned char *c, const unsigned char *m,
                                 unsigned long long mlen, const unsigned char *n,
                                 const unsigned char *k)
 {
-    return implementation->stream_ietf_xor_ic(c, m, mlen, n, 0U, k);
+    if (mlen >
+        crypto_stream_chacha20_ietf_MESSAGEBYTES_MAX / 64ULL - (mlen + 63ULL) / 64ULL) {
+        sodium_misuse();
+    }
+    return crypto_stream_chacha20_ietf_ext_xor(c, m, mlen, n, k);
 }
 
 void
