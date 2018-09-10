@@ -120,8 +120,7 @@ int
 crypto_stream_chacha20_ietf(unsigned char *c, unsigned long long clen,
                             const unsigned char *n, const unsigned char *k)
 {
-    if (clen >
-        crypto_stream_chacha20_ietf_MESSAGEBYTES_MAX / 64ULL - (clen + 63ULL) / 64ULL) {
+    if (clen > crypto_stream_chacha20_ietf_MESSAGEBYTES_MAX) {
         sodium_misuse();
     }
     return crypto_stream_chacha20_ietf_ext(c, clen, n, k);
@@ -145,8 +144,7 @@ crypto_stream_chacha20_ietf_xor(unsigned char *c, const unsigned char *m,
                                 unsigned long long mlen, const unsigned char *n,
                                 const unsigned char *k)
 {
-    if (mlen >
-        crypto_stream_chacha20_ietf_MESSAGEBYTES_MAX / 64ULL - (mlen + 63ULL) / 64ULL) {
+    if (mlen > crypto_stream_chacha20_ietf_MESSAGEBYTES_MAX) {
         sodium_misuse();
     }
     return crypto_stream_chacha20_ietf_ext_xor(c, m, mlen, n, k);
