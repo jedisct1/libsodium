@@ -133,7 +133,7 @@ crypto_stream_chacha20_ietf_xor_ic(unsigned char *c, const unsigned char *m,
                                    const unsigned char *k)
 {
     if ((unsigned long long) ic >
-        crypto_stream_chacha20_ietf_MESSAGEBYTES_MAX / 64ULL - (mlen + 63ULL) / 64ULL) {
+        (64ULL * (1ULL << 32)) / 64ULL - (mlen + 63ULL) / 64ULL) {
         sodium_misuse();
     }
     return crypto_stream_chacha20_ietf_ext_xor_ic(c, m, mlen, n, ic, k);
