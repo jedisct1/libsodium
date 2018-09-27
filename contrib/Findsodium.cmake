@@ -55,16 +55,16 @@ if (UNIX)
     endif()
 
     if(sodium_USE_STATIC_LIBS)
-        foreach(_libname ${sodium_PKG_STATIC_LIBRARIES})
-            if (NOT _libname MATCHES "^lib.*\\.a$") # ignore strings already ending with .a
-                list(INSERT sodium_PKG_STATIC_LIBRARIES 0 "lib${_libname}.a")
-            endif()
-        endforeach()
-        list(REMOVE_DUPLICATES sodium_PKG_STATIC_LIBRARIES)
-
-        # if pkgconfig for libsodium doesn't provide
-        # static lib info, then override PKG_STATIC here..
-        if (sodium_PKG_STATIC_LIBRARIES STREQUAL "")
+        if (sodium_PKG_STATIC_LIBRARIES STREQUAL)
+            foreach(_libname ${sodium_PKG_STATIC_LIBRARIES})
+                if (NOT _libname MATCHES "^lib.*\\.a$") # ignore strings already ending with .a
+                    list(INSERT sodium_PKG_STATIC_LIBRARIES 0 "lib${_libname}.a")
+                endif()
+            endforeach()
+            list(REMOVE_DUPLICATES sodium_PKG_STATIC_LIBRARIES)
+        else()
+            # if pkgconfig for libsodium doesn't provide
+            # static lib info, then override PKG_STATIC here..
             set(sodium_PKG_STATIC_LIBRARIES libsodium.a)
         endif()
 
