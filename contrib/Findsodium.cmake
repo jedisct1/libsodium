@@ -55,7 +55,7 @@ if (UNIX)
     endif()
 
     if(sodium_USE_STATIC_LIBS)
-        if (sodium_PKG_STATIC_LIBRARIES STREQUAL)
+        if (sodium_PKG_STATIC_LIBRARIES)
             foreach(_libname ${sodium_PKG_STATIC_LIBRARIES})
                 if (NOT _libname MATCHES "^lib.*\\.a$") # ignore strings already ending with .a
                     list(INSERT sodium_PKG_STATIC_LIBRARIES 0 "lib${_libname}.a")
