@@ -23,7 +23,7 @@
 #  define HAVE_LINUX_COMPATIBLE_GETRANDOM
 # else
 #  include <sys/syscall.h>
-#  if defined(SYS_getrandom) && defined(__NR_getrandom) && !defined(__TINYC__)
+#  if defined(SYS_getrandom) && defined(__NR_getrandom)
 #   define getrandom(B, S, F) syscall(SYS_getrandom, (B), (int) (S), (F))
 #   define HAVE_LINUX_COMPATIBLE_GETRANDOM
 #  endif
