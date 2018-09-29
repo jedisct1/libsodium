@@ -110,6 +110,8 @@ sodium_memzero(void *const pnt, const size_t len)
     }
 #elif defined(HAVE_EXPLICIT_BZERO)
     explicit_bzero(pnt, len);
+#elif defined(HAVE_EXPLICIT_MEMSET)
+    explicit_memset(pnt, 0, len);
 #elif HAVE_WEAK_SYMBOLS
     memset(pnt, 0, len);
     _sodium_dummy_symbol_to_prevent_memzero_lto(pnt, len);
