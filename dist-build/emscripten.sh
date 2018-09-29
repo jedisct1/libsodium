@@ -110,7 +110,9 @@ if [ "$DIST" = yes ]; then
       Module.useBackupModule = function () {
         var Module = _Module;
         Object.keys(Module).forEach(function(k) {
-          delete Module[k];
+          if (k !== 'getRandomValue') {
+            delete Module[k];
+          }
         });
         $(cat "${PREFIX}/lib/libsodium.asm.tmp.js" | sed 's|use asm||g')
       };
