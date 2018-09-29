@@ -18,9 +18,20 @@
 #ifdef __linux__
 # ifdef __dietlibc__
 #  define _LINUX_SOURCE
+#  include <sys/random.h>
+#  define HAVE_LINUX_COMPATIBLE_GETRANDOM
 # else
 #  include <sys/syscall.h>
+#  if defined(SYS_getrandom) && defined(__NR_getrandom)
+#   define getrandom(B, S, F) syscall(SYS_getrandom, (B), (int) (S), (F))
+#   define HAVE_LINUX_COMPATIBLE_GETRANDOM
+#  endif
 # endif
+#elif defined(__FreeBSD_version) && __FreeBSD_version >= 1200000
+# include <sys/random.h>
+# define HAVE_LINUX_COMPATIBLE_GETRANDOM
+#endif
+#ifdef HAVE_LINUX_COMPATIBLE_GETRANDOM
 # include <poll.h>
 #endif
 
@@ -204,7 +215,7 @@ randombytes_sysrandom_random_dev_open(void)
 /* LCOV_EXCL_STOP */
 }
 
-# if defined(__dietlibc__) || (defined(SYS_getrandom) && defined(__NR_getrandom))
+# ifdef HAVE_LINUX_COMPATIBLE_GETRANDOM
 static int
 _randombytes_linux_getrandom(void * const buf, const size_t size)
 {
@@ -212,11 +223,7 @@ _randombytes_linux_getrandom(void * const buf, const size_t size)
 
     assert(size <= 256U);
     do {
-#  ifdef __dietlibc__
         readnb = getrandom(buf, size, 0);
-#  else
-        readnb = syscall(SYS_getrandom, buf, (int) size, 0);
-#  endif
     } while (readnb < 0 && (errno == EINTR || errno == EAGAIN));
 
     return (readnb == (int) size) - 1;
@@ -249,7 +256,7 @@ randombytes_sysrandom_init(void)
 {
     const int     errno_save = errno;
 
-# if defined(SYS_getrandom) && defined(__NR_getrandom)
+# ifdef HAVE_LINUX_COMPATIBLE_GETRANDOM
     {
         unsigned char fodder[16];
 
@@ -306,7 +313,7 @@ randombytes_sysrandom_close(void)
         stream.initialized = 0;
         ret = 0;
     }
-# if defined(SYS_getrandom) && defined(__NR_getrandom)
+# ifdef HAVE_LINUX_COMPATIBLE_GETRANDOM
     if (stream.getrandom_available != 0) {
         ret = 0;
     }
@@ -331,7 +338,7 @@ randombytes_sysrandom_buf(void * const buf, const size_t size)
 # endif
 #endif
 #ifndef _WIN32
-# if defined(SYS_getrandom) && defined(__NR_getrandom)
+# ifdef HAVE_LINUX_COMPATIBLE_GETRANDOM
     if (stream.getrandom_available != 0) {
         if (randombytes_linux_getrandom(buf, size) != 0) {
             sodium_misuse(); /* LCOV_EXCL_LINE */

@@ -19,9 +19,20 @@
 #ifdef __linux__
 # ifdef __dietlibc__
 #  define _LINUX_SOURCE
+#  include <sys/random.h>
+#  define HAVE_LINUX_COMPATIBLE_GETRANDOM
 # else
 #  include <sys/syscall.h>
+#  if defined(SYS_getrandom) && defined(__NR_getrandom)
+#   define getrandom(B, S, F) syscall(SYS_getrandom, (B), (int) (S), (F))
+#   define HAVE_LINUX_COMPATIBLE_GETRANDOM
+#  endif
 # endif
+#elif defined(__FreeBSD_version) && __FreeBSD_version >= 1200000
+# include <sys/random.h>
+# define HAVE_LINUX_COMPATIBLE_GETRANDOM
+#endif
+#ifdef HAVE_LINUX_COMPATIBLE_GETRANDOM
 # include <poll.h>
 #endif
 #ifdef HAVE_RDRAND
@@ -246,7 +257,7 @@ randombytes_salsa20_random_random_dev_open(void)
 }
 # endif
 
-# if defined(__dietlibc__) || (defined(SYS_getrandom) && defined(__NR_getrandom))
+# ifdef HAVE_LINUX_COMPATIBLE_GETRANDOM
 static int
 _randombytes_linux_getrandom(void * const buf, const size_t size)
 {
@@ -254,11 +265,7 @@ _randombytes_linux_getrandom(void * const buf, const size_t size)
 
     assert(size <= 256U);
     do {
-#  ifdef __dietlibc__
         readnb = getrandom(buf, size, 0);
-#  else
-        readnb = syscall(SYS_getrandom, buf, (int) size, 0);
-#  endif
     } while (readnb < 0 && (errno == EINTR || errno == EAGAIN));
 
     return (readnb == (int) size) - 1;
@@ -299,7 +306,7 @@ randombytes_salsa20_random_init(void)
     errno = errno_save;
 # else
 
-#  if defined(SYS_getrandom) && defined(__NR_getrandom)
+#  ifdef HAVE_LINUX_COMPATIBLE_GETRANDOM
     {
         unsigned char fodder[16];
 
@@ -310,7 +317,7 @@ randombytes_salsa20_random_init(void)
         }
         global.getrandom_available = 0;
     }
-#  endif /* SYS_getrandom */
+#  endif /* HAVE_LINUX_COMPATIBLE_GETRANDOM */
 
     if ((global.random_data_source_fd =
          randombytes_salsa20_random_random_dev_open()) == -1) {
@@ -343,7 +350,7 @@ randombytes_salsa20_random_stir(void)
 
 # ifdef HAVE_SAFE_ARC4RANDOM
     arc4random_buf(stream.key, sizeof stream.key);
-# elif defined(SYS_getrandom) && defined(__NR_getrandom)
+# elif defined(HAVE_LINUX_COMPATIBLE_GETRANDOM)
     if (global.getrandom_available != 0) {
         if (randombytes_linux_getrandom(stream.key, sizeof stream.key) != 0) {
             sodium_misuse(); /* LCOV_EXCL_LINE */
@@ -428,7 +435,7 @@ randombytes_salsa20_random_close(void)
     ret = 0;
 # endif
 
-# if defined(SYS_getrandom) && defined(__NR_getrandom)
+# ifdef HAVE_LINUX_COMPATIBLE_GETRANDOM
     if (global.getrandom_available != 0) {
         ret = 0;
     }
