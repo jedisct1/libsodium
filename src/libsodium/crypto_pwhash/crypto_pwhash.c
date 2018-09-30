@@ -168,6 +168,7 @@ crypto_pwhash_str_alg(char out[crypto_pwhash_STRBYTES],
     }
     sodium_misuse();
     /* NOTREACHED */
+    return -1;
 }
 
 int
