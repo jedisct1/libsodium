@@ -82,6 +82,13 @@ libsodium_la_SOURCES = \
 	crypto_stream/salsa20/stream_salsa20.h \
 	crypto_stream/xsalsa20/stream_xsalsa20.c \
 	crypto_verify/sodium/verify.c \
+	crypto_vrf/crypto_vrf.c \
+	crypto_vrf/ietfdraft03/keypair.c \
+	crypto_vrf/ietfdraft03/convert.c \
+	crypto_vrf/ietfdraft03/prove.c \
+	crypto_vrf/ietfdraft03/verify.c \
+	crypto_vrf/ietfdraft03/vrf.c \
+	crypto_vrf/ietfdraft03/vrf_ietfdraft03.h \
 	include/sodium/private/chacha20_ietf_ext.h \
 	include/sodium/private/common.h \
 	include/sodium/private/ed25519_ref10.h \

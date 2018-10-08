@@ -154,6 +154,7 @@ test/default/stream2
 test/default/stream3
 test/default/stream4
 test/default/verify1
+test/default/vrf
 test/default/xchacha20
 test/js.done
 testing
