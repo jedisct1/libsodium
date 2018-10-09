@@ -7,7 +7,7 @@ typedef struct TestData_ {
 	const unsigned char pk[crypto_vrf_PUBLICKEYBYTES];
 	const unsigned char proof[crypto_vrf_PROOFBYTES];
 	const unsigned char output[crypto_vrf_OUTPUTBYTES];
-	const unsigned char *msg;
+	const char *msg;
 } TestData;
 
 static const TestData test_data[] = {
@@ -83,7 +83,7 @@ int main(void)
 			printf("crypto_vrf_is_valid_key() error: [%u]\n", i);
 			continue;
 		}
-		if (crypto_vrf_prove(proof, sk, test_data[i].msg, i) != 0){
+		if (crypto_vrf_prove(proof, sk, (const unsigned char*) test_data[i].msg, i) != 0){
 			printf("crypto_vrf_prove() error: [%u]\n", i);
 			continue;
 		}
@@ -93,7 +93,7 @@ int main(void)
 			printhex("\tGot:    ", proof, crypto_vrf_PROOFBYTES);
 			continue;
 		}
-		if (crypto_vrf_verify(output, test_data[i].pk, proof, test_data[i].msg, i) != 0){
+		if (crypto_vrf_verify(output, test_data[i].pk, proof, (const unsigned char*) test_data[i].msg, i) != 0){
 			printf("verify error: [%u]\n", i);
 			continue;
 		}
@@ -105,32 +105,32 @@ int main(void)
 		}
 
 		proof[0] ^= 0x01;
-		if (crypto_vrf_verify(output, test_data[i].pk, proof, test_data[i].msg, i) == 0){
+		if (crypto_vrf_verify(output, test_data[i].pk, proof, (const unsigned char*) test_data[i].msg, i) == 0){
 			printf("verify succeeded with bad gamma: [%u]\n", i);
 			continue;
 		}
 		proof[0] ^= 0x01;
 		proof[32] ^= 0x01;
-		if (crypto_vrf_verify(output, test_data[i].pk, proof, test_data[i].msg, i) == 0){
+		if (crypto_vrf_verify(output, test_data[i].pk, proof, (const unsigned char*) test_data[i].msg, i) == 0){
 			printf("verify succeeded with bad c value: [%u]\n", i);
 			continue;
 		}
 		proof[32] ^= 0x01;
 		proof[48] ^= 0x01;
-		if (crypto_vrf_verify(output, test_data[i].pk, proof, test_data[i].msg, i) == 0){
+		if (crypto_vrf_verify(output, test_data[i].pk, proof, (const unsigned char*) test_data[i].msg, i) == 0){
 			printf("verify succeeded with bad s value: [%u]\n", i);
 			continue;
 		}
 		proof[48] ^= 0x01;
 		proof[79] ^= 0x80;
-		if (crypto_vrf_verify(output, test_data[i].pk, proof, test_data[i].msg, i) == 0){
+		if (crypto_vrf_verify(output, test_data[i].pk, proof, (const unsigned char*) test_data[i].msg, i) == 0){
 			printf("verify succeeded with bad s value (high-order-bit flipped): [%u]\n", i);
 			continue;
 		}
 		proof[79] ^= 0x80;
 
 		if (i > 0) {
-			if (crypto_vrf_verify(output, test_data[i].pk, proof, test_data[i].msg, i-1) == 0){
+			if (crypto_vrf_verify(output, test_data[i].pk, proof, (const unsigned char*) test_data[i].msg, i-1) == 0){
 				printf("verify succeeded with truncated message: [%u]\n", i);
 				continue;
 			}
