@@ -80,11 +80,11 @@ crypto_vrf_proof_to_hash(unsigned char *hash, const unsigned char *proof)
 void
 crypto_vrf_sk_to_pk(unsigned char *pk, const unsigned char *skpk)
 {
-    return crypto_vrf_ietfdraft03_sk_to_pk(pk, skpk);
+    crypto_vrf_ietfdraft03_sk_to_pk(pk, skpk);
 }
 
 void
 crypto_vrf_sk_to_seed(unsigned char *seed, const unsigned char *skpk)
 {
-    return crypto_vrf_ietfdraft03_sk_to_seed(seed, skpk);
+    crypto_vrf_ietfdraft03_sk_to_seed(seed, skpk);
 }
