@@ -78,6 +78,7 @@ EXTRA_DIST = \
 	stream3.exp \
 	stream4.exp \
 	verify1.exp \
+	vrf.exp \
 	xchacha20.exp
 
 DISTCLEANFILES = \
@@ -156,6 +157,7 @@ DISTCLEANFILES = \
 	stream3.res \
 	stream4.res \
 	verify1.res \
+	vrf.res \
 	xchacha20.res
 
 if NATIVECLIENT
@@ -387,7 +389,8 @@ TESTS_TARGETS = \
 	stream2 \
 	stream3 \
 	stream4 \
-	verify1
+	verify1 \
+	vrf
 
 if !EMSCRIPTEN
 if !NATIVECLIENT
@@ -625,6 +628,9 @@ stream4_LDADD             = $(TESTS_LDADD)
 
 verify1_SOURCE            = cmptest.h verify1.c
 verify1_LDADD             = $(TESTS_LDADD)
+
+vrf_SOURCE                = cmptest.h vrf.c
+vrf_LDADD                 = $(TESTS_LDADD)
 
 xchacha20_SOURCE          = cmptest.h xchacha20.c
 xchacha20_LDADD           = $(TESTS_LDADD)
