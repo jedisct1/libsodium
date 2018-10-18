@@ -75,14 +75,17 @@ crypto_sign_ed25519_open(unsigned char *m, unsigned long long *mlen_p,
     }
     mlen = smlen - 64;
     if (crypto_sign_ed25519_verify_detached(sm, sm + 64, mlen, pk) != 0) {
-        memset(m, 0, mlen);
+        if (m != NULL) {
+            memset(m, 0, mlen);
+        }
         goto badsig;
     }
     if (mlen_p != NULL) {
         *mlen_p = mlen;
     }
-    memmove(m, sm + 64, mlen);
-
+    if (m != NULL) {
+        memmove(m, sm + 64, mlen);
+    }
     return 0;
 
 badsig:
