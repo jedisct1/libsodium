@@ -64,33 +64,38 @@ size_t crypto_secretstream_xchacha20poly1305_statebytes(void);
 
 SODIUM_EXPORT
 void crypto_secretstream_xchacha20poly1305_keygen
-   (unsigned char k[crypto_secretstream_xchacha20poly1305_KEYBYTES]);
+   (unsigned char k[crypto_secretstream_xchacha20poly1305_KEYBYTES])
+            __attribute__ ((nonnull));
 
 SODIUM_EXPORT
 int crypto_secretstream_xchacha20poly1305_init_push
    (crypto_secretstream_xchacha20poly1305_state *state,
     unsigned char header[crypto_secretstream_xchacha20poly1305_HEADERBYTES],
-    const unsigned char k[crypto_secretstream_xchacha20poly1305_KEYBYTES]);
+    const unsigned char k[crypto_secretstream_xchacha20poly1305_KEYBYTES])
+            __attribute__ ((nonnull));
 
 SODIUM_EXPORT
 int crypto_secretstream_xchacha20poly1305_push
    (crypto_secretstream_xchacha20poly1305_state *state,
     unsigned char *c, unsigned long long *clen_p,
     const unsigned char *m, unsigned long long mlen,
-    const unsigned char *ad, unsigned long long adlen, unsigned char tag);
+    const unsigned char *ad, unsigned long long adlen, unsigned char tag)
+            __attribute__ ((nonnull(1)));
 
 SODIUM_EXPORT
 int crypto_secretstream_xchacha20poly1305_init_pull
    (crypto_secretstream_xchacha20poly1305_state *state,
     const unsigned char header[crypto_secretstream_xchacha20poly1305_HEADERBYTES],
-    const unsigned char k[crypto_secretstream_xchacha20poly1305_KEYBYTES]);
+    const unsigned char k[crypto_secretstream_xchacha20poly1305_KEYBYTES])
+            __attribute__ ((nonnull));
 
 SODIUM_EXPORT
 int crypto_secretstream_xchacha20poly1305_pull
    (crypto_secretstream_xchacha20poly1305_state *state,
     unsigned char *m, unsigned long long *mlen_p, unsigned char *tag_p,
     const unsigned char *c, unsigned long long clen,
-    const unsigned char *ad, unsigned long long adlen);
+    const unsigned char *ad, unsigned long long adlen)
+            __attribute__ ((nonnull(1)));
 
 SODIUM_EXPORT
 void crypto_secretstream_xchacha20poly1305_rekey

@@ -34,7 +34,8 @@ int crypto_secretbox_xchacha20poly1305_easy(unsigned char *c,
                                             const unsigned char *m,
                                             unsigned long long mlen,
                                             const unsigned char *n,
-                                            const unsigned char *k);
+                                            const unsigned char *k)
+            __attribute__ ((nonnull));
 
 SODIUM_EXPORT
 int crypto_secretbox_xchacha20poly1305_open_easy(unsigned char *m,
@@ -42,7 +43,7 @@ int crypto_secretbox_xchacha20poly1305_open_easy(unsigned char *m,
                                                  unsigned long long clen,
                                                  const unsigned char *n,
                                                  const unsigned char *k)
-            __attribute__ ((warn_unused_result));
+            __attribute__ ((warn_unused_result)) __attribute__ ((nonnull(2, 4, 5)));
 
 SODIUM_EXPORT
 int crypto_secretbox_xchacha20poly1305_detached(unsigned char *c,
@@ -50,7 +51,8 @@ int crypto_secretbox_xchacha20poly1305_detached(unsigned char *c,
                                                 const unsigned char *m,
                                                 unsigned long long mlen,
                                                 const unsigned char *n,
-                                                const unsigned char *k);
+                                                const unsigned char *k)
+            __attribute__ ((nonnull));
 
 SODIUM_EXPORT
 int crypto_secretbox_xchacha20poly1305_open_detached(unsigned char *m,
@@ -59,7 +61,7 @@ int crypto_secretbox_xchacha20poly1305_open_detached(unsigned char *m,
                                                      unsigned long long clen,
                                                      const unsigned char *n,
                                                      const unsigned char *k)
-            __attribute__ ((warn_unused_result));
+            __attribute__ ((warn_unused_result)) __attribute__ ((nonnull(2, 3, 5, 6)));
 
 #ifdef __cplusplus
 }
