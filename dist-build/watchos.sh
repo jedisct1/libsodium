@@ -2,16 +2,16 @@
 #
 #  Step 1.
 #  Configure for base system so simulator is covered
-#  
+#
 #  Step 2.
 #  Make for iOS and iOS simulator
 #
 #  Step 3.
 #  Merge libs into final version for xcode import
 
-export PREFIX="$(pwd)/libsodium-watchOS"
-export WATCHOS32_PREFIX="$PREFIX/tmp/watchOS32"
-export WATCHOS64_PREFIX="$PREFIX/tmp/watchOS64"
+export PREFIX="$(pwd)/libsodium-watchos"
+export WATCHOS32_PREFIX="$PREFIX/tmp/watchos32"
+export WATCHOS64_PREFIX="$PREFIX/tmp/watchos64"
 export SIMULATOR32_PREFIX="$PREFIX/tmp/simulator32"
 export SIMULATOR64_PREFIX="$PREFIX/tmp/simulator64"
 export XCODEDIR=$(xcode-select -p)
@@ -110,5 +110,5 @@ echo
 file -- "$PREFIX/lib/libsodium.a"
 
 # Cleanup
-# rm -rf -- "$PREFIX/tmp"
-# make distclean > /dev/null
+rm -rf -- "$PREFIX/tmp"
+make distclean > /dev/null
