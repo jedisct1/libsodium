@@ -4,14 +4,14 @@
 #  Configure for base system so simulator is covered
 #
 #  Step 2.
-#  Make for iOS and iOS simulator
+#  Make for watchOS and watchOS simulator
 #
 #  Step 3.
 #  Merge libs into final version for xcode import
 
 export PREFIX="$(pwd)/libsodium-watchos"
 export WATCHOS32_PREFIX="$PREFIX/tmp/watchos32"
-export WATCHOS64_PREFIX="$PREFIX/tmp/watchos64"
+export WATCHOS64_32_PREFIX="$PREFIX/tmp/watchos64_32"
 export SIMULATOR32_PREFIX="$PREFIX/tmp/simulator32"
 export SIMULATOR64_PREFIX="$PREFIX/tmp/simulator64"
 export XCODEDIR=$(xcode-select -p)
@@ -19,7 +19,7 @@ export XCODEDIR=$(xcode-select -p)
 export WATCHOS_SIMULATOR_VERSION_MIN=${WATCHOS_SIMULATOR_VERSION_MIN-"4.0.0"}
 export WATCHOS_VERSION_MIN=${WATCHOS_VERSION_MIN-"4.0.0"}
 
-mkdir -p $SIMULATOR32_PREFIX $SIMULATOR64_PREFIX $WATCHOS32_PREFIX $WATCHOS64_PREFIX || exit 1
+mkdir -p $SIMULATOR32_PREFIX $SIMULATOR64_PREFIX $WATCHOS32_PREFIX $WATCHOS64_32_PREFIX || exit 1
 
 # Build for the simulator
 export BASEDIR="${XCODEDIR}/Platforms/WatchSimulator.platform/Developer"
@@ -62,12 +62,12 @@ make distclean > /dev/null
 
 make -j${PROCESSORS} install || exit 1
 
-# Build for iOS
+# Build for watchOS
 export BASEDIR="${XCODEDIR}/Platforms/WatchOS.platform/Developer"
 export PATH="${BASEDIR}/usr/bin:$BASEDIR/usr/sbin:$PATH"
 export SDK="${BASEDIR}/SDKs/WatchOS.sdk"
 
-## 32-bit iOS
+## 32-bit watchOS
 export CFLAGS="-fembed-bitcode -O2 -mthumb -arch armv7k -isysroot ${SDK} -mwatchos-version-min=${WATCHOS_VERSION_MIN}"
 export LDFLAGS="-fembed-bitcode -mthumb -arch armv7k -isysroot ${SDK} -mwatchos-version-min=${WATCHOS_VERSION_MIN}"
 
@@ -89,7 +89,7 @@ make distclean > /dev/null
 ./configure --host=arm-apple-darwin10 \
             --disable-shared \
             ${LIBSODIUM_ENABLE_MINIMAL_FLAG} \
-            --prefix="$WATCHOS64_PREFIX" || exit 1
+            --prefix="$WATCHOS64_32_PREFIX" || exit 1
 
 make -j${PROCESSORS} install || exit 1
 
@@ -100,7 +100,7 @@ lipo -create \
   "$SIMULATOR32_PREFIX/lib/libsodium.a" \
   "$SIMULATOR64_PREFIX/lib/libsodium.a" \
   "$WATCHOS32_PREFIX/lib/libsodium.a" \
-  "$WATCHOS64_PREFIX/lib/libsodium.a" \
+  "$WATCHOS64_32_PREFIX/lib/libsodium.a" \
   -output "$PREFIX/lib/libsodium.a"
 mv -f -- "$WATCHOS32_PREFIX/include" "$PREFIX/"
 
