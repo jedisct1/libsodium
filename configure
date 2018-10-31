@@ -8648,8 +8648,8 @@ else
 fi
 
 
-{ $as_echo "$as_me:${as_lineno-$LINENO}: checking for a broken clang + AVX512 combination" >&5
-$as_echo_n "checking for a broken clang + AVX512 combination... " >&6; }
+{ $as_echo "$as_me:${as_lineno-$LINENO}: checking for obsolete compiler with possibly broken AVX512 support" >&5
+$as_echo_n "checking for obsolete compiler with possibly broken AVX512 support... " >&6; }
 cat confdefs.h - <<_ACEOF >conftest.$ac_ext
 /* end confdefs.h.  */
 
@@ -8657,8 +8657,10 @@ int
 main ()
 {
 
-#if !(defined(__AVX512F__) && defined(__clang__) && __clang_major__ < 4)
-#error Not a broken clang + AVX512 combination
+#if !(defined(__AVX512F__) && \
+      ((defined(__clang__) && __clang_major__ < 4) || \
+       (defined(__GNUC__) && __GNUC__ < 6)))
+#error Compiler should properly support AVX512 opcodes
 #endif
 
   ;
