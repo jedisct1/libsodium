@@ -330,10 +330,12 @@ AX_CHECK_LINK_FLAG([-Wl,-z,relro], [LDFLAGS="$LDFLAGS -Wl,-z,relro"])
 AX_CHECK_LINK_FLAG([-Wl,-z,now], [LDFLAGS="$LDFLAGS -Wl,-z,now"])
 AX_CHECK_LINK_FLAG([-Wl,-z,noexecstack], [LDFLAGS="$LDFLAGS -Wl,-z,noexecstack"])
 
-AC_MSG_CHECKING(for a broken clang + AVX512 combination)
+AC_MSG_CHECKING(for obsolete compiler with possibly broken AVX512 support)
 AC_COMPILE_IFELSE([AC_LANG_PROGRAM([[]], [[
-#if !(defined(__AVX512F__) && defined(__clang__) && __clang_major__ < 4)
-#error Not a broken clang + AVX512 combination
+#if !(defined(__AVX512F__) && \
+      ((defined(__clang__) && __clang_major__ < 4) || \
+       (defined(__GNUC__) && __GNUC__ < 6)))
+#error Compiler should properly support AVX512 opcodes
 #endif
 ]])],
   [AC_MSG_RESULT(yes - disabling AVX512 optimizations)
