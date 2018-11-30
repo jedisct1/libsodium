@@ -8648,74 +8648,6 @@ else
 fi
 
 
-{ $as_echo "$as_me:${as_lineno-$LINENO}: checking for obsolete compiler with possibly broken AVX512 support" >&5
-$as_echo_n "checking for obsolete compiler with possibly broken AVX512 support... " >&6; }
-cat confdefs.h - <<_ACEOF >conftest.$ac_ext
-/* end confdefs.h.  */
-
-int
-main ()
-{
-
-#if !(defined(__AVX512F__) && \
-      ((defined(__clang__) && __clang_major__ < 4) || \
-       (defined(__GNUC__) && __GNUC__ < 6)))
-#error Compiler should properly support AVX512 opcodes
-#endif
-
-  ;
-  return 0;
-}
-_ACEOF
-if ac_fn_c_try_compile "$LINENO"; then :
-  { $as_echo "$as_me:${as_lineno-$LINENO}: result: yes - disabling AVX512 optimizations" >&5
-$as_echo "yes - disabling AVX512 optimizations" >&6; }
-   as_CACHEVAR=`$as_echo "ax_cv_check_cflags__$CFLAGS -mno-avx512f" | $as_tr_sh`
-{ $as_echo "$as_me:${as_lineno-$LINENO}: checking whether C compiler accepts $CFLAGS -mno-avx512f" >&5
-$as_echo_n "checking whether C compiler accepts $CFLAGS -mno-avx512f... " >&6; }
-if eval \${$as_CACHEVAR+:} false; then :
-  $as_echo_n "(cached) " >&6
-else
-
-  ax_check_save_flags=$CFLAGS
-  CFLAGS="$CFLAGS  $CFLAGS -mno-avx512f"
-  cat confdefs.h - <<_ACEOF >conftest.$ac_ext
-/* end confdefs.h.  */
-#include <time.h>
-int
-main ()
-{
-time_t x; int fodder = 0; if (fodder > -1000 && time(&x)) return (int) x
-  ;
-  return 0;
-}
-_ACEOF
-if ac_fn_c_try_link "$LINENO"; then :
-  eval "$as_CACHEVAR=yes"
-else
-  eval "$as_CACHEVAR=no"
-fi
-rm -f core conftest.err conftest.$ac_objext \
-    conftest$ac_exeext conftest.$ac_ext
-  CFLAGS=$ax_check_save_flags
-fi
-eval ac_res=\$$as_CACHEVAR
-	       { $as_echo "$as_me:${as_lineno-$LINENO}: result: $ac_res" >&5
-$as_echo "$ac_res" >&6; }
-if eval test \"x\$"$as_CACHEVAR"\" = x"yes"; then :
-  CFLAGS="$CFLAGS -mno-avx512f"
-else
-  :
-fi
-
-
-else
-  { $as_echo "$as_me:${as_lineno-$LINENO}: result: no" >&5
-$as_echo "no" >&6; }
-
-fi
-rm -f core conftest.err conftest.$ac_objext conftest.$ac_ext
-
 
         { $as_echo "$as_me:${as_lineno-$LINENO}: checking whether segmentation violations can be caught when using the C compiler" >&5
 $as_echo_n "checking whether segmentation violations can be caught when using the C compiler... " >&6; }
@@ -17425,6 +17357,19 @@ int
 main ()
 {
 
+
+#ifndef __AVX512F__
+# error No AVX512 support
+#elif defined(__clang__)
+# if __clang_major__ < 4
+#  error Compiler AVX512 support may be broken
+# endif
+#elif defined(__GNUC__)
+# if __GNUC__ < 6
+#  error Compiler AVX512 support may be broken
+# endif
+#endif
+
 __m512i x = _mm512_setzero_epi32();
 __m512i y = _mm512_permutexvar_epi64(_mm512_setr_epi64(0, 1, 4, 5, 2, 3, 6, 7), x);
 
@@ -17477,6 +17422,45 @@ fi
 else
   { $as_echo "$as_me:${as_lineno-$LINENO}: result: no" >&5
 $as_echo "no" >&6; }
+     as_CACHEVAR=`$as_echo "ax_cv_check_cflags__$CFLAGS -mno-avx512f" | $as_tr_sh`
+{ $as_echo "$as_me:${as_lineno-$LINENO}: checking whether C compiler accepts $CFLAGS -mno-avx512f" >&5
+$as_echo_n "checking whether C compiler accepts $CFLAGS -mno-avx512f... " >&6; }
+if eval \${$as_CACHEVAR+:} false; then :
+  $as_echo_n "(cached) " >&6
+else
+
+  ax_check_save_flags=$CFLAGS
+  CFLAGS="$CFLAGS  $CFLAGS -mno-avx512f"
+  cat confdefs.h - <<_ACEOF >conftest.$ac_ext
+/* end confdefs.h.  */
+#include <time.h>
+int
+main ()
+{
+time_t x; int fodder = 0; if (fodder > -1000 && time(&x)) return (int) x
+  ;
+  return 0;
+}
+_ACEOF
+if ac_fn_c_try_link "$LINENO"; then :
+  eval "$as_CACHEVAR=yes"
+else
+  eval "$as_CACHEVAR=no"
+fi
+rm -f core conftest.err conftest.$ac_objext \
+    conftest$ac_exeext conftest.$ac_ext
+  CFLAGS=$ax_check_save_flags
+fi
+eval ac_res=\$$as_CACHEVAR
+	       { $as_echo "$as_me:${as_lineno-$LINENO}: result: $ac_res" >&5
+$as_echo "$ac_res" >&6; }
+if eval test \"x\$"$as_CACHEVAR"\" = x"yes"; then :
+  CFLAGS="$CFLAGS -mno-avx512f"
+else
+  :
+fi
+
+
 fi
 rm -f core conftest.err conftest.$ac_objext conftest.$ac_ext
   CFLAGS="$oldcflags"
