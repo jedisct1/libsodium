@@ -324,21 +324,6 @@ AX_CHECK_LINK_FLAG([-Wl,-z,relro], [LDFLAGS="$LDFLAGS -Wl,-z,relro"])
 AX_CHECK_LINK_FLAG([-Wl,-z,now], [LDFLAGS="$LDFLAGS -Wl,-z,now"])
 AX_CHECK_LINK_FLAG([-Wl,-z,noexecstack], [LDFLAGS="$LDFLAGS -Wl,-z,noexecstack"])
 
-AC_MSG_CHECKING(for obsolete compiler with possibly broken AVX512 support)
-AC_COMPILE_IFELSE([AC_LANG_PROGRAM([[]], [[
-#if !(defined(__AVX512F__) && \
-      ((defined(__clang__) && __clang_major__ < 4) || \
-       (defined(__GNUC__) && __GNUC__ < 6)))
-#error Compiler should properly support AVX512 opcodes
-#endif
-]])],
-  [AC_MSG_RESULT(yes - disabling AVX512 optimizations)
-   AX_CHECK_COMPILE_FLAG([$CFLAGS -mno-avx512f],
-     [CFLAGS="$CFLAGS -mno-avx512f"])
-  ],
-  [AC_MSG_RESULT(no)
-])
-
 AX_CHECK_CATCHABLE_SEGV
 AX_CHECK_CATCHABLE_ABRT
 
@@ -485,13 +470,29 @@ return _mm256_movemask_ps(_mm256_cmp_ps(x, y, _CMP_NEQ_OQ));
 #pragma GCC target("avx512f")
 #include <immintrin.h>
 ]], [[
+
+#ifndef __AVX512F__
+# error No AVX512 support
+#elif defined(__clang__)
+# if __clang_major__ < 4
+#  error Compiler AVX512 support may be broken
+# endif
+#elif defined(__GNUC__)
+# if __GNUC__ < 6
+#  error Compiler AVX512 support may be broken
+# endif
+#endif
+
 __m512i x = _mm512_setzero_epi32();
 __m512i y = _mm512_permutexvar_epi64(_mm512_setr_epi64(0, 1, 4, 5, 2, 3, 6, 7), x);
 ]])],
     [AC_MSG_RESULT(yes)
      AC_DEFINE([HAVE_AVX512FINTRIN_H], [1], [AVX512F is available])
      AX_CHECK_COMPILE_FLAG([-mavx512f], [CFLAGS_AVX512F="-mavx512f"])],
-    [AC_MSG_RESULT(no)])
+    [AC_MSG_RESULT(no)
+     AX_CHECK_COMPILE_FLAG([$CFLAGS -mno-avx512f],
+       [CFLAGS="$CFLAGS -mno-avx512f"])
+    ])
   CFLAGS="$oldcflags"
 
   oldcflags="$CFLAGS"
