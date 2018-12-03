@@ -113,7 +113,7 @@ int crypto_sign_ed25519ph_final_create(crypto_sign_ed25519ph_state *state,
 
 SODIUM_EXPORT
 int crypto_sign_ed25519ph_final_verify(crypto_sign_ed25519ph_state *state,
-                                       unsigned char *sig,
+                                       const unsigned char *sig,
                                        const unsigned char *pk)
             __attribute__ ((warn_unused_result)) __attribute__ ((nonnull));
 
