@@ -86,7 +86,7 @@ crypto_sign_ed25519ph_final_create(crypto_sign_ed25519ph_state *state,
 
 int
 crypto_sign_ed25519ph_final_verify(crypto_sign_ed25519ph_state *state,
-                                   unsigned char               *sig,
+                                   const unsigned char         *sig,
                                    const unsigned char         *pk)
 {
     unsigned char ph[crypto_hash_sha512_BYTES];

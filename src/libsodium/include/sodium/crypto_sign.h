@@ -96,7 +96,7 @@ int crypto_sign_final_create(crypto_sign_state *state, unsigned char *sig,
             __attribute__ ((nonnull(1, 2, 4)));
 
 SODIUM_EXPORT
-int crypto_sign_final_verify(crypto_sign_state *state, unsigned char *sig,
+int crypto_sign_final_verify(crypto_sign_state *state, const unsigned char *sig,
                              const unsigned char *pk)
             __attribute__ ((warn_unused_result)) __attribute__ ((nonnull));
 

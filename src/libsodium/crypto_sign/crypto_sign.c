@@ -108,7 +108,7 @@ crypto_sign_final_create(crypto_sign_state *state, unsigned char *sig,
 }
 
 int
-crypto_sign_final_verify(crypto_sign_state *state, unsigned char *sig,
+crypto_sign_final_verify(crypto_sign_state *state, const unsigned char *sig,
                          const unsigned char *pk)
 {
     return crypto_sign_ed25519ph_final_verify(state, sig, pk);
