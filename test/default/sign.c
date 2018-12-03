@@ -1067,6 +1067,7 @@ static void add_l(unsigned char * const S)
 int main(void)
 {
     crypto_sign_state  st;
+    crypto_hash_sha512_state hs;
     unsigned char      extracted_seed[crypto_sign_ed25519_SEEDBYTES];
     unsigned char      extracted_pk[crypto_sign_ed25519_PUBLICKEYBYTES];
     unsigned char      sig[crypto_sign_BYTES];
@@ -1075,6 +1076,7 @@ int main(void)
     unsigned char      skpk[crypto_sign_SECRETKEYBYTES];
     unsigned char      pk[crypto_sign_PUBLICKEYBYTES];
     unsigned char      sk[crypto_sign_SECRETKEYBYTES];
+    unsigned char      mhash[crypto_hash_sha512_BYTES];
     char               sig_hex[crypto_sign_BYTES * 2 + 1];
     char               pk_hex[crypto_sign_PUBLICKEYBYTES * 2 + 1];
     char               sk_hex[crypto_sign_SECRETKEYBYTES * 2 + 1];
@@ -1286,6 +1288,43 @@ int main(void)
     if (crypto_sign_final_verify(&st, sig, pk) != 0) {
         printf("ed25519ph verification failed\n");
     }
+
+    // Make sure crypto_sign_init/update/final interoperates with
+    // the crypto_sign_*_prehashed() versions.
+    crypto_hash_sha512_init(&hs);
+    crypto_hash_sha512_update(&hs, (const unsigned char *) "abc", 3);
+    crypto_hash_sha512_final(&hs, mhash);
+
+    // 1. Verify the signature created above using the _prehashed() function
+    if (crypto_sign_ed25519ph_verify_prehashed(mhash, sizeof mhash, sig,  pk) != 0) {
+      printf("crypto_sign_ed25519ph_verify_prehashed() failed\n");
+    }
+    // 2. Create a new signature using the _prehashed() function and verify by
+    // the init/update/final flow.
+    if (crypto_sign_ed25519ph_prehashed(mhash, sizeof mhash, sig, &siglen, sk) != 0) {
+      printf("crypto_sign_ed25519ph_prehashed() failed\n");
+    }
+    if (siglen == 0U || siglen > crypto_sign_BYTES) {
+        printf("crypto_sign_ed25519ph_prehashed() signature has an unexpected length\n");
+    }
+    crypto_sign_init(&st);
+    crypto_sign_update(&st, (const unsigned char *) "abc", 3);
+    if (crypto_sign_final_verify(&st, sig, pk) != 0) {
+        printf("ed25519ph verification of prehashed signature failed\n");
+    }
+    // 3. Use _prehashed() functions for both sign and verify
+    if (crypto_sign_ed25519ph_verify_prehashed(mhash, sizeof mhash, sig,  pk) != 0) {
+      printf("crypto_sign_ed25519ph_verify_prehashed() failed\n");
+    }
+
+    // Calling sign/verify prehashed functions with wrong size should fail
+    if (crypto_sign_ed25519ph_verify_prehashed(mhash, sizeof(mhash) - 1, sig, pk) == 0) {
+      printf("crypto_sign_ed25519ph_verify_prehashed() didn't fail with wrong size\n");
+    }
+    if (crypto_sign_ed25519ph_prehashed(mhash, sizeof(mhash) - 1, sig, &siglen, sk) == 0) {
+      printf("crypto_sign_ed25519ph_prehashed() didn't fail with wrong size\n");
+    }
+
     if (crypto_sign_keypair(pk, sk) != 0) {
         printf("crypto_sign_keypair() failure\n");
     }
