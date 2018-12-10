@@ -74,11 +74,10 @@ _crypto_sign_ed25519_detached(unsigned char *sig, unsigned long long *siglen_p,
 
     _crypto_sign_ed25519_ref10_hinit(&hs, prehashed);
 
+    crypto_hash_sha512(az, sk, 32);
 #ifdef ED25519_NONDETERMINISTIC
-    memcpy(az, sk, 32);
     _crypto_sign_ed25519_synthetic_r_hv(&hs, nonce, az);
 #else
-    crypto_hash_sha512(az, sk, 32);
     crypto_hash_sha512_update(&hs, az + 32, 32);
 #endif
 
