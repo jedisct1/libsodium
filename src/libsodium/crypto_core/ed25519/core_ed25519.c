@@ -2,6 +2,7 @@
 #include "crypto_core_ed25519.h"
 #include "private/common.h"
 #include "private/ed25519_ref10.h"
+#include "utils.h"
 
 int
 crypto_core_ed25519_is_valid_point(const unsigned char *p)
@@ -66,6 +67,14 @@ crypto_core_ed25519_from_uniform(unsigned char *p, const unsigned char *r)
     return - ge25519_has_small_order(p);
 }
 
+int
+crypto_core_ed25519_scalar_invert(unsigned char *recip, const unsigned char *s)
+{
+    sc25519_invert(recip, s);
+
+    return - sodium_is_zero(s, crypto_core_ed25519_SCALARBYTES);
+}
+
 size_t
 crypto_core_ed25519_bytes(void)
 {
@@ -76,4 +85,10 @@ size_t
 crypto_core_ed25519_uniformbytes(void)
 {
     return crypto_core_ed25519_UNIFORMBYTES;
+}
+
+size_t
+crypto_core_ed25519_scalarbytes(void)
+{
+    return crypto_core_ed25519_SCALARBYTES;
 }
