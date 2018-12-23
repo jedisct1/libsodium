@@ -39,7 +39,7 @@ main(void)
 {
     unsigned char *h;
     unsigned char *p, *p2, *p3;
-    unsigned char *sc;
+    unsigned char *sc, *sc2;
     int            i, j;
 
     h = (unsigned char *) sodium_malloc(crypto_core_ed25519_UNIFORMBYTES);
@@ -135,6 +135,24 @@ main(void)
     assert(crypto_core_ed25519_sub(p3, non_canonical_p, p3) == 0);
     assert(crypto_core_ed25519_sub(p3, non_canonical_invalid_p, p3) == -1);
 
+    for (i = 0; i < 1000; i++) {
+        randombytes_buf(h, crypto_core_ed25519_UNIFORMBYTES);
+        crypto_core_ed25519_from_uniform(p, h);
+        randombytes_buf(sc, crypto_core_ed25519_SCALARBYTES);
+        crypto_core_ed25519_scalar_reduce(sc, sc);
+        if (crypto_scalarmult_ed25519_noclamp(p2, sc, p) != 0) {
+            printf("crypto_scalarmult_ed25519_noclamp() failed\n");
+        }
+        assert(crypto_core_ed25519_is_valid_point(p2));
+        if (crypto_core_ed25519_scalar_invert(sc, sc) != 0) {
+            printf("crypto_core_ed25519_scalar_invert() failed\n");
+        }
+        if (crypto_scalarmult_ed25519_noclamp(p3, sc, p2) != 0) {
+            printf("crypto_scalarmult_ed25519_noclamp() failed\n");
+        }
+        assert(memcmp(p3, p, crypto_core_ed25519_BYTES) == 0);
+    }
+
     sodium_free(sc);
     sodium_free(p3);
     sodium_free(p2);
@@ -142,6 +160,7 @@ main(void)
     sodium_free(h);
 
     assert(crypto_core_ed25519_BYTES == crypto_core_ed25519_bytes());
+    assert(crypto_core_ed25519_SCALARBYTES == crypto_core_ed25519_scalarbytes());
     assert(crypto_core_ed25519_UNIFORMBYTES == crypto_core_ed25519_uniformbytes());
     assert(crypto_core_ed25519_UNIFORMBYTES >= crypto_core_ed25519_BYTES);
 

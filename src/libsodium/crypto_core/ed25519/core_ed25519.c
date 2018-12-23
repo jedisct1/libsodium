@@ -75,6 +75,18 @@ crypto_core_ed25519_scalar_invert(unsigned char *recip, const unsigned char *s)
     return - sodium_is_zero(s, crypto_core_ed25519_SCALARBYTES);
 }
 
+
+void
+crypto_core_ed25519_scalar_reduce(unsigned char *r, const unsigned char *s)
+{
+    unsigned char t[crypto_core_ed25519_SCALARBYTES];
+
+    memcpy(t, s, sizeof t);
+    sc25519_reduce(t);
+    memcpy(r, t, sizeof t);
+    sodium_memzero(t, sizeof t);
+}
+
 size_t
 crypto_core_ed25519_bytes(void)
 {
