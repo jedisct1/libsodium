@@ -2108,7 +2108,7 @@ sc25519_invert(unsigned char recip[32], const unsigned char s[32])
  */
 
 void
-sc25519_reduce(unsigned char s[32])
+sc25519_reduce(unsigned char s[64])
 {
     int64_t s0  = 2097151 & load_3(s);
     int64_t s1  = 2097151 & (load_4(s + 2) >> 5);

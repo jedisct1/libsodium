@@ -68,7 +68,7 @@ crypto_core_ed25519_from_uniform(unsigned char *p, const unsigned char *r)
     return - ge25519_has_small_order(p);
 }
 
-int
+void
 crypto_core_ed25519_scalar_random(unsigned char *r)
 {
     do {
@@ -86,13 +86,13 @@ crypto_core_ed25519_scalar_invert(unsigned char *recip, const unsigned char *s)
 }
 
 void
-crypto_core_ed25519_scalar_reduce(unsigned char *r, const unsigned char *s)
+crypto_core_ed25519_scalar_reduce(unsigned char *r, const unsigned char s[64])
 {
-    unsigned char t[crypto_core_ed25519_SCALARBYTES];
+    unsigned char t[64];
 
     memcpy(t, s, sizeof t);
     sc25519_reduce(t);
-    memcpy(r, t, sizeof t);
+    memcpy(r, t, crypto_core_ed25519_SCALARBYTES);
     sodium_memzero(t, sizeof t);
 }
 

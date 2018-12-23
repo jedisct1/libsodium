@@ -117,7 +117,7 @@ void ge25519_from_uniform(unsigned char s[32], const unsigned char r[32]);
 
 void sc25519_invert(unsigned char recip[32], const unsigned char s[32]);
 
-void sc25519_reduce(unsigned char s[32]);
+void sc25519_reduce(unsigned char s[64]);
 
 void sc25519_muladd(unsigned char s[32], const unsigned char a[32],
                     const unsigned char b[32], const unsigned char c[32]);
