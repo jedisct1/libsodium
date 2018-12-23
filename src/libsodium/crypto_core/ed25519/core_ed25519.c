@@ -2,6 +2,7 @@
 #include "crypto_core_ed25519.h"
 #include "private/common.h"
 #include "private/ed25519_ref10.h"
+#include "randombytes.h"
 #include "utils.h"
 
 int
@@ -68,13 +69,21 @@ crypto_core_ed25519_from_uniform(unsigned char *p, const unsigned char *r)
 }
 
 int
+crypto_core_ed25519_scalar_random(unsigned char *r)
+{
+    do {
+        randombytes_buf(r, crypto_core_ed25519_SCALARBYTES);
+        r[crypto_core_ed25519_SCALARBYTES - 1] &= 0x1f;
+    } while (sc25519_is_canonical(r) == 0);
+}
+
+int
 crypto_core_ed25519_scalar_invert(unsigned char *recip, const unsigned char *s)
 {
     sc25519_invert(recip, s);
 
     return - sodium_is_zero(s, crypto_core_ed25519_SCALARBYTES);
 }
-
 
 void
 crypto_core_ed25519_scalar_reduce(unsigned char *r, const unsigned char *s)

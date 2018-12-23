@@ -39,7 +39,7 @@ main(void)
 {
     unsigned char *h;
     unsigned char *p, *p2, *p3;
-    unsigned char *sc, *sc2;
+    unsigned char *sc;
     int            i, j;
 
     h = (unsigned char *) sodium_malloc(crypto_core_ed25519_UNIFORMBYTES);
@@ -138,8 +138,7 @@ main(void)
     for (i = 0; i < 1000; i++) {
         randombytes_buf(h, crypto_core_ed25519_UNIFORMBYTES);
         crypto_core_ed25519_from_uniform(p, h);
-        randombytes_buf(sc, crypto_core_ed25519_SCALARBYTES);
-        crypto_core_ed25519_scalar_reduce(sc, sc);
+        crypto_core_ed25519_scalar_random(sc);
         if (crypto_scalarmult_ed25519_noclamp(p2, sc, p) != 0) {
             printf("crypto_scalarmult_ed25519_noclamp() failed\n");
         }
