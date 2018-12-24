@@ -47,7 +47,7 @@ void crypto_core_ed25519_scalar_random(unsigned char *r)
             __attribute__ ((nonnull));
 
 SODIUM_EXPORT
-int crypto_core_ed25519_scalar_invert(unsigned char *recip, const unsigned char s[64])
+int crypto_core_ed25519_scalar_invert(unsigned char *recip, const unsigned char *s)
             __attribute__ ((nonnull));
 
 /*
@@ -55,7 +55,7 @@ int crypto_core_ed25519_scalar_invert(unsigned char *recip, const unsigned char 
  * uniformity of `r` over `L`.
  */
 SODIUM_EXPORT
-void crypto_core_ed25519_scalar_reduce(unsigned char *r, const unsigned char s[64])
+void crypto_core_ed25519_scalar_reduce(unsigned char *r, const unsigned char *s)
             __attribute__ ((nonnull));
 
 #ifdef __cplusplus
