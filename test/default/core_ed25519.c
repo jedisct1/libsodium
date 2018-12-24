@@ -23,15 +23,22 @@ add_P(unsigned char * const S)
         0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff,
         0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0x7f
     };
-    unsigned char c = 0U;
-    unsigned int  i;
-    unsigned int  s;
 
-    for (i = 0U; i < 32U; i++) {
-        s = S[i] + P[i] + c;
-        S[i] = (unsigned char) s;
-        c = (s >> 8) & 1;
-    }
+    sodium_add(S, P, sizeof P);
+}
+
+static void
+add_l64(unsigned char * const S)
+{
+    static const unsigned char l[64] =
+      { 0xed, 0xd3, 0xf5, 0x5c, 0x1a, 0x63, 0x12, 0x58,
+        0xd6, 0x9c, 0xf7, 0xa2, 0xde, 0xf9, 0xde, 0x14,
+        0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
+        0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x10,
+        0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+        0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 };
+
+    sodium_add(S, l, sizeof l);
 }
 
 int
@@ -40,6 +47,7 @@ main(void)
     unsigned char *h;
     unsigned char *p, *p2, *p3;
     unsigned char *sc;
+    unsigned char *sc64;
     int            i, j;
 
     h = (unsigned char *) sodium_malloc(crypto_core_ed25519_UNIFORMBYTES);
@@ -150,6 +158,20 @@ main(void)
             printf("crypto_scalarmult_ed25519_noclamp() failed\n");
         }
         assert(memcmp(p3, p, crypto_core_ed25519_BYTES) == 0);
+    }
+
+    sc64 = (unsigned char *) sodium_malloc(64);
+    crypto_core_ed25519_scalar_random(sc);
+    memcpy(sc64, sc, crypto_core_ed25519_BYTES);
+    memset(sc64 + crypto_core_ed25519_BYTES, 0,
+           64 - crypto_core_ed25519_BYTES);
+    i = randombytes_uniform(100);
+    do {
+        add_l64(sc64);
+    } while (i-- > 0U);
+    crypto_core_ed25519_scalar_reduce(sc64, sc64);
+    if (memcmp(sc64, sc, crypto_core_ed25519_BYTES) != 0) {
+        printf("crypto_core_ed25519_scalar_reduce() failed\n");
     }
 
     sodium_free(sc);

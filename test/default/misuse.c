@@ -54,7 +54,8 @@ sigabrt_handler_11(int sig)
 {
     (void) sig;
     signal(SIGABRT, sigabrt_handler_12);
-    assert(crypto_box_easy(guard_page, guard_page, crypto_stream_xsalsa20_MESSAGEBYTES_MAX,
+    assert(crypto_box_easy(guard_page, guard_page,
+                           crypto_stream_xsalsa20_MESSAGEBYTES_MAX,
                            guard_page, guard_page, guard_page) == -1);
     exit(1);
 }
@@ -64,7 +65,8 @@ sigabrt_handler_10(int sig)
 {
     (void) sig;
     signal(SIGABRT, sigabrt_handler_11);
-    assert(crypto_box_easy_afternm(guard_page, guard_page, crypto_stream_xsalsa20_MESSAGEBYTES_MAX,
+    assert(crypto_box_easy_afternm(guard_page, guard_page,
+                                   crypto_stream_xsalsa20_MESSAGEBYTES_MAX,
                                    guard_page, guard_page) == -1);
     exit(1);
 }
@@ -74,7 +76,8 @@ sigabrt_handler_9(int sig)
 {
     (void) sig;
     signal(SIGABRT, sigabrt_handler_10);
-    assert(sodium_base642bin(guard_page, 1, guard_page, 1, NULL, NULL, NULL, -1) == -1);
+    assert(sodium_base642bin(guard_page, 1, guard_page, 1,
+                             NULL, NULL, NULL, -1) == -1);
     exit(1);
 }
 
@@ -83,7 +86,8 @@ sigabrt_handler_8(int sig)
 {
     (void) sig;
     signal(SIGABRT, sigabrt_handler_9);
-    assert(sodium_bin2base64(guard_page, 1, guard_page, 1, sodium_base64_VARIANT_ORIGINAL) == NULL);
+    assert(sodium_bin2base64(guard_page, 1, guard_page, 1,
+                             sodium_base64_VARIANT_ORIGINAL) == NULL);
     exit(1);
 }
 
@@ -111,7 +115,8 @@ sigabrt_handler_5(int sig)
     (void) sig;
     signal(SIGABRT, sigabrt_handler_6);
     assert(crypto_aead_xchacha20poly1305_ietf_encrypt(guard_page, NULL, NULL, UINT64_MAX,
-                                                      NULL, 0, NULL, guard_page, NULL) == -1);
+                                                      NULL, 0, NULL,
+                                                      guard_page, guard_page) == -1);
     exit(1);
 }
 
@@ -121,7 +126,8 @@ sigabrt_handler_4(int sig)
     (void) sig;
     signal(SIGABRT, sigabrt_handler_5);
     assert(crypto_aead_chacha20poly1305_ietf_encrypt(guard_page, NULL, NULL, UINT64_MAX,
-                                                     NULL, 0, NULL, guard_page, NULL) == -1);
+                                                     NULL, 0, NULL,
+                                                     guard_page, guard_page) == -1);
     exit(1);
 }
 
@@ -131,7 +137,8 @@ sigabrt_handler_3(int sig)
     (void) sig;
     signal(SIGABRT, sigabrt_handler_4);
     assert(crypto_aead_chacha20poly1305_encrypt(guard_page, NULL, NULL, UINT64_MAX,
-                                                NULL, 0, NULL, guard_page, NULL) == -1);
+                                                NULL, 0, NULL,
+                                                guard_page, guard_page) == -1);
     exit(1);
 }
 
@@ -153,7 +160,8 @@ sigabrt_handler_1(int sig)
 {
     (void) sig;
     signal(SIGABRT, sigabrt_handler_2);
-    assert(crypto_kx_server_session_keys(NULL, NULL, guard_page, guard_page, guard_page) == -1);
+    assert(crypto_kx_server_session_keys(NULL, NULL, guard_page, guard_page,
+                                         guard_page) == -1);
     exit(1);
 }
 
@@ -161,7 +169,8 @@ int
 main(void)
 {
     signal(SIGABRT, sigabrt_handler_1);
-    assert(crypto_kx_client_session_keys(NULL, NULL, guard_page, guard_page, guard_page) == -1);
+    assert(crypto_kx_client_session_keys(NULL, NULL, guard_page, guard_page,
+                                         guard_page) == -1);
     return 1;
 }
 #else
