@@ -20,6 +20,10 @@ size_t crypto_core_ed25519_uniformbytes(void);
 SODIUM_EXPORT
 size_t crypto_core_ed25519_scalarbytes(void);
 
+#define crypto_core_ed25519_NONREDUCEDSCALARBYTES 64
+SODIUM_EXPORT
+size_t crypto_core_ed25519_nonreducedscalarbytes(void);
+
 SODIUM_EXPORT
 int crypto_core_ed25519_is_valid_point(const unsigned char *p)
             __attribute__ ((nonnull));

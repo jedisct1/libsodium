@@ -74,7 +74,8 @@ crypto_core_ed25519_scalar_random(unsigned char *r)
     do {
         randombytes_buf(r, crypto_core_ed25519_SCALARBYTES);
         r[crypto_core_ed25519_SCALARBYTES - 1] &= 0x1f;
-    } while (sc25519_is_canonical(r) == 0);
+    } while (sc25519_is_canonical(r) == 0 ||
+             sodium_is_zero(r, crypto_core_ed25519_SCALARBYTES));
 }
 
 int
@@ -86,9 +87,10 @@ crypto_core_ed25519_scalar_invert(unsigned char *recip, const unsigned char *s)
 }
 
 void
-crypto_core_ed25519_scalar_reduce(unsigned char *r, const unsigned char s[64])
+crypto_core_ed25519_scalar_reduce(unsigned char *r,
+                                  const unsigned char s[crypto_core_ed25519_NONREDUCEDSCALARBYTES])
 {
-    unsigned char t[64];
+    unsigned char t[crypto_core_ed25519_NONREDUCEDSCALARBYTES];
 
     memcpy(t, s, sizeof t);
     sc25519_reduce(t);
@@ -100,6 +102,12 @@ size_t
 crypto_core_ed25519_bytes(void)
 {
     return crypto_core_ed25519_BYTES;
+}
+
+size_t
+crypto_core_ed25519_nonreducedscalarbytes(void)
+{
+    return crypto_core_ed25519_NONREDUCEDSCALARBYTES;
 }
 
 size_t

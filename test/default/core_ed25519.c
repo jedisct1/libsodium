@@ -30,7 +30,7 @@ add_P(unsigned char * const S)
 static void
 add_l64(unsigned char * const S)
 {
-    static const unsigned char l[64] =
+    static const unsigned char l[crypto_core_ed25519_NONREDUCEDSCALARBYTES] =
       { 0xed, 0xd3, 0xf5, 0x5c, 0x1a, 0x63, 0x12, 0x58,
         0xd6, 0x9c, 0xf7, 0xa2, 0xde, 0xf9, 0xde, 0x14,
         0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
@@ -182,6 +182,8 @@ main(void)
 
     assert(crypto_core_ed25519_BYTES == crypto_core_ed25519_bytes());
     assert(crypto_core_ed25519_SCALARBYTES == crypto_core_ed25519_scalarbytes());
+    assert(crypto_core_ed25519_NONREDUCEDSCALARBYTES == crypto_core_ed25519_nonreducedscalarbytes());
+    assert(crypto_core_ed25519_NONREDUCEDSCALARBYTES >= crypto_core_ed25519_SCALARBYTES);
     assert(crypto_core_ed25519_UNIFORMBYTES == crypto_core_ed25519_uniformbytes());
     assert(crypto_core_ed25519_UNIFORMBYTES >= crypto_core_ed25519_BYTES);
 
