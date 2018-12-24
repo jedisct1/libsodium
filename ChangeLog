@@ -13,6 +13,15 @@ not to be detected.
  - The library now enables compilation with retpoline by default.
  - Portability improvements.
  - Test vectors from Project Wycheproof have been added.
+ - New low-level APIs for arithmetic mod the order of the prime order group:
+`crypto_core_ed25519_scalar_random()`, `crypto_core_ed25519_scalar_reduce()`,
+and `crypto_core_ed25519_scalar_invert()`.
+ - New low-level APIs for scalar multiplication without clamping:
+`crypto_scalarmult_ed25519_base_noclamp()`,
+and `crypto_scalarmult_ed25519_noclamp()`. These new APIs are
+especially useful for blinding.
+ - Support for WatchOS has been added.
+ - getrandom(2) is now used on FreeBSD 12+.
 
 * Version 1.0.16
  - Signatures computations and verifications are now way faster on
