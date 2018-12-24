@@ -93,7 +93,7 @@ main(void)
            sodium_bin2base64(buf3, 33U, (const unsigned char *) "\xfb\xf0\xf1" "0123456789ABCDEFabc",
                              22U, sodium_base64_VARIANT_URLSAFE_NO_PADDING));
     printf("%s\n",
-           sodium_bin2base64(buf3, 1U, NULL,
+           sodium_bin2base64(buf3, 1U, guard_page,
                              0U, sodium_base64_VARIANT_ORIGINAL));
     printf("%s\n",
            sodium_bin2base64(buf3, 5U, (const unsigned char *) "a",
@@ -105,7 +105,7 @@ main(void)
            sodium_bin2base64(buf3, 5U, (const unsigned char *) "abc",
                              3U, sodium_base64_VARIANT_ORIGINAL));
     printf("%s\n",
-           sodium_bin2base64(buf3, 1U, NULL,
+           sodium_bin2base64(buf3, 1U, guard_page,
                              0U, sodium_base64_VARIANT_ORIGINAL_NO_PADDING));
     printf("%s\n",
            sodium_bin2base64(buf3, 3U, (const unsigned char *) "a",
@@ -161,21 +161,21 @@ main(void)
     assert(sodium_base642bin(buf1, sizeof buf1, b64, strlen(b64), " \r\n", NULL,
                              NULL, sodium_base64_VARIANT_URLSAFE_NO_PADDING) == -1);
 
-    assert(sodium_base642bin(NULL, (size_t) 10U, "a=", (size_t) 2U, NULL, NULL, NULL,
+    assert(sodium_base642bin(guard_page, (size_t) 10U, "a=", (size_t) 2U, NULL, NULL, NULL,
                              sodium_base64_VARIANT_URLSAFE) == -1);
-    assert(sodium_base642bin(NULL, (size_t) 10U, "a*", (size_t) 2U, NULL, NULL, NULL,
+    assert(sodium_base642bin(guard_page, (size_t) 10U, "a*", (size_t) 2U, NULL, NULL, NULL,
                              sodium_base64_VARIANT_URLSAFE) == -1);
-    assert(sodium_base642bin(NULL, (size_t) 10U, "a*", (size_t) 2U, "~", NULL, NULL,
+    assert(sodium_base642bin(guard_page, (size_t) 10U, "a*", (size_t) 2U, "~", NULL, NULL,
                              sodium_base64_VARIANT_URLSAFE) == -1);
-    assert(sodium_base642bin(NULL, (size_t) 10U, "a*", (size_t) 2U, "*", NULL, NULL,
+    assert(sodium_base642bin(guard_page, (size_t) 10U, "a*", (size_t) 2U, "*", NULL, NULL,
                              sodium_base64_VARIANT_URLSAFE) == -1);
-    assert(sodium_base642bin(NULL, (size_t) 10U, "a==", (size_t) 3U, NULL, NULL, NULL,
+    assert(sodium_base642bin(guard_page, (size_t) 10U, "a==", (size_t) 3U, NULL, NULL, NULL,
                              sodium_base64_VARIANT_URLSAFE) == -1);
-    assert(sodium_base642bin(NULL, (size_t) 10U, "a=*", (size_t) 3U, NULL, NULL, NULL,
+    assert(sodium_base642bin(guard_page, (size_t) 10U, "a=*", (size_t) 3U, NULL, NULL, NULL,
                              sodium_base64_VARIANT_URLSAFE) == -1);
-    assert(sodium_base642bin(NULL, (size_t) 10U, "a=*", (size_t) 3U, "~", NULL, NULL,
+    assert(sodium_base642bin(guard_page, (size_t) 10U, "a=*", (size_t) 3U, "~", NULL, NULL,
                              sodium_base64_VARIANT_URLSAFE) == -1);
-    assert(sodium_base642bin(NULL, (size_t) 10U, "a=*", (size_t) 3U, "*", NULL, NULL,
+    assert(sodium_base642bin(guard_page, (size_t) 10U, "a=*", (size_t) 3U, "*", NULL, NULL,
                              sodium_base64_VARIANT_URLSAFE) == -1);
 
     assert(sodium_base642bin(buf1, sizeof buf1, "O1R", (size_t) 3U, NULL, NULL, NULL,

@@ -55,7 +55,7 @@ main(void)
 
     memset(a2, 0, sizeof a2);
     crypto_auth_hmacsha256_init(&st256, key2, sizeof key2);
-    crypto_auth_hmacsha256_update(&st256, NULL, 0U);
+    crypto_auth_hmacsha256_update(&st256, guard_page, 0U);
     crypto_auth_hmacsha256_update(&st256, c, 1U);
     crypto_auth_hmacsha256_update(&st256, c, sizeof c - 2U);
     crypto_auth_hmacsha256_final(&st256, a2);
