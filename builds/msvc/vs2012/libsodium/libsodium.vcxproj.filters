@@ -51,6 +51,12 @@
     <ClCompile Include="..\..\..\..\src\libsodium\crypto_kx\crypto_kx.c">
       <Filter>crypto_kx</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\..\..\src\libsodium\crypto_kx\ed25519\kx_ed25519.c">
+      <Filter>crypto_kx\ed25519</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\src\libsodium\crypto_kx\curve25519\kx_curve25519.c">
+      <Filter>crypto_kx\curve25519</Filter>
+    </ClCompile>
     <ClCompile Include="..\..\..\..\src\libsodium\crypto_sign\crypto_sign.c">
       <Filter>crypto_sign</Filter>
     </ClCompile>
@@ -386,6 +392,9 @@
     <ClInclude Include="..\..\..\..\src\libsodium\include\sodium\core.h">
       <Filter>include\sodium</Filter>
     </ClInclude>
+    <ClInclude Include="..\..\..\..\src\libsodium\include\sodium\version.h">
+      <Filter>include\sodium</Filter>
+    </ClInclude>
     <ClInclude Include="..\..\..\..\src\libsodium\include\sodium\export.h">
       <Filter>include\sodium</Filter>
     </ClInclude>
@@ -414,6 +423,9 @@
       <Filter>include\sodium</Filter>
     </ClInclude>
     <ClInclude Include="..\..\..\..\src\libsodium\include\sodium\crypto_stream_salsa20.h">
+      <Filter>include\sodium</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\src\libsodium\include\sodium\crypto_kx_ed25519.h">
       <Filter>include\sodium</Filter>
     </ClInclude>
     <ClInclude Include="..\..\..\..\src\libsodium\include\sodium\crypto_onetimeauth_poly1305.h">
@@ -507,6 +519,9 @@
       <Filter>include\sodium</Filter>
     </ClInclude>
     <ClInclude Include="..\..\..\..\src\libsodium\include\sodium\crypto_pwhash_scryptsalsa208sha256.h">
+      <Filter>include\sodium</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\src\libsodium\include\sodium\crypto_kx_curve25519.h">
       <Filter>include\sodium</Filter>
     </ClInclude>
     <ClInclude Include="..\..\..\..\src\libsodium\include\sodium\crypto_sign_ed25519.h">
@@ -834,6 +849,12 @@
     </Filter>
     <Filter Include="crypto_kx">
       <UniqueIdentifier>{898b6bd5-1360-3a34-adcd-0fade7561685}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="crypto_kx\curve25519">
+      <UniqueIdentifier>{a87725bb-5474-365f-be59-ada5ae3f9e73}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="crypto_kx\ed25519">
+      <UniqueIdentifier>{57637f5e-c7cb-31ae-8f7b-1a68c22ef39f}</UniqueIdentifier>
     </Filter>
     <Filter Include="crypto_onetimeauth">
       <UniqueIdentifier>{323c0a15-3c1d-39b2-9ec1-299deb299497}</UniqueIdentifier>

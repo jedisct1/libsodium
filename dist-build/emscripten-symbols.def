@@ -250,6 +250,15 @@ _crypto_kx_curve25519_seed_keypair 0 1
 _crypto_kx_curve25519_seedbytes 0 1
 _crypto_kx_curve25519_server_session_keys 0 1
 _crypto_kx_curve25519_sessionkeybytes 0 1
+_crypto_kx_ed25519_client_session_keys 0 1
+_crypto_kx_ed25519_keypair 0 1
+_crypto_kx_ed25519_primitive 0 1
+_crypto_kx_ed25519_publickeybytes 0 1
+_crypto_kx_ed25519_secretkeybytes 0 1
+_crypto_kx_ed25519_seed_keypair 0 1
+_crypto_kx_ed25519_seedbytes 0 1
+_crypto_kx_ed25519_server_session_keys 0 1
+_crypto_kx_ed25519_sessionkeybytes 0 1
 _crypto_onetimeauth 0 1
 _crypto_onetimeauth_bytes 0 1
 _crypto_onetimeauth_final 0 1
