@@ -42,12 +42,6 @@
     <ClCompile Include="src\libsodium\crypto_kx\crypto_kx.c">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="src\libsodium\crypto_kx\ed25519\kx_ed25519.c">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="src\libsodium\crypto_kx\curve25519\kx_curve25519.c">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="src\libsodium\crypto_sign\crypto_sign.c">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -383,9 +377,6 @@
     <ClInclude Include="src\libsodium\include\sodium\core.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="src\libsodium\include\sodium\version.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="src\libsodium\include\sodium\export.h">
       <Filter>Header Files</Filter>
     </ClInclude>
@@ -414,9 +405,6 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="src\libsodium\include\sodium\crypto_stream_salsa20.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="src\libsodium\include\sodium\crypto_kx_ed25519.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="src\libsodium\include\sodium\crypto_onetimeauth_poly1305.h">
@@ -510,9 +498,6 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="src\libsodium\include\sodium\crypto_pwhash_scryptsalsa208sha256.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="src\libsodium\include\sodium\crypto_kx_curve25519.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="src\libsodium\include\sodium\crypto_sign_ed25519.h">

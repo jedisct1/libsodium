@@ -324,8 +324,6 @@
     <ClCompile Include="src\libsodium\crypto_generichash\blake2b\ref\generichash_blake2b.c" />
     <ClCompile Include="src\libsodium\crypto_generichash\blake2b\ref\blake2b-ref.c" />
     <ClCompile Include="src\libsodium\crypto_kx\crypto_kx.c" />
-    <ClCompile Include="src\libsodium\crypto_kx\ed25519\kx_ed25519.c" />
-    <ClCompile Include="src\libsodium\crypto_kx\curve25519\kx_curve25519.c" />
     <ClCompile Include="src\libsodium\crypto_sign\crypto_sign.c" />
     <ClCompile Include="src\libsodium\crypto_sign\ed25519\sign_ed25519.c" />
     <ClCompile Include="src\libsodium\crypto_sign\ed25519\ref10\obsolete.c" />
@@ -439,7 +437,6 @@
     <ClInclude Include="src\libsodium\include\sodium\crypto_core_hchacha20.h" />
     <ClInclude Include="src\libsodium\include\sodium\crypto_hash_sha512.h" />
     <ClInclude Include="src\libsodium\include\sodium\core.h" />
-    <ClInclude Include="src\libsodium\include\sodium\version.h" />
     <ClInclude Include="src\libsodium\include\sodium\export.h" />
     <ClInclude Include="src\libsodium\include\sodium\randombytes_salsa20_random.h" />
     <ClInclude Include="src\libsodium\include\sodium\crypto_core_salsa20.h" />
@@ -450,7 +447,6 @@
     <ClInclude Include="src\libsodium\include\sodium\crypto_auth_hmacsha512.h" />
     <ClInclude Include="src\libsodium\include\sodium\crypto_aead_xchacha20poly1305.h" />
     <ClInclude Include="src\libsodium\include\sodium\crypto_stream_salsa20.h" />
-    <ClInclude Include="src\libsodium\include\sodium\crypto_kx_ed25519.h" />
     <ClInclude Include="src\libsodium\include\sodium\crypto_onetimeauth_poly1305.h" />
     <ClInclude Include="src\libsodium\include\sodium\crypto_kx.h" />
     <ClInclude Include="src\libsodium\include\sodium\crypto_hash.h" />
@@ -482,7 +478,6 @@
     <ClInclude Include="src\libsodium\include\sodium\crypto_pwhash_argon2id.h" />
     <ClInclude Include="src\libsodium\include\sodium\crypto_secretstream_xchacha20poly1305.h" />
     <ClInclude Include="src\libsodium\include\sodium\crypto_pwhash_scryptsalsa208sha256.h" />
-    <ClInclude Include="src\libsodium\include\sodium\crypto_kx_curve25519.h" />
     <ClInclude Include="src\libsodium\include\sodium\crypto_sign_ed25519.h" />
     <ClInclude Include="src\libsodium\include\sodium\crypto_onetimeauth.h" />
     <ClInclude Include="src\libsodium\include\sodium\crypto_verify_64.h" />

@@ -3,7 +3,6 @@
 
 #include <stddef.h>
 
-#include "crypto_kx_curve25519.h"
 #include "export.h"
 
 #ifdef __cplusplus
@@ -13,23 +12,23 @@
 extern "C" {
 #endif
 
-#define crypto_kx_PUBLICKEYBYTES crypto_kx_curve25519_PUBLICKEYBYTES
+#define crypto_kx_PUBLICKEYBYTES 32
 SODIUM_EXPORT
 size_t crypto_kx_publickeybytes(void);
 
-#define crypto_kx_SECRETKEYBYTES crypto_kx_curve25519_SECRETKEYBYTES
+#define crypto_kx_SECRETKEYBYTES 32
 SODIUM_EXPORT
 size_t crypto_kx_secretkeybytes(void);
 
-#define crypto_kx_SEEDBYTES crypto_kx_curve25519_SEEDBYTES
+#define crypto_kx_SEEDBYTES 32
 SODIUM_EXPORT
 size_t crypto_kx_seedbytes(void);
 
-#define crypto_kx_SESSIONKEYBYTES crypto_kx_curve25519_SESSIONKEYBYTES
+#define crypto_kx_SESSIONKEYBYTES 32
 SODIUM_EXPORT
 size_t crypto_kx_sessionkeybytes(void);
 
-#define crypto_kx_PRIMITIVE crypto_kx_curve25519_PRIMITIVE
+#define crypto_kx_PRIMITIVE "x25519blake2b"
 SODIUM_EXPORT
 const char *crypto_kx_primitive(void);
 
