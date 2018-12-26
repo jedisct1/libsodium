@@ -1,5 +1,6 @@
 #include "crypto_stream_chacha20.h"
 #include "core.h"
+#include "private/chacha20_ietf_ext.h"
 #include "private/common.h"
 #include "private/implementations.h"
 #include "randombytes.h"

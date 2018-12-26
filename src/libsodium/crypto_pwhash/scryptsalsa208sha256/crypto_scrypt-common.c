@@ -158,7 +158,7 @@ escrypt_r(escrypt_local_t *local, const uint8_t *passwd, size_t passwdlen,
     prefixlen = src - setting;
 
     salt = src;
-    src  = (const uint8_t *) strrchr((char *) salt, '$');
+    src  = (const uint8_t *) strrchr((const char *) salt, '$');
     if (src) {
         saltlen = src - salt;
     } else {
