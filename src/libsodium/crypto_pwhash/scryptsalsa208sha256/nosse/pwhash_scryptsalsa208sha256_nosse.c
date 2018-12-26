@@ -181,20 +181,23 @@ blockmix_salsa8(const uint32_t *Bin, uint32_t *Bout, uint32_t *X, size_t r)
 
     /* 1: X <-- B_{2r - 1} */
     blkcpy_64((escrypt_block_t *) X,
-              (escrypt_block_t *) &Bin[(2 * r - 1) * 16]);
+              (const escrypt_block_t *) &Bin[(2 * r - 1) * 16]);
 
     /* 2: for i = 0 to 2r - 1 do */
     for (i = 0; i < 2 * r; i += 2) {
         /* 3: X <-- H(X \xor B_i) */
-        blkxor_64((escrypt_block_t *) X, (escrypt_block_t *) &Bin[i * 16]);
+        blkxor_64((escrypt_block_t *) X,
+                  (const escrypt_block_t *) &Bin[i * 16]);
         salsa20_8(X);
 
         /* 4: Y_i <-- X */
         /* 6: B' <-- (Y_0, Y_2 ... Y_{2r-2}, Y_1, Y_3 ... Y_{2r-1}) */
-        blkcpy_64((escrypt_block_t *) &Bout[i * 8], (escrypt_block_t *) X);
+        blkcpy_64((escrypt_block_t *) &Bout[i * 8],
+                  (const escrypt_block_t *) X);
 
         /* 3: X <-- H(X \xor B_i) */
-        blkxor_64((escrypt_block_t *) X, (escrypt_block_t *) &Bin[i * 16 + 16]);
+        blkxor_64((escrypt_block_t *) X,
+                  (const escrypt_block_t *) &Bin[i * 16 + 16]);
         salsa20_8(X);
 
         /* 4: Y_i <-- X */

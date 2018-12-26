@@ -44,12 +44,12 @@ crypto_verify_n(const unsigned char *x_, const unsigned char *y_,
         (const volatile __m128i *volatile) (const void *) x_;
     const volatile __m128i *volatile y =
         (const volatile __m128i *volatile) (const void *) y_;
-    v1 = _mm_loadu_si128((const __m128i *) &x[0]);
-    v2 = _mm_loadu_si128((const __m128i *) &y[0]);
+    v1 = _mm_loadu_si128((const volatile __m128i *) &x[0]);
+    v2 = _mm_loadu_si128((const volatile __m128i *) &y[0]);
     z = _mm_xor_si128(v1, v2);
     for (i = 1; i < n / 16; i++) {
-        v1 = _mm_loadu_si128((const __m128i *) &x[i]);
-        v2 = _mm_loadu_si128((const __m128i *) &y[i]);
+        v1 = _mm_loadu_si128((const volatile __m128i *) &x[i]);
+        v2 = _mm_loadu_si128((const volatile __m128i *) &y[i]);
         z = _mm_or_si128(z, _mm_xor_si128(v1, v2));
     }
     m = _mm_movemask_epi8(_mm_cmpeq_epi32(z, zero));

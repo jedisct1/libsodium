@@ -9,10 +9,10 @@ if (bytes > 0) {
 
     unsigned int i;
 
-    x_0 = _mm_loadu_si128((__m128i*) (x + 0));
-    x_1 = _mm_loadu_si128((__m128i*) (x + 4));
-    x_2 = _mm_loadu_si128((__m128i*) (x + 8));
-    x_3 = _mm_loadu_si128((__m128i*) (x + 12));
+    x_0 = _mm_loadu_si128((const __m128i*) (x + 0));
+    x_1 = _mm_loadu_si128((const __m128i*) (x + 4));
+    x_2 = _mm_loadu_si128((const __m128i*) (x + 8));
+    x_3 = _mm_loadu_si128((const __m128i*) (x + 12));
 
     for (i = 0; i < ROUNDS; i += 2) {
         x_0 = _mm_add_epi32(x_0, x_1);
