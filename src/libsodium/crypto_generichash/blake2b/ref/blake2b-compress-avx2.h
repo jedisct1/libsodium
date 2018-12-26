@@ -2,13 +2,13 @@
 #ifndef blake2b_compress_avx2_H
 #define blake2b_compress_avx2_H
 
-#define LOADU128(p) _mm_loadu_si128((__m128i *) (p))
+#define LOADU128(p) _mm_loadu_si128((const __m128i *) (p))
 #define STOREU128(p, r) _mm_storeu_si128((__m128i *) (p), r)
 
-#define LOAD(p) _mm256_load_si256((__m256i *) (p))
+#define LOAD(p) _mm256_load_si256((const __m256i *) (p))
 #define STORE(p, r) _mm256_store_si256((__m256i *) (p), r)
 
-#define LOADU(p) _mm256_loadu_si256((__m256i *) (p))
+#define LOADU(p) _mm256_loadu_si256((const __m256i *) (p))
 #define STOREU(p, r) _mm256_storeu_si256((__m256i *) (p), r)
 
 static inline uint64_t
