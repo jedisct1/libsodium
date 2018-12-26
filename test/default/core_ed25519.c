@@ -48,7 +48,7 @@ main(void)
     unsigned char *p, *p2, *p3;
     unsigned char *sc;
     unsigned char *sc64;
-    int            i, j;
+    unsigned int   i, j;
 
     h = (unsigned char *) sodium_malloc(crypto_core_ed25519_UNIFORMBYTES);
     p = (unsigned char *) sodium_malloc(crypto_core_ed25519_BYTES);
@@ -67,7 +67,7 @@ main(void)
     randombytes_buf(h, crypto_core_ed25519_UNIFORMBYTES);
     crypto_core_ed25519_from_uniform(p2, h);
 
-    j = 1 + (int) randombytes_uniform(100);
+    j = 1 + (unsigned int) randombytes_uniform(100);
     memcpy(p3, p, crypto_core_ed25519_BYTES);
     for (i = 0; i < j; i++) {
         crypto_core_ed25519_add(p, p, p2);
@@ -165,10 +165,10 @@ main(void)
     memcpy(sc64, sc, crypto_core_ed25519_BYTES);
     memset(sc64 + crypto_core_ed25519_BYTES, 0,
            64 - crypto_core_ed25519_BYTES);
-    i = randombytes_uniform(100);
+    i = (unsigned int) randombytes_uniform(100);
     do {
         add_l64(sc64);
-    } while (i-- > 0U);
+    } while (i-- > 0);
     crypto_core_ed25519_scalar_reduce(sc64, sc64);
     if (memcmp(sc64, sc, crypto_core_ed25519_BYTES) != 0) {
         printf("crypto_core_ed25519_scalar_reduce() failed\n");
