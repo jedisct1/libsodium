@@ -11,11 +11,10 @@ main(void)
     char          *b64_;
     const char    *b64_end;
     unsigned char *bin;
-    unsigned char *bin_padded;
     const char    *hex;
     const char    *hex_end;
     size_t         b64_len;
-    size_t         bin_len, bin_len2;
+    size_t         bin_len;
     unsigned int   i;
 
     printf("%s\n",

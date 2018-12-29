@@ -125,8 +125,6 @@ sodium_crit_enter(void)
 int
 sodium_crit_leave(void)
 {
-    int ret;
-
     if (locked == 0) {
 # ifdef EPERM
         errno = EPERM;

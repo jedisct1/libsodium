@@ -954,9 +954,7 @@ tv(void)
     unsigned char *message;
     unsigned char *mac;
     unsigned char *nonce;
-    char *         hex;
     size_t         ad_len;
-    size_t         ciphertext_len;
     size_t         detached_ciphertext_len;
     size_t         message_len;
     unsigned int   i;
