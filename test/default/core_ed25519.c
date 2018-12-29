@@ -174,6 +174,43 @@ main(void)
         printf("crypto_core_ed25519_scalar_reduce() failed\n");
     }
 
+    randombytes_buf(h, crypto_core_ed25519_UNIFORMBYTES);
+    crypto_core_ed25519_from_uniform(p, h);
+    memcpy(p2, p, crypto_core_ed25519_BYTES);
+    crypto_core_ed25519_scalar_random(sc);
+    if (crypto_scalarmult_ed25519_noclamp(p, sc, p) != 0) {
+        printf("crypto_scalarmult_ed25519_noclamp() failed (1)\n");
+    }
+    crypto_core_ed25519_scalar_complement(sc, sc);
+    if (crypto_scalarmult_ed25519_noclamp(p2, sc, p2) != 0) {
+        printf("crypto_scalarmult_ed25519_noclamp() failed (2)\n");
+    }
+    crypto_core_ed25519_add(p3, p, p2);
+    crypto_core_ed25519_from_uniform(p, h);
+    crypto_core_ed25519_sub(p, p, p3);
+    assert(p[0] == 0x01);
+    for (i = 1; i < crypto_core_ed25519_BYTES; i++) {
+        assert(p[i] == 0);
+    }
+
+    randombytes_buf(h, crypto_core_ed25519_UNIFORMBYTES);
+    crypto_core_ed25519_from_uniform(p, h);
+    memcpy(p2, p, crypto_core_ed25519_BYTES);
+    crypto_core_ed25519_scalar_random(sc);
+    if (crypto_scalarmult_ed25519_noclamp(p, sc, p) != 0) {
+        printf("crypto_scalarmult_ed25519_noclamp() failed (3)\n");
+    }
+    crypto_core_ed25519_scalar_negate(sc, sc);
+    if (crypto_scalarmult_ed25519_noclamp(p2, sc, p2) != 0) {
+        printf("crypto_scalarmult_ed25519_noclamp() failed (4)\n");
+    }
+    crypto_core_ed25519_add(p, p, p2);
+    assert(p[0] == 0x01);
+    for (i = 1; i < crypto_core_ed25519_BYTES; i++) {
+        assert(p[i] == 0);
+    }
+
+    sodium_free(sc64);
     sodium_free(sc);
     sodium_free(p3);
     sodium_free(p2);
