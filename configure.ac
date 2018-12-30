@@ -197,11 +197,12 @@ AC_CHECK_DEFINE([_FORTIFY_SOURCE], [], [
     [CPPFLAGS="$CPPFLAGS -D_FORTIFY_SOURCE=2"])
 ])
 
-AX_CHECK_COMPILE_FLAG([-mindirect-branch=thunk],
-  [CFLAGS="$CFLAGS -mindirect-branch=thunk"],
-  [
-    AX_CHECK_COMPILE_FLAG([-mretpoline], [CFLAGS="$CFLAGS -mretpoline"])
-  ])
+AS_IF([test "x$EMSCRIPTEN" = "x" -a "$host_os" != "pnacl"], [
+  AX_CHECK_COMPILE_FLAG([-mindirect-branch=thunk],
+    [CFLAGS="$CFLAGS -mindirect-branch=thunk"],
+    [AX_CHECK_COMPILE_FLAG([-mretpoline], [CFLAGS="$CFLAGS -mretpoline"])]
+  )
+])
 
 AX_CHECK_COMPILE_FLAG([-fvisibility=hidden],
   [CFLAGS="$CFLAGS -fvisibility=hidden"])
