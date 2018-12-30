@@ -22,6 +22,7 @@ and `crypto_core_ed25519_scalar_sub()`.
 `crypto_scalarmult_ed25519_base_noclamp()`,
 and `crypto_scalarmult_ed25519_noclamp()`. These new APIs are
 especially useful for blinding.
+ - `sodium_sub()` has been implemented.
  - Support for WatchOS has been added.
  - getrandom(2) is now used on FreeBSD 12+.
 

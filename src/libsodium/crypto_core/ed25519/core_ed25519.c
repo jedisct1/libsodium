@@ -88,63 +88,44 @@ crypto_core_ed25519_scalar_invert(unsigned char *recip, const unsigned char *s)
     return - sodium_is_zero(s, crypto_core_ed25519_SCALARBYTES);
 }
 
+/* 2^252+27742317777372353535851937790883648493 */
+static const unsigned char L[] = {
+    0xed, 0xd3, 0xf5, 0x5c, 0x1a, 0x63, 0x12, 0x58, 0xd6, 0x9c, 0xf7,
+    0xa2, 0xde, 0xf9, 0xde, 0x14, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
+    0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x10
+};
+
 void
 crypto_core_ed25519_scalar_negate(unsigned char *neg, const unsigned char *s)
 {
-    /* 2^252+27742317777372353535851937790883648493 */
-    static const unsigned char L[32] = {
-        0xed, 0xd3, 0xf5, 0x5c, 0x1a, 0x63, 0x12, 0x58, 0xd6, 0x9c, 0xf7,
-        0xa2, 0xde, 0xf9, 0xde, 0x14, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
-        0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x10
-    };
-    uint_fast16_t c = 0U;
-    unsigned char r = 0U;
-    size_t        i;
+    unsigned char t_[crypto_core_ed25519_NONREDUCEDSCALARBYTES] = { 0U };
+    unsigned char s_[crypto_core_ed25519_NONREDUCEDSCALARBYTES] = { 0U };
 
-    for (i = 0; i < crypto_core_ed25519_SCALARBYTES; i++) {
-        r |= s[i];
-        c = (uint_fast16_t) L[i] - (uint_fast16_t) s[i] - c;
-        neg[i] = (unsigned char) c;
-        c = (c >> 8) & 1U;
-    }
-    r = ~(r - 1U) >> 8;
-    for (i = 0; i < crypto_core_ed25519_SCALARBYTES; i++) {
-        neg[i] &= r;
-    }
+    COMPILER_ASSERT(crypto_core_ed25519_NONREDUCEDSCALARBYTES >=
+                    2 * crypto_core_ed25519_SCALARBYTES);
+    memcpy(t_ + crypto_core_ed25519_SCALARBYTES, L,
+           crypto_core_ed25519_SCALARBYTES);
+    memcpy(s_, s, crypto_core_ed25519_SCALARBYTES);
+    sodium_sub(t_, s_, sizeof t_);
+    sc25519_reduce(t_);
+    memcpy(neg, t_, crypto_core_ed25519_SCALARBYTES);
 }
 
 void
-crypto_core_ed25519_scalar_complement(unsigned char *comp, const unsigned char *s)
+crypto_core_ed25519_scalar_complement(unsigned char *comp,
+                                      const unsigned char *s)
 {
-    /* 2^252+27742317777372353535851937790883648493 + 1 */
-    static const unsigned char L1[32] = {
-        0xee, 0xd3, 0xf5, 0x5c, 0x1a, 0x63, 0x12, 0x58, 0xd6, 0x9c, 0xf7,
-        0xa2, 0xde, 0xf9, 0xde, 0x14, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
-        0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x10
-    };
-    uint_fast16_t c = 0U;
-    unsigned char q = 0U;
-    unsigned char r = 0U;
-    size_t        i;
+    unsigned char t_[crypto_core_ed25519_NONREDUCEDSCALARBYTES] = { 1U };
+    unsigned char s_[crypto_core_ed25519_NONREDUCEDSCALARBYTES] = { 0U };
 
-    q |= s[0] ^ 1U;
-    r |= s[0];
-    c = (uint_fast16_t) L1[0] - (uint_fast16_t) s[0] - c;
-    comp[0] = (unsigned char) c;
-    c = (c >> 8) & 1U;
-    for (i = 1U; i < crypto_core_ed25519_SCALARBYTES; i++) {
-        q |= s[i];
-        r |= s[i];
-        c = (uint_fast16_t) L1[i] - (uint_fast16_t) s[i] - c;
-        comp[i] = (unsigned char) c;
-        c = (c >> 8) & 1U;
-    }
-    q = ~(q - 1U) >> 8;
-    r = ~(r - 1U) >> 8;
-    for (i = 0; i < crypto_core_ed25519_SCALARBYTES; i++) {
-        comp[i] &= q & r;
-    }
-    comp[0] |= (~r) & 1U;
+    COMPILER_ASSERT(crypto_core_ed25519_NONREDUCEDSCALARBYTES >=
+                    2 * crypto_core_ed25519_SCALARBYTES);
+    memcpy(t_ + crypto_core_ed25519_SCALARBYTES, L,
+           crypto_core_ed25519_SCALARBYTES);
+    memcpy(s_, s, crypto_core_ed25519_SCALARBYTES);
+    sodium_sub(t_, s_, sizeof t_);
+    sc25519_reduce(t_);
+    memcpy(comp, t_, crypto_core_ed25519_SCALARBYTES);
 }
 
 void
