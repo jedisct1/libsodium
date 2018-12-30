@@ -148,9 +148,13 @@ _crypto_core_ed25519_bytes 0 1
 _crypto_core_ed25519_from_uniform 0 1
 _crypto_core_ed25519_is_valid_point 0 1
 _crypto_core_ed25519_nonreducedscalarbytes 0 1
+_crypto_core_ed25519_scalar_add 0 1
+_crypto_core_ed25519_scalar_complement 0 1
 _crypto_core_ed25519_scalar_invert 0 1
+_crypto_core_ed25519_scalar_negate 0 1
 _crypto_core_ed25519_scalar_random 0 1
 _crypto_core_ed25519_scalar_reduce 0 1
+_crypto_core_ed25519_scalar_sub 0 1
 _crypto_core_ed25519_scalarbytes 0 1
 _crypto_core_ed25519_sub 0 1
 _crypto_core_ed25519_uniformbytes 0 1
@@ -573,5 +577,6 @@ _sodium_runtime_has_sse41 0 0
 _sodium_runtime_has_ssse3 0 0
 _sodium_set_misuse_handler 0 0
 _sodium_stackzero 0 0
+_sodium_sub 0 0
 _sodium_unpad 1 1
 _sodium_version_string 1 1
