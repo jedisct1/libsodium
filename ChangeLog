@@ -25,6 +25,7 @@ especially useful for blinding.
  - `sodium_sub()` has been implemented.
  - Support for WatchOS has been added.
  - getrandom(2) is now used on FreeBSD 12+.
+ - The `nonnull` attribute has been added to all relevant prototypes.
 
 * Version 1.0.16
  - Signatures computations and verifications are now way faster on
