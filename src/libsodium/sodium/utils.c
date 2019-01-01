@@ -289,7 +289,7 @@ sodium_increment(unsigned char *n, const size_t nlen)
 void
 sodium_add(unsigned char *a, const unsigned char *b, const size_t len)
 {
-    size_t        i = 0U;
+    size_t        i;
     uint_fast16_t c = 0U;
 
 #ifdef HAVE_AMD64_ASM
@@ -328,7 +328,7 @@ sodium_add(unsigned char *a, const unsigned char *b, const size_t len)
         return;
     }
 #endif
-    for (; i < len; i++) {
+    for (i = 0U; i < len; i++) {
         c += (uint_fast16_t) a[i] + (uint_fast16_t) b[i];
         a[i] = (unsigned char) c;
         c >>= 8;
@@ -371,7 +371,7 @@ sodium_sub(unsigned char *a, const unsigned char *b, const size_t len)
         return;
     }
 #endif
-    for (i = 0; i < len; i++) {
+    for (i = 0U; i < len; i++) {
         c = (uint_fast16_t) a[i] - (uint_fast16_t) b[i] - c;
         a[i] = (unsigned char) c;
         c = (c >> 8) & 1U;
