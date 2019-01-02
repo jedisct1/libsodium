@@ -60,8 +60,7 @@ main(void)
             buf2_rev[bin_len - 1 - j] = buf2[j];
         }
         if (memcmp(buf1_rev, buf2_rev, bin_len) *
-                sodium_compare(buf1, buf2, bin_len) <
-            0) {
+            sodium_compare(buf1, buf2, bin_len) < 0) {
             printf("sodium_compare() failure with length=%u\n",
                    (unsigned int) bin_len);
         }
@@ -106,7 +105,21 @@ main(void)
     if (sodium_compare(buf1, buf2, bin_len) != 0) {
         printf("sodium_add() failed\n");
     }
-
+    for (i = 0U; i < 1000U; i++) {
+        randombytes_buf(buf1, bin_len);
+        randombytes_buf(buf2, bin_len);
+        sodium_add(buf1, buf2, bin_len);
+        sodium_sub(buf1, buf2, bin_len);
+        sodium_sub(buf1, buf2, 0U);
+        if (sodium_is_zero(buf1, bin_len) &&
+            !sodium_is_zero(buf1, bin_len)) {
+            printf("sodium_sub() failed\n");
+        }
+        sodium_sub(buf1, buf1, bin_len);
+        if (!sodium_is_zero(buf1, bin_len)) {
+            printf("sodium_sub() failed\n");
+        }
+    }
     assert(sizeof nonce >= 24U);
     memset(nonce, 0xfe, 24U);
     memset(nonce, 0xff, 6U);
