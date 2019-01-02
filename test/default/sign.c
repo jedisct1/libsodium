@@ -1266,7 +1266,7 @@ int main(void)
     }
     sodium_hex2bin(sk, crypto_sign_SECRETKEYBYTES,
                    "833fe62409237b9d62ec77587520911e9a759cec1d19755b7da901b96dca3d42",
-                   2 * crypto_sign_SECRETKEYBYTES , NULL, NULL, NULL);
+                   2 * crypto_sign_SECRETKEYBYTES / 2, NULL, NULL, NULL);
     sodium_hex2bin(pk, crypto_sign_PUBLICKEYBYTES,
                    "ec172b93ad5e563bf4932c70e1245034c35467ef2efd4d64ebf819683467e2bf",
                    2 * crypto_sign_PUBLICKEYBYTES, NULL, NULL, NULL);
