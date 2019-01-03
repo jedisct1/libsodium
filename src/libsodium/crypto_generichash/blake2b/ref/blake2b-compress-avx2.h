@@ -5,11 +5,16 @@
 #define LOADU128(p) _mm_loadu_si128((const __m128i *) (p))
 #define STOREU128(p, r) _mm_storeu_si128((__m128i *) (p), r)
 
-#define LOAD(p) _mm256_load_si256((const __m256i *) (p))
-#define STORE(p, r) _mm256_store_si256((__m256i *) (p), r)
-
 #define LOADU(p) _mm256_loadu_si256((const __m256i *) (p))
 #define STOREU(p, r) _mm256_storeu_si256((__m256i *) (p), r)
+
+#if defined(__INTEL_COMPILER) || defined(_MSC_VER) || defined(__GNUC__)
+# define LOAD(p) _mm256_load_si256((const __m256i *) (p))
+# define STORE(p, r) _mm256_store_si256((__m256i *) (p), r)
+#else
+# define LOAD(p) LOADU(p)
+# define STORE(p, r) STOREU(p, r)
+#endif
 
 static inline uint64_t
 LOADU64(const void *p)
