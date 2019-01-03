@@ -742,7 +742,7 @@ sodium_pad(size_t *padded_buflen_p, unsigned char *buf,
     for (i = 0; i < blocksize; i++) {
         barrier_mask = (unsigned char) (((i ^ xpadlen) - 1U)
            >> ((sizeof(size_t) - 1) * CHAR_BIT));
-        tail[-i] = (tail[-i] & mask) | (0x80 & barrier_mask);
+        *(tail - i) = ((*(tail - i)) & mask) | (0x80 & barrier_mask);
         mask |= barrier_mask;
     }
     return 0;
@@ -766,7 +766,7 @@ sodium_unpad(size_t *unpadded_buflen_p, const unsigned char *buf,
     tail = &buf[padded_buflen - 1U];
 
     for (i = 0U; i < blocksize; i++) {
-        c = tail[-i];
+        c = *(tail - i);
         is_barrier =
             (( (acc - 1U) & (pad_len - 1U) & ((c ^ 0x80) - 1U) ) >> 8) & 1U;
         acc |= c;
