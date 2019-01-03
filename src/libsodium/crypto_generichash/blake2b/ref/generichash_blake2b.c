@@ -5,6 +5,7 @@
 
 #include "blake2.h"
 #include "crypto_generichash_blake2b.h"
+#include "private/common.h"
 #include "private/implementations.h"
 
 int
@@ -52,6 +53,7 @@ crypto_generichash_blake2b_init(crypto_generichash_blake2b_state *state,
     }
     assert(outlen <= UINT8_MAX);
     assert(keylen <= UINT8_MAX);
+    COMPILER_ASSERT(sizeof(blake2b_state) <= sizeof *state);
     if (key == NULL || keylen <= 0U) {
         if (blake2b_init((blake2b_state *) (void *) state, (uint8_t) outlen) != 0) {
             return -1; /* LCOV_EXCL_LINE */
