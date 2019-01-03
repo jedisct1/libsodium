@@ -21,12 +21,7 @@ extern "C" {
 #endif
 
 typedef struct CRYPTO_ALIGN(64) crypto_generichash_blake2b_state {
-    uint64_t h[8];
-    uint64_t t[2];
-    uint64_t f[2];
-    uint8_t  buf[2 * 128];
-    size_t   buflen;
-    uint8_t  last_node;
+    unsigned char opaque[384];
 } crypto_generichash_blake2b_state;
 
 #if defined(__IBMC__) || defined(__SUNPRO_C) || defined(__SUNPRO_CC)

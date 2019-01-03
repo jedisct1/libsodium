@@ -56,7 +56,9 @@ size_t crypto_aead_aes256gcm_abytes(void);
 SODIUM_EXPORT
 size_t crypto_aead_aes256gcm_messagebytes_max(void);
 
-typedef CRYPTO_ALIGN(16) unsigned char crypto_aead_aes256gcm_state[512];
+typedef CRYPTO_ALIGN(16) struct crypto_aead_aes256gcm_state_ {
+    unsigned char opaque[512];
+} crypto_aead_aes256gcm_state;
 
 SODIUM_EXPORT
 size_t crypto_aead_aes256gcm_statebytes(void);
