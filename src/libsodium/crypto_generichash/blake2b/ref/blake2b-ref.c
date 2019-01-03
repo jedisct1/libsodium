@@ -184,7 +184,7 @@ blake2b_init_key(blake2b_state *S, const uint8_t outlen, const void *key,
         sodium_misuse();
     }
     if (!key || !keylen || keylen > BLAKE2B_KEYBYTES) {
-        sodium_misuse();
+        sodium_misuse(); /* does not return */
     }
     P->digest_length = outlen;
     P->key_length    = keylen;
@@ -222,7 +222,7 @@ blake2b_init_key_salt_personal(blake2b_state *S, const uint8_t outlen,
         sodium_misuse();
     }
     if (!key || !keylen || keylen > BLAKE2B_KEYBYTES) {
-        sodium_misuse();
+        sodium_misuse(); /* does not return */
     }
     P->digest_length = outlen;
     P->key_length    = keylen;
