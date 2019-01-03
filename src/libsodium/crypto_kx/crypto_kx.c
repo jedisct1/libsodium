@@ -63,8 +63,8 @@ crypto_kx_client_session_keys(unsigned char rx[crypto_kx_SESSIONKEYBYTES],
     crypto_generichash_final(&h, keys, sizeof keys);
     sodium_memzero(&h, sizeof h);
     for (i = 0; i < crypto_kx_SESSIONKEYBYTES; i++) {
-        rx[i] = keys[i];
-        tx[i] = keys[i + crypto_kx_SESSIONKEYBYTES];
+        rx[i] = keys[i]; /* rx cannot be NULL */
+        tx[i] = keys[i + crypto_kx_SESSIONKEYBYTES]; /* tx cannot be NULL */
     }
     sodium_memzero(keys, sizeof keys);
 

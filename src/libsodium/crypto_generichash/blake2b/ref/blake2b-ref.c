@@ -97,6 +97,7 @@ blake2b_init0(blake2b_state *S)
     for (i  = 0; i < 8; i++) {
         S->h[i] = blake2b_IV[i];
     }
+    /* zero everything between .t and .last_node */
     memset(S->t, 0, offsetof(blake2b_state, last_node) + sizeof(S->last_node)
            - offsetof(blake2b_state, t));
     return 0;
@@ -203,7 +204,7 @@ blake2b_init_key(blake2b_state *S, const uint8_t outlen, const void *key,
     {
         uint8_t block[BLAKE2B_BLOCKBYTES];
         memset(block, 0, BLAKE2B_BLOCKBYTES);
-        memcpy(block, key, keylen); /* keylen cannot be 0 */
+        memcpy(block, key, keylen); /* key and keylen cannot be 0 */
         blake2b_update(S, block, BLAKE2B_BLOCKBYTES);
         sodium_memzero(block, BLAKE2B_BLOCKBYTES); /* Burn the key from stack */
     }
@@ -249,7 +250,7 @@ blake2b_init_key_salt_personal(blake2b_state *S, const uint8_t outlen,
     {
         uint8_t block[BLAKE2B_BLOCKBYTES];
         memset(block, 0, BLAKE2B_BLOCKBYTES);
-        memcpy(block, key, keylen); /* keylen cannot be 0 */
+        memcpy(block, key, keylen); /* key and keylen cannot be 0 */
         blake2b_update(S, block, BLAKE2B_BLOCKBYTES);
         sodium_memzero(block, BLAKE2B_BLOCKBYTES); /* Burn the key from stack */
     }
