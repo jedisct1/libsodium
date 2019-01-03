@@ -45,7 +45,8 @@ sigabrt_handler_12(int sig)
 # else
     signal(SIGABRT, sigabrt_handler_13);
 # endif
-    assert(crypto_pwhash_str_alg(guard_page, "", 0U, 1U, 1U, -1) == -1);
+    assert(crypto_pwhash_str_alg((char *) guard_page,
+                                 "", 0U, 1U, 1U, -1) == -1);
     exit(1);
 }
 
@@ -76,7 +77,7 @@ sigabrt_handler_9(int sig)
 {
     (void) sig;
     signal(SIGABRT, sigabrt_handler_10);
-    assert(sodium_base642bin(guard_page, 1, guard_page, 1,
+    assert(sodium_base642bin(guard_page, 1, (const char *) guard_page, 1,
                              NULL, NULL, NULL, -1) == -1);
     exit(1);
 }
@@ -86,7 +87,7 @@ sigabrt_handler_8(int sig)
 {
     (void) sig;
     signal(SIGABRT, sigabrt_handler_9);
-    assert(sodium_bin2base64(guard_page, 1, guard_page, 1,
+    assert(sodium_bin2base64((char *) guard_page, 1, guard_page, 1,
                              sodium_base64_VARIANT_ORIGINAL) == NULL);
     exit(1);
 }
@@ -96,7 +97,8 @@ sigabrt_handler_7(int sig)
 {
     (void) sig;
     signal(SIGABRT, sigabrt_handler_8);
-    assert(sodium_bin2base64(guard_page, 1, guard_page, 1, -1) == NULL);
+    assert(sodium_bin2base64((char *) guard_page, 1,
+                             guard_page, 1, -1) == NULL);
     exit(1);
 }
 

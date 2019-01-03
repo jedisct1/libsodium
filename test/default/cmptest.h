@@ -35,7 +35,7 @@
 
 int xmain(void);
 
-static void *guard_page;
+static unsigned char *guard_page;
 
 #ifdef BENCHMARKS
 
@@ -167,9 +167,9 @@ static FILE *fp_res;
 
 int main(void)
 {
-    FILE *fp_out;
-    void *_guard_page;
-    int   c;
+    FILE          *fp_out;
+    unsigned char *_guard_page;
+    int           c;
 
     if ((fp_res = fopen(TEST_NAME_RES, "w+")) == NULL) {
         perror("fopen(" TEST_NAME_RES ")");
@@ -178,11 +178,11 @@ int main(void)
     if (sodium_init() != 0) {
         return 99;
     }
-    if ((_guard_page = sodium_malloc(0)) == NULL) {
+    if ((_guard_page = (unsigned char *) sodium_malloc(0)) == NULL) {
         perror("sodium_malloc()");
         return 99;
     }
-    guard_page = (void *) (((unsigned char *) _guard_page) + 1);
+    guard_page = _guard_page + 1;
     if (xmain() != 0) {
         return 99;
     }
