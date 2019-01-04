@@ -43,7 +43,7 @@ const char *crypto_generichash_primitive(void);
 
 /*
  * Important when writing bindings for other programming languages:
- * the state address *must* be 64-bytes aligned.
+ * the state address should be 64-bytes aligned.
  */
 typedef crypto_generichash_blake2b_state crypto_generichash_state;
 
