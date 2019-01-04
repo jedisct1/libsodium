@@ -10,7 +10,6 @@ module; fall back to Javascript on these.
 counterpart.
  - Added a workaround for Visual Studio 2010 bug causing CPU features
 not to be detected.
- - The library now enables compilation with retpoline by default.
  - Portability improvements.
  - Test vectors from Project Wycheproof have been added.
  - New low-level APIs for arithmetic mod the order of the prime order group:

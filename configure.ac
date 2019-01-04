@@ -149,6 +149,17 @@ AC_ARG_WITH(ctgrind,
   ])
 ])
 
+AC_ARG_ENABLE(retpoline,
+[AS_HELP_STRING(--enable-retpoline,Use return trampolines for indirect calls)],
+[AS_IF([test "x$enableval" = "xyes"], [
+  AX_CHECK_COMPILE_FLAG([-mindirect-branch=thunk-inline],
+    [CFLAGS="$CFLAGS -mindirect-branch=thunk-inline"],
+    [AX_CHECK_COMPILE_FLAG([-mretpoline], [CFLAGS="$CFLAGS -mretpoline"])]
+  )
+  AX_CHECK_COMPILE_FLAG([-mindirect-branch-register])
+  ])
+])
+
 ENABLE_CWFLAGS=no
 AC_ARG_ENABLE(debug,
 [AS_HELP_STRING(--enable-debug,For maintainers only - please do not use)],
@@ -195,13 +206,6 @@ AC_CHECK_DEFINE([__native_client__], [NATIVECLIENT="yes"], [])
 AC_CHECK_DEFINE([_FORTIFY_SOURCE], [], [
   AX_CHECK_COMPILE_FLAG([-D_FORTIFY_SOURCE=2],
     [CPPFLAGS="$CPPFLAGS -D_FORTIFY_SOURCE=2"])
-])
-
-AS_IF([test "x$EMSCRIPTEN" = "x" -a "$host_os" != "pnacl"], [
-  AX_CHECK_COMPILE_FLAG([-mindirect-branch=thunk],
-    [CFLAGS="$CFLAGS -mindirect-branch=thunk"],
-    [AX_CHECK_COMPILE_FLAG([-mretpoline], [CFLAGS="$CFLAGS -mretpoline"])]
-  )
 ])
 
 AX_CHECK_COMPILE_FLAG([-fvisibility=hidden],
