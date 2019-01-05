@@ -98,7 +98,8 @@ blake2b_init0(blake2b_state *S)
         S->h[i] = blake2b_IV[i];
     }
     /* zero everything between .t and .last_node */
-    memset(S->t, 0, offsetof(blake2b_state, last_node) + sizeof(S->last_node)
+    memset((void *) &S->t, 0,
+           offsetof(blake2b_state, last_node) + sizeof(S->last_node)
            - offsetof(blake2b_state, t));
     return 0;
 }
