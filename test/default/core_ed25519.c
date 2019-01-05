@@ -211,7 +211,7 @@ main(void)
         assert(p[i] == 0);
     }
 
-    hex = sodium_malloc(crypto_core_ed25519_SCALARBYTES * 2 + 1);
+    hex = (char *) sodium_malloc(crypto_core_ed25519_SCALARBYTES * 2 + 1);
 
     for (i = 0; i < crypto_core_ed25519_SCALARBYTES; i++) {
         sc[i] = 255 - i;
@@ -234,7 +234,7 @@ main(void)
     if (crypto_core_ed25519_scalar_invert(sc, sc) != 0) {
         printf("crypto_core_ed25519_scalar_invert() failed\n");
     }
-    hex = sodium_malloc(crypto_core_ed25519_SCALARBYTES * 2 + 1);
+
     sodium_bin2hex(hex, crypto_core_ed25519_SCALARBYTES * 2 + 1,
                    sc, crypto_core_ed25519_SCALARBYTES);
     printf("inv3: %s\n", hex);
@@ -291,16 +291,20 @@ main(void)
                    sc, crypto_core_ed25519_SCALARBYTES);
     printf("comp4: %s\n", hex);
 
-    sc2 = sodium_malloc(crypto_core_ed25519_SCALARBYTES);
-    sc3 = sodium_malloc(crypto_core_ed25519_SCALARBYTES);
-    randombytes_buf(sc, crypto_core_ed25519_SCALARBYTES);
-    randombytes_buf(sc2, crypto_core_ed25519_SCALARBYTES);
-    crypto_core_ed25519_scalar_add(sc3, sc, sc2);
-    assert(!sodium_is_zero(sc, crypto_core_ed25519_SCALARBYTES));
-    crypto_core_ed25519_scalar_sub(sc3, sc3, sc2);
-    assert(!sodium_is_zero(sc, crypto_core_ed25519_SCALARBYTES));
-    crypto_core_ed25519_scalar_sub(sc3, sc3, sc);
-    assert(sodium_is_zero(sc3, crypto_core_ed25519_SCALARBYTES));
+    sc2 = (unsigned char *) sodium_malloc(crypto_core_ed25519_SCALARBYTES);
+    sc3 = (unsigned char *) sodium_malloc(crypto_core_ed25519_SCALARBYTES);
+    for (i = 0; i < 1000; i++) {
+        randombytes_buf(sc, crypto_core_ed25519_SCALARBYTES);
+        randombytes_buf(sc2, crypto_core_ed25519_SCALARBYTES);
+        sc[crypto_core_ed25519_SCALARBYTES - 1] &= 0x7f;
+        sc2[crypto_core_ed25519_SCALARBYTES - 1] &= 0x7f;
+        crypto_core_ed25519_scalar_add(sc3, sc, sc2);
+        assert(!sodium_is_zero(sc, crypto_core_ed25519_SCALARBYTES));
+        crypto_core_ed25519_scalar_sub(sc3, sc3, sc2);
+        assert(!sodium_is_zero(sc, crypto_core_ed25519_SCALARBYTES));
+        crypto_core_ed25519_scalar_sub(sc3, sc3, sc);
+        assert(sodium_is_zero(sc3, crypto_core_ed25519_SCALARBYTES));
+    }
 
     memset(sc, 0x69, crypto_core_ed25519_UNIFORMBYTES);
     memset(sc2, 0x42, crypto_core_ed25519_UNIFORMBYTES);
