@@ -312,13 +312,27 @@ main(void)
     crypto_core_ed25519_scalar_add(sc, sc2, sc);
     sodium_bin2hex(hex, crypto_core_ed25519_SCALARBYTES * 2 + 1,
                    sc, crypto_core_ed25519_SCALARBYTES);
-    printf("add: %s\n", hex);
+    printf("add1: %s\n", hex);
 
     crypto_core_ed25519_scalar_sub(sc, sc2, sc);
     crypto_core_ed25519_scalar_sub(sc, sc, sc2);
     sodium_bin2hex(hex, crypto_core_ed25519_SCALARBYTES * 2 + 1,
                    sc, crypto_core_ed25519_SCALARBYTES);
-    printf("sub: %s\n", hex);
+    printf("sub1: %s\n", hex);
+
+    memset(sc, 0xcd, crypto_core_ed25519_UNIFORMBYTES);
+    memset(sc2, 0x42, crypto_core_ed25519_UNIFORMBYTES);
+    crypto_core_ed25519_scalar_add(sc, sc, sc2);
+    crypto_core_ed25519_scalar_add(sc, sc2, sc);
+    sodium_bin2hex(hex, crypto_core_ed25519_SCALARBYTES * 2 + 1,
+                   sc, crypto_core_ed25519_SCALARBYTES);
+    printf("add2: %s\n", hex);
+
+    crypto_core_ed25519_scalar_sub(sc, sc2, sc);
+    crypto_core_ed25519_scalar_sub(sc, sc, sc2);
+    sodium_bin2hex(hex, crypto_core_ed25519_SCALARBYTES * 2 + 1,
+                   sc, crypto_core_ed25519_SCALARBYTES);
+    printf("sub2: %s\n", hex);
 
     sodium_free(hex);
     sodium_free(sc64);
