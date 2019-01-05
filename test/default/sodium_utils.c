@@ -155,6 +155,18 @@ main(void)
     printf("%s\n",
            sodium_bin2hex(nonce_hex, sizeof nonce_hex, nonce, sizeof nonce));
 
+    randombytes_buf(buf1, 64U);
+    randombytes_buf(buf2, 64U);
+    memset(buf_add, 0, 64U);
+    sodium_add(buf_add, buf1, 64U);
+    assert(!sodium_is_zero(buf_add, 64U));
+    sodium_add(buf_add, buf2, 64U);
+    assert(!sodium_is_zero(buf_add, 64U));
+    sodium_sub(buf_add, buf1, 64U);
+    assert(!sodium_is_zero(buf_add, 64U));
+    sodium_sub(buf_add, buf2, 64U);
+    assert(sodium_is_zero(buf_add, 64U));
+
     for (i = 0; i < 2000U; i++) {
         bin_len = randombytes_uniform(200U);
         blocksize = 1U + randombytes_uniform(500U);
