@@ -46,8 +46,9 @@ main(void)
 {
     unsigned char *h;
     unsigned char *p, *p2, *p3;
-    unsigned char *sc;
+    unsigned char *sc, *sc2, *sc3;
     unsigned char *sc64;
+    char          *hex;
     unsigned int   i, j;
 
     h = (unsigned char *) sodium_malloc(crypto_core_ed25519_UNIFORMBYTES);
@@ -210,7 +211,115 @@ main(void)
         assert(p[i] == 0);
     }
 
+    hex = sodium_malloc(crypto_core_ed25519_SCALARBYTES * 2 + 1);
+
+    for (i = 0; i < crypto_core_ed25519_SCALARBYTES; i++) {
+        sc[i] = 255 - i;
+    }
+    if (crypto_core_ed25519_scalar_invert(sc, sc) != 0) {
+        printf("crypto_core_ed25519_scalar_invert() failed\n");
+    }
+    sodium_bin2hex(hex, crypto_core_ed25519_SCALARBYTES * 2 + 1,
+                   sc, crypto_core_ed25519_SCALARBYTES);
+    printf("inv1: %s\n", hex);
+    if (crypto_core_ed25519_scalar_invert(sc, sc) != 0) {
+        printf("crypto_core_ed25519_scalar_invert() failed\n");
+    }
+    sodium_bin2hex(hex, crypto_core_ed25519_SCALARBYTES * 2 + 1,
+                   sc, crypto_core_ed25519_SCALARBYTES);
+    printf("inv2: %s\n", hex);
+    for (i = 0; i < crypto_core_ed25519_SCALARBYTES; i++) {
+        sc[i] = 32 - i;
+    }
+    if (crypto_core_ed25519_scalar_invert(sc, sc) != 0) {
+        printf("crypto_core_ed25519_scalar_invert() failed\n");
+    }
+    hex = sodium_malloc(crypto_core_ed25519_SCALARBYTES * 2 + 1);
+    sodium_bin2hex(hex, crypto_core_ed25519_SCALARBYTES * 2 + 1,
+                   sc, crypto_core_ed25519_SCALARBYTES);
+    printf("inv3: %s\n", hex);
+    if (crypto_core_ed25519_scalar_invert(sc, sc) != 0) {
+        printf("crypto_core_ed25519_scalar_invert() failed\n");
+    }
+    sodium_bin2hex(hex, crypto_core_ed25519_SCALARBYTES * 2 + 1,
+                   sc, crypto_core_ed25519_SCALARBYTES);
+    printf("inv4: %s\n", hex);
+
+    for (i = 0; i < crypto_core_ed25519_SCALARBYTES; i++) {
+        sc[i] = 255 - i;
+    }
+    crypto_core_ed25519_scalar_negate(sc, sc);
+    sodium_bin2hex(hex, crypto_core_ed25519_SCALARBYTES * 2 + 1,
+                   sc, crypto_core_ed25519_SCALARBYTES);
+    printf("neg1: %s\n", hex);
+    crypto_core_ed25519_scalar_negate(sc, sc);
+    sodium_bin2hex(hex, crypto_core_ed25519_SCALARBYTES * 2 + 1,
+                   sc, crypto_core_ed25519_SCALARBYTES);
+    printf("neg2: %s\n", hex);
+    for (i = 0; i < crypto_core_ed25519_SCALARBYTES; i++) {
+        sc[i] = 32 - i;
+    }
+    crypto_core_ed25519_scalar_negate(sc, sc);
+    sodium_bin2hex(hex, crypto_core_ed25519_SCALARBYTES * 2 + 1,
+                   sc, crypto_core_ed25519_SCALARBYTES);
+    printf("neg3: %s\n", hex);
+    crypto_core_ed25519_scalar_negate(sc, sc);
+    sodium_bin2hex(hex, crypto_core_ed25519_SCALARBYTES * 2 + 1,
+                   sc, crypto_core_ed25519_SCALARBYTES);
+    printf("neg4: %s\n", hex);
+
+    for (i = 0; i < crypto_core_ed25519_SCALARBYTES; i++) {
+        sc[i] = 255 - i;
+    }
+    crypto_core_ed25519_scalar_complement(sc, sc);
+    sodium_bin2hex(hex, crypto_core_ed25519_SCALARBYTES * 2 + 1,
+                   sc, crypto_core_ed25519_SCALARBYTES);
+    printf("comp1: %s\n", hex);
+    crypto_core_ed25519_scalar_complement(sc, sc);
+    sodium_bin2hex(hex, crypto_core_ed25519_SCALARBYTES * 2 + 1,
+                   sc, crypto_core_ed25519_SCALARBYTES);
+    printf("comp2: %s\n", hex);
+    for (i = 0; i < crypto_core_ed25519_SCALARBYTES; i++) {
+        sc[i] = 32 - i;
+    }
+    crypto_core_ed25519_scalar_complement(sc, sc);
+    sodium_bin2hex(hex, crypto_core_ed25519_SCALARBYTES * 2 + 1,
+                   sc, crypto_core_ed25519_SCALARBYTES);
+    printf("comp3: %s\n", hex);
+    crypto_core_ed25519_scalar_complement(sc, sc);
+    sodium_bin2hex(hex, crypto_core_ed25519_SCALARBYTES * 2 + 1,
+                   sc, crypto_core_ed25519_SCALARBYTES);
+    printf("comp4: %s\n", hex);
+
+    sc2 = sodium_malloc(crypto_core_ed25519_SCALARBYTES);
+    sc3 = sodium_malloc(crypto_core_ed25519_SCALARBYTES);
+    randombytes_buf(sc, crypto_core_ed25519_SCALARBYTES);
+    randombytes_buf(sc2, crypto_core_ed25519_SCALARBYTES);
+    crypto_core_ed25519_scalar_add(sc3, sc, sc2);
+    assert(!sodium_is_zero(sc, crypto_core_ed25519_SCALARBYTES));
+    crypto_core_ed25519_scalar_sub(sc3, sc3, sc2);
+    assert(!sodium_is_zero(sc, crypto_core_ed25519_SCALARBYTES));
+    crypto_core_ed25519_scalar_sub(sc3, sc3, sc);
+    assert(sodium_is_zero(sc3, crypto_core_ed25519_SCALARBYTES));
+
+    memset(sc, 0x69, crypto_core_ed25519_UNIFORMBYTES);
+    memset(sc2, 0x42, crypto_core_ed25519_UNIFORMBYTES);
+    crypto_core_ed25519_scalar_add(sc, sc, sc2);
+    crypto_core_ed25519_scalar_add(sc, sc2, sc);
+    sodium_bin2hex(hex, crypto_core_ed25519_SCALARBYTES * 2 + 1,
+                   sc, crypto_core_ed25519_SCALARBYTES);
+    printf("add: %s\n", hex);
+
+    crypto_core_ed25519_scalar_sub(sc, sc2, sc);
+    crypto_core_ed25519_scalar_sub(sc, sc, sc2);
+    sodium_bin2hex(hex, crypto_core_ed25519_SCALARBYTES * 2 + 1,
+                   sc, crypto_core_ed25519_SCALARBYTES);
+    printf("sub: %s\n", hex);
+
+    sodium_free(hex);
     sodium_free(sc64);
+    sodium_free(sc3);
+    sodium_free(sc2);
     sodium_free(sc);
     sodium_free(p3);
     sodium_free(p2);
