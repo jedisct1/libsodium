@@ -211,9 +211,6 @@ AC_CHECK_DEFINE([_FORTIFY_SOURCE], [], [
 AX_CHECK_COMPILE_FLAG([-fvisibility=hidden],
   [CFLAGS="$CFLAGS -fvisibility=hidden"])
 
-AX_CHECK_COMPILE_FLAG([-ftls-model=global-dynamic],
-  [CFLAGS="$CFLAGS -ftls-model=global-dynamic"])
-
 AS_CASE([$host_os], [cygwin*|mingw*|msys|pw32*|cegcc*], [ ], [
   AX_CHECK_COMPILE_FLAG([-fPIC], [CFLAGS="$CFLAGS -fPIC"])
 ])
@@ -340,7 +337,9 @@ AX_CHECK_CATCHABLE_SEGV
 AX_CHECK_CATCHABLE_ABRT
 
 AS_IF([test "x$with_threads" = "xyes"], [
-  AX_TLS([AC_MSG_RESULT(thread local storage is supported)],
+  AX_TLS([AC_MSG_RESULT(thread local storage is supported)
+          AX_CHECK_COMPILE_FLAG([-ftls-model=global-dynamic],
+            [CFLAGS="$CFLAGS -ftls-model=global-dynamic"])],
          [AC_MSG_RESULT(thread local storage is not supported)]) ])
 
 LT_INIT
