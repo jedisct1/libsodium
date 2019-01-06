@@ -43,10 +43,13 @@ main(void)
 
     memset(n, 0, crypto_scalarmult_ed25519_SCALARBYTES);
     if (crypto_scalarmult_ed25519_base(q, n) != -1) {
-        printf("crypto_scalarmult_ed25519_base(0) failed\n");
+        printf("crypto_scalarmult_ed25519_base(0) passed\n");
     }
     if (crypto_scalarmult_ed25519(q2, n, p) != -1) {
         printf("crypto_scalarmult_ed25519(0) passed\n");
+    }
+    if (crypto_scalarmult_ed25519_noclamp(q2, n, p) != -1) {
+        printf("crypto_scalarmult_ed25519_noclamp(0) passed\n");
     }
 
     n[0] = 1;
@@ -54,7 +57,10 @@ main(void)
         printf("crypto_scalarmult_ed25519_base() failed\n");
     }
     if (crypto_scalarmult_ed25519(q2, n, p) != 0) {
-        printf("crypto_scalarmult_ed25519() passed\n");
+        printf("crypto_scalarmult_ed25519() failed\n");
+    }
+    if (crypto_scalarmult_ed25519_noclamp(q2, n, p) != 0) {
+        printf("crypto_scalarmult_ed25519_noclamp() failed\n");
     }
 
     if (crypto_scalarmult_ed25519(q, n, non_canonical_p) != -1) {
@@ -67,13 +73,39 @@ main(void)
         printf("crypto_scalarmult_ed25519() failed\n");
     }
 
+    n[0] = 9;
+    if (crypto_scalarmult_ed25519(q, n, p) != 0) {
+        printf("crypto_scalarmult_ed25519() failed\n");
+    }
+    if (crypto_scalarmult_ed25519_noclamp(q2, n, p) != 0) {
+        printf("crypto_scalarmult_ed25519_noclamp() failed\n");
+    }
+    if (memcmp(q, q2, crypto_scalarmult_ed25519_BYTES) == 0) {
+        printf("clamping not applied\n");
+    }
+    n[0] = 8;
+    n[31] = 64;
+    if (crypto_scalarmult_ed25519_noclamp(q2, n, p) != 0) {
+        printf("crypto_scalarmult_ed25519_noclamp() failed\n");
+    }
+    if (memcmp(q, q2, crypto_scalarmult_ed25519_BYTES) != 0) {
+        printf("inconsistent clamping\n");
+    }
+
     memset(p, 0, crypto_scalarmult_ed25519_BYTES);
     if (crypto_scalarmult_ed25519(q, n, p) != -1) {
         printf("crypto_scalarmult_ed25519() didn't fail\n");
     }
+    if (crypto_scalarmult_ed25519_noclamp(q, n, p) != -1) {
+        printf("crypto_scalarmult_ed25519_noclamp() didn't fail\n");
+    }
+
     n[0] = 8;
     if (crypto_scalarmult_ed25519(q, n, p) != -1) {
         printf("crypto_scalarmult_ed25519() didn't fail\n");
+    }
+    if (crypto_scalarmult_ed25519_noclamp(q, n, p) != -1) {
+        printf("crypto_scalarmult_ed25519_noclamp() didn't fail\n");
     }
 
     sodium_free(q2);

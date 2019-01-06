@@ -84,7 +84,7 @@ int crypto_pwhash_scryptsalsa208sha256(unsigned char * const out,
                                        const unsigned char * const salt,
                                        unsigned long long opslimit,
                                        size_t memlimit)
-            __attribute__ ((warn_unused_result));
+            __attribute__ ((warn_unused_result)) __attribute__ ((nonnull));
 
 SODIUM_EXPORT
 int crypto_pwhash_scryptsalsa208sha256_str(char out[crypto_pwhash_scryptsalsa208sha256_STRBYTES],
@@ -92,26 +92,26 @@ int crypto_pwhash_scryptsalsa208sha256_str(char out[crypto_pwhash_scryptsalsa208
                                            unsigned long long passwdlen,
                                            unsigned long long opslimit,
                                            size_t memlimit)
-            __attribute__ ((warn_unused_result));
+            __attribute__ ((warn_unused_result)) __attribute__ ((nonnull));
 
 SODIUM_EXPORT
 int crypto_pwhash_scryptsalsa208sha256_str_verify(const char str[crypto_pwhash_scryptsalsa208sha256_STRBYTES],
                                                   const char * const passwd,
                                                   unsigned long long passwdlen)
-            __attribute__ ((warn_unused_result));
+            __attribute__ ((warn_unused_result)) __attribute__ ((nonnull));
 
 SODIUM_EXPORT
 int crypto_pwhash_scryptsalsa208sha256_ll(const uint8_t * passwd, size_t passwdlen,
                                           const uint8_t * salt, size_t saltlen,
                                           uint64_t N, uint32_t r, uint32_t p,
                                           uint8_t * buf, size_t buflen)
-            __attribute__ ((warn_unused_result));
+            __attribute__ ((warn_unused_result)) __attribute__ ((nonnull));
 
 SODIUM_EXPORT
 int crypto_pwhash_scryptsalsa208sha256_str_needs_rehash(const char str[crypto_pwhash_scryptsalsa208sha256_STRBYTES],
                                                         unsigned long long opslimit,
                                                         size_t memlimit)
-            __attribute__ ((warn_unused_result));
+            __attribute__ ((warn_unused_result))  __attribute__ ((nonnull));
 
 #ifdef __cplusplus
 }

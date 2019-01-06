@@ -9,10 +9,10 @@ if (bytes > 0) {
 
     unsigned int i;
 
-    x_0 = _mm_loadu_si128((__m128i*) (x + 0));
-    x_1 = _mm_loadu_si128((__m128i*) (x + 4));
-    x_2 = _mm_loadu_si128((__m128i*) (x + 8));
-    x_3 = _mm_loadu_si128((__m128i*) (x + 12));
+    x_0 = _mm_loadu_si128((const __m128i*) (x + 0));
+    x_1 = _mm_loadu_si128((const __m128i*) (x + 4));
+    x_2 = _mm_loadu_si128((const __m128i*) (x + 8));
+    x_3 = _mm_loadu_si128((const __m128i*) (x + 12));
 
     for (i = 0; i < ROUNDS; i += 2) {
         x_0 = _mm_add_epi32(x_0, x_1);
@@ -69,10 +69,10 @@ if (bytes > 0) {
         t_1 = _mm_srli_epi32(t_1, 25);
         x_1 = _mm_xor_si128(x_1, t_1);
     }
-    x_0 = _mm_add_epi32(x_0, _mm_loadu_si128((__m128i*) (x + 0)));
-    x_1 = _mm_add_epi32(x_1, _mm_loadu_si128((__m128i*) (x + 4)));
-    x_2 = _mm_add_epi32(x_2, _mm_loadu_si128((__m128i*) (x + 8)));
-    x_3 = _mm_add_epi32(x_3, _mm_loadu_si128((__m128i*) (x + 12)));
+    x_0 = _mm_add_epi32(x_0, _mm_loadu_si128((const __m128i*) (x + 0)));
+    x_1 = _mm_add_epi32(x_1, _mm_loadu_si128((const __m128i*) (x + 4)));
+    x_2 = _mm_add_epi32(x_2, _mm_loadu_si128((const __m128i*) (x + 8)));
+    x_3 = _mm_add_epi32(x_3, _mm_loadu_si128((const __m128i*) (x + 12)));
     _mm_storeu_si128((__m128i*) (partialblock + 0), x_0);
     _mm_storeu_si128((__m128i*) (partialblock + 16), x_1);
     _mm_storeu_si128((__m128i*) (partialblock + 32), x_2);

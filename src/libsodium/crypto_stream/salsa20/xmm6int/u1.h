@@ -1,8 +1,8 @@
 while (bytes >= 64) {
-    __m128i diag0 = _mm_loadu_si128((__m128i *) (x + 0));
-    __m128i diag1 = _mm_loadu_si128((__m128i *) (x + 4));
-    __m128i diag2 = _mm_loadu_si128((__m128i *) (x + 8));
-    __m128i diag3 = _mm_loadu_si128((__m128i *) (x + 12));
+    __m128i diag0 = _mm_loadu_si128((const __m128i *) (x + 0));
+    __m128i diag1 = _mm_loadu_si128((const __m128i *) (x + 4));
+    __m128i diag2 = _mm_loadu_si128((const __m128i *) (x + 8));
+    __m128i diag3 = _mm_loadu_si128((const __m128i *) (x + 12));
     __m128i a0, a1, a2, a3, a4, a5, a6, a7;
     __m128i b0, b1, b2, b3, b4, b5, b6, b7;
 
@@ -157,10 +157,10 @@ while (bytes >= 64) {
         diag0 = _mm_xor_si128(diag0, b7);
     }
 
-    diag0 = _mm_add_epi32(diag0, _mm_loadu_si128((__m128i *) (x + 0)));
-    diag1 = _mm_add_epi32(diag1, _mm_loadu_si128((__m128i *) (x + 4)));
-    diag2 = _mm_add_epi32(diag2, _mm_loadu_si128((__m128i *) (x + 8)));
-    diag3 = _mm_add_epi32(diag3, _mm_loadu_si128((__m128i *) (x + 12)));
+    diag0 = _mm_add_epi32(diag0, _mm_loadu_si128((const __m128i *) (x + 0)));
+    diag1 = _mm_add_epi32(diag1, _mm_loadu_si128((const __m128i *) (x + 4)));
+    diag2 = _mm_add_epi32(diag2, _mm_loadu_si128((const __m128i *) (x + 8)));
+    diag3 = _mm_add_epi32(diag3, _mm_loadu_si128((const __m128i *) (x + 12)));
 
 #define ONEQUAD_SHUFFLE(A, B, C, D)                      \
     do {                                                 \
@@ -172,10 +172,10 @@ while (bytes >= 64) {
         diag1          = _mm_shuffle_epi32(diag1, 0x39); \
         diag2          = _mm_shuffle_epi32(diag2, 0x39); \
         diag3          = _mm_shuffle_epi32(diag3, 0x39); \
-        in##A ^= *(uint32_t *) (m + (A * 4));            \
-        in##B ^= *(uint32_t *) (m + (B * 4));            \
-        in##C ^= *(uint32_t *) (m + (C * 4));            \
-        in##D ^= *(uint32_t *) (m + (D * 4));            \
+        in##A ^= *(const uint32_t *) (m + (A * 4));      \
+        in##B ^= *(const uint32_t *) (m + (B * 4));      \
+        in##C ^= *(const uint32_t *) (m + (C * 4));      \
+        in##D ^= *(const uint32_t *) (m + (D * 4));      \
         *(uint32_t *) (c + (A * 4)) = in##A;             \
         *(uint32_t *) (c + (B * 4)) = in##B;             \
         *(uint32_t *) (c + (C * 4)) = in##C;             \

@@ -12,22 +12,22 @@ if (bytes >= 256) {
 
     /* element broadcast immediate for _mm_shuffle_epi32 are in order:
        0x00, 0x55, 0xaa, 0xff */
-    z0  = _mm_loadu_si128((__m128i *) (x + 0));
+    z0  = _mm_loadu_si128((const __m128i *) (x + 0));
     z5  = _mm_shuffle_epi32(z0, 0x55);
     z10 = _mm_shuffle_epi32(z0, 0xaa);
     z15 = _mm_shuffle_epi32(z0, 0xff);
     z0  = _mm_shuffle_epi32(z0, 0x00);
-    z1  = _mm_loadu_si128((__m128i *) (x + 4));
+    z1  = _mm_loadu_si128((const __m128i *) (x + 4));
     z6  = _mm_shuffle_epi32(z1, 0xaa);
     z11 = _mm_shuffle_epi32(z1, 0xff);
     z12 = _mm_shuffle_epi32(z1, 0x00);
     z1  = _mm_shuffle_epi32(z1, 0x55);
-    z2  = _mm_loadu_si128((__m128i *) (x + 8));
+    z2  = _mm_loadu_si128((const __m128i *) (x + 8));
     z7  = _mm_shuffle_epi32(z2, 0xff);
     z13 = _mm_shuffle_epi32(z2, 0x55);
     z2  = _mm_shuffle_epi32(z2, 0xaa);
     /* no z8 -> first half of the nonce, will fill later */
-    z3  = _mm_loadu_si128((__m128i *) (x + 12));
+    z3  = _mm_loadu_si128((const __m128i *) (x + 12));
     z4  = _mm_shuffle_epi32(z3, 0x00);
     z14 = _mm_shuffle_epi32(z3, 0xaa);
     z3  = _mm_shuffle_epi32(z3, 0xff);
@@ -498,26 +498,26 @@ if (bytes >= 256) {
 
 /* store data ; this macro first transpose data in-registers, and then store
  * them in memory. much faster with icc. */
-#define ONEQUAD_TRANSPOSE(A, B, C, D)                                   \
-    z##A = _mm_add_epi32(z##A, orig##A);                                \
-    z##B = _mm_add_epi32(z##B, orig##B);                                \
-    z##C = _mm_add_epi32(z##C, orig##C);                                \
-    z##D = _mm_add_epi32(z##D, orig##D);                                \
-    y##A = _mm_unpacklo_epi32(z##A, z##B);                              \
-    y##B = _mm_unpacklo_epi32(z##C, z##D);                              \
-    y##C = _mm_unpackhi_epi32(z##A, z##B);                              \
-    y##D = _mm_unpackhi_epi32(z##C, z##D);                              \
-    z##A = _mm_unpacklo_epi64(y##A, y##B);                              \
-    z##B = _mm_unpackhi_epi64(y##A, y##B);                              \
-    z##C = _mm_unpacklo_epi64(y##C, y##D);                              \
-    z##D = _mm_unpackhi_epi64(y##C, y##D);                              \
-    y##A = _mm_xor_si128(z##A, _mm_loadu_si128((__m128i *) (m + 0)));   \
-    _mm_storeu_si128((__m128i *) (c + 0), y##A);                        \
-    y##B = _mm_xor_si128(z##B, _mm_loadu_si128((__m128i *) (m + 64)));  \
-    _mm_storeu_si128((__m128i *) (c + 64), y##B);                       \
-    y##C = _mm_xor_si128(z##C, _mm_loadu_si128((__m128i *) (m + 128))); \
-    _mm_storeu_si128((__m128i *) (c + 128), y##C);                      \
-    y##D = _mm_xor_si128(z##D, _mm_loadu_si128((__m128i *) (m + 192))); \
+#define ONEQUAD_TRANSPOSE(A, B, C, D)                                         \
+    z##A = _mm_add_epi32(z##A, orig##A);                                      \
+    z##B = _mm_add_epi32(z##B, orig##B);                                      \
+    z##C = _mm_add_epi32(z##C, orig##C);                                      \
+    z##D = _mm_add_epi32(z##D, orig##D);                                      \
+    y##A = _mm_unpacklo_epi32(z##A, z##B);                                    \
+    y##B = _mm_unpacklo_epi32(z##C, z##D);                                    \
+    y##C = _mm_unpackhi_epi32(z##A, z##B);                                    \
+    y##D = _mm_unpackhi_epi32(z##C, z##D);                                    \
+    z##A = _mm_unpacklo_epi64(y##A, y##B);                                    \
+    z##B = _mm_unpackhi_epi64(y##A, y##B);                                    \
+    z##C = _mm_unpacklo_epi64(y##C, y##D);                                    \
+    z##D = _mm_unpackhi_epi64(y##C, y##D);                                    \
+    y##A = _mm_xor_si128(z##A, _mm_loadu_si128((const __m128i *) (m + 0)));   \
+    _mm_storeu_si128((__m128i *) (c + 0), y##A);                              \
+    y##B = _mm_xor_si128(z##B, _mm_loadu_si128((const __m128i *) (m + 64)));  \
+    _mm_storeu_si128((__m128i *) (c + 64), y##B);                             \
+    y##C = _mm_xor_si128(z##C, _mm_loadu_si128((const __m128i *) (m + 128))); \
+    _mm_storeu_si128((__m128i *) (c + 128), y##C);                            \
+    y##D = _mm_xor_si128(z##D, _mm_loadu_si128((const __m128i *) (m + 192))); \
     _mm_storeu_si128((__m128i *) (c + 192), y##D)
 
 #define ONEQUAD(A, B, C, D) ONEQUAD_TRANSPOSE(A, B, C, D)

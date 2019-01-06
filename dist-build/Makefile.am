@@ -14,4 +14,5 @@ EXTRA_DIST = \
 	msys2-win64.sh \
 	nativeclient-pnacl.sh \
 	nativeclient-x86.sh \
-	nativeclient-x86_64.sh
+	nativeclient-x86_64.sh \
+	watchos.sh

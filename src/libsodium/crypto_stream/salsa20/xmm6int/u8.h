@@ -361,45 +361,45 @@ if (bytes >= 512) {
 
 /* store data ; this macro first transpose data in-registers, and then store
  * them in memory. much faster with icc. */
-#define ONEQUAD_TRANSPOSE(A, B, C, D)                              \
-    {                                                              \
-        __m128i t0, t1, t2, t3;                                    \
-        z##A = _mm256_add_epi32(z##A, orig##A);                    \
-        z##B = _mm256_add_epi32(z##B, orig##B);                    \
-        z##C = _mm256_add_epi32(z##C, orig##C);                    \
-        z##D = _mm256_add_epi32(z##D, orig##D);                    \
-        y##A = _mm256_unpacklo_epi32(z##A, z##B);                  \
-        y##B = _mm256_unpacklo_epi32(z##C, z##D);                  \
-        y##C = _mm256_unpackhi_epi32(z##A, z##B);                  \
-        y##D = _mm256_unpackhi_epi32(z##C, z##D);                  \
-        z##A = _mm256_unpacklo_epi64(y##A, y##B);                  \
-        z##B = _mm256_unpackhi_epi64(y##A, y##B);                  \
-        z##C = _mm256_unpacklo_epi64(y##C, y##D);                  \
-        z##D = _mm256_unpackhi_epi64(y##C, y##D);                  \
-        t0   = _mm_xor_si128(_mm256_extracti128_si256(z##A, 0),    \
-                           _mm_loadu_si128((__m128i*) (m + 0)));   \
-        _mm_storeu_si128((__m128i*) (c + 0), t0);                  \
-        t1 = _mm_xor_si128(_mm256_extracti128_si256(z##B, 0),      \
-                           _mm_loadu_si128((__m128i*) (m + 64)));  \
-        _mm_storeu_si128((__m128i*) (c + 64), t1);                 \
-        t2 = _mm_xor_si128(_mm256_extracti128_si256(z##C, 0),      \
-                           _mm_loadu_si128((__m128i*) (m + 128))); \
-        _mm_storeu_si128((__m128i*) (c + 128), t2);                \
-        t3 = _mm_xor_si128(_mm256_extracti128_si256(z##D, 0),      \
-                           _mm_loadu_si128((__m128i*) (m + 192))); \
-        _mm_storeu_si128((__m128i*) (c + 192), t3);                \
-        t0 = _mm_xor_si128(_mm256_extracti128_si256(z##A, 1),      \
-                           _mm_loadu_si128((__m128i*) (m + 256))); \
-        _mm_storeu_si128((__m128i*) (c + 256), t0);                \
-        t1 = _mm_xor_si128(_mm256_extracti128_si256(z##B, 1),      \
-                           _mm_loadu_si128((__m128i*) (m + 320))); \
-        _mm_storeu_si128((__m128i*) (c + 320), t1);                \
-        t2 = _mm_xor_si128(_mm256_extracti128_si256(z##C, 1),      \
-                           _mm_loadu_si128((__m128i*) (m + 384))); \
-        _mm_storeu_si128((__m128i*) (c + 384), t2);                \
-        t3 = _mm_xor_si128(_mm256_extracti128_si256(z##D, 1),      \
-                           _mm_loadu_si128((__m128i*) (m + 448))); \
-        _mm_storeu_si128((__m128i*) (c + 448), t3);                \
+#define ONEQUAD_TRANSPOSE(A, B, C, D)                                    \
+    {                                                                    \
+        __m128i t0, t1, t2, t3;                                          \
+        z##A = _mm256_add_epi32(z##A, orig##A);                          \
+        z##B = _mm256_add_epi32(z##B, orig##B);                          \
+        z##C = _mm256_add_epi32(z##C, orig##C);                          \
+        z##D = _mm256_add_epi32(z##D, orig##D);                          \
+        y##A = _mm256_unpacklo_epi32(z##A, z##B);                        \
+        y##B = _mm256_unpacklo_epi32(z##C, z##D);                        \
+        y##C = _mm256_unpackhi_epi32(z##A, z##B);                        \
+        y##D = _mm256_unpackhi_epi32(z##C, z##D);                        \
+        z##A = _mm256_unpacklo_epi64(y##A, y##B);                        \
+        z##B = _mm256_unpackhi_epi64(y##A, y##B);                        \
+        z##C = _mm256_unpacklo_epi64(y##C, y##D);                        \
+        z##D = _mm256_unpackhi_epi64(y##C, y##D);                        \
+        t0   = _mm_xor_si128(_mm256_extracti128_si256(z##A, 0),          \
+                           _mm_loadu_si128((const __m128i*) (m + 0))); \
+        _mm_storeu_si128((__m128i*) (c + 0), t0);                        \
+        t1 = _mm_xor_si128(_mm256_extracti128_si256(z##B, 0),            \
+                           _mm_loadu_si128((const __m128i*) (m + 64)));  \
+        _mm_storeu_si128((__m128i*) (c + 64), t1);                       \
+        t2 = _mm_xor_si128(_mm256_extracti128_si256(z##C, 0),            \
+                           _mm_loadu_si128((const __m128i*) (m + 128))); \
+        _mm_storeu_si128((__m128i*) (c + 128), t2);                      \
+        t3 = _mm_xor_si128(_mm256_extracti128_si256(z##D, 0),            \
+                           _mm_loadu_si128((const __m128i*) (m + 192))); \
+        _mm_storeu_si128((__m128i*) (c + 192), t3);                      \
+        t0 = _mm_xor_si128(_mm256_extracti128_si256(z##A, 1),            \
+                           _mm_loadu_si128((const __m128i*) (m + 256))); \
+        _mm_storeu_si128((__m128i*) (c + 256), t0);                      \
+        t1 = _mm_xor_si128(_mm256_extracti128_si256(z##B, 1),            \
+                           _mm_loadu_si128((const __m128i*) (m + 320))); \
+        _mm_storeu_si128((__m128i*) (c + 320), t1);                      \
+        t2 = _mm_xor_si128(_mm256_extracti128_si256(z##C, 1),            \
+                           _mm_loadu_si128((const __m128i*) (m + 384))); \
+        _mm_storeu_si128((__m128i*) (c + 384), t2);                      \
+        t3 = _mm_xor_si128(_mm256_extracti128_si256(z##D, 1),            \
+                           _mm_loadu_si128((const __m128i*) (m + 448))); \
+        _mm_storeu_si128((__m128i*) (c + 448), t3);                      \
     }
 
 #define ONEQUAD(A, B, C, D) ONEQUAD_TRANSPOSE(A, B, C, D)
@@ -420,41 +420,42 @@ if (bytes >= 512) {
         z##D = _mm256_unpackhi_epi64(y##C, y##D); \
     }
 
-#define ONEOCTO(A, B, C, D, A2, B2, C2, D2)                                     \
-    {                                                                           \
-        ONEQUAD_UNPCK(A, B, C, D);                                              \
-        ONEQUAD_UNPCK(A2, B2, C2, D2);                                          \
-        y##A  = _mm256_permute2x128_si256(z##A, z##A2, 0x20);                   \
-        y##A2 = _mm256_permute2x128_si256(z##A, z##A2, 0x31);                   \
-        y##B  = _mm256_permute2x128_si256(z##B, z##B2, 0x20);                   \
-        y##B2 = _mm256_permute2x128_si256(z##B, z##B2, 0x31);                   \
-        y##C  = _mm256_permute2x128_si256(z##C, z##C2, 0x20);                   \
-        y##C2 = _mm256_permute2x128_si256(z##C, z##C2, 0x31);                   \
-        y##D  = _mm256_permute2x128_si256(z##D, z##D2, 0x20);                   \
-        y##D2 = _mm256_permute2x128_si256(z##D, z##D2, 0x31);                   \
-        y##A  = _mm256_xor_si256(y##A, _mm256_loadu_si256((__m256i*) (m + 0))); \
-        y##B =                                                                  \
-            _mm256_xor_si256(y##B, _mm256_loadu_si256((__m256i*) (m + 64)));    \
-        y##C =                                                                  \
-            _mm256_xor_si256(y##C, _mm256_loadu_si256((__m256i*) (m + 128)));   \
-        y##D =                                                                  \
-            _mm256_xor_si256(y##D, _mm256_loadu_si256((__m256i*) (m + 192)));   \
-        y##A2 =                                                                 \
-            _mm256_xor_si256(y##A2, _mm256_loadu_si256((__m256i*) (m + 256)));  \
-        y##B2 =                                                                 \
-            _mm256_xor_si256(y##B2, _mm256_loadu_si256((__m256i*) (m + 320)));  \
-        y##C2 =                                                                 \
-            _mm256_xor_si256(y##C2, _mm256_loadu_si256((__m256i*) (m + 384)));  \
-        y##D2 =                                                                 \
-            _mm256_xor_si256(y##D2, _mm256_loadu_si256((__m256i*) (m + 448)));  \
-        _mm256_storeu_si256((__m256i*) (c + 0), y##A);                          \
-        _mm256_storeu_si256((__m256i*) (c + 64), y##B);                         \
-        _mm256_storeu_si256((__m256i*) (c + 128), y##C);                        \
-        _mm256_storeu_si256((__m256i*) (c + 192), y##D);                        \
-        _mm256_storeu_si256((__m256i*) (c + 256), y##A2);                       \
-        _mm256_storeu_si256((__m256i*) (c + 320), y##B2);                       \
-        _mm256_storeu_si256((__m256i*) (c + 384), y##C2);                       \
-        _mm256_storeu_si256((__m256i*) (c + 448), y##D2);                       \
+#define ONEOCTO(A, B, C, D, A2, B2, C2, D2)                                    \
+    {                                                                          \
+        ONEQUAD_UNPCK(A, B, C, D);                                             \
+        ONEQUAD_UNPCK(A2, B2, C2, D2);                                         \
+        y##A  = _mm256_permute2x128_si256(z##A, z##A2, 0x20);                  \
+        y##A2 = _mm256_permute2x128_si256(z##A, z##A2, 0x31);                  \
+        y##B  = _mm256_permute2x128_si256(z##B, z##B2, 0x20);                  \
+        y##B2 = _mm256_permute2x128_si256(z##B, z##B2, 0x31);                  \
+        y##C  = _mm256_permute2x128_si256(z##C, z##C2, 0x20);                  \
+        y##C2 = _mm256_permute2x128_si256(z##C, z##C2, 0x31);                  \
+        y##D  = _mm256_permute2x128_si256(z##D, z##D2, 0x20);                  \
+        y##D2 = _mm256_permute2x128_si256(z##D, z##D2, 0x31);                  \
+        y##A  = _mm256_xor_si256(y##A,                                         \
+                                _mm256_loadu_si256((const __m256i*) (m + 0))); \
+        y##B  = _mm256_xor_si256(                                              \
+            y##B, _mm256_loadu_si256((const __m256i*) (m + 64)));              \
+        y##C = _mm256_xor_si256(                                               \
+            y##C, _mm256_loadu_si256((const __m256i*) (m + 128)));             \
+        y##D = _mm256_xor_si256(                                               \
+            y##D, _mm256_loadu_si256((const __m256i*) (m + 192)));             \
+        y##A2 = _mm256_xor_si256(                                              \
+            y##A2, _mm256_loadu_si256((const __m256i*) (m + 256)));            \
+        y##B2 = _mm256_xor_si256(                                              \
+            y##B2, _mm256_loadu_si256((const __m256i*) (m + 320)));            \
+        y##C2 = _mm256_xor_si256(                                              \
+            y##C2, _mm256_loadu_si256((const __m256i*) (m + 384)));            \
+        y##D2 = _mm256_xor_si256(                                              \
+            y##D2, _mm256_loadu_si256((const __m256i*) (m + 448)));            \
+        _mm256_storeu_si256((__m256i*) (c + 0), y##A);                         \
+        _mm256_storeu_si256((__m256i*) (c + 64), y##B);                        \
+        _mm256_storeu_si256((__m256i*) (c + 128), y##C);                       \
+        _mm256_storeu_si256((__m256i*) (c + 192), y##D);                       \
+        _mm256_storeu_si256((__m256i*) (c + 256), y##A2);                      \
+        _mm256_storeu_si256((__m256i*) (c + 320), y##B2);                      \
+        _mm256_storeu_si256((__m256i*) (c + 384), y##C2);                      \
+        _mm256_storeu_si256((__m256i*) (c + 448), y##D2);                      \
     }
 
         ONEOCTO(0, 1, 2, 3, 4, 5, 6, 7);

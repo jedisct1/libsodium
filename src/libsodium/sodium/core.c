@@ -21,21 +21,6 @@
 #include "private/implementations.h"
 #include "private/mutex.h"
 
-#if !defined(_MSC_VER) && 0
-# warning *** This is unstable, untested, development code.
-# warning It might not compile. It might not work as expected.
-# warning It might be totally insecure.
-# warning Do not use this in production.
-# warning Use releases available at https://download.libsodium.org/libsodium/releases/ instead.
-# warning Alternatively, use the "stable" branch in the git repository.
-#endif
-
-#if !defined(_MSC_VER) && (!defined(CONFIGURED) || CONFIGURED != 1)
-# warning *** The library is being compiled using an undocumented method.
-# warning This is not supported. It has not been tested, it might not
-# warning work as expected, and performance is likely to be suboptimal.
-#endif
-
 static volatile int initialized;
 static volatile int locked;
 
@@ -140,8 +125,6 @@ sodium_crit_enter(void)
 int
 sodium_crit_leave(void)
 {
-    int ret;
-
     if (locked == 0) {
 # ifdef EPERM
         errno = EPERM;

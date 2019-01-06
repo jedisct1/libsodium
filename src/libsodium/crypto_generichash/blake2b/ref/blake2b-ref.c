@@ -97,7 +97,9 @@ blake2b_init0(blake2b_state *S)
     for (i  = 0; i < 8; i++) {
         S->h[i] = blake2b_IV[i];
     }
-    memset(S->t, 0, offsetof(blake2b_state, last_node) + sizeof(S->last_node)
+    /* zero everything between .t and .last_node */
+    memset((void *) &S->t, 0,
+           offsetof(blake2b_state, last_node) + sizeof(S->last_node)
            - offsetof(blake2b_state, t));
     return 0;
 }
@@ -183,7 +185,7 @@ blake2b_init_key(blake2b_state *S, const uint8_t outlen, const void *key,
         sodium_misuse();
     }
     if (!key || !keylen || keylen > BLAKE2B_KEYBYTES) {
-        sodium_misuse();
+        sodium_misuse(); /* does not return */
     }
     P->digest_length = outlen;
     P->key_length    = keylen;
@@ -203,7 +205,7 @@ blake2b_init_key(blake2b_state *S, const uint8_t outlen, const void *key,
     {
         uint8_t block[BLAKE2B_BLOCKBYTES];
         memset(block, 0, BLAKE2B_BLOCKBYTES);
-        memcpy(block, key, keylen); /* keylen cannot be 0 */
+        memcpy(block, key, keylen); /* key and keylen cannot be 0 */
         blake2b_update(S, block, BLAKE2B_BLOCKBYTES);
         sodium_memzero(block, BLAKE2B_BLOCKBYTES); /* Burn the key from stack */
     }
@@ -221,7 +223,7 @@ blake2b_init_key_salt_personal(blake2b_state *S, const uint8_t outlen,
         sodium_misuse();
     }
     if (!key || !keylen || keylen > BLAKE2B_KEYBYTES) {
-        sodium_misuse();
+        sodium_misuse(); /* does not return */
     }
     P->digest_length = outlen;
     P->key_length    = keylen;
@@ -249,7 +251,7 @@ blake2b_init_key_salt_personal(blake2b_state *S, const uint8_t outlen,
     {
         uint8_t block[BLAKE2B_BLOCKBYTES];
         memset(block, 0, BLAKE2B_BLOCKBYTES);
-        memcpy(block, key, keylen); /* keylen cannot be 0 */
+        memcpy(block, key, keylen); /* key and keylen cannot be 0 */
         blake2b_update(S, block, BLAKE2B_BLOCKBYTES);
         sodium_memzero(block, BLAKE2B_BLOCKBYTES); /* Burn the key from stack */
     }
@@ -333,7 +335,7 @@ int
 blake2b(uint8_t *out, const void *in, const void *key, const uint8_t outlen,
         const uint64_t inlen, uint8_t keylen)
 {
-    blake2b_state S[1];
+    CRYPTO_ALIGN(64) blake2b_state S[1];
 
     /* Verify parameters */
     if (NULL == in && inlen > 0) {
@@ -371,7 +373,7 @@ blake2b_salt_personal(uint8_t *out, const void *in, const void *key,
                       const uint8_t outlen, const uint64_t inlen,
                       uint8_t keylen, const void *salt, const void *personal)
 {
-    blake2b_state S[1];
+    CRYPTO_ALIGN(64) blake2b_state S[1];
 
     /* Verify parameters */
     if (NULL == in && inlen > 0) {

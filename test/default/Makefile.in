@@ -128,7 +128,8 @@ CONFIG_CLEAN_VPATH_FILES =
 @MINIMAL_FALSE@	pwhash_scrypt_ll$(EXEEXT) \
 @MINIMAL_FALSE@	scalarmult_ed25519$(EXEEXT) siphashx24$(EXEEXT) \
 @MINIMAL_FALSE@	xchacha20$(EXEEXT)
-am__EXEEXT_3 = aead_aes256gcm$(EXEEXT) aead_chacha20poly1305$(EXEEXT) \
+am__EXEEXT_3 = aead_aes256gcm$(EXEEXT) aead_aes256gcm2$(EXEEXT) \
+	aead_chacha20poly1305$(EXEEXT) aead_chacha20poly13052$(EXEEXT) \
 	aead_xchacha20poly1305$(EXEEXT) auth$(EXEEXT) auth2$(EXEEXT) \
 	auth3$(EXEEXT) auth5$(EXEEXT) auth6$(EXEEXT) auth7$(EXEEXT) \
 	box$(EXEEXT) box2$(EXEEXT) box7$(EXEEXT) box8$(EXEEXT) \
@@ -143,14 +144,14 @@ am__EXEEXT_3 = aead_aes256gcm$(EXEEXT) aead_chacha20poly1305$(EXEEXT) \
 	onetimeauth7$(EXEEXT) pwhash_argon2i$(EXEEXT) \
 	pwhash_argon2id$(EXEEXT) randombytes$(EXEEXT) \
 	scalarmult$(EXEEXT) scalarmult2$(EXEEXT) scalarmult5$(EXEEXT) \
-	scalarmult6$(EXEEXT) scalarmult7$(EXEEXT) secretbox$(EXEEXT) \
-	secretbox2$(EXEEXT) secretbox7$(EXEEXT) secretbox8$(EXEEXT) \
-	secretbox_easy$(EXEEXT) secretbox_easy2$(EXEEXT) \
-	secretstream$(EXEEXT) shorthash$(EXEEXT) sign$(EXEEXT) \
-	sodium_core$(EXEEXT) sodium_utils$(EXEEXT) \
-	sodium_version$(EXEEXT) stream$(EXEEXT) stream2$(EXEEXT) \
-	stream3$(EXEEXT) stream4$(EXEEXT) verify1$(EXEEXT) \
-	$(am__EXEEXT_1) $(am__EXEEXT_2)
+	scalarmult6$(EXEEXT) scalarmult7$(EXEEXT) scalarmult8$(EXEEXT) \
+	secretbox$(EXEEXT) secretbox2$(EXEEXT) secretbox7$(EXEEXT) \
+	secretbox8$(EXEEXT) secretbox_easy$(EXEEXT) \
+	secretbox_easy2$(EXEEXT) secretstream$(EXEEXT) \
+	shorthash$(EXEEXT) sign$(EXEEXT) sodium_core$(EXEEXT) \
+	sodium_utils$(EXEEXT) sodium_version$(EXEEXT) stream$(EXEEXT) \
+	stream2$(EXEEXT) stream3$(EXEEXT) stream4$(EXEEXT) \
+	verify1$(EXEEXT) $(am__EXEEXT_1) $(am__EXEEXT_2)
 aead_aes256gcm_SOURCES = aead_aes256gcm.c
 aead_aes256gcm_OBJECTS = aead_aes256gcm.$(OBJEXT)
 aead_aes256gcm_DEPENDENCIES = $(TESTS_LDADD)
@@ -158,9 +159,15 @@ AM_V_lt = $(am__v_lt_@AM_V@)
 am__v_lt_ = $(am__v_lt_@AM_DEFAULT_V@)
 am__v_lt_0 = --silent
 am__v_lt_1 = 
+aead_aes256gcm2_SOURCES = aead_aes256gcm2.c
+aead_aes256gcm2_OBJECTS = aead_aes256gcm2.$(OBJEXT)
+aead_aes256gcm2_DEPENDENCIES = $(TESTS_LDADD)
 aead_chacha20poly1305_SOURCES = aead_chacha20poly1305.c
 aead_chacha20poly1305_OBJECTS = aead_chacha20poly1305.$(OBJEXT)
 aead_chacha20poly1305_DEPENDENCIES = $(TESTS_LDADD)
+aead_chacha20poly13052_SOURCES = aead_chacha20poly13052.c
+aead_chacha20poly13052_OBJECTS = aead_chacha20poly13052.$(OBJEXT)
+aead_chacha20poly13052_DEPENDENCIES = $(TESTS_LDADD)
 aead_xchacha20poly1305_SOURCES = aead_xchacha20poly1305.c
 aead_xchacha20poly1305_OBJECTS = aead_xchacha20poly1305.$(OBJEXT)
 aead_xchacha20poly1305_DEPENDENCIES = $(TESTS_LDADD)
@@ -305,6 +312,9 @@ scalarmult6_DEPENDENCIES = $(TESTS_LDADD)
 scalarmult7_SOURCES = scalarmult7.c
 scalarmult7_OBJECTS = scalarmult7.$(OBJEXT)
 scalarmult7_DEPENDENCIES = $(TESTS_LDADD)
+scalarmult8_SOURCES = scalarmult8.c
+scalarmult8_OBJECTS = scalarmult8.$(OBJEXT)
+scalarmult8_DEPENDENCIES = $(TESTS_LDADD)
 scalarmult_ed25519_SOURCES = scalarmult_ed25519.c
 scalarmult_ed25519_OBJECTS = scalarmult_ed25519.$(OBJEXT)
 scalarmult_ed25519_DEPENDENCIES = $(TESTS_LDADD)
@@ -387,7 +397,9 @@ DEFAULT_INCLUDES = -I.@am__isrc@
 depcomp = $(SHELL) $(top_srcdir)/build-aux/depcomp
 am__maybe_remake_depfiles = depfiles
 am__depfiles_remade = ./$(DEPDIR)/aead_aes256gcm.Po \
+	./$(DEPDIR)/aead_aes256gcm2.Po \
 	./$(DEPDIR)/aead_chacha20poly1305.Po \
+	./$(DEPDIR)/aead_chacha20poly13052.Po \
 	./$(DEPDIR)/aead_xchacha20poly1305.Po ./$(DEPDIR)/auth.Po \
 	./$(DEPDIR)/auth2.Po ./$(DEPDIR)/auth3.Po ./$(DEPDIR)/auth5.Po \
 	./$(DEPDIR)/auth6.Po ./$(DEPDIR)/auth7.Po ./$(DEPDIR)/box.Po \
@@ -409,17 +421,18 @@ am__depfiles_remade = ./$(DEPDIR)/aead_aes256gcm.Po \
 	./$(DEPDIR)/randombytes.Po ./$(DEPDIR)/scalarmult.Po \
 	./$(DEPDIR)/scalarmult2.Po ./$(DEPDIR)/scalarmult5.Po \
 	./$(DEPDIR)/scalarmult6.Po ./$(DEPDIR)/scalarmult7.Po \
-	./$(DEPDIR)/scalarmult_ed25519.Po ./$(DEPDIR)/secretbox.Po \
-	./$(DEPDIR)/secretbox2.Po ./$(DEPDIR)/secretbox7.Po \
-	./$(DEPDIR)/secretbox8.Po ./$(DEPDIR)/secretbox_easy.Po \
-	./$(DEPDIR)/secretbox_easy2.Po ./$(DEPDIR)/secretstream.Po \
-	./$(DEPDIR)/shorthash.Po ./$(DEPDIR)/sign.Po \
-	./$(DEPDIR)/siphashx24.Po ./$(DEPDIR)/sodium_core.Po \
-	./$(DEPDIR)/sodium_utils.Po ./$(DEPDIR)/sodium_utils2.Po \
-	./$(DEPDIR)/sodium_utils3.Po ./$(DEPDIR)/sodium_version.Po \
-	./$(DEPDIR)/stream.Po ./$(DEPDIR)/stream2.Po \
-	./$(DEPDIR)/stream3.Po ./$(DEPDIR)/stream4.Po \
-	./$(DEPDIR)/verify1.Po ./$(DEPDIR)/xchacha20.Po
+	./$(DEPDIR)/scalarmult8.Po ./$(DEPDIR)/scalarmult_ed25519.Po \
+	./$(DEPDIR)/secretbox.Po ./$(DEPDIR)/secretbox2.Po \
+	./$(DEPDIR)/secretbox7.Po ./$(DEPDIR)/secretbox8.Po \
+	./$(DEPDIR)/secretbox_easy.Po ./$(DEPDIR)/secretbox_easy2.Po \
+	./$(DEPDIR)/secretstream.Po ./$(DEPDIR)/shorthash.Po \
+	./$(DEPDIR)/sign.Po ./$(DEPDIR)/siphashx24.Po \
+	./$(DEPDIR)/sodium_core.Po ./$(DEPDIR)/sodium_utils.Po \
+	./$(DEPDIR)/sodium_utils2.Po ./$(DEPDIR)/sodium_utils3.Po \
+	./$(DEPDIR)/sodium_version.Po ./$(DEPDIR)/stream.Po \
+	./$(DEPDIR)/stream2.Po ./$(DEPDIR)/stream3.Po \
+	./$(DEPDIR)/stream4.Po ./$(DEPDIR)/verify1.Po \
+	./$(DEPDIR)/xchacha20.Po
 am__mv = mv -f
 COMPILE = $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) \
 	$(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS)
@@ -439,7 +452,25 @@ AM_V_CCLD = $(am__v_CCLD_@AM_V@)
 am__v_CCLD_ = $(am__v_CCLD_@AM_DEFAULT_V@)
 am__v_CCLD_0 = @echo "  CCLD    " $@;
 am__v_CCLD_1 = 
-SOURCES = aead_aes256gcm.c aead_chacha20poly1305.c \
+SOURCES = aead_aes256gcm.c aead_aes256gcm2.c aead_chacha20poly1305.c \
+	aead_chacha20poly13052.c aead_xchacha20poly1305.c auth.c \
+	auth2.c auth3.c auth5.c auth6.c auth7.c box.c box2.c box7.c \
+	box8.c box_easy.c box_easy2.c box_seal.c box_seed.c chacha20.c \
+	codecs.c core1.c core2.c core3.c core4.c core5.c core6.c \
+	core_ed25519.c ed25519_convert.c generichash.c generichash2.c \
+	generichash3.c hash.c hash3.c kdf.c keygen.c kx.c \
+	metamorphic.c misuse.c onetimeauth.c onetimeauth2.c \
+	onetimeauth7.c pwhash_argon2i.c pwhash_argon2id.c \
+	pwhash_scrypt.c pwhash_scrypt_ll.c randombytes.c scalarmult.c \
+	scalarmult2.c scalarmult5.c scalarmult6.c scalarmult7.c \
+	scalarmult8.c scalarmult_ed25519.c secretbox.c secretbox2.c \
+	secretbox7.c secretbox8.c secretbox_easy.c secretbox_easy2.c \
+	secretstream.c shorthash.c sign.c siphashx24.c sodium_core.c \
+	sodium_utils.c sodium_utils2.c sodium_utils3.c \
+	sodium_version.c stream.c stream2.c stream3.c stream4.c \
+	verify1.c xchacha20.c
+DIST_SOURCES = aead_aes256gcm.c aead_aes256gcm2.c \
+	aead_chacha20poly1305.c aead_chacha20poly13052.c \
 	aead_xchacha20poly1305.c auth.c auth2.c auth3.c auth5.c \
 	auth6.c auth7.c box.c box2.c box7.c box8.c box_easy.c \
 	box_easy2.c box_seal.c box_seed.c chacha20.c codecs.c core1.c \
@@ -449,28 +480,12 @@ SOURCES = aead_aes256gcm.c aead_chacha20poly1305.c \
 	onetimeauth.c onetimeauth2.c onetimeauth7.c pwhash_argon2i.c \
 	pwhash_argon2id.c pwhash_scrypt.c pwhash_scrypt_ll.c \
 	randombytes.c scalarmult.c scalarmult2.c scalarmult5.c \
-	scalarmult6.c scalarmult7.c scalarmult_ed25519.c secretbox.c \
-	secretbox2.c secretbox7.c secretbox8.c secretbox_easy.c \
-	secretbox_easy2.c secretstream.c shorthash.c sign.c \
-	siphashx24.c sodium_core.c sodium_utils.c sodium_utils2.c \
-	sodium_utils3.c sodium_version.c stream.c stream2.c stream3.c \
-	stream4.c verify1.c xchacha20.c
-DIST_SOURCES = aead_aes256gcm.c aead_chacha20poly1305.c \
-	aead_xchacha20poly1305.c auth.c auth2.c auth3.c auth5.c \
-	auth6.c auth7.c box.c box2.c box7.c box8.c box_easy.c \
-	box_easy2.c box_seal.c box_seed.c chacha20.c codecs.c core1.c \
-	core2.c core3.c core4.c core5.c core6.c core_ed25519.c \
-	ed25519_convert.c generichash.c generichash2.c generichash3.c \
-	hash.c hash3.c kdf.c keygen.c kx.c metamorphic.c misuse.c \
-	onetimeauth.c onetimeauth2.c onetimeauth7.c pwhash_argon2i.c \
-	pwhash_argon2id.c pwhash_scrypt.c pwhash_scrypt_ll.c \
-	randombytes.c scalarmult.c scalarmult2.c scalarmult5.c \
-	scalarmult6.c scalarmult7.c scalarmult_ed25519.c secretbox.c \
-	secretbox2.c secretbox7.c secretbox8.c secretbox_easy.c \
-	secretbox_easy2.c secretstream.c shorthash.c sign.c \
-	siphashx24.c sodium_core.c sodium_utils.c sodium_utils2.c \
-	sodium_utils3.c sodium_version.c stream.c stream2.c stream3.c \
-	stream4.c verify1.c xchacha20.c
+	scalarmult6.c scalarmult7.c scalarmult8.c scalarmult_ed25519.c \
+	secretbox.c secretbox2.c secretbox7.c secretbox8.c \
+	secretbox_easy.c secretbox_easy2.c secretstream.c shorthash.c \
+	sign.c siphashx24.c sodium_core.c sodium_utils.c \
+	sodium_utils2.c sodium_utils3.c sodium_version.c stream.c \
+	stream2.c stream3.c stream4.c verify1.c xchacha20.c
 am__can_run_installinfo = \
   case $$AM_UPDATE_INFO_DIR in \
     n|no|NO) false;; \
@@ -760,7 +775,6 @@ INSTALL_DATA = @INSTALL_DATA@
 INSTALL_PROGRAM = @INSTALL_PROGRAM@
 INSTALL_SCRIPT = @INSTALL_SCRIPT@
 INSTALL_STRIP_PROGRAM = @INSTALL_STRIP_PROGRAM@
-ISODATE = @ISODATE@
 LD = @LD@
 LDFLAGS = @LDFLAGS@
 LIBOBJS = @LIBOBJS@
@@ -867,7 +881,9 @@ EXTRA_DIST = \
 	wintest.bat \
 	pre.js.inc \
 	aead_aes256gcm.exp \
+	aead_aes256gcm2.exp \
 	aead_chacha20poly1305.exp \
+	aead_chacha20poly13052.exp \
 	aead_xchacha20poly1305.exp \
 	auth.exp \
 	auth2.exp \
@@ -918,6 +934,7 @@ EXTRA_DIST = \
 	scalarmult5.exp \
 	scalarmult6.exp \
 	scalarmult7.exp \
+	scalarmult8.exp \
 	secretbox.exp \
 	secretbox2.exp \
 	secretbox7.exp \
@@ -942,7 +959,9 @@ EXTRA_DIST = \
 
 DISTCLEANFILES = \
 	aead_aes256gcm.res \
+	aead_aes256gcm2.res \
 	aead_chacha20poly1305.res \
+	aead_chacha20poly13052.res \
 	aead_xchacha20poly1305.res \
 	auth.res \
 	auth2.res \
@@ -993,6 +1012,7 @@ DISTCLEANFILES = \
 	scalarmult5.res \
 	scalarmult6.res \
 	scalarmult7.res \
+	scalarmult8.res \
 	secretbox.res \
 	secretbox2.res \
 	secretbox7.res \
@@ -1017,7 +1037,9 @@ DISTCLEANFILES = \
 
 @NATIVECLIENT_TRUE@CLEANFILES = \
 @NATIVECLIENT_TRUE@	aead_aes256gcm.final \
+@NATIVECLIENT_TRUE@	aead_aes256gcm2.final \
 @NATIVECLIENT_TRUE@	aead_chacha20poly1305.final \
+@NATIVECLIENT_TRUE@	aead_chacha20poly13052.final \
 @NATIVECLIENT_TRUE@	aead_xchacha20poly1305.final \
 @NATIVECLIENT_TRUE@	auth.final \
 @NATIVECLIENT_TRUE@	auth2.final \
@@ -1068,6 +1090,7 @@ DISTCLEANFILES = \
 @NATIVECLIENT_TRUE@	scalarmult5.final \
 @NATIVECLIENT_TRUE@	scalarmult6.final \
 @NATIVECLIENT_TRUE@	scalarmult7.final \
+@NATIVECLIENT_TRUE@	scalarmult8.final \
 @NATIVECLIENT_TRUE@	secretbox.final \
 @NATIVECLIENT_TRUE@	secretbox2.final \
 @NATIVECLIENT_TRUE@	secretbox7.final \
@@ -1088,7 +1111,9 @@ DISTCLEANFILES = \
 @NATIVECLIENT_TRUE@	verify1.final \
 @NATIVECLIENT_TRUE@	xchacha20.final \
 @NATIVECLIENT_TRUE@	aead_aes256gcm.nexe \
+@NATIVECLIENT_TRUE@	aead_aes256gcm2.nexe \
 @NATIVECLIENT_TRUE@	aead_chacha20poly1305.nexe \
+@NATIVECLIENT_TRUE@	aead_chacha20poly13052.nexe \
 @NATIVECLIENT_TRUE@	aead_xchacha20poly1305.nexe \
 @NATIVECLIENT_TRUE@	auth.nexe \
 @NATIVECLIENT_TRUE@	auth2.nexe \
@@ -1139,6 +1164,7 @@ DISTCLEANFILES = \
 @NATIVECLIENT_TRUE@	scalarmult5.nexe \
 @NATIVECLIENT_TRUE@	scalarmult6.nexe \
 @NATIVECLIENT_TRUE@	scalarmult7.nexe \
+@NATIVECLIENT_TRUE@	scalarmult8.nexe \
 @NATIVECLIENT_TRUE@	secretbox.nexe \
 @NATIVECLIENT_TRUE@	secretbox2.nexe \
 @NATIVECLIENT_TRUE@	secretbox7.nexe \
@@ -1168,25 +1194,30 @@ AM_CPPFLAGS = \
 	-I$(top_srcdir)/test/quirks
 
 AM_LDFLAGS = @TEST_LDFLAGS@
-TESTS_TARGETS = aead_aes256gcm aead_chacha20poly1305 \
-	aead_xchacha20poly1305 auth auth2 auth3 auth5 auth6 auth7 box \
-	box2 box7 box8 box_easy box_easy2 box_seal box_seed chacha20 \
-	codecs core1 core2 core3 core4 core5 core6 ed25519_convert \
-	generichash generichash2 generichash3 hash hash3 kdf keygen kx \
-	metamorphic misuse onetimeauth onetimeauth2 onetimeauth7 \
-	pwhash_argon2i pwhash_argon2id randombytes scalarmult \
-	scalarmult2 scalarmult5 scalarmult6 scalarmult7 secretbox \
-	secretbox2 secretbox7 secretbox8 secretbox_easy \
-	secretbox_easy2 secretstream shorthash sign sodium_core \
-	sodium_utils sodium_version stream stream2 stream3 stream4 \
-	verify1 $(am__append_1) $(am__append_2)
+TESTS_TARGETS = aead_aes256gcm aead_aes256gcm2 aead_chacha20poly1305 \
+	aead_chacha20poly13052 aead_xchacha20poly1305 auth auth2 auth3 \
+	auth5 auth6 auth7 box box2 box7 box8 box_easy box_easy2 \
+	box_seal box_seed chacha20 codecs core1 core2 core3 core4 \
+	core5 core6 ed25519_convert generichash generichash2 \
+	generichash3 hash hash3 kdf keygen kx metamorphic misuse \
+	onetimeauth onetimeauth2 onetimeauth7 pwhash_argon2i \
+	pwhash_argon2id randombytes scalarmult scalarmult2 scalarmult5 \
+	scalarmult6 scalarmult7 scalarmult8 secretbox secretbox2 \
+	secretbox7 secretbox8 secretbox_easy secretbox_easy2 \
+	secretstream shorthash sign sodium_core sodium_utils \
+	sodium_version stream stream2 stream3 stream4 verify1 \
+	$(am__append_1) $(am__append_2)
 TESTS_LDADD = \
 	${top_builddir}/src/libsodium/libsodium.la
 
 aead_aes256gcm_SOURCE = cmptest.h aead_aes256gcm.c
 aead_aes256gcm_LDADD = $(TESTS_LDADD)
+aead_aes256gcm2_SOURCE = cmptest.h aead_aes256gcm2.c
+aead_aes256gcm2_LDADD = $(TESTS_LDADD)
 aead_chacha20poly1305_SOURCE = cmptest.h aead_chacha20poly1305.c
 aead_chacha20poly1305_LDADD = $(TESTS_LDADD)
+aead_chacha20poly13052_SOURCE = cmptest.h aead_chacha20poly13052.c
+aead_chacha20poly13052_LDADD = $(TESTS_LDADD)
 aead_xchacha20poly1305_SOURCE = cmptest.h aead_xchacha20poly1305.c
 aead_xchacha20poly1305_LDADD = $(TESTS_LDADD)
 auth_SOURCE = cmptest.h auth.c
@@ -1285,6 +1316,8 @@ scalarmult6_SOURCE = cmptest.h scalarmult6.c
 scalarmult6_LDADD = $(TESTS_LDADD)
 scalarmult7_SOURCE = cmptest.h scalarmult7.c
 scalarmult7_LDADD = $(TESTS_LDADD)
+scalarmult8_SOURCE = cmptest.h scalarmult8.c
+scalarmult8_LDADD = $(TESTS_LDADD)
 secretbox_SOURCE = cmptest.h secretbox.c
 secretbox_LDADD = $(TESTS_LDADD)
 secretbox2_SOURCE = cmptest.h secretbox2.c
@@ -1375,9 +1408,17 @@ aead_aes256gcm$(EXEEXT): $(aead_aes256gcm_OBJECTS) $(aead_aes256gcm_DEPENDENCIES
 	@rm -f aead_aes256gcm$(EXEEXT)
 	$(AM_V_CCLD)$(LINK) $(aead_aes256gcm_OBJECTS) $(aead_aes256gcm_LDADD) $(LIBS)
 
+aead_aes256gcm2$(EXEEXT): $(aead_aes256gcm2_OBJECTS) $(aead_aes256gcm2_DEPENDENCIES) $(EXTRA_aead_aes256gcm2_DEPENDENCIES) 
+	@rm -f aead_aes256gcm2$(EXEEXT)
+	$(AM_V_CCLD)$(LINK) $(aead_aes256gcm2_OBJECTS) $(aead_aes256gcm2_LDADD) $(LIBS)
+
 aead_chacha20poly1305$(EXEEXT): $(aead_chacha20poly1305_OBJECTS) $(aead_chacha20poly1305_DEPENDENCIES) $(EXTRA_aead_chacha20poly1305_DEPENDENCIES) 
 	@rm -f aead_chacha20poly1305$(EXEEXT)
 	$(AM_V_CCLD)$(LINK) $(aead_chacha20poly1305_OBJECTS) $(aead_chacha20poly1305_LDADD) $(LIBS)
+
+aead_chacha20poly13052$(EXEEXT): $(aead_chacha20poly13052_OBJECTS) $(aead_chacha20poly13052_DEPENDENCIES) $(EXTRA_aead_chacha20poly13052_DEPENDENCIES) 
+	@rm -f aead_chacha20poly13052$(EXEEXT)
+	$(AM_V_CCLD)$(LINK) $(aead_chacha20poly13052_OBJECTS) $(aead_chacha20poly13052_LDADD) $(LIBS)
 
 aead_xchacha20poly1305$(EXEEXT): $(aead_xchacha20poly1305_OBJECTS) $(aead_xchacha20poly1305_DEPENDENCIES) $(EXTRA_aead_xchacha20poly1305_DEPENDENCIES) 
 	@rm -f aead_xchacha20poly1305$(EXEEXT)
@@ -1571,6 +1612,10 @@ scalarmult7$(EXEEXT): $(scalarmult7_OBJECTS) $(scalarmult7_DEPENDENCIES) $(EXTRA
 	@rm -f scalarmult7$(EXEEXT)
 	$(AM_V_CCLD)$(LINK) $(scalarmult7_OBJECTS) $(scalarmult7_LDADD) $(LIBS)
 
+scalarmult8$(EXEEXT): $(scalarmult8_OBJECTS) $(scalarmult8_DEPENDENCIES) $(EXTRA_scalarmult8_DEPENDENCIES) 
+	@rm -f scalarmult8$(EXEEXT)
+	$(AM_V_CCLD)$(LINK) $(scalarmult8_OBJECTS) $(scalarmult8_LDADD) $(LIBS)
+
 scalarmult_ed25519$(EXEEXT): $(scalarmult_ed25519_OBJECTS) $(scalarmult_ed25519_DEPENDENCIES) $(EXTRA_scalarmult_ed25519_DEPENDENCIES) 
 	@rm -f scalarmult_ed25519$(EXEEXT)
 	$(AM_V_CCLD)$(LINK) $(scalarmult_ed25519_OBJECTS) $(scalarmult_ed25519_LDADD) $(LIBS)
@@ -1666,7 +1711,9 @@ distclean-compile:
 	-rm -f *.tab.c
 
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/aead_aes256gcm.Po@am__quote@ # am--include-marker
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/aead_aes256gcm2.Po@am__quote@ # am--include-marker
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/aead_chacha20poly1305.Po@am__quote@ # am--include-marker
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/aead_chacha20poly13052.Po@am__quote@ # am--include-marker
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/aead_xchacha20poly1305.Po@am__quote@ # am--include-marker
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/auth.Po@am__quote@ # am--include-marker
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/auth2.Po@am__quote@ # am--include-marker
@@ -1715,6 +1762,7 @@ distclean-compile:
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/scalarmult5.Po@am__quote@ # am--include-marker
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/scalarmult6.Po@am__quote@ # am--include-marker
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/scalarmult7.Po@am__quote@ # am--include-marker
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/scalarmult8.Po@am__quote@ # am--include-marker
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/scalarmult_ed25519.Po@am__quote@ # am--include-marker
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/secretbox.Po@am__quote@ # am--include-marker
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/secretbox2.Po@am__quote@ # am--include-marker
@@ -1974,9 +2022,23 @@ aead_aes256gcm.log: aead_aes256gcm$(EXEEXT)
 	--log-file $$b.log --trs-file $$b.trs \
 	$(am__common_driver_flags) $(AM_LOG_DRIVER_FLAGS) $(LOG_DRIVER_FLAGS) -- $(LOG_COMPILE) \
 	"$$tst" $(AM_TESTS_FD_REDIRECT)
+aead_aes256gcm2.log: aead_aes256gcm2$(EXEEXT)
+	@p='aead_aes256gcm2$(EXEEXT)'; \
+	b='aead_aes256gcm2'; \
+	$(am__check_pre) $(LOG_DRIVER) --test-name "$$f" \
+	--log-file $$b.log --trs-file $$b.trs \
+	$(am__common_driver_flags) $(AM_LOG_DRIVER_FLAGS) $(LOG_DRIVER_FLAGS) -- $(LOG_COMPILE) \
+	"$$tst" $(AM_TESTS_FD_REDIRECT)
 aead_chacha20poly1305.log: aead_chacha20poly1305$(EXEEXT)
 	@p='aead_chacha20poly1305$(EXEEXT)'; \
 	b='aead_chacha20poly1305'; \
+	$(am__check_pre) $(LOG_DRIVER) --test-name "$$f" \
+	--log-file $$b.log --trs-file $$b.trs \
+	$(am__common_driver_flags) $(AM_LOG_DRIVER_FLAGS) $(LOG_DRIVER_FLAGS) -- $(LOG_COMPILE) \
+	"$$tst" $(AM_TESTS_FD_REDIRECT)
+aead_chacha20poly13052.log: aead_chacha20poly13052$(EXEEXT)
+	@p='aead_chacha20poly13052$(EXEEXT)'; \
+	b='aead_chacha20poly13052'; \
 	$(am__check_pre) $(LOG_DRIVER) --test-name "$$f" \
 	--log-file $$b.log --trs-file $$b.trs \
 	$(am__common_driver_flags) $(AM_LOG_DRIVER_FLAGS) $(LOG_DRIVER_FLAGS) -- $(LOG_COMPILE) \
@@ -2296,6 +2358,13 @@ scalarmult7.log: scalarmult7$(EXEEXT)
 	--log-file $$b.log --trs-file $$b.trs \
 	$(am__common_driver_flags) $(AM_LOG_DRIVER_FLAGS) $(LOG_DRIVER_FLAGS) -- $(LOG_COMPILE) \
 	"$$tst" $(AM_TESTS_FD_REDIRECT)
+scalarmult8.log: scalarmult8$(EXEEXT)
+	@p='scalarmult8$(EXEEXT)'; \
+	b='scalarmult8'; \
+	$(am__check_pre) $(LOG_DRIVER) --test-name "$$f" \
+	--log-file $$b.log --trs-file $$b.trs \
+	$(am__common_driver_flags) $(AM_LOG_DRIVER_FLAGS) $(LOG_DRIVER_FLAGS) -- $(LOG_COMPILE) \
+	"$$tst" $(AM_TESTS_FD_REDIRECT)
 secretbox.log: secretbox$(EXEEXT)
 	@p='secretbox$(EXEEXT)'; \
 	b='secretbox'; \
@@ -2567,7 +2636,9 @@ clean-am: clean-checkPROGRAMS clean-generic clean-libtool \
 
 distclean: distclean-am
 		-rm -f ./$(DEPDIR)/aead_aes256gcm.Po
+	-rm -f ./$(DEPDIR)/aead_aes256gcm2.Po
 	-rm -f ./$(DEPDIR)/aead_chacha20poly1305.Po
+	-rm -f ./$(DEPDIR)/aead_chacha20poly13052.Po
 	-rm -f ./$(DEPDIR)/aead_xchacha20poly1305.Po
 	-rm -f ./$(DEPDIR)/auth.Po
 	-rm -f ./$(DEPDIR)/auth2.Po
@@ -2616,6 +2687,7 @@ distclean: distclean-am
 	-rm -f ./$(DEPDIR)/scalarmult5.Po
 	-rm -f ./$(DEPDIR)/scalarmult6.Po
 	-rm -f ./$(DEPDIR)/scalarmult7.Po
+	-rm -f ./$(DEPDIR)/scalarmult8.Po
 	-rm -f ./$(DEPDIR)/scalarmult_ed25519.Po
 	-rm -f ./$(DEPDIR)/secretbox.Po
 	-rm -f ./$(DEPDIR)/secretbox2.Po
@@ -2684,7 +2756,9 @@ installcheck-am:
 
 maintainer-clean: maintainer-clean-am
 		-rm -f ./$(DEPDIR)/aead_aes256gcm.Po
+	-rm -f ./$(DEPDIR)/aead_aes256gcm2.Po
 	-rm -f ./$(DEPDIR)/aead_chacha20poly1305.Po
+	-rm -f ./$(DEPDIR)/aead_chacha20poly13052.Po
 	-rm -f ./$(DEPDIR)/aead_xchacha20poly1305.Po
 	-rm -f ./$(DEPDIR)/auth.Po
 	-rm -f ./$(DEPDIR)/auth2.Po
@@ -2733,6 +2807,7 @@ maintainer-clean: maintainer-clean-am
 	-rm -f ./$(DEPDIR)/scalarmult5.Po
 	-rm -f ./$(DEPDIR)/scalarmult6.Po
 	-rm -f ./$(DEPDIR)/scalarmult7.Po
+	-rm -f ./$(DEPDIR)/scalarmult8.Po
 	-rm -f ./$(DEPDIR)/scalarmult_ed25519.Po
 	-rm -f ./$(DEPDIR)/secretbox.Po
 	-rm -f ./$(DEPDIR)/secretbox2.Po

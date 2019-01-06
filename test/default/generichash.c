@@ -1367,13 +1367,13 @@ main(void)
     }
     printf("\n");
 
-    assert(crypto_generichash(NULL, 0,
+    assert(crypto_generichash(guard_page, 0,
                               in, (unsigned long long) sizeof in,
                               k, sizeof k) == -1);
-    assert(crypto_generichash(NULL, crypto_generichash_BYTES_MAX + 1,
+    assert(crypto_generichash(guard_page, crypto_generichash_BYTES_MAX + 1,
                               in, (unsigned long long) sizeof in,
                               k, sizeof k) == -1);
-    assert(crypto_generichash(NULL, (unsigned long long) sizeof in,
+    assert(crypto_generichash(guard_page, (unsigned long long) sizeof in,
                               in, (unsigned long long) sizeof in,
                               k, crypto_generichash_KEYBYTES_MAX + 1) == -1);
 

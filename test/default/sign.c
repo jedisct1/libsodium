@@ -1053,15 +1053,8 @@ static void add_l(unsigned char * const S)
         0xd6, 0x9c, 0xf7, 0xa2, 0xde, 0xf9, 0xde, 0x14,
         0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
         0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x10 };
-    unsigned char c = 0U;
-    unsigned int  i;
-    unsigned int  s;
 
-    for (i = 0U; i < 32U; i++) {
-        s = S[i] + l[i] + c;
-        S[i] = (unsigned char) s;
-        c = (s >> 8) & 1;
-    }
+    sodium_add(S, l, sizeof l);
 }
 
 int main(void)

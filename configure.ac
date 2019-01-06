@@ -1,5 +1,5 @@
 AC_PREREQ([2.65])
-AC_INIT([libsodium],[1.0.16],
+AC_INIT([libsodium],[1.0.17],
   [https://github.com/jedisct1/libsodium/issues],
   [libsodium],
   [https://github.com/jedisct1/libsodium])
@@ -13,13 +13,11 @@ AM_MAINTAINER_MODE
 AM_DEP_TRACK
 
 AC_SUBST(VERSION)
-ISODATE=`date +%Y-%m-%d`
-AC_SUBST(ISODATE)
 
 SODIUM_LIBRARY_VERSION_MAJOR=10
-SODIUM_LIBRARY_VERSION_MINOR=1
+SODIUM_LIBRARY_VERSION_MINOR=2
 DLL_VERSION=8
-SODIUM_LIBRARY_VERSION=24:0:1
+SODIUM_LIBRARY_VERSION=25:0:2
 #                       | | |
 #                +------+ | +---+
 #                |        |     |
@@ -148,6 +146,17 @@ AC_ARG_WITH(ctgrind,
 [AS_HELP_STRING(--with-ctgrind,For maintainers only - please do not use)],
 [AS_IF([test "x$withval" = "xyes"], [
     AC_CHECK_LIB(ctgrind, ct_poison)
+  ])
+])
+
+AC_ARG_ENABLE(retpoline,
+[AS_HELP_STRING(--enable-retpoline,Use return trampolines for indirect calls)],
+[AS_IF([test "x$enableval" = "xyes"], [
+  AX_CHECK_COMPILE_FLAG([-mindirect-branch=thunk-inline],
+    [CFLAGS="$CFLAGS -mindirect-branch=thunk-inline"],
+    [AX_CHECK_COMPILE_FLAG([-mretpoline], [CFLAGS="$CFLAGS -mretpoline"])]
+  )
+  AX_CHECK_COMPILE_FLAG([-mindirect-branch-register])
   ])
 ])
 
@@ -328,7 +337,9 @@ AX_CHECK_CATCHABLE_SEGV
 AX_CHECK_CATCHABLE_ABRT
 
 AS_IF([test "x$with_threads" = "xyes"], [
-  AX_TLS([AC_MSG_RESULT(thread local storage is supported)],
+  AX_TLS([AC_MSG_RESULT(thread local storage is supported)
+          AX_CHECK_COMPILE_FLAG([-ftls-model=local-dynamic],
+            [CFLAGS="$CFLAGS -ftls-model=local-dynamic"])],
          [AC_MSG_RESULT(thread local storage is not supported)]) ])
 
 LT_INIT
@@ -660,8 +671,7 @@ AC_COMPILE_IFELSE([AC_LANG_PROGRAM([[
 # error libsodium currently expects a little endian CPU for the 128-bit type
 #endif
 #ifdef __EMSCRIPTEN__
-# error emscripten currently supports only shift operations on integers \
-#       larger than 64 bits
+# error emscripten currently doesn't support some operations on integers larger than 64 bits
 #endif
 #include <stddef.h>
 #include <stdint.h>
@@ -672,6 +682,8 @@ typedef unsigned uint128_t __attribute__((mode(TI)));
 #endif
 void fcontract(uint128_t *t) {
   *t += 0x8000000000000 - 1;
+  *t *= *t;
+  *t >>= 84;
 }
 ]], [[
 (void) fcontract;
@@ -787,7 +799,7 @@ dnl Checks for functions and headers
 AC_FUNC_ALLOCA
 AS_IF([test "x$EMSCRIPTEN" = "x"],[
   AC_CHECK_FUNCS([arc4random arc4random_buf])
-  AC_CHECK_FUNCS([mmap mlock madvise mprotect memset_s explicit_bzero nanosleep])
+  AC_CHECK_FUNCS([mmap mlock madvise mprotect memset_s explicit_bzero explicit_memset nanosleep])
 ])
 AC_CHECK_FUNCS([posix_memalign getpid])
 

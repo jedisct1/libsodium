@@ -17,14 +17,8 @@ export SIMULATOR32_PREFIX="$PREFIX/tmp/simulator32"
 export SIMULATOR64_PREFIX="$PREFIX/tmp/simulator64"
 export XCODEDIR=$(xcode-select -p)
 
-xcode_major=$(xcodebuild -version|egrep '^Xcode '|cut -d' ' -f2|cut -d. -f1)
-if [ $xcode_major -ge 8 ]; then
-  export IOS_SIMULATOR_VERSION_MIN=${IOS_SIMULATOR_VERSION_MIN-"6.0.0"}
-  export IOS_VERSION_MIN=${IOS_VERSION_MIN-"6.0.0"}
-else
-  export IOS_SIMULATOR_VERSION_MIN=${IOS_SIMULATOR_VERSION_MIN-"5.1.1"}
-  export IOS_VERSION_MIN=${IOS_VERSION_MIN-"5.1.1"}
-fi
+export IOS_SIMULATOR_VERSION_MIN=${IOS_SIMULATOR_VERSION_MIN-"6.0.0"}
+export IOS_VERSION_MIN=${IOS_VERSION_MIN-"6.0.0"}
 
 mkdir -p $SIMULATOR32_PREFIX $SIMULATOR64_PREFIX $IOS32_PREFIX $IOS32s_PREFIX $IOS64_PREFIX || exit 1
 

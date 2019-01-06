@@ -45,17 +45,19 @@ size_t crypto_box_curve25519xsalsa20poly1305_messagebytes_max(void);
 SODIUM_EXPORT
 int crypto_box_curve25519xsalsa20poly1305_seed_keypair(unsigned char *pk,
                                                        unsigned char *sk,
-                                                       const unsigned char *seed);
+                                                       const unsigned char *seed)
+            __attribute__ ((nonnull));
 
 SODIUM_EXPORT
 int crypto_box_curve25519xsalsa20poly1305_keypair(unsigned char *pk,
-                                                  unsigned char *sk);
+                                                  unsigned char *sk)
+            __attribute__ ((nonnull));
 
 SODIUM_EXPORT
 int crypto_box_curve25519xsalsa20poly1305_beforenm(unsigned char *k,
                                                    const unsigned char *pk,
                                                    const unsigned char *sk)
-            __attribute__ ((warn_unused_result));
+            __attribute__ ((warn_unused_result)) __attribute__ ((nonnull));
 
 /* -- NaCl compatibility interface ; Requires padding -- */
 
@@ -76,7 +78,7 @@ int crypto_box_curve25519xsalsa20poly1305(unsigned char *c,
                                           const unsigned char *n,
                                           const unsigned char *pk,
                                           const unsigned char *sk)
-            __attribute__ ((warn_unused_result));
+            __attribute__ ((warn_unused_result)) __attribute__ ((nonnull));
 
 SODIUM_EXPORT
 int crypto_box_curve25519xsalsa20poly1305_open(unsigned char *m,
@@ -85,14 +87,15 @@ int crypto_box_curve25519xsalsa20poly1305_open(unsigned char *m,
                                                const unsigned char *n,
                                                const unsigned char *pk,
                                                const unsigned char *sk)
-            __attribute__ ((warn_unused_result));
+            __attribute__ ((warn_unused_result)) __attribute__ ((nonnull(2, 4, 5, 6)));
 
 SODIUM_EXPORT
 int crypto_box_curve25519xsalsa20poly1305_afternm(unsigned char *c,
                                                   const unsigned char *m,
                                                   unsigned long long mlen,
                                                   const unsigned char *n,
-                                                  const unsigned char *k);
+                                                  const unsigned char *k)
+            __attribute__ ((nonnull));
 
 SODIUM_EXPORT
 int crypto_box_curve25519xsalsa20poly1305_open_afternm(unsigned char *m,
@@ -100,7 +103,7 @@ int crypto_box_curve25519xsalsa20poly1305_open_afternm(unsigned char *m,
                                                        unsigned long long clen,
                                                        const unsigned char *n,
                                                        const unsigned char *k)
-            __attribute__ ((warn_unused_result));
+            __attribute__ ((warn_unused_result)) __attribute__ ((nonnull(2, 4, 5)));
 
 #ifdef __cplusplus
 }

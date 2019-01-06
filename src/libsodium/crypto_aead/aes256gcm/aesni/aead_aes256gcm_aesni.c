@@ -51,10 +51,10 @@ _bswap64(const uint64_t x)
 }
 #endif
 
-typedef struct context {
-    CRYPTO_ALIGN(16) unsigned char H[16];
-    __m128i          rkeys[16];
-} context;
+typedef struct aes256gcm_state {
+    __m128i       rkeys[16];
+    unsigned char H[16];
+} aes256gcm_state;
 
 static inline void
 aesni_key256_expand(const unsigned char *key, __m128i * const rkeys)
@@ -488,10 +488,10 @@ int
 crypto_aead_aes256gcm_beforenm(crypto_aead_aes256gcm_state *ctx_,
                                const unsigned char *k)
 {
-    context       *ctx = (context *) ctx_;
-    __m128i       *rkeys = ctx->rkeys;
-    __m128i        zero = _mm_setzero_si128();
-    unsigned char *H = ctx->H;
+    aes256gcm_state *ctx = (aes256gcm_state *) (void *) ctx_;
+    unsigned char   *H = ctx->H;
+    __m128i         *rkeys = ctx->rkeys;
+    __m128i          zero = _mm_setzero_si128();
 
     COMPILER_ASSERT((sizeof *ctx_) >= (sizeof *ctx));
     aesni_key256_expand(k, rkeys);
@@ -509,13 +509,13 @@ crypto_aead_aes256gcm_encrypt_detached_afternm(unsigned char *c,
                                                const unsigned char *npub,
                                                const crypto_aead_aes256gcm_state *ctx_)
 {
-    const __m128i       rev = _mm_set_epi8(0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15);
-    const context      *ctx = (const context *) ctx_;
-    const __m128i      *rkeys = ctx->rkeys;
-    __m128i             Hv, H2v, H3v, H4v, accv;
-    unsigned long long  i, j;
-    unsigned long long  adlen_rnd64 = adlen & ~63ULL;
-    unsigned long long  mlen_rnd128 = mlen & ~127ULL;
+    const __m128i          rev = _mm_set_epi8(0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15);
+    const aes256gcm_state *ctx = (const aes256gcm_state *) (const void *) ctx_;
+    const __m128i         *rkeys = ctx->rkeys;
+    __m128i                Hv, H2v, H3v, H4v, accv;
+    unsigned long long     i, j;
+    unsigned long long     adlen_rnd64 = adlen & ~63ULL;
+    unsigned long long     mlen_rnd128 = mlen & ~127ULL;
     CRYPTO_ALIGN(16) uint32_t      n2[4];
     CRYPTO_ALIGN(16) unsigned char H[16];
     CRYPTO_ALIGN(16) unsigned char T[16];
@@ -647,14 +647,14 @@ crypto_aead_aes256gcm_decrypt_detached_afternm(unsigned char *m, unsigned char *
                                                const unsigned char *npub,
                                                const crypto_aead_aes256gcm_state *ctx_)
 {
-    const __m128i       rev = _mm_set_epi8(0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15);
-    const context      *ctx = (const context *) ctx_;
-    const __m128i      *rkeys = ctx->rkeys;
-    __m128i             Hv, H2v, H3v, H4v, accv;
-    unsigned long long  i, j;
-    unsigned long long  adlen_rnd64 = adlen & ~63ULL;
-    unsigned long long  mlen;
-    unsigned long long  mlen_rnd128;
+    const __m128i          rev = _mm_set_epi8(0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15);
+    const aes256gcm_state *ctx = (const aes256gcm_state *) (const void *) ctx_;
+    const __m128i         *rkeys = ctx->rkeys;
+    __m128i                Hv, H2v, H3v, H4v, accv;
+    unsigned long long     i, j;
+    unsigned long long     adlen_rnd64 = adlen & ~63ULL;
+    unsigned long long     mlen;
+    unsigned long long     mlen_rnd128;
     CRYPTO_ALIGN(16) uint32_t      n2[4];
     CRYPTO_ALIGN(16) unsigned char H[16];
     CRYPTO_ALIGN(16) unsigned char T[16];
@@ -862,7 +862,7 @@ crypto_aead_aes256gcm_encrypt(unsigned char *c,
     ret = crypto_aead_aes256gcm_encrypt_afternm
         (c, clen_p, m, mlen, ad, adlen, nsec, npub,
             (const crypto_aead_aes256gcm_state *) &ctx);
-    sodium_memzero(ctx, sizeof ctx);
+    sodium_memzero(&ctx, sizeof ctx);
 
     return ret;
 }
@@ -906,7 +906,7 @@ crypto_aead_aes256gcm_decrypt(unsigned char *m,
     ret = crypto_aead_aes256gcm_decrypt_afternm
         (m, mlen_p, nsec, c, clen, ad, adlen, npub,
          (const crypto_aead_aes256gcm_state *) &ctx);
-    sodium_memzero(ctx, sizeof ctx);
+    sodium_memzero(&ctx, sizeof ctx);
 
     return ret;
 }

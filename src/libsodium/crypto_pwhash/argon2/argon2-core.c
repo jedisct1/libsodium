@@ -80,14 +80,11 @@ allocate_memory(block_region **region, uint32_t m_cost)
         return ARGON2_MEMORY_ALLOCATION_ERROR; /* LCOV_EXCL_LINE */
     }
     memory_size = sizeof(block) * m_cost;
-    if (m_cost == 0 ||
-        memory_size / m_cost !=
-            sizeof(block)) { /*1. Check for multiplication overflow*/
+    if (m_cost == 0 || memory_size / m_cost != sizeof(block)) {
         return ARGON2_MEMORY_ALLOCATION_ERROR; /* LCOV_EXCL_LINE */
     }
-    *region = (block_region *) malloc(
-        sizeof(block_region)); /*2. Try to allocate region*/
-    if (!*region) {
+    *region = (block_region *) malloc(sizeof(block_region));
+    if (*region == NULL) {
         return ARGON2_MEMORY_ALLOCATION_ERROR; /* LCOV_EXCL_LINE */
     }
     (*region)->base = (*region)->memory = NULL;
@@ -116,6 +113,8 @@ allocate_memory(block_region **region, uint32_t m_cost)
     }
 #endif
     if (base == NULL) {
+        free(*region);
+        *region = NULL;
         return ARGON2_MEMORY_ALLOCATION_ERROR; /* LCOV_EXCL_LINE */
     }
     (*region)->base   = base;

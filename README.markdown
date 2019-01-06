@@ -21,7 +21,7 @@ as well as Javascript and Webassembly.
 
 ## Documentation
 
-The documentation is available on Gitbook:
+The documentation is available on Gitbook and built from the [libsodium-doc](https://github.com/jedisct1/libsodium-doc) repository:
 
 * [libsodium documentation](https://download.libsodium.org/doc/) -
 online, requires Javascript.
@@ -31,7 +31,7 @@ in PDF, MOBI and ePUB formats.
 ## Integrity Checking
 
 The integrity checking instructions (including the signing key for libsodium)
-are available in the [installation](https://download.libsodium.org/doc/installation/index.html#integrity-checking)
+are available in the [installation](https://download.libsodium.org/doc/installation#integrity-checking)
 section of the documentation.
 
 ## Community

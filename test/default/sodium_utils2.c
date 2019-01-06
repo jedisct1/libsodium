@@ -12,6 +12,10 @@
 # warning The sodium_utils2 test is expected to fail with address sanitizer
 #endif
 
+#undef sodium_malloc
+#undef sodium_free
+#undef sodium_allocarray
+
 __attribute__((noreturn)) static void
 segv_handler(int sig)
 {

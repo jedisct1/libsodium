@@ -158,11 +158,11 @@ escrypt_r(escrypt_local_t *local, const uint8_t *passwd, size_t passwdlen,
     prefixlen = src - setting;
 
     salt = src;
-    src  = (uint8_t *) strrchr((char *) salt, '$');
+    src  = (const uint8_t *) strrchr((const char *) salt, '$');
     if (src) {
         saltlen = src - salt;
     } else {
-        saltlen = strlen((char *) salt);
+        saltlen = strlen((const char *) salt);
     }
     need = prefixlen + saltlen + 1 +
            crypto_pwhash_scryptsalsa208sha256_STRHASHBYTES_ENCODED + 1;

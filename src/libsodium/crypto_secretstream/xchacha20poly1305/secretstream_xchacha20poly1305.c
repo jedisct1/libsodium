@@ -123,6 +123,8 @@ crypto_secretstream_xchacha20poly1305_push
     if (outlen_p != NULL) {
         *outlen_p = 0U;
     }
+    COMPILER_ASSERT(crypto_secretstream_xchacha20poly1305_MESSAGEBYTES_MAX
+                    <= crypto_aead_chacha20poly1305_ietf_MESSAGEBYTES_MAX);
     if (mlen > crypto_secretstream_xchacha20poly1305_MESSAGEBYTES_MAX) {
         sodium_misuse();
     }

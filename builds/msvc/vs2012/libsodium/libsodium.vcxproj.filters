@@ -566,6 +566,9 @@
     <ClInclude Include="..\..\..\..\src\libsodium\include\sodium\private\mutex.h">
       <Filter>include\sodium\private</Filter>
     </ClInclude>
+    <ClInclude Include="..\..\..\..\src\libsodium\include\sodium\private\chacha20_ietf_ext.h">
+      <Filter>include\sodium\private</Filter>
+    </ClInclude>
     <ClInclude Include="..\..\..\..\src\libsodium\include\sodium\private\implementations.h">
       <Filter>include\sodium\private</Filter>
     </ClInclude>

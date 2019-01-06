@@ -35,6 +35,8 @@
 
 int xmain(void);
 
+static unsigned char *guard_page;
+
 #ifdef BENCHMARKS
 
 # include <sys/time.h>
@@ -42,6 +44,77 @@ int xmain(void);
 # ifndef ITERATIONS
 #  define ITERATIONS 128
 # endif
+
+struct {
+    void   *pnt;
+    size_t  size;
+} mempool[1024];
+
+static size_t mempool_idx;
+
+static __attribute__((malloc)) void *mempool_alloc(size_t size)
+{
+    size_t i;
+    if (size >= (size_t) 0x80000000 - (size_t) 0x00000fff) {
+        return NULL;
+    }
+    size = (size + (size_t) 0x00000fff) & ~ (size_t) 0x00000fff;
+    for (i = 0U; i < mempool_idx; i++) {
+        if (mempool[i].size >= (size | (size_t) 0x80000000)) {
+            mempool[i].size &= ~ (size_t) 0x80000000;
+            return mempool[i].pnt;
+        }
+    }
+    if (mempool_idx >= sizeof mempool / sizeof mempool[0]) {
+        return NULL;
+    }
+    mempool[mempool_idx].size = size;
+    return (mempool[mempool_idx++].pnt = (void *) malloc(size));
+}
+
+static void mempool_free(void *pnt)
+{
+    size_t i;
+    for (i = 0U; i < mempool_idx; i++) {
+        if (mempool[i].pnt == pnt) {
+            if ((mempool[i].size & (size_t) 0x80000000) != (size_t) 0x0) {
+                break;
+            }
+            mempool[i].size |= (size_t) 0x80000000;
+            return;
+        }
+    }
+    abort();
+}
+
+static __attribute__((malloc)) void *mempool_allocarray(size_t count, size_t size)
+{
+    if (count > (size_t) 0U && size >= (size_t) SIZE_MAX / count) {
+        return NULL;
+    }
+    return mempool_alloc(count * size);
+}
+
+static int mempool_free_all(void)
+{
+    size_t i;
+    int    ret = 0;
+
+    for (i = 0U; i < mempool_idx; i++) {
+        if ((mempool[i].size & (size_t) 0x80000000) == (size_t) 0x0) {
+            ret = -1;
+        }
+        free(mempool[i].pnt);
+        mempool[i].pnt = NULL;
+    }
+    mempool_idx = (size_t) 0U;
+
+    return ret;
+}
+
+#define sodium_malloc(X)        mempool_alloc(X)
+#define sodium_free(X)          mempool_free(X)
+#define sodium_allocarray(X, Y) mempool_allocarray((X), (Y))
 
 static unsigned long long now(void)
 {
@@ -78,7 +151,10 @@ int main(void)
     }
     ts_end = now();
     printf("%llu\n", 1000000ULL * (ts_end - ts_start) / ITERATIONS);
-
+    if (mempool_free_all() != 0) {
+        fprintf(stderr, "** memory leaks detected **\n");
+        return 99;
+    }
     return 0;
 }
 
@@ -91,8 +167,9 @@ static FILE *fp_res;
 
 int main(void)
 {
-    FILE *fp_out;
-    int   c;
+    FILE          *fp_out;
+    unsigned char *_guard_page;
+    int           c;
 
     if ((fp_res = fopen(TEST_NAME_RES, "w+")) == NULL) {
         perror("fopen(" TEST_NAME_RES ")");
@@ -101,6 +178,11 @@ int main(void)
     if (sodium_init() != 0) {
         return 99;
     }
+    if ((_guard_page = (unsigned char *) sodium_malloc(0)) == NULL) {
+        perror("sodium_malloc()");
+        return 99;
+    }
+    guard_page = _guard_page + 1;
     if (xmain() != 0) {
         return 99;
     }
@@ -114,6 +196,7 @@ int main(void)
             return 99;
         }
     } while (c != EOF);
+    sodium_free(_guard_page);
 
     return 0;
 }

@@ -480,19 +480,19 @@ main(void)
     assert(crypto_pwhash_alg_argon2id13() != crypto_pwhash_alg_argon2i13());
     assert(crypto_pwhash_alg_argon2id13() == crypto_pwhash_alg_default());
 
-    assert(crypto_pwhash_argon2id(NULL, 0, NULL, 0, NULL,
+    assert(crypto_pwhash_argon2id(guard_page, 0, (const char *) guard_page, 0, guard_page,
                                   crypto_pwhash_argon2id_OPSLIMIT_INTERACTIVE,
                                   crypto_pwhash_argon2id_MEMLIMIT_INTERACTIVE,
                                   0) == -1);
-    assert(crypto_pwhash_argon2id(NULL, 0, NULL, 0, NULL,
+    assert(crypto_pwhash_argon2id(guard_page, 0, (const char *) guard_page, 0, guard_page,
                                  crypto_pwhash_argon2id_OPSLIMIT_INTERACTIVE,
                                  crypto_pwhash_argon2id_MEMLIMIT_INTERACTIVE,
                                  crypto_pwhash_ALG_ARGON2I13) == -1);
-    assert(crypto_pwhash_argon2i(NULL, 0, NULL, 0, NULL,
+    assert(crypto_pwhash_argon2i(guard_page, 0, (const char *) guard_page, 0, guard_page,
                                  crypto_pwhash_argon2id_OPSLIMIT_INTERACTIVE,
                                  crypto_pwhash_argon2id_MEMLIMIT_INTERACTIVE,
                                  0) == -1);
-    assert(crypto_pwhash_argon2i(NULL, 0, NULL, 0, NULL,
+    assert(crypto_pwhash_argon2i(guard_page, 0, (const char *) guard_page, 0, guard_page,
                                  crypto_pwhash_argon2id_OPSLIMIT_INTERACTIVE,
                                  crypto_pwhash_argon2id_MEMLIMIT_INTERACTIVE,
                                  crypto_pwhash_ALG_ARGON2ID13) == -1);

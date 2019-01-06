@@ -51,50 +51,54 @@ const char *crypto_sign_primitive(void);
 
 SODIUM_EXPORT
 int crypto_sign_seed_keypair(unsigned char *pk, unsigned char *sk,
-                             const unsigned char *seed);
+                             const unsigned char *seed)
+            __attribute__ ((nonnull));
 
 SODIUM_EXPORT
-int crypto_sign_keypair(unsigned char *pk, unsigned char *sk);
+int crypto_sign_keypair(unsigned char *pk, unsigned char *sk)
+            __attribute__ ((nonnull));
 
 SODIUM_EXPORT
 int crypto_sign(unsigned char *sm, unsigned long long *smlen_p,
                 const unsigned char *m, unsigned long long mlen,
-                const unsigned char *sk);
+                const unsigned char *sk) __attribute__ ((nonnull(1, 3, 5)));
 
 SODIUM_EXPORT
 int crypto_sign_open(unsigned char *m, unsigned long long *mlen_p,
                      const unsigned char *sm, unsigned long long smlen,
                      const unsigned char *pk)
-            __attribute__ ((warn_unused_result));
+            __attribute__ ((warn_unused_result)) __attribute__ ((nonnull(3, 5)));
 
 SODIUM_EXPORT
 int crypto_sign_detached(unsigned char *sig, unsigned long long *siglen_p,
                          const unsigned char *m, unsigned long long mlen,
-                         const unsigned char *sk);
+                         const unsigned char *sk) __attribute__ ((nonnull(1, 3, 5)));
 
 SODIUM_EXPORT
 int crypto_sign_verify_detached(const unsigned char *sig,
                                 const unsigned char *m,
                                 unsigned long long mlen,
                                 const unsigned char *pk)
-            __attribute__ ((warn_unused_result));
+            __attribute__ ((warn_unused_result)) __attribute__ ((nonnull));
 
 SODIUM_EXPORT
 int crypto_sign_init(crypto_sign_state *state);
 
 SODIUM_EXPORT
 int crypto_sign_update(crypto_sign_state *state,
-                       const unsigned char *m, unsigned long long mlen);
+                       const unsigned char *m, unsigned long long mlen)
+            __attribute__ ((nonnull));
 
 SODIUM_EXPORT
 int crypto_sign_final_create(crypto_sign_state *state, unsigned char *sig,
                              unsigned long long *siglen_p,
-                             const unsigned char *sk);
+                             const unsigned char *sk)
+            __attribute__ ((nonnull(1, 2, 4)));
 
 SODIUM_EXPORT
-int crypto_sign_final_verify(crypto_sign_state *state, unsigned char *sig,
+int crypto_sign_final_verify(crypto_sign_state *state, const unsigned char *sig,
                              const unsigned char *pk)
-            __attribute__ ((warn_unused_result));
+            __attribute__ ((warn_unused_result)) __attribute__ ((nonnull));
 
 #ifdef __cplusplus
 }

@@ -39,15 +39,18 @@ const char *crypto_stream_primitive(void);
 
 SODIUM_EXPORT
 int crypto_stream(unsigned char *c, unsigned long long clen,
-                  const unsigned char *n, const unsigned char *k);
+                  const unsigned char *n, const unsigned char *k)
+            __attribute__ ((nonnull));
 
 SODIUM_EXPORT
 int crypto_stream_xor(unsigned char *c, const unsigned char *m,
                       unsigned long long mlen, const unsigned char *n,
-                      const unsigned char *k);
+                      const unsigned char *k)
+            __attribute__ ((nonnull));
 
 SODIUM_EXPORT
-void crypto_stream_keygen(unsigned char k[crypto_stream_KEYBYTES]);
+void crypto_stream_keygen(unsigned char k[crypto_stream_KEYBYTES])
+            __attribute__ ((nonnull));
 
 #ifdef __cplusplus
 }

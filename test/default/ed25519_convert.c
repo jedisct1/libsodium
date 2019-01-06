@@ -18,16 +18,10 @@ main(void)
     unsigned char curve25519_sk[crypto_scalarmult_curve25519_BYTES];
     char          curve25519_pk_hex[crypto_scalarmult_curve25519_BYTES * 2 + 1];
     char          curve25519_sk_hex[crypto_scalarmult_curve25519_BYTES * 2 + 1];
-    unsigned char hseed[crypto_hash_sha512_BYTES];
     unsigned int  i;
 
     assert(crypto_sign_ed25519_SEEDBYTES <= crypto_hash_sha512_BYTES);
-#ifdef ED25519_NONDETERMINISTIC
-    crypto_hash_sha512(hseed, keypair_seed, crypto_sign_ed25519_SEEDBYTES);
-#else
-    memcpy(hseed, keypair_seed, crypto_sign_ed25519_SEEDBYTES);
-#endif
-    crypto_sign_ed25519_seed_keypair(ed25519_pk, ed25519_skpk, hseed);
+    crypto_sign_ed25519_seed_keypair(ed25519_pk, ed25519_skpk, keypair_seed);
 
     if (crypto_sign_ed25519_pk_to_curve25519(curve25519_pk, ed25519_pk) != 0) {
         printf("conversion failed\n");

@@ -81,7 +81,9 @@ test/default/*.asm.js
 test/default/*.res
 test/default/*.trs
 test/default/aead_aes256gcm
+test/default/aead_aes256gcm2
 test/default/aead_chacha20poly1305
+test/default/aead_chacha20poly13052
 test/default/aead_xchacha20poly1305
 test/default/auth
 test/default/auth2
@@ -131,6 +133,7 @@ test/default/scalarmult2
 test/default/scalarmult5
 test/default/scalarmult6
 test/default/scalarmult7
+test/default/scalarmult8
 test/default/secretbox
 test/default/secretbox2
 test/default/secretbox7
