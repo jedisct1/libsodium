@@ -338,8 +338,8 @@ AX_CHECK_CATCHABLE_ABRT
 
 AS_IF([test "x$with_threads" = "xyes"], [
   AX_TLS([AC_MSG_RESULT(thread local storage is supported)
-          AX_CHECK_COMPILE_FLAG([-ftls-model=global-dynamic],
-            [CFLAGS="$CFLAGS -ftls-model=global-dynamic"])],
+          AX_CHECK_COMPILE_FLAG([-ftls-model=local-dynamic],
+            [CFLAGS="$CFLAGS -ftls-model=local-dynamic"])],
          [AC_MSG_RESULT(thread local storage is not supported)]) ])
 
 LT_INIT
