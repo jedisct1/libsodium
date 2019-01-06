@@ -18,15 +18,15 @@ not to be detected.
 `crypto_core_ed25519_scalar_complement()`, `crypto_core_ed25519_scalar_add()`
 and `crypto_core_ed25519_scalar_sub()`.
  - New low-level APIs for scalar multiplication without clamping:
-`crypto_scalarmult_ed25519_base_noclamp()`,
-and `crypto_scalarmult_ed25519_noclamp()`. These new APIs are
-especially useful for blinding.
+`crypto_scalarmult_ed25519_base_noclamp()` and
+`crypto_scalarmult_ed25519_noclamp()`. These new APIs are especially useful
+for blinding.
  - `sodium_sub()` has been implemented.
  - Support for WatchOS has been added.
  - getrandom(2) is now used on FreeBSD 12+.
  - The `nonnull` attribute has been added to all relevant prototypes.
  - More reliable AVX512 detection.
- - Javascript/Webassembly builds now use dynamic memory growth
+ - Javascript/Webassembly builds now use dynamic memory growth.
 
 * Version 1.0.16
  - Signatures computations and verifications are now way faster on
