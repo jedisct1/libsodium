@@ -163,8 +163,6 @@ sodium_hrtime(void)
 static void
 randombytes_salsa20_random_init(void)
 {
-    stream.nonce = sodium_hrtime();
-    assert(stream.nonce != (uint64_t) 0U);
     global.rdrand_available = sodium_runtime_has_rdrand();
 }
 
@@ -304,9 +302,7 @@ randombytes_salsa20_random_init(void)
 {
     const int errno_save = errno;
 
-    stream.nonce = sodium_hrtime();
     global.rdrand_available = sodium_runtime_has_rdrand();
-    assert(stream.nonce != (uint64_t) 0U);
 
 # ifdef HAVE_SAFE_ARC4RANDOM
     errno = errno_save;
@@ -342,6 +338,8 @@ randombytes_salsa20_random_init(void)
 static void
 randombytes_salsa20_random_stir(void)
 {
+    stream.nonce = sodium_hrtime();
+    assert(stream.nonce != (uint64_t) 0U);
     memset(stream.rnd32, 0, sizeof stream.rnd32);
     stream.rnd32_outleft = (size_t) 0U;
     if (global.initialized == 0) {
