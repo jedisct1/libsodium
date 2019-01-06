@@ -15,7 +15,7 @@
     <Version><!-- set by prepare.py --></Version>
     <Authors>Frank Denis</Authors>
     <Description>Internal implementation package not meant for direct consumption. Please do not reference directly.</Description>
-    <Copyright>&#169; 2013-2017 Frank Denis</Copyright>
+    <Copyright>&#169; 2013-2019 Frank Denis</Copyright>
     <PackageRequireLicenseAcceptance>true</PackageRequireLicenseAcceptance>
     <PackageLicenseUrl>https://raw.githubusercontent.com/jedisct1/libsodium/master/LICENSE</PackageLicenseUrl>
     <PackageProjectUrl>https://libsodium.org/</PackageProjectUrl>
