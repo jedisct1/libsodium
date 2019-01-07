@@ -185,6 +185,8 @@ AC_ARG_ENABLE(opt,
 [
   AS_IF([test "x$enableval" = "xyes"], [
     AX_CHECK_COMPILE_FLAG([-Ofast], [CFLAGS="$CFLAGS -Ofast"])
+    AX_CHECK_COMPILE_FLAG([-ftree-vectorize], [CFLAGS="$CFLAGS -ftree-vectorize"])
+    AX_CHECK_COMPILE_FLAG([-ftree-slp-vectorize], [CFLAGS="$CFLAGS -ftree-slp-vectorize"])
     AX_CHECK_COMPILE_FLAG([-fomit-frame-pointer], [CFLAGS="$CFLAGS -fomit-frame-pointer"])
     AX_CHECK_COMPILE_FLAG([-march=native], [CFLAGS="$CFLAGS -march=native"])
   ])
