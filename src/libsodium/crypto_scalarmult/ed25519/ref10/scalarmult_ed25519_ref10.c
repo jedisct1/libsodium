@@ -24,7 +24,6 @@ static inline void
 _crypto_scalarmult_ed25519_clamp(unsigned char k[32])
 {
     k[0] &= 248;
-    k[31] &= 127;
     k[31] |= 64;
 }
 
@@ -47,6 +46,8 @@ _crypto_scalarmult_ed25519(unsigned char *q, const unsigned char *n,
     if (clamp != 0) {
         _crypto_scalarmult_ed25519_clamp(t);
     }
+    t[31] &= 127;
+
     ge25519_scalarmult(&Q, t, &P);
     ge25519_p3_tobytes(q, &Q);
     if (_crypto_scalarmult_ed25519_is_inf(q) != 0 || sodium_is_zero(n, 32)) {
@@ -83,6 +84,8 @@ _crypto_scalarmult_ed25519_base(unsigned char *q,
     if (clamp != 0) {
         _crypto_scalarmult_ed25519_clamp(t);
     }
+    t[31] &= 127;
+
     ge25519_scalarmult_base(&Q, t);
     ge25519_p3_tobytes(q, &Q);
     if (_crypto_scalarmult_ed25519_is_inf(q) != 0 || sodium_is_zero(n, 32)) {
