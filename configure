@@ -704,6 +704,7 @@ VALGRIND_ENABLED
 VALGRIND_ENABLED_FALSE
 VALGRIND_ENABLED_TRUE
 VALGRIND
+PKGCONFIG_LIBS_PRIVATE
 SAFECODE_HOME
 PTHREAD_CFLAGS
 PTHREAD_LIBS
@@ -3275,7 +3276,7 @@ fi
 
 SODIUM_LIBRARY_VERSION_MAJOR=10
 SODIUM_LIBRARY_VERSION_MINOR=2
-DLL_VERSION=8
+DLL_VERSION=23
 SODIUM_LIBRARY_VERSION=25:0:2
 #                       | | |
 #                +------+ | +---+
@@ -3295,6 +3296,7 @@ SODIUM_LIBRARY_VERSION=25:0:2
 
 
 LX_CFLAGS=${CFLAGS-NONE}
+PKGCONFIG_LIBS_PRIVATE=""
 
 
 if pwd | fgrep ' ' > /dev/null 2>&1; then :
@@ -5463,6 +5465,7 @@ $as_echo "#define HAVE_PTHREAD 1" >>confdefs.h
 
     with_threads="yes"
     LIBS="$PTHREAD_LIBS $LIBS"
+    PKGCONFIG_LIBS_PRIVATE="$PTHREAD_LIBS $PTHREAD_CFLAGS $PKGCONFIG_LIBS_PRIVATE"
     CFLAGS="$CFLAGS $PTHREAD_CFLAGS"
     CC="$PTHREAD_CC"
         :
@@ -5745,6 +5748,78 @@ else
   :
 fi
 
+    { $as_echo "$as_me:${as_lineno-$LINENO}: checking whether C compiler accepts -ftree-vectorize" >&5
+$as_echo_n "checking whether C compiler accepts -ftree-vectorize... " >&6; }
+if ${ax_cv_check_cflags___ftree_vectorize+:} false; then :
+  $as_echo_n "(cached) " >&6
+else
+
+  ax_check_save_flags=$CFLAGS
+  CFLAGS="$CFLAGS  -ftree-vectorize"
+  cat confdefs.h - <<_ACEOF >conftest.$ac_ext
+/* end confdefs.h.  */
+#include <time.h>
+int
+main ()
+{
+time_t x; int fodder = 0; if (fodder > -1000 && time(&x)) return (int) x
+  ;
+  return 0;
+}
+_ACEOF
+if ac_fn_c_try_link "$LINENO"; then :
+  ax_cv_check_cflags___ftree_vectorize=yes
+else
+  ax_cv_check_cflags___ftree_vectorize=no
+fi
+rm -f core conftest.err conftest.$ac_objext \
+    conftest$ac_exeext conftest.$ac_ext
+  CFLAGS=$ax_check_save_flags
+fi
+{ $as_echo "$as_me:${as_lineno-$LINENO}: result: $ax_cv_check_cflags___ftree_vectorize" >&5
+$as_echo "$ax_cv_check_cflags___ftree_vectorize" >&6; }
+if test "x$ax_cv_check_cflags___ftree_vectorize" = xyes; then :
+  CFLAGS="$CFLAGS -ftree-vectorize"
+else
+  :
+fi
+
+    { $as_echo "$as_me:${as_lineno-$LINENO}: checking whether C compiler accepts -ftree-slp-vectorize" >&5
+$as_echo_n "checking whether C compiler accepts -ftree-slp-vectorize... " >&6; }
+if ${ax_cv_check_cflags___ftree_slp_vectorize+:} false; then :
+  $as_echo_n "(cached) " >&6
+else
+
+  ax_check_save_flags=$CFLAGS
+  CFLAGS="$CFLAGS  -ftree-slp-vectorize"
+  cat confdefs.h - <<_ACEOF >conftest.$ac_ext
+/* end confdefs.h.  */
+#include <time.h>
+int
+main ()
+{
+time_t x; int fodder = 0; if (fodder > -1000 && time(&x)) return (int) x
+  ;
+  return 0;
+}
+_ACEOF
+if ac_fn_c_try_link "$LINENO"; then :
+  ax_cv_check_cflags___ftree_slp_vectorize=yes
+else
+  ax_cv_check_cflags___ftree_slp_vectorize=no
+fi
+rm -f core conftest.err conftest.$ac_objext \
+    conftest$ac_exeext conftest.$ac_ext
+  CFLAGS=$ax_check_save_flags
+fi
+{ $as_echo "$as_me:${as_lineno-$LINENO}: result: $ax_cv_check_cflags___ftree_slp_vectorize" >&5
+$as_echo "$ax_cv_check_cflags___ftree_slp_vectorize" >&6; }
+if test "x$ax_cv_check_cflags___ftree_slp_vectorize" = xyes; then :
+  CFLAGS="$CFLAGS -ftree-slp-vectorize"
+else
+  :
+fi
+
     { $as_echo "$as_me:${as_lineno-$LINENO}: checking whether C compiler accepts -fomit-frame-pointer" >&5
 $as_echo_n "checking whether C compiler accepts -fomit-frame-pointer... " >&6; }
 if ${ax_cv_check_cflags___fomit_frame_pointer+:} false; then :
@@ -5821,6 +5896,7 @@ fi
 fi
 
 fi
+
 
 
 
