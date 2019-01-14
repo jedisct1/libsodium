@@ -36,6 +36,7 @@ AC_SUBST(DLL_VERSION)
 
 AC_LANG_ASSERT(C)
 LX_CFLAGS=${CFLAGS-NONE}
+PKGCONFIG_LIBS_PRIVATE=""
 
 dnl Path check
 
@@ -127,6 +128,7 @@ AS_IF([test "x$withval" = "xyes"], [
     AC_DEFINE([HAVE_PTHREAD], [1], [Define if you have POSIX threads libraries and header files])
     with_threads="yes"
     LIBS="$PTHREAD_LIBS $LIBS"
+    PKGCONFIG_LIBS_PRIVATE="$PTHREAD_LIBS $PTHREAD_CFLAGS $PKGCONFIG_LIBS_PRIVATE"
     CFLAGS="$CFLAGS $PTHREAD_CFLAGS"
     CC="$PTHREAD_CC"])
 ], [with_threads="no"])
@@ -193,6 +195,7 @@ AC_ARG_ENABLE(opt,
 ])
 
 AC_SUBST([MAINT])
+AC_SUBST(PKGCONFIG_LIBS_PRIVATE, $PKGCONFIG_LIBS_PRIVATE)
 
 AX_VALGRIND_CHECK
 
