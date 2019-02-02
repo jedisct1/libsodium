@@ -33,7 +33,7 @@ int crypto_sign_edwards25519sha512batch(unsigned char *sm,
                                         const unsigned char *m,
                                         unsigned long long mlen,
                                         const unsigned char *sk)
-            __attribute__ ((deprecated)) __attribute__ ((nonnull(1, 3, 5)));
+            __attribute__ ((deprecated)) __attribute__ ((nonnull(1, 5)));
 
 SODIUM_EXPORT
 int crypto_sign_edwards25519sha512batch_open(unsigned char *m,

@@ -66,7 +66,7 @@ SODIUM_EXPORT
 int crypto_generichash_update(crypto_generichash_state *state,
                               const unsigned char *in,
                               unsigned long long inlen)
-            __attribute__ ((nonnull));
+            __attribute__ ((nonnull(1)));
 
 SODIUM_EXPORT
 int crypto_generichash_final(crypto_generichash_state *state,

@@ -32,5 +32,10 @@ main(void)
             }
         }
     }
+
+    crypto_auth_keygen(key);
+    crypto_auth(a, guard_page, 0U, key);
+    assert(crypto_auth_verify(a, guard_page, 0U, key) == 0);
+
     return 0;
 }

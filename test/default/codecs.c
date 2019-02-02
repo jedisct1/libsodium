@@ -20,6 +20,11 @@ main(void)
     printf("%s\n",
            sodium_bin2hex(buf3, 33U, (const unsigned char *) "0123456789ABCDEF",
                           16U));
+    printf("bin2hex(..., guard_page, 0):%s\n",
+           sodium_bin2hex(buf3, sizeof buf3, guard_page, 0U));
+    printf("bin2hex(..., \"\", 0):%s\n",
+           sodium_bin2hex(buf3, sizeof buf3, (const unsigned char *) "", 0U));
+
     hex = "Cafe : 6942";
     sodium_hex2bin(buf4, sizeof buf4, hex, strlen(hex), ": ", &bin_len,
                    &hex_end);
@@ -78,6 +83,13 @@ main(void)
                        &bin_len, NULL) != -1) {
         printf("sodium_hex2bin() with an extra character and no end pointer\n");
     }
+
+    assert(sodium_hex2bin(buf4, sizeof buf4, (const char *) guard_page, 0U,
+                          NULL, &bin_len, NULL) == 0);
+    assert(bin_len == 0);
+
+    assert(sodium_hex2bin(buf4, sizeof buf4, "", 0U, NULL, &bin_len, NULL) == 0);
+    assert(bin_len == 0);
 
     printf("%s\n",
            sodium_bin2base64(buf3, 31U, (const unsigned char *) "\xfb\xf0\xf1" "0123456789ABCDEFab",
@@ -200,6 +212,14 @@ main(void)
                              sodium_base64_VARIANT_ORIGINAL) == 0);
     assert(sodium_base642bin(buf1, sizeof buf1, "ka*w*=*", (size_t) 7U, "*~", NULL, NULL,
                              sodium_base64_VARIANT_ORIGINAL) == 0);
+
+    assert(sodium_base642bin(buf1, sizeof buf1, (const char *) guard_page, 0U,
+                             NULL, &bin_len, NULL, sodium_base64_VARIANT_ORIGINAL) == 0);
+    assert(bin_len == 0);
+
+    assert(sodium_base642bin(buf1, sizeof buf1, "", 0U, NULL, &bin_len, NULL,
+                             sodium_base64_VARIANT_ORIGINAL) == 0);
+    assert(bin_len == 0);
 
     for (i = 0; i < 1000; i++) {
         assert(sizeof buf1 >= 100);

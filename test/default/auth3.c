@@ -25,7 +25,12 @@ static unsigned char a[32] = { 0x37, 0x2e, 0xfc, 0xf9, 0xb4, 0x0b, 0x35, 0xc2,
 int
 main(void)
 {
+    static unsigned char a2[crypto_auth_hmacsha256_BYTES];
+
     printf("%d\n", crypto_auth_hmacsha256_verify(a, c, sizeof c, key));
+
+    crypto_auth_hmacsha256(a2, guard_page, 0U, key);
+    assert(crypto_auth_hmacsha256_verify(a2, guard_page, 0U, key) == 0);
 
     return 0;
 }

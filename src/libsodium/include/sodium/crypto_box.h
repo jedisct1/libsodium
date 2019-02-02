@@ -61,7 +61,7 @@ SODIUM_EXPORT
 int crypto_box_easy(unsigned char *c, const unsigned char *m,
                     unsigned long long mlen, const unsigned char *n,
                     const unsigned char *pk, const unsigned char *sk)
-            __attribute__ ((warn_unused_result)) __attribute__ ((nonnull));
+            __attribute__ ((warn_unused_result)) __attribute__ ((nonnull(1, 4, 5, 6)));
 
 SODIUM_EXPORT
 int crypto_box_open_easy(unsigned char *m, const unsigned char *c,
@@ -74,7 +74,7 @@ int crypto_box_detached(unsigned char *c, unsigned char *mac,
                         const unsigned char *m, unsigned long long mlen,
                         const unsigned char *n, const unsigned char *pk,
                         const unsigned char *sk)
-            __attribute__ ((warn_unused_result)) __attribute__ ((nonnull));
+            __attribute__ ((warn_unused_result)) __attribute__ ((nonnull(1, 2, 5, 6, 7)));
 
 SODIUM_EXPORT
 int crypto_box_open_detached(unsigned char *m, const unsigned char *c,
@@ -99,7 +99,7 @@ int crypto_box_beforenm(unsigned char *k, const unsigned char *pk,
 SODIUM_EXPORT
 int crypto_box_easy_afternm(unsigned char *c, const unsigned char *m,
                             unsigned long long mlen, const unsigned char *n,
-                            const unsigned char *k) __attribute__ ((nonnull));
+                            const unsigned char *k) __attribute__ ((nonnull(1, 4, 5)));
 
 SODIUM_EXPORT
 int crypto_box_open_easy_afternm(unsigned char *m, const unsigned char *c,
@@ -111,7 +111,7 @@ SODIUM_EXPORT
 int crypto_box_detached_afternm(unsigned char *c, unsigned char *mac,
                                 const unsigned char *m, unsigned long long mlen,
                                 const unsigned char *n, const unsigned char *k)
-            __attribute__ ((nonnull));
+            __attribute__ ((nonnull(1, 2, 5, 6)));
 
 SODIUM_EXPORT
 int crypto_box_open_detached_afternm(unsigned char *m, const unsigned char *c,
@@ -129,7 +129,7 @@ size_t crypto_box_sealbytes(void);
 SODIUM_EXPORT
 int crypto_box_seal(unsigned char *c, const unsigned char *m,
                     unsigned long long mlen, const unsigned char *pk)
-            __attribute__ ((nonnull));
+            __attribute__ ((nonnull(1, 4)));
 
 SODIUM_EXPORT
 int crypto_box_seal_open(unsigned char *m, const unsigned char *c,
@@ -151,7 +151,7 @@ SODIUM_EXPORT
 int crypto_box(unsigned char *c, const unsigned char *m,
                unsigned long long mlen, const unsigned char *n,
                const unsigned char *pk, const unsigned char *sk)
-            __attribute__ ((warn_unused_result)) __attribute__ ((nonnull));
+            __attribute__ ((warn_unused_result)) __attribute__ ((nonnull(1, 4, 5, 6)));
 
 SODIUM_EXPORT
 int crypto_box_open(unsigned char *m, const unsigned char *c,
@@ -162,7 +162,7 @@ int crypto_box_open(unsigned char *m, const unsigned char *c,
 SODIUM_EXPORT
 int crypto_box_afternm(unsigned char *c, const unsigned char *m,
                        unsigned long long mlen, const unsigned char *n,
-                       const unsigned char *k) __attribute__ ((nonnull));
+                       const unsigned char *k) __attribute__ ((nonnull(1, 4, 5)));
 
 SODIUM_EXPORT
 int crypto_box_open_afternm(unsigned char *m, const unsigned char *c,

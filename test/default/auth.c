@@ -14,12 +14,14 @@ static unsigned char key2[] =
 
 static unsigned char a[crypto_auth_BYTES];
 static unsigned char a2[crypto_auth_hmacsha512_BYTES];
+static unsigned char a3[crypto_auth_hmacsha512_BYTES];
 
 int
 main(void)
 {
     crypto_auth_hmacsha512_state st;
     crypto_auth_hmacsha256_state st256;
+    crypto_auth_hmacsha512256_state st512_256;
     size_t                       i;
 
     assert(crypto_auth_hmacsha512_statebytes() ==
@@ -64,6 +66,60 @@ main(void)
         if (i % 8 == 7)
             printf("\n");
     }
+
+    /* Empty message tests: HMAC-SHA512 */
+    memset(a2, 0, sizeof a2);
+    crypto_auth_hmacsha512_init(&st, key, sizeof key);
+    crypto_auth_hmacsha512_final(&st, a2);
+
+    memset(a3, 0, sizeof a3);
+    crypto_auth_hmacsha512_init(&st, key, sizeof key);
+    crypto_auth_hmacsha512_update(&st, a2, 0U);
+    crypto_auth_hmacsha512_final(&st, a3);
+    assert(sodium_memcmp(a2, a3, sizeof a2) == 0);
+
+    memset(a3, 0, sizeof a3);
+    crypto_auth_hmacsha512_init(&st, key, sizeof key);
+    crypto_auth_hmacsha512_update(&st, guard_page, 0U);
+    crypto_auth_hmacsha512_final(&st, a3);
+    assert(sodium_memcmp(a2, a3, sizeof a2) == 0);
+
+    /* Empty message tests: HMAC-SHA512-256 */
+    memset(a2, 0, sizeof a2);
+    crypto_auth_hmacsha512256_init(&st512_256, key, sizeof key);
+    crypto_auth_hmacsha512256_final(&st512_256, a2);
+
+    memset(a3, 0, sizeof a3);
+    crypto_auth_hmacsha512256_init(&st512_256, key, sizeof key);
+    crypto_auth_hmacsha512256_update(&st512_256, a2, 0U);
+    crypto_auth_hmacsha512256_final(&st512_256, a3);
+    assert(sodium_memcmp(a2, a3, sizeof a2) == 0);
+
+    memset(a3, 0, sizeof a3);
+    crypto_auth_hmacsha512256_init(&st512_256, key, sizeof key);
+    crypto_auth_hmacsha512256_update(&st512_256, guard_page, 0U);
+    crypto_auth_hmacsha512256_final(&st512_256, a3);
+    assert(sodium_memcmp(a2, a3, sizeof a2) == 0);
+
+    /* Empty message tests: HMAC-SHA256 */
+
+    memset(a2, 0, sizeof a2);
+    crypto_auth_hmacsha256_init(&st256, key, sizeof key);
+    crypto_auth_hmacsha256_final(&st256, a2);
+
+    memset(a3, 0, sizeof a3);
+    crypto_auth_hmacsha256_init(&st256, key, sizeof key);
+    crypto_auth_hmacsha256_update(&st256, a2, 0U);
+    crypto_auth_hmacsha256_final(&st256, a3);
+    assert(sodium_memcmp(a2, a3, sizeof a2) == 0);
+
+    memset(a3, 0, sizeof a3);
+    crypto_auth_hmacsha256_init(&st256, key, sizeof key);
+    crypto_auth_hmacsha256_update(&st256, guard_page, 0U);
+    crypto_auth_hmacsha256_final(&st256, a3);
+    assert(sodium_memcmp(a2, a3, sizeof a2) == 0);
+
+    /* --- */
 
     assert(crypto_auth_bytes() > 0U);
     assert(crypto_auth_keybytes() > 0U);

@@ -19,7 +19,7 @@ extern "C" {
 #endif
 
 SODIUM_EXPORT
-void sodium_memzero(void * const pnt, const size_t len) __attribute__ ((nonnull));
+void sodium_memzero(void * const pnt, const size_t len);
 
 SODIUM_EXPORT
 void sodium_stackzero(const size_t len);
@@ -32,7 +32,7 @@ void sodium_stackzero(const size_t len);
  */
 SODIUM_EXPORT
 int sodium_memcmp(const void * const b1_, const void * const b2_, size_t len)
-            __attribute__ ((warn_unused_result)) __attribute__ ((nonnull));
+            __attribute__ ((warn_unused_result));
 
 /*
  * sodium_compare() returns -1 if b1_ < b2_, 1 if b1_ > b2_ and 0 if b1_ == b2_
@@ -42,8 +42,7 @@ int sodium_memcmp(const void * const b1_, const void * const b2_, size_t len)
  */
 SODIUM_EXPORT
 int sodium_compare(const unsigned char *b1_, const unsigned char *b2_,
-                   size_t len)
-            __attribute__ ((warn_unused_result)) __attribute__ ((nonnull));
+                   size_t len) __attribute__ ((warn_unused_result));
 
 SODIUM_EXPORT
 int sodium_is_zero(const unsigned char *n, const size_t nlen);
@@ -52,24 +51,22 @@ SODIUM_EXPORT
 void sodium_increment(unsigned char *n, const size_t nlen);
 
 SODIUM_EXPORT
-void sodium_add(unsigned char *a, const unsigned char *b, const size_t len)
-            __attribute__ ((nonnull));
+void sodium_add(unsigned char *a, const unsigned char *b, const size_t len);
 
 SODIUM_EXPORT
-void sodium_sub(unsigned char *a, const unsigned char *b, const size_t len)
-            __attribute__ ((nonnull));
+void sodium_sub(unsigned char *a, const unsigned char *b, const size_t len);
 
 SODIUM_EXPORT
 char *sodium_bin2hex(char * const hex, const size_t hex_maxlen,
                      const unsigned char * const bin, const size_t bin_len)
-            __attribute__ ((nonnull));
+            __attribute__ ((nonnull(1)));
 
 SODIUM_EXPORT
 int sodium_hex2bin(unsigned char * const bin, const size_t bin_maxlen,
                    const char * const hex, const size_t hex_len,
                    const char * const ignore, size_t * const bin_len,
                    const char ** const hex_end)
-            __attribute__ ((nonnull(1, 3)));
+            __attribute__ ((nonnull(1)));
 
 #define sodium_base64_VARIANT_ORIGINAL            1
 #define sodium_base64_VARIANT_ORIGINAL_NO_PADDING 3
@@ -91,14 +88,14 @@ size_t sodium_base64_encoded_len(const size_t bin_len, const int variant);
 SODIUM_EXPORT
 char *sodium_bin2base64(char * const b64, const size_t b64_maxlen,
                         const unsigned char * const bin, const size_t bin_len,
-                        const int variant) __attribute__ ((nonnull));
+                        const int variant) __attribute__ ((nonnull(1)));
 
 SODIUM_EXPORT
 int sodium_base642bin(unsigned char * const bin, const size_t bin_maxlen,
                       const char * const b64, const size_t b64_len,
                       const char * const ignore, size_t * const bin_len,
                       const char ** const b64_end, const int variant)
-            __attribute__ ((nonnull(1, 3)));
+            __attribute__ ((nonnull(1)));
 
 SODIUM_EXPORT
 int sodium_mlock(void * const addr, const size_t len)

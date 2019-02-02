@@ -29,6 +29,10 @@ main(void)
     printf("%d\n", sodium_memcmp(buf1, buf2, 0U));
     sodium_memzero(buf2, sizeof buf2 / 2);
     printf("%d\n", sodium_memcmp(buf1, buf2, sizeof buf1));
+    printf("%d\n", sodium_memcmp(buf1, guard_page, 0U));
+    printf("%d\n", sodium_memcmp(guard_page, buf2, 0U));
+    printf("%d\n", sodium_memcmp(guard_page, guard_page, 0U));
+    sodium_memzero(guard_page, 0U);
 
     memset(nonce, 0, sizeof nonce);
     sodium_increment(nonce, sizeof nonce);
@@ -70,6 +74,8 @@ main(void)
                    (unsigned int) bin_len);
         }
     }
+    printf("%d\n", sodium_compare(buf1, NULL, 0U));
+    printf("%d\n", sodium_compare(NULL, buf1, 0U));
     memset(buf1, 0, sizeof buf1);
     if (sodium_is_zero(buf1, sizeof buf1) != 1) {
         printf("sodium_is_zero() failed\n");
@@ -154,6 +160,21 @@ main(void)
     sodium_add(nonce, nonce, 24U);
     printf("%s\n",
            sodium_bin2hex(nonce_hex, sizeof nonce_hex, nonce, sizeof nonce));
+    sodium_add(nonce, nonce, 0U);
+    printf("%s\n",
+           sodium_bin2hex(nonce_hex, sizeof nonce_hex, nonce, sizeof nonce));
+    sodium_add(nonce, guard_page, 0U);
+    printf("%s\n",
+           sodium_bin2hex(nonce_hex, sizeof nonce_hex, nonce, sizeof nonce));
+    sodium_add(guard_page, nonce, 0U);
+
+    sodium_sub(nonce, nonce, 0U);
+    printf("%s\n",
+           sodium_bin2hex(nonce_hex, sizeof nonce_hex, nonce, sizeof nonce));
+    sodium_sub(nonce, guard_page, 0U);
+    printf("%s\n",
+           sodium_bin2hex(nonce_hex, sizeof nonce_hex, nonce, sizeof nonce));
+    sodium_sub(guard_page, nonce, 0U);
 
     randombytes_buf(buf1, 64U);
     randombytes_buf(buf2, 64U);

@@ -78,7 +78,7 @@ int crypto_box_curve25519xsalsa20poly1305(unsigned char *c,
                                           const unsigned char *n,
                                           const unsigned char *pk,
                                           const unsigned char *sk)
-            __attribute__ ((warn_unused_result)) __attribute__ ((nonnull));
+            __attribute__ ((warn_unused_result)) __attribute__ ((nonnull(1, 4, 5, 6)));
 
 SODIUM_EXPORT
 int crypto_box_curve25519xsalsa20poly1305_open(unsigned char *m,
@@ -95,7 +95,7 @@ int crypto_box_curve25519xsalsa20poly1305_afternm(unsigned char *c,
                                                   unsigned long long mlen,
                                                   const unsigned char *n,
                                                   const unsigned char *k)
-            __attribute__ ((nonnull));
+            __attribute__ ((nonnull(1, 4, 5)));
 
 SODIUM_EXPORT
 int crypto_box_curve25519xsalsa20poly1305_open_afternm(unsigned char *m,
