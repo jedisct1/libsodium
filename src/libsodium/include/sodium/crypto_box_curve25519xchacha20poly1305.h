@@ -60,7 +60,7 @@ int crypto_box_curve25519xchacha20poly1305_easy(unsigned char *c,
                                                 const unsigned char *n,
                                                 const unsigned char *pk,
                                                 const unsigned char *sk)
-            __attribute__ ((warn_unused_result)) __attribute__ ((nonnull));
+            __attribute__ ((warn_unused_result)) __attribute__ ((nonnull(1, 4, 5, 6)));
 
 SODIUM_EXPORT
 int crypto_box_curve25519xchacha20poly1305_open_easy(unsigned char *m,
@@ -79,7 +79,7 @@ int crypto_box_curve25519xchacha20poly1305_detached(unsigned char *c,
                                                     const unsigned char *n,
                                                     const unsigned char *pk,
                                                     const unsigned char *sk)
-            __attribute__ ((warn_unused_result)) __attribute__ ((nonnull));
+            __attribute__ ((warn_unused_result)) __attribute__ ((nonnull(1, 2, 5, 6, 7)));
 
 SODIUM_EXPORT
 int crypto_box_curve25519xchacha20poly1305_open_detached(unsigned char *m,
@@ -105,7 +105,7 @@ int crypto_box_curve25519xchacha20poly1305_easy_afternm(unsigned char *c,
                                                         unsigned long long mlen,
                                                         const unsigned char *n,
                                                         const unsigned char *k)
-            __attribute__ ((nonnull));
+            __attribute__ ((nonnull(1, 4, 5)));
 
 SODIUM_EXPORT
 int crypto_box_curve25519xchacha20poly1305_open_easy_afternm(unsigned char *m,
@@ -122,7 +122,7 @@ int crypto_box_curve25519xchacha20poly1305_detached_afternm(unsigned char *c,
                                                             unsigned long long mlen,
                                                             const unsigned char *n,
                                                             const unsigned char *k)
-            __attribute__ ((nonnull));
+            __attribute__ ((nonnull(1, 2, 5, 6)));
 
 SODIUM_EXPORT
 int crypto_box_curve25519xchacha20poly1305_open_detached_afternm(unsigned char *m,
@@ -147,7 +147,7 @@ int crypto_box_curve25519xchacha20poly1305_seal(unsigned char *c,
                                                 const unsigned char *m,
                                                 unsigned long long mlen,
                                                 const unsigned char *pk)
-            __attribute__ ((nonnull));
+            __attribute__ ((nonnull(1, 4)));
 
 SODIUM_EXPORT
 int crypto_box_curve25519xchacha20poly1305_seal_open(unsigned char *m,

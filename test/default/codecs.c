@@ -20,6 +20,11 @@ main(void)
     printf("%s\n",
            sodium_bin2hex(buf3, 33U, (const unsigned char *) "0123456789ABCDEF",
                           16U));
+    printf("bin2hex(..., NULL, 0):%s\n",
+           sodium_bin2hex(buf4, sizeof(buf4), NULL, 0U));
+    printf("bin2hex(..., \"\", 0):%s\n",
+           sodium_bin2hex(buf4, sizeof(buf4), (const unsigned char *) "", 0U));
+
     hex = "Cafe : 6942";
     sodium_hex2bin(buf4, sizeof buf4, hex, strlen(hex), ": ", &bin_len,
                    &hex_end);
@@ -79,6 +84,12 @@ main(void)
         printf("sodium_hex2bin() with an extra character and no end pointer\n");
     }
 
+    assert(sodium_hex2bin(buf4, sizeof(buf4), NULL, 0U, NULL, &bin_len, NULL) == 0);
+    assert(bin_len == 0);
+
+    assert(sodium_hex2bin(buf4, sizeof(buf4), "", 0U, NULL, &bin_len, NULL) == 0);
+    assert(bin_len == 0);
+
     printf("%s\n",
            sodium_bin2base64(buf3, 31U, (const unsigned char *) "\xfb\xf0\xf1" "0123456789ABCDEFab",
                              21U, sodium_base64_VARIANT_ORIGINAL));
@@ -93,6 +104,9 @@ main(void)
                              22U, sodium_base64_VARIANT_URLSAFE_NO_PADDING));
     printf("%s\n",
            sodium_bin2base64(buf3, 1U, guard_page,
+                             0U, sodium_base64_VARIANT_ORIGINAL));
+    printf("%s\n",
+           sodium_bin2base64(buf3, 1U, NULL,
                              0U, sodium_base64_VARIANT_ORIGINAL));
     printf("%s\n",
            sodium_bin2base64(buf3, 5U, (const unsigned char *) "a",
@@ -200,6 +214,13 @@ main(void)
                              sodium_base64_VARIANT_ORIGINAL) == 0);
     assert(sodium_base642bin(buf1, sizeof buf1, "ka*w*=*", (size_t) 7U, "*~", NULL, NULL,
                              sodium_base64_VARIANT_ORIGINAL) == 0);
+
+    assert(sodium_base642bin(buf1, sizeof buf1, "", 0U, NULL, &bin_len, NULL,
+                             sodium_base64_VARIANT_ORIGINAL) == 0);
+    assert(bin_len == 0);
+    assert(sodium_base642bin(buf1, sizeof buf1, NULL, 0U, NULL, &bin_len, NULL,
+                             sodium_base64_VARIANT_ORIGINAL) == 0);
+    assert(bin_len == 0);
 
     for (i = 0; i < 1000; i++) {
         assert(sizeof buf1 >= 100);
