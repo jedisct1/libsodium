@@ -36,7 +36,7 @@ size_t crypto_secretbox_messagebytes_max(void);
 SODIUM_EXPORT
 int crypto_secretbox_easy(unsigned char *c, const unsigned char *m,
                           unsigned long long mlen, const unsigned char *n,
-                          const unsigned char *k) __attribute__ ((nonnull));
+                          const unsigned char *k) __attribute__ ((nonnull(1, 4, 5)));
 
 SODIUM_EXPORT
 int crypto_secretbox_open_easy(unsigned char *m, const unsigned char *c,
@@ -50,7 +50,7 @@ int crypto_secretbox_detached(unsigned char *c, unsigned char *mac,
                               unsigned long long mlen,
                               const unsigned char *n,
                               const unsigned char *k)
-            __attribute__ ((nonnull));
+            __attribute__ ((nonnull(1, 2, 5, 6)));
 
 SODIUM_EXPORT
 int crypto_secretbox_open_detached(unsigned char *m,
@@ -78,7 +78,7 @@ size_t  crypto_secretbox_boxzerobytes(void);
 SODIUM_EXPORT
 int crypto_secretbox(unsigned char *c, const unsigned char *m,
                      unsigned long long mlen, const unsigned char *n,
-                     const unsigned char *k) __attribute__ ((nonnull));
+                     const unsigned char *k) __attribute__ ((nonnull(1, 4, 5)));
 
 SODIUM_EXPORT
 int crypto_secretbox_open(unsigned char *m, const unsigned char *c,

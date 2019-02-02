@@ -36,14 +36,14 @@ int crypto_onetimeauth_poly1305(unsigned char *out,
                                 const unsigned char *in,
                                 unsigned long long inlen,
                                 const unsigned char *k)
-            __attribute__ ((nonnull));
+            __attribute__ ((nonnull(1, 4)));
 
 SODIUM_EXPORT
 int crypto_onetimeauth_poly1305_verify(const unsigned char *h,
                                        const unsigned char *in,
                                        unsigned long long inlen,
                                        const unsigned char *k)
-            __attribute__ ((warn_unused_result)) __attribute__ ((nonnull));
+            __attribute__ ((warn_unused_result)) __attribute__ ((nonnull(1, 4)));
 
 SODIUM_EXPORT
 int crypto_onetimeauth_poly1305_init(crypto_onetimeauth_poly1305_state *state,
@@ -54,7 +54,7 @@ SODIUM_EXPORT
 int crypto_onetimeauth_poly1305_update(crypto_onetimeauth_poly1305_state *state,
                                        const unsigned char *in,
                                        unsigned long long inlen)
-            __attribute__ ((nonnull));
+            __attribute__ ((nonnull(1)));
 
 SODIUM_EXPORT
 int crypto_onetimeauth_poly1305_final(crypto_onetimeauth_poly1305_state *state,

@@ -100,8 +100,11 @@ _sodium_dummy_symbol_to_prevent_memzero_lto(void *const  pnt,
 /* LCOV_EXCL_STOP */
 
 void
-sodium_memzero(void *const pnt, const size_t len)
+sodium_memzero(void * const pnt, const size_t len)
 {
+    if (len == 0) {
+        return;
+    }
 #ifdef _WIN32
     SecureZeroMemory(pnt, len);
 #elif defined(HAVE_MEMSET_S)

@@ -35,7 +35,7 @@ int crypto_secretbox_xchacha20poly1305_easy(unsigned char *c,
                                             unsigned long long mlen,
                                             const unsigned char *n,
                                             const unsigned char *k)
-            __attribute__ ((nonnull));
+            __attribute__ ((nonnull(1, 4, 5)));
 
 SODIUM_EXPORT
 int crypto_secretbox_xchacha20poly1305_open_easy(unsigned char *m,
@@ -52,7 +52,7 @@ int crypto_secretbox_xchacha20poly1305_detached(unsigned char *c,
                                                 unsigned long long mlen,
                                                 const unsigned char *n,
                                                 const unsigned char *k)
-            __attribute__ ((nonnull));
+            __attribute__ ((nonnull(1, 2, 5, 6)));
 
 SODIUM_EXPORT
 int crypto_secretbox_xchacha20poly1305_open_detached(unsigned char *m,
