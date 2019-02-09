@@ -67,7 +67,7 @@ main(void)
             printf("\n");
     }
 
-    // Empty message tests: HMAC-SHA512
+    /* Empty message tests: HMAC-SHA512 */
     memset(a2, 0, sizeof a2);
     crypto_auth_hmacsha512_init(&st, key, sizeof key);
     crypto_auth_hmacsha512_final(&st, a2);
@@ -80,11 +80,11 @@ main(void)
 
     memset(a3, 0, sizeof a3);
     crypto_auth_hmacsha512_init(&st, key, sizeof key);
-    crypto_auth_hmacsha512_update(&st, NULL, 0U);
+    crypto_auth_hmacsha512_update(&st, guard_page, 0U);
     crypto_auth_hmacsha512_final(&st, a3);
     assert(sodium_memcmp(a2, a3, sizeof a2) == 0);
 
-    // Empty message tests: HMAC-SHA512-256
+    /* Empty message tests: HMAC-SHA512-256 */
     memset(a2, 0, sizeof a2);
     crypto_auth_hmacsha512256_init(&st512_256, key, sizeof key);
     crypto_auth_hmacsha512256_final(&st512_256, a2);
@@ -97,12 +97,12 @@ main(void)
 
     memset(a3, 0, sizeof a3);
     crypto_auth_hmacsha512256_init(&st512_256, key, sizeof key);
-    crypto_auth_hmacsha512256_update(&st512_256, NULL, 0U);
+    crypto_auth_hmacsha512256_update(&st512_256, guard_page, 0U);
     crypto_auth_hmacsha512256_final(&st512_256, a3);
     assert(sodium_memcmp(a2, a3, sizeof a2) == 0);
 
+    /* Empty message tests: HMAC-SHA256 */
 
-    // Empty message tests: HMAC-SHA256
     memset(a2, 0, sizeof a2);
     crypto_auth_hmacsha256_init(&st256, key, sizeof key);
     crypto_auth_hmacsha256_final(&st256, a2);
@@ -115,9 +115,11 @@ main(void)
 
     memset(a3, 0, sizeof a3);
     crypto_auth_hmacsha256_init(&st256, key, sizeof key);
-    crypto_auth_hmacsha256_update(&st256, NULL, 0U);
+    crypto_auth_hmacsha256_update(&st256, guard_page, 0U);
     crypto_auth_hmacsha256_final(&st256, a3);
     assert(sodium_memcmp(a2, a3, sizeof a2) == 0);
+
+    /* --- */
 
     assert(crypto_auth_bytes() > 0U);
     assert(crypto_auth_keybytes() > 0U);

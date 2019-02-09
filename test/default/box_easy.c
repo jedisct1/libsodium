@@ -50,7 +50,7 @@ main(void)
 
     /* Null message */
 
-    ret = crypto_box_easy(c, NULL, 0, nonce, bobpk, alicesk);
+    ret = crypto_box_easy(c, guard_page, 0, nonce, bobpk, alicesk);
     assert(ret == 0);
     for (i = 0; i < 1 + crypto_box_MACBYTES; ++i) {
         printf(",0x%02x", (unsigned int) c[i]);

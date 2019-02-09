@@ -33,10 +33,9 @@ main(void)
         }
     }
 
-    // Test empty message with NULL pointer
     crypto_auth_keygen(key);
-    crypto_auth(a, NULL, 0U, key);
-    assert(crypto_auth_verify(a, NULL, 0U, key) == 0);
+    crypto_auth(a, guard_page, 0U, key);
+    assert(crypto_auth_verify(a, guard_page, 0U, key) == 0);
 
     return 0;
 }

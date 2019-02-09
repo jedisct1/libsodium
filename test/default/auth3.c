@@ -29,9 +29,8 @@ main(void)
 
     printf("%d\n", crypto_auth_hmacsha256_verify(a, c, sizeof c, key));
 
-    // Test empty message with NULL pointer
-    crypto_auth_hmacsha256(a2, NULL, 0U, key);
-    assert(crypto_auth_hmacsha256_verify(a2, NULL, 0U, key) == 0);
+    crypto_auth_hmacsha256(a2, guard_page, 0U, key);
+    assert(crypto_auth_hmacsha256_verify(a2, guard_page, 0U, key) == 0);
 
     return 0;
 }

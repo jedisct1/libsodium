@@ -33,10 +33,9 @@ main(void)
         }
     }
 
-    // Test empty message with NULL pointer
     crypto_auth_keygen(key);
-    crypto_auth_hmacsha512(a, NULL, 0U, key);
-    assert(crypto_auth_hmacsha512_verify(a, NULL, 0U, key) == 0);
+    crypto_auth_hmacsha512(a, guard_page, 0U, key);
+    assert(crypto_auth_hmacsha512_verify(a, guard_page, 0U, key) == 0);
 
     return 0;
 }
