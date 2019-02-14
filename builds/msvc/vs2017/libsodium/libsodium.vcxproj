@@ -139,7 +139,6 @@
     <ClCompile Include="..\..\..\..\src\libsodium\randombytes\randombytes.c" />
     <ClCompile Include="..\..\..\..\src\libsodium\randombytes\sysrandom\randombytes_sysrandom.c" />
     <ClCompile Include="..\..\..\..\src\libsodium\randombytes\salsa20\randombytes_salsa20_random.c" />
-    <ClCompile Include="..\..\..\..\src\libsodium\randombytes\nativeclient\randombytes_nativeclient.c" />
     <ClCompile Include="..\..\..\..\src\libsodium\crypto_box\crypto_box_easy.c" />
     <ClCompile Include="..\..\..\..\src\libsodium\crypto_box\crypto_box_seal.c" />
     <ClCompile Include="..\..\..\..\src\libsodium\crypto_box\crypto_box.c" />
@@ -227,7 +226,6 @@
     <ClInclude Include="..\..\..\..\src\libsodium\include\sodium\crypto_aead_aes256gcm.h" />
     <ClInclude Include="..\..\..\..\src\libsodium\include\sodium\crypto_core_salsa2012.h" />
     <ClInclude Include="..\..\..\..\src\libsodium\include\sodium\crypto_secretbox_xchacha20poly1305.h" />
-    <ClInclude Include="..\..\..\..\src\libsodium\include\sodium\randombytes_nativeclient.h" />
     <ClInclude Include="..\..\..\..\src\libsodium\include\sodium\crypto_scalarmult.h" />
     <ClInclude Include="..\..\..\..\src\libsodium\include\sodium\crypto_pwhash.h" />
     <ClInclude Include="..\..\..\..\src\libsodium\include\sodium\crypto_verify_16.h" />

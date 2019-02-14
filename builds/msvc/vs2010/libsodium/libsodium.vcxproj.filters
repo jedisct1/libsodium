@@ -210,9 +210,6 @@
     <ClCompile Include="..\..\..\..\src\libsodium\randombytes\salsa20\randombytes_salsa20_random.c">
       <Filter>randombytes\salsa20</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\..\..\src\libsodium\randombytes\nativeclient\randombytes_nativeclient.c">
-      <Filter>randombytes\nativeclient</Filter>
-    </ClCompile>
     <ClCompile Include="..\..\..\..\src\libsodium\crypto_box\crypto_box_easy.c">
       <Filter>crypto_box</Filter>
     </ClCompile>
@@ -468,9 +465,6 @@
       <Filter>include\sodium</Filter>
     </ClInclude>
     <ClInclude Include="..\..\..\..\src\libsodium\include\sodium\crypto_secretbox_xchacha20poly1305.h">
-      <Filter>include\sodium</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\..\src\libsodium\include\sodium\randombytes_nativeclient.h">
       <Filter>include\sodium</Filter>
     </ClInclude>
     <ClInclude Include="..\..\..\..\src\libsodium\include\sodium\crypto_scalarmult.h">
@@ -972,9 +966,6 @@
     </Filter>
     <Filter Include="randombytes">
       <UniqueIdentifier>{ef090484-4db4-3dc2-aca7-c59bab1db23b}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="randombytes\nativeclient">
-      <UniqueIdentifier>{fd98b90f-ba7b-3aa0-a505-935c82ca8023}</UniqueIdentifier>
     </Filter>
     <Filter Include="randombytes\salsa20">
       <UniqueIdentifier>{7450ec6e-c197-3798-9434-1b46c8c4d9af}</UniqueIdentifier>

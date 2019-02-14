@@ -42,8 +42,6 @@ randombytes_tests(void)
 #ifndef BENCHMARKS
 # ifdef __EMSCRIPTEN__
     assert(strcmp(randombytes_implementation_name(), "js") == 0);
-# elif defined(__native_client__)
-    assert(strcmp(randombytes_implementation_name(), "nativeclient") == 0);
 # else
     assert(strcmp(randombytes_implementation_name(), "sysrandom") == 0);
 # endif
@@ -129,11 +127,7 @@ randombytes_uniform_impl(const uint32_t upper_bound)
 static int
 impl_tests(void)
 {
-#ifndef __native_client__
     randombytes_implementation impl = randombytes_sysrandom_implementation;
-#else
-    randombytes_implementation impl = randombytes_nativeclient_implementation;
-#endif
     uint32_t                   v = randombytes_random();
 
     impl.uniform = randombytes_uniform_impl;

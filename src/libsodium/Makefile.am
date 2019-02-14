@@ -208,14 +208,8 @@ if !EMSCRIPTEN
 libsodium_la_LIBADD += librdrand.la
 noinst_LTLIBRARIES  += librdrand.la
 
-if NATIVECLIENT
-libsodium_la_SOURCES += \
-	randombytes/nativeclient/randombytes_nativeclient.c
-else
 libsodium_la_SOURCES += \
 	randombytes/sysrandom/randombytes_sysrandom.c
-endif
-
 endif
 
 libaesni_la_LDFLAGS = $(libsodium_la_LDFLAGS)
