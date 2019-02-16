@@ -152,6 +152,7 @@ libsodium_la_SOURCES += \
 	crypto_box/curve25519xchacha20poly1305/box_curve25519xchacha20poly1305.c \
 	crypto_box/curve25519xchacha20poly1305/box_seal_curve25519xchacha20poly1305.c \
 	crypto_core/ed25519/core_ed25519.c \
+	crypto_core/ed25519/core_ristretto255.c \
 	crypto_pwhash/scryptsalsa208sha256/crypto_scrypt-common.c \
 	crypto_pwhash/scryptsalsa208sha256/crypto_scrypt.h \
 	crypto_pwhash/scryptsalsa208sha256/scrypt_platform.c \
@@ -160,6 +161,7 @@ libsodium_la_SOURCES += \
 	crypto_pwhash/scryptsalsa208sha256/pwhash_scryptsalsa208sha256.c \
 	crypto_pwhash/scryptsalsa208sha256/nosse/pwhash_scryptsalsa208sha256_nosse.c \
 	crypto_scalarmult/ed25519/ref10/scalarmult_ed25519_ref10.c \
+	crypto_scalarmult/ristretto255/ref10/scalarmult_ristretto255_ref10.c \
 	crypto_secretbox/xchacha20poly1305/secretbox_xchacha20poly1305.c \
 	crypto_shorthash/siphash24/shorthash_siphashx24.c \
 	crypto_shorthash/siphash24/ref/shorthash_siphashx24_ref.c \

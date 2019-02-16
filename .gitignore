@@ -102,6 +102,7 @@ test/default/box_seed
 test/default/chacha20
 test/default/codecs
 test/default/core_ed25519
+test/default/core_ristretto255
 test/default/core1
 test/default/core2
 test/default/core3
@@ -129,6 +130,7 @@ test/default/pwhash_scrypt_ll
 test/default/randombytes
 test/default/scalarmult
 test/default/scalarmult_ed25519
+test/default/scalarmult_ristretto255
 test/default/scalarmult2
 test/default/scalarmult5
 test/default/scalarmult6

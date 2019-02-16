@@ -13,6 +13,7 @@ SODIUM_EXPORT = \
 	sodium/crypto_box_curve25519xchacha20poly1305.h \
 	sodium/crypto_box_curve25519xsalsa20poly1305.h \
 	sodium/crypto_core_ed25519.h \
+	sodium/crypto_core_ristretto255.h \
 	sodium/crypto_core_hchacha20.h \
 	sodium/crypto_core_hsalsa20.h \
 	sodium/crypto_core_salsa20.h \
@@ -35,6 +36,7 @@ SODIUM_EXPORT = \
 	sodium/crypto_scalarmult.h \
 	sodium/crypto_scalarmult_curve25519.h \
 	sodium/crypto_scalarmult_ed25519.h \
+	sodium/crypto_scalarmult_ristretto255.h \
 	sodium/crypto_secretbox.h \
 	sodium/crypto_secretbox_xchacha20poly1305.h \
 	sodium/crypto_secretbox_xsalsa20poly1305.h \

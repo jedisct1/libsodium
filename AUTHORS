@@ -28,6 +28,13 @@ ed25519                                Daniel J. Bernstein
 
 poly1305                               Daniel J. Bernstein
 
+ristretto                              Mike Hamburg
+                                       Henry de Valence
+                                       Jack Grigg
+                                       George Tankersley
+                                       Filippo Valsorda
+                                       Isis Lovecruft
+
 salsa20                                Daniel J. Bernstein
 
 scrypt                                 Colin Percival
@@ -56,6 +63,7 @@ crypto_box/curve25519xchacha20poly1305 Frank Denis
 
 crypto_core/ed25519                    Daniel J. Bernstein
                                        Adam Langley
+                                       Frank Denis
 
 crypto_core/hchacha20                  Frank Denis
 
@@ -92,6 +100,8 @@ crypto_scalarmult/curve25519/ref10     Daniel J. Bernstein
 crypto_scalarmult/curve25519/sandy2x   Tung Chou
 
 crypto_scalarmult/ed25519              Frank Denis
+
+crypto_scalarmult/ristretto255         Frank Denis
 
 crypto_secretbox/xsalsa20poly1305      Daniel J. Bernstein
 
