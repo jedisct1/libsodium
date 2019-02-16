@@ -550,7 +550,7 @@ ge25519_cmov_cached(ge25519_cached *t, const ge25519_cached *u, unsigned char b)
 }
 
 static void
-ge25519_select(ge25519_precomp *t, const ge25519_precomp precomp[8], const signed char b)
+ge25519_cmov8(ge25519_precomp *t, const ge25519_precomp precomp[8], const signed char b)
 {
     ge25519_precomp     minust;
     const unsigned char bnegative = negative(b);
@@ -572,7 +572,7 @@ ge25519_select(ge25519_precomp *t, const ge25519_precomp precomp[8], const signe
 }
 
 static void
-ge25519_select_base(ge25519_precomp *t, const int pos, const signed char b)
+ge25519_cmov8_base(ge25519_precomp *t, const int pos, const signed char b)
 {
     static const ge25519_precomp base[32][8] = { /* base[i][j] = (j+1)*256^i*B */
 #ifdef HAVE_TI_MODE
@@ -581,11 +581,11 @@ ge25519_select_base(ge25519_precomp *t, const int pos, const signed char b)
 # include "fe_25_5/base.h"
 #endif
     };
-    ge25519_select(t, base[pos], b);
+    ge25519_cmov8(t, base[pos], b);
 }
 
 static void
-ge25519_select_cached(ge25519_cached *t, const ge25519_cached cached[8], const signed char b)
+ge25519_cmov8_cached(ge25519_cached *t, const ge25519_cached cached[8], const signed char b)
 {
     ge25519_cached      minust;
     const unsigned char bnegative = negative(b);
@@ -811,7 +811,7 @@ ge25519_scalarmult(ge25519_p3 *h, const unsigned char *a, const ge25519_p3 *p)
     ge25519_p3_0(h);
 
     for (i = 63; i != 0; i--) {
-        ge25519_select_cached(&t, pi, e[i]);
+        ge25519_cmov8_cached(&t, pi, e[i]);
         ge25519_add(&r, h, &t);
 
         ge25519_p1p1_to_p2(&s, &r);
@@ -825,7 +825,7 @@ ge25519_scalarmult(ge25519_p3 *h, const unsigned char *a, const ge25519_p3 *p)
 
         ge25519_p1p1_to_p3(h, &r);  /* *16 */
     }
-    ge25519_select_cached(&t, pi, e[i]);
+    ge25519_cmov8_cached(&t, pi, e[i]);
     ge25519_add(&r, h, &t);
 
     ge25519_p1p1_to_p3(h, &r);
@@ -871,7 +871,7 @@ ge25519_scalarmult_base(ge25519_p3 *h, const unsigned char *a)
     ge25519_p3_0(h);
 
     for (i = 1; i < 64; i += 2) {
-        ge25519_select_base(&t, i / 2, e[i]);
+        ge25519_cmov8_base(&t, i / 2, e[i]);
         ge25519_madd(&r, h, &t);
         ge25519_p1p1_to_p3(h, &r);
     }
@@ -886,7 +886,7 @@ ge25519_scalarmult_base(ge25519_p3 *h, const unsigned char *a)
     ge25519_p1p1_to_p3(h, &r);
 
     for (i = 0; i < 64; i += 2) {
-        ge25519_select_base(&t, i / 2, e[i]);
+        ge25519_cmov8_base(&t, i / 2, e[i]);
         ge25519_madd(&r, h, &t);
         ge25519_p1p1_to_p3(h, &r);
     }
