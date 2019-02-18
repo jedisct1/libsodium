@@ -106,11 +106,90 @@ tv2(void)
     sodium_free(s);
 }
 
+static void
+tv3(void)
+{
+    static const unsigned char l[crypto_core_ed25519_BYTES] =
+      { 0xed, 0xd3, 0xf5, 0x5c, 0x1a, 0x63, 0x12, 0x58,
+        0xd6, 0x9c, 0xf7, 0xa2, 0xde, 0xf9, 0xde, 0x14,
+        0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
+        0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x10 };
+
+    unsigned char *r =
+        (unsigned char *) sodium_malloc(crypto_core_ristretto255_SCALARBYTES);
+    unsigned char *r_inv =
+        (unsigned char *) sodium_malloc(crypto_core_ristretto255_SCALARBYTES);
+    unsigned char *ru =
+        (unsigned char *) sodium_malloc(crypto_core_ristretto255_UNIFORMBYTES);
+    unsigned char *s =
+        (unsigned char *) sodium_malloc(crypto_core_ristretto255_BYTES);
+    unsigned char *s_ =
+        (unsigned char *) sodium_malloc(crypto_core_ristretto255_BYTES);
+    unsigned char *s2 =
+        (unsigned char *) sodium_malloc(crypto_core_ristretto255_BYTES);
+    int            i;
+
+    for (i = 0; i < 1000; i++) {
+        crypto_core_ristretto255_scalar_random(r);
+        if (crypto_scalarmult_ristretto255_base(s, r) != 0 ||
+            crypto_core_ristretto255_is_valid_point(s) != 1) {
+            printf("crypto_scalarmult_ristretto255_base() failed\n");
+        }
+        if (crypto_scalarmult_ristretto255(s, l, s) == 0) {
+            printf("s*l != inf (1)\n");
+        }
+        randombytes_buf(ru, crypto_core_ristretto255_UNIFORMBYTES);
+        if (crypto_core_ristretto255_from_uniform(s, ru) != 0 ||
+            crypto_core_ristretto255_is_valid_point(s) != 1) {
+            printf("crypto_core_ristretto255_from_uniform() failed\n");
+        }
+        if (crypto_scalarmult_ristretto255(s2, l, s) == 0) {
+            printf("s*l != inf (2)\n");
+        }
+        if (crypto_scalarmult_ristretto255(s2, r, s) != 0  ||
+            crypto_core_ristretto255_is_valid_point(s2) != 1) {
+            printf("crypto_scalarmult_ristretto255() failed\n");
+        }
+        if (crypto_core_ristretto255_scalar_invert(r_inv, r) != 0) {
+            printf("crypto_core_ristretto255_scalar_invert() failed\n");
+        }
+        if (crypto_scalarmult_ristretto255(s_, r_inv, s2) != 0  ||
+            crypto_core_ristretto255_is_valid_point(s_) != 1) {
+            printf("crypto_scalarmult_ristretto255() failed\n");
+        }
+        if (memcmp(s, s_, crypto_core_ristretto255_BYTES) != 0) {
+            printf("inversion failed\n");
+        }
+        if (crypto_scalarmult_ristretto255(s2, l, s2) == 0) {
+            printf("s*l != inf (3)\n");
+        }
+    }
+
+    sodium_free(s2);
+    sodium_free(s_);
+    sodium_free(s);
+    sodium_free(ru);
+    sodium_free(r);
+}
+
 int
 main(void)
 {
     tv1();
     tv2();
+    tv3();
+
+    assert(crypto_core_ristretto255_BYTES == crypto_core_ristretto255_bytes());
+    assert(crypto_core_ristretto255_SCALARBYTES == crypto_core_ristretto255_scalarbytes());
+    assert(crypto_core_ristretto255_NONREDUCEDSCALARBYTES == crypto_core_ristretto255_nonreducedscalarbytes());
+    assert(crypto_core_ristretto255_NONREDUCEDSCALARBYTES >= crypto_core_ristretto255_SCALARBYTES);
+    assert(crypto_core_ristretto255_UNIFORMBYTES == crypto_core_ristretto255_uniformbytes());
+    assert(crypto_core_ristretto255_UNIFORMBYTES >= crypto_core_ristretto255_BYTES);
+    assert(crypto_core_ristretto255_BYTES == crypto_core_ed25519_BYTES);
+    assert(crypto_core_ristretto255_SCALARBYTES == crypto_core_ed25519_SCALARBYTES);
+    assert(crypto_core_ristretto255_NONREDUCEDSCALARBYTES == crypto_core_ed25519_NONREDUCEDSCALARBYTES);
+    assert(crypto_core_ristretto255_UNIFORMBYTES > crypto_core_ed25519_UNIFORMBYTES);
+
     printf("OK\n");
 
     return 0;
