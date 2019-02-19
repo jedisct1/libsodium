@@ -35,7 +35,7 @@ blake2b_compress_ref(blake2b_state *S, const uint8_t block[BLAKE2B_BLOCKBYTES])
     int      i;
 
     for (i = 0; i < 16; ++i) {
-        m[i] = LOAD64_LE(block + i * sizeof(m[i]));
+        m[i] = LOAD64_LE(block + i * sizeof m[i]);
     }
     for (i = 0; i < 8; ++i) {
         v[i] = S->h[i];
@@ -48,16 +48,16 @@ blake2b_compress_ref(blake2b_state *S, const uint8_t block[BLAKE2B_BLOCKBYTES])
     v[13] = S->t[1] ^ blake2b_IV[5];
     v[14] = S->f[0] ^ blake2b_IV[6];
     v[15] = S->f[1] ^ blake2b_IV[7];
-#define G(r, i, a, b, c, d)                         \
-    do {                                            \
-        a = a + b + m[blake2b_sigma[r][2 * i + 0]]; \
-        d = ROTR64(d ^ a, 32);                      \
-        c = c + d;                                  \
-        b = ROTR64(b ^ c, 24);                      \
-        a = a + b + m[blake2b_sigma[r][2 * i + 1]]; \
-        d = ROTR64(d ^ a, 16);                      \
-        c = c + d;                                  \
-        b = ROTR64(b ^ c, 63);                      \
+#define G(r, i, a, b, c, d)                      \
+    do {                                         \
+        a += b + m[blake2b_sigma[r][2 * i + 0]]; \
+        d = ROTR64(d ^ a, 32);                   \
+        c += d;                                  \
+        b = ROTR64(b ^ c, 24);                   \
+        a += b + m[blake2b_sigma[r][2 * i + 1]]; \
+        d = ROTR64(d ^ a, 16);                   \
+        c += d;                                  \
+        b = ROTR64(b ^ c, 63);                   \
     } while (0)
 #define ROUND(r)                           \
     do {                                   \
