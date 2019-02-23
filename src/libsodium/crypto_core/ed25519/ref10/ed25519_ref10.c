@@ -2687,9 +2687,9 @@ ristretto255_frombytes(ge25519_p3 *h, const unsigned char *s)
     fe25519_neg(v, v);                 /* v = -d*u1^2 */
     fe25519_sub(v, v, u2u2);           /* v = -(d*u1^2)-u2^2 */
 
-    fe25519_1(one);
     fe25519_mul(v_u2u2, v, u2u2);      /* v_u2u2 = v*u2^2 */
 
+    fe25519_1(one);
     was_square = ristretto255_sqrt_ratio_m1(inv_sqrt, one, v_u2u2);
     fe25519_mul(h->X, inv_sqrt, u2);
     fe25519_mul(h->Y, inv_sqrt, h->X);
@@ -2730,10 +2730,10 @@ ristretto255_p3_tobytes(unsigned char *s, const ge25519_p3 *h)
     fe25519_mul(u1, u1, zmy);          /* u1 = (Z+Y)*(Z-Y) */
     fe25519_mul(u2, h->X, h->Y);       /* u2 = X*Y */
 
-    fe25519_1(one);
     fe25519_sq(u1_u2u2, u2);           /* u1_u2u2 = u2^2 */
     fe25519_mul(u1_u2u2, u1, u1_u2u2); /* u1_u2u2 = u1*u2^2 */
 
+    fe25519_1(one);
     (void) ristretto255_sqrt_ratio_m1(inv_sqrt, one, u1_u2u2);
     fe25519_mul(den1, inv_sqrt, u1);   /* den1 = inv_sqrt*u1 */
     fe25519_mul(den2, inv_sqrt, u2);   /* den2 = inv_sqrt*u2 */
@@ -2749,7 +2749,7 @@ ristretto255_p3_tobytes(unsigned char *s, const ge25519_p3 *h)
 
     fe25519_copy(x_, h->X);
     fe25519_copy(y_, h->Y);
-    fe25519_copy(den_inv, den2) ;
+    fe25519_copy(den_inv, den2);
 
     fe25519_cmov(x_, iy, rotate);
     fe25519_cmov(y_, ix, rotate);
