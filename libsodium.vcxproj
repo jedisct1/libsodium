@@ -377,7 +377,7 @@
     <ClCompile Include="src\libsodium\crypto_onetimeauth\poly1305\sse2\poly1305_sse2.c" />
     <ClCompile Include="src\libsodium\randombytes\randombytes.c" />
     <ClCompile Include="src\libsodium\randombytes\sysrandom\randombytes_sysrandom.c" />
-    <ClCompile Include="src\libsodium\randombytes\salsa20\randombytes_salsa20_random.c" />
+    <ClCompile Include="src\libsodium\randombytes\internal\randombytes_internal_random.c" />
     <ClCompile Include="src\libsodium\crypto_box\crypto_box_easy.c" />
     <ClCompile Include="src\libsodium\crypto_box\crypto_box_seal.c" />
     <ClCompile Include="src\libsodium\crypto_box\crypto_box.c" />
@@ -439,7 +439,6 @@
     <ClInclude Include="src\libsodium\include\sodium\crypto_hash_sha512.h" />
     <ClInclude Include="src\libsodium\include\sodium\core.h" />
     <ClInclude Include="src\libsodium\include\sodium\export.h" />
-    <ClInclude Include="src\libsodium\include\sodium\randombytes_salsa20_random.h" />
     <ClInclude Include="src\libsodium\include\sodium\crypto_core_salsa20.h" />
     <ClInclude Include="src\libsodium\include\sodium\crypto_shorthash_siphash24.h" />
     <ClInclude Include="src\libsodium\include\sodium\randombytes.h" />
@@ -486,6 +485,7 @@
     <ClInclude Include="src\libsodium\include\sodium\crypto_box_curve25519xchacha20poly1305.h" />
     <ClInclude Include="src\libsodium\include\sodium\crypto_core_ed25519.h" />
     <ClInclude Include="src\libsodium\include\sodium\crypto_pwhash_argon2i.h" />
+    <ClInclude Include="src\libsodium\include\sodium\randombytes_internal_random.h" />
     <ClInclude Include="src\libsodium\include\sodium\crypto_generichash.h" />
     <ClInclude Include="src\libsodium\include\sodium\crypto_secretbox_xsalsa20poly1305.h" />
     <ClInclude Include="src\libsodium\include\sodium\crypto_secretbox.h" />

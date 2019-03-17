@@ -15,7 +15,7 @@
 #include "randombytes.h"
 #ifndef RANDOMBYTES_CUSTOM_IMPLEMENTATION
 # ifdef RANDOMBYTES_DEFAULT_IMPLEMENTATION
-#  include "randombytes_salsa20.h"
+#  include "randombytes_internal.h"
 # endif
 # include "randombytes_sysrandom.h"
 #endif

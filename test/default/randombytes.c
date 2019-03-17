@@ -71,8 +71,9 @@ randombytes_tests(void)
     assert(randombytes_uniform(1U) == 0U);
     randombytes_close();
 #ifndef __EMSCRIPTEN__
-    randombytes_set_implementation(&randombytes_salsa20_implementation);
-    assert(strcmp(randombytes_implementation_name(), "salsa20") == 0);
+    assert(&randombytes_internal_implementation == &randombytes_salsa20_implementation);
+    randombytes_set_implementation(&randombytes_internal_implementation);
+    assert(strcmp(randombytes_implementation_name(), "internal") == 0);
 #endif
     randombytes_stir();
     for (i = 0; i < 256; ++i) {

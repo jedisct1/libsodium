@@ -210,8 +210,8 @@
     <ClCompile Include="..\..\..\..\src\libsodium\randombytes\sysrandom\randombytes_sysrandom.c">
       <Filter>randombytes\sysrandom</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\..\..\src\libsodium\randombytes\salsa20\randombytes_salsa20_random.c">
-      <Filter>randombytes\salsa20</Filter>
+    <ClCompile Include="..\..\..\..\src\libsodium\randombytes\internal\randombytes_internal_random.c">
+      <Filter>randombytes\internal</Filter>
     </ClCompile>
     <ClCompile Include="..\..\..\..\src\libsodium\crypto_box\crypto_box_easy.c">
       <Filter>crypto_box</Filter>
@@ -392,9 +392,6 @@
     <ClInclude Include="..\..\..\..\src\libsodium\include\sodium\export.h">
       <Filter>include\sodium</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\..\..\src\libsodium\include\sodium\randombytes_salsa20_random.h">
-      <Filter>include\sodium</Filter>
-    </ClInclude>
     <ClInclude Include="..\..\..\..\src\libsodium\include\sodium\crypto_core_salsa20.h">
       <Filter>include\sodium</Filter>
     </ClInclude>
@@ -531,6 +528,9 @@
       <Filter>include\sodium</Filter>
     </ClInclude>
     <ClInclude Include="..\..\..\..\src\libsodium\include\sodium\crypto_pwhash_argon2i.h">
+      <Filter>include\sodium</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\src\libsodium\include\sodium\randombytes_internal_random.h">
       <Filter>include\sodium</Filter>
     </ClInclude>
     <ClInclude Include="..\..\..\..\src\libsodium\include\sodium\crypto_generichash.h">
@@ -985,8 +985,8 @@
     <Filter Include="randombytes">
       <UniqueIdentifier>{ef090484-4db4-3dc2-aca7-c59bab1db23b}</UniqueIdentifier>
     </Filter>
-    <Filter Include="randombytes\salsa20">
-      <UniqueIdentifier>{7450ec6e-c197-3798-9434-1b46c8c4d9af}</UniqueIdentifier>
+    <Filter Include="randombytes\internal">
+      <UniqueIdentifier>{14c126fd-bb91-37ea-b807-b60c386be601}</UniqueIdentifier>
     </Filter>
     <Filter Include="randombytes\sysrandom">
       <UniqueIdentifier>{ac56c38f-7e17-3b79-bf47-58e9476b3b89}</UniqueIdentifier>

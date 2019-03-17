@@ -173,7 +173,7 @@ libsodium_la_SOURCES += \
 	crypto_stream/xchacha20/stream_xchacha20.c
 endif
 
-randombytes_salsa20_randombytes_salsa20_random_CFLAGS = @CFLAGS_RDRAND@
+randombytes_internal_randombytes_internal_random_CFLAGS = @CFLAGS_RDRAND@
 
 libsodium_la_LDFLAGS = \
 	$(AM_LDFLAGS) \
@@ -204,7 +204,7 @@ librdrand_la_LDFLAGS = $(libsodium_la_LDFLAGS)
 librdrand_la_CPPFLAGS = $(libsodium_la_CPPFLAGS) \
 	@CFLAGS_RDRAND@
 librdrand_la_SOURCES = \
-	randombytes/salsa20/randombytes_salsa20_random.c
+	randombytes/internal/randombytes_internal_random.c
 
 if !EMSCRIPTEN
 libsodium_la_LIBADD += librdrand.la
