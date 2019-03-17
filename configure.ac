@@ -782,7 +782,7 @@ AS_IF([test "x$EMSCRIPTEN" = "x"],[
   AC_CHECK_FUNCS([arc4random arc4random_buf])
   AC_CHECK_FUNCS([mmap mlock madvise mprotect])
 ])
-AC_CHECK_FUNCS([posix_memalign getpid memset_s explicit_bzero
+AC_CHECK_FUNCS([posix_memalign getpid getentropy memset_s explicit_bzero
                 explicit_memset nanosleep])
 
 AC_SUBST([LIBTOOL_EXTRA_FLAGS])
