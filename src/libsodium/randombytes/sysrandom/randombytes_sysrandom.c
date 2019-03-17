@@ -105,7 +105,7 @@ randombytes_sysrandom_close(void)
     return 0;
 }
 
-#else /* __OpenBSD__ */
+#else /* HAVE_SAFE_ARC4RANDOM */
 
 typedef struct SysRandom_ {
     int random_data_source_fd;

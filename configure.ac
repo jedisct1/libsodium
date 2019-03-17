@@ -539,7 +539,7 @@ AC_SUBST(CFLAGS_AESNI)
 AC_SUBST(CFLAGS_PCLMUL)
 AC_SUBST(CFLAGS_RDRAND)
 
-AC_CHECK_HEADERS([sys/mman.h intrin.h])
+AC_CHECK_HEADERS([sys/mman.h sys/random.h intrin.h])
 
 AC_MSG_CHECKING([if _xgetbv() is available])
 AC_LINK_IFELSE(
@@ -779,11 +779,11 @@ dnl Checks for functions and headers
 
 AC_FUNC_ALLOCA
 AS_IF([test "x$EMSCRIPTEN" = "x"],[
-  AC_CHECK_FUNCS([arc4random arc4random_buf])
+  AC_CHECK_FUNCS([arc4random arc4random_buf getentropy])
   AC_CHECK_FUNCS([mmap mlock madvise mprotect])
 ])
-AC_CHECK_FUNCS([posix_memalign getpid getentropy memset_s explicit_bzero
-                explicit_memset nanosleep])
+AC_CHECK_FUNCS([posix_memalign getpid nanosleep])
+AC_CHECK_FUNCS([memset_s explicit_bzero explicit_memset])
 
 AC_SUBST([LIBTOOL_EXTRA_FLAGS])
 

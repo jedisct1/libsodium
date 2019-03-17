@@ -13,9 +13,10 @@
 #include "core.h"
 #include "crypto_stream_chacha20.h"
 #include "randombytes.h"
-#ifdef RANDOMBYTES_DEFAULT_IMPLEMENTATION
-# include "randombytes_default.h"
-#else
+#ifndef RANDOMBYTES_CUSTOM_IMPLEMENTATION
+# ifdef RANDOMBYTES_DEFAULT_IMPLEMENTATION
+#  include "randombytes_salsa20.h"
+# endif
 # include "randombytes_sysrandom.h"
 #endif
 #include "private/common.h"

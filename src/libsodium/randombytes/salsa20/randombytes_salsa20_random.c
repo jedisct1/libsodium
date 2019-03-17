@@ -31,9 +31,11 @@
 #elif defined(__FreeBSD__)
 # include <sys/param.h>
 # if defined(__FreeBSD_version) && __FreeBSD_version >= 1200000
-#  include <sys/random.h>
 #  define HAVE_LINUX_COMPATIBLE_GETRANDOM
 # endif
+#endif
+#ifdef HAVE_SYS_RANDOM_H
+# include <sys/random.h>
 #endif
 #if !defined(NO_BLOCKING_RANDOM_POLL) && defined(__linux__)
 # define BLOCK_ON_DEV_RANDOM
@@ -75,6 +77,9 @@ BOOLEAN NTAPI RtlGenRandom(PVOID RandomBuffer, ULONG RandomBufferLength);
 #if defined(__OpenBSD__) || defined(__CloudABI__)
 # define HAVE_SAFE_ARC4RANDOM 1
 #endif
+#if defined(__CloudABI__) || defined(__wasm__)
+# define NONEXISTENT_DEV_RANDOM 1
+#endif
 
 #ifndef SSIZE_MAX
 # define SSIZE_MAX (SIZE_MAX / 2 - 1)
@@ -98,6 +103,7 @@ BOOLEAN NTAPI RtlGenRandom(PVOID RandomBuffer, ULONG RandomBufferLength);
 typedef struct Salsa20RandomGlobal_ {
     int           initialized;
     int           random_data_source_fd;
+    int           getentropy_available;
     int           getrandom_available;
     int           rdrand_available;
 #ifdef HAVE_GETPID
@@ -152,7 +158,7 @@ sodium_hrtime(void)
     }
     return ((uint64_t) tv.tv_sec) * 1000000U + (uint64_t) tv.tv_usec;
 }
-#endif
+#endif /* _WIN32 */
 
 /*
  * Initialize the entropy source
@@ -168,100 +174,43 @@ randombytes_salsa20_random_init(void)
 
 #else /* _WIN32 */
 
-static ssize_t
-safe_read(const int fd, void * const buf_, size_t size)
+# ifdef HAVE_GETENTROPY
+static int
+_randombytes_getentropy(void * const buf, const size_t size)
+{
+    int readnb;
+
+    assert(size <= 256U);
+    do {
+        readnb = getentropy(buf, size);
+    } while (readnb < 0 && (errno == EINTR || errno == EAGAIN));
+
+    return (readnb == (int) size) - 1;
+}
+
+static int
+randombytes_getentropy(void * const buf_, size_t size)
 {
     unsigned char *buf = (unsigned char *) buf_;
-    ssize_t        readnb;
+    size_t         chunk_size = 256U;
 
-    assert(size > (size_t) 0U);
-    assert(size <= SSIZE_MAX);
     do {
-        while ((readnb = read(fd, buf, size)) < (ssize_t) 0 &&
-               (errno == EINTR || errno == EAGAIN)); /* LCOV_EXCL_LINE */
-        if (readnb < (ssize_t) 0) {
-            return readnb; /* LCOV_EXCL_LINE */
+        if (size < chunk_size) {
+            chunk_size = size;
+            assert(chunk_size > (size_t) 0U);
         }
-        if (readnb == (ssize_t) 0) {
-            break; /* LCOV_EXCL_LINE */
+        if (_randombytes_getentropy(buf, chunk_size) != 0) {
+            return -1;
         }
-        size -= (size_t) readnb;
-        buf += readnb;
-    } while (size > (ssize_t) 0);
+        size -= chunk_size;
+        buf += chunk_size;
+    } while (size > (size_t) 0U);
 
-    return (ssize_t) (buf - (unsigned char *) buf_);
+    return 0;
 }
 
-# ifdef BLOCK_ON_DEV_RANDOM
-static int
-randombytes_block_on_dev_random(void)
-{
-    struct pollfd pfd;
-    int           fd;
-    int           pret;
+# elif defined(HAVE_LINUX_COMPATIBLE_GETRANDOM)
 
-    fd = open("/dev/random", O_RDONLY);
-    if (fd == -1) {
-        return 0;
-    }
-    pfd.fd = fd;
-    pfd.events = POLLIN;
-    pfd.revents = 0;
-    do {
-        pret = poll(&pfd, 1, -1);
-    } while (pret < 0 && (errno == EINTR || errno == EAGAIN));
-    if (pret != 1) {
-        (void) close(fd);
-        errno = EIO;
-        return -1;
-    }
-    return close(fd);
-}
-# endif
-
-# ifndef HAVE_SAFE_ARC4RANDOM
-static int
-randombytes_salsa20_random_random_dev_open(void)
-{
-/* LCOV_EXCL_START */
-    struct stat       st;
-    static const char *devices[] = {
-#  ifndef USE_BLOCKING_RANDOM
-        "/dev/urandom",
-#  endif
-        "/dev/random", NULL
-    };
-    const char      **device = devices;
-    int               fd;
-
-#  ifdef BLOCK_ON_DEV_RANDOM
-    if (randombytes_block_on_dev_random() != 0) {
-        return -1;
-    }
-#  endif
-    do {
-        fd = open(*device, O_RDONLY);
-        if (fd != -1) {
-            if (fstat(fd, &st) == 0 && (S_ISNAM(st.st_mode) || S_ISCHR(st.st_mode))) {
-#  if defined(F_SETFD) && defined(FD_CLOEXEC)
-                (void) fcntl(fd, F_SETFD, fcntl(fd, F_GETFD) | FD_CLOEXEC);
-#  endif
-                return fd;
-            }
-            (void) close(fd);
-        } else if (errno == EINTR) {
-            continue;
-        }
-        device++;
-    } while (*device != NULL);
-
-    errno = EIO;
-    return -1;
-/* LCOV_EXCL_STOP */
-}
-# endif
-
-# ifdef HAVE_LINUX_COMPATIBLE_GETRANDOM
 static int
 _randombytes_linux_getrandom(void * const buf, const size_t size)
 {
@@ -297,18 +246,120 @@ randombytes_linux_getrandom(void * const buf_, size_t size)
 }
 # endif
 
+# ifndef NONEXISTENT_DEV_RANDOM
+static int
+randombytes_salsa20_random_random_dev_open(void)
+{
+    /* LCOV_EXCL_START */
+    struct stat       st;
+    static const char *devices[] = {
+#  ifndef USE_BLOCKING_RANDOM
+        "/dev/urandom",
+#  endif
+        "/dev/random", NULL
+    };
+    const char      **device = devices;
+    int               fd;
+
+#  ifdef BLOCK_ON_DEV_RANDOM
+    if (randombytes_block_on_dev_random() != 0) {
+        return -1;
+    }
+#  endif
+    do {
+        fd = open(*device, O_RDONLY);
+        if (fd != -1) {
+            if (fstat(fd, &st) == 0 && (S_ISNAM(st.st_mode) || S_ISCHR(st.st_mode))) {
+#  if defined(F_SETFD) && defined(FD_CLOEXEC)
+                (void) fcntl(fd, F_SETFD, fcntl(fd, F_GETFD) | FD_CLOEXEC);
+#  endif
+                return fd;
+            }
+            (void) close(fd);
+        } else if (errno == EINTR) {
+            continue;
+        }
+        device++;
+    } while (*device != NULL);
+
+    errno = EIO;
+    return -1;
+    /* LCOV_EXCL_STOP */
+}
+
+static ssize_t
+safe_read(const int fd, void * const buf_, size_t size)
+{
+    unsigned char *buf = (unsigned char *) buf_;
+    ssize_t        readnb;
+
+    assert(size > (size_t) 0U);
+    assert(size <= SSIZE_MAX);
+    do {
+        while ((readnb = read(fd, buf, size)) < (ssize_t) 0 &&
+               (errno == EINTR || errno == EAGAIN)); /* LCOV_EXCL_LINE */
+        if (readnb < (ssize_t) 0) {
+            return readnb; /* LCOV_EXCL_LINE */
+        }
+        if (readnb == (ssize_t) 0) {
+            break; /* LCOV_EXCL_LINE */
+        }
+        size -= (size_t) readnb;
+        buf += readnb;
+    } while (size > (ssize_t) 0);
+
+    return (ssize_t) (buf - (unsigned char *) buf_);
+}
+
+#  ifdef BLOCK_ON_DEV_RANDOM
+static int
+randombytes_block_on_dev_random(void)
+{
+    struct pollfd pfd;
+    int           fd;
+    int           pret;
+
+    fd = open("/dev/random", O_RDONLY);
+    if (fd == -1) {
+        return 0;
+    }
+    pfd.fd = fd;
+    pfd.events = POLLIN;
+    pfd.revents = 0;
+    do {
+        pret = poll(&pfd, 1, -1);
+    } while (pret < 0 && (errno == EINTR || errno == EAGAIN));
+    if (pret != 1) {
+        (void) close(fd);
+        errno = EIO;
+        return -1;
+    }
+    return close(fd);
+}
+#  endif
+
+# endif /* !NONEXISTENT_DEV_RANDOM */
+
 static void
 randombytes_salsa20_random_init(void)
 {
     const int errno_save = errno;
 
     global.rdrand_available = sodium_runtime_has_rdrand();
+    global.getentropy_available = 0;
+    global.getrandom_available = 0;
 
-# ifdef HAVE_SAFE_ARC4RANDOM
-    errno = errno_save;
-# else
+# ifdef HAVE_GETENTROPY
+    {
+        unsigned char fodder[16];
 
-#  ifdef HAVE_LINUX_COMPATIBLE_GETRANDOM
+        if (randombytes_getentropy(fodder, sizeof fodder) == 0) {
+            global.getentropy_available = 1;
+            errno = errno_save;
+            return;
+        }
+    }
+# elif defined(HAVE_LINUX_COMPATIBLE_GETRANDOM)
     {
         unsigned char fodder[16];
 
@@ -317,16 +368,18 @@ randombytes_salsa20_random_init(void)
             errno = errno_save;
             return;
         }
-        global.getrandom_available = 0;
     }
-#  endif /* HAVE_LINUX_COMPATIBLE_GETRANDOM */
-
+# elif !defined(NONEXISTENT_DEV_RANDOM)
+    assert((global.getentropy_available | global.getrandom_available) == 0);
     if ((global.random_data_source_fd =
          randombytes_salsa20_random_random_dev_open()) == -1) {
         sodium_misuse(); /* LCOV_EXCL_LINE */
     }
+# elif !defined(HAVE_SAFE_ARC4RANDOM)
+    sodium_misuse();
+# endif
+
     errno = errno_save;
-# endif /* HAVE_SAFE_ARC4RANDOM */
 }
 
 #endif /* _WIN32 */
@@ -352,18 +405,20 @@ randombytes_salsa20_random_stir(void)
 
 #ifndef _WIN32
 
-# ifdef HAVE_SAFE_ARC4RANDOM
-    arc4random_buf(stream.key, sizeof stream.key);
+# ifdef HAVE_GETENTROPY
+     if (global.getentropy_available != 0) {
+         if (randombytes_getentropy(stream.key, sizeof stream.key) != 0) {
+             sodium_misuse(); /* LCOV_EXCL_LINE */
+         }
+     }
 # elif defined(HAVE_LINUX_COMPATIBLE_GETRANDOM)
-    if (global.getrandom_available != 0) {
-        if (randombytes_linux_getrandom(stream.key, sizeof stream.key) != 0) {
-            sodium_misuse(); /* LCOV_EXCL_LINE */
-        }
-    } else if (global.random_data_source_fd == -1 ||
-               safe_read(global.random_data_source_fd, stream.key,
-                         sizeof stream.key) != (ssize_t) sizeof stream.key) {
-        sodium_misuse(); /* LCOV_EXCL_LINE */
-    }
+     if (global.getrandom_available != 0) {
+         if (randombytes_getrandom(stream.key, sizeof stream.key) != 0) {
+             sodium_misuse(); /* LCOV_EXCL_LINE */
+         }
+     }
+# elif !defined(NONEXISTENT_DEV_RANDOM) && defined(HAVE_SAFE_ARC4RANDOM)
+    arc4random_buf(stream.key, sizeof stream.key);
 # else
     if (global.random_data_source_fd == -1 ||
         safe_read(global.random_data_source_fd, stream.key,
@@ -425,6 +480,17 @@ randombytes_salsa20_random_close(void)
 {
     int ret = -1;
 
+# ifdef HAVE_GETENTROPY
+    if (global.getentropy_available != 0) {
+        ret = 0;
+    }
+# elif defined(HAVE_LINUX_COMPATIBLE_GETRANDOM)
+    if (global.getrandom_available != 0) {
+        ret = 0;
+    }
+# elif !defined(NONEXISTENT_DEV_RANDOM) && defined(HAVE_SAFE_ARC4RANDOM)
+    ret = 0;
+# else
     if (global.random_data_source_fd != -1 &&
         close(global.random_data_source_fd) == 0) {
         global.random_data_source_fd = -1;
@@ -432,15 +498,6 @@ randombytes_salsa20_random_close(void)
 # ifdef HAVE_GETPID
         global.pid = (pid_t) 0;
 # endif
-        ret = 0;
-    }
-
-# ifdef HAVE_SAFE_ARC4RANDOM
-    ret = 0;
-# endif
-
-# ifdef HAVE_LINUX_COMPATIBLE_GETRANDOM
-    if (global.getrandom_available != 0) {
         ret = 0;
     }
 # endif
