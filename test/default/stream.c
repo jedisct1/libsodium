@@ -53,10 +53,10 @@ main(void)
     sodium_bin2hex(hex, 192 * 2 + 1, output, 192);
     printf("%s\n", hex);
 
-    for (i = -16; i < 0; i++) {
+    for (i = 16; i > 0; i--) {
         memset(output, 0, 17 * 64);
         crypto_stream_xsalsa20_xor_ic(output, output, 17 * 64, nonce,
-                                      (1ULL << 32) + (unsigned long long) i,
+                                      (1ULL << 32) - (unsigned long long) i,
                                       firstkey);
         sodium_bin2hex(hex, 2 * 17 * 64 + 1, output, 17 * 64);
         printf("%s\n", hex);
