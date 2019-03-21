@@ -64,19 +64,14 @@ main(void)
     assert(memcmp(output + 192, output + 64, 64) != 0);
     assert(memcmp(output + 192, output + 128, 64) != 0);
 
-    memset(output + 192, 1, 64);
-    crypto_stream_xsalsa20_xor_ic(output, output, 64, nonce,
-                                  0ULL, firstkey);
-    assert(memcmp(output + 192, output, 64) != 0);
-    assert(memcmp(output + 192, output + 64, 64) != 0);
-    assert(memcmp(output + 192, output + 128, 64) != 0);
-
     memset(output, 0, 64);
     crypto_stream_xsalsa20_xor_ic(output, output, 128, nonce,
                                   1ULL << 32, firstkey);
     assert(memcmp(output, output + 192, 64) != 0);
     assert(memcmp(output, output + 128, 64) != 0);
     assert(memcmp(output, output + 64, 64) != 0);
+    assert(memcmp(output + 64, output + 192, 64) != 0);
+    assert(memcmp(output + 128, output + 192, 64) != 0);
 
     assert(crypto_stream_keybytes() > 0U);
     assert(crypto_stream_noncebytes() > 0U);
