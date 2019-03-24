@@ -74,7 +74,7 @@ BOOLEAN NTAPI RtlGenRandom(PVOID RandomBuffer, ULONG RandomBufferLength);
 
 #define INTERNAL_RANDOM_BLOCK_SIZE crypto_core_hchacha20_OUTPUTBYTES
 
-#if defined(__OpenBSD__) || defined(__CloudABI__)
+#if defined(__OpenBSD__) || defined(__CloudABI__) || defined(__wasi__)
 # define HAVE_SAFE_ARC4RANDOM 1
 #endif
 #if defined(__CloudABI__) || defined(__wasm__)
