@@ -2608,7 +2608,6 @@ ristretto255_sqrt_ratio_m1(fe25519 x, const fe25519 u, const fe25519 v)
     fe25519 v3;
     fe25519 vxx;
     fe25519 m_root_check, p_root_check, f_root_check;
-    fe25519 negx;
     fe25519 x_sqrtm1;
     int     has_m_root, has_p_root, has_f_root;
 
