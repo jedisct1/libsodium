@@ -41,7 +41,7 @@ poly1305_init(poly1305_state_internal_t *st, const unsigned char key[32])
     t1 = LOAD64_LE(&key[8]);
 
     /* wiped after finalization */
-    st->r[0] = (t0) &0xffc0fffffff;
+    st->r[0] = (t0) & 0xffc0fffffff;
     st->r[1] = ((t0 >> 44) | (t1 << 20)) & 0xfffffc0ffff;
     st->r[2] = ((t1 >> 24)) & 0x00ffffffc0f;
 
@@ -88,8 +88,8 @@ poly1305_blocks(poly1305_state_internal_t *st, const unsigned char *m,
         t0 = LOAD64_LE(&m[0]);
         t1 = LOAD64_LE(&m[8]);
 
-        h0 += ((t0) &0xfffffffffff);
-        h1 += (((t0 >> 44) | (t1 << 20)) & 0xfffffffffff);
+        h0 += t0 & 0xfffffffffff;
+        h1 += ((t0 >> 44) | (t1 << 20)) & 0xfffffffffff;
         h2 += (((t1 >> 24)) & 0x3ffffffffff) | hibit;
 
         /* h *= r */
@@ -138,6 +138,7 @@ poly1305_finish(poly1305_state_internal_t *st, unsigned char mac[16])
     unsigned long long h0, h1, h2, c;
     unsigned long long g0, g1, g2;
     unsigned long long t0, t1;
+    unsigned long long mask;
 
     /* process the remaining block */
     if (st->leftover) {
@@ -157,43 +158,43 @@ poly1305_finish(poly1305_state_internal_t *st, unsigned char mac[16])
     h1 = st->h[1];
     h2 = st->h[2];
 
-    c = (h1 >> 44);
+    c = h1 >> 44;
     h1 &= 0xfffffffffff;
     h2 += c;
-    c = (h2 >> 42);
+    c = h2 >> 42;
     h2 &= 0x3ffffffffff;
     h0 += c * 5;
-    c = (h0 >> 44);
+    c = h0 >> 44;
     h0 &= 0xfffffffffff;
     h1 += c;
-    c = (h1 >> 44);
+    c = h1 >> 44;
     h1 &= 0xfffffffffff;
     h2 += c;
-    c = (h2 >> 42);
+    c = h2 >> 42;
     h2 &= 0x3ffffffffff;
     h0 += c * 5;
-    c = (h0 >> 44);
+    c = h0 >> 44;
     h0 &= 0xfffffffffff;
     h1 += c;
 
     /* compute h + -p */
     g0 = h0 + 5;
-    c  = (g0 >> 44);
+    c  = g0 >> 44;
     g0 &= 0xfffffffffff;
     g1 = h1 + c;
-    c  = (g1 >> 44);
+    c  = g1 >> 44;
     g1 &= 0xfffffffffff;
     g2 = h2 + c - (1ULL << 42);
 
     /* select h if h < p, or h + -p if h >= p */
-    c = (g2 >> ((sizeof(unsigned long long) * 8) - 1)) - 1;
-    g0 &= c;
-    g1 &= c;
-    g2 &= c;
-    c  = ~c;
-    h0 = (h0 & c) | g0;
-    h1 = (h1 & c) | g1;
-    h2 = (h2 & c) | g2;
+    mask = (g2 >> ((sizeof(unsigned long long) * 8) - 1)) - 1;
+    g0   &= mask;
+    g1   &= mask;
+    g2   &= mask;
+    mask =  ~mask;
+    h0   =  (h0 & mask) | g0;
+    h1   =  (h1 & mask) | g1;
+    h2   =  (h2 & mask) | g2;
 
     /* h = (h + pad) */
     t0 = st->pad[0];
@@ -209,8 +210,8 @@ poly1305_finish(poly1305_state_internal_t *st, unsigned char mac[16])
     h2 &= 0x3ffffffffff;
 
     /* mac = h % (2^128) */
-    h0 = ((h0) | (h1 << 44));
-    h1 = ((h1 >> 20) | (h2 << 24));
+    h0 = (h0) | (h1 << 44);
+    h1 = (h1 >> 20) | (h2 << 24);
 
     STORE64_LE(&mac[0], h0);
     STORE64_LE(&mac[8], h1);
