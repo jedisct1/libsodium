@@ -481,10 +481,12 @@ _mprotect_readwrite(void *ptr, size_t size)
 __attribute__((noreturn)) static void
 _out_of_bounds(void)
 {
-# ifdef SIGSEGV
+# ifndef __wasm__
+#  ifdef SIGSEGV
     raise(SIGSEGV);
-# elif defined(SIGKILL)
+#  elif defined(SIGKILL)
     raise(SIGKILL);
+#  endif
 # endif
     abort(); /* not something we want any higher-level API to catch */
 } /* LCOV_EXCL_LINE */
