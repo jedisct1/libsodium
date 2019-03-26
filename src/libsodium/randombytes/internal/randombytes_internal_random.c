@@ -178,14 +178,11 @@ randombytes_internal_random_init(void)
 static int
 _randombytes_getentropy(void * const buf, const size_t size)
 {
-    int readnb;
-
     assert(size <= 256U);
-    do {
-        readnb = getentropy(buf, size);
-    } while (readnb < 0 && (errno == EINTR || errno == EAGAIN));
-
-    return (readnb == (int) size) - 1;
+    if (getentropy(buf, size) != 0) {
+        return -1;
+    }
+    return 0;
 }
 
 static int
