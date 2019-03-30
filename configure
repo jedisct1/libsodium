@@ -5460,17 +5460,45 @@ test -n "$PTHREAD_CC" || PTHREAD_CC="$CC"
 # Finally, execute ACTION-IF-FOUND/ACTION-IF-NOT-FOUND:
 if test "x$ax_pthread_ok" = "xyes"; then
 
+    cat confdefs.h - <<_ACEOF >conftest.$ac_ext
+/* end confdefs.h.  */
+
+        #include <pthread.h>
+
+int
+main ()
+{
+
+        pthread_mutex_t mutex;
+
+        pthread_mutex_lock(&mutex);
+        pthread_mutex_unlock(&mutex)
+
+
+  ;
+  return 0;
+}
+_ACEOF
+if ac_fn_c_try_link "$LINENO"; then :
+
 
 $as_echo "#define HAVE_PTHREAD 1" >>confdefs.h
 
-    with_threads="yes"
-    LIBS="$PTHREAD_LIBS $LIBS"
-    PKGCONFIG_LIBS_PRIVATE="$PTHREAD_LIBS $PTHREAD_CFLAGS $PKGCONFIG_LIBS_PRIVATE"
-    CFLAGS="$CFLAGS $PTHREAD_CFLAGS"
-    CC="$PTHREAD_CC"
+        with_threads="yes"
+        LIBS="$PTHREAD_LIBS $LIBS"
+        PKGCONFIG_LIBS_PRIVATE="$PTHREAD_LIBS $PTHREAD_CFLAGS $PKGCONFIG_LIBS_PRIVATE"
+        CFLAGS="$CFLAGS $PTHREAD_CFLAGS"
+        CC="$PTHREAD_CC"
+
+fi
+rm -f core conftest.err conftest.$ac_objext \
+    conftest$ac_exeext conftest.$ac_ext
+
         :
 else
         ax_pthread_ok=no
+         { $as_echo "$as_me:${as_lineno-$LINENO}: pthread mutexes are not available" >&5
+$as_echo "$as_me: pthread mutexes are not available" >&6;}
 
 fi
 ac_ext=c

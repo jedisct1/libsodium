@@ -131,7 +131,7 @@ AS_IF([test "x$withval" = "xyes"], [
         pthread_mutex_t mutex;
 
         pthread_mutex_lock(&mutex);
-        pthread_mutex_unlock(&mutex);
+        pthread_mutex_unlock(&mutex)
       ]]
     )], [
         AC_DEFINE([HAVE_PTHREAD], [1], [Define if you have POSIX threads libraries and header files])
