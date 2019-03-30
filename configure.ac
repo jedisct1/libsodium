@@ -121,12 +121,25 @@ AC_ARG_WITH(pthreads, AC_HELP_STRING([--with-pthreads],
 
 AS_IF([test "x$withval" = "xyes"], [
   AX_PTHREAD([
-    AC_DEFINE([HAVE_PTHREAD], [1], [Define if you have POSIX threads libraries and header files])
-    with_threads="yes"
-    LIBS="$PTHREAD_LIBS $LIBS"
-    PKGCONFIG_LIBS_PRIVATE="$PTHREAD_LIBS $PTHREAD_CFLAGS $PKGCONFIG_LIBS_PRIVATE"
-    CFLAGS="$CFLAGS $PTHREAD_CFLAGS"
-    CC="$PTHREAD_CC"])
+    AC_LINK_IFELSE([AC_LANG_PROGRAM([[
+        #include <pthread.h>
+      ]], [[
+        pthread_mutex_t mutex;
+
+        pthread_mutex_lock(&mutex);
+        pthread_mutex_unlock(&mutex);
+      ]]
+    )], [
+        AC_DEFINE([HAVE_PTHREAD], [1], [Define if you have POSIX threads libraries and header files])
+        with_threads="yes"
+        LIBS="$PTHREAD_LIBS $LIBS"
+        PKGCONFIG_LIBS_PRIVATE="$PTHREAD_LIBS $PTHREAD_CFLAGS $PKGCONFIG_LIBS_PRIVATE"
+        CFLAGS="$CFLAGS $PTHREAD_CFLAGS"
+        CC="$PTHREAD_CC"
+      ])
+    ],
+    [ AC_MSG_NOTICE(pthread mutexes are not available) ]
+  )
 ], [with_threads="no"])
 
 AC_ARG_WITH(safecode,
