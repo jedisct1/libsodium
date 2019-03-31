@@ -808,6 +808,9 @@ AS_IF([test "x$EMSCRIPTEN" != "x"],[
 AC_SUBST(TEST_LDFLAGS)
 AM_CONDITIONAL([EMSCRIPTEN], [test "x$EMSCRIPTEN" != "x"])
 
+LIBCURL_CHECK_CONFIG([yes], [], [],
+  [AC_MSG_ERROR([[Libcurl header files not found, install libcurl-dev]])])
+
 AC_DEFINE([CONFIGURED], [1], [the build system was properly configured])
 
 dnl Libtool.
