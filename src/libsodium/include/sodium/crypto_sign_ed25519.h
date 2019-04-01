@@ -46,9 +46,23 @@ int crypto_sign_ed25519(unsigned char *sm, unsigned long long *smlen_p,
             __attribute__ ((nonnull(1, 3, 5)));
 
 SODIUM_EXPORT
+int crypto_sign_ed25519_blake2b(unsigned char *sm, unsigned long long *smlen_p,
+                                const unsigned char *m, unsigned long long mlen,
+                                const unsigned char *sk,
+                                const unsigned char *personal)
+            __attribute__ ((nonnull(1, 3, 5)));
+
+SODIUM_EXPORT
 int crypto_sign_ed25519_open(unsigned char *m, unsigned long long *mlen_p,
                              const unsigned char *sm, unsigned long long smlen,
                              const unsigned char *pk)
+            __attribute__ ((warn_unused_result)) __attribute__ ((nonnull(3, 5)));
+
+SODIUM_EXPORT
+int crypto_sign_ed25519_blake2b_open(unsigned char *m, unsigned long long *mlen_p,
+                                     const unsigned char *sm, unsigned long long smlen,
+                                     const unsigned char *pk,
+                                     const unsigned char *personal)
             __attribute__ ((warn_unused_result)) __attribute__ ((nonnull(3, 5)));
 
 SODIUM_EXPORT
@@ -60,10 +74,27 @@ int crypto_sign_ed25519_detached(unsigned char *sig,
             __attribute__ ((nonnull(1, 3)));
 
 SODIUM_EXPORT
+int crypto_sign_ed25519_blake2b_detached(unsigned char *sig,
+                                         unsigned long long *siglen_p,
+                                         const unsigned char *m,
+                                         unsigned long long mlen,
+                                         const unsigned char *sk,
+                                         const unsigned char *personal)
+            __attribute__ ((nonnull(1, 3)));
+
+SODIUM_EXPORT
 int crypto_sign_ed25519_verify_detached(const unsigned char *sig,
                                         const unsigned char *m,
                                         unsigned long long mlen,
                                         const unsigned char *pk)
+            __attribute__ ((warn_unused_result));
+
+SODIUM_EXPORT
+int crypto_sign_ed25519_blake2b_verify_detached(const unsigned char *sig,
+                                                const unsigned char *m,
+                                                unsigned long long mlen,
+                                                const unsigned char *pk,
+                                                const unsigned char *personal)
             __attribute__ ((warn_unused_result));
 
 SODIUM_EXPORT
@@ -73,6 +104,15 @@ int crypto_sign_ed25519_keypair(unsigned char *pk, unsigned char *sk)
 SODIUM_EXPORT
 int crypto_sign_ed25519_seed_keypair(unsigned char *pk, unsigned char *sk,
                                      const unsigned char *seed)
+            __attribute__ ((nonnull));
+
+SODIUM_EXPORT
+int crypto_sign_ed25519_blake2b_keypair(unsigned char *pk, unsigned char *sk)
+            __attribute__ ((nonnull));
+
+SODIUM_EXPORT
+int crypto_sign_ed25519_blake2b_seed_keypair(unsigned char *pk, unsigned char *sk,
+                                             const unsigned char *seed)
             __attribute__ ((nonnull));
 
 SODIUM_EXPORT
