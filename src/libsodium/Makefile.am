@@ -54,8 +54,6 @@ libsodium_la_SOURCES = \
 	crypto_pwhash/argon2/pwhash_argon2i.c \
 	crypto_pwhash/argon2/pwhash_argon2id.c \
 	crypto_pwhash/crypto_pwhash.c \
-	crypto_pwhash/crypto_pwhash_hedgehogcoin.c \
-	crypto_pwhash/crypto_pwhash_hedgehogcoin.h \
 	crypto_scalarmult/crypto_scalarmult.c \
 	crypto_scalarmult/curve25519/ref10/x25519_ref10.c \
 	crypto_scalarmult/curve25519/ref10/x25519_ref10.h \
@@ -179,14 +177,12 @@ randombytes_internal_randombytes_internal_random_CFLAGS = @CFLAGS_RDRAND@
 
 libsodium_la_LDFLAGS = \
 	$(AM_LDFLAGS) \
-	@LIBCURL@ \
 	-export-dynamic \
 	-no-undefined \
 	$(LIBTOOL_EXTRA_FLAGS)
 
 libsodium_la_CPPFLAGS = \
 	$(LTDLINCL) \
-	@LIBCURL_CPPFLAGS@ \
 	-I$(srcdir)/include/sodium \
 	-I$(builddir)/include/sodium
 

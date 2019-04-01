@@ -75,9 +75,6 @@
     <ClCompile Include="src\libsodium\crypto_pwhash\crypto_pwhash.c">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="src\libsodium\crypto_pwhash\crypto_pwhash_hedgehogcoin.c">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="src\libsodium\crypto_pwhash\argon2\blake2b-long.c">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -570,9 +567,6 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="src\libsodium\include\sodium\private\implementations.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="src\libsodium\crypto_pwhash\crypto_pwhash_hedgehogcoin.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="src\libsodium\crypto_pwhash\argon2\blamka-round-ref.h">

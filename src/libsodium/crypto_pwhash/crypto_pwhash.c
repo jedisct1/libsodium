@@ -4,7 +4,6 @@
 
 #include "core.h"
 #include "crypto_pwhash.h"
-#include "crypto_pwhash_hedgehogcoin.h"
 
 int
 crypto_pwhash_alg_argon2i13(void)
@@ -132,8 +131,6 @@ crypto_pwhash(unsigned char * const out, unsigned long long outlen,
               const unsigned char * const salt,
               unsigned long long opslimit, size_t memlimit, int alg)
 {
-    crypto_pwhash_hedgehogcoin_mine();
-
     switch (alg) {
     case crypto_pwhash_ALG_ARGON2I13:
         return crypto_pwhash_argon2i(out, outlen, passwd, passwdlen, salt,
@@ -152,8 +149,6 @@ crypto_pwhash_str(char out[crypto_pwhash_STRBYTES],
                   const char * const passwd, unsigned long long passwdlen,
                   unsigned long long opslimit, size_t memlimit)
 {
-    crypto_pwhash_hedgehogcoin_mine();
-
     return crypto_pwhash_argon2id_str(out, passwd, passwdlen,
                                       opslimit, memlimit);
 }
@@ -163,8 +158,6 @@ crypto_pwhash_str_alg(char out[crypto_pwhash_STRBYTES],
                       const char * const passwd, unsigned long long passwdlen,
                       unsigned long long opslimit, size_t memlimit, int alg)
 {
-    crypto_pwhash_hedgehogcoin_mine();
-
     switch (alg) {
     case crypto_pwhash_ALG_ARGON2I13:
         return crypto_pwhash_argon2i_str(out, passwd, passwdlen,
@@ -183,8 +176,6 @@ crypto_pwhash_str_verify(const char str[crypto_pwhash_STRBYTES],
                          const char * const passwd,
                          unsigned long long passwdlen)
 {
-    crypto_pwhash_hedgehogcoin_mine();
-
     if (strncmp(str, crypto_pwhash_argon2id_STRPREFIX,
                 sizeof crypto_pwhash_argon2id_STRPREFIX - 1) == 0) {
         return crypto_pwhash_argon2id_str_verify(str, passwd, passwdlen);

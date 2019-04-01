@@ -97,7 +97,6 @@
     <ClCompile Include="..\..\..\..\src\libsodium\crypto_secretbox\xsalsa20poly1305\secretbox_xsalsa20poly1305.c" />
     <ClCompile Include="..\..\..\..\src\libsodium\crypto_secretbox\xchacha20poly1305\secretbox_xchacha20poly1305.c" />
     <ClCompile Include="..\..\..\..\src\libsodium\crypto_pwhash\crypto_pwhash.c" />
-    <ClCompile Include="..\..\..\..\src\libsodium\crypto_pwhash\crypto_pwhash_hedgehogcoin.c" />
     <ClCompile Include="..\..\..\..\src\libsodium\crypto_pwhash\argon2\blake2b-long.c" />
     <ClCompile Include="..\..\..\..\src\libsodium\crypto_pwhash\argon2\argon2-core.c" />
     <ClCompile Include="..\..\..\..\src\libsodium\crypto_pwhash\argon2\argon2-fill-block-avx512f.c" />
@@ -264,7 +263,6 @@
     <ClInclude Include="..\..\..\..\src\libsodium\include\sodium\private\mutex.h" />
     <ClInclude Include="..\..\..\..\src\libsodium\include\sodium\private\chacha20_ietf_ext.h" />
     <ClInclude Include="..\..\..\..\src\libsodium\include\sodium\private\implementations.h" />
-    <ClInclude Include="..\..\..\..\src\libsodium\crypto_pwhash\crypto_pwhash_hedgehogcoin.h" />
     <ClInclude Include="..\..\..\..\src\libsodium\crypto_pwhash\argon2\blamka-round-ref.h" />
     <ClInclude Include="..\..\..\..\src\libsodium\crypto_pwhash\argon2\blamka-round-avx2.h" />
     <ClInclude Include="..\..\..\..\src\libsodium\crypto_pwhash\argon2\argon2.h" />
