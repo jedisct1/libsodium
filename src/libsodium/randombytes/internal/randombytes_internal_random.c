@@ -413,7 +413,7 @@ randombytes_internal_random_stir(void)
      }
 # elif defined(HAVE_LINUX_COMPATIBLE_GETRANDOM)
      if (global.getrandom_available != 0) {
-         if (randombytes_getrandom(stream.key, sizeof stream.key) != 0) {
+         if (randombytes_linux_getrandom(stream.key, sizeof stream.key) != 0) {
              sodium_misuse(); /* LCOV_EXCL_LINE */
          }
      }
