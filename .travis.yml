@@ -24,13 +24,15 @@ script:
  - make distcheck
  - make distclean > /dev/null
  - ./configure --disable-dependency-tracking --enable-minimal
+ - make -j $(nproc)
  - make check
  - ( echo '#include <sodium.h>' ; echo 'int main(void) { return sodium_init(); }' ) > /tmp/main.c && gcc -Isrc/libsodium/include -Isrc/libsodium/include/sodium $(find src -name '*.c' -o -name '*.S') /tmp/main.c
  - make distclean > /dev/null
 
 after_success:
  - ./configure --disable-dependency-tracking --host=powerpc-linux-gnu
- - env QEMU_LD_PREFIX=/usr/powerpc-linux-gnu make -j $(nproc) check
+ - make -j $(nproc)
+ - env QEMU_LD_PREFIX=/usr/powerpc-linux-gnu make check
  - make clean > /dev/null
 
 addons:
