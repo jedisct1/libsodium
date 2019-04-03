@@ -99,7 +99,7 @@ sd = os.path.dirname(os.path.realpath(__file__))
 apply_template(sd + "/tl_libsodium.vcxproj.filters.tpl",
                "libsodium.vcxproj.filters", sbox)
 
-sbox.update({"platform": "v142"})
+sbox.update({"platform": "v141"})
 apply_template(sd + "/tl_libsodium.vcxproj.tpl",
                "libsodium.vcxproj", sbox)
 
