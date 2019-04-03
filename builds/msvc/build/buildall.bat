@@ -1,5 +1,7 @@
 @ECHO OFF
 
+CALL buildbase.bat ..\vs2019\libsodium.sln 16
+ECHO.
 CALL buildbase.bat ..\vs2017\libsodium.sln 15
 ECHO.
 CALL buildbase.bat ..\vs2015\libsodium.sln 14

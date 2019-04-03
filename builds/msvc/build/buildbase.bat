@@ -1,10 +1,11 @@
 @ECHO OFF
-REM Usage: [buildbase.bat ..\vs2013\mysolution.sln 12]
+REM Usage: [buildbase.bat ..\vs2019\mysolution.sln 16]
 
 SET solution=%1
 SET version=%2
 SET log=build_%version%.log
 SET tools=Microsoft Visual Studio %version%.0\VC\vcvarsall.bat
+IF %version% == 16 SET tools=Microsoft Visual Studio\2019\Community\VC\Auxiliary\Build\vcvarsall.bat
 IF %version% == 15 SET tools=Microsoft Visual Studio\2017\Community\VC\Auxiliary\Build\vcvarsall.bat
 SET environment="%programfiles(x86)%\%tools%"
 IF NOT EXIST %environment% SET environment="%programfiles%\%tools%"
