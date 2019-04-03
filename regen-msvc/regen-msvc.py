@@ -99,10 +99,12 @@ sd = os.path.dirname(os.path.realpath(__file__))
 apply_template(sd + "/tl_libsodium.vcxproj.filters.tpl",
                "libsodium.vcxproj.filters", sbox)
 
-sbox.update({"platform": "v140"})
+sbox.update({"platform": "v142"})
 apply_template(sd + "/tl_libsodium.vcxproj.tpl",
                "libsodium.vcxproj", sbox)
 
+apply_template(sd + "/libsodium.vcxproj.filters.tpl",
+               "builds/msvc/vs2019/libsodium/libsodium.vcxproj.filters", sbox)
 apply_template(sd + "/libsodium.vcxproj.filters.tpl",
                "builds/msvc/vs2017/libsodium/libsodium.vcxproj.filters", sbox)
 apply_template(sd + "/libsodium.vcxproj.filters.tpl",
@@ -113,6 +115,10 @@ apply_template(sd + "/libsodium.vcxproj.filters.tpl",
                "builds/msvc/vs2012/libsodium/libsodium.vcxproj.filters", sbox)
 apply_template(sd + "/libsodium.vcxproj.filters.tpl",
                "builds/msvc/vs2010/libsodium/libsodium.vcxproj.filters", sbox)
+
+sbox.update({"platform": "v142"})
+apply_template(sd + "/libsodium.vcxproj.tpl",
+               "builds/msvc/vs2019/libsodium/libsodium.vcxproj", sbox)
 
 sbox.update({"platform": "v141"})
 apply_template(sd + "/libsodium.vcxproj.tpl",
