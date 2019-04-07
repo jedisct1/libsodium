@@ -8,29 +8,32 @@
 #ifndef _WIN32
 # include <unistd.h>
 #endif
-
 #include <stdlib.h>
+
 #include <sys/types.h>
 #ifndef _WIN32
 # include <sys/stat.h>
 # include <sys/time.h>
 #endif
 #ifdef __linux__
-# ifdef __dietlibc__
-#  define _LINUX_SOURCE
-#  include <sys/random.h>
+# define _LINUX_SOURCE
+#endif
+#ifdef HAVE_SYS_RANDOM_H
+# include <sys/random.h>
+#endif
+#ifdef __linux__
+# ifdef HAVE_GETRANDOM
 #  define HAVE_LINUX_COMPATIBLE_GETRANDOM
-# else /* __dietlibc__ */
+# else
 #  include <sys/syscall.h>
 #  if defined(SYS_getrandom) && defined(__NR_getrandom)
 #   define getrandom(B, S, F) syscall(SYS_getrandom, (B), (int) (S), (F))
 #   define HAVE_LINUX_COMPATIBLE_GETRANDOM
 #  endif
-# endif /* __dietlibc */
+# endif
 #elif defined(__FreeBSD__)
 # include <sys/param.h>
 # if defined(__FreeBSD_version) && __FreeBSD_version >= 1200000
-#  include <sys/random.h>
 #  define HAVE_LINUX_COMPATIBLE_GETRANDOM
 # endif
 #endif

@@ -792,7 +792,7 @@ dnl Checks for functions and headers
 
 AC_FUNC_ALLOCA
 AS_IF([test "x$EMSCRIPTEN" = "x"],[
-  AC_CHECK_FUNCS([arc4random arc4random_buf getentropy])
+  AC_CHECK_FUNCS([arc4random arc4random_buf getrandom getentropy])
   AC_CHECK_FUNCS([mmap mlock madvise mprotect])
 ])
 AC_CHECK_FUNCS([posix_memalign getpid nanosleep])
