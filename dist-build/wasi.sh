@@ -11,7 +11,7 @@ export PREFIX="$(pwd)/libsodium-wasm32-wasi"
 mkdir -p $PREFIX || exit 1
 
 export CC="clang"
-export CFLAGS="--target=wasm32-unknkown-wasi --sysroot=${WASI_SYSROOT} -Os"
+export CFLAGS="--target=wasm32-unknkown-wasi --sysroot=${WASI_SYSROOT} -O2"
 export LDFLAGS="-s"
 export NM="llvm-nm"
 export AR="llvm-ar"
@@ -26,7 +26,7 @@ grep -q -F -- '-wasi' build-aux/config.sub || \
 if [ "x$1" = "x--bench" ]; then
   export BENCHMARKS=1
   export LIBSODIUM_FULL_BUILD=1
-  export CPPFLAGS="-DBENCHMARKS -DITERATIONS=50"
+  export CPPFLAGS="-DBENCHMARKS -DITERATIONS=25"
 fi
 
 if [ -z "$LIBSODIUM_FULL_BUILD" ]; then
@@ -43,7 +43,7 @@ NPROCESSORS=$(getconf NPROCESSORS_ONLN 2>/dev/null || getconf _NPROCESSORS_ONLN 
 PROCESSORS=${NPROCESSORS:-3}
 
 if [ -z "$BENCHMARKS" ]; then
-  make -j${PROCESSORS} && make check
-else
   make -j${PROCESSORS} check && make install && make distclean > /dev/null
+else
+  make -j${PROCESSORS} && make check
 fi
