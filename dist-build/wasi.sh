@@ -21,7 +21,7 @@ export STRIP="llvm-strip"
 make distclean > /dev/null
 
 grep -q -F -- '-wasi' build-aux/config.sub || \
-  sed -i -e 's/-nacl\*)/-nacl*|-wasi/' build-aux/config.sub
+  sed -i -e 's/-nacl\*)/-nacl*|-wasi)/' build-aux/config.sub
 
 if [ -z "$LIBSODIUM_FULL_BUILD" ]; then
   export LIBSODIUM_ENABLE_MINIMAL_FLAG="--enable-minimal"
@@ -36,6 +36,7 @@ fi
 NPROCESSORS=$(getconf NPROCESSORS_ONLN 2>/dev/null || getconf _NPROCESSORS_ONLN 2>/dev/null)
 PROCESSORS=${NPROCESSORS:-3}
 
-make -j${PROCESSORS} install || exit 1
+make -j${PROCESSORS} check || exit 1
+make install || exit 1
 
 make distclean > /dev/null

@@ -497,6 +497,10 @@ TESTS_TARGETS += \
 	xchacha20
 endif
 
+if WASI
+LOG_COMPILER = ./wasi-test-wrapper.sh
+endif
+
 verify: check
 
 @VALGRIND_CHECK_RULES@
