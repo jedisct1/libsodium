@@ -169,6 +169,7 @@ tv3(void)
     sodium_free(s_);
     sodium_free(s);
     sodium_free(ru);
+    sodium_free(r_inv);
     sodium_free(r);
 }
 
