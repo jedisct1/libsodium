@@ -12,4 +12,5 @@ EXTRA_DIST = \
 	ios.sh \
 	msys2-win32.sh \
 	msys2-win64.sh \
-	watchos.sh
+	watchos.sh \
+	wasi.sh

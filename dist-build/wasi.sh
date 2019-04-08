@@ -23,6 +23,12 @@ make distclean > /dev/null
 grep -q -F -- '-wasi' build-aux/config.sub || \
   sed -i -e 's/-nacl\*)/-nacl*|-wasi)/' build-aux/config.sub
 
+if [ "x$1" = "x--bench" ]; then
+  export BENCHMARKS=1
+  export LIBSODIUM_FULL_BUILD=1
+  export CPPFLAGS="-DBENCHMARKS -DITERATIONS=50"
+fi
+
 if [ -z "$LIBSODIUM_FULL_BUILD" ]; then
   export LIBSODIUM_ENABLE_MINIMAL_FLAG="--enable-minimal"
 else
@@ -36,7 +42,8 @@ fi
 NPROCESSORS=$(getconf NPROCESSORS_ONLN 2>/dev/null || getconf _NPROCESSORS_ONLN 2>/dev/null)
 PROCESSORS=${NPROCESSORS:-3}
 
-make -j${PROCESSORS} check || exit 1
-make install || exit 1
-
-make distclean > /dev/null
+if [ -z "$BENCHMARKS" ]; then
+  make -j${PROCESSORS} && make check
+else
+  make -j${PROCESSORS} check && make install && make distclean > /dev/null
+fi
