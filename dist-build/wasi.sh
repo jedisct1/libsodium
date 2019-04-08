@@ -20,7 +20,7 @@ export STRIP="llvm-strip"
 
 make distclean > /dev/null
 
-egrep -q -F -- '-wasi' build-aux/config.sub || \
+grep -q -F -- '-wasi' build-aux/config.sub || \
   sed -i -e 's/-nacl\*)/-nacl*|-wasi/' build-aux/config.sub
 
 if [ -z "$LIBSODIUM_FULL_BUILD" ]; then
