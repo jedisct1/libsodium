@@ -1,6 +1,7 @@
 
 EXTRA_DIST = \
 	cmptest.h \
+	wasi-test-wrapper.sh \
 	wintest.bat \
 	pre.js.inc \
 	aead_aes256gcm.exp \
