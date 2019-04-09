@@ -1,4 +1,4 @@
 #! /bin/sh
 
-wasmtime --dir=. "$1"
+wasmtime -o --dir=. "$1"
 
