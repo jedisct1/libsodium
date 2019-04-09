@@ -13,4 +13,4 @@ EXTRA_DIST = \
 	msys2-win32.sh \
 	msys2-win64.sh \
 	watchos.sh \
-	wasi.sh
+	wasm32-wasi.sh
