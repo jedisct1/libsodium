@@ -1081,7 +1081,7 @@ ge25519_has_small_order(const unsigned char s[32])
  where l = 2^252 + 27742317777372353535851937790883648493.
  */
 
-static void
+void
 sc25519_mul(unsigned char s[32], const unsigned char a[32], const unsigned char b[32])
 {
     int64_t a0  = 2097151 & load_3(a);

@@ -109,6 +109,13 @@ crypto_core_ristretto255_scalar_sub(unsigned char *z, const unsigned char *x,
 }
 
 void
+crypto_core_ristretto255_scalar_mul(unsigned char *z, const unsigned char *x,
+                                    const unsigned char *y)
+{
+    sc25519_mul(z, x, y);
+}
+
+void
 crypto_core_ristretto255_scalar_reduce(unsigned char *r,
                                        const unsigned char *s)
 {
