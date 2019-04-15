@@ -147,7 +147,9 @@ main(void)
     for (i = 0; i < 1000; i++) {
         randombytes_buf(h, crypto_core_ed25519_UNIFORMBYTES);
         crypto_core_ed25519_from_uniform(p, h);
-        crypto_core_ed25519_scalar_random(sc);
+        do {
+            crypto_core_ed25519_scalar_random(sc);
+        } while (sodium_is_zero(sc, crypto_core_ed25519_SCALARBYTES));
         if (crypto_scalarmult_ed25519_noclamp(p2, sc, p) != 0) {
             printf("crypto_scalarmult_ed25519_noclamp() failed\n");
         }
@@ -359,7 +361,9 @@ main(void)
         crypto_core_ed25519_scalar_sub(sc3, sc3, sc);
         assert(sodium_is_zero(sc3, crypto_core_ed25519_SCALARBYTES));
 
-        crypto_core_ed25519_scalar_random(sc2);
+        do {
+            crypto_core_ed25519_scalar_random(sc2);
+        } while (sodium_is_zero(sc2, crypto_core_ed25519_SCALARBYTES));
         crypto_core_ed25519_scalar_mul(sc3, sc, sc2);
         crypto_core_ed25519_scalar_invert(sc2, sc2);
         crypto_core_ed25519_scalar_mul(sc3, sc3, sc2);
