@@ -306,8 +306,8 @@ main(void)
         assert(sodium_is_zero(sc3, crypto_core_ed25519_SCALARBYTES));
     }
 
-    memset(sc, 0x69, crypto_core_ed25519_UNIFORMBYTES);
-    memset(sc2, 0x42, crypto_core_ed25519_UNIFORMBYTES);
+    memset(sc, 0x69, crypto_core_ed25519_SCALARBYTES);
+    memset(sc2, 0x42, crypto_core_ed25519_SCALARBYTES);
     crypto_core_ed25519_scalar_add(sc, sc, sc2);
     crypto_core_ed25519_scalar_add(sc, sc2, sc);
     sodium_bin2hex(hex, crypto_core_ed25519_SCALARBYTES * 2 + 1,
@@ -320,8 +320,8 @@ main(void)
                    sc, crypto_core_ed25519_SCALARBYTES);
     printf("sub1: %s\n", hex);
 
-    memset(sc, 0xcd, crypto_core_ed25519_UNIFORMBYTES);
-    memset(sc2, 0x42, crypto_core_ed25519_UNIFORMBYTES);
+    memset(sc, 0xcd, crypto_core_ed25519_SCALARBYTES);
+    memset(sc2, 0x42, crypto_core_ed25519_SCALARBYTES);
     crypto_core_ed25519_scalar_add(sc, sc, sc2);
     crypto_core_ed25519_scalar_add(sc, sc2, sc);
     sodium_bin2hex(hex, crypto_core_ed25519_SCALARBYTES * 2 + 1,
