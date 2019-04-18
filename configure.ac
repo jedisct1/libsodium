@@ -794,8 +794,44 @@ dnl Checks for functions and headers
 
 AC_FUNC_ALLOCA
 AS_IF([test "x$EMSCRIPTEN" = "x"],[
-  AC_CHECK_FUNCS([arc4random arc4random_buf getrandom getentropy])
+  AC_CHECK_FUNCS([arc4random arc4random_buf])
   AC_CHECK_FUNCS([mmap mlock madvise mprotect])
+
+  AC_MSG_CHECKING(for getrandom with a standard API)
+  AC_LINK_IFELSE([AC_LANG_PROGRAM([[
+#include <stdlib.h>
+#ifdef HAVE_UNISTD_H
+# include <unistd.h>
+#endif
+#ifdef HAVE_SYS_RANDOM_H
+# include <sys/random.h>
+#endif
+]], [[
+unsigned char buf;
+(void) getrandom((void *) &buf, 1U, 0U);
+  ]])],
+  [AC_MSG_RESULT(yes)
+   AC_CHECK_FUNCS([getrandom])],
+  [AC_MSG_RESULT(no)
+  ])
+
+  AC_MSG_CHECKING(for getentropy with a standard API)
+  AC_LINK_IFELSE([AC_LANG_PROGRAM([[
+#include <stdlib.h>
+#ifdef HAVE_UNISTD_H
+# include <unistd.h>
+#endif
+#ifdef HAVE_SYS_RANDOM_H
+# include <sys/random.h>
+#endif
+]], [[
+unsigned char buf;
+(void) getentropy((void *) &buf, 1U);
+  ]])],
+  [AC_MSG_RESULT(yes)
+   AC_CHECK_FUNCS([getentropy])],
+  [AC_MSG_RESULT(no)
+  ])
 ])
 AC_CHECK_FUNCS([posix_memalign getpid nanosleep])
 AC_CHECK_FUNCS([memset_s explicit_bzero explicit_memset])
