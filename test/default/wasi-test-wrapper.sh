@@ -17,7 +17,8 @@ if [ -z "$WASI_RUNTIME" ] || [ "$WASI_RUNTIME" = "lucet" ]; then
     lucetc-wasi \
       --min-reserved-size "128MiB" \
       -o "${1}.so" --opt-level best "$1" &&
-      lucet-wasi --dir=.:. "$1.so" && exit 0
+      lucet-wasi --dir=.:. "${1}.so" &&
+      rm -f "${1}.so" && exit 0
   fi
 fi
 
