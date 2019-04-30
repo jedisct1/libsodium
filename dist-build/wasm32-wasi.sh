@@ -11,7 +11,7 @@ export PREFIX="$(pwd)/libsodium-wasm32-wasi"
 mkdir -p $PREFIX || exit 1
 
 export CC="clang"
-export CFLAGS="--target=wasm32-unknkown-wasi --sysroot=${WASI_SYSROOT} -O2"
+export CFLAGS="-DED25519_NONDETERMINISTIC=1 --target=wasm32-unknkown-wasi --sysroot=${WASI_SYSROOT} -O2"
 export LDFLAGS="-s -Wl,--no-threads"
 export NM="llvm-nm"
 export AR="llvm-ar"
