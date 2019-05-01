@@ -110,6 +110,8 @@ int ge25519_has_small_order(const unsigned char s[32]);
 
 void ge25519_from_uniform(unsigned char s[32], const unsigned char r[32]);
 
+void ge25519_from_hash(unsigned char s[32], const unsigned char h[64]);
+
 /*
  Ristretto group
  */
@@ -118,7 +120,7 @@ int ristretto255_frombytes(ge25519_p3 *h, const unsigned char *s);
 
 void ristretto255_p3_tobytes(unsigned char *s, const ge25519_p3 *h);
 
-void ristretto255_from_hash(unsigned char s[32], const unsigned char r[64]);
+void ristretto255_from_hash(unsigned char s[32], const unsigned char h[64]);
 
 /*
  The set of scalars is \Z/l

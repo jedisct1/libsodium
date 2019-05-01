@@ -44,6 +44,10 @@ int crypto_core_ristretto255_from_hash(unsigned char *p,
             __attribute__ ((nonnull));
 
 SODIUM_EXPORT
+void crypto_core_ristretto255_random(unsigned char *p)
+            __attribute__ ((nonnull));
+
+SODIUM_EXPORT
 void crypto_core_ristretto255_scalar_random(unsigned char *r)
             __attribute__ ((nonnull));
 

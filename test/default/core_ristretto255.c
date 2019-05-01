@@ -135,6 +135,10 @@ tv3(void)
             crypto_core_ristretto255_is_valid_point(s) != 1) {
             printf("crypto_scalarmult_ristretto255_base() failed\n");
         }
+        crypto_core_ristretto255_random(s);
+        if (crypto_core_ristretto255_is_valid_point(s) != 1) {
+            printf("crypto_core_ristretto255_random() failed\n");
+        }
         if (crypto_scalarmult_ristretto255(s, l, s) == 0) {
             printf("s*l != inf (1)\n");
         }

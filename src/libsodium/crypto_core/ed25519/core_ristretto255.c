@@ -68,6 +68,15 @@ crypto_core_ristretto255_from_hash(unsigned char *p, const unsigned char *r)
 }
 
 void
+crypto_core_ristretto255_random(unsigned char *p)
+{
+    unsigned char h[crypto_core_ristretto255_HASHBYTES];
+
+    randombytes_buf(h, sizeof h);
+    (void) crypto_core_ristretto255_from_hash(p, h);
+}
+
+void
 crypto_core_ristretto255_scalar_random(unsigned char *r)
 {
     crypto_core_ed25519_scalar_random(r);
