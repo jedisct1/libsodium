@@ -2815,7 +2815,7 @@ ristretto255_elligator(ge25519_p3 *p, const fe25519 t)
 }
 
 void
-ristretto255_from_uniform(unsigned char s[32], const unsigned char r[64])
+ristretto255_from_hash(unsigned char s[32], const unsigned char r[64])
 {
     fe25519        r0, r1;
     ge25519_cached p1_cached;

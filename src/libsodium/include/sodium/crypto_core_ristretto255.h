@@ -12,9 +12,9 @@ extern "C" {
 SODIUM_EXPORT
 size_t crypto_core_ristretto255_bytes(void);
 
-#define crypto_core_ristretto255_UNIFORMBYTES 64
+#define crypto_core_ristretto255_HASHBYTES 64
 SODIUM_EXPORT
-size_t crypto_core_ristretto255_uniformbytes(void);
+size_t crypto_core_ristretto255_hashbytes(void);
 
 #define crypto_core_ristretto255_SCALARBYTES 32
 SODIUM_EXPORT
@@ -39,8 +39,8 @@ int crypto_core_ristretto255_sub(unsigned char *r,
             __attribute__ ((nonnull));
 
 SODIUM_EXPORT
-int crypto_core_ristretto255_from_uniform(unsigned char *p,
-                                          const unsigned char *r)
+int crypto_core_ristretto255_from_hash(unsigned char *p,
+                                       const unsigned char *r)
             __attribute__ ((nonnull));
 
 SODIUM_EXPORT

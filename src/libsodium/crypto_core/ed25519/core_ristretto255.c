@@ -60,9 +60,9 @@ crypto_core_ristretto255_sub(unsigned char *r,
 }
 
 int
-crypto_core_ristretto255_from_uniform(unsigned char *p, const unsigned char *r)
+crypto_core_ristretto255_from_hash(unsigned char *p, const unsigned char *r)
 {
-    ristretto255_from_uniform(p, r);
+    ristretto255_from_hash(p, r);
 
     return 0;
 }
@@ -135,9 +135,9 @@ crypto_core_ristretto255_nonreducedscalarbytes(void)
 }
 
 size_t
-crypto_core_ristretto255_uniformbytes(void)
+crypto_core_ristretto255_hashbytes(void)
 {
-    return crypto_core_ristretto255_UNIFORMBYTES;
+    return crypto_core_ristretto255_HASHBYTES;
 }
 
 size_t
