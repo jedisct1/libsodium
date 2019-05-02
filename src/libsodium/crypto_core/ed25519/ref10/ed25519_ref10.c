@@ -2526,20 +2526,18 @@ chi25519(fe25519 out, const fe25519 z)
 }
 
 static void
-ge25519_elligator2(unsigned char s[32], const unsigned char x_sign)
+ge25519_elligator2(unsigned char s[32], const fe25519 r, const unsigned char x_sign)
 {
-    fe25519       e;
-    fe25519       negx;
-    fe25519       rr2;
-    fe25519       x, x2, x3;
-    ge25519_p3    p3;
-    ge25519_p1p1  p1;
-    ge25519_p2    p2;
-    unsigned int  e_is_minus_1;
+    fe25519      e;
+    fe25519      negx;
+    fe25519      rr2;
+    fe25519      x, x2, x3;
+    ge25519_p3   p3;
+    ge25519_p1p1 p1;
+    ge25519_p2   p2;
+    unsigned int e_is_minus_1;
 
-    fe25519_frombytes(rr2, s);
-
-    fe25519_sq2(rr2, rr2);
+    fe25519_sq2(rr2, r);
     rr2[0]++;
     fe25519_invert(rr2, rr2);
     fe25519_mul(x, curve25519_A, rr2);
@@ -2597,12 +2595,14 @@ ge25519_elligator2(unsigned char s[32], const unsigned char x_sign)
 void
 ge25519_from_uniform(unsigned char s[32], const unsigned char r[32])
 {
+    fe25519       r_fe;
     unsigned char x_sign;
 
     memcpy(s, r, 32);
     x_sign = s[31] & 0x80;
     s[31] &= 0x7f;
-    ge25519_elligator2(s, x_sign);
+    fe25519_frombytes(r_fe, s);
+    ge25519_elligator2(s, r_fe, x_sign);
 }
 
 void
@@ -2627,8 +2627,8 @@ ge25519_from_hash(unsigned char s[32], const unsigned char h[64])
     for (i = 0; i < sizeof (fe25519) / sizeof fe_f[0]; i++) {
         fe_f[i] += 38 * fe_g[i];
     }
-    fe25519_tobytes(s, fe_f);
-    ge25519_elligator2(s, x_sign);
+    fe25519_reduce(fe_f, fe_f);
+    ge25519_elligator2(s, fe_f, x_sign);
 }
 
 /* Ristretto group */
