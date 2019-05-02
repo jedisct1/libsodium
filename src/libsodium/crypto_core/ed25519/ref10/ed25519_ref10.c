@@ -2605,20 +2605,6 @@ ge25519_from_uniform(unsigned char s[32], const unsigned char r[32])
     ge25519_elligator2(s, x_sign);
 }
 
-void
-ge25519_from_hash(unsigned char s[32], const unsigned char h[64])
-{
-    unsigned char r[64];
-    unsigned char x_sign;
-
-    memcpy(r, h, 64);
-    x_sign = h[63] & 0x80;
-    r[63] &= 0x7f;
-    sc25519_reduce(r);
-    memcpy(s, r, 32);
-    ge25519_elligator2(s, x_sign);
-}
-
 /* Ristretto group */
 
 static int

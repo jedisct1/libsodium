@@ -110,8 +110,6 @@ int ge25519_has_small_order(const unsigned char s[32]);
 
 void ge25519_from_uniform(unsigned char s[32], const unsigned char r[32]);
 
-void ge25519_from_hash(unsigned char s[32], const unsigned char h[64]);
-
 /*
  Ristretto group
  */

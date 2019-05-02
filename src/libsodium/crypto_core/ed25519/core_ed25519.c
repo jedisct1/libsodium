@@ -70,21 +70,13 @@ crypto_core_ed25519_from_uniform(unsigned char *p, const unsigned char *r)
     return 0;
 }
 
-int
-crypto_core_ed25519_from_hash(unsigned char *p, const unsigned char *h)
-{
-    ge25519_from_hash(p, h);
-
-    return 0;
-}
-
 void
 crypto_core_ed25519_random(unsigned char *p)
 {
-    unsigned char h[crypto_core_ed25519_HASHBYTES];
+    unsigned char r[crypto_core_ed25519_UNIFORMBYTES];
 
-    randombytes_buf(h, sizeof h);
-    (void) crypto_core_ed25519_from_hash(p, h);
+    randombytes_buf(r, sizeof r);
+    (void) crypto_core_ed25519_from_uniform(p, r);
 }
 
 void
@@ -210,12 +202,6 @@ size_t
 crypto_core_ed25519_uniformbytes(void)
 {
     return crypto_core_ed25519_UNIFORMBYTES;
-}
-
-size_t
-crypto_core_ed25519_hashbytes(void)
-{
-    return crypto_core_ed25519_HASHBYTES;
 }
 
 size_t
