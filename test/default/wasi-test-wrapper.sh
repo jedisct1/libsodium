@@ -11,7 +11,7 @@ fi
 if [ -z "$WASI_RUNTIME" ] || [ "$WASI_RUNTIME" = "lucet" ]; then
   if command -v lucetc-wasi >/dev/null && command -v lucet-wasi >/dev/null; then
     lucetc-wasi \
-      --min-reserved-size "${MAX_MEMORY_MB}MiB" \
+      --reserved-size "${MAX_MEMORY_MB}MiB" \
       -o "${1}.so" --opt-level best "$1" &&
       lucet-wasi --dir=.:. --max-heap-size "${MAX_MEMORY_MB}MiB" "${1}.so" &&
       rm -f "${1}.so" && exit 0
