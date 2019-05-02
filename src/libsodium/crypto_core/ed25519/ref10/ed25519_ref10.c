@@ -2605,6 +2605,32 @@ ge25519_from_uniform(unsigned char s[32], const unsigned char r[32])
     ge25519_elligator2(s, x_sign);
 }
 
+void
+ge25519_from_hash(unsigned char s[32], const unsigned char h[64])
+{
+    unsigned char fl[32];
+    unsigned char gl[32];
+    fe25519       fe_f;
+    fe25519       fe_g;
+    int           i;
+    unsigned char x_sign;
+
+    x_sign = h[63] & 0x80;
+    memcpy(fl, &h[0], 32);
+    memcpy(gl, &h[32], 32);
+    fl[31] &= 0x7f;
+    gl[31] &= 0x7f;
+    fe25519_frombytes(fe_f, fl);
+    fe25519_frombytes(fe_g, gl);
+    fe_f[0] += (h[0 + 31] >> 7) * 19;
+    fe_g[0] += (h[32 + 31] >> 7) * 19;
+    for (i = 0; i < sizeof (fe25519) / sizeof fe_f[0]; i++) {
+        fe_f[i] += 38 * fe_g[i];
+    }
+    fe25519_tobytes(s, fe_f);
+    ge25519_elligator2(s, x_sign);
+}
+
 /* Ristretto group */
 
 static int
