@@ -152,7 +152,7 @@ sodium_hrtime(void)
 static uint64_t
 sodium_hrtime(void)
 {
-    struct   timeval tv;
+    struct timeval tv;
 
     if (gettimeofday(&tv, NULL) != 0) {
         sodium_misuse(); /* LCOV_EXCL_LINE */
