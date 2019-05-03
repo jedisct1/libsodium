@@ -20,7 +20,7 @@ export STRIP="llvm-strip"
 
 make distclean > /dev/null
 
-grep -q -F -- '-wasi' build-aux/config.sub || \
+grep -q -F -- 'wasi' build-aux/config.sub || \
   sed -i -e 's/-nacl\*)/-nacl*|-wasi)/' build-aux/config.sub
 
 if [ "x$1" = "x--bench" ]; then
