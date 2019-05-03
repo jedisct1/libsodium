@@ -11,7 +11,7 @@ export PREFIX="$(pwd)/libsodium-wasm32-wasi"
 mkdir -p $PREFIX || exit 1
 
 export CC="clang"
-export CFLAGS="-DED25519_NONDETERMINISTIC=1 --target=wasm32-unknkown-wasi --sysroot=${WASI_SYSROOT} -O2"
+export CFLAGS="-DED25519_NONDETERMINISTIC=1 --target=wasm32-wasi --sysroot=${WASI_SYSROOT} -O2"
 export LDFLAGS="-s -Wl,--no-threads"
 export NM="llvm-nm"
 export AR="llvm-ar"
@@ -36,7 +36,7 @@ fi
 
 ./configure ${LIBSODIUM_ENABLE_MINIMAL_FLAG} \
             --prefix="$PREFIX" --with-sysroot="$WASI_SYSROOT" \
-            --host=wasm32-unknown-wasi \
+            --host=wasm32-wasi \
             --disable-ssp --disable-shared || exit 1
 
 NPROCESSORS=$(getconf NPROCESSORS_ONLN 2>/dev/null || getconf _NPROCESSORS_ONLN 2>/dev/null)
