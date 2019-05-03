@@ -27,10 +27,22 @@ command -v automake >/dev/null 2>&1 || {
 }
 
 if autoreconf --version > /dev/null 2>&1 ; then
-  exec autoreconf -ivf
+  autoreconf -ivf
+else
+  $LIBTOOLIZE && \
+  aclocal && \
+  automake --add-missing --force-missing --include-deps && \
+  autoconf
 fi
 
-$LIBTOOLIZE && \
-aclocal && \
-automake --add-missing --force-missing --include-deps && \
-autoconf
+command -v curl >/dev/null 2>&1 && {
+  curl -sL -o config.guess \
+    'https://git.savannah.gnu.org/gitweb/?p=config.git;a=blob_plain;f=config.guess;hb=HEAD' &&
+    mv -f config.guess build-aux/config.guess
+
+  curl -sL -o config.sub \
+    'https://git.savannah.gnu.org/gitweb/?p=config.git;a=blob_plain;f=config.sub;hb=HEAD' &&
+    mv -f config.sub build-aux/config.sub
+}
+
+rm -f config.guess config.sub
