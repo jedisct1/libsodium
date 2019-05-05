@@ -2615,14 +2615,16 @@ ge25519_from_hash(unsigned char s[32], const unsigned char h[64])
     int           i;
     unsigned char x_sign;
 
-    x_sign = h[63] & 0x80;
-    memcpy(fl, &h[0], 32);
-    memcpy(gl, &h[32], 32);
+    x_sign = h[0] & 0x80;
+    for (i = 0; i < 32; i++) {
+        fl[i] = h[63 - i];
+        gl[i] = h[31 - i];
+    }
     fl[31] &= 0x7f;
     gl[31] &= 0x7f;
     fe25519_frombytes(fe_f, fl);
     fe25519_frombytes(fe_g, gl);
-    fe_f[0] += (h[0 + 31] >> 7) * 19;
+    fe_f[0] += (h[32] >> 7) * 19;
     for (i = 0; i < sizeof (fe25519) / sizeof fe_f[0]; i++) {
         fe_f[i] += 38 * fe_g[i];
     }
