@@ -8,7 +8,7 @@
 
 int
 crypto_scalarmult_ristretto255(unsigned char *q, const unsigned char *n,
-                                const unsigned char *p)
+                               const unsigned char *p)
 {
     unsigned char *t = q;
     ge25519_p3     Q;
@@ -49,6 +49,7 @@ crypto_scalarmult_ristretto255_base(unsigned char *q,
     }
     return 0;
 }
+
 size_t
 crypto_scalarmult_ristretto255_bytes(void)
 {
