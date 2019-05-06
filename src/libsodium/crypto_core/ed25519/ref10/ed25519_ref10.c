@@ -2612,7 +2612,7 @@ ge25519_from_hash(unsigned char s[32], const unsigned char h[64])
     unsigned char gl[32];
     fe25519       fe_f;
     fe25519       fe_g;
-    int           i;
+    size_t        i;
     unsigned char x_sign;
 
     x_sign = h[0] & 0x80;
