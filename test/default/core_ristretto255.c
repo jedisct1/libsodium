@@ -187,6 +187,17 @@ tv3(void)
         }
     }
 
+    crypto_core_ristretto255_random(s);
+    memset(s_, 0xfe, crypto_core_ristretto255_BYTES);
+    assert(crypto_core_ristretto255_add(s2, s_, s) == -1);
+    assert(crypto_core_ristretto255_add(s2, s, s_) == -1);
+    assert(crypto_core_ristretto255_add(s2, s_, s_) == -1);
+    assert(crypto_core_ristretto255_add(s2, s, s) == 0);
+    assert(crypto_core_ristretto255_sub(s2, s_, s) == -1);
+    assert(crypto_core_ristretto255_sub(s2, s, s_) == -1);
+    assert(crypto_core_ristretto255_sub(s2, s_, s_) == -1);
+    assert(crypto_core_ristretto255_sub(s2, s, s) == 0);
+
     sodium_free(s2);
     sodium_free(s_);
     sodium_free(s);
