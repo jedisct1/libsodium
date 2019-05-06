@@ -203,11 +203,13 @@ _sodium_runtime_intel_cpu_features(CPUFeatures * const cpu_features)
         unsigned int cpu_info7[4];
 
         _cpuid(cpu_info7, 0x00000007);
+        /* LCOV_EXCL_START */
         if ((cpu_info7[1] & CPUID_EBX_AVX512F) == CPUID_EBX_AVX512F &&
             (xcr0 & (XCR0_OPMASK | XCR0_ZMM_HI256 | XCR0_HI16_ZMM))
             == (XCR0_OPMASK | XCR0_ZMM_HI256 | XCR0_HI16_ZMM)) {
             cpu_features->has_avx512f = 1;
         }
+        /* LCOV_EXCL_STOP */
     }
 #endif
 
