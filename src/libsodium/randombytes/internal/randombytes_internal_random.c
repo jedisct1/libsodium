@@ -181,7 +181,7 @@ _randombytes_getentropy(void * const buf, const size_t size)
 {
     assert(size <= 256U);
     if (getentropy(buf, size) != 0) {
-        return -1;
+        return -1; /* LCOV_EXCL_LINE */
     }
     return 0;
 }
@@ -198,7 +198,7 @@ randombytes_getentropy(void * const buf_, size_t size)
             assert(chunk_size > (size_t) 0U);
         }
         if (_randombytes_getentropy(buf, chunk_size) != 0) {
-            return -1;
+            return -1; /* LCOV_EXCL_LINE */
         }
         size -= chunk_size;
         buf += chunk_size;
@@ -273,10 +273,10 @@ randombytes_block_on_dev_random(void)
 }
 #  endif
 
+/* LCOV_EXCL_START */
 static int
 randombytes_internal_random_random_dev_open(void)
 {
-    /* LCOV_EXCL_START */
     struct stat       st;
     static const char *devices[] = {
 #  ifndef USE_BLOCKING_RANDOM
@@ -310,8 +310,8 @@ randombytes_internal_random_random_dev_open(void)
 
     errno = EIO;
     return -1;
-    /* LCOV_EXCL_STOP */
 }
+/* LCOV_EXCL_STOP */
 
 static ssize_t
 safe_read(const int fd, void * const buf_, size_t size)
@@ -369,6 +369,7 @@ randombytes_internal_random_init(void)
         }
     }
 # endif
+/* LCOV_EXCL_START */
 # if !defined(NONEXISTENT_DEV_RANDOM)
     assert((global.getentropy_available | global.getrandom_available) == 0);
     if ((global.random_data_source_fd =
@@ -378,6 +379,7 @@ randombytes_internal_random_init(void)
     errno = errno_save;
     return;
 # endif
+/* LCOV_EXCL_STOP */
 # ifndef HAVE_SAFE_ARC4RANDOM
     sodium_misuse();
 # endif
