@@ -32,6 +32,10 @@ main(void)
         assert(memcmp(p, p2, crypto_scalarmult_ristretto255_BYTES) == 0);
         sodium_increment(n, crypto_scalarmult_ristretto255_SCALARBYTES);
     }
+
+    memset(p, 0xfe, crypto_scalarmult_ristretto255_BYTES);
+    assert(crypto_scalarmult_ristretto255(guard_page, n, p) == -1);
+
     sodium_free(hex);
     sodium_free(p2);
     sodium_free(p);

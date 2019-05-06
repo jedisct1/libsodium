@@ -167,6 +167,24 @@ tv3(void)
         if (crypto_scalarmult_ristretto255(s2, l, s2) == 0) {
             printf("s*l != inf (3)\n");
         }
+        if (crypto_core_ristretto255_add(s2, s, s_) != 0) {
+            printf("addition failed");
+        }
+        if (crypto_core_ristretto255_sub(s2, s2, s_) != 0) {
+            printf("substraction failed");
+        }
+        if (crypto_core_ristretto255_is_valid_point(s2) == 0) {
+            printf("invalid point");
+        }
+        if (memcmp(s, s2, crypto_core_ristretto255_BYTES) != 0) {
+            printf("s2 + s - s_ != s\n");
+        }
+        if (crypto_core_ristretto255_sub(s2, s2, s) != 0) {
+            printf("substraction failed");
+        }
+        if (crypto_core_ristretto255_is_valid_point(s2) == -1) {
+            printf("s + s' - s - s' != 0");
+        }
     }
 
     sodium_free(s2);

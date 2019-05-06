@@ -10,6 +10,7 @@
 #include "randombytes.h"
 #include "utils.h"
 
+/* LCOV_EXCL_START */
 int
 crypto_sign_edwards25519sha512batch_keypair(unsigned char *pk,
                                             unsigned char *sk)
@@ -114,3 +115,4 @@ crypto_sign_edwards25519sha512batch_open(unsigned char       *m,
 
     return 0;
 }
+/* LCOV_EXCL_END */

@@ -83,6 +83,18 @@ main(void)
     if (memcmp(q, q2, crypto_scalarmult_ed25519_BYTES) == 0) {
         printf("clamping not applied\n");
     }
+
+    n[0] = 9;
+    if (crypto_scalarmult_ed25519_base(q, n) != 0) {
+        printf("crypto_scalarmult_ed25519_base() failed\n");
+    }
+    if (crypto_scalarmult_ed25519_base_noclamp(q2, n) != 0) {
+        printf("crypto_scalarmult_ed25519_base_noclamp() failed\n");
+    }
+    if (memcmp(q, q2, crypto_scalarmult_ed25519_BYTES) == 0) {
+        printf("clamping not applied\n");
+    }
+
     n[0] = 8;
     n[31] = 64;
     if (crypto_scalarmult_ed25519_noclamp(q2, n, p) != 0) {
