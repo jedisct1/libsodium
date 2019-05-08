@@ -2,6 +2,7 @@
 #define crypto_shorthash_siphash24_H
 
 #include <stddef.h>
+#include <stdint.h>
 #include "export.h"
 
 #ifdef __cplusplus
@@ -10,6 +11,16 @@
 # endif
 extern "C" {
 #endif
+
+typedef struct CRYPTO_ALIGN(16) crypto_shorthash_siphash24_state {
+    uint64_t       v0;
+    uint64_t       v1;
+    uint64_t       v2;
+    uint64_t       v3;
+    uint64_t       m;
+    uint8_t        m_shift;
+    uint8_t        len;
+} crypto_shorthash_siphash24_state;
 
 /* -- 64-bit output -- */
 
@@ -24,6 +35,19 @@ size_t crypto_shorthash_siphash24_keybytes(void);
 SODIUM_EXPORT
 int crypto_shorthash_siphash24(unsigned char *out, const unsigned char *in,
                                unsigned long long inlen, const unsigned char *k);
+
+SODIUM_EXPORT
+int crypto_shorthash_siphash24_init(crypto_shorthash_siphash24_state *state,
+                                    const unsigned char *k);
+
+SODIUM_EXPORT
+int crypto_shorthash_siphash24_update(crypto_shorthash_siphash24_state *state,
+                                      const unsigned char *in,
+                                      unsigned long long inlen);
+
+SODIUM_EXPORT
+int crypto_shorthash_siphash24_final(crypto_shorthash_siphash24_state *state,
+                                     unsigned char *out);
 
 #ifndef SODIUM_LIBRARY_MINIMAL
 /* -- 128-bit output -- */

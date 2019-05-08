@@ -9,9 +9,12 @@ main(void)
 {
     unsigned char in[MAXLEN];
     unsigned char out[crypto_shorthash_BYTES];
+    unsigned char out_incr[crypto_shorthash_BYTES];
     unsigned char k[crypto_shorthash_KEYBYTES];
     size_t        i;
     size_t        j;
+    size_t        half_i;
+    crypto_shorthash_state state;
 
     for (i = 0; i < crypto_shorthash_KEYBYTES; ++i) {
         k[i] = (unsigned char) i;
@@ -23,6 +26,14 @@ main(void)
             printf("%02x", (unsigned int) out[j]);
         }
         printf("\n");
+
+        /* Check that the incremental mode gives same result. */
+        crypto_shorthash_init(&state, k);
+        half_i = i/2;
+        crypto_shorthash_update(&state, in, (unsigned long long) half_i);
+        crypto_shorthash_update(&state, in+half_i, (unsigned long long) (i - half_i));
+        crypto_shorthash_final(&state, out_incr);
+        assert(memcmp(out, out_incr, crypto_shorthash_BYTES) == 0);
     }
     assert(crypto_shorthash_bytes() > 0);
     assert(crypto_shorthash_keybytes() > 0);
