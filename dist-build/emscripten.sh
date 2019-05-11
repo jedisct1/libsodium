@@ -99,6 +99,12 @@ if [ "$DIST" = yes ]; then
     Module.ready = new Promise(function(resolve, reject) {
       var Module = _Module;
       Module.onAbort = reject;
+      Module.print = function(what) {
+        console.log(what);
+      }
+      Module.printErr = function(what) {
+        console.warn(what);
+      }
       Module.onRuntimeInitialized = function() {
         try {
           /* Test arbitrary wasm function */
