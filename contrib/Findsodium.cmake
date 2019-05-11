@@ -21,6 +21,7 @@
 #   sodium_INCLUDE_DIR
 #   sodium_LIBRARY_DEBUG
 #   sodium_LIBRARY_RELEASE
+#   sodium_VERSION
 #
 #
 # Furthermore an imported "sodium" target is created.
@@ -213,12 +214,12 @@ endif()
 
 # extract sodium version
 if (sodium_INCLUDE_DIR)
-    set(_VERSION_HEADER "${_INCLUDE_DIR}/sodium/version.h")
-    if (EXISTS _VERSION_HEADER)
+    set(_VERSION_HEADER "${sodium_INCLUDE_DIR}/sodium/version.h")
+    if (EXISTS "${_VERSION_HEADER}")
         file(READ "${_VERSION_HEADER}" _VERSION_HEADER_CONTENT)
         string(REGEX REPLACE ".*#[ \t]*define[ \t]*SODIUM_VERSION_STRING[ \t]*\"([^\n]*)\".*" "\\1"
-            sodium_VERSION "${_VERSION_HEADER_CONTENT}")
-        set(sodium_VERSION "${sodium_VERSION}" PARENT_SCOPE)
+                sodium_VERSION "${_VERSION_HEADER_CONTENT}")
+        set(sodium_VERSION "${sodium_VERSION}")
     endif()
 endif()
 
