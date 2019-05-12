@@ -100,10 +100,14 @@ if [ "$DIST" = yes ]; then
       var Module = _Module;
       Module.onAbort = reject;
       Module.print = function(what) {
-        console.log(what);
+        if (console != null) {
+          console.log(what);
+        }
       }
       Module.printErr = function(what) {
-        console.warn(what);
+        if (console != null) {
+          console.warn(what);
+        }
       }
       Module.onRuntimeInitialized = function() {
         try {
