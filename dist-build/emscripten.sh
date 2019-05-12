@@ -100,12 +100,12 @@ if [ "$DIST" = yes ]; then
       var Module = _Module;
       Module.onAbort = reject;
       Module.print = function(what) {
-        if (console != null) {
+        if (typeof(console) !== 'undefined') {
           console.log(what);
         }
       }
       Module.printErr = function(what) {
-        if (console != null) {
+        if (typeof(console) !== 'undefined') {
           console.warn(what);
         }
       }
