@@ -1,6 +1,6 @@
 #! /bin/sh
 
-if glibtoolize --version > /dev/null 2>&1; then
+if glibtoolize --version >/dev/null 2>&1; then
   LIBTOOLIZE='glibtoolize'
 else
   LIBTOOLIZE='libtoolize'
@@ -26,16 +26,19 @@ command -v automake >/dev/null 2>&1 || {
   exit 1
 }
 
-if autoreconf --version > /dev/null 2>&1 ; then
+if autoreconf --version >/dev/null 2>&1; then
   autoreconf -ivf
 else
-  $LIBTOOLIZE && \
-  aclocal && \
-  automake --add-missing --force-missing --include-deps && \
-  autoconf
+  $LIBTOOLIZE &&
+    aclocal &&
+    automake --add-missing --force-missing --include-deps &&
+    autoconf
 fi
 
-command -v curl >/dev/null 2>&1 && {
+[ -z "$DO_NOT_UPDATE_CONFIG_SCRIPTS" ] &&
+  command -v curl >/dev/null 2>&1 && {
+  echo "Downloading config.guess and config.sub..."
+
   curl -sL -o config.guess \
     'https://git.savannah.gnu.org/gitweb/?p=config.git;a=blob_plain;f=config.guess;hb=HEAD' &&
     mv -f config.guess build-aux/config.guess
@@ -43,6 +46,8 @@ command -v curl >/dev/null 2>&1 && {
   curl -sL -o config.sub \
     'https://git.savannah.gnu.org/gitweb/?p=config.git;a=blob_plain;f=config.sub;hb=HEAD' &&
     mv -f config.sub build-aux/config.sub
+
+  echo "Done."
 }
 
 rm -f config.guess config.sub
