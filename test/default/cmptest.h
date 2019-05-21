@@ -23,8 +23,8 @@
 #include "sodium.h"
 #include "quirks.h"
 
-#ifndef TOTAL_MEMORY_TESTS
-# define TOTAL_MEMORY_TESTS 16777216
+#ifndef MAX_MEMORY_TESTS
+# define MAX_MEMORY_TESTS 67108864
 #endif
 
 #ifdef __EMSCRIPTEN__
@@ -54,7 +54,7 @@ static int set_resource_limits(void)
 #if defined(RLIM_INFINITY) && defined(HAVE_SETRLIMIT)
     struct rlimit limits;
 
-    limits.rlim_cur = limits.rlim_max = TOTAL_MEMORY_TESTS;
+    limits.rlim_cur = limits.rlim_max = MAX_MEMORY_TESTS;
 # ifdef RLIMIT_AS
     res |= setrlimit(RLIMIT_AS, &limits);
 # endif

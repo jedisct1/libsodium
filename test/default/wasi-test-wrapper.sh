@@ -1,6 +1,6 @@
 #! /bin/sh
 
-MAX_MEMORY_MB="128"
+MAX_MEMORY_TESTS_MB="64"
 
 if [ -z "$WASI_RUNTIME" ] || [ "$WASI_RUNTIME" = "wasmtime" ]; then
   if command -v wasmtime >/dev/null; then
@@ -11,9 +11,9 @@ fi
 if [ -z "$WASI_RUNTIME" ] || [ "$WASI_RUNTIME" = "lucet" ]; then
   if command -v lucetc-wasi >/dev/null && command -v lucet-wasi >/dev/null; then
     lucetc-wasi \
-      --reserved-size "${MAX_MEMORY_MB}MiB" \
+      --reserved-size "${MAX_MEMORY_TESTS_MB}MiB" \
       -o "${1}.so" --opt-level best "$1" &&
-      lucet-wasi --dir=.:. --max-heap-size "${MAX_MEMORY_MB}MiB" "${1}.so" &&
+      lucet-wasi --dir=.:. --max-heap-size "${MAX_MEMORY_TESTS_MB}MiB" "${1}.so" &&
       rm -f "${1}.so" && exit 0
   fi
 fi
