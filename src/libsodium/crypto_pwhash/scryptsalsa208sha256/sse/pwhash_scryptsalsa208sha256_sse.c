@@ -317,6 +317,10 @@ escrypt_kdf_sse(escrypt_local_t *local, const uint8_t *passwd, size_t passwdlen,
     uint32_t  i;
 
 /* Sanity-check parameters. */
+    if (r == 0 || p == 0) {
+        errno = EINVAL;
+        return -1;
+    }
 # if SIZE_MAX > UINT32_MAX
 /* LCOV_EXCL_START */
     if (buflen > (((uint64_t)(1) << 32) - 1) * 32) {
