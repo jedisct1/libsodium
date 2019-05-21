@@ -76,7 +76,7 @@ _crypto_sign_ed25519_detached(unsigned char *sig, unsigned long long *siglen_p,
 
     crypto_hash_sha512(az, sk, 32);
 #ifdef ED25519_NONDETERMINISTIC
-    _crypto_sign_ed25519_synthetic_r_hv(&hs, nonce, az);
+    _crypto_sign_ed25519_synthetic_r_hv(&hs, nonce /* Z */, az);
 #else
     crypto_hash_sha512_update(&hs, az + 32, 32);
 #endif
