@@ -2,6 +2,10 @@
 #define TEST_NAME "pwhash_scrypt"
 #include "cmptest.h"
 
+#ifdef HAVE_SYS_RESOURCE_H
+#include <sys/resource.h>
+#endif
+
 #define OUT_LEN 128
 #define OPSLIMIT 1000000
 #define MEMLIMIT 10000000
@@ -278,6 +282,20 @@ tv3(void)
     char * passwd;
     size_t i = 0U;
 
+#ifdef HAVE_SYS_RESOURCE_H
+    struct rlimit rlim;
+    int rlimit_get = -1, rlimit_set = -1;
+    rlim_t rlimit_backup;
+
+    if (rlimit_get = getrlimit(RLIMIT_AS, &rlim) == 0) {
+        if (rlim.rlim_cur > 2*MEMLIMIT) {
+            rlimit_backup = rlim.rlim_cur;
+            rlim.rlim_cur = 2*MEMLIMIT;
+            rlimit_set = setrlimit(RLIMIT_AS, &rlim);
+        }
+    }
+#endif
+
     do {
         out = (char *) sodium_malloc(strlen(tests[i].out) + 1U);
         assert(out != NULL);
@@ -292,6 +310,13 @@ tv3(void)
         sodium_free(out);
         sodium_free(passwd);
     } while (++i < (sizeof tests) / (sizeof tests[0]));
+
+#ifdef HAVE_SYS_RESOURCE_H
+    if (rlimit_get == 0 && rlimit_set == 0) {
+        rlim.rlim_cur = rlimit_backup;
+        setrlimit(RLIMIT_AS, &rlim);
+    }
+#endif
 }
 
 static void
