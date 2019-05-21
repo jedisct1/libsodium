@@ -14,8 +14,18 @@
 #include <stdlib.h>
 #include <string.h>
 
+#if defined(HAVE_SYS_RESOURCE_H) && defined(HAVE_SETRLIMIT)
+# include <sys/types.h>
+# include <sys/time.h>
+# include <sys/resource.h>
+#endif
+
 #include "sodium.h"
 #include "quirks.h"
+
+#ifndef TOTAL_MEMORY_TESTS
+# define TOTAL_MEMORY_TESTS 16777216
+#endif
 
 #ifdef __EMSCRIPTEN__
 # undef TEST_SRCDIR
@@ -36,6 +46,25 @@
 int xmain(void);
 
 static unsigned char *guard_page;
+
+static int set_resource_limits(void)
+{
+    int res = 0;
+
+#if defined(RLIM_INFINITY) && defined(HAVE_SETRLIMIT)
+    struct rlimit limits;
+
+    limits.rlim_cur = limits.rlim_max = TOTAL_MEMORY_TESTS;
+# ifdef RLIMIT_AS
+    res |= setrlimit(RLIMIT_AS, &limits);
+# endif
+# ifdef RLIMIT_DATA
+    res |= setrlimit(RLIMIT_DATA, &limits);
+# endif
+#endif
+
+    return res;
+}
 
 #ifdef BENCHMARKS
 
@@ -136,6 +165,8 @@ int main(void)
     unsigned long long ts_end;
     unsigned int       i;
 
+    (void) set_resource_limits();
+
     if (sodium_init() != 0) {
         return 99;
     }
@@ -170,6 +201,8 @@ int main(void)
     FILE          *fp_out;
     unsigned char *_guard_page;
     int           c;
+
+    (void) set_resource_limits();
 
     if ((fp_res = fopen(TEST_NAME_RES, "w+")) == NULL) {
         perror("fopen(" TEST_NAME_RES ")");
