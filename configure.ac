@@ -554,7 +554,7 @@ AC_SUBST(CFLAGS_AESNI)
 AC_SUBST(CFLAGS_PCLMUL)
 AC_SUBST(CFLAGS_RDRAND)
 
-AC_CHECK_HEADERS([sys/mman.h sys/random.h sys/resource.h intrin.h])
+AC_CHECK_HEADERS([sys/mman.h sys/random.h intrin.h])
 
 AC_MSG_CHECKING([if _xgetbv() is available])
 AC_LINK_IFELSE(
@@ -796,7 +796,6 @@ AC_FUNC_ALLOCA
 AS_IF([test "x$EMSCRIPTEN" = "x"],[
   AC_CHECK_FUNCS([arc4random arc4random_buf])
   AC_CHECK_FUNCS([mmap mlock madvise mprotect])
-  AC_CHECK_FUNCS([setrlimit])
 
   AC_MSG_CHECKING(for getrandom with a standard API)
   AC_LINK_IFELSE([AC_LANG_PROGRAM([[
