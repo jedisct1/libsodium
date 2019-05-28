@@ -1,19 +1,44 @@
 @ECHO OFF
 REM Usage: [buildbase.bat ..\vs2019\mysolution.sln 16]
 
+SETLOCAL enabledelayedexpansion
+
 SET solution=%1
 SET version=%2
 SET log=build_%version%.log
 SET tools=Microsoft Visual Studio %version%.0\VC\vcvarsall.bat
-IF %version% == 16 SET tools=Microsoft Visual Studio\2019\Community\VC\Auxiliary\Build\vcvarsall.bat
-IF %version% == 15 SET tools=Microsoft Visual Studio\2017\Community\VC\Auxiliary\Build\vcvarsall.bat
-SET environment="%programfiles(x86)%\%tools%"
-IF NOT EXIST %environment% SET environment="%programfiles%\%tools%"
-IF NOT EXIST %environment% GOTO no_tools
+
+IF %version% == 16 (
+  SET tools=Microsoft Visual Studio\2019\Enterprise\VC\Auxiliary\Build\vcvarsall.bat
+  SET environment="%programfiles%\!tools!"
+  IF NOT EXIST !environment! (
+    SET environment="%programfiles(x86)%\!tools!"
+    IF NOT EXIST !environment! (
+      SET tools=Microsoft Visual Studio\2019\Community\VC\Auxiliary\Build\vcvarsall.bat
+    )
+  )
+)
+
+IF %version% == 15 (
+  SET tools=Microsoft Visual Studio\2017\Enterprise\VC\Auxiliary\Build\vcvarsall.bat
+  SET environment="%programfiles%\!tools!"
+  IF NOT EXIST !environment! (
+    SET environment="%programfiles(x86)%\!tools!"
+    IF NOT EXIST !environment! (
+      SET tools=Microsoft Visual Studio\2017\Community\VC\Auxiliary\Build\vcvarsall.bat
+    )
+  )
+)
+SET environment="%programfiles%\!tools!"
+IF NOT EXIST !environment! SET environment="%programfiles(x86)%\!tools!"
+
+ECHO Environment: !environment!
+
+IF NOT EXIST !environment! GOTO no_tools
 
 ECHO Building: %solution%
 
-CALL %environment% x86 > nul
+CALL !environment! x86 > nul
 ECHO Platform=x86
 
 ECHO Configuration=DynDebug
@@ -35,7 +60,7 @@ ECHO Configuration=StaticRelease
 msbuild /m /v:n /p:Configuration=StaticRelease /p:Platform=Win32 %solution% >> %log%
 IF errorlevel 1 GOTO error
 
-CALL %environment% x86_amd64 > nul
+CALL !environment! x86_amd64 > nul
 ECHO Platform=x64
 
 ECHO Configuration=DynDebug
@@ -65,7 +90,7 @@ ECHO *** ERROR, build terminated early, see: %log%
 GOTO end
 
 :no_tools
-ECHO *** ERROR, build tools not found: %tools%
+ECHO *** ERROR, build tools not found: !tools!
 
 :end
 
