@@ -2,7 +2,7 @@
 # Configuration validation subroutine script.
 #   Copyright 1992-2019 Free Software Foundation, Inc.
 
-timestamp='2019-01-05'
+timestamp='2019-05-23'
 
 # This file is free software; you can redistribute it and/or modify it
 # under the terms of the GNU General Public License as published by
@@ -1172,7 +1172,7 @@ case $cpu-$vendor in
 			| asmjs \
 			| ba \
 			| be32 | be64 \
-			| bfin | bs2000 \
+			| bfin | bpf | bs2000 \
 			| c[123]* | c30 | [cjt]90 | c4x \
 			| c8051 | clipper | craynv | csky | cydra \
 			| d10v | d30v | dlx | dsp16xx \
