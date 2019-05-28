@@ -16,7 +16,7 @@ jobs:
           mkdir bin\include\sodium
           Copy-Item "src\libsodium\include\sodium\*.h" -Destination "bin\include\sodium" -Recurse
           Copy-Item "src\libsodium\include\*.h" -Destination "bin\include\"
-        displayName: Copy header files        
+        displayName: Copy header files
       - task: PublishBuildArtifacts@1
         inputs:
           pathToPublish: bin
@@ -50,26 +50,3 @@ jobs:
         inputs:
           pathToPublish: bin
           artifactName: libsodium
-
-  - job: "package"
-    dependsOn:
-      - windows
-      - windows_old
-      - windows_reallyold
-    pool:
-      vmImage: "windows-2019"
-    steps:
-      - powershell: |
-          cd $(Build.ArtifactStagingDirectory)
-          & ls
-        displayName: Checking the staged files
-      - powershell: |
-          Set-ExecutionPolicy Bypass -Scope Process -Force; iex ((New-Object System.Net.WebClient).DownloadString('https://chocolatey.org/install.ps1'))
-        displayName: Install chocolatey
-      - powershell: |
-          $Env:Path += ";C:\ProgramData\chocolatey\bin"
-          choco install -y 7zip
-        displayName: Install 7zip
-      - powershell: |
-          "C:\Program Files\7-Zip\7za.exe" a -mx=9 libsodium-msvc.zip *
-        displayName: Create archive
