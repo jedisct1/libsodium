@@ -16,8 +16,7 @@ environment:
 matrix:
   fast_finish: false
 
-init:
-  msbuild /version
+init: msbuild /version
 
 build:
   parallel: true
