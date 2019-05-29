@@ -70,17 +70,10 @@ jobs:
         displayName: Update MSYS2
       - script: |
           set PATH=%CD:~0,2%\msys64\usr\bin;C:\Windows\system32;C:\Windows;C:\Windows\System32\Wbem
-          %CD:~0,2%\msys64\usr\bin\pacman --noconfirm --needed -S base-devel libtool mingw-w64-x86_64-toolchain
+          %CD:~0,2%\msys64\usr\bin\pacman --noconfirm --needed -S base-devel mingw-w64-x86_64-toolchain
           %CD:~0,2%\msys64\usr\bin\pacman --noconfirm -Scc
           %CD:~0,2%\msys64\usr\bin\sed -i "s|#CacheDir.*|CacheDir=/c/Users/%USERNAME%/AppData/Local/Temp|g" /etc/pacman.conf
         displayName: Install Toolchain
-      - script: |
-          condition: and(succeeded(), eq(variables['Build.SourceBranch'], 'refs/heads/master'))
-          set PATH=C:\Windows\system32;C:\Windows;C:\Windows\System32\Wbem;%CD:~0,2%\msys64\usr\bin;%CD:~0,2%\msys64\bin
-          set MSYS2_ROOT=%CD:~0,2%\msys64
-          set MSYSTEM=MINGW64
-          %MSYS2_ROOT%\cmd\msystem MINGW64
-          %CD:~0,2%\msys64\usr\bin\bash -lc ./autogen.sh
       - script: |
           set PATH=C:\Windows\system32;C:\Windows;C:\Windows\System32\Wbem;%CD:~0,2%\msys64\usr\bin;%CD:~0,2%\msys64\bin
           set MSYS2_ROOT=%CD:~0,2%\msys64
@@ -112,17 +105,10 @@ jobs:
         displayName: Update MSYS2
       - script: |
           set PATH=%CD:~0,2%\msys64\usr\bin;C:\Windows\system32;C:\Windows;C:\Windows\System32\Wbem
-          %CD:~0,2%\msys64\usr\bin\pacman --noconfirm --needed -S base-devel libtool mingw-w64-i686-toolchain
+          %CD:~0,2%\msys64\usr\bin\pacman --noconfirm --needed -S base-devel mingw-w64-i686-toolchain
           %CD:~0,2%\msys64\usr\bin\pacman --noconfirm -Scc
           %CD:~0,2%\msys64\usr\bin\sed -i "s|#CacheDir.*|CacheDir=/c/Users/%USERNAME%/AppData/Local/Temp|g" /etc/pacman.conf
         displayName: Install Toolchain
-      - script: |
-          condition: and(succeeded(), eq(variables['Build.SourceBranch'], 'refs/heads/master'))
-          set PATH=C:\Windows\system32;C:\Windows;C:\Windows\System32\Wbem;%CD:~0,2%\msys64\usr\bin;%CD:~0,2%\msys64\bin
-          set MSYS2_ROOT=%CD:~0,2%\msys64
-          set MSYSTEM=MINGW32
-          %MSYS2_ROOT%\cmd\msystem MINGW32
-          %CD:~0,2%\msys64\usr\bin\bash -lc ./autogen.sh
       - script: |
           set PATH=C:\Windows\system32;C:\Windows;C:\Windows\System32\Wbem;%CD:~0,2%\msys64\usr\bin;%CD:~0,2%\msys64\bin
           set MSYS2_ROOT=%CD:~0,2%\msys64
