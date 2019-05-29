@@ -55,7 +55,7 @@ jobs:
           pathToPublish: bin
           artifactName: libsodium
 
-  - job: mingw
+  - job: mingw64
     pool:
       vmImage: "windows-2019"
     steps:
@@ -70,16 +70,20 @@ jobs:
         displayName: Update MSYS2
       - script: |
           set PATH=%CD:~0,2%\msys64\usr\bin;C:\Windows\system32;C:\Windows;C:\Windows\System32\Wbem
-          %CD:~0,2%\msys64\usr\bin\pacman --noconfirm --needed -S base-devel mingw-w64-i686-toolchain mingw-w64-x86_64-toolchain
+          %CD:~0,2%\msys64\usr\bin\pacman --noconfirm --needed -S base-devel libtool mingw-w64-x86_64-toolchain
           %CD:~0,2%\msys64\usr\bin\pacman --noconfirm -Scc
+          %CD:~0,2%\msys64\usr\bin\sed -i "s|#CacheDir.*|CacheDir=/c/Users/%USERNAME%/AppData/Local/Temp|g" /etc/pacman.conf
         displayName: Install Toolchain
+      - script: |
+          condition: and(succeeded(), eq(variables['Build.SourceBranch'], 'refs/heads/master'))
+          set PATH=C:\Windows\system32;C:\Windows;C:\Windows\System32\Wbem;%CD:~0,2%\msys64\usr\bin;%CD:~0,2%\msys64\bin
+          set MSYS2_ROOT=%CD:~0,2%\msys64
+          set MSYSTEM=MINGW64
+          %MSYS2_ROOT%\cmd\msystem MINGW64
+          %CD:~0,2%\msys64\usr\bin\bash -lc ./autogen.sh
       - script: |
           set PATH=C:\Windows\system32;C:\Windows;C:\Windows\System32\Wbem;%CD:~0,2%\msys64\usr\bin;%CD:~0,2%\msys64\bin
           set MSYS2_ROOT=%CD:~0,2%\msys64
-          %CD:~0,2%\msys64\usr\bin\sed -i "s|#CacheDir.*|CacheDir=/c/Users/%USERNAME%/AppData/Local/Temp|g" /etc/pacman.conf
-          set MSYSTEM=MINGW32
-          %MSYS2_ROOT%\cmd\msystem MINGW32
-          %CD:~0,2%\msys64\usr\bin\bash -lc dist-build/msys2-win32.sh
           set MSYSTEM=MINGW64
           %MSYS2_ROOT%\cmd\msystem MINGW64
           %CD:~0,2%\msys64\usr\bin\bash -lc dist-build/msys2-win64.sh
@@ -90,10 +94,47 @@ jobs:
       - task: PublishBuildArtifacts@1
         condition: not(canceled())
         inputs:
-          pathToPublish: libsodium-win32
-          artifactName: libsodium-mingw32
+          pathToPublish: libsodium-win64
+          artifactName: libsodium-mingw64
+
+  - job: mingw32
+    pool:
+      vmImage: "windows-2019"
+    steps:
+      - script: |
+          git clone https://github.com/msys2/msys2-ci-base.git %CD:~0,2%\msys64
+          %CD:~0,2%\msys64\usr\bin\rm -rf %CD:~0,2%\msys64\.git
+        displayName: Install MSYS2
+      - script: |
+          set PATH=%CD:~0,2%\msys64\usr\bin;C:\Windows\system32;C:\Windows;C:\Windows\System32\Wbem
+          %CD:~0,2%\msys64\usr\bin\pacman --noconfirm -Syyuu
+          %CD:~0,2%\msys64\usr\bin\pacman --noconfirm -Syuu
+        displayName: Update MSYS2
+      - script: |
+          set PATH=%CD:~0,2%\msys64\usr\bin;C:\Windows\system32;C:\Windows;C:\Windows\System32\Wbem
+          %CD:~0,2%\msys64\usr\bin\pacman --noconfirm --needed -S base-devel libtool mingw-w64-i686-toolchain
+          %CD:~0,2%\msys64\usr\bin\pacman --noconfirm -Scc
+          %CD:~0,2%\msys64\usr\bin\sed -i "s|#CacheDir.*|CacheDir=/c/Users/%USERNAME%/AppData/Local/Temp|g" /etc/pacman.conf
+        displayName: Install Toolchain
+      - script: |
+          condition: and(succeeded(), eq(variables['Build.SourceBranch'], 'refs/heads/master'))
+          set PATH=C:\Windows\system32;C:\Windows;C:\Windows\System32\Wbem;%CD:~0,2%\msys64\usr\bin;%CD:~0,2%\msys64\bin
+          set MSYS2_ROOT=%CD:~0,2%\msys64
+          set MSYSTEM=MINGW32
+          %MSYS2_ROOT%\cmd\msystem MINGW32
+          %CD:~0,2%\msys64\usr\bin\bash -lc ./autogen.sh
+      - script: |
+          set PATH=C:\Windows\system32;C:\Windows;C:\Windows\System32\Wbem;%CD:~0,2%\msys64\usr\bin;%CD:~0,2%\msys64\bin
+          set MSYS2_ROOT=%CD:~0,2%\msys64
+          set MSYSTEM=MINGW32
+          %MSYS2_ROOT%\cmd\msystem MINGW32
+          %CD:~0,2%\msys64\usr\bin\bash -lc dist-build/msys2-win32.sh
+        env:
+          CHERE_INVOKING: yes
+          MSYS2_ARCH: x86_64
+        displayName: Compile libsodium
       - task: PublishBuildArtifacts@1
         condition: not(canceled())
         inputs:
-          pathToPublish: libsodium-win64
-          artifactName: libsodium-mingw64
+          pathToPublish: libsodium-win32
+          artifactName: libsodium-mingw32
