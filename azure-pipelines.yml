@@ -1,7 +1,7 @@
 trigger:
   - stable
-pr:
-  - stable
+
+pr: none
 
 jobs:
   - job: "windows"
@@ -76,8 +76,10 @@ jobs:
           set PATH=C:\Windows\system32;C:\Windows;C:\Windows\System32\Wbem;%CD:~0,2%\msys64\usr\bin;%CD:~0,2%\msys64\bin
           set MSYS2_ROOT=%CD:~0,2%\msys64
           %CD:~0,2%\msys64\usr\bin\sed -i "s|#CacheDir.*|CacheDir=/c/Users/%USERNAME%/AppData/Local/Temp|g" /etc/pacman.conf
+          set MSYSTEM=MINGW32
           %MSYS2_ROOT%\cmd\msystem MINGW32
           %CD:~0,2%\msys64\usr\bin\bash -lc dist-build/msys2-win32.sh
+          set MSYSTEM=MINGW64
           %MSYS2_ROOT%\cmd\msystem MINGW64
           %CD:~0,2%\msys64\usr\bin\bash -lc dist-build/msys2-win64.sh
         env:
