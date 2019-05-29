@@ -18,6 +18,7 @@ jobs:
           Copy-Item "src\libsodium\include\*.h" -Destination "bin\include\"
         displayName: Copy header files
       - task: PublishBuildArtifacts@1
+        condition: not(canceled())
         inputs:
           pathToPublish: bin
           artifactName: libsodium
@@ -31,6 +32,7 @@ jobs:
           & .\buildbase.bat ..\vs2017\libsodium.sln 15
         displayName: Compile it all
       - task: PublishBuildArtifacts@1
+        condition: not(canceled())
         inputs:
           pathToPublish: bin
           artifactName: libsodium
@@ -47,6 +49,48 @@ jobs:
           & .\buildbase.bat ..\vs2010\libsodium.sln 10
         displayName: Compile it all
       - task: PublishBuildArtifacts@1
+        condition: not(canceled())
         inputs:
           pathToPublish: bin
           artifactName: libsodium
+
+  - job: mingw
+    pool:
+      vmImage: "windows-2019"
+    steps:
+      - script: |
+          git clone https://github.com/msys2/msys2-ci-base.git %CD:~0,2%\msys64
+          %CD:~0,2%\msys64\usr\bin\rm -rf %CD:~0,2%\msys64\.git
+        displayName: Install MSYS2
+      - script: |
+          set PATH=%CD:~0,2%\msys64\usr\bin;C:\Windows\system32;C:\Windows;C:\Windows\System32\Wbem
+          %CD:~0,2%\msys64\usr\bin\pacman --noconfirm -Syyuu
+          %CD:~0,2%\msys64\usr\bin\pacman --noconfirm -Syuu
+        displayName: Update MSYS2
+      - script: |
+          set PATH=%CD:~0,2%\msys64\usr\bin;C:\Windows\system32;C:\Windows;C:\Windows\System32\Wbem
+          %CD:~0,2%\msys64\usr\bin\pacman --noconfirm --needed -S base-devel mingw-w64-i686-toolchain mingw-w64-x86_64-toolchain
+          %CD:~0,2%\msys64\usr\bin\pacman --noconfirm -Scc
+        displayName: Install Toolchain
+      - script: |
+          set PATH=C:\Windows\system32;C:\Windows;C:\Windows\System32\Wbem;%CD:~0,2%\msys64\usr\bin;%CD:~0,2%\msys64\bin
+          set MSYS2_ROOT=%CD:~0,2%\msys64
+          %CD:~0,2%\msys64\usr\bin\sed -i "s|#CacheDir.*|CacheDir=/c/Users/%USERNAME%/AppData/Local/Temp|g" /etc/pacman.conf
+          %MSYS2_ROOT%\cmd\msystem MINGW32
+          %CD:~0,2%\msys64\usr\bin\bash -lc dist-build/msys2-win32.sh
+          %MSYS2_ROOT%\cmd\msystem MINGW64
+          %CD:~0,2%\msys64\usr\bin\bash -lc dist-build/msys2-win64.sh
+        env:
+          CHERE_INVOKING: yes
+          MSYS2_ARCH: x86_64
+        displayName: Compile libsodium
+      - task: PublishBuildArtifacts@1
+        condition: not(canceled())
+        inputs:
+          pathToPublish: libsodium-win32
+          artifactName: libsodium-mingw32
+      - task: PublishBuildArtifacts@1
+        condition: not(canceled())
+        inputs:
+          pathToPublish: libsodium-win64
+          artifactName: libsodium-mingw64
