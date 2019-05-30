@@ -5,6 +5,33 @@ trigger:
 pr: none
 
 jobs:
+  - job: "wasi"
+    pool:
+      vmImage: "ubuntu-16.04"
+    steps:
+      - script: |
+          sudo apt-get install build-essential curl cmake
+        displayName: Install system packages
+      - script: |
+          curl https://sh.rustup.rs -sSf | sh -s -- -y
+          source ${HOME}/.cargo/env
+          git clone --recursive https://github.com/wasmerio/wasmer.git
+          (cd wasmer && cargo install --path .)
+        displayName: Install wasmer
+      - script: |
+          curl -sL -o wasi-sdk.deb https://github.com/CraneStation/wasi-sdk/releases/download/wasi-sdk-5/wasi-sdk_5.0_amd64.deb
+          sudo dpkg -i wasi-sdk.deb && rm -f wasi-sdk.deb
+          sudo ln -s /opt/wasi-sdk/share/*sysroot* /opt/wasi-sysroot
+        displayName: Install the WASI SDK
+      - script: |
+          env PATH=/opt/wasi-sdk/bin:${HOME}/.cargo/bin:$PATH dist-build/wasm32-wasi.sh
+        displayName: Compile libsodium
+      - task: PublishBuildArtifacts@1
+        condition: not(canceled())
+        inputs:
+          pathToPublish: libsodium-wasm32-wasi
+          artifactName: libsodium-wasm32-wasi
+
   - job: "windows"
     pool:
       vmImage: "windows-2019"
