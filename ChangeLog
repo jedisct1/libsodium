@@ -1,4 +1,33 @@
 
+* Version 1.0.18
+ - The Enterprise versions of Visual Studio are now supported.
+ - Visual Studio 2019 is now supported.
+ - 32-bit binaries for Visual Studio 2010 are now provided.
+ - A test that didn't work properly on Linux systems with overcommit
+memory turned on has been removed. This fixes Ansible builds.
+ - Emscripten: `print` and `printErr` functions are overridden to send
+errors to the console, if there is one.
+ - Emscripten: `UTF8ToString()` is now exported since `Pointer_stringify()`
+has been deprecated.
+ - Libsodium version detection has been fixed in the CMake recipe.
+ - Generic hashing got a 10% speedup on AVX2.
+ - New target: WebAssembly/WASI (compile with `dist-builds/wasm32-wasi.sh`).
+ - New functions to map a hash to an edwards25519 point or get a random point:
+`core_ed25519_from_hash()` and `core_ed25519_random()`.
+ - `crypto_core_ed25519_scalar_mul()` has been implemented for `scalar*scalar`
+`(mod L)` multiplication.
+ - Support for the Ristretto group has been implemented, for compatibility
+with wasm-crypto.
+ - Improvements have been made to the test suite.
+ - Portability improvements has been made.
+ - `getentropy()` is now used on systems providing this system call.
+ - `randombytes_salsa20 has been renamed to `randombytes_internal`.
+ - Support for (p)nacl has been removed.
+ - Most `((nonnull))` attributes have been relaxed to allow 0-length inputs
+to be `NULL`.
+ - The `-ftree-vectorize` and `-ftree-slp-vectorize` compiler switches are
+now used, if available, for optimized builds.
+
 * Version 1.0.17
  - Bug fix: `sodium_pad()` didn't properly support block sizes >= 256 bytes.
  - JS/WebAssembly: some old iOS versions can't instantiate the WebAssembly

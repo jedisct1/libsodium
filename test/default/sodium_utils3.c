@@ -19,14 +19,16 @@ segv_handler(int sig)
 
     printf("Intentional segfault / bus error caught\n");
     printf("OK\n");
-#ifdef SIGSEGV
+#ifdef SIG_DFL
+# ifdef SIGSEGV
     signal(SIGSEGV, SIG_DFL);
-#endif
-#ifdef SIGBUS
+# endif
+# ifdef SIGBUS
     signal(SIGBUS, SIG_DFL);
-#endif
-#ifdef SIGABRT
+# endif
+# ifdef SIGABRT
     signal(SIGABRT, SIG_DFL);
+# endif
 #endif
     exit(0);
 }
@@ -37,14 +39,16 @@ main(void)
     void * buf;
     size_t size;
 
-#ifdef SIGSEGV
+#ifdef SIG_DFL
+# ifdef SIGSEGV
     signal(SIGSEGV, segv_handler);
-#endif
-#ifdef SIGBUS
+# endif
+# ifdef SIGBUS
     signal(SIGBUS, segv_handler);
-#endif
-#ifdef SIGABRT
+# endif
+# ifdef SIGABRT
     signal(SIGABRT, segv_handler);
+# endif
 #endif
     size = 1U + randombytes_uniform(100000U);
     buf  = sodium_malloc(size);

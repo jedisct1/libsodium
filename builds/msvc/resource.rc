@@ -4,8 +4,8 @@
 #include "windows.h"
 
 //specify the version numbers for the dll's
-#define LIBSODIUM_VERSION_STRING "1.0.17.0"
-#define LIBSODIUM_VERSION_BIN 1,0,17,0
+#define LIBSODIUM_VERSION_STRING "1.0.18.0"
+#define LIBSODIUM_VERSION_BIN 1,0,18,0
 
 //specify the product name for the dlls based on the platform we are compiling for
 #if defined(x64)

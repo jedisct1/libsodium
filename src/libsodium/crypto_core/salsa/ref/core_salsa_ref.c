@@ -127,7 +127,7 @@ crypto_core_salsa20_constbytes(void)
 }
 
 #ifndef MINIMAL
-
+/* LCOV_EXCL_START */
 int
 crypto_core_salsa2012(unsigned char *out, const unsigned char *in,
                       const unsigned char *k, const unsigned char *c)
@@ -191,5 +191,5 @@ crypto_core_salsa208_constbytes(void)
 {
     return crypto_core_salsa208_CONSTBYTES;
 }
-
+/* LCOV_EXCL_END */
 #endif

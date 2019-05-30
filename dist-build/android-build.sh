@@ -34,6 +34,12 @@ export CC=${CC:-"${HOST_COMPILER}-clang"}
 rm -rf "${TOOLCHAIN_DIR}" "${PREFIX}"
 
 echo
+echo "Warnings related to headers being present but not usable are due to functions"
+echo "that didn't exist in the specified minimum API version level."
+echo "They can be safely ignored."
+echo
+
+echo
 if [ "$NDK_PLATFORM" != "$NDK_PLATFORM_COMPAT" ]; then
   echo "Building for platform [${NDK_PLATFORM}], retaining compatibility with platform [${NDK_PLATFORM_COMPAT}]"
 else

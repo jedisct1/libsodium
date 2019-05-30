@@ -113,9 +113,11 @@ allocate_memory(block_region **region, uint32_t m_cost)
     }
 #endif
     if (base == NULL) {
+        /* LCOV_EXCL_START */
         free(*region);
         *region = NULL;
-        return ARGON2_MEMORY_ALLOCATION_ERROR; /* LCOV_EXCL_LINE */
+        return ARGON2_MEMORY_ALLOCATION_ERROR;
+        /* LCOV_EXCL_STOP */
     }
     (*region)->base   = base;
     (*region)->memory = memory;

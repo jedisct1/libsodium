@@ -16,6 +16,10 @@ size_t crypto_core_ed25519_bytes(void);
 SODIUM_EXPORT
 size_t crypto_core_ed25519_uniformbytes(void);
 
+#define crypto_core_ed25519_HASHBYTES 64
+SODIUM_EXPORT
+size_t crypto_core_ed25519_hashbytes(void);
+
 #define crypto_core_ed25519_SCALARBYTES 32
 SODIUM_EXPORT
 size_t crypto_core_ed25519_scalarbytes(void);
@@ -43,6 +47,14 @@ int crypto_core_ed25519_from_uniform(unsigned char *p, const unsigned char *r)
             __attribute__ ((nonnull));
 
 SODIUM_EXPORT
+int crypto_core_ed25519_from_hash(unsigned char *p, const unsigned char *h)
+            __attribute__ ((nonnull));
+
+SODIUM_EXPORT
+void crypto_core_ed25519_random(unsigned char *p)
+            __attribute__ ((nonnull));
+
+SODIUM_EXPORT
 void crypto_core_ed25519_scalar_random(unsigned char *r)
             __attribute__ ((nonnull));
 
@@ -65,6 +77,11 @@ void crypto_core_ed25519_scalar_add(unsigned char *z, const unsigned char *x,
 
 SODIUM_EXPORT
 void crypto_core_ed25519_scalar_sub(unsigned char *z, const unsigned char *x,
+                                    const unsigned char *y)
+            __attribute__ ((nonnull));
+
+SODIUM_EXPORT
+void crypto_core_ed25519_scalar_mul(unsigned char *z, const unsigned char *x,
                                     const unsigned char *y)
             __attribute__ ((nonnull));
 

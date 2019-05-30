@@ -67,7 +67,24 @@ crypto_core_ed25519_from_uniform(unsigned char *p, const unsigned char *r)
 {
     ge25519_from_uniform(p, r);
 
-    return - ge25519_has_small_order(p);
+    return 0;
+}
+
+int
+crypto_core_ed25519_from_hash(unsigned char *p, const unsigned char *h)
+{
+    ge25519_from_hash(p, h);
+
+    return 0;
+}
+
+void
+crypto_core_ed25519_random(unsigned char *p)
+{
+    unsigned char h[crypto_core_ed25519_HASHBYTES];
+
+    randombytes_buf(h, sizeof h);
+    (void) crypto_core_ed25519_from_hash(p, h);
 }
 
 void
@@ -159,6 +176,13 @@ crypto_core_ed25519_scalar_sub(unsigned char *z, const unsigned char *x,
 }
 
 void
+crypto_core_ed25519_scalar_mul(unsigned char *z, const unsigned char *x,
+                               const unsigned char *y)
+{
+    sc25519_mul(z, x, y);
+}
+
+void
 crypto_core_ed25519_scalar_reduce(unsigned char *r,
                                   const unsigned char *s)
 {
@@ -186,6 +210,12 @@ size_t
 crypto_core_ed25519_uniformbytes(void)
 {
     return crypto_core_ed25519_UNIFORMBYTES;
+}
+
+size_t
+crypto_core_ed25519_hashbytes(void)
+{
+    return crypto_core_ed25519_HASHBYTES;
 }
 
 size_t

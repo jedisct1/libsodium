@@ -305,6 +305,10 @@ escrypt_kdf_nosse(escrypt_local_t *local, const uint8_t *passwd,
     uint32_t  i;
 
 /* Sanity-check parameters. */
+    if (r == 0 || p == 0) {
+        errno = EINVAL;
+        return -1;
+    }
 #if SIZE_MAX > UINT32_MAX
     if (buflen > (((uint64_t)(1) << 32) - 1) * 32) {
         errno = EFBIG;

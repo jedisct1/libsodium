@@ -4,23 +4,6 @@
 /* C++Builder defines a "random" macro */
 #undef random
 
-#ifdef __native_client__
-# define memset(dst, c, n) xmemset(dst, c, n)
-
-static void *
-xmemset(void *dst, int c, size_t n)
-{
-    unsigned char *     dst_ = (unsigned char *) dst;
-    const unsigned char c_   = (unsigned char) c;
-    size_t              i;
-
-    for (i = 0; i < n; i++) {
-        dst_[i] = c_;
-    }
-    return dst;
-}
-#endif
-
 #ifdef __EMSCRIPTEN__
 # define strcmp(s1, s2) xstrcmp(s1, s2)
 
