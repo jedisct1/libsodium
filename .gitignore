@@ -35,7 +35,6 @@ aclocal.m4
 android-toolchain
 android-toolchain-*
 autom4te.cache
-azure-pipelines.yml
 build
 compile
 confdefs.h
