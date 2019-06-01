@@ -213,7 +213,7 @@ if(sodium_INCLUDE_DIR)
     string(
       REGEX
       REPLACE
-        ".*#[ \t]*define[ \t]*sodium_VERSION_STRING_STRING[ \t]*\"([^\n]*)\".*"
+        ".*define[ \t]+SODIUM_VERSION_STRING[^\"]+\"([^\"]+)\".*"
         "\\1"
         sodium_VERSION_STRING
         "${_VERSION_HEADER_CONTENT}")
