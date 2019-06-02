@@ -180,6 +180,12 @@ static int
 _randombytes_getentropy(void * const buf, const size_t size)
 {
     assert(size <= 256U);
+    /* LCOV_EXCL_START */
+    if (&getentropy == NULL) {
+        errno = ENOSYS;
+        return -1;
+    }
+    /* LCOV_EXCL_END */
     if (getentropy(buf, size) != 0) {
         return -1; /* LCOV_EXCL_LINE */
     }
