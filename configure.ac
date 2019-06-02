@@ -825,10 +825,6 @@ unsigned char buf;
 # include <sys/random.h>
 #endif
 ]], [[
-#ifdef __APPLE__
-# error getentropy() is currently disabled on Apple operating systems
-#endif
-
 unsigned char buf;
 (void) getentropy((void *) &buf, 1U);
   ]])],
