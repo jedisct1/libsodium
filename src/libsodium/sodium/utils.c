@@ -59,7 +59,11 @@ void *alloca (size_t);
 #define GARBAGE_VALUE 0xdb
 
 #ifndef MAP_NOCORE
-# define MAP_NOCORE 0
+# ifdef MAP_CONCEAL
+#  define MAP_NOCORE MAP_CONCEAL
+# else
+#  define MAP_NOCORE 0
+# endif
 #endif
 #if !defined(MAP_ANON) && defined(MAP_ANONYMOUS)
 # define MAP_ANON MAP_ANONYMOUS
