@@ -23,19 +23,23 @@
 #include "crypto_generichash_blake2b.h"
 #include "export.h"
 
-#define blake2b_init_param crypto_generichash_blake2b__init_param
-#define blake2b_init crypto_generichash_blake2b__init
+#define blake2b_init_param crypto_generichash__blake2b_init_param
+#define blake2b_init crypto_generichash__blake2b_init
 #define blake2b_init_salt_personal \
-    crypto_generichash_blake2b__init_salt_personal
-#define blake2b_init_key crypto_generichash_blake2b__init_key
+    crypto_generichash__blake2b_init_salt_personal
+#define blake2b_init_key crypto_generichash__blake2b_init_key
 #define blake2b_init_key_salt_personal \
-    crypto_generichash_blake2b__init_key_salt_personal
-#define blake2b_update crypto_generichash_blake2b__update
-#define blake2b_final crypto_generichash_blake2b__final
-#define blake2b crypto_generichash_blake2b__blake2b
-#define blake2b_salt_personal crypto_generichash_blake2b__blake2b_salt_personal
+    crypto_generichash__blake2b_init_key_salt_personal
+#define blake2b_update crypto_generichash__blake2b_update
+#define blake2b_final crypto_generichash__blake2b_final
+#define blake2b crypto_generichash__blake2b
+#define blake2b_salt_personal crypto_generichash__blake2b_salt_personal
 #define blake2b_pick_best_implementation \
-    crypto_generichash_blake2b__pick_best_implementation
+    crypto_generichash__blake2b_pick_best_implementation
+#define blake2b_compress_ref crypto_generichash__blake2b_compress_ref
+#define blake2b_compress_ssse3 crypto_generichash__blake2b_compress_ssse3
+#define blake2b_compress_sse41 crypto_generichash__blake2b_compress_sse41
+#define blake2b_compress_avx2 crypto_generichash__blake2b_compress_avx2
 
 enum blake2b_constant {
     BLAKE2B_BLOCKBYTES    = 128,
