@@ -73,7 +73,7 @@ argon2_ctx(argon2_context *context, argon2_type type)
 
     /* 4. Filling memory */
     for (pass = 0; pass < instance.passes; pass++) {
-        fill_memory_blocks(&instance, pass);
+        argon2_fill_memory_blocks(&instance, pass);
     }
 
     /* 5. Finalization */

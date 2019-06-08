@@ -223,7 +223,7 @@ argon2_finalize(const argon2_context *context, argon2_instance_t *instance)
 }
 
 void
-fill_memory_blocks(argon2_instance_t *instance, uint32_t pass)
+argon2_fill_memory_blocks(argon2_instance_t *instance, uint32_t pass)
 {
     argon2_position_t position;
     uint32_t l;
@@ -369,8 +369,8 @@ argon2_validate_inputs(const argon2_context *context)
     return ARGON2_OK;
 }
 
-void
-fill_first_blocks(uint8_t *blockhash, const argon2_instance_t *instance)
+static void
+argon2_fill_first_blocks(uint8_t *blockhash, const argon2_instance_t *instance)
 {
     uint32_t l;
     /* Make the first and second block in each lane as G(H0||i||0) or
@@ -511,7 +511,7 @@ argon2_initialize(argon2_instance_t *instance, argon2_context *context)
 
     /* 3. Creating first blocks, we always have at least two blocks in a slice
      */
-    fill_first_blocks(blockhash, instance);
+    argon2_fill_first_blocks(blockhash, instance);
     /* Clearing the hash */
     sodium_memzero(blockhash, ARGON2_PREHASH_SEED_LENGTH);
 
