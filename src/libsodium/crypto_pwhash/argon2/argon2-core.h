@@ -217,27 +217,6 @@ static uint32_t index_alpha(const argon2_instance_t *instance,
 int validate_inputs(const argon2_context *context);
 
 /*
- * Hashes all the inputs into @a blockhash[PREHASH_DIGEST_LENGTH], clears
- * password and secret if needed
- * @param  context  Pointer to the Argon2 internal structure containing memory
- * pointer, and parameters for time and space requirements.
- * @param  blockhash Buffer for pre-hashing digest
- * @param  type Argon2 type
- * @pre    @a blockhash must have at least @a PREHASH_DIGEST_LENGTH bytes
- * allocated
- */
-void initial_hash(uint8_t *blockhash, argon2_context *context,
-                  argon2_type type);
-
-/*
- * Function creates first 2 blocks per lane
- * @param instance Pointer to the current instance
- * @param blockhash Pointer to the pre-hashing digest
- * @pre blockhash must point to @a PREHASH_SEED_LENGTH allocated values
- */
-void fill_first_blocks(uint8_t *blockhash, const argon2_instance_t *instance);
-
-/*
  * Function allocates memory, hashes the inputs with Blake,  and creates first
  * two blocks. Returns the pointer to the main memory with 2 blocks per lane
  * initialized
@@ -248,11 +227,6 @@ void fill_first_blocks(uint8_t *blockhash, const argon2_instance_t *instance);
  * will be modified if successful.
  */
 int initialize(argon2_instance_t *instance, argon2_context *context);
-
-/*
- * Deallocates memory. Used on error path.
- */
-void free_instance(argon2_instance_t *instance, int flags);
 
 /*
  * XORing the last block of each lane, hashing it, making the tag. Deallocates
@@ -276,7 +250,6 @@ void finalize(const argon2_context *context, argon2_instance_t *instance);
  */
 typedef void (*fill_segment_fn)(const argon2_instance_t *instance,
                                 argon2_position_t        position);
-int argon2_pick_best_implementation(void);
 void fill_segment_avx512f(const argon2_instance_t *instance,
                           argon2_position_t        position);
 void fill_segment_avx2(const argon2_instance_t *instance,

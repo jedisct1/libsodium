@@ -175,7 +175,10 @@ free_memory(block_region *region)
     free(region);
 }
 
-void
+/*
+ * Deallocates memory. Used on error path.
+ */
+static void
 free_instance(argon2_instance_t *instance, int flags)
 {
     /* Clear memory */
@@ -369,7 +372,13 @@ validate_inputs(const argon2_context *context)
     return ARGON2_OK;
 }
 
-void
+/*
+ * Function creates first 2 blocks per lane
+ * @param instance Pointer to the current instance
+ * @param blockhash Pointer to the pre-hashing digest
+ * @pre blockhash must point to @a PREHASH_SEED_LENGTH allocated values
+ */
+static void
 fill_first_blocks(uint8_t *blockhash, const argon2_instance_t *instance)
 {
     uint32_t l;
@@ -393,7 +402,17 @@ fill_first_blocks(uint8_t *blockhash, const argon2_instance_t *instance)
     sodium_memzero(blockhash_bytes, ARGON2_BLOCK_SIZE);
 }
 
-void
+/*
+ * Hashes all the inputs into @a blockhash[PREHASH_DIGEST_LENGTH], clears
+ * password and secret if needed
+ * @param  context  Pointer to the Argon2 internal structure containing memory
+ * pointer, and parameters for time and space requirements.
+ * @param  blockhash Buffer for pre-hashing digest
+ * @param  type Argon2 type
+ * @pre    @a blockhash must have at least @a PREHASH_DIGEST_LENGTH bytes
+ * allocated
+ */
+static void
 initial_hash(uint8_t *blockhash, argon2_context *context, argon2_type type)
 {
     crypto_generichash_blake2b_state BlakeHash;
@@ -517,7 +536,7 @@ initialize(argon2_instance_t *instance, argon2_context *context)
     return ARGON2_OK;
 }
 
-int
+static int
 argon2_pick_best_implementation(void)
 {
 /* LCOV_EXCL_START */
