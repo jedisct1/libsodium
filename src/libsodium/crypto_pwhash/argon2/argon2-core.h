@@ -18,6 +18,15 @@
 
 #include "argon2.h"
 
+#define validate_inputs crypto_pwhash_argon2__validate_inputs
+#define initialize crypto_pwhash_argon2__initialize
+#define finalize crypto_pwhash_argon2__finalize
+#define fill_segment_avx512f crypto_pwhash_argon2__fill_segment_avx512f
+#define fill_segment_avx2 crypto_pwhash_argon2__fill_segment_avx2
+#define fill_segment_ssse3 crypto_pwhash_argon2__fill_segment_ssse3
+#define fill_segment_ref crypto_pwhash_argon2__fill_segment_ref
+#define fill_memory_blocks crypto_pwhash_argon2__fill_memory_blocks
+
 /*************************Argon2 internal
  * constants**************************************************/
 

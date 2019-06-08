@@ -16,6 +16,16 @@
 #include <stddef.h>
 #include <stdint.h>
 
+#define argon2_ctx crypto_pwhash__argon2_ctx
+#define argon2i_hash_encoded crypto_pwhash__argon2i_hash_encoded
+#define argon2id_hash_encoded crypto_pwhash__argon2id_hash_encoded
+#define argon2i_hash_raw crypto_pwhash__argon2i_hash_raw
+#define argon2id_hash_raw crypto_pwhash__argon2id_hash_raw
+#define argon2_hash crypto_pwhash__argon2_hash
+#define argon2i_verify crypto_pwhash__argon2i_verify
+#define argon2id_verify crypto_pwhash__argon2id_verify
+#define argon2_verify crypto_pwhash__argon2_verify
+
 /*
  * Argon2 input parameter restrictions
  */

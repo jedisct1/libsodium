@@ -3,6 +3,9 @@
 
 #include "argon2.h"
 
+#define encode_string crypto_pwhash_argon2__encode_string
+#define decode_string crypto_pwhash_argon2__decode_string
+
 /*
  * encode an Argon2 hash string into the provided buffer. 'dst_len'
  * contains the size, in characters, of the 'dst' buffer; if 'dst_len'
