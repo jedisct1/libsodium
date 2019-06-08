@@ -217,14 +217,6 @@ static uint32_t index_alpha(const argon2_instance_t *instance,
 int argon2_validate_inputs(const argon2_context *context);
 
 /*
- * Function creates first 2 blocks per lane
- * @param instance Pointer to the current instance
- * @param blockhash Pointer to the pre-hashing digest
- * @pre blockhash must point to @a PREHASH_SEED_LENGTH allocated values
- */
-void fill_first_blocks(uint8_t *blockhash, const argon2_instance_t *instance);
-
-/*
  * Function allocates memory, hashes the inputs with Blake,  and creates first
  * two blocks. Returns the pointer to the main memory with 2 blocks per lane
  * initialized
@@ -275,6 +267,6 @@ void argon2_fill_segment_ref(const argon2_instance_t *instance,
  * @param instance Pointer to the current instance
  * @return Zero if successful, -1 if memory failed to allocate
  */
-void fill_memory_blocks(argon2_instance_t *instance, uint32_t pass);
+void argon2_fill_memory_blocks(argon2_instance_t *instance, uint32_t pass);
 
 #endif
