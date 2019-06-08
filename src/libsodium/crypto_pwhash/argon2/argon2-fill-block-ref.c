@@ -141,7 +141,8 @@ generate_addresses(const argon2_instance_t *instance,
 }
 
 void
-fill_segment_ref(const argon2_instance_t *instance, argon2_position_t position)
+argon2_fill_segment_ref(const argon2_instance_t *instance,
+                        argon2_position_t position)
 {
     block    *ref_block = NULL, *curr_block = NULL;
     /* Pseudo-random values that determine the reference block position */
