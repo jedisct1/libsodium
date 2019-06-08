@@ -34,6 +34,17 @@
 #include <stddef.h>
 #include <stdint.h>
 
+#define escrypt_kdf_sse crypto_pwhash__escrypt_kdf_sse
+#define escrypt_gensalt_r crypto_pwhash__escrypt_gensalt_r
+#define escrypt_parse_setting crypto_pwhash__escrypt_parse_setting
+#define escrypt_r crypto_pwhash__escrypt_r
+#define escrypt_kdf_nosse crypto_pwhash__escrypt_kdf_nosse
+#define escrypt_init_local crypto_pwhash__escrypt_init_local
+#define escrypt_free_local crypto_pwhash__escrypt_free_local
+
+#define alloc_region crypto_pwhash_escrypt__alloc_region
+#define free_region  crypto_pwhash_escrypt__free_region
+
 #if SIZE_MAX > 0xffffffffULL
 #define ARCH_BITS 64
 #else

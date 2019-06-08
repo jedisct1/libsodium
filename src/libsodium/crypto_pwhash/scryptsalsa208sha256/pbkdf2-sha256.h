@@ -34,6 +34,8 @@
 
 #include "crypto_auth_hmacsha256.h"
 
+#define PBKDF2_SHA256 crypto_pwhash__PBKDF2_SHA256
+
 /**
  * PBKDF2_SHA256(passwd, passwdlen, salt, saltlen, c, buf, dkLen):
  * Compute PBKDF2(passwd, salt, c, dkLen) using HMAC-SHA256 as the PRF, and
