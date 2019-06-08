@@ -261,7 +261,7 @@ _needs_rehash(const char *str, unsigned long long opslimit, size_t memlimit,
     ctx.outlen = ctx.pwdlen    = ctx.saltlen = (uint32_t) fodder_len;
     ctx.ad     = ctx.secret    = NULL;
     ctx.adlen  = ctx.secretlen = 0U;
-    if (decode_string(&ctx, str, type) != 0) {
+    if (argon2_decode_string(&ctx, str, type) != 0) {
         errno = EINVAL;
         ret = -1;
     } else if (ctx.t_cost != (uint32_t) opslimit ||

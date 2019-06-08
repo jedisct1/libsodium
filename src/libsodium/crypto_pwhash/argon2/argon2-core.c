@@ -175,8 +175,8 @@ free_memory(block_region *region)
     free(region);
 }
 
-void
-free_instance(argon2_instance_t *instance, int flags)
+static void
+argon2_free_instance(argon2_instance_t *instance, int flags)
 {
     /* Clear memory */
     clear_memory(instance, flags & ARGON2_FLAG_CLEAR_MEMORY);
@@ -189,7 +189,7 @@ free_instance(argon2_instance_t *instance, int flags)
 }
 
 void
-finalize(const argon2_context *context, argon2_instance_t *instance)
+argon2_finalize(const argon2_context *context, argon2_instance_t *instance)
 {
     if (context != NULL && instance != NULL) {
         block    blockhash;
@@ -218,7 +218,7 @@ finalize(const argon2_context *context, argon2_instance_t *instance)
                            ARGON2_BLOCK_SIZE); /* clear blockhash_bytes */
         }
 
-        free_instance(instance, context->flags);
+        argon2_free_instance(instance, context->flags);
     }
 }
 
@@ -245,7 +245,7 @@ fill_memory_blocks(argon2_instance_t *instance, uint32_t pass)
 }
 
 int
-validate_inputs(const argon2_context *context)
+argon2_validate_inputs(const argon2_context *context)
 {
     /* LCOV_EXCL_START */
     if (NULL == context) {
@@ -393,8 +393,9 @@ fill_first_blocks(uint8_t *blockhash, const argon2_instance_t *instance)
     sodium_memzero(blockhash_bytes, ARGON2_BLOCK_SIZE);
 }
 
-void
-initial_hash(uint8_t *blockhash, argon2_context *context, argon2_type type)
+static void
+argon2_initial_hash(uint8_t *blockhash, argon2_context *context,
+                    argon2_type type)
 {
     crypto_generichash_blake2b_state BlakeHash;
     uint8_t                          value[4U /* sizeof(uint32_t) */];
@@ -477,7 +478,7 @@ initial_hash(uint8_t *blockhash, argon2_context *context, argon2_type type)
 }
 
 int
-initialize(argon2_instance_t *instance, argon2_context *context)
+argon2_initialize(argon2_instance_t *instance, argon2_context *context)
 {
     uint8_t blockhash[ARGON2_PREHASH_SEED_LENGTH];
     int     result = ARGON2_OK;
@@ -495,7 +496,7 @@ initialize(argon2_instance_t *instance, argon2_context *context)
 
     result = allocate_memory(&(instance->region), instance->memory_blocks);
     if (ARGON2_OK != result) {
-        free_instance(instance, context->flags);
+        argon2_free_instance(instance, context->flags);
         return result;
     }
 
@@ -503,7 +504,7 @@ initialize(argon2_instance_t *instance, argon2_context *context)
     /* H_0 + 8 extra bytes to produce the first blocks */
     /* uint8_t blockhash[ARGON2_PREHASH_SEED_LENGTH]; */
     /* Hashing all inputs */
-    initial_hash(blockhash, context, instance->type);
+    argon2_initial_hash(blockhash, context, instance->type);
     /* Zeroing 8 extra bytes */
     sodium_memzero(blockhash + ARGON2_PREHASH_DIGEST_LENGTH,
                    ARGON2_PREHASH_SEED_LENGTH - ARGON2_PREHASH_DIGEST_LENGTH);

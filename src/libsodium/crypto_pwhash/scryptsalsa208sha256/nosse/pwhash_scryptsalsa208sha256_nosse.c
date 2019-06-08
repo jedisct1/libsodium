@@ -351,10 +351,10 @@ escrypt_kdf_nosse(escrypt_local_t *local, const uint8_t *passwd,
         return -1;
     }
     if (local->size < need) {
-        if (free_region(local)) {
+        if (escrypt_free_region(local)) {
             return -1;
         }
-        if (!alloc_region(local, need)) {
+        if (!escrypt_alloc_region(local, need)) {
             return -1;
         }
     }
