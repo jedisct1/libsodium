@@ -383,7 +383,7 @@ escrypt_kdf_sse(escrypt_local_t *local, const uint8_t *passwd, size_t passwdlen,
     XY = (uint32_t *) ((uint8_t *) V + V_size);
 
     /* 1: (B_0 ... B_{p-1}) <-- PBKDF2(P, S, 1, p * MFLen) */
-    PBKDF2_SHA256(passwd, passwdlen, salt, saltlen, 1, B, B_size);
+    escrypt_PBKDF2_SHA256(passwd, passwdlen, salt, saltlen, 1, B, B_size);
 
     /* 2: for i = 0 to p - 1 do */
     for (i = 0; i < p; i++) {
@@ -392,7 +392,7 @@ escrypt_kdf_sse(escrypt_local_t *local, const uint8_t *passwd, size_t passwdlen,
     }
 
     /* 5: DK <-- PBKDF2(P, B, 1, dkLen) */
-    PBKDF2_SHA256(passwd, passwdlen, B, B_size, 1, buf, buflen);
+    escrypt_PBKDF2_SHA256(passwd, passwdlen, B, B_size, 1, buf, buflen);
 
     /* Success! */
     return 0;
