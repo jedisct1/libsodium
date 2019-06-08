@@ -4,17 +4,17 @@
 .p2align 5
 
 #ifdef ASM_HIDE_SYMBOL
-ASM_HIDE_SYMBOL stream_salsa20_xmm6
-ASM_HIDE_SYMBOL _stream_salsa20_xmm6
+ASM_HIDE_SYMBOL crypto_stream_salsa20__xmm6
+ASM_HIDE_SYMBOL _crypto_stream_salsa20__xmm6
 #endif
-.globl  stream_salsa20_xmm6
-.globl _stream_salsa20_xmm6
+.globl  crypto_stream_salsa20__xmm6
+.globl _crypto_stream_salsa20__xmm6
 #ifdef __ELF__
-.type  stream_salsa20_xmm6, @function
-.type _stream_salsa20_xmm6, @function
+.type  crypto_stream_salsa20__xmm6, @function
+.type _crypto_stream_salsa20__xmm6, @function
 #endif
-stream_salsa20_xmm6:
-_stream_salsa20_xmm6:
+crypto_stream_salsa20__xmm6:
+_crypto_stream_salsa20__xmm6:
 mov %rsp,%r11
 and $31,%r11
 add $512,%r11
@@ -44,17 +44,17 @@ jmp ._start
 .p2align 5
 
 #ifdef ASM_HIDE_SYMBOL
-ASM_HIDE_SYMBOL stream_salsa20_xmm6_xor_ic
-ASM_HIDE_SYMBOL _stream_salsa20_xmm6_xor_ic
+ASM_HIDE_SYMBOL crypto_stream_salsa20__xmm6_xor_ic
+ASM_HIDE_SYMBOL _crypto_stream_salsa20__xmm6_xor_ic
 #endif
-.globl  stream_salsa20_xmm6_xor_ic
-.globl _stream_salsa20_xmm6_xor_ic
+.globl  crypto_stream_salsa20__xmm6_xor_ic
+.globl _crypto_stream_salsa20__xmm6_xor_ic
 #ifdef __ELF__
-.type  stream_salsa20_xmm6_xor_ic, @function
-.type _stream_salsa20_xmm6_xor_ic, @function
+.type  crypto_stream_salsa20__xmm6_xor_ic, @function
+.type _crypto_stream_salsa20__xmm6_xor_ic, @function
 #endif
-stream_salsa20_xmm6_xor_ic:
-_stream_salsa20_xmm6_xor_ic:
+crypto_stream_salsa20__xmm6_xor_ic:
+_crypto_stream_salsa20__xmm6_xor_ic:
 
 mov %rsp,%r11
 and $31,%r11
