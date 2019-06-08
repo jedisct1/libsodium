@@ -42,7 +42,7 @@
 #endif
 
 void *
-alloc_region(escrypt_region_t *region, size_t size)
+escrypt_alloc_region(escrypt_region_t *region, size_t size)
 {
     uint8_t *base, *aligned;
 #if defined(MAP_ANON) && defined(HAVE_MMAP)
@@ -81,7 +81,7 @@ init_region(escrypt_region_t *region)
 }
 
 int
-free_region(escrypt_region_t *region)
+escrypt_free_region(escrypt_region_t *region)
 {
     if (region->base) {
 #if defined(MAP_ANON) && defined(HAVE_MMAP)
@@ -108,5 +108,5 @@ escrypt_init_local(escrypt_local_t *local)
 int
 escrypt_free_local(escrypt_local_t *local)
 {
-    return free_region(local);
+    return escrypt_free_region(local);
 }

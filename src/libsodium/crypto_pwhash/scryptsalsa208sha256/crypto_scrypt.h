@@ -65,8 +65,8 @@ extern int escrypt_init_local(escrypt_local_t *__local);
 
 extern int escrypt_free_local(escrypt_local_t *__local);
 
-extern void *alloc_region(escrypt_region_t *region, size_t size);
-extern int free_region(escrypt_region_t *region);
+extern void *escrypt_alloc_region(escrypt_region_t *region, size_t size);
+extern int escrypt_free_region(escrypt_region_t *region);
 
 typedef int (*escrypt_kdf_t)(escrypt_local_t *__local, const uint8_t *__passwd,
                              size_t __passwdlen, const uint8_t *__salt,

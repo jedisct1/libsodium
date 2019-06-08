@@ -371,10 +371,10 @@ escrypt_kdf_sse(escrypt_local_t *local, const uint8_t *passwd, size_t passwdlen,
     }
 /* LCOV_EXCL_END */
     if (local->size < need) {
-        if (free_region(local)) {
+        if (escrypt_free_region(local)) {
             return -1; /* LCOV_EXCL_LINE */
         }
-        if (!alloc_region(local, need)) {
+        if (!escrypt_alloc_region(local, need)) {
             return -1; /* LCOV_EXCL_LINE */
         }
     }
