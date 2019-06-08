@@ -23,20 +23,6 @@
 #include "crypto_generichash_blake2b.h"
 #include "export.h"
 
-#define blake2b_init_param crypto_generichash_blake2b__init_param
-#define blake2b_init crypto_generichash_blake2b__init
-#define blake2b_init_salt_personal \
-    crypto_generichash_blake2b__init_salt_personal
-#define blake2b_init_key crypto_generichash_blake2b__init_key
-#define blake2b_init_key_salt_personal \
-    crypto_generichash_blake2b__init_key_salt_personal
-#define blake2b_update crypto_generichash_blake2b__update
-#define blake2b_final crypto_generichash_blake2b__final
-#define blake2b crypto_generichash_blake2b__blake2b
-#define blake2b_salt_personal crypto_generichash_blake2b__blake2b_salt_personal
-#define blake2b_pick_best_implementation \
-    crypto_generichash_blake2b__pick_best_implementation
-
 enum blake2b_constant {
     BLAKE2B_BLOCKBYTES    = 128,
     BLAKE2B_OUTBYTES      = 64,
