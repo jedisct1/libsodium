@@ -260,14 +260,14 @@ void argon2_finalize(const argon2_context *context,
 typedef void (*fill_segment_fn)(const argon2_instance_t *instance,
                                 argon2_position_t        position);
 int argon2_pick_best_implementation(void);
-void fill_segment_avx512f(const argon2_instance_t *instance,
-                          argon2_position_t        position);
-void fill_segment_avx2(const argon2_instance_t *instance,
-                       argon2_position_t        position);
-void fill_segment_ssse3(const argon2_instance_t *instance,
-                        argon2_position_t        position);
-void fill_segment_ref(const argon2_instance_t *instance,
-                      argon2_position_t        position);
+void argon2_fill_segment_avx512f(const argon2_instance_t *instance,
+                                 argon2_position_t        position);
+void argon2_fill_segment_avx2(const argon2_instance_t *instance,
+                              argon2_position_t        position);
+void argon2_fill_segment_ssse3(const argon2_instance_t *instance,
+                               argon2_position_t        position);
+void argon2_fill_segment_ref(const argon2_instance_t *instance,
+                             argon2_position_t        position);
 
 /*
  * Function that fills the entire memory t_cost times based on the first two
