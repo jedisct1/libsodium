@@ -1,6 +1,8 @@
 #ifndef implementations_H
 #define implementations_H
 
+#include "private/quirks.h"
+
 int _crypto_generichash_blake2b_pick_best_implementation(void);
 int _crypto_onetimeauth_poly1305_pick_best_implementation(void);
 int _crypto_pwhash_argon2_pick_best_implementation(void);

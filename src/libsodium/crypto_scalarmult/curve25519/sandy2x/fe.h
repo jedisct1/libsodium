@@ -19,7 +19,7 @@ t[0]+2^26 t[1]+2^51 t[2]+2^77 t[3]+2^102 t[4]+...+2^230 t[9].
 Bounds on each t[i] vary depending on context.
 */
 
-#define fe_frombytes crypto_scalarmult_curve25519_sandy2x_fe_frombytes
+#define fe_frombytes _sodium_scalarmult_curve25519_sandy2x_fe_frombytes
 
 extern void fe_frombytes(fe, const unsigned char *);
 

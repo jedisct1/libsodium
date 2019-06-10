@@ -4,6 +4,8 @@
 
 #include <stdint.h>
 
+#include "private/quirks.h"
+
 typedef struct crypto_stream_salsa20_implementation {
     int (*stream)(unsigned char *c, unsigned long long clen,
                   const unsigned char *n, const unsigned char *k);

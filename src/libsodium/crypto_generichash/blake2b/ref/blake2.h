@@ -22,6 +22,7 @@
 
 #include "crypto_generichash_blake2b.h"
 #include "export.h"
+#include "private/quirks.h"
 
 enum blake2b_constant {
     BLAKE2B_BLOCKBYTES    = 128,

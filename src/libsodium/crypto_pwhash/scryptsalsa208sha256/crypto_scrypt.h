@@ -34,6 +34,8 @@
 #include <stddef.h>
 #include <stdint.h>
 
+#include "private/quirks.h"
+
 #if SIZE_MAX > 0xffffffffULL
 #define ARCH_BITS 64
 #else

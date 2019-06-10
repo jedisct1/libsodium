@@ -1,5 +1,7 @@
 #ifdef HAVE_AMD64_ASM
 
+#include "salsa20_xmm6-asm_namespace.h"
+
 .text
 .p2align 5
 

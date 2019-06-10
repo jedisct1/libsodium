@@ -43,6 +43,9 @@ configure
 configure.lineno
 coverage.info
 depcomp
+test/symbols/all-host-symbols.txt
+test/symbols/internal-host-symbols.txt
+test/symbols/internal-symbols.txt
 install-sh
 libsodium-*.tar.bz2
 libsodium-*.tar.gz
@@ -74,6 +77,7 @@ man/*.html
 man/Makefile.in
 missing
 src/libsodium/*.def
+src/libsodium/include/sodium/private/quirks.h.old
 src/libsodium/include/sodium/version.h
 stamp-*
 test-driver

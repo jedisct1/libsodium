@@ -4,6 +4,8 @@
 #include <stddef.h>
 #include <stdint.h>
 
+#include "private/quirks.h"
+
 /*
  fe means field element.
  Here the field is \Z/(2^255-19).

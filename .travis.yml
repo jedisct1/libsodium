@@ -28,6 +28,7 @@ script:
   - make check
   - ( echo '#include <sodium.h>' ; echo 'int main(void) { return sodium_init(); }' ) > /tmp/main.c && gcc -DDEV_MODE=1 -Isrc/libsodium/include -Isrc/libsodium/include/sodium $(find src -name '*.c' -o -name '*.S') /tmp/main.c
   - make distclean > /dev/null
+  - test/rename-globals.sh
 
 after_success:
   - env CPPFLAGS="-DDEV_MODE=1" ./configure --disable-dependency-tracking --host=powerpc-linux-gnu

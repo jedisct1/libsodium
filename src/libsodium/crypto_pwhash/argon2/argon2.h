@@ -16,6 +16,8 @@
 #include <stddef.h>
 #include <stdint.h>
 
+#include "private/quirks.h"
+
 /*
  * Argon2 input parameter restrictions
  */

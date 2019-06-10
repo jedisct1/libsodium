@@ -3,6 +3,8 @@
 
 #include <stdint.h>
 
+#include "private/quirks.h"
+
 /* The ietf_ext variant allows the internal counter to overflow into the IV */
 
 int crypto_stream_chacha20_ietf_ext(unsigned char *c, unsigned long long clen,

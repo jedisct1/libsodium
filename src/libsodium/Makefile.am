@@ -88,6 +88,7 @@ libsodium_la_SOURCES = \
 	include/sodium/private/implementations.h \
 	include/sodium/private/mutex.h \
 	include/sodium/private/sse2_64_32.h \
+	include/sodium/private/quirks.h \
 	randombytes/randombytes.c \
 	sodium/codecs.c \
 	sodium/core.c \
@@ -115,7 +116,8 @@ if HAVE_AMD64_ASM
 libsodium_la_SOURCES += \
 	crypto_stream/salsa20/xmm6/salsa20_xmm6-asm.S \
 	crypto_stream/salsa20/xmm6/salsa20_xmm6.c \
-	crypto_stream/salsa20/xmm6/salsa20_xmm6.h
+	crypto_stream/salsa20/xmm6/salsa20_xmm6.h \
+	crypto_stream/salsa20/xmm6/salsa20_xmm6-asm_namespace.h
 else
 libsodium_la_SOURCES += \
 	crypto_stream/salsa20/ref/salsa20_ref.c \
