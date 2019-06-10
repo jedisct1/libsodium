@@ -518,7 +518,7 @@ argon2_initialize(argon2_instance_t *instance, argon2_context *context)
     return ARGON2_OK;
 }
 
-int
+static int
 argon2_pick_best_implementation(void)
 {
 /* LCOV_EXCL_START */
