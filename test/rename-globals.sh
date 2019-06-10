@@ -15,7 +15,7 @@ INTERNAL_SYMBOL_PREFIX="_sodium_"
 QUIRKS_H="src/libsodium/include/sodium/private/quirks.h"
 QUIRKS_H_NEW="${QUIRKS_H}.new"
 CFLAGS_UNOPTIMIZED="-O0 -fno-lto"
-MAKE_OPTS="-j$(getconf NPROCESSORS_ONLN 2>/dev/null || getconf _NPROCESSORS_ONLN 2>/dev/null)"
+MAKE_OPTS="-j$(getconf NPROCESSORS_ONLN 2>/dev/null || getconf _NPROCESSORS_ONLN 2>/dev/null || echo 1)"
 
 NM="nm"
 NM_OPTS=""
