@@ -2,7 +2,7 @@
 # Attempt to guess a canonical system name.
 #   Copyright 1992-2019 Free Software Foundation, Inc.
 
-timestamp='2019-05-28'
+timestamp='2019-06-10'
 
 # This file is free software; you can redistribute it and/or modify it
 # under the terms of the GNU General Public License as published by
@@ -261,6 +261,9 @@ case "$UNAME_MACHINE:$UNAME_SYSTEM:$UNAME_RELEASE:$UNAME_VERSION" in
 	exit ;;
     *:SolidBSD:*:*)
 	echo "$UNAME_MACHINE"-unknown-solidbsd"$UNAME_RELEASE"
+	exit ;;
+    *:OS108:*:*)
+	echo "$UNAME_MACHINE"-unknown-os108_"$UNAME_RELEASE"
 	exit ;;
     macppc:MirBSD:*:*)
 	echo powerpc-unknown-mirbsd"$UNAME_RELEASE"
