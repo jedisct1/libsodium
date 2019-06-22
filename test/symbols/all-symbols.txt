@@ -664,7 +664,9 @@ sodium_mlock
 sodium_mprotect_noaccess
 sodium_mprotect_readonly
 sodium_mprotect_readwrite
+sodium_mshield
 sodium_munlock
+sodium_munshield
 sodium_pad
 sodium_runtime_has_aesni
 sodium_runtime_has_avx
