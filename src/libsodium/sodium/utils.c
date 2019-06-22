@@ -725,6 +725,15 @@ sodium_mprotect_readwrite(void *ptr)
     return _sodium_mprotect(ptr, _mprotect_readwrite);
 }
 
+#ifndef HAVE_PAGE_PROTECTION
+int
+sodium_mshield(void *ptr)
+{
+    (void) ptr;
+    errno = ENOSYS;
+    return -1;
+}
+#else
 int
 sodium_mshield(void *ptr)
 {
@@ -750,6 +759,7 @@ sodium_mshield(void *ptr)
 
     return 0;
 }
+#endif
 
 int
 sodium_munshield(void *ptr)
