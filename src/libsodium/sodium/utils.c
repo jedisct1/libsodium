@@ -43,7 +43,10 @@ void *alloca (size_t);
 #endif
 
 #include "core.h"
+#include "crypto_generichash.h"
+#include "crypto_stream.h"
 #include "randombytes.h"
+#include "private/common.h"
 #include "utils.h"
 
 #ifndef ENOSYS
@@ -57,6 +60,8 @@ void *alloca (size_t);
 
 #define CANARY_SIZE 16U
 #define GARBAGE_VALUE 0xdb
+
+#define SHIELDING_PREKEY_SIZE 16384U
 
 #ifndef MAP_NOCORE
 # ifdef MAP_CONCEAL
@@ -87,6 +92,7 @@ void *alloca (size_t);
 
 static size_t        page_size;
 static unsigned char canary[CANARY_SIZE];
+static unsigned char shielding_prekey[SHIELDING_PREKEY_SIZE];
 
 /* LCOV_EXCL_START */
 #ifdef HAVE_WEAK_SYMBOLS
@@ -402,7 +408,11 @@ _sodium_alloc_init(void)
         sodium_misuse(); /* LCOV_EXCL_LINE */
     }
 #endif
-    randombytes_buf(canary, sizeof canary);
+    COMPILER_ASSERT(sizeof shielding_prekey >= randombytes_SEEDBYTES);
+    randombytes_buf(shielding_prekey, randombytes_SEEDBYTES);
+    randombytes_buf_deterministic(canary, sizeof canary, shielding_prekey);
+    shielding_prekey[0] ^= 0x01;
+    randombytes_buf_deterministic(shielding_prekey, sizeof shielding_prekey, shielding_prekey);
 
     return 0;
 }
@@ -713,6 +723,38 @@ int
 sodium_mprotect_readwrite(void *ptr)
 {
     return _sodium_mprotect(ptr, _mprotect_readwrite);
+}
+
+int
+sodium_mshield(void *ptr)
+{
+    unsigned char  shielding_key[crypto_stream_KEYBYTES];
+    unsigned char  nonce[crypto_stream_NONCEBYTES];
+    unsigned char *base_ptr;
+    unsigned char *unprotected_ptr;
+    size_t         unprotected_size;
+
+    unprotected_ptr = _unprotected_ptr_from_user_ptr(ptr);
+    base_ptr        = unprotected_ptr - page_size * 2U;
+    memcpy(&unprotected_size, base_ptr, sizeof unprotected_size);
+
+    crypto_generichash(shielding_key, sizeof shielding_key,
+                       shielding_prekey, sizeof shielding_prekey, NULL, 0);
+    COMPILER_ASSERT(sizeof nonce >= (sizeof unprotected_ptr) + (sizeof unprotected_size));
+    memset(nonce, 0, sizeof nonce);
+    memcpy(nonce, &unprotected_ptr, sizeof unprotected_ptr);
+    memcpy(nonce + sizeof unprotected_ptr, &unprotected_size, sizeof unprotected_size);
+    crypto_stream_xor(unprotected_ptr, unprotected_ptr, unprotected_size, nonce, shielding_prekey);
+    sodium_memzero(shielding_key, sizeof shielding_key);
+    sodium_memzero(nonce, sizeof nonce);
+
+    return 0;
+}
+
+int
+sodium_munshield(void *ptr)
+{
+    return sodium_mshield(ptr);
 }
 
 int

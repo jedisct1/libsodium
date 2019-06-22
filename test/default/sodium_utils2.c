@@ -40,9 +40,24 @@ segv_handler(int sig)
 int
 main(void)
 {
-    void *       buf;
-    size_t       size;
-    unsigned int i;
+    void         *buf;
+    void         *buf2;
+    size_t        size;
+    unsigned int  i;
+
+    size = randombytes_uniform(100U);
+    if ((buf = sodium_malloc(size)) == NULL ||
+        (buf2 = sodium_malloc(size)) == NULL) {
+        return 1;
+    }
+    randombytes_buf(buf, size);
+    memcpy(buf2, buf, size);
+    sodium_mshield(buf);
+    assert(size == 0U || memcmp(buf, buf2, size) != 0);
+    sodium_munshield(buf);
+    assert(size == 0U || memcmp(buf, buf2, size) == 0);
+    sodium_free(buf2);
+    sodium_free(buf);
 
     if (sodium_malloc(SIZE_MAX - 1U) != NULL) {
         return 1;

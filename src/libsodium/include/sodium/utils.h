@@ -159,6 +159,12 @@ SODIUM_EXPORT
 int sodium_mprotect_readwrite(void *ptr) __attribute__ ((nonnull));
 
 SODIUM_EXPORT
+int sodium_mshield(void *ptr) __attribute__ ((nonnull));
+
+SODIUM_EXPORT
+int sodium_munshield(void *ptr) __attribute__ ((nonnull));
+
+SODIUM_EXPORT
 int sodium_pad(size_t *padded_buflen_p, unsigned char *buf,
                size_t unpadded_buflen, size_t blocksize, size_t max_buflen)
             __attribute__ ((nonnull(2)));
