@@ -753,7 +753,7 @@ sodium_mshield(void *ptr)
     memset(nonce, 0, sizeof nonce);
     memcpy(nonce, &unprotected_ptr, sizeof unprotected_ptr);
     memcpy(nonce + sizeof unprotected_ptr, &unprotected_size, sizeof unprotected_size);
-    crypto_stream_xor(unprotected_ptr, unprotected_ptr, unprotected_size, nonce, shielding_prekey);
+    crypto_stream_xor(unprotected_ptr, unprotected_ptr, unprotected_size, nonce, shielding_key);
     sodium_memzero(shielding_key, sizeof shielding_key);
     sodium_memzero(nonce, sizeof nonce);
 
