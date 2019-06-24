@@ -602,6 +602,8 @@ _sodium_runtime_has_sse3 0 0
 _sodium_runtime_has_sse41 0 0
 _sodium_runtime_has_ssse3 0 0
 _sodium_set_misuse_handler 0 0
+_sodium_mshield 1 1
+_sodium_munshield 1 1
 _sodium_stackzero 0 0
 _sodium_sub 0 0
 _sodium_unpad 1 1
