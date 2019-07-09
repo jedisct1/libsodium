@@ -1,7 +1,7 @@
 #! /bin/sh
 
 if [ -z "$WASI_SYSROOT" ]; then
-  export WASI_SYSROOT="/opt/wasi-sysroot"
+  export WASI_SYSROOT="/opt/wasi-libc"
 fi
 
 export PATH="/usr/local/opt/llvm/bin:$PATH"
