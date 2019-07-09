@@ -13,7 +13,7 @@ if [ -z "$WASI_RUNTIME" ] || [ "$WASI_RUNTIME" = "lucet" ]; then
     lucetc-wasi \
       --reserved-size "${MAX_MEMORY_TESTS}" \
       -o "${1}.so" --opt-level fast "$1" &&
-      lucet-wasi --dir=.:. --max-heap-size "${MAX_MEMORY_TESTS}" "${1}.so" &&
+      lucet-wasi --dir=.:. --max-heap-size "${MAX_MEMORY_TESTS}B" "${1}.so" &&
       rm -f "${1}.so" && exit 0
   fi
 fi
