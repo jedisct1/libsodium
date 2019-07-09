@@ -52,10 +52,18 @@ main(void)
     }
     randombytes_buf(buf, size);
     memcpy(buf2, buf, size);
-    sodium_mshield(buf);
-    assert(size == 0U || memcmp(buf, buf2, size) != 0);
-    sodium_munshield(buf);
-    assert(size == 0U || memcmp(buf, buf2, size) == 0);
+    errno = EINVAL;
+    if (sodium_mshield(buf) != 0) {
+        assert(errno == ENOSYS);
+    } else {
+        assert(size == 0U || memcmp(buf, buf2, size) != 0);
+    }
+    errno = EINVAL;
+    if (sodium_munshield(buf) != 0) {
+        assert(errno == ENOSYS);
+    } else {
+        assert(size == 0U || memcmp(buf, buf2, size) == 0);
+    }
     sodium_free(buf2);
     sodium_free(buf);
 
