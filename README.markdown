@@ -42,6 +42,30 @@ A mailing-list is available to discuss libsodium.
 In order to join, just send a random mail to `sodium-subscribe` {at}
 `pureftpd` {dot} `org`.
 
+## Contributors
+
+### Code Contributors
+
+This project exists thanks to all the people who contribute. [[Contribute](CONTRIBUTING.md)].
+
+<a href="https://github.com/jedisct1/libsodium/graphs/contributors"><img src="https://opencollective.com/libsodium/contributors.svg?width=890&button=false" /></a>
+
+### Financial Contributors
+
+Become a financial contributor and help us sustain our community. [[Contribute](https://opencollective.com/libsodium/contribute)]
+
+#### Individuals
+
+<a href="https://opencollective.com/libsodium"><img src="https://opencollective.com/libsodium/individuals.svg?width=890"></a>
+
+#### Organizations
+
+Support this project with your organization. Your logo will show up here with a link to your website. [[Contribute](https://opencollective.com/libsodium/contribute)]
+
+<a href="https://opencollective.com/libsodium/organization/0/website"><img src="https://opencollective.com/libsodium/organization/0/avatar.svg"></a>
+
+
+
 ## License
 
 [ISC license](https://en.wikipedia.org/wiki/ISC_license).
