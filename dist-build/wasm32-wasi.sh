@@ -7,10 +7,10 @@ if [ -z "$WASI_LIBC" ]; then
       break
     fi
   done
-  if [ -z "$WASI_LIBC" ]; then
-    echo "Set WASI_LIBC to the path to the WASI libc sysroot" >&2
-    exit 1
-  fi
+fi
+if [ -z "$WASI_LIBC" ]; then
+  echo "Set WASI_LIBC to the path to the WASI libc sysroot" >&2
+  exit 1
 fi
 
 export PATH="/usr/local/opt/llvm/bin:$PATH"
