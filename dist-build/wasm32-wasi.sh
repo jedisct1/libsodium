@@ -1,7 +1,16 @@
 #! /bin/sh
 
-if [ -z "$WASI_SYSROOT" ]; then
-  export WASI_SYSROOT="/opt/wasi-libc"
+if [ -z "$WASI_LIBC" ]; then
+  for path in /opt/wasi-libc /opt/wasi-sysroot; do
+    if [ -d "$path" ]; then
+      export WASI_LIBC="$path"
+      break
+    fi
+  done
+fi
+if [ -z "$WASI_LIBC" ]; then
+  echo "Set WASI_LIBC to the path to the WASI libc sysroot" >&2
+  exit 1
 fi
 
 export PATH="/usr/local/opt/llvm/bin:$PATH"
@@ -11,7 +20,7 @@ export PREFIX="$(pwd)/libsodium-wasm32-wasi"
 mkdir -p $PREFIX || exit 1
 
 export CC="clang"
-export CFLAGS="-DED25519_NONDETERMINISTIC=1 --target=wasm32-wasi --sysroot=${WASI_SYSROOT} -O2"
+export CFLAGS="-DED25519_NONDETERMINISTIC=1 --target=wasm32-wasi --sysroot=${WASI_LIBC} -O2"
 export LDFLAGS="-s -Wl,--no-threads"
 export NM="llvm-nm"
 export AR="llvm-ar"
@@ -35,7 +44,7 @@ else
 fi
 
 ./configure ${LIBSODIUM_ENABLE_MINIMAL_FLAG} \
-            --prefix="$PREFIX" --with-sysroot="$WASI_SYSROOT" \
+            --prefix="$PREFIX" --with-sysroot="$WASI_LIBC" \
             --host=wasm32-wasi \
             --disable-ssp --disable-shared || exit 1
 
