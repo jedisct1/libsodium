@@ -210,13 +210,11 @@ if(sodium_INCLUDE_DIR)
   set(_VERSION_HEADER "${sodium_INCLUDE_DIR}/sodium/version.h")
   if(EXISTS "${_VERSION_HEADER}")
     file(READ "${_VERSION_HEADER}" _VERSION_HEADER_CONTENT)
-    string(
-      REGEX
-      REPLACE
-        ".*define[ \t]+SODIUM_VERSION_STRING[^\"]+\"([^\"]+)\".*"
-        "\\1"
-        sodium_VERSION_STRING
-        "${_VERSION_HEADER_CONTENT}")
+    string(REGEX
+           REPLACE ".*define[ \t]+SODIUM_VERSION_STRING[^\"]+\"([^\"]+)\".*"
+                   "\\1"
+                   sodium_VERSION_STRING
+                   "${_VERSION_HEADER_CONTENT}")
     set(sodium_VERSION_STRING "${sodium_VERSION_STRING}")
   endif()
 endif()
