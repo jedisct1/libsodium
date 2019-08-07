@@ -2,7 +2,7 @@
 # Attempt to guess a canonical system name.
 #   Copyright 1992-2019 Free Software Foundation, Inc.
 
-timestamp='2019-06-10'
+timestamp='2019-07-24'
 
 # This file is free software; you can redistribute it and/or modify it
 # under the terms of the GNU General Public License as published by
@@ -278,8 +278,8 @@ case "$UNAME_MACHINE:$UNAME_SYSTEM:$UNAME_RELEASE:$UNAME_VERSION" in
 	echo "$UNAME_MACHINE"-unknown-redox
 	exit ;;
     mips:OSF1:*.*)
-        echo mips-dec-osf1
-        exit ;;
+	echo mips-dec-osf1
+	exit ;;
     alpha:OSF1:*:*)
 	case $UNAME_RELEASE in
 	*4.0)
