@@ -694,7 +694,7 @@ AC_SUBST(HAVE_TI_MODE_V)
 HAVE_CPUID_V=0
 AS_IF([test "$enable_asm" != "no"],[
   AC_MSG_CHECKING(for cpuid instruction)
-  AC_COMPILE_IFELSE([AC_LANG_PROGRAM([[ ]], [[
+  AC_LINK_IFELSE([AC_LANG_PROGRAM([[ ]], [[
 unsigned int cpu_info[4];
 __asm__ __volatile__ ("xchgl %%ebx, %k1; cpuid; xchgl %%ebx, %k1" :
                       "=a" (cpu_info[0]), "=&r" (cpu_info[1]),
