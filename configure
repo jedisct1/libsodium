@@ -7492,6 +7492,77 @@ fi
      ;;
 esac
 
+{ $as_echo "$as_me:${as_lineno-$LINENO}: checking for a broken Xcode version" >&5
+$as_echo_n "checking for a broken Xcode version... " >&6; }
+cat confdefs.h - <<_ACEOF >conftest.$ac_ext
+/* end confdefs.h.  */
+
+int
+main ()
+{
+
+#if !defined(__APPLE_CC__) || __APPLE_CC__ != 6000
+#error Not Apple
+#endif
+#if !defined(__clang_major__) || __clang_major__ != 11
+#error Not Xcode 11
+#endif
+
+  ;
+  return 0;
+}
+_ACEOF
+if ac_fn_c_try_compile "$LINENO"; then :
+  { $as_echo "$as_me:${as_lineno-$LINENO}: result: yes" >&5
+$as_echo "yes" >&6; }
+   { $as_echo "$as_me:${as_lineno-$LINENO}: WARNING: Using unsupported Xcode version" >&5
+$as_echo "$as_me: WARNING: Using unsupported Xcode version" >&2;}
+   as_CACHEVAR=`$as_echo "ax_cv_check_cflags__$CFLAGS -ffreestanding" | $as_tr_sh`
+{ $as_echo "$as_me:${as_lineno-$LINENO}: checking whether C compiler accepts $CFLAGS -ffreestanding" >&5
+$as_echo_n "checking whether C compiler accepts $CFLAGS -ffreestanding... " >&6; }
+if eval \${$as_CACHEVAR+:} false; then :
+  $as_echo_n "(cached) " >&6
+else
+
+  ax_check_save_flags=$CFLAGS
+  CFLAGS="$CFLAGS  $CFLAGS -ffreestanding"
+  cat confdefs.h - <<_ACEOF >conftest.$ac_ext
+/* end confdefs.h.  */
+#include <time.h>
+int
+main ()
+{
+time_t x; int fodder = 0; if (fodder > -1000 && time(&x)) return (int) x
+  ;
+  return 0;
+}
+_ACEOF
+if ac_fn_c_try_link "$LINENO"; then :
+  eval "$as_CACHEVAR=yes"
+else
+  eval "$as_CACHEVAR=no"
+fi
+rm -f core conftest.err conftest.$ac_objext \
+    conftest$ac_exeext conftest.$ac_ext
+  CFLAGS=$ax_check_save_flags
+fi
+eval ac_res=\$$as_CACHEVAR
+	       { $as_echo "$as_me:${as_lineno-$LINENO}: result: $ac_res" >&5
+$as_echo "$ac_res" >&6; }
+if eval test \"x\$"$as_CACHEVAR"\" = x"yes"; then :
+  CFLAGS="$CFLAGS -ffreestanding"
+else
+  :
+fi
+
+
+else
+  { $as_echo "$as_me:${as_lineno-$LINENO}: result: no" >&5
+$as_echo "no" >&6; }
+
+fi
+rm -f core conftest.err conftest.$ac_objext conftest.$ac_ext
+
 if test "x$enable_ssp" != "xno"; then :
 
 

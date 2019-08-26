@@ -284,6 +284,23 @@ AS_CASE([$host_os],
     ])
 ])
 
+AC_MSG_CHECKING(for a broken Xcode version)
+AC_COMPILE_IFELSE([AC_LANG_PROGRAM([[]], [[
+#if !defined(__APPLE_CC__) || __APPLE_CC__ != 6000
+#error Not Apple
+#endif
+#if !defined(__clang_major__) || __clang_major__ != 11
+#error Not Xcode 11
+#endif
+]])],
+  [AC_MSG_RESULT(yes)
+   AC_MSG_WARN([Using unsupported Xcode version])
+   AX_CHECK_COMPILE_FLAG([$CFLAGS -ffreestanding],
+     [CFLAGS="$CFLAGS -ffreestanding"])
+  ],
+  [AC_MSG_RESULT(no)
+])
+
 AS_IF([test "x$enable_ssp" != "xno"],[
 
 AS_CASE([$host_os],
