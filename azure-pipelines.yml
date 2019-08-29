@@ -13,7 +13,7 @@ jobs:
           sudo apt-get install build-essential curl cmake
         displayName: Install system packages
       - script: |
-          curl https://sh.rustup.rs -sSf | sh -s -- -y
+          curl https://sh.rustup.rs -sSf | sh -s -- -y --channel=beta
           source ${HOME}/.cargo/env
           git clone --recursive https://github.com/CraneStation/wasmtime.git
           (cd wasmtime && cargo install --path .)
