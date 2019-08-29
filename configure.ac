@@ -806,6 +806,9 @@ AS_IF([test "x$EMSCRIPTEN" = "x"],[
 #ifdef HAVE_SYS_RANDOM_H
 # include <sys/random.h>
 #endif
+#ifdef __SANITIZE_ADDRESS__
+# error A recent libasan version on an old system may intercept nonexistent functions
+#endif
 ]], [[
 unsigned char buf;
 (void) getrandom((void *) &buf, 1U, 0U);
@@ -823,6 +826,9 @@ unsigned char buf;
 #endif
 #ifdef HAVE_SYS_RANDOM_H
 # include <sys/random.h>
+#endif
+#ifdef __SANITIZE_ADDRESS__
+# error A recent libasan version on an old system may intercept nonexistent functions
 #endif
 ]], [[
 #ifdef __APPLE__

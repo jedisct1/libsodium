@@ -19017,6 +19017,9 @@ $as_echo_n "checking for getrandom with a standard API... " >&6; }
 #ifdef HAVE_SYS_RANDOM_H
 # include <sys/random.h>
 #endif
+#ifdef __SANITIZE_ADDRESS__
+# error A recent libasan version on an old system may intercept nonexistent functions
+#endif
 
 int
 main ()
@@ -19062,6 +19065,9 @@ $as_echo_n "checking for getentropy with a standard API... " >&6; }
 #endif
 #ifdef HAVE_SYS_RANDOM_H
 # include <sys/random.h>
+#endif
+#ifdef __SANITIZE_ADDRESS__
+# error A recent libasan version on an old system may intercept nonexistent functions
 #endif
 
 int
