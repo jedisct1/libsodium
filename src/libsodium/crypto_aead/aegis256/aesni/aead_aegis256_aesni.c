@@ -31,7 +31,7 @@
 #include <wmmintrin.h>
 
 static inline void
-crypto_aead_aegis256_update(__m128i *const restrict state,
+crypto_aead_aegis256_update(__m128i *const state,
                             const __m128i data)
 {
     __m128i tmp;
@@ -48,7 +48,7 @@ crypto_aead_aegis256_update(__m128i *const restrict state,
 static void
 crypto_aead_aegis256_init(const unsigned char *key,
                           const unsigned char *iv,
-                          __m128i *const restrict state)
+                          __m128i *const state)
 {
     int     i;
     __m128i k1;
@@ -82,7 +82,7 @@ static void
 crypto_aead_aegis256_tag(unsigned char *mac,
                          unsigned long long mlen,
                          unsigned long long adlen,
-                         __m128i *const restrict state)
+                         __m128i *const state)
 {
     int     i;
     __m128i tmp;
@@ -104,9 +104,9 @@ crypto_aead_aegis256_tag(unsigned char *mac,
 }
 
 static void
-crypto_aead_aegis256_enc(unsigned char *const restrict dst,
-                         const unsigned char *const restrict src,
-                         __m128i *const restrict state)
+crypto_aead_aegis256_enc(unsigned char *const dst,
+                         const unsigned char *const src,
+                         __m128i *const state)
 {
     __m128i msg;
     __m128i tmp;
@@ -122,9 +122,9 @@ crypto_aead_aegis256_enc(unsigned char *const restrict dst,
 }
 
 static void
-crypto_aead_aegis256_dec(unsigned char *const restrict dst,
-                         const unsigned char *const restrict src,
-                         __m128i *const restrict state)
+crypto_aead_aegis256_dec(unsigned char *const dst,
+                         const unsigned char *const src,
+                         __m128i *const state)
 {
     __m128i msg;
 
