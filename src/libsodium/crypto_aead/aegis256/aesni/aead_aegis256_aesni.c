@@ -3,6 +3,7 @@
  */
 
 #include <errno.h>
+#include <stdlib.h>
 #include <string.h>
 
 #include "core.h"
@@ -72,7 +73,7 @@ crypto_aead_aegis256_init(const unsigned char *key, const unsigned char *iv, __m
 }
 
 static void
-crypto_aead_aegis256_tag(unsigned char *mac, unsigned long long mlen, unsigned long long adlen,
+crypto_aead_aegis256_mac(unsigned char *mac, unsigned long long mlen, unsigned long long adlen,
                          __m128i *const state)
 {
     __m128i tmp;
@@ -135,8 +136,8 @@ crypto_aead_aegis256_encrypt_detached(unsigned char *c, unsigned char *mac,
                                       const unsigned char *npub, const unsigned char *k)
 {
     __m128i            state[6];
-    unsigned char      src[16];
-    unsigned char      dst[16];
+    CRYPTO_ALIGN(16) unsigned char src[16];
+    CRYPTO_ALIGN(16) unsigned char dst[16];
     unsigned long long i;
 
     (void) nsec;
@@ -160,7 +161,7 @@ crypto_aead_aegis256_encrypt_detached(unsigned char *c, unsigned char *mac,
         memcpy(c + i, dst, mlen & 0xf);
     }
 
-    crypto_aead_aegis256_tag(mac, mlen, adlen, state);
+    crypto_aead_aegis256_mac(mac, mlen, adlen, state);
     sodium_memzero(state, sizeof state);
     sodium_memzero(src, sizeof src);
     sodium_memzero(dst, sizeof dst);
@@ -201,11 +202,11 @@ crypto_aead_aegis256_decrypt_detached(unsigned char *m, unsigned char *nsec, con
                                       const unsigned char *npub, const unsigned char *k)
 {
     __m128i            state[6];
-    unsigned char      src[16];
-    unsigned char      dst[16];
-    unsigned char      tag[16];
-    unsigned long long mlen;
+    CRYPTO_ALIGN(16) unsigned char src[16];
+    CRYPTO_ALIGN(16) unsigned char dst[16];
+    CRYPTO_ALIGN(16) unsigned char computed_mac[16];
     unsigned long long i;
+    unsigned long long mlen;
     int                ret;
 
     (void) nsec;
@@ -232,12 +233,12 @@ crypto_aead_aegis256_decrypt_detached(unsigned char *m, unsigned char *nsec, con
         state[0] = _mm_xor_si128(state[0], _mm_loadu_si128((__m128i *) dst));
     }
 
-    crypto_aead_aegis256_tag(tag, mlen, adlen, state);
+    crypto_aead_aegis256_mac(computed_mac, mlen, adlen, state);
     sodium_memzero(state, sizeof state);
     sodium_memzero(src, sizeof src);
     sodium_memzero(dst, sizeof dst);
-    ret = crypto_verify_16(tag, mac);
-    sodium_memzero(tag, sizeof tag);
+    ret = crypto_verify_16(computed_mac, mac);
+    sodium_memzero(computed_mac, sizeof computed_mac);
     if (m == NULL) {
         return ret;
     }
@@ -245,7 +246,6 @@ crypto_aead_aegis256_decrypt_detached(unsigned char *m, unsigned char *nsec, con
         memset(m, 0, mlen);
         return -1;
     }
-
     return 0;
 }
 
