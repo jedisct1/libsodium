@@ -6,6 +6,7 @@ EXTRA_DIST = \
 	pre.js.inc \
 	aead_aes256gcm.exp \
 	aead_aes256gcm2.exp \
+	aead_aegis256.exp \
 	aead_chacha20poly1305.exp \
 	aead_chacha20poly13052.exp \
 	aead_xchacha20poly1305.exp \
@@ -86,6 +87,7 @@ EXTRA_DIST = \
 DISTCLEANFILES = \
 	aead_aes256gcm.res \
 	aead_aes256gcm2.res \
+	aead_aegis256.res \
 	aead_chacha20poly1305.res \
 	aead_chacha20poly13052.res \
 	aead_xchacha20poly1305.res \
@@ -176,6 +178,7 @@ AM_LDFLAGS = @TEST_LDFLAGS@
 TESTS_TARGETS = \
 	aead_aes256gcm \
 	aead_aes256gcm2 \
+	aead_aegis256 \
 	aead_chacha20poly1305 \
 	aead_chacha20poly13052 \
 	aead_xchacha20poly1305 \
@@ -260,6 +263,9 @@ aead_aes256gcm_LDADD                  = $(TESTS_LDADD)
 
 aead_aes256gcm2_SOURCE                = cmptest.h aead_aes256gcm2.c
 aead_aes256gcm2_LDADD                 = $(TESTS_LDADD)
+
+aead_aegis256_SOURCE                  = cmptest.h aead_aegis256.c
+aead_aegis256_LDADD                   = $(TESTS_LDADD)
 
 aead_chacha20poly1305_SOURCE          = cmptest.h aead_chacha20poly1305.c
 aead_chacha20poly1305_LDADD           = $(TESTS_LDADD)
