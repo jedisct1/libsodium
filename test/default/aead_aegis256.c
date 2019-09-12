@@ -2144,6 +2144,11 @@ tv(void)
             printf("Verification of test vector #%u with a truncated tag failed\n",
                    (unsigned int) i);
         }
+        if (i == 0 && crypto_aead_aegis256_decrypt(NULL, NULL,
+                                                   NULL, ciphertext, ciphertext_len,
+                                                   ad, ad_len, nonce, key) != 0) {
+            printf("Verification of test vector #%u's tag failed\n", (unsigned int) i);
+        }
         if (crypto_aead_aegis256_decrypt(decrypted, &found_message_len, NULL, ciphertext,
                                          ciphertext_len, ad, ad_len, nonce, key) != 0) {
             printf("Verification of test vector #%u failed\n", (unsigned int) i);
