@@ -30,10 +30,6 @@
 #include <tmmintrin.h>
 #include <wmmintrin.h>
 
-#ifndef ENOSYS
-# define ENOSYS ENXIO
-#endif
-
 #if defined(__INTEL_COMPILER) || defined(_bswap64)
 #elif defined(_MSC_VER)
 # define _bswap64(a) _byteswap_uint64(a)
@@ -918,6 +914,10 @@ crypto_aead_aes256gcm_is_available(void)
 }
 
 #else
+
+#ifndef ENOSYS
+# define ENOSYS ENXIO
+#endif
 
 int
 crypto_aead_aes256gcm_encrypt_detached(unsigned char *c,
