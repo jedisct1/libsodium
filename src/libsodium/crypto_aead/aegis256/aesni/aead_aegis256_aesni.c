@@ -184,8 +184,8 @@ crypto_aead_aegis256_encrypt(unsigned char *c, unsigned long long *clen_p, const
     if (mlen > crypto_aead_aegis256_MESSAGEBYTES_MAX) {
         sodium_misuse();
     }
-    ret =
-        crypto_aead_aegis256_encrypt_detached(c, c + mlen, NULL, m, mlen, ad, adlen, nsec, npub, k);
+    ret = crypto_aead_aegis256_encrypt_detached(c, c + mlen, NULL, m, mlen,
+                                                ad, adlen, nsec, npub, k);
     if (clen_p != NULL) {
         if (ret == 0) {
             clen = mlen + 16ULL;
