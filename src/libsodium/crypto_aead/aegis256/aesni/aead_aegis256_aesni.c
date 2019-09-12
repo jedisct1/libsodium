@@ -18,21 +18,20 @@
 
 #if defined(HAVE_TMMINTRIN_H) && defined(HAVE_WMMINTRIN_H)
 
-# ifdef __GNUC__
-#  pragma GCC target("ssse3")
-#  pragma GCC target("aes")
-# endif
+#ifdef __GNUC__
+# pragma GCC target("ssse3")
+# pragma GCC target("aes")
+#endif
 
 #include <tmmintrin.h>
 #include <wmmintrin.h>
 
 static inline void
-crypto_aead_aegis256_update(__m128i *const state,
-                            const __m128i data)
+crypto_aead_aegis256_update(__m128i *const state, const __m128i data)
 {
     __m128i tmp;
 
-    tmp = _mm_aesenc_si128(state[5], state[0]);
+    tmp      = _mm_aesenc_si128(state[5], state[0]);
     state[5] = _mm_aesenc_si128(state[4], state[5]);
     state[4] = _mm_aesenc_si128(state[3], state[4]);
     state[3] = _mm_aesenc_si128(state[2], state[3]);
@@ -42,27 +41,25 @@ crypto_aead_aegis256_update(__m128i *const state,
 }
 
 static void
-crypto_aead_aegis256_init(const unsigned char *key,
-                          const unsigned char *iv,
-                          __m128i *const state)
+crypto_aead_aegis256_init(const unsigned char *key, const unsigned char *iv, __m128i *const state)
 {
-    int     i;
     __m128i k1;
     __m128i k2;
     __m128i k3;
     __m128i k4;
+    int     i;
 
-    k1 = _mm_loadu_si128((__m128i *)&key[0]);
-    k2 = _mm_loadu_si128((__m128i *)&key[16]);
-    k3 = _mm_xor_si128(k1, _mm_loadu_si128((__m128i *)&iv[0]));
-    k4 = _mm_xor_si128(k2, _mm_loadu_si128((__m128i *)&iv[16]));
+    k1 = _mm_loadu_si128((__m128i *) &key[0]);
+    k2 = _mm_loadu_si128((__m128i *) &key[16]);
+    k3 = _mm_xor_si128(k1, _mm_loadu_si128((__m128i *) &iv[0]));
+    k4 = _mm_xor_si128(k2, _mm_loadu_si128((__m128i *) &iv[16]));
 
     state[0] = k3;
     state[1] = k4;
-    state[2] = _mm_set_epi8(0xdd, 0x28, 0xb5, 0x73, 0x42, 0x31, 0x11, 0x20,
-                            0xf1, 0x2f, 0xc2, 0x6d, 0x55, 0x18, 0x3d, 0xdb);
-    state[3] = _mm_set_epi8(0x62, 0x79, 0xe9, 0x90, 0x59, 0x37, 0x22, 0x15,
-                            0x0d, 0x08, 0x05, 0x03, 0x02, 0x01, 0x01, 0x00);
+    state[2] = _mm_set_epi8(0xdd, 0x28, 0xb5, 0x73, 0x42, 0x31, 0x11, 0x20, 0xf1, 0x2f, 0xc2, 0x6d,
+                            0x55, 0x18, 0x3d, 0xdb);
+    state[3] = _mm_set_epi8(0x62, 0x79, 0xe9, 0x90, 0x59, 0x37, 0x22, 0x15, 0x0d, 0x08, 0x05, 0x03,
+                            0x02, 0x01, 0x01, 0x00);
     state[4] = _mm_xor_si128(k1, state[3]);
     state[5] = _mm_xor_si128(k2, state[2]);
 
@@ -75,13 +72,11 @@ crypto_aead_aegis256_init(const unsigned char *key,
 }
 
 static void
-crypto_aead_aegis256_tag(unsigned char *mac,
-                         unsigned long long mlen,
-                         unsigned long long adlen,
+crypto_aead_aegis256_tag(unsigned char *mac, unsigned long long mlen, unsigned long long adlen,
                          __m128i *const state)
 {
-    int     i;
     __m128i tmp;
+    int     i;
 
     tmp = _mm_set_epi64x(mlen << 3, adlen << 3);
     tmp = _mm_xor_si128(tmp, state[3]);
@@ -96,55 +91,48 @@ crypto_aead_aegis256_tag(unsigned char *mac,
     tmp = _mm_xor_si128(tmp, state[1]);
     tmp = _mm_xor_si128(tmp, state[0]);
 
-    _mm_storeu_si128((__m128i *)mac, tmp);
+    _mm_storeu_si128((__m128i *) mac, tmp);
 }
 
 static void
-crypto_aead_aegis256_enc(unsigned char *const dst,
-                         const unsigned char *const src,
+crypto_aead_aegis256_enc(unsigned char *const dst, const unsigned char *const src,
                          __m128i *const state)
 {
     __m128i msg;
     __m128i tmp;
 
-    msg = _mm_loadu_si128((__m128i *)src);
+    msg = _mm_loadu_si128((__m128i *) src);
     tmp = _mm_xor_si128(msg, state[5]);
     tmp = _mm_xor_si128(tmp, state[4]);
     tmp = _mm_xor_si128(tmp, state[1]);
     tmp = _mm_xor_si128(tmp, _mm_and_si128(state[2], state[3]));
-    _mm_storeu_si128((__m128i *)dst, tmp);
+    _mm_storeu_si128((__m128i *) dst, tmp);
 
     crypto_aead_aegis256_update(state, msg);
 }
 
 static void
-crypto_aead_aegis256_dec(unsigned char *const dst,
-                         const unsigned char *const src,
+crypto_aead_aegis256_dec(unsigned char *const dst, const unsigned char *const src,
                          __m128i *const state)
 {
     __m128i msg;
 
-    msg = _mm_loadu_si128((__m128i *)src);
+    msg = _mm_loadu_si128((__m128i *) src);
     msg = _mm_xor_si128(msg, state[5]);
     msg = _mm_xor_si128(msg, state[4]);
     msg = _mm_xor_si128(msg, state[1]);
     msg = _mm_xor_si128(msg, _mm_and_si128(state[2], state[3]));
-    _mm_storeu_si128((__m128i *)dst, msg);
+    _mm_storeu_si128((__m128i *) dst, msg);
 
     crypto_aead_aegis256_update(state, msg);
 }
 
 int
-crypto_aead_aegis256_encrypt_detached(unsigned char *c,
-                                      unsigned char *mac,
-                                      unsigned long long *maclen_p,
-                                      const unsigned char *m,
-                                      unsigned long long mlen,
-                                      const unsigned char *ad,
-                                      unsigned long long adlen,
-                                      const unsigned char *nsec,
-                                      const unsigned char *npub,
-                                      const unsigned char *k)
+crypto_aead_aegis256_encrypt_detached(unsigned char *c, unsigned char *mac,
+                                      unsigned long long *maclen_p, const unsigned char *m,
+                                      unsigned long long mlen, const unsigned char *ad,
+                                      unsigned long long adlen, const unsigned char *nsec,
+                                      const unsigned char *npub, const unsigned char *k)
 {
     __m128i            state[6];
     unsigned char      src[16];
@@ -184,15 +172,10 @@ crypto_aead_aegis256_encrypt_detached(unsigned char *c,
 }
 
 int
-crypto_aead_aegis256_encrypt(unsigned char *c,
-                             unsigned long long *clen_p,
-                             const unsigned char *m,
-                             unsigned long long mlen,
-                             const unsigned char *ad,
-                             unsigned long long adlen,
-                             const unsigned char *nsec,
-                             const unsigned char *npub,
-                             const unsigned char *k)
+crypto_aead_aegis256_encrypt(unsigned char *c, unsigned long long *clen_p, const unsigned char *m,
+                             unsigned long long mlen, const unsigned char *ad,
+                             unsigned long long adlen, const unsigned char *nsec,
+                             const unsigned char *npub, const unsigned char *k)
 {
     unsigned long long clen = 0ULL;
     int                ret;
@@ -200,11 +183,8 @@ crypto_aead_aegis256_encrypt(unsigned char *c,
     if (mlen > crypto_aead_aegis256_MESSAGEBYTES_MAX) {
         sodium_misuse();
     }
-    ret = crypto_aead_aegis256_encrypt_detached(c,
-                                                c + mlen, NULL,
-                                                m, mlen,
-                                                ad, adlen,
-                                                nsec, npub, k);
+    ret =
+        crypto_aead_aegis256_encrypt_detached(c, c + mlen, NULL, m, mlen, ad, adlen, nsec, npub, k);
     if (clen_p != NULL) {
         if (ret == 0) {
             clen = mlen + 16ULL;
@@ -215,15 +195,10 @@ crypto_aead_aegis256_encrypt(unsigned char *c,
 }
 
 int
-crypto_aead_aegis256_decrypt_detached(unsigned char *m,
-                                      unsigned char *nsec,
-                                      const unsigned char *c,
-                                      unsigned long long clen,
-                                      const unsigned char *mac,
-                                      const unsigned char *ad,
-                                      unsigned long long adlen,
-                                      const unsigned char *npub,
-                                      const unsigned char *k)
+crypto_aead_aegis256_decrypt_detached(unsigned char *m, unsigned char *nsec, const unsigned char *c,
+                                      unsigned long long clen, const unsigned char *mac,
+                                      const unsigned char *ad, unsigned long long adlen,
+                                      const unsigned char *npub, const unsigned char *k)
 {
     __m128i            state[6];
     unsigned char      src[16];
@@ -254,7 +229,7 @@ crypto_aead_aegis256_decrypt_detached(unsigned char *m,
         crypto_aead_aegis256_dec(dst, src, state);
         memcpy(m + i, dst, mlen & 0xf);
         memset(dst, 0, mlen & 0xf);
-        state[0] = _mm_xor_si128(state[0], _mm_loadu_si128((__m128i *)dst));
+        state[0] = _mm_xor_si128(state[0], _mm_loadu_si128((__m128i *) dst));
     }
 
     crypto_aead_aegis256_tag(tag, mlen, adlen, state);
@@ -275,24 +250,17 @@ crypto_aead_aegis256_decrypt_detached(unsigned char *m,
 }
 
 int
-crypto_aead_aegis256_decrypt(unsigned char *m,
-                             unsigned long long *mlen_p,
-                             unsigned char *nsec,
-                             const unsigned char *c,
-                             unsigned long long clen,
-                             const unsigned char *ad,
-                             unsigned long long adlen,
-                             const unsigned char *npub,
-                             const unsigned char *k)
+crypto_aead_aegis256_decrypt(unsigned char *m, unsigned long long *mlen_p, unsigned char *nsec,
+                             const unsigned char *c, unsigned long long clen,
+                             const unsigned char *ad, unsigned long long adlen,
+                             const unsigned char *npub, const unsigned char *k)
 {
     unsigned long long mlen = 0ULL;
-    int                ret = -1;
+    int                ret  = -1;
 
     if (clen >= 16ULL) {
-        ret = crypto_aead_aegis256_decrypt_detached(m, nsec,
-                                                    c, clen - 16ULL,
-                                                    c + clen - 16ULL,
-                                                    ad, adlen, npub, k);
+        ret = crypto_aead_aegis256_decrypt_detached(m, nsec, c, clen - 16ULL, c + clen - 16ULL, ad,
+                                                    adlen, npub, k);
     }
     if (mlen_p != NULL) {
         if (ret == 0) {
@@ -316,61 +284,41 @@ crypto_aead_aegis256_is_available(void)
 #endif
 
 int
-crypto_aead_aegis256_encrypt_detached(unsigned char *c,
-                                      unsigned char *mac,
-                                      unsigned long long *maclen_p,
-                                      const unsigned char *m,
-                                      unsigned long long mlen,
-                                      const unsigned char *ad,
-                                      unsigned long long adlen,
-                                      const unsigned char *nsec,
-                                      const unsigned char *npub,
-                                      const unsigned char *k)
+crypto_aead_aegis256_encrypt_detached(unsigned char *c, unsigned char *mac,
+                                      unsigned long long *maclen_p, const unsigned char *m,
+                                      unsigned long long mlen, const unsigned char *ad,
+                                      unsigned long long adlen, const unsigned char *nsec,
+                                      const unsigned char *npub, const unsigned char *k)
 {
     errno = ENOSYS;
     return -1;
 }
 
 int
-crypto_aead_aegis256_encrypt(unsigned char *c,
-                             unsigned long long *clen_p,
-                             const unsigned char *m,
-                             unsigned long long mlen,
-                             const unsigned char *ad,
-                             unsigned long long adlen,
-                             const unsigned char *nsec,
-                             const unsigned char *npub,
-                             const unsigned char *k)
+crypto_aead_aegis256_encrypt(unsigned char *c, unsigned long long *clen_p, const unsigned char *m,
+                             unsigned long long mlen, const unsigned char *ad,
+                             unsigned long long adlen, const unsigned char *nsec,
+                             const unsigned char *npub, const unsigned char *k)
 {
     errno = ENOSYS;
     return -1;
 }
 
 int
-crypto_aead_aegis256_decrypt_detached(unsigned char *m,
-                                      unsigned char *nsec,
-                                      const unsigned char *c,
-                                      unsigned long long clen,
-                                      const unsigned char *mac,
-                                      const unsigned char *ad,
-                                      unsigned long long adlen,
-                                      const unsigned char *npub,
-                                      const unsigned char *k)
+crypto_aead_aegis256_decrypt_detached(unsigned char *m, unsigned char *nsec, const unsigned char *c,
+                                      unsigned long long clen, const unsigned char *mac,
+                                      const unsigned char *ad, unsigned long long adlen,
+                                      const unsigned char *npub, const unsigned char *k)
 {
     errno = ENOSYS;
     return -1;
 }
 
 int
-crypto_aead_aegis256_decrypt(unsigned char *m,
-                             unsigned long long *mlen_p,
-                             unsigned char *nsec,
-                             const unsigned char *c,
-                             unsigned long long clen,
-                             const unsigned char *ad,
-                             unsigned long long adlen,
-                             const unsigned char *npub,
-                             const unsigned char *k)
+crypto_aead_aegis256_decrypt(unsigned char *m, unsigned long long *mlen_p, unsigned char *nsec,
+                             const unsigned char *c, unsigned long long clen,
+                             const unsigned char *ad, unsigned long long adlen,
+                             const unsigned char *npub, const unsigned char *k)
 {
     errno = ENOSYS;
     return -1;
