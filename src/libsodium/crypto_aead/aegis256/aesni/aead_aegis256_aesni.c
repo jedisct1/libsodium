@@ -16,10 +16,6 @@
 #include "private/common.h"
 #include "private/sse2_64_32.h"
 
-#ifndef ENOSYS
-# define ENOSYS ENXIO
-#endif
-
 #if defined(HAVE_TMMINTRIN_H) && defined(HAVE_WMMINTRIN_H)
 
 # ifdef __GNUC__
@@ -314,6 +310,10 @@ crypto_aead_aegis256_is_available(void)
 }
 
 #else
+
+#ifndef ENOSYS
+# define ENOSYS ENXIO
+#endif
 
 int
 crypto_aead_aegis256_encrypt_detached(unsigned char *c,
