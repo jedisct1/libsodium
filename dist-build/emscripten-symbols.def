@@ -15,6 +15,17 @@ _crypto_aead_aes256gcm_messagebytes_max 0 0
 _crypto_aead_aes256gcm_npubbytes 0 0
 _crypto_aead_aes256gcm_nsecbytes 0 0
 _crypto_aead_aes256gcm_statebytes 0 0
+_crypto_aead_aegis256_abytes 0 0
+_crypto_aead_aegis256_decrypt 0 0
+_crypto_aead_aegis256_decrypt_detached 0 0
+_crypto_aead_aegis256_encrypt 0 0
+_crypto_aead_aegis256_encrypt_detached 0 0
+_crypto_aead_aegis256_is_available 0 0
+_crypto_aead_aegis256_keybytes 0 0
+_crypto_aead_aegis256_keygen 0 0
+_crypto_aead_aegis256_messagebytes_max 0 0
+_crypto_aead_aegis256_npubbytes 0 0
+_crypto_aead_aegis256_nsecbytes 0 0
 _crypto_aead_chacha20poly1305_abytes 1 1
 _crypto_aead_chacha20poly1305_decrypt 1 1
 _crypto_aead_chacha20poly1305_decrypt_detached 1 1
