@@ -221,14 +221,22 @@ crypto_aead_aegis256_decrypt_detached(unsigned char *m, unsigned char *nsec, con
         memcpy(src, ad + i, adlen & 0xf);
         crypto_aead_aegis256_enc(dst, src, state);
     }
-    for (i = 0ULL; i + 16ULL <= mlen; i += 16ULL) {
-        crypto_aead_aegis256_dec(m + i, c + i, state);
+    if (m != NULL) {
+        for (i = 0ULL; i + 16ULL <= mlen; i += 16ULL) {
+            crypto_aead_aegis256_dec(m + i, c + i, state);
+        }
+    } else {
+        for (i = 0ULL; i + 16ULL <= mlen; i += 16ULL) {
+            crypto_aead_aegis256_dec(dst, c + i, state);
+        }
     }
     if (mlen & 0xf) {
         memset(src, 0, 16);
         memcpy(src, c + i, mlen & 0xf);
         crypto_aead_aegis256_dec(dst, src, state);
-        memcpy(m + i, dst, mlen & 0xf);
+        if (m != NULL) {
+            memcpy(m + i, dst, mlen & 0xf);
+        }
         memset(dst, 0, mlen & 0xf);
         state[0] = _mm_xor_si128(state[0], _mm_loadu_si128((__m128i *) dst));
     }
