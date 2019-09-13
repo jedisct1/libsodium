@@ -190,6 +190,7 @@ int main(void)
     if (xmain() != 0) {
         return 99;
     }
+    fflush(fp_res);
     rewind(fp_res);
     if ((fp_out = fopen(TEST_NAME_OUT, "r")) == NULL) {
         perror("fopen(" TEST_NAME_OUT ")");
