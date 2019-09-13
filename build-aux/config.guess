@@ -2,7 +2,7 @@
 # Attempt to guess a canonical system name.
 #   Copyright 1992-2019 Free Software Foundation, Inc.
 
-timestamp='2019-07-24'
+timestamp='2019-09-10'
 
 # This file is free software; you can redistribute it and/or modify it
 # under the terms of the GNU General Public License as published by
@@ -273,6 +273,9 @@ case "$UNAME_MACHINE:$UNAME_SYSTEM:$UNAME_RELEASE:$UNAME_VERSION" in
 	exit ;;
     *:Sortix:*:*)
 	echo "$UNAME_MACHINE"-unknown-sortix
+	exit ;;
+    *:Twizzler:*:*)
+	echo "$UNAME_MACHINE"-unknown-twizzler
 	exit ;;
     *:Redox:*:*)
 	echo "$UNAME_MACHINE"-unknown-redox
