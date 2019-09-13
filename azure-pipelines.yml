@@ -13,10 +13,8 @@ jobs:
           sudo apt-get install build-essential curl cmake
         displayName: Install system packages
       - script: |
-          curl https://sh.rustup.rs -sSf | sh -s -- -y --channel=beta
-          source ${HOME}/.cargo/env
-          git clone --recursive https://github.com/wasmerio/wasmer.git
-          (cd wasmer && cargo install --path .)
+          curl https://get.wasmer.io -sSfL | sh
+          source ~/.wasmer/wasmer.sh
         displayName: Install wasmer
       - script: |
           curl -sL -o wasi-sdk.deb https://github.com/CraneStation/wasi-sdk/releases/download/wasi-sdk-6/wasi-sdk_6.0_amd64.deb
