@@ -31,7 +31,8 @@ SODIUM_EXPORT
 size_t crypto_aead_aegis256_abytes(void);
 
 #define crypto_aead_aegis256_MESSAGEBYTES_MAX \
-    (SODIUM_SIZE_MAX - crypto_aead_aegis256_ABYTES)
+    SODIUM_MIN(SODIUM_SIZE_MAX - crypto_aead_aegis256_ABYTES, \
+               (1ULL << 61) - 1)
 SODIUM_EXPORT
 size_t crypto_aead_aegis256_messagebytes_max(void);
 
