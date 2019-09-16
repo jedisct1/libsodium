@@ -1,5 +1,5 @@
 
-#define TEST_NAME "secretstream"
+#define TEST_NAME "secretstream_xchacha20poly1305"
 #include "cmptest.h"
 
 int
