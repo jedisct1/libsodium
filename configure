@@ -7517,15 +7517,15 @@ if ac_fn_c_try_compile "$LINENO"; then :
 $as_echo "yes" >&6; }
    { $as_echo "$as_me:${as_lineno-$LINENO}: WARNING: Using unsupported Xcode version" >&5
 $as_echo "$as_me: WARNING: Using unsupported Xcode version" >&2;}
-   as_CACHEVAR=`$as_echo "ax_cv_check_cflags__$CFLAGS -ffreestanding" | $as_tr_sh`
-{ $as_echo "$as_me:${as_lineno-$LINENO}: checking whether C compiler accepts $CFLAGS -ffreestanding" >&5
-$as_echo_n "checking whether C compiler accepts $CFLAGS -ffreestanding... " >&6; }
+   as_CACHEVAR=`$as_echo "ax_cv_check_cflags__$CFLAGS -fno-stack-check" | $as_tr_sh`
+{ $as_echo "$as_me:${as_lineno-$LINENO}: checking whether C compiler accepts $CFLAGS -fno-stack-check" >&5
+$as_echo_n "checking whether C compiler accepts $CFLAGS -fno-stack-check... " >&6; }
 if eval \${$as_CACHEVAR+:} false; then :
   $as_echo_n "(cached) " >&6
 else
 
   ax_check_save_flags=$CFLAGS
-  CFLAGS="$CFLAGS  $CFLAGS -ffreestanding"
+  CFLAGS="$CFLAGS  $CFLAGS -fno-stack-check"
   cat confdefs.h - <<_ACEOF >conftest.$ac_ext
 /* end confdefs.h.  */
 #include <time.h>
@@ -7550,7 +7550,7 @@ eval ac_res=\$$as_CACHEVAR
 	       { $as_echo "$as_me:${as_lineno-$LINENO}: result: $ac_res" >&5
 $as_echo "$ac_res" >&6; }
 if eval test \"x\$"$as_CACHEVAR"\" = x"yes"; then :
-  CFLAGS="$CFLAGS -ffreestanding"
+  CFLAGS="$CFLAGS -fno-stack-check"
 else
   :
 fi

@@ -295,8 +295,8 @@ AC_COMPILE_IFELSE([AC_LANG_PROGRAM([[]], [[
 ]])],
   [AC_MSG_RESULT(yes)
    AC_MSG_WARN([Using unsupported Xcode version])
-   AX_CHECK_COMPILE_FLAG([$CFLAGS -ffreestanding],
-     [CFLAGS="$CFLAGS -ffreestanding"])
+   AX_CHECK_COMPILE_FLAG([$CFLAGS -fno-stack-check],
+     [CFLAGS="$CFLAGS -fno-stack-check"])
   ],
   [AC_MSG_RESULT(no)
 ])
