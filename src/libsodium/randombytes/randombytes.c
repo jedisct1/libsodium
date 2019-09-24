@@ -69,6 +69,7 @@ randombytes_random(void)
     randombytes_init_if_needed();
     return implementation->random();
 #else
+    randombytes_stir();
     return EM_ASM_INT_V({
         return Module.getRandomValue();
     });
