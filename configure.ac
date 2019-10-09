@@ -762,23 +762,6 @@ void f(void *x) { __dummy(x); }
  AC_DEFINE([HAVE_WEAK_SYMBOLS], [1], [weak symbols are supported])],
 [AC_MSG_RESULT(no)])
 
-AC_MSG_CHECKING(if data alignment is required)
-aligned_access_required=yes
-AS_CASE([$host_cpu],
-  [i?86|amd64|x86_64|powerpc*|s390*],
-    [aligned_access_required=no],
-  [arm*],
-    [AC_COMPILE_IFELSE([AC_LANG_PROGRAM([[
-#ifndef __ARM_FEATURE_UNALIGNED
-# error data alignment is required
-#endif
-      ]], [[]])], [aligned_access_required=no], [])]
-)
-AS_IF([test "x$aligned_access_required" = "xyes"],
-  [AC_MSG_RESULT(yes)],
-  [AC_MSG_RESULT(no)
-   AC_DEFINE([CPU_UNALIGNED_ACCESS], [1], [unaligned memory access is supported])])
-
 AC_MSG_CHECKING(if atomic operations are supported)
 AC_LINK_IFELSE([AC_LANG_PROGRAM([[ ]], [[
 static volatile int _sodium_lock;
