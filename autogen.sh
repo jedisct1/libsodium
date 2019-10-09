@@ -39,11 +39,11 @@ fi
   command -v curl >/dev/null 2>&1 && {
   echo "Downloading config.guess and config.sub..."
 
-  curl -sL -o config.guess \
+  curl -sSL -o config.guess \
     'https://git.savannah.gnu.org/gitweb/?p=config.git;a=blob_plain;f=config.guess;hb=HEAD' &&
     mv -f config.guess build-aux/config.guess
 
-  curl -sL -o config.sub \
+  curl -sSL -o config.sub \
     'https://git.savannah.gnu.org/gitweb/?p=config.git;a=blob_plain;f=config.sub;hb=HEAD' &&
     mv -f config.sub build-aux/config.sub
 
