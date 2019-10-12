@@ -28,8 +28,11 @@ _crypto_sign_ed25519_verify_detached(const unsigned char *sig,
         return -1;
     }
 #else
-    if (sc25519_is_canonical(sig + 32) == 0 ||
-        ge25519_has_small_order(sig) != 0) {
+    if (sig[63] & 240 &&
+        sc25519_is_canonical(sig + 32) == 0) {
+      return -1;
+    }
+    if (ge25519_has_small_order(sig) != 0) {
         return -1;
     }
     if (ge25519_is_canonical(pk) == 0 ||
