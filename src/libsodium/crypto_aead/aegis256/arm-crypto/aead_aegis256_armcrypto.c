@@ -4,7 +4,6 @@
 
 #if defined(__ARM_NEON_FP) || defined(__aarch64__)
 # include <arm_neon.h>
-#endif
 
 static inline void
 crypto_aead_aegis256_update(uint8x16_t *const state, const uint8x16_t data)
@@ -268,3 +267,4 @@ crypto_aead_aegis256_decrypt(unsigned char *m, unsigned long long *mlen_p, unsig
     }
     return ret;
 }
+#endif
