@@ -44,14 +44,13 @@ add_l64(unsigned char * const S)
 int
 main(void)
 {
-    unsigned char *h, *r;
+    unsigned char *r;
     unsigned char *p, *p2, *p3;
     unsigned char *sc, *sc2, *sc3;
     unsigned char *sc64;
     char          *hex;
     unsigned int   i, j;
 
-    h = (unsigned char *) sodium_malloc(crypto_core_ed25519_HASHBYTES);
     r = (unsigned char *) sodium_malloc(crypto_core_ed25519_UNIFORMBYTES);
     p = (unsigned char *) sodium_malloc(crypto_core_ed25519_BYTES);
     for (i = 0; i < 500; i++) {
@@ -61,14 +60,6 @@ main(void)
         }
         if (crypto_core_ed25519_is_valid_point(p) == 0) {
             printf("crypto_core_ed25519_from_uniform() returned an invalid point\n");
-        }
-
-        randombytes_buf(h, crypto_core_ed25519_HASHBYTES);
-        if (crypto_core_ed25519_from_hash(p, h) != 0) {
-            printf("crypto_core_ed25519_from_hash() failed\n");
-        }
-        if (crypto_core_ed25519_is_valid_point(p) == 0) {
-            printf("crypto_core_ed25519_from_hash() returned an invalid point\n");
         }
 
         crypto_core_ed25519_random(p);
@@ -396,7 +387,6 @@ main(void)
     sodium_free(p2);
     sodium_free(p);
     sodium_free(r);
-    sodium_free(h);
 
     assert(crypto_core_ed25519_BYTES == crypto_core_ed25519_bytes());
     assert(crypto_core_ed25519_SCALARBYTES == crypto_core_ed25519_scalarbytes());
@@ -404,8 +394,6 @@ main(void)
     assert(crypto_core_ed25519_NONREDUCEDSCALARBYTES >= crypto_core_ed25519_SCALARBYTES);
     assert(crypto_core_ed25519_UNIFORMBYTES == crypto_core_ed25519_uniformbytes());
     assert(crypto_core_ed25519_UNIFORMBYTES >= crypto_core_ed25519_BYTES);
-    assert(crypto_core_ed25519_HASHBYTES == crypto_core_ed25519_hashbytes());
-    assert(crypto_core_ed25519_HASHBYTES >= 2 * crypto_core_ed25519_BYTES);
 
     printf("OK\n");
 

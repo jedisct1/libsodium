@@ -48,7 +48,7 @@ int crypto_core_ed25519_from_uniform(unsigned char *p, const unsigned char *r)
 
 SODIUM_EXPORT
 int crypto_core_ed25519_from_hash(unsigned char *p, const unsigned char *h)
-            __attribute__ ((nonnull));
+            __attribute__ ((nonnull)) __attribute__ ((deprecated));
 
 SODIUM_EXPORT
 void crypto_core_ed25519_random(unsigned char *p)
