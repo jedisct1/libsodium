@@ -72,13 +72,11 @@ static void
 crypto_aead_aegis256_mac(unsigned char *mac, unsigned long long mlen,
                          unsigned long long adlen, uint8x16_t *const state)
 {
-    CRYPTO_ALIGN(16) const uint64_t madlen[] = {
-        adlen << 3, mlen << 3
-    };
     uint8x16_t tmp;
     int        i;
 
-    tmp = vreinterpretq_u8_u64(vld1q_u64(madlen));
+    tmp = vreinterpretq_u8_u64(vsetq_lane_u64(mlen << 3,
+                                              vmovq_n_u64(adlen << 3), 1));
     tmp = veorq_u8(tmp, state[3]);
 
     for (i = 0; i < 7; i++) {
