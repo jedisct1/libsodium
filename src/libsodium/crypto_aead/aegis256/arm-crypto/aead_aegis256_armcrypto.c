@@ -2,6 +2,16 @@
 #include <stdlib.h>
 #include <string.h>
 
+#include "core.h"
+#include "crypto_aead_aegis256.h"
+#include "crypto_verify_16.h"
+#include "export.h"
+#include "randombytes.h"
+#include "runtime.h"
+#include "utils.h"
+
+#include "private/common.h"
+
 #if (defined(__ARM_NEON_FP) || defined(__aarch64__)) && defined(__ARM_FEATURE_CRYPTO)
 # include <arm_neon.h>
 
@@ -62,7 +72,7 @@ static void
 crypto_aead_aegis256_mac(unsigned char *mac, unsigned long long mlen,
                          unsigned long long adlen, uint8x16_t *const state)
 {
-    static CRYPTO_ALIGN(16) const uint64_t madlen[] = {
+    CRYPTO_ALIGN(16) const uint64_t madlen[] = {
         adlen << 3, mlen << 3
     };
     uint8x16_t tmp;
