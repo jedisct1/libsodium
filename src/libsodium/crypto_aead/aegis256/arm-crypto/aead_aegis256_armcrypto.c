@@ -18,8 +18,8 @@
 static inline void
 crypto_aead_aegis256_update(uint8x16_t *const state, const uint8x16_t data)
 {
-    uint8x16_t tmp;
-    uint8x16_t zero = {0};
+    const uint8x16_t zero = vmovq_n_u8(0);
+    uint8x16_t       tmp;
 
     tmp      = veorq_u8(vaesmcq_u8(vaeseq_u8(state[5], zero)), state[0]);
     state[5] = veorq_u8(vaesmcq_u8(vaeseq_u8(state[4], zero)), state[5]);
