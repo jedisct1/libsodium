@@ -680,6 +680,7 @@ sodium_munlock
 sodium_munshield
 sodium_pad
 sodium_runtime_has_aesni
+sodium_runtime_has_armcrypto_aes
 sodium_runtime_has_avx
 sodium_runtime_has_avx2
 sodium_runtime_has_avx512f

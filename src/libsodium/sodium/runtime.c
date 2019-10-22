@@ -3,6 +3,14 @@
 #ifdef HAVE_ANDROID_GETCPUFEATURES
 # include <cpu-features.h>
 #endif
+#ifdef __APPLE__
+# include <sys/types.h>
+# include <sys/sysctl.h>
+# include <mach/machine.h>
+#endif
+#ifdef HAVE_SYS_AUXV_H
+# include <sys/auxv.h>
+#endif
 
 #include "private/common.h"
 #include "runtime.h"
@@ -10,6 +18,7 @@
 typedef struct CPUFeatures_ {
     int initialized;
     int has_neon;
+    int has_armcrypto_aes;
     int has_sse2;
     int has_sse3;
     int has_ssse3;
@@ -48,25 +57,50 @@ static CPUFeatures _cpu_features;
 static int
 _sodium_runtime_arm_cpu_features(CPUFeatures * const cpu_features)
 {
+    cpu_features->has_neon = 0;
+    cpu_features->has_armcrypto_aes = 0;
+
 #ifndef __arm__
-    cpu_features->has_neon = 0;
-    return -1;
-#else
-# ifdef __APPLE__
-#  ifdef __ARM_NEON__
+    return -1; /* LCOV_EXCL_LINE */
+#endif
+
+#if defined(__ARM_NEON) || defined(__aarch64__)
     cpu_features->has_neon = 1;
-#  else
-    cpu_features->has_neon = 0;
-#  endif
-# elif defined(HAVE_ANDROID_GETCPUFEATURES) && \
-    defined(ANDROID_CPU_ARM_FEATURE_NEON)
+#elif defined(HAVE_ANDROID_GETCPUFEATURES) && defined(ANDROID_CPU_ARM_FEATURE_NEON)
     cpu_features->has_neon =
         (android_getCpuFeatures() & ANDROID_CPU_ARM_FEATURE_NEON) != 0x0;
-# else
-    cpu_features->has_neon = 0;
-# endif
-    return 0;
+#elif defined(HAVE_GETAUXVAL) && defined(AT_HWCAP) && defined(__aarch64__)
+    cpu_features->has_neon = (getauxval(AT_HWCAP) & (1L << 1)) != 0;
 #endif
+
+    if (cpu_features->has_neon == 0) {
+        return 0;
+    }
+
+#if __ARM_FEATURE_CRYPTO
+    cpu_features->has_armcrypto_aes = 1;
+#elif defined(__APPLE__) && defined(CPU_TYPE_ARM64) && defined(CPU_SUBTYPE_ARM64E)
+    {
+        cpu_type_t    cpu_type;
+        cpu_subtype_t cpu_subtype;
+        size_t        cpu_type_len = sizeof cpu_type;
+        size_t        cpu_subtype_len = sizeof cpu_subtype;
+
+        if (sysctlbyname("hw.cputype", &cpu_type, &cpu_type_len,
+                         NULL, 0) == 0 && cpu_type == CPU_TYPE_ARM64 &&
+            sysctlbyname("hw.cpusubtype", &cpu_subtype, &cpu_subtype_len,
+                         NULL, 0) == 0 && cpu_type == CPU_SUBTYPE_ARM64E) {
+            cpu_features->has_armcrypto_aes = 1;
+        }
+    }
+#elif defined(HAVE_ANDROID_GETCPUFEATURES) && defined(ANDROID_CPU_ARM_FEATURE_AES)
+    cpu_features->has_armcrypto_aes =
+        (android_getCpuFeatures() & ANDROID_CPU_ARM_FEATURE_AES) != 0x0;
+#elif defined(HAVE_GETAUXVAL) && defined(AT_HWCAP) && defined(__aarch64__)
+    cpu_features->has_armcrypto_aes = (getauxval(AT_HWCAP) & (1L << 3)) != 0;
+#endif
+
+    return 0;
 }
 
 static void
@@ -246,6 +280,12 @@ int
 sodium_runtime_has_neon(void)
 {
     return _cpu_features.has_neon;
+}
+
+int
+sodium_runtime_has_armcrypto_aes(void)
+{
+    return _cpu_features.has_armcrypto_aes;
 }
 
 int

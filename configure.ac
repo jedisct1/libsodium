@@ -554,7 +554,7 @@ AC_SUBST(CFLAGS_AESNI)
 AC_SUBST(CFLAGS_PCLMUL)
 AC_SUBST(CFLAGS_RDRAND)
 
-AC_CHECK_HEADERS([sys/mman.h sys/random.h intrin.h])
+AC_CHECK_HEADERS([sys/mman.h sys/random.h intrin.h sys/auxv.h])
 
 AC_MSG_CHECKING([if _xgetbv() is available])
 AC_LINK_IFELSE(
@@ -818,6 +818,7 @@ unsigned char buf;
 ])
 AC_CHECK_FUNCS([posix_memalign getpid nanosleep])
 AC_CHECK_FUNCS([memset_s explicit_bzero explicit_memset])
+AC_CHECK_FUNCS([getauxval])
 
 AC_SUBST([LIBTOOL_EXTRA_FLAGS])
 
