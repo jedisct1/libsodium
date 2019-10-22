@@ -60,7 +60,7 @@ _sodium_runtime_arm_cpu_features(CPUFeatures * const cpu_features)
     cpu_features->has_neon = 0;
     cpu_features->has_armcrypto_aes = 0;
 
-#ifndef __arm__
+#ifndef __ARM_ARCH
     return -1; /* LCOV_EXCL_LINE */
 #endif
 
