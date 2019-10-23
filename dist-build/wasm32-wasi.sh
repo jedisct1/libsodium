@@ -10,8 +10,15 @@ export PREFIX="$(pwd)/libsodium-wasm32-wasi"
 mkdir -p $PREFIX || exit 1
 
 export CFLAGS="-DED25519_NONDETERMINISTIC=1 -O2"
+export LDFLAGS="-s -Wl,--no-threads"
 
 make distclean > /dev/null
+
+# This is necessary for Frankeinstein Linux systems, where people mix a base
+# system containing old tools (here: old autotools) with backported or
+# hand-compiled recent tools (here: LLVM)
+grep -q -F -- 'wasi' build-aux/config.sub || \
+  sed -i -e 's/-nacl\*)/-nacl*|-wasi)/' build-aux/config.sub
 
 if [ "x$1" = "x--bench" ]; then
   export BENCHMARKS=1
