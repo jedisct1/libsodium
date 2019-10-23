@@ -791,7 +791,9 @@ AS_IF([test "x$EMSCRIPTEN" = "x"],[
 #endif
 ]], [[
 unsigned char buf;
-(void) getrandom((void *) &buf, 1U, 0U);
+if (&getrandom != NULL) {
+  (void) getrandom((void *) &buf, 1U, 0U);
+}
   ]])],
   [AC_MSG_RESULT(yes)
    AC_CHECK_FUNCS([getrandom])],
@@ -809,7 +811,9 @@ unsigned char buf;
 #endif
 ]], [[
 unsigned char buf;
-(void) getentropy((void *) &buf, 1U);
+if (&getentropy != NULL) {
+  (void) getentropy((void *) &buf, 1U);
+}
   ]])],
   [AC_MSG_RESULT(yes)
    AC_CHECK_FUNCS([getentropy])],

@@ -17,8 +17,8 @@ export SIMULATOR32_PREFIX="$PREFIX/tmp/simulator32"
 export SIMULATOR64_PREFIX="$PREFIX/tmp/simulator64"
 export XCODEDIR=$(xcode-select -p)
 
-export IOS_SIMULATOR_VERSION_MIN=${IOS_SIMULATOR_VERSION_MIN-"8.0.0"}
-export IOS_VERSION_MIN=${IOS_VERSION_MIN-"8.0.0"}
+export IOS_SIMULATOR_VERSION_MIN=${IOS_SIMULATOR_VERSION_MIN-"9.0.0"}
+export IOS_VERSION_MIN=${IOS_VERSION_MIN-"9.0.0"}
 
 echo
 echo "Warnings related to headers being present but not usable are due to functions"
