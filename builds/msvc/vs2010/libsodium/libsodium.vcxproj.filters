@@ -312,8 +312,14 @@
     <ClCompile Include="..\..\..\..\src\libsodium\crypto_aead\xchacha20poly1305\sodium\aead_xchacha20poly1305.c">
       <Filter>crypto_aead\xchacha20poly1305\sodium</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\..\..\src\libsodium\crypto_aead\aegis256\aead_aegis256.c">
+      <Filter>crypto_aead\aegis256</Filter>
+    </ClCompile>
     <ClCompile Include="..\..\..\..\src\libsodium\crypto_aead\aegis256\aesni\aead_aegis256_aesni.c">
       <Filter>crypto_aead\aegis256\aesni</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\src\libsodium\crypto_aead\aegis256\armcrypto\aead_aegis256_armcrypto.c">
+      <Filter>crypto_aead\aegis256\armcrypto</Filter>
     </ClCompile>
     <ClCompile Include="..\..\..\..\src\libsodium\crypto_aead\aes256gcm\aesni\aead_aes256gcm_aesni.c">
       <Filter>crypto_aead\aes256gcm\aesni</Filter>
@@ -393,6 +399,9 @@
       <Filter>include\sodium</Filter>
     </ClInclude>
     <ClInclude Include="..\..\..\..\src\libsodium\include\sodium\core.h">
+      <Filter>include\sodium</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\src\libsodium\include\sodium\version.h">
       <Filter>include\sodium</Filter>
     </ClInclude>
     <ClInclude Include="..\..\..\..\src\libsodium\include\sodium\export.h">
@@ -756,6 +765,9 @@
     </Filter>
     <Filter Include="crypto_aead\aegis256\aesni">
       <UniqueIdentifier>{53f55581-bb1c-3fe5-8c1b-1dd4243765ef}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="crypto_aead\aegis256\armcrypto">
+      <UniqueIdentifier>{d8e5d430-b695-3e19-81bd-31fd1e6445da}</UniqueIdentifier>
     </Filter>
     <Filter Include="crypto_aead\aes256gcm">
       <UniqueIdentifier>{3e53394c-b59c-30cc-ae69-a4f46f9edfa3}</UniqueIdentifier>
