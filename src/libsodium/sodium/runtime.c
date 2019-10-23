@@ -91,7 +91,9 @@ _sodium_runtime_arm_cpu_features(CPUFeatures * const cpu_features)
         if (sysctlbyname("hw.cputype", &cpu_type, &cpu_type_len,
                          NULL, 0) == 0 && cpu_type == CPU_TYPE_ARM64 &&
             sysctlbyname("hw.cpusubtype", &cpu_subtype, &cpu_subtype_len,
-                         NULL, 0) == 0 && cpu_type == CPU_SUBTYPE_ARM64E) {
+                         NULL, 0) == 0 &&
+            (cpu_subtype == CPU_SUBTYPE_ARM64E ||
+                cpu_subtype == CPU_SUBTYPE_ARM64_V8)) {
             cpu_features->has_armcrypto_aes = 1;
         }
     }
