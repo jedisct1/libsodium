@@ -848,12 +848,11 @@ unsigned char buf;
 # error A recent libasan version on an old system may intercept nonexistent functions
 #endif
 ]], [[
-#ifdef __APPLE__
-# error getentropy() is currently disabled on Apple operating systems
-#endif
-
 unsigned char buf;
-(void) getentropy((void *) &buf, 1U);
+
+if (&getentropy != NULL) {
+  (void) getentropy((void *) &buf, 1U);
+}
   ]])],
   [AC_MSG_RESULT(yes)
    AC_CHECK_FUNCS([getentropy])],

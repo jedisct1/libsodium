@@ -19145,12 +19145,11 @@ int
 main ()
 {
 
-#ifdef __APPLE__
-# error getentropy() is currently disabled on Apple operating systems
-#endif
-
 unsigned char buf;
-(void) getentropy((void *) &buf, 1U);
+
+if (&getentropy != NULL) {
+  (void) getentropy((void *) &buf, 1U);
+}
 
   ;
   return 0;
