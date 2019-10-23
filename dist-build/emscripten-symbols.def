@@ -606,7 +606,7 @@ _sodium_runtime_has_avx 0 0
 _sodium_runtime_has_avx2 0 0
 _sodium_runtime_has_avx512f 0 0
 _sodium_runtime_has_neon 0 0
-_sodium_runtime_has_armcrypto_aes 0 0
+_sodium_runtime_has_armcrypto 0 0
 _sodium_runtime_has_pclmul 0 0
 _sodium_runtime_has_rdrand 0 0
 _sodium_runtime_has_sse2 0 0

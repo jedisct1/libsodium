@@ -18,7 +18,7 @@
 typedef struct CPUFeatures_ {
     int initialized;
     int has_neon;
-    int has_armcrypto_aes;
+    int has_armcrypto;
     int has_sse2;
     int has_sse3;
     int has_ssse3;
@@ -58,7 +58,7 @@ static int
 _sodium_runtime_arm_cpu_features(CPUFeatures * const cpu_features)
 {
     cpu_features->has_neon = 0;
-    cpu_features->has_armcrypto_aes = 0;
+    cpu_features->has_armcrypto = 0;
 
 #ifndef __ARM_ARCH
     return -1; /* LCOV_EXCL_LINE */
@@ -80,7 +80,7 @@ _sodium_runtime_arm_cpu_features(CPUFeatures * const cpu_features)
     }
 
 #if __ARM_FEATURE_CRYPTO
-    cpu_features->has_armcrypto_aes = 1;
+    cpu_features->has_armcrypto = 1;
 #elif defined(__APPLE__) && defined(CPU_TYPE_ARM64) && defined(CPU_SUBTYPE_ARM64E)
     {
         cpu_type_t    cpu_type;
@@ -94,16 +94,16 @@ _sodium_runtime_arm_cpu_features(CPUFeatures * const cpu_features)
                          NULL, 0) == 0 &&
             (cpu_subtype == CPU_SUBTYPE_ARM64E ||
                 cpu_subtype == CPU_SUBTYPE_ARM64_V8)) {
-            cpu_features->has_armcrypto_aes = 1;
+            cpu_features->has_armcrypto = 1;
         }
     }
 #elif defined(HAVE_ANDROID_GETCPUFEATURES) && defined(ANDROID_CPU_ARM_FEATURE_AES)
-    cpu_features->has_armcrypto_aes =
+    cpu_features->has_armcrypto =
         (android_getCpuFeatures() & ANDROID_CPU_ARM_FEATURE_AES) != 0x0;
 #elif defined(HAVE_GETAUXVAL) && defined(AT_HWCAP) && defined(__aarch64__)
-    cpu_features->has_armcrypto_aes = (getauxval(AT_HWCAP) & (1L << 3)) != 0;
+    cpu_features->has_armcrypto = (getauxval(AT_HWCAP) & (1L << 3)) != 0;
 #elif defined(HAVE_GETAUXVAL) && defined(AT_HWCAP2) && defined(__arm__)
-    cpu_features->has_armcrypto_aes = (getauxval(AT_HWCAP2) & (1L << 0)) != 0;
+    cpu_features->has_armcrypto = (getauxval(AT_HWCAP2) & (1L << 0)) != 0;
 #endif
 
     return 0;
@@ -289,9 +289,9 @@ sodium_runtime_has_neon(void)
 }
 
 int
-sodium_runtime_has_armcrypto_aes(void)
+sodium_runtime_has_armcrypto(void)
 {
-    return _cpu_features.has_armcrypto_aes;
+    return _cpu_features.has_armcrypto;
 }
 
 int
