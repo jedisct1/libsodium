@@ -12,7 +12,7 @@
 
 #include "private/common.h"
 
-#if (defined(__ARM_NEON) || defined(__aarch64__)) && defined(__ARM_FEATURE_CRYPTO)
+#ifdef HAVE_ARM_CRYPTO
 # include <arm_neon.h>
 
 static inline void

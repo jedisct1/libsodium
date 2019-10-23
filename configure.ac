@@ -366,6 +366,20 @@ dnl Checks for headers
 
 AS_IF([test "x$EMSCRIPTEN" = "x"], [
 
+  AS_IF([test "$host_cpu" = "aarch64"], [
+    oldcflags="$CFLAGS"
+    AX_CHECK_COMPILE_FLAG([-march=armv8-a+crypto], [CFLAGS="$CFLAGS -march=armv8-a+crypto"])
+    AC_MSG_CHECKING(for ARM crypto instructions set)
+    AC_COMPILE_IFELSE([AC_LANG_PROGRAM([[
+#include <arm_neon.h>
+]], [[ vaeseq_u8(vmovq_n_u8(0), vmovq_n_u8(__ARM_FEATURE_CRYPTO)) ]])],
+      [AC_MSG_RESULT(yes)
+       AC_DEFINE([HAVE_ARMCRYPTO], [1], [ARM crypto extensions are available])
+       AX_CHECK_COMPILE_FLAG([-march=armv8-a+crypto], [CFLAGS_ARMCRYPTO="-march=armv8-a+crypto"])],
+      [AC_MSG_RESULT(no)])
+    CFLAGS="$oldcflags"
+  ])
+
   oldcflags="$CFLAGS"
   AX_CHECK_COMPILE_FLAG([-mmmx], [CFLAGS="$CFLAGS -mmmx"])
   AC_MSG_CHECKING(for MMX instructions set)
@@ -542,6 +556,7 @@ __m512i y = _mm512_permutexvar_epi64(_mm512_setr_epi64(0, 1, 4, 5, 2, 3, 6, 7), 
 
 ])
 
+AC_SUBST(CFLAGS_ARMCRYPTO)
 AC_SUBST(CFLAGS_MMX)
 AC_SUBST(CFLAGS_SSE2)
 AC_SUBST(CFLAGS_SSE3)
