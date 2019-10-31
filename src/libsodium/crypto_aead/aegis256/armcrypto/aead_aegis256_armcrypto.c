@@ -283,7 +283,7 @@ crypto_aead_aegis256_decrypt(unsigned char *m, unsigned long long *mlen_p, unsig
 int
 crypto_aead_aegis256_is_available(void)
 {
-    return sodium_runtime_has_aesni();
+    return sodium_runtime_has_armcrypto();
 }
 
 #endif
