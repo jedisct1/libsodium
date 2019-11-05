@@ -34,5 +34,11 @@ if [ -z "$WASI_RUNTIME" ] || [ "$WASI_RUNTIME" = "lucet" ]; then
   fi
 fi
 
+if [ -z "$WASI_RUNTIME" ] || [ "$WASI_RUNTIME" = "wasmer-js" ]; then
+  if command -v wasmer-js >/dev/null; then
+    wasmer-js run "$1" --dir=. && exit 0
+  fi
+fi
+
 echo "WebAssembly runtime failed" >&2
 exit 1
