@@ -46,6 +46,7 @@ EXTRA_DIST = \
 	kx.exp \
 	metamorphic.exp \
 	misuse.exp \
+	musig.exp \
 	onetimeauth.exp \
 	onetimeauth2.exp \
 	onetimeauth7.exp \
@@ -127,6 +128,7 @@ DISTCLEANFILES = \
 	kx.res \
 	metamorphic.res \
 	misuse.res \
+	musig.res \
 	onetimeauth.res \
 	onetimeauth2.res \
 	onetimeauth7.res \
@@ -215,6 +217,7 @@ TESTS_TARGETS = \
 	kx \
 	metamorphic \
 	misuse \
+	musig \
 	onetimeauth \
 	onetimeauth2 \
 	onetimeauth7 \
@@ -380,6 +383,9 @@ metamorphic_LDADD         = $(TESTS_LDADD)
 
 misuse_SOURCE             = cmptest.h misuse.c
 misuse_LDADD              = $(TESTS_LDADD)
+
+musig_SOURCE              = cmptest.h musig.c
+musig_LDADD               = $(TESTS_LDADD)
 
 onetimeauth_SOURCE        = cmptest.h onetimeauth.c
 onetimeauth_LDADD         = $(TESTS_LDADD)

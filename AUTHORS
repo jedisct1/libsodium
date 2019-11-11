@@ -26,6 +26,11 @@ ed25519                                Daniel J. Bernstein
                                        Peter Schwabe
                                        Tanja Lange
 
+musig                                  Gregory Maxwell
+                                       Andrew Poelstra
+                                       Yannick Seurin
+                                       Pieter Wuille
+
 poly1305                               Daniel J. Bernstein
 
 ristretto                              Mike Hamburg
@@ -82,6 +87,8 @@ crypto_hash/sha512256
 crypto_kdf                             Frank Denis
 
 crypto_kx                              Frank Denis
+
+crypto_musig                           Nicola Di Lieto
 
 crypto_onetimeauth/poly1305/donna      Andrew "floodyberry" Moon
 crypto_onetimeauth/poly1305/sse2

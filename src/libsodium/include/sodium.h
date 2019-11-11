@@ -28,6 +28,7 @@
 #include "sodium/crypto_kdf.h"
 #include "sodium/crypto_kdf_blake2b.h"
 #include "sodium/crypto_kx.h"
+#include "sodium/crypto_musig.h"
 #include "sodium/crypto_onetimeauth.h"
 #include "sodium/crypto_onetimeauth_poly1305.h"
 #include "sodium/crypto_pwhash.h"
