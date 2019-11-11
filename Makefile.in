@@ -90,7 +90,8 @@ build_triplet = @build@
 host_triplet = @host@
 subdir = .
 ACLOCAL_M4 = $(top_srcdir)/aclocal.m4
-am__aclocal_m4_deps = $(top_srcdir)/m4/ax_check_catchable_abrt.m4 \
+am__aclocal_m4_deps = $(top_srcdir)/m4/ax_add_fortify_source.m4 \
+	$(top_srcdir)/m4/ax_check_catchable_abrt.m4 \
 	$(top_srcdir)/m4/ax_check_catchable_segv.m4 \
 	$(top_srcdir)/m4/ax_check_compile_flag.m4 \
 	$(top_srcdir)/m4/ax_check_define.m4 \
