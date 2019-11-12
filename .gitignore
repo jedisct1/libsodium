@@ -126,6 +126,7 @@ test/default/keygen
 test/default/kx
 test/default/metamorphic
 test/default/misuse
+test/default/musig
 test/default/onetimeauth
 test/default/onetimeauth2
 test/default/onetimeauth7

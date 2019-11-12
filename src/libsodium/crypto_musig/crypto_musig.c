@@ -133,7 +133,7 @@ _crypto_musig_publickey(unsigned char *pk, unsigned char *a,
     unsigned char a_tmp[crypto_musig_KSTBYTES];
     const crypto_musig_peer *p;
 
-    if (!peers || !crypto_core_ristretto255_is_valid_point(peers->pk)) {
+    if (!peers) {
         sodium_misuse();
     }
 
@@ -207,7 +207,7 @@ crypto_musig_add(crypto_musig_state *st, const unsigned char *pk)
         p = &(*p)->next;
     }
 
-    np = sodium_malloc(sizeof(crypto_musig_peer));
+    np = (crypto_musig_peer *)sodium_malloc(sizeof(crypto_musig_peer));
     if (!np) {
         return -1;
     }

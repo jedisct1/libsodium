@@ -3,6 +3,7 @@
 #include <stdlib.h>
 
 #include "crypto_aead_aegis256.h"
+#include "randombytes.h"
 
 size_t
 crypto_aead_aegis256_keybytes(void)
