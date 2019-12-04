@@ -224,6 +224,7 @@ AX_CHECK_COMPILE_FLAG([-fvisibility=hidden],
 
 AS_CASE([$host_os], [cygwin*|mingw*|msys|pw32*|cegcc*], [ ], [
   AX_CHECK_COMPILE_FLAG([-fPIC], [CFLAGS="$CFLAGS -fPIC"])
+  CPPFLAGS="$CPPFLAGS -U_FORTIFY_SOURCE"
 ])
 
 AS_IF([test "$enable_pie" != "no"],[

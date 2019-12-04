@@ -7042,6 +7042,7 @@ else
   :
 fi
 
+  CPPFLAGS="$CPPFLAGS -U_FORTIFY_SOURCE"
  ;;
 esac
 
