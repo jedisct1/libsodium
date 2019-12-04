@@ -6903,6 +6903,8 @@ if test $ac_cv_defined___wasi__ != "no"; then :
   WASI="yes"
 fi
 
+case $host_os in #(
+  linux-gnu) :
 
     { $as_echo "$as_me:${as_lineno-$LINENO}: checking whether to add -D_FORTIFY_SOURCE=2 to CPPFLAGS" >&5
 $as_echo_n "checking whether to add -D_FORTIFY_SOURCE=2 to CPPFLAGS... " >&6; }
@@ -6962,7 +6964,10 @@ $as_echo "no" >&6; }
 fi
 rm -f core conftest.err conftest.$ac_objext \
     conftest$ac_exeext conftest.$ac_ext
-
+ ;; #(
+  *) :
+      ;;
+esac
 
 { $as_echo "$as_me:${as_lineno-$LINENO}: checking whether C compiler accepts -fvisibility=hidden" >&5
 $as_echo_n "checking whether C compiler accepts -fvisibility=hidden... " >&6; }
@@ -7042,7 +7047,6 @@ else
   :
 fi
 
-  CPPFLAGS="$CPPFLAGS -U_FORTIFY_SOURCE"
  ;;
 esac
 
