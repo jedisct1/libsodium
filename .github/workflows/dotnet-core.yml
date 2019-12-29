@@ -1,0 +1,123 @@
+name: .NET Core Package
+
+on:
+  push:
+    branches: 
+    - stable
+
+jobs:
+  build-windows:
+    runs-on: windows-latest
+    steps:
+    - uses: actions/checkout@v1
+    - name: Build libsodium
+      run: buildbase.bat ..\vs2019\libsodium.sln 16
+      working-directory: builds/msvc/build/
+      shell: cmd
+    - uses: actions/upload-artifact@v1
+      with:
+        name: libsodium-win-x64
+        path: bin/x64/Release/v142/dynamic/libsodium.dll
+    - uses: actions/upload-artifact@v1
+      with:
+        name: libsodium-win-x86
+        path: bin/Win32/Release/v142/dynamic/libsodium.dll
+  build-linux-glibc:
+    runs-on: ubuntu-latest
+    container:
+      image: centos:6
+    steps:
+    - name: Set up build environment
+      run: |
+        yum install -q -y centos-release-scl ca-certificates
+        yum install -q -y devtoolset-7-gcc*
+    - uses: actions/checkout@v1
+    - name: Build libsodium
+      run: |
+        scl enable devtoolset-7 './configure --disable-debug --prefix=$PWD/.libsodium-build'
+        scl enable devtoolset-7 'make && make check'
+        scl enable devtoolset-7 'make install'
+        scl enable devtoolset-7 'strip --strip-all .libsodium-build/lib/libsodium.so'
+    - uses: actions/upload-artifact@v1
+      with:
+        name: libsodium-linux-x64
+        path: .libsodium-build/lib/libsodium.so
+  build-linux-musl:
+    runs-on: ubuntu-latest
+    container:
+      image: alpine:3.7
+    steps:
+    - name: Set up build environment
+      run: |
+        apk update
+        apk add alpine-sdk ca-certificates
+    - uses: actions/checkout@v1
+    - name: Build libsodium
+      run: |
+        ./configure --disable-debug --prefix=$PWD/.libsodium-build
+        make && make check
+        make install
+        strip --strip-all .libsodium-build/lib/libsodium.so
+    - uses: actions/upload-artifact@v1
+      with:
+        name: libsodium-linux-musl-x64
+        path: .libsodium-build/lib/libsodium.so
+  build-macos:
+    runs-on: macos-latest
+    steps:
+    - uses: actions/checkout@v1
+    - name: Build libsodium
+      run: |
+        ./configure --disable-debug --prefix=$PWD/.libsodium-build
+        make && make check
+        make install
+    - uses: actions/upload-artifact@v1
+      with:
+        name: libsodium-osx-x64
+        path: .libsodium-build/lib/libsodium.dylib
+  pack:
+    runs-on: ubuntu-latest
+    needs:
+    - build-windows
+    - build-linux-glibc
+    - build-linux-musl
+    - build-macos
+    steps:
+    - name: Set up .NET Core SDK
+      uses: actions/setup-dotnet@v1
+      with:
+        dotnet-version: 2.1.607
+    - uses: actions/checkout@v1
+    - name: Copy files
+      run: |
+        mkdir -p .libsodium-pack/
+        cp AUTHORS ChangeLog LICENSE packaging/dotnet-core/libsodium.pkgproj .libsodium-pack/
+    - uses: actions/download-artifact@v1
+      with:
+        name: libsodium-win-x64
+        path: .libsodium-pack/runtimes/win-x64/native/libsodium.dll
+    - uses: actions/download-artifact@v1
+      with:
+        name: libsodium-win-x86
+        path: .libsodium-pack/runtimes/win-x86/native/libsodium.dll
+    - uses: actions/download-artifact@v1
+      with:
+        name: libsodium-linux-x64
+        path: .libsodium-pack/runtimes/linux-x64/native/libsodium.so
+    - uses: actions/download-artifact@v1
+      with:
+        name: libsodium-linux-musl-x64
+        path: .libsodium-pack/runtimes/linux-musl-x64/native/libsodium.so
+    - uses: actions/download-artifact@v1
+      with:
+        name: libsodium-osx-x64
+        path: .libsodium-pack/runtimes/osx-x64/native/libsodium.dylib
+    - name: Pack
+      run: dotnet pack .libsodium-pack/libsodium.pkgproj
+      env:
+        DOTNET_CLI_TELEMETRY_OPTOUT: 1
+        DOTNET_SKIP_FIRST_TIME_EXPERIENCE: 1
+    - uses: actions/upload-artifact@v1
+      with:
+        name: libsodium.1.0.18.nupkg
+        path: .libsodium-pack/libsodium.1.0.18.nupkg
