@@ -2,8 +2,9 @@ name: .NET Core Package
 
 on:
   push:
-    branches: 
+    branches:
     - stable
+    - next
 
 jobs:
 
