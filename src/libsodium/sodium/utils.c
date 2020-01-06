@@ -90,7 +90,15 @@ void *alloca (size_t);
 # define MADV_DONTDUMP MADV_NOCORE
 #endif
 
-static size_t        page_size;
+#ifndef DEFAULT_PAGE_SIZE
+# ifdef PAGE_SIZE
+#  define DEFAULT_PAGE_SIZE PAGE_SIZE
+# else
+#  define DEFAULT_PAGE_SIZE 0x10000
+# endif
+#endif
+
+static size_t        page_size = DEFAULT_PAGE_SIZE;
 static unsigned char canary[CANARY_SIZE];
 static unsigned char shielding_prekey[SHIELDING_PREKEY_SIZE];
 
@@ -403,6 +411,8 @@ _sodium_alloc_init(void)
     SYSTEM_INFO si;
     GetSystemInfo(&si);
     page_size = (size_t) si.dwPageSize;
+# else
+#  warning Unknown page size
 # endif
     if (page_size < CANARY_SIZE || page_size < sizeof(size_t)) {
         sodium_misuse(); /* LCOV_EXCL_LINE */
