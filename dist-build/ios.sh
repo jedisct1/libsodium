@@ -2,7 +2,7 @@
 #
 #  Step 1.
 #  Configure for base system so simulator is covered
-#  
+#
 #  Step 2.
 #  Make for iOS and iOS simulator
 #
@@ -14,11 +14,11 @@ export IOS32_PREFIX="$PREFIX/tmp/ios32"
 export IOS32s_PREFIX="$PREFIX/tmp/ios32s"
 export IOS64_PREFIX="$PREFIX/tmp/ios64"
 export SIMULATOR32_PREFIX="$PREFIX/tmp/simulator32"
-export SIMULATOR64_PREFIX="$PREFIX/tmp/simulator64"
+export CATALYST_PREFIX="$PREFIX/tmp/catalyst"
 export XCODEDIR=$(xcode-select -p)
 
-export IOS_SIMULATOR_VERSION_MIN=${IOS_SIMULATOR_VERSION_MIN-"9.0.0"}
-export IOS_VERSION_MIN=${IOS_VERSION_MIN-"9.0.0"}
+export IOS_SIMULATOR_VERSION_MIN=${IOS_SIMULATOR_VERSION_MIN-"6.0.0"}
+export IOS_VERSION_MIN=${IOS_VERSION_MIN-"6.0.0"}
 
 echo
 echo "Warnings related to headers being present but not usable are due to functions"
@@ -46,24 +46,13 @@ else
 fi
 
 ./configure --host=i686-apple-darwin10 \
+            --disable-shared \
             ${LIBSODIUM_ENABLE_MINIMAL_FLAG} \
             --prefix="$SIMULATOR32_PREFIX" || exit 1
 
 
 NPROCESSORS=$(getconf NPROCESSORS_ONLN 2>/dev/null || getconf _NPROCESSORS_ONLN 2>/dev/null)
 PROCESSORS=${NPROCESSORS:-3}
-
-make -j${PROCESSORS} install || exit 1
-
-## x86_64 simulator
-export CFLAGS="-O2 -arch x86_64 -isysroot ${SDK} -mios-simulator-version-min=${IOS_SIMULATOR_VERSION_MIN}"
-export LDFLAGS="-arch x86_64 -isysroot ${SDK} -mios-simulator-version-min=${IOS_SIMULATOR_VERSION_MIN}"
-
-make distclean > /dev/null
-
-./configure --host=x86_64-apple-darwin10 \
-            ${LIBSODIUM_ENABLE_MINIMAL_FLAG} \
-            --prefix="$SIMULATOR64_PREFIX"
 
 make -j${PROCESSORS} install || exit 1
 
@@ -79,6 +68,7 @@ export LDFLAGS="-fembed-bitcode -mthumb -arch armv7 -isysroot ${SDK} -mios-versi
 make distclean > /dev/null
 
 ./configure --host=arm-apple-darwin10 \
+            --disable-shared \
             ${LIBSODIUM_ENABLE_MINIMAL_FLAG} \
             --prefix="$IOS32_PREFIX" || exit 1
 
@@ -91,6 +81,7 @@ export LDFLAGS="-fembed-bitcode -mthumb -arch armv7s -isysroot ${SDK} -mios-vers
 make distclean > /dev/null
 
 ./configure --host=arm-apple-darwin10 \
+            --disable-shared \
             ${LIBSODIUM_ENABLE_MINIMAL_FLAG} \
             --prefix="$IOS32s_PREFIX" || exit 1
 
@@ -103,8 +94,27 @@ export LDFLAGS="-fembed-bitcode -arch arm64 -isysroot ${SDK} -mios-version-min=$
 make distclean > /dev/null
 
 ./configure --host=arm-apple-darwin10 \
+            --disable-shared \
             ${LIBSODIUM_ENABLE_MINIMAL_FLAG} \
             --prefix="$IOS64_PREFIX" || exit 1
+
+make -j${PROCESSORS} install || exit 1
+
+# Build for macOS
+export BASEDIR="${XCODEDIR}/Platforms/MacOSX.platform/Developer"
+export PATH="${BASEDIR}/usr/bin:$BASEDIR/usr/sbin:$PATH"
+export SDK="${BASEDIR}/SDKs/MacOSX10.15.sdk"
+
+# Catalyst
+export CFLAGS="-fembed-bitcode -O2 -arch x86_64 -target x86_64-apple-ios13.0-macabi -isysroot ${SDK} -fembed-bitcode"
+export LDFLAGS="-fembed-bitcode -arch x86_64 -target x86_64-apple-ios13.0-macabi -isysroot ${SDK} -fembed-bitcode"
+
+make distclean > /dev/null
+
+./configure --host=x86_64-apple-darwin10 \
+            --disable-shared \
+            ${LIBSODIUM_ENABLE_MINIMAL_FLAG} \
+            --prefix="$CATALYST_PREFIX" || exit 1
 
 make -j${PROCESSORS} install || exit 1
 
@@ -113,26 +123,17 @@ rm -fr -- "$PREFIX/include" "$PREFIX/libsodium.a" 2> /dev/null
 mkdir -p -- "$PREFIX/lib"
 lipo -create \
   "$SIMULATOR32_PREFIX/lib/libsodium.a" \
-  "$SIMULATOR64_PREFIX/lib/libsodium.a" \
   "$IOS32_PREFIX/lib/libsodium.a" \
   "$IOS32s_PREFIX/lib/libsodium.a" \
   "$IOS64_PREFIX/lib/libsodium.a" \
+  "$CATALYST_PREFIX/lib/libsodium.a" \
   -output "$PREFIX/lib/libsodium.a"
-lipo -create \
-  "$SIMULATOR32_PREFIX/lib/libsodium.dylib" \
-  "$SIMULATOR64_PREFIX/lib/libsodium.dylib" \
-  "$IOS32_PREFIX/lib/libsodium.dylib" \
-  "$IOS32s_PREFIX/lib/libsodium.dylib" \
-  "$IOS64_PREFIX/lib/libsodium.dylib" \
-  -output "$PREFIX/lib/libsodium.dylib"
 mv -f -- "$IOS32_PREFIX/include" "$PREFIX/"
-install_name_tool -id "@rpath/SODIUM.framework/libsodium.dylib" "$PREFIX/lib/libsodium.dylib"
 
 echo
 echo "libsodium has been installed into $PREFIX"
 echo
 file -- "$PREFIX/lib/libsodium.a"
-file -- "$PREFIX/lib/libsodium.dylib"
 
 # Cleanup
 rm -rf -- "$PREFIX/tmp"
