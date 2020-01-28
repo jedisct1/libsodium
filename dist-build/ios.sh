@@ -55,14 +55,13 @@ PROCESSORS=${NPROCESSORS:-3}
 
 make -j${PROCESSORS} install || exit 1
 
-# Build for macOS
+# Build for macOS (Catalyst)
 export BASEDIR="${XCODEDIR}/Platforms/MacOSX.platform/Developer"
 export PATH="${BASEDIR}/usr/bin:$BASEDIR/usr/sbin:$PATH"
 export SDK="${BASEDIR}/SDKs/MacOSX10.15.sdk"
 
-# Catalyst
-export CFLAGS="-fembed-bitcode -O2 -arch x86_64 -target x86_64-apple-ios13.0-macabi -isysroot ${SDK} -fembed-bitcode"
-export LDFLAGS="-fembed-bitcode -arch x86_64 -target x86_64-apple-ios13.0-macabi -isysroot ${SDK} -fembed-bitcode"
+export CFLAGS="-fembed-bitcode -O2 -arch x86_64 -target x86_64-apple-ios13.0-macabi -isysroot ${SDK}"
+export LDFLAGS="-fembed-bitcode -arch x86_64 -target x86_64-apple-ios13.0-macabi -isysroot ${SDK}"
 
 make distclean > /dev/null
 
