@@ -55,6 +55,23 @@ PROCESSORS=${NPROCESSORS:-3}
 
 make -j${PROCESSORS} install || exit 1
 
+# Build for macOS
+export BASEDIR="${XCODEDIR}/Platforms/MacOSX.platform/Developer"
+export PATH="${BASEDIR}/usr/bin:$BASEDIR/usr/sbin:$PATH"
+export SDK="${BASEDIR}/SDKs/MacOSX10.15.sdk"
+
+# Catalyst
+export CFLAGS="-fembed-bitcode -O2 -arch x86_64 -target x86_64-apple-ios13.0-macabi -isysroot ${SDK} -fembed-bitcode"
+export LDFLAGS="-fembed-bitcode -arch x86_64 -target x86_64-apple-ios13.0-macabi -isysroot ${SDK} -fembed-bitcode"
+
+make distclean > /dev/null
+
+./configure --host=x86_64-apple-darwin10 \
+            ${LIBSODIUM_ENABLE_MINIMAL_FLAG} \
+            --prefix="$CATALYST_PREFIX" || exit 1
+
+make -j${PROCESSORS} install || exit 1
+
 # Build for iOS
 export BASEDIR="${XCODEDIR}/Platforms/iPhoneOS.platform/Developer"
 export PATH="${BASEDIR}/usr/bin:$BASEDIR/usr/sbin:$PATH"
@@ -96,40 +113,23 @@ make distclean > /dev/null
 
 make -j${PROCESSORS} install || exit 1
 
-# Build for macOS
-export BASEDIR="${XCODEDIR}/Platforms/MacOSX.platform/Developer"
-export PATH="${BASEDIR}/usr/bin:$BASEDIR/usr/sbin:$PATH"
-export SDK="${BASEDIR}/SDKs/MacOSX10.15.sdk"
-
-# Catalyst
-export CFLAGS="-fembed-bitcode -O2 -arch x86_64 -target x86_64-apple-ios13.0-macabi -isysroot ${SDK} -fembed-bitcode"
-export LDFLAGS="-fembed-bitcode -arch x86_64 -target x86_64-apple-ios13.0-macabi -isysroot ${SDK} -fembed-bitcode"
-
-make distclean > /dev/null
-
-./configure --host=x86_64-apple-darwin10 \
-            ${LIBSODIUM_ENABLE_MINIMAL_FLAG} \
-            --prefix="$CATALYST_PREFIX" || exit 1
-
-make -j${PROCESSORS} install || exit 1
-
 # Create universal binary and include folder
 rm -fr -- "$PREFIX/include" "$PREFIX/libsodium.a" 2> /dev/null
 mkdir -p -- "$PREFIX/lib"
 lipo -create \
   "$SIMULATOR32_PREFIX/lib/libsodium.a" \
+  "$CATALYST_PREFIX/lib/libsodium.a" \
   "$IOS32_PREFIX/lib/libsodium.a" \
   "$IOS32s_PREFIX/lib/libsodium.a" \
   "$IOS64_PREFIX/lib/libsodium.a" \
-  "$CATALYST_PREFIX/lib/libsodium.a" \
   -output "$PREFIX/lib/libsodium.a"
 
 lipo -create \
   "$SIMULATOR32_PREFIX/lib/libsodium.dylib" \
+  "$CATALYST_PREFIX/lib/libsodium.dylib" \
   "$IOS32_PREFIX/lib/libsodium.dylib" \
   "$IOS32s_PREFIX/lib/libsodium.dylib" \
   "$IOS64_PREFIX/lib/libsodium.dylib" \
-  "$CATALYST_PREFIX/lib/libsodium.dylib" \
   -output "$PREFIX/lib/libsodium.dylib"
 
 mv -f -- "$IOS32_PREFIX/include" "$PREFIX/"
