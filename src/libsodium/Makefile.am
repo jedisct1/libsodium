@@ -130,8 +130,7 @@ noinst_HEADERS = \
 	crypto_scalarmult/curve25519/sandy2x/fe51_mul.S \
 	crypto_scalarmult/curve25519/sandy2x/fe51_nsquare.S \
 	crypto_scalarmult/curve25519/sandy2x/fe51_pack.S \
-	crypto_scalarmult/curve25519/sandy2x/ladder.S \
-	crypto_scalarmult/curve25519/sandy2x/ladder_base.S
+	crypto_scalarmult/curve25519/sandy2x/ladder.S
 
 if HAVE_AVX_ASM
 libsodium_la_SOURCES += \
@@ -144,8 +143,6 @@ libsodium_la_SOURCES += \
 	crypto_scalarmult/curve25519/sandy2x/fe51_namespace.h \
 	crypto_scalarmult/curve25519/sandy2x/fe_frombytes_sandy2x.c \
 	crypto_scalarmult/curve25519/sandy2x/ladder.h \
-	crypto_scalarmult/curve25519/sandy2x/ladder_base.h \
-	crypto_scalarmult/curve25519/sandy2x/ladder_base_namespace.h \
 	crypto_scalarmult/curve25519/sandy2x/ladder_namespace.h \
 	crypto_scalarmult/curve25519/sandy2x/sandy2x.S
 endif
