@@ -11,7 +11,6 @@
 
 #include "utils.h"
 #include "curve25519_sandy2x.h"
-#include "../ref10/x25519_ref10.h"
 #include "../scalarmult_curve25519.h"
 #include "fe.h"
 #include "fe51.h"
@@ -61,18 +60,10 @@ crypto_scalarmult_curve25519_sandy2x(unsigned char *q, const unsigned char *n,
   return 0;
 }
 
-static int
-crypto_scalarmult_curve25519_sandy2x_base(unsigned char *q,
-                                          const unsigned char *n)
-{
-    return crypto_scalarmult_curve25519_ref10_implementation.
-        mult_base(q, n);
-}
-
 struct crypto_scalarmult_curve25519_implementation
 crypto_scalarmult_curve25519_sandy2x_implementation = {
     SODIUM_C99(.mult = ) crypto_scalarmult_curve25519_sandy2x,
-    SODIUM_C99(.mult_base = ) crypto_scalarmult_curve25519_sandy2x_base
+    SODIUM_C99(.mult_base = ) NULL
 };
 
 #endif
