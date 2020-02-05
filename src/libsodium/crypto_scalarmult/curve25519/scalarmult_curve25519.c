@@ -30,7 +30,8 @@ crypto_scalarmult_curve25519(unsigned char *q, const unsigned char *n,
 int
 crypto_scalarmult_curve25519_base(unsigned char *q, const unsigned char *n)
 {
-    return implementation->mult_base(q, n);
+    return crypto_scalarmult_curve25519_ref10_implementation
+        .mult_base(q, n);
 }
 
 size_t

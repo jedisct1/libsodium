@@ -123,8 +123,6 @@ host_triplet = @host@
 @HAVE_AVX_ASM_TRUE@	crypto_scalarmult/curve25519/sandy2x/fe51_namespace.h \
 @HAVE_AVX_ASM_TRUE@	crypto_scalarmult/curve25519/sandy2x/fe_frombytes_sandy2x.c \
 @HAVE_AVX_ASM_TRUE@	crypto_scalarmult/curve25519/sandy2x/ladder.h \
-@HAVE_AVX_ASM_TRUE@	crypto_scalarmult/curve25519/sandy2x/ladder_base.h \
-@HAVE_AVX_ASM_TRUE@	crypto_scalarmult/curve25519/sandy2x/ladder_base_namespace.h \
 @HAVE_AVX_ASM_TRUE@	crypto_scalarmult/curve25519/sandy2x/ladder_namespace.h \
 @HAVE_AVX_ASM_TRUE@	crypto_scalarmult/curve25519/sandy2x/sandy2x.S
 
@@ -359,8 +357,6 @@ am__libsodium_la_SOURCES_DIST =  \
 	crypto_scalarmult/curve25519/sandy2x/fe51_namespace.h \
 	crypto_scalarmult/curve25519/sandy2x/fe_frombytes_sandy2x.c \
 	crypto_scalarmult/curve25519/sandy2x/ladder.h \
-	crypto_scalarmult/curve25519/sandy2x/ladder_base.h \
-	crypto_scalarmult/curve25519/sandy2x/ladder_base_namespace.h \
 	crypto_scalarmult/curve25519/sandy2x/ladder_namespace.h \
 	crypto_scalarmult/curve25519/sandy2x/sandy2x.S \
 	crypto_box/curve25519xchacha20poly1305/box_curve25519xchacha20poly1305.c \
@@ -1002,8 +998,7 @@ noinst_HEADERS = \
 	crypto_scalarmult/curve25519/sandy2x/fe51_mul.S \
 	crypto_scalarmult/curve25519/sandy2x/fe51_nsquare.S \
 	crypto_scalarmult/curve25519/sandy2x/fe51_pack.S \
-	crypto_scalarmult/curve25519/sandy2x/ladder.S \
-	crypto_scalarmult/curve25519/sandy2x/ladder_base.S
+	crypto_scalarmult/curve25519/sandy2x/ladder.S
 
 randombytes_internal_randombytes_internal_random_CFLAGS = @CFLAGS_RDRAND@
 libsodium_la_LDFLAGS = $(AM_LDFLAGS) -export-dynamic -no-undefined \

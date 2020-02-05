@@ -623,9 +623,6 @@
     <ClInclude Include="..\..\..\..\src\libsodium\crypto_scalarmult\curve25519\sandy2x\fe.h">
       <Filter>crypto_scalarmult\curve25519\sandy2x</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\..\..\src\libsodium\crypto_scalarmult\curve25519\sandy2x\ladder_base_namespace.h">
-      <Filter>crypto_scalarmult\curve25519\sandy2x</Filter>
-    </ClInclude>
     <ClInclude Include="..\..\..\..\src\libsodium\crypto_scalarmult\curve25519\sandy2x\ladder.h">
       <Filter>crypto_scalarmult\curve25519\sandy2x</Filter>
     </ClInclude>
@@ -636,9 +633,6 @@
       <Filter>crypto_scalarmult\curve25519\sandy2x</Filter>
     </ClInclude>
     <ClInclude Include="..\..\..\..\src\libsodium\crypto_scalarmult\curve25519\sandy2x\fe51_namespace.h">
-      <Filter>crypto_scalarmult\curve25519\sandy2x</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\..\src\libsodium\crypto_scalarmult\curve25519\sandy2x\ladder_base.h">
       <Filter>crypto_scalarmult\curve25519\sandy2x</Filter>
     </ClInclude>
     <ClInclude Include="..\..\..\..\src\libsodium\crypto_scalarmult\curve25519\ref10\x25519_ref10.h">

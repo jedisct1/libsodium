@@ -8,7 +8,6 @@
 #include "fe51_nsquare.S"
 #include "fe51_pack.S"
 #include "ladder.S"
-#include "ladder_base.S"
 
 #if defined(__linux__) && defined(__ELF__)
 .section .note.GNU-stack,"",%progbits
