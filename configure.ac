@@ -868,7 +868,6 @@ AS_IF([test "x$ENABLE_CWFLAGS" = "xyes"], [
 
 AC_CONFIG_FILES([Makefile
                  builds/Makefile
-                 contrib/Makefile
                  dist-build/Makefile
                  libsodium.pc
                  libsodium-uninstalled.pc
