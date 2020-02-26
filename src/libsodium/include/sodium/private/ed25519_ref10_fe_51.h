@@ -106,36 +106,6 @@ fe25519_neg(fe25519 h, const fe25519 f)
  Preconditions: b in {0,1}.
  */
 
-#ifdef HAVE_AMD64_ASM
-static void
-fe25519_cmov(fe25519 f, const fe25519 g, unsigned int b)
-{
-    uint64_t t64_0, t64_1, t64_2, t64_3, t64_4;
-
-     __asm__ __volatile__(
-                          "cmpl $0, %[b] ;\n"
-                          "movq 0(%[f]), %[t64_0] ;\n"
-                          "movq 8(%[f]), %[t64_1] ;\n"
-                          "movq 16(%[f]), %[t64_2] ;\n"
-                          "movq 24(%[f]), %[t64_3] ;\n"
-                          "movq 32(%[f]), %[t64_4] ;\n"
-                          "cmovnzq 0(%[g]), %[t64_0] ;\n"
-                          "cmovnzq 8(%[g]), %[t64_1] ;\n"
-                          "cmovnzq 16(%[g]), %[t64_2] ;\n"
-                          "cmovnzq 24(%[g]), %[t64_3] ;\n"
-                          "cmovnzq 32(%[g]), %[t64_4] ;\n"
-                          "movq %[t64_0], 0(%[f]) ;\n"
-                          "movq %[t64_1], 8(%[f]) ;\n"
-                          "movq %[t64_2], 16(%[f]) ;\n"
-                          "movq %[t64_3], 24(%[f]) ;\n"
-                          "movq %[t64_4], 32(%[f]) ;\n"
-                          : [t64_0] "=&r"(t64_0), [t64_1] "=&r"(t64_1),
-                            [t64_2] "=&r"(t64_2), [t64_3] "=&r"(t64_3),
-                            [t64_4] "=&r"(t64_4)
-                          : [f] "r"(f), [g] "r"(g), [b] "rm"(b)
-                          : "memory", "flags", "cc");
-}
-#else
 static void
 fe25519_cmov(fe25519 f, const fe25519 g, unsigned int b)
 {
@@ -165,7 +135,6 @@ fe25519_cmov(fe25519 f, const fe25519 g, unsigned int b)
     f[3] = f3 ^ x3;
     f[4] = f4 ^ x4;
 }
-#endif
 
 /*
 Replace (f,g) with (g,f) if b == 1;
