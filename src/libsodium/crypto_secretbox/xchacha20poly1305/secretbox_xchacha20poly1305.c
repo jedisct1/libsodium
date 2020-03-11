@@ -122,9 +122,9 @@ crypto_secretbox_xchacha20poly1305_open_detached(unsigned char *m,
        Some tools even report undefined behavior, despite the conversion.
        Nevertheless, this works on all supported platforms.
     */
-    if (((uintptr_t) c >= (uintptr_t) m &&
+    if (((uintptr_t) c > (uintptr_t) m &&
          (uintptr_t) c - (uintptr_t) m < clen) ||
-        ((uintptr_t) m >= (uintptr_t) c &&
+        ((uintptr_t) m > (uintptr_t) c &&
          (uintptr_t) m - (uintptr_t) c < clen)) { /* LCOV_EXCL_LINE */
         memmove(m, c, clen);
         c = m;
