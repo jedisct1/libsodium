@@ -85,7 +85,7 @@
     X2 = _mm_shuffle_epi32(X2, 0x4E); \
     X3 = _mm_shuffle_epi32(X3, 0x93);
 
-/**
+/*
  * Apply the salsa20/8 core to the block provided in (X0 ... X3) ^ (Z0 ... Z3).
  */
 # define SALSA20_8_XOR(in, out)                               \
@@ -103,10 +103,11 @@
         (out)[3] = X3 = _mm_add_epi32(X3, Y3);                \
     }
 
-/**
+/*
  * blockmix_salsa8(Bin, Bout, r):
- * Compute Bout = BlockMix_{salsa20/8, r}(Bin).  The input Bin must be 128r
- * bytes in length; the output Bout must also be the same size.
+ * Compute Bout = BlockMix_{salsa20/8, r}(Bin).
+ * The input Bin must be 128r bytes in length;
+ * the output Bout must also be the same size.
  */
 static inline void
 blockmix_salsa8(const __m128i *Bin, __m128i *Bout, size_t r)
@@ -208,7 +209,7 @@ blockmix_salsa8_xor(const __m128i *Bin1, const __m128i *Bin2, __m128i *Bout,
 # undef XOR4
 # undef XOR4_2
 
-/**
+/*
  * integerify(B, r):
  * Return the result of parsing B_{2r-1} as a little-endian integer.
  * Note that B's layout is permuted compared to the generic implementation.
@@ -221,7 +222,7 @@ integerify(const void *B, size_t r)
     return *X;
 }
 
-/**
+/*
  * smix(B, r, N, V, XY):
  * Compute B = SMix_r(B, N).  The input B must be 128r bytes in length;
  * the temporary storage V must be 128rN bytes in length; the temporary
@@ -297,7 +298,7 @@ smix(uint8_t *B, size_t r, uint64_t N, void *V, void *XY)
     }
 }
 
-/**
+/*
  * escrypt_kdf(local, passwd, passwdlen, salt, saltlen,
  *     N, r, p, buf, buflen):
  * Compute scrypt(passwd[0 .. passwdlen - 1], salt[0 .. saltlen - 1], N, r,
