@@ -39,71 +39,23 @@
 #include "private/common.h"
 
 static inline void
-blkcpy_64(escrypt_block_t *dest, const escrypt_block_t *src)
+blkcpy(uint32_t *dest, const uint32_t *src, size_t len)
 {
-    int i;
+    size_t i;
 
-#if (ARCH_BITS == 32)
-    for (i = 0; i < 16; ++i) {
-        dest->w[i] = src->w[i];
+    for (i = 0; i < len; i++) {
+        dest[i] = src[i];
     }
-#else
-    for (i = 0; i < 8; ++i) {
-        dest->d[i] = src->d[i];
-    }
-#endif
 }
 
 static inline void
-blkxor_64(escrypt_block_t *dest, const escrypt_block_t *src)
+blkxor(uint32_t *dest, const uint32_t *src, size_t len)
 {
-    int i;
+    size_t i;
 
-#if (ARCH_BITS == 32)
-    for (i = 0; i < 16; ++i) {
-        dest->w[i] ^= src->w[i];
+    for (i = 0; i < len; ++i) {
+        dest[i] ^= src[i];
     }
-#else
-    for (i = 0; i < 8; ++i) {
-        dest->d[i] ^= src->d[i];
-    }
-#endif
-}
-
-static inline void
-blkcpy(escrypt_block_t *dest, const escrypt_block_t *src, size_t len)
-{
-    size_t i, L;
-
-#if (ARCH_BITS == 32)
-    L = (len >> 2);
-    for (i = 0; i < L; ++i) {
-        dest->w[i] = src->w[i];
-    }
-#else
-    L = (len >> 3);
-    for (i = 0; i < L; ++i) {
-        dest->d[i] = src->d[i];
-    }
-#endif
-}
-
-static inline void
-blkxor(escrypt_block_t *dest, const escrypt_block_t *src, size_t len)
-{
-    size_t i, L;
-
-#if (ARCH_BITS == 32)
-    L = (len >> 2);
-    for (i = 0; i < L; ++i) {
-        dest->w[i] ^= src->w[i];
-    }
-#else
-    L = (len >> 3);
-    for (i = 0; i < L; ++i) {
-        dest->d[i] ^= src->d[i];
-    }
-#endif
 }
 
 /**
@@ -113,11 +65,10 @@ blkxor(escrypt_block_t *dest, const escrypt_block_t *src, size_t len)
 static void
 salsa20_8(uint32_t B[16])
 {
-    escrypt_block_t  X;
-    uint32_t        *x = X.w;
-    size_t           i;
+    uint32_t x[16];
+    size_t   i;
 
-    blkcpy_64(&X, (escrypt_block_t *) B);
+    blkcpy(x, B, 16);
     for (i = 0; i < 8; i += 2) {
 #define R(a, b) (((a) << (b)) | ((a) >> (32 - (b))))
         /* Operate on columns. */
@@ -180,30 +131,25 @@ blockmix_salsa8(const uint32_t *Bin, uint32_t *Bout, uint32_t *X, size_t r)
     size_t i;
 
     /* 1: X <-- B_{2r - 1} */
-    blkcpy_64((escrypt_block_t *) X,
-              (const escrypt_block_t *) &Bin[(2 * r - 1) * 16]);
+    blkcpy(X, &Bin[(2 * r - 1) * 16], 16);
 
     /* 2: for i = 0 to 2r - 1 do */
     for (i = 0; i < 2 * r; i += 2) {
         /* 3: X <-- H(X \xor B_i) */
-        blkxor_64((escrypt_block_t *) X,
-                  (const escrypt_block_t *) &Bin[i * 16]);
+        blkxor(X, &Bin[i * 16], 16);
         salsa20_8(X);
 
         /* 4: Y_i <-- X */
         /* 6: B' <-- (Y_0, Y_2 ... Y_{2r-2}, Y_1, Y_3 ... Y_{2r-1}) */
-        blkcpy_64((escrypt_block_t *) &Bout[i * 8],
-                  (const escrypt_block_t *) X);
+        blkcpy(&Bout[i * 8], X, 16);
 
         /* 3: X <-- H(X \xor B_i) */
-        blkxor_64((escrypt_block_t *) X,
-                  (const escrypt_block_t *) &Bin[i * 16 + 16]);
+        blkxor(X, &Bin[i * 16 + 16], 16);
         salsa20_8(X);
 
         /* 4: Y_i <-- X */
         /* 6: B' <-- (Y_0, Y_2 ... Y_{2r-2}, Y_1, Y_3 ... Y_{2r-1}) */
-        blkcpy_64((escrypt_block_t *) &Bout[i * 8 + r * 16],
-                  (escrypt_block_t *) X);
+        blkcpy(&Bout[i * 8 + r * 16], X, 16);
     }
 }
 
@@ -244,15 +190,13 @@ smix(uint8_t *B, size_t r, uint64_t N, uint32_t *V, uint32_t *XY)
     /* 2: for i = 0 to N - 1 do */
     for (i = 0; i < N; i += 2) {
         /* 3: V_i <-- X */
-        blkcpy((escrypt_block_t *) &V[i * (32 * r)], (escrypt_block_t *) X,
-               128 * r);
+        blkcpy(&V[i * (32 * r)], X, 32 * r);
 
         /* 4: X <-- H(X) */
         blockmix_salsa8(X, Y, Z, r);
 
         /* 3: V_i <-- X */
-        blkcpy((escrypt_block_t *) &V[(i + 1) * (32 * r)],
-               (escrypt_block_t *) Y, 128 * r);
+        blkcpy(&V[(i + 1) * (32 * r)], Y, 32 * r);
 
         /* 4: X <-- H(X) */
         blockmix_salsa8(Y, X, Z, r);
@@ -264,16 +208,14 @@ smix(uint8_t *B, size_t r, uint64_t N, uint32_t *V, uint32_t *XY)
         j = integerify(X, r) & (N - 1);
 
         /* 8: X <-- H(X \xor V_j) */
-        blkxor((escrypt_block_t *) X, (escrypt_block_t *) &V[j * (32 * r)],
-               128 * r);
+        blkxor(X, &V[j * (32 * r)], 32 * r);
         blockmix_salsa8(X, Y, Z, r);
 
         /* 7: j <-- Integerify(X) mod N */
         j = integerify(Y, r) & (N - 1);
 
         /* 8: X <-- H(X \xor V_j) */
-        blkxor((escrypt_block_t *) Y, (escrypt_block_t *) &V[j * (32 * r)],
-               128 * r);
+        blkxor(Y, &V[j * (32 * r)], 32 * r);
         blockmix_salsa8(Y, X, Z, r);
     }
     /* 10: B' <-- X */
