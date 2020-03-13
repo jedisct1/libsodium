@@ -160,9 +160,9 @@ blockmix_salsa8(const uint32_t *Bin, uint32_t *Bout, uint32_t *X, size_t r)
 static inline uint64_t
 integerify(const void *B, size_t r)
 {
-    const uint32_t *X = (const uint32_t *) ((uintptr_t)(B) + (2 * r - 1) * 64);
+    const uint32_t *X = ((const uint32_t *) B) + (2 * r - 1) * 16;
 
-    return (((uint64_t)(X[1]) << 32) + X[0]);
+    return ((uint64_t) (X[1]) << 32) + X[0];
 }
 
 /**
