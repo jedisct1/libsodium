@@ -213,10 +213,12 @@ blockmix_salsa8_xor(const __m128i *Bin1, const __m128i *Bin2, __m128i *Bout,
  * Return the result of parsing B_{2r-1} as a little-endian integer.
  * Note that B's layout is permuted compared to the generic implementation.
  */
-static inline uint32_t
+static inline uint64_t
 integerify(const void *B, size_t r)
 {
-    return *(const uint32_t *) ((uintptr_t)(B) + (2 * r - 1) * 64);
+    const uint64_t *X = ((const uint64_t *) B) + (2 * r - 1) * 8;
+
+    return *X;
 }
 
 /**
@@ -228,12 +230,12 @@ integerify(const void *B, size_t r)
  * multiple of 64 bytes.
  */
 static void
-smix(uint8_t *B, size_t r, uint32_t N, void *V, void *XY)
+smix(uint8_t *B, size_t r, uint64_t N, void *V, void *XY)
 {
     size_t    s   = 128 * r;
-    __m128i * X   = (__m128i *) V, *Y;
+    __m128i  *X   = (__m128i *) V, *Y;
     uint32_t *X32 = (uint32_t *) V;
-    uint32_t  i, j;
+    uint64_t  i, j;
     size_t    k;
 
     /* 1: X <-- B */
@@ -388,7 +390,7 @@ escrypt_kdf_sse(escrypt_local_t *local, const uint8_t *passwd, size_t passwdlen,
     /* 2: for i = 0 to p - 1 do */
     for (i = 0; i < p; i++) {
         /* 3: B_i <-- MF(B_i, N) */
-        smix(&B[(size_t) 128 * i * r], r, (uint32_t) N, V, XY);
+        smix(&B[(size_t) 128 * i * r], r, N, V, XY);
     }
 
     /* 5: DK <-- PBKDF2(P, B, 1, dkLen) */
