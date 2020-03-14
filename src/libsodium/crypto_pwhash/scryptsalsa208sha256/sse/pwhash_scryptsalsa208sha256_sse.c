@@ -50,17 +50,12 @@
 # include "../crypto_scrypt.h"
 # include "../pbkdf2-sha256.h"
 
-# if defined(__XOP__) && defined(DISABLED)
-#  define ARX(out, in1, in2, s) \
-    out = _mm_xor_si128(out, _mm_roti_epi32(_mm_add_epi32(in1, in2), s));
-# else
-#  define ARX(out, in1, in2, s)                                    \
+# define ARX(out, in1, in2, s)                                     \
     {                                                              \
         __m128i T = _mm_add_epi32(in1, in2);                       \
         out       = _mm_xor_si128(out, _mm_slli_epi32(T, s));      \
         out       = _mm_xor_si128(out, _mm_srli_epi32(T, 32 - s)); \
     }
-# endif
 
 # define SALSA20_2ROUNDS              \
     /* Operate on "columns". */       \
