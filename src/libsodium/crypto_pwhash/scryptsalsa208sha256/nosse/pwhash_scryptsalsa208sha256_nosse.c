@@ -41,21 +41,30 @@
 static inline void
 blkcpy(uint32_t *dest, const uint32_t *src, size_t len)
 {
-    size_t i;
-
-    for (i = 0; i < len; i++) {
-        dest[i] = src[i];
-    }
+    memcpy(dest, src, len * 64);
 }
+
+typedef union escrypt_block_t {
+    uint32_t w[16];
+    uint64_t q[8];
+} escrypt_block_t;
 
 static inline void
 blkxor(uint32_t *dest, const uint32_t *src, size_t len)
 {
-    size_t i;
+    escrypt_block_t       *dest_ = (escrypt_block_t *) (void *) dest;
+    const escrypt_block_t *src_ = (const escrypt_block_t *) (const void *) src;
+    size_t                 i;
 
-    for (i = 0; i < len; ++i) {
-        dest[i] ^= src[i];
+#if ARCH_BITS == 32
+    for (i = 0; i < len * 16; i++) {
+        dest_->w[i] ^= src_->w[i];
     }
+#else
+    for (i = 0; i < len * 8; i++) {
+        dest_->q[i] ^= src_->q[i];
+    }
+#endif
 }
 
 /*
@@ -68,7 +77,7 @@ salsa20_8(uint32_t B[16])
     uint32_t x[16];
     size_t   i;
 
-    blkcpy(x, B, 16);
+    blkcpy(x, B, 1);
     for (i = 0; i < 8; i += 2) {
 #define R(a, b) (((a) << (b)) | ((a) >> (32 - (b))))
         /* Operate on columns. */
@@ -132,25 +141,25 @@ blockmix_salsa8(const uint32_t *Bin, uint32_t *Bout, uint32_t *X, size_t r)
     size_t i;
 
     /* 1: X <-- B_{2r - 1} */
-    blkcpy(X, &Bin[(2 * r - 1) * 16], 16);
+    blkcpy(X, &Bin[(2 * r - 1) * 16], 1);
 
     /* 2: for i = 0 to 2r - 1 do */
     for (i = 0; i < 2 * r; i += 2) {
         /* 3: X <-- H(X \xor B_i) */
-        blkxor(X, &Bin[i * 16], 16);
+        blkxor(X, &Bin[i * 16], 1);
         salsa20_8(X);
 
         /* 4: Y_i <-- X */
         /* 6: B' <-- (Y_0, Y_2 ... Y_{2r-2}, Y_1, Y_3 ... Y_{2r-1}) */
-        blkcpy(&Bout[i * 8], X, 16);
+        blkcpy(&Bout[i * 8], X, 1);
 
         /* 3: X <-- H(X \xor B_i) */
-        blkxor(X, &Bin[i * 16 + 16], 16);
+        blkxor(X, &Bin[i * 16 + 16], 1);
         salsa20_8(X);
 
         /* 4: Y_i <-- X */
         /* 6: B' <-- (Y_0, Y_2 ... Y_{2r-2}, Y_1, Y_3 ... Y_{2r-1}) */
-        blkcpy(&Bout[i * 8 + r * 16], X, 16);
+        blkcpy(&Bout[i * 8 + r * 16], X, 1);
     }
 }
 
@@ -191,13 +200,13 @@ smix(uint8_t *B, size_t r, uint64_t N, uint32_t *V, uint32_t *XY)
     /* 2: for i = 0 to N - 1 do */
     for (i = 0; i < N; i += 2) {
         /* 3: V_i <-- X */
-        blkcpy(&V[i * (32 * r)], X, 32 * r);
+        blkcpy(&V[i * (32 * r)], X, 2 * r);
 
         /* 4: X <-- H(X) */
         blockmix_salsa8(X, Y, Z, r);
 
         /* 3: V_i <-- X */
-        blkcpy(&V[(i + 1) * (32 * r)], Y, 32 * r);
+        blkcpy(&V[(i + 1) * (32 * r)], Y, 2 * r);
 
         /* 4: X <-- H(X) */
         blockmix_salsa8(Y, X, Z, r);
@@ -209,14 +218,14 @@ smix(uint8_t *B, size_t r, uint64_t N, uint32_t *V, uint32_t *XY)
         j = integerify(X, r) & (N - 1);
 
         /* 8: X <-- H(X \xor V_j) */
-        blkxor(X, &V[j * (32 * r)], 32 * r);
+        blkxor(X, &V[j * (32 * r)], 2 * r);
         blockmix_salsa8(X, Y, Z, r);
 
         /* 7: j <-- Integerify(X) mod N */
         j = integerify(Y, r) & (N - 1);
 
         /* 8: X <-- H(X \xor V_j) */
-        blkxor(Y, &V[j * (32 * r)], 32 * r);
+        blkxor(Y, &V[j * (32 * r)], 2 * r);
         blockmix_salsa8(Y, X, Z, r);
     }
     /* 10: B' <-- X */
