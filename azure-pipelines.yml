@@ -16,7 +16,7 @@ jobs:
           curl https://get.wasmer.io -sSfL | sh
         displayName: Install wasmer
       - script: |
-          curl -sL -o wasi-sdk.deb https://github.com/CraneStation/wasi-sdk/releases/download/wasi-sdk-8/wasi-sdk_8.0_amd64.deb
+          curl -sL -o wasi-sdk.deb https://github.com/WebAssembly/wasi-sdk/releases/download/wasi-sdk-8/wasi-sdk_8.0_amd64.deb
           sudo dpkg -i wasi-sdk.deb && rm -f wasi-sdk.deb
           sudo ln -s /opt/wasi-sdk/share/*sysroot* /opt/wasi-sysroot
         displayName: Install the WASI SDK
