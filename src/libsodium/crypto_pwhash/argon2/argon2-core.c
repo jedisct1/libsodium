@@ -132,29 +132,6 @@ allocate_memory(block_region **region, uint32_t m_cost)
 
 /*********Memory functions*/
 
-/* Clears memory
- * @param instance pointer to the current instance
- * @param clear_memory indicates if we clear the memory with zeros.
- */
-static void clear_memory(argon2_instance_t *instance, int clear);
-
-static void
-clear_memory(argon2_instance_t *instance, int clear)
-{
-    /* LCOV_EXCL_START */
-    if (clear) {
-        if (instance->region != NULL) {
-            sodium_memzero(instance->region->memory,
-                           sizeof(block) * instance->memory_blocks);
-        }
-        if (instance->pseudo_rands != NULL) {
-            sodium_memzero(instance->pseudo_rands,
-                           sizeof(uint64_t) * instance->segment_length);
-        }
-    }
-    /* LCOV_EXCL_STOP */
-}
-
 /* Deallocates memory
  * @param memory pointer to the blocks
  */
@@ -163,7 +140,7 @@ static void free_memory(block_region *region);
 static void
 free_memory(block_region *region)
 {
-    if (region && region->base) {
+    if (region != NULL && region->base != NULL) {
 #if defined(MAP_ANON) && defined(HAVE_MMAP)
         if (munmap(region->base, region->size)) {
             return; /* LCOV_EXCL_LINE */
@@ -178,9 +155,6 @@ free_memory(block_region *region)
 static void
 argon2_free_instance(argon2_instance_t *instance, int flags)
 {
-    /* Clear memory */
-    clear_memory(instance, flags & ARGON2_FLAG_CLEAR_MEMORY);
-
     /* Deallocate the memory */
     free(instance->pseudo_rands);
     instance->pseudo_rands = NULL;
