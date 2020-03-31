@@ -78,9 +78,8 @@ crypto_core_ed25519_from_uniform(unsigned char *p, const unsigned char *r)
 #define HASH_L          48U
 
 static int
-_string_to_points(unsigned char * const px, size_t n, const char *suite,
-                  size_t suite_len, const char *ctx, const unsigned char *msg,
-                  size_t msg_len)
+_string_to_points(unsigned char * const px, size_t n,
+                  const char *ctx, const unsigned char *msg, size_t msg_len)
 {
     crypto_hash_sha512_state st;
     unsigned char            empty_block[128] = { 0 };
@@ -89,32 +88,25 @@ _string_to_points(unsigned char * const px, size_t n, const char *suite,
     size_t                   ctx_len = ctx != NULL ? strlen(ctx) : 0U;
     size_t                   i, j;
 
-    /* LCOV_EXCL_START */
-    if (n > 2U || suite_len > 0xff) {
-        abort();
+    if (n > 2U) {
+        abort(); /* LCOV_EXCL_LINE */
     }
-    /* LCOV_EXCL_END */
-    if (ctx_len > 0xff - suite_len) {
+    if (ctx_len > (size_t) 0xff) {
         crypto_hash_sha512_init(&st);
-        crypto_hash_sha512_update(&st, "H2C-OVERSIZE-DST-",
+        crypto_hash_sha512_update(&st,
+                                  (const unsigned char *) "H2C-OVERSIZE-DST-",
                                   sizeof "H2C-OVERSIZE-DST-" - 1U);
-        crypto_hash_sha512_update(&st, (const unsigned char *) suite, suite_len);
         crypto_hash_sha512_update(&st, (const unsigned char *) ctx, ctx_len);
         crypto_hash_sha512_final(&st, u0);
         ctx = (const char *) u0;
         ctx_len = HASH_BYTES;
-        /* LCOV_EXCL_START */
-        if (ctx_len > 0xff - suite_len) {
-            abort();
-        }
-        /* LCOV_EXCL_END */
+        COMPILER_ASSERT(HASH_BYTES <= (size_t) 0xff);
     }
     crypto_hash_sha512_init(&st);
     crypto_hash_sha512_update(&st, empty_block, sizeof empty_block);
     crypto_hash_sha512_update(&st, msg, msg_len);
-    t[3] = (unsigned char) suite_len + ctx_len;
+    t[3] = (unsigned char) ctx_len;
     crypto_hash_sha512_update(&st, t, 4U);
-    crypto_hash_sha512_update(&st, (const unsigned char *) suite, suite_len);
     crypto_hash_sha512_update(&st, (const unsigned char *) ctx, ctx_len);
     crypto_hash_sha512_final(&st, u0);
 
@@ -127,8 +119,6 @@ _string_to_points(unsigned char * const px, size_t n, const char *suite,
         crypto_hash_sha512_update(&st, &u[i], HASH_BYTES);
         t[2]++;
         crypto_hash_sha512_update(&st, t + 2U, 2U);
-        crypto_hash_sha512_update(&st, (const unsigned char *) suite,
-                                  suite_len);
         crypto_hash_sha512_update(&st, (const unsigned char *) ctx, ctx_len);
         crypto_hash_sha512_final(&st, &u[i]);
     }
@@ -145,9 +135,7 @@ crypto_core_ed25519_from_string(unsigned char p[crypto_core_ed25519_BYTES],
                                 const char *ctx, const unsigned char *msg,
                                 size_t msg_len)
 {
-    return _string_to_points(p, 1,  "edwards25519_XMD:SHA-512_ELL2_NU_",
-                             sizeof "edwards25519_XMD:SHA-512_ELL2_NU_" - 1U, ctx,
-                             msg, msg_len);
+    return _string_to_points(p, 1, ctx, msg, msg_len);
 }
 
 int
@@ -157,9 +145,7 @@ crypto_core_ed25519_from_string_ro(unsigned char p[crypto_core_ed25519_BYTES],
 {
     unsigned char px[2 * crypto_core_ed25519_BYTES];
 
-    if (_string_to_points(px, 2, "edwards25519_XMD:SHA-512_ELL2_RO_",
-                          sizeof "edwards25519_XMD:SHA-512_ELL2_RO_" - 1U, ctx,
-                          msg, msg_len) != 0) {
+    if (_string_to_points(px, 2, ctx, msg, msg_len) != 0) {
         return -1;
     }
     return crypto_core_ed25519_add(p, &px[0], &px[crypto_core_ed25519_BYTES]);

@@ -52,7 +52,7 @@ main(void)
     char *         expected_y_hex, *y_hex;
     char *         oversized_ctx;
     size_t         i, j;
-    size_t         oversized_ctx_len = 250U;
+    size_t         oversized_ctx_len = 500U;
 
     expected_yr = (unsigned char *) sodium_malloc(crypto_core_ed25519_BYTES);
     expected_y  = (unsigned char *) sodium_malloc(crypto_core_ed25519_BYTES);
@@ -68,13 +68,15 @@ main(void)
         }
         if (test_data[i].ro == 0) {
             if (crypto_core_ed25519_from_string(
-                    y, "TESTGEN", (const unsigned char *) test_data[i].msg,
+                    y, "edwards25519_XMD:SHA-512_ELL2_NU_TESTGEN",
+                    (const unsigned char *) test_data[i].msg,
                     strlen(test_data[i].msg)) != 0) {
                 printf("crypto_core_ed25519_from_string() failed\n");
             }
         } else {
             if (crypto_core_ed25519_from_string_ro(
-                    y, "TESTGEN", (const unsigned char *) test_data[i].msg,
+                    y, "edwards25519_XMD:SHA-512_ELL2_RO_TESTGEN",
+                    (const unsigned char *) test_data[i].msg,
                     strlen(test_data[i].msg)) != 0) {
                 printf("crypto_core_ed25519_from_string_ro() failed\n");
             }
