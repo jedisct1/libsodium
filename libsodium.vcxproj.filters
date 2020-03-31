@@ -48,9 +48,6 @@
     <ClCompile Include="src\libsodium\crypto_sign\ed25519\sign_ed25519.c">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="src\libsodium\crypto_sign\ed25519\ref10\obsolete.c">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="src\libsodium\crypto_sign\ed25519\ref10\sign.c">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -567,9 +564,6 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="src\libsodium\include\sodium\crypto_generichash_blake2b.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="src\libsodium\include\sodium\crypto_sign_edwards25519sha512batch.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="src\libsodium\include\sodium\private\ed25519_ref10.h">

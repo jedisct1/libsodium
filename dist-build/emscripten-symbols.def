@@ -502,9 +502,6 @@ _crypto_sign_ed25519ph_final_verify 0 1
 _crypto_sign_ed25519ph_init 0 1
 _crypto_sign_ed25519ph_statebytes 0 1
 _crypto_sign_ed25519ph_update 0 1
-_crypto_sign_edwards25519sha512batch 0 0
-_crypto_sign_edwards25519sha512batch_keypair 0 0
-_crypto_sign_edwards25519sha512batch_open 0 0
 _crypto_sign_final_create 1 1
 _crypto_sign_final_verify 1 1
 _crypto_sign_init 1 1

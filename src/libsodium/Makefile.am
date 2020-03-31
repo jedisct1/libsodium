@@ -167,7 +167,6 @@ libsodium_la_SOURCES += \
 	crypto_secretbox/xchacha20poly1305/secretbox_xchacha20poly1305.c \
 	crypto_shorthash/siphash24/shorthash_siphashx24.c \
 	crypto_shorthash/siphash24/ref/shorthash_siphashx24_ref.c \
-	crypto_sign/ed25519/ref10/obsolete.c \
 	crypto_stream/salsa2012/ref/stream_salsa2012_ref.c \
 	crypto_stream/salsa2012/stream_salsa2012.c \
 	crypto_stream/salsa208/ref/stream_salsa208_ref.c \
