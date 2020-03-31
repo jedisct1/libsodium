@@ -4,7 +4,7 @@
 typedef struct TestData_ {
     int         ro;
     const char *msg;
-    const char  tv_y[64];
+    const char  tv_y[64 + 1];
 } TestData;
 
 static TestData test_data[] = {
@@ -101,7 +101,7 @@ main(void)
         printf("Failed with empty parameters");
     }
 
-    oversized_ctx = sodium_malloc(oversized_ctx_len);
+    oversized_ctx = (char *) sodium_malloc(oversized_ctx_len);
     memset(oversized_ctx, 'X', oversized_ctx_len - 1U);
     oversized_ctx[oversized_ctx_len - 1U] = 0;
     crypto_core_ed25519_from_string(y, oversized_ctx,
