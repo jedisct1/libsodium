@@ -62,6 +62,7 @@ tv_kdf(void)
     printf("tv_kdf: ok\n");
 }
 
+#ifndef SODIUM_LIBRARY_MINIMAL
 static void
 tv_kdf_hkdf(void)
 {
@@ -150,12 +151,16 @@ tv_kdf_hkdf(void)
 
     printf("tv_kdf_hkdf: ok\n");
 }
+#endif
 
 int
 main(void)
 {
     tv_kdf();
+
+#ifndef SODIUM_LIBRARY_MINIMAL
     tv_kdf_hkdf();
+#endif
 
     return 0;
 }
