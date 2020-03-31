@@ -26,7 +26,7 @@ size_t crypto_kdf_hkdf_sha256_bytes_min(void);
 
 #define crypto_kdf_hkdf_sha256_BYTES_MAX (0xff * crypto_auth_hmacsha256_BYTES)
 SODIUM_EXPORT
-size_t crypto_kdf_hkdf_sha256_bytes_min(void);
+size_t crypto_kdf_hkdf_sha256_bytes_max(void);
 
 SODIUM_EXPORT
 int crypto_kdf_hkdf_sha256_extract(unsigned char prk[crypto_kdf_hkdf_sha256_KEYBYTES],

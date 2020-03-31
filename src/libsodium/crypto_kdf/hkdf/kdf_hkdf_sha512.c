@@ -44,7 +44,8 @@ crypto_kdf_hkdf_sha512_expand(unsigned char *out, size_t out_len,
         errno = EINVAL;
         return -1;
     }
-    for (i = (size_t) 0U; i < out_len; i += crypto_auth_hmacsha512_BYTES) {
+    for (i = (size_t) 0U; i + crypto_auth_hmacsha512_BYTES <= out_len;
+         i += crypto_auth_hmacsha512_BYTES) {
         crypto_auth_hmacsha512_init(&st, prk, crypto_kdf_hkdf_sha512_KEYBYTES);
         if (i != (size_t) 0U) {
             crypto_auth_hmacsha512_update(
