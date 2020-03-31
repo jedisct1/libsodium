@@ -50,7 +50,9 @@ main(void)
 {
     unsigned char *expected_yr, *expected_y, *y;
     char *         expected_y_hex, *y_hex;
+    char *         oversized_ctx;
     size_t         i, j;
+    size_t         oversized_ctx_len = 250U;
 
     expected_yr = (unsigned char *) sodium_malloc(crypto_core_ed25519_BYTES);
     expected_y  = (unsigned char *) sodium_malloc(crypto_core_ed25519_BYTES);
@@ -97,6 +99,21 @@ main(void)
         printf("Failed with empty parameters");
     }
 
+    oversized_ctx = sodium_malloc(oversized_ctx_len);
+    memset(oversized_ctx, 'X', oversized_ctx_len - 1U);
+    oversized_ctx[oversized_ctx_len - 1U] = 0;
+    crypto_core_ed25519_from_string(y, oversized_ctx,
+                                    (const unsigned char *) "msg", 3U);
+    sodium_bin2hex(y_hex, crypto_core_ed25519_BYTES * 2U + 1U, y,
+                   crypto_core_ed25519_BYTES);
+    printf("NU with oversized context: %s\n", y_hex);
+    crypto_core_ed25519_from_string_ro(y, oversized_ctx,
+                                       (const unsigned char *) "msg", 3U);
+    sodium_bin2hex(y_hex, crypto_core_ed25519_BYTES * 2U + 1U, y,
+                   crypto_core_ed25519_BYTES);
+    printf("RO with oversized context: %s\n", y_hex);
+
+    sodium_free(oversized_ctx);
     sodium_free(y_hex);
     sodium_free(expected_y_hex);
     sodium_free(y);

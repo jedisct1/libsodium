@@ -1,5 +1,6 @@
 
 #include <stdint.h>
+#include <stdlib.h>
 #include <string.h>
 
 #include "crypto_core_ed25519.h"
@@ -88,8 +89,25 @@ _string_to_points(unsigned char * const px, size_t n, const char *suite,
     size_t                   ctx_len = ctx != NULL ? strlen(ctx) : 0U;
     size_t                   i, j;
 
-    if (n > 2U || suite_len > 0xff || ctx_len > 0xff - suite_len) {
-        return -1;
+    /* LCOV_EXCL_START */
+    if (n > 2U || suite_len > 0xff) {
+        abort();
+    }
+    /* LCOV_EXCL_END */
+    if (ctx_len > 0xff - suite_len) {
+        crypto_hash_sha512_init(&st);
+        crypto_hash_sha512_update(&st, "H2C-OVERSIZE-DST-",
+                                  sizeof "H2C-OVERSIZE-DST-" - 1U);
+        crypto_hash_sha512_update(&st, (const unsigned char *) suite, suite_len);
+        crypto_hash_sha512_update(&st, (const unsigned char *) ctx, ctx_len);
+        crypto_hash_sha512_final(&st, u0);
+        ctx = (const char *) u0;
+        ctx_len = HASH_BYTES;
+        /* LCOV_EXCL_START */
+        if (ctx_len > 0xff - suite_len) {
+            abort();
+        }
+        /* LCOV_EXCL_END */
     }
     crypto_hash_sha512_init(&st);
     crypto_hash_sha512_update(&st, empty_block, sizeof empty_block);
