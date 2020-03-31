@@ -114,6 +114,7 @@ test/default/core4
 test/default/core5
 test/default/core6
 test/default/core_ed25519
+test/default/core_ed25519_h2c
 test/default/core_ristretto255
 test/default/ed25519_convert
 test/default/generichash
