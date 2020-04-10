@@ -9,11 +9,11 @@ typedef struct TestData_ {
 
 static TestData test_data[] = {
     { 0, "",
-      "115fe9c145cec75332210f75537f89a5af2e9e81928ab63225fcf0db4b9f0b41" },
+      "4af6284e3cc7116df104f6708e0c44d79b0e294ccd89b87c4c3c892ebd2f03b1" },
     { 0, "abc",
-      "2a78994752306e4a4eb1c629b3c8625cc26f143f1fe35fc728d295222eba7890" },
+      "23e704500ac22fd7106ceedd86bfcc8d50351a6303be22b2724fcc1280d00544" },
     { 0, "abcdef0123456789",
-      "0ca9e2b900bcdfc8b26d705040b6b6a6fd6bfadfd43982a2a59e1d069898ae6b" },
+      "34b8a16b923101f2d4caa48d9bb86fef4f92be0ce0f55c8ba9db55da23ad623e" },
     { 0,
       "a512_"
       "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
@@ -24,14 +24,14 @@ static TestData test_data[] = {
       "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
       "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
       "aaaaaaaa",
-      "511dee3fcc3a422738c453a58acdeafc08fc76f862e97d678adb26f03d0963b5" },
+      "31e648bbade3b272b7676f82da905d27de37f41581b1d170250dd9d56f95413c" },
 
     { 1, "",
-      "1af40833bed99ac42f445e9494dbcc489561b3995a40e3864a1b1bdb6ed6ecd0" },
+      "5c307efcdf7f0822428f932e66b46b3d88f59880772a1ab07fac5231609c5f76" },
     { 1, "abc",
-      "7bdb83b6322c4977ffbb69b18df168b56eec733a0254cac0e85eb790460ee4b2" },
+      "3f4887aeee9213d976e125bfd0e4e2201d7ddea8abfa28e47bec8df008821b1c" },
     { 1, "abcdef0123456789",
-      "2dd85e9585fba5ab3c22a07cf07b2cf4a19b10dcab49e1a4c8f952461e644bbc" },
+      "3c67b98967527a551ea54e4de791689834552009a7a40393fd4a23d1f04061ef" },
     { 1,
       "a512_"
       "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
@@ -42,7 +42,7 @@ static TestData test_data[] = {
       "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
       "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
       "aaaaaaaa",
-      "160e08388e85b6bcbec8f321ed1de259ffe88dc547a1ce506d61b30fd2378fc5" }
+      "4ce238dc1cac3b392767bda2c81e3374e61efa4c2f93c5c400f0d848b9b2e339" }
 };
 
 int
