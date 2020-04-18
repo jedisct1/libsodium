@@ -92,6 +92,7 @@ _string_to_points(unsigned char * const px, size_t n,
     if (n > 2U) {
         abort(); /* LCOV_EXCL_LINE */
     }
+    COMPILER_ASSERT(2U * HASH_L <= 0xff);
     if (ctx_len > (size_t) 0xff) {
         crypto_hash_sha512_init(&st);
         crypto_hash_sha512_update(&st,
