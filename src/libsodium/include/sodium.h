@@ -42,7 +42,6 @@
 #include "sodium/crypto_sign.h"
 #include "sodium/crypto_sign_ed25519.h"
 #include "sodium/crypto_stream.h"
-#include "sodium/crypto_stream_blabla2000.h"
 #include "sodium/crypto_stream_chacha20.h"
 #include "sodium/crypto_stream_salsa20.h"
 #include "sodium/crypto_stream_xsalsa20.h"
