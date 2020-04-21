@@ -50,6 +50,9 @@ load_4(const unsigned char *in)
 # include "fe_25_5/fe.h"
 #endif
 
+/*
+ * Inversion - returns 0 if z=0
+ */
 void
 fe25519_invert(fe25519 out, const fe25519 z)
 {
