@@ -2550,7 +2550,7 @@ chi25519(fe25519 out, const fe25519 z)
     fe25519_mul(out, t1, t0);
 }
 
-/* montgomery to edwards - xed = sqrt(-A)*x/y */
+/* montgomery to edwards -- xed = sqrt(-A-2)*x/y */
 static void
 ge25519_xymont_to_xed(fe25519 xed, const fe25519 x, const fe25519 y)
 {
@@ -2575,6 +2575,7 @@ ge25519_xmont_to_yed(fe25519 yed, const fe25519 x)
     fe25519_sub(x_minus_one, x, one);
     fe25519_invert(x_plus_one_inv, x_plus_one);
     fe25519_mul(yed, x_minus_one, x_plus_one_inv);
+    fe25519_cmov(yed, one, fe25519_iszero(x_plus_one));
 }
 
 /* montgomery -- recover y = sqrt(x^3 + A*x^2 + x) */
