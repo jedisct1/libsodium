@@ -2553,32 +2553,30 @@ chi25519(fe25519 out, const fe25519 z)
     fe25519_mul(out, t1, t0);
 }
 
-/* montgomery to edwards -- xed = sqrt(-A-2)*x/y */
+/* montgomery to edwards */
 static void
-ge25519_xymont_to_xed(fe25519 xed, const fe25519 x, const fe25519 y)
-{
-    fe25519 yinv;
-
-    fe25519_invert(yinv, y);
-    fe25519_mul(xed, x, yinv);
-    fe25519_mul(xed, xed, sqrtam2);
-}
-
-/* montgomery to edwards -- yed = (x-1)/(x+1) */
-static void
-ge25519_xmont_to_yed(fe25519 yed, const fe25519 x)
+ge25519_mont_to_ed(fe25519 xed, fe25519 yed, const fe25519 x, const fe25519 y)
 {
     fe25519 one;
     fe25519 x_plus_one;
-    fe25519 x_plus_one_inv;
     fe25519 x_minus_one;
+    fe25519 x_plus_one_y_inv;
 
     fe25519_1(one);
     fe25519_add(x_plus_one, x, one);
     fe25519_sub(x_minus_one, x, one);
-    fe25519_invert(x_plus_one_inv, x_plus_one);
-    fe25519_mul(yed, x_minus_one, x_plus_one_inv);
-    fe25519_cmov(yed, one, fe25519_iszero(x_plus_one));
+
+    /* xed = sqrt(-A-2)*x/y */
+    fe25519_mul(x_plus_one_y_inv, x_plus_one, y);
+    fe25519_invert(x_plus_one_y_inv, x_plus_one_y_inv); /* 1/((x+1)*y) */
+    fe25519_mul(xed, x, sqrtam2);
+    fe25519_mul(xed, xed, x_plus_one_y_inv);            /* sqrt(-A-2)*x/((x+1)*y) */
+    fe25519_mul(xed, xed, x_plus_one);
+
+    /* yed = (x-1)/(x+1) */
+    fe25519_mul(yed, x_plus_one_y_inv, y);              /* 1/(x+1) */
+    fe25519_mul(yed, yed, x_minus_one);
+    fe25519_cmov(yed, one, fe25519_iszero(x_plus_one_y_inv));
 }
 
 /* montgomery -- recover y = sqrt(x^3 + A*x^2 + x) */
@@ -2667,8 +2665,7 @@ ge25519_from_uniform(unsigned char s[32], const unsigned char r[32])
 
     ge25519_elligator2(x, y, r_fe);
 
-    ge25519_xymont_to_xed(p3.X, x, y);
-    ge25519_xmont_to_yed(p3.Y, x);
+    ge25519_mont_to_ed(p3.X, p3.Y, x, y);
     fe25519_neg(negxed, p3.X);
     fe25519_cmov(p3.X, negxed, fe25519_isnegative(p3.X) ^ x_sign);
 
@@ -2710,8 +2707,7 @@ ge25519_from_hash(unsigned char s[32], const unsigned char h[64])
     fe25519_neg(negy, y);
     fe25519_cmov(y, negy, fe25519_isnegative(y) ^ y_sign);
 
-    ge25519_xymont_to_xed(p3.X, x, y);
-    ge25519_xmont_to_yed(p3.Y, x);
+    ge25519_mont_to_ed(p3.X, p3.Y, x, y);
 
     fe25519_1(p3.Z);
     fe25519_mul(p3.T, p3.X, p3.Y);
