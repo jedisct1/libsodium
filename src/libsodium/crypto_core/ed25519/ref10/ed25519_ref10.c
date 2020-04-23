@@ -2540,13 +2540,13 @@ ge25519_elligator2(unsigned char s[32], const fe25519 r, const unsigned char x_s
     fe25519_sq2(rr2, r);
     rr2[0]++;
     fe25519_invert(rr2, rr2);
-    fe25519_mul(x, curve25519_A, rr2);
+    fe25519_mul32(x, curve25519_A[0], rr2);
     fe25519_neg(x, x);
 
     fe25519_sq(x2, x);
     fe25519_mul(x3, x, x2);
     fe25519_add(e, x3, x);
-    fe25519_mul(x2, x2, curve25519_A);
+    fe25519_mul32(x2, x2, curve25519_A[0]);
     fe25519_add(e, x2, e);
 
     chi25519(e, e);

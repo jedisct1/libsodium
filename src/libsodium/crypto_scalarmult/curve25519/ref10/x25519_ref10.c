@@ -123,7 +123,7 @@ crypto_scalarmult_curve25519_ref10(unsigned char *q,
         fe25519_mul(x2, tmp1, tmp0);
         fe25519_sub(tmp1, tmp1, tmp0);
         fe25519_sq(z2, z2);
-        fe25519_scalar_product(z3, tmp1, 121666);
+        fe25519_mul32(z3, tmp1, 121666);
         fe25519_sq(x3, x3);
         fe25519_add(tmp0, tmp0, z3);
         fe25519_mul(z3, x1, z2);
