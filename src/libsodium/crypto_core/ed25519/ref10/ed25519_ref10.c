@@ -2758,6 +2758,7 @@ ristretto255_is_canonical(const unsigned char *s)
 {
     unsigned char c;
     unsigned char d;
+    unsigned char e;
     unsigned int  i;
 
     c = (s[31] & 0x7f) ^ 0x7f;
@@ -2766,8 +2767,9 @@ ristretto255_is_canonical(const unsigned char *s)
     }
     c = (((unsigned int) c) - 1U) >> 8;
     d = (0xed - 1U - (unsigned int) s[0]) >> 8;
+    e = s[31] >> 7;
 
-    return 1 - (((c & d) | s[0]) & 1);
+    return 1 - (((c & d) | e | s[0]) & 1);
 }
 
 int
