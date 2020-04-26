@@ -2,7 +2,7 @@
 # Attempt to guess a canonical system name.
 #   Copyright 1992-2020 Free Software Foundation, Inc.
 
-timestamp='2020-01-01'
+timestamp='2020-04-26'
 
 # This file is free software; you can redistribute it and/or modify it
 # under the terms of the GNU General Public License as published by
@@ -1629,6 +1629,12 @@ copies of config.guess and config.sub with the latest versions from:
   https://git.savannah.gnu.org/gitweb/?p=config.git;a=blob_plain;f=config.guess
 and
   https://git.savannah.gnu.org/gitweb/?p=config.git;a=blob_plain;f=config.sub
+EOF
+
+year=`echo $timestamp | sed 's,-.*,,'`
+# shellcheck disable=SC2003
+if test "`expr "\`date +%Y\`" - "$year"`" -lt 3 ; then
+   cat >&2 <<EOF
 
 If $0 has already been updated, send the following data and any
 information you think might be pertinent to config-patches@gnu.org to
@@ -1656,6 +1662,7 @@ UNAME_RELEASE = "$UNAME_RELEASE"
 UNAME_SYSTEM  = "$UNAME_SYSTEM"
 UNAME_VERSION = "$UNAME_VERSION"
 EOF
+fi
 
 exit 1
 
