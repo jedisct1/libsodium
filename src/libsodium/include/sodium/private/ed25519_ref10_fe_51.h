@@ -191,17 +191,7 @@ fe25519_cswap(fe25519 f, fe25519 g, unsigned int b)
 static inline void
 fe25519_copy(fe25519 h, const fe25519 f)
 {
-    uint64_t f0 = f[0];
-    uint64_t f1 = f[1];
-    uint64_t f2 = f[2];
-    uint64_t f3 = f[3];
-    uint64_t f4 = f[4];
-
-    h[0] = f0;
-    h[1] = f1;
-    h[2] = f2;
-    h[3] = f3;
-    h[4] = f4;
+    memcpy(h, f, 5 * 8);
 }
 
 /*
