@@ -200,7 +200,7 @@ poly1305_finish(poly1305_state_internal_t *st, unsigned char mac[16])
     t0 = st->pad[0];
     t1 = st->pad[1];
 
-    h0 += ((t0) &0xfffffffffff);
+    h0 += ((t0) & 0xfffffffffff);
     c = (h0 >> 44);
     h0 &= 0xfffffffffff;
     h1 += (((t0 >> 44) | (t1 << 20)) & 0xfffffffffff) + c;
