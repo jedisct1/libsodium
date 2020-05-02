@@ -479,7 +479,7 @@ fe25519_sq2(fe25519 h, const fe25519 f)
     h[4] = r04;
 }
 
-static void
+static inline void
 fe25519_mul32(fe25519 h, const fe25519 f, uint32_t n)
 {
     const uint64_t mask = 0x7ffffffffffffULL;

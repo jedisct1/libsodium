@@ -958,7 +958,7 @@ fe25519_sq2(fe25519 h, const fe25519 f)
     h[9] = (int32_t) h9;
 }
 
-static void
+static inline void
 fe25519_mul32(fe25519 h, const fe25519 f, uint32_t n)
 {
     int64_t sn = (int64_t) n;
