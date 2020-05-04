@@ -41,14 +41,14 @@ typedef struct poly1305_state_internal_t {
     union {
         uint64_t h[3];
         uint32_t hh[10];
-    } H;                                            /*  40 bytes  */
-    uint32_t           R[5];                        /*  20 bytes  */
-    uint32_t           R2[5];                       /*  20 bytes  */
-    uint32_t           R4[5];                       /*  20 bytes  */
-    uint64_t           pad[2];                      /*  16 bytes  */
-    uint64_t           flags;                       /*   8 bytes  */
-    unsigned long long leftover;                    /* 8 bytes */
-    unsigned char      buffer[poly1305_block_size]; /* 32 bytes */
+    } H;                                            /*  40 bytes */
+    uint32_t           R[5];                        /*  20 bytes */
+    uint32_t           R2[5];                       /*  20 bytes */
+    uint32_t           R4[5];                       /*  20 bytes */
+    uint64_t           pad[2];                      /*  16 bytes */
+    uint64_t           flags;                       /*   8 bytes */
+    unsigned long long leftover;                    /*   8 bytes */
+    unsigned char      buffer[poly1305_block_size]; /*  32 bytes */
 } poly1305_state_internal_t;                        /* 164 bytes total */
 
 /*
