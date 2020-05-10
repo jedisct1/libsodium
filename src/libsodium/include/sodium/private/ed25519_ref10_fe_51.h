@@ -131,8 +131,7 @@ fe25519_cmov(fe25519 f, const fe25519 g, unsigned int b)
         "movq      %[t0], 24(%[a])\n"
         "movq      %[t1], 32(%[a])\n"
       : [ t0 ] "=&r"(t0), [ t1 ] "=&r"(t1), [ t2 ] "=&r"(t2)
-      : [ a ] "r"(*(unsigned char(*)[40]) f),
-        [ b ] "r"(*(const unsigned char(*)[40]) g), [ c ] "r"(b)
+      : [ a ] "r"(f), [ b ] "r"(g), [ c ] "r"(b)
       : "cc");
 #else
     uint64_t mask = (uint64_t) (-(int64_t) b);
