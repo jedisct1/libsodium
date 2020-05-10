@@ -609,9 +609,7 @@ _sodium_mlock 0 0
 _sodium_mprotect_noaccess 0 0
 _sodium_mprotect_readonly 0 0
 _sodium_mprotect_readwrite 0 0
-_sodium_mshield 1 1
 _sodium_munlock 0 0
-_sodium_munshield 1 1
 _sodium_pad 1 1
 _sodium_runtime_has_aesni 0 0
 _sodium_runtime_has_armcrypto 0 0
