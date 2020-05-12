@@ -2611,14 +2611,14 @@ ge25519_clear_cofactor(ge25519_p3 *p3)
 }
 
 static void
-ge25519_elligator2(fe25519 x, fe25519 y, const fe25519 r)
+ge25519_elligator2(fe25519 x, fe25519 y, const fe25519 r, int *was_square_p)
 {
     fe25519       e;
     fe25519       gx1;
     fe25519       rr2;
     fe25519       x2, x3, negx;
     unsigned char s[32];
-    unsigned int  e_is_minus_1;
+    int           was_square;
 
     fe25519_sq2(rr2, r);
     rr2[0]++;
@@ -2634,13 +2634,13 @@ ge25519_elligator2(fe25519 x, fe25519 y, const fe25519 r)
 
     chi25519(e, gx1);
     fe25519_tobytes(s, e);
-    e_is_minus_1 = s[1] & 1;
+    was_square = s[1] & 1;
 
     /* e=-1 => x = -x1-A */
     fe25519_neg(negx, x);
-    fe25519_cmov(x, negx, e_is_minus_1);
+    fe25519_cmov(x, negx, was_square);
     fe25519_0(x2);
-    fe25519_cmov(x2, ed25519_A, e_is_minus_1);
+    fe25519_cmov(x2, ed25519_A, was_square);
     fe25519_sub(x, x, x2);
 
     /* y = sqrt(gx1) or sqrt(gx2) with gx2 = gx1 * (A+x1) / -x1 */
@@ -2648,6 +2648,7 @@ ge25519_elligator2(fe25519 x, fe25519 y, const fe25519 r)
     if (ge25519_xmont_to_ymont(y, x) != 0) {
         abort();
     }
+    *was_square_p = was_square;
 }
 
 void
@@ -2656,6 +2657,7 @@ ge25519_from_uniform(unsigned char s[32], const unsigned char r[32])
     ge25519_p3    p3;
     fe25519       x, y, negxed;
     fe25519       r_fe;
+    int           was_square;
     unsigned char x_sign;
 
     memcpy(s, r, 32);
@@ -2663,7 +2665,7 @@ ge25519_from_uniform(unsigned char s[32], const unsigned char r[32])
     s[31] &= 0x7f;
     fe25519_frombytes(r_fe, s);
 
-    ge25519_elligator2(x, y, r_fe);
+    ge25519_elligator2(x, y, r_fe, &was_square);
 
     ge25519_mont_to_ed(p3.X, p3.Y, x, y);
     fe25519_neg(negxed, p3.X);
@@ -2685,6 +2687,7 @@ ge25519_from_hash(unsigned char s[32], const unsigned char h[64])
     fe25519       fe_f;
     fe25519       fe_g;
     size_t        i;
+    int           was_square;
     unsigned char y_sign;
 
     for (i = 0; i < 32; i++) {
@@ -2701,9 +2704,9 @@ ge25519_from_hash(unsigned char s[32], const unsigned char h[64])
     }
     fe25519_reduce(fe_f, fe_f);
 
-    ge25519_elligator2(x, y, fe_f);
+    ge25519_elligator2(x, y, fe_f, &was_square);
 
-    y_sign = fe_f[0] & 1;
+    y_sign = was_square;
     fe25519_neg(negy, y);
     fe25519_cmov(y, negy, fe25519_isnegative(y) ^ y_sign);
 

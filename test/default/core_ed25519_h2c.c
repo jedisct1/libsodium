@@ -29,7 +29,7 @@ static TestData test_data[] = {
     { 1, "",
       "5c307efcdf7f0822428f932e66b46b3d88f59880772a1ab07fac5231609c5f76" },
     { 1, "abc",
-      "3f4887aeee9213d976e125bfd0e4e2201d7ddea8abfa28e47bec8df008821b1c" },
+      "4bc72bbd27a3207ad932ea6e218b257875ad2cb34695d964da83a57f4807394d" },
     { 1, "abcdef0123456789",
       "3c67b98967527a551ea54e4de791689834552009a7a40393fd4a23d1f04061ef" },
     { 1,
@@ -42,7 +42,7 @@ static TestData test_data[] = {
       "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
       "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
       "aaaaaaaa",
-      "4ce238dc1cac3b392767bda2c81e3374e61efa4c2f93c5c400f0d848b9b2e339" }
+      "6ce3485dc2cd37462e08e46f9931b16bb272280aea3efc38fb96d2d2df4870bd" }
 };
 
 int
