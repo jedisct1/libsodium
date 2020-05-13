@@ -332,7 +332,7 @@ mulv(__m128i A, __m128i B)
         __m128i       H0 = H0_, H1 = H1_, H2 = H2_, H3 = H3_;                                   \
         __m128i       X0 = X0_, X1 = X1_, X2 = X2_, X3 = X3_;                                   \
         const __m128i rev = _mm_set_epi8(0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15); \
-        __m128i       lo, tmplo, hi, tmphi;                                                     \
+        __m128i       lo, hi;                                                                   \
         __m128i       tmp8, tmp9;                                                               \
         MAKE4(RED_DECL);                                                                        \
                                                                                                 \
@@ -413,7 +413,7 @@ mulv(__m128i A, __m128i B)
         __m128i H0 = H0_, H1 = H1_, H2 = H2_, H3 = H3_, H4 = H4_, H5 = H5_, H6 = H6_, H7 = H7_;  \
         __m128i X0 = X0_, X1 = X1_, X2 = X2_, X3 = X3_, X4 = X4_, X5 = X5_, X6 = X6_, X7 = X7_;  \
         const __m128i rev = _mm_set_epi8(0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15);  \
-        __m128i       lo, tmplo, hi, tmphi;                                                      \
+        __m128i       lo, hi;                                                                    \
         __m128i       tmp8, tmp9;                                                                \
         MAKE8(RED_DECL);                                                                         \
                                                                                                  \
@@ -810,27 +810,29 @@ crypto_aead_aes256gcm_decrypt_detached_afternm(unsigned char *m, unsigned char *
         }                                                                                        \
     } while (0)
 
-#define LOOPDRMD128                                    \
-    do {                                               \
-        const int iter = 8;                            \
-        const int lb   = iter * 16;                    \
-        for (i = mlen_rnd128; i < mlen; i += lb) {     \
-            CRYPTO_ALIGN(16) unsigned char outni[lb];  \
-            unsigned long long             mj = lb;    \
-            if ((i + mj) >= mlen)                      \
-                mj = mlen - i;                         \
-            for (j = 0; j < mj; j += 16) {             \
-                unsigned long long bl = 16;            \
-                if (j + bl >= mj) {                    \
-                    bl = mj - j;                       \
-                }                                      \
-                addmulreduce(accum, c + i + j, bl, H); \
-            }                                          \
-            aesni_encrypt8(outni, n2, rkeys);          \
-            for (j = 0; j < mj; j++) {                 \
-                m[i + j] = c[i + j] ^ outni[j];        \
-            }                                          \
-        }                                              \
+#define LOOPDRMD128                                       \
+    do {                                                  \
+        const int iter = 8;                               \
+        const int lb   = iter * 16;                       \
+        for (i = mlen_rnd128; i < mlen; i += lb) {        \
+            CRYPTO_ALIGN(16) unsigned char outni[8 * 16]; \
+            unsigned long long             mj = lb;       \
+                                                          \
+            if ((i + mj) >= mlen) {                       \
+                mj = mlen - i;                            \
+            }                                             \
+            for (j = 0; j < mj; j += 16) {                \
+                unsigned long long bl = 16;               \
+                if (j + bl >= mj) {                       \
+                    bl = mj - j;                          \
+                }                                         \
+                addmulreduce(accum, c + i + j, bl, H);    \
+            }                                             \
+            aesni_encrypt8(outni, n2, rkeys);             \
+            for (j = 0; j < mj; j++) {                    \
+                m[i + j] = c[i + j] ^ outni[j];           \
+            }                                             \
+        }                                                 \
     } while (0)
 
     n2[3] = 0U;
