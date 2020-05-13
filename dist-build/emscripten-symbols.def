@@ -166,6 +166,7 @@ _crypto_core_ed25519_random 0 1
 _crypto_core_ed25519_scalar_add 0 1
 _crypto_core_ed25519_scalar_complement 0 1
 _crypto_core_ed25519_scalar_invert 0 1
+_crypto_core_ed25519_scalar_is_canonical 0 1
 _crypto_core_ed25519_scalar_mul 0 1
 _crypto_core_ed25519_scalar_negate 0 1
 _crypto_core_ed25519_scalar_random 0 1
@@ -194,6 +195,7 @@ _crypto_core_ristretto255_random 0 1
 _crypto_core_ristretto255_scalar_add 0 1
 _crypto_core_ristretto255_scalar_complement 0 1
 _crypto_core_ristretto255_scalar_invert 0 1
+_crypto_core_ristretto255_scalar_is_canonical 0 1
 _crypto_core_ristretto255_scalar_mul 0 1
 _crypto_core_ristretto255_scalar_negate 0 1
 _crypto_core_ristretto255_scalar_random 0 1

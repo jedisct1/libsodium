@@ -131,6 +131,12 @@ crypto_core_ristretto255_scalar_reduce(unsigned char *r,
     crypto_core_ed25519_scalar_reduce(r, s);
 }
 
+int
+crypto_core_ristretto255_scalar_is_canonical(const unsigned char *s)
+{
+    return sc25519_is_canonical(s);
+}
+
 size_t
 crypto_core_ristretto255_bytes(void)
 {

@@ -101,6 +101,10 @@ SODIUM_EXPORT
 void crypto_core_ed25519_scalar_reduce(unsigned char *r, const unsigned char *s)
             __attribute__ ((nonnull));
 
+SODIUM_EXPORT
+int crypto_core_ed25519_scalar_is_canonical(const unsigned char *s)
+            __attribute__ ((nonnull));
+
 #ifdef __cplusplus
 }
 #endif

@@ -271,6 +271,12 @@ crypto_core_ed25519_scalar_reduce(unsigned char *r,
     sodium_memzero(t, sizeof t);
 }
 
+int
+crypto_core_ed25519_scalar_is_canonical(const unsigned char *s)
+{
+    return sc25519_is_canonical(s);
+}
+
 size_t
 crypto_core_ed25519_bytes(void)
 {
