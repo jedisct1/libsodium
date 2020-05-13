@@ -1,8 +1,8 @@
 
 /*
- * AES256-GCM, based on the "Intel Carry-Less Multiplication Instruction and its Usage for Computing
- * the GCM Mode" paper and reference code, using the aggregated reduction method.
- * Originally adapted by Romain Dolbeau.
+ * AES256-GCM, based on the "Intel Carry-Less Multiplication Instruction and its
+ * Usage for Computing the GCM Mode" paper and reference code, using the
+ * aggregated reduction method. Originally adapted by Romain Dolbeau.
  */
 
 #include <errno.h>
@@ -99,50 +99,33 @@ aesni_key256_expand(const unsigned char *key, __m128i *const rkeys)
     EXPAND_KEY_1(0x40);
 }
 
-/** single, by-the-book AES encryption with AES-NI */
-static inline void
-aesni_encrypt1(unsigned char *out, __m128i nv, const __m128i *rkeys)
-{
-    __m128i temp = _mm_xor_si128(nv, rkeys[0]);
-
-    temp = _mm_aesenc_si128(temp, rkeys[1]);
-    temp = _mm_aesenc_si128(temp, rkeys[2]);
-    temp = _mm_aesenc_si128(temp, rkeys[3]);
-    temp = _mm_aesenc_si128(temp, rkeys[4]);
-    temp = _mm_aesenc_si128(temp, rkeys[5]);
-    temp = _mm_aesenc_si128(temp, rkeys[6]);
-    temp = _mm_aesenc_si128(temp, rkeys[7]);
-    temp = _mm_aesenc_si128(temp, rkeys[8]);
-    temp = _mm_aesenc_si128(temp, rkeys[9]);
-    temp = _mm_aesenc_si128(temp, rkeys[10]);
-    temp = _mm_aesenc_si128(temp, rkeys[11]);
-    temp = _mm_aesenc_si128(temp, rkeys[12]);
-    temp = _mm_aesenc_si128(temp, rkeys[13]);
-
-    temp = _mm_aesenclast_si128(temp, rkeys[14]);
-    _mm_storeu_si128((__m128i *) out, temp);
-}
-
-/** multiple-blocks-at-once AES encryption with AES-NI ;
-    on Haswell, aesenc has a latency of 7 and a throughput of 1
-    so the sequence of aesenc should be bubble-free if you
-    have at least 8 blocks. Let's build an arbitratry-sized
-    function */
-/* Step 1 : loading the nonce */
-/* load & increment the n vector (non-vectorized, unused for now) */
 #define NVDECLx(a) __m128i nv##a
 
+/* Step 1 : loading and incrementing the nonce */
 #define NVx(a)                                                         \
     nv##a = _mm_shuffle_epi8(_mm_load_si128((const __m128i *) n), pt); \
     n[3]++
 
-/* Step 2 : define value in round one (xor with subkey #0, aka key) */
 #define TEMPDECLx(a) __m128i temp##a
 
+/* Step 2 : define value in round one (xor with subkey #0, aka key) */
 #define TEMPx(a) temp##a = _mm_xor_si128(nv##a, rkeys[0])
 
 /* Step 3: one round of AES */
-#define AESENCx(a) temp##a = _mm_aesenc_si128(temp##a, rkeys[roundctr])
+#define AESENCx(a, roundctr) temp##a = _mm_aesenc_si128(temp##a, rkeys[roundctr])
+#define AESENCx1(a) AESENCx(a, 1)
+#define AESENCx2(a) AESENCx(a, 2)
+#define AESENCx3(a) AESENCx(a, 3)
+#define AESENCx4(a) AESENCx(a, 4)
+#define AESENCx5(a) AESENCx(a, 5)
+#define AESENCx6(a) AESENCx(a, 6)
+#define AESENCx7(a) AESENCx(a, 7)
+#define AESENCx8(a) AESENCx(a, 8)
+#define AESENCx9(a) AESENCx(a, 9)
+#define AESENCx10(a) AESENCx(a, 10)
+#define AESENCx11(a) AESENCx(a, 11)
+#define AESENCx12(a) AESENCx(a, 12)
+#define AESENCx13(a) AESENCx(a, 13)
 
 /* Step 4: last round of AES */
 #define AESENCLASTx(a) temp##a = _mm_aesenclast_si128(temp##a, rkeys[14])
@@ -169,33 +152,61 @@ aesni_encrypt1(unsigned char *out, __m128i nv, const __m128i *rkeys)
 
 #define COUNTER_INC2(N) (N)[3] += 2
 
-/* create a function of unrolling N ; the MAKEN is the unrolling
-   macro, defined above. The N in MAKEN must match N, obviously. */
-#define FUNC(N, MAKEN)                                                                         \
-    static inline void aesni_encrypt##N(unsigned char *out, uint32_t *n, const __m128i *rkeys) \
-    {                                                                                          \
-        const __m128i pt = _mm_set_epi8(12, 13, 14, 15, 11, 10, 9, 8, 7, 6, 5, 4, 3, 2, 1, 0); \
-        int           roundctr;                                                                \
-        MAKEN(NVDECLx);                                                                        \
-        MAKEN(TEMPDECLx);                                                                      \
-                                                                                               \
-        MAKEN(NVx);                                                                            \
-        MAKEN(TEMPx);                                                                          \
-        for (roundctr = 1; roundctr < 14; roundctr++) {                                        \
-            MAKEN(AESENCx);                                                                    \
-        }                                                                                      \
-        MAKEN(AESENCLASTx);                                                                    \
-        MAKEN(STOREx);                                                                         \
-    }
+static inline void
+aesni_encrypt1(unsigned char *out, __m128i nv0, const __m128i *rkeys)
+{
+    TEMPDECLx(0);
 
-FUNC(8, MAKE8)
+    TEMPx(0);
+    AESENCx1(0);
+    AESENCx2(0);
+    AESENCx3(0);
+    AESENCx4(0);
+    AESENCx5(0);
+    AESENCx6(0);
+    AESENCx7(0);
+    AESENCx8(0);
+    AESENCx9(0);
+    AESENCx10(0);
+    AESENCx11(0);
+    AESENCx12(0);
+    AESENCx13(0);
+    AESENCLASTx(0);
+    STOREx(0);
+}
 
-/* all GF(2^128) fnctions are by the book, meaning this one:
+static inline void
+aesni_encrypt8(unsigned char *out, uint32_t *n, const __m128i *rkeys)
+{
+    const __m128i pt = _mm_set_epi8(12, 13, 14, 15, 11, 10, 9, 8, 7, 6, 5, 4, 3, 2, 1, 0);
+    MAKE8(NVDECLx);
+    MAKE8(TEMPDECLx);
+
+    MAKE8(NVx);
+    MAKE8(TEMPx);
+    MAKE8(AESENCx1);
+    MAKE8(AESENCx2);
+    MAKE8(AESENCx3);
+    MAKE8(AESENCx4);
+    MAKE8(AESENCx5);
+    MAKE8(AESENCx6);
+    MAKE8(AESENCx7);
+    MAKE8(AESENCx8);
+    MAKE8(AESENCx9);
+    MAKE8(AESENCx10);
+    MAKE8(AESENCx11);
+    MAKE8(AESENCx12);
+    MAKE8(AESENCx13);
+    MAKE8(AESENCLASTx);
+    MAKE8(STOREx);
+}
+
+/* all GF(2^128) functions are by the book, meaning this one:
    <https://software.intel.com/sites/default/files/managed/72/cc/clmul-wp-rev-2.02-2014-04-20.pdf>
 */
 
 static inline void
-addmul(unsigned char *c, const unsigned char *a, unsigned int xlen, const unsigned char *b)
+addmulreduce(unsigned char *c, const unsigned char *a, unsigned int xlen, const unsigned char *b)
 {
     const __m128i rev = _mm_set_epi8(0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15);
     __m128i       A, B, C;
@@ -301,11 +312,6 @@ mulv(__m128i A, __m128i B)
     return C;
 }
 
-/* 4 multiply-accumulate at once; again
-   <https://software.intel.com/sites/default/files/managed/72/cc/clmul-wp-rev-2.02-2014-04-20.pdf>
-   for the Aggregated Reduction Method & sample code.
-   Algorithm by Krzysztof Jankowski, Pierre Laurent - Intel */
-
 #define RED_DECL(a) __m128i H##a##_X##a##_lo, H##a##_X##a##_hi, tmp##a, tmp##a##B
 #define RED_SHUFFLE(a) X##a = _mm_shuffle_epi8(X##a, rev)
 #define RED_MUL_LOW(a) H##a##_X##a##_lo = _mm_clmulepi64_si128(H##a, X##a, 0x00)
@@ -317,165 +323,259 @@ mulv(__m128i A, __m128i B)
     tmp##a##B = _mm_xor_si128(tmp##a##B, X##a); \
     tmp##a    = _mm_clmulepi64_si128(tmp##a, tmp##a##B, 0x00)
 
-#define MULREDUCE4(rev, H0_, H1_, H2_, H3_, X0_, X1_, X2_, X3_, accv)         \
-    do {                                                                      \
-        MAKE4(RED_DECL);                                                      \
-        __m128i lo, hi;                                                       \
-        __m128i tmp8, tmp9;                                                   \
-        __m128i H0 = H0_;                                                     \
-        __m128i H1 = H1_;                                                     \
-        __m128i H2 = H2_;                                                     \
-        __m128i H3 = H3_;                                                     \
-        __m128i X0 = X0_;                                                     \
-        __m128i X1 = X1_;                                                     \
-        __m128i X2 = X2_;                                                     \
-        __m128i X3 = X3_;                                                     \
-                                                                              \
-        /* byte-revert the inputs & xor the first one into the accumulator */ \
-                                                                              \
-        MAKE4(RED_SHUFFLE);                                                   \
-        X3 = _mm_xor_si128(X3, accv);                                         \
-                                                                              \
-        /* 4 low H*X (x0*h0) */                                               \
-                                                                              \
-        MAKE4(RED_MUL_LOW);                                                   \
-        lo = _mm_xor_si128(H0_X0_lo, H1_X1_lo);                               \
-        lo = _mm_xor_si128(lo, H2_X2_lo);                                     \
-        lo = _mm_xor_si128(lo, H3_X3_lo);                                     \
-                                                                              \
-        /* 4 high H*X (x1*h1) */                                              \
-                                                                              \
-        MAKE4(RED_MUL_HIGH);                                                  \
-        hi = _mm_xor_si128(H0_X0_hi, H1_X1_hi);                               \
-        hi = _mm_xor_si128(hi, H2_X2_hi);                                     \
-        hi = _mm_xor_si128(hi, H3_X3_hi);                                     \
-                                                                              \
-        /* 4 middle H*X, using Karatsuba, i.e.                                \
-             x1*h0+x0*h1 =(x1+x0)*(h1+h0)-x1*h1-x0*h0                         \
-             we already have all x1y1 & x0y0 (accumulated in hi & lo)         \
-             (0 is low half and 1 is high half)                               \
-          */                                                                  \
-        /* permute the high and low 64 bits in H1 & X1,                       \
-             so create (h0,h1) from (h1,h0) and (x0,x1) from (x1,x0),         \
-             then compute (h0+h1,h1+h0) and (x0+x1,x1+x0),                    \
-             and finally multiply                                             \
-          */                                                                  \
-        MAKE4(RED_MUL_MID);                                                   \
-                                                                              \
-        /* substracts x1*h1 and x0*h0 */                                      \
-        tmp0 = _mm_xor_si128(tmp0, lo);                                       \
-        tmp0 = _mm_xor_si128(tmp0, hi);                                       \
-        tmp0 = _mm_xor_si128(tmp1, tmp0);                                     \
-        tmp0 = _mm_xor_si128(tmp2, tmp0);                                     \
-        tmp0 = _mm_xor_si128(tmp3, tmp0);                                     \
-                                                                              \
-        /* reduction */                                                       \
-        tmp0B = _mm_slli_si128(tmp0, 8);                                      \
-        tmp0  = _mm_srli_si128(tmp0, 8);                                      \
-        lo    = _mm_xor_si128(tmp0B, lo);                                     \
-        hi    = _mm_xor_si128(tmp0, hi);                                      \
-        tmp3  = lo;                                                           \
-        tmp2B = hi;                                                           \
-        tmp3B = _mm_srli_epi32(tmp3, 31);                                     \
-        tmp8  = _mm_srli_epi32(tmp2B, 31);                                    \
-        tmp3  = _mm_slli_epi32(tmp3, 1);                                      \
-        tmp2B = _mm_slli_epi32(tmp2B, 1);                                     \
-        tmp9  = _mm_srli_si128(tmp3B, 12);                                    \
-        tmp8  = _mm_slli_si128(tmp8, 4);                                      \
-        tmp3B = _mm_slli_si128(tmp3B, 4);                                     \
-        tmp3  = _mm_or_si128(tmp3, tmp3B);                                    \
-        tmp2B = _mm_or_si128(tmp2B, tmp8);                                    \
-        tmp2B = _mm_or_si128(tmp2B, tmp9);                                    \
-        tmp3B = _mm_slli_epi32(tmp3, 31);                                     \
-        tmp8  = _mm_slli_epi32(tmp3, 30);                                     \
-        tmp9  = _mm_slli_epi32(tmp3, 25);                                     \
-        tmp3B = _mm_xor_si128(tmp3B, tmp8);                                   \
-        tmp3B = _mm_xor_si128(tmp3B, tmp9);                                   \
-        tmp8  = _mm_srli_si128(tmp3B, 4);                                     \
-        tmp3B = _mm_slli_si128(tmp3B, 12);                                    \
-        tmp3  = _mm_xor_si128(tmp3, tmp3B);                                   \
-        tmp2  = _mm_srli_epi32(tmp3, 1);                                      \
-        tmp0B = _mm_srli_epi32(tmp3, 2);                                      \
-        tmp1B = _mm_srli_epi32(tmp3, 7);                                      \
-        tmp2  = _mm_xor_si128(tmp2, tmp0B);                                   \
-        tmp2  = _mm_xor_si128(tmp2, tmp1B);                                   \
-        tmp2  = _mm_xor_si128(tmp2, tmp8);                                    \
-        tmp3  = _mm_xor_si128(tmp3, tmp2);                                    \
-        tmp2B = _mm_xor_si128(tmp2B, tmp3);                                   \
-                                                                              \
-        accv = tmp2B;                                                         \
+/* 4 multiply-accumulate at once; again
+   <https://software.intel.com/sites/default/files/managed/72/cc/clmul-wp-rev-2.02-2014-04-20.pdf>
+   for the Aggregated Reduction Method & sample code.
+   Algorithm by Krzysztof Jankowski, Pierre Laurent - Intel */
+#define ADDMULREDUCE4(H0_, H1_, H2_, H3_, X0_, X1_, X2_, X3_, accv)                             \
+    do {                                                                                        \
+        __m128i       H0 = H0_, H1 = H1_, H2 = H2_, H3 = H3_;                                   \
+        __m128i       X0 = X0_, X1 = X1_, X2 = X2_, X3 = X3_;                                   \
+        const __m128i rev = _mm_set_epi8(0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15); \
+        __m128i       lo, tmplo, hi, tmphi;                                                     \
+        __m128i       tmp8, tmp9;                                                               \
+        MAKE4(RED_DECL);                                                                        \
+                                                                                                \
+        /* byte-revert the inputs & xor the first one into the accumulator */                   \
+        MAKE4(RED_SHUFFLE);                                                                     \
+        X3 = _mm_xor_si128(X3, accv);                                                           \
+                                                                                                \
+        /* 4 low H*X (x0*h0) */                                                                 \
+        MAKE4(RED_MUL_LOW);                                                                     \
+        lo = _mm_xor_si128(H0_X0_lo, H1_X1_lo);                                                 \
+        lo = _mm_xor_si128(lo, H2_X2_lo);                                                       \
+        lo = _mm_xor_si128(lo, H3_X3_lo);                                                       \
+                                                                                                \
+        /* 4 high H*X (x1*h1) */                                                                \
+        MAKE4(RED_MUL_HIGH);                                                                    \
+        hi = _mm_xor_si128(H0_X0_hi, H1_X1_hi);                                                 \
+        hi = _mm_xor_si128(hi, H2_X2_hi);                                                       \
+        hi = _mm_xor_si128(hi, H3_X3_hi);                                                       \
+                                                                                                \
+        /* 4 middle H*X, using Karatsuba, i.e.                                                  \
+           x1*h0+x0*h1 =(x1+x0)*(h1+h0)-x1*h1-x0*h0                                             \
+           we already have all x1y1 & x0y0 (accumulated in hi & lo)                             \
+           (0 is low half and 1 is high half)                                                   \
+        */                                                                                      \
+        /* permute the high and low 64 bits in H1 & X1,                                         \
+           so create (h0,h1) from (h1,h0) and (x0,x1) from (x1,x0),                             \
+           then compute (h0+h1,h1+h0) and (x0+x1,x1+x0),                                        \
+           and finally multiply                                                                 \
+        */                                                                                      \
+        MAKE4(RED_MUL_MID);                                                                     \
+                                                                                                \
+        /* substracts x1*h1 and x0*h0 */                                                        \
+        tmp0 = _mm_xor_si128(tmp0, lo);                                                         \
+        tmp0 = _mm_xor_si128(tmp0, hi);                                                         \
+        tmp0 = _mm_xor_si128(tmp1, tmp0);                                                       \
+        tmp0 = _mm_xor_si128(tmp2, tmp0);                                                       \
+        tmp0 = _mm_xor_si128(tmp3, tmp0);                                                       \
+                                                                                                \
+        /* reduction */                                                                         \
+        tmp0B = _mm_slli_si128(tmp0, 8);                                                        \
+        tmp0  = _mm_srli_si128(tmp0, 8);                                                        \
+        lo    = _mm_xor_si128(tmp0B, lo);                                                       \
+        hi    = _mm_xor_si128(tmp0, hi);                                                        \
+        tmp3  = lo;                                                                             \
+        tmp2B = hi;                                                                             \
+        tmp3B = _mm_srli_epi32(tmp3, 31);                                                       \
+        tmp8  = _mm_srli_epi32(tmp2B, 31);                                                      \
+        tmp3  = _mm_slli_epi32(tmp3, 1);                                                        \
+        tmp2B = _mm_slli_epi32(tmp2B, 1);                                                       \
+        tmp9  = _mm_srli_si128(tmp3B, 12);                                                      \
+        tmp8  = _mm_slli_si128(tmp8, 4);                                                        \
+        tmp3B = _mm_slli_si128(tmp3B, 4);                                                       \
+        tmp3  = _mm_or_si128(tmp3, tmp3B);                                                      \
+        tmp2B = _mm_or_si128(tmp2B, tmp8);                                                      \
+        tmp2B = _mm_or_si128(tmp2B, tmp9);                                                      \
+        tmp3B = _mm_slli_epi32(tmp3, 31);                                                       \
+        tmp8  = _mm_slli_epi32(tmp3, 30);                                                       \
+        tmp9  = _mm_slli_epi32(tmp3, 25);                                                       \
+        tmp3B = _mm_xor_si128(tmp3B, tmp8);                                                     \
+        tmp3B = _mm_xor_si128(tmp3B, tmp9);                                                     \
+        tmp8  = _mm_srli_si128(tmp3B, 4);                                                       \
+        tmp3B = _mm_slli_si128(tmp3B, 12);                                                      \
+        tmp3  = _mm_xor_si128(tmp3, tmp3B);                                                     \
+        tmp2  = _mm_srli_epi32(tmp3, 1);                                                        \
+        tmp0B = _mm_srli_epi32(tmp3, 2);                                                        \
+        tmp1B = _mm_srli_epi32(tmp3, 7);                                                        \
+        tmp2  = _mm_xor_si128(tmp2, tmp0B);                                                     \
+        tmp2  = _mm_xor_si128(tmp2, tmp1B);                                                     \
+        tmp2  = _mm_xor_si128(tmp2, tmp8);                                                      \
+        tmp3  = _mm_xor_si128(tmp3, tmp2);                                                      \
+        tmp2B = _mm_xor_si128(tmp2B, tmp3);                                                     \
+        accv  = tmp2B;                                                                          \
     } while (0)
 
+#define ADDMULREDUCE8(H0_, H1_, H2_, H3_, H4_, H5_, H6_, H7_, X0_, X1_, X2_, X3_, X4_, X5_, X6_, \
+                      X7_, accv)                                                                 \
+    do {                                                                                         \
+        __m128i H0 = H0_, H1 = H1_, H2 = H2_, H3 = H3_, H4 = H4_, H5 = H5_, H6 = H6_, H7 = H7_;  \
+        __m128i X0 = X0_, X1 = X1_, X2 = X2_, X3 = X3_, X4 = X4_, X5 = X5_, X6 = X6_, X7 = X7_;  \
+        const __m128i rev = _mm_set_epi8(0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15);  \
+        __m128i       lo, tmplo, hi, tmphi;                                                      \
+        __m128i       tmp8, tmp9;                                                                \
+        MAKE8(RED_DECL);                                                                         \
+                                                                                                 \
+        /* byte-revert the inputs & xor the first one into the accumulator */                    \
+        MAKE8(RED_SHUFFLE);                                                                      \
+        X7 = _mm_xor_si128(X7, accv);                                                            \
+                                                                                                 \
+        /* 8 low H*X (x0*h0) */                                                                  \
+        MAKE8(RED_MUL_LOW);                                                                      \
+        lo = _mm_xor_si128(H0_X0_lo, H1_X1_lo);                                                  \
+        lo = _mm_xor_si128(lo, H2_X2_lo);                                                        \
+        lo = _mm_xor_si128(lo, H3_X3_lo);                                                        \
+        lo = _mm_xor_si128(lo, H4_X4_lo);                                                        \
+        lo = _mm_xor_si128(lo, H5_X5_lo);                                                        \
+        lo = _mm_xor_si128(lo, H6_X6_lo);                                                        \
+        lo = _mm_xor_si128(lo, H7_X7_lo);                                                        \
+                                                                                                 \
+        /* 8 high H*X (x1*h1) */                                                                 \
+        MAKE8(RED_MUL_HIGH);                                                                     \
+        hi = _mm_xor_si128(H0_X0_hi, H1_X1_hi);                                                  \
+        hi = _mm_xor_si128(hi, H2_X2_hi);                                                        \
+        hi = _mm_xor_si128(hi, H3_X3_hi);                                                        \
+        hi = _mm_xor_si128(hi, H4_X4_hi);                                                        \
+        hi = _mm_xor_si128(hi, H5_X5_hi);                                                        \
+        hi = _mm_xor_si128(hi, H6_X6_hi);                                                        \
+        hi = _mm_xor_si128(hi, H7_X7_hi);                                                        \
+                                                                                                 \
+        /* 8 middle H*X, using Karatsuba, i.e.                                                   \
+           x1*h0+x0*h1 =(x1+x0)*(h1+h0)-x1*h1-x0*h0                                              \
+           we already have all x1y1 & x0y0 (accumulated in hi & lo)                              \
+           (0 is low half and 1 is high half)                                                    \
+        */                                                                                       \
+        /* permute the high and low 64 bits in H1 & X1,                                          \
+           so create (h0,h1) from (h1,h0) and (x0,x1) from (x1,x0),                              \
+           then compute (h0+h1,h1+h0) and (x0+x1,x1+x0),                                         \
+           and finally multiply                                                                  \
+        */                                                                                       \
+        MAKE8(RED_MUL_MID);                                                                      \
+                                                                                                 \
+        /* substracts x1*h1 and x0*h0 */                                                         \
+        tmp0 = _mm_xor_si128(tmp0, lo);                                                          \
+        tmp0 = _mm_xor_si128(tmp0, hi);                                                          \
+        tmp0 = _mm_xor_si128(tmp1, tmp0);                                                        \
+        tmp0 = _mm_xor_si128(tmp2, tmp0);                                                        \
+        tmp0 = _mm_xor_si128(tmp3, tmp0);                                                        \
+        tmp0 = _mm_xor_si128(tmp4, tmp0);                                                        \
+        tmp0 = _mm_xor_si128(tmp5, tmp0);                                                        \
+        tmp0 = _mm_xor_si128(tmp6, tmp0);                                                        \
+        tmp0 = _mm_xor_si128(tmp7, tmp0);                                                        \
+                                                                                                 \
+        /* reduction */                                                                          \
+        tmp0B = _mm_slli_si128(tmp0, 8);                                                         \
+        tmp0  = _mm_srli_si128(tmp0, 8);                                                         \
+        lo    = _mm_xor_si128(tmp0B, lo);                                                        \
+        hi    = _mm_xor_si128(tmp0, hi);                                                         \
+        tmp3  = lo;                                                                              \
+        tmp2B = hi;                                                                              \
+        tmp3B = _mm_srli_epi32(tmp3, 31);                                                        \
+        tmp8  = _mm_srli_epi32(tmp2B, 31);                                                       \
+        tmp3  = _mm_slli_epi32(tmp3, 1);                                                         \
+        tmp2B = _mm_slli_epi32(tmp2B, 1);                                                        \
+        tmp9  = _mm_srli_si128(tmp3B, 12);                                                       \
+        tmp8  = _mm_slli_si128(tmp8, 4);                                                         \
+        tmp3B = _mm_slli_si128(tmp3B, 4);                                                        \
+        tmp3  = _mm_or_si128(tmp3, tmp3B);                                                       \
+        tmp2B = _mm_or_si128(tmp2B, tmp8);                                                       \
+        tmp2B = _mm_or_si128(tmp2B, tmp9);                                                       \
+        tmp3B = _mm_slli_epi32(tmp3, 31);                                                        \
+        tmp8  = _mm_slli_epi32(tmp3, 30);                                                        \
+        tmp9  = _mm_slli_epi32(tmp3, 25);                                                        \
+        tmp3B = _mm_xor_si128(tmp3B, tmp8);                                                      \
+        tmp3B = _mm_xor_si128(tmp3B, tmp9);                                                      \
+        tmp8  = _mm_srli_si128(tmp3B, 4);                                                        \
+        tmp3B = _mm_slli_si128(tmp3B, 12);                                                       \
+        tmp3  = _mm_xor_si128(tmp3, tmp3B);                                                      \
+        tmp2  = _mm_srli_epi32(tmp3, 1);                                                         \
+        tmp0B = _mm_srli_epi32(tmp3, 2);                                                         \
+        tmp1B = _mm_srli_epi32(tmp3, 7);                                                         \
+        tmp2  = _mm_xor_si128(tmp2, tmp0B);                                                      \
+        tmp2  = _mm_xor_si128(tmp2, tmp1B);                                                      \
+        tmp2  = _mm_xor_si128(tmp2, tmp8);                                                       \
+        tmp3  = _mm_xor_si128(tmp3, tmp2);                                                       \
+        tmp2B = _mm_xor_si128(tmp2B, tmp3);                                                      \
+        accv  = tmp2B;                                                                           \
+    } while (0)
+
+#define INDECLx(a) __m128i in##a
+
 #define XORx(a) temp##a = _mm_xor_si128(temp##a, _mm_loadu_si128((const __m128i *) (in + a * 16)))
+
+#define INXORx(a) \
+    temp##a = _mm_xor_si128(temp##a, (in##a = _mm_loadu_si128((const __m128i *) (in + a * 16))))
 
 #define LOADx(a) __m128i in##a = _mm_loadu_si128((const __m128i *) (in + a * 16))
 
 /* full encrypt & checksum 8 blocks at once */
-#define aesni_encrypt8full(out_, n_, rkeys, in_, accum, hv_, h2v_, h3v_, h4v_, rev)            \
-    do {                                                                                       \
-        unsigned char *      out = out_;                                                       \
-        uint32_t *           n   = n_;                                                         \
-        const unsigned char *in  = in_;                                                        \
-        const __m128i        hv  = hv_;                                                        \
-        const __m128i        h2v = h2v_;                                                       \
-        const __m128i        h3v = h3v_;                                                       \
-        const __m128i        h4v = h4v_;                                                       \
-        const __m128i pt = _mm_set_epi8(12, 13, 14, 15, 11, 10, 9, 8, 7, 6, 5, 4, 3, 2, 1, 0); \
-        __m128i       accv_;                                                                   \
-        int           roundctr;                                                                \
-                                                                                               \
-        MAKE8(NVDECLx);                                                                        \
-        MAKE8(TEMPDECLx);                                                                      \
-        MAKE8(NVx);                                                                            \
-        MAKE8(TEMPx);                                                                          \
-        for (roundctr = 1; roundctr < 14; roundctr++) {                                        \
-            MAKE8(AESENCx);                                                                    \
-        }                                                                                      \
-        MAKE8(AESENCLASTx);                                                                    \
-        MAKE8(XORx);                                                                           \
-        MAKE8(STOREx);                                                                         \
-        accv_ = _mm_load_si128((const __m128i *) accum);                                       \
-        MULREDUCE4(rev, hv, h2v, h3v, h4v, temp3, temp2, temp1, temp0, accv_);                 \
-        MULREDUCE4(rev, hv, h2v, h3v, h4v, temp7, temp6, temp5, temp4, accv_);                 \
-        _mm_store_si128((__m128i *) accum, accv_);                                             \
+#define ENCRYPT8FULL(out_, n_, rkeys, in_, accum, Hv, H2v, H3v, H4v, H5v, H6v, H7v, H8v)        \
+    do {                                                                                        \
+        const __m128i pt = _mm_set_epi8(12, 13, 14, 15, 11, 10, 9, 8, 7, 6, 5, 4, 3, 2, 1, 0);  \
+        const unsigned char *in   = in_;                                                        \
+        unsigned char *      out  = out_;                                                       \
+        unsigned int *       n    = n_;                                                         \
+        __m128i              accv = _mm_loadu_si128((const __m128i *) accum);                   \
+        MAKE8(NVDECLx);                                                                         \
+        MAKE8(TEMPDECLx);                                                                       \
+                                                                                                \
+        MAKE8(NVx);                                                                             \
+        MAKE8(TEMPx);                                                                           \
+        MAKE8(AESENCx1);                                                                        \
+        MAKE8(AESENCx2);                                                                        \
+        MAKE8(AESENCx3);                                                                        \
+        MAKE8(AESENCx4);                                                                        \
+        MAKE8(AESENCx5);                                                                        \
+        MAKE8(AESENCx6);                                                                        \
+        MAKE8(AESENCx7);                                                                        \
+        MAKE8(AESENCx8);                                                                        \
+        MAKE8(AESENCx9);                                                                        \
+        MAKE8(AESENCx10);                                                                       \
+        MAKE8(AESENCx11);                                                                       \
+        MAKE8(AESENCx12);                                                                       \
+        MAKE8(AESENCx13);                                                                       \
+        MAKE8(AESENCLASTx);                                                                     \
+        MAKE8(XORx);                                                                            \
+        MAKE8(STOREx);                                                                          \
+        ADDMULREDUCE8(Hv, H2v, H3v, H4v, H5v, H6v, H7v, H8v, temp7, temp6, temp5, temp4, temp3, \
+                      temp2, temp1, temp0, accv);                                               \
+        _mm_storeu_si128((__m128i *) accum, accv);                                              \
     } while (0)
 
-/* checksum 8 blocks at once */
-#define aesni_addmul8full(in_, accum, hv_, h2v_, h3v_, h4v_, rev)      \
-    do {                                                               \
-        const unsigned char *in  = in_;                                \
-        const __m128i        hv  = hv_;                                \
-        const __m128i        h2v = h2v_;                               \
-        const __m128i        h3v = h3v_;                               \
-        const __m128i        h4v = h4v_;                               \
-        __m128i              accv_;                                    \
-                                                                       \
-        MAKE8(LOADx);                                                  \
-        accv_ = _mm_load_si128((const __m128i *) accum);               \
-        MULREDUCE4(rev, hv, h2v, h3v, h4v, in3, in2, in1, in0, accv_); \
-        MULREDUCE4(rev, hv, h2v, h3v, h4v, in7, in6, in5, in4, accv_); \
-        _mm_store_si128((__m128i *) accum, accv_);                     \
-    } while (0)
-
-/* decrypt 8 blocks at once */
-#define aesni_decrypt8full(out_, n_, rkeys, in_)                                               \
-    do {                                                                                       \
-        unsigned char *      out = out_;                                                       \
-        uint32_t *           n   = n_;                                                         \
-        const unsigned char *in  = in_;                                                        \
-        const __m128i pt = _mm_set_epi8(12, 13, 14, 15, 11, 10, 9, 8, 7, 6, 5, 4, 3, 2, 1, 0); \
-        int           roundctr;                                                                \
-                                                                                               \
-        MAKE8(NVDECLx);                                                                        \
-        MAKE8(TEMPDECLx);                                                                      \
-        MAKE8(NVx);                                                                            \
-        MAKE8(TEMPx);                                                                          \
-        for (roundctr = 1; roundctr < 14; roundctr++) {                                        \
-            MAKE8(AESENCx);                                                                    \
-        }                                                                                      \
-        MAKE8(AESENCLASTx);                                                                    \
-        MAKE8(XORx);                                                                           \
-        MAKE8(STOREx);                                                                         \
+/* full decrypt & checksum 8 blocks at once */
+#define DECRYPT8FULL(out_, n_, rkeys, in_, accum, Hv, H2v, H3v, H4v, H5v, H6v, H7v, H8v)        \
+    do {                                                                                        \
+        const __m128i pt = _mm_set_epi8(12, 13, 14, 15, 11, 10, 9, 8, 7, 6, 5, 4, 3, 2, 1, 0);  \
+        const unsigned char *in   = in_;                                                        \
+        unsigned char *      out  = out_;                                                       \
+        unsigned int *       n    = n_;                                                         \
+        __m128i              accv = _mm_loadu_si128((const __m128i *) accum);                   \
+        MAKE8(INDECLx);                                                                         \
+        MAKE8(NVDECLx);                                                                         \
+        MAKE8(TEMPDECLx);                                                                       \
+                                                                                                \
+        MAKE8(NVx);                                                                             \
+        MAKE8(TEMPx);                                                                           \
+        MAKE8(AESENCx1);                                                                        \
+        MAKE8(AESENCx2);                                                                        \
+        MAKE8(AESENCx3);                                                                        \
+        MAKE8(AESENCx4);                                                                        \
+        MAKE8(AESENCx5);                                                                        \
+        MAKE8(AESENCx6);                                                                        \
+        MAKE8(AESENCx7);                                                                        \
+        MAKE8(AESENCx8);                                                                        \
+        MAKE8(AESENCx9);                                                                        \
+        MAKE8(AESENCx10);                                                                       \
+        MAKE8(AESENCx11);                                                                       \
+        MAKE8(AESENCx12);                                                                       \
+        MAKE8(AESENCx13);                                                                       \
+        MAKE8(AESENCLASTx);                                                                     \
+        MAKE8(INXORx);                                                                          \
+        ADDMULREDUCE8(Hv, H2v, H3v, H4v, H5v, H6v, H7v, H8v, in7, in6, in5, in4, in3, in2, in1, \
+                      in0, accv);                                                               \
+        _mm_storeu_si128((__m128i *) accum, accv);                                              \
+        MAKE8(STOREx);                                                                          \
     } while (0)
 
 int
@@ -504,7 +604,7 @@ crypto_aead_aes256gcm_encrypt_detached_afternm(unsigned char *c, unsigned char *
     const __m128i          rev = _mm_set_epi8(0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15);
     const aes256gcm_state *ctx = (const aes256gcm_state *) (const void *) ctx_;
     const __m128i *        rkeys = ctx->rkeys;
-    __m128i                Hv, H2v, H3v, H4v, accv;
+    __m128i                Hv, H2v, H3v, H4v, H5v, H6v, H7v, H8v, accv;
     unsigned long long     i, j;
     unsigned long long     adlen_rnd64 = adlen & ~63ULL;
     unsigned long long     mlen_rnd128 = mlen & ~127ULL;
@@ -535,15 +635,18 @@ crypto_aead_aes256gcm_encrypt_detached_afternm(unsigned char *c, unsigned char *
     H2v = mulv(Hv, Hv);
     H3v = mulv(H2v, Hv);
     H4v = mulv(H3v, Hv);
+    H5v = mulv(H4v, Hv);
+    H6v = mulv(H5v, Hv);
+    H7v = mulv(H6v, Hv);
+    H8v = mulv(H7v, Hv);
 
     accv = _mm_setzero_si128();
-    /* unrolled by 4 GCM (by 8 doesn't improve using MULREDUCE4) */
     for (i = 0; i < adlen_rnd64; i += 64) {
         __m128i X4_ = _mm_loadu_si128((const __m128i *) (ad + i + 0));
         __m128i X3_ = _mm_loadu_si128((const __m128i *) (ad + i + 16));
         __m128i X2_ = _mm_loadu_si128((const __m128i *) (ad + i + 32));
         __m128i X1_ = _mm_loadu_si128((const __m128i *) (ad + i + 48));
-        MULREDUCE4(rev, Hv, H2v, H3v, H4v, X1_, X2_, X3_, X4_, accv);
+        ADDMULREDUCE4(Hv, H2v, H3v, H4v, X1_, X2_, X3_, X4_, accv);
     }
     _mm_store_si128((__m128i *) accum, accv);
 
@@ -554,21 +657,21 @@ crypto_aead_aes256gcm_encrypt_detached_afternm(unsigned char *c, unsigned char *
         if (i + (unsigned long long) blocklen > adlen) {
             blocklen = (unsigned int) (adlen - i);
         }
-        addmul(accum, ad + i, blocklen, H);
+        addmulreduce(accum, ad + i, blocklen, H);
     }
 
-/* this only does 8 full blocks, so no fancy bounds checking is necessary*/
-#define LOOPRND128                                                                      \
-    do {                                                                                \
-        const int iter = 8;                                                             \
-        const int lb   = iter * 16;                                                     \
-                                                                                        \
-        for (i = 0; i < mlen_rnd128; i += lb) {                                         \
-            aesni_encrypt8full(c + i, n2, rkeys, m + i, accum, Hv, H2v, H3v, H4v, rev); \
-        }                                                                               \
+    /* this only does 8 full blocks, so no fancy bounds checking is necessary*/
+#define LOOPRND128                                                                               \
+    do {                                                                                         \
+        const int iter = 8;                                                                      \
+        const int lb   = iter * 16;                                                              \
+                                                                                                 \
+        for (i = 0; i < mlen_rnd128; i += lb) {                                                  \
+            ENCRYPT8FULL(c + i, n2, rkeys, m + i, accum, Hv, H2v, H3v, H4v, H5v, H6v, H7v, H8v); \
+        }                                                                                        \
     } while (0)
 
-/* remainder loop, with the slower GCM update to accommodate partial blocks */
+    /* remainder loop, with the slower GCM update to accommodate partial blocks */
 #define LOOPRMD128                                        \
     do {                                                  \
         const int iter = 8;                               \
@@ -591,7 +694,7 @@ crypto_aead_aes256gcm_encrypt_detached_afternm(unsigned char *c, unsigned char *
                 if (j + (unsigned long long) bl >= mj) {  \
                     bl = (unsigned int) (mj - j);         \
                 }                                         \
-                addmul(accum, c + i + j, bl, H);          \
+                addmulreduce(accum, c + i + j, bl, H);    \
             }                                             \
         }                                                 \
     } while (0)
@@ -601,7 +704,7 @@ crypto_aead_aes256gcm_encrypt_detached_afternm(unsigned char *c, unsigned char *
     LOOPRND128;
     LOOPRMD128;
 
-    addmul(accum, fb, 16, H);
+    addmulreduce(accum, fb, 16, H);
 
     for (i = 0; i < 16; ++i) {
         mac[i] = T[i] ^ accum[15 - i];
@@ -637,7 +740,7 @@ crypto_aead_aes256gcm_decrypt_detached_afternm(unsigned char *m, unsigned char *
     const __m128i          rev = _mm_set_epi8(0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15);
     const aes256gcm_state *ctx = (const aes256gcm_state *) (const void *) ctx_;
     const __m128i *        rkeys = ctx->rkeys;
-    __m128i                Hv, H2v, H3v, H4v, accv;
+    __m128i                Hv, H2v, H3v, H4v, H5v, H6v, H7v, H8v, accv;
     unsigned long long     i, j;
     unsigned long long     adlen_rnd64 = adlen & ~63ULL;
     unsigned long long     mlen;
@@ -669,96 +772,72 @@ crypto_aead_aes256gcm_decrypt_detached_afternm(unsigned char *m, unsigned char *
     memcpy(H, ctx->H, sizeof H);
     Hv = _mm_shuffle_epi8(_mm_load_si128((const __m128i *) H), rev);
     _mm_store_si128((__m128i *) H, Hv);
-    H2v = mulv(Hv, Hv);
-    H3v = mulv(H2v, Hv);
-    H4v = mulv(H3v, Hv);
-
+    H2v  = mulv(Hv, Hv);
+    H3v  = mulv(H2v, Hv);
+    H4v  = mulv(H3v, Hv);
+    H5v  = mulv(H4v, Hv);
+    H6v  = mulv(H5v, Hv);
+    H7v  = mulv(H6v, Hv);
+    H8v  = mulv(H7v, Hv);
     accv = _mm_setzero_si128();
+
     for (i = 0; i < adlen_rnd64; i += 64) {
         __m128i X4_ = _mm_loadu_si128((const __m128i *) (ad + i + 0));
         __m128i X3_ = _mm_loadu_si128((const __m128i *) (ad + i + 16));
         __m128i X2_ = _mm_loadu_si128((const __m128i *) (ad + i + 32));
         __m128i X1_ = _mm_loadu_si128((const __m128i *) (ad + i + 48));
-        MULREDUCE4(rev, Hv, H2v, H3v, H4v, X1_, X2_, X3_, X4_, accv);
+        ADDMULREDUCE4(Hv, H2v, H3v, H4v, X1_, X2_, X3_, X4_, accv);
     }
     _mm_store_si128((__m128i *) accum, accv);
 
+    /* GCM remainder loop */
     for (i = adlen_rnd64; i < adlen; i += 16) {
         unsigned int blocklen = 16;
         if (i + (unsigned long long) blocklen > adlen) {
             blocklen = (unsigned int) (adlen - i);
         }
-        addmul(accum, ad + i, blocklen, H);
+        addmulreduce(accum, ad + i, blocklen, H);
     }
 
     mlen_rnd128 = mlen & ~127ULL;
 
-#define LOOPACCUMDRND128                                             \
-    do {                                                             \
-        const int iter = 8;                                          \
-        const int lb   = iter * 16;                                  \
-        for (i = 0; i < mlen_rnd128; i += lb) {                      \
-            aesni_addmul8full(c + i, accum, Hv, H2v, H3v, H4v, rev); \
-        }                                                            \
+#define LOOPDRND128                                                                              \
+    do {                                                                                         \
+        const int iter = 8;                                                                      \
+        const int lb   = iter * 16;                                                              \
+        for (i = 0; i < mlen_rnd128; i += lb) {                                                  \
+            DECRYPT8FULL(m + i, n2, rkeys, c + i, accum, Hv, H2v, H3v, H4v, H5v, H6v, H7v, H8v); \
+        }                                                                                        \
     } while (0)
 
-#define LOOPDRND128                                      \
-    do {                                                 \
-        const int iter = 8;                              \
-        const int lb   = iter * 16;                      \
-                                                         \
-        for (i = 0; i < mlen_rnd128; i += lb) {          \
-            aesni_decrypt8full(m + i, n2, rkeys, c + i); \
-        }                                                \
+#define LOOPDRMD128                                    \
+    do {                                               \
+        const int iter = 8;                            \
+        const int lb   = iter * 16;                    \
+        for (i = mlen_rnd128; i < mlen; i += lb) {     \
+            CRYPTO_ALIGN(16) unsigned char outni[lb];  \
+            unsigned long long             mj = lb;    \
+            if ((i + mj) >= mlen)                      \
+                mj = mlen - i;                         \
+            for (j = 0; j < mj; j += 16) {             \
+                unsigned long long bl = 16;            \
+                if (j + bl >= mj) {                    \
+                    bl = mj - j;                       \
+                }                                      \
+                addmulreduce(accum, c + i + j, bl, H); \
+            }                                          \
+            aesni_encrypt8(outni, n2, rkeys);          \
+            for (j = 0; j < mj; j++) {                 \
+                m[i + j] = c[i + j] ^ outni[j];        \
+            }                                          \
+        }                                              \
     } while (0)
 
-#define LOOPACCUMDRMD128                                 \
-    do {                                                 \
-        const int iter = 8;                              \
-        const int lb   = iter * 16;                      \
-                                                         \
-        for (i = mlen_rnd128; i < mlen; i += lb) {       \
-            unsigned long long mj = lb;                  \
-                                                         \
-            if ((i + mj) >= mlen) {                      \
-                mj = mlen - i;                           \
-            }                                            \
-            for (j = 0; j < mj; j += 16) {               \
-                unsigned int bl = 16;                    \
-                                                         \
-                if (j + (unsigned long long) bl >= mj) { \
-                    bl = (unsigned int) (mj - j);        \
-                }                                        \
-                addmul(accum, c + i + j, bl, H);         \
-            }                                            \
-        }                                                \
-    } while (0)
-
-#define LOOPDRMD128                                       \
-    do {                                                  \
-        const int iter = 8;                               \
-        const int lb   = iter * 16;                       \
-                                                          \
-        for (i = mlen_rnd128; i < mlen; i += lb) {        \
-            CRYPTO_ALIGN(16) unsigned char outni[8 * 16]; \
-            unsigned long long             mj = lb;       \
-                                                          \
-            if ((i + mj) >= mlen) {                       \
-                mj = mlen - i;                            \
-            }                                             \
-            aesni_encrypt8(outni, n2, rkeys);             \
-            for (j = 0; j < mj; j++) {                    \
-                m[i + j] = c[i + j] ^ outni[j];           \
-            }                                             \
-        }                                                 \
-    } while (0)
-
-    n2[3] &= 0x00ffffff;
-
+    n2[3] = 0U;
     COUNTER_INC2(n2);
-    LOOPACCUMDRND128;
-    LOOPACCUMDRMD128;
-    addmul(accum, fb, 16, H);
+    LOOPDRND128;
+    LOOPDRMD128;
+    addmulreduce(accum, fb, 16, H);
     {
         unsigned char d = 0;
 
@@ -775,11 +854,6 @@ crypto_aead_aes256gcm_decrypt_detached_afternm(unsigned char *m, unsigned char *
             return 0;
         }
     }
-    n2[3] = 0U;
-    COUNTER_INC2(n2);
-    LOOPDRND128;
-    LOOPDRMD128;
-
     return 0;
 }
 
