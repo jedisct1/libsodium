@@ -141,34 +141,34 @@ int crypto_box_seal_open(unsigned char *m, const unsigned char *c,
 
 #define crypto_box_ZEROBYTES crypto_box_curve25519xsalsa20poly1305_ZEROBYTES
 SODIUM_EXPORT
-size_t  crypto_box_zerobytes(void);
+size_t  crypto_box_zerobytes(void) __attribute__ ((deprecated));
 
 #define crypto_box_BOXZEROBYTES crypto_box_curve25519xsalsa20poly1305_BOXZEROBYTES
 SODIUM_EXPORT
-size_t  crypto_box_boxzerobytes(void);
+size_t  crypto_box_boxzerobytes(void) __attribute__ ((deprecated));
 
 SODIUM_EXPORT
 int crypto_box(unsigned char *c, const unsigned char *m,
                unsigned long long mlen, const unsigned char *n,
                const unsigned char *pk, const unsigned char *sk)
-            __attribute__ ((warn_unused_result)) __attribute__ ((nonnull(1, 4, 5, 6)));
+            __attribute__ ((deprecated)) __attribute__ ((warn_unused_result)) __attribute__ ((nonnull(1, 4, 5, 6)));
 
 SODIUM_EXPORT
 int crypto_box_open(unsigned char *m, const unsigned char *c,
                     unsigned long long clen, const unsigned char *n,
                     const unsigned char *pk, const unsigned char *sk)
-            __attribute__ ((warn_unused_result)) __attribute__ ((nonnull(2, 4, 5, 6)));
+            __attribute__ ((deprecated)) __attribute__ ((warn_unused_result)) __attribute__ ((nonnull(2, 4, 5, 6)));
 
 SODIUM_EXPORT
 int crypto_box_afternm(unsigned char *c, const unsigned char *m,
                        unsigned long long mlen, const unsigned char *n,
-                       const unsigned char *k) __attribute__ ((nonnull(1, 4, 5)));
+                       const unsigned char *k) __attribute__ ((deprecated)) __attribute__ ((nonnull(1, 4, 5)));
 
 SODIUM_EXPORT
 int crypto_box_open_afternm(unsigned char *m, const unsigned char *c,
                             unsigned long long clen, const unsigned char *n,
                             const unsigned char *k)
-            __attribute__ ((warn_unused_result)) __attribute__ ((nonnull(2, 4, 5)));
+            __attribute__ ((warn_unused_result)) __attribute__ ((deprecated)) __attribute__ ((nonnull(2, 4, 5)));
 
 #ifdef __cplusplus
 }

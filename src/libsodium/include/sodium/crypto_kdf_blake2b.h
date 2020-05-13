@@ -3,8 +3,8 @@
 
 #include <stddef.h>
 #include <stdint.h>
+#include <stdlib.h>
 
-#include "crypto_kdf_blake2b.h"
 #include "export.h"
 
 #ifdef __cplusplus

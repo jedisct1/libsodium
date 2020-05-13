@@ -1,7 +1,10 @@
 
 #include <stdint.h>
+#include <stdlib.h>
+#include <string.h>
 
 #include "crypto_core_ed25519.h"
+#include "crypto_hash_sha512.h"
 #include "private/common.h"
 #include "private/ed25519_ref10.h"
 #include "randombytes.h"
@@ -70,21 +73,95 @@ crypto_core_ed25519_from_uniform(unsigned char *p, const unsigned char *r)
     return 0;
 }
 
-int
-crypto_core_ed25519_from_hash(unsigned char *p, const unsigned char *h)
-{
-    ge25519_from_hash(p, h);
+#define HASH_BYTES      crypto_hash_sha512_BYTES
+#define HASH_BLOCKBYTES 128U
+#define HASH_L          48U
 
+static int
+_string_to_points(unsigned char * const px, size_t n,
+                  const char *ctx, const unsigned char *msg, size_t msg_len)
+{
+    crypto_hash_sha512_state st;
+    unsigned char            empty_block[128] = { 0 };
+    unsigned char            u0[HASH_BYTES], u[2 * HASH_BYTES];
+    unsigned char            t[3] = { 0U, n * HASH_L, 0U};
+    unsigned char            ctx_len_u8;
+    size_t                   ctx_len = ctx != NULL ? strlen(ctx) : 0U;
+    size_t                   i, j;
+
+    if (n > 2U) {
+        abort(); /* LCOV_EXCL_LINE */
+    }
+    COMPILER_ASSERT(2U * HASH_L <= 0xff);
+    if (ctx_len > (size_t) 0xff) {
+        crypto_hash_sha512_init(&st);
+        crypto_hash_sha512_update(&st,
+                                  (const unsigned char *) "H2C-OVERSIZE-DST-",
+                                  sizeof "H2C-OVERSIZE-DST-" - 1U);
+        crypto_hash_sha512_update(&st, (const unsigned char *) ctx, ctx_len);
+        crypto_hash_sha512_final(&st, u0);
+        ctx = (const char *) u0;
+        ctx_len = HASH_BYTES;
+        COMPILER_ASSERT(HASH_BYTES <= (size_t) 0xff);
+    }
+    ctx_len_u8 = (unsigned char) ctx_len;
+    crypto_hash_sha512_init(&st);
+    crypto_hash_sha512_update(&st, empty_block, sizeof empty_block);
+    crypto_hash_sha512_update(&st, msg, msg_len);
+    crypto_hash_sha512_update(&st, t, 3U);
+    crypto_hash_sha512_update(&st, (const unsigned char *) ctx, ctx_len);
+    crypto_hash_sha512_update(&st, &ctx_len_u8, 1U);
+    crypto_hash_sha512_final(&st, u0);
+
+    for (i = 0U; i < n * HASH_BYTES; i += HASH_BYTES) {
+        memcpy(&u[i], u0, HASH_BYTES);
+        for (j = 0U; i > 0U && j < HASH_BYTES; j++) {
+            u[i + j] ^= u[i + j - HASH_BYTES];
+        }
+        t[2]++;
+        crypto_hash_sha512_init(&st);
+        crypto_hash_sha512_update(&st, &u[i], HASH_BYTES);
+        crypto_hash_sha512_update(&st, &t[2], 1U);
+        crypto_hash_sha512_update(&st, (const unsigned char *) ctx, ctx_len);
+        crypto_hash_sha512_update(&st, &ctx_len_u8, 1U);
+        crypto_hash_sha512_final(&st, &u[i]);
+    }
+    for (i = 0U; i < n; i++) {
+        memset(u0, 0U, HASH_BYTES - HASH_L);
+        memcpy(u0 + HASH_BYTES - HASH_L, &u[i * HASH_L], HASH_L);
+        ge25519_from_hash(&px[i * crypto_core_ed25519_BYTES], u0);
+    }
     return 0;
+}
+
+int
+crypto_core_ed25519_from_string(unsigned char p[crypto_core_ed25519_BYTES],
+                                const char *ctx, const unsigned char *msg,
+                                size_t msg_len)
+{
+    return _string_to_points(p, 1, ctx, msg, msg_len);
+}
+
+int
+crypto_core_ed25519_from_string_ro(unsigned char p[crypto_core_ed25519_BYTES],
+                                   const char *ctx, const unsigned char *msg,
+                                   size_t msg_len)
+{
+    unsigned char px[2 * crypto_core_ed25519_BYTES];
+
+    if (_string_to_points(px, 2, ctx, msg, msg_len) != 0) {
+        return -1;
+    }
+    return crypto_core_ed25519_add(p, &px[0], &px[crypto_core_ed25519_BYTES]);
 }
 
 void
 crypto_core_ed25519_random(unsigned char *p)
 {
-    unsigned char h[crypto_core_ed25519_HASHBYTES];
+    unsigned char h[crypto_core_ed25519_UNIFORMBYTES];
 
     randombytes_buf(h, sizeof h);
-    (void) crypto_core_ed25519_from_hash(p, h);
+    (void) crypto_core_ed25519_from_uniform(p, h);
 }
 
 void

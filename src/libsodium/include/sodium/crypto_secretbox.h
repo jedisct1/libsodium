@@ -69,22 +69,23 @@ void crypto_secretbox_keygen(unsigned char k[crypto_secretbox_KEYBYTES])
 
 #define crypto_secretbox_ZEROBYTES crypto_secretbox_xsalsa20poly1305_ZEROBYTES
 SODIUM_EXPORT
-size_t  crypto_secretbox_zerobytes(void);
+size_t  crypto_secretbox_zerobytes(void) __attribute__ ((deprecated));
 
 #define crypto_secretbox_BOXZEROBYTES crypto_secretbox_xsalsa20poly1305_BOXZEROBYTES
 SODIUM_EXPORT
-size_t  crypto_secretbox_boxzerobytes(void);
+size_t  crypto_secretbox_boxzerobytes(void) __attribute__ ((deprecated));
 
 SODIUM_EXPORT
 int crypto_secretbox(unsigned char *c, const unsigned char *m,
                      unsigned long long mlen, const unsigned char *n,
-                     const unsigned char *k) __attribute__ ((nonnull(1, 4, 5)));
+                     const unsigned char *k)
+            __attribute__ ((deprecated)) __attribute__ ((nonnull(1, 4, 5)));
 
 SODIUM_EXPORT
 int crypto_secretbox_open(unsigned char *m, const unsigned char *c,
                           unsigned long long clen, const unsigned char *n,
                           const unsigned char *k)
-            __attribute__ ((warn_unused_result)) __attribute__ ((nonnull(2, 4, 5)));
+            __attribute__ ((deprecated)) __attribute__ ((warn_unused_result)) __attribute__ ((nonnull(2, 4, 5)));
 
 #ifdef __cplusplus
 }

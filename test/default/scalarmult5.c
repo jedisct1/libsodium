@@ -14,27 +14,18 @@ static unsigned char bobpk[32] = { 0xde, 0x9e, 0xdb, 0x7d, 0x7b, 0x7d, 0xc1,
                                    0x78, 0x67, 0x4d, 0xad, 0xfc, 0x7e, 0x14,
                                    0x6f, 0x88, 0x2b, 0x4f };
 
-static unsigned char k[32];
-
 int
 main(void)
 {
-    int i;
-    int ret;
+    unsigned char k[32];
+    char          hex[65];
+    int           i;
+    int           ret;
 
     ret = crypto_scalarmult(k, alicesk, bobpk);
     assert(ret == 0);
+    sodium_bin2hex(hex, sizeof hex, k, sizeof k);
+    printf("%s\n", hex);
 
-    for (i = 0; i < 32; ++i) {
-        if (i > 0) {
-            printf(",");
-        } else {
-            printf(" ");
-        }
-        printf("0x%02x", (unsigned int) k[i]);
-        if (i % 8 == 7) {
-            printf("\n");
-        }
-    }
     return 0;
 }

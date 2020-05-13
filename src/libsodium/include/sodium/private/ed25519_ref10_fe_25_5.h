@@ -148,29 +148,35 @@ fe25519_neg(fe25519 h, const fe25519 f)
 static void
 fe25519_cmov(fe25519 f, const fe25519 g, unsigned int b)
 {
-    const uint32_t mask = (uint32_t) (-(int32_t) b);
+    uint32_t mask = (uint32_t) (-(int32_t) b);
+    int32_t  f0, f1, f2, f3, f4, f5, f6, f7, f8, f9;
+    int32_t  x0, x1, x2, x3, x4, x5, x6, x7, x8, x9;
 
-    int32_t f0 = f[0];
-    int32_t f1 = f[1];
-    int32_t f2 = f[2];
-    int32_t f3 = f[3];
-    int32_t f4 = f[4];
-    int32_t f5 = f[5];
-    int32_t f6 = f[6];
-    int32_t f7 = f[7];
-    int32_t f8 = f[8];
-    int32_t f9 = f[9];
+    f0 = f[0];
+    f1 = f[1];
+    f2 = f[2];
+    f3 = f[3];
+    f4 = f[4];
+    f5 = f[5];
+    f6 = f[6];
+    f7 = f[7];
+    f8 = f[8];
+    f9 = f[9];
 
-    int32_t x0 = f0 ^ g[0];
-    int32_t x1 = f1 ^ g[1];
-    int32_t x2 = f2 ^ g[2];
-    int32_t x3 = f3 ^ g[3];
-    int32_t x4 = f4 ^ g[4];
-    int32_t x5 = f5 ^ g[5];
-    int32_t x6 = f6 ^ g[6];
-    int32_t x7 = f7 ^ g[7];
-    int32_t x8 = f8 ^ g[8];
-    int32_t x9 = f9 ^ g[9];
+    x0 = f0 ^ g[0];
+    x1 = f1 ^ g[1];
+    x2 = f2 ^ g[2];
+    x3 = f3 ^ g[3];
+    x4 = f4 ^ g[4];
+    x5 = f5 ^ g[5];
+    x6 = f6 ^ g[6];
+    x7 = f7 ^ g[7];
+    x8 = f8 ^ g[8];
+    x9 = f9 ^ g[9];
+
+#ifdef HAVE_INLINE_ASM
+    __asm__ __volatile__("" : "+r"(mask));
+#endif
 
     x0 &= mask;
     x1 &= mask;
@@ -198,40 +204,47 @@ fe25519_cmov(fe25519 f, const fe25519 g, unsigned int b)
 static void
 fe25519_cswap(fe25519 f, fe25519 g, unsigned int b)
 {
-    const uint32_t mask = (uint32_t) (-(int64_t) b);
+    uint32_t mask = (uint32_t) (-(int64_t) b);
+    int32_t  f0, f1, f2, f3, f4, f5, f6, f7, f8, f9;
+    int32_t  g0, g1, g2, g3, g4, g5, g6, g7, g8, g9;
+    int32_t  x0, x1, x2, x3, x4, x5, x6, x7, x8, x9;
 
-    int32_t f0 = f[0];
-    int32_t f1 = f[1];
-    int32_t f2 = f[2];
-    int32_t f3 = f[3];
-    int32_t f4 = f[4];
-    int32_t f5 = f[5];
-    int32_t f6 = f[6];
-    int32_t f7 = f[7];
-    int32_t f8 = f[8];
-    int32_t f9 = f[9];
+    f0 = f[0];
+    f1 = f[1];
+    f2 = f[2];
+    f3 = f[3];
+    f4 = f[4];
+    f5 = f[5];
+    f6 = f[6];
+    f7 = f[7];
+    f8 = f[8];
+    f9 = f[9];
 
-    int32_t g0 = g[0];
-    int32_t g1 = g[1];
-    int32_t g2 = g[2];
-    int32_t g3 = g[3];
-    int32_t g4 = g[4];
-    int32_t g5 = g[5];
-    int32_t g6 = g[6];
-    int32_t g7 = g[7];
-    int32_t g8 = g[8];
-    int32_t g9 = g[9];
+    g0 = g[0];
+    g1 = g[1];
+    g2 = g[2];
+    g3 = g[3];
+    g4 = g[4];
+    g5 = g[5];
+    g6 = g[6];
+    g7 = g[7];
+    g8 = g[8];
+    g9 = g[9];
 
-    int32_t x0 = f0 ^ g0;
-    int32_t x1 = f1 ^ g1;
-    int32_t x2 = f2 ^ g2;
-    int32_t x3 = f3 ^ g3;
-    int32_t x4 = f4 ^ g4;
-    int32_t x5 = f5 ^ g5;
-    int32_t x6 = f6 ^ g6;
-    int32_t x7 = f7 ^ g7;
-    int32_t x8 = f8 ^ g8;
-    int32_t x9 = f9 ^ g9;
+    x0 = f0 ^ g0;
+    x1 = f1 ^ g1;
+    x2 = f2 ^ g2;
+    x3 = f3 ^ g3;
+    x4 = f4 ^ g4;
+    x5 = f5 ^ g5;
+    x6 = f6 ^ g6;
+    x7 = f7 ^ g7;
+    x8 = f8 ^ g8;
+    x9 = f9 ^ g9;
+
+#ifdef HAVE_INLINE_ASM
+    __asm__ __volatile__("" : "+r"(mask));
+#endif
 
     x0 &= mask;
     x1 &= mask;
@@ -274,27 +287,7 @@ fe25519_cswap(fe25519 f, fe25519 g, unsigned int b)
 static inline void
 fe25519_copy(fe25519 h, const fe25519 f)
 {
-    int32_t f0 = f[0];
-    int32_t f1 = f[1];
-    int32_t f2 = f[2];
-    int32_t f3 = f[3];
-    int32_t f4 = f[4];
-    int32_t f5 = f[5];
-    int32_t f6 = f[6];
-    int32_t f7 = f[7];
-    int32_t f8 = f[8];
-    int32_t f9 = f[9];
-
-    h[0] = f0;
-    h[1] = f1;
-    h[2] = f2;
-    h[3] = f3;
-    h[4] = f4;
-    h[5] = f5;
-    h[6] = f6;
-    h[7] = f7;
-    h[8] = f8;
-    h[9] = f9;
+    memcpy(h, f, 10 * 4);
 }
 
 /*
@@ -979,8 +972,8 @@ fe25519_sq2(fe25519 h, const fe25519 f)
     h[9] = (int32_t) h9;
 }
 
-static void
-fe25519_scalar_product(fe25519 h, const fe25519 f, uint32_t n)
+static inline void
+fe25519_mul32(fe25519 h, const fe25519 f, uint32_t n)
 {
     int64_t sn = (int64_t) n;
     int32_t f0 = f[0];

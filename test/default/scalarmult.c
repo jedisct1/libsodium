@@ -52,6 +52,12 @@ main(void)
     sodium_bin2hex(hex, sizeof hex, k, crypto_scalarmult_BYTES);
     printf("%s\n", hex);
 
+    alicepk[31] ^= 0x80;
+    ret = crypto_scalarmult(k, bobsk, alicepk);
+    assert(ret == 0);
+    sodium_bin2hex(hex, sizeof hex, k, crypto_scalarmult_BYTES);
+    printf("%s\n", hex);
+
     ret = crypto_scalarmult(k, bobsk, small_order_p);
     assert(ret == -1);
 
