@@ -2498,6 +2498,7 @@ sc25519_is_canonical(const unsigned char s[32])
     return (c != 0);
 }
 
+/* x^((p-1)/2) */
 static void
 chi25519(fe25519 out, const fe25519 z)
 {
