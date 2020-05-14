@@ -2,21 +2,6 @@
 #define VEC8_ROT(A, IMM) \
     _mm256_or_si256(_mm256_slli_epi32(A, IMM), _mm256_srli_epi32(A, (32 - IMM)))
 
-/* implements a vector quarter round by-the-book (naive!) */
-#define VEC8_QUARTERROUND_NAIVE(A, B, C, D) \
-    x_##A = _mm256_add_epi32(x_##A, x_##B); \
-    t_##A = _mm256_xor_si256(x_##D, x_##A); \
-    x_##D = VEC8_ROT(t_##A, 16);            \
-    x_##C = _mm256_add_epi32(x_##C, x_##D); \
-    t_##C = _mm256_xor_si256(x_##B, x_##C); \
-    x_##B = VEC8_ROT(t_##C, 12);            \
-    x_##A = _mm256_add_epi32(x_##A, x_##B); \
-    t_##A = _mm256_xor_si256(x_##D, x_##A); \
-    x_##D = VEC8_ROT(t_##A, 8);             \
-    x_##C = _mm256_add_epi32(x_##C, x_##D); \
-    t_##C = _mm256_xor_si256(x_##B, x_##C); \
-    x_##B = VEC8_ROT(t_##C, 7)
-
 /* same, but replace 2 of the shift/shift/or "rotation" by byte shuffles (8 &
  * 16) (better) */
 #define VEC8_QUARTERROUND_SHUFFLE(A, B, C, D)  \
@@ -31,22 +16,6 @@
     x_##D = _mm256_shuffle_epi8(t_##A, rot8);  \
     x_##C = _mm256_add_epi32(x_##C, x_##D);    \
     t_##C = _mm256_xor_si256(x_##B, x_##C);    \
-    x_##B = VEC8_ROT(t_##C, 7)
-
-/* same, but replace 2 of the shift/shift/or "rotation" by byte & word shuffles
- * (8 & 16) (not as good as previous) */
-#define VEC8_QUARTERROUND_SHUFFLE2(A, B, C, D)                                 \
-    x_##A = _mm256_add_epi32(x_##A, x_##B);                                    \
-    t_##A = _mm256_xor_si256(x_##D, x_##A);                                    \
-    x_##D = _mm256_shufflehi_epi16(_mm256_shufflelo_epi16(t_##A, 0xb1), 0xb1); \
-    x_##C = _mm256_add_epi32(x_##C, x_##D);                                    \
-    t_##C = _mm256_xor_si256(x_##B, x_##C);                                    \
-    x_##B = VEC8_ROT(t_##C, 12);                                               \
-    x_##A = _mm256_add_epi32(x_##A, x_##B);                                    \
-    t_##A = _mm256_xor_si256(x_##D, x_##A);                                    \
-    x_##D = _mm256_shuffle_epi8(t_##A, rot8);                                  \
-    x_##C = _mm256_add_epi32(x_##C, x_##D);                                    \
-    t_##C = _mm256_xor_si256(x_##B, x_##C);                                    \
     x_##B = VEC8_ROT(t_##C, 7)
 
 #define VEC8_QUARTERROUND(A, B, C, D) VEC8_QUARTERROUND_SHUFFLE(A, B, C, D)
