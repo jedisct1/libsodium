@@ -52,7 +52,7 @@ This project exists thanks to all the people who contribute. [[Contribute](CONTR
 
 Become a financial contributor and help us sustain our community. [[Contribute](https://opencollective.com/libsodium/contribute)]
 
-#### Individuals Href="https://opencollective.com/libsodium"><img src="https://opencollective.com/libsodium/individuals.svg?width=890"></a>
+#### Individuals <a href="https://opencollective.com/libsodium"><img src="https://opencollective.com/libsodium/individuals.svg?width=890"></a>
 
 #### Organizations
 
