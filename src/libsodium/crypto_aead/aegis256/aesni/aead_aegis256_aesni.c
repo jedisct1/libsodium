@@ -135,7 +135,7 @@ crypto_aead_aegis256_encrypt_detached(unsigned char *c, unsigned char *mac,
                                       unsigned long long adlen, const unsigned char *nsec,
                                       const unsigned char *npub, const unsigned char *k)
 {
-    __m128i            state[6];
+    __m128i                        state[6];
     CRYPTO_ALIGN(16) unsigned char src[16];
     CRYPTO_ALIGN(16) unsigned char dst[16];
     unsigned long long i;
@@ -201,7 +201,7 @@ crypto_aead_aegis256_decrypt_detached(unsigned char *m, unsigned char *nsec, con
                                       const unsigned char *ad, unsigned long long adlen,
                                       const unsigned char *npub, const unsigned char *k)
 {
-    __m128i            state[6];
+    __m128i                        state[6];
     CRYPTO_ALIGN(16) unsigned char src[16];
     CRYPTO_ALIGN(16) unsigned char dst[16];
     CRYPTO_ALIGN(16) unsigned char computed_mac[16];
