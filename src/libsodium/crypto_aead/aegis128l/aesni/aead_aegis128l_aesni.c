@@ -56,8 +56,8 @@ crypto_aead_aegis128l_init(const unsigned char *key, const unsigned char *iv, __
     __m128i k1, k2;
     int     i;
 
-    k1 = _mm_loadu_si128((__m128i *) key);
-    k2 = _mm_xor_si128(k1, _mm_loadu_si128((__m128i *) iv));
+    k1 = _mm_loadu_si128((const __m128i *) (const void *) key);
+    k2 = _mm_xor_si128(k1, _mm_loadu_si128((const __m128i *) (const void *) iv));
 
     state[0] = k2;
     state[1] = c1;
@@ -93,7 +93,7 @@ crypto_aead_aegis128l_mac(unsigned char *mac, unsigned long long mlen, unsigned 
     tmp = _mm_xor_si128(tmp, state[1]);
     tmp = _mm_xor_si128(tmp, state[0]);
 
-    _mm_storeu_si128((__m128i *) mac, tmp);
+    _mm_storeu_si128((__m128i *) (void *) mac, tmp);
 }
 
 static void
@@ -103,16 +103,16 @@ crypto_aead_aegis128l_enc(unsigned char *const dst, const unsigned char *const s
     __m128i msg0, msg1;
     __m128i tmp0, tmp1;
 
-    msg0 = _mm_loadu_si128((__m128i *) src);
-    msg1 = _mm_loadu_si128((__m128i *) (src + 16));
+    msg0 = _mm_loadu_si128((const __m128i *) (const void *) src);
+    msg1 = _mm_loadu_si128((const __m128i *) (const void *) (src + 16));
     tmp0 = _mm_xor_si128(msg0, state[6]);
     tmp0 = _mm_xor_si128(tmp0, state[1]);
     tmp1 = _mm_xor_si128(msg1, state[2]);
     tmp1 = _mm_xor_si128(tmp1, state[5]);
     tmp0 = _mm_xor_si128(tmp0, _mm_and_si128(state[2], state[3]));
     tmp1 = _mm_xor_si128(tmp1, _mm_and_si128(state[6], state[7]));
-    _mm_storeu_si128((__m128i *) dst, tmp0);
-    _mm_storeu_si128((__m128i *) (dst + 16), tmp1);
+    _mm_storeu_si128((__m128i *) (void *) dst, tmp0);
+    _mm_storeu_si128((__m128i *) (void *) (dst + 16), tmp1);
 
     crypto_aead_aegis128l_update(state, msg0, msg1);
 }
@@ -123,16 +123,16 @@ crypto_aead_aegis128l_dec(unsigned char *const dst, const unsigned char *const s
 {
     __m128i msg0, msg1;
 
-    msg0 = _mm_loadu_si128((__m128i *) src);
-    msg1 = _mm_loadu_si128((__m128i *) (src + 16));
+    msg0 = _mm_loadu_si128((const __m128i *) (const void *) src);
+    msg1 = _mm_loadu_si128((const __m128i *) (const void *) (src + 16));
     msg0 = _mm_xor_si128(msg0, state[6]);
     msg0 = _mm_xor_si128(msg0, state[1]);
     msg1 = _mm_xor_si128(msg1, state[2]);
     msg1 = _mm_xor_si128(msg1, state[5]);
     msg0 = _mm_xor_si128(msg0, _mm_and_si128(state[2], state[3]));
     msg1 = _mm_xor_si128(msg1, _mm_and_si128(state[6], state[7]));
-    _mm_storeu_si128((__m128i *) dst, msg0);
-    _mm_storeu_si128((__m128i *) (dst + 16), msg1);
+    _mm_storeu_si128((__m128i *) (void *) dst, msg0);
+    _mm_storeu_si128((__m128i *) (void *) (dst + 16), msg1);
 
     crypto_aead_aegis128l_update(state, msg0, msg1);
 }
@@ -247,8 +247,10 @@ crypto_aead_aegis128l_decrypt_detached(unsigned char *m, unsigned char *nsec, co
             memcpy(m + i, dst, mlen & 0x1f);
         }
         memset(dst, 0, mlen & 0x1f);
-        state[0] = _mm_xor_si128(state[0], _mm_loadu_si128((__m128i *) dst));
-        state[4] = _mm_xor_si128(state[4], _mm_loadu_si128((__m128i *) (dst + 16)));
+        state[0] = _mm_xor_si128(state[0],
+                                 _mm_loadu_si128((const __m128i *) (const void *) dst));
+        state[4] = _mm_xor_si128(state[4],
+                                 _mm_loadu_si128((const __m128i *) (const void *) (dst + 16)));
     }
 
     crypto_aead_aegis128l_mac(computed_mac, mlen, adlen, state);
