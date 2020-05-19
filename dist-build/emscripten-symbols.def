@@ -1,3 +1,14 @@
+_crypto_aead_aegis128l_abytes 0 0
+_crypto_aead_aegis128l_decrypt 0 0
+_crypto_aead_aegis128l_decrypt_detached 0 0
+_crypto_aead_aegis128l_encrypt 0 0
+_crypto_aead_aegis128l_encrypt_detached 0 0
+_crypto_aead_aegis128l_is_available 0 0
+_crypto_aead_aegis128l_keybytes 0 0
+_crypto_aead_aegis128l_keygen 0 0
+_crypto_aead_aegis128l_messagebytes_max 0 0
+_crypto_aead_aegis128l_npubbytes 0 0
+_crypto_aead_aegis128l_nsecbytes 0 0
 _crypto_aead_aegis256_abytes 0 0
 _crypto_aead_aegis256_decrypt 0 0
 _crypto_aead_aegis256_decrypt_detached 0 0

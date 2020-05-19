@@ -582,8 +582,8 @@ int
 crypto_aead_aes256gcm_beforenm(crypto_aead_aes256gcm_state *ctx_, const unsigned char *k)
 {
     aes256gcm_state *ctx   = (aes256gcm_state *) (void *) ctx_;
-    unsigned char *  H     = ctx->H;
-    const __m128i *  rkeys = ctx->rkeys;
+    unsigned char   *H     = ctx->H;
+    __m128i         *rkeys = ctx->rkeys;
     const __m128i    zero  = _mm_setzero_si128();
 
     COMPILER_ASSERT((sizeof *ctx_) >= (sizeof *ctx));
