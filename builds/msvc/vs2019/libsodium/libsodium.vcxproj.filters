@@ -315,6 +315,15 @@
     <ClCompile Include="..\..\..\..\src\libsodium\crypto_aead\xchacha20poly1305\sodium\aead_xchacha20poly1305.c">
       <Filter>crypto_aead\xchacha20poly1305\sodium</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\..\..\src\libsodium\crypto_aead\aegis128l\aead_aegis128l.c">
+      <Filter>crypto_aead\aegis128l</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\src\libsodium\crypto_aead\aegis128l\aesni\aead_aegis128l_aesni.c">
+      <Filter>crypto_aead\aegis128l\aesni</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\src\libsodium\crypto_aead\aegis128l\armcrypto\aead_aegis128l_armcrypto.c">
+      <Filter>crypto_aead\aegis128l\armcrypto</Filter>
+    </ClCompile>
     <ClCompile Include="..\..\..\..\src\libsodium\crypto_aead\aegis256\aead_aegis256.c">
       <Filter>crypto_aead\aegis256</Filter>
     </ClCompile>
@@ -471,6 +480,9 @@
       <Filter>include\sodium</Filter>
     </ClInclude>
     <ClInclude Include="..\..\..\..\src\libsodium\include\sodium\crypto_auth_hmacsha512256.h">
+      <Filter>include\sodium</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\src\libsodium\include\sodium\crypto_aead_aegis128l.h">
       <Filter>include\sodium</Filter>
     </ClInclude>
     <ClInclude Include="..\..\..\..\src\libsodium\include\sodium\crypto_aead_chacha20poly1305.h">
@@ -759,6 +771,15 @@
   <ItemGroup>
     <Filter Include="crypto_aead">
       <UniqueIdentifier>{a6837e41-3751-38c9-bb90-dd59d5f4af7b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="crypto_aead\aegis128l">
+      <UniqueIdentifier>{9e2a023d-fef1-3231-90ba-9a0ffc9bc9ab}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="crypto_aead\aegis128l\aesni">
+      <UniqueIdentifier>{77ed2f29-bed2-35a2-acce-0c09b665d57b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="crypto_aead\aegis128l\armcrypto">
+      <UniqueIdentifier>{2abca274-f068-3cf1-bd4e-5bfc5ee81de6}</UniqueIdentifier>
     </Filter>
     <Filter Include="crypto_aead\aegis256">
       <UniqueIdentifier>{6897a4cc-0091-3970-b712-c0ac75c16b67}</UniqueIdentifier>
