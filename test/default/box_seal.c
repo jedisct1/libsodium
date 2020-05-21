@@ -41,9 +41,38 @@ void tv1(void)
     assert(crypto_box_sealbytes() == crypto_box_SEALBYTES);
 }
 
-#ifndef SODIUM_LIBRARY_MINIMAL
 static
 void tv2(void)
+{
+    unsigned char  pk[crypto_box_PUBLICKEYBYTES];
+    unsigned char  sk[crypto_box_SECRETKEYBYTES];
+    unsigned char *cm;
+    unsigned char *m2;
+    size_t         m_len;
+    size_t         cm_len;
+
+    crypto_box_keypair(pk, sk);
+    m_len = (size_t) randombytes_uniform(1000);
+    cm_len = crypto_box_SEALBYTES + m_len;
+    m2    = (unsigned char *) sodium_malloc(m_len);
+    cm    = (unsigned char *) sodium_malloc(cm_len);
+    randombytes_buf(cm, m_len);
+    if (crypto_box_seal(cm, cm, m_len, pk) != 0) {
+        printf("crypto_box_seal() failure\n");
+        return;
+    }
+    if (crypto_box_seal_open(m2, cm, cm_len, pk, sk) != 0) {
+        printf("crypto_box_seal_open() failure\n");
+        return;
+    }
+    assert(memcmp(cm, m2, m_len) != 0);
+    sodium_free(cm);
+    sodium_free(m2);
+}
+
+#ifndef SODIUM_LIBRARY_MINIMAL
+static
+void tv3(void)
 {
     unsigned char  pk[crypto_box_curve25519xchacha20poly1305_PUBLICKEYBYTES];
     unsigned char  sk[crypto_box_curve25519xchacha20poly1305_SECRETKEYBYTES];
@@ -82,13 +111,46 @@ void tv2(void)
            crypto_box_curve25519xchacha20poly1305_SEALBYTES);
 }
 
+static
+void tv4(void)
+{
+    unsigned char  pk[crypto_box_curve25519xchacha20poly1305_PUBLICKEYBYTES];
+    unsigned char  sk[crypto_box_curve25519xchacha20poly1305_SECRETKEYBYTES];
+    unsigned char *cm;
+    unsigned char *m2;
+    size_t         m_len;
+    size_t         cm_len;
+
+    crypto_box_curve25519xchacha20poly1305_keypair(pk, sk);
+    m_len = (size_t) randombytes_uniform(1000);
+    cm_len = crypto_box_curve25519xchacha20poly1305_SEALBYTES + m_len;
+    m2    = (unsigned char *) sodium_malloc(m_len);
+    cm    = (unsigned char *) sodium_malloc(cm_len);
+    randombytes_buf(cm, m_len);
+    if (crypto_box_curve25519xchacha20poly1305_seal(cm, cm, m_len, pk) != 0) {
+        printf("crypto_box_curve25519xchacha20poly1305_seal() failure\n");
+        return;
+    }
+    if (crypto_box_curve25519xchacha20poly1305_seal_open(m2, cm, cm_len, pk, sk) != 0) {
+        printf("crypto_box_curve25519xchacha20poly1305_seal_open() failure\n");
+        return;
+    }
+    assert(memcmp(cm, m2, m_len) != 0);
+    sodium_free(cm);
+    sodium_free(m2);
+}
+
 #else
 
 static
-void tv2(void)
+void tv3(void)
 {
     printf("0\n-1\n-1\n-1\n");
 }
+
+static
+void tv4(void)
+{ }
 #endif
 
 int
@@ -96,6 +158,8 @@ main(void)
 {
     tv1();
     tv2();
+    tv3();
+    tv4();
 
     return 0;
 }
