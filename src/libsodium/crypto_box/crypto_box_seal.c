@@ -32,10 +32,10 @@ crypto_box_seal(unsigned char *c, const unsigned char *m,
     if (crypto_box_keypair(epk, esk) != 0) {
         return -1; /* LCOV_EXCL_LINE */
     }
-    memcpy(c, epk, crypto_box_PUBLICKEYBYTES);
     _crypto_box_seal_nonce(nonce, epk, pk);
     ret = crypto_box_easy(c + crypto_box_PUBLICKEYBYTES, m, mlen,
                           nonce, pk, esk);
+    memcpy(c, epk, crypto_box_PUBLICKEYBYTES);
     sodium_memzero(esk, sizeof esk);
     sodium_memzero(epk, sizeof epk);
     sodium_memzero(nonce, sizeof nonce);
