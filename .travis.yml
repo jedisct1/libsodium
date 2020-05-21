@@ -11,7 +11,7 @@ compiler:
   - g++
 
 install:
-  - ./autogen.sh -f
+  - ./autogen.sh -s
   - env CC=tcc CFLAGS='-w' CPPFLAGS="-DDEV_MODE=1" ./configure --prefix=/tmp --disable-dependency-tracking --disable-shared || cat config.log
   - make -j $(nproc) && make check && make install
   - env CC=tcc CPPFLAGS='-I/tmp/include' LDFLAGS='-L/tmp/lib' LD_LIBRARY_PATH='/tmp/lib' ./test/constcheck.sh
