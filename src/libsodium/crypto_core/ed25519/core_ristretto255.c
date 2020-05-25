@@ -32,7 +32,7 @@ crypto_core_ristretto255_add(unsigned char *r,
         return -1;
     }
     ge25519_p3_to_cached(&q_cached, &q_p3);
-    ge25519_add(&r_p1p1, &p_p3, &q_cached);
+    ge25519_add_cached(&r_p1p1, &p_p3, &q_cached);
     ge25519_p1p1_to_p3(&r_p3, &r_p1p1);
     ristretto255_p3_tobytes(r, &r_p3);
 
@@ -52,7 +52,7 @@ crypto_core_ristretto255_sub(unsigned char *r,
         return -1;
     }
     ge25519_p3_to_cached(&q_cached, &q_p3);
-    ge25519_sub(&r_p1p1, &p_p3, &q_cached);
+    ge25519_sub_cached(&r_p1p1, &p_p3, &q_cached);
     ge25519_p1p1_to_p3(&r_p3, &r_p1p1);
     ristretto255_p3_tobytes(r, &r_p3);
 

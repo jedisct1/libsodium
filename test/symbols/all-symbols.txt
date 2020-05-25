@@ -637,7 +637,7 @@ escrypt_r
 fe25519_frombytes
 fe25519_invert
 fe25519_tobytes
-ge25519_add
+ge25519_add_cached
 ge25519_double_scalarmult_vartime
 ge25519_from_hash
 ge25519_from_uniform
@@ -653,7 +653,7 @@ ge25519_p3_to_cached
 ge25519_p3_tobytes
 ge25519_scalarmult
 ge25519_scalarmult_base
-ge25519_sub
+ge25519_sub_cached
 ge25519_tobytes
 randombytes
 randombytes_buf
