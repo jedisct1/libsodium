@@ -38,11 +38,11 @@ crypto_box_curve25519xchacha20poly1305_seal(unsigned char *c, const unsigned cha
     if (crypto_box_curve25519xchacha20poly1305_keypair(epk, esk) != 0) {
         return -1; /* LCOV_EXCL_LINE */
     }
-    memcpy(c, epk, crypto_box_curve25519xchacha20poly1305_PUBLICKEYBYTES);
     _crypto_box_curve25519xchacha20poly1305_seal_nonce(nonce, epk, pk);
     ret = crypto_box_curve25519xchacha20poly1305_easy(
          c + crypto_box_curve25519xchacha20poly1305_PUBLICKEYBYTES, m, mlen,
          nonce, pk, esk);
+    memcpy(c, epk, crypto_box_curve25519xchacha20poly1305_PUBLICKEYBYTES);
     sodium_memzero(esk, sizeof esk);
     sodium_memzero(epk, sizeof epk);
     sodium_memzero(nonce, sizeof nonce);

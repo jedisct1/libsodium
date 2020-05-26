@@ -84,14 +84,10 @@ if [ "$overwrite_config" = false ]; then
     mv build-aux/config.sub build-aux/config.sub.stable
   fi
 fi
-if autoreconf --version >/dev/null 2>&1; then
-  autoreconf -ivf
-else
-  $LIBTOOLIZE &&
-    aclocal &&
-    automake --add-missing --force-missing --include-deps &&
-    autoconf
-fi
+$LIBTOOLIZE --copy --install &&
+  aclocal &&
+  automake --add-missing --copy --force-missing --include-deps &&
+  autoconf && echo Done.
 if [ "$overwrite_config" = false ]; then
   if [ -f build-aux/config.guess.stable ]; then
     mv build-aux/config.guess.stable build-aux/config.guess
