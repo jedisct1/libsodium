@@ -35,6 +35,7 @@ elif [ "x$1" = "x--sumo" ]; then
   echo "Building a sumo distribution in [${PREFIX}]"
 elif [ "x$1" = "x--browser-tests" ]; then
   export EXPORTED_FUNCTIONS="$EXPORTED_FUNCTIONS_SUMO"
+  export CPPFLAGS="${CPPFLAGS} -s FORCE_FILESYSTEM=1"
   export LDFLAGS="${LDFLAGS} -s TOTAL_MEMORY=${MAX_MEMORY_TESTS}"
   export PREFIX="$(pwd)/libsodium-js-tests"
   export DONE_FILE="$(pwd)/js-tests-browser.done"
@@ -44,7 +45,7 @@ elif [ "x$1" = "x--browser-tests" ]; then
 elif [ "x$1" = "x--tests" ]; then
   echo "Building for testing"
   export EXPORTED_FUNCTIONS="$EXPORTED_FUNCTIONS_SUMO"
-  export CPPFLAGS="${CPPFLAGS} -DBENCHMARKS -DITERATIONS=10"
+  export CPPFLAGS="${CPPFLAGS} -s FORCE_FILESYSTEM=1 -DBENCHMARKS -DITERATIONS=10"
   export LDFLAGS="${LDFLAGS} -s TOTAL_MEMORY=${MAX_MEMORY_TESTS}"
   export PREFIX="$(pwd)/libsodium-js-tests"
   export DONE_FILE="$(pwd)/js-tests.done"
