@@ -8816,7 +8816,9 @@ else
 fi
 
 
-{ $as_echo "$as_me:${as_lineno-$LINENO}: checking whether the linker accepts -Wl,-z,relro" >&5
+if test "x$EMSCRIPTEN" = "x"; then :
+
+  { $as_echo "$as_me:${as_lineno-$LINENO}: checking whether the linker accepts -Wl,-z,relro" >&5
 $as_echo_n "checking whether the linker accepts -Wl,-z,relro... " >&6; }
 if ${ax_cv_check_ldflags___Wl__z_relro+:} false; then :
   $as_echo_n "(cached) " >&6
@@ -8852,7 +8854,7 @@ else
   :
 fi
 
-{ $as_echo "$as_me:${as_lineno-$LINENO}: checking whether the linker accepts -Wl,-z,now" >&5
+  { $as_echo "$as_me:${as_lineno-$LINENO}: checking whether the linker accepts -Wl,-z,now" >&5
 $as_echo_n "checking whether the linker accepts -Wl,-z,now... " >&6; }
 if ${ax_cv_check_ldflags___Wl__z_now+:} false; then :
   $as_echo_n "(cached) " >&6
@@ -8888,7 +8890,7 @@ else
   :
 fi
 
-{ $as_echo "$as_me:${as_lineno-$LINENO}: checking whether the linker accepts -Wl,-z,noexecstack" >&5
+  { $as_echo "$as_me:${as_lineno-$LINENO}: checking whether the linker accepts -Wl,-z,noexecstack" >&5
 $as_echo_n "checking whether the linker accepts -Wl,-z,noexecstack... " >&6; }
 if ${ax_cv_check_ldflags___Wl__z_noexecstack+:} false; then :
   $as_echo_n "(cached) " >&6
@@ -8924,6 +8926,8 @@ else
   :
 fi
 
+
+fi
 
 
         { $as_echo "$as_me:${as_lineno-$LINENO}: checking whether segmentation violations can be caught when using the C compiler" >&5
