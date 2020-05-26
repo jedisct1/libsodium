@@ -44,6 +44,10 @@ AS_IF([pwd | fgrep ' ' > /dev/null 2>&1],
   [AC_MSG_ERROR([The build directory contains whitespaces - This can cause tests/installation to fail due to limitations of some libtool versions])]
 )
 
+AC_PROG_CC_C99
+AM_PROG_AS
+AC_USE_SYSTEM_EXTENSIONS
+
 dnl Switches
 
 AC_ARG_ENABLE(ssp,
@@ -210,9 +214,6 @@ AX_VALGRIND_CHECK
 
 dnl Checks
 
-AC_PROG_CC_C99
-AM_PROG_AS
-AC_USE_SYSTEM_EXTENSIONS
 AC_C_VARARRAYS
 
 AC_CHECK_DEFINE([__wasi__], [WASI="yes"], [])
