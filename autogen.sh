@@ -86,7 +86,7 @@ if [ "$overwrite_config" = false ]; then
 fi
 $LIBTOOLIZE &&
   aclocal &&
-  automake --add-missing --force-missing --include-deps &&
+  automake --add-missing --copy --force-missing --include-deps &&
   autoconf
 if [ "$overwrite_config" = false ]; then
   if [ -f build-aux/config.guess.stable ]; then
