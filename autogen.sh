@@ -87,7 +87,7 @@ fi
 $LIBTOOLIZE --copy --install &&
   aclocal &&
   automake --add-missing --copy --force-missing --include-deps &&
-  autoconf
+  autoconf && echo Done.
 if [ "$overwrite_config" = false ]; then
   if [ -f build-aux/config.guess.stable ]; then
     mv build-aux/config.guess.stable build-aux/config.guess
