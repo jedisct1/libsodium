@@ -84,7 +84,7 @@ if [ "$overwrite_config" = false ]; then
     mv build-aux/config.sub build-aux/config.sub.stable
   fi
 fi
-$LIBTOOLIZE &&
+$LIBTOOLIZE --copy --install &&
   aclocal &&
   automake --add-missing --copy --force-missing --include-deps &&
   autoconf
