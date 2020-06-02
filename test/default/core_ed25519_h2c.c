@@ -35,7 +35,7 @@ static TestData test_data[] = {
     { 1, "abc",
       "1a8395b88338f22e435bbd301183e7f20a5f9de643f11882fb237f88268a5531" },
     { 1, "abcdef0123456789",
-      "53060a3d140e7fbcda641ed3cf42c88a75411e648a1add71217f70ea8ec561a6e" },
+      "53060a3d140e7fbcda641ed3cf42c88a75411e648a1add71217f70ea8ec561a6" },
     { 1,
       "q128_"
       "qqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqq"
