@@ -9,11 +9,16 @@ typedef struct TestData_ {
 
 static TestData test_data[] = {
     { 0, "",
-      "4af6284e3cc7116df104f6708e0c44d79b0e294ccd89b87c4c3c892ebd2f03b1" },
+      "222e314d04a4d5725e9f2aff9fb2a6b69ef375a1214eb19021ceab2d687f0f9b" },
     { 0, "abc",
-      "23e704500ac22fd7106ceedd86bfcc8d50351a6303be22b2724fcc1280d00544" },
+      "67732d50f9a26f73111dd1ed5dba225614e538599db58ba30aaea1f5c827fa42" },
     { 0, "abcdef0123456789",
-      "34b8a16b923101f2d4caa48d9bb86fef4f92be0ce0f55c8ba9db55da23ad623e" },
+      "2f8a6c24dd1adde73909cada6a4a137577b0f179d336685c4a955a0a8e1a86fb" },
+    { 0,
+      "q128_"
+      "qqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqq"
+      "qqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqq",
+      "2af6ff6ef5ebba128b0774f4296cb4c2279a074658b083b8dcca91f57a603450" },
     { 0,
       "a512_"
       "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
@@ -24,14 +29,18 @@ static TestData test_data[] = {
       "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
       "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
       "aaaaaaaa",
-      "31e648bbade3b272b7676f82da905d27de37f41581b1d170250dd9d56f95413c" },
-
+      "2c90c3d39eb18ff291d33441b35f3262cdd307162cc97c31bfcc7a4245891a37" },
     { 1, "",
-      "5c307efcdf7f0822428f932e66b46b3d88f59880772a1ab07fac5231609c5f76" },
+      "09a6c8561a0b22bef63124c588ce4c62ea83a3c899763af26d795302e115dc21" },
     { 1, "abc",
-      "4bc72bbd27a3207ad932ea6e218b257875ad2cb34695d964da83a57f4807394d" },
+      "1a8395b88338f22e435bbd301183e7f20a5f9de643f11882fb237f88268a5531" },
     { 1, "abcdef0123456789",
-      "3c67b98967527a551ea54e4de791689834552009a7a40393fd4a23d1f04061ef" },
+      "53060a3d140e7fbcda641ed3cf42c88a75411e648a1add71217f70ea8ec561a6e" },
+    { 1,
+      "q128_"
+      "qqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqq"
+      "qqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqq",
+      "2eca15e355fcfa39d2982f67ddb0eea138e2994f5956ed37b7f72eea5e89d2f7" },
     { 1,
       "a512_"
       "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
@@ -42,7 +51,7 @@ static TestData test_data[] = {
       "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
       "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
       "aaaaaaaa",
-      "6ce3485dc2cd37462e08e46f9931b16bb272280aea3efc38fb96d2d2df4870bd" }
+      "6dc2fc04f266c5c27f236a80b14f92ccd051ef1ff027f26a07f8c0f327d8f995" }
 };
 
 int
@@ -68,14 +77,14 @@ main(void)
         }
         if (test_data[i].ro == 0) {
             if (crypto_core_ed25519_from_string(
-                    y, "edwards25519_XMD:SHA-512_ELL2_NU_TESTGEN",
+                    y, "QUUX-V01-CS02-with-edwards25519_XMD:SHA-512_ELL2_NU_",
                     (const unsigned char *) test_data[i].msg,
                     strlen(test_data[i].msg)) != 0) {
                 printf("crypto_core_ed25519_from_string() failed\n");
             }
         } else {
             if (crypto_core_ed25519_from_string_ro(
-                    y, "edwards25519_XMD:SHA-512_ELL2_RO_TESTGEN",
+                    y, "QUUX-V01-CS02-with-edwards25519_XMD:SHA-512_ELL2_RO_",
                     (const unsigned char *) test_data[i].msg,
                     strlen(test_data[i].msg)) != 0) {
                 printf("crypto_core_ed25519_from_string_ro() failed\n");
