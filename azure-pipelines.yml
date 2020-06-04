@@ -16,7 +16,7 @@ jobs:
           curl https://get.wasmer.io -sSfL | sh
         displayName: Install wasmer
       - script: |
-          curl -sL -o - https://github.com/WebAssembly/wasi-sdk/releases/download/wasi-sdk-10/wasi-sdk-10.0-linux.tar.gz | tar xz -f - -C /opt/
+          curl -sL -o - https://github.com/WebAssembly/wasi-sdk/releases/download/wasi-sdk-11/wasi-sdk-11.0-linux.tar.gz | tar xz -f - -C /opt/
           sudo mv /opt/wasi-sdk-* /opt/wasi-sdk
           sudo ln -s /opt/wasi-sdk/share/*sysroot* /opt/wasi-sysroot
         displayName: Install the WASI SDK

@@ -3,7 +3,9 @@
 #include <sys/types.h>
 
 #include <limits.h>
-#include <signal.h>
+#ifdef HAVE_CATCHABLE_SEGV
+# include <signal.h>
+#endif
 
 #define TEST_NAME "sodium_utils2"
 #include "cmptest.h"
