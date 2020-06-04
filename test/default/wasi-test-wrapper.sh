@@ -2,6 +2,16 @@
 
 MAX_MEMORY_TESTS="67108864"
 
+if command -v wasm-opt >/dev/null; then
+  wasm-opt -O4 -o "${1}.tmp" "$1" && mv -f "${1}.tmp" "$1"
+fi
+
+if [ -z "$WASI_RUNTIME" ] || [ "$WASI_RUNTIME" = "wavm" ]; then
+  if command -v wavm >/dev/null; then
+    wavm run --abi=wasi "$1" && exit 0
+  fi
+fi
+
 if [ -z "$WASI_RUNTIME" ] || [ "$WASI_RUNTIME" = "wasmtime" ]; then
   if command -v wasmtime >/dev/null; then
     wasmtime -o --dir=. "$1" && exit 0
