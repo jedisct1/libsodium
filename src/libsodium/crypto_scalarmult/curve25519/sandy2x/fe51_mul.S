@@ -30,7 +30,6 @@ movq %r14,24(%rsp)
 movq %r15,32(%rsp)
 movq %rbx,40(%rsp)
 movq %rbp,48(%rsp)
-movq %rdi,56(%rsp)
 mov  %rdx,%rcx
 movq   24(%rsi),%rdx
 imulq  $19,%rdx,%rax
