@@ -56,11 +56,11 @@ const char *crypto_pwhash_strprefix(void);
 
 #define crypto_pwhash_OPSLIMIT_MIN crypto_pwhash_argon2id_OPSLIMIT_MIN
 SODIUM_EXPORT
-size_t crypto_pwhash_opslimit_min(void);
+unsigned long long crypto_pwhash_opslimit_min(void);
 
 #define crypto_pwhash_OPSLIMIT_MAX crypto_pwhash_argon2id_OPSLIMIT_MAX
 SODIUM_EXPORT
-size_t crypto_pwhash_opslimit_max(void);
+unsigned long long crypto_pwhash_opslimit_max(void);
 
 #define crypto_pwhash_MEMLIMIT_MIN crypto_pwhash_argon2id_MEMLIMIT_MIN
 SODIUM_EXPORT
@@ -72,7 +72,7 @@ size_t crypto_pwhash_memlimit_max(void);
 
 #define crypto_pwhash_OPSLIMIT_INTERACTIVE crypto_pwhash_argon2id_OPSLIMIT_INTERACTIVE
 SODIUM_EXPORT
-size_t crypto_pwhash_opslimit_interactive(void);
+unsigned long long crypto_pwhash_opslimit_interactive(void);
 
 #define crypto_pwhash_MEMLIMIT_INTERACTIVE crypto_pwhash_argon2id_MEMLIMIT_INTERACTIVE
 SODIUM_EXPORT
@@ -80,7 +80,7 @@ size_t crypto_pwhash_memlimit_interactive(void);
 
 #define crypto_pwhash_OPSLIMIT_MODERATE crypto_pwhash_argon2id_OPSLIMIT_MODERATE
 SODIUM_EXPORT
-size_t crypto_pwhash_opslimit_moderate(void);
+unsigned long long crypto_pwhash_opslimit_moderate(void);
 
 #define crypto_pwhash_MEMLIMIT_MODERATE crypto_pwhash_argon2id_MEMLIMIT_MODERATE
 SODIUM_EXPORT
@@ -88,7 +88,7 @@ size_t crypto_pwhash_memlimit_moderate(void);
 
 #define crypto_pwhash_OPSLIMIT_SENSITIVE crypto_pwhash_argon2id_OPSLIMIT_SENSITIVE
 SODIUM_EXPORT
-size_t crypto_pwhash_opslimit_sensitive(void);
+unsigned long long crypto_pwhash_opslimit_sensitive(void);
 
 #define crypto_pwhash_MEMLIMIT_SENSITIVE crypto_pwhash_argon2id_MEMLIMIT_SENSITIVE
 SODIUM_EXPORT

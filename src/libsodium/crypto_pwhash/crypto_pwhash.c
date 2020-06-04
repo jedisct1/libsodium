@@ -65,13 +65,13 @@ crypto_pwhash_strprefix(void)
     return crypto_pwhash_STRPREFIX;
 }
 
-size_t
+unsigned long long
 crypto_pwhash_opslimit_min(void)
 {
     return crypto_pwhash_OPSLIMIT_MIN;
 }
 
-size_t
+unsigned long long
 crypto_pwhash_opslimit_max(void)
 {
     return crypto_pwhash_OPSLIMIT_MAX;
@@ -89,7 +89,7 @@ crypto_pwhash_memlimit_max(void)
     return crypto_pwhash_MEMLIMIT_MAX;
 }
 
-size_t
+unsigned long long
 crypto_pwhash_opslimit_interactive(void)
 {
     return crypto_pwhash_OPSLIMIT_INTERACTIVE;
@@ -101,7 +101,7 @@ crypto_pwhash_memlimit_interactive(void)
     return crypto_pwhash_MEMLIMIT_INTERACTIVE;
 }
 
-size_t
+unsigned long long
 crypto_pwhash_opslimit_moderate(void)
 {
     return crypto_pwhash_OPSLIMIT_MODERATE;
@@ -113,7 +113,7 @@ crypto_pwhash_memlimit_moderate(void)
     return crypto_pwhash_MEMLIMIT_MODERATE;
 }
 
-size_t
+unsigned long long
 crypto_pwhash_opslimit_sensitive(void)
 {
     return crypto_pwhash_OPSLIMIT_SENSITIVE;
