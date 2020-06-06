@@ -10,7 +10,7 @@ export NDK_API_VERSION_COMPAT=$(echo "$NDK_PLATFORM_COMPAT" | sed 's/^android-//
 if [ -z "$ANDROID_NDK_HOME" ]; then
   echo "You should probably set ANDROID_NDK_HOME to the directory containing"
   echo "the Android NDK"
-  exit
+  exit 1
 fi
 
 if [ ! -f ./configure ]; then
