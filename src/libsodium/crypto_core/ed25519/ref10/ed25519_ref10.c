@@ -50,6 +50,17 @@ load_4(const unsigned char *in)
 # include "fe_25_5/fe.h"
 #endif
 
+static inline void
+fe25519_sqmul(fe25519 s, const int n, const fe25519 a)
+{
+    int i;
+
+    for (i = 0; i < n; i++) {
+        fe25519_sq(s, s);
+    }
+    fe25519_mul(s, s, a);
+}
+
 /*
  * Inversion - returns 0 if z=0
  */
@@ -206,6 +217,44 @@ fe25519_sqrt(fe25519 x, const fe25519 x2)
     fe25519_sub(check, check, x2_copy);
 
     return fe25519_iszero(check) - 1;
+}
+
+static int
+fe25519_notsquare(const fe25519 x)
+{
+    fe25519       _10, _11, _1100, _1111, _11110000, _11111111;
+    fe25519       t, u, v;
+    unsigned char s[32];
+
+    /* Jacobi symbol - x^((p-1)/2) */
+    fe25519_mul(_10, x, x);
+    fe25519_mul(_11, x, _10);
+    fe25519_sq(_1100, _11);
+    fe25519_sq(_1100, _1100);
+    fe25519_mul(_1111, _11, _1100);
+    fe25519_sq(_11110000, _1111);
+    fe25519_sq(_11110000, _11110000);
+    fe25519_sq(_11110000, _11110000);
+    fe25519_sq(_11110000, _11110000);
+    fe25519_mul(_11111111, _1111, _11110000);
+    fe25519_copy(t, _11111111);
+    fe25519_sqmul(t, 2, _11);
+    fe25519_copy(u, t);
+    fe25519_sqmul(t, 10, u);
+    fe25519_sqmul(t, 10, u);
+    fe25519_copy(v, t);
+    fe25519_sqmul(t, 30, v);
+    fe25519_copy(v, t);
+    fe25519_sqmul(t, 60, v);
+    fe25519_copy(v, t);
+    fe25519_sqmul(t, 120, v);
+    fe25519_sqmul(t, 10, u);
+    fe25519_sqmul(t, 3, _11);
+    fe25519_sq(t, t);
+
+    fe25519_tobytes(s, t);
+
+    return s[1] & 1;
 }
 
 /*
@@ -2537,62 +2586,6 @@ sc25519_is_canonical(const unsigned char s[32])
     return (c != 0);
 }
 
-/* x^((p-1)/2) */
-static void
-chi25519(fe25519 out, const fe25519 z)
-{
-    fe25519 t0, t1, t2, t3;
-    int     i;
-
-    fe25519_sq(t0, z);
-    fe25519_mul(t1, t0, z);
-    fe25519_sq(t0, t1);
-    fe25519_sq(t2, t0);
-    fe25519_sq(t2, t2);
-    fe25519_mul(t2, t2, t0);
-    fe25519_mul(t1, t2, z);
-    fe25519_sq(t2, t1);
-    for (i = 1; i < 5; i++) {
-        fe25519_sq(t2, t2);
-    }
-    fe25519_mul(t1, t2, t1);
-    fe25519_sq(t2, t1);
-    for (i = 1; i < 10; i++) {
-        fe25519_sq(t2, t2);
-    }
-    fe25519_mul(t2, t2, t1);
-    fe25519_sq(t3, t2);
-    for (i = 1; i < 20; i++) {
-        fe25519_sq(t3, t3);
-    }
-    fe25519_mul(t2, t3, t2);
-    fe25519_sq(t2, t2);
-    for (i = 1; i < 10; i++) {
-        fe25519_sq(t2, t2);
-    }
-    fe25519_mul(t1, t2, t1);
-    fe25519_sq(t2, t1);
-    for (i = 1; i < 50; i++) {
-        fe25519_sq(t2, t2);
-    }
-    fe25519_mul(t2, t2, t1);
-    fe25519_sq(t3, t2);
-    for (i = 1; i < 100; i++) {
-        fe25519_sq(t3, t3);
-    }
-    fe25519_mul(t2, t3, t2);
-    fe25519_sq(t2, t2);
-    for (i = 1; i < 50; i++) {
-        fe25519_sq(t2, t2);
-    }
-    fe25519_mul(t1, t2, t1);
-    fe25519_sq(t1, t1);
-    for (i = 1; i < 4; i++) {
-        fe25519_sq(t1, t1);
-    }
-    fe25519_mul(out, t1, t0);
-}
-
 /* montgomery to edwards */
 static void
 ge25519_mont_to_ed(fe25519 xed, fe25519 yed, const fe25519 x, const fe25519 y)
@@ -2651,14 +2644,13 @@ ge25519_clear_cofactor(ge25519_p3 *p3)
 }
 
 static void
-ge25519_elligator2(fe25519 x, fe25519 y, const fe25519 r, int *was_square_p)
+ge25519_elligator2(fe25519 x, fe25519 y, const fe25519 r, int *notsquare_p)
 {
     fe25519       e;
     fe25519       gx1;
     fe25519       rr2;
     fe25519       x2, x3, negx;
-    unsigned char s[32];
-    int           was_square;
+    int           notsquare;
 
     fe25519_sq2(rr2, r);
     rr2[0]++;
@@ -2672,15 +2664,13 @@ ge25519_elligator2(fe25519 x, fe25519 y, const fe25519 r, int *was_square_p)
     fe25519_add(gx1, x3, x);
     fe25519_add(gx1, gx1, x2); /* gx1 = x1^3 + A*x1^2 + x1 */
 
-    chi25519(e, gx1);
-    fe25519_tobytes(s, e);
-    was_square = s[1] & 1;
+    notsquare = fe25519_notsquare(gx1);
 
-    /* e=-1 => x = -x1-A */
+    /* gx1 not a square  => x = -x1-A */
     fe25519_neg(negx, x);
-    fe25519_cmov(x, negx, was_square);
+    fe25519_cmov(x, negx, notsquare);
     fe25519_0(x2);
-    fe25519_cmov(x2, ed25519_A, was_square);
+    fe25519_cmov(x2, ed25519_A, notsquare);
     fe25519_sub(x, x, x2);
 
     /* y = sqrt(gx1) or sqrt(gx2) with gx2 = gx1 * (A+x1) / -x1 */
@@ -2688,7 +2678,7 @@ ge25519_elligator2(fe25519 x, fe25519 y, const fe25519 r, int *was_square_p)
     if (ge25519_xmont_to_ymont(y, x) != 0) {
         abort();
     }
-    *was_square_p = was_square;
+    *notsquare_p = notsquare;
 }
 
 void
@@ -2697,7 +2687,7 @@ ge25519_from_uniform(unsigned char s[32], const unsigned char r[32])
     ge25519_p3    p3;
     fe25519       x, y, negxed;
     fe25519       r_fe;
-    int           was_square;
+    int           notsquare;
     unsigned char x_sign;
 
     memcpy(s, r, 32);
@@ -2705,7 +2695,7 @@ ge25519_from_uniform(unsigned char s[32], const unsigned char r[32])
     s[31] &= 0x7f;
     fe25519_frombytes(r_fe, s);
 
-    ge25519_elligator2(x, y, r_fe, &was_square);
+    ge25519_elligator2(x, y, r_fe, &notsquare);
 
     ge25519_mont_to_ed(p3.X, p3.Y, x, y);
     fe25519_neg(negxed, p3.X);
@@ -2727,7 +2717,7 @@ ge25519_from_hash(unsigned char s[32], const unsigned char h[64])
     fe25519       fe_f;
     fe25519       fe_g;
     size_t        i;
-    int           was_square;
+    int           notsquare;
     unsigned char y_sign;
 
     for (i = 0; i < 32; i++) {
@@ -2744,9 +2734,9 @@ ge25519_from_hash(unsigned char s[32], const unsigned char h[64])
     }
     fe25519_reduce(fe_f, fe_f);
 
-    ge25519_elligator2(x, y, fe_f, &was_square);
+    ge25519_elligator2(x, y, fe_f, &notsquare);
 
-    y_sign = was_square;
+    y_sign = notsquare;
     fe25519_neg(negy, y);
     fe25519_cmov(y, negy, fe25519_isnegative(y) ^ y_sign);
 
@@ -2826,7 +2816,7 @@ ristretto255_frombytes(ge25519_p3 *h, const unsigned char *s)
     fe25519 u1u1, u2u2;
     fe25519 v;
     fe25519 v_u2u2;
-    int     was_square;
+    int     notsquare;
 
     if (ristretto255_is_canonical(s) == 0) {
         return -1;
@@ -2849,7 +2839,7 @@ ristretto255_frombytes(ge25519_p3 *h, const unsigned char *s)
     fe25519_mul(v_u2u2, v, u2u2);      /* v_u2u2 = v*u2^2 */
 
     fe25519_1(one);
-    was_square = ristretto255_sqrt_ratio_m1(inv_sqrt, one, v_u2u2);
+    notsquare = ristretto255_sqrt_ratio_m1(inv_sqrt, one, v_u2u2);
     fe25519_mul(h->X, inv_sqrt, u2);
     fe25519_mul(h->Y, inv_sqrt, h->X);
     fe25519_mul(h->Y, h->Y, v);
@@ -2861,7 +2851,7 @@ ristretto255_frombytes(ge25519_p3 *h, const unsigned char *s)
     fe25519_1(h->Z);
     fe25519_mul(h->T, h->X, h->Y);
 
-    return - ((1 - was_square) |
+    return - ((1 - notsquare) |
               fe25519_isnegative(h->T) | fe25519_iszero(h->Y));
 }
 
