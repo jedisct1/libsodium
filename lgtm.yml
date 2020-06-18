@@ -2,5 +2,5 @@ extraction:
   cpp:
      configure:
         command:
-        - ./autogen.sh
+        - ./autogen.sh -s
         - ./configure
