@@ -1095,7 +1095,17 @@ EOF
 	echo "$UNAME_MACHINE"-dec-linux-"$LIBC"
 	exit ;;
     x86_64:Linux:*:*)
-	echo "$UNAME_MACHINE"-pc-linux-"$LIBC"
+	set_cc_for_build
+	LIBCABI=$LIBC
+	if [ "$CC_FOR_BUILD" != no_compiler_found ]; then
+	    if (echo '#ifdef __ILP32__'; echo IS_X32; echo '#endif') | \
+		(CCOPTS="" $CC_FOR_BUILD -E - 2>/dev/null) | \
+		grep IS_X32 >/dev/null
+	    then
+		LIBCABI="$LIBC"x32
+	    fi
+	fi
+	echo "$UNAME_MACHINE"-pc-linux-"$LIBCABI"
 	exit ;;
     xtensa*:Linux:*:*)
 	echo "$UNAME_MACHINE"-unknown-linux-"$LIBC"
