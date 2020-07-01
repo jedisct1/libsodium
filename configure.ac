@@ -214,8 +214,6 @@ AX_VALGRIND_CHECK
 
 dnl Checks
 
-AS_IF([test "$host_cpu" = "arm" && test "$host_vendor" = "apple"], [host_cpu=aarch64])
-
 AC_C_VARARRAYS
 
 AC_CHECK_DEFINE([__wasi__], [WASI="yes"], [])
@@ -364,22 +362,49 @@ AC_SUBST(LIBTOOL_DEPS)
 AC_ARG_VAR([AR], [path to the ar utility])
 AC_CHECK_TOOL([AR], [ar], [ar])
 
-dnl Checks for headers
+dnl Checks for headers and codegen feature flags
+
+target_cpu_aarch64=no
+AC_MSG_CHECKING(for ARM64 target)
+AC_COMPILE_IFELSE(
+  [AC_LANG_PROGRAM([
+#ifndef __aarch64__
+#error Not aarch64
+#endif
+#include <arm_neon.h>
+   ], [(void) 0])],
+   [AC_MSG_RESULT(yes)
+    target_cpu_aarch64=yes],
+   [AC_MSG_RESULT(no)
+    target_cpu_aarch64=no])
 
 AS_IF([test "x$EMSCRIPTEN" = "x"], [
 
-  AS_IF([test "$host_cpu" = "aarch64"], [
-    oldcflags="$CFLAGS"
-    AX_CHECK_COMPILE_FLAG([-march=armv8-a+crypto], [CFLAGS="$CFLAGS -march=armv8-a+crypto"])
+  AS_IF([test "x$target_cpu_aarch64" = "xyes"], [
+    have_armcrypto=no
     AC_MSG_CHECKING(for ARM crypto instructions set)
-    AC_COMPILE_IFELSE([AC_LANG_PROGRAM([[
-#include <arm_neon.h>
-]], [[ vaeseq_u8(vmovq_n_u8(0), vmovq_n_u8(__ARM_FEATURE_CRYPTO)) ]])],
-      [AC_MSG_RESULT(yes)
-       AC_DEFINE([HAVE_ARMCRYPTO], [1], [ARM crypto extensions are available])
-       AX_CHECK_COMPILE_FLAG([-march=armv8-a+crypto], [CFLAGS_ARMCRYPTO="-march=armv8-a+crypto"])],
-      [AC_MSG_RESULT(no)])
-    CFLAGS="$oldcflags"
+    AC_COMPILE_IFELSE([AC_LANG_PROGRAM([[#include <arm_neon.h>]], [[ vaeseq_u8(vmovq_n_u8(0), vmovq_n_u8(__ARM_FEATURE_CRYPTO)) ]])],
+      [
+        AC_MSG_RESULT(yes)
+        have_armcrypto=yes
+      ],
+      [
+        AC_MSG_RESULT(no)
+        oldcflags="$CFLAGS"
+        AX_CHECK_COMPILE_FLAG([-march=armv8-a+crypto], [
+          CFLAGS="$CFLAGS -march=armv8-a+crypto"
+          AC_MSG_CHECKING(for ARM crypto instructions set with -march=armv8-a+crypto)
+          AC_COMPILE_IFELSE([AC_LANG_PROGRAM([[#include <arm_neon.h>]], [[ vaeseq_u8(vmovq_n_u8(0), vmovq_n_u8(__ARM_FEATURE_CRYPTO)) ]])],
+            [
+              AC_MSG_RESULT(yes)
+              have_armcrypto=yes
+              CFLAGS_ARMCRYPTO="-march=armv8-a+crypto"
+            ],
+            [AC_MSG_RESULT(no)])
+          CFLAGS="$oldcflags"
+        ])
+      ])
+      AS_IF([test "$have_armcrypto" = "yes"],[AC_DEFINE([HAVE_ARMCRYPTO], [1], [ARM crypto extensions are available])])
   ])
 
   oldcflags="$CFLAGS"
