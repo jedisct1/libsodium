@@ -148,6 +148,7 @@ crypto_secretstream_xchacha20poly1305_push
     crypto_onetimeauth_poly1305_update(&poly1305_state, c, mlen);
     crypto_onetimeauth_poly1305_update
         (&poly1305_state, _pad0, (0x10 - (sizeof block) + mlen) & 0xf);
+    /* should have been (0x10 - (sizeof block + mlen)) & 0xf to keep input blocks aligned */
 
     STORE64_LE(slen, (uint64_t) adlen);
     crypto_onetimeauth_poly1305_update(&poly1305_state, slen, sizeof slen);
@@ -224,6 +225,7 @@ crypto_secretstream_xchacha20poly1305_pull
     crypto_onetimeauth_poly1305_update(&poly1305_state, c, mlen);
     crypto_onetimeauth_poly1305_update
         (&poly1305_state, _pad0, (0x10 - (sizeof block) + mlen) & 0xf);
+    /* should have been (0x10 - (sizeof block + mlen)) & 0xf to keep input blocks aligned */
 
     STORE64_LE(slen, (uint64_t) adlen);
     crypto_onetimeauth_poly1305_update(&poly1305_state, slen, sizeof slen);
