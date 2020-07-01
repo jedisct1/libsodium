@@ -214,6 +214,8 @@ AX_VALGRIND_CHECK
 
 dnl Checks
 
+AS_IF([test "$host_cpu" = "arm" && test "$host_vendor" = "apple"], [host_cpu=aarch64])
+
 AC_C_VARARRAYS
 
 AC_CHECK_DEFINE([__wasi__], [WASI="yes"], [])
