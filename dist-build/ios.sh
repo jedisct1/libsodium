@@ -1,33 +1,29 @@
 #! /bin/sh
-#
-#  Step 1.
-#  Configure for base system so simulator is covered
-#
-#  Step 2.
-#  Make for iOS, iOS simulator and Catalyst
-#
-#  Step 3.
-#  Merge libs into final version for xcode import
 
-export PREFIX="$(pwd)/libsodium-ios"
-export IOS32_PREFIX="$PREFIX/tmp/ios32"
-export IOS32s_PREFIX="$PREFIX/tmp/ios32s"
-export IOS64_PREFIX="$PREFIX/tmp/ios64"
-export SIMULATOR32_PREFIX="$PREFIX/tmp/simulator32"
-export SIMULATOR64_PREFIX="$PREFIX/tmp/simulator64"
-export CATALYST_PREFIX="$PREFIX/tmp/catalyst"
+export PREFIX="$(pwd)/libsodium-apple"
+export IOS32_PREFIX="${PREFIX}/tmp/ios32"
+export IOS32s_PREFIX="${PREFIX}/tmp/ios32s"
+export IOS64_PREFIX="${PREFIX}/tmp/ios64"
+export IOS_SIMULATOR_I386_PREFIX="${PREFIX}/tmp/ios-simulator-i386"
+export IOS_SIMULATOR_X86_64_PREFIX="${PREFIX}/tmp/ios-simulator-x86_64"
+export WATCHOS32_PREFIX="${PREFIX}/tmp/watchos32"
+export WATCHOS64_32_PREFIX="${PREFIX}/tmp/watchos64_32"
+export WATCHOS_SIMULATOR_I386_PREFIX="${PREFIX}/tmp/watchos-simulator-i386"
+export WATCHOS_SIMULATOR_X86_64_PREFIX="${PREFIX}/tmp/watchos-simulator-x86_64"
+export CATALYST_X86_64_PREFIX="${PREFIX}/tmp/catalyst-x86_64"
+export LOG_FILE="${PREFIX}/tmp/build_log"
 export XCODEDIR="$(xcode-select -p)"
 
 export IOS_SIMULATOR_VERSION_MIN=${IOS_SIMULATOR_VERSION_MIN-"9.0.0"}
 export IOS_VERSION_MIN=${IOS_VERSION_MIN-"9.0.0"}
+export WATCHOS_SIMULATOR_VERSION_MIN=${WATCHOS_SIMULATOR_VERSION_MIN-"4.0.0"}
+export WATCHOS_VERSION_MIN=${WATCHOS_VERSION_MIN-"4.0.0"}
 
 echo
 echo "Warnings related to headers being present but not usable are due to functions"
 echo "that didn't exist in the specified minimum iOS version level."
 echo "They can be safely ignored."
 echo
-
-mkdir -p $SIMULATOR32_PREFIX $SIMULATOR64_PREFIX $IOS32_PREFIX $IOS32s_PREFIX $IOS64_PREFIX $CATALYST_PREFIX || exit 1
 
 if [ -z "$LIBSODIUM_FULL_BUILD" ]; then
   export LIBSODIUM_ENABLE_MINIMAL_FLAG="--enable-minimal"
@@ -38,119 +34,223 @@ fi
 NPROCESSORS=$(getconf NPROCESSORS_ONLN 2>/dev/null || getconf _NPROCESSORS_ONLN 2>/dev/null)
 PROCESSORS=${NPROCESSORS:-3}
 
-# Build for the simulator
-export BASEDIR="${XCODEDIR}/Platforms/iPhoneSimulator.platform/Developer"
-export PATH="${BASEDIR}/usr/bin:$BASEDIR/usr/sbin:$PATH"
-export SDK="${BASEDIR}/SDKs/iPhoneSimulator.sdk"
+swift_module_map() {
+  echo 'module Clibsodium {'
+  echo '    header "sodium.h"'
+  echo '    export *'
+  echo '}'
+}
 
-## i386 simulator
-export CFLAGS="-O2 -arch i386 -isysroot ${SDK} -mios-simulator-version-min=${IOS_SIMULATOR_VERSION_MIN}"
-export LDFLAGS="-arch i386 -isysroot ${SDK} -mios-simulator-version-min=${IOS_SIMULATOR_VERSION_MIN}"
+build_ios() {
+  export BASEDIR="${XCODEDIR}/Platforms/iPhoneOS.platform/Developer"
+  export PATH="${BASEDIR}/usr/bin:$BASEDIR/usr/sbin:$PATH"
+  export SDK="${BASEDIR}/SDKs/iPhoneOS.sdk"
 
-make distclean >/dev/null
+  ## 32-bit iOS
+  export CFLAGS="-fembed-bitcode -O2 -mthumb -arch armv7 -isysroot ${SDK} -mios-version-min=${IOS_VERSION_MIN}"
+  export LDFLAGS="-fembed-bitcode -mthumb -arch armv7 -isysroot ${SDK} -mios-version-min=${IOS_VERSION_MIN}"
 
-./configure --host=i686-apple-darwin10 \
-  ${LIBSODIUM_ENABLE_MINIMAL_FLAG} \
-  --prefix="$SIMULATOR32_PREFIX" || exit 1
+  make distclean >/dev/null 2>&1
+  ./configure --host=arm-apple-darwin10 --prefix="$IOS32_PREFIX" \
+    ${LIBSODIUM_ENABLE_MINIMAL_FLAG} || exit 1
+  make -j${PROCESSORS} install || exit 1
 
-make -j${PROCESSORS} install || exit 1
+  ## 32-bit armv7s iOS
+  export CFLAGS="-fembed-bitcode -O2 -mthumb -arch armv7s -isysroot ${SDK} -mios-version-min=${IOS_VERSION_MIN}"
+  export LDFLAGS="-fembed-bitcode -mthumb -arch armv7s -isysroot ${SDK} -mios-version-min=${IOS_VERSION_MIN}"
 
-## x86_64 simulator
-export CFLAGS="-O2 -arch x86_64 -isysroot ${SDK} -mios-simulator-version-min=${IOS_SIMULATOR_VERSION_MIN}"
-export LDFLAGS="-arch x86_64 -isysroot ${SDK} -mios-simulator-version-min=${IOS_SIMULATOR_VERSION_MIN}"
+  make distclean >/dev/null 2>&1
+  ./configure --host=arm-apple-darwin10 --prefix="$IOS32s_PREFIX" \
+    ${LIBSODIUM_ENABLE_MINIMAL_FLAG} || exit 1
+  make -j${PROCESSORS} install || exit 1
 
-make distclean >/dev/null
+  ## 64-bit iOS
+  export CFLAGS="-fembed-bitcode -O2 -arch arm64 -isysroot ${SDK} -mios-version-min=${IOS_VERSION_MIN}"
+  export LDFLAGS="-fembed-bitcode -arch arm64 -isysroot ${SDK} -mios-version-min=${IOS_VERSION_MIN}"
 
-./configure --host=x86_64-apple-darwin10 \
-  ${LIBSODIUM_ENABLE_MINIMAL_FLAG} \
-  --prefix="$SIMULATOR64_PREFIX"
+  make distclean >/dev/null 2>&1
+  ./configure --host=arm-apple-darwin10 --prefix="$IOS64_PREFIX" \
+    ${LIBSODIUM_ENABLE_MINIMAL_FLAG} || exit 1
+  make -j${PROCESSORS} install || exit 1
+}
 
-make -j${PROCESSORS} install || exit 1
+build_ios_simulator() {
+  export BASEDIR="${XCODEDIR}/Platforms/iPhoneSimulator.platform/Developer"
+  export PATH="${BASEDIR}/usr/bin:$BASEDIR/usr/sbin:$PATH"
+  export SDK="${BASEDIR}/SDKs/iPhoneSimulator.sdk"
 
-# Build for x86_64 macOS (Catalyst)
-export BASEDIR="${XCODEDIR}/Platforms/MacOSX.platform/Developer"
-export PATH="${BASEDIR}/usr/bin:$BASEDIR/usr/sbin:$PATH"
-export SDK="${BASEDIR}/SDKs/MacOSX.sdk"
+  ## i386 simulator
+  export CFLAGS="-O2 -arch i386 -isysroot ${SDK} -mios-simulator-version-min=${IOS_SIMULATOR_VERSION_MIN}"
+  export LDFLAGS="-arch i386 -isysroot ${SDK} -mios-simulator-version-min=${IOS_SIMULATOR_VERSION_MIN}"
 
-export CFLAGS="-fembed-bitcode -O2 -arch x86_64 -target x86_64-apple-ios13.0-macabi -isysroot ${SDK}"
-export LDFLAGS="-fembed-bitcode -arch x86_64 -target x86_64-apple-ios13.0-macabi -isysroot ${SDK}"
+  make distclean >/dev/null 2>&1
+  ./configure --host=i686-apple-darwin10 --prefix="$IOS_SIMULATOR_I386_PREFIX" \
+    ${LIBSODIUM_ENABLE_MINIMAL_FLAG} || exit 1
+  make -j${PROCESSORS} install || exit 1
 
-make distclean >/dev/null
+  ## x86_64 simulator
+  export CFLAGS="-O2 -arch x86_64 -isysroot ${SDK} -mios-simulator-version-min=${IOS_SIMULATOR_VERSION_MIN}"
+  export LDFLAGS="-arch x86_64 -isysroot ${SDK} -mios-simulator-version-min=${IOS_SIMULATOR_VERSION_MIN}"
 
-./configure --host=x86_64-apple-darwin10 \
-  ${LIBSODIUM_ENABLE_MINIMAL_FLAG} \
-  --prefix="$CATALYST_PREFIX" || exit 1
+  make distclean >/dev/null 2>&1
+  ./configure --host=x86_64-apple-darwin10 --prefix="$IOS_SIMULATOR_X86_64_PREFIX" \
+    ${LIBSODIUM_ENABLE_MINIMAL_FLAG}
+  make -j${PROCESSORS} install || exit 1
+}
 
-make -j${PROCESSORS} install || exit 1
+build_watchos() {
+  export BASEDIR="${XCODEDIR}/Platforms/WatchOS.platform/Developer"
+  export PATH="${BASEDIR}/usr/bin:$BASEDIR/usr/sbin:$PATH"
+  export SDK="${BASEDIR}/SDKs/WatchOS.sdk"
 
-# Build for iOS
-export BASEDIR="${XCODEDIR}/Platforms/iPhoneOS.platform/Developer"
-export PATH="${BASEDIR}/usr/bin:$BASEDIR/usr/sbin:$PATH"
-export SDK="${BASEDIR}/SDKs/iPhoneOS.sdk"
+  # 32-bit watchOS
+  export CFLAGS="-fembed-bitcode -O2 -mthumb -arch armv7k -isysroot ${SDK} -mwatchos-version-min=${WATCHOS_VERSION_MIN}"
+  export LDFLAGS="-fembed-bitcode -mthumb -arch armv7k -isysroot ${SDK} -mwatchos-version-min=${WATCHOS_VERSION_MIN}"
 
-## 32-bit iOS
-export CFLAGS="-fembed-bitcode -O2 -mthumb -arch armv7 -isysroot ${SDK} -mios-version-min=${IOS_VERSION_MIN}"
-export LDFLAGS="-fembed-bitcode -mthumb -arch armv7 -isysroot ${SDK} -mios-version-min=${IOS_VERSION_MIN}"
+  make distclean >/dev/null 2>&1
+  ./configure --host=arm-apple-darwin10 --prefix="$WATCHOS32_PREFIX" \
+    ${LIBSODIUM_ENABLE_MINIMAL_FLAG} || exit 1
+  make -j${PROCESSORS} install || exit 1
 
-make distclean >/dev/null
+  ## 64-bit arm64_32 watchOS
+  export CFLAGS="-fembed-bitcode -O2 -mthumb -arch arm64_32 -isysroot ${SDK} -mwatchos-version-min=${WATCHOS_VERSION_MIN}"
+  export LDFLAGS="-fembed-bitcode -mthumb -arch arm64_32 -isysroot ${SDK} -mwatchos-version-min=${WATCHOS_VERSION_MIN}"
 
-./configure --host=arm-apple-darwin10 \
-  ${LIBSODIUM_ENABLE_MINIMAL_FLAG} \
-  --prefix="$IOS32_PREFIX" || exit 1
+  make distclean >/dev/null 2>&1
+  ./configure --host=arm-apple-darwin10 --prefix="$WATCHOS64_32_PREFIX" \
+    ${LIBSODIUM_ENABLE_MINIMAL_FLAG} || exit 1
+  make -j${PROCESSORS} install || exit 1
+}
 
-make -j${PROCESSORS} install || exit 1
+build_watchos_simulator() {
+  export BASEDIR="${XCODEDIR}/Platforms/WatchSimulator.platform/Developer"
+  export PATH="${BASEDIR}/usr/bin:$BASEDIR/usr/sbin:$PATH"
+  export SDK="${BASEDIR}/SDKs/WatchSimulator.sdk"
 
-## 32-bit armv7s iOS
-export CFLAGS="-fembed-bitcode -O2 -mthumb -arch armv7s -isysroot ${SDK} -mios-version-min=${IOS_VERSION_MIN}"
-export LDFLAGS="-fembed-bitcode -mthumb -arch armv7s -isysroot ${SDK} -mios-version-min=${IOS_VERSION_MIN}"
+  ## i386 simulator
+  export CFLAGS="-O2 -arch i386 -isysroot ${SDK} -mwatchos-simulator-version-min=${WATCHOS_SIMULATOR_VERSION_MIN}"
+  export LDFLAGS="-arch i386 -isysroot ${SDK} -mwatchos-simulator-version-min=${WATCHOS_SIMULATOR_VERSION_MIN}"
 
-make distclean >/dev/null
+  make distclean >/dev/null 2>&1
+  ./configure --host=i686-apple-darwin10 --prefix="$WATCHOS_SIMULATOR_I386_PREFIX" \
+    ${LIBSODIUM_ENABLE_MINIMAL_FLAG} || exit 1
+  make -j${PROCESSORS} install || exit 1
 
-./configure --host=arm-apple-darwin10 \
-  ${LIBSODIUM_ENABLE_MINIMAL_FLAG} \
-  --prefix="$IOS32s_PREFIX" || exit 1
+  ## x86_64 simulator
+  export CFLAGS="-O2 -arch x86_64 -isysroot ${SDK} -mwatchos-simulator-version-min=${WATCHOS_SIMULATOR_VERSION_MIN}"
+  export LDFLAGS="-arch x86_64 -isysroot ${SDK} -mwatchos-simulator-version-min=${WATCHOS_SIMULATOR_VERSION_MIN}"
 
-make -j${PROCESSORS} install || exit 1
+  make distclean >/dev/null 2>&1
+  ./configure --host=x86_64-apple-darwin10 --prefix="$WATCHOS_SIMULATOR_X86_64_PREFIX" \
+    ${LIBSODIUM_ENABLE_MINIMAL_FLAG} || exit 1
+  make -j${PROCESSORS} install || exit 1
+}
 
-## 64-bit iOS
-export CFLAGS="-fembed-bitcode -O2 -arch arm64 -isysroot ${SDK} -mios-version-min=${IOS_VERSION_MIN}"
-export LDFLAGS="-fembed-bitcode -arch arm64 -isysroot ${SDK} -mios-version-min=${IOS_VERSION_MIN}"
+build_catalyst() {
+  export BASEDIR="${XCODEDIR}/Platforms/MacOSX.platform/Developer"
+  export PATH="${BASEDIR}/usr/bin:$BASEDIR/usr/sbin:$PATH"
+  export SDK="${BASEDIR}/SDKs/MacOSX.sdk"
 
-make distclean >/dev/null
+  ## x86_64 catalyst
+  export CFLAGS="-fembed-bitcode -O2 -arch x86_64 -target x86_64-apple-ios13.0-macabi -isysroot ${SDK}"
+  export LDFLAGS="-fembed-bitcode -arch x86_64 -target x86_64-apple-ios13.0-macabi -isysroot ${SDK}"
 
-./configure --host=arm-apple-darwin10 \
-  ${LIBSODIUM_ENABLE_MINIMAL_FLAG} \
-  --prefix="$IOS64_PREFIX" || exit 1
+  make distclean >/dev/null 2>&1
+  ./configure --host=x86_64-apple-darwin10 --prefix="$CATALYST_X86_64_PREFIX" \
+    ${LIBSODIUM_ENABLE_MINIMAL_FLAG} || exit 1
+  make -j${PROCESSORS} install || exit 1
+}
 
-make -j${PROCESSORS} install || exit 1
+mkdir -p "${PREFIX}/tmp"
+echo "Building for iOS..."
+build_ios >"$LOG_FILE" 2>&1 || exit 1
+echo "Building for the iOS simulator..."
+build_ios_simulator >"$LOG_FILE" 2>&1 || exit 1
+echo "Building for watchOS..."
+build_watchos >"$LOG_FILE" 2>&1 || exit 1
+echo "Building for the watchOS simulator..."
+build_watchos_simulator >"$LOG_FILE" 2>&1 || exit 1
+echo "Building for Catalyst..."
+build_catalyst >"$LOG_FILE" 2>&1 || exit 1
 
-# Create fat libraries for iOS and simulators
-rm -fr -- "$PREFIX/include" "$PREFIX/libsodium.a" 2>/dev/null
-mkdir -p -- "$PREFIX/lib"
-lipo -create \
-  "$SIMULATOR32_PREFIX/lib/libsodium.a" \
-  "$CATALYST_PREFIX/lib/libsodium.a" \
-  "$IOS32_PREFIX/lib/libsodium.a" \
-  "$IOS32s_PREFIX/lib/libsodium.a" \
-  "$IOS64_PREFIX/lib/libsodium.a" \
-  -output "$PREFIX/lib/libsodium.a"
+echo "Adding the Clibsodium module map for Swift..."
 
-lipo -create \
-  "$SIMULATOR32_PREFIX/lib/libsodium.dylib" \
-  "$CATALYST_PREFIX/lib/libsodium.dylib" \
-  "$IOS32_PREFIX/lib/libsodium.dylib" \
-  "$IOS32s_PREFIX/lib/libsodium.dylib" \
-  "$IOS64_PREFIX/lib/libsodium.dylib" \
-  -output "$PREFIX/lib/libsodium.dylib"
+find "$PREFIX" -name "include" -type d -print | while read -r f; do
+  swift_module_map >"${f}/module.modulemap"
+done
 
-mv -f -- "$IOS32_PREFIX/include" "$PREFIX/"
-install_name_tool -id "@rpath/SODIUM.framework/libsodium.dylib" "$PREFIX/lib/libsodium.dylib"
+echo "Bundling iOS targets..."
 
-echo
-echo "libsodium has been installed into $PREFIX"
-echo
-file -- "$PREFIX/lib/libsodium.a"
-file -- "$PREFIX/lib/libsodium.dylib"
+mkdir -p "${PREFIX}/ios/lib"
+cp -a "${IOS64_PREFIX}/include" "${PREFIX}/ios/"
+for ext in a dylib; do
+  lipo -create \
+    "$IOS32_PREFIX/lib/libsodium.${ext}" \
+    "$IOS32s_PREFIX/lib/libsodium.${ext}" \
+    "$IOS64_PREFIX/lib/libsodium.${ext}" \
+    -output "$PREFIX/ios/lib/libsodium.${ext}"
+done
+
+echo "Bundling iOS simulators..."
+
+mkdir -p "${PREFIX}/ios-simulators/lib"
+cp -a "${IOS_SIMULATOR_X86_64_PREFIX}/include" "${PREFIX}/ios-simulators/"
+for ext in a dylib; do
+  lipo -create \
+    "${IOS_SIMULATOR_I386_PREFIX}/lib/libsodium.${ext}" \
+    "${IOS_SIMULATOR_X86_64_PREFIX}/lib/libsodium.${ext}" \
+    -output "${PREFIX}/ios-simulators/lib/libsodium.${ext}" || exit 1
+done
+
+echo "Bundling watchOS targets..."
+
+mkdir -p "${PREFIX}/watchos/lib"
+cp -a "${WATCHOS64_32_PREFIX}/include" "${PREFIX}/watchos/"
+for ext in a dylib; do
+  lipo -create \
+    "${WATCHOS32_PREFIX}/lib/libsodium.${ext}" \
+    "${WATCHOS64_32_PREFIX}/lib/libsodium.${ext}" \
+    -output "${PREFIX}/watchos/lib/libsodium.${ext}"
+done
+
+echo "Bundling watchOS simulators..."
+
+mkdir -p "${PREFIX}/watchos-simulators/lib"
+cp -a "${WATCHOS_SIMULATOR_X86_64_PREFIX}/include" "${PREFIX}/watchos-simulators/"
+for ext in a dylib; do
+  lipo -create \
+    "${WATCHOS_SIMULATOR_I386_PREFIX}/lib/libsodium.${ext}" \
+    "${WATCHOS_SIMULATOR_X86_64_PREFIX}/lib/libsodium.${ext}" \
+    -output "${PREFIX}/watchos-simulators/lib/libsodium.${ext}"
+done
+
+echo "Bundling Catalyst targets..."
+
+mkdir -p "${PREFIX}/catalyst/lib"
+cp -a "${CATALYST_X86_64_PREFIX}/include" "${PREFIX}/catalyst/"
+for ext in a dylib; do
+  lipo -create \
+    "${CATALYST_X86_64_PREFIX}/lib/libsodium.${ext}" \
+    -output "${PREFIX}/catalyst/lib/libsodium.${ext}"
+done
+
+echo "Creating Clibsodium.xcframework..."
+
+rm -rf "${PREFIX}/Clibsodium.xcframework"
+
+for f in ios ios-simulators watchos watchos-simulators catalyst; do
+  echo "> ${f}"
+  xcodebuild -create-xcframework \
+    -library "${PREFIX}/${f}/lib/libsodium.a" \
+    -headers "${PREFIX}/${f}/include" \
+    -output "${PREFIX}/Clibsodium.xcframework" >/dev/null
+done
+
+ls -ld -- "$PREFIX"
+ls -l -- "$PREFIX"
+ls -l -- "$PREFIX/Clibsodium.xcframework"
+
+echo "Done!"
 
 # Cleanup
 rm -rf -- "$PREFIX/tmp"
