@@ -14,7 +14,7 @@ export WATCHOS32_PREFIX="$PREFIX/tmp/watchos32"
 export WATCHOS64_32_PREFIX="$PREFIX/tmp/watchos64_32"
 export SIMULATOR32_PREFIX="$PREFIX/tmp/simulator32"
 export SIMULATOR64_PREFIX="$PREFIX/tmp/simulator64"
-export XCODEDIR=$(xcode-select -p)
+export XCODEDIR="$(xcode-select -p)"
 
 export WATCHOS_SIMULATOR_VERSION_MIN=${WATCHOS_SIMULATOR_VERSION_MIN-"4.0.0"}
 export WATCHOS_VERSION_MIN=${WATCHOS_VERSION_MIN-"4.0.0"}

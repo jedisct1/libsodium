@@ -4,7 +4,7 @@
 #  Configure for base system so simulator is covered
 #
 #  Step 2.
-#  Make for iOS and iOS simulator
+#  Make for iOS, iOS simulator and Catalyst
 #
 #  Step 3.
 #  Merge libs into final version for xcode import
@@ -14,8 +14,9 @@ export IOS32_PREFIX="$PREFIX/tmp/ios32"
 export IOS32s_PREFIX="$PREFIX/tmp/ios32s"
 export IOS64_PREFIX="$PREFIX/tmp/ios64"
 export SIMULATOR32_PREFIX="$PREFIX/tmp/simulator32"
+export SIMULATOR64_PREFIX="$PREFIX/tmp/simulator64"
 export CATALYST_PREFIX="$PREFIX/tmp/catalyst"
-export XCODEDIR=$(xcode-select -p)
+export XCODEDIR="$(xcode-select -p)"
 
 export IOS_SIMULATOR_VERSION_MIN=${IOS_SIMULATOR_VERSION_MIN-"9.0.0"}
 export IOS_VERSION_MIN=${IOS_VERSION_MIN-"9.0.0"}
@@ -26,7 +27,7 @@ echo "that didn't exist in the specified minimum iOS version level."
 echo "They can be safely ignored."
 echo
 
-mkdir -p $SIMULATOR32_PREFIX $SIMULATOR64_PREFIX $IOS32_PREFIX $IOS32s_PREFIX $IOS64_PREFIX || exit 1
+mkdir -p $SIMULATOR32_PREFIX $SIMULATOR64_PREFIX $IOS32_PREFIX $IOS32s_PREFIX $IOS64_PREFIX $CATALYST_PREFIX || exit 1
 
 # Build for the simulator
 export BASEDIR="${XCODEDIR}/Platforms/iPhoneSimulator.platform/Developer"
@@ -37,7 +38,7 @@ export SDK="${BASEDIR}/SDKs/iPhoneSimulator.sdk"
 export CFLAGS="-O2 -arch i386 -isysroot ${SDK} -mios-simulator-version-min=${IOS_SIMULATOR_VERSION_MIN}"
 export LDFLAGS="-arch i386 -isysroot ${SDK} -mios-simulator-version-min=${IOS_SIMULATOR_VERSION_MIN}"
 
-make distclean > /dev/null
+make distclean >/dev/null
 
 if [ -z "$LIBSODIUM_FULL_BUILD" ]; then
   export LIBSODIUM_ENABLE_MINIMAL_FLAG="--enable-minimal"
@@ -46,28 +47,39 @@ else
 fi
 
 ./configure --host=i686-apple-darwin10 \
-            ${LIBSODIUM_ENABLE_MINIMAL_FLAG} \
-            --prefix="$SIMULATOR32_PREFIX" || exit 1
-
+  ${LIBSODIUM_ENABLE_MINIMAL_FLAG} \
+  --prefix="$SIMULATOR32_PREFIX" || exit 1
 
 NPROCESSORS=$(getconf NPROCESSORS_ONLN 2>/dev/null || getconf _NPROCESSORS_ONLN 2>/dev/null)
 PROCESSORS=${NPROCESSORS:-3}
 
 make -j${PROCESSORS} install || exit 1
 
-# Build for macOS (Catalyst)
+## x86_64 simulator
+export CFLAGS="-O2 -arch x86_64 -isysroot ${SDK} -mios-simulator-version-min=${IOS_SIMULATOR_VERSION_MIN}"
+export LDFLAGS="-arch x86_64 -isysroot ${SDK} -mios-simulator-version-min=${IOS_SIMULATOR_VERSION_MIN}"
+
+make distclean >/dev/null
+
+./configure --host=x86_64-apple-darwin10 \
+  ${LIBSODIUM_ENABLE_MINIMAL_FLAG} \
+  --prefix="$SIMULATOR64_PREFIX"
+
+make -j${PROCESSORS} install || exit 1
+
+# Build for x86_64 macOS (Catalyst)
 export BASEDIR="${XCODEDIR}/Platforms/MacOSX.platform/Developer"
 export PATH="${BASEDIR}/usr/bin:$BASEDIR/usr/sbin:$PATH"
-export SDK="${BASEDIR}/SDKs/MacOSX10.15.sdk"
+export SDK="${BASEDIR}/SDKs/MacOSX.sdk"
 
 export CFLAGS="-fembed-bitcode -O2 -arch x86_64 -target x86_64-apple-ios13.0-macabi -isysroot ${SDK}"
 export LDFLAGS="-fembed-bitcode -arch x86_64 -target x86_64-apple-ios13.0-macabi -isysroot ${SDK}"
 
-make distclean > /dev/null
+make distclean >/dev/null
 
 ./configure --host=x86_64-apple-darwin10 \
-            ${LIBSODIUM_ENABLE_MINIMAL_FLAG} \
-            --prefix="$CATALYST_PREFIX" || exit 1
+  ${LIBSODIUM_ENABLE_MINIMAL_FLAG} \
+  --prefix="$CATALYST_PREFIX" || exit 1
 
 make -j${PROCESSORS} install || exit 1
 
@@ -80,11 +92,11 @@ export SDK="${BASEDIR}/SDKs/iPhoneOS.sdk"
 export CFLAGS="-fembed-bitcode -O2 -mthumb -arch armv7 -isysroot ${SDK} -mios-version-min=${IOS_VERSION_MIN}"
 export LDFLAGS="-fembed-bitcode -mthumb -arch armv7 -isysroot ${SDK} -mios-version-min=${IOS_VERSION_MIN}"
 
-make distclean > /dev/null
+make distclean >/dev/null
 
 ./configure --host=arm-apple-darwin10 \
-            ${LIBSODIUM_ENABLE_MINIMAL_FLAG} \
-            --prefix="$IOS32_PREFIX" || exit 1
+  ${LIBSODIUM_ENABLE_MINIMAL_FLAG} \
+  --prefix="$IOS32_PREFIX" || exit 1
 
 make -j${PROCESSORS} install || exit 1
 
@@ -92,11 +104,11 @@ make -j${PROCESSORS} install || exit 1
 export CFLAGS="-fembed-bitcode -O2 -mthumb -arch armv7s -isysroot ${SDK} -mios-version-min=${IOS_VERSION_MIN}"
 export LDFLAGS="-fembed-bitcode -mthumb -arch armv7s -isysroot ${SDK} -mios-version-min=${IOS_VERSION_MIN}"
 
-make distclean > /dev/null
+make distclean >/dev/null
 
 ./configure --host=arm-apple-darwin10 \
-            ${LIBSODIUM_ENABLE_MINIMAL_FLAG} \
-            --prefix="$IOS32s_PREFIX" || exit 1
+  ${LIBSODIUM_ENABLE_MINIMAL_FLAG} \
+  --prefix="$IOS32s_PREFIX" || exit 1
 
 make -j${PROCESSORS} install || exit 1
 
@@ -104,16 +116,16 @@ make -j${PROCESSORS} install || exit 1
 export CFLAGS="-fembed-bitcode -O2 -arch arm64 -isysroot ${SDK} -mios-version-min=${IOS_VERSION_MIN}"
 export LDFLAGS="-fembed-bitcode -arch arm64 -isysroot ${SDK} -mios-version-min=${IOS_VERSION_MIN}"
 
-make distclean > /dev/null
+make distclean >/dev/null
 
 ./configure --host=arm-apple-darwin10 \
-            ${LIBSODIUM_ENABLE_MINIMAL_FLAG} \
-            --prefix="$IOS64_PREFIX" || exit 1
+  ${LIBSODIUM_ENABLE_MINIMAL_FLAG} \
+  --prefix="$IOS64_PREFIX" || exit 1
 
 make -j${PROCESSORS} install || exit 1
 
-# Create universal binary and include folder
-rm -fr -- "$PREFIX/include" "$PREFIX/libsodium.a" 2> /dev/null
+# Create fat libraries for iOS and simulators
+rm -fr -- "$PREFIX/include" "$PREFIX/libsodium.a" 2>/dev/null
 mkdir -p -- "$PREFIX/lib"
 lipo -create \
   "$SIMULATOR32_PREFIX/lib/libsodium.a" \
@@ -142,4 +154,4 @@ file -- "$PREFIX/lib/libsodium.dylib"
 
 # Cleanup
 rm -rf -- "$PREFIX/tmp"
-make distclean > /dev/null
+make distclean >/dev/null
