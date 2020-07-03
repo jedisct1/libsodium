@@ -29,6 +29,15 @@ echo
 
 mkdir -p $SIMULATOR32_PREFIX $SIMULATOR64_PREFIX $IOS32_PREFIX $IOS32s_PREFIX $IOS64_PREFIX $CATALYST_PREFIX || exit 1
 
+if [ -z "$LIBSODIUM_FULL_BUILD" ]; then
+  export LIBSODIUM_ENABLE_MINIMAL_FLAG="--enable-minimal"
+else
+  export LIBSODIUM_ENABLE_MINIMAL_FLAG=""
+fi
+
+NPROCESSORS=$(getconf NPROCESSORS_ONLN 2>/dev/null || getconf _NPROCESSORS_ONLN 2>/dev/null)
+PROCESSORS=${NPROCESSORS:-3}
+
 # Build for the simulator
 export BASEDIR="${XCODEDIR}/Platforms/iPhoneSimulator.platform/Developer"
 export PATH="${BASEDIR}/usr/bin:$BASEDIR/usr/sbin:$PATH"
@@ -40,18 +49,9 @@ export LDFLAGS="-arch i386 -isysroot ${SDK} -mios-simulator-version-min=${IOS_SI
 
 make distclean >/dev/null
 
-if [ -z "$LIBSODIUM_FULL_BUILD" ]; then
-  export LIBSODIUM_ENABLE_MINIMAL_FLAG="--enable-minimal"
-else
-  export LIBSODIUM_ENABLE_MINIMAL_FLAG=""
-fi
-
 ./configure --host=i686-apple-darwin10 \
   ${LIBSODIUM_ENABLE_MINIMAL_FLAG} \
   --prefix="$SIMULATOR32_PREFIX" || exit 1
-
-NPROCESSORS=$(getconf NPROCESSORS_ONLN 2>/dev/null || getconf _NPROCESSORS_ONLN 2>/dev/null)
-PROCESSORS=${NPROCESSORS:-3}
 
 make -j${PROCESSORS} install || exit 1
 

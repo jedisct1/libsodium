@@ -21,6 +21,15 @@ export WATCHOS_VERSION_MIN=${WATCHOS_VERSION_MIN-"4.0.0"}
 
 mkdir -p $SIMULATOR32_PREFIX $SIMULATOR64_PREFIX $WATCHOS32_PREFIX $WATCHOS64_32_PREFIX || exit 1
 
+if [ -z "$LIBSODIUM_FULL_BUILD" ]; then
+  export LIBSODIUM_ENABLE_MINIMAL_FLAG="--enable-minimal"
+else
+  export LIBSODIUM_ENABLE_MINIMAL_FLAG=""
+fi
+
+NPROCESSORS=$(getconf NPROCESSORS_ONLN 2>/dev/null || getconf _NPROCESSORS_ONLN 2>/dev/null)
+PROCESSORS=${NPROCESSORS:-3}
+
 # Build for the simulator
 export BASEDIR="${XCODEDIR}/Platforms/WatchSimulator.platform/Developer"
 export PATH="${BASEDIR}/usr/bin:$BASEDIR/usr/sbin:$PATH"
@@ -30,22 +39,12 @@ export SDK="${BASEDIR}/SDKs/WatchSimulator.sdk"
 export CFLAGS="-O2 -arch i386 -isysroot ${SDK} -mwatchos-simulator-version-min=${WATCHOS_SIMULATOR_VERSION_MIN}"
 export LDFLAGS="-arch i386 -isysroot ${SDK} -mwatchos-simulator-version-min=${WATCHOS_SIMULATOR_VERSION_MIN}"
 
-make distclean > /dev/null
-
-if [ -z "$LIBSODIUM_FULL_BUILD" ]; then
-  export LIBSODIUM_ENABLE_MINIMAL_FLAG="--enable-minimal"
-else
-  export LIBSODIUM_ENABLE_MINIMAL_FLAG=""
-fi
+make distclean >/dev/null
 
 ./configure --host=i686-apple-darwin10 \
-            --disable-shared \
-            ${LIBSODIUM_ENABLE_MINIMAL_FLAG} \
-            --prefix="$SIMULATOR32_PREFIX" || exit 1
-
-
-NPROCESSORS=$(getconf NPROCESSORS_ONLN 2>/dev/null || getconf _NPROCESSORS_ONLN 2>/dev/null)
-PROCESSORS=${NPROCESSORS:-3}
+  --disable-shared \
+  ${LIBSODIUM_ENABLE_MINIMAL_FLAG} \
+  --prefix="$SIMULATOR32_PREFIX" || exit 1
 
 make -j${PROCESSORS} install || exit 1
 
@@ -53,12 +52,12 @@ make -j${PROCESSORS} install || exit 1
 export CFLAGS="-O2 -arch x86_64 -isysroot ${SDK} -mwatchos-simulator-version-min=${WATCHOS_SIMULATOR_VERSION_MIN}"
 export LDFLAGS="-arch x86_64 -isysroot ${SDK} -mwatchos-simulator-version-min=${WATCHOS_SIMULATOR_VERSION_MIN}"
 
-make distclean > /dev/null
+make distclean >/dev/null
 
 ./configure --host=x86_64-apple-darwin10 \
-            --disable-shared \
-            ${LIBSODIUM_ENABLE_MINIMAL_FLAG} \
-            --prefix="$SIMULATOR64_PREFIX"
+  --disable-shared \
+  ${LIBSODIUM_ENABLE_MINIMAL_FLAG} \
+  --prefix="$SIMULATOR64_PREFIX"
 
 make -j${PROCESSORS} install || exit 1
 
@@ -71,12 +70,12 @@ export SDK="${BASEDIR}/SDKs/WatchOS.sdk"
 export CFLAGS="-fembed-bitcode -O2 -mthumb -arch armv7k -isysroot ${SDK} -mwatchos-version-min=${WATCHOS_VERSION_MIN}"
 export LDFLAGS="-fembed-bitcode -mthumb -arch armv7k -isysroot ${SDK} -mwatchos-version-min=${WATCHOS_VERSION_MIN}"
 
-make distclean > /dev/null
+make distclean >/dev/null
 
 ./configure --host=arm-apple-darwin10 \
-            --disable-shared \
-            ${LIBSODIUM_ENABLE_MINIMAL_FLAG} \
-            --prefix="$WATCHOS32_PREFIX" || exit 1
+  --disable-shared \
+  ${LIBSODIUM_ENABLE_MINIMAL_FLAG} \
+  --prefix="$WATCHOS32_PREFIX" || exit 1
 
 make -j${PROCESSORS} install || exit 1
 
@@ -84,17 +83,17 @@ make -j${PROCESSORS} install || exit 1
 export CFLAGS="-fembed-bitcode -O2 -mthumb -arch arm64_32 -isysroot ${SDK} -mwatchos-version-min=${WATCHOS_VERSION_MIN}"
 export LDFLAGS="-fembed-bitcode -mthumb -arch arm64_32 -isysroot ${SDK} -mwatchos-version-min=${WATCHOS_VERSION_MIN}"
 
-make distclean > /dev/null
+make distclean >/dev/null
 
 ./configure --host=arm-apple-darwin10 \
-            --disable-shared \
-            ${LIBSODIUM_ENABLE_MINIMAL_FLAG} \
-            --prefix="$WATCHOS64_32_PREFIX" || exit 1
+  --disable-shared \
+  ${LIBSODIUM_ENABLE_MINIMAL_FLAG} \
+  --prefix="$WATCHOS64_32_PREFIX" || exit 1
 
 make -j${PROCESSORS} install || exit 1
 
 # Create universal binary and include folder
-rm -fr -- "$PREFIX/include" "$PREFIX/libsodium.a" 2> /dev/null
+rm -fr -- "$PREFIX/include" "$PREFIX/libsodium.a" 2>/dev/null
 mkdir -p -- "$PREFIX/lib"
 lipo -create \
   "$SIMULATOR32_PREFIX/lib/libsodium.a" \
@@ -111,4 +110,4 @@ file -- "$PREFIX/lib/libsodium.a"
 
 # Cleanup
 rm -rf -- "$PREFIX/tmp"
-make distclean > /dev/null
+make distclean >/dev/null
