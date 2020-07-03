@@ -10,6 +10,7 @@ export WATCHOS32_PREFIX="${PREFIX}/tmp/watchos32"
 export WATCHOS64_32_PREFIX="${PREFIX}/tmp/watchos64_32"
 export WATCHOS_SIMULATOR_I386_PREFIX="${PREFIX}/tmp/watchos-simulator-i386"
 export WATCHOS_SIMULATOR_X86_64_PREFIX="${PREFIX}/tmp/watchos-simulator-x86_64"
+export CATALYST_ARM64_PREFIX="${PREFIX}/tmp/catalyst-arm64"
 export CATALYST_X86_64_PREFIX="${PREFIX}/tmp/catalyst-x86_64"
 export LOG_FILE="${PREFIX}/tmp/build_log"
 export XCODEDIR="$(xcode-select -p)"
@@ -151,14 +152,25 @@ build_catalyst() {
   export PATH="${BASEDIR}/usr/bin:$BASEDIR/usr/sbin:$PATH"
   export SDK="${BASEDIR}/SDKs/MacOSX.sdk"
 
-  ## x86_64 catalyst
-  export CFLAGS="-fembed-bitcode -O2 -arch x86_64 -target x86_64-apple-ios13.0-macabi -isysroot ${SDK}"
-  export LDFLAGS="-fembed-bitcode -arch x86_64 -target x86_64-apple-ios13.0-macabi -isysroot ${SDK}"
+  ## arm64 catalyst
+  export CFLAGS="-fembed-bitcode -O2 -arch arm64 -target arm64-apple-ios13.0-macabi -isysroot ${SDK}"
+  export LDFLAGS="-fembed-bitcode -arch arm64 -target arm64-apple-ios13.0-macabi -isysroot ${SDK}"
 
   make distclean >/dev/null 2>&1
-  ./configure --host=x86_64-apple-darwin10 --prefix="$CATALYST_X86_64_PREFIX" \
+  ./configure --host=arm-apple-darwin20 --prefix="$CATALYST_ARM64_PREFIX" \
     ${LIBSODIUM_ENABLE_MINIMAL_FLAG} || exit 1
   make -j${PROCESSORS} install || exit 1
+
+  ## x86_64 catalyst
+  if [ "$(arch)" = "arm64" ]; then
+    export CFLAGS="-fembed-bitcode -O2 -arch x86_64 -target x86_64-apple-ios13.0-macabi -isysroot ${SDK}"
+    export LDFLAGS="-fembed-bitcode -arch x86_64 -target x86_64-apple-ios13.0-macabi -isysroot ${SDK}"
+
+    make distclean >/dev/null 2>&1
+    ./configure --host=x86_64-apple-darwin10 --prefix="$CATALYST_X86_64_PREFIX" \
+      ${LIBSODIUM_ENABLE_MINIMAL_FLAG} || exit 1
+    make -j${PROCESSORS} install || exit 1
+  fi
 }
 
 mkdir -p "${PREFIX}/tmp"
@@ -166,10 +178,12 @@ echo "Building for iOS..."
 build_ios >"$LOG_FILE" 2>&1 || exit 1
 echo "Building for the iOS simulator..."
 build_ios_simulator >"$LOG_FILE" 2>&1 || exit 1
-echo "Building for watchOS..."
-build_watchos >"$LOG_FILE" 2>&1 || exit 1
-echo "Building for the watchOS simulator..."
-build_watchos_simulator >"$LOG_FILE" 2>&1 || exit 1
+if [ "$(arch)" != "arm64" ]; then
+  echo "Building for watchOS..."
+  build_watchos >"$LOG_FILE" 2>&1 || exit 1
+  echo "Building for the watchOS simulator..."
+  build_watchos_simulator >"$LOG_FILE" 2>&1 || exit 1
+fi
 echo "Building for Catalyst..."
 build_catalyst >"$LOG_FILE" 2>&1 || exit 1
 
@@ -202,36 +216,45 @@ for ext in a dylib; do
     -output "${PREFIX}/ios-simulators/lib/libsodium.${ext}" || exit 1
 done
 
-echo "Bundling watchOS targets..."
+if [ "$(arch)" != "arm64" ]; then
+  echo "Bundling watchOS targets..."
 
-mkdir -p "${PREFIX}/watchos/lib"
-cp -a "${WATCHOS64_32_PREFIX}/include" "${PREFIX}/watchos/"
-for ext in a dylib; do
-  lipo -create \
-    "${WATCHOS32_PREFIX}/lib/libsodium.${ext}" \
-    "${WATCHOS64_32_PREFIX}/lib/libsodium.${ext}" \
-    -output "${PREFIX}/watchos/lib/libsodium.${ext}"
-done
+  mkdir -p "${PREFIX}/watchos/lib"
+  cp -a "${WATCHOS64_32_PREFIX}/include" "${PREFIX}/watchos/"
+  for ext in a dylib; do
+    lipo -create \
+      "${WATCHOS32_PREFIX}/lib/libsodium.${ext}" \
+      "${WATCHOS64_32_PREFIX}/lib/libsodium.${ext}" \
+      -output "${PREFIX}/watchos/lib/libsodium.${ext}"
+  done
 
-echo "Bundling watchOS simulators..."
+  echo "Bundling watchOS simulators..."
 
-mkdir -p "${PREFIX}/watchos-simulators/lib"
-cp -a "${WATCHOS_SIMULATOR_X86_64_PREFIX}/include" "${PREFIX}/watchos-simulators/"
-for ext in a dylib; do
-  lipo -create \
-    "${WATCHOS_SIMULATOR_I386_PREFIX}/lib/libsodium.${ext}" \
-    "${WATCHOS_SIMULATOR_X86_64_PREFIX}/lib/libsodium.${ext}" \
-    -output "${PREFIX}/watchos-simulators/lib/libsodium.${ext}"
-done
+  mkdir -p "${PREFIX}/watchos-simulators/lib"
+  cp -a "${WATCHOS_SIMULATOR_X86_64_PREFIX}/include" "${PREFIX}/watchos-simulators/"
+  for ext in a dylib; do
+    lipo -create \
+      "${WATCHOS_SIMULATOR_I386_PREFIX}/lib/libsodium.${ext}" \
+      "${WATCHOS_SIMULATOR_X86_64_PREFIX}/lib/libsodium.${ext}" \
+      -output "${PREFIX}/watchos-simulators/lib/libsodium.${ext}"
+  done
+fi
 
 echo "Bundling Catalyst targets..."
 
 mkdir -p "${PREFIX}/catalyst/lib"
 cp -a "${CATALYST_X86_64_PREFIX}/include" "${PREFIX}/catalyst/"
 for ext in a dylib; do
-  lipo -create \
-    "${CATALYST_X86_64_PREFIX}/lib/libsodium.${ext}" \
-    -output "${PREFIX}/catalyst/lib/libsodium.${ext}"
+  if [ "$(arch)" = "arm64" ]; then
+    lipo -create \
+      "${CATALYST_ARM64_PREFIX}/lib/libsodium.${ext}" \
+      "${CATALYST_X86_64_PREFIX}/lib/libsodium.${ext}" \
+      -output "${PREFIX}/catalyst/lib/libsodium.${ext}"
+  else
+    lipo -create \
+      "${CATALYST_X86_64_PREFIX}/lib/libsodium.${ext}" \
+      -output "${PREFIX}/catalyst/lib/libsodium.${ext}"
+  fi
 done
 
 echo "Creating Clibsodium.xcframework..."
