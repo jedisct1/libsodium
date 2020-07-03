@@ -5194,7 +5194,7 @@ fi
 
 
 case $host_os in #(
-  mingw*|cygwin*|msys|eabi) :
+  mingw*|cygwin*|msys|eabi*) :
     enable_pie="no" ;; #(
   *) :
      ;;
@@ -7008,7 +7008,7 @@ fi
 
 
 case $host_os in #(
-  cygwin*|mingw*|msys|pw32*|cegcc*|eabi) :
+  cygwin*|mingw*|msys|pw32*|cegcc*|eabi*) :
       ;; #(
   *) :
 
@@ -7439,7 +7439,7 @@ fi
 esac
 
 case $host_os in #(
-  cygwin*|mingw*|msys|pw32*|cegcc*|eabi) :
+  cygwin*|mingw*|msys|pw32*|cegcc*|eabi*) :
 
     { $as_echo "$as_me:${as_lineno-$LINENO}: checking whether C compiler accepts -fno-asynchronous-unwind-tables" >&5
 $as_echo_n "checking whether C compiler accepts -fno-asynchronous-unwind-tables... " >&6; }
@@ -7559,7 +7559,7 @@ if test "x$enable_ssp" != "xno"; then :
 
 
 case $host_os in #(
-  cygwin*|mingw*|msys|pw32*|cegcc*|haiku|none|eabi) :
+  cygwin*|mingw*|msys|pw32*|cegcc*|haiku|none|eabi*) :
       ;; #(
   *) :
 
