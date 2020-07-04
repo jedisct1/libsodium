@@ -15,11 +15,11 @@ symbols() {
       else
         eval "defined_${symbol}=no"
       fi
-    done < emscripten-symbols.def
+    done <emscripten-symbols.def
 
-    /usr/bin/nm /usr/local/lib/libsodium.27.dylib | \
-    fgrep ' T _' | \
-    cut -d' ' -f3 | {
+    /usr/bin/nm /usr/local/lib/libsodium.27.dylib |
+      fgrep ' T _' |
+      cut -d' ' -f3 | {
       while read symbol; do
         eval "found=\$defined_${symbol}"
         if [ "$found" = "yes" ]; then
@@ -32,11 +32,11 @@ symbols() {
         fi
       done
     }
-  } | \
-    sort | \
+  } |
+    sort |
     {
       out='"_malloc","_free"'
-      while read symbol ; do
+      while read symbol; do
         if [ ! -z "$out" ]; then
           out="${out},"
         fi
@@ -47,11 +47,11 @@ symbols() {
 }
 
 out=$(symbols standard)
-sed s/EXPORTED_FUNCTIONS_STANDARD=\'.*\'/EXPORTED_FUNCTIONS_STANDARD=\'${out}\'/ < emscripten.sh > emscripten.sh.tmp && \
+sed s/EXPORTED_FUNCTIONS_STANDARD=\'.*\'/EXPORTED_FUNCTIONS_STANDARD=\'${out}\'/ <emscripten.sh >emscripten.sh.tmp &&
   mv -f emscripten.sh.tmp emscripten.sh
 
 out=$(symbols sumo)
-sed s/EXPORTED_FUNCTIONS_SUMO=\'.*\'/EXPORTED_FUNCTIONS_SUMO=\'${out}\'/ < emscripten.sh > emscripten.sh.tmp && \
+sed s/EXPORTED_FUNCTIONS_SUMO=\'.*\'/EXPORTED_FUNCTIONS_SUMO=\'${out}\'/ <emscripten.sh >emscripten.sh.tmp &&
   mv -f emscripten.sh.tmp emscripten.sh
 
 chmod +x emscripten.sh

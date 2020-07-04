@@ -48,8 +48,8 @@ fi
 echo
 
 env - PATH="$PATH" \
-    "$MAKE_TOOLCHAIN" --force --api="$NDK_API_VERSION_COMPAT" \
-    --arch="$ARCH" --install-dir="$TOOLCHAIN_DIR" || exit 1
+  "$MAKE_TOOLCHAIN" --force --api="$NDK_API_VERSION_COMPAT" \
+  --arch="$ARCH" --install-dir="$TOOLCHAIN_DIR" || exit 1
 
 if [ -z "$LIBSODIUM_FULL_BUILD" ]; then
   export LIBSODIUM_ENABLE_MINIMAL_FLAG="--enable-minimal"
@@ -58,29 +58,29 @@ else
 fi
 
 ./configure \
+  --disable-soname-versions \
+  ${LIBSODIUM_ENABLE_MINIMAL_FLAG} \
+  --host="${HOST_COMPILER}" \
+  --prefix="${PREFIX}" \
+  --with-sysroot="${TOOLCHAIN_DIR}/sysroot" || exit 1
+
+if [ "$NDK_PLATFORM" != "$NDK_PLATFORM_COMPAT" ]; then
+  egrep '^#define ' config.log | sort -u >config-def-compat.log
+  echo
+  echo "Configuring again for platform [${NDK_PLATFORM}]"
+  echo
+  env - PATH="$PATH" \
+    "$MAKE_TOOLCHAIN" --force --api="$NDK_API_VERSION" \
+    --arch="$ARCH" --install-dir="$TOOLCHAIN_DIR" || exit 1
+
+  ./configure \
     --disable-soname-versions \
     ${LIBSODIUM_ENABLE_MINIMAL_FLAG} \
     --host="${HOST_COMPILER}" \
     --prefix="${PREFIX}" \
     --with-sysroot="${TOOLCHAIN_DIR}/sysroot" || exit 1
 
-if [ "$NDK_PLATFORM" != "$NDK_PLATFORM_COMPAT" ]; then
-  egrep '^#define ' config.log | sort -u > config-def-compat.log
-  echo
-  echo "Configuring again for platform [${NDK_PLATFORM}]"
-  echo
-  env - PATH="$PATH" \
-      "$MAKE_TOOLCHAIN" --force --api="$NDK_API_VERSION" \
-      --arch="$ARCH" --install-dir="$TOOLCHAIN_DIR" || exit 1
-
-  ./configure \
-      --disable-soname-versions \
-      ${LIBSODIUM_ENABLE_MINIMAL_FLAG} \
-      --host="${HOST_COMPILER}" \
-      --prefix="${PREFIX}" \
-      --with-sysroot="${TOOLCHAIN_DIR}/sysroot" || exit 1
-
-  egrep '^#define ' config.log | sort -u > config-def.log
+  egrep '^#define ' config.log | sort -u >config-def.log
   if ! cmp config-def.log config-def-compat.log; then
     echo "Platform [${NDK_PLATFORM}] is not backwards-compatible with [${NDK_PLATFORM_COMPAT}]" >&2
     diff -u config-def.log config-def-compat.log >&2
@@ -89,10 +89,9 @@ if [ "$NDK_PLATFORM" != "$NDK_PLATFORM_COMPAT" ]; then
   rm -f config-def.log config-def-compat.log
 fi
 
-
 NPROCESSORS=$(getconf NPROCESSORS_ONLN 2>/dev/null || getconf _NPROCESSORS_ONLN 2>/dev/null)
 PROCESSORS=${NPROCESSORS:-3}
 
-make clean && \
-make -j${PROCESSORS} install && \
-echo "libsodium has been installed into ${PREFIX}"
+make clean &&
+  make -j${PROCESSORS} install &&
+  echo "libsodium has been installed into ${PREFIX}"

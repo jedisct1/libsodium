@@ -64,14 +64,14 @@ rm -f "$DONE_FILE"
 echo
 
 emconfigure ./configure $CONFIG_EXTRA --disable-shared --prefix="$PREFIX" \
-                        --without-pthreads \
-                        --disable-ssp --disable-asm --disable-pie \
-                        CFLAGS="$CFLAGS" && \
-emmake make clean
+  --without-pthreads \
+  --disable-ssp --disable-asm --disable-pie \
+  CFLAGS="$CFLAGS" &&
+  emmake make clean
 [ $? = 0 ] || exit 1
 
 if [ "$DIST" = yes ]; then
-  emccLibsodium () {
+  emccLibsodium() {
     outFile="${1}"
     shift
     emcc "$CFLAGS" --llvm-lto 1 $CPPFLAGS $LDFLAGS $JS_EXPORTS_FLAGS ${@} \
@@ -81,7 +81,7 @@ if [ "$DIST" = yes ]; then
   emccLibsodium "${PREFIX}/lib/libsodium.asm.tmp.js" -Oz -s WASM=0 -s RUNNING_JS_OPTS=1
   emccLibsodium "${PREFIX}/lib/libsodium.wasm.tmp.js" -O3 -s WASM=1
 
-  cat > "${PREFIX}/lib/libsodium.js" <<- EOM
+  cat >"${PREFIX}/lib/libsodium.js" <<-EOM
     var Module;
     if (typeof Module === 'undefined') {
       Module = {};
@@ -151,51 +151,52 @@ fi
 if test "x$NODE" = x; then
   for candidate in /usr/local/bin/node /usr/local/bin/nodejs /usr/bin/node /usr/bin/nodejs node nodejs; do
     case $($candidate --version 2>&1) in #(
-      v*)
-        NODE=$candidate
-        break ;;
+    v*)
+      NODE=$candidate
+      break
+      ;;
     esac
   done
 fi
 
 if [ "x$BROWSER_TESTS" != "x" ]; then
-  echo 'Compiling the test suite for web browsers...' && \
-    emmake make $MAKE_FLAGS CPPFLAGS="$CPPFLAGS -DBROWSER_TESTS=1" check > /dev/null 2>&1
+  echo 'Compiling the test suite for web browsers...' &&
+    emmake make $MAKE_FLAGS CPPFLAGS="$CPPFLAGS -DBROWSER_TESTS=1" check >/dev/null 2>&1
 else
   if test "x$NODE" = x; then
     echo 'node.js not found - test suite skipped' >&2
     exit 1
   fi
   echo "Using [${NODE}] as a Javascript runtime"
-  echo 'Compiling the test suite...' && \
-    emmake make $MAKE_FLAGS check > /dev/null 2>&1
+  echo 'Compiling the test suite...' &&
+    emmake make $MAKE_FLAGS check >/dev/null 2>&1
 fi
 
 if [ "x$BROWSER_TESTS" != "x" ]; then
   echo 'Creating the test suite for web browsers'
   (
-    cd test/default && \
-    mkdir -p browser && \
-    rm -f browser/tests.txt && \
-    for file in *.js; do
-      fgrep -v "#! /usr/bin/env ${NODE}" "$file" > "browser/${file}"
-      tname=$(echo "$file" | sed 's/.js$//')
-      cp -f "${tname}.exp" "browser/${tname}.exp"
-      sed "s/{{tname}}/${tname}/" index.html.tpl > "browser/${tname}.html"
-      echo "${tname}.html" >> "browser/tests.txt"
-    done
+    cd test/default &&
+      mkdir -p browser &&
+      rm -f browser/tests.txt &&
+      for file in *.js; do
+        fgrep -v "#! /usr/bin/env ${NODE}" "$file" >"browser/${file}"
+        tname=$(echo "$file" | sed 's/.js$//')
+        cp -f "${tname}.exp" "browser/${tname}.exp"
+        sed "s/{{tname}}/${tname}/" index.html.tpl >"browser/${tname}.html"
+        echo "${tname}.html" >>"browser/tests.txt"
+      done
     touch "$DONE_FILE"
   )
 else
   echo 'Running the test suite'
   (
-    cd test/default && \
-    for file in *.js; do
-      echo "#! /usr/bin/env ${NODE}" > "${file}.tmp"
-      fgrep -v "#! /usr/bin/env ${NODE}" "$file" >> "${file}.tmp"
-      chmod +x "${file}.tmp"
-      mv -f "${file}.tmp" "$file"
-    done
+    cd test/default &&
+      for file in *.js; do
+        echo "#! /usr/bin/env ${NODE}" >"${file}.tmp"
+        fgrep -v "#! /usr/bin/env ${NODE}" "$file" >>"${file}.tmp"
+        chmod +x "${file}.tmp"
+        mv -f "${file}.tmp" "$file"
+      done
   )
   make $MAKE_FLAGS check || exit 1
   touch "$DONE_FILE"

@@ -27,9 +27,9 @@ export AR="llvm-ar"
 export RANLIB="llvm-ranlib"
 export STRIP="llvm-strip"
 
-make distclean > /dev/null
+make distclean >/dev/null
 
-grep -q -F -- 'wasi' build-aux/config.sub || \
+grep -q -F -- 'wasi' build-aux/config.sub ||
   sed -i -e 's/-nacl\*)/-nacl*|-wasi)/' build-aux/config.sub
 
 if [ "x$1" = "x--bench" ]; then
@@ -44,15 +44,15 @@ else
 fi
 
 ./configure ${LIBSODIUM_ENABLE_MINIMAL_FLAG} \
-            --prefix="$PREFIX" --with-sysroot="$WASI_LIBC" \
-            --host=wasm32-wasi \
-            --disable-ssp --disable-shared || exit 1
+  --prefix="$PREFIX" --with-sysroot="$WASI_LIBC" \
+  --host=wasm32-wasi \
+  --disable-ssp --disable-shared || exit 1
 
 NPROCESSORS=$(getconf NPROCESSORS_ONLN 2>/dev/null || getconf _NPROCESSORS_ONLN 2>/dev/null)
 PROCESSORS=${NPROCESSORS:-3}
 
 if [ -z "$BENCHMARKS" ]; then
-  make -j${PROCESSORS} check && make install && make distclean > /dev/null
+  make -j${PROCESSORS} check && make install && make distclean >/dev/null
 else
   make -j${PROCESSORS} && make check
 fi
