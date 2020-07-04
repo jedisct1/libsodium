@@ -10,6 +10,7 @@ EXTRA_DIST = \
 	android-x86_64.sh \
 	emscripten.sh \
 	ios.sh \
+	macos.sh \
 	msys2-win32.sh \
 	msys2-win64.sh \
 	wasm32-wasi.sh

@@ -14,8 +14,8 @@ PROCESSORS=${NPROCESSORS:-3}
 
 mkdir -p $PREFIX || exit 1
 
-export CFLAGS="-mmacosx-version-min=${OSX_VERSION_MIN} -march=${OSX_CPU_ARCH} -O2 -g"
-export LDFLAGS="-mmacosx-version-min=${OSX_VERSION_MIN} -march=${OSX_CPU_ARCH}"
+export CFLAGS="-mmacosx-version-min=${OSX_VERSION_MIN} -O2 -g"
+export LDFLAGS="-mmacosx-version-min=${OSX_VERSION_MIN}"
 
 make distclean >/dev/null
 ./configure ${LIBSODIUM_ENABLE_MINIMAL_FLAG} \
