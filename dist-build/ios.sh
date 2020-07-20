@@ -261,13 +261,19 @@ echo "Creating Clibsodium.xcframework..."
 
 rm -rf "${PREFIX}/Clibsodium.xcframework"
 
-for f in ios ios-simulators watchos watchos-simulators catalyst; do
-  echo "> ${f}"
-  xcodebuild -create-xcframework \
-    -library "${PREFIX}/${f}/lib/libsodium.a" \
-    -headers "${PREFIX}/${f}/include" \
-    -output "${PREFIX}/Clibsodium.xcframework" >/dev/null
-done
+xcodebuild -create-xcframework \
+  -library "${PREFIX}/ios/lib/libsodium.a" \
+  -headers "${PREFIX}/ios/include" \
+  -library "${PREFIX}/ios-simulators/lib/libsodium.a" \
+  -headers "${PREFIX}/ios-simulators/include" \
+  -library "${PREFIX}/watchos/lib/libsodium.a" \
+  -headers "${PREFIX}/watchos/include" \
+  -library "${PREFIX}/watchos-simulators/lib/libsodium.a" \
+  -headers "${PREFIX}/watchos-simulators/include" \
+  -library "${PREFIX}/catalyst/lib/libsodium.a" \
+  -headers "${PREFIX}/catalyst/include" \
+  -output "${PREFIX}/Clibsodium.xcframework"
+
 
 ls -ld -- "$PREFIX"
 ls -l -- "$PREFIX"
