@@ -10,6 +10,7 @@ EXTRA_DIST = \
 	android-x86_64.sh \
 	emscripten.sh \
 	ios.sh \
+	ios-xcframework.sh \
 	msys2-win32.sh \
 	msys2-win64.sh \
 	watchos.sh \
