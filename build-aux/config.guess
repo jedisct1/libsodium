@@ -2,7 +2,7 @@
 # Attempt to guess a canonical system name.
 #   Copyright 1992-2020 Free Software Foundation, Inc.
 
-timestamp='2020-04-26'
+timestamp='2020-07-12'
 
 # This file is free software; you can redistribute it and/or modify it
 # under the terms of the GNU General Public License as published by
@@ -1341,6 +1341,9 @@ EOF
 	exit ;;
     *:Rhapsody:*:*)
 	echo "$UNAME_MACHINE"-apple-rhapsody"$UNAME_RELEASE"
+	exit ;;
+    arm64:Darwin:*:*)
+	echo aarch64-apple-darwin"$UNAME_RELEASE"
 	exit ;;
     *:Darwin:*:*)
 	UNAME_PROCESSOR=`uname -p`

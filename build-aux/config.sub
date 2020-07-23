@@ -2,7 +2,7 @@
 # Configuration validation subroutine script.
 #   Copyright 1992-2020 Free Software Foundation, Inc.
 
-timestamp='2020-06-28'
+timestamp='2020-07-10'
 
 # This file is free software; you can redistribute it and/or modify it
 # under the terms of the GNU General Public License as published by
@@ -1104,6 +1104,9 @@ case $cpu-$vendor in
 	xscale-* | xscalee[bl]-*)
 		cpu=`echo "$cpu" | sed 's/^xscale/arm/'`
 		;;
+	arm64-*)
+		cpu=aarch64
+		;;
 
 	# Recognize the canonical CPU Types that limit and/or modify the
 	# company names they are paired with.
@@ -1163,7 +1166,7 @@ case $cpu-$vendor in
 			| am33_2.0 \
 			| amdgcn \
 			| arc | arceb \
-			| arm  | arm[lb]e | arme[lb] | armv* \
+			| arm | arm[lb]e | arme[lb] | armv* \
 			| avr | avr32 \
 			| asmjs \
 			| ba \
