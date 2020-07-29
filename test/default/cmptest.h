@@ -165,6 +165,7 @@ int main(void)
 
 static FILE *fp_res;
 
+/*@ ensures main_returns_zero: \result == 0; */
 int main(void)
 {
     FILE          *fp_out;
