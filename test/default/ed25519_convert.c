@@ -35,7 +35,11 @@ main(void)
     printf("curve25519 pk: [%s]\n", curve25519_pk_hex);
     printf("curve25519 sk: [%s]\n", curve25519_sk_hex);
 
+#ifdef  __TRUSTINSOFT_ANALYZER__
+    for (i = 0U; i < 10U; i++) {
+#else
     for (i = 0U; i < 500U; i++) {
+#endif
         crypto_sign_ed25519_keypair(ed25519_pk, ed25519_skpk);
         if (crypto_sign_ed25519_pk_to_curve25519(curve25519_pk, ed25519_pk) !=
             0) {

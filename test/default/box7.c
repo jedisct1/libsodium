@@ -15,7 +15,11 @@ main(void)
     unsigned char *c;
     unsigned char *m2;
     size_t         mlen;
+#ifdef  __TRUSTINSOFT_ANALYZER__
+    size_t         mlen_max = 32;
+#else
     size_t         mlen_max = 1000;
+#endif
     size_t         i;
     int            ret;
 

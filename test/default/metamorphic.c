@@ -3,7 +3,11 @@
 #include "cmptest.h"
 
 #define MAXLEN 512
+#ifdef  __TRUSTINSOFT_ANALYZER__
+#define MAX_ITER 64
+#else
 #define MAX_ITER 1000
+#endif
 
 static void
 mm_generichash(void)

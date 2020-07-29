@@ -3,7 +3,11 @@
 #include "cmptest.h"
 
 static unsigned char key[32];
+#ifdef  __TRUSTINSOFT_ANALYZER__
+static unsigned char c[64];
+#else
 static unsigned char c[600];
+#endif
 static unsigned char a[64];
 
 int

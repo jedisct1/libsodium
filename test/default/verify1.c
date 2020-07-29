@@ -18,7 +18,11 @@ main(void)
     v32x = (unsigned char *) sodium_malloc(32);
     v64  = (unsigned char *) sodium_malloc(64);
     v64x = (unsigned char *) sodium_malloc(64);
+#ifdef  __TRUSTINSOFT_ANALYZER__
+    for (i = 0; i < 1; i++) {
+#else
     for (i = 0; i < 10000; i++) {
+#endif
         randombytes_buf(v16, 16);
         randombytes_buf(v32, 32);
         randombytes_buf(v64, 64);
@@ -38,7 +42,11 @@ main(void)
     }
     printf("OK\n");
 
+#ifdef  __TRUSTINSOFT_ANALYZER__
+    for (i = 0; i < 1; i++) {
+#else
     for (i = 0; i < 100000; i++) {
+#endif
         r = randombytes_random();
         o = (uint8_t) randombytes_random();
         if (o == 0) {

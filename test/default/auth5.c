@@ -11,7 +11,11 @@ main(void)
 {
     size_t clen;
 
+#ifdef  __TRUSTINSOFT_ANALYZER__
+    for (clen = 0; clen < 64; ++clen) {
+#else
     for (clen = 0; clen < 1000; ++clen) {
+#endif
         crypto_auth_keygen(key);
         randombytes_buf(c, clen);
         crypto_auth(a, c, clen, key);
