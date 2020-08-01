@@ -1,0 +1,2 @@
+setup = ".muse/setup.sh"
+build = "make"
