@@ -81,8 +81,7 @@ fe25519_invert(fe25519 out, const fe25519 z)
         fe25519_sq(t3, t3);
     }
     fe25519_mul(t2, t3, t2);
-    fe25519_sq(t2, t2);
-    for (i = 1; i < 10; ++i) {
+    for (i = 1; i < 11; ++i) {
         fe25519_sq(t2, t2);
     }
     fe25519_mul(t1, t2, t1);
@@ -96,13 +95,11 @@ fe25519_invert(fe25519 out, const fe25519 z)
         fe25519_sq(t3, t3);
     }
     fe25519_mul(t2, t3, t2);
-    fe25519_sq(t2, t2);
-    for (i = 1; i < 50; ++i) {
+    for (i = 1; i < 51; ++i) {
         fe25519_sq(t2, t2);
     }
     fe25519_mul(t1, t2, t1);
-    fe25519_sq(t1, t1);
-    for (i = 1; i < 5; ++i) {
+    for (i = 1; i < 6; ++i) {
         fe25519_sq(t1, t1);
     }
     fe25519_mul(out, t1, t0);
@@ -138,8 +135,7 @@ fe25519_pow22523(fe25519 out, const fe25519 z)
         fe25519_sq(t2, t2);
     }
     fe25519_mul(t1, t2, t1);
-    fe25519_sq(t1, t1);
-    for (i = 1; i < 10; ++i) {
+    for (i = 1; i < 11; ++i) {
         fe25519_sq(t1, t1);
     }
     fe25519_mul(t0, t1, t0);
@@ -153,8 +149,7 @@ fe25519_pow22523(fe25519 out, const fe25519 z)
         fe25519_sq(t2, t2);
     }
     fe25519_mul(t1, t2, t1);
-    fe25519_sq(t1, t1);
-    for (i = 1; i < 50; ++i) {
+    for (i = 1; i < 51; ++i) {
         fe25519_sq(t1, t1);
     }
     fe25519_mul(t0, t1, t0);
