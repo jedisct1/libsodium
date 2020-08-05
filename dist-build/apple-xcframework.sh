@@ -1,6 +1,8 @@
 #! /bin/sh
 
 export PREFIX="$(pwd)/libsodium-apple"
+export MACOS_ARM64_PREFIX="${PREFIX}/tmp/macos-arm64"
+export MACOS_X86_64_PREFIX="${PREFIX}/tmp/macos-x86_64"
 export IOS32_PREFIX="${PREFIX}/tmp/ios32"
 export IOS32s_PREFIX="${PREFIX}/tmp/ios32s"
 export IOS64_PREFIX="${PREFIX}/tmp/ios64"
@@ -15,6 +17,7 @@ export CATALYST_X86_64_PREFIX="${PREFIX}/tmp/catalyst-x86_64"
 export LOG_FILE="${PREFIX}/tmp/build_log"
 export XCODEDIR="$(xcode-select -p)"
 
+export MACOS_VERSION_MIN=${MACOS_VERSION_MIN-"10.10"}
 export IOS_SIMULATOR_VERSION_MIN=${IOS_SIMULATOR_VERSION_MIN-"9.0.0"}
 export IOS_VERSION_MIN=${IOS_VERSION_MIN-"9.0.0"}
 export WATCHOS_SIMULATOR_VERSION_MIN=${WATCHOS_SIMULATOR_VERSION_MIN-"4.0.0"}
@@ -40,6 +43,31 @@ swift_module_map() {
   echo '    header "sodium.h"'
   echo '    export *'
   echo '}'
+}
+
+build_macos() {
+  export BASEDIR="${XCODEDIR}/Platforms/MacOSX.platform/Developer"
+  export PATH="${BASEDIR}/usr/bin:$BASEDIR/usr/sbin:$PATH"
+
+  ## macOS arm64
+  if [ "$(arch)" = "arm64" ]; then
+    export CFLAGS="-O2 -arch arm64 -mmacosx-version-min=${MACOS_VERSION_MIN}"
+    export LDFLAGS="-arch arm64 -mmacosx-version-min=${MACOS_VERSION_MIN}"
+
+    make distclean >/dev/null 2>&1
+    ./configure --host=arm-apple-darwin20 --prefix="$MACOS_ARM64_PREFIX" \
+      ${LIBSODIUM_ENABLE_MINIMAL_FLAG} || exit 1
+    make -j${PROCESSORS} install || exit 1
+  fi
+
+  ## macOS x86_64
+  export CFLAGS="-O2 -arch x86_64 -mmacosx-version-min=${MACOS_VERSION_MIN}"
+  export LDFLAGS="-arch x86_64 -mmacosx-version-min=${MACOS_VERSION_MIN}"
+
+  make distclean >/dev/null 2>&1
+  ./configure --host=x86_64-apple-darwin10 --prefix="$MACOS_X86_64_PREFIX" \
+    ${LIBSODIUM_ENABLE_MINIMAL_FLAG} || exit 1
+  make -j${PROCESSORS} install || exit 1
 }
 
 build_ios() {
@@ -174,6 +202,8 @@ build_catalyst() {
 }
 
 mkdir -p "${PREFIX}/tmp"
+echo "Building for macOS..."
+build_macos >"$LOG_FILE" 2>&1 || exit 1
 echo "Building for iOS..."
 build_ios >"$LOG_FILE" 2>&1 || exit 1
 echo "Building for the iOS simulator..."
@@ -189,6 +219,23 @@ echo "Adding the Clibsodium module map for Swift..."
 
 find "$PREFIX" -name "include" -type d -print | while read -r f; do
   swift_module_map >"${f}/module.modulemap"
+done
+
+echo "Bundling macOS targets..."
+
+mkdir -p "${PREFIX}/macos/lib"
+cp -a "${MACOS_X86_64_PREFIX}/include" "${PREFIX}/macos/"
+for ext in a dylib; do
+  if [ "$(arch)" = "arm64" ]; then
+    lipo -create \
+      "${MACOS_ARM64_PREFIX}/lib/libsodium.${ext}" \
+      "${MACOS_X86_64_PREFIX}/lib/libsodium.${ext}" \
+      -output "${PREFIX}/macos/lib/libsodium.${ext}"
+  else
+    lipo -create \
+      "${MACOS_X86_64_PREFIX}/lib/libsodium.${ext}" \
+      -output "${PREFIX}/macos/lib/libsodium.${ext}"
+  fi
 done
 
 echo "Bundling iOS targets..."
@@ -258,7 +305,7 @@ echo "Creating Clibsodium.xcframework..."
 rm -rf "${PREFIX}/Clibsodium.xcframework"
 
 XCFRAMEWORK_ARGS=""
-for f in ios ios-simulators watchos watchos-simulators catalyst; do
+for f in macos ios ios-simulators watchos watchos-simulators catalyst; do
   XCFRAMEWORK_ARGS="${XCFRAMEWORK_ARGS} -library ${PREFIX}/${f}/lib/libsodium.a"
   XCFRAMEWORK_ARGS="${XCFRAMEWORK_ARGS} -headers ${PREFIX}/${f}/include"
 done
