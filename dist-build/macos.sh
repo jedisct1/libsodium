@@ -1,7 +1,7 @@
 #! /bin/sh
 
 export PREFIX="$(pwd)/libsodium-osx"
-export OSX_VERSION_MIN=${OSX_VERSION_MIN-"10.10"}
+export MACOS_VERSION_MIN=${MACOS_VERSION_MIN-"10.10"}
 
 if [ -z "$LIBSODIUM_FULL_BUILD" ]; then
   export LIBSODIUM_ENABLE_MINIMAL_FLAG="--enable-minimal"
@@ -14,8 +14,8 @@ PROCESSORS=${NPROCESSORS:-3}
 
 mkdir -p $PREFIX || exit 1
 
-export CFLAGS="-mmacosx-version-min=${OSX_VERSION_MIN} -O2 -g"
-export LDFLAGS="-mmacosx-version-min=${OSX_VERSION_MIN}"
+export CFLAGS="-mmacosx-version-min=${MACOS_VERSION_MIN} -O2 -g"
+export LDFLAGS="-mmacosx-version-min=${MACOS_VERSION_MIN}"
 
 make distclean >/dev/null
 ./configure ${LIBSODIUM_ENABLE_MINIMAL_FLAG} \
