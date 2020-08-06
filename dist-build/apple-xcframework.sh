@@ -182,21 +182,21 @@ build_catalyst() {
 
   ## arm64 catalyst
   if [ "$(arch)" = "arm64" ]; then
-    export CFLAGS="-fembed-bitcode -O2 -arch arm64 -target arm64-apple-ios13.0-macabi -isysroot ${SDK}"
-    export LDFLAGS="-fembed-bitcode -arch arm64 -target arm64-apple-ios13.0-macabi -isysroot ${SDK}"
+    export CFLAGS="-O2 -arch arm64 -target arm64-apple-ios13.0-macabi -isysroot ${SDK}"
+    export LDFLAGS="-arch arm64 -target arm64-apple-ios13.0-macabi -isysroot ${SDK}"
 
     make distclean >/dev/null 2>&1
-    ./configure --host=arm-apple-darwin20 --prefix="$CATALYST_ARM64_PREFIX" \
+    ./configure --host=arm-apple-ios --prefix="$CATALYST_ARM64_PREFIX" \
       ${LIBSODIUM_ENABLE_MINIMAL_FLAG} || exit 1
     make -j${PROCESSORS} install || exit 1
   fi
 
   ## x86_64 catalyst
-  export CFLAGS="-fembed-bitcode -O2 -arch x86_64 -target x86_64-apple-ios13.0-macabi -isysroot ${SDK}"
-  export LDFLAGS="-fembed-bitcode -arch x86_64 -target x86_64-apple-ios13.0-macabi -isysroot ${SDK}"
+  export CFLAGS="-O2 -arch x86_64 -target x86_64-apple-ios13.0-macabi -isysroot ${SDK}"
+  export LDFLAGS="-arch x86_64 -target x86_64-apple-ios13.0-macabi -isysroot ${SDK}"
 
   make distclean >/dev/null 2>&1
-  ./configure --host=x86_64-apple-darwin10 --prefix="$CATALYST_X86_64_PREFIX" \
+  ./configure --host=x86_64-apple-ios --prefix="$CATALYST_X86_64_PREFIX" \
     ${LIBSODIUM_ENABLE_MINIMAL_FLAG} || exit 1
   make -j${PROCESSORS} install || exit 1
 }
