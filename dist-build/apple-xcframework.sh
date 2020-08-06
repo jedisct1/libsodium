@@ -35,6 +35,10 @@ else
   export LIBSODIUM_ENABLE_MINIMAL_FLAG=""
 fi
 
+APPLE_SILICON_SUPPORTED=false
+echo 'int main(void){return 0;}' >comptest.c && cc --target=arm64-macos comptest.c 2>/dev/null && APPLE_SILICON_SUPPORTED=true
+rm -f comptest.c
+
 NPROCESSORS=$(getconf NPROCESSORS_ONLN 2>/dev/null || getconf _NPROCESSORS_ONLN 2>/dev/null)
 PROCESSORS=${NPROCESSORS:-3}
 
@@ -50,7 +54,7 @@ build_macos() {
   export PATH="${BASEDIR}/usr/bin:$BASEDIR/usr/sbin:$PATH"
 
   ## macOS arm64
-  if [ "$(arch)" = "arm64" ]; then
+  if [ "$APPLE_SILICON_SUPPORTED" = "true" ]; then
     export CFLAGS="-O2 -arch arm64 -mmacosx-version-min=${MACOS_VERSION_MIN}"
     export LDFLAGS="-arch arm64 -mmacosx-version-min=${MACOS_VERSION_MIN}"
 
@@ -181,7 +185,7 @@ build_catalyst() {
   export SDK="${BASEDIR}/SDKs/MacOSX.sdk"
 
   ## arm64 catalyst
-  if [ "$(arch)" = "arm64" ]; then
+  if [ "$APPLE_SILICON_SUPPORTED" = "true" ]; then
     export CFLAGS="-O2 -arch arm64 -target arm64-apple-ios13.0-macabi -isysroot ${SDK}"
     export LDFLAGS="-arch arm64 -target arm64-apple-ios13.0-macabi -isysroot ${SDK}"
 
@@ -226,7 +230,7 @@ echo "Bundling macOS targets..."
 mkdir -p "${PREFIX}/macos/lib"
 cp -a "${MACOS_X86_64_PREFIX}/include" "${PREFIX}/macos/"
 for ext in a dylib; do
-  if [ "$(arch)" = "arm64" ]; then
+  if [ "$APPLE_SILICON_SUPPORTED" = "true" ]; then
     lipo -create \
       "${MACOS_ARM64_PREFIX}/lib/libsodium.${ext}" \
       "${MACOS_X86_64_PREFIX}/lib/libsodium.${ext}" \
@@ -288,7 +292,7 @@ echo "Bundling Catalyst targets..."
 mkdir -p "${PREFIX}/catalyst/lib"
 cp -a "${CATALYST_X86_64_PREFIX}/include" "${PREFIX}/catalyst/"
 for ext in a dylib; do
-  if [ "$(arch)" = "arm64" ]; then
+  if [ "$APPLE_SILICON_SUPPORTED" = "true" ]; then
     lipo -create \
       "${CATALYST_ARM64_PREFIX}/lib/libsodium.${ext}" \
       "${CATALYST_X86_64_PREFIX}/lib/libsodium.${ext}" \
