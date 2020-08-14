@@ -48,9 +48,9 @@ crypto_kdf_hkdf_sha512_expand(unsigned char *out, size_t out_len,
          i += crypto_auth_hmacsha512_BYTES) {
         crypto_auth_hmacsha512_init(&st, prk, crypto_kdf_hkdf_sha512_KEYBYTES);
         if (i != (size_t) 0U) {
-            crypto_auth_hmacsha512_update(
-                &st, &out[i - crypto_auth_hmacsha512_BYTES],
-                crypto_auth_hmacsha512_BYTES);
+            crypto_auth_hmacsha512_update(&st,
+                                          &out[i - crypto_auth_hmacsha512_BYTES],
+                                          crypto_auth_hmacsha512_BYTES);
         }
         crypto_auth_hmacsha512_update(&st,
                                       (const unsigned char *) ctx, ctx_len);
@@ -61,9 +61,9 @@ crypto_kdf_hkdf_sha512_expand(unsigned char *out, size_t out_len,
     if ((left = out_len & (crypto_auth_hmacsha512_BYTES - 1U)) != (size_t) 0U) {
         crypto_auth_hmacsha512_init(&st, prk, crypto_kdf_hkdf_sha512_KEYBYTES);
         if (i != (size_t) 0U) {
-            crypto_auth_hmacsha512_update(
-                &st, &out[i - crypto_auth_hmacsha512_BYTES],
-                crypto_auth_hmacsha512_BYTES);
+            crypto_auth_hmacsha512_update(&st,
+                                          &out[i - crypto_auth_hmacsha512_BYTES],
+                                          crypto_auth_hmacsha512_BYTES);
         }
         crypto_auth_hmacsha512_update(&st,
                                       (const unsigned char *) ctx, ctx_len);
