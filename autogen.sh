@@ -46,7 +46,10 @@ if [ -s configure ]; then
     exit 0
   fi
 elif [ "$dev_setup" != true ]; then
-  echo "A development environment was not created."
+  echo "If you are looking to install a stable version of libsodium,"
+  echo "please do not run arbitrary, undocumented commands."
+  echo
+  echo "Installation instructions are available at https://libsodium.org"
   exit 0
 fi
 
