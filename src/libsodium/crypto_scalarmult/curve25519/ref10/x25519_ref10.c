@@ -76,16 +76,11 @@ crypto_scalarmult_curve25519_ref10(unsigned char *q,
 {
     unsigned char *t = q;
     unsigned int   i;
-    fe25519        x1;
-    fe25519        x2;
-    fe25519        z2;
-    fe25519        x3;
-    fe25519        z3;
-    fe25519        tmp0;
-    fe25519        tmp1;
+    fe25519        x1, x2, x3, z2, z3;
+    fe25519        a, b, aa, bb, e, da, cb;
     int            pos;
     unsigned int   swap;
-    unsigned int   b;
+    unsigned int   bit;
 
     if (has_small_order(p)) {
         return -1;
@@ -104,30 +99,30 @@ crypto_scalarmult_curve25519_ref10(unsigned char *q,
 
     swap = 0;
     for (pos = 254; pos >= 0; --pos) {
-        b = t[pos / 8] >> (pos & 7);
-        b &= 1;
-        swap ^= b;
+        bit = t[pos / 8] >> (pos & 7);
+        bit &= 1;
+        swap ^= bit;
         fe25519_cswap(x2, x3, swap);
         fe25519_cswap(z2, z3, swap);
-        swap = b;
-        fe25519_sub(tmp0, x3, z3);
-        fe25519_sub(tmp1, x2, z2);
-        fe25519_add(x2, x2, z2);
-        fe25519_add(z2, x3, z3);
-        fe25519_mul(z3, tmp0, x2);
-        fe25519_mul(z2, z2, tmp1);
-        fe25519_sq(tmp0, tmp1);
-        fe25519_sq(tmp1, x2);
-        fe25519_add(x3, z3, z2);
-        fe25519_sub(z2, z3, z2);
-        fe25519_mul(x2, tmp1, tmp0);
-        fe25519_sub(tmp1, tmp1, tmp0);
-        fe25519_sq(z2, z2);
-        fe25519_mul32(z3, tmp1, 121666);
+        swap = bit;
+        fe25519_add(a, x2, z2);
+        fe25519_sub(b, x2, z2);
+        fe25519_sq(aa, a);
+        fe25519_sq(bb, b);
+        fe25519_mul(x2, aa, bb);
+        fe25519_sub(e, aa, bb);
+        fe25519_sub(da, x3, z3);
+        fe25519_mul(da, da, a);
+        fe25519_add(cb, x3, z3);
+        fe25519_mul(cb, cb, b);
+        fe25519_add(x3, da, cb);
         fe25519_sq(x3, x3);
-        fe25519_add(tmp0, tmp0, z3);
-        fe25519_mul(z3, x1, z2);
-        fe25519_mul(z2, tmp1, tmp0);
+        fe25519_sub(z3, da, cb);
+        fe25519_sq(z3, z3);
+        fe25519_mul(z3, z3, x1);
+        fe25519_mul32(z2, e, 121666);
+        fe25519_add(z2, z2, bb);
+        fe25519_mul(z2, z2, e);
     }
     fe25519_cswap(x2, x3, swap);
     fe25519_cswap(z2, z3, swap);
