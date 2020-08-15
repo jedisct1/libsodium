@@ -2757,8 +2757,8 @@ ristretto255_sqrt_ratio_m1(fe25519 x, const fe25519 u, const fe25519 v)
     fe25519_sq(v3, v);
     fe25519_mul(v3, v3, v); /* v3 = v^3 */
     fe25519_sq(x, v3);
-    fe25519_mul(x, x, v);
-    fe25519_mul(x, x, u); /* x = uv^7 */
+    fe25519_mul(x, x, u);
+    fe25519_mul(x, x, v); /* x = uv^7 */
 
     fe25519_pow22523(x, x); /* x = (uv^7)^((q-5)/8) */
     fe25519_mul(x, x, v3);
@@ -2886,7 +2886,7 @@ ristretto255_p3_tobytes(unsigned char *s, const ge25519_p3 *h)
 
     fe25519_mul(ix, h->X, fe25519_sqrtm1);       /* ix = X*sqrt(-1) */
     fe25519_mul(iy, h->Y, fe25519_sqrtm1);       /* iy = Y*sqrt(-1) */
-    fe25519_mul(eden, den1, ed25519_invsqrtamd); /* eden = den1*sqrt(a-d) */
+    fe25519_mul(eden, den1, ed25519_invsqrtamd); /* eden = den1/sqrt(a-d) */
 
     fe25519_mul(t_z_inv, h->T, z_inv); /* t_z_inv = T*z_inv */
     rotate = fe25519_isnegative(t_z_inv);
