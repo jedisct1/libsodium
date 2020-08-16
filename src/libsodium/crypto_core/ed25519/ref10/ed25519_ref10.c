@@ -2766,7 +2766,7 @@ ristretto255_p3_tobytes(unsigned char *s, const ge25519_p3 *h)
 
     fe25519_mul(ix, h->X, sqrtm1);     /* ix = X*sqrt(-1) */
     fe25519_mul(iy, h->Y, sqrtm1);     /* iy = Y*sqrt(-1) */
-    fe25519_mul(eden, den1, invsqrtamd); /* eden = den1*sqrt(a-d) */
+    fe25519_mul(eden, den1, invsqrtamd); /* eden = den1/sqrt(a-d) */
 
     fe25519_mul(t_z_inv, h->T, z_inv); /* t_z_inv = T*z_inv */
     rotate = fe25519_isnegative(t_z_inv);
