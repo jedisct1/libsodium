@@ -299,6 +299,15 @@ argon2_validate_inputs(const argon2_context *context)
         }
     }
 
+    /* Validate lanes */
+    if (ARGON2_MIN_LANES > context->lanes) {
+        return ARGON2_LANES_TOO_FEW;
+    }
+
+    if (ARGON2_MAX_LANES < context->lanes) {
+        return ARGON2_LANES_TOO_MANY;
+    }
+
     /* Validate memory cost */
     if (ARGON2_MIN_MEMORY > context->m_cost) {
         return ARGON2_MEMORY_TOO_LITTLE;
@@ -319,15 +328,6 @@ argon2_validate_inputs(const argon2_context *context)
 
     if (ARGON2_MAX_TIME < context->t_cost) {
         return ARGON2_TIME_TOO_LARGE;
-    }
-
-    /* Validate lanes */
-    if (ARGON2_MIN_LANES > context->lanes) {
-        return ARGON2_LANES_TOO_FEW;
-    }
-
-    if (ARGON2_MAX_LANES < context->lanes) {
-        return ARGON2_LANES_TOO_MANY;
     }
 
     /* Validate threads */
