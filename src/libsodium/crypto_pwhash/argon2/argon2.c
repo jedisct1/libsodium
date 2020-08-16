@@ -134,11 +134,6 @@ argon2_hash(const uint32_t t_cost, const uint32_t m_cost,
         return result;
     }
 
-    /* if raw hash requested, write it */
-    if (hash) {
-        memcpy(hash, out, hashlen);
-    }
-
     /* if encoding requested, write it */
     if (encoded && encodedlen) {
         if (argon2_encode_string(encoded, encodedlen,
@@ -148,6 +143,11 @@ argon2_hash(const uint32_t t_cost, const uint32_t m_cost,
             free(out);
             return ARGON2_ENCODING_FAIL;
         }
+    }
+
+    /* if raw hash requested, write it */
+    if (hash) {
+        memcpy(hash, out, hashlen);
     }
 
     sodium_memzero(out, hashlen);
