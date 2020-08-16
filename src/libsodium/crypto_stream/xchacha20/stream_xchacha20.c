@@ -35,7 +35,7 @@ crypto_stream_xchacha20(unsigned char *c, unsigned long long clen,
     COMPILER_ASSERT(crypto_stream_chacha20_KEYBYTES <= sizeof k2);
     COMPILER_ASSERT(crypto_stream_chacha20_NONCEBYTES ==
                     crypto_stream_xchacha20_NONCEBYTES -
-                        crypto_core_hchacha20_INPUTBYTES);
+                    crypto_core_hchacha20_INPUTBYTES);
 
     return crypto_stream_chacha20(c, clen, n + crypto_core_hchacha20_INPUTBYTES,
                                   k2);
