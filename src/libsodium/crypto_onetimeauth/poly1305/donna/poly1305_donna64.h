@@ -120,7 +120,7 @@ poly1305_blocks(poly1305_state_internal_t *st, const unsigned char *m,
         h2 = LO(d2) & 0x3ffffffffff;
         h0 += c * 5;
         c  = (h0 >> 44);
-        h0 = h0 & 0xfffffffffff;
+        h0 &= 0xfffffffffff;
         h1 += c;
 
         m += poly1305_block_size;
