@@ -2702,18 +2702,13 @@ ge25519_from_uniform(unsigned char s[32], const unsigned char r[32])
     ge25519_p3_tobytes(s, &p3);
 }
 
-void
-ge25519_from_hash(unsigned char s[32], const unsigned char h[64])
+static void
+fe25519_reduce64(fe25519 fe_f, const unsigned char h[64])
 {
     unsigned char fl[32];
     unsigned char gl[32];
-    ge25519_p3    p3;
-    fe25519       x, y, negy;
-    fe25519       fe_f;
     fe25519       fe_g;
     size_t        i;
-    int           notsquare;
-    unsigned char y_sign;
 
     for (i = 0; i < 32; i++) {
         fl[i] = h[63 - i];
@@ -2728,7 +2723,18 @@ ge25519_from_hash(unsigned char s[32], const unsigned char h[64])
         fe_f[i] += 38 * fe_g[i];
     }
     fe25519_reduce(fe_f, fe_f);
+}
 
+void
+ge25519_from_hash(unsigned char s[32], const unsigned char h[64])
+{
+    ge25519_p3    p3;
+    fe25519       fe_f;
+    fe25519       x, y, negy;
+    int           notsquare;
+    unsigned char y_sign;
+
+    fe25519_reduce64(fe_f, h);
     ge25519_elligator2(x, y, fe_f, &notsquare);
 
     y_sign = notsquare;
