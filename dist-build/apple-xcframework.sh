@@ -292,6 +292,9 @@ echo "Bundling Catalyst targets..."
 mkdir -p "${PREFIX}/catalyst/lib"
 cp -a "${CATALYST_X86_64_PREFIX}/include" "${PREFIX}/catalyst/"
 for ext in a dylib; do
+  if [ ! -f "${CATALYST_X86_64_PREFIX}/lib/libsodium.${ext}" ]; then
+    continue
+  fi
   if [ "$APPLE_SILICON_SUPPORTED" = "true" ]; then
     lipo -create \
       "${CATALYST_ARM64_PREFIX}/lib/libsodium.${ext}" \
