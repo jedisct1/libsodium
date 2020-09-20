@@ -2,7 +2,7 @@
 # Configuration validation subroutine script.
 #   Copyright 1992-2020 Free Software Foundation, Inc.
 
-timestamp='2020-07-10'
+timestamp='2020-09-08'
 
 # This file is free software; you can redistribute it and/or modify it
 # under the terms of the GNU General Public License as published by
@@ -1278,7 +1278,7 @@ esac
 
 # Decode manufacturer-specific aliases for certain operating systems.
 
-if [ x$basic_os != x ]
+if test x$basic_os != x
 then
 
 # First recognize some ad-hoc caes, or perhaps split kernel-os, or else just
@@ -1367,13 +1367,7 @@ case $os in
 		os=psos
 		;;
 	qnx*)
-		case $cpu in
-		    x86 | i*86)
-			;;
-		    *)
-			os=nto-$os
-			;;
-		esac
+		os=qnx
 		;;
 	hiux*)
 		os=hiuxwe2
@@ -1722,7 +1716,7 @@ case $os in
 	     | skyos* | haiku* | rdos* | toppers* | drops* | es* \
 	     | onefs* | tirtos* | phoenix* | fuchsia* | redox* | bme* \
 	     | midnightbsd* | amdhsa* | unleashed* | emscripten* | wasi* \
-	     | nsk* | powerunix* | genode* | zvmoe* )
+	     | nsk* | powerunix* | genode* | zvmoe* | qnx* )
 		;;
 	# This one is extra strict with allowed versions
 	sco3.2v2 | sco3.2v[4-9]* | sco5v6*)
