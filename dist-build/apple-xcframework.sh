@@ -6,10 +6,12 @@ export MACOS_X86_64_PREFIX="${PREFIX}/tmp/macos-x86_64"
 export IOS32_PREFIX="${PREFIX}/tmp/ios32"
 export IOS32s_PREFIX="${PREFIX}/tmp/ios32s"
 export IOS64_PREFIX="${PREFIX}/tmp/ios64"
+export IOS_SIMULATOR_ARM64_PREFIX="${PREFIX}/tmp/ios-simulator-arm64"
 export IOS_SIMULATOR_I386_PREFIX="${PREFIX}/tmp/ios-simulator-i386"
 export IOS_SIMULATOR_X86_64_PREFIX="${PREFIX}/tmp/ios-simulator-x86_64"
 export WATCHOS32_PREFIX="${PREFIX}/tmp/watchos32"
 export WATCHOS64_32_PREFIX="${PREFIX}/tmp/watchos64_32"
+export WATCHOS_SIMULATOR_ARM64_PREFIX="${PREFIX}/tmp/watchos-simulator-arm64"
 export WATCHOS_SIMULATOR_I386_PREFIX="${PREFIX}/tmp/watchos-simulator-i386"
 export WATCHOS_SIMULATOR_X86_64_PREFIX="${PREFIX}/tmp/watchos-simulator-x86_64"
 export CATALYST_ARM64_PREFIX="${PREFIX}/tmp/catalyst-arm64"
@@ -112,6 +114,17 @@ build_ios_simulator() {
   export PATH="${BASEDIR}/usr/bin:$BASEDIR/usr/sbin:$PATH"
   export SDK="${BASEDIR}/SDKs/iPhoneSimulator.sdk"
 
+  ## arm64 simulator
+  if [ "$APPLE_SILICON_SUPPORTED" = "true" ]; then
+    export CFLAGS="-O2 -arch arm64 -isysroot ${SDK} -mios-simulator-version-min=${IOS_SIMULATOR_VERSION_MIN}"
+    export LDFLAGS="-arch arm64 -isysroot ${SDK} -mios-simulator-version-min=${IOS_SIMULATOR_VERSION_MIN}"
+
+    make distclean >/dev/null 2>&1
+    ./configure --host=arm-apple-darwin20 --prefix="$IOS_SIMULATOR_ARM64_PREFIX" \
+      ${LIBSODIUM_ENABLE_MINIMAL_FLAG} || exit 1
+    make -j${PROCESSORS} install || exit 1
+  fi
+
   ## i386 simulator
   export CFLAGS="-O2 -arch i386 -isysroot ${SDK} -mios-simulator-version-min=${IOS_SIMULATOR_VERSION_MIN}"
   export LDFLAGS="-arch i386 -isysroot ${SDK} -mios-simulator-version-min=${IOS_SIMULATOR_VERSION_MIN}"
@@ -159,6 +172,17 @@ build_watchos_simulator() {
   export BASEDIR="${XCODEDIR}/Platforms/WatchSimulator.platform/Developer"
   export PATH="${BASEDIR}/usr/bin:$BASEDIR/usr/sbin:$PATH"
   export SDK="${BASEDIR}/SDKs/WatchSimulator.sdk"
+
+  ## arm64 simulator
+  if [ "$APPLE_SILICON_SUPPORTED" = "true" ]; then
+    export CFLAGS="-O2 -arch arm64 -isysroot ${SDK} -mwatchos-simulator-version-min=${WATCHOS_SIMULATOR_VERSION_MIN}"
+    export LDFLAGS="-arch arm64 -isysroot ${SDK} -mwatchos-simulator-version-min=${WATCHOS_SIMULATOR_VERSION_MIN}"
+
+    make distclean >/dev/null 2>&1
+    ./configure --host=arm-apple-darwin20 --prefix="$WATCHOS_SIMULATOR_ARM64_PREFIX" \
+      ${LIBSODIUM_ENABLE_MINIMAL_FLAG} || exit 1
+    make -j${PROCESSORS} install || exit 1
+  fi
 
   ## i386 simulator
   export CFLAGS="-O2 -arch i386 -isysroot ${SDK} -mwatchos-simulator-version-min=${WATCHOS_SIMULATOR_VERSION_MIN}"
@@ -259,10 +283,18 @@ echo "Bundling iOS simulators..."
 mkdir -p "${PREFIX}/ios-simulators/lib"
 cp -a "${IOS_SIMULATOR_X86_64_PREFIX}/include" "${PREFIX}/ios-simulators/"
 for ext in a dylib; do
-  lipo -create \
-    "${IOS_SIMULATOR_I386_PREFIX}/lib/libsodium.${ext}" \
-    "${IOS_SIMULATOR_X86_64_PREFIX}/lib/libsodium.${ext}" \
-    -output "${PREFIX}/ios-simulators/lib/libsodium.${ext}" || exit 1
+  if [ "$APPLE_SILICON_SUPPORTED" = "true" ]; then
+    lipo -create \
+      "${IOS_SIMULATOR_ARM64_PREFIX}/lib/libsodium.${ext}" \
+      "${IOS_SIMULATOR_I386_PREFIX}/lib/libsodium.${ext}" \
+      "${IOS_SIMULATOR_X86_64_PREFIX}/lib/libsodium.${ext}" \
+      -output "${PREFIX}/ios-simulators/lib/libsodium.${ext}" || exit 1
+  else
+    lipo -create \
+      "${IOS_SIMULATOR_I386_PREFIX}/lib/libsodium.${ext}" \
+      "${IOS_SIMULATOR_X86_64_PREFIX}/lib/libsodium.${ext}" \
+      -output "${PREFIX}/ios-simulators/lib/libsodium.${ext}" || exit 1
+  fi
 done
 
 echo "Bundling watchOS targets..."
@@ -281,10 +313,18 @@ echo "Bundling watchOS simulators..."
 mkdir -p "${PREFIX}/watchos-simulators/lib"
 cp -a "${WATCHOS_SIMULATOR_X86_64_PREFIX}/include" "${PREFIX}/watchos-simulators/"
 for ext in a dylib; do
-  lipo -create \
-    "${WATCHOS_SIMULATOR_I386_PREFIX}/lib/libsodium.${ext}" \
-    "${WATCHOS_SIMULATOR_X86_64_PREFIX}/lib/libsodium.${ext}" \
-    -output "${PREFIX}/watchos-simulators/lib/libsodium.${ext}"
+  if [ "$APPLE_SILICON_SUPPORTED" = "true" ]; then
+    lipo -create \
+      "${WATCHOS_SIMULATOR_ARM64_PREFIX}/lib/libsodium.${ext}" \
+      "${WATCHOS_SIMULATOR_I386_PREFIX}/lib/libsodium.${ext}" \
+      "${WATCHOS_SIMULATOR_X86_64_PREFIX}/lib/libsodium.${ext}" \
+      -output "${PREFIX}/watchos-simulators/lib/libsodium.${ext}"
+  else
+    lipo -create \
+      "${WATCHOS_SIMULATOR_I386_PREFIX}/lib/libsodium.${ext}" \
+      "${WATCHOS_SIMULATOR_X86_64_PREFIX}/lib/libsodium.${ext}" \
+      -output "${PREFIX}/watchos-simulators/lib/libsodium.${ext}"
+  fi
 done
 
 echo "Bundling Catalyst targets..."
