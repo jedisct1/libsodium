@@ -51,23 +51,23 @@ crypto_aead_aegis128l_init(const unsigned char *key, const unsigned char *nonce,
     };
     const uint8x16_t c1 = vld1q_u8(c1_);
     const uint8x16_t c2 = vld1q_u8(c2_);
-    uint8x16_t       key_block;
-    uint8x16_t       nonce_block;
+    uint8x16_t       k;
+    uint8x16_t       n;
     int              i;
 
-    key_block = vld1q_u8(key);
-    nonce_block = vld1q_u8(nonce);
+    k = vld1q_u8(key);
+    n = vld1q_u8(nonce);
 
-    state[0] = veorq_u8(key_block, nonce_block);
+    state[0] = veorq_u8(k, n);
     state[1] = c1;
     state[2] = c2;
     state[3] = c1;
-    state[4] = veorq_u8(key_block, nonce_block);
+    state[4] = veorq_u8(k, n);
     state[5] = veorq_u8(k1, c2);
     state[6] = veorq_u8(k1, c1);
     state[7] = veorq_u8(k1, c2);
     for (i = 0; i < 10; i++) {
-        crypto_aead_aegis128l_update(state, nonce_block, key_block);
+        crypto_aead_aegis128l_update(state, n, k);
     }
 }
 
