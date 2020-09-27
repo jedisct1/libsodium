@@ -70,8 +70,8 @@ crypto_aead_aegis256_init(const unsigned char *key, const unsigned char *nonce,
 }
 
 static void
-crypto_aead_aegis256_mac(unsigned char *mac, unsigned long long mlen,
-                         unsigned long long adlen, uint8x16_t *const state)
+crypto_aead_aegis256_mac(unsigned char *mac, unsigned long long adlen,
+                         unsigned long long mlen, uint8x16_t *const state)
 {
     uint8x16_t tmp;
     int        i;
@@ -162,7 +162,7 @@ crypto_aead_aegis256_encrypt_detached(unsigned char *c, unsigned char *mac,
         memcpy(c + i, dst, mlen & 0xf);
     }
 
-    crypto_aead_aegis256_mac(mac, mlen, adlen, state);
+    crypto_aead_aegis256_mac(mac, adlen, mlen, state);
     sodium_memzero(state, sizeof state);
     sodium_memzero(src, sizeof src);
     sodium_memzero(dst, sizeof dst);
@@ -242,7 +242,7 @@ crypto_aead_aegis256_decrypt_detached(unsigned char *m, unsigned char *nsec, con
         state[0] = veorq_u8(state[0], vld1q_u8(dst));
     }
 
-    crypto_aead_aegis256_mac(computed_mac, mlen, adlen, state);
+    crypto_aead_aegis256_mac(computed_mac, adlen, mlen, state);
     sodium_memzero(state, sizeof state);
     sodium_memzero(src, sizeof src);
     sodium_memzero(dst, sizeof dst);

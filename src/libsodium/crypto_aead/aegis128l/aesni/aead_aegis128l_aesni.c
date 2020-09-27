@@ -74,7 +74,7 @@ crypto_aead_aegis128l_init(const unsigned char *key, const unsigned char *nonce,
 }
 
 static void
-crypto_aead_aegis128l_mac(unsigned char *mac, unsigned long long mlen, unsigned long long adlen,
+crypto_aead_aegis128l_mac(unsigned char *mac, unsigned long long adlen, unsigned long long mlen,
                           __m128i *const state)
 {
     __m128i tmp;
@@ -171,7 +171,7 @@ crypto_aead_aegis128l_encrypt_detached(unsigned char *c, unsigned char *mac,
         memcpy(c + i, dst, mlen & 0x1f);
     }
 
-    crypto_aead_aegis128l_mac(mac, mlen, adlen, state);
+    crypto_aead_aegis128l_mac(mac, adlen, mlen, state);
     sodium_memzero(state, sizeof state);
     sodium_memzero(src, sizeof src);
     sodium_memzero(dst, sizeof dst);
@@ -254,7 +254,7 @@ crypto_aead_aegis128l_decrypt_detached(unsigned char *m, unsigned char *nsec, co
                                  _mm_loadu_si128((const __m128i *) (const void *) (dst + 16)));
     }
 
-    crypto_aead_aegis128l_mac(computed_mac, mlen, adlen, state);
+    crypto_aead_aegis128l_mac(computed_mac, adlen, mlen, state);
     sodium_memzero(state, sizeof state);
     sodium_memzero(src, sizeof src);
     sodium_memzero(dst, sizeof dst);
