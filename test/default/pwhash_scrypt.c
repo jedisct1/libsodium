@@ -297,16 +297,12 @@ str_tests(void)
 {
     char       *str_out;
     char       *str_out2;
-    char       *salt;
     const char *passwd = "Correct Horse Battery Staple";
 
-    salt = (char *) sodium_malloc(crypto_pwhash_scryptsalsa208sha256_SALTBYTES);
     str_out =
         (char *) sodium_malloc(crypto_pwhash_scryptsalsa208sha256_STRBYTES);
     str_out2 =
         (char *) sodium_malloc(crypto_pwhash_scryptsalsa208sha256_STRBYTES);
-    memcpy(salt, "[<~A 32-bytes salt for scrypt~>]",
-           crypto_pwhash_scryptsalsa208sha256_SALTBYTES);
     if (crypto_pwhash_scryptsalsa208sha256_str(str_out, passwd, strlen(passwd),
                                                OPSLIMIT, MEMLIMIT) != 0) {
         printf("pwhash_str failure\n");
@@ -360,7 +356,6 @@ str_tests(void)
     assert(crypto_pwhash_scryptsalsa208sha256_str_needs_rehash
            ("", OPSLIMIT, MEMLIMIT) == -1);
 
-    sodium_free(salt);
     sodium_free(str_out);
     sodium_free(str_out2);
 }
