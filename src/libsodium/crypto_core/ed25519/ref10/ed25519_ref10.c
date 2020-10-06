@@ -116,6 +116,10 @@ fe25519_invert(fe25519 out, const fe25519 z)
     fe25519_mul(out, t1, t0);
 }
 
+/*
+ * returns z^((p-5)/8) = z^(2^252-3)
+ * used to compute square roots since we have p=5 (mod 8); see Cohen and Frey.
+ */
 static void
 fe25519_pow22523(fe25519 out, const fe25519 z)
 {
