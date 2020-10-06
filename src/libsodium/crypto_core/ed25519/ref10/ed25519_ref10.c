@@ -195,8 +195,8 @@ fe25519_unchecked_sqrt(fe25519 x, const fe25519 x2)
     fe25519 m_root2;
     fe25519 e;
 
-    fe25519_pow22523(e, x);
-    fe25519_mul(p_root, e, x);
+    fe25519_pow22523(e, x2);
+    fe25519_mul(p_root, e, x2);
     fe25519_mul(m_root, p_root, fe25519_sqrtm1);
     fe25519_sq(m_root2, m_root);
     fe25519_sub(e, x2, m_root2);
