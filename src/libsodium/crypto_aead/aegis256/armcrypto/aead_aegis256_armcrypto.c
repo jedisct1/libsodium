@@ -51,8 +51,8 @@ crypto_aead_aegis256_init(const unsigned char *key, const unsigned char *nonce,
 
     k1 = vld1q_u8(&key[0]);
     k2 = vld1q_u8(&key[16]);
-    kxn3 = veorq_u8(k1, vld1q_u8(&nonce[0]));
-    kxn4 = veorq_u8(k2, vld1q_u8(&nonce[16]));
+    kxn1 = veorq_u8(k1, vld1q_u8(&nonce[0]));
+    kxn2 = veorq_u8(k2, vld1q_u8(&nonce[16]));
 
     state[0] = kxn1;
     state[1] = kxn2;

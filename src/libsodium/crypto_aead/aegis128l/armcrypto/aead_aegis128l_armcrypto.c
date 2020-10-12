@@ -63,9 +63,9 @@ crypto_aead_aegis128l_init(const unsigned char *key, const unsigned char *nonce,
     state[2] = c2;
     state[3] = c1;
     state[4] = veorq_u8(k, n);
-    state[5] = veorq_u8(k1, c2);
-    state[6] = veorq_u8(k1, c1);
-    state[7] = veorq_u8(k1, c2);
+    state[5] = veorq_u8(k, c2);
+    state[6] = veorq_u8(k, c1);
+    state[7] = veorq_u8(k, c2);
     for (i = 0; i < 10; i++) {
         crypto_aead_aegis128l_update(state, n, k);
     }
