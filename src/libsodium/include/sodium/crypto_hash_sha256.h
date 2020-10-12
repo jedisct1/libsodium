@@ -2,7 +2,7 @@
 #define crypto_hash_sha256_H
 
 /*
- * WARNING: Unless you absolutely need to use SHA256 for interoperatibility,
+ * WARNING: Unless you absolutely need to use SHA256 for interoperability,
  * purposes, you might want to consider crypto_generichash() instead.
  * Unlike SHA256, crypto_generichash() is not vulnerable to length
  * extension attacks.
