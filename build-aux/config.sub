@@ -2,7 +2,7 @@
 # Configuration validation subroutine script.
 #   Copyright 1992-2020 Free Software Foundation, Inc.
 
-timestamp='2020-09-08'
+timestamp='2020-10-13'
 
 # This file is free software; you can redistribute it and/or modify it
 # under the terms of the GNU General Public License as published by
@@ -1288,6 +1288,10 @@ case $basic_os in
 		kernel=linux
 		os=`echo $basic_os | sed -e 's|gnu/linux|gnu|'`
 		;;
+	os2-emx)
+		kernel=os2
+		os=`echo $basic_os | sed -e 's|os2-emx|emx|'`
+		;;
 	nto-qnx*)
 		kernel=nto
 		os=`echo $basic_os | sed -e 's|nto-qnx|qnx|'`
@@ -1716,7 +1720,7 @@ case $os in
 	     | skyos* | haiku* | rdos* | toppers* | drops* | es* \
 	     | onefs* | tirtos* | phoenix* | fuchsia* | redox* | bme* \
 	     | midnightbsd* | amdhsa* | unleashed* | emscripten* | wasi* \
-	     | nsk* | powerunix* | genode* | zvmoe* | qnx* )
+	     | nsk* | powerunix* | genode* | zvmoe* | qnx* | emx*)
 		;;
 	# This one is extra strict with allowed versions
 	sco3.2v2 | sco3.2v[4-9]* | sco5v6*)
@@ -1735,6 +1739,8 @@ esac
 case $kernel-$os in
 	linux-gnu* | linux-dietlibc* | linux-android* | linux-newlib* | linux-musl* | linux-uclibc* )
 		;;
+	uclinux-uclibc* )
+		;;
 	-dietlibc* | -newlib* | -musl* | -uclibc* )
 		# These are just libc implementations, not actual OSes, and thus
 		# require a kernel.
@@ -1744,6 +1750,8 @@ case $kernel-$os in
 	kfreebsd*-gnu* | kopensolaris*-gnu*)
 		;;
 	nto-qnx*)
+		;;
+	os2-emx)
 		;;
 	*-eabi* | *-gnueabi*)
 		;;
