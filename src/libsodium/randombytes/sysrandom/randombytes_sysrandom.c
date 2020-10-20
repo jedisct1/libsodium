@@ -35,6 +35,8 @@
 # if defined(__FreeBSD_version) && __FreeBSD_version >= 1200000
 #  define HAVE_LINUX_COMPATIBLE_GETRANDOM
 # endif
+#elif defined(__GENODE__)
+#  define HAVE_LINUX_COMPATIBLE_GETRANDOM
 #endif
 #if !defined(NO_BLOCKING_RANDOM_POLL) && defined(__linux__)
 # define BLOCK_ON_DEV_RANDOM
