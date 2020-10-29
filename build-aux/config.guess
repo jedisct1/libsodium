@@ -2,7 +2,7 @@
 # Attempt to guess a canonical system name.
 #   Copyright 1992-2020 Free Software Foundation, Inc.
 
-timestamp='2020-09-19'
+timestamp='2020-10-22'
 
 # This file is free software; you can redistribute it and/or modify it
 # under the terms of the GNU General Public License as published by
@@ -182,6 +182,7 @@ case "$UNAME_MACHINE:$UNAME_SYSTEM:$UNAME_RELEASE:$UNAME_VERSION" in
 	    "/usr/sbin/$sysctl" 2>/dev/null || \
 	    echo unknown)`
 	case "$UNAME_MACHINE_ARCH" in
+	    aarch64eb) machine=aarch64_be-unknown ;;
 	    armeb) machine=armeb-unknown ;;
 	    arm*) machine=arm-unknown ;;
 	    sh3el) machine=shl-unknown ;;
