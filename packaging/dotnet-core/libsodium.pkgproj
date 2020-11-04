@@ -1,12 +1,10 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFramework>netstandard1.1</TargetFramework>
+    <TargetFramework>netstandard2.0</TargetFramework>
     <NoBuild>true</NoBuild>
     <IncludeBuildOutput>false</IncludeBuildOutput>
-    <DisableImplicitFrameworkReferences>true</DisableImplicitFrameworkReferences>
-    <PackageOutputPath>$(MSBuildProjectDirectory)</PackageOutputPath>
-    <ProjectFileToPack>$(MSBuildProjectFullPath)</ProjectFileToPack>
+    <SuppressDependenciesWhenPacking>true</SuppressDependenciesWhenPacking>
   </PropertyGroup>
 
   <PropertyGroup>
@@ -22,10 +20,6 @@
     <RepositoryType>git</RepositoryType>
     <MinClientVersion>4.0</MinClientVersion>
   </PropertyGroup>
-
-  <ItemGroup>
-    <PackageReference Include="Microsoft.NETCore.Platforms" Version="1.0.1" />
-  </ItemGroup>
 
   <ItemGroup>
     <Content Include="LICENSE" PackagePath="" />
