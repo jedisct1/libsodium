@@ -66,14 +66,17 @@ jobs:
     pool:
       vmImage: "windows-2019"
     steps:
-      - script: |
-          git clone https://github.com/msys2/msys2-ci-base.git %CD:~0,2%\msys64
-          %CD:~0,2%\msys64\usr\bin\rm -rf %CD:~0,2%\msys64\.git
+      - powershell: |
+          (New-Object Net.WebClient).DownloadFile("https://github.com/msys2/msys2-installer/releases/download/2020-09-03/msys2-base-x86_64-20200903.sfx.exe", "sfx.exe")
+          .\sfx.exe -y -o\
+          del sfx.exe
         displayName: Install MSYS2
       - script: |
           set PATH=%CD:~0,2%\msys64\usr\bin;C:\Windows\system32;C:\Windows;C:\Windows\System32\Wbem
-          %CD:~0,2%\msys64\usr\bin\pacman --noconfirm -Syyuu
-          %CD:~0,2%\msys64\usr\bin\pacman --noconfirm -Syuu
+          %CD:~0,2%\msys64\usr\bin\bash -lc
+          %CD:~0,2%\msys64\usr\bin\bash -lc "pacman --noconfirm -Sydd filesystem"
+          %CD:~0,2%\msys64\usr\bin\bash -lc 'pacman --noconfirm -Syuu'
+          %CD:~0,2%\msys64\usr\bin\bash -lc 'pacman --noconfirm -Syuu'
         displayName: Update MSYS2
       - script: |
           set PATH=%CD:~0,2%\msys64\usr\bin;C:\Windows\system32;C:\Windows;C:\Windows\System32\Wbem
@@ -85,6 +88,7 @@ jobs:
           set PATH=C:\Windows\system32;C:\Windows;C:\Windows\System32\Wbem;%CD:~0,2%\msys64\usr\bin;%CD:~0,2%\msys64\bin
           set MSYS2_ROOT=%CD:~0,2%\msys64
           set MSYSTEM=MINGW64
+          set CHERE_INVOKING=yes
           %MSYS2_ROOT%\cmd\msystem MINGW64
           %CD:~0,2%\msys64\usr\bin\bash -lc dist-build/msys2-win64.sh
         env:
@@ -101,14 +105,17 @@ jobs:
     pool:
       vmImage: "windows-2019"
     steps:
-      - script: |
-          git clone https://github.com/msys2/msys2-ci-base.git %CD:~0,2%\msys64
-          %CD:~0,2%\msys64\usr\bin\rm -rf %CD:~0,2%\msys64\.git
+      - powershell: |
+          (New-Object Net.WebClient).DownloadFile("https://github.com/msys2/msys2-installer/releases/download/2020-09-03/msys2-base-x86_64-20200903.sfx.exe", "sfx.exe")
+          .\sfx.exe -y -o\
+          del sfx.exe
         displayName: Install MSYS2
       - script: |
           set PATH=%CD:~0,2%\msys64\usr\bin;C:\Windows\system32;C:\Windows;C:\Windows\System32\Wbem
-          %CD:~0,2%\msys64\usr\bin\pacman --noconfirm -Syyuu
-          %CD:~0,2%\msys64\usr\bin\pacman --noconfirm -Syuu
+          %CD:~0,2%\msys64\usr\bin\bash -lc
+          %CD:~0,2%\msys64\usr\bin\bash -lc "pacman --noconfirm -Sydd filesystem"
+          %CD:~0,2%\msys64\usr\bin\bash -lc 'pacman --noconfirm -Syuu'
+          %CD:~0,2%\msys64\usr\bin\bash -lc 'pacman --noconfirm -Syuu'
         displayName: Update MSYS2
       - script: |
           set PATH=%CD:~0,2%\msys64\usr\bin;C:\Windows\system32;C:\Windows;C:\Windows\System32\Wbem
@@ -120,6 +127,7 @@ jobs:
           set PATH=C:\Windows\system32;C:\Windows;C:\Windows\System32\Wbem;%CD:~0,2%\msys64\usr\bin;%CD:~0,2%\msys64\bin
           set MSYS2_ROOT=%CD:~0,2%\msys64
           set MSYSTEM=MINGW32
+          set CHERE_INVOKING=yes
           %MSYS2_ROOT%\cmd\msystem MINGW32
           %CD:~0,2%\msys64\usr\bin\bash -lc dist-build/msys2-win32.sh
         env:
