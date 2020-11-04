@@ -1,4 +1,4 @@
-name: .NET Core Package
+name: .NET Package
 
 on:
   push:
@@ -99,11 +99,13 @@ jobs:
     - build-linux-glibc
     - build-linux-musl
     - build-macos
+    container:
+      image: mcr.microsoft.com/dotnet/sdk:5.0
+    env:
+      DOTNET_CLI_TELEMETRY_OPTOUT: 1
+      DOTNET_SKIP_FIRST_TIME_EXPERIENCE: 1
+      DOTNET_SYSTEM_GLOBALIZATION_INVARIANT: 1
     steps:
-    - name: Set up .NET Core SDK
-      uses: actions/setup-dotnet@v1
-      with:
-        dotnet-version: 2.1.607
     - uses: actions/checkout@v1
     - uses: actions/download-artifact@v1
       with:
@@ -128,14 +130,11 @@ jobs:
     - name: Copy files
       run: cp AUTHORS ChangeLog LICENSE packaging/dotnet-core/libsodium.pkgproj .libsodium-pack/
     - name: Create NuGet package
-      run: dotnet pack .libsodium-pack/libsodium.pkgproj
-      env:
-        DOTNET_CLI_TELEMETRY_OPTOUT: 1
-        DOTNET_SKIP_FIRST_TIME_EXPERIENCE: 1
+      run: dotnet pack -c Release .libsodium-pack/libsodium.pkgproj
     - uses: actions/upload-artifact@v1
       with:
         name: nuget-package
-        path: .libsodium-pack/libsodium.1.0.18.nupkg
+        path: .libsodium-pack/bin/Release/libsodium.1.0.18.nupkg
 
   test-ubuntu18_04:
     runs-on: ubuntu-latest
