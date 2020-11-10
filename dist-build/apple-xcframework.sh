@@ -121,8 +121,8 @@ build_ios_simulator() {
 
   ## arm64 simulator
   if [ "$APPLE_SILICON_SUPPORTED" = "true" ]; then
-    export CFLAGS="-O2 -arch arm64 -isysroot ${SDK} -mios-simulator-version-min=${IOS_SIMULATOR_VERSION_MIN}"
-    export LDFLAGS="-arch arm64 -isysroot ${SDK} -mios-simulator-version-min=${IOS_SIMULATOR_VERSION_MIN}"
+    export CFLAGS="-fembed-bitcode -O2 -arch arm64 -isysroot ${SDK} -mios-simulator-version-min=${IOS_SIMULATOR_VERSION_MIN}"
+    export LDFLAGS="-fembed-bitcode -arch arm64 -isysroot ${SDK} -mios-simulator-version-min=${IOS_SIMULATOR_VERSION_MIN}"
 
     make distclean >/dev/null 2>&1
     ./configure --host=arm-apple-darwin20 --prefix="$IOS_SIMULATOR_ARM64_PREFIX" \
@@ -131,8 +131,8 @@ build_ios_simulator() {
   fi
 
   ## i386 simulator
-  export CFLAGS="-O2 -arch i386 -isysroot ${SDK} -mios-simulator-version-min=${IOS_SIMULATOR_VERSION_MIN}"
-  export LDFLAGS="-arch i386 -isysroot ${SDK} -mios-simulator-version-min=${IOS_SIMULATOR_VERSION_MIN}"
+  export CFLAGS="-fembed-bitcode -O2 -arch i386 -isysroot ${SDK} -mios-simulator-version-min=${IOS_SIMULATOR_VERSION_MIN}"
+  export LDFLAGS="-fembed-bitcode -arch i386 -isysroot ${SDK} -mios-simulator-version-min=${IOS_SIMULATOR_VERSION_MIN}"
 
   make distclean >/dev/null 2>&1
   ./configure --host=i686-apple-darwin10 --prefix="$IOS_SIMULATOR_I386_PREFIX" \
@@ -140,8 +140,8 @@ build_ios_simulator() {
   make -j${PROCESSORS} install || exit 1
 
   ## x86_64 simulator
-  export CFLAGS="-O2 -arch x86_64 -isysroot ${SDK} -mios-simulator-version-min=${IOS_SIMULATOR_VERSION_MIN}"
-  export LDFLAGS="-arch x86_64 -isysroot ${SDK} -mios-simulator-version-min=${IOS_SIMULATOR_VERSION_MIN}"
+  export CFLAGS="-fembed-bitcode -O2 -arch x86_64 -isysroot ${SDK} -mios-simulator-version-min=${IOS_SIMULATOR_VERSION_MIN}"
+  export LDFLAGS="-fembed-bitcode -arch x86_64 -isysroot ${SDK} -mios-simulator-version-min=${IOS_SIMULATOR_VERSION_MIN}"
 
   make distclean >/dev/null 2>&1
   ./configure --host=x86_64-apple-darwin10 --prefix="$IOS_SIMULATOR_X86_64_PREFIX" \
@@ -230,8 +230,8 @@ build_tvos_simulator() {
 
   ## arm64 simulator
   if [ "$APPLE_SILICON_SUPPORTED" = "true" ]; then
-    export CFLAGS="-O2 -arch arm64 -isysroot ${SDK} -mtvos-simulator-version-min=${TVOS_SIMULATOR_VERSION_MIN}"
-    export LDFLAGS="-arch arm64 -isysroot ${SDK} -mtvos-simulator-version-min=${TVOS_SIMULATOR_VERSION_MIN}"
+    export CFLAGS="-fembed-bitcode -O2 -arch arm64 -isysroot ${SDK} -mtvos-simulator-version-min=${TVOS_SIMULATOR_VERSION_MIN}"
+    export LDFLAGS="-fembed-bitcode -arch arm64 -isysroot ${SDK} -mtvos-simulator-version-min=${TVOS_SIMULATOR_VERSION_MIN}"
 
     make distclean >/dev/null 2>&1
     ./configure --host=arm-apple-darwin20 --prefix="$TVOS_SIMULATOR_ARM64_PREFIX" \
@@ -240,8 +240,8 @@ build_tvos_simulator() {
   fi
 
   ## x86_64 simulator
-  export CFLAGS="-O2 -arch x86_64 -isysroot ${SDK} -mtvos-simulator-version-min=${TVOS_SIMULATOR_VERSION_MIN}"
-  export LDFLAGS="-arch x86_64 -isysroot ${SDK} -mtvos-simulator-version-min=${TVOS_SIMULATOR_VERSION_MIN}"
+  export CFLAGS="-fembed-bitcode -O2 -arch x86_64 -isysroot ${SDK} -mtvos-simulator-version-min=${TVOS_SIMULATOR_VERSION_MIN}"
+  export LDFLAGS="-fembed-bitcode -arch x86_64 -isysroot ${SDK} -mtvos-simulator-version-min=${TVOS_SIMULATOR_VERSION_MIN}"
 
   make distclean >/dev/null 2>&1
   ./configure --host=x86_64-apple-darwin10 --prefix="$TVOS_SIMULATOR_X86_64_PREFIX" \
