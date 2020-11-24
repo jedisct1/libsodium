@@ -176,6 +176,10 @@ crypto_pwhash_scryptsalsa208sha256(unsigned char *const       out,
         errno = EINVAL; /* LCOV_EXCL_LINE */
         return -1;      /* LCOV_EXCL_LINE */
     }
+    if ((const void *) out == (const void *) passwd) {
+        errno = EINVAL;
+        return -1;
+    }
     return crypto_pwhash_scryptsalsa208sha256_ll(
         (const uint8_t *) passwd, (size_t) passwdlen, (const uint8_t *) salt,
         crypto_pwhash_scryptsalsa208sha256_SALTBYTES, (uint64_t)(1) << N_log2,

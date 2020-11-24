@@ -159,6 +159,10 @@ crypto_pwhash_argon2id(unsigned char *const out, unsigned long long outlen,
         errno = EINVAL;
         return -1;
     }
+    if ((const void *) out == (const void *) passwd) {
+        errno = EINVAL;
+        return -1;
+    }
     switch (alg) {
     case crypto_pwhash_argon2id_ALG_ARGON2ID13:
         if (argon2id_hash_raw((uint32_t) opslimit, (uint32_t) (memlimit / 1024U),
