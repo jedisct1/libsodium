@@ -21,7 +21,7 @@ mkdir -p $PREFIX || exit 1
 
 export CC="clang"
 export CFLAGS="-DED25519_NONDETERMINISTIC=1 --target=wasm32-wasi --sysroot=${WASI_LIBC} -O2"
-export LDFLAGS="-s -Wl,--no-threads -Wl,--stack-first"
+export LDFLAGS="-s -Wl,--stack-first"
 export NM="llvm-nm"
 export AR="llvm-ar"
 export RANLIB="llvm-ranlib"
