@@ -72,10 +72,24 @@ _sodium_runtime_arm_cpu_features(CPUFeatures * const cpu_features)
 #elif defined(__aarch64__) && defined(AT_HWCAP)
 # ifdef HAVE_GETAUXVAL
     cpu_features->has_neon = (getauxval(AT_HWCAP) & (1L << 1)) != 0;
+# elif defined(HAVE_ELF_AUX_INFO)
+    {
+        unsigned long buf;
+        if (elf_aux_info(AT_HWCAP, (void *) &buf, (int) sizeof buf) == 0) {
+            cpu_features->has_neon = (buf & (1L << 1)) != 0;
+        }
+    }
 # endif
 #elif defined(__arm__) && defined(AT_HWCAP)
 # ifdef HAVE_GETAUXVAL
     cpu_features->has_neon = (getauxval(AT_HWCAP) & (1L << 12)) != 0;
+# elif defined(HAVE_ELF_AUX_INFO)
+    {
+        unsigned long buf;
+        if (elf_aux_info(AT_HWCAP, (void *) &buf, (int) sizeof buf) == 0) {
+            cpu_features->has_neon = (buf & (1L << 12)) != 0;
+        }
+    }
 # endif
 #endif
 
@@ -107,10 +121,24 @@ _sodium_runtime_arm_cpu_features(CPUFeatures * const cpu_features)
 #elif defined(__aarch64__) && defined(AT_HWCAP)
 # ifdef HAVE_GETAUXVAL
     cpu_features->has_armcrypto = (getauxval(AT_HWCAP) & (1L << 3)) != 0;
+# elif defined(HAVE_ELF_AUX_INFO)
+    {
+        unsigned long buf;
+        if (elf_aux_info(AT_HWCAP, (void *) &buf, (int) sizeof buf) == 0) {
+            cpu_features->has_armcrypto = (buf & (1L << 3)) != 0;
+        }
+    }
 # endif
 #elif defined(__arm__) && defined(AT_HWCAP2)
 # ifdef HAVE_GETAUXVAL
     cpu_features->has_armcrypto = (getauxval(AT_HWCAP2) & (1L << 0)) != 0;
+# elif defined(HAVE_ELF_AUX_INFO)
+    {
+        unsigned long buf;
+        if (elf_aux_info(AT_HWCAP2, (void *) &buf, (int) sizeof buf) == 0) {
+            cpu_features->has_armcrypto = (buf & (1L << 0)) != 0;
+        }
+    }
 # endif
 #endif
 
