@@ -69,10 +69,14 @@ _sodium_runtime_arm_cpu_features(CPUFeatures * const cpu_features)
 #elif defined(HAVE_ANDROID_GETCPUFEATURES) && defined(ANDROID_CPU_ARM_FEATURE_NEON)
     cpu_features->has_neon =
         (android_getCpuFeatures() & ANDROID_CPU_ARM_FEATURE_NEON) != 0x0;
-#elif defined(HAVE_GETAUXVAL) && defined(AT_HWCAP) && defined(__aarch64__)
+#elif defined(__aarch64__) && defined(AT_HWCAP)
+# ifdef HAVE_GETAUXVAL
     cpu_features->has_neon = (getauxval(AT_HWCAP) & (1L << 1)) != 0;
-#elif defined(HAVE_GETAUXVAL) && defined(AT_HWCAP) && defined(__arm__)
+# endif
+#elif defined(__arm__) && defined(AT_HWCAP)
+# ifdef HAVE_GETAUXVAL
     cpu_features->has_neon = (getauxval(AT_HWCAP) & (1L << 12)) != 0;
+# endif
 #endif
 
     if (cpu_features->has_neon == 0) {
@@ -100,10 +104,14 @@ _sodium_runtime_arm_cpu_features(CPUFeatures * const cpu_features)
 #elif defined(HAVE_ANDROID_GETCPUFEATURES) && defined(ANDROID_CPU_ARM_FEATURE_AES)
     cpu_features->has_armcrypto =
         (android_getCpuFeatures() & ANDROID_CPU_ARM_FEATURE_AES) != 0x0;
-#elif defined(HAVE_GETAUXVAL) && defined(AT_HWCAP) && defined(__aarch64__)
+#elif defined(__aarch64__) && defined(AT_HWCAP)
+# ifdef HAVE_GETAUXVAL
     cpu_features->has_armcrypto = (getauxval(AT_HWCAP) & (1L << 3)) != 0;
-#elif defined(HAVE_GETAUXVAL) && defined(AT_HWCAP2) && defined(__arm__)
+# endif
+#elif defined(__arm__) && defined(AT_HWCAP2)
+# ifdef HAVE_GETAUXVAL
     cpu_features->has_armcrypto = (getauxval(AT_HWCAP2) & (1L << 0)) != 0;
+# endif
 #endif
 
     return 0;
