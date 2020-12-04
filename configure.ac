@@ -864,7 +864,7 @@ if (&getentropy != NULL) {
 ])
 AC_CHECK_FUNCS([posix_memalign getpid nanosleep])
 AC_CHECK_FUNCS([memset_s explicit_bzero explicit_memset])
-AC_CHECK_FUNCS([getauxval])
+AC_CHECK_FUNCS([getauxval elf_aux_info])
 
 AC_SUBST([LIBTOOL_EXTRA_FLAGS])
 

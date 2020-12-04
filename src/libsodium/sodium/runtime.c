@@ -54,6 +54,17 @@ static CPUFeatures _cpu_features;
 #define XCR0_ZMM_HI256 0x00000040
 #define XCR0_HI16_ZMM  0x00000080
 
+#if defined(HAVE_ELF_AUX_INFO)
+#define HAVE_GETAUXVAL
+static unsigned long getauxval(unsigned long key)
+{
+    unsigned long val = 0ul;
+    if (elf_aux_info(key, &val, sizeof(val)) != 0)
+        return 0ul;
+    return val;
+}
+#endif
+
 static int
 _sodium_runtime_arm_cpu_features(CPUFeatures * const cpu_features)
 {
