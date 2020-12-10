@@ -28,23 +28,22 @@ jobs:
   build-linux-glibc:
     runs-on: ubuntu-latest
     container:
-      image: centos:6
+      image: ubuntu:16.04
     steps:
     - name: Set up build environment
       run: |
-        yum install -q -y centos-release-scl ca-certificates
-        yum install -q -y devtoolset-7-gcc*
+        apt-get update && apt-get install -y build-essential
     - uses: actions/checkout@v1
     - name: configure
-      run: scl enable devtoolset-7 './configure --disable-debug --prefix=$PWD/.libsodium-build'
+      run: ./configure --disable-debug --prefix=$PWD/.libsodium-build
     - name: make
-      run: scl enable devtoolset-7 'make'
+      run: make
     - name: make check
-      run: scl enable devtoolset-7 'make check'
+      run: make check
     - name: make install
-      run: scl enable devtoolset-7 'make install'
+      run: make install
     - name: strip
-      run: scl enable devtoolset-7 'strip --strip-all .libsodium-build/lib/libsodium.so'
+      run: strip --strip-all .libsodium-build/lib/libsodium.so
     - uses: actions/upload-artifact@v1
       with:
         name: build-linux-x64
