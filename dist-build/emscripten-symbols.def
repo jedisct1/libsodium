@@ -1,3 +1,4 @@
+_crypto_core_ristretto255_from_string 0 1
 _crypto_aead_aegis128l_abytes 0 0
 _crypto_aead_aegis128l_decrypt 0 0
 _crypto_aead_aegis128l_decrypt_detached 0 0
