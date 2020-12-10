@@ -119,7 +119,7 @@ _string_to_element(unsigned char *p,
 }
 
 int
-crypto_core_risretto255_from_string(unsigned char p[crypto_core_ristretto255_BYTES],
+crypto_core_ristretto255_from_string(unsigned char p[crypto_core_ristretto255_BYTES],
                                     const char *ctx, const unsigned char *msg,
                                     size_t msg_len)
 {
@@ -131,7 +131,7 @@ crypto_core_ristretto255_from_string_ro(unsigned char p[crypto_core_ristretto255
                                         const char *ctx, const unsigned char *msg,
                                         size_t msg_len)
 {
-    return crypto_core_risretto255_from_string(p, ctx, msg, msg_len);
+    return crypto_core_ristretto255_from_string(p, ctx, msg, msg_len);
 }
 
 void
