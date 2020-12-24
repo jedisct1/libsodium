@@ -2,7 +2,7 @@
 # Attempt to guess a canonical system name.
 #   Copyright 1992-2020 Free Software Foundation, Inc.
 
-timestamp='2020-11-19'
+timestamp='2020-12-22'
 
 # This file is free software; you can redistribute it and/or modify it
 # under the terms of the GNU General Public License as published by
@@ -994,6 +994,9 @@ EOF
 	echo "$UNAME_MACHINE"-unknown-linux-"$LIBC"
 	exit ;;
     k1om:Linux:*:*)
+	echo "$UNAME_MACHINE"-unknown-linux-"$LIBC"
+	exit ;;
+    loongarch32:Linux:*:* | loongarch64:Linux:*:* | loongarchx32:Linux:*:*)
 	echo "$UNAME_MACHINE"-unknown-linux-"$LIBC"
 	exit ;;
     m32r*:Linux:*:*)
