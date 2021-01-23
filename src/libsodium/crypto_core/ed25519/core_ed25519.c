@@ -1,4 +1,5 @@
 
+#include <assert.h>
 #include <stdint.h>
 #include <stdlib.h>
 #include <string.h>
@@ -75,24 +76,21 @@ crypto_core_ed25519_from_uniform(unsigned char *p, const unsigned char *r)
 
 #define HASH_BYTES      crypto_hash_sha512_BYTES
 #define HASH_BLOCKBYTES 128U
-#define HASH_L          48U
 
-static int
-_string_to_points(unsigned char * const px, size_t n,
-                  const char *ctx, const unsigned char *msg, size_t msg_len)
+static void
+_string_to_h2c_hash(unsigned char *h, const size_t h_len,
+                    const char *ctx, const unsigned char *msg, size_t msg_len)
 {
     crypto_hash_sha512_state st;
     const unsigned char      empty_block[HASH_BLOCKBYTES] = { 0 };
-    unsigned char            u0[HASH_BYTES], u[2 * HASH_BYTES];
-    unsigned char            t[3] = { 0U, n * HASH_L, 0U};
+    unsigned char            u0[HASH_BYTES];
+    unsigned char            ux[HASH_BYTES] = { 0 };
+    unsigned char            t[3] = { 0U, (unsigned char) h_len, 0U};
     unsigned char            ctx_len_u8;
     size_t                   ctx_len = ctx != NULL ? strlen(ctx) : 0U;
     size_t                   i, j;
 
-    if (n > 2U) {
-        abort(); /* LCOV_EXCL_LINE */
-    }
-    COMPILER_ASSERT(2U * HASH_L <= 0xff);
+    assert(h_len <= 0xff);
     if (ctx_len > (size_t) 0xff) {
         crypto_hash_sha512_init(&st);
         crypto_hash_sha512_update(&st,
@@ -113,23 +111,43 @@ _string_to_points(unsigned char * const px, size_t n,
     crypto_hash_sha512_update(&st, &ctx_len_u8, 1U);
     crypto_hash_sha512_final(&st, u0);
 
-    for (i = 0U; i < n * HASH_BYTES; i += HASH_BYTES) {
-        memcpy(&u[i], u0, HASH_BYTES);
-        for (j = 0U; i > 0U && j < HASH_BYTES; j++) {
-            u[i + j] ^= u[i + j - HASH_BYTES];
+    for (i = 0U; i < h_len; i += HASH_BYTES) {
+        for (j = 0U; j < HASH_BYTES; j++) {
+            ux[j] ^= u0[j];
         }
         t[2]++;
         crypto_hash_sha512_init(&st);
-        crypto_hash_sha512_update(&st, &u[i], HASH_BYTES);
+        crypto_hash_sha512_update(&st, ux, HASH_BYTES);
         crypto_hash_sha512_update(&st, &t[2], 1U);
         crypto_hash_sha512_update(&st, (const unsigned char *) ctx, ctx_len);
         crypto_hash_sha512_update(&st, &ctx_len_u8, 1U);
-        crypto_hash_sha512_final(&st, &u[i]);
+        crypto_hash_sha512_final(&st, ux);
+        memcpy(&h[i], ux, h_len - i >= (sizeof ux) ? (sizeof ux) : h_len - i);
     }
+}
+
+#define HASH_GE_L 48U
+
+static int
+_string_to_points(unsigned char * const px, const size_t n,
+                  const char *ctx, const unsigned char *msg, size_t msg_len)
+{
+    unsigned char h[crypto_core_ed25519_HASHBYTES];
+    unsigned char h_be[2U * HASH_GE_L];
+    size_t        i, j;
+
+    if (n > 2U) {
+        abort(); /* LCOV_EXCL_LINE */
+    }
+    _string_to_h2c_hash(h_be, n * HASH_GE_L, ctx, msg, msg_len);
+
+    COMPILER_ASSERT(sizeof h >= HASH_GE_L);
     for (i = 0U; i < n; i++) {
-        memset(u0, 0U, HASH_BYTES - HASH_L);
-        memcpy(u0 + HASH_BYTES - HASH_L, &u[i * HASH_L], HASH_L);
-        ge25519_from_hash(&px[i * crypto_core_ed25519_BYTES], u0);
+        for (j = 0U; j < HASH_GE_L; j++) {
+            h[j] = h_be[i * HASH_GE_L + HASH_GE_L - 1U - j];
+        }
+        memset(&h[j], 0, (sizeof h) - j);
+        ge25519_from_hash(&px[i * crypto_core_ed25519_BYTES], h);
     }
     return 0;
 }

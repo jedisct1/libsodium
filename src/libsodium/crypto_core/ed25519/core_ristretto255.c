@@ -1,5 +1,7 @@
 
+#include <assert.h>
 #include <stdint.h>
+#include <string.h>
 
 #include "crypto_core_ed25519.h"
 #include "crypto_core_ristretto255.h"
@@ -70,23 +72,21 @@ crypto_core_ristretto255_from_hash(unsigned char *p, const unsigned char *r)
 
 #define HASH_BYTES      crypto_hash_sha256_BYTES
 #define HASH_BLOCKBYTES 64U
-#define HASH_L          crypto_core_ristretto255_HASHBYTES
 
-static int
-_string_to_element(unsigned char *p,
-                   const char *ctx, const unsigned char *msg, size_t msg_len)
+static void
+_string_to_h2c_hash(unsigned char *h, const size_t h_len,
+                    const char *ctx, const unsigned char *msg, size_t msg_len)
 {
     crypto_hash_sha256_state st;
     const unsigned char      empty_block[HASH_BLOCKBYTES] = { 0 };
     unsigned char            u0[HASH_BYTES];
-    unsigned char            u[2 * HASH_BYTES];
-    unsigned char            t[3] = { 0U, HASH_L, 0U};
+    unsigned char            ux[HASH_BYTES] = { 0 };
+    unsigned char            t[3] = { 0U, (unsigned char) h_len, 0U};
     unsigned char            ctx_len_u8;
     size_t                   ctx_len = ctx != NULL ? strlen(ctx) : 0U;
-    size_t                   i;
+    size_t                   i, j;
 
-    COMPILER_ASSERT(HASH_L == sizeof u);
-    COMPILER_ASSERT(HASH_L <= 0xff);
+    assert(h_len <= 0xff);
     if (ctx_len > (size_t) 0xff) {
         crypto_hash_sha256_init(&st);
         crypto_hash_sha256_update(&st,
@@ -107,27 +107,29 @@ _string_to_element(unsigned char *p,
     crypto_hash_sha256_update(&st, &ctx_len_u8, 1U);
     crypto_hash_sha256_final(&st, u0);
 
-    t[2]++;
-    crypto_hash_sha256_init(&st);
-    crypto_hash_sha256_update(&st, u0, HASH_BYTES);
-    crypto_hash_sha256_update(&st, &t[2], 1U);
-    crypto_hash_sha256_update(&st, (const unsigned char *) ctx, ctx_len);
-    crypto_hash_sha256_update(&st, &ctx_len_u8, 1U);
-    crypto_hash_sha256_final(&st, u);
-
-    t[2]++;
-    crypto_hash_sha256_init(&st);
-    for (i = 0; i < HASH_BYTES; i++) {
-        u[32 + i] = u[i] ^ u0[i];
+    for (i = 0U; i < h_len; i += HASH_BYTES) {
+        for (j = 0U; j < HASH_BYTES; j++) {
+            ux[j] ^= u0[j];
+        }
+        t[2]++;
+        crypto_hash_sha256_init(&st);
+        crypto_hash_sha256_update(&st, ux, HASH_BYTES);
+        crypto_hash_sha256_update(&st, &t[2], 1U);
+        crypto_hash_sha256_update(&st, (const unsigned char *) ctx, ctx_len);
+        crypto_hash_sha256_update(&st, &ctx_len_u8, 1U);
+        crypto_hash_sha256_final(&st, ux);
+        memcpy(&h[i], ux, h_len - i >= (sizeof ux) ? (sizeof ux) : h_len - i);
     }
-    crypto_hash_sha256_update(&st, &u[32], HASH_BYTES);
-    crypto_hash_sha256_update(&st, &t[2], 1U);
-    crypto_hash_sha256_update(&st, (const unsigned char *) ctx, ctx_len);
-    crypto_hash_sha256_update(&st, &ctx_len_u8, 1U);
-    crypto_hash_sha256_final(&st, &u[32]);
+}
 
-    COMPILER_ASSERT(crypto_core_ristretto255_HASHBYTES == HASH_L);
-    ristretto255_from_hash(p, u);
+static int
+_string_to_element(unsigned char *p,
+                   const char *ctx, const unsigned char *msg, size_t msg_len)
+{
+    unsigned char h[crypto_core_ristretto255_HASHBYTES];
+
+    _string_to_h2c_hash(h, sizeof h, ctx, msg, msg_len);
+    ristretto255_from_hash(p, h);
 
     return 0;
 }
@@ -216,6 +218,29 @@ int
 crypto_core_ristretto255_scalar_is_canonical(const unsigned char *s)
 {
     return sc25519_is_canonical(s);
+}
+
+#define HASH_SC_L 48U
+
+int
+crypto_core_ristretto255_scalar_from_string(unsigned char *s,
+                                            const char *ctx, const unsigned char *msg,
+                                            size_t msg_len)
+{
+    unsigned char h[crypto_core_ristretto255_NONREDUCEDSCALARBYTES];
+    unsigned char h_be[HASH_SC_L];
+    size_t        i;
+
+    _string_to_h2c_hash(h_be, sizeof h_be, ctx, msg, msg_len);
+
+    COMPILER_ASSERT(sizeof h >= sizeof h_be);
+    for (i = 0U; i < HASH_SC_L; i++) {
+        h[i] = h_be[HASH_SC_L - 1U - i];
+    }
+    memset(&h[i], 0, (sizeof h) - i);
+    crypto_core_ristretto255_scalar_reduce(s, h);
+
+    return 0;
 }
 
 size_t
