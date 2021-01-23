@@ -82,7 +82,7 @@ _string_to_points(unsigned char * const px, size_t n,
                   const char *ctx, const unsigned char *msg, size_t msg_len)
 {
     crypto_hash_sha512_state st;
-    const unsigned char      empty_block[128] = { 0 };
+    const unsigned char      empty_block[HASH_BLOCKBYTES] = { 0 };
     unsigned char            u0[HASH_BYTES], u[2 * HASH_BYTES];
     unsigned char            t[3] = { 0U, n * HASH_L, 0U};
     unsigned char            ctx_len_u8;
