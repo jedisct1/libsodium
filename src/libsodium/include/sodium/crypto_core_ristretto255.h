@@ -24,6 +24,9 @@ size_t crypto_core_ristretto255_scalarbytes(void);
 SODIUM_EXPORT
 size_t crypto_core_ristretto255_nonreducedscalarbytes(void);
 
+#define crypto_core_ristretto255_H2CSHA256 1
+#define crypto_core_ristretto255_H2CSHA512 2
+
 SODIUM_EXPORT
 int crypto_core_ristretto255_is_valid_point(const unsigned char *p)
             __attribute__ ((nonnull));
@@ -47,14 +50,14 @@ SODIUM_EXPORT
 int crypto_core_ristretto255_from_string(unsigned char p[crypto_core_ristretto255_BYTES],
                                          const char *ctx,
                                          const unsigned char *msg,
-                                         size_t msg_len)
+                                         size_t msg_len, int hash_alg)
             __attribute__ ((nonnull(1)));
 
 SODIUM_EXPORT
 int crypto_core_ristretto255_from_string_ro(unsigned char p[crypto_core_ristretto255_BYTES],
                                             const char *ctx,
                                             const unsigned char *msg,
-                                            size_t msg_len)
+                                            size_t msg_len, int hash_alg)
             __attribute__ ((nonnull(1)));
 
 SODIUM_EXPORT

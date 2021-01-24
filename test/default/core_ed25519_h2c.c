@@ -54,6 +54,8 @@ static TestData test_data[] = {
       "6dc2fc04f266c5c27f236a80b14f92ccd051ef1ff027f26a07f8c0f327d8f995" }
 };
 
+#define H2CHASH crypto_core_ed25519_H2CSHA512
+
 int
 main(void)
 {
@@ -79,14 +81,14 @@ main(void)
             if (crypto_core_ed25519_from_string(
                     y, "QUUX-V01-CS02-with-edwards25519_XMD:SHA-512_ELL2_NU_",
                     (const unsigned char *) test_data[i].msg,
-                    strlen(test_data[i].msg)) != 0) {
+                    strlen(test_data[i].msg), H2CHASH) != 0) {
                 printf("crypto_core_ed25519_from_string() failed\n");
             }
         } else {
             if (crypto_core_ed25519_from_string_ro(
                     y, "QUUX-V01-CS02-with-edwards25519_XMD:SHA-512_ELL2_RO_",
                     (const unsigned char *) test_data[i].msg,
-                    strlen(test_data[i].msg)) != 0) {
+                    strlen(test_data[i].msg), H2CHASH) != 0) {
                 printf("crypto_core_ed25519_from_string_ro() failed\n");
             }
         }
@@ -102,11 +104,12 @@ main(void)
     }
 
     if (crypto_core_ed25519_from_string(y, NULL, (const unsigned char *) "msg",
-                                        3U) != 0 ||
-        crypto_core_ed25519_from_string(y, "", guard_page, 0U) != 0 ||
+                                        3U, H2CHASH) != 0 ||
+        crypto_core_ed25519_from_string(y, "", guard_page, 0U, H2CHASH) != 0 ||
         crypto_core_ed25519_from_string_ro(
-            y, NULL, (const unsigned char *) "msg", 3U) != 0 ||
-        crypto_core_ed25519_from_string_ro(y, "", guard_page, 0U) != 0) {
+            y, NULL, (const unsigned char *) "msg", 3U, H2CHASH) != 0 ||
+        crypto_core_ed25519_from_string_ro(y, "", guard_page, 0U,
+                                           H2CHASH) != 0) {
         printf("Failed with empty parameters");
     }
 
@@ -114,12 +117,14 @@ main(void)
     memset(oversized_ctx, 'X', oversized_ctx_len - 1U);
     oversized_ctx[oversized_ctx_len - 1U] = 0;
     crypto_core_ed25519_from_string(y, oversized_ctx,
-                                    (const unsigned char *) "msg", 3U);
+                                    (const unsigned char *) "msg", 3U,
+                                    H2CHASH);
     sodium_bin2hex(y_hex, crypto_core_ed25519_BYTES * 2U + 1U, y,
                    crypto_core_ed25519_BYTES);
     printf("NU with oversized context: %s\n", y_hex);
     crypto_core_ed25519_from_string_ro(y, oversized_ctx,
-                                       (const unsigned char *) "msg", 3U);
+                                       (const unsigned char *) "msg", 3U,
+                                       H2CHASH);
     sodium_bin2hex(y_hex, crypto_core_ed25519_BYTES * 2U + 1U, y,
                    crypto_core_ed25519_BYTES);
     printf("RO with oversized context: %s\n", y_hex);

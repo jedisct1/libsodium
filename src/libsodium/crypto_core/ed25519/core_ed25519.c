@@ -77,7 +77,8 @@ crypto_core_ed25519_from_uniform(unsigned char *p, const unsigned char *r)
 
 static int
 _string_to_points(unsigned char * const px, const size_t n,
-                  const char *ctx, const unsigned char *msg, size_t msg_len)
+                  const char *ctx, const unsigned char *msg, size_t msg_len,
+                  int hash_alg)
 {
     unsigned char h[crypto_core_ed25519_HASHBYTES];
     unsigned char h_be[2U * HASH_GE_L];
@@ -87,7 +88,7 @@ _string_to_points(unsigned char * const px, const size_t n,
         abort(); /* LCOV_EXCL_LINE */
     }
     if (core_h2c_string_to_hash(h_be, n * HASH_GE_L, ctx, msg, msg_len,
-                                CORE_H2C_SHA512) != 0) {
+                                hash_alg) != 0) {
         return -1;
     }
     COMPILER_ASSERT(sizeof h >= HASH_GE_L);
@@ -104,19 +105,19 @@ _string_to_points(unsigned char * const px, const size_t n,
 int
 crypto_core_ed25519_from_string(unsigned char p[crypto_core_ed25519_BYTES],
                                 const char *ctx, const unsigned char *msg,
-                                size_t msg_len)
+                                size_t msg_len, int hash_alg)
 {
-    return _string_to_points(p, 1, ctx, msg, msg_len);
+    return _string_to_points(p, 1, ctx, msg, msg_len, hash_alg);
 }
 
 int
 crypto_core_ed25519_from_string_ro(unsigned char p[crypto_core_ed25519_BYTES],
                                    const char *ctx, const unsigned char *msg,
-                                   size_t msg_len)
+                                   size_t msg_len, int hash_alg)
 {
     unsigned char px[2 * crypto_core_ed25519_BYTES];
 
-    if (_string_to_points(px, 2, ctx, msg, msg_len) != 0) {
+    if (_string_to_points(px, 2, ctx, msg, msg_len, hash_alg) != 0) {
         return -1;
     }
     return crypto_core_ed25519_add(p, &px[0], &px[crypto_core_ed25519_BYTES]);
