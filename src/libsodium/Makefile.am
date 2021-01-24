@@ -14,6 +14,8 @@ libsodium_la_SOURCES = \
 	crypto_box/crypto_box_easy.c \
 	crypto_box/crypto_box_seal.c \
 	crypto_box/curve25519xsalsa20poly1305/box_curve25519xsalsa20poly1305.c \
+	crypto_core/ed25519/core_h2c.c \
+	crypto_core/ed25519/core_h2c.h \
 	crypto_core/ed25519/ref10/ed25519_ref10.c \
 	crypto_core/hchacha20/core_hchacha20.c \
 	crypto_core/hsalsa20/ref2/core_hsalsa20_ref2.c \

@@ -32,6 +32,7 @@ blake2b_long
 blake2b_pick_best_implementation
 blake2b_salt_personal
 blake2b_update
+core_h2c_string_to_hash
 crypto_aead_aegis128l_abytes
 crypto_aead_aegis128l_decrypt
 crypto_aead_aegis128l_decrypt_detached

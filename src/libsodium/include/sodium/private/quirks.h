@@ -37,6 +37,7 @@
 #define blake2b_pick_best_implementation _sodium_blake2b_pick_best_implementation
 #define blake2b_salt_personal _sodium_blake2b_salt_personal
 #define blake2b_update _sodium_blake2b_update
+#define core_h2c_string_to_hash _sodium_core_h2c_string_to_hash
 #define escrypt_PBKDF2_SHA256 _sodium_escrypt_PBKDF2_SHA256
 #define escrypt_alloc_region _sodium_escrypt_alloc_region
 #define escrypt_free_local _sodium_escrypt_free_local

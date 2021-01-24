@@ -189,6 +189,7 @@
     <ClCompile Include="..\..\..\..\src\libsodium\crypto_core\hsalsa20\ref2\core_hsalsa20_ref2.c" />
     <ClCompile Include="..\..\..\..\src\libsodium\crypto_core\ed25519\core_ed25519.c" />
     <ClCompile Include="..\..\..\..\src\libsodium\crypto_core\ed25519\core_ristretto255.c" />
+    <ClCompile Include="..\..\..\..\src\libsodium\crypto_core\ed25519\core_h2c.c" />
     <ClCompile Include="..\..\..\..\src\libsodium\crypto_core\ed25519\ref10\ed25519_ref10.c" />
   </ItemGroup>
   <ItemGroup>
@@ -318,6 +319,7 @@
     <ClInclude Include="..\..\..\..\src\libsodium\crypto_stream\salsa20\xmm6int\salsa20_xmm6int-sse2.h" />
     <ClInclude Include="..\..\..\..\src\libsodium\crypto_stream\salsa20\xmm6\salsa20_xmm6-asm_namespace.h" />
     <ClInclude Include="..\..\..\..\src\libsodium\crypto_stream\salsa20\xmm6\salsa20_xmm6.h" />
+    <ClInclude Include="..\..\..\..\src\libsodium\crypto_core\ed25519\core_h2c.h" />
     <ClInclude Include="..\..\..\..\src\libsodium\crypto_core\ed25519\ref10\fe_25_5\constants.h" />
     <ClInclude Include="..\..\..\..\src\libsodium\crypto_core\ed25519\ref10\fe_25_5\fe.h" />
     <ClInclude Include="..\..\..\..\src\libsodium\crypto_core\ed25519\ref10\fe_25_5\base2.h" />

@@ -351,6 +351,9 @@
     <ClCompile Include="src\libsodium\crypto_core\ed25519\core_ristretto255.c">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="src\libsodium\crypto_core\ed25519\core_h2c.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
     <ClCompile Include="src\libsodium\crypto_core\ed25519\ref10\ed25519_ref10.c">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -732,6 +735,9 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="src\libsodium\crypto_stream\salsa20\xmm6\salsa20_xmm6.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\libsodium\crypto_core\ed25519\core_h2c.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="src\libsodium\crypto_core\ed25519\ref10\fe_25_5\constants.h">
