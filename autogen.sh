@@ -106,13 +106,13 @@ fi
 
   curl -sSL --fail -o config.guess \
     'https://git.savannah.gnu.org/gitweb/?p=config.git;a=blob_plain;f=config.guess;hb=HEAD' &&
-    mv -f config.guess build-aux/config.guess &&
+    chmod +x config.guess &&
     chmod +x build-aux/config.guess
 
   curl -sSL --fail -o config.sub \
     'https://git.savannah.gnu.org/gitweb/?p=config.git;a=blob_plain;f=config.sub;hb=HEAD' &&
-    mv -f config.sub build-aux/config.sub &&
-    chmod +x build-aux/config.sub
+    chmod +x build-aux/config.sub &&
+    mv -f config.sub build-aux/config.sub 
 
   echo "Done."
 }
