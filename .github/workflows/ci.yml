@@ -67,7 +67,7 @@ jobs:
 
       - name: Check globals
         run: |
-          test/rename-globals.sh
+          [ -x test/rename-globals.sh ] && test/rename-globals.sh
 
   other-comp:
     runs-on: ubuntu-latest
