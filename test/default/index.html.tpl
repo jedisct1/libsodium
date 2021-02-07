@@ -1,8 +1,8 @@
 <!doctype html>
 <html>
 <head>
-<style>
 <meta name="google" content="notranslate" />
+<style>
 body {
   background: white;
   color: black;  
