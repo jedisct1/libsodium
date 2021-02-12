@@ -28,7 +28,7 @@ crypto_secretbox_detached(unsigned char *c, unsigned char *mac,
     crypto_core_hsalsa20(subkey, n, k, NULL);
 
     /*
-     * Allow the m and and c buffer to partially overlap, by calling
+     * Allow the m and c buffers to partially overlap, by calling
      * memmove() if necessary.
      *
      * Note that there is no fully portable way to compare pointers.
@@ -117,7 +117,7 @@ crypto_secretbox_open_detached(unsigned char *m, const unsigned char *c,
     }
 
     /*
-     * Allow the m and and c buffer to partially overlap, by calling
+     * Allow the m and c buffers to partially overlap, by calling
      * memmove() if necessary.
      *
      * Note that there is no fully portable way to compare pointers.
