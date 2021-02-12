@@ -134,7 +134,7 @@ int sodium_munlock(void * const addr, const size_t len)
  * either 357 or 361 bytes. For this reason, when using sodium_malloc() to
  * allocate a crypto_generichash_state structure, padding must be added in
  * order to ensure proper alignment. crypto_generichash_statebytes()
- * returns the rounded up structure size, and should be prefered to sizeof():
+ * returns the rounded up structure size, and should be preferred to sizeof():
  * state = sodium_malloc(crypto_generichash_statebytes());
  */
 

@@ -365,7 +365,7 @@ do { \
   */ \
     MAKE4(RED_MUL_MID); \
 \
-/* substracts x1*h1 and x0*h0 */ \
+    /* subtracts x1*h1 and x0*h0 */ \
     tmp0 = _mm_xor_si128(tmp0, lo); \
     tmp0 = _mm_xor_si128(tmp0, hi); \
     tmp0 = _mm_xor_si128(tmp1, tmp0); \
