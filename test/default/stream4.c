@@ -41,8 +41,9 @@ main(void)
 
     for (i = 32; i < 163; ++i) {
         printf(",0x%02x", (unsigned int) c[i]);
-        if (i % 8 == 7)
+        if (i % 8 == 7) {
             printf("\n");
+        }
     }
     printf("\n");
 
