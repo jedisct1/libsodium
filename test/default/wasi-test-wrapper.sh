@@ -27,12 +27,6 @@ if [ -z "$WASI_RUNTIME" ] || [ "$WASI_RUNTIME" = "wasmer" ]; then
   fi
 fi
 
-if [ -z "$WASI_RUNTIME" ] || [ "$WASI_RUNTIME" = "wasmer-js" ]; then
-  if command -v wasmer-js >/dev/null; then
-    wasmer-js run "$1" --dir=. && exit 0
-  fi
-fi
-
 if [ -z "$WASI_RUNTIME" ] || [ "$WASI_RUNTIME" = "wasm3" ]; then
   if command -v wasm3 >/dev/null; then
     wasm3 "$1" && exit 0
@@ -54,6 +48,28 @@ if [ -z "$WASI_RUNTIME" ] || [ "$WASI_RUNTIME" = "lucet" ]; then
       "$1" -o "${1}.so" &&
       lucet-wasi --dir=.:. --max-heap-size "${MAX_MEMORY_TESTS}" "${1}.so" &&
       rm -f "${1}.so" && exit 0
+  fi
+fi
+
+if [ -z "$WASI_RUNTIME" ] || [ "$WASI_RUNTIME" = "node" ]; then
+  if echo | node --experimental-wasi-unstable-preview1 >/dev/null 2>&1; then
+    {
+      echo "import fs from 'fs'; import { WASI } from 'wasi';"
+      echo "const wasi = new WASI({args: process.argv, env: process.env, preopens: {'.':'.'}});"
+      echo "const importObject = { wasi_snapshot_preview1: wasi.wasiImport };"
+      echo "const wasm = await WebAssembly.compile(fs.readFileSync('${1}'));"
+      echo "const instance = await WebAssembly.instantiate(wasm, importObject);"
+      echo "wasi.start(instance);"
+    } >"${1}.mjs"
+    cat "${1}.mjs" >/tmp/a
+    node --experimental-wasi-unstable-preview1 "${1}.mjs" 2>/tmp/err &&
+      rm -f "${1}.mjs" && exit 0
+  fi
+fi
+
+if [ -z "$WASI_RUNTIME" ] || [ "$WASI_RUNTIME" = "wasmer-js" ]; then
+  if command -v wasmer-js >/dev/null; then
+    wasmer-js run "$1" --dir=. && exit 0
   fi
 fi
 
