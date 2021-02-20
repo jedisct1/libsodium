@@ -40,7 +40,6 @@ EXTRA_DIST = \
 	generichash2.exp \
 	generichash3.exp \
 	hash.exp \
-	hash2.exp \
 	hash3.exp \
 	kdf.exp \
 	kdf_hkdf.exp \
