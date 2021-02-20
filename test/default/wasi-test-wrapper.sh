@@ -45,6 +45,14 @@ if [ -z "$WASI_RUNTIME" ] || [ "$WASI_RUNTIME" = "iwasm" ]; then
   fi
 fi
 
+if [ -z "$WASI_RUNTIME" ] || [ "$WASI_RUNTIME" = "ssvm" ]; then
+  if command -v ssvmc >/dev/null && command -v ssvm >/dev/null; then
+    ssvmc "$1" "${1}.so" &&
+      ssvm --dir=.:. "${1}.so" &&
+      rm -f "${1}.so"
+  fi
+fi
+
 if [ -z "$WASI_RUNTIME" ] || [ "$WASI_RUNTIME" = "lucet" ]; then
   if command -v lucetc-wasi >/dev/null && command -v lucet-wasi >/dev/null; then
     lucetc-wasi \
