@@ -43,7 +43,7 @@ if [ -z "$WASI_RUNTIME" ] || [ "$WASI_RUNTIME" = "lucet" ]; then
   if command -v lucetc-wasi >/dev/null && command -v lucet-wasi >/dev/null; then
     lucetc-wasi \
       --target-cpu native \
-      --reserved-size "${MAX_MEMORY_TESTS}" \
+      --reserved-size "4GiB" \
       --opt-level speed \
       "$1" -o "${1}.so" &&
       lucet-wasi --dir=.:. --max-heap-size "${MAX_MEMORY_TESTS}" "${1}.so" &&
