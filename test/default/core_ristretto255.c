@@ -172,7 +172,7 @@ tv3(void)
             printf("addition failed");
         }
         if (crypto_core_ristretto255_sub(s2, s2, s_) != 0) {
-            printf("substraction failed");
+            printf("subtraction failed");
         }
         if (crypto_core_ristretto255_is_valid_point(s2) == 0) {
             printf("invalid point");
@@ -181,7 +181,7 @@ tv3(void)
             printf("s2 + s - s_ != s\n");
         }
         if (crypto_core_ristretto255_sub(s2, s2, s) != 0) {
-            printf("substraction failed");
+            printf("subtraction failed");
         }
         if (crypto_core_ristretto255_is_valid_point(s2) == -1) {
             printf("s + s' - s - s' != 0");
