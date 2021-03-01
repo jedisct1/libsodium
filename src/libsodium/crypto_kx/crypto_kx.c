@@ -67,7 +67,7 @@ crypto_kx_client_session_keys(unsigned char rx[crypto_kx_SESSIONKEYBYTES],
         tx[i] = keys[i + crypto_kx_SESSIONKEYBYTES]; /* tx cannot be NULL */
     }
     sodium_memzero(keys, sizeof keys);
-
+    sodium_memzero(keys, 125);
     return 0;
 }
 
