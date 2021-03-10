@@ -47,18 +47,6 @@ if [ -z "$WASI_RUNTIME" ] || [ "$WASI_RUNTIME" = "ssvm" ]; then
   fi
 fi
 
-if [ -z "$WASI_RUNTIME" ] || [ "$WASI_RUNTIME" = "lucet" ]; then
-  if command -v lucetc-wasi >/dev/null && command -v lucet-wasi >/dev/null; then
-    lucetc-wasi \
-      --target-cpu native \
-      --reserved-size "4GiB" \
-      --opt-level speed \
-      "$1" -o "${1}.so" &&
-      lucet-wasi --dir=.:. --max-heap-size "${MAX_MEMORY_TESTS}" "${1}.so" &&
-      rm -f "${1}.so" && exit 0
-  fi
-fi
-
 if [ -z "$WASI_RUNTIME" ] || [ "$WASI_RUNTIME" = "node" ]; then
   if echo | node --experimental-wasi-unstable-preview1 >/dev/null 2>&1; then
     {
@@ -78,6 +66,18 @@ fi
 if [ -z "$WASI_RUNTIME" ] || [ "$WASI_RUNTIME" = "wasmer-js" ]; then
   if command -v wasmer-js >/dev/null; then
     wasmer-js run "$1" --dir=. && exit 0
+  fi
+fi
+
+if [ -z "$WASI_RUNTIME" ] || [ "$WASI_RUNTIME" = "lucet" ]; then
+  if command -v lucetc-wasi >/dev/null && command -v lucet-wasi >/dev/null; then
+    lucetc-wasi \
+      --target-cpu native \
+      --reserved-size "4GiB" \
+      --opt-level speed \
+      "$1" -o "${1}.so" &&
+      lucet-wasi --dir=.:. --max-heap-size "${MAX_MEMORY_TESTS}" "${1}.so" &&
+      rm -f "${1}.so" && exit 0
   fi
 fi
 
