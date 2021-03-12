@@ -261,7 +261,7 @@ argon2_verify(const char *encoded, const void *pwd, const size_t pwdlen,
     free(ctx.ad);
     free(ctx.salt);
 
-    if (ret != ARGON2_OK || sodium_memcmp(out, ctx.out, ctx.outlen) != 0) {
+    if (ret == ARGON2_OK && sodium_memcmp(out, ctx.out, ctx.outlen) != 0) {
         ret = ARGON2_VERIFY_MISMATCH;
     }
     free(out);
