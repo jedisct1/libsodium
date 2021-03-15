@@ -87,7 +87,6 @@ crypto_aead_aegis128l_mac(unsigned char *mac, unsigned long long adlen,
     }
 
     tmp = veorq_u8(state[6], state[5]);
-    tmp = veorq_u8(tmp, state[5]);
     tmp = veorq_u8(tmp, state[4]);
     tmp = veorq_u8(tmp, state[3]);
     tmp = veorq_u8(tmp, state[2]);
