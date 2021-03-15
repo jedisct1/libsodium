@@ -84,6 +84,7 @@ test-driver
 test/default/*.asm.js
 test/default/*.res
 test/default/*.trs
+test/default/aead_aegis128l
 test/default/aead_aegis256
 test/default/aead_aes256gcm
 test/default/aead_aes256gcm2
