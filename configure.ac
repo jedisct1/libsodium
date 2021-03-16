@@ -1,8 +1,5 @@
-AC_PREREQ([2.65])
-AC_INIT([libsodium],[1.0.18],
-  [https://github.com/jedisct1/libsodium/issues],
-  [libsodium],
-  [https://github.com/jedisct1/libsodium])
+AC_PREREQ([2.69])
+AC_INIT([libsodium],[1.0.18],[https://github.com/jedisct1/libsodium/issues],[libsodium],[https://libsodium.org])
 AC_CONFIG_AUX_DIR([build-aux])
 AC_CONFIG_MACRO_DIR([m4])
 AC_CONFIG_SRCDIR([src/libsodium/sodium/version.c])
@@ -44,7 +41,7 @@ AS_IF([pwd | fgrep ' ' > /dev/null 2>&1],
   [AC_MSG_ERROR([The build directory contains whitespaces - This can cause tests/installation to fail due to limitations of some libtool versions])]
 )
 
-AC_PROG_CC_C99
+AC_PROG_CC
 AM_PROG_AS
 AC_USE_SYSTEM_EXTENSIONS
 
@@ -119,8 +116,8 @@ AC_ARG_ENABLE(minimal,
 AM_CONDITIONAL([MINIMAL], [test x$enable_minimal = xyes])
 AC_SUBST(SODIUM_LIBRARY_MINIMAL_DEF)
 
-AC_ARG_WITH(pthreads, AC_HELP_STRING([--with-pthreads],
- [use pthreads library, or --without-pthreads to disable threading support.]),
+AC_ARG_WITH(pthreads, AS_HELP_STRING([--with-pthreads],
+ [use pthreads library, or --without-pthreads to disable threading support]),
  [ ], [withval="yes"])
 
 AS_IF([test "x$withval" = "xyes"], [
@@ -260,7 +257,7 @@ int main(void) { return 0; }
 LIBTOOL_OLD_FLAGS="$LIBTOOL_EXTRA_FLAGS"
 LIBTOOL_EXTRA_FLAGS="$LIBTOOL_EXTRA_FLAGS -version-info $SODIUM_LIBRARY_VERSION"
 AC_ARG_ENABLE(soname-versions,
-  [AC_HELP_STRING([--enable-soname-versions], [enable soname versions (must be disabled for Android) (default: enabled)])],
+  [AS_HELP_STRING([--enable-soname-versions], [enable soname versions (must be disabled for Android) (default: enabled)])],
     [
         AS_IF([test "x$enableval" = "xno"], [
           LIBTOOL_EXTRA_FLAGS="$LIBTOOL_OLD_FLAGS -avoid-version"
@@ -881,8 +878,7 @@ AC_DEFINE([CONFIGURED], [1], [the build system was properly configured])
 
 dnl Libtool.
 
-LT_INIT([dlopen])
-AC_LIBTOOL_WIN32_DLL
+LT_INIT([dlopen win32-dll])
 gl_LD_OUTPUT_DEF
 
 dnl Output.
