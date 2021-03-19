@@ -200,6 +200,12 @@ main(void)
     assert(sodium_base642bin(buf1, sizeof buf1, "O", (size_t) 1U, NULL, NULL, NULL,
                              sodium_base64_VARIANT_ORIGINAL_NO_PADDING) == -1);
 
+    assert(sodium_base642bin(buf1, sizeof buf1, "", (size_t) 0U, NULL, NULL, NULL,
+                             sodium_base64_VARIANT_ORIGINAL) == 0);
+    assert(sodium_base642bin(buf1, sizeof buf1, "A", (size_t) 1U, NULL, NULL, NULL,
+                             sodium_base64_VARIANT_ORIGINAL) == -1);
+    assert(sodium_base642bin(buf1, sizeof buf1, "AA", (size_t) 2U, NULL, NULL, NULL,
+                             sodium_base64_VARIANT_ORIGINAL) == -1);
     assert(sodium_base642bin(buf1, sizeof buf1, "kaw", (size_t) 3U, NULL, NULL, NULL,
                              sodium_base64_VARIANT_ORIGINAL) == -1);
     assert(sodium_base642bin(buf1, sizeof buf1, "kQ*", (size_t) 3U, "@", NULL, NULL,
