@@ -2,6 +2,12 @@
 
 set -e
 
+lib="$(
+  /usr/bin/nm /usr/local/lib/libsodium.23.dylib | \
+  fgrep ' T _' | \
+  cut -d' ' -f3
+)"
+
 symbols() {
   {
     SUMO="$1"
@@ -11,24 +17,22 @@ symbols() {
         found="$sumo"
       fi
       if [ "$found" = "1" ]; then
-        eval "defined_${symbol}=yes"
-      else
-        eval "defined_${symbol}=no"
-      fi
-    done <emscripten-symbols.def
-
-    /usr/bin/nm /usr/local/lib/libsodium.27.dylib |
-      fgrep ' T _' |
-      cut -d' ' -f3 | {
-      while read symbol; do
-        eval "found=\$defined_${symbol}"
-        if [ "$found" = "yes" ]; then
-          echo "$symbol"
-        elif [ "$found" != "no" ]; then
+        if [ $(echo "$lib" | fgrep "$symbol" | head -n 1) = "$symbol" ]; then
+          eval "defined_${symbol}=yes"
+        else
           echo >&2
           echo "*** [$symbol] was not expected ***" >&2
           echo >&2
           exit 1
+        fi
+      fi
+    done <emscripten-symbols.def
+
+    echo "$lib" | {
+      while read symbol; do
+        eval "found=\$defined_${symbol}"
+        if [ "$found" = "yes" ]; then
+          echo "$symbol"
         fi
       done
     }
