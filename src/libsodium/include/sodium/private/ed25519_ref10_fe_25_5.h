@@ -76,7 +76,7 @@ fe25519_add(fe25519 h, const fe25519 f, const fe25519 g)
  |h| bounded by 1.1*2^26,1.1*2^25,1.1*2^26,1.1*2^25,etc.
  */
 
-static void
+static inline void
 fe25519_sub(fe25519 h, const fe25519 f, const fe25519 g)
 {
     int32_t h0 = f[0] - g[0];
