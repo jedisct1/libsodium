@@ -44,7 +44,7 @@
 #   modified version of the Autoconf Macro, you may extend this special
 #   exception to the GPL to apply to your modified version as well.
 
-#serial 14
+#serial 15
 
 AC_DEFUN([AX_TLS], [
   AC_MSG_CHECKING([for thread local storage (TLS) class])
@@ -52,23 +52,20 @@ AC_DEFUN([AX_TLS], [
    [for ax_tls_keyword in thread_local _Thread_local __thread '__declspec(thread)' none; do
        AS_CASE([$ax_tls_keyword],
           [none], [ac_cv_tls=none ; break],
-          [AC_TRY_COMPILE(
-              [#include <stdlib.h>
-               static void
-               foo(void) {
-               static ] $ax_tls_keyword [ int bar;
-               exit(1);
-               }],
-               [],
-               [ac_cv_tls=$ax_tls_keyword ; break],
-               ac_cv_tls=none
-           )])
-    done
-  ])
+          [AC_COMPILE_IFELSE([AC_LANG_PROGRAM(
+              [#include <stdlib.h>],
+              [static  $ax_tls_keyword  int bar;]
+            )],
+            [ac_cv_tls=$ax_tls_keyword ; break],
+            [ac_cv_tls=none]
+          )]
+        )
+    done ]
+  )
   AC_MSG_RESULT([$ac_cv_tls])
 
   AS_IF([test "$ac_cv_tls" != "none"],
-    [AC_DEFINE_UNQUOTED([TLS],[$ac_cv_tls],[If the compiler supports a TLS storage class define it to that here])
-     m4_ifnblank([$1],[$1])],
-    [m4_ifnblank([$2],[$2])])
+    [AC_DEFINE_UNQUOTED([TLS],[$ac_cv_tls],[If the compiler supports a TLS storage class, define it to that here])
+     m4_ifnblank([$1],[$1],[[:]])],
+    [m4_ifnblank([$2],[$2],[[:]])])
 ])
