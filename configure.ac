@@ -393,7 +393,7 @@ AS_IF([test "x$EMSCRIPTEN" = "x"], [
           AC_MSG_CHECKING(for ARM crypto instructions set with -march=armv8-a+crypto)
           AC_LINK_IFELSE([AC_LANG_PROGRAM([[#include <arm_neon.h>]], [[ vaeseq_u8(vmovq_n_u8(0), vmovq_n_u8(__ARM_FEATURE_CRYPTO)) ]])],
             [
-              AC_MSG_RESULT(yes)
+              AC_MSG_RESULT(yes - with addition of -march=armv8-a+crypto)
               have_armcrypto=yes
               CFLAGS_ARMCRYPTO="-march=armv8-a+crypto"
             ],
