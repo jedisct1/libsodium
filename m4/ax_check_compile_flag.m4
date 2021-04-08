@@ -42,7 +42,9 @@ AS_VAR_PUSHDEF([CACHEVAR],[ax_cv_check_[]_AC_LANG_ABBREV[]flags_$4_$1])dnl
 AC_CACHE_CHECK([whether _AC_LANG compiler accepts $1], CACHEVAR, [
   ax_check_save_flags=$[]_AC_LANG_PREFIX[]FLAGS
   _AC_LANG_PREFIX[]FLAGS="$[]_AC_LANG_PREFIX[]FLAGS $4 $1"
-  AC_LINK_IFELSE([m4_default([$5],[AC_LANG_PROGRAM()])],
+  AC_LINK_IFELSE([m4_default([$5],[AC_LANG_PROGRAM(
+[#include <time.h>], [time_t x; int fodder = 0; if (fodder > -1000 && time(&x)) return (int) x]
+  )])],
     [AS_VAR_SET(CACHEVAR,[yes])],
     [AS_VAR_SET(CACHEVAR,[no])])
   _AC_LANG_PREFIX[]FLAGS=$ax_check_save_flags])
