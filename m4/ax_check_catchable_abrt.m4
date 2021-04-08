@@ -11,7 +11,7 @@
 AC_DEFUN([AX_CHECK_CATCHABLE_ABRT], [dnl
     AC_PREREQ(2.64)
     AS_VAR_PUSHDEF([CACHEVAR], [ax_cv_check_[]_AC_LANG_ABBREV[]CATCHABLE_ABRT])dnl
-    AC_CACHE_CHECK([whether SIGABRT can be caught when using the _AC_LANG compiler], CACHEVAR, [
+    AC_CACHE_CHECK([whether SIGABRT can be caught], CACHEVAR, [
         AC_RUN_IFELSE([
             AC_LANG_PROGRAM([[
 #include <signal.h>

@@ -90,6 +90,7 @@ PRE_UNINSTALL = :
 POST_UNINSTALL = :
 build_triplet = @build@
 host_triplet = @host@
+target_triplet = @target@
 @HAVE_TI_MODE_TRUE@am__append_1 = \
 @HAVE_TI_MODE_TRUE@	crypto_core/ed25519/ref10/fe_51/base.h \
 @HAVE_TI_MODE_TRUE@	crypto_core/ed25519/ref10/fe_51/base2.h \
@@ -835,6 +836,7 @@ PATH_SEPARATOR = @PATH_SEPARATOR@
 PKGCONFIG_LIBS_PRIVATE = @PKGCONFIG_LIBS_PRIVATE@
 PTHREAD_CC = @PTHREAD_CC@
 PTHREAD_CFLAGS = @PTHREAD_CFLAGS@
+PTHREAD_CXX = @PTHREAD_CXX@
 PTHREAD_LIBS = @PTHREAD_LIBS@
 RANLIB = @RANLIB@
 SAFECODE_HOME = @SAFECODE_HOME@
@@ -900,7 +902,11 @@ sbindir = @sbindir@
 sharedstatedir = @sharedstatedir@
 srcdir = @srcdir@
 sysconfdir = @sysconfdir@
+target = @target@
 target_alias = @target_alias@
+target_cpu = @target_cpu@
+target_os = @target_os@
+target_vendor = @target_vendor@
 top_build_prefix = @top_build_prefix@
 top_builddir = @top_builddir@
 top_srcdir = @top_srcdir@
