@@ -2937,7 +2937,7 @@ ristretto255_elligator(ge25519_p3 *p, const fe25519 t)
     fe25519_mul(u, u, ed25519_onemsqd);/* u = (r+1)*(1-d^2) */
     fe25519_1(c);
     fe25519_neg(c, c);                 /* c = -1 */
-    fe25519_add(rpd, r, ed25519_d);    /* rpd = r*d */
+    fe25519_add(rpd, r, ed25519_d);    /* rpd = r+d */
     fe25519_mul(v, r, ed25519_d);      /* v = r*d */
     fe25519_sub(v, c, v);              /* v = c-r*d */
     fe25519_mul(v, v, rpd);            /* v = (c-r*d)*(r+d) */
