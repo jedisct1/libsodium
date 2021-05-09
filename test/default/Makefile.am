@@ -64,6 +64,10 @@ EXTRA_DIST = \
 	scalarmult6.exp \
 	scalarmult7.exp \
 	scalarmult8.exp \
+	scalarmult_noclamp.exp \
+	scalarmult2_noclamp.exp \
+	scalarmult5_noclamp.exp \
+	scalarmult6_noclamp.exp \
 	secretbox.exp \
 	secretbox2.exp \
 	secretbox7.exp \
@@ -148,6 +152,10 @@ DISTCLEANFILES = \
 	scalarmult6.res \
 	scalarmult7.res \
 	scalarmult8.res \
+	scalarmult_noclamp.res \
+	scalarmult2_noclamp.res \
+	scalarmult5_noclamp.res \
+	scalarmult6_noclamp.res \
 	secretbox.res \
 	secretbox2.res \
 	secretbox7.res \
@@ -233,6 +241,10 @@ TESTS_TARGETS = \
 	scalarmult6 \
 	scalarmult7 \
 	scalarmult8 \
+	scalarmult_noclamp \
+	scalarmult2_noclamp \
+	scalarmult5_noclamp \
+	scalarmult6_noclamp \
 	secretbox \
 	secretbox2 \
 	secretbox7 \
@@ -443,6 +455,18 @@ scalarmult7_LDADD         = $(TESTS_LDADD)
 
 scalarmult8_SOURCE        = cmptest.h scalarmult8.c
 scalarmult8_LDADD         = $(TESTS_LDADD)
+
+scalarmult_noclamp_SOURCE         = cmptest.h scalarmult_noclamp.c
+scalarmult_noclamp_LDADD          = $(TESTS_LDADD)
+
+scalarmult2_noclamp_SOURCE        = cmptest.h scalarmult2_noclamp.c
+scalarmult2_noclamp_LDADD         = $(TESTS_LDADD)
+
+scalarmult5_noclamp_SOURCE        = cmptest.h scalarmult5_noclamp.c
+scalarmult5_noclamp_LDADD         = $(TESTS_LDADD)
+
+scalarmult6_noclamp_SOURCE        = cmptest.h scalarmult6_noclamp.c
+scalarmult6_noclamp_LDADD         = $(TESTS_LDADD)
 
 secretbox_SOURCE          = cmptest.h secretbox.c
 secretbox_LDADD           = $(TESTS_LDADD)

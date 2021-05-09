@@ -72,7 +72,8 @@ has_small_order(const unsigned char s[32])
 static int
 crypto_scalarmult_curve25519_ref10(unsigned char *q,
                                    const unsigned char *n,
-                                   const unsigned char *p)
+                                   const unsigned char *p,
+                                   const int clamp)
 {
     unsigned char *t = q;
     unsigned int   i;
@@ -85,12 +86,16 @@ crypto_scalarmult_curve25519_ref10(unsigned char *q,
     if (has_small_order(p)) {
         return -1;
     }
+
     for (i = 0; i < 32; i++) {
         t[i] = n[i];
     }
-    t[0] &= 248;
+    if (clamp != 0) {
+        t[0] &= 248;
+        t[31] |= 64;
+    }
     t[31] &= 127;
-    t[31] |= 64;
+
     fe25519_frombytes(x1, p);
     fe25519_1(x2);
     fe25519_0(z2);
@@ -148,7 +153,8 @@ edwards_to_montgomery(fe25519 montgomeryX, const fe25519 edwardsY, const fe25519
 
 static int
 crypto_scalarmult_curve25519_ref10_base(unsigned char *q,
-                                        const unsigned char *n)
+                                        const unsigned char *n,
+                                        const int clamp)
 {
     unsigned char *t = q;
     ge25519_p3     A;
@@ -158,9 +164,12 @@ crypto_scalarmult_curve25519_ref10_base(unsigned char *q,
     for (i = 0; i < 32; i++) {
         t[i] = n[i];
     }
-    t[0] &= 248;
+    if (clamp != 0) {
+        t[0] &= 248;
+        t[31] |= 64;
+    }
     t[31] &= 127;
-    t[31] |= 64;
+
     ge25519_scalarmult_base(&A, t);
     edwards_to_montgomery(pk, A.Y, A.Z);
     fe25519_tobytes(q, pk);

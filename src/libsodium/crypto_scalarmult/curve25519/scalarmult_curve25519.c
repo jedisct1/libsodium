@@ -11,14 +11,14 @@
 static const crypto_scalarmult_curve25519_implementation *implementation =
     &crypto_scalarmult_curve25519_ref10_implementation;
 
-int
-crypto_scalarmult_curve25519(unsigned char *q, const unsigned char *n,
-                             const unsigned char *p)
+static int
+_crypto_scalarmult_curve25519(unsigned char *q, const unsigned char *n,
+                              const unsigned char *p, const int clamp)
 {
     size_t                 i;
     volatile unsigned char d = 0;
 
-    if (implementation->mult(q, n, p) != 0) {
+    if (implementation->mult(q, n, p, clamp) != 0) {
         return -1; /* LCOV_EXCL_LINE */
     }
     for (i = 0; i < crypto_scalarmult_curve25519_BYTES; i++) {
@@ -28,10 +28,31 @@ crypto_scalarmult_curve25519(unsigned char *q, const unsigned char *n,
 }
 
 int
+crypto_scalarmult_curve25519(unsigned char *q, const unsigned char *n,
+                             const unsigned char *p)
+{
+    return _crypto_scalarmult_curve25519(q, n, p, 1);
+}
+
+int
+crypto_scalarmult_curve25519_noclamp(unsigned char *q, const unsigned char *n,
+                                     const unsigned char *p)
+{
+    return _crypto_scalarmult_curve25519(q, n, p, 0);
+}
+
+int
 crypto_scalarmult_curve25519_base(unsigned char *q, const unsigned char *n)
 {
     return crypto_scalarmult_curve25519_ref10_implementation
-        .mult_base(q, n);
+        .mult_base(q, n, 1);
+}
+
+int
+crypto_scalarmult_curve25519_base_noclamp(unsigned char *q, const unsigned char *n)
+{
+    return crypto_scalarmult_curve25519_ref10_implementation
+        .mult_base(q, n, 0);
 }
 
 size_t

@@ -14,10 +14,23 @@ crypto_scalarmult_base(unsigned char *q, const unsigned char *n)
 }
 
 int
+crypto_scalarmult_base_noclamp(unsigned char *q, const unsigned char *n)
+{
+    return crypto_scalarmult_curve25519_base_noclamp(q, n);
+}
+
+int
 crypto_scalarmult(unsigned char *q, const unsigned char *n,
                   const unsigned char *p)
 {
     return crypto_scalarmult_curve25519(q, n, p);
+}
+
+int
+crypto_scalarmult_noclamp(unsigned char *q, const unsigned char *n,
+                          const unsigned char *p)
+{
+    return crypto_scalarmult_curve25519_noclamp(q, n, p);
 }
 
 size_t

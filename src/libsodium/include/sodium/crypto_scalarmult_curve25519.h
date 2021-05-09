@@ -31,8 +31,19 @@ int crypto_scalarmult_curve25519(unsigned char *q, const unsigned char *n,
             __attribute__ ((warn_unused_result)) __attribute__ ((nonnull));
 
 SODIUM_EXPORT
+int crypto_scalarmult_curve25519_noclamp(unsigned char *q,
+                                         const unsigned char *n,
+                                         const unsigned char *p)
+            __attribute__ ((warn_unused_result)) __attribute__ ((nonnull));
+
+SODIUM_EXPORT
 int crypto_scalarmult_curve25519_base(unsigned char *q,
                                       const unsigned char *n)
+            __attribute__ ((nonnull));
+
+SODIUM_EXPORT
+int crypto_scalarmult_curve25519_base_noclamp(unsigned char *q,
+                                              const unsigned char *n)
             __attribute__ ((nonnull));
 
 #ifdef __cplusplus

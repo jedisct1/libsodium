@@ -100,10 +100,10 @@ movq   0(%rsi),%rdx
 movq   8(%rsi),%rcx
 movq   16(%rsi),%r8
 movq   24(%rsi),%r9
-shrd $1,%rcx,%rdx
-shrd $1,%r8,%rcx
-shrd $1,%r9,%r8
-shr  $1,%r9
+shld $1,%r8,%r9
+shld $1,%rcx,%r8
+shld $1,%rdx,%rcx
+shl  $1,%rdx
 xorq 0(%rsi),%rdx
 xorq 8(%rsi),%rcx
 xorq 16(%rsi),%r8
@@ -137,7 +137,7 @@ add  $4,%rsi
 sub  $1,%rax
 jne ._ladder_small_loop
 mov  $255,%rdx
-add  $760,%rsi
+add  $764,%rsi
 
 .p2align 4
 ._ladder_loop:
@@ -1420,6 +1420,18 @@ vpunpckhqdq %xmm14,%xmm13,%xmm9
 vpunpcklqdq %xmm14,%xmm13,%xmm8
 cmp  $0,%rdx
 jne ._ladder_loop
+
+vbroadcastss 0(%rsi),%xmm10
+vpblendvb %xmm10,0(%rsp),%xmm0,%xmm0
+vpblendvb %xmm10,80(%rsp),%xmm1,%xmm1
+vpblendvb %xmm10,16(%rsp),%xmm2,%xmm2
+vpblendvb %xmm10,96(%rsp),%xmm3,%xmm3
+vpblendvb %xmm10,32(%rsp),%xmm4,%xmm4
+vpblendvb %xmm10,112(%rsp),%xmm5,%xmm5
+vpblendvb %xmm10,48(%rsp),%xmm6,%xmm6
+vpblendvb %xmm10,128(%rsp),%xmm7,%xmm7
+vpblendvb %xmm10,64(%rsp),%xmm8,%xmm8
+vpblendvb %xmm10,144(%rsp),%xmm9,%xmm9
 vmovdqu %xmm1,160(%rdi)
 vmovdqu %xmm0,80(%rdi)
 vmovdqu %xmm3,176(%rdi)

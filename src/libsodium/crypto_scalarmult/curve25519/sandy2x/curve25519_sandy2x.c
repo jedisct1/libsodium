@@ -22,7 +22,7 @@
 
 static int
 crypto_scalarmult_curve25519_sandy2x(unsigned char *q, const unsigned char *n,
-                                     const unsigned char *p)
+                                     const unsigned char *p, const int clamp)
 {
   unsigned char *t = q;
   fe             var[3];
@@ -33,9 +33,11 @@ crypto_scalarmult_curve25519_sandy2x(unsigned char *q, const unsigned char *n,
   for (i = 0; i < 32; i++) {
       t[i] = n[i];
   }
-  t[0] &= 248;
+  if (clamp != 0) {
+      t[0] &= 248;
+      t[31] |= 64;
+  }
   t[31] &= 127;
-  t[31] |= 64;
 
   fe_frombytes(x1, p);
 
