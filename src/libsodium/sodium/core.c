@@ -106,6 +106,21 @@ sodium_crit_leave(void)
     return 0;
 }
 
+void sodium_finalize(void)
+{
+    LONG status = 0L;
+
+    while ((status = InterlockedCompareExchange(&_sodium_lock_initialized,
+                                                1L, 0L)) == 1L) {
+        Sleep(0);
+    }
+
+    if (status == 2) {
+        DeleteCriticalSection(&_sodium_lock);
+        InterlockedExchange(&_sodium_lock_initialized, 0L);
+    }
+}
+
 #elif defined(HAVE_PTHREAD) && !defined(__EMSCRIPTEN__)
 
 static pthread_mutex_t _sodium_lock = PTHREAD_MUTEX_INITIALIZER;
@@ -134,6 +149,10 @@ sodium_crit_leave(void)
     locked = 0;
 
     return pthread_mutex_unlock(&_sodium_lock);
+}
+
+void sodium_finalize(void)
+{
 }
 
 #elif defined(HAVE_ATOMIC_OPS) && !defined(__EMSCRIPTEN__)
@@ -167,6 +186,10 @@ sodium_crit_leave(void)
     return 0;
 }
 
+void sodium_finalize(void)
+{
+}
+
 #else
 
 int
@@ -179,6 +202,10 @@ int
 sodium_crit_leave(void)
 {
     return 0;
+}
+
+void sodium_finalize(void)
+{
 }
 
 #endif

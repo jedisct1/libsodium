@@ -12,6 +12,9 @@ SODIUM_EXPORT
 int sodium_init(void)
             __attribute__ ((warn_unused_result));
 
+SODIUM_EXPORT
+void sodium_finalize(void);
+
 /* ---- */
 
 SODIUM_EXPORT
