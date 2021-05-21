@@ -112,7 +112,7 @@ randombytes_init_if_needed(void)
 }
 
 int
-randombytes_set_implementation(randombytes_implementation *impl)
+randombytes_set_implementation(const randombytes_implementation *impl)
 {
     implementation = impl;
     return 0;
