@@ -859,7 +859,13 @@ if (&getentropy != NULL) {
   [AC_MSG_RESULT(no)
   ])
 ])
-AC_CHECK_FUNCS([posix_memalign getpid nanosleep])
+
+AS_IF([test "x$WASI" = "x"],[
+  AC_CHECK_FUNCS([getpid])
+  AC_CHECK_FUNCS([getauxva elf_aux_info])
+])
+
+AC_CHECK_FUNCS([posix_memalign nanosleep])
 AC_CHECK_FUNCS([memset_s explicit_bzero explicit_memset])
 
 AC_SUBST([LIBTOOL_EXTRA_FLAGS])
