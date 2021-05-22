@@ -214,3 +214,16 @@ sodium_set_misuse_handler(void (*handler)(void))
     }
     return 0;
 }
+
+#ifdef _WIN32
+BOOL WINAPI DllMain(HINSTANCE hinstDLL, DWORD fdwReason, LPVOID lpReserved) {
+    switch (fdwReason) {
+        case DLL_PROCESS_DETACH:
+            if (_sodium_lock_initialized == 2) {
+                DeleteCriticalSection(&_sodium_lock);
+            }
+            break;
+    }
+    return TRUE;
+}
+#endif
