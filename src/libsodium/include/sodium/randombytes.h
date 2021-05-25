@@ -53,7 +53,7 @@ SODIUM_EXPORT
 int randombytes_close(void);
 
 SODIUM_EXPORT
-int randombytes_set_implementation(randombytes_implementation *impl)
+int randombytes_set_implementation(const randombytes_implementation *impl)
             __attribute__ ((nonnull));
 
 SODIUM_EXPORT
