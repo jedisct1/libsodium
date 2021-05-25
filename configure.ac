@@ -1,4 +1,4 @@
-AC_PREREQ([2.71])
+AC_PREREQ([2.69])
 AC_INIT([libsodium],[1.0.18],[https://github.com/jedisct1/libsodium/issues],[libsodium],[https://libsodium.org])
 AC_CONFIG_AUX_DIR([build-aux])
 AC_CONFIG_MACRO_DIR([m4])
