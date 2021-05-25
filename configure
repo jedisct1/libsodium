@@ -624,7 +624,7 @@ PACKAGE_TARNAME='libsodium'
 PACKAGE_VERSION='1.0.18'
 PACKAGE_STRING='libsodium 1.0.18'
 PACKAGE_BUGREPORT='https://github.com/jedisct1/libsodium/issues'
-PACKAGE_URL='https://github.com/jedisct1/libsodium'
+PACKAGE_URL='https://libsodium.org'
 
 ac_unique_file="src/libsodium/sodium/version.c"
 # Factoring default headers for most tests.
@@ -1601,7 +1601,7 @@ Use these variables to override the choices made by `configure' or to help
 it to find libraries and programs with nonstandard names/locations.
 
 Report bugs to <https://github.com/jedisct1/libsodium/issues>.
-libsodium home page: <https://github.com/jedisct1/libsodium>.
+libsodium home page: <https://libsodium.org>.
 _ACEOF
 ac_status=$?
 fi
@@ -21216,7 +21216,7 @@ Configuration commands:
 $config_commands
 
 Report bugs to <https://github.com/jedisct1/libsodium/issues>.
-libsodium home page: <https://github.com/jedisct1/libsodium>."
+libsodium home page: <https://libsodium.org>."
 
 _ACEOF
 ac_cs_config=`printf "%s\n" "$ac_configure_args" | sed "$ac_safe_unquote"`
