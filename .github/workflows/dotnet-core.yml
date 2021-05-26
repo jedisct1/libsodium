@@ -24,7 +24,7 @@ jobs:
       with:
         name: build-win-x86
         path: bin/Win32/Release/v142/dynamic/libsodium.dll
-        
+
   build-linux-glibc:
     runs-on: ubuntu-latest
     container:
@@ -49,7 +49,7 @@ jobs:
         name: build-linux-x64
         path: .libsodium-build/lib/libsodium.so
 
-        
+
   build-linux-glibc-arm64:
     runs-on: ubuntu-20.04
     steps:
@@ -78,7 +78,7 @@ jobs:
       run: ./configure --disable-debug --prefix=$PWD/.libsodium-build --host=aarch64-linux-gnu
     - name: make
       run: make -j $(nproc)
-      
+
     - name: make check
       run: |
         make check
@@ -91,8 +91,8 @@ jobs:
     - uses: actions/upload-artifact@v1
       with:
         name: build-linux-arm64
-        path: .libsodium-build/lib/libsodium.so        
-        
+        path: .libsodium-build/lib/libsodium.so
+
   build-linux-musl:
     runs-on: ubuntu-latest
     container:
@@ -117,7 +117,7 @@ jobs:
       with:
         name: build-linux-musl-x64
         path: .libsodium-build/lib/libsodium.so
-        
+
   build-macos:
     runs-on: macos-latest
     steps:
@@ -186,7 +186,7 @@ jobs:
 
   test-ubuntu18_04:
     runs-on: ubuntu-latest
-    needs: 
+    needs:
     - pack
     container:
       image: mcr.microsoft.com/dotnet/core/sdk:3.1-bionic
