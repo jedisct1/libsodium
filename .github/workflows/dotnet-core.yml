@@ -28,7 +28,7 @@ jobs:
   build-linux-glibc:
     runs-on: ubuntu-latest
     container:
-      image: ubuntu:16.04
+      image: ubuntu:20.04
     steps:
     - name: Set up build environment
       run: |
@@ -49,9 +49,8 @@ jobs:
         name: build-linux-x64
         path: .libsodium-build/lib/libsodium.so
 
-
   build-linux-glibc-arm64:
-    runs-on: ubuntu-20.04
+    runs-on: ubuntu-latest
     steps:
     - name: Set up build environment
       run: |
@@ -96,7 +95,7 @@ jobs:
   build-linux-musl:
     runs-on: ubuntu-latest
     container:
-      image: alpine:3.7
+      image: alpine:3.13
     steps:
     - name: Set up build environment
       run: |
