@@ -265,7 +265,7 @@ jobs:
     - name: Move Build Output
       run: |
         mkdir .libsodium-builds
-        mv .libsodium-test/bin/Release/net5.0/linux-arm/publish .libsodium-builds/linux-arm        
+        mv .libsodium-test/bin/Release/net5.0/linux-arm/publish .libsodium-builds/linux-arm
         mv .libsodium-test/bin/Release/net5.0/linux-arm64/publish .libsodium-builds/linux-arm64
         mv .libsodium-test/bin/Release/net5.0/linux-x64/publish .libsodium-builds/linux-x64
     - uses: actions/upload-artifact@v2
@@ -310,7 +310,7 @@ jobs:
         path: .libsodium-builds/
 
     - name: Run ${{ matrix.arch }}
-      run: | 
+      run: |
         chmod +x .libsodium-builds/linux-${{ matrix.arch }}/Tests
         .libsodium-builds/linux-${{ matrix.arch }}/Tests
-  
+
