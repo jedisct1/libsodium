@@ -14,14 +14,14 @@ jobs:
     steps:
     - name: Checkout repository
       uses: actions/checkout@v2
-      with:      
+      with:
         fetch-depth: 2
 
     - name: Initialize CodeQL
       uses: github/codeql-action/init@v1
       with:
         languages: cpp
-  
+
     - run: |
        ./autogen.sh -s
        env CPPFLAGS="-DDEV_MODE=1" ./configure --disable-dependency-tracking

@@ -16,19 +16,19 @@ jobs:
       run: buildbase.bat ..\vs2019\libsodium.sln 16
       working-directory: builds/msvc/build/
       shell: cmd
-    - uses: actions/upload-artifact@v1
+    - uses: actions/upload-artifact@v2
       with:
         name: build-win-x64
         path: bin/x64/Release/v142/dynamic/libsodium.dll
-    - uses: actions/upload-artifact@v1
+    - uses: actions/upload-artifact@v2
       with:
         name: build-win-x86
         path: bin/Win32/Release/v142/dynamic/libsodium.dll
-        
+
   build-linux-glibc:
     runs-on: ubuntu-latest
     container:
-      image: ubuntu:16.04
+      image: ubuntu:20.04
     steps:
     - name: Set up build environment
       run: |
@@ -44,15 +44,101 @@ jobs:
       run: make install
     - name: strip
       run: strip --strip-all .libsodium-build/lib/libsodium.so
-    - uses: actions/upload-artifact@v1
+    - uses: actions/upload-artifact@v2
       with:
         name: build-linux-x64
         path: .libsodium-build/lib/libsodium.so
-        
+
+  build-linux-glibc-arm64:
+    runs-on: ubuntu-latest
+    steps:
+    - name: Set up build environment
+      run: |
+        export DEBIAN_FRONTEND=noninteractive
+
+        cat <<-EOF | sudo tee /etc/apt/sources.list.d/arm64.list >/dev/null
+        deb [arch=arm64] http://ports.ubuntu.com/ focal main restricted
+        deb [arch=arm64] http://ports.ubuntu.com/ focal-updates main restricted
+        deb [arch=arm64] http://ports.ubuntu.com/ focal universe
+        deb [arch=arm64] http://ports.ubuntu.com/ focal-updates universe
+        deb [arch=arm64] http://ports.ubuntu.com/ focal multiverse
+        deb [arch=arm64] http://ports.ubuntu.com/ focal-updates multiverse
+        deb [arch=arm64] http://ports.ubuntu.com/ focal-backports main restricted universe multiverse
+        EOF
+
+        sudo sed -i 's/deb h/deb [arch=amd64] h/g' /etc/apt/sources.list
+
+        sudo dpkg --add-architecture arm64
+
+        sudo apt-get update && sudo apt-get install -y build-essential qemu-user qemu-user-static gcc-aarch64-linux-gnu g++-aarch64-linux-gnu libstdc++6:arm64
+
+    - uses: actions/checkout@v1
+    - name: configure
+      run: ./configure --disable-debug --prefix=$PWD/.libsodium-build --host=aarch64-linux-gnu
+    - name: make
+      run: make -j $(nproc)
+
+    - name: make check
+      run: |
+        make check
+
+    - name: make install
+      run: make install
+
+    - name: strip
+      run: aarch64-linux-gnu-strip --strip-all .libsodium-build/lib/libsodium.so
+    - uses: actions/upload-artifact@v2
+      with:
+        name: build-linux-arm64
+        path: .libsodium-build/lib/libsodium.so
+
+  build-linux-glibc-arm:
+    runs-on: ubuntu-20.04
+    steps:
+    - name: Set up build environment
+      run: |
+        export DEBIAN_FRONTEND=noninteractive
+
+        cat <<-EOF | sudo tee /etc/apt/sources.list.d/armhf.list >/dev/null
+        deb [arch=armhf] http://ports.ubuntu.com/ focal main restricted
+        deb [arch=armhf] http://ports.ubuntu.com/ focal-updates main restricted
+        deb [arch=armhf] http://ports.ubuntu.com/ focal universe
+        deb [arch=armhf] http://ports.ubuntu.com/ focal-updates universe
+        deb [arch=armhf] http://ports.ubuntu.com/ focal multiverse
+        deb [arch=armhf] http://ports.ubuntu.com/ focal-updates multiverse
+        deb [arch=armhf] http://ports.ubuntu.com/ focal-backports main restricted universe multiverse
+        EOF
+
+        sudo sed -i 's/deb h/deb [arch=amd64] h/g' /etc/apt/sources.list
+
+        sudo dpkg --add-architecture armhf
+
+        sudo apt-get update && sudo apt-get install -y build-essential qemu-user qemu-user-static gcc-arm-linux-gnueabihf g++-arm-linux-gnueabihf libstdc++6:armhf
+
+    - uses: actions/checkout@v1
+    - name: configure
+      run: ./configure --disable-debug --prefix=$PWD/.libsodium-build --host=arm-linux-gnueabihf
+    - name: make
+      run: make -j $(nproc)
+
+    - name: make check
+      run: |
+        make check
+
+    - name: make install
+      run: make install
+
+    - name: strip
+      run: arm-linux-gnueabihf-strip --strip-all .libsodium-build/lib/libsodium.so
+    - uses: actions/upload-artifact@v2
+      with:
+        name: build-linux-arm
+        path: .libsodium-build/lib/libsodium.so
+
   build-linux-musl:
     runs-on: ubuntu-latest
     container:
-      image: alpine:3.7
+      image: alpine:3.13
     steps:
     - name: Set up build environment
       run: |
@@ -69,11 +155,11 @@ jobs:
       run: make install
     - name: strip
       run: strip --strip-all .libsodium-build/lib/libsodium.so
-    - uses: actions/upload-artifact@v1
+    - uses: actions/upload-artifact@v2
       with:
         name: build-linux-musl-x64
         path: .libsodium-build/lib/libsodium.so
-        
+
   build-macos:
     runs-on: macos-latest
     steps:
@@ -86,7 +172,7 @@ jobs:
       run: make check
     - name: make install
       run: make install
-    - uses: actions/upload-artifact@v1
+    - uses: actions/upload-artifact@v2
       with:
         name: build-osx-x64
         path: .libsodium-build/lib/libsodium.dylib
@@ -96,6 +182,8 @@ jobs:
     needs:
     - build-windows
     - build-linux-glibc
+    - build-linux-glibc-arm
+    - build-linux-glibc-arm64
     - build-linux-musl
     - build-macos
     container:
@@ -106,23 +194,31 @@ jobs:
       DOTNET_SYSTEM_GLOBALIZATION_INVARIANT: 1
     steps:
     - uses: actions/checkout@v1
-    - uses: actions/download-artifact@v1
+    - uses: actions/download-artifact@v2
       with:
         name: build-win-x64
         path: .libsodium-pack/runtimes/win-x64/native/
-    - uses: actions/download-artifact@v1
+    - uses: actions/download-artifact@v2
       with:
         name: build-win-x86
         path: .libsodium-pack/runtimes/win-x86/native/
-    - uses: actions/download-artifact@v1
+    - uses: actions/download-artifact@v2
       with:
         name: build-linux-x64
         path: .libsodium-pack/runtimes/linux-x64/native/
-    - uses: actions/download-artifact@v1
+    - uses: actions/download-artifact@v2
+      with:
+        name: build-linux-arm64
+        path: .libsodium-pack/runtimes/linux-arm64/native/
+    - uses: actions/download-artifact@v2
+      with:
+        name: build-linux-arm
+        path: .libsodium-pack/runtimes/linux-arm/native/
+    - uses: actions/download-artifact@v2
       with:
         name: build-linux-musl-x64
         path: .libsodium-pack/runtimes/linux-musl-x64/native/
-    - uses: actions/download-artifact@v1
+    - uses: actions/download-artifact@v2
       with:
         name: build-osx-x64
         path: .libsodium-pack/runtimes/osx-x64/native/
@@ -130,24 +226,24 @@ jobs:
       run: cp AUTHORS ChangeLog LICENSE packaging/dotnet-core/libsodium.pkgproj .libsodium-pack/
     - name: Create NuGet package
       run: dotnet pack -c Release .libsodium-pack/libsodium.pkgproj
-    - uses: actions/upload-artifact@v1
+    - uses: actions/upload-artifact@v2
       with:
         name: nuget-package
-        path: .libsodium-pack/bin/Release/libsodium.1.0.18.nupkg
+        path: .libsodium-pack/bin/Release/*.nupkg
 
-  test-ubuntu18_04:
+  build-test-binaries:
     runs-on: ubuntu-latest
-    needs: 
+    needs:
     - pack
     container:
-      image: mcr.microsoft.com/dotnet/core/sdk:3.1-bionic
+      image: mcr.microsoft.com/dotnet/sdk:5.0
     env:
       DOTNET_CLI_TELEMETRY_OPTOUT: 1
       DOTNET_SKIP_FIRST_TIME_EXPERIENCE: 1
       DOTNET_SYSTEM_GLOBALIZATION_INVARIANT: 1
     steps:
     - uses: actions/checkout@v1
-    - uses: actions/download-artifact@v1
+    - uses: actions/download-artifact@v2
       with:
         name: nuget-package
         path: .libsodium-pack/
@@ -157,6 +253,64 @@ jobs:
       run: dotnet add .libsodium-test/Tests.csproj package libsodium -s $PWD/.libsodium-pack
     - name: Copy files
       run: cp -f packaging/dotnet-core/test.cs .libsodium-test/Program.cs
-    - name: dotnet run
-      run: dotnet run
+    - name: dotnet publish linux-x64
+      run: dotnet publish -c Release -r linux-x64 --self-contained true -p:PublishTrimmed=true
       working-directory: .libsodium-test/
+    - name: dotnet publish linux-arm
+      run: dotnet publish -c Release -r linux-arm --self-contained true -p:PublishTrimmed=true
+      working-directory: .libsodium-test/
+    - name: dotnet publish linux-arm64
+      run: dotnet publish -c Release -r linux-arm64 --self-contained true -p:PublishTrimmed=true
+      working-directory: .libsodium-test/
+    - name: Move Build Output
+      run: |
+        mkdir .libsodium-builds
+        mv .libsodium-test/bin/Release/net5.0/linux-arm/publish .libsodium-builds/linux-arm
+        mv .libsodium-test/bin/Release/net5.0/linux-arm64/publish .libsodium-builds/linux-arm64
+        mv .libsodium-test/bin/Release/net5.0/linux-x64/publish .libsodium-builds/linux-x64
+    - uses: actions/upload-artifact@v2
+      with:
+        name: test-builds
+        path: .libsodium-builds/*
+
+  run-test-binaries:
+    runs-on: ubuntu-20.04
+    needs:
+    - build-test-binaries
+    env:
+      DOTNET_SYSTEM_GLOBALIZATION_INVARIANT: 1
+    strategy:
+      matrix:
+        arch: [x64, arm, arm64]
+    steps:
+    - name: Set up build environment
+      run: |
+        export DEBIAN_FRONTEND=noninteractive
+
+        cat <<-EOF | sudo tee /etc/apt/sources.list.d/multiarch.list >/dev/null
+        deb [arch=armhf,arm64] http://ports.ubuntu.com/ focal main restricted
+        deb [arch=armhf,arm64] http://ports.ubuntu.com/ focal-updates main restricted
+        deb [arch=armhf,arm64] http://ports.ubuntu.com/ focal universe
+        deb [arch=armhf,arm64] http://ports.ubuntu.com/ focal-updates universe
+        deb [arch=armhf,arm64] http://ports.ubuntu.com/ focal multiverse
+        deb [arch=armhf,arm64] http://ports.ubuntu.com/ focal-updates multiverse
+        deb [arch=armhf,arm64] http://ports.ubuntu.com/ focal-backports main restricted universe multiverse
+        EOF
+
+        sudo sed -i 's/deb h/deb [arch=amd64] h/g' /etc/apt/sources.list
+
+        sudo dpkg --add-architecture armhf
+        sudo dpkg --add-architecture arm64
+
+        sudo apt-get update && sudo apt-get install -y qemu-user qemu-user-static libstdc++6:armhf libstdc++6:arm64
+
+    - uses: actions/download-artifact@v2
+      with:
+        name: test-builds
+        path: .libsodium-builds/
+
+    - name: Run ${{ matrix.arch }}
+      run: |
+        chmod +x .libsodium-builds/linux-${{ matrix.arch }}/Tests
+        .libsodium-builds/linux-${{ matrix.arch }}/Tests
+
