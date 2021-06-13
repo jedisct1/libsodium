@@ -18,7 +18,6 @@
 #include "argon2-core.h"
 #include "argon2.h"
 #include "private/common.h"
-#include "private/sse2_64_32.h"
 
 #if defined(HAVE_AVX512FINTRIN_H) && defined(HAVE_AVX2INTRIN_H) && \
     defined(HAVE_EMMINTRIN_H) &&  defined(HAVE_TMMINTRIN_H) && defined(HAVE_SMMINTRIN_H)
@@ -34,10 +33,11 @@
 # ifdef _MSC_VER
 #  include <intrin.h> /* for _mm_set_epi64x */
 # endif
-#include <emmintrin.h>
-#include <immintrin.h>
-#include <smmintrin.h>
-#include <tmmintrin.h>
+# include <emmintrin.h>
+# include <immintrin.h>
+# include <smmintrin.h>
+# include <tmmintrin.h>
+# include "private/sse2_64_32.h"
 
 # include "blamka-round-avx512f.h"
 

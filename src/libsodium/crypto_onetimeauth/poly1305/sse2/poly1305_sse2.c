@@ -6,7 +6,6 @@
 #include "crypto_verify_16.h"
 #include "poly1305_sse2.h"
 #include "private/common.h"
-#include "private/sse2_64_32.h"
 #include "utils.h"
 
 #if defined(HAVE_TI_MODE) && defined(HAVE_EMMINTRIN_H)
@@ -16,6 +15,7 @@
 # endif
 
 # include <emmintrin.h>
+# include "private/sse2_64_32.h"
 
 typedef __m128i xmmi;
 
