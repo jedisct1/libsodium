@@ -14,6 +14,11 @@
 # include <emmintrin.h>
 # include <stdint.h>
 
+# ifdef __GNUC__
+#  pragma GCC push_options
+#  pragma GCC target("sse2")
+# endif
+
 # ifndef _mm_set_epi64x
 #  define _mm_set_epi64x(Q0, Q1) sodium__mm_set_epi64x((Q0), (Q1))
 static inline __m128i
@@ -43,6 +48,10 @@ sodium__mm_cvtsi64_si128(int64_t q)
     x.as64 = q;
     return _mm_setr_epi32(x.as32[0], x.as32[1], 0, 0);
 }
+# endif
+
+# ifdef __GNUC__
+#  pragma GCC pop_options
 # endif
 
 #endif
