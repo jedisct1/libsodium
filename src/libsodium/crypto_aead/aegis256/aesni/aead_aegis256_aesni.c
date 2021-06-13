@@ -15,7 +15,6 @@
 #include "utils.h"
 
 #include "private/common.h"
-#include "private/sse2_64_32.h"
 
 #if defined(HAVE_TMMINTRIN_H) && defined(HAVE_WMMINTRIN_H)
 
@@ -26,6 +25,7 @@
 
 #include <tmmintrin.h>
 #include <wmmintrin.h>
+#include "private/sse2_64_32.h"
 
 static inline void
 crypto_aead_aegis256_update(__m128i *const state, const __m128i data)
