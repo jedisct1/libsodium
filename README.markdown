@@ -45,7 +45,7 @@ In order to join, just send a random mail to `sodium-subscribe` {at}
 
 ### Code Contributors
 
-This project exists thanks to all the people who contribute. [[Contribute](CONTRIBUTING.md)].
+This project exists thanks to all the people who contribute. [[Contribute](https://github.com/jedisct1/libsodium/graphs/contributors)].
 
 <a href="https://github.com/jedisct1/libsodium/graphs/contributors"><img src="https://opencollective.com/libsodium/contributors.svg?width=890&button=false" /></a>
 
