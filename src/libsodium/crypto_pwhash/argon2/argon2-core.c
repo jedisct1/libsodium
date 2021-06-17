@@ -99,12 +99,12 @@ allocate_memory(block_region **region, uint32_t m_cost)
                      -1, 0)) == MAP_FAILED) {
         base = NULL; /* LCOV_EXCL_LINE */
     }                /* LCOV_EXCL_LINE */
-    memcpy(&memory, &base, sizeof memory);
+    memory = base;
 #elif defined(HAVE_POSIX_MEMALIGN)
     if ((errno = posix_memalign((void **) &base, 64, memory_size)) != 0) {
         base = NULL;
     }
-    memcpy(&memory, &base, sizeof memory);
+    memory = base;
 #else
     memory = NULL;
     if (memory_size + 63 < memory_size) {
@@ -113,7 +113,7 @@ allocate_memory(block_region **region, uint32_t m_cost)
     } else if ((base = malloc(memory_size + 63)) != NULL) {
         uint8_t *aligned = ((uint8_t *) base) + 63;
         aligned -= (uintptr_t) aligned & 63;
-        memcpy(&memory, &aligned, sizeof memory);
+        memory = base;
     }
 #endif
     if (base == NULL) {
