@@ -192,11 +192,10 @@ static int
 _sodium_runtime_intel_cpu_features(CPUFeatures * const cpu_features)
 {
     unsigned int cpu_info[4];
-    unsigned int id;
     uint32_t     xcr0 = 0U;
 
     _cpuid(cpu_info, 0x0);
-    if ((id = cpu_info[0]) == 0U) {
+    if (cpu_info[0] == 0U) {
         return -1; /* LCOV_EXCL_LINE */
     }
     _cpuid(cpu_info, 0x00000001);
