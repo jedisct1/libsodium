@@ -61,7 +61,7 @@ typedef struct blake2b_state {
     uint8_t  last_node;
 } blake2b_state;
 
-#if defined(__IBMC__) || defined(__SUNPRO_C) || defined(__SUNPRO_CC)
+#if defined(__SUNPRO_C) || defined(__SUNPRO_CC)
 #pragma pack()
 #else
 #pragma pack(pop)
