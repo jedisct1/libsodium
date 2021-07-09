@@ -31,10 +31,12 @@ enum blake2b_constant {
     BLAKE2B_PERSONALBYTES = 16
 };
 
-#if defined(__IBMC__) || defined(__SUNPRO_C) || defined(__SUNPRO_CC)
-#pragma pack(1)
+#ifdef __IBMC__
+# pragma pack(1)
+#elif defined(__SUNPRO_C) || defined(__SUNPRO_CC)
+# pragma pack(1)
 #else
-#pragma pack(push, 1)
+# pragma pack(push, 1)
 #endif
 
 typedef struct blake2b_param_ {
@@ -60,10 +62,12 @@ typedef struct blake2b_state {
     uint8_t  last_node;
 } blake2b_state;
 
-#if defined(__IBMC__) || defined(__SUNPRO_C) || defined(__SUNPRO_CC)
-#pragma pack()
+#ifdef __IBMC__
+# pragma pack(pop)
+#elif defined(__SUNPRO_C) || defined(__SUNPRO_CC)
+# pragma pack()
 #else
-#pragma pack(pop)
+# pragma pack(pop)
 #endif
 
 /* Streaming API */

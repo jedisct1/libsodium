@@ -14,7 +14,9 @@
 extern "C" {
 #endif
 
-#if defined(__IBMC__) || defined(__SUNPRO_C) || defined(__SUNPRO_CC)
+#ifdef __IBMC__
+# pragma pack(1)
+#elif defined(__SUNPRO_C) || defined(__SUNPRO_CC)
 # pragma pack(1)
 #else
 # pragma pack(push, 1)
@@ -24,7 +26,9 @@ typedef struct CRYPTO_ALIGN(64) crypto_generichash_blake2b_state {
     unsigned char opaque[384];
 } crypto_generichash_blake2b_state;
 
-#if defined(__IBMC__) || defined(__SUNPRO_C) || defined(__SUNPRO_CC)
+#ifdef __IBMC__
+# pragma pack(pop)
+#elif defined(__SUNPRO_C) || defined(__SUNPRO_CC)
 # pragma pack()
 #else
 # pragma pack(pop)
