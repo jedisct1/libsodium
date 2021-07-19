@@ -10,7 +10,7 @@ jobs:
       vmImage: "ubuntu-20.04"
     steps:
       - script: |
-          sudo apt-get install build-essential curl cmake llvm lld
+          sudo apt-get install build-essential curl cmake lld
         displayName: Install system packages
       - script: |
           curl https://get.wasmer.io -sSfL | sh
