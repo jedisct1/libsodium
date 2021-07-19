@@ -9,10 +9,8 @@ mkdir -p $PREFIX || exit 1
 export CC="zig cc"
 export CFLAGS="-DED25519_NONDETERMINISTIC=1 --target=wasm32-wasi -O2"
 export LDFLAGS="-s -Wl,--stack-first"
-export NM="llvm-nm"
-export AR="llvm-ar"
-export RANLIB="llvm-ranlib"
-export STRIP="llvm-strip"
+export AR="zig ar"
+export RANLIB="zig ranlib"
 
 make distclean >/dev/null
 
