@@ -11,7 +11,6 @@ export CFLAGS="-DED25519_NONDETERMINISTIC=1 --target=wasm32-wasi -O2"
 export LDFLAGS="-s -Wl,--stack-first"
 export AR="zig ar"
 export RANLIB="zig ranlib"
-export STRIP="llvm-strip"
 
 make distclean >/dev/null
 
