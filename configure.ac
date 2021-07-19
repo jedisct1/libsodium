@@ -810,7 +810,9 @@ dnl Checks for functions and headers
 AC_FUNC_ALLOCA
 AS_IF([test "x$EMSCRIPTEN" = "x"],[
   AC_CHECK_FUNCS([arc4random arc4random_buf])
-  AC_CHECK_FUNCS([mmap mlock madvise mprotect])
+  AS_IF([test "x$WASI" = "x"],[
+    AC_CHECK_FUNCS([mmap mlock madvise mprotect])
+  ])
 
   AC_MSG_CHECKING(for getrandom with a standard API)
   AC_LINK_IFELSE([AC_LANG_PROGRAM([[
@@ -864,7 +866,10 @@ AS_IF([test "x$WASI" = "x"],[
 ])
 
 AC_CHECK_FUNCS([posix_memalign nanosleep])
-AC_CHECK_FUNCS([memset_s explicit_bzero explicit_memset])
+
+AS_IF([test "x$WASI" = "x"],[
+  AC_CHECK_FUNCS([memset_s explicit_bzero explicit_memset])
+])
 
 AC_SUBST([LIBTOOL_EXTRA_FLAGS])
 

@@ -20290,7 +20290,10 @@ then :
 
 fi
 
-  ac_fn_c_check_func "$LINENO" "mmap" "ac_cv_func_mmap"
+  if test "x$WASI" = "x"
+then :
+
+    ac_fn_c_check_func "$LINENO" "mmap" "ac_cv_func_mmap"
 if test "x$ac_cv_func_mmap" = xyes
 then :
   printf "%s\n" "#define HAVE_MMAP 1" >>confdefs.h
@@ -20315,6 +20318,8 @@ then :
 
 fi
 
+
+fi
 
   { printf "%s\n" "$as_me:${as_lineno-$LINENO}: checking for getrandom with a standard API" >&5
 printf %s "checking for getrandom with a standard API... " >&6; }
@@ -20452,7 +20457,11 @@ then :
 
 fi
 
-ac_fn_c_check_func "$LINENO" "memset_s" "ac_cv_func_memset_s"
+
+if test "x$WASI" = "x"
+then :
+
+  ac_fn_c_check_func "$LINENO" "memset_s" "ac_cv_func_memset_s"
 if test "x$ac_cv_func_memset_s" = xyes
 then :
   printf "%s\n" "#define HAVE_MEMSET_S 1" >>confdefs.h
@@ -20471,6 +20480,8 @@ then :
 
 fi
 
+
+fi
 
 
 
