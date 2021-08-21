@@ -273,7 +273,28 @@ jobs:
         name: test-builds
         path: .libsodium-builds/*
 
-  run-test-binaries:
+  run-test-binaries-os-versions:
+    runs-on: ubuntu-latest
+    needs:
+    - build-test-binaries
+    strategy:
+      matrix:
+        arch: [ centos:7 ]
+    container:
+      image: ${{ matrix.arch }}
+    env:
+      DOTNET_SYSTEM_GLOBALIZATION_INVARIANT: 1
+    steps:    
+    - uses: actions/download-artifact@v2
+      with:
+        name: test-builds
+        path: .libsodium-builds/    
+    - name: Run x64 tests
+      run: |
+        chmod +x .libsodium-builds/linux-x64/Tests
+        .libsodium-builds/linux-x64/Tests
+
+  run-test-binaries-cross-plat:
     runs-on: ubuntu-20.04
     needs:
     - build-test-binaries
