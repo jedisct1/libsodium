@@ -279,7 +279,7 @@ jobs:
     - build-test-binaries
     strategy:
       matrix:
-        arch: [ centos:7 ]
+        arch: [ 'centos:7' ]
     container:
       image: ${{ matrix.arch }}
     env:
