@@ -28,7 +28,7 @@ jobs:
   build-linux-glibc:
     runs-on: ubuntu-latest
     container:
-      image: ubuntu:20.04
+      image: ubuntu:16.04
     steps:
     - name: Set up build environment
       run: |
