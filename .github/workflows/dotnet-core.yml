@@ -50,27 +50,29 @@ jobs:
         path: .libsodium-build/lib/libsodium.so
 
   build-linux-glibc-arm64:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-latest    
+    container:
+      image: ubuntu:16.04
     steps:
     - name: Set up build environment
       run: |
         export DEBIAN_FRONTEND=noninteractive
 
-        cat <<-EOF | sudo tee /etc/apt/sources.list.d/arm64.list >/dev/null
-        deb [arch=arm64] http://ports.ubuntu.com/ focal main restricted
-        deb [arch=arm64] http://ports.ubuntu.com/ focal-updates main restricted
-        deb [arch=arm64] http://ports.ubuntu.com/ focal universe
-        deb [arch=arm64] http://ports.ubuntu.com/ focal-updates universe
-        deb [arch=arm64] http://ports.ubuntu.com/ focal multiverse
-        deb [arch=arm64] http://ports.ubuntu.com/ focal-updates multiverse
-        deb [arch=arm64] http://ports.ubuntu.com/ focal-backports main restricted universe multiverse
+        cat <<-EOF | tee /etc/apt/sources.list.d/arm64.list >/dev/null
+        deb [arch=arm64] http://ports.ubuntu.com/ xenial main restricted
+        deb [arch=arm64] http://ports.ubuntu.com/ xenial-updates main restricted
+        deb [arch=arm64] http://ports.ubuntu.com/ xenial universe
+        deb [arch=arm64] http://ports.ubuntu.com/ xenial-updates universe
+        deb [arch=arm64] http://ports.ubuntu.com/ xenial multiverse
+        deb [arch=arm64] http://ports.ubuntu.com/ xenial-updates multiverse
+        deb [arch=arm64] http://ports.ubuntu.com/ xenial-backports main restricted universe multiverse
         EOF
 
-        sudo sed -i 's/deb h/deb [arch=amd64] h/g' /etc/apt/sources.list
+        sed -i 's/deb h/deb [arch=amd64] h/g' /etc/apt/sources.list
 
-        sudo dpkg --add-architecture arm64
+        dpkg --add-architecture arm64
 
-        sudo apt-get update && sudo apt-get install -y build-essential qemu-user qemu-user-static gcc-aarch64-linux-gnu g++-aarch64-linux-gnu libstdc++6:arm64
+        apt-get update && apt-get install -y build-essential qemu-user qemu-user-static gcc-aarch64-linux-gnu g++-aarch64-linux-gnu libstdc++6:arm64
 
     - uses: actions/checkout@v1
     - name: configure
@@ -81,6 +83,13 @@ jobs:
     - name: make check
       run: |
         make check
+
+    - name: Upload test Log
+      if: ${{ failure() }}
+      uses: actions/upload-artifact@v2
+      with:
+        name: test-log-arm64
+        path: test/default/test-suite.log
 
     - name: make install
       run: make install
