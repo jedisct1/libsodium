@@ -821,6 +821,7 @@ AS_IF([test "x$EMSCRIPTEN" = "x"],[
   AS_IF([test "x$WASI" = "x"],[
     AC_CHECK_FUNCS([mmap mlock madvise mprotect])
   ])
+  AC_CHECK_FUNCS([raise])
 
   AC_MSG_CHECKING(for getrandom with a standard API)
   AC_LINK_IFELSE([AC_LANG_PROGRAM([[
