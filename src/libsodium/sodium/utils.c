@@ -17,6 +17,10 @@
 # include <sys/mman.h>
 #endif
 
+#ifdef HAVE_SYS_PARAM_H
+# include <sys/param.h>
+#endif
+
 #ifdef _WIN32
 # include <windows.h>
 # include <wincrypt.h>
@@ -402,7 +406,7 @@ int
 _sodium_alloc_init(void)
 {
 #ifdef HAVE_ALIGNED_MALLOC
-# if defined(_SC_PAGESIZE)
+# if defined(_SC_PAGESIZE) && defined(HAVE_SYSCONF)
     long page_size_ = sysconf(_SC_PAGESIZE);
     if (page_size_ > 0L) {
         page_size = (size_t) page_size_;
@@ -411,7 +415,7 @@ _sodium_alloc_init(void)
     SYSTEM_INFO si;
     GetSystemInfo(&si);
     page_size = (size_t) si.dwPageSize;
-# else
+# elif !defined(PAGE_SIZE)
 #  warning Unknown page size
 # endif
     if (page_size < CANARY_SIZE || page_size < sizeof(size_t)) {
