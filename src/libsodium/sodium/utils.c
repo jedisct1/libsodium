@@ -9,7 +9,7 @@
 #include <stdlib.h>
 #include <string.h>
 
-#ifdef HAVE_RAISE
+#if defined(HAVE_RAISE) && !defined(__wasm__)
 # include <signal.h>
 #endif
 
@@ -507,7 +507,7 @@ _mprotect_readwrite(void *ptr, size_t size)
 __attribute__((noreturn)) static void
 _out_of_bounds(void)
 {
-# ifdef HAVE_RAISE
+# if defined(HAVE_RAISE) && !defined(__wasm__)
 #  ifdef SIGSEGV
     raise(SIGSEGV);
 #  elif defined(SIGKILL)
