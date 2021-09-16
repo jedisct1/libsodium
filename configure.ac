@@ -820,10 +820,9 @@ AS_IF([test "x$EMSCRIPTEN" = "x"],[
   AC_CHECK_FUNCS([arc4random arc4random_buf])
   AS_IF([test "x$WASI" = "x"],[
     AC_CHECK_FUNCS([mmap mlock madvise mprotect])
+    AC_CHECK_FUNCS([raise])
+    AC_CHECK_FUNCS([sysconf])
   ])
-  AC_CHECK_FUNCS([raise])
-  AC_CHECK_FUNCS([sysconf])
-
   AC_MSG_CHECKING(for getrandom with a standard API)
   AC_LINK_IFELSE([AC_LANG_PROGRAM([[
 #include <stdlib.h>
