@@ -771,6 +771,9 @@ AM_BACKSLASH
 AM_DEFAULT_VERBOSITY
 AM_DEFAULT_V
 AM_V
+CSCOPE
+ETAGS
+CTAGS
 am__untar
 am__tar
 AMTAR
@@ -3571,6 +3574,20 @@ printf "%s\n" "$am_cv_prog_tar_ustar" >&6; }
 
 
 
+
+
+# Variables for tags utilities; see am/tags.am
+if test -z "$CTAGS"; then
+  CTAGS=ctags
+fi
+
+if test -z "$ETAGS"; then
+  ETAGS=etags
+fi
+
+if test -z "$CSCOPE"; then
+  CSCOPE=cscope
+fi
 
 
 
@@ -19304,6 +19321,12 @@ then :
   printf "%s\n" "#define HAVE_SYS_MMAN_H 1" >>confdefs.h
 
 fi
+ac_fn_c_check_header_compile "$LINENO" "sys/param.h" "ac_cv_header_sys_param_h" "$ac_includes_default"
+if test "x$ac_cv_header_sys_param_h" = xyes
+then :
+  printf "%s\n" "#define HAVE_SYS_PARAM_H 1" >>confdefs.h
+
+fi
 ac_fn_c_check_header_compile "$LINENO" "sys/random.h" "ac_cv_header_sys_random_h" "$ac_includes_default"
 if test "x$ac_cv_header_sys_random_h" = xyes
 then :
@@ -20318,9 +20341,22 @@ then :
 
 fi
 
+    ac_fn_c_check_func "$LINENO" "raise" "ac_cv_func_raise"
+if test "x$ac_cv_func_raise" = xyes
+then :
+  printf "%s\n" "#define HAVE_RAISE 1" >>confdefs.h
 
 fi
 
+    ac_fn_c_check_func "$LINENO" "sysconf" "ac_cv_func_sysconf"
+if test "x$ac_cv_func_sysconf" = xyes
+then :
+  printf "%s\n" "#define HAVE_SYSCONF 1" >>confdefs.h
+
+fi
+
+
+fi
   { printf "%s\n" "$as_me:${as_lineno-$LINENO}: checking for getrandom with a standard API" >&5
 printf %s "checking for getrandom with a standard API... " >&6; }
   cat confdefs.h - <<_ACEOF >conftest.$ac_ext
