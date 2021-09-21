@@ -5,6 +5,7 @@ on:
     branches:
     - stable
     - next
+    - macos-arm64
 
 jobs:
 
@@ -176,6 +177,22 @@ jobs:
       with:
         name: build-osx-x64
         path: .libsodium-build/lib/libsodium.dylib
+  build-macos-arm:
+    runs-on: macos-latest
+    steps:
+    - uses: actions/checkout@v1
+    - name: configure
+      run: ./configure --disable-debug --prefix=$PWD/.libsodium-build CFLAGS='-target arm64-apple-macos' --host=arm64-apple-macos
+    - name: make
+      run: make LIBTOOL_EXTRA_FLAGS="-Wc,'--target=arm64-apple-macos'"
+    - name: make check
+      run: make check
+    - name: make install
+      run: make install
+    - uses: actions/upload-artifact@v2
+      with:
+        name: build-osx-arm64
+        path: .libsodium-build/lib/libsodium.dylib        
 
   pack:
     runs-on: ubuntu-latest
@@ -186,6 +203,7 @@ jobs:
     - build-linux-glibc-arm64
     - build-linux-musl
     - build-macos
+    - build-macos-arm
     container:
       image: mcr.microsoft.com/dotnet/sdk:5.0
     env:
@@ -222,6 +240,10 @@ jobs:
       with:
         name: build-osx-x64
         path: .libsodium-pack/runtimes/osx-x64/native/
+    - uses: actions/download-artifact@v2
+      with:
+        name: build-osx-arm64
+        path: .libsodium-pack/runtimes/osx-arm64/native/        
     - name: Copy files
       run: cp AUTHORS ChangeLog LICENSE packaging/dotnet-core/libsodium.pkgproj .libsodium-pack/
     - name: Create NuGet package
