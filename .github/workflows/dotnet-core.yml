@@ -182,7 +182,7 @@ jobs:
     steps:
     - uses: actions/checkout@v1
     - name: configure
-      run: ./configure --disable-debug --prefix=$PWD/.libsodium-build CFLAGS='-target arm64-apple-macos' --host=arm64-apple-macos
+      run: ./configure --disable-debug --prefix=$PWD/.libsodium-build CFLAGS='-target arm64-apple-macos'
     - name: make
       run: make LIBTOOL_EXTRA_FLAGS="-Wc,'--target=arm64-apple-macos'"
     - name: make check
