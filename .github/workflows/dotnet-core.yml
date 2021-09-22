@@ -182,9 +182,9 @@ jobs:
     steps:
     - uses: actions/checkout@v1
     - name: configure
-      run: ./configure --disable-debug --prefix=$PWD/.libsodium-build CFLAGS='-target arm64-apple-macos' --host=arm64-apple-macos
+      run: ./configure --disable-debug --prefix=$PWD/.libsodium-build CFLAGS='-target aarch64-apple-darwin20.6.0' --host=aarch64-apple-darwin20.6.0
     - name: make
-      run: make LDFLAGS="-Wc,'--target=aarch64-apple-darwin20.6.0'"
+      run: make LDFLAGS="-Wc,'--target=aarch64-apple-darwin20.6.0'" -j 3
     - name: make install
       run: make install
     - uses: actions/upload-artifact@v2
