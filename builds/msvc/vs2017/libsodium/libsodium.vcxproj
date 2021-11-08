@@ -200,6 +200,7 @@
     <ClInclude Include="..\..\..\..\src\libsodium\include\sodium\crypto_core_hchacha20.h" />
     <ClInclude Include="..\..\..\..\src\libsodium\include\sodium\crypto_hash_sha512.h" />
     <ClInclude Include="..\..\..\..\src\libsodium\include\sodium\core.h" />
+    <ClInclude Include="..\..\..\..\src\libsodium\include\sodium\version.h" />
     <ClInclude Include="..\..\..\..\src\libsodium\include\sodium\export.h" />
     <ClInclude Include="..\..\..\..\src\libsodium\include\sodium\crypto_core_salsa20.h" />
     <ClInclude Include="..\..\..\..\src\libsodium\include\sodium\crypto_shorthash_siphash24.h" />
