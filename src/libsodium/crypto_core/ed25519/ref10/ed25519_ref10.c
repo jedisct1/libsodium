@@ -2739,7 +2739,7 @@ ge25519_from_hash(unsigned char s[32], const unsigned char h[64])
     fe25519_reduce64(fe_f, h);
     ge25519_elligator2(x, y, fe_f, &notsquare);
 
-    y_sign = notsquare;
+    y_sign = notsquare ^ 1;
     fe25519_neg(negy, y);
     fe25519_cmov(y, negy, fe25519_isnegative(y) ^ y_sign);
 
