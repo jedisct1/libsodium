@@ -2645,7 +2645,6 @@ ge25519_clear_cofactor(ge25519_p3 *p3)
 static void
 ge25519_elligator2(fe25519 x, fe25519 y, const fe25519 r, int *notsquare_p)
 {
-    fe25519       e;
     fe25519       gx1;
     fe25519       rr2;
     fe25519       x2, x3, negx;

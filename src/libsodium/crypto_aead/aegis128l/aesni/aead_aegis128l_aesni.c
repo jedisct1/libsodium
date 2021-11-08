@@ -30,7 +30,7 @@
 static inline void
 crypto_aead_aegis128l_update(__m128i *const state, const __m128i d1, const __m128i d2)
 {
-    __m128i tmp, tmp2;
+    __m128i tmp;
 
     tmp      = state[7];
     state[7] = _mm_aesenc_si128(state[6], state[7]);
