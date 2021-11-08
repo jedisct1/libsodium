@@ -8,6 +8,17 @@ SET version=%2
 SET log=build_%version%.log
 SET tools=Microsoft Visual Studio %version%.0\VC\vcvarsall.bat
 
+IF %version% == 17 (
+  SET tools=Microsoft Visual Studio\2022\Enterprise\VC\Auxiliary\Build\vcvarsall.bat
+  SET environment="%programfiles%\!tools!"
+  IF NOT EXIST !environment! (
+    SET environment="%programfiles(x86)%\!tools!"
+    IF NOT EXIST !environment! (
+      SET tools=Microsoft Visual Studio\2022\Community\VC\Auxiliary\Build\vcvarsall.bat
+    )
+  )
+)
+
 IF %version% == 16 (
   SET tools=Microsoft Visual Studio\2019\Enterprise\VC\Auxiliary\Build\vcvarsall.bat
   SET environment="%programfiles%\!tools!"
