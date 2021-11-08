@@ -2734,14 +2734,12 @@ ge25519_from_hash(unsigned char s[32], const unsigned char h[64])
     fe25519       fe_f;
     fe25519       x, y, negy;
     int           notsquare;
-    unsigned char y_sign;
 
     fe25519_reduce64(fe_f, h);
     ge25519_elligator2(x, y, fe_f, &notsquare);
 
-    y_sign = notsquare;
     fe25519_neg(negy, y);
-    fe25519_cmov(y, negy, fe25519_isnegative(y) ^ y_sign);
+    fe25519_cmov(y, negy, notsquare == fe25519_isnegative(y));
 
     ge25519_mont_to_ed(p3.X, p3.Y, x, y);
 
