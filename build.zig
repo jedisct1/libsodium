@@ -9,7 +9,7 @@ pub fn build(b: *std.build.Builder) !void {
     var target = b.standardTargetOptions(.{});
     var mode = b.standardReleaseOptions();
 
-    const libsodium = b.addStaticLibrary("libsodium", null);
+    const libsodium = b.addStaticLibrary("sodium", null);
     libsodium.setTarget(target);
     libsodium.setBuildMode(mode);
     libsodium.install();
