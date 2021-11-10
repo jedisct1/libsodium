@@ -66,6 +66,4 @@ pub fn build(b: *std.build.Builder) !void {
             });
         }
     }
-
-    libsodium.defineCMacro("CONFIGURED", "1");
 }
