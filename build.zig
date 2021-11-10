@@ -13,6 +13,9 @@ pub fn build(b: *std.build.Builder) !void {
     libsodium.setTarget(target);
     libsodium.setBuildMode(mode);
     libsodium.install();
+    if (mode != .Debug) {
+        libsodium.strip = true;
+    }
     libsodium.linkLibC();
 
     libsodium.addIncludeDir("src/libsodium/include/sodium");
