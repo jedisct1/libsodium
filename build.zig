@@ -67,6 +67,9 @@ pub fn build(b: *std.build.Builder) !void {
                 "-fwrapv",
                 "-flax-vector-conversions",
             });
+        } else if (mem.endsWith(u8, name, ".S")) {
+            const full_path = try fmt.allocPrint(allocator, "{s}/{s}", .{ base, entry.path });
+            libsodium.addAssemblyFile(full_path);
         }
     }
 }
