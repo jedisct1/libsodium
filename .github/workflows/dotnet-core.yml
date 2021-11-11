@@ -34,7 +34,7 @@ jobs:
           apt-get update && apt-get install -y build-essential
       - uses: actions/checkout@v1
       - name: configure
-        run: ./configure --disable-debug --prefix=$PWD/.libsodium-build
+        run: ./configure --disable-dependency-tracking --prefix=$PWD/.libsodium-build
       - name: make
         run: make
       - name: make check
@@ -73,7 +73,7 @@ jobs:
 
       - uses: actions/checkout@v1
       - name: configure
-        run: ./configure --disable-debug --prefix=$PWD/.libsodium-build --host=aarch64-linux-gnu
+        run: ./configure --disable-dependency-tracking --prefix=$PWD/.libsodium-build --host=aarch64-linux-gnu
       - name: make
         run: make -j $(nproc)
 
@@ -116,7 +116,7 @@ jobs:
 
       - uses: actions/checkout@v1
       - name: configure
-        run: ./configure --disable-debug --prefix=$PWD/.libsodium-build --host=arm-linux-gnueabihf
+        run: ./configure --disable-dependency-tracking --prefix=$PWD/.libsodium-build --host=arm-linux-gnueabihf
       - name: make
         run: make -j $(nproc)
 
@@ -145,7 +145,7 @@ jobs:
           apk add alpine-sdk ca-certificates
       - uses: actions/checkout@v1
       - name: configure
-        run: ./configure --disable-debug --prefix=$PWD/.libsodium-build
+        run: ./configure --disable-dependency-tracking --prefix=$PWD/.libsodium-build
       - name: make
         run: make
       - name: make check
@@ -159,12 +159,12 @@ jobs:
           name: build-linux-musl-x64
           path: .libsodium-build/lib/libsodium.so
 
-  build-macos:
-    runs-on: macos-latest
+  build-macos-x64:
+    runs-on: macos-11
     steps:
       - uses: actions/checkout@v1
       - name: configure
-        run: ./configure --disable-debug --prefix=$PWD/.libsodium-build
+        run: env CFLAGS="-O2 -arch x86_64 -mmacosx-version-min=10.10" LDFLAGS="-arch x86_64 -mmacosx-version-min=10.10" ./configure --host=arm-apple-darwin20 --prefix=$PWD/.libsodium-build
       - name: make
         run: make
       - name: make check
@@ -176,6 +176,21 @@ jobs:
           name: build-osx-x64
           path: .libsodium-build/lib/libsodium.dylib
 
+  build-macos-arm64:
+    runs-on: macos-11
+    steps:
+      - uses: actions/checkout@v1
+      - name: configure
+        run: env CFLAGS="-O2 -arch arm64 -mmacosx-version-min=10.10" LDFLAGS="-arch arm64 -mmacosx-version-min=10.10" ./configure --host=arm-apple-darwin20 --prefix=$PWD/.libsodium-build
+      - name: make
+        run: make
+      - name: make install
+        run: make install
+      - uses: actions/upload-artifact@v2
+        with:
+          name: build-osx-arm64
+          path: .libsodium-build/lib/libsodium.dylib
+
   pack:
     runs-on: ubuntu-latest
     needs:
@@ -184,7 +199,8 @@ jobs:
       - build-linux-glibc-arm
       - build-linux-glibc-arm64
       - build-linux-musl
-      - build-macos
+      - build-macos-x64
+      - build-macos-arm64
     container:
       image: mcr.microsoft.com/dotnet/sdk:5.0
     env:
@@ -221,6 +237,10 @@ jobs:
         with:
           name: build-osx-x64
           path: .libsodium-pack/runtimes/osx-x64/native/
+      - uses: actions/download-artifact@v2
+        with:
+          name: build-osx-arm64
+          path: .libsodium-pack/runtimes/osx-arm64/native/
       - name: Copy files
         run: cp AUTHORS ChangeLog LICENSE packaging/dotnet-core/libsodium.pkgproj .libsodium-pack/
       - name: Create NuGet package
