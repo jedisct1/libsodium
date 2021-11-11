@@ -210,8 +210,8 @@ crypto_pwhash_argon2id_str(char out[crypto_pwhash_argon2id_STRBYTES],
 }
 
 int
-crypto_pwhash_argon2id_str_verify(const char str[crypto_pwhash_argon2id_STRBYTES],
-                                  const char *const  passwd,
+crypto_pwhash_argon2id_str_verify(const char * str,
+                                  const char * const passwd,
                                   unsigned long long passwdlen)
 {
     int verify_ret;

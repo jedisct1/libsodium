@@ -243,7 +243,7 @@ crypto_pwhash_scryptsalsa208sha256_str(
 
 int
 crypto_pwhash_scryptsalsa208sha256_str_verify(
-    const char        str[crypto_pwhash_scryptsalsa208sha256_STRBYTES],
+    const char        *str,
     const char *const passwd, unsigned long long passwdlen)
 {
     char            wanted[crypto_pwhash_scryptsalsa208sha256_STRBYTES];
@@ -273,7 +273,7 @@ crypto_pwhash_scryptsalsa208sha256_str_verify(
 
 int
 crypto_pwhash_scryptsalsa208sha256_str_needs_rehash(
-    const char str[crypto_pwhash_scryptsalsa208sha256_STRBYTES],
+    const char * str,
     unsigned long long opslimit, size_t memlimit)
 {
     uint32_t N_log2, N_log2_;
