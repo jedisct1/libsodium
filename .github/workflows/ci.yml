@@ -113,7 +113,7 @@ jobs:
         run: sudo apt-get update
 
       - name: Install dependencies
-        run: sudo apt-get install -y build-essential libtool autoconf automake qemu-user-static gcc-powerpc-linux-gnu
+        run: sudo apt-get install -y build-essential libtool autoconf automake gcc-powerpc-linux-gnu
 
       - name: Autogen
         run: ./autogen.sh -s
