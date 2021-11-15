@@ -206,7 +206,7 @@ crypto_core_ed25519_scalar_add(unsigned char *z, const unsigned char *x,
     memset(y_, 0, sizeof y_);
     memcpy(x_, x, crypto_core_ed25519_SCALARBYTES);
     memcpy(y_, y, crypto_core_ed25519_SCALARBYTES);
-    sodium_add(x_, y_, crypto_core_ed25519_SCALARBYTES);
+    sodium_add(x_, y_, crypto_core_ed25519_NONREDUCEDSCALARBYTES);
     crypto_core_ed25519_scalar_reduce(z, x_);
 }
 
