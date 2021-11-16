@@ -13,7 +13,7 @@ if not exist sodium_version.c (
 	)
 )
 
-if "%2" == "x64" (SET ARCH=x64) else (SET ARCH=Win32)
+if "%2" == "x64" (SET ARCH=x64) else if "%2" == "ARM64" (SET ARCH=ARM64) else (SET ARCH=ARM64)
 SET CFLAGS=/nologo /DTEST_SRCDIR=\".\" /I..\..\src\libsodium\include\sodium /I..\..\src\libsodium\include /I..\quirks
 SET LDFLAGS=/link /LTCG advapi32.lib ..\..\Build\%1\%ARCH%\libsodium.lib
 if "%1" == "ReleaseDLL" ( goto :ReleaseDLL )
