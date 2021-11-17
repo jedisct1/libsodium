@@ -6,7 +6,7 @@ unset LDFLAGS
 unset CFLAGS
 
 if command -v wasm-opt >/dev/null; then
-  wasm-opt -O4 -o "${1}.tmp" "$1" && mv -f "${1}.tmp" "$1"
+  wasm-opt -O4 --strip-debug -o "${1}.tmp" "$1" && mv -f "${1}.tmp" "$1"
 fi
 
 if [ -z "$WASI_RUNTIME" ] || [ "$WASI_RUNTIME" = "wavm" ]; then
