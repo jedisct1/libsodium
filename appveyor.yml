@@ -1,6 +1,6 @@
 version: 1.0.18.{build}
 
-os: Visual Studio 2017
+os: Visual Studio 2019
 
 environment:
   matrix:
@@ -11,6 +11,10 @@ environment:
     - platform: x64
       configuration: Debug
     - platform: x64
+      configuration: Release
+    - platform: ARM64
+      configuration: Debug
+    - platform: ARM64
       configuration: Release
 
 matrix:
