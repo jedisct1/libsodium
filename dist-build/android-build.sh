@@ -26,12 +26,13 @@ fi
 export MAKE_TOOLCHAIN="${ANDROID_NDK_HOME}/build/tools/make_standalone_toolchain.py"
 
 export PREFIX="$(pwd)/libsodium-android-${TARGET_ARCH}"
-export TOOLCHAIN_DIR="$(pwd)/android-toolchain-${TARGET_ARCH}"
+export TOOLCHAIN_OS_DIR="`uname | tr '[:upper:]' '[:lower:]'`-x86_64/"
+export TOOLCHAIN_DIR="$ANDROID_NDK_HOME/toolchains/llvm/prebuilt/${TOOLCHAIN_OS_DIR}"
+echo "$ANDROID_NDK_HOME/toolchains/llvm/prebuilt/${TOOLCHAIN_OS_DIR}/${HOST_COMPILER}"
+
 export PATH="${PATH}:${TOOLCHAIN_DIR}/bin"
-
-export CC=${CC:-"${HOST_COMPILER}-clang"}
-
-rm -rf "${TOOLCHAIN_DIR}" "${PREFIX}"
+SDK_VERSION_NUM=`echo $NDK_PLATFORM | cut -d'-' -f2`
+export CC=${CC:-"${HOST_COMPILER}${SDK_VERSION_NUM}-clang"}
 
 echo
 echo "Warnings related to headers being present but not usable are due to functions"
@@ -47,9 +48,6 @@ else
 fi
 echo
 
-env - PATH="$PATH" \
-  "$MAKE_TOOLCHAIN" --force --api="$NDK_API_VERSION_COMPAT" \
-  --arch="$ARCH" --install-dir="$TOOLCHAIN_DIR" || exit 1
 
 if [ -z "$LIBSODIUM_FULL_BUILD" ]; then
   export LIBSODIUM_ENABLE_MINIMAL_FLAG="--enable-minimal"
@@ -69,9 +67,6 @@ if [ "$NDK_PLATFORM" != "$NDK_PLATFORM_COMPAT" ]; then
   echo
   echo "Configuring again for platform [${NDK_PLATFORM}]"
   echo
-  env - PATH="$PATH" \
-    "$MAKE_TOOLCHAIN" --force --api="$NDK_API_VERSION" \
-    --arch="$ARCH" --install-dir="$TOOLCHAIN_DIR" || exit 1
 
   ./configure \
     --disable-soname-versions \
