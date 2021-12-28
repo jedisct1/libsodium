@@ -24,12 +24,12 @@ if [ "x$TARGET_ARCH" = 'x' ] || [ "x$ARCH" = 'x' ] || [ "x$HOST_COMPILER" = 'x' 
 fi
 
 export PREFIX="$(pwd)/libsodium-android-${TARGET_ARCH}"
-export TOOLCHAIN_OS_DIR="`uname | tr '[:upper:]' '[:lower:]'`-x86_64/"
+export TOOLCHAIN_OS_DIR="$(uname | tr '[:upper:]' '[:lower:]')-x86_64/"
 export TOOLCHAIN_DIR="$ANDROID_NDK_HOME/toolchains/llvm/prebuilt/${TOOLCHAIN_OS_DIR}"
 echo "$ANDROID_NDK_HOME/toolchains/llvm/prebuilt/${TOOLCHAIN_OS_DIR}/${HOST_COMPILER}"
 
 export PATH="${PATH}:${TOOLCHAIN_DIR}/bin"
-SDK_VERSION_NUM=`echo $NDK_PLATFORM | cut -d'-' -f2`
+SDK_VERSION_NUM=$(echo $NDK_PLATFORM | cut -d'-' -f2)
 export CC=${CC:-"${HOST_COMPILER}${SDK_VERSION_NUM}-clang"}
 
 echo
@@ -73,7 +73,7 @@ if [ "$NDK_PLATFORM" != "$NDK_PLATFORM_COMPAT" ]; then
     --prefix="${PREFIX}" \
     --with-sysroot="${TOOLCHAIN_DIR}/sysroot" || exit 1
 
-  egrep '^#define ' config.log | sort -u >config-def.log
+  grep -E '^#define ' config.log | sort -u >config-def.log
   if ! cmp config-def.log config-def-compat.log; then
     echo "Platform [${NDK_PLATFORM}] is not backwards-compatible with [${NDK_PLATFORM_COMPAT}]" >&2
     diff -u config-def.log config-def-compat.log >&2
