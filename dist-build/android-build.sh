@@ -18,7 +18,7 @@ if [ ! -f ./configure ]; then
   exit 1
 fi
 
-if [ "$TARGET_ARCH" = '' ] || [ "$ARCH" = '' ] || [ "$HOST_COMPILER" = '' ]; then
+if [ -z "$TARGET_ARCH" ] || [ -z "$ARCH" ] || [ -z "$HOST_COMPILER" ]; then
   echo "You shouldn't use android-build.sh directly, use android-[arch].sh instead" >&2
   exit 1
 fi
