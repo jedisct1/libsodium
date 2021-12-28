@@ -23,8 +23,6 @@ if [ "x$TARGET_ARCH" = 'x' ] || [ "x$ARCH" = 'x' ] || [ "x$HOST_COMPILER" = 'x' 
   exit 1
 fi
 
-export MAKE_TOOLCHAIN="${ANDROID_NDK_HOME}/build/tools/make_standalone_toolchain.py"
-
 export PREFIX="$(pwd)/libsodium-android-${TARGET_ARCH}"
 export TOOLCHAIN_OS_DIR="`uname | tr '[:upper:]' '[:lower:]'`-x86_64/"
 export TOOLCHAIN_DIR="$ANDROID_NDK_HOME/toolchains/llvm/prebuilt/${TOOLCHAIN_OS_DIR}"
