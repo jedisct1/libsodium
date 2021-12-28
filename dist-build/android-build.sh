@@ -1,7 +1,7 @@
 #! /bin/sh
 
 if [ -z "$NDK_PLATFORM" ]; then
-  export NDK_PLATFORM="android-16"
+  export NDK_PLATFORM="android-19"
 fi
 export NDK_PLATFORM_COMPAT="${NDK_PLATFORM_COMPAT:-${NDK_PLATFORM}}"
 export NDK_API_VERSION=$(echo "$NDK_PLATFORM" | sed 's/^android-//')
@@ -18,7 +18,7 @@ if [ ! -f ./configure ]; then
   exit 1
 fi
 
-if [ "x$TARGET_ARCH" = 'x' ] || [ "x$ARCH" = 'x' ] || [ "x$HOST_COMPILER" = 'x' ]; then
+if [ "$TARGET_ARCH" = '' ] || [ "$ARCH" = '' ] || [ "$HOST_COMPILER" = '' ]; then
   echo "You shouldn't use android-build.sh directly, use android-[arch].sh instead" >&2
   exit 1
 fi
