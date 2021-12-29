@@ -1,11 +1,11 @@
 #! /bin/sh
 
 if [ -z "$NDK_PLATFORM" ]; then
-  export NDK_PLATFORM="android-16"
+  export NDK_PLATFORM="android-19"
 fi
 export NDK_PLATFORM_COMPAT="${NDK_PLATFORM_COMPAT:-${NDK_PLATFORM}}"
-export NDK_API_VERSION=$(echo "$NDK_PLATFORM" | sed 's/^android-//')
-export NDK_API_VERSION_COMPAT=$(echo "$NDK_PLATFORM_COMPAT" | sed 's/^android-//')
+export NDK_API_VERSION="$(echo "$NDK_PLATFORM" | sed 's/^android-//')"
+export NDK_API_VERSION_COMPAT="$(echo "$NDK_PLATFORM_COMPAT" | sed 's/^android-//')"
 
 if [ -z "$ANDROID_NDK_HOME" ]; then
   echo "You should probably set ANDROID_NDK_HOME to the directory containing"
@@ -18,19 +18,23 @@ if [ ! -f ./configure ]; then
   exit 1
 fi
 
-if [ "x$TARGET_ARCH" = 'x' ] || [ "x$ARCH" = 'x' ] || [ "x$HOST_COMPILER" = 'x' ]; then
+if [ -z "$TARGET_ARCH" ] || [ -z "$ARCH" ] || [ -z "$HOST_COMPILER" ]; then
   echo "You shouldn't use android-build.sh directly, use android-[arch].sh instead" >&2
   exit 1
 fi
 
+
 if [ -z ${PREFIX+x} ]; then export PREFIX="$(pwd)/libsodium-android"; echo "setting default PREFIX=${PREFIX}"; fi
 
-export TOOLCHAIN_OS_DIR="`uname | tr '[:upper:]' '[:lower:]'`-x86_64/"
+
+export TOOLCHAIN_OS_DIR="$(uname | tr '[:upper:]' '[:lower:]')-x86_64/"
 export TOOLCHAIN_DIR="$ANDROID_NDK_HOME/toolchains/llvm/prebuilt/${TOOLCHAIN_OS_DIR}"
 echo "$ANDROID_NDK_HOME/toolchains/llvm/prebuilt/${TOOLCHAIN_OS_DIR}/${HOST_COMPILER}"
 
 export PATH="${PATH}:${TOOLCHAIN_DIR}/bin"
-SDK_VERSION_NUM=`echo $NDK_PLATFORM | cut -d'-' -f2`
+
+SDK_VERSION_NUM=$(echo $NDK_PLATFORM | cut -d'-' -f2)
+
 export CC=${CC:-"${HOST_COMPILER}${SDK_VERSION_NUM}-clang"}
 
 echo
@@ -78,7 +82,7 @@ if [ "$NDK_PLATFORM" != "$NDK_PLATFORM_COMPAT" ]; then
     --includedir="${PREFIX}/include" \
     --with-sysroot="${TOOLCHAIN_DIR}/sysroot" || exit 1
 
-  egrep '^#define ' config.log | sort -u >config-def.log
+  grep -E '^#define ' config.log | sort -u >config-def.log
   if ! cmp config-def.log config-def-compat.log; then
     echo "Platform [${NDK_PLATFORM}] is not backwards-compatible with [${NDK_PLATFORM_COMPAT}]" >&2
     diff -u config-def.log config-def-compat.log >&2
