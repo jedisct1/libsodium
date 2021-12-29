@@ -23,7 +23,8 @@ if [ "x$TARGET_ARCH" = 'x' ] || [ "x$ARCH" = 'x' ] || [ "x$HOST_COMPILER" = 'x' 
   exit 1
 fi
 
-export PREFIX="$(pwd)/libsodium-android-${TARGET_ARCH}"
+if [ -z ${PREFIX+x} ]; then export PREFIX="$(pwd)/libsodium-android"; echo "setting default PREFIX=${PREFIX}"; fi
+
 export TOOLCHAIN_OS_DIR="`uname | tr '[:upper:]' '[:lower:]'`-x86_64/"
 export TOOLCHAIN_DIR="$ANDROID_NDK_HOME/toolchains/llvm/prebuilt/${TOOLCHAIN_OS_DIR}"
 echo "$ANDROID_NDK_HOME/toolchains/llvm/prebuilt/${TOOLCHAIN_OS_DIR}/${HOST_COMPILER}"
@@ -58,6 +59,8 @@ fi
   ${LIBSODIUM_ENABLE_MINIMAL_FLAG} \
   --host="${HOST_COMPILER}" \
   --prefix="${PREFIX}" \
+  --includedir="${PREFIX}/include" \
+  --libdir="${PREFIX}/lib/sodium/${TARGET_ARCH}" \
   --with-sysroot="${TOOLCHAIN_DIR}/sysroot" || exit 1
 
 if [ "$NDK_PLATFORM" != "$NDK_PLATFORM_COMPAT" ]; then
@@ -71,6 +74,8 @@ if [ "$NDK_PLATFORM" != "$NDK_PLATFORM_COMPAT" ]; then
     ${LIBSODIUM_ENABLE_MINIMAL_FLAG} \
     --host="${HOST_COMPILER}" \
     --prefix="${PREFIX}" \
+    --libdir="${PREFIX}/lib/sodium/${TARGET_ARCH}" \
+    --includedir="${PREFIX}/include" \
     --with-sysroot="${TOOLCHAIN_DIR}/sysroot" || exit 1
 
   egrep '^#define ' config.log | sort -u >config-def.log
