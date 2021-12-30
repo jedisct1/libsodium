@@ -1,7 +1,7 @@
 #! /bin/sh
 
 if [ -z "$NDK_PLATFORM" ]; then
-  export NDK_PLATFORM="android-16"
+  export NDK_PLATFORM="android-19"
 fi
 export NDK_PLATFORM_COMPAT="${NDK_PLATFORM_COMPAT:-${NDK_PLATFORM}}"
 export NDK_API_VERSION=$(echo "$NDK_PLATFORM" | sed 's/^android-//')
