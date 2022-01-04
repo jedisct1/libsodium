@@ -41,16 +41,16 @@ static void
 crypto_aead_aegis128l_init(const unsigned char *key, const unsigned char *nonce,
                            uint8x16_t *const state)
 {
-    static CRYPTO_ALIGN(16) const unsigned char c1_[] = {
+    static CRYPTO_ALIGN(16) const unsigned char c0_[] = {
         0xdb, 0x3d, 0x18, 0x55, 0x6d, 0xc2, 0x2f, 0xf1, 0x20, 0x11, 0x31, 0x42,
         0x73, 0xb5, 0x28, 0xdd
     };
-    static CRYPTO_ALIGN(16) const unsigned char c2_[] = {
+    static CRYPTO_ALIGN(16) const unsigned char c1_[] = {
         0x00, 0x01, 0x01, 0x02, 0x03, 0x05, 0x08, 0x0d, 0x15, 0x22, 0x37, 0x59,
         0x90, 0xe9, 0x79, 0x62
     };
+    const uint8x16_t c0 = vld1q_u8(c0_);
     const uint8x16_t c1 = vld1q_u8(c1_);
-    const uint8x16_t c2 = vld1q_u8(c2_);
     uint8x16_t       k;
     uint8x16_t       n;
     int              i;
@@ -59,13 +59,13 @@ crypto_aead_aegis128l_init(const unsigned char *key, const unsigned char *nonce,
     n = vld1q_u8(nonce);
 
     state[0] = veorq_u8(k, n);
-    state[1] = c1;
-    state[2] = c2;
-    state[3] = c1;
+    state[1] = c0;
+    state[2] = c1;
+    state[3] = c0;
     state[4] = veorq_u8(k, n);
-    state[5] = veorq_u8(k, c2);
-    state[6] = veorq_u8(k, c1);
-    state[7] = veorq_u8(k, c2);
+    state[5] = veorq_u8(k, c1);
+    state[6] = veorq_u8(k, c0);
+    state[7] = veorq_u8(k, c1);
     for (i = 0; i < 10; i++) {
         crypto_aead_aegis128l_update(state, n, k);
     }

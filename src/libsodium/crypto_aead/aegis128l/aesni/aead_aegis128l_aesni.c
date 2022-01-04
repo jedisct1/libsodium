@@ -49,9 +49,9 @@ crypto_aead_aegis128l_update(__m128i *const state, const __m128i d1, const __m12
 static void
 crypto_aead_aegis128l_init(const unsigned char *key, const unsigned char *nonce, __m128i *const state)
 {
-    const __m128i c1 = _mm_set_epi8(0xdd, 0x28, 0xb5, 0x73, 0x42, 0x31, 0x11, 0x20, 0xf1, 0x2f, 0xc2, 0x6d,
+    const __m128i c0 = _mm_set_epi8(0xdd, 0x28, 0xb5, 0x73, 0x42, 0x31, 0x11, 0x20, 0xf1, 0x2f, 0xc2, 0x6d,
                                     0x55, 0x18, 0x3d, 0xdb);
-    const __m128i c2 = _mm_set_epi8(0x62, 0x79, 0xe9, 0x90, 0x59, 0x37, 0x22, 0x15, 0x0d, 0x08, 0x05, 0x03,
+    const __m128i c1 = _mm_set_epi8(0x62, 0x79, 0xe9, 0x90, 0x59, 0x37, 0x22, 0x15, 0x0d, 0x08, 0x05, 0x03,
                                     0x02, 0x01, 0x01, 0x00);
     __m128i       k;
     __m128i       n;
@@ -61,13 +61,13 @@ crypto_aead_aegis128l_init(const unsigned char *key, const unsigned char *nonce,
     n = _mm_loadu_si128((const __m128i *) (const void *) nonce);
 
     state[0] = _mm_xor_si128(k, n);
-    state[1] = c1;
-    state[2] = c2;
-    state[3] = c1;
+    state[1] = c0;
+    state[2] = c1;
+    state[3] = c0;
     state[4] = _mm_xor_si128(k, n);
-    state[5] = _mm_xor_si128(k, c2);
-    state[6] = _mm_xor_si128(k, c1);
-    state[7] = _mm_xor_si128(k, c2);
+    state[5] = _mm_xor_si128(k, c1);
+    state[6] = _mm_xor_si128(k, c0);
+    state[7] = _mm_xor_si128(k, c1);
     for (i = 0; i < 10; i++) {
         crypto_aead_aegis128l_update(state, n, k);
     }
