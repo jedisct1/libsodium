@@ -1,6 +1,6 @@
 #! /bin/sh
 
-export PATH="/opt/zig/bin:/opt/zig:/usr/local/opt/llvm/bin:$PATH"
+export PATH="/opt/zig/bin:/opt/zig:/opt/homebrew/bin:$PATH"
 
 export PREFIX="$(pwd)/libsodium-wasm32-wasi"
 
