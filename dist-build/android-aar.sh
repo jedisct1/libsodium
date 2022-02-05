@@ -106,3 +106,31 @@ rm "$AAR_PATH"
 zip -r "$AAR_PATH" META-INF prefab AndroidManifest.xml
 cd .. || exit
 rm -r "$DEST_PATH"
+clear
+echo "congrats you have built an AAR containing libsodium. To use it with 
+gradle / cmake (defaults for Android Studio projects) simply:
+
+edit the app/build.gradle file to add:
+
+    android {
+        buildFeatures {
+            prefab true
+        }
+    }
+    
+    #and
+    dependencies {
+        implementation fileTree(dir:'path/to/aar/',include:['libsodium-$SODIUM_VERSION.aar']) 
+    }
+    #you can optionally store multiple AAR files in the same folder and include '*.aar'
+
+edit your module's CMakeLists.txt file to add:
+    
+    find_package(sodium REQUIRED CONFIG)
+    
+    # the specify sodium::sodium as an item in the relevant target_link_libraries statement
+    # the first value specifies the AAR and is always sodium the second is the library 
+    # name which supports sodium for the full shared library sodium-static
+    # for the full static library sodium-minimal for the minimal shared library
+    # or sodium-minimal-static for the minimal static library"
+
