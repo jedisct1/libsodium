@@ -55,6 +55,7 @@ fi
 
 ./configure \
   --disable-soname-versions \
+  --disable-pie \
   ${LIBSODIUM_ENABLE_MINIMAL_FLAG} \
   --host="${HOST_COMPILER}" \
   --prefix="${PREFIX}" \
@@ -68,6 +69,7 @@ if [ "$NDK_PLATFORM" != "$NDK_PLATFORM_COMPAT" ]; then
 
   ./configure \
     --disable-soname-versions \
+    --disable-pie \
     ${LIBSODIUM_ENABLE_MINIMAL_FLAG} \
     --host="${HOST_COMPILER}" \
     --prefix="${PREFIX}" \
