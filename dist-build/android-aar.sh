@@ -11,12 +11,7 @@ DEST_PATH=$(mktemp -d)
 cd "$(dirname "$0")/../" || exit
 
 make_abi_json() {
-  if [ -z "$2" ]; then
-    STL_VALUE="c++_shared"
-  else
-    STL_VALUE="c++_static"
-  fi
-  echo "{\"abi\":\"$NDK_ARCH\",\"api\":$SDK_VERSION,\"ndk\":$NDK_VERSION,\"stl\":\"$STL_VALUE\"}" >"$1/abi.json"
+  echo "{\"abi\":\"$NDK_ARCH\",\"api\":$SDK_VERSION,\"ndk\":$NDK_VERSION,\"stl\":\"none\"}" >"$1/abi.json"
 }
 
 make_prefab_json() {
@@ -40,6 +35,11 @@ make_prefab_structure() {
   cp "LICENSE" "$DEST_PATH/META-INF"
   for i in "prefab/modules/sodium" "prefab/modules/sodium-static" "prefab/modules/sodium-minimal" "prefab/modules/sodium-minimal-static"; do
     mkdir "$DEST_PATH/$i"
+    if [ "$i" = "prefab/modules/sodium-minimal" ]; then
+      echo "{\"library_name\":\"libsodium\"}" >"$DEST_PATH/$i/module.json"
+    else
+      echo "{}" >"$DEST_PATH/$i/module.json"
+    fi
     mkdir "$DEST_PATH/$i/libs"
     for j in "arm64-v8a" "armeabi-v7a" "x86" "x86_64"; do
       mkdir "$DEST_PATH/$i/libs/android.$j"
@@ -52,15 +52,8 @@ make_prefab_structure() {
 
       fi
 
-      if [ $j != "x86" ]; then
-        if [ $i = "prefab/modules/sodium-minimal-static" ] || [ $i = "prefab/modules/sodium-static" ]; then
-          make_abi_json "$DEST_PATH/$i/libs/android.$j" static
-        else
-          make_abi_json "$DEST_PATH/$i/libs/android.$j"
-        fi
-      else
-        make_abi_json "$DEST_PATH/$i/libs/android.$j"
-      fi
+      make_abi_json "$DEST_PATH/$i/libs/android.$j"
+
     done
   done
 }
@@ -73,18 +66,24 @@ copy_libs() {
 
   cp -r "$SRC_DIR/include" "$SHARED_DEST_DIR"
   cp -r "$SRC_DIR/include" "$STATIC_DEST_DIR"
-  cp "$SRC_DIR/lib/libsodium.so" "$SHARED_DEST_DIR/libsodium$3.so"
-  if [ "$2" = "x86" ]; then
-    cp "$SRC_DIR/lib/libsodium.so" "$STATIC_DEST_DIR/libsodium$3-static.so"
-  else
-    cp "$SRC_DIR/lib/libsodium.a" "$STATIC_DEST_DIR/libsodium$3-static.a"
-  fi
+  cp "$SRC_DIR/lib/libsodium.so" "$SHARED_DEST_DIR/libsodium.so"
+  cp "$SRC_DIR/lib/libsodium.a" "$STATIC_DEST_DIR/libsodium$3-static.a"
+
   rm -r "$SRC_DIR"
+}
+
+build_all() {
+
+  dist-build/android-armv7-a.sh
+  dist-build/android-armv8-a.sh
+  dist-build/android-x86_64.sh
+  dist-build/android-x86.sh
+
 }
 
 make_prefab_structure
 
-"dist-build/android-all.sh"
+build_all
 
 copy_libs "armv7-a" "armeabi-v7a" "-minimal"
 copy_libs "armv8-a+crypto" "arm64-v8a" "-minimal"
@@ -94,7 +93,7 @@ copy_libs "westmere" "x86_64" "-minimal"
 LIBSODIUM_FULL_BUILD="Y"
 export LIBSODIUM_FULL_BUILD
 
-"dist-build/android-all.sh"
+build_all
 
 copy_libs "armv7-a" "armeabi-v7a"
 copy_libs "armv8-a+crypto" "arm64-v8a"
