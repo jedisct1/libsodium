@@ -12,7 +12,7 @@ jobs:
     steps:
       - uses: actions/checkout@v1
       - name: buildbase.bat
-        run: buildbase.bat ..\vs2019\libsodium.sln 16
+        run: buildbase.bat ..\vs2022\libsodium.sln 17
         working-directory: builds/msvc/build/
         shell: cmd
       - uses: actions/upload-artifact@v2
