@@ -3,7 +3,7 @@
   <PropertyGroup Label="Globals">
     <ProjectGuid>{A185B162-6CB6-4502-B03F-B56F7699A8D9}</ProjectGuid>
     <ProjectName>libsodium</ProjectName>
-    <PlatformToolset>v120</PlatformToolset>
+    <PlatformToolset>v143</PlatformToolset>
   </PropertyGroup>
   <ItemGroup Label="ProjectConfigurations">
     <ProjectConfiguration Include="DebugDLL|Win32">

@@ -1,13 +1,13 @@
 #! /bin/sh
 
-export PATH="/opt/zig/bin:/opt/zig:/usr/local/opt/llvm/bin:$PATH"
+export PATH="/opt/zig/bin:/opt/zig:/opt/homebrew/bin:$PATH"
 
 export PREFIX="$(pwd)/libsodium-wasm32-wasi"
 
 mkdir -p $PREFIX || exit 1
 
 export CC="zig cc"
-export CFLAGS="-DED25519_NONDETERMINISTIC=1 --target=wasm32-wasi -O2"
+export CFLAGS="--target=wasm32-wasi -O2"
 export LDFLAGS="-s -Wl,--stack-first"
 export AR="zig ar"
 export RANLIB="zig ranlib"
@@ -17,6 +17,8 @@ make distclean >/dev/null
 if [ "x$1" = "x--bench" ]; then
   export BENCHMARKS=1
   export CPPFLAGS="-DBENCHMARKS -DITERATIONS=100"
+else
+  export CPPFLAGS="-DED25519_NONDETERMINISTIC=1"
 fi
 
 if [ -n "$LIBSODIUM_MINIMAL_BUILD" ]; then

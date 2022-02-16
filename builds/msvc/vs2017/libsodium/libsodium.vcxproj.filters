@@ -389,6 +389,9 @@
     <ClInclude Include="..\..\..\..\src\libsodium\include\sodium\core.h">
       <Filter>include\sodium</Filter>
     </ClInclude>
+    <ClInclude Include="..\..\..\..\src\libsodium\include\sodium\version.h">
+      <Filter>include\sodium</Filter>
+    </ClInclude>
     <ClInclude Include="..\..\..\..\src\libsodium\include\sodium\export.h">
       <Filter>include\sodium</Filter>
     </ClInclude>

@@ -293,7 +293,6 @@ ge25519_frombytes(ge25519_p3 *h, const unsigned char *s)
 {
     fe25519 u;
     fe25519 v;
-    fe25519 v3;
     fe25519 vxx;
     fe25519 m_root_check, p_root_check;
     fe25519 negx;
@@ -307,15 +306,9 @@ ge25519_frombytes(ge25519_p3 *h, const unsigned char *s)
     fe25519_sub(u, u, h->Z); /* u = y^2-1 */
     fe25519_add(v, v, h->Z); /* v = dy^2+1 */
 
-    fe25519_sq(v3, v);
-    fe25519_mul(v3, v3, v); /* v3 = v^3 */
-    fe25519_sq(h->X, v3);
-    fe25519_mul(h->X, h->X, v);
-    fe25519_mul(h->X, h->X, u); /* x = uv^7 */
-
-    fe25519_pow22523(h->X, h->X); /* x = (uv^7)^((q-5)/8) */
-    fe25519_mul(h->X, h->X, v3);
-    fe25519_mul(h->X, h->X, u); /* x = uv^3(uv^7)^((q-5)/8) */
+    fe25519_mul(h->X, u, v);
+    fe25519_pow22523(h->X, h->X);
+    fe25519_mul(h->X, u, h->X); /* u((uv)^((q-5)/8)) */
 
     fe25519_sq(vxx, h->X);
     fe25519_mul(vxx, vxx, v);

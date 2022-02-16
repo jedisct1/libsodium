@@ -380,6 +380,9 @@
     <ClInclude Include="src\libsodium\include\sodium\core.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="src\libsodium\include\sodium\version.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
     <ClInclude Include="src\libsodium\include\sodium\export.h">
       <Filter>Header Files</Filter>
     </ClInclude>
