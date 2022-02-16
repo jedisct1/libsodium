@@ -80,15 +80,10 @@ jobs:
         run: make -j $(nproc)
 
       - name: make check
+        # Disable make check on this platform
+        if: ${{ false }}
         run: |
           make check
-
-      - name: Upload test Log
-        if: ${{ failure() }}
-        uses: actions/upload-artifact@v2
-        with:
-          name: test-log-arm64
-          path: test/default/test-suite.log
 
       - name: make install
         run: make install
