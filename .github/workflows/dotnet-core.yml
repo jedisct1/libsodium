@@ -18,11 +18,11 @@ jobs:
       - uses: actions/upload-artifact@v2
         with:
           name: build-win-x64
-          path: bin/x64/Release/*/dynamic/libsodium.dll
+          path: bin/x64/Release/v143/dynamic/libsodium.dll
       - uses: actions/upload-artifact@v2
         with:
           name: build-win-x86
-          path: bin/Win32/Release/*/dynamic/libsodium.dll
+          path: bin/Win32/Release/v143/dynamic/libsodium.dll
 
   build-linux-glibc:
     runs-on: ubuntu-latest
