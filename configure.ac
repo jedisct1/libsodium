@@ -813,6 +813,26 @@ __sync_lock_release(&_sodium_lock);
  AC_DEFINE([HAVE_ATOMIC_OPS], [1], [atomic operations are supported])],
 [AC_MSG_RESULT(no)])
 
+AC_MSG_CHECKING(if C11 memory fences are supported)
+AC_LINK_IFELSE([AC_LANG_PROGRAM([[
+#include <stdatomic.h>
+ ]], [[
+atomic_thread_fence(memory_order_acquire);
+]]
+)],
+[AC_MSG_RESULT(yes)
+ AC_DEFINE([HAVE_C11_MEMORY_FENCES], [1], [C11 memory fences are supported])],
+[AC_MSG_RESULT(no)])
+
+AC_MSG_CHECKING(if gcc memory fences are supported)
+AC_LINK_IFELSE([AC_LANG_PROGRAM([[ ]], [[
+__atomic_thread_fence(__ATOMIC_ACQUIRE);
+]]
+)],
+[AC_MSG_RESULT(yes)
+ AC_DEFINE([HAVE_GCC_MEMORY_FENCES], [1], [GCC memory fences are supported])],
+[AC_MSG_RESULT(no)])
+
 dnl Checks for functions and headers
 
 AC_FUNC_ALLOCA
