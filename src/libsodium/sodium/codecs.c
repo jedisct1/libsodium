@@ -7,6 +7,7 @@
 #include <string.h>
 
 #include "core.h"
+#include "private/common.h"
 #include "utils.h"
 
 /* Derived from original code by CodesInChaos */
@@ -250,6 +251,7 @@ _sodium_base642bin_skip_padding(const char * const b64, const size_t b64_len,
             errno = ERANGE;
             return -1;
         }
+        ACQUIRE_FENCE;
         c = b64[*b64_pos_p];
         if (c == '=') {
             padding_len--;

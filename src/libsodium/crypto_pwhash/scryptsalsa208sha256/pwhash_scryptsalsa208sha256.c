@@ -57,6 +57,7 @@ sodium_strnlen(const char *str, size_t maxlen)
 {
     size_t i = 0U;
 
+    ACQUIRE_FENCE;
     while (i < maxlen && str[i] != 0) {
         i++;
     }
