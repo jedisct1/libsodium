@@ -27,8 +27,6 @@ The documentation is available on Gitbook and built from the [libsodium-doc](htt
 
 * [libsodium documentation](https://download.libsodium.org/doc/) -
 online, requires Javascript.
-* [offline documentation](https://www.gitbook.com/book/jedisct1/libsodium/details)
-in PDF format.
 
 ## Integrity Checking
 
