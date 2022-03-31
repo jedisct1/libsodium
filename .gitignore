@@ -166,6 +166,7 @@ test/default/stream3
 test/default/stream4
 test/default/verify1
 test/default/xchacha20
+test/default/shifumi128
 test/js.done
 testing
 zig-cache

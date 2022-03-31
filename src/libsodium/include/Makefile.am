@@ -59,6 +59,7 @@ SODIUM_EXPORT = \
 	sodium/crypto_verify_16.h \
 	sodium/crypto_verify_32.h \
 	sodium/crypto_verify_64.h \
+	sodium/crypto_zkp_shifumi128.h \
 	sodium/export.h \
 	sodium/randombytes.h \
 	sodium/randombytes_internal_random.h \

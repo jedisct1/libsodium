@@ -339,6 +339,9 @@
     <ClCompile Include="..\..\..\..\src\libsodium\crypto_aead\chacha20poly1305\sodium\aead_chacha20poly1305.c">
       <Filter>crypto_aead\chacha20poly1305\sodium</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\..\..\src\libsodium\crypto_zkp\shifumi128.c">
+      <Filter>crypto_zkp</Filter>
+    </ClCompile>
     <ClCompile Include="..\..\..\..\src\libsodium\crypto_secretstream\xchacha20poly1305\secretstream_xchacha20poly1305.c">
       <Filter>crypto_secretstream\xchacha20poly1305</Filter>
     </ClCompile>
@@ -588,6 +591,9 @@
       <Filter>include\sodium</Filter>
     </ClInclude>
     <ClInclude Include="..\..\..\..\src\libsodium\include\sodium\crypto_generichash_blake2b.h">
+      <Filter>include\sodium</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\src\libsodium\include\sodium\crypto_zkp_shifumi128.h">
       <Filter>include\sodium</Filter>
     </ClInclude>
     <ClInclude Include="..\..\..\..\src\libsodium\include\sodium\private\ed25519_ref10.h">
@@ -1032,6 +1038,9 @@
     </Filter>
     <Filter Include="crypto_verify\sodium">
       <UniqueIdentifier>{80669cf5-3c9c-3c60-b409-9d8fb305bc77}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="crypto_zkp">
+      <UniqueIdentifier>{782f92dd-85aa-35fb-919d-aabbca1c59f1}</UniqueIdentifier>
     </Filter>
     <Filter Include="include">
       <UniqueIdentifier>{96da72eb-3aa0-3850-83eb-32788f91e5bd}</UniqueIdentifier>
