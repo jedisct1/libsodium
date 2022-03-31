@@ -764,13 +764,5 @@
     <ClInclude Include="src\libsodium\crypto_core\ed25519\ref10\fe_51\base.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="builds\msvc\resource.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-  </ItemGroup>
-  <ItemGroup>
-    <ResourceCompile Include="builds\msvc\resource.rc">
-      <Filter>Resource Files</Filter>
-    </ResourceCompile>
   </ItemGroup>
 </Project>
