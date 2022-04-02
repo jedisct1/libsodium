@@ -84,8 +84,7 @@ EXTRA_DIST = \
 	stream3.exp \
 	stream4.exp \
 	verify1.exp \
-	xchacha20.exp \
-	shifumi128.exp
+	xchacha20.exp
 
 DISTCLEANFILES = \
 	aead_aegis128l.res \
@@ -169,8 +168,7 @@ DISTCLEANFILES = \
 	stream3.res \
 	stream4.res \
 	verify1.res \
-	xchacha20.res \
-	shifumi128.res
+	xchacha20.res
 
 AM_CPPFLAGS = \
 	-DTEST_SRCDIR=\"@srcdir@\" \
@@ -251,8 +249,7 @@ TESTS_TARGETS = \
 	stream2 \
 	stream3 \
 	stream4 \
-	verify1 \
-	shifumi128
+	verify1
 
 if !EMSCRIPTEN
 TESTS_TARGETS += \
@@ -509,9 +506,6 @@ verify1_LDADD             = $(TESTS_LDADD)
 
 xchacha20_SOURCE          = cmptest.h xchacha20.c
 xchacha20_LDADD           = $(TESTS_LDADD)
-
-shifumi128_SOURC          = cmptest.h shifumi128.c
-shifumi128_LDADD          = $(TESTS_LDADD)
 
 if !MINIMAL
 TESTS_TARGETS += \

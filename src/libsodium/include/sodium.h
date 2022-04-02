@@ -49,7 +49,6 @@
 #include "sodium/crypto_verify_16.h"
 #include "sodium/crypto_verify_32.h"
 #include "sodium/crypto_verify_64.h"
-#include "sodium/crypto_zkp_shifumi128.h"
 #include "sodium/randombytes.h"
 #include "sodium/randombytes_internal_random.h"
 #include "sodium/randombytes_sysrandom.h"
