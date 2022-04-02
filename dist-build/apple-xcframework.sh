@@ -256,8 +256,8 @@ build_catalyst() {
 
   ## arm64 catalyst
   if [ "$APPLE_SILICON_SUPPORTED" = "true" ]; then
-    export CFLAGS="-O2 -arch arm64 -target arm64-apple-ios13.0-macabi -isysroot ${SDK}"
-    export LDFLAGS="-arch arm64 -target arm64-apple-ios13.0-macabi -isysroot ${SDK}"
+    export CFLAGS="-O2 -arch arm64 -target arm64-apple-ios13.1-macabi -isysroot ${SDK}"
+    export LDFLAGS="-arch arm64 -target arm64-apple-ios13.1-macabi -isysroot ${SDK}"
 
     make distclean >/dev/null 2>&1
     ./configure --host=arm-apple-ios --prefix="$CATALYST_ARM64_PREFIX" \
@@ -266,8 +266,8 @@ build_catalyst() {
   fi
 
   ## x86_64 catalyst
-  export CFLAGS="-O2 -arch x86_64 -target x86_64-apple-ios13.0-macabi -isysroot ${SDK}"
-  export LDFLAGS="-arch x86_64 -target x86_64-apple-ios13.0-macabi -isysroot ${SDK}"
+  export CFLAGS="-O2 -arch x86_64 -target x86_64-apple-ios13.1-macabi -isysroot ${SDK}"
+  export LDFLAGS="-arch x86_64 -target x86_64-apple-ios13.1-macabi -isysroot ${SDK}"
 
   make distclean >/dev/null 2>&1
   ./configure --host=x86_64-apple-ios --prefix="$CATALYST_X86_64_PREFIX" \
