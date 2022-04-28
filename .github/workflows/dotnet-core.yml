@@ -261,7 +261,7 @@ jobs:
           path: .libsodium-pack/runtimes/linux-arm/native/
       - uses: actions/download-artifact@v2
         with:
-          name: build-linux-musl
+          name: build-linux-musl-x64
           path: .libsodium-pack/runtimes/linux-musl-x64/native/
       - uses: actions/download-artifact@v2
         with:
