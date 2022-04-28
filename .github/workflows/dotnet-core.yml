@@ -5,6 +5,7 @@ on:
     branches:
       - stable
       - next
+  workflow_dispatch:
 
 jobs:
   build-windows:
@@ -163,6 +164,31 @@ jobs:
           name: build-linux-musl-x64
           path: .libsodium-build/lib/libsodium.so
 
+  build-linux-musl-arm64:
+    runs-on: ubuntu-latest
+    container:
+      image: alpine:3.15
+    steps:
+      - name: Set up build environment
+        run: |
+          apk update
+          apk add alpine-sdk ca-certificates
+      - uses: actions/checkout@v1
+      - name: configure
+        run: ./configure --disable-dependency-tracking --prefix=$PWD/.libsodium-build --host=aarch64-linux-gnu
+      - name: make
+        run: make
+      - name: make check
+        run: make check
+      - name: make install
+        run: make install
+      - name: strip
+        run: strip --strip-all .libsodium-build/lib/libsodium.so
+      - uses: actions/upload-artifact@v2
+        with:
+          name: build-linux-musl-arm64
+          path: .libsodium-build/lib/libsodium.so
+
   build-macos-x64:
     runs-on: macos-11
     steps:
@@ -203,6 +229,7 @@ jobs:
       - build-linux-glibc-arm
       - build-linux-glibc-arm64
       - build-linux-musl
+      - build-linux-musl-arm64
       - build-macos-x64
       - build-macos-arm64
     container:
@@ -235,8 +262,12 @@ jobs:
           path: .libsodium-pack/runtimes/linux-arm/native/
       - uses: actions/download-artifact@v2
         with:
-          name: build-linux-musl-x64
+          name: build-linux-musl
           path: .libsodium-pack/runtimes/linux-musl-x64/native/
+      - uses: actions/download-artifact@v2
+        with:
+          name: build-linux-musl-arm64
+          path: .libsodium-pack/runtimes/linux-musl-arm64/native/
       - uses: actions/download-artifact@v2
         with:
           name: build-osx-x64
