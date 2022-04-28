@@ -5,7 +5,6 @@ on:
     branches:
       - stable
       - next
-  workflow_dispatch:
 
 jobs:
   build-windows:
