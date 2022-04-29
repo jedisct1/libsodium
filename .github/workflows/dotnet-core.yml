@@ -362,6 +362,7 @@ jobs:
         run: |
           export DEBIAN_FRONTEND=noninteractive
 
+          mkdir /etc/gcrypt && echo all >> /etc/gcrypt/hwf.deny
           cat <<-EOF | sudo tee /etc/apt/sources.list.d/multiarch.list >/dev/null
           deb [arch=armhf,arm64] http://ports.ubuntu.com/ focal main restricted
           deb [arch=armhf,arm64] http://ports.ubuntu.com/ focal-updates main restricted
