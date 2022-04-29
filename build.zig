@@ -25,7 +25,6 @@ pub fn build(b: *std.build.Builder) !void {
     libsodium.defineCMacro("HAVE_INLINE_ASM", "1");
     libsodium.defineCMacro("HAVE_TI_MODE", "1");
     libsodium.defineCMacro("HAVE_ATOMIC_OPS", "1");
-    libsodium.defineCMacro("ASM_HIDE_SYMBOL", ".private_extern");
 
     switch (target.getCpuArch()) {
         .x86_64 => {
