@@ -362,7 +362,11 @@ jobs:
         run: |
           export DEBIAN_FRONTEND=noninteractive
 
-          mkdir /etc/gcrypt && echo all >> /etc/gcrypt/hwf.deny
+          # On virtualization systems such as the one used by WSL2, the ARM crypto extensions
+          # don't work as expected. As a result, installing Ubuntu 20.04 fails during integrity
+          # checks. As a workaround, the following command disables hardware acceleration for
+          # gcrypt, which the apt-get command relies on.
+          mkdir -p /etc/gcrypt && echo all >> /etc/gcrypt/hwf.deny
 
           cat <<-EOF | sudo tee /etc/apt/sources.list.d/multiarch.list >/dev/null
           deb [arch=armhf,arm64] http://ports.ubuntu.com/ focal main restricted
