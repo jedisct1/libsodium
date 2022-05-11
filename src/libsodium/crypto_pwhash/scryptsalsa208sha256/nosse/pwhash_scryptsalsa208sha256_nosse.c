@@ -44,25 +44,20 @@ blkcpy(uint32_t *dest, const uint32_t *src, size_t len)
     memcpy(dest, src, len * 64);
 }
 
-typedef union escrypt_block_t {
-    uint32_t w[16];
-    uint64_t q[8];
-} escrypt_block_t;
-
 static inline void
 blkxor(uint32_t *dest, const uint32_t *src, size_t len)
 {
-    escrypt_block_t       *dest_ = (escrypt_block_t *) (void *) dest;
-    const escrypt_block_t *src_ = (const escrypt_block_t *) (const void *) src;
     size_t                 i;
 
 #if ARCH_BITS == 32
     for (i = 0; i < len * 16; i++) {
-        dest_->w[i] ^= src_->w[i];
+        dest[i] ^= src[i];
     }
 #else
+    uint64_t       *dest_ = (uint64_t *) (void *) dest;
+    const uint64_t *src_  = (const uint64_t *) (const void *) src;
     for (i = 0; i < len * 8; i++) {
-        dest_->q[i] ^= src_->q[i];
+        dest_[i] ^= src_[i];
     }
 #endif
 }
