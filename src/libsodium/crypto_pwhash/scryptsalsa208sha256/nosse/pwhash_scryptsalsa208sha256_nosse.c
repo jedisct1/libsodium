@@ -47,7 +47,7 @@ blkcpy(uint32_t *dest, const uint32_t *src, size_t len)
 static inline void
 blkxor(uint32_t *dest, const uint32_t *src, size_t len)
 {
-    size_t                 i;
+    size_t i;
 
 #if ARCH_BITS == 32
     for (i = 0; i < len * 16; i++) {
