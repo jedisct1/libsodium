@@ -326,7 +326,6 @@ ge25519_frombytes(ge25519_p3 *h, const unsigned char *s)
 {
     fe25519 u;
     fe25519 v;
-    fe25519 v3;
     fe25519 vxx;
     fe25519 m_root_check, p_root_check;
     fe25519 negx;
@@ -340,15 +339,9 @@ ge25519_frombytes(ge25519_p3 *h, const unsigned char *s)
     fe25519_sub(u, u, h->Z); /* u = y^2-1 */
     fe25519_add(v, v, h->Z); /* v = dy^2+1 */
 
-    fe25519_sq(v3, v);
-    fe25519_mul(v3, v3, v); /* v3 = v^3 */
-    fe25519_sq(h->X, v3);
-    fe25519_mul(h->X, h->X, v);
-    fe25519_mul(h->X, h->X, u); /* x = uv^7 */
-
-    fe25519_pow22523(h->X, h->X); /* x = (uv^7)^((q-5)/8) */
-    fe25519_mul(h->X, h->X, v3);
-    fe25519_mul(h->X, h->X, u); /* x = uv^3(uv^7)^((q-5)/8) */
+    fe25519_mul(h->X, u, v);
+    fe25519_pow22523(h->X, h->X);
+    fe25519_mul(h->X, u, h->X); /* u((uv)^((q-5)/8)) */
 
     fe25519_sq(vxx, h->X);
     fe25519_mul(vxx, vxx, v);
@@ -2645,7 +2638,6 @@ ge25519_clear_cofactor(ge25519_p3 *p3)
 static void
 ge25519_elligator2(fe25519 x, fe25519 y, const fe25519 r, int *notsquare_p)
 {
-    fe25519       e;
     fe25519       gx1;
     fe25519       rr2;
     fe25519       x2, x3, negx;
@@ -2720,7 +2712,7 @@ fe25519_reduce64(fe25519 fe_f, const unsigned char h[64])
     gl[31] &= 0x7f;
     fe25519_frombytes(fe_f, fl);
     fe25519_frombytes(fe_g, gl);
-    fe_f[0] += (h[31] >> 7) * 19;
+    fe_f[0] += (h[31] >> 7) * 19 + (h[63] >> 7) * 722;
     for (i = 0; i < sizeof (fe25519) / sizeof fe_f[0]; i++) {
         fe_f[i] += 38 * fe_g[i];
     }
@@ -2739,7 +2731,7 @@ ge25519_from_hash(unsigned char s[32], const unsigned char h[64])
     fe25519_reduce64(fe_f, h);
     ge25519_elligator2(x, y, fe_f, &notsquare);
 
-    y_sign = notsquare;
+    y_sign = notsquare ^ 1;
     fe25519_neg(negy, y);
     fe25519_cmov(y, negy, fe25519_isnegative(y) ^ y_sign);
 

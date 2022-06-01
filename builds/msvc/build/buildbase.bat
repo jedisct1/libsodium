@@ -8,6 +8,17 @@ SET version=%2
 SET log=build_%version%.log
 SET tools=Microsoft Visual Studio %version%.0\VC\vcvarsall.bat
 
+IF %version% == 17 (
+  SET tools=Microsoft Visual Studio\2022\Enterprise\VC\Auxiliary\Build\vcvarsall.bat
+  SET environment="%programfiles%\!tools!"
+  IF NOT EXIST !environment! (
+    SET environment="%programfiles(x86)%\!tools!"
+    IF NOT EXIST !environment! (
+      SET tools=Microsoft Visual Studio\2022\Community\VC\Auxiliary\Build\vcvarsall.bat
+    )
+  )
+)
+
 IF %version% == 16 (
   SET tools=Microsoft Visual Studio\2019\Enterprise\VC\Auxiliary\Build\vcvarsall.bat
   SET environment="%programfiles%\!tools!"
@@ -81,6 +92,31 @@ IF errorlevel 1 GOTO error
 ECHO Configuration=StaticRelease
 msbuild /m /v:n /p:Configuration=StaticRelease /p:Platform=x64 %solution% >> %log%
 IF errorlevel 1 GOTO error
+
+@REM Build ARM64 packages only for Visual studio 19 and later
+IF %version% == 16 (
+  CALL !environment! x86_arm64 > nul
+  ECHO Platform=ARM64
+
+  ECHO Configuration=DynDebug
+  msbuild /m /v:n /p:Configuration=DynDebug /p:Platform=ARM64 %solution% >> %log%
+  IF errorlevel 1 GOTO error
+  ECHO Configuration=DynRelease
+  msbuild /m /v:n /p:Configuration=DynRelease /p:Platform=ARM64 %solution% >> %log%
+  IF errorlevel 1 GOTO error
+  ECHO Configuration=LtcgDebug
+  msbuild /m /v:n /p:Configuration=LtcgDebug /p:Platform=ARM64 %solution% >> %log%
+  IF errorlevel 1 GOTO error
+  ECHO Configuration=LtcgRelease
+  msbuild /m /v:n /p:Configuration=LtcgRelease /p:Platform=ARM64 %solution% >> %log%
+  IF errorlevel 1 GOTO error
+  ECHO Configuration=StaticDebug
+  msbuild /m /v:n /p:Configuration=StaticDebug /p:Platform=ARM64 %solution% >> %log%
+  IF errorlevel 1 GOTO error
+  ECHO Configuration=StaticRelease
+  msbuild /m /v:n /p:Configuration=StaticRelease /p:Platform=ARM64 %solution% >> %log%
+  IF errorlevel 1 GOTO error
+)
 
 ECHO Complete: %solution%
 GOTO end

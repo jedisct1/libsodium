@@ -14,7 +14,6 @@
 #include "crypto_aead_aes256gcm.h"
 #include "export.h"
 #include "private/common.h"
-#include "private/sse2_64_32.h"
 #include "randombytes.h"
 #include "runtime.h"
 #include "utils.h"
@@ -22,19 +21,20 @@
 #if defined(HAVE_TMMINTRIN_H) && defined(HAVE_WMMINTRIN_H)
 
 #ifdef __GNUC__
-#pragma GCC target("ssse3")
-#pragma GCC target("aes")
-#pragma GCC target("pclmul")
+# pragma GCC target("ssse3")
+# pragma GCC target("aes")
+# pragma GCC target("pclmul")
 #endif
 
 #include <tmmintrin.h>
 #include <wmmintrin.h>
+#include "private/sse2_64_32.h"
 
 #if defined(__INTEL_COMPILER) || defined(_bswap64)
 #elif defined(_MSC_VER)
-#define _bswap64(a) _byteswap_uint64(a)
+# define _bswap64(a) _byteswap_uint64(a)
 #elif defined(__GNUC__) && (__GNUC__ > 4 || (__GNUC__ == 4 && __GNUC_MINOR__ >= 2))
-#define _bswap64(a) __builtin_bswap64(a)
+# define _bswap64(a) __builtin_bswap64(a)
 #else
 static inline uint64_t
 _bswap64(const uint64_t x)

@@ -594,7 +594,7 @@ AC_SUBST(CFLAGS_AESNI)
 AC_SUBST(CFLAGS_PCLMUL)
 AC_SUBST(CFLAGS_RDRAND)
 
-AC_CHECK_HEADERS([sys/mman.h sys/random.h intrin.h sys/auxv.h])
+AC_CHECK_HEADERS([sys/mman.h sys/param.h sys/random.h intrin.h sys/auxv.h])
 
 AC_MSG_CHECKING([if _xgetbv() is available])
 AC_LINK_IFELSE(
@@ -813,13 +813,36 @@ __sync_lock_release(&_sodium_lock);
  AC_DEFINE([HAVE_ATOMIC_OPS], [1], [atomic operations are supported])],
 [AC_MSG_RESULT(no)])
 
+AC_MSG_CHECKING(if C11 memory fences are supported)
+AC_LINK_IFELSE([AC_LANG_PROGRAM([[
+#include <stdatomic.h>
+ ]], [[
+atomic_thread_fence(memory_order_acquire);
+]]
+)],
+[AC_MSG_RESULT(yes)
+ AC_DEFINE([HAVE_C11_MEMORY_FENCES], [1], [C11 memory fences are supported])],
+[AC_MSG_RESULT(no)])
+
+AC_MSG_CHECKING(if gcc memory fences are supported)
+AC_LINK_IFELSE([AC_LANG_PROGRAM([[ ]], [[
+__atomic_thread_fence(__ATOMIC_ACQUIRE);
+]]
+)],
+[AC_MSG_RESULT(yes)
+ AC_DEFINE([HAVE_GCC_MEMORY_FENCES], [1], [GCC memory fences are supported])],
+[AC_MSG_RESULT(no)])
+
 dnl Checks for functions and headers
 
 AC_FUNC_ALLOCA
 AS_IF([test "x$EMSCRIPTEN" = "x"],[
   AC_CHECK_FUNCS([arc4random arc4random_buf])
-  AC_CHECK_FUNCS([mmap mlock madvise mprotect])
-
+  AS_IF([test "x$WASI" = "x"],[
+    AC_CHECK_FUNCS([mmap mlock madvise mprotect])
+    AC_CHECK_FUNCS([raise])
+    AC_CHECK_FUNCS([sysconf])
+  ])
   AC_MSG_CHECKING(for getrandom with a standard API)
   AC_LINK_IFELSE([AC_LANG_PROGRAM([[
 #include <stdlib.h>
@@ -867,7 +890,10 @@ AS_IF([test "x$WASI" = "x"],[
 ])
 
 AC_CHECK_FUNCS([posix_memalign nanosleep])
-AC_CHECK_FUNCS([memset_s explicit_bzero explicit_memset])
+
+AS_IF([test "x$WASI" = "x"],[
+  AC_CHECK_FUNCS([memset_s explicit_bzero explicit_memset])
+])
 
 AC_SUBST([LIBTOOL_EXTRA_FLAGS])
 

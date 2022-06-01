@@ -5,7 +5,6 @@
 
 #include "crypto_stream_salsa20.h"
 #include "private/common.h"
-#include "private/sse2_64_32.h"
 #include "utils.h"
 
 #ifdef HAVE_EMMINTRIN_H
@@ -14,6 +13,7 @@
 #  pragma GCC target("sse2")
 # endif
 # include <emmintrin.h>
+# include "private/sse2_64_32.h"
 
 # include "../stream_salsa20.h"
 # include "salsa20_xmm6int-sse2.h"

@@ -7,21 +7,21 @@ pr: none
 jobs:
   - job: "wasi"
     pool:
-      vmImage: "ubuntu-18.04"
+      vmImage: "ubuntu-20.04"
     steps:
       - script: |
-          sudo apt-get install build-essential curl cmake
+          sudo apt-get install build-essential curl cmake lld
         displayName: Install system packages
       - script: |
           curl https://get.wasmer.io -sSfL | sh
         displayName: Install wasmer
       - script: |
-          curl -sL -o - https://github.com/WebAssembly/wasi-sdk/releases/download/wasi-sdk-12/wasi-sdk-12.0-linux.tar.gz | tar xz -f - -C /opt/
-          sudo mv /opt/wasi-sdk-* /opt/wasi-sdk
-          sudo ln -s /opt/wasi-sdk/share/*sysroot* /opt/wasi-sysroot
-        displayName: Install the WASI SDK
+          curl -sL -o - https://ziglang.org/download/0.8.0/zig-linux-x86_64-0.8.0.tar.xz | tar xJ -f - -C /opt/
+          sudo mv /opt/zig-* /opt/zig
+          env PATH=/opt/zig/bin:/opt/zig:$PATH
+        displayName: Install the Zig SDK
       - script: |
-          env WASMER_DIR=${HOME}/.wasmer PATH=${HOME}/.wasmer/bin:/opt/wasi-sdk/bin:${HOME}/.cargo/bin:$PATH dist-build/wasm32-wasi.sh
+          env WASMER_DIR=${HOME}/.wasmer PATH=${HOME}/.wasmer/bin:${HOME}/.cargo/bin:$PATH dist-build/wasm32-wasi.sh
         displayName: Compile libsodium
       - task: PublishBuildArtifacts@1
         condition: not(canceled())
@@ -30,6 +30,25 @@ jobs:
           artifactName: libsodium-wasm32-wasi
 
   - job: "windows"
+    pool:
+      vmImage: "windows-2022"
+    steps:
+      - powershell: |
+          cd builds\msvc\build
+          & .\buildbase.bat ..\vs2022\libsodium.sln 17
+        displayName: Compile it all
+      - powershell: |
+          mkdir bin\include\sodium
+          Copy-Item "src\libsodium\include\sodium\*.h" -Destination "bin\include\sodium" -Recurse
+          Copy-Item "src\libsodium\include\*.h" -Destination "bin\include\"
+        displayName: Copy header files
+      - task: PublishBuildArtifacts@1
+        condition: not(canceled())
+        inputs:
+          pathToPublish: bin
+          artifactName: libsodium
+
+  - job: "windows_2019"
     pool:
       vmImage: "windows-2019"
     steps:
@@ -67,7 +86,7 @@ jobs:
       vmImage: "windows-2019"
     steps:
       - powershell: |
-          (New-Object Net.WebClient).DownloadFile("https://github.com/msys2/msys2-installer/releases/download/2021-02-28/msys2-base-x86_64-20210228.sfx.exe", "sfx.exe")
+          (New-Object Net.WebClient).DownloadFile("https://github.com/msys2/msys2-installer/releases/download/2021-07-25/msys2-base-x86_64-20210725.sfx.exe", "sfx.exe")
           .\sfx.exe -y -o\
           del sfx.exe
         displayName: Install MSYS2
@@ -106,7 +125,7 @@ jobs:
       vmImage: "windows-2019"
     steps:
       - powershell: |
-          (New-Object Net.WebClient).DownloadFile("https://github.com/msys2/msys2-installer/releases/download/2020-09-03/msys2-base-x86_64-20200903.sfx.exe", "sfx.exe")
+          (New-Object Net.WebClient).DownloadFile("https://github.com/msys2/msys2-installer/releases/download/2021-07-25/msys2-base-x86_64-20210725.sfx.exe", "sfx.exe")
           .\sfx.exe -y -o\
           del sfx.exe
         displayName: Install MSYS2

@@ -35,7 +35,6 @@
 #include <string.h>
 
 #include "private/common.h"
-#include "private/sse2_64_32.h"
 
 #ifdef HAVE_EMMINTRIN_H
 
@@ -46,6 +45,7 @@
 # if defined(__XOP__) && defined(DISABLED)
 #  include <x86intrin.h>
 # endif
+# include "private/sse2_64_32.h"
 
 # include "../crypto_scrypt.h"
 # include "../pbkdf2-sha256.h"

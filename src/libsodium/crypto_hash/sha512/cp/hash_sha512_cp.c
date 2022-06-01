@@ -175,6 +175,7 @@ SHA512_Pad(crypto_hash_sha512_state *state, uint64_t tmp64[80 + 8])
     unsigned int r;
     unsigned int i;
 
+    ACQUIRE_FENCE;
     r = (unsigned int) ((state->count[1] >> 3) & 0x7f);
     if (r < 112) {
         for (i = 0; i < 112 - r; i++) {
@@ -218,6 +219,7 @@ crypto_hash_sha512_update(crypto_hash_sha512_state *state,
     if (inlen <= 0U) {
         return 0;
     }
+    ACQUIRE_FENCE;
     r = (unsigned long long) ((state->count[1] >> 3) & 0x7f);
 
     bitlen[1] = ((uint64_t) inlen) << 3;

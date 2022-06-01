@@ -25,6 +25,7 @@ EXTRA_DIST = \
 	msvc/properties/ReleaseSEXE.props \
 	msvc/properties/Win32.props \
 	msvc/properties/x64.props \
+	msvc/properties/ARM64.props \
 	msvc/resource.h \
 	msvc/resource.rc \
 	msvc/version.h \

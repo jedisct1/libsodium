@@ -1,7 +1,7 @@
 @ECHO OFF
 
 if "%1" == "" (
-  echo "Usage: wintest.bat <Release | ReleaseDLL | Debug | DebugDLL"
+  echo "Usage: wintest.bat <Release | ReleaseDLL | Debug | DebugDLL> [ <x64 | ARM64> ]"
 	goto :END
 )
 
@@ -13,7 +13,8 @@ if not exist sodium_version.c (
 	)
 )
 
-if "%2" == "x64" (SET ARCH=x64) else (SET ARCH=Win32)
+if "%2" == "x64" (SET ARCH=x64) else if "%2" == "ARM64" (SET ARCH=ARM64) else (SET ARCH=ARM64)
+if "%2" == "ARM64" (SET CROSSCOMPILE=1) else (SET CROSSCOMPILE=0)
 SET CFLAGS=/nologo /DTEST_SRCDIR=\".\" /I..\..\src\libsodium\include\sodium /I..\..\src\libsodium\include /I..\quirks
 SET LDFLAGS=/link /LTCG advapi32.lib ..\..\Build\%1\%ARCH%\libsodium.lib
 if "%1" == "ReleaseDLL" ( goto :ReleaseDLL )
@@ -44,11 +45,15 @@ FOR %%f in (*.c) DO (
 		echo %%f compile failed
 		goto :END
 	)
-	%%f.exe
-	if errorlevel 1 ( 
-		echo %%f failed
+	if %CROSSCOMPILE% == 1 (
+		echo %%f skipped
 	) else (
-		echo %%f ok
+		%%f.exe
+		if errorlevel 1 (
+			echo %%f failed
+		) else (
+			echo %%f ok
+		)
 	)
 )
 REM Remove temporary files

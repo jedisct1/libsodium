@@ -57,7 +57,7 @@ sodium_init(void)
 static CRITICAL_SECTION _sodium_lock;
 static volatile LONG    _sodium_lock_initialized;
 
-int
+static int
 _sodium_crit_init(void)
 {
     LONG status = 0L;

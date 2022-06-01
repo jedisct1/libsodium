@@ -39,11 +39,12 @@ if [ -z "$WASI_RUNTIME" ] || [ "$WASI_RUNTIME" = "iwasm" ]; then
   fi
 fi
 
-if [ -z "$WASI_RUNTIME" ] || [ "$WASI_RUNTIME" = "ssvm" ]; then
-  if command -v ssvmc >/dev/null && command -v ssvm >/dev/null; then
-    ssvmc "$1" "${1}.so" &&
-      ssvm --dir=.:. "${1}.so" &&
-      rm -f "${1}.so"
+if [ -z "$WASI_RUNTIME" ] || [ "$WASI_RUNTIME" = "wasmedge" ]; then
+  if command -v wasmedgec >/dev/null && command -v wasmedge >/dev/null; then
+    wasmedgec "$1" "${1}.so" &&
+      wasmedge --dir=.:. "${1}.so" &&
+      rm -f "${1}.so" &&
+      exit 0
   fi
 fi
 
@@ -66,18 +67,6 @@ fi
 if [ -z "$WASI_RUNTIME" ] || [ "$WASI_RUNTIME" = "wasmer-js" ]; then
   if command -v wasmer-js >/dev/null; then
     wasmer-js run "$1" --dir=. && exit 0
-  fi
-fi
-
-if [ -z "$WASI_RUNTIME" ] || [ "$WASI_RUNTIME" = "lucet" ]; then
-  if command -v lucetc-wasi >/dev/null && command -v lucet-wasi >/dev/null; then
-    lucetc-wasi \
-      --target-cpu native \
-      --reserved-size "4GiB" \
-      --opt-level speed \
-      "$1" -o "${1}.so" &&
-      lucet-wasi --dir=.:. --max-heap-size "${MAX_MEMORY_TESTS}" "${1}.so" &&
-      rm -f "${1}.so" && exit 0
   fi
 fi
 
