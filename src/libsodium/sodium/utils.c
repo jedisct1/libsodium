@@ -242,8 +242,8 @@ sodium_compare(const unsigned char *b1_, const unsigned char *b2_, size_t len)
         i--;
         x1 = b1[i];
         x2 = b2[i];
-        gt |= ((x2 - x1) >> 8) & eq;
-        eq &= ((x2 ^ x1) - 1) >> 8;
+        gt |= (((unsigned int) x2 - (unsigned int) x1) >> 8) & eq;
+        eq &= (((unsigned int) (x2 ^ x1)) - 1) >> 8;
     }
     return (int) (gt + gt + eq) - 1;
 }
