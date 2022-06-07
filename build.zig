@@ -15,6 +15,9 @@ pub fn build(b: *std.build.Builder) !void {
 
     const static = b.addStaticLibrary("sodium", null);
     const shared = b.addSharedLibrary("sodium", null, .unversioned);
+    shared.strip = true;
+    static.strip = true;
+
     const libs = [_]*LibExeObjStep{ static, shared };
 
     const prebuilt_version_file_path = "builds/msvc/version.h";
