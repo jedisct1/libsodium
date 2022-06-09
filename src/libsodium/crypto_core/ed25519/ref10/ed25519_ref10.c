@@ -837,6 +837,106 @@ ge25519_double_scalarmult_vartime(ge25519_p2 *r, const unsigned char *a,
 }
 
 /*
+ * Precomputation of a base point, to use in multiscalar multiplication algorithm A,3A,5A,7A,9A,11A,13A,15A
+ */
+void point_precomputation(ge25519_cached cached[8], const ge25519_p3 *base) {
+    ge25519_p1p1   t;
+    ge25519_p3     u;
+    ge25519_p3     A;
+
+    // Precomputation of values of A
+    ge25519_p3_to_cached(&cached[0], base);
+
+    ge25519_p3_dbl(&t, base);
+    ge25519_p1p1_to_p3(&A, &t);
+
+    ge25519_add_cached(&t, &A, &cached[0]);
+    ge25519_p1p1_to_p3(&u, &t);
+    ge25519_p3_to_cached(&cached[1], &u);
+
+    ge25519_add_cached(&t, &A, &cached[1]);
+    ge25519_p1p1_to_p3(&u, &t);
+    ge25519_p3_to_cached(&cached[2], &u);
+
+    ge25519_add_cached(&t, &A, &cached[2]);
+    ge25519_p1p1_to_p3(&u, &t);
+    ge25519_p3_to_cached(&cached[3], &u);
+
+    ge25519_add_cached(&t, &A, &cached[3]);
+    ge25519_p1p1_to_p3(&u, &t);
+    ge25519_p3_to_cached(&cached[4], &u);
+
+    ge25519_add_cached(&t, &A, &cached[4]);
+    ge25519_p1p1_to_p3(&u, &t);
+    ge25519_p3_to_cached(&cached[5], &u);
+
+    ge25519_add_cached(&t, &A, &cached[5]);
+    ge25519_p1p1_to_p3(&u, &t);
+    ge25519_p3_to_cached(&cached[6], &u);
+
+    ge25519_add_cached(&t, &A, &cached[6]);
+    ge25519_p1p1_to_p3(&u, &t);
+    ge25519_p3_to_cached(&cached[7], &u);
+}
+
+/*
+ Variable time double scalar multiplication with variable bases
+ r = a * A + b * B
+ where a = a[0]+256*a[1]+...+256^31 a[31].
+ and b = b[0]+256*b[1]+...+256^31 b[31].
+ Only used for VRF verification.
+ */
+
+void
+ge25519_double_scalarmult_vartime_variable(ge25519_p2 *r, const unsigned char *a,
+                                           const ge25519_p3 *A, const unsigned char *b, const ge25519_p3 *B)
+{
+    signed char    aslide[256];
+    signed char    bslide[256];
+    ge25519_cached Ai[8]; /* A,3A,5A,7A,9A,11A,13A,15A */
+    ge25519_cached Bi[8]; /* B,3B,5B,7B,9B,11B,13B,15B */
+    ge25519_p1p1   t;
+    ge25519_p3     u;
+    int            i;
+
+    slide_vartime(aslide, a);
+    slide_vartime(bslide, b);
+
+    point_precomputation(Ai, A);
+    point_precomputation(Bi, B);
+
+    ge25519_p2_0(r);
+
+    for (i = 255; i >= 0; --i) {
+        if (aslide[i] || bslide[i]) {
+            break;
+        }
+    }
+
+    for (; i >= 0; --i) {
+        ge25519_p2_dbl(&t, r);
+
+        if (aslide[i] > 0) {
+            ge25519_p1p1_to_p3(&u, &t);
+            ge25519_add_cached(&t, &u, &Ai[aslide[i] / 2]);
+        } else if (aslide[i] < 0) {
+            ge25519_p1p1_to_p3(&u, &t);
+            ge25519_sub_cached(&t, &u, &Ai[(-aslide[i]) / 2]);
+        }
+
+        if (bslide[i] > 0) {
+            ge25519_p1p1_to_p3(&u, &t);
+            ge25519_add_cached(&t, &u, &Bi[bslide[i] / 2]);
+        } else if (bslide[i] < 0) {
+            ge25519_p1p1_to_p3(&u, &t);
+            ge25519_sub_cached(&t, &u, &Bi[(-bslide[i]) / 2]);
+        }
+
+        ge25519_p1p1_to_p2(r, &t);
+    }
+}
+
+/*
  h = a * p
  where a = a[0]+256*a[1]+...+256^31 a[31]
 
