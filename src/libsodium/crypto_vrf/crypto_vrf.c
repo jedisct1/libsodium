@@ -51,10 +51,10 @@ crypto_vrf_seed_keypair(unsigned char *pk, unsigned char *sk,
 }
 
 int
-crypto_vrf_prove(unsigned char *proof, const unsigned char *skpk,
-		 const unsigned char *m, const unsigned long long mlen)
+crypto_vrf_prove(unsigned char *proof, const unsigned char *m, const unsigned long long mlen,
+                 const unsigned char *skpk)
 {
-    return crypto_vrf_ietfdraft12_prove(proof, skpk, m, mlen);
+    return crypto_vrf_ietfdraft12_prove(proof, m, mlen, skpk);
 }
 
 int
