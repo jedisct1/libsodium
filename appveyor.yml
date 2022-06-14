@@ -12,10 +12,6 @@ environment:
       configuration: Debug
     - platform: x64
       configuration: Release
-    - platform: ARM64
-      configuration: Debug
-    - platform: ARM64
-      configuration: Release
 
 matrix:
   fast_finish: false
