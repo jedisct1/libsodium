@@ -8,7 +8,7 @@
 
 int
 crypto_vrf_ietfdraft12_seed_keypair(unsigned char *pk, unsigned char *sk,
-                                 const unsigned char *seed)
+                                    const unsigned char *seed)
 {
     ge25519_p3 A;
 

@@ -34,29 +34,21 @@ static const TestData test_data[] = {
 
 static const unsigned char messages[3][2] = {{0x00}, {0x72}, {0xaf, 0x82}};
 
-static inline void printhex(const char *label, const unsigned char *c, size_t len){
-    size_t i;
-    printf("%s", label);
-    for (i = 0; i < len; i++){
-        printf("%02x", c[i]);
-    }
-    printf("\n");
-}
-
 int main(void)
 {
     unsigned char *seed, *expected_pk, *expected_proof, *expected_output;
-    seed            = (unsigned char *) sodium_malloc(crypto_vrf_ietfdraft12_SEEDBYTES);
-    expected_pk     = (unsigned char *) sodium_malloc(crypto_vrf_ietfdraft12_PUBLICKEYBYTES);
-    expected_proof  = (unsigned char *) sodium_malloc(crypto_vrf_ietfdraft12_BYTES);
-    expected_output = (unsigned char *) sodium_malloc(crypto_vrf_ietfdraft12_OUTPUTBYTES);
 
     unsigned char sk[64];
     unsigned char pk[32];
     unsigned char proof[80];
     unsigned char output[64];
-
     unsigned int i;
+
+    seed            = (unsigned char *) sodium_malloc(crypto_vrf_ietfdraft12_SEEDBYTES);
+    expected_pk     = (unsigned char *) sodium_malloc(crypto_vrf_ietfdraft12_PUBLICKEYBYTES);
+    expected_proof  = (unsigned char *) sodium_malloc(crypto_vrf_ietfdraft12_BYTES);
+    expected_output = (unsigned char *) sodium_malloc(crypto_vrf_ietfdraft12_OUTPUTBYTES);
+
     assert(crypto_vrf_ietfdraft12_SECRETKEYBYTES == 64);
     assert(crypto_vrf_ietfdraft12_PUBLICKEYBYTES == 32);
     assert(crypto_vrf_ietfdraft12_SEEDBYTES == 32);

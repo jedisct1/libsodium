@@ -46,23 +46,24 @@ const char *crypto_vrf_primitive(void);
 
 SODIUM_EXPORT
 int crypto_vrf_keypair(unsigned char *pk, unsigned char *sk)
-__attribute__ ((nonnull));
+                       __attribute__ ((nonnull));
 
 SODIUM_EXPORT
 int crypto_vrf_seed_keypair(unsigned char *pk, unsigned char *sk,
-				 const unsigned char *seed)
-__attribute__ ((nonnull));
+				            const unsigned char *seed)
+                            __attribute__ ((nonnull));
 
 SODIUM_EXPORT
-int crypto_vrf_prove(unsigned char *proof,
-		     const unsigned char *m, unsigned long long mlen, const unsigned char *sk)  __attribute__ ((nonnull));
+int crypto_vrf_prove(unsigned char *proof, const unsigned char *m,
+                     unsigned long long mlen, const unsigned char *sk)
+                     __attribute__ ((nonnull));
 
 SODIUM_EXPORT
 int crypto_vrf_verify(unsigned char *output,
-		      const unsigned char *pk,
-		      const unsigned char *proof,
-		      const unsigned char *m, unsigned long long mlen)
-            __attribute__ ((warn_unused_result))  __attribute__ ((nonnull));
+                      const unsigned char *pk,
+                      const unsigned char *proof,
+                      const unsigned char *m, unsigned long long mlen)
+                      __attribute__ ((warn_unused_result))  __attribute__ ((nonnull));
 
 SODIUM_EXPORT
 int crypto_vrf_proof_to_hash(unsigned char *hash, const unsigned char *proof);

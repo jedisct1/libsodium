@@ -48,7 +48,7 @@ vrf_verify(const unsigned char *pi,
 {
     unsigned char H_string[32], U_string[32], V_string[32], Y_string[32];
     unsigned char cn[32], c[32], s[32];
-    unsigned char string_to_hash[32 + alphalen], hram[64];
+    unsigned char string_to_hash[32 + alphalen], challenge[64];
 
     crypto_hash_sha512_state hs;
     ge25519_p2     U, V;
@@ -63,15 +63,15 @@ vrf_verify(const unsigned char *pi,
         return -1;
     }
 
-    memmove(c, pi+32, 16); /* c = pi[32:48] */
-    memmove(s, pi+48, 32); /* s = pi[48:80] */
+    memmove(c, pi + 32, 16); /* c = pi[32:48] */
+    memmove(s, pi + 48, 32); /* s = pi[48:80] */
 
     if (s[31] & 240 &&
         sc25519_is_canonical(s) == 0) {
         return -1;
     }
 
-    memset(c+16, 0, 16);
+    memset(c + 16, 0, 16);
 
     memmove(string_to_hash, Y_string, 32);
     memmove(string_to_hash + 32, alpha, alphalen);
@@ -96,9 +96,9 @@ vrf_verify(const unsigned char *pi,
     crypto_hash_sha512_update(&hs, U_string, 32);
     crypto_hash_sha512_update(&hs, V_string, 32);
     crypto_hash_sha512_update(&hs, &ZERO, 1);
-    crypto_hash_sha512_final(&hs, hram);
+    crypto_hash_sha512_final(&hs, challenge);
 
-    return crypto_verify_16(c, hram);
+    return crypto_verify_16(c, challenge);
 }
 
 int

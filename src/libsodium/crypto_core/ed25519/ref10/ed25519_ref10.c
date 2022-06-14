@@ -889,7 +889,8 @@ void point_precomputation(ge25519_cached cached[8], const ge25519_p3 *base) {
 
 void
 ge25519_double_scalarmult_vartime_variable(ge25519_p2 *r, const unsigned char *a,
-                                           const ge25519_p3 *A, const unsigned char *b, const ge25519_p3 *B)
+                                           const ge25519_p3 *A, const unsigned char *b,
+                                           const ge25519_p3 *B)
 {
     signed char    aslide[256];
     signed char    bslide[256];

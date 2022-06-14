@@ -11,8 +11,8 @@
 
 int
 crypto_vrf_ietfdraft12_prove(unsigned char *proof,
-                  const unsigned char *m, unsigned long long mlen,
-                  const unsigned char *sk)
+                             const unsigned char *m, unsigned long long mlen,
+                             const unsigned char *sk)
 {
 
     crypto_hash_sha512_state hs;
@@ -20,7 +20,7 @@ crypto_vrf_ietfdraft12_prove(unsigned char *proof,
     unsigned char H_string[32];
     unsigned char kB_string[32], kH_string[32];
     unsigned char string_to_hash[32 + mlen];
-    unsigned char hram[64], nonce[64];
+    unsigned char challenge[64], nonce[64];
     ge25519_p3    H, Gamma, kB, kH;
 
     crypto_hash_sha512(az, sk, 32);
@@ -57,11 +57,11 @@ crypto_vrf_ietfdraft12_prove(unsigned char *proof,
     crypto_hash_sha512_update(&hs, kB_string, 32);
     crypto_hash_sha512_update(&hs, kH_string, 32);
     crypto_hash_sha512_update(&hs, &ZERO, 1);
-    crypto_hash_sha512_final(&hs, hram);
+    crypto_hash_sha512_final(&hs, challenge);
 
-    memmove(proof + 32, hram, 16);
-    memset(hram + 16, 0, 48); /* we zero out the last 48 bytes of the challenge */
-    sc25519_muladd(proof + 48, hram, az, nonce);
+    memmove(proof + 32, challenge, 16);
+    memset(challenge + 16, 0, 48); /* we zero out the last 48 bytes of the challenge */
+    sc25519_muladd(proof + 48, challenge, az, nonce);
 
     sodium_memzero(az, sizeof az);
     sodium_memzero(nonce, sizeof nonce);
