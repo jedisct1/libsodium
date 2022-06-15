@@ -801,17 +801,9 @@ ge25519_double_scalarmult_vartime(ge25519_p2 *r, const unsigned char *a,
                                            const ge25519_p3 *A, const unsigned char *b,
                                            const ge25519_p3 *B)
 {
-    static const ge25519_precomp Bi_pc[8] = {
-#ifdef HAVE_TI_MODE
-# include "fe_51/base2.h"
-#else
-# include "fe_25_5/base2.h"
-#endif
-    };
     signed char    aslide[256];
     signed char    bslide[256];
-    ge25519_cached Ai[8]; /* A,3A,5A,7A,9A,11A,13A,15A */
-    ge25519_cached Bi[8]; /* B,3B,5B,7B,9B,11B,13B,15B */
+    ge25519_cached Ai[8];
     ge25519_p1p1   t;
     ge25519_p3     u;
     int            i;
@@ -820,9 +812,6 @@ ge25519_double_scalarmult_vartime(ge25519_p2 *r, const unsigned char *a,
     slide_vartime(bslide, b);
 
     point_precomputation(Ai, A);
-    if (B != NULL) {
-        point_precomputation(Bi, B);
-    }
 
     ge25519_p2_0(r);
 
@@ -844,14 +833,23 @@ ge25519_double_scalarmult_vartime(ge25519_p2 *r, const unsigned char *a,
         }
 
         if (B == NULL) {
+            static const ge25519_precomp Bi[8] = {
+#ifdef HAVE_TI_MODE
+# include "fe_51/base2.h"
+#else
+# include "fe_25_5/base2.h"
+#endif
+            };
             if (bslide[i] > 0) {
                 ge25519_p1p1_to_p3(&u, &t);
-                ge25519_add_precomp(&t, &u, &Bi_pc[bslide[i] / 2]);
+                ge25519_add_precomp(&t, &u, &Bi[bslide[i] / 2]);
             } else if (bslide[i] < 0) {
                 ge25519_p1p1_to_p3(&u, &t);
-                ge25519_sub_precomp(&t, &u, &Bi_pc[(-bslide[i]) / 2]);
+                ge25519_sub_precomp(&t, &u, &Bi[(-bslide[i]) / 2]);
             }
         } else {
+            ge25519_cached Bi[8];
+            point_precomputation(Bi, B);
             if (bslide[i] > 0) {
                 ge25519_p1p1_to_p3(&u, &t);
                 ge25519_add_cached(&t, &u, &Bi[bslide[i] / 2]);
