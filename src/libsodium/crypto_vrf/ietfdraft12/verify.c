@@ -80,9 +80,9 @@ vrf_verify(const unsigned char *pi,
     ge25519_frombytes(&H, H_string);
     crypto_core_ed25519_scalar_negate(cn, c); /* negate scalar c */
 
-    ge25519_double_scalarmult_vartime(&U, cn, Y_point, s);
+    ge25519_double_scalarmult_vartime(&U, cn, Y_point, s, NULL);
 
-    ge25519_double_scalarmult_vartime_variable(&V, cn, &Gamma, s, &H);
+    ge25519_double_scalarmult_vartime(&V, cn, &Gamma, s, &H);
 
     ge25519_tobytes(U_string, &U);
     ge25519_tobytes(V_string, &V);
