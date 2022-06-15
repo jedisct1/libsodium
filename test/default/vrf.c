@@ -10,15 +10,9 @@ typedef struct TestData_ {
  * which contains the seeds. The expected values for the pk, proof and output are in vrf.exp
  */
 static const TestData test_data[] = {
-        {
-            "9d61b19deffd5a60ba844af492ec2cc44449c5697b326919703bac031cae7f60",
-        },
-        {
-            "4ccd089b28ff96da9db6c346ec114e0f5b8a319f35aba624da8cf6ed4fb8a6fb",
-        },
-        {
-            "c5aa8df43f9f837bedb7442f31dcb7b166d38535076f094b85ce3a2e0b4458f7",
-        }
+    {"9d61b19deffd5a60ba844af492ec2cc44449c5697b326919703bac031cae7f60"},
+    {"4ccd089b28ff96da9db6c346ec114e0f5b8a319f35aba624da8cf6ed4fb8a6fb"},
+    {"c5aa8df43f9f837bedb7442f31dcb7b166d38535076f094b85ce3a2e0b4458f7"},
 };
 
 static const unsigned char messages[3][2] = {{0x00}, {0x72}, {0xaf, 0x82}};
