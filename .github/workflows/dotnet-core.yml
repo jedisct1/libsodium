@@ -163,6 +163,31 @@ jobs:
           name: build-linux-musl-x64
           path: .libsodium-build/lib/libsodium.so
 
+  build-linux-musl-arm64:
+    runs-on: ubuntu-latest
+    container:
+      image: alpine:3.15
+    steps:
+      - name: Set up build environment
+        run: |
+          apk update
+          apk add alpine-sdk ca-certificates
+      - uses: actions/checkout@v1
+      - name: configure
+        run: ./configure --disable-dependency-tracking --prefix=$PWD/.libsodium-build --host=aarch64-linux-gnu
+      - name: make
+        run: make
+      - name: make check
+        run: make check
+      - name: make install
+        run: make install
+      - name: strip
+        run: strip --strip-all .libsodium-build/lib/libsodium.so
+      - uses: actions/upload-artifact@v2
+        with:
+          name: build-linux-musl-arm64
+          path: .libsodium-build/lib/libsodium.so
+
   build-macos-x64:
     runs-on: macos-11
     steps:
@@ -203,6 +228,7 @@ jobs:
       - build-linux-glibc-arm
       - build-linux-glibc-arm64
       - build-linux-musl
+      - build-linux-musl-arm64
       - build-macos-x64
       - build-macos-arm64
     container:
@@ -237,6 +263,10 @@ jobs:
         with:
           name: build-linux-musl-x64
           path: .libsodium-pack/runtimes/linux-musl-x64/native/
+      - uses: actions/download-artifact@v2
+        with:
+          name: build-linux-musl-arm64
+          path: .libsodium-pack/runtimes/linux-musl-arm64/native/
       - uses: actions/download-artifact@v2
         with:
           name: build-osx-x64
@@ -331,6 +361,12 @@ jobs:
       - name: Set up build environment
         run: |
           export DEBIAN_FRONTEND=noninteractive
+
+          # On virtualization systems such as the one used by WSL2, the ARM crypto extensions
+          # don't work as expected. As a result, installing Ubuntu 20.04 fails during integrity
+          # checks. As a workaround, the following command disables hardware acceleration for
+          # gcrypt, which the apt-get command relies on.
+          mkdir -p /etc/gcrypt && echo all >> /etc/gcrypt/hwf.deny
 
           cat <<-EOF | sudo tee /etc/apt/sources.list.d/multiarch.list >/dev/null
           deb [arch=armhf,arm64] http://ports.ubuntu.com/ focal main restricted
