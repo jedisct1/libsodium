@@ -87,8 +87,8 @@ build_ios() {
   export SDK="${BASEDIR}/SDKs/iPhoneOS.sdk"
 
   ## 32-bit iOS
-  export CFLAGS="-fembed-bitcode -O2 -mthumb -arch armv7 -isysroot ${SDK} -mios-version-min=${IOS_VERSION_MIN}"
-  export LDFLAGS="-fembed-bitcode -mthumb -arch armv7 -isysroot ${SDK} -mios-version-min=${IOS_VERSION_MIN}"
+  export CFLAGS="-O2 -mthumb -arch armv7 -isysroot ${SDK} -mios-version-min=${IOS_VERSION_MIN}"
+  export LDFLAGS="-mthumb -arch armv7 -isysroot ${SDK} -mios-version-min=${IOS_VERSION_MIN}"
 
   make distclean >/dev/null 2>&1
   ./configure --host=arm-apple-darwin10 --prefix="$IOS32_PREFIX" \
@@ -96,8 +96,8 @@ build_ios() {
   make -j${PROCESSORS} install || exit 1
 
   ## 32-bit armv7s iOS
-  export CFLAGS="-fembed-bitcode -O2 -mthumb -arch armv7s -isysroot ${SDK} -mios-version-min=${IOS_VERSION_MIN}"
-  export LDFLAGS="-fembed-bitcode -mthumb -arch armv7s -isysroot ${SDK} -mios-version-min=${IOS_VERSION_MIN}"
+  export CFLAGS="-O2 -mthumb -arch armv7s -isysroot ${SDK} -mios-version-min=${IOS_VERSION_MIN}"
+  export LDFLAGS="-mthumb -arch armv7s -isysroot ${SDK} -mios-version-min=${IOS_VERSION_MIN}"
 
   make distclean >/dev/null 2>&1
   ./configure --host=arm-apple-darwin10 --prefix="$IOS32s_PREFIX" \
@@ -105,8 +105,8 @@ build_ios() {
   make -j${PROCESSORS} install || exit 1
 
   ## 64-bit iOS
-  export CFLAGS="-fembed-bitcode -O2 -arch arm64 -isysroot ${SDK} -mios-version-min=${IOS_VERSION_MIN}"
-  export LDFLAGS="-fembed-bitcode -arch arm64 -isysroot ${SDK} -mios-version-min=${IOS_VERSION_MIN}"
+  export CFLAGS="-O2 -arch arm64 -isysroot ${SDK} -mios-version-min=${IOS_VERSION_MIN}"
+  export LDFLAGS="-arch arm64 -isysroot ${SDK} -mios-version-min=${IOS_VERSION_MIN}"
 
   make distclean >/dev/null 2>&1
   ./configure --host=arm-apple-darwin10 --prefix="$IOS64_PREFIX" \
@@ -121,8 +121,8 @@ build_ios_simulator() {
 
   ## arm64 simulator
   if [ "$APPLE_SILICON_SUPPORTED" = "true" ]; then
-    export CFLAGS="-fembed-bitcode -O2 -arch arm64 -isysroot ${SDK} -mios-simulator-version-min=${IOS_SIMULATOR_VERSION_MIN}"
-    export LDFLAGS="-fembed-bitcode -arch arm64 -isysroot ${SDK} -mios-simulator-version-min=${IOS_SIMULATOR_VERSION_MIN}"
+    export CFLAGS="-O2 -arch arm64 -isysroot ${SDK} -mios-simulator-version-min=${IOS_SIMULATOR_VERSION_MIN}"
+    export LDFLAGS="-arch arm64 -isysroot ${SDK} -mios-simulator-version-min=${IOS_SIMULATOR_VERSION_MIN}"
 
     make distclean >/dev/null 2>&1
     ./configure --host=arm-apple-darwin20 --prefix="$IOS_SIMULATOR_ARM64_PREFIX" \
@@ -131,8 +131,8 @@ build_ios_simulator() {
   fi
 
   ## i386 simulator
-  export CFLAGS="-fembed-bitcode -O2 -arch i386 -isysroot ${SDK} -mios-simulator-version-min=${IOS_SIMULATOR_VERSION_MIN}"
-  export LDFLAGS="-fembed-bitcode -arch i386 -isysroot ${SDK} -mios-simulator-version-min=${IOS_SIMULATOR_VERSION_MIN}"
+  export CFLAGS="-O2 -arch i386 -isysroot ${SDK} -mios-simulator-version-min=${IOS_SIMULATOR_VERSION_MIN}"
+  export LDFLAGS="-arch i386 -isysroot ${SDK} -mios-simulator-version-min=${IOS_SIMULATOR_VERSION_MIN}"
 
   make distclean >/dev/null 2>&1
   ./configure --host=i686-apple-darwin10 --prefix="$IOS_SIMULATOR_I386_PREFIX" \
@@ -140,8 +140,8 @@ build_ios_simulator() {
   make -j${PROCESSORS} install || exit 1
 
   ## x86_64 simulator
-  export CFLAGS="-fembed-bitcode -O2 -arch x86_64 -isysroot ${SDK} -mios-simulator-version-min=${IOS_SIMULATOR_VERSION_MIN}"
-  export LDFLAGS="-fembed-bitcode -arch x86_64 -isysroot ${SDK} -mios-simulator-version-min=${IOS_SIMULATOR_VERSION_MIN}"
+  export CFLAGS="-O2 -arch x86_64 -isysroot ${SDK} -mios-simulator-version-min=${IOS_SIMULATOR_VERSION_MIN}"
+  export LDFLAGS="-arch x86_64 -isysroot ${SDK} -mios-simulator-version-min=${IOS_SIMULATOR_VERSION_MIN}"
 
   make distclean >/dev/null 2>&1
   ./configure --host=x86_64-apple-darwin10 --prefix="$IOS_SIMULATOR_X86_64_PREFIX" \
@@ -155,8 +155,8 @@ build_watchos() {
   export SDK="${BASEDIR}/SDKs/WatchOS.sdk"
 
   # 32-bit watchOS
-  export CFLAGS="-fembed-bitcode -O2 -mthumb -arch armv7k -isysroot ${SDK} -mwatchos-version-min=${WATCHOS_VERSION_MIN}"
-  export LDFLAGS="-fembed-bitcode -mthumb -arch armv7k -isysroot ${SDK} -mwatchos-version-min=${WATCHOS_VERSION_MIN}"
+  export CFLAGS="-O2 -mthumb -arch armv7k -isysroot ${SDK} -mwatchos-version-min=${WATCHOS_VERSION_MIN}"
+  export LDFLAGS="-mthumb -arch armv7k -isysroot ${SDK} -mwatchos-version-min=${WATCHOS_VERSION_MIN}"
 
   make distclean >/dev/null 2>&1
   ./configure --host=arm-apple-darwin10 --prefix="$WATCHOS32_PREFIX" \
@@ -164,8 +164,8 @@ build_watchos() {
   make -j${PROCESSORS} install || exit 1
 
   ## 64-bit arm64_32 watchOS
-  export CFLAGS="-fembed-bitcode -O2 -mthumb -arch arm64_32 -isysroot ${SDK} -mwatchos-version-min=${WATCHOS_VERSION_MIN}"
-  export LDFLAGS="-fembed-bitcode -mthumb -arch arm64_32 -isysroot ${SDK} -mwatchos-version-min=${WATCHOS_VERSION_MIN}"
+  export CFLAGS="-O2 -mthumb -arch arm64_32 -isysroot ${SDK} -mwatchos-version-min=${WATCHOS_VERSION_MIN}"
+  export LDFLAGS="-mthumb -arch arm64_32 -isysroot ${SDK} -mwatchos-version-min=${WATCHOS_VERSION_MIN}"
 
   make distclean >/dev/null 2>&1
   ./configure --host=arm-apple-darwin10 --prefix="$WATCHOS64_32_PREFIX" \
@@ -180,8 +180,8 @@ build_watchos_simulator() {
 
   ## arm64 simulator
   if [ "$APPLE_SILICON_SUPPORTED" = "true" ]; then
-    export CFLAGS="-fembed-bitcode -O2 -arch arm64 -isysroot ${SDK} -mwatchos-simulator-version-min=${WATCHOS_SIMULATOR_VERSION_MIN}"
-    export LDFLAGS="-fembed-bitcode -arch arm64 -isysroot ${SDK} -mwatchos-simulator-version-min=${WATCHOS_SIMULATOR_VERSION_MIN}"
+    export CFLAGS="-O2 -arch arm64 -isysroot ${SDK} -mwatchos-simulator-version-min=${WATCHOS_SIMULATOR_VERSION_MIN}"
+    export LDFLAGS="-arch arm64 -isysroot ${SDK} -mwatchos-simulator-version-min=${WATCHOS_SIMULATOR_VERSION_MIN}"
 
     make distclean >/dev/null 2>&1
     ./configure --host=arm-apple-darwin20 --prefix="$WATCHOS_SIMULATOR_ARM64_PREFIX" \
@@ -190,8 +190,8 @@ build_watchos_simulator() {
   fi
 
   ## i386 simulator
-  export CFLAGS="-fembed-bitcode -O2 -arch i386 -isysroot ${SDK} -mwatchos-simulator-version-min=${WATCHOS_SIMULATOR_VERSION_MIN}"
-  export LDFLAGS="-fembed-bitcode -arch i386 -isysroot ${SDK} -mwatchos-simulator-version-min=${WATCHOS_SIMULATOR_VERSION_MIN}"
+  export CFLAGS="-O2 -arch i386 -isysroot ${SDK} -mwatchos-simulator-version-min=${WATCHOS_SIMULATOR_VERSION_MIN}"
+  export LDFLAGS="-arch i386 -isysroot ${SDK} -mwatchos-simulator-version-min=${WATCHOS_SIMULATOR_VERSION_MIN}"
 
   make distclean >/dev/null 2>&1
   ./configure --host=i686-apple-darwin10 --prefix="$WATCHOS_SIMULATOR_I386_PREFIX" \
@@ -199,8 +199,8 @@ build_watchos_simulator() {
   make -j${PROCESSORS} install || exit 1
 
   ## x86_64 simulator
-  export CFLAGS="-fembed-bitcode -O2 -arch x86_64 -isysroot ${SDK} -mwatchos-simulator-version-min=${WATCHOS_SIMULATOR_VERSION_MIN}"
-  export LDFLAGS="-fembed-bitcode -arch x86_64 -isysroot ${SDK} -mwatchos-simulator-version-min=${WATCHOS_SIMULATOR_VERSION_MIN}"
+  export CFLAGS="-O2 -arch x86_64 -isysroot ${SDK} -mwatchos-simulator-version-min=${WATCHOS_SIMULATOR_VERSION_MIN}"
+  export LDFLAGS="-arch x86_64 -isysroot ${SDK} -mwatchos-simulator-version-min=${WATCHOS_SIMULATOR_VERSION_MIN}"
 
   make distclean >/dev/null 2>&1
   ./configure --host=x86_64-apple-darwin10 --prefix="$WATCHOS_SIMULATOR_X86_64_PREFIX" \
@@ -214,8 +214,8 @@ build_tvos() {
   export SDK="${BASEDIR}/SDKs/AppleTVOS.sdk"
 
   ## 64-bit tvOS
-  export CFLAGS="-fembed-bitcode -O2 -arch arm64 -isysroot ${SDK} -mtvos-version-min=${TVOS_VERSION_MIN}"
-  export LDFLAGS="-fembed-bitcode -arch arm64 -isysroot ${SDK} -mtvos-version-min=${TVOS_VERSION_MIN}"
+  export CFLAGS="-O2 -arch arm64 -isysroot ${SDK} -mtvos-version-min=${TVOS_VERSION_MIN}"
+  export LDFLAGS="-arch arm64 -isysroot ${SDK} -mtvos-version-min=${TVOS_VERSION_MIN}"
 
   make distclean >/dev/null 2>&1
   ./configure --host=arm-apple-darwin10 --prefix="$TVOS64_PREFIX" \
@@ -230,8 +230,8 @@ build_tvos_simulator() {
 
   ## arm64 simulator
   if [ "$APPLE_SILICON_SUPPORTED" = "true" ]; then
-    export CFLAGS="-fembed-bitcode -O2 -arch arm64 -isysroot ${SDK} -mtvos-simulator-version-min=${TVOS_SIMULATOR_VERSION_MIN}"
-    export LDFLAGS="-fembed-bitcode -arch arm64 -isysroot ${SDK} -mtvos-simulator-version-min=${TVOS_SIMULATOR_VERSION_MIN}"
+    export CFLAGS="-O2 -arch arm64 -isysroot ${SDK} -mtvos-simulator-version-min=${TVOS_SIMULATOR_VERSION_MIN}"
+    export LDFLAGS="-arch arm64 -isysroot ${SDK} -mtvos-simulator-version-min=${TVOS_SIMULATOR_VERSION_MIN}"
 
     make distclean >/dev/null 2>&1
     ./configure --host=arm-apple-darwin20 --prefix="$TVOS_SIMULATOR_ARM64_PREFIX" \
@@ -240,8 +240,8 @@ build_tvos_simulator() {
   fi
 
   ## x86_64 simulator
-  export CFLAGS="-fembed-bitcode -O2 -arch x86_64 -isysroot ${SDK} -mtvos-simulator-version-min=${TVOS_SIMULATOR_VERSION_MIN}"
-  export LDFLAGS="-fembed-bitcode -arch x86_64 -isysroot ${SDK} -mtvos-simulator-version-min=${TVOS_SIMULATOR_VERSION_MIN}"
+  export CFLAGS="-O2 -arch x86_64 -isysroot ${SDK} -mtvos-simulator-version-min=${TVOS_SIMULATOR_VERSION_MIN}"
+  export LDFLAGS="-arch x86_64 -isysroot ${SDK} -mtvos-simulator-version-min=${TVOS_SIMULATOR_VERSION_MIN}"
 
   make distclean >/dev/null 2>&1
   ./configure --host=x86_64-apple-darwin10 --prefix="$TVOS_SIMULATOR_X86_64_PREFIX" \
