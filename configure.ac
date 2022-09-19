@@ -311,6 +311,7 @@ AC_COMPILE_IFELSE([AC_LANG_PROGRAM([[]], [[
   [AC_MSG_RESULT(no)
 ])
 
+AX_CHECK_COMPILE_FLAG([$CWFLAGS -Warray-bounds], [CWFLAGS="$CWFLAGS -Warray-bounds"])
 AX_CHECK_COMPILE_FLAG([$CWFLAGS -Wbad-function-cast], [CWFLAGS="$CWFLAGS -Wbad-function-cast"])
 AX_CHECK_COMPILE_FLAG([$CWFLAGS -Wcast-qual], [CWFLAGS="$CWFLAGS -Wcast-qual"])
 AX_CHECK_COMPILE_FLAG([$CWFLAGS -Wdiv-by-zero], [CWFLAGS="$CWFLAGS -Wdiv-by-zero"])
