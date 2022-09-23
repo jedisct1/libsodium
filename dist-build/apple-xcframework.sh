@@ -11,6 +11,7 @@ export IOS_SIMULATOR_I386_PREFIX="${PREFIX}/tmp/ios-simulator-i386"
 export IOS_SIMULATOR_X86_64_PREFIX="${PREFIX}/tmp/ios-simulator-x86_64"
 export WATCHOS32_PREFIX="${PREFIX}/tmp/watchos32"
 export WATCHOS64_32_PREFIX="${PREFIX}/tmp/watchos64_32"
+export WATCHOS64_PREFIX="${PREFIX}/tmp/watchos64"
 export WATCHOS_SIMULATOR_ARM64_PREFIX="${PREFIX}/tmp/watchos-simulator-arm64"
 export WATCHOS_SIMULATOR_I386_PREFIX="${PREFIX}/tmp/watchos-simulator-i386"
 export WATCHOS_SIMULATOR_X86_64_PREFIX="${PREFIX}/tmp/watchos-simulator-x86_64"
@@ -169,6 +170,15 @@ build_watchos() {
 
   make distclean >/dev/null 2>&1
   ./configure --host=arm-apple-darwin10 --prefix="$WATCHOS64_32_PREFIX" \
+    ${LIBSODIUM_ENABLE_MINIMAL_FLAG} || exit 1
+  make -j${PROCESSORS} install || exit 1
+
+  ## 64-bit arm64 watchOS
+  export CFLAGS="-O2 -mthumb -arch arm64 -isysroot ${SDK} -mwatchos-version-min=${WATCHOS_VERSION_MIN}"
+  export LDFLAGS="-mthumb -arch arm64 -isysroot ${SDK} -mwatchos-version-min=${WATCHOS_VERSION_MIN}"
+
+  make distclean >/dev/null 2>&1
+  ./configure --host=arm-apple-darwin10 --prefix="$WATCHOS64_PREFIX" \
     ${LIBSODIUM_ENABLE_MINIMAL_FLAG} || exit 1
   make -j${PROCESSORS} install || exit 1
 }
@@ -355,6 +365,7 @@ for ext in a dylib; do
   lipo -create \
     "${WATCHOS32_PREFIX}/lib/libsodium.${ext}" \
     "${WATCHOS64_32_PREFIX}/lib/libsodium.${ext}" \
+    "${WATCHOS64_PREFIX}/lib/libsodium.${ext}" \
     -output "${PREFIX}/watchos/lib/libsodium.${ext}"
 done
 
