@@ -31,6 +31,7 @@
     <Content Include="runtimes/linux-arm64/native/libsodium.so" PackagePath="runtimes/linux-arm64/native/" />
     <Content Include="runtimes/linux-arm/native/libsodium.so" PackagePath="runtimes/linux-arm/native/" />
     <Content Include="runtimes/linux-musl-x64/native/libsodium.so" PackagePath="runtimes/linux-musl-x64/native/" />
+    <Content Include="runtimes/linux-musl-arm64/native/libsodium.so" PackagePath="runtimes/linux-musl-arm64/native/" />
     <Content Include="runtimes/osx-x64/native/libsodium.dylib" PackagePath="runtimes/osx-x64/native/" />
     <Content Include="runtimes/osx-arm64/native/libsodium.dylib" PackagePath="runtimes/osx-arm64/native/" />    
   </ItemGroup>
