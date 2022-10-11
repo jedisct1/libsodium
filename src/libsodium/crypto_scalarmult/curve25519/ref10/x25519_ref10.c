@@ -74,7 +74,7 @@ crypto_scalarmult_curve25519_ref10(unsigned char *q,
                                    const unsigned char *n,
                                    const unsigned char *p)
 {
-    unsigned char *t = q;
+    unsigned char  t[32];
     unsigned int   i;
     fe25519        x1, x2, x3, z2, z3;
     fe25519        a, b, aa, bb, e, da, cb;
@@ -130,6 +130,8 @@ crypto_scalarmult_curve25519_ref10(unsigned char *q,
     fe25519_invert(z2, z2);
     fe25519_mul(x2, x2, z2);
     fe25519_tobytes(q, x2);
+
+    sodium_memzero(t, sizeof t);
 
     return 0;
 }
