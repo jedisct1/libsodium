@@ -8,7 +8,7 @@ const LibExeObjStep = std.build.LibExeObjStep;
 
 pub fn build(b: *std.build.Builder) !void {
     const src_path = "src/libsodium";
-    const src_dir = try fs.Dir.openDir(fs.cwd(), src_path, .{ .iterate = true, .no_follow = true });
+    const src_dir = try fs.Dir.openIterableDir(fs.cwd(), src_path, .{ .no_follow = true });
 
     var target = b.standardTargetOptions(.{});
     var mode = b.standardReleaseOptions();
@@ -23,8 +23,8 @@ pub fn build(b: *std.build.Builder) !void {
     const prebuilt_version_file_path = "builds/msvc/version.h";
     const version_file_path = "include/sodium/version.h";
 
-    if (src_dir.access(version_file_path, .{ .mode = .read_only })) {} else |_| {
-        try fs.cwd().copyFile(prebuilt_version_file_path, src_dir, version_file_path, .{});
+    if (src_dir.dir.access(version_file_path, .{ .mode = .read_only })) {} else |_| {
+        try fs.cwd().copyFile(prebuilt_version_file_path, src_dir.dir, version_file_path, .{});
     }
 
     for (libs) |lib| {
@@ -36,7 +36,7 @@ pub fn build(b: *std.build.Builder) !void {
         }
         lib.linkLibC();
 
-        lib.addIncludeDir("src/libsodium/include/sodium");
+        lib.addIncludePath("src/libsodium/include/sodium");
         lib.defineCMacro("CONFIGURED", "1");
         lib.defineCMacro("DEV_MODE", "1");
         lib.defineCMacro("_GNU_SOURCE", "1");
