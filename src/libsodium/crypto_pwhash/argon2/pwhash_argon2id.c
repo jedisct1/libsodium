@@ -191,14 +191,13 @@ crypto_pwhash_argon2id_str(char out[crypto_pwhash_argon2id_STRBYTES],
     memset(out, 0, crypto_pwhash_argon2id_STRBYTES);
     if (passwdlen > crypto_pwhash_argon2id_PASSWD_MAX ||
         opslimit > crypto_pwhash_argon2id_OPSLIMIT_MAX ||
-        memlimit > crypto_pwhash_argon2id_MEMLIMIT_MAX) ||
-        joblimit > crypto_pwhash_argon2id_JOBLIMIT_MAX) {
+        memlimit > crypto_pwhash_argon2id_MEMLIMIT_MAX) {
         errno = EFBIG;
         return -1;
     }
     if (passwdlen < crypto_pwhash_argon2id_PASSWD_MIN ||
         opslimit < crypto_pwhash_argon2id_OPSLIMIT_MIN ||
-        joblimit < crypto_pwhash_argon2id_JOBLIMIT_MIN) {
+        memlimit < crypto_pwhash_argon2id_MEMLIMIT_MIN) {
         errno = EINVAL;
         return -1;
     }
