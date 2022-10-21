@@ -136,7 +136,8 @@ int
 crypto_pwhash_argon2id(unsigned char *const out, unsigned long long outlen,
                        const char *const passwd, unsigned long long passwdlen,
                        const unsigned char *const salt,
-                       unsigned long long opslimit, size_t memlimit, int alg)
+                       unsigned long long opslimit, size_t memlimit,
+                       size_t joblimit, int alg)
 {
     memset(out, 0, outlen);
     if (outlen > crypto_pwhash_argon2id_BYTES_MAX) {
@@ -166,7 +167,7 @@ crypto_pwhash_argon2id(unsigned char *const out, unsigned long long outlen,
     switch (alg) {
     case crypto_pwhash_argon2id_ALG_ARGON2ID13:
         if (argon2id_hash_raw((uint32_t) opslimit, (uint32_t) (memlimit / 1024U),
-                              (uint32_t) 1U, passwd, (size_t) passwdlen, salt,
+                              (uint32_t) joblimit, passwd, (size_t) passwdlen, salt,
                               (size_t) crypto_pwhash_argon2id_SALTBYTES, out,
                               (size_t) outlen) != ARGON2_OK) {
             return -1; /* LCOV_EXCL_LINE */
@@ -182,26 +183,28 @@ int
 crypto_pwhash_argon2id_str(char out[crypto_pwhash_argon2id_STRBYTES],
                            const char *const passwd,
                            unsigned long long passwdlen,
-                           unsigned long long opslimit, size_t memlimit)
+                           unsigned long long opslimit, size_t memlimit,
+                           size_t joblimit)
 {
     unsigned char salt[crypto_pwhash_argon2id_SALTBYTES];
 
     memset(out, 0, crypto_pwhash_argon2id_STRBYTES);
     if (passwdlen > crypto_pwhash_argon2id_PASSWD_MAX ||
         opslimit > crypto_pwhash_argon2id_OPSLIMIT_MAX ||
-        memlimit > crypto_pwhash_argon2id_MEMLIMIT_MAX) {
+        memlimit > crypto_pwhash_argon2id_MEMLIMIT_MAX) ||
+        joblimit > crypto_pwhash_argon2id_JOBLIMIT_MAX) {
         errno = EFBIG;
         return -1;
     }
     if (passwdlen < crypto_pwhash_argon2id_PASSWD_MIN ||
         opslimit < crypto_pwhash_argon2id_OPSLIMIT_MIN ||
-        memlimit < crypto_pwhash_argon2id_MEMLIMIT_MIN) {
+        joblimit < crypto_pwhash_argon2id_JOBLIMIT_MIN) {
         errno = EINVAL;
         return -1;
     }
     randombytes_buf(salt, sizeof salt);
     if (argon2id_hash_encoded((uint32_t) opslimit, (uint32_t) (memlimit / 1024U),
-                              (uint32_t) 1U, passwd, (size_t) passwdlen, salt,
+                              (uint32_t) joblimit, passwd, (size_t) passwdlen, salt,
                               sizeof salt, STR_HASHBYTES, out,
                               crypto_pwhash_argon2id_STRBYTES) != ARGON2_OK) {
         return -1; /* LCOV_EXCL_LINE */

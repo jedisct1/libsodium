@@ -94,14 +94,15 @@ int crypto_pwhash_argon2i(unsigned char * const out,
                           unsigned long long passwdlen,
                           const unsigned char * const salt,
                           unsigned long long opslimit, size_t memlimit,
-                          int alg)
+                          size_t joblimit, int alg)
             __attribute__ ((warn_unused_result)) __attribute__ ((nonnull));
 
 SODIUM_EXPORT
 int crypto_pwhash_argon2i_str(char out[crypto_pwhash_argon2i_STRBYTES],
                               const char * const passwd,
                               unsigned long long passwdlen,
-                              unsigned long long opslimit, size_t memlimit)
+                              unsigned long long opslimit, size_t memlimit,
+                              size_t joblimit)
             __attribute__ ((warn_unused_result)) __attribute__ ((nonnull));
 
 SODIUM_EXPORT
@@ -112,7 +113,8 @@ int crypto_pwhash_argon2i_str_verify(const char * str,
 
 SODIUM_EXPORT
 int crypto_pwhash_argon2i_str_needs_rehash(const char * str,
-                                           unsigned long long opslimit, size_t memlimit)
+                                           unsigned long long opslimit, size_t memlimit,
+                                           size_t joblimit)
             __attribute__ ((warn_unused_result))  __attribute__ ((nonnull));
 
 #ifdef __cplusplus
