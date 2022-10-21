@@ -24,42 +24,42 @@ static int
 crypto_scalarmult_curve25519_sandy2x(unsigned char *q, const unsigned char *n,
                                      const unsigned char *p)
 {
-  unsigned char  t[32];
-  fe             var[3];
-  fe51           x_51;
-  fe51           z_51;
-  unsigned int   i;
+    unsigned char  t[32];
+    fe             var[3];
+    fe51           x_51;
+    fe51           z_51;
+    unsigned int   i;
 
-  for (i = 0; i < 32; i++) {
-      t[i] = n[i];
-  }
-  t[0] &= 248;
-  t[31] &= 127;
-  t[31] |= 64;
+    for (i = 0; i < 32; i++) {
+        t[i] = n[i];
+    }
+    t[0] &= 248;
+    t[31] &= 127;
+    t[31] |= 64;
 
-  fe_frombytes(x1, p);
+    fe_frombytes(x1, p);
 
-  ladder(var, t);
+    ladder(var, t);
 
-  z_51.v[0] = (z2[1] << 26) + z2[0];
-  z_51.v[1] = (z2[3] << 26) + z2[2];
-  z_51.v[2] = (z2[5] << 26) + z2[4];
-  z_51.v[3] = (z2[7] << 26) + z2[6];
-  z_51.v[4] = (z2[9] << 26) + z2[8];
+    z_51.v[0] = (z2[1] << 26) + z2[0];
+    z_51.v[1] = (z2[3] << 26) + z2[2];
+    z_51.v[2] = (z2[5] << 26) + z2[4];
+    z_51.v[3] = (z2[7] << 26) + z2[6];
+    z_51.v[4] = (z2[9] << 26) + z2[8];
 
-  x_51.v[0] = (x2[1] << 26) + x2[0];
-  x_51.v[1] = (x2[3] << 26) + x2[2];
-  x_51.v[2] = (x2[5] << 26) + x2[4];
-  x_51.v[3] = (x2[7] << 26) + x2[6];
-  x_51.v[4] = (x2[9] << 26) + x2[8];
+    x_51.v[0] = (x2[1] << 26) + x2[0];
+    x_51.v[1] = (x2[3] << 26) + x2[2];
+    x_51.v[2] = (x2[5] << 26) + x2[4];
+    x_51.v[3] = (x2[7] << 26) + x2[6];
+    x_51.v[4] = (x2[9] << 26) + x2[8];
 
-  fe51_invert(&z_51, &z_51);
-  fe51_mul(&x_51, &x_51, &z_51);
-  fe51_pack(q, &x_51);
+    fe51_invert(&z_51, &z_51);
+    fe51_mul(&x_51, &x_51, &z_51);
+    fe51_pack(q, &x_51);
 
-  sodium_memzero(t, sizeof t);
+    sodium_memzero(t, sizeof t);
 
-  return 0;
+    return 0;
 }
 
 struct crypto_scalarmult_curve25519_implementation
