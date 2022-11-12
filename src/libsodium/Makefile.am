@@ -222,6 +222,7 @@ libarmcrypto_la_LDFLAGS = $(libsodium_la_LDFLAGS)
 libarmcrypto_la_CPPFLAGS = $(libsodium_la_CPPFLAGS) \
 	@CFLAGS_ARMCRYPTO@
 libarmcrypto_la_SOURCES = \
+	crypto_aead/aes256gcm/armcrypto/aead_aes256gcm_armcrypto.c \
 	crypto_aead/aegis128l/armcrypto/aead_aegis128l_armcrypto.c \
 	crypto_aead/aegis256/armcrypto/aead_aegis256_armcrypto.c
 

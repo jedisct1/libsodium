@@ -18,17 +18,16 @@
 #include "runtime.h"
 #include "utils.h"
 
-#if defined(HAVE_TMMINTRIN_H) && defined(HAVE_WMMINTRIN_H)
+#ifdef HAVE_ARMCRYPTO
 
-#ifdef __GNUC__
-# pragma GCC target("ssse3")
-# pragma GCC target("aes")
-# pragma GCC target("pclmul")
-#endif
+//#ifdef __GNUC__
+//# pragma GCC target("ssse3")
+//# pragma GCC target("aes")
+//# pragma GCC target("pclmul")
+//#endif
 
-#include <tmmintrin.h>
-#include <wmmintrin.h>
-#include "private/sse2_64_32.h"
+#include "sse2neon.h"
+//#include "private/sse2_64_32.h"
 
 #if defined(__INTEL_COMPILER) || defined(_bswap64)
 #elif defined(_MSC_VER)
@@ -953,7 +952,7 @@ crypto_aead_aes256gcm_decrypt(unsigned char *m, unsigned long long *mlen_p, unsi
 int
 crypto_aead_aes256gcm_is_available(void)
 {
-    return sodium_runtime_has_pclmul() & sodium_runtime_has_aesni();
+    return sodium_runtime_has_armcrypto();
 }
 
 size_t
