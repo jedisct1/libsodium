@@ -57,8 +57,8 @@ typedef __m128i BlockVec;
 #define CLMULHI128(a, b)           _mm_clmulepi64_si128((a), (b), 0x11)
 #define CLMULLOHI128(a, b)         _mm_clmulepi64_si128((a), (b), 0x10)
 #define CLMULHILO128(a, b)         _mm_clmulepi64_si128((a), (b), 0x01)
-#define PREFETCH_READ(x)           _mm_prefetch((x), 2)
-#define PREFETCH_WRITE(x)          _mm_prefetch((x), 2)
+#define PREFETCH_READ(x)           _mm_prefetch((x), _MM_HINT_T1)
+#define PREFETCH_WRITE(x)          _mm_prefetch((x), _MM_HINT_T1)
 
 #define ROUNDS 14
 
