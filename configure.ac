@@ -310,6 +310,7 @@ AC_ARG_VAR([CWFLAGS], [define to compilation flags for generating extra warnings
 
 AX_CHECK_COMPILE_FLAG([$CFLAGS -Wall], [CWFLAGS="$CFLAGS -Wall"])
 AX_CHECK_COMPILE_FLAG([$CFLAGS -Wextra], [CWFLAGS="$CFLAGS -Wextra"])
+AX_CHECK_COMPILE_FLAG([$CFLAGS -Wno-deprecated-declarations], [CWFLAGS="$CFLAGS -Wno-deprecated-declarations"])
 
 AC_MSG_CHECKING(for clang)
 AC_COMPILE_IFELSE([AC_LANG_PROGRAM([[]], [[
@@ -323,8 +324,6 @@ AC_COMPILE_IFELSE([AC_LANG_PROGRAM([[]], [[
   ],
   [AC_MSG_RESULT(no)
 ])
-
-AX_CHECK_COMPILE_FLAG([$CWFLAGS -Wno-deprecated-declarations], [CWFLAGS="$CWFLAGS -Wno-deprecated-declarations"])
 
 AX_CHECK_COMPILE_FLAG([$CWFLAGS -Warray-bounds], [CWFLAGS="$CWFLAGS -Warray-bounds"])
 AX_CHECK_COMPILE_FLAG([$CWFLAGS -Wbad-function-cast], [CWFLAGS="$CWFLAGS -Wbad-function-cast"])
