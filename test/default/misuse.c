@@ -12,7 +12,7 @@ static void
 sigabrt_handler_15(int sig)
 {
     (void) sig;
-    exit(0);
+    _exit(0);
 }
 
 # ifndef SODIUM_LIBRARY_MINIMAL
