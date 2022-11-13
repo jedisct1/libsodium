@@ -4,12 +4,15 @@
 
 #ifdef HAVE_CATCHABLE_ABRT
 # include <signal.h>
+#ifndef _WIN32
+# include <unistd.h>
+#endif
 
 static void
 sigabrt_handler_15(int sig)
 {
     (void) sig;
-    exit(0);
+    _exit(0);
 }
 
 # ifndef SODIUM_LIBRARY_MINIMAL
@@ -21,7 +24,7 @@ sigabrt_handler_14(int sig)
     assert(crypto_box_curve25519xchacha20poly1305_easy
            (guard_page, guard_page, crypto_stream_xchacha20_MESSAGEBYTES_MAX - 1,
             guard_page, guard_page, guard_page) == -1);
-    exit(1);
+    _exit(1);
 }
 
 static void
@@ -32,7 +35,7 @@ sigabrt_handler_13(int sig)
     assert(crypto_box_curve25519xchacha20poly1305_easy_afternm
            (guard_page, guard_page, crypto_stream_xchacha20_MESSAGEBYTES_MAX - 1,
             guard_page, guard_page) == -1);
-    exit(1);
+    _exit(1);
 }
 # endif
 
@@ -47,7 +50,7 @@ sigabrt_handler_12(int sig)
 # endif
     assert(crypto_pwhash_str_alg((char *) guard_page,
                                  "", 0U, 1U, 1U, -1) == -1);
-    exit(1);
+    _exit(1);
 }
 
 static void
@@ -58,7 +61,7 @@ sigabrt_handler_11(int sig)
     assert(crypto_box_easy(guard_page, guard_page,
                            crypto_stream_xsalsa20_MESSAGEBYTES_MAX,
                            guard_page, guard_page, guard_page) == -1);
-    exit(1);
+    _exit(1);
 }
 
 static void
@@ -69,7 +72,7 @@ sigabrt_handler_10(int sig)
     assert(crypto_box_easy_afternm(guard_page, guard_page,
                                    crypto_stream_xsalsa20_MESSAGEBYTES_MAX,
                                    guard_page, guard_page) == -1);
-    exit(1);
+    _exit(1);
 }
 
 static void
@@ -79,7 +82,7 @@ sigabrt_handler_9(int sig)
     signal(SIGABRT, sigabrt_handler_10);
     assert(sodium_base642bin(guard_page, 1, (const char *) guard_page, 1,
                              NULL, NULL, NULL, -1) == -1);
-    exit(1);
+    _exit(1);
 }
 
 static void
@@ -89,7 +92,7 @@ sigabrt_handler_8(int sig)
     signal(SIGABRT, sigabrt_handler_9);
     assert(sodium_bin2base64((char *) guard_page, 1, guard_page, 1,
                              sodium_base64_VARIANT_ORIGINAL) == NULL);
-    exit(1);
+    _exit(1);
 }
 
 static void
@@ -99,7 +102,7 @@ sigabrt_handler_7(int sig)
     signal(SIGABRT, sigabrt_handler_8);
     assert(sodium_bin2base64((char *) guard_page, 1,
                              guard_page, 1, -1) == NULL);
-    exit(1);
+    _exit(1);
 }
 
 static void
@@ -108,7 +111,7 @@ sigabrt_handler_6(int sig)
     (void) sig;
     signal(SIGABRT, sigabrt_handler_7);
     assert(sodium_pad(NULL, guard_page, SIZE_MAX, 16, 1) == -1);
-    exit(1);
+    _exit(1);
 }
 
 static void
@@ -119,7 +122,7 @@ sigabrt_handler_5(int sig)
     assert(crypto_aead_xchacha20poly1305_ietf_encrypt(guard_page, NULL, NULL, UINT64_MAX,
                                                       NULL, 0, NULL,
                                                       guard_page, guard_page) == -1);
-    exit(1);
+    _exit(1);
 }
 
 static void
@@ -130,7 +133,7 @@ sigabrt_handler_4(int sig)
     assert(crypto_aead_chacha20poly1305_ietf_encrypt(guard_page, NULL, NULL, UINT64_MAX,
                                                      NULL, 0, NULL,
                                                      guard_page, guard_page) == -1);
-    exit(1);
+    _exit(1);
 }
 
 static void
@@ -141,7 +144,7 @@ sigabrt_handler_3(int sig)
     assert(crypto_aead_chacha20poly1305_encrypt(guard_page, NULL, NULL, UINT64_MAX,
                                                 NULL, 0, NULL,
                                                 guard_page, guard_page) == -1);
-    exit(1);
+    _exit(1);
 }
 
 static void
@@ -154,7 +157,7 @@ sigabrt_handler_2(int sig)
 #else
     abort();
 #endif
-    exit(1);
+    _exit(1);
 }
 
 static void
@@ -164,7 +167,7 @@ sigabrt_handler_1(int sig)
     signal(SIGABRT, sigabrt_handler_2);
     assert(crypto_kx_server_session_keys(NULL, NULL, guard_page, guard_page,
                                          guard_page) == -1);
-    exit(1);
+    _exit(1);
 }
 
 int
