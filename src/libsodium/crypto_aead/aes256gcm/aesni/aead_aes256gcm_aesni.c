@@ -22,7 +22,7 @@
 
 #if defined(HAVE_TMMINTRIN_H) && defined(HAVE_WMMINTRIN_H)
 
-#ifdef __x86_64__
+#if defined(__x86_64__) || defined(__i386__)
 #ifdef __GNUC__
 #pragma GCC target("ssse3")
 #pragma GCC target("aes")
