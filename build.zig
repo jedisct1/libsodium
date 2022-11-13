@@ -54,7 +54,12 @@ pub fn build(b: *std.build.Builder) !void {
                 lib.defineCMacro("HAVE_PMMINTRIN_H", "1");
             },
             .aarch64, .aarch64_be => {
-                lib.defineCMacro("HAVE_ARMCRYTO", "1");
+                const cpu_features = target.getCpuFeatures();
+                const has_neon = cpu_features.isEnabled(@enumToInt(std.Target.aarch64.Feature.neon));
+                const has_crypto = cpu_features.isEnabled(@enumToInt(std.Target.aarch64.Feature.crypto));
+                if (has_neon and has_crypto) {
+                    lib.defineCMacro("HAVE_ARMCRYPTO", "1");
+                }
             },
             .wasm32, .wasm64 => {
                 lib.defineCMacro("__wasm__", "1");
