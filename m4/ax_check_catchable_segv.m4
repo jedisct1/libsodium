@@ -24,6 +24,8 @@ size_t i;
 signal(SIGSEGV, sig);
 signal(SIGBUS, sig);
 #if !defined(__SANITIZE_ADDRESS__) && !defined(__EMSCRIPTEN__)
+*((volatile unsigned char *) -1) = 0xd0;
+*((volatile unsigned char *) 1) = 0xd0;
 for (i = 0; i < 10000000; i += 1024) { x[-i] = x[i] = (unsigned char) i; }
 #endif
 free((void *) x);
