@@ -6,6 +6,9 @@
 #ifdef HAVE_CATCHABLE_SEGV
 # include <signal.h>
 #endif
+#ifndef _WIN32
+# include <unistd.h>
+#endif
 
 #define TEST_NAME "sodium_utils3"
 #include "cmptest.h"
@@ -32,7 +35,7 @@ segv_handler(int sig)
     signal(SIGABRT, SIG_DFL);
 # endif
 #endif
-    exit(0);
+    _exit(0);
 }
 
 int
