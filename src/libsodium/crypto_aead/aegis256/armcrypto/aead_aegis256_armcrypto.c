@@ -12,7 +12,7 @@
 
 #include "private/common.h"
 
-#ifdef HAVE_ARMCRYPTO
+#if defined(HAVE_ARMCRYPTO) && defined(NATIVE_LITTLE_ENDIAN)
 
 # include <arm_neon.h>
 

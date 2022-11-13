@@ -13,7 +13,7 @@
 #include "runtime.h"
 #include "utils.h"
 
-#if defined(HAVE_ARMCRYPTO) && defined(__GNUC__)
+#if defined(HAVE_ARMCRYPTO) && defined(__GNUC__) && defined(NATIVE_LITTLE_ENDIAN)
 
 #include <arm_neon.h>
 

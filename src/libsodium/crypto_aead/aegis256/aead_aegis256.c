@@ -43,7 +43,7 @@ crypto_aead_aegis256_keygen(unsigned char k[crypto_aead_aegis256_KEYBYTES])
 }
 
 #if !((defined(HAVE_TMMINTRIN_H) && defined(HAVE_WMMINTRIN_H)) || \
-      defined(HAVE_ARMCRYPTO))
+      (defined(HAVE_ARMCRYPTO) && defined(NATIVE_LITTLE_ENDIAN)))
 
 #ifndef ENOSYS
 # define ENOSYS ENXIO
