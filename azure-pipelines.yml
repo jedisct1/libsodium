@@ -67,20 +67,6 @@ jobs:
           pathToPublish: bin
           artifactName: libsodium
 
-  - job: "windows_old"
-    pool:
-      vmImage: "vs2017-win2016"
-    steps:
-      - powershell: |
-          cd builds\msvc\build
-          & .\buildbase.bat ..\vs2017\libsodium.sln 15
-        displayName: Compile it all
-      - task: PublishBuildArtifacts@1
-        condition: not(canceled())
-        inputs:
-          pathToPublish: bin
-          artifactName: libsodium
-
   - job: mingw64
     pool:
       vmImage: "windows-2019"
