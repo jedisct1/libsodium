@@ -74,9 +74,9 @@ static inline I256
 XOR256(const I256 a, const I256 b)
 {
     return (I256) {
-        .hi  = XOR128(a.hi, b.hi),
-        .lo  = XOR128(a.lo, b.lo),
-        .mid = XOR128(a.mid, b.mid),
+        SODIUM_C99(.hi =) XOR128(a.hi, b.hi),
+        SODIUM_C99(.lo =) XOR128(a.lo, b.lo),
+        SODIUM_C99(.mid =) XOR128(a.mid, b.mid),
     };
 }
 
@@ -205,9 +205,9 @@ clsq128(const BlockVec x)
     const BlockVec r_mid = XOR128(CLMULLO128(mid, mid), XOR128(r_lo, r_hi));
 
     return (I256) {
-        .hi  = r_hi,
-        .lo  = r_lo,
-        .mid = r_mid,
+        SODIUM_C99(.hi =) r_hi,
+        SODIUM_C99(.lo =) r_lo,
+        SODIUM_C99(.mid =) r_mid,
     };
 }
 
@@ -225,9 +225,9 @@ clmul128(const BlockVec x, const BlockVec y)
     const BlockVec r_mid = XOR128(CLMULLO128(XOR128(x, x_hi), XOR128(y, y_hi)), XOR128(r_lo, r_hi));
 
     return (I256) {
-        .hi  = r_hi,
-        .lo  = r_lo,
-        .mid = r_mid,
+        SODIUM_C99(.hi =) r_hi,
+        SODIUM_C99(.lo =) r_lo,
+        SODIUM_C99(.mid =) r_mid,
     };
 #else
     const BlockVec r_hi  = CLMULHI128(x, y);
@@ -235,9 +235,9 @@ clmul128(const BlockVec x, const BlockVec y)
     const BlockVec r_mid = XOR128(CLMULHILO128(x, y), CLMULLOHI128(x, y));
 
     return (I256) {
-        .hi  = r_hi,
-        .lo  = r_lo,
-        .mid = r_mid,
+        SODIUM_C99(.hi =) r_hi,
+        SODIUM_C99(.lo =) r_lo,
+        SODIUM_C99(.mid =) r_mid,
     };
 #endif
 }
