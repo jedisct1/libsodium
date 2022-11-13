@@ -4,6 +4,7 @@ lib_LTLIBRARIES = \
 libsodium_la_SOURCES = \
 	crypto_aead/aegis128l/aead_aegis128l.c \
 	crypto_aead/aegis256/aead_aegis256.c \
+	crypto_aead/aes256gcm/aead_aes256gcm.c \
 	crypto_aead/chacha20poly1305/sodium/aead_chacha20poly1305.c \
 	crypto_aead/xchacha20poly1305/sodium/aead_xchacha20poly1305.c \
 	crypto_auth/crypto_auth.c \
@@ -223,7 +224,8 @@ libarmcrypto_la_CPPFLAGS = $(libsodium_la_CPPFLAGS) \
 	@CFLAGS_ARMCRYPTO@
 libarmcrypto_la_SOURCES = \
 	crypto_aead/aegis128l/armcrypto/aead_aegis128l_armcrypto.c \
-	crypto_aead/aegis256/armcrypto/aead_aegis256_armcrypto.c
+	crypto_aead/aegis256/armcrypto/aead_aegis256_armcrypto.c \
+	crypto_aead/aes256gcm/armcrypto/aead_aes256gcm_armcrypto.c
 
 libaesni_la_LDFLAGS = $(libsodium_la_LDFLAGS)
 libaesni_la_CPPFLAGS = $(libsodium_la_CPPFLAGS) \

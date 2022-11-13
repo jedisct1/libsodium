@@ -13,52 +13,67 @@
 #include "runtime.h"
 #include "utils.h"
 
-#if defined(HAVE_TMMINTRIN_H) && defined(HAVE_WMMINTRIN_H)
+#if defined(HAVE_ARMCRYPTO) && defined(__GNUC__)
 
-#ifdef __GNUC__
-#pragma GCC target("ssse3")
-#pragma GCC target("aes")
-#pragma GCC target("pclmul")
-#endif
-#include <tmmintrin.h>
-#include <wmmintrin.h>
+#include <arm_neon.h>
 
 #define ABYTES    crypto_aead_aes256gcm_ABYTES
 #define NPUBBYTES crypto_aead_aes256gcm_NPUBBYTES
 #define KEYBYTES  crypto_aead_aes256gcm_KEYBYTES
 
-#define PARALLEL_BLOCKS 7
+#define PARALLEL_BLOCKS 6
 #undef USE_KARATSUBA_MULTIPLICATION
 
-typedef __m128i BlockVec;
+typedef uint64x2_t BlockVec;
 
-#define LOAD128(a)                       _mm_loadu_si128((const BlockVec *) (a))
-#define STORE128(a, b)                   _mm_storeu_si128((BlockVec *) (a), (b))
-#define AES_ENCRYPT(block_vec, rkey)     _mm_aesenc_si128((block_vec), (rkey))
-#define AES_ENCRYPTLAST(block_vec, rkey) _mm_aesenclast_si128((block_vec), (rkey))
-#define AES_KEYGEN(block_vec, rc)        _mm_aeskeygenassist_si128((block_vec), (rc))
-#define XOR128(a, b)                     _mm_xor_si128((a), (b))
-#define AND128(a, b)                     _mm_and_si128((a), (b))
-#define OR128(a, b)                      _mm_or_si128((a), (b))
-#define SET64x2(a, b)                    _mm_set_epi64x((uint64_t) (a), (uint64_t) (b))
-#define ZERO128                          _mm_setzero_si128()
-#define ONE128                           SET64x2(0, 1)
-#define ADD64x2(a, b)                    _mm_add_epi64((a), (b))
-#define SUB64x2(a, b)                    _mm_sub_epi64((a), (b))
-#define SHL64x2(a, b)                    _mm_slli_epi64((a), (b))
-#define SHR64x2(a, b)                    _mm_srli_epi64((a), (b))
-#define REV128(x) \
-    _mm_shuffle_epi8((x), _mm_set_epi8(0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15))
-#define SHUFFLE32x4(x, a, b, c, d) _mm_shuffle_epi32((x), _MM_SHUFFLE((d), (c), (b), (a)))
-#define BYTESHL128(a, b)           _mm_slli_si128(a, b)
-#define BYTESHR128(a, b)           _mm_srli_si128(a, b)
-#define SHL128(a, b)               OR128(SHL64x2((a), (b)), SHR64x2(BYTESHL128((a), 8), 64 - (b)))
-#define CLMULLO128(a, b)           _mm_clmulepi64_si128((a), (b), 0x00)
-#define CLMULHI128(a, b)           _mm_clmulepi64_si128((a), (b), 0x11)
-#define CLMULLOHI128(a, b)         _mm_clmulepi64_si128((a), (b), 0x10)
-#define CLMULHILO128(a, b)         _mm_clmulepi64_si128((a), (b), 0x01)
-#define PREFETCH_READ(x)           __builtin_prefetch((x), 0, 2)
-#define PREFETCH_WRITE(x)          __builtin_prefetch((x), 1, 2);
+#define LOAD128(a)     vld1q_u64((const void *) a)
+#define STORE128(a, b) vst1q_u64(((void *) a), (b))
+#define AES_ENCRYPT(block_vec, rkey) \
+    vreinterpretq_u64_u8(            \
+        veorq_u8(vaesmcq_u8(vaeseq_u8(vreinterpretq_u8_u64(block_vec), vmovq_n_u8(0))), rkey))
+#define AES_ENCRYPTLAST(block_vec, rkey) \
+    vreinterpretq_u64_u8(veorq_u8(vaeseq_u8(vreinterpretq_u8_u64(block_vec), vmovq_n_u8(0)), rkey))
+#define XOR128(a, b)  veorq_u64((a), (b))
+#define AND128(a, b)  vandq_u64((a), (b))
+#define OR128(a, b)   vorrq_u64((a), (b))
+#define SET64x2(a, b) vsetq_lane_u64((uint64_t) (a), vmovq_n_u64((uint64_t) (b)), 1)
+#define ZERO128       vmovq_n_u8(0)
+#define ONE128        SET64x2(0, 1)
+#define ADD64x2(a, b) vaddq_u64((a), (b))
+#define SUB64x2(a, b) vsubq_u64((a), (b))
+#define SHL64x2(a, b) vshlq_n_u64((a), (b))
+#define SHR64x2(a, b) vshrq_n_u64((a), (b))
+#define REV128(x)                                                                                  \
+    vreinterpretq_u64_u8(__builtin_shufflevector(vreinterpretq_u8_u64(x), vreinterpretq_u8_u64(x), \
+                                                 15, 14, 13, 12, 11, 10, 9, 8, 7, 6, 5, 4, 3, 2,   \
+                                                 1, 0))
+#define SHUFFLE32x4(x, a, b, c, d)                                          \
+    vreinterpretq_u64_u32(__builtin_shufflevector(vreinterpretq_u32_u64(x), \
+                                                  vreinterpretq_u32_u64(x), (a), (b), (c), (d)))
+#define BYTESHL128(a, b) vreinterpretq_u64_u8(vextq_s8(vdupq_n_s8(0), (int8x16_t) a, 16 - (b)))
+#define BYTESHR128(a, b) vreinterpretq_u64_u8(vextq_s8((int8x16_t) a, vdupq_n_s8(0), (b)))
+
+#define SHL128(a, b) OR128(SHL64x2((a), (b)), SHR64x2(BYTESHL128((a), 8), 64 - (b)))
+#define CLMULLO128(a, b) \
+    vreinterpretq_u64_p128(vmull_p64((poly64_t) vget_low_u64(a), (poly64_t) vget_low_u64(b)))
+#define CLMULHI128(a, b) \
+    vreinterpretq_u64_p128(vmull_high_p64(vreinterpretq_p64_s64(a), vreinterpretq_p64_s64(b)))
+#define CLMULLOHI128(a, b) \
+    vreinterpretq_u64_p128(vmull_p64((poly64_t) vget_low_u64(a), (poly64_t) vget_high_u64(b)))
+#define CLMULHILO128(a, b) \
+    vreinterpretq_u64_p128(vmull_p64((poly64_t) vget_high_u64(a), (poly64_t) vget_low_u64(b)))
+#define PREFETCH_READ(x)  __builtin_prefetch((x), 0, 2)
+#define PREFETCH_WRITE(x) __builtin_prefetch((x), 1, 2);
+
+static inline BlockVec
+AES_KEYGEN(BlockVec block_vec, const int rc)
+{
+    uint8x16_t       a = vaeseq_u8(vreinterpretq_u8_u64(block_vec), vmovq_n_u8(0));
+    const uint8x16_t b =
+        __builtin_shufflevector(a, a, 4, 1, 14, 11, 1, 14, 11, 4, 12, 9, 6, 3, 9, 6, 3, 12);
+    const uint64x2_t c = SET64x2((uint64_t) rc << 32, (uint64_t) rc << 32);
+    return XOR128(b, c);
+}
 
 #define ROUNDS 14
 
@@ -1018,7 +1033,7 @@ crypto_aead_aes256gcm_decrypt(unsigned char *m, unsigned long long *mlen_p, unsi
 int
 crypto_aead_aes256gcm_is_available(void)
 {
-    return sodium_runtime_has_pclmul() & sodium_runtime_has_aesni();
+    return sodium_runtime_has_armcrypto();
 }
 
 #endif
