@@ -311,6 +311,8 @@ AC_COMPILE_IFELSE([AC_LANG_PROGRAM([[]], [[
   [AC_MSG_RESULT(no)
 ])
 
+AX_CHECK_COMPILE_FLAG([$CWFLAGS -Wno-deprecated-declarations], [CWFLAGS="$CWFLAGS -Wno-deprecated-declarations"])
+
 AX_CHECK_COMPILE_FLAG([$CWFLAGS -Warray-bounds], [CWFLAGS="$CWFLAGS -Warray-bounds"])
 AX_CHECK_COMPILE_FLAG([$CWFLAGS -Wbad-function-cast], [CWFLAGS="$CWFLAGS -Wbad-function-cast"])
 AX_CHECK_COMPILE_FLAG([$CWFLAGS -Wcast-qual], [CWFLAGS="$CWFLAGS -Wcast-qual"])
