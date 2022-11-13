@@ -42,9 +42,22 @@ AS_IF([pwd | fgrep ' ' > /dev/null 2>&1],
   [AC_MSG_ERROR([The build directory contains whitespaces - This can cause tests/installation to fail due to limitations of some libtool versions])]
 )
 
+sodium_CFLAGS=${CFLAGS+set}
+: ${CFLAGS=""}
+
 AC_PROG_CC
 AM_PROG_AS
 AC_USE_SYSTEM_EXTENSIONS
+
+dnl Default optimization flags
+
+if test "$sodium_CFLAGS" != "set" ; then
+  AX_CHECK_COMPILE_FLAG([-Ofast], [CFLAGS="$CFLAGS -Ofast"],
+    [AX_CHECK_COMPILE_FLAG([-O3], [CFLAGS="$CFLAGS -O3"],
+      [AX_CHECK_COMPILE_FLAG([-O2], [CFLAGS="$CFLAGS -O2"],
+        [AX_CHECK_COMPILE_FLAG([-O1], [CFLAGS="$CFLAGS -O1"],
+          [AX_CHECK_COMPILE_FLAG([-O], [CFLAGS="$CFLAGS -O"])])])])])
+fi
 
 dnl Switches
 
@@ -197,11 +210,11 @@ AC_ARG_ENABLE(opt,
 [AS_HELP_STRING(--enable-opt,Optimize for the native CPU - The resulting library will be faster but not portable)],
 [
   AS_IF([test "x$enableval" = "xyes"], [
-    AX_CHECK_COMPILE_FLAG([-Ofast], [CFLAGS="$CFLAGS -Ofast"])
     AX_CHECK_COMPILE_FLAG([-ftree-vectorize], [CFLAGS="$CFLAGS -ftree-vectorize"])
     AX_CHECK_COMPILE_FLAG([-ftree-slp-vectorize], [CFLAGS="$CFLAGS -ftree-slp-vectorize"])
     AX_CHECK_COMPILE_FLAG([-fomit-frame-pointer], [CFLAGS="$CFLAGS -fomit-frame-pointer"])
     AX_CHECK_COMPILE_FLAG([-march=native], [CFLAGS="$CFLAGS -march=native"])
+    AX_CHECK_COMPILE_FLAG([-mcpu=native], [CFLAGS="$CFLAGS -mcpu=native"])
   ])
 ])
 
