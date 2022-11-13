@@ -48,7 +48,7 @@ crypto_aead_aes256gcm_keygen(unsigned char k[crypto_aead_aes256gcm_KEYBYTES])
 }
 
 #if !((defined(HAVE_ARMCRYPTO) && defined(__GNUC__) && defined(NATIVE_LITTLE_ENDIAN)) || \
-      (defined(HAVE_TMMINTRIN_H) && defined(HAVE_WMMINTRIN_H)))
+      (defined(HAVE_TMMINTRIN_H) && defined(HAVE_WMMINTRIN_H) && defined(__GNUC__)))
 
 #ifndef ENOSYS
 #define ENOSYS ENXIO

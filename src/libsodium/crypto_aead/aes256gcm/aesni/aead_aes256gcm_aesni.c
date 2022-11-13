@@ -13,7 +13,7 @@
 #include "runtime.h"
 #include "utils.h"
 
-#if defined(HAVE_TMMINTRIN_H) && defined(HAVE_WMMINTRIN_H)
+#if defined(HAVE_TMMINTRIN_H) && defined(HAVE_WMMINTRIN_H) && defined(__GNUC__)
 
 #ifdef __GNUC__
 #pragma GCC target("ssse3")
