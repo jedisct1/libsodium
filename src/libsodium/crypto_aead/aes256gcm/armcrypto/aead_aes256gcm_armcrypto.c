@@ -89,15 +89,6 @@ typedef struct I256 {
     BlockVec mid;
 } I256;
 
-static inline I256 __vectorcall XOR256(const I256 a, const I256 b)
-{
-    return (I256) {
-        SODIUM_C99(.hi =) XOR128(a.hi, b.hi),
-        SODIUM_C99(.lo =) XOR128(a.lo, b.lo),
-        SODIUM_C99(.mid =) XOR128(a.mid, b.mid),
-    };
-}
-
 typedef BlockVec Precomp;
 
 typedef struct GHash {
@@ -321,6 +312,21 @@ gh_init(GHash *sth)
     sth->acc = ZERO128;
 }
 
+static inline I256 __vectorcall gh_update0(const GHash *const sth, const unsigned char *const p,
+                                           const Precomp hn)
+{
+    const BlockVec m = REV128(LOAD128(p));
+    return clmul128(XOR128(sth->acc, m), hn);
+}
+
+static inline void __vectorcall gh_update(I256 *const u, const unsigned char *p, const Precomp hn)
+{
+    const BlockVec m = REV128(LOAD128(p));
+    const I256     t = clmul128(m, hn);
+    *u = (I256) { SODIUM_C99(.hi =) XOR128(u->hi, t.hi), SODIUM_C99(.lo =) XOR128(u->lo, t.lo),
+                  SODIUM_C99(.mid =) XOR128(u->mid, t.mid) };
+}
+
 /* Absorb ad_len bytes of associated data. There has to be no partial block. */
 
 static inline void
@@ -330,58 +336,48 @@ gh_ad_blocks(const State *st, GHash *sth, const unsigned char *ad, size_t ad_len
 
     i = (size_t) 0U;
     for (; i + PC_COUNT * 16 <= ad_len; i += PC_COUNT * 16) {
-        BlockVec m = REV128(LOAD128(ad + i));
-        I256     u = clmul128(XOR128(sth->acc, m), st->hx[PC_COUNT - 1 - 0]);
+        I256     u = gh_update0(sth, ad + i, st->hx[PC_COUNT - 1 - 0]);
         size_t   j;
 
         for (j = 1; j < PC_COUNT; j += 1) {
-            m = REV128(LOAD128(ad + i + j * 16));
-            u = XOR256(u, clmul128(m, st->hx[PC_COUNT - 1 - j]));
+            gh_update(&u, ad + i + j * 16, st->hx[PC_COUNT - 1 - j]);
         }
         sth->acc = gcm_reduce(u);
     }
     for (; i + PC_COUNT * 16 / 2 <= ad_len; i += PC_COUNT * 16 / 2) {
-        BlockVec m = REV128(LOAD128(ad + i));
-        I256     u = clmul128(XOR128(sth->acc, m), st->hx[PC_COUNT / 2 - 1 - 0]);
+        I256     u = gh_update0(sth, ad + i, st->hx[PC_COUNT / 2 - 1 - 0]);
         size_t   j;
 
         for (j = 1; j < PC_COUNT / 2; j += 1) {
-            m = REV128(LOAD128(ad + i + j * 16));
-            u = XOR256(u, clmul128(m, st->hx[PC_COUNT / 2 - 1 - j]));
+            gh_update(&u, ad + i + j * 16, st->hx[PC_COUNT / 2 - 1 - j]);
         }
         sth->acc = gcm_reduce(u);
     }
     for (; i + 4 * 16 <= ad_len; i += 4 * 16) {
-        BlockVec m = REV128(LOAD128(ad + i));
-        I256     u = clmul128(XOR128(sth->acc, m), st->hx[4 - 1 - 0]);
         size_t   j;
+        I256     u = gh_update0(sth, ad + i, st->hx[4 - 1 - 0]);
 
         for (j = 1; j < 4; j += 1) {
-            m = REV128(LOAD128(ad + i + j * 16));
-            u = XOR256(u, clmul128(m, st->hx[4 - 1 - j]));
+            gh_update(&u, ad + i + j * 16, st->hx[4 - 1 - j]);
         }
         sth->acc = gcm_reduce(u);
     }
     for (; i + 2 * 16 <= ad_len; i += 2 * 16) {
-        BlockVec m = REV128(LOAD128(ad + i));
-        I256     u = clmul128(XOR128(sth->acc, m), st->hx[2 - 1 - 0]);
         size_t   j;
+        I256     u = gh_update0(sth, ad + i, st->hx[2 - 1 - 0]);
 
         for (j = 1; j < 2; j += 1) {
-            m = REV128(LOAD128(ad + i + j * 16));
-            u = XOR256(u, clmul128(m, st->hx[2 - 1 - j]));
+            gh_update(&u, ad + i + j * 16, st->hx[2 - 1 - j]);
         }
         sth->acc = gcm_reduce(u);
     }
     if (i < ad_len) {
         const size_t n = (ad_len - i) / 16;
-        BlockVec     m = REV128(LOAD128(ad + i));
-        I256         u = clmul128(XOR128(sth->acc, m), st->hx[n - 1 - 0]);
+        I256         u = gh_update0(sth, ad + i, st->hx[n - 1 - 0]);
         size_t       j;
 
         for (j = 1; j < n; j += 1) {
-            m = REV128(LOAD128(ad + i + j * 16));
-            u = XOR256(u, clmul128(m, st->hx[n - 1 - j]));
+            gh_update(&u, ad + i + j * 16, st->hx[n - 1 - j]);
         }
         i += n * 16;
         sth->acc = gcm_reduce(u);
@@ -433,7 +429,6 @@ aes_gcm_encrypt_generic(const State *st, GHash *sth, unsigned char mac[ABYTES], 
     const BlockVec                 one = ONE128;
     BlockVec                       final_block;
     BlockVec                       rev_counters[PARALLEL_BLOCKS];
-    BlockVec                       m;
     BlockVec                       counter;
     size_t                         i;
     size_t                         j;
@@ -473,11 +468,9 @@ aes_gcm_encrypt_generic(const State *st, GHash *sth, unsigned char mac[ABYTES], 
             encrypt_xor_wide(st, dst + i, src + i, rev_counters);
 
             pi = i - PARALLEL_BLOCKS * 16;
-            m  = REV128(LOAD128(dst + pi));
-            u  = clmul128(XOR128(sth->acc, m), st->hx[2 * PARALLEL_BLOCKS - 1 - 0]);
+            u  = gh_update0(sth, dst + pi, st->hx[2 * PARALLEL_BLOCKS - 1 - 0]);
             for (j = 1; j < PARALLEL_BLOCKS; j += 1) {
-                m = REV128(LOAD128(dst + pi + j * 16));
-                u = XOR256(u, clmul128(m, st->hx[2 * PARALLEL_BLOCKS - 1 - j]));
+                gh_update(&u, dst + pi + j * 16, st->hx[2 * PARALLEL_BLOCKS - 1 - j]);
             }
 
             counter = incr_counters(rev_counters, counter, PARALLEL_BLOCKS);
@@ -486,18 +479,15 @@ aes_gcm_encrypt_generic(const State *st, GHash *sth, unsigned char mac[ABYTES], 
 
             pi = i;
             for (j = 0; j < PARALLEL_BLOCKS; j += 1) {
-                m = REV128(LOAD128(dst + pi + j * 16));
-                u = XOR256(u, clmul128(m, st->hx[PARALLEL_BLOCKS - 1 - j]));
+                gh_update(&u, dst + pi + j * 16, st->hx[PARALLEL_BLOCKS - 1 - j]);
             }
             sth->acc = gcm_reduce(u);
         }
 
         pi = i - PARALLEL_BLOCKS * 16;
-        m  = REV128(LOAD128(dst + pi));
-        u  = clmul128(XOR128(sth->acc, m), st->hx[PARALLEL_BLOCKS - 1 - 0]);
+        u  = gh_update0(sth, dst + pi, st->hx[PARALLEL_BLOCKS - 1 - 0]);
         for (j = 1; j < PARALLEL_BLOCKS; j += 1) {
-            m = REV128(LOAD128(dst + pi + j * 16));
-            u = XOR256(u, clmul128(m, st->hx[PARALLEL_BLOCKS - 1 - j]));
+            gh_update(&u, dst + pi + j * 16, st->hx[PARALLEL_BLOCKS - 1 - j]);
         }
         sth->acc = gcm_reduce(u);
     }
@@ -514,21 +504,17 @@ aes_gcm_encrypt_generic(const State *st, GHash *sth, unsigned char mac[ABYTES], 
             encrypt_xor_wide(st, dst + i, src + i, rev_counters);
 
             pi = i - PARALLEL_BLOCKS * 16;
-            m  = REV128(LOAD128(dst + pi));
-            u  = clmul128(XOR128(sth->acc, m), st->hx[PARALLEL_BLOCKS - 1 - 0]);
+            u  = gh_update0(sth, dst + pi, st->hx[PARALLEL_BLOCKS - 1 - 0]);
             for (j = 1; j < PARALLEL_BLOCKS; j += 1) {
-                m = REV128(LOAD128(dst + pi + j * 16));
-                u = XOR256(u, clmul128(m, st->hx[PARALLEL_BLOCKS - 1 - j]));
+                gh_update(&u, dst + pi + j * 16, st->hx[PARALLEL_BLOCKS - 1 - j]);
             }
             sth->acc = gcm_reduce(u);
         }
 
         pi = i - PARALLEL_BLOCKS * 16;
-        m  = REV128(LOAD128(dst + pi));
-        u  = clmul128(XOR128(sth->acc, m), st->hx[PARALLEL_BLOCKS - 1 - 0]);
+        u  = gh_update0(sth, dst + pi, st->hx[PARALLEL_BLOCKS - 1 - 0]);
         for (j = 1; j < PARALLEL_BLOCKS; j += 1) {
-            m = REV128(LOAD128(dst + pi + j * 16));
-            u = XOR256(u, clmul128(m, st->hx[PARALLEL_BLOCKS - 1 - j]));
+            gh_update(&u, dst + pi + j * 16, st->hx[PARALLEL_BLOCKS - 1 - j]);
         }
         sth->acc = gcm_reduce(u);
     }
@@ -541,11 +527,9 @@ aes_gcm_encrypt_generic(const State *st, GHash *sth, unsigned char mac[ABYTES], 
             encrypt_xor_block(st, dst + i + j * 16, src + i + j * 16, rev_counters[j]);
         }
 
-        m = REV128(LOAD128(dst + i));
-        u = clmul128(XOR128(sth->acc, m), st->hx[4 - 1 - 0]);
+        u = gh_update0(sth, dst + i, st->hx[4 - 1 - 0]);
         for (j = 1; j < 4; j += 1) {
-            m = REV128(LOAD128(dst + i + j * 16));
-            u = XOR256(u, clmul128(m, st->hx[4 - 1 - j]));
+            gh_update(&u, dst + i + j * 16, st->hx[4 - 1 - j]);
         }
         sth->acc = gcm_reduce(u);
     }
@@ -558,11 +542,9 @@ aes_gcm_encrypt_generic(const State *st, GHash *sth, unsigned char mac[ABYTES], 
             encrypt_xor_block(st, dst + i + j * 16, src + i + j * 16, rev_counters[j]);
         }
 
-        m = REV128(LOAD128(dst + i));
-        u = clmul128(XOR128(sth->acc, m), st->hx[2 - 1 - 0]);
+        u = gh_update0(sth, dst + i, st->hx[2 - 1 - 0]);
         for (j = 1; j < 2; j += 1) {
-            m = REV128(LOAD128(dst + i + j * 16));
-            u = XOR256(u, clmul128(m, st->hx[2 - 1 - j]));
+            gh_update(&u, dst + i + j * 16, st->hx[2 - 1 - j]);
         }
         sth->acc = gcm_reduce(u);
     }
@@ -572,8 +554,7 @@ aes_gcm_encrypt_generic(const State *st, GHash *sth, unsigned char mac[ABYTES], 
 
     for (; i + 16 < src_len; i += 16) {
         encrypt_xor_block(st, dst + i, src + i, REV128(counter));
-        m        = REV128(LOAD128(dst + i));
-        u        = clmul128(XOR128(sth->acc, m), st->hx[1 - 1 - 0]);
+        u        = gh_update0(sth, dst + i, st->hx[1 - 1 - 0]);
         sth->acc = gcm_reduce(u);
         counter  = ADD64x2(counter, one);
     }
@@ -617,7 +598,6 @@ aes_gcm_decrypt_generic(const State *st, GHash *sth, unsigned char mac[ABYTES], 
     const BlockVec                 one = ONE128;
     BlockVec                       final_block;
     BlockVec                       rev_counters[PARALLEL_BLOCKS];
-    BlockVec                       m;
     BlockVec                       counter;
     size_t                         i;
     size_t                         j;
@@ -649,11 +629,9 @@ aes_gcm_decrypt_generic(const State *st, GHash *sth, unsigned char mac[ABYTES], 
     for (; i + 2 * PARALLEL_BLOCKS * 16 <= src_len; i += 2 * PARALLEL_BLOCKS * 16) {
         counter = incr_counters(rev_counters, counter, PARALLEL_BLOCKS);
 
-        m = REV128(LOAD128(src + i));
-        u = clmul128(XOR128(sth->acc, m), st->hx[2 * PARALLEL_BLOCKS - 1 - 0]);
+        u = gh_update0(sth, src + i, st->hx[2 * PARALLEL_BLOCKS - 1 - 0]);
         for (j = 1; j < PARALLEL_BLOCKS; j += 1) {
-            m = REV128(LOAD128(src + i + j * 16));
-            u = XOR256(u, clmul128(m, st->hx[2 * PARALLEL_BLOCKS - 1 - j]));
+            gh_update(&u, src + i + j * 16, st->hx[2 * PARALLEL_BLOCKS - 1 - j]);
         }
 
         encrypt_xor_wide(st, dst + i, src + i, rev_counters);
@@ -661,8 +639,7 @@ aes_gcm_decrypt_generic(const State *st, GHash *sth, unsigned char mac[ABYTES], 
         counter = incr_counters(rev_counters, counter, PARALLEL_BLOCKS);
 
         for (j = 0; j < PARALLEL_BLOCKS; j += 1) {
-            m = REV128(LOAD128(src + i + j * 16));
-            u = XOR256(u, clmul128(m, st->hx[PARALLEL_BLOCKS - 1 - j]));
+            gh_update(&u, src + i + j * 16, st->hx[PARALLEL_BLOCKS - 1 - j]);
         }
         sth->acc = gcm_reduce(u);
 
@@ -675,11 +652,9 @@ aes_gcm_decrypt_generic(const State *st, GHash *sth, unsigned char mac[ABYTES], 
     for (; i + PARALLEL_BLOCKS * 16 <= src_len; i += PARALLEL_BLOCKS * 16) {
         counter = incr_counters(rev_counters, counter, PARALLEL_BLOCKS);
 
-        m = REV128(LOAD128(src + i));
-        u = clmul128(XOR128(sth->acc, m), st->hx[PARALLEL_BLOCKS - 1 - 0]);
+        u = gh_update0(sth, src + i, st->hx[PARALLEL_BLOCKS - 1 - 0]);
         for (j = 1; j < PARALLEL_BLOCKS; j += 1) {
-            m = REV128(LOAD128(src + i + j * 16));
-            u = XOR256(u, clmul128(m, st->hx[PARALLEL_BLOCKS - 1 - j]));
+            gh_update(&u, src + i + j * 16, st->hx[PARALLEL_BLOCKS - 1 - j]);
         }
         sth->acc = gcm_reduce(u);
 
@@ -691,11 +666,9 @@ aes_gcm_decrypt_generic(const State *st, GHash *sth, unsigned char mac[ABYTES], 
     for (; i + 4 * 16 <= src_len; i += 4 * 16) {
         counter = incr_counters(rev_counters, counter, 4);
 
-        m = REV128(LOAD128(src + i));
-        u = clmul128(XOR128(sth->acc, m), st->hx[4 - 1 - 0]);
+        u = gh_update0(sth, src + i, st->hx[4 - 1 - 0]);
         for (j = 1; j < 4; j += 1) {
-            m = REV128(LOAD128(src + i + j * 16));
-            u = XOR256(u, clmul128(m, st->hx[4 - 1 - j]));
+            gh_update(&u, src + i + j * 16, st->hx[4 - 1 - j]);
         }
         sth->acc = gcm_reduce(u);
 
@@ -709,11 +682,9 @@ aes_gcm_decrypt_generic(const State *st, GHash *sth, unsigned char mac[ABYTES], 
     for (; i + 2 * 16 <= src_len; i += 2 * 16) {
         counter = incr_counters(rev_counters, counter, 2);
 
-        m = REV128(LOAD128(src + i));
-        u = clmul128(XOR128(sth->acc, m), st->hx[2 - 1 - 0]);
+        u = gh_update0(sth, src + i, st->hx[2 - 1 - 0]);
         for (j = 1; j < 2; j += 1) {
-            m = REV128(LOAD128(src + i + j * 16));
-            u = XOR256(u, clmul128(m, st->hx[2 - 1 - j]));
+            gh_update(&u, src + i + j * 16, st->hx[2 - 1 - j]);
         }
         sth->acc = gcm_reduce(u);
 
@@ -726,8 +697,7 @@ aes_gcm_decrypt_generic(const State *st, GHash *sth, unsigned char mac[ABYTES], 
     full block authenticated along with the final block, hence < and not <= */
 
     for (; i + 16 < src_len; i += 16) {
-        m        = REV128(LOAD128(src + i));
-        u        = clmul128(XOR128(sth->acc, m), st->hx[1 - 1 - 0]);
+        u        = gh_update0(sth, src + i, st->hx[1 - 1 - 0]);
         sth->acc = gcm_reduce(u);
         encrypt_xor_block(st, dst + i, src + i, REV128(counter));
         counter = ADD64x2(counter, one);
