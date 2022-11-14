@@ -319,7 +319,7 @@ AX_CHECK_COMPILE_FLAG([$CFLAGS -Wextra], [CWFLAGS="$CFLAGS -Wextra"])
 AC_MSG_CHECKING(for clang)
 AC_COMPILE_IFELSE([AC_LANG_PROGRAM([[]], [[
 #ifndef __clang__
-#error Not clang
+#error Not clang nor zig cc
 #endif
 ]])],
   [AC_MSG_RESULT(yes)
