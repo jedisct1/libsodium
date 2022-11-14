@@ -214,7 +214,7 @@ AC_ARG_ENABLE(opt,
     AX_CHECK_COMPILE_FLAG([-ftree-slp-vectorize], [CFLAGS="$CFLAGS -ftree-slp-vectorize"])
     AX_CHECK_COMPILE_FLAG([-fomit-frame-pointer], [CFLAGS="$CFLAGS -fomit-frame-pointer"])
     AX_CHECK_COMPILE_FLAG([-march=native], [CFLAGS="$CFLAGS -march=native"])
-    AX_CHECK_COMPILE_FLAG([-mcpu=native], [CFLAGS="$CFLAGS -mcpu=native"])
+    AX_CHECK_COMPILE_FLAG([-mtune=native], [CFLAGS="$CFLAGS -mtune=native"])
   ])
 ])
 
