@@ -13,13 +13,18 @@
 #include "runtime.h"
 #include "utils.h"
 
-#if defined(HAVE_TMMINTRIN_H) && defined(HAVE_WMMINTRIN_H) && defined(__GNUC__)
+#if defined(HAVE_TMMINTRIN_H) && defined(HAVE_WMMINTRIN_H)
 
 #ifdef __GNUC__
 #pragma GCC target("ssse3")
 #pragma GCC target("aes")
 #pragma GCC target("pclmul")
 #endif
+
+#ifndef _MSC_VER
+#define __vectorcall
+#endif
+
 #include <tmmintrin.h>
 #include <wmmintrin.h>
 
@@ -70,8 +75,7 @@ typedef struct I256 {
     BlockVec mid;
 } I256;
 
-static inline I256
-XOR256(const I256 a, const I256 b)
+static inline I256 __vectorcall XOR256(const I256 a, const I256 b)
 {
     return (I256) {
         SODIUM_C99(.hi =) XOR128(a.hi, b.hi),
@@ -91,8 +95,7 @@ typedef struct State {
     Precomp  hx[PC_COUNT];
 } State;
 
-static void
-expand256(const unsigned char key[KEYBYTES], BlockVec rkeys[1 + ROUNDS])
+static void __vectorcall expand256(const unsigned char key[KEYBYTES], BlockVec rkeys[1 + ROUNDS])
 {
     BlockVec t1, t2, s;
     size_t   i = 0;
@@ -150,9 +153,9 @@ encrypt(const State *st, unsigned char dst[16], const unsigned char src[16])
 
 /* Encrypt and add a single AES block */
 
-static inline void
-encrypt_xor_block(const State *st, unsigned char dst[16], const unsigned char src[16],
-                  const BlockVec counter)
+static inline void __vectorcall encrypt_xor_block(const State *st, unsigned char dst[16],
+                                                  const unsigned char src[16],
+                                                  const BlockVec      counter)
 {
     BlockVec ts;
     size_t   i;
@@ -168,10 +171,10 @@ encrypt_xor_block(const State *st, unsigned char dst[16], const unsigned char sr
 
 /* Encrypt and add PARALLEL_BLOCKS AES blocks */
 
-static inline void
-encrypt_xor_wide(const State *st, unsigned char dst[16 * PARALLEL_BLOCKS],
-                 const unsigned char src[16 * PARALLEL_BLOCKS],
-                 const BlockVec      counters[PARALLEL_BLOCKS])
+static inline void __vectorcall encrypt_xor_wide(const State        *st,
+                                                 unsigned char       dst[16 * PARALLEL_BLOCKS],
+                                                 const unsigned char src[16 * PARALLEL_BLOCKS],
+                                                 const BlockVec      counters[PARALLEL_BLOCKS])
 {
     BlockVec ts[PARALLEL_BLOCKS];
     size_t   i, j;
@@ -195,8 +198,7 @@ encrypt_xor_wide(const State *st, unsigned char dst[16 * PARALLEL_BLOCKS],
 
 /* Square a field element */
 
-static inline I256
-clsq128(const BlockVec x)
+static inline I256 __vectorcall clsq128(const BlockVec x)
 {
     const BlockVec x_hi  = BYTESHR128(x, 8);
     const BlockVec mid   = XOR128(x, x_hi);
@@ -214,8 +216,7 @@ clsq128(const BlockVec x)
 /* Multiply two field elements -- Textbook multiplication is faster than Karatsuba on some recent
  * CPUs */
 
-static inline I256
-clmul128(const BlockVec x, const BlockVec y)
+static inline I256 __vectorcall clmul128(const BlockVec x, const BlockVec y)
 {
 #ifdef USE_KARATSUBA_MULTIPLICATION
     const BlockVec x_hi  = BYTESHR128(x, 8);
@@ -244,8 +245,7 @@ clmul128(const BlockVec x, const BlockVec y)
 
 /* Merge the middle word and reduce a field element */
 
-static inline BlockVec
-gcm_reduce(const I256 x)
+static inline BlockVec __vectorcall gcm_reduce(const I256 x)
 {
     const BlockVec hi = XOR128(x.hi, BYTESHR128(x.mid, 8));
     const BlockVec lo = XOR128(x.lo, BYTESHL128(x.mid, 8));
@@ -261,8 +261,7 @@ gcm_reduce(const I256 x)
 
 /* Precompute powers of H from `from` to `to` */
 
-static inline void
-precomp(Precomp hx[PC_COUNT], const size_t from, const size_t to)
+static inline void __vectorcall precomp(Precomp hx[PC_COUNT], const size_t from, const size_t to)
 {
     const Precomp h = hx[0];
     size_t        i;
@@ -275,9 +274,9 @@ precomp(Precomp hx[PC_COUNT], const size_t from, const size_t to)
 
 /* Precompute powers of H given a key and a block count */
 
-static void
-precomp_for_block_count(Precomp hx[PC_COUNT], const unsigned char gh_key[16],
-                        const size_t block_count)
+static void __vectorcall precomp_for_block_count(Precomp             hx[PC_COUNT],
+                                                 const unsigned char gh_key[16],
+                                                 const size_t        block_count)
 {
     const BlockVec h0    = REV128(LOAD128(gh_key));
     BlockVec       carry = SET64x2(0xc200000000000000, 1);
@@ -377,8 +376,8 @@ gh_ad_blocks(const State *st, GHash *sth, const unsigned char *ad, size_t ad_len
 
 /* Increment counters */
 
-static inline BlockVec
-incr_counters(BlockVec rev_counters[], BlockVec counter, const size_t n)
+static inline BlockVec __vectorcall incr_counters(BlockVec rev_counters[], BlockVec counter,
+                                                  const size_t n)
 {
     size_t i;
 
