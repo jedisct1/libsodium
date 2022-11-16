@@ -358,14 +358,7 @@ gh_ad_blocks(const State *st, GHash *sth, const unsigned char *ad, size_t ad_len
         sth->acc = gcm_reduce(u);
     }
     if (i < ad_len) {
-        const size_t n = (ad_len - i) / 16;
-        I256         u = gh_update0(sth, ad + i, st->hx[n - 1 - 0]);
-        size_t       j;
-
-        for (j = 1; j < n; j += 1) {
-            gh_update(&u, ad + i + j * 16, st->hx[n - 1 - j]);
-        }
-        i += n * 16;
+        I256     u = gh_update0(sth, ad + i, st->hx[0]);
         sth->acc = gcm_reduce(u);
     }
 }
