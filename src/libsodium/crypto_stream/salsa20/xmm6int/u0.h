@@ -5,7 +5,7 @@ if (bytes > 0) {
     __m128i diag3 = _mm_loadu_si128((const __m128i *) (x + 12));
     __m128i a0, a1, a2, a3, a4, a5, a6, a7;
     __m128i b0, b1, b2, b3, b4, b5, b6, b7;
-    uint8_t partialblock[64];
+    uint8_t partialblock[64] = { 0 };
 
     unsigned int i;
 
