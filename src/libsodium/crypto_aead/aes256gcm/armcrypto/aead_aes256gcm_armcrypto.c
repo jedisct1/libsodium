@@ -205,16 +205,13 @@ static inline void __vectorcall encrypt_xor_wide(const State        *st,
 
 static inline I256 __vectorcall clsq128(const BlockVec x)
 {
-    const BlockVec x_hi  = BYTESHR128(x, 8);
-    const BlockVec mid   = XOR128(x, x_hi);
     const BlockVec r_lo  = CLMULLO128(x, x);
     const BlockVec r_hi  = CLMULHI128(x, x);
-    const BlockVec r_mid = XOR128(CLMULLO128(mid, mid), XOR128(r_lo, r_hi));
 
     return (I256) {
         SODIUM_C99(.hi =) r_hi,
         SODIUM_C99(.lo =) r_lo,
-        SODIUM_C99(.mid =) r_mid,
+        SODIUM_C99(.mid =) ZERO128,
     };
 }
 
