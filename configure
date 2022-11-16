@@ -1596,7 +1596,7 @@ Some influential environment variables:
   CPP         C preprocessor
   SAFECODE_HOME
               set to the safecode base directory
-  CWFLAGS     define to compilation flags for generating extra warnings
+  CWFLAGS     compilation flags for generating extra warnings
   LT_SYS_LIBRARY_PATH
               User-defined run-time library search path.
   AR          path to the ar utility
@@ -8498,8 +8498,6 @@ esac
 
 fi
 
-
-
 as_CACHEVAR=`printf "%s\n" "ax_cv_check_cflags__$CFLAGS -Wall" | $as_tr_sh`
 { printf "%s\n" "$as_me:${as_lineno-$LINENO}: checking whether C compiler accepts $CFLAGS -Wall" >&5
 printf %s "checking whether C compiler accepts $CFLAGS -Wall... " >&6; }
@@ -8542,47 +8540,7 @@ else $as_nop
   :
 fi
 
-as_CACHEVAR=`printf "%s\n" "ax_cv_check_cflags__$CFLAGS -Wextra" | $as_tr_sh`
-{ printf "%s\n" "$as_me:${as_lineno-$LINENO}: checking whether C compiler accepts $CFLAGS -Wextra" >&5
-printf %s "checking whether C compiler accepts $CFLAGS -Wextra... " >&6; }
-if eval test \${$as_CACHEVAR+y}
-then :
-  printf %s "(cached) " >&6
-else $as_nop
 
-  ax_check_save_flags=$CFLAGS
-  CFLAGS="$CFLAGS  $CFLAGS -Wextra"
-  cat confdefs.h - <<_ACEOF >conftest.$ac_ext
-/* end confdefs.h.  */
-#include <time.h>
-int
-main (void)
-{
-time_t x; int fodder = 0; if (fodder > -1000 && time(&x)) return (int) x
-
-  ;
-  return 0;
-}
-_ACEOF
-if ac_fn_c_try_link "$LINENO"
-then :
-  eval "$as_CACHEVAR=yes"
-else $as_nop
-  eval "$as_CACHEVAR=no"
-fi
-rm -f core conftest.err conftest.$ac_objext conftest.beam \
-    conftest$ac_exeext conftest.$ac_ext
-  CFLAGS=$ax_check_save_flags
-fi
-eval ac_res=\$$as_CACHEVAR
-	       { printf "%s\n" "$as_me:${as_lineno-$LINENO}: result: $ac_res" >&5
-printf "%s\n" "$ac_res" >&6; }
-if eval test \"x\$"$as_CACHEVAR"\" = x"yes"
-then :
-  CWFLAGS="$CFLAGS -Wextra"
-else $as_nop
-  :
-fi
 
 
 { printf "%s\n" "$as_me:${as_lineno-$LINENO}: checking for clang" >&5
@@ -8595,7 +8553,7 @@ main (void)
 {
 
 #ifndef __clang__
-#error Not clang
+#error Not clang nor zig cc
 #endif
 
   ;
@@ -8655,6 +8613,90 @@ printf "%s\n" "no" >&6; }
 
 fi
 rm -f core conftest.err conftest.$ac_objext conftest.beam conftest.$ac_ext
+
+as_CACHEVAR=`printf "%s\n" "ax_cv_check_cflags__$CWFLAGS -Wextra" | $as_tr_sh`
+{ printf "%s\n" "$as_me:${as_lineno-$LINENO}: checking whether C compiler accepts $CWFLAGS -Wextra" >&5
+printf %s "checking whether C compiler accepts $CWFLAGS -Wextra... " >&6; }
+if eval test \${$as_CACHEVAR+y}
+then :
+  printf %s "(cached) " >&6
+else $as_nop
+
+  ax_check_save_flags=$CFLAGS
+  CFLAGS="$CFLAGS  $CWFLAGS -Wextra"
+  cat confdefs.h - <<_ACEOF >conftest.$ac_ext
+/* end confdefs.h.  */
+#include <time.h>
+int
+main (void)
+{
+time_t x; int fodder = 0; if (fodder > -1000 && time(&x)) return (int) x
+
+  ;
+  return 0;
+}
+_ACEOF
+if ac_fn_c_try_link "$LINENO"
+then :
+  eval "$as_CACHEVAR=yes"
+else $as_nop
+  eval "$as_CACHEVAR=no"
+fi
+rm -f core conftest.err conftest.$ac_objext conftest.beam \
+    conftest$ac_exeext conftest.$ac_ext
+  CFLAGS=$ax_check_save_flags
+fi
+eval ac_res=\$$as_CACHEVAR
+	       { printf "%s\n" "$as_me:${as_lineno-$LINENO}: result: $ac_res" >&5
+printf "%s\n" "$ac_res" >&6; }
+if eval test \"x\$"$as_CACHEVAR"\" = x"yes"
+then :
+  CWFLAGS="$WCFLAGS -Wextra"
+else $as_nop
+  :
+fi
+
+as_CACHEVAR=`printf "%s\n" "ax_cv_check_cflags__$CWFLAGS -Warray-bounds" | $as_tr_sh`
+{ printf "%s\n" "$as_me:${as_lineno-$LINENO}: checking whether C compiler accepts $CWFLAGS -Warray-bounds" >&5
+printf %s "checking whether C compiler accepts $CWFLAGS -Warray-bounds... " >&6; }
+if eval test \${$as_CACHEVAR+y}
+then :
+  printf %s "(cached) " >&6
+else $as_nop
+
+  ax_check_save_flags=$CFLAGS
+  CFLAGS="$CFLAGS  $CWFLAGS -Warray-bounds"
+  cat confdefs.h - <<_ACEOF >conftest.$ac_ext
+/* end confdefs.h.  */
+#include <time.h>
+int
+main (void)
+{
+time_t x; int fodder = 0; if (fodder > -1000 && time(&x)) return (int) x
+
+  ;
+  return 0;
+}
+_ACEOF
+if ac_fn_c_try_link "$LINENO"
+then :
+  eval "$as_CACHEVAR=yes"
+else $as_nop
+  eval "$as_CACHEVAR=no"
+fi
+rm -f core conftest.err conftest.$ac_objext conftest.beam \
+    conftest$ac_exeext conftest.$ac_ext
+  CFLAGS=$ax_check_save_flags
+fi
+eval ac_res=\$$as_CACHEVAR
+	       { printf "%s\n" "$as_me:${as_lineno-$LINENO}: result: $ac_res" >&5
+printf "%s\n" "$ac_res" >&6; }
+if eval test \"x\$"$as_CACHEVAR"\" = x"yes"
+then :
+  CWFLAGS="$CWFLAGS -Warray-bounds"
+else $as_nop
+  :
+fi
 
 as_CACHEVAR=`printf "%s\n" "ax_cv_check_cflags__$CWFLAGS -Wbad-function-cast" | $as_tr_sh`
 { printf "%s\n" "$as_me:${as_lineno-$LINENO}: checking whether C compiler accepts $CWFLAGS -Wbad-function-cast" >&5
