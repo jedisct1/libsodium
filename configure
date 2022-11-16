@@ -8540,6 +8540,48 @@ else $as_nop
   :
 fi
 
+as_CACHEVAR=`printf "%s\n" "ax_cv_check_cflags__$CFLAGS -Wno-unknown-pragmas" | $as_tr_sh`
+{ printf "%s\n" "$as_me:${as_lineno-$LINENO}: checking whether C compiler accepts $CFLAGS -Wno-unknown-pragmas" >&5
+printf %s "checking whether C compiler accepts $CFLAGS -Wno-unknown-pragmas... " >&6; }
+if eval test \${$as_CACHEVAR+y}
+then :
+  printf %s "(cached) " >&6
+else $as_nop
+
+  ax_check_save_flags=$CFLAGS
+  CFLAGS="$CFLAGS  $CFLAGS -Wno-unknown-pragmas"
+  cat confdefs.h - <<_ACEOF >conftest.$ac_ext
+/* end confdefs.h.  */
+#include <time.h>
+int
+main (void)
+{
+time_t x; int fodder = 0; if (fodder > -1000 && time(&x)) return (int) x
+
+  ;
+  return 0;
+}
+_ACEOF
+if ac_fn_c_try_link "$LINENO"
+then :
+  eval "$as_CACHEVAR=yes"
+else $as_nop
+  eval "$as_CACHEVAR=no"
+fi
+rm -f core conftest.err conftest.$ac_objext conftest.beam \
+    conftest$ac_exeext conftest.$ac_ext
+  CFLAGS=$ax_check_save_flags
+fi
+eval ac_res=\$$as_CACHEVAR
+	       { printf "%s\n" "$as_me:${as_lineno-$LINENO}: result: $ac_res" >&5
+printf "%s\n" "$ac_res" >&6; }
+if eval test \"x\$"$as_CACHEVAR"\" = x"yes"
+then :
+  CFLAGS="$CFLAGS -Wno-unknown-pragmas"
+else $as_nop
+  :
+fi
+
 
 
 

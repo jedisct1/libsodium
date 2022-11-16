@@ -312,6 +312,7 @@ AS_CASE([$host_os],
 ])
 
 AX_CHECK_COMPILE_FLAG([$CFLAGS -Wall], [CWFLAGS="$CFLAGS -Wall"])
+AX_CHECK_COMPILE_FLAG([$CFLAGS -Wno-unknown-pragmas], [CFLAGS="$CFLAGS -Wno-unknown-pragmas"])
 
 AC_ARG_VAR([CWFLAGS], [compilation flags for generating extra warnings])
 
