@@ -9,6 +9,7 @@
 #include "crypto_verify_16.h"
 #include "export.h"
 #include "private/common.h"
+#include "private/sse2_64_32.h"
 #include "randombytes.h"
 #include "runtime.h"
 #include "utils.h"
