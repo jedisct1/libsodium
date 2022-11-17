@@ -16,24 +16,31 @@
 
 # include <arm_neon.h>
 
-static inline void
-crypto_aead_aegis256_update(uint8x16_t *const state, const uint8x16_t data)
-{
-    const uint8x16_t zero = vmovq_n_u8(0);
-    uint8x16_t       tmp;
+typedef uint8x16_t aes_block_t;
+#define AES_BLOCK_XOR(A, B)       veorq_u8((A), (B))
+#define AES_BLOCK_AND(A, B)       vandq_u8((A), (B))
+#define AES_BLOCK_LOAD(A)         vld1q_u8(A)
+#define AES_BLOCK_LOAD_64x2(A, B) vreinterpretq_u8_u64(vsetq_lane_u64((A), vmovq_n_u64(B), 1))
+#define AES_BLOCK_STORE(A, B)     vst1q_u8((A), (B))
+#define AES_ENC(A, B)             veorq_u8(vaesmcq_u8(vaeseq_u8((A), vmovq_n_u8(0))), (B))
 
-    tmp      = veorq_u8(vaesmcq_u8(vaeseq_u8(state[5], zero)), state[0]);
-    state[5] = veorq_u8(vaesmcq_u8(vaeseq_u8(state[4], zero)), state[5]);
-    state[4] = veorq_u8(vaesmcq_u8(vaeseq_u8(state[3], zero)), state[4]);
-    state[3] = veorq_u8(vaesmcq_u8(vaeseq_u8(state[2], zero)), state[3]);
-    state[2] = veorq_u8(vaesmcq_u8(vaeseq_u8(state[1], zero)), state[2]);
-    state[1] = veorq_u8(vaesmcq_u8(vaeseq_u8(state[0], zero)), state[1]);
-    state[0] = veorq_u8(tmp, data);
+static inline void
+crypto_aead_aegis256_update(aes_block_t *const state, const aes_block_t data)
+{
+    aes_block_t tmp;
+
+    tmp      = AES_ENC(state[5], state[0]);
+    state[5] = AES_ENC(state[4], state[5]);
+    state[4] = AES_ENC(state[3], state[4]);
+    state[3] = AES_ENC(state[2], state[3]);
+    state[2] = AES_ENC(state[1], state[2]);
+    state[1] = AES_ENC(state[0], state[1]);
+    state[0] = AES_BLOCK_XOR(tmp, data);
 }
 
 static void
 crypto_aead_aegis256_init(const unsigned char *key, const unsigned char *nonce,
-                          uint8x16_t *const state)
+                          aes_block_t *const state)
 {
     static CRYPTO_ALIGN(16) const unsigned char c0_[] = {
         0xdb, 0x3d, 0x18, 0x55, 0x6d, 0xc2, 0x2f, 0xf1, 0x20, 0x11, 0x31, 0x42,
@@ -43,23 +50,23 @@ crypto_aead_aegis256_init(const unsigned char *key, const unsigned char *nonce,
         0x00, 0x01, 0x01, 0x02, 0x03, 0x05, 0x08, 0x0d, 0x15, 0x22, 0x37, 0x59,
         0x90, 0xe9, 0x79, 0x62
     };
-    const uint8x16_t c0 = vld1q_u8(c0_);
-    const uint8x16_t c1 = vld1q_u8(c1_);
-    uint8x16_t       k1, k2;
-    uint8x16_t       kxn1, kxn2;
+    const aes_block_t c0 = AES_BLOCK_LOAD(c0_);
+    const aes_block_t c1 = AES_BLOCK_LOAD(c1_);
+    aes_block_t       k1, k2;
+    aes_block_t       kxn1, kxn2;
     int              i;
 
-    k1 = vld1q_u8(&key[0]);
-    k2 = vld1q_u8(&key[16]);
-    kxn1 = veorq_u8(k1, vld1q_u8(&nonce[0]));
-    kxn2 = veorq_u8(k2, vld1q_u8(&nonce[16]));
+    k1   = AES_BLOCK_LOAD(&key[0]);
+    k2   = AES_BLOCK_LOAD(&key[16]);
+    kxn1 = AES_BLOCK_XOR(k1, AES_BLOCK_LOAD(&nonce[0]));
+    kxn2 = AES_BLOCK_XOR(k2, AES_BLOCK_LOAD(&nonce[16]));
 
     state[0] = kxn1;
     state[1] = kxn2;
     state[2] = c0;
     state[3] = c1;
-    state[4] = veorq_u8(k1, c1);
-    state[5] = veorq_u8(k2, c0);
+    state[4] = AES_BLOCK_XOR(k1, c1);
+    state[5] = AES_BLOCK_XOR(k2, c0);
 
     for (i = 0; i < 4; i++) {
         crypto_aead_aegis256_update(state, k1);
@@ -70,61 +77,59 @@ crypto_aead_aegis256_init(const unsigned char *key, const unsigned char *nonce,
 }
 
 static void
-crypto_aead_aegis256_mac(unsigned char *mac, unsigned long long adlen,
-                         unsigned long long mlen, uint8x16_t *const state)
+crypto_aead_aegis256_mac(unsigned char *mac, unsigned long long adlen, unsigned long long mlen,
+                         aes_block_t *const state)
 {
-    uint8x16_t tmp;
+    aes_block_t tmp;
     int        i;
 
-    tmp = vreinterpretq_u8_u64(vsetq_lane_u64(mlen << 3,
-                                              vmovq_n_u64(adlen << 3), 1));
-    tmp = veorq_u8(tmp, state[3]);
+    tmp = AES_BLOCK_LOAD_64x2(mlen << 3, adlen << 3);
+    tmp = AES_BLOCK_XOR(tmp, state[3]);
 
     for (i = 0; i < 7; i++) {
         crypto_aead_aegis256_update(state, tmp);
     }
 
-    tmp = veorq_u8(state[5], state[4]);
-    tmp = veorq_u8(tmp, state[3]);
-    tmp = veorq_u8(tmp, state[2]);
-    tmp = veorq_u8(tmp, state[1]);
-    tmp = veorq_u8(tmp, state[0]);
+    tmp = AES_BLOCK_XOR(state[5], state[4]);
+    tmp = AES_BLOCK_XOR(tmp, state[3]);
+    tmp = AES_BLOCK_XOR(tmp, state[2]);
+    tmp = AES_BLOCK_XOR(tmp, state[1]);
+    tmp = AES_BLOCK_XOR(tmp, state[0]);
 
-    vst1q_u8(mac, tmp);
+    AES_BLOCK_STORE(mac, tmp);
 }
 
 static void
-crypto_aead_aegis256_enc(unsigned char *const dst,
+crypto_aead_aegis256_enc(unsigned char *const       dst,
                          const unsigned char *const src,
-                         uint8x16_t *const state)
+                         aes_block_t *const         state)
 {
-    uint8x16_t msg;
-    uint8x16_t tmp;
+    aes_block_t msg;
+    aes_block_t tmp;
 
-    msg = vld1q_u8(src);
-    tmp = veorq_u8(msg, state[5]);
-    tmp = veorq_u8(tmp, state[4]);
-    tmp = veorq_u8(tmp, state[1]);
-    tmp = veorq_u8(tmp, vandq_u8(state[2], state[3]));
-    vst1q_u8(dst, tmp);
+    msg = AES_BLOCK_LOAD(src);
+    tmp = AES_BLOCK_XOR(msg, state[5]);
+    tmp = AES_BLOCK_XOR(tmp, state[4]);
+    tmp = AES_BLOCK_XOR(tmp, state[1]);
+    tmp = AES_BLOCK_XOR(tmp, AES_BLOCK_AND(state[2], state[3]));
+    AES_BLOCK_STORE(dst, tmp);
 
     crypto_aead_aegis256_update(state, msg);
 }
 
-
 static void
-crypto_aead_aegis256_dec(unsigned char *const dst,
+crypto_aead_aegis256_dec(unsigned char *const       dst,
                          const unsigned char *const src,
-                         uint8x16_t *const state)
+                         aes_block_t *const         state)
 {
-    uint8x16_t msg;
+    aes_block_t msg;
 
-    msg = vld1q_u8(src);
-    msg = veorq_u8(msg, state[5]);
-    msg = veorq_u8(msg, state[4]);
-    msg = veorq_u8(msg, state[1]);
-    msg = veorq_u8(msg, vandq_u8(state[2], state[3]));
-    vst1q_u8(dst, msg);
+    msg = AES_BLOCK_LOAD(src);
+    msg = AES_BLOCK_XOR(msg, state[5]);
+    msg = AES_BLOCK_XOR(msg, state[4]);
+    msg = AES_BLOCK_XOR(msg, state[1]);
+    msg = AES_BLOCK_XOR(msg, AES_BLOCK_AND(state[2], state[3]));
+    AES_BLOCK_STORE(dst, msg);
 
     crypto_aead_aegis256_update(state, msg);
 }
@@ -136,7 +141,7 @@ crypto_aead_aegis256_encrypt_detached(unsigned char *c, unsigned char *mac,
                                       unsigned long long adlen, const unsigned char *nsec,
                                       const unsigned char *npub, const unsigned char *k)
 {
-    uint8x16_t                     state[6];
+    aes_block_t                    state[6];
     CRYPTO_ALIGN(16) unsigned char src[16];
     CRYPTO_ALIGN(16) unsigned char dst[16];
     unsigned long long i;
@@ -202,7 +207,7 @@ crypto_aead_aegis256_decrypt_detached(unsigned char *m, unsigned char *nsec, con
                                       const unsigned char *ad, unsigned long long adlen,
                                       const unsigned char *npub, const unsigned char *k)
 {
-    uint8x16_t                     state[6];
+    aes_block_t                    state[6];
     CRYPTO_ALIGN(16) unsigned char src[16];
     CRYPTO_ALIGN(16) unsigned char dst[16];
     CRYPTO_ALIGN(16) unsigned char computed_mac[16];
@@ -239,7 +244,7 @@ crypto_aead_aegis256_decrypt_detached(unsigned char *m, unsigned char *nsec, con
             memcpy(m + i, dst, mlen & 0xf);
         }
         memset(dst, 0, mlen & 0xf);
-        state[0] = veorq_u8(state[0], vld1q_u8(dst));
+        state[0] = AES_BLOCK_XOR(state[0], AES_BLOCK_LOAD(dst));
     }
 
     crypto_aead_aegis256_mac(computed_mac, adlen, mlen, state);
