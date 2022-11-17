@@ -725,6 +725,8 @@ crypto_aead_aes256gcm_beforenm(crypto_aead_aes256gcm_state *st_, const unsigned 
     State                         *st = (State *) (void *) st_;
     CRYPTO_ALIGN(16) unsigned char h[16];
 
+    COMPILER_ASSERT(sizeof *st_ >= sizeof *st);
+
     expand256(k, st->rkeys);
     memset(h, 0, sizeof h);
     encrypt(st, h, h);
@@ -737,19 +739,24 @@ crypto_aead_aes256gcm_beforenm(crypto_aead_aes256gcm_state *st_, const unsigned 
 int
 crypto_aead_aes256gcm_encrypt_detached_afternm(unsigned char *c, unsigned char *mac,
                                                unsigned long long *maclen_p, const unsigned char *m,
-                                               unsigned long long m_len, const unsigned char *ad,
-                                               unsigned long long ad_len, const unsigned char *nsec,
-                                               const unsigned char               *npub,
+                                               unsigned long long m_len_, const unsigned char *ad,
+                                               unsigned long long   ad_len_,
+                                               const unsigned char *nsec, const unsigned char *npub,
                                                const crypto_aead_aes256gcm_state *st_)
 {
     const State                   *st = (const State *) (const void *) st_;
     GHash                          sth;
     CRYPTO_ALIGN(16) unsigned char j[16];
     size_t                         gh_required_blocks;
+    const size_t                   ad_len = (size_t) ad_len_;
+    const size_t                   m_len  = (size_t) m_len_;
 
     (void) nsec;
     if (maclen_p != NULL) {
         *maclen_p = 0;
+    }
+    if (ad_len_ > SODIUM_SIZE_MAX || m_len_ > SODIUM_SIZE_MAX) {
+        sodium_misuse();
     }
     gh_required_blocks = required_blocks(ad_len, m_len);
     if (gh_required_blocks == 0) {
@@ -828,8 +835,8 @@ crypto_aead_aes256gcm_encrypt_afternm(unsigned char *c, unsigned long long *clen
 
 static int
 crypto_aead_aes256gcm_verify_mac(unsigned char *nsec, const unsigned char *c,
-                                 unsigned long long c_len, const unsigned char *mac,
-                                 const unsigned char *ad, unsigned long long ad_len,
+                                 unsigned long long c_len_, const unsigned char *mac,
+                                 const unsigned char *ad, unsigned long long ad_len_,
                                  const unsigned char *npub, const crypto_aead_aes256gcm_state *st_)
 {
     const State                   *st = (const State *) (const void *) st_;
@@ -840,9 +847,14 @@ crypto_aead_aes256gcm_verify_mac(unsigned char *nsec, const unsigned char *c,
     CRYPTO_ALIGN(16) unsigned char last_block[16];
     size_t                         gh_required_blocks;
     size_t                         left;
+    const size_t                   ad_len = (size_t) ad_len_;
+    const size_t                   c_len  = (size_t) c_len_;
     int                            ret;
 
     (void) nsec;
+    if (ad_len_ > SODIUM_SIZE_MAX || c_len_ > SODIUM_SIZE_MAX) {
+        sodium_misuse();
+    }
     gh_required_blocks = required_blocks(ad_len, c_len);
     if (gh_required_blocks == 0) {
         return -1;
@@ -887,9 +899,10 @@ crypto_aead_aes256gcm_verify_mac(unsigned char *nsec, const unsigned char *c,
 
 int
 crypto_aead_aes256gcm_decrypt_detached_afternm(unsigned char *m, unsigned char *nsec,
-                                               const unsigned char *c, unsigned long long c_len,
+                                               const unsigned char *c, unsigned long long c_len_,
                                                const unsigned char *mac, const unsigned char *ad,
-                                               unsigned long long ad_len, const unsigned char *npub,
+                                               unsigned long long                 ad_len_,
+                                               const unsigned char               *npub,
                                                const crypto_aead_aes256gcm_state *st_)
 {
     const State                   *st = (const State *) (const void *) st_;
@@ -897,13 +910,17 @@ crypto_aead_aes256gcm_decrypt_detached_afternm(unsigned char *m, unsigned char *
     CRYPTO_ALIGN(16) unsigned char j[16];
     unsigned char                  computed_mac[16];
     size_t                         gh_required_blocks;
+    const size_t                   ad_len = (size_t) ad_len_;
+    const size_t                   c_len  = (size_t) c_len_;
     const size_t                   m_len = c_len;
 
+    (void) nsec;
+    if (ad_len_ > SODIUM_SIZE_MAX || c_len_ > SODIUM_SIZE_MAX) {
+        sodium_misuse();
+    }
     if (m == NULL) {
         return crypto_aead_aes256gcm_verify_mac(nsec, c, c_len, mac, ad, ad_len, npub, st_);
     }
-
-    (void) nsec;
     gh_required_blocks = required_blocks(ad_len, m_len);
     if (gh_required_blocks == 0) {
         return -1;
