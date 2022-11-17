@@ -45,8 +45,7 @@ siphash                                Jean-Philippe Aumasson
 Implementors
 ============
 
-crypto_aead/aes256gcm/aesni            Romain Dolbeau
-                                       Frank Denis
+crypto_aead/aes256gcm/aesni            Frank Denis
 
 crypto_aead/chacha20poly1305           Frank Denis
 
