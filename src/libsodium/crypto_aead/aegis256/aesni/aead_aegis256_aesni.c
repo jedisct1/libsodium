@@ -108,6 +108,15 @@ crypto_aead_aegis256_mac(unsigned char *mac, unsigned long long adlen, unsigned 
     AES_BLOCK_STORE((aes_block_t *) (void *) mac, tmp);
 }
 
+static inline void
+crypto_aead_aegis256_absorb(const unsigned char *const src, aes_block_t *const state)
+{
+    aes_block_t msg;
+
+    msg = AES_BLOCK_LOAD(src);
+    crypto_aead_aegis256_update(state, msg);
+}
+
 static void
 crypto_aead_aegis256_enc(unsigned char *const dst, const unsigned char *const src,
                          aes_block_t *const state)
@@ -157,12 +166,12 @@ crypto_aead_aegis256_encrypt_detached(unsigned char *c, unsigned char *mac,
     crypto_aead_aegis256_init(k, npub, state);
 
     for (i = 0ULL; i + 16ULL <= adlen; i += 16ULL) {
-        crypto_aead_aegis256_enc(dst, ad + i, state);
+        crypto_aead_aegis256_absorb(ad + i, state);
     }
     if (adlen & 0xf) {
         memset(src, 0, 16);
         memcpy(src, ad + i, adlen & 0xf);
-        crypto_aead_aegis256_enc(dst, src, state);
+        crypto_aead_aegis256_absorb(src, state);
     }
     for (i = 0ULL; i + 16ULL <= mlen; i += 16ULL) {
         crypto_aead_aegis256_enc(c + i, m + i, state);
@@ -227,12 +236,12 @@ crypto_aead_aegis256_decrypt_detached(unsigned char *m, unsigned char *nsec, con
     crypto_aead_aegis256_init(k, npub, state);
 
     for (i = 0ULL; i + 16ULL <= adlen; i += 16ULL) {
-        crypto_aead_aegis256_enc(dst, ad + i, state);
+        crypto_aead_aegis256_absorb(ad + i, state);
     }
     if (adlen & 0xf) {
         memset(src, 0, 16);
         memcpy(src, ad + i, adlen & 0xf);
-        crypto_aead_aegis256_enc(dst, src, state);
+        crypto_aead_aegis256_absorb(src, state);
     }
     if (m != NULL) {
         for (i = 0ULL; i + 16ULL <= mlen; i += 16ULL) {

@@ -110,6 +110,16 @@ crypto_aead_aegis128l_mac(unsigned char *mac, unsigned long long adlen, unsigned
     AES_BLOCK_STORE((aes_block_t *) (void *) mac, tmp);
 }
 
+static inline void
+crypto_aead_aegis128l_absorb(const unsigned char *const src, aes_block_t *const state)
+{
+    aes_block_t msg0, msg1;
+
+    msg0 = AES_BLOCK_LOAD(src);
+    msg1 = AES_BLOCK_LOAD(src + 16);
+    crypto_aead_aegis128l_update(state, msg0, msg1);
+}
+
 static void
 crypto_aead_aegis128l_enc(unsigned char *const dst, const unsigned char *const src,
                           aes_block_t *const state)
@@ -167,12 +177,12 @@ crypto_aead_aegis128l_encrypt_detached(unsigned char *c, unsigned char *mac,
     crypto_aead_aegis128l_init(k, npub, state);
 
     for (i = 0ULL; i + 32ULL <= adlen; i += 32ULL) {
-        crypto_aead_aegis128l_enc(dst, ad + i, state);
+        crypto_aead_aegis128l_absorb(ad + i, state);
     }
     if (adlen & 0x1f) {
         memset(src, 0, 32);
         memcpy(src, ad + i, adlen & 0x1f);
-        crypto_aead_aegis128l_enc(dst, src, state);
+        crypto_aead_aegis128l_absorb(src, state);
     }
     for (i = 0ULL; i + 32ULL <= mlen; i += 32ULL) {
         crypto_aead_aegis128l_enc(c + i, m + i, state);
@@ -238,12 +248,12 @@ crypto_aead_aegis128l_decrypt_detached(unsigned char *m, unsigned char *nsec,
     crypto_aead_aegis128l_init(k, npub, state);
 
     for (i = 0ULL; i + 32ULL <= adlen; i += 32ULL) {
-        crypto_aead_aegis128l_enc(dst, ad + i, state);
+        crypto_aead_aegis128l_absorb(ad + i, state);
     }
     if (adlen & 0x1f) {
         memset(src, 0, 32);
         memcpy(src, ad + i, adlen & 0x1f);
-        crypto_aead_aegis128l_enc(dst, src, state);
+        crypto_aead_aegis128l_absorb(src, state);
     }
     if (m != NULL) {
         for (i = 0ULL; i + 32ULL <= mlen; i += 32ULL) {
