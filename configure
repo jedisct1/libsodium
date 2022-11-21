@@ -20936,6 +20936,12 @@ then :
   printf "%s\n" "#define HAVE_EXPLICIT_BZERO 1" >>confdefs.h
 
 fi
+ac_fn_c_check_func "$LINENO" "memset_explicit" "ac_cv_func_memset_explicit"
+if test "x$ac_cv_func_memset_explicit" = xyes
+then :
+  printf "%s\n" "#define HAVE_MEMSET_EXPLICIT 1" >>confdefs.h
+
+fi
 ac_fn_c_check_func "$LINENO" "explicit_memset" "ac_cv_func_explicit_memset"
 if test "x$ac_cv_func_explicit_memset" = xyes
 then :
