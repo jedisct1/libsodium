@@ -93,4 +93,34 @@ pub fn build(b: *std.build.Builder) !void {
             }
         }
     }
+
+    const test_path = "test/default";
+    const out_bin_path = "zig-out/bin";
+    const test_dir = try fs.Dir.openIterableDir(fs.cwd(), test_path, .{ .no_follow = true });
+    fs.Dir.makePath(fs.cwd(), out_bin_path) catch {};
+    const out_bin_dir = try fs.Dir.openDir(fs.cwd(), out_bin_path, .{});
+    var allocator = heap.page_allocator;
+    var walker = try test_dir.walk(allocator);
+    while (try walker.next()) |entry| {
+        const name = entry.basename;
+        if (mem.endsWith(u8, name, ".exp")) {
+            try test_dir.dir.copyFile(name, out_bin_dir, name, .{});
+            continue;
+        }
+        if (!mem.endsWith(u8, name, ".c")) {
+            continue;
+        }
+        const exe_name = name[0 .. name.len - 2];
+        var exe = b.addExecutable(exe_name, null);
+        exe.setTarget(target);
+        exe.setBuildMode(mode);
+        exe.linkLibC();
+        exe.linkLibrary(static);
+        exe.addIncludePath("src/libsodium/include");
+        exe.addIncludePath("test/quirks");
+        const full_path = try fmt.allocPrint(allocator, "{s}/{s}", .{ test_path, entry.path });
+        exe.addCSourceFiles(&.{full_path}, &.{});
+        exe.strip = true;
+        exe.install();
+    }
 }
