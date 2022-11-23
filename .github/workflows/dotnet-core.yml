@@ -347,7 +347,7 @@ jobs:
         .libsodium-builds/linux-x64/Tests
 
   run-test-binaries-cross-plat:
-    runs-on: ubuntu-20.04
+    runs-on: ubuntu-22.04
     needs:
       - build-test-binaries
     env:
@@ -361,18 +361,18 @@ jobs:
           export DEBIAN_FRONTEND=noninteractive
 
           # On virtualization systems such as the one used by WSL2, the ARM crypto extensions
-          # don't work as expected. As a result, installing Ubuntu 18.04 fails during integrity
+          # don't work as expected. As a result, installing on Ubuntu fails during integrity
           # checks. As a workaround, the following command disables hardware acceleration for
           # gcrypt, which the apt-get command relies on.
           mkdir -p /etc/gcrypt && echo all >> /etc/gcrypt/hwf.deny
 
           cat <<-EOF | sudo tee /etc/apt/sources.list.d/multiarch.list >/dev/null
-          deb [arch=armhf,arm64] http://ports.ubuntu.com/ focal main restricted
-          deb [arch=armhf,arm64] http://ports.ubuntu.com/ focal-updates main restricted
-          deb [arch=armhf,arm64] http://ports.ubuntu.com/ focal universe
-          deb [arch=armhf,arm64] http://ports.ubuntu.com/ focal-updates universe
-          deb [arch=armhf,arm64] http://ports.ubuntu.com/ focal multiverse
-          deb [arch=armhf,arm64] http://ports.ubuntu.com/ focal-updates multiverse
+          deb [arch=armhf,arm64] http://ports.ubuntu.com/ jammy main restricted
+          deb [arch=armhf,arm64] http://ports.ubuntu.com/ jammy-updates main restricted
+          deb [arch=armhf,arm64] http://ports.ubuntu.com/ jammy universe
+          deb [arch=armhf,arm64] http://ports.ubuntu.com/ jammy-updates universe
+          deb [arch=armhf,arm64] http://ports.ubuntu.com/ jammy multiverse
+          deb [arch=armhf,arm64] http://ports.ubuntu.com/ jammy-updates multiverse
           EOF
 
           sudo sed -i 's/deb h/deb [arch=amd64] h/g' /etc/apt/sources.list
