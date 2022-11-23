@@ -99,6 +99,7 @@ pub fn build(b: *std.build.Builder) !void {
     const test_dir = try fs.Dir.openIterableDir(fs.cwd(), test_path, .{ .no_follow = true });
     fs.Dir.makePath(fs.cwd(), out_bin_path) catch {};
     const out_bin_dir = try fs.Dir.openDir(fs.cwd(), out_bin_path, .{});
+    try test_dir.dir.copyFile("run.sh", out_bin_dir, "run.sh", .{});
     var allocator = heap.page_allocator;
     var walker = try test_dir.walk(allocator);
     while (try walker.next()) |entry| {
