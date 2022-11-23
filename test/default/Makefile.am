@@ -1,5 +1,6 @@
 
 EXTRA_DIST = \
+	run.sh \
 	cmptest.h \
 	wasi-test-wrapper.sh \
 	wintest.bat \
