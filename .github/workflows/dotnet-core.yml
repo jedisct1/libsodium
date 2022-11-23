@@ -10,16 +10,16 @@ jobs:
   build-windows:
     runs-on: windows-latest
     steps:
-      - uses: actions/checkout@v1
+      - uses: actions/checkout@v3
       - name: buildbase.bat
         run: buildbase.bat ..\vs2022\libsodium.sln 17
         working-directory: builds/msvc/build/
         shell: cmd
-      - uses: actions/upload-artifact@v2
+      - uses: actions/upload-artifact@v3
         with:
           name: build-win-x64
           path: bin/x64/Release/v143/dynamic/libsodium.dll
-      - uses: actions/upload-artifact@v2
+      - uses: actions/upload-artifact@v3
         with:
           name: build-win-x86
           path: bin/Win32/Release/v143/dynamic/libsodium.dll
@@ -27,12 +27,12 @@ jobs:
   build-linux-glibc:
     runs-on: ubuntu-latest
     container:
-      image: ubuntu:16.04
+      image: ubuntu:18.04
     steps:
       - name: Set up build environment
         run: |
           apt-get update && apt-get install -y build-essential
-      - uses: actions/checkout@v1
+      - uses: actions/checkout@v3
       - name: configure
         run: ./configure --disable-dependency-tracking --prefix=$PWD/.libsodium-build
       - name: make
@@ -43,7 +43,7 @@ jobs:
         run: make install
       - name: strip
         run: strip --strip-all .libsodium-build/lib/libsodium.so
-      - uses: actions/upload-artifact@v2
+      - uses: actions/upload-artifact@v3
         with:
           name: build-linux-x64
           path: .libsodium-build/lib/libsodium.so
@@ -51,7 +51,7 @@ jobs:
   build-linux-glibc-arm64:
     runs-on: ubuntu-latest
     container:
-      image: ubuntu:16.04
+      image: ubuntu:18.04
     steps:
       - name: Set up build environment
         run: |
@@ -73,7 +73,7 @@ jobs:
 
           apt-get update && apt-get install -y build-essential qemu-user qemu-user-static gcc-aarch64-linux-gnu g++-aarch64-linux-gnu libstdc++6:arm64
 
-      - uses: actions/checkout@v1
+      - uses: actions/checkout@v3
       - name: configure
         run: ./configure --disable-dependency-tracking --prefix=$PWD/.libsodium-build --host=aarch64-linux-gnu
       - name: make
@@ -90,7 +90,7 @@ jobs:
 
       - name: strip
         run: aarch64-linux-gnu-strip --strip-all .libsodium-build/lib/libsodium.so
-      - uses: actions/upload-artifact@v2
+      - uses: actions/upload-artifact@v3
         with:
           name: build-linux-arm64
           path: .libsodium-build/lib/libsodium.so
@@ -118,7 +118,7 @@ jobs:
 
           sudo apt-get update && sudo apt-get install -y build-essential qemu-user qemu-user-static gcc-arm-linux-gnueabihf g++-arm-linux-gnueabihf libstdc++6:armhf
 
-      - uses: actions/checkout@v1
+      - uses: actions/checkout@v3
       - name: configure
         run: ./configure --disable-dependency-tracking --prefix=$PWD/.libsodium-build --host=arm-linux-gnueabihf
       - name: make
@@ -133,7 +133,7 @@ jobs:
 
       - name: strip
         run: arm-linux-gnueabihf-strip --strip-all .libsodium-build/lib/libsodium.so
-      - uses: actions/upload-artifact@v2
+      - uses: actions/upload-artifact@v3
         with:
           name: build-linux-arm
           path: .libsodium-build/lib/libsodium.so
@@ -141,13 +141,13 @@ jobs:
   build-linux-musl:
     runs-on: ubuntu-latest
     container:
-      image: alpine:3.15
+      image: alpine:3.17
     steps:
       - name: Set up build environment
         run: |
           apk update
           apk add alpine-sdk ca-certificates
-      - uses: actions/checkout@v1
+      - uses: actions/checkout@v3
       - name: configure
         run: ./configure --disable-dependency-tracking --prefix=$PWD/.libsodium-build
       - name: make
@@ -158,7 +158,7 @@ jobs:
         run: make install
       - name: strip
         run: strip --strip-all .libsodium-build/lib/libsodium.so
-      - uses: actions/upload-artifact@v2
+      - uses: actions/upload-artifact@v3
         with:
           name: build-linux-musl-x64
           path: .libsodium-build/lib/libsodium.so
@@ -166,13 +166,13 @@ jobs:
   build-linux-musl-arm64:
     runs-on: ubuntu-latest
     container:
-      image: alpine:3.15
+      image: alpine:3.17
     steps:
       - name: Set up build environment
         run: |
           apk update
           apk add alpine-sdk ca-certificates
-      - uses: actions/checkout@v1
+      - uses: actions/checkout@v3
       - name: configure
         run: ./configure --disable-dependency-tracking --prefix=$PWD/.libsodium-build --host=aarch64-linux-gnu
       - name: make
@@ -183,7 +183,7 @@ jobs:
         run: make install
       - name: strip
         run: strip --strip-all .libsodium-build/lib/libsodium.so
-      - uses: actions/upload-artifact@v2
+      - uses: actions/upload-artifact@v3
         with:
           name: build-linux-musl-arm64
           path: .libsodium-build/lib/libsodium.so
@@ -191,7 +191,7 @@ jobs:
   build-macos-x64:
     runs-on: macos-11
     steps:
-      - uses: actions/checkout@v1
+      - uses: actions/checkout@v3
       - name: configure
         run: env CFLAGS="-O2 -arch x86_64 -mmacosx-version-min=10.10" LDFLAGS="-arch x86_64 -mmacosx-version-min=10.10" ./configure --host=arm-apple-darwin20 --prefix=$PWD/.libsodium-build
       - name: make
@@ -200,7 +200,7 @@ jobs:
         run: make check
       - name: make install
         run: make install
-      - uses: actions/upload-artifact@v2
+      - uses: actions/upload-artifact@v3
         with:
           name: build-osx-x64
           path: .libsodium-build/lib/libsodium.dylib
@@ -208,14 +208,14 @@ jobs:
   build-macos-arm64:
     runs-on: macos-11
     steps:
-      - uses: actions/checkout@v1
+      - uses: actions/checkout@v3
       - name: configure
         run: env CFLAGS="-O2 -arch arm64 -mmacosx-version-min=10.10" LDFLAGS="-arch arm64 -mmacosx-version-min=10.10" ./configure --host=arm-apple-darwin20 --prefix=$PWD/.libsodium-build
       - name: make
         run: make
       - name: make install
         run: make install
-      - uses: actions/upload-artifact@v2
+      - uses: actions/upload-artifact@v3
         with:
           name: build-osx-arm64
           path: .libsodium-build/lib/libsodium.dylib
@@ -238,40 +238,40 @@ jobs:
       DOTNET_SKIP_FIRST_TIME_EXPERIENCE: 1
       DOTNET_SYSTEM_GLOBALIZATION_INVARIANT: 1
     steps:
-      - uses: actions/checkout@v1
-      - uses: actions/download-artifact@v2
+      - uses: actions/checkout@v3
+      - uses: actions/download-artifact@v3
         with:
           name: build-win-x64
           path: .libsodium-pack/runtimes/win-x64/native/
-      - uses: actions/download-artifact@v2
+      - uses: actions/download-artifact@v3
         with:
           name: build-win-x86
           path: .libsodium-pack/runtimes/win-x86/native/
-      - uses: actions/download-artifact@v2
+      - uses: actions/download-artifact@v3
         with:
           name: build-linux-x64
           path: .libsodium-pack/runtimes/linux-x64/native/
-      - uses: actions/download-artifact@v2
+      - uses: actions/download-artifact@v3
         with:
           name: build-linux-arm64
           path: .libsodium-pack/runtimes/linux-arm64/native/
-      - uses: actions/download-artifact@v2
+      - uses: actions/download-artifact@v3
         with:
           name: build-linux-arm
           path: .libsodium-pack/runtimes/linux-arm/native/
-      - uses: actions/download-artifact@v2
+      - uses: actions/download-artifact@v3
         with:
           name: build-linux-musl-x64
           path: .libsodium-pack/runtimes/linux-musl-x64/native/
-      - uses: actions/download-artifact@v2
+      - uses: actions/download-artifact@v3
         with:
           name: build-linux-musl-arm64
           path: .libsodium-pack/runtimes/linux-musl-arm64/native/
-      - uses: actions/download-artifact@v2
+      - uses: actions/download-artifact@v3
         with:
           name: build-osx-x64
           path: .libsodium-pack/runtimes/osx-x64/native/
-      - uses: actions/download-artifact@v2
+      - uses: actions/download-artifact@v3
         with:
           name: build-osx-arm64
           path: .libsodium-pack/runtimes/osx-arm64/native/
@@ -279,7 +279,7 @@ jobs:
         run: cp AUTHORS ChangeLog LICENSE packaging/dotnet-core/libsodium.pkgproj .libsodium-pack/
       - name: Create NuGet package
         run: dotnet pack -c Release .libsodium-pack/libsodium.pkgproj
-      - uses: actions/upload-artifact@v2
+      - uses: actions/upload-artifact@v3
         with:
           name: nuget-package
           path: .libsodium-pack/bin/Release/*.nupkg
@@ -295,8 +295,8 @@ jobs:
       DOTNET_SKIP_FIRST_TIME_EXPERIENCE: 1
       DOTNET_SYSTEM_GLOBALIZATION_INVARIANT: 1
     steps:
-      - uses: actions/checkout@v1
-      - uses: actions/download-artifact@v2
+      - uses: actions/checkout@v3
+      - uses: actions/download-artifact@v3
         with:
           name: nuget-package
           path: .libsodium-pack/
@@ -321,7 +321,7 @@ jobs:
           mv .libsodium-test/bin/Release/net6.0/linux-arm/publish .libsodium-builds/linux-arm
           mv .libsodium-test/bin/Release/net6.0/linux-arm64/publish .libsodium-builds/linux-arm64
           mv .libsodium-test/bin/Release/net6.0/linux-x64/publish .libsodium-builds/linux-x64
-      - uses: actions/upload-artifact@v2
+      - uses: actions/upload-artifact@v3
         with:
           name: test-builds
           path: .libsodium-builds/*
@@ -339,7 +339,7 @@ jobs:
     env:
       DOTNET_SYSTEM_GLOBALIZATION_INVARIANT: 1
     steps:
-    - uses: actions/download-artifact@v2
+    - uses: actions/download-artifact@v3
       with:
         name: test-builds
         path: .libsodium-builds/
@@ -385,7 +385,7 @@ jobs:
 
           sudo apt-get update && sudo apt-get install -y qemu-user qemu-user-static libstdc++6:armhf libstdc++6:arm64
 
-      - uses: actions/download-artifact@v2
+      - uses: actions/download-artifact@v3
         with:
           name: test-builds
           path: .libsodium-builds/
