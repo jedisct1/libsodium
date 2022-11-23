@@ -58,13 +58,12 @@ jobs:
           export DEBIAN_FRONTEND=noninteractive
 
           cat <<-EOF | tee /etc/apt/sources.list.d/arm64.list >/dev/null
-          deb [arch=arm64] http://ports.ubuntu.com/ xenial main restricted
-          deb [arch=arm64] http://ports.ubuntu.com/ xenial-updates main restricted
-          deb [arch=arm64] http://ports.ubuntu.com/ xenial universe
-          deb [arch=arm64] http://ports.ubuntu.com/ xenial-updates universe
-          deb [arch=arm64] http://ports.ubuntu.com/ xenial multiverse
-          deb [arch=arm64] http://ports.ubuntu.com/ xenial-updates multiverse
-          deb [arch=arm64] http://ports.ubuntu.com/ xenial-backports main restricted universe multiverse
+          deb [arch=arm64] http://ports.ubuntu.com/ bionic main restricted
+          deb [arch=arm64] http://ports.ubuntu.com/ bionic-updates main restricted
+          deb [arch=arm64] http://ports.ubuntu.com/ bionic universe
+          deb [arch=arm64] http://ports.ubuntu.com/ bionic-updates universe
+          deb [arch=arm64] http://ports.ubuntu.com/ bionic multiverse
+          deb [arch=arm64] http://ports.ubuntu.com/ bionic-updates multiverse
           EOF
 
           sed -i 's/deb h/deb [arch=amd64] h/g' /etc/apt/sources.list
@@ -96,20 +95,19 @@ jobs:
           path: .libsodium-build/lib/libsodium.so
 
   build-linux-glibc-arm:
-    runs-on: ubuntu-20.04
+    runs-on: ubuntu-18.04
     steps:
       - name: Set up build environment
         run: |
           export DEBIAN_FRONTEND=noninteractive
 
           cat <<-EOF | sudo tee /etc/apt/sources.list.d/armhf.list >/dev/null
-          deb [arch=armhf] http://ports.ubuntu.com/ focal main restricted
-          deb [arch=armhf] http://ports.ubuntu.com/ focal-updates main restricted
-          deb [arch=armhf] http://ports.ubuntu.com/ focal universe
-          deb [arch=armhf] http://ports.ubuntu.com/ focal-updates universe
-          deb [arch=armhf] http://ports.ubuntu.com/ focal multiverse
-          deb [arch=armhf] http://ports.ubuntu.com/ focal-updates multiverse
-          deb [arch=armhf] http://ports.ubuntu.com/ focal-backports main restricted universe multiverse
+          deb [arch=armhf] http://ports.ubuntu.com/ bionic main restricted
+          deb [arch=armhf] http://ports.ubuntu.com/ bionic-updates main restricted
+          deb [arch=armhf] http://ports.ubuntu.com/ bionic universe
+          deb [arch=armhf] http://ports.ubuntu.com/ bionic-updates universe
+          deb [arch=armhf] http://ports.ubuntu.com/ bionic multiverse
+          deb [arch=armhf] http://ports.ubuntu.com/ bionic-updates multiverse
           EOF
 
           sudo sed -i 's/deb h/deb [arch=amd64] h/g' /etc/apt/sources.list
@@ -193,7 +191,7 @@ jobs:
     steps:
       - uses: actions/checkout@v3
       - name: configure
-        run: env CFLAGS="-O2 -arch x86_64 -mmacosx-version-min=10.10" LDFLAGS="-arch x86_64 -mmacosx-version-min=10.10" ./configure --host=arm-apple-darwin20 --prefix=$PWD/.libsodium-build
+        run: env CFLAGS="-Ofast -arch x86_64 -mmacosx-version-min=10.10" LDFLAGS="-arch x86_64 -mmacosx-version-min=10.10" ./configure --host=arm-apple-darwin20 --prefix=$PWD/.libsodium-build
       - name: make
         run: make
       - name: make check
@@ -210,7 +208,7 @@ jobs:
     steps:
       - uses: actions/checkout@v3
       - name: configure
-        run: env CFLAGS="-O2 -arch arm64 -mmacosx-version-min=10.10" LDFLAGS="-arch arm64 -mmacosx-version-min=10.10" ./configure --host=arm-apple-darwin20 --prefix=$PWD/.libsodium-build
+        run: env CFLAGS="-Ofast -arch arm64 -mmacosx-version-min=10.10" LDFLAGS="-arch arm64 -mmacosx-version-min=10.10" ./configure --host=arm-apple-darwin20 --prefix=$PWD/.libsodium-build
       - name: make
         run: make
       - name: make install
@@ -363,7 +361,7 @@ jobs:
           export DEBIAN_FRONTEND=noninteractive
 
           # On virtualization systems such as the one used by WSL2, the ARM crypto extensions
-          # don't work as expected. As a result, installing Ubuntu 20.04 fails during integrity
+          # don't work as expected. As a result, installing Ubuntu 18.04 fails during integrity
           # checks. As a workaround, the following command disables hardware acceleration for
           # gcrypt, which the apt-get command relies on.
           mkdir -p /etc/gcrypt && echo all >> /etc/gcrypt/hwf.deny
@@ -375,7 +373,6 @@ jobs:
           deb [arch=armhf,arm64] http://ports.ubuntu.com/ focal-updates universe
           deb [arch=armhf,arm64] http://ports.ubuntu.com/ focal multiverse
           deb [arch=armhf,arm64] http://ports.ubuntu.com/ focal-updates multiverse
-          deb [arch=armhf,arm64] http://ports.ubuntu.com/ focal-backports main restricted universe multiverse
           EOF
 
           sudo sed -i 's/deb h/deb [arch=amd64] h/g' /etc/apt/sources.list
