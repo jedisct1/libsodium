@@ -27,7 +27,7 @@ jobs:
   build-linux-glibc:
     runs-on: ubuntu-latest
     container:
-      image: ubuntu:18.04
+      image: ubuntu:16.04
     steps:
       - name: Set up build environment
         run: |
@@ -51,26 +51,26 @@ jobs:
   build-linux-glibc-arm64:
     runs-on: ubuntu-latest
     container:
-      image: ubuntu:18.04
+      image: ubuntu:16.04
     steps:
       - name: Set up build environment
         run: |
           export DEBIAN_FRONTEND=noninteractive
 
           cat <<-EOF | tee /etc/apt/sources.list.d/arm64.list >/dev/null
-          deb [arch=arm64] http://ports.ubuntu.com/ bionic main restricted
-          deb [arch=arm64] http://ports.ubuntu.com/ bionic-updates main restricted
-          deb [arch=arm64] http://ports.ubuntu.com/ bionic universe
-          deb [arch=arm64] http://ports.ubuntu.com/ bionic-updates universe
-          deb [arch=arm64] http://ports.ubuntu.com/ bionic multiverse
-          deb [arch=arm64] http://ports.ubuntu.com/ bionic-updates multiverse
+          deb [arch=arm64] http://ports.ubuntu.com/ xenial main restricted
+          deb [arch=arm64] http://ports.ubuntu.com/ xenial-updates main restricted
+          deb [arch=arm64] http://ports.ubuntu.com/ xenial universe
+          deb [arch=arm64] http://ports.ubuntu.com/ xenial-updates universe
+          deb [arch=arm64] http://ports.ubuntu.com/ xenial multiverse
+          deb [arch=arm64] http://ports.ubuntu.com/ xenial-updates multiverse
           EOF
 
           sed -i 's/deb h/deb [arch=amd64] h/g' /etc/apt/sources.list
 
           dpkg --add-architecture arm64
 
-          apt-get update && apt-get install -y build-essential qemu-user qemu-user-static gcc-aarch64-linux-gnu g++-aarch64-linux-gnu libstdc++6:arm64
+          apt-get update && apt-get install -y build-essential qemu-user qemu-user-static gcc-aarch64-linux-gnu
 
       - uses: actions/checkout@v3
       - name: configure
@@ -95,26 +95,26 @@ jobs:
           path: .libsodium-build/lib/libsodium.so
 
   build-linux-glibc-arm:
-    runs-on: ubuntu-18.04
+    runs-on: ubuntu-16.04
     steps:
       - name: Set up build environment
         run: |
           export DEBIAN_FRONTEND=noninteractive
 
           cat <<-EOF | sudo tee /etc/apt/sources.list.d/armhf.list >/dev/null
-          deb [arch=armhf] http://ports.ubuntu.com/ bionic main restricted
-          deb [arch=armhf] http://ports.ubuntu.com/ bionic-updates main restricted
-          deb [arch=armhf] http://ports.ubuntu.com/ bionic universe
-          deb [arch=armhf] http://ports.ubuntu.com/ bionic-updates universe
-          deb [arch=armhf] http://ports.ubuntu.com/ bionic multiverse
-          deb [arch=armhf] http://ports.ubuntu.com/ bionic-updates multiverse
+          deb [arch=armhf] http://ports.ubuntu.com/ xenial main restricted
+          deb [arch=armhf] http://ports.ubuntu.com/ xenial-updates main restricted
+          deb [arch=armhf] http://ports.ubuntu.com/ xenial universe
+          deb [arch=armhf] http://ports.ubuntu.com/ xenial-updates universe
+          deb [arch=armhf] http://ports.ubuntu.com/ xenial multiverse
+          deb [arch=armhf] http://ports.ubuntu.com/ xenial-updates multiverse
           EOF
 
           sudo sed -i 's/deb h/deb [arch=amd64] h/g' /etc/apt/sources.list
 
           sudo dpkg --add-architecture armhf
 
-          sudo apt-get update && sudo apt-get install -y build-essential qemu-user qemu-user-static gcc-arm-linux-gnueabihf g++-arm-linux-gnueabihf libstdc++6:armhf
+          sudo apt-get update && sudo apt-get install -y build-essential qemu-user qemu-user-static gcc-arm-linux-gnueabihf
 
       - uses: actions/checkout@v3
       - name: configure
@@ -139,7 +139,7 @@ jobs:
   build-linux-musl:
     runs-on: ubuntu-latest
     container:
-      image: alpine:3.17
+      image: alpine:latest
     steps:
       - name: Set up build environment
         run: |
@@ -164,7 +164,7 @@ jobs:
   build-linux-musl-arm64:
     runs-on: ubuntu-latest
     container:
-      image: alpine:3.17
+      image: alpine:latest
     steps:
       - name: Set up build environment
         run: |
