@@ -27,7 +27,7 @@ jobs:
   build-linux-glibc:
     runs-on: ubuntu-latest
     container:
-      image: ubuntu:18.04
+      image: ubuntu:16.04
     steps:
       - name: Set up build environment
         run: |
@@ -51,42 +51,27 @@ jobs:
   build-linux-glibc-arm64:
     runs-on: ubuntu-latest
     container:
-      image: ubuntu:18.04
+      image: ubuntu:16.04
+      options: --privileged
     steps:
       - name: Set up build environment
         run: |
           export DEBIAN_FRONTEND=noninteractive
-
-          cat <<-EOF | tee /etc/apt/sources.list.d/arm64.list >/dev/null
-          deb [arch=arm64] http://ports.ubuntu.com/ bionic main restricted
-          deb [arch=arm64] http://ports.ubuntu.com/ bionic-updates main restricted
-          deb [arch=arm64] http://ports.ubuntu.com/ bionic universe
-          deb [arch=arm64] http://ports.ubuntu.com/ bionic-updates universe
-          deb [arch=arm64] http://ports.ubuntu.com/ bionic multiverse
-          deb [arch=arm64] http://ports.ubuntu.com/ bionic-updates multiverse
-          EOF
-
-          sed -i 's/deb h/deb [arch=amd64] h/g' /etc/apt/sources.list
-
+          apt-get update && apt-get install -y build-essential qemu binfmt-support qemu-user-static qemu-system-arm gcc-aarch64-linux-gnu libc6-arm64-cross
           dpkg --add-architecture arm64
-
-          apt-get update && apt-get install -y build-essential qemu-user qemu-user-static gcc-aarch64-linux-gnu g++-aarch64-linux-gnu libstdc++6:arm64
-
+          update-binfmts --enable qemu-aarch64
+          update-binfmts --display
+          ln -s /usr/aarch64-linux-gnu/lib/ld-linux-aarch64.so.* /lib
       - uses: actions/checkout@v3
       - name: configure
         run: ./configure --disable-dependency-tracking --prefix=$PWD/.libsodium-build --host=aarch64-linux-gnu
       - name: make
         run: make -j $(nproc)
-
       - name: make check
-        # Disable make check on this platform
-        if: ${{ false }}
         run: |
-          make check
-
+          env LD_LIBRARY_PATH=/usr/aarch64-linux-gnu/lib make check
       - name: make install
         run: make install
-
       - name: strip
         run: aarch64-linux-gnu-strip --strip-all .libsodium-build/lib/libsodium.so
       - uses: actions/upload-artifact@v3
@@ -95,40 +80,29 @@ jobs:
           path: .libsodium-build/lib/libsodium.so
 
   build-linux-glibc-arm:
-    runs-on: ubuntu-18.04
+    runs-on: ubuntu-latest
+    container:
+      image: ubuntu:16.04
+      options: --privileged
     steps:
       - name: Set up build environment
         run: |
           export DEBIAN_FRONTEND=noninteractive
-
-          cat <<-EOF | sudo tee /etc/apt/sources.list.d/armhf.list >/dev/null
-          deb [arch=armhf] http://ports.ubuntu.com/ bionic main restricted
-          deb [arch=armhf] http://ports.ubuntu.com/ bionic-updates main restricted
-          deb [arch=armhf] http://ports.ubuntu.com/ bionic universe
-          deb [arch=armhf] http://ports.ubuntu.com/ bionic-updates universe
-          deb [arch=armhf] http://ports.ubuntu.com/ bionic multiverse
-          deb [arch=armhf] http://ports.ubuntu.com/ bionic-updates multiverse
-          EOF
-
-          sudo sed -i 's/deb h/deb [arch=amd64] h/g' /etc/apt/sources.list
-
-          sudo dpkg --add-architecture armhf
-
-          sudo apt-get update && sudo apt-get install -y build-essential qemu-user qemu-user-static gcc-arm-linux-gnueabihf g++-arm-linux-gnueabihf libstdc++6:armhf
-
+          apt-get update && apt-get install -y build-essential qemu binfmt-support qemu-user-static qemu-system-arm gcc-arm-linux-gnueabihf libc6-armhf-cross
+          dpkg --add-architecture armhf
+          update-binfmts --enable qemu-arm
+          update-binfmts --display
+          ln -s /usr/arm-linux-gnueabihf/lib/ld-linux-armhf.so.* /lib
       - uses: actions/checkout@v3
       - name: configure
         run: ./configure --disable-dependency-tracking --prefix=$PWD/.libsodium-build --host=arm-linux-gnueabihf
       - name: make
         run: make -j $(nproc)
-
       - name: make check
         run: |
-          make check
-
+          env LD_LIBRARY_PATH=/usr/arm-linux-gnueabihf/lib make check
       - name: make install
         run: make install
-
       - name: strip
         run: arm-linux-gnueabihf-strip --strip-all .libsodium-build/lib/libsodium.so
       - uses: actions/upload-artifact@v3
@@ -139,7 +113,7 @@ jobs:
   build-linux-musl:
     runs-on: ubuntu-latest
     container:
-      image: alpine:3.17
+      image: alpine:latest
     steps:
       - name: Set up build environment
         run: |
@@ -164,7 +138,7 @@ jobs:
   build-linux-musl-arm64:
     runs-on: ubuntu-latest
     container:
-      image: alpine:3.17
+      image: alpine:latest
     steps:
       - name: Set up build environment
         run: |
@@ -364,23 +338,16 @@ jobs:
           # don't work as expected. As a result, installing on Ubuntu fails during integrity
           # checks. As a workaround, the following command disables hardware acceleration for
           # gcrypt, which the apt-get command relies on.
-          mkdir -p /etc/gcrypt && echo all >> /etc/gcrypt/hwf.deny
+          sudo mkdir -p /etc/gcrypt && echo all | sudo tee /etc/gcrypt/hwf.deny
 
-          cat <<-EOF | sudo tee /etc/apt/sources.list.d/multiarch.list >/dev/null
-          deb [arch=armhf,arm64] http://ports.ubuntu.com/ jammy main restricted
-          deb [arch=armhf,arm64] http://ports.ubuntu.com/ jammy-updates main restricted
-          deb [arch=armhf,arm64] http://ports.ubuntu.com/ jammy universe
-          deb [arch=armhf,arm64] http://ports.ubuntu.com/ jammy-updates universe
-          deb [arch=armhf,arm64] http://ports.ubuntu.com/ jammy multiverse
-          deb [arch=armhf,arm64] http://ports.ubuntu.com/ jammy-updates multiverse
-          EOF
-
-          sudo sed -i 's/deb h/deb [arch=amd64] h/g' /etc/apt/sources.list
-
+          sudo apt-get update && sudo apt-get install -y qemu binfmt-support qemu-user-static qemu-system-arm gcc-arm-linux-gnueabihf libc6-armhf-cross libc6-arm64-cross
           sudo dpkg --add-architecture armhf
           sudo dpkg --add-architecture arm64
-
-          sudo apt-get update && sudo apt-get install -y qemu-user qemu-user-static libstdc++6:armhf libstdc++6:arm64
+          sudo update-binfmts --enable qemu-aarch64
+          sudo update-binfmts --enable qemu-arm
+          sudo update-binfmts --display
+          sudo ln -s /usr/aarch64-linux-gnu/lib/ld-linux-aarch64.so.* /lib
+          sudo ln -s /usr/arm-linux-gnueabihf/lib/ld-linux-armhf.so.* /lib
 
       - uses: actions/download-artifact@v3
         with:
