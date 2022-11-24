@@ -79,10 +79,7 @@ jobs:
         run: make -j $(nproc)
 
       - name: make check
-        # Disable make check on this platform
-        if: ${{ false }}
-        run: |
-          make check
+        run: make check
 
       - name: make install
         run: make install
