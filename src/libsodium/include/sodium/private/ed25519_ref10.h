@@ -89,9 +89,15 @@ void ge25519_p1p1_to_p2(ge25519_p2 *r, const ge25519_p1p1 *p);
 
 void ge25519_p1p1_to_p3(ge25519_p3 *r, const ge25519_p1p1 *p);
 
+void ge25519_p2_to_p3(ge25519_p3 *r, const ge25519_p2 *p);
+
 void ge25519_add_cached(ge25519_p1p1 *r, const ge25519_p3 *p, const ge25519_cached *q);
 
 void ge25519_sub_cached(ge25519_p1p1 *r, const ge25519_p3 *p, const ge25519_cached *q);
+
+void ge25519_p3_add(ge25519_p3 *r, const ge25519_p3 *p, const ge25519_p3 *q);
+
+void ge25519_p3_sub(ge25519_p3 *r, const ge25519_p3 *p, const ge25519_p3 *q);
 
 void ge25519_scalarmult_base(ge25519_p3 *h, const unsigned char *a);
 
