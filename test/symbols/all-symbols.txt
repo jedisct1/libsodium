@@ -455,10 +455,13 @@ crypto_pwhash_strbytes
 crypto_pwhash_strprefix
 crypto_scalarmult
 crypto_scalarmult_base
+crypto_scalarmult_base_noclamp
 crypto_scalarmult_bytes
 crypto_scalarmult_curve25519
 crypto_scalarmult_curve25519_base
+crypto_scalarmult_curve25519_base_noclamp
 crypto_scalarmult_curve25519_bytes
+crypto_scalarmult_curve25519_noclamp
 crypto_scalarmult_curve25519_scalarbytes
 crypto_scalarmult_ed25519
 crypto_scalarmult_ed25519_base
@@ -466,6 +469,7 @@ crypto_scalarmult_ed25519_base_noclamp
 crypto_scalarmult_ed25519_bytes
 crypto_scalarmult_ed25519_noclamp
 crypto_scalarmult_ed25519_scalarbytes
+crypto_scalarmult_noclamp
 crypto_scalarmult_primitive
 crypto_scalarmult_ristretto255
 crypto_scalarmult_ristretto255_base
@@ -641,7 +645,7 @@ escrypt_r
 fe25519_frombytes
 fe25519_invert
 fe25519_tobytes
-ge25519_add_cached
+ge25519_clear_cofactor
 ge25519_double_scalarmult_vartime
 ge25519_from_hash
 ge25519_from_uniform
@@ -653,11 +657,12 @@ ge25519_is_on_curve
 ge25519_is_on_main_subgroup
 ge25519_p1p1_to_p2
 ge25519_p1p1_to_p3
-ge25519_p3_to_cached
+ge25519_p2_to_p3
+ge25519_p3_add
+ge25519_p3_sub
 ge25519_p3_tobytes
 ge25519_scalarmult
 ge25519_scalarmult_base
-ge25519_sub_cached
 ge25519_tobytes
 randombytes
 randombytes_buf

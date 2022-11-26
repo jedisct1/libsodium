@@ -51,7 +51,7 @@
 #define fe25519_frombytes _sodium_fe25519_frombytes
 #define fe25519_invert _sodium_fe25519_invert
 #define fe25519_tobytes _sodium_fe25519_tobytes
-#define ge25519_add_cached _sodium_ge25519_add_cached
+#define ge25519_clear_cofactor _sodium_ge25519_clear_cofactor
 #define ge25519_double_scalarmult_vartime _sodium_ge25519_double_scalarmult_vartime
 #define ge25519_from_hash _sodium_ge25519_from_hash
 #define ge25519_from_uniform _sodium_ge25519_from_uniform
@@ -63,11 +63,12 @@
 #define ge25519_is_on_main_subgroup _sodium_ge25519_is_on_main_subgroup
 #define ge25519_p1p1_to_p2 _sodium_ge25519_p1p1_to_p2
 #define ge25519_p1p1_to_p3 _sodium_ge25519_p1p1_to_p3
-#define ge25519_p3_to_cached _sodium_ge25519_p3_to_cached
+#define ge25519_p2_to_p3 _sodium_ge25519_p2_to_p3
+#define ge25519_p3_add _sodium_ge25519_p3_add
+#define ge25519_p3_sub _sodium_ge25519_p3_sub
 #define ge25519_p3_tobytes _sodium_ge25519_p3_tobytes
 #define ge25519_scalarmult _sodium_ge25519_scalarmult
 #define ge25519_scalarmult_base _sodium_ge25519_scalarmult_base
-#define ge25519_sub_cached _sodium_ge25519_sub_cached
 #define ge25519_tobytes _sodium_ge25519_tobytes
 #define ristretto255_from_hash _sodium_ristretto255_from_hash
 #define ristretto255_frombytes _sodium_ristretto255_frombytes

@@ -260,7 +260,7 @@ fe25519_notsquare(const fe25519 x)
  r = p + q
  */
 
-void
+static void
 ge25519_add_cached(ge25519_p1p1 *r, const ge25519_p3 *p, const ge25519_cached *q)
 {
     fe25519 t0;
@@ -533,7 +533,7 @@ ge25519_cached_0(ge25519_cached *h)
  r = p
  */
 
-void
+static void
 ge25519_p3_to_cached(ge25519_cached *r, const ge25519_p3 *p)
 {
     fe25519_add(r->YplusX, p->Y, p->X);
@@ -709,7 +709,7 @@ ge25519_cmov8_cached(ge25519_cached *t, const ge25519_cached cached[8], const si
  r = p - q
  */
 
-void
+static void
 ge25519_sub_cached(ge25519_p1p1 *r, const ge25519_p3 *p, const ge25519_cached *q)
 {
     fe25519 t0;
