@@ -74,6 +74,7 @@ EXTRA_DIST = \
 	secretstream_xchacha20poly1305.exp \
 	shorthash.exp \
 	sign.exp \
+	sign2.exp \
 	siphashx24.exp \
 	sodium_core.exp \
 	sodium_utils.exp \
@@ -158,6 +159,7 @@ DISTCLEANFILES = \
 	secretstream_xchacha20poly1305.res \
 	shorthash.res \
 	sign.res \
+	sign2.res \
 	siphashx24.res \
 	sodium_core.res \
 	sodium_utils.res \
@@ -243,6 +245,7 @@ TESTS_TARGETS = \
 	secretstream_xchacha20poly1305 \
 	shorthash \
 	sign \
+	sign2 \
 	sodium_core \
 	sodium_utils \
 	sodium_version \
@@ -471,6 +474,9 @@ shorthash_LDADD           = $(TESTS_LDADD)
 
 sign_SOURCE               = cmptest.h sign.c
 sign_LDADD                = $(TESTS_LDADD)
+
+sign2_SOURCE              = cmptest.h sign2.c
+sign2_LDADD               = $(TESTS_LDADD)
 
 siphashx24_SOURCE         = cmptest.h siphashx24.c
 siphashx24_LDADD          = $(TESTS_LDADD)

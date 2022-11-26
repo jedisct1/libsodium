@@ -2621,7 +2621,7 @@ ge25519_xmont_to_ymont(fe25519 y, const fe25519 x)
 }
 
 /* multiply by the cofactor */
-static void
+void
 ge25519_clear_cofactor(ge25519_p3 *p3)
 {
     ge25519_p1p1 p1;

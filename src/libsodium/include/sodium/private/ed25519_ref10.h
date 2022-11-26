@@ -102,6 +102,8 @@ void ge25519_double_scalarmult_vartime(ge25519_p2 *r, const unsigned char *a,
 void ge25519_scalarmult(ge25519_p3 *h, const unsigned char *a,
                         const ge25519_p3 *p);
 
+void ge25519_clear_cofactor(ge25519_p3 *p3);
+
 int ge25519_is_canonical(const unsigned char *s);
 
 int ge25519_is_on_curve(const ge25519_p3 *p);
