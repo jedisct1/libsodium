@@ -2995,8 +2995,6 @@ void
 ristretto255_from_hash(unsigned char s[32], const unsigned char h[64])
 {
     fe25519        r0, r1;
-    ge25519_cached p1_cached;
-    ge25519_p1p1   p_p1p1;
     ge25519_p3     p0, p1;
     ge25519_p3     p;
 
@@ -3004,8 +3002,6 @@ ristretto255_from_hash(unsigned char s[32], const unsigned char h[64])
     fe25519_frombytes(r1, h + 32);
     ristretto255_elligator(&p0, r0);
     ristretto255_elligator(&p1, r1);
-    ge25519_p3_to_cached(&p1_cached, &p1);
-    ge25519_add_cached(&p_p1p1, &p0, &p1_cached);
-    ge25519_p1p1_to_p3(&p, &p_p1p1);
+    ge25519_p3_add(&p, &p0, &p1);
     ristretto255_p3_tobytes(s, &p);
 }
