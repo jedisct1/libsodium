@@ -36,8 +36,8 @@ _crypto_scalarmult_ed25519(unsigned char *q, const unsigned char *n,
     ge25519_p3     P;
     unsigned int   i;
 
-    if (ge25519_is_canonical(p) == 0 || ge25519_has_small_order(p) != 0 ||
-        ge25519_frombytes(&P, p) != 0 || ge25519_is_on_main_subgroup(&P) == 0) {
+    if (ge25519_is_canonical(p) == 0 || ge25519_frombytes(&P, p) != 0 ||
+        ge25519_has_small_order(&P) != 0 || ge25519_is_on_main_subgroup(&P) == 0) {
         return -1;
     }
     for (i = 0; i < 32; ++i) {
