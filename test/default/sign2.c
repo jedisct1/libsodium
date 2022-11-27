@@ -29,7 +29,7 @@ static TestData test_data[] = {
         "f7badec5b8abeaf699583992219b7b223f1df3fbbea919844e3f7c554a43dd43",
         "c7176a703d4dd84fba3c0b760d10670f2a2053fa2c39ccc64ec7fd7792ac03fa8c4bd45aecaca5b24fb97bc10a"
         "c27ac8751a7dfe1baff8b953ec9f5833ca260e",
-        -1 /* compat */, /* 2 - libsodium traditionally rejects small-order R */
+        -1 /* compat */, /* 2 - libsodium traditionally rejects small-order R since this is a strong indication that the signer's PRNG is weak, so we can't really trust the secret key to be only known by the signer */
     },
     {
         "9bd9f44f4dcc75bd531b56b2cd280b0bb38fc1cd6d1230e14861d861de092e79",
