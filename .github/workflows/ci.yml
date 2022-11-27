@@ -158,7 +158,7 @@ jobs:
   android:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v3
 
       - name: Update packages list
         run: sudo apt-get update
