@@ -901,6 +901,7 @@ top_srcdir = @top_srcdir@
 valgrind_enabled_tools = @valgrind_enabled_tools@
 valgrind_tools = @valgrind_tools@
 EXTRA_DIST = \
+	run.sh \
 	cmptest.h \
 	wasi-test-wrapper.sh \
 	wintest.bat \
