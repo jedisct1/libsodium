@@ -37,12 +37,94 @@ pub fn build(b: *std.build.Builder) !void {
         lib.linkLibC();
 
         lib.addIncludePath("src/libsodium/include/sodium");
+        lib.defineCMacro("_GNU_SOURCE", "1");
         lib.defineCMacro("CONFIGURED", "1");
         lib.defineCMacro("DEV_MODE", "1");
-        lib.defineCMacro("_GNU_SOURCE", "1");
-        lib.defineCMacro("HAVE_INLINE_ASM", "1");
-        lib.defineCMacro("HAVE_TI_MODE", "1");
         lib.defineCMacro("HAVE_ATOMIC_OPS", "1");
+        lib.defineCMacro("HAVE_C11_MEMORY_FENCES", "1");
+        lib.defineCMacro("HAVE_GCC_MEMORY_FENCES", "1");
+        lib.defineCMacro("HAVE_INLINE_ASM", "1");
+        lib.defineCMacro("HAVE_INTTYPES_H", "1");
+        lib.defineCMacro("HAVE_STDINT_H", "1");
+        lib.defineCMacro("HAVE_TI_MODE", "1");
+
+        if (target.cpu_arch) |arch| {
+            switch (arch.endian()) {
+                .Big => lib.defineCMacro("NATIVE_BIG_ENDIAN", "1"),
+                .Little => lib.defineCMacro("NATIVE_LITTLE_ENDIAN", "1"),
+            }
+        }
+
+        switch (target.getOsTag()) {
+            .linux => {
+                lib.defineCMacro("ASM_HIDE_SYMBOL", ".hidden");
+                lib.defineCMacro("TLS", "_Thread_local");
+
+                lib.defineCMacro("HAVE_CATCHABLE_ABRT", "1");
+                lib.defineCMacro("HAVE_CATCHABLE_SEGV", "1");
+                lib.defineCMacro("HAVE_GETENTROPY", "1");
+                lib.defineCMacro("HAVE_GETPID", "1");
+                lib.defineCMacro("HAVE_GETRANDOM", "1");
+                lib.defineCMacro("HAVE_INLINE_ASM", "1");
+                lib.defineCMacro("HAVE_MADVISE", "1");
+                lib.defineCMacro("HAVE_MLOCK", "1");
+                lib.defineCMacro("HAVE_MMAP", "1");
+                lib.defineCMacro("HAVE_MPROTECT", "1");
+                lib.defineCMacro("HAVE_NANOSLEEP", "1");
+                lib.defineCMacro("HAVE_POSIX_MEMALIGN", "1");
+                lib.defineCMacro("HAVE_PTHREAD_PRIO_INHERIT", "1");
+                lib.defineCMacro("HAVE_PTHREAD", "1");
+                lib.defineCMacro("HAVE_RAISE", "1");
+                lib.defineCMacro("HAVE_SYSCONF", "1");
+                lib.defineCMacro("HAVE_SYS_AUXV_H", "1");
+                lib.defineCMacro("HAVE_SYS_MMAN_H", "1");
+                lib.defineCMacro("HAVE_SYS_PARAM_H", "1");
+                lib.defineCMacro("HAVE_SYS_RANDOM_H", "1");
+                lib.defineCMacro("HAVE_WEAK_SYMBOLS", "1");
+            },
+            .windows => {
+                lib.defineCMacro("HAVE_GETPID", "1");
+                lib.defineCMacro("HAVE_RAISE", "1");
+                lib.defineCMacro("HAVE_SYS_PARAM_H", "1");
+            },
+            .macos => {
+                lib.defineCMacro("ASM_HIDE_SYMBOL", ".private_extern");
+                lib.defineCMacro("TLS", "_Thread_local");
+
+                lib.defineCMacro("HAVE_ARC4RANDOM", "1");
+                lib.defineCMacro("HAVE_ARC4RANDOM_BUF", "1");
+                lib.defineCMacro("HAVE_CATCHABLE_ABRT", "1");
+                lib.defineCMacro("HAVE_CATCHABLE_SEGV", "1");
+                lib.defineCMacro("HAVE_GETENTROPY", "1");
+                lib.defineCMacro("HAVE_GETPID", "1");
+                lib.defineCMacro("HAVE_MADVISE", "1");
+                lib.defineCMacro("HAVE_MEMSET_S", "1");
+                lib.defineCMacro("HAVE_MLOCK", "1");
+                lib.defineCMacro("HAVE_MMAP", "1");
+                lib.defineCMacro("HAVE_MPROTECT", "1");
+                lib.defineCMacro("HAVE_NANOSLEEP", "1");
+                lib.defineCMacro("HAVE_POSIX_MEMALIGN", "1");
+                lib.defineCMacro("HAVE_PTHREAD", "1");
+                lib.defineCMacro("HAVE_PTHREAD_PRIO_INHERIT", "1");
+                lib.defineCMacro("HAVE_RAISE", "1");
+                lib.defineCMacro("HAVE_SYSCONF", "1");
+                lib.defineCMacro("HAVE_SYS_MMAN_H", "1");
+                lib.defineCMacro("HAVE_SYS_PARAM_H", "1");
+                lib.defineCMacro("HAVE_SYS_RANDOM_H", "1");
+                lib.defineCMacro("HAVE_WEAK_SYMBOLS", "1");
+            },
+            .wasi => {
+                lib.defineCMacro("HAVE_ARC4RANDOM", "1");
+                lib.defineCMacro("HAVE_ARC4RANDOM_BUF", "1");
+                lib.defineCMacro("HAVE_GETENTROPY", "1");
+                lib.defineCMacro("HAVE_NANOSLEEP", "1");
+                lib.defineCMacro("HAVE_POSIX_MEMALIGN", "1");
+                lib.defineCMacro("HAVE_SYS_AUXV_H", "1");
+                lib.defineCMacro("HAVE_SYS_PARAM_H", "1");
+                lib.defineCMacro("HAVE_SYS_RANDOM_H", "1");
+            },
+            else => {},
+        }
 
         switch (target.getCpuArch()) {
             .x86_64 => {
@@ -52,6 +134,8 @@ pub fn build(b: *std.build.Builder) !void {
                 lib.defineCMacro("HAVE_MMINTRIN_H", "1");
                 lib.defineCMacro("HAVE_EMMINTRIN_H", "1");
                 lib.defineCMacro("HAVE_PMMINTRIN_H", "1");
+                lib.defineCMacro("HAVE_SMMINTRIN_H", "1");
+                lib.defineCMacro("HAVE_WMMINTRIN_H", "1");
             },
             .aarch64, .aarch64_be => {
                 const cpu_features = target.getCpuFeatures();
