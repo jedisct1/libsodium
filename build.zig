@@ -5,6 +5,7 @@ const fs = std.fs;
 const heap = std.heap;
 const mem = std.mem;
 const LibExeObjStep = std.build.LibExeObjStep;
+const Target = std.Target;
 
 pub fn build(b: *std.build.Builder) !void {
     const src_path = "src/libsodium";
@@ -135,12 +136,13 @@ pub fn build(b: *std.build.Builder) !void {
                 lib.defineCMacro("HAVE_EMMINTRIN_H", "1");
                 lib.defineCMacro("HAVE_PMMINTRIN_H", "1");
                 lib.defineCMacro("HAVE_SMMINTRIN_H", "1");
+                lib.defineCMacro("HAVE_TMMINTRIN_H", "1");
                 lib.defineCMacro("HAVE_WMMINTRIN_H", "1");
             },
             .aarch64, .aarch64_be => {
                 const cpu_features = target.getCpuFeatures();
-                const has_neon = cpu_features.isEnabled(@enumToInt(std.Target.aarch64.Feature.neon));
-                const has_crypto = cpu_features.isEnabled(@enumToInt(std.Target.aarch64.Feature.crypto));
+                const has_neon = cpu_features.isEnabled(@enumToInt(Target.aarch64.Feature.neon));
+                const has_crypto = cpu_features.isEnabled(@enumToInt(Target.aarch64.Feature.crypto));
                 if (has_neon and has_crypto) {
                     lib.defineCMacro("HAVE_ARMCRYPTO", "1");
                 }
@@ -154,6 +156,15 @@ pub fn build(b: *std.build.Builder) !void {
         switch (target.getOsTag()) {
             .wasi => {
                 lib.defineCMacro("__wasi__", "1");
+            },
+            else => {},
+        }
+
+        switch (target.getCpuArch()) {
+            .x86_64 => {
+                lib.target.cpu_features_add.addFeature(@enumToInt(Target.x86.Feature.sse4_1));
+                lib.target.cpu_features_add.addFeature(@enumToInt(Target.x86.Feature.aes));
+                lib.target.cpu_features_add.addFeature(@enumToInt(Target.x86.Feature.pclmul));
             },
             else => {},
         }
