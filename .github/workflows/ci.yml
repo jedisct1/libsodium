@@ -50,7 +50,7 @@ jobs:
 
       - name: Compilation with zig
         run: |
-          export PATH=/opt/zig/bin:/opt/zig:$PATH
+          export PATH=/opt/zig:$PATH
           zig build
           zig build -Dtarget=x86_64-linux
           zig build -Dtarget=aarch64-linux
