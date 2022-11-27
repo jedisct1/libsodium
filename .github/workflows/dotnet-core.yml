@@ -163,7 +163,7 @@ jobs:
     steps:
       - uses: actions/checkout@v3
       - name: configure
-        run: env CFLAGS="-Ofast -arch x86_64 -mmacosx-version-min=10.13" LDFLAGS="-arch x86_64 -mmacosx-version-min=10.13" ./configure --host=arm-apple-darwin20 --prefix=$PWD/.libsodium-build
+        run: env CFLAGS="-Ofast -arch x86_64 -mmacosx-version-min=10.15" LDFLAGS="-arch x86_64 -mmacosx-version-min=10.15" ./configure --host=arm-apple-darwin20 --prefix=$PWD/.libsodium-build
       - name: make
         run: make
       - name: make check
@@ -180,7 +180,7 @@ jobs:
     steps:
       - uses: actions/checkout@v3
       - name: configure
-        run: env CFLAGS="-Ofast -arch arm64 -mmacosx-version-min=10.13" LDFLAGS="-arch arm64 -mmacosx-version-min=10.13" ./configure --host=arm-apple-darwin20 --prefix=$PWD/.libsodium-build
+        run: env CFLAGS="-Ofast -arch arm64 -mmacosx-version-min=10.15" LDFLAGS="-arch arm64 -mmacosx-version-min=10.15" ./configure --host=arm-apple-darwin20 --prefix=$PWD/.libsodium-build
       - name: make
         run: make
       - name: make install
