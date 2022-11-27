@@ -199,6 +199,8 @@ pub fn build(b: *std.build.Builder) !void {
         exe.setTarget(target);
         exe.setBuildMode(mode);
         exe.linkLibC();
+        exe.want_lto = false;
+        exe.strip = true;
         exe.linkLibrary(static);
         exe.addIncludePath("src/libsodium/include");
         exe.addIncludePath("test/quirks");
