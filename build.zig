@@ -83,7 +83,6 @@ pub fn build(b: *std.build.Builder) !void {
                 lib.defineCMacro("HAVE_WEAK_SYMBOLS", "1");
             },
             .windows => {
-                lib.defineCMacro("HAVE_GETPID", "1");
                 lib.defineCMacro("HAVE_RAISE", "1");
                 lib.defineCMacro("HAVE_SYS_PARAM_H", "1");
             },
