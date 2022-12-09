@@ -312,6 +312,9 @@
     <ClCompile Include="src\libsodium\crypto_aead\aegis128l\aesni\aead_aegis128l_aesni.c">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="src\libsodium\crypto_aead\aegis128l\soft\aead_aegis128l_soft.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
     <ClCompile Include="src\libsodium\crypto_aead\aegis128l\armcrypto\aead_aegis128l_armcrypto.c">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -349,6 +352,9 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="src\libsodium\crypto_core\hsalsa20\ref2\core_hsalsa20_ref2.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\libsodium\crypto_core\softaes\softaes.c">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="src\libsodium\crypto_core\ed25519\core_ed25519.c">
@@ -590,6 +596,9 @@
     <ClInclude Include="src\libsodium\include\sodium\private\ed25519_ref10.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="src\libsodium\include\sodium\private\softaes.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
     <ClInclude Include="src\libsodium\include\sodium\private\quirks.h">
       <Filter>Header Files</Filter>
     </ClInclude>
@@ -741,6 +750,18 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="src\libsodium\crypto_stream\salsa20\xmm6\salsa20_xmm6.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\libsodium\crypto_aead\aegis128l\aead_aegis128l.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\libsodium\crypto_aead\aegis128l\aesni\aead_aegis128l_aesni.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\libsodium\crypto_aead\aegis128l\soft\aead_aegis128l_soft.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\libsodium\crypto_aead\aegis128l\armcrypto\aead_aegis128l_armcrypto.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="src\libsodium\crypto_core\ed25519\core_h2c.h">

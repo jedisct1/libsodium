@@ -11,20 +11,17 @@
 #include "utils.h"
 
 #include "private/common.h"
+#include "private/softaes.h"
 
-#include "aead_aegis128l_armcrypto.h"
+#include "aead_aegis128l_soft.h"
 
-#if defined(HAVE_ARMCRYPTO) && defined(NATIVE_LITTLE_ENDIAN)
-
-#include <arm_neon.h>
-
-typedef uint8x16_t aes_block_t;
-#define AES_BLOCK_XOR(A, B)       veorq_u8((A), (B))
-#define AES_BLOCK_AND(A, B)       vandq_u8((A), (B))
-#define AES_BLOCK_LOAD(A)         vld1q_u8(A)
-#define AES_BLOCK_LOAD_64x2(A, B) vreinterpretq_u8_u64(vsetq_lane_u64((A), vmovq_n_u64(B), 1))
-#define AES_BLOCK_STORE(A, B)     vst1q_u8((A), (B))
-#define AES_ENC(A, B)             veorq_u8(vaesmcq_u8(vaeseq_u8((A), vmovq_n_u8(0))), (B))
+typedef SoftAesBlock aes_block_t;
+#define AES_BLOCK_XOR(A, B)       softaes_block_xor((A), (B))
+#define AES_BLOCK_AND(A, B)       softaes_block_and((A), (B))
+#define AES_BLOCK_LOAD(A)         softaes_block_load(A)
+#define AES_BLOCK_LOAD_64x2(A, B) softaes_block_load64x2((A), (B))
+#define AES_BLOCK_STORE(A, B)     softaes_block_store((A), (B))
+#define AES_ENC(A, B)             softaes_block_encrypt((A), (B))
 
 static inline void
 aegis128l_update(aes_block_t *const state, const aes_block_t d1, const aes_block_t d2)
@@ -255,8 +252,7 @@ aegis128l_decrypt_detached(unsigned char *m, unsigned char *nsec, const unsigned
     return 0;
 }
 
-struct crypto_aead_aegis128l_implementation crypto_aead_aegis128l_armcrypto_implementation = {
+struct crypto_aead_aegis128l_implementation crypto_aead_aegis128l_soft_implementation = {
     SODIUM_C99(.encrypt_detached =) aegis128l_encrypt_detached,
     SODIUM_C99(.decrypt_detached =) aegis128l_decrypt_detached
 };
-#endif

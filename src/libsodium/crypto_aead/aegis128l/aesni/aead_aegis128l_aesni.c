@@ -7,7 +7,6 @@
 #include <string.h>
 
 #include "core.h"
-#include "crypto_aead_aegis128l.h"
 #include "crypto_verify_16.h"
 #include "export.h"
 #include "randombytes.h"
@@ -15,6 +14,8 @@
 #include "utils.h"
 
 #include "private/common.h"
+
+#include "aead_aegis128l_aesni.h"
 
 #if defined(HAVE_TMMINTRIN_H) && defined(HAVE_WMMINTRIN_H)
 
@@ -36,7 +37,7 @@ typedef __m128i aes_block_t;
 #define AES_ENC(A, B)             _mm_aesenc_si128((A), (B))
 
 static inline void
-crypto_aead_aegis128l_update(aes_block_t *const state, const aes_block_t d1, const aes_block_t d2)
+aegis128l_update(aes_block_t *const state, const aes_block_t d1, const aes_block_t d2)
 {
     aes_block_t tmp;
 
@@ -55,8 +56,7 @@ crypto_aead_aegis128l_update(aes_block_t *const state, const aes_block_t d1, con
 }
 
 static void
-crypto_aead_aegis128l_init(const unsigned char *key, const unsigned char *nonce,
-                           aes_block_t *const state)
+aegis128l_init(const unsigned char *key, const unsigned char *nonce, aes_block_t *const state)
 {
     static CRYPTO_ALIGN(16)
         const uint8_t c0_[] = { 0xdb, 0x3d, 0x18, 0x55, 0x6d, 0xc2, 0x2f, 0xf1,
@@ -82,13 +82,13 @@ crypto_aead_aegis128l_init(const unsigned char *key, const unsigned char *nonce,
     state[6] = AES_BLOCK_XOR(k, c0);
     state[7] = AES_BLOCK_XOR(k, c1);
     for (i = 0; i < 10; i++) {
-        crypto_aead_aegis128l_update(state, n, k);
+        aegis128l_update(state, n, k);
     }
 }
 
 static void
-crypto_aead_aegis128l_mac(unsigned char *mac, unsigned long long adlen, unsigned long long mlen,
-                          aes_block_t *const state)
+aegis128l_mac(unsigned char *mac, unsigned long long adlen, unsigned long long mlen,
+              aes_block_t *const state)
 {
     aes_block_t tmp;
     int         i;
@@ -97,7 +97,7 @@ crypto_aead_aegis128l_mac(unsigned char *mac, unsigned long long adlen, unsigned
     tmp = AES_BLOCK_XOR(tmp, state[2]);
 
     for (i = 0; i < 7; i++) {
-        crypto_aead_aegis128l_update(state, tmp, tmp);
+        aegis128l_update(state, tmp, tmp);
     }
 
     tmp = AES_BLOCK_XOR(state[6], state[5]);
@@ -111,18 +111,17 @@ crypto_aead_aegis128l_mac(unsigned char *mac, unsigned long long adlen, unsigned
 }
 
 static inline void
-crypto_aead_aegis128l_absorb(const unsigned char *const src, aes_block_t *const state)
+aegis128l_absorb(const unsigned char *const src, aes_block_t *const state)
 {
     aes_block_t msg0, msg1;
 
     msg0 = AES_BLOCK_LOAD(src);
     msg1 = AES_BLOCK_LOAD(src + 16);
-    crypto_aead_aegis128l_update(state, msg0, msg1);
+    aegis128l_update(state, msg0, msg1);
 }
 
 static void
-crypto_aead_aegis128l_enc(unsigned char *const dst, const unsigned char *const src,
-                          aes_block_t *const state)
+aegis128l_enc(unsigned char *const dst, const unsigned char *const src, aes_block_t *const state)
 {
     aes_block_t msg0, msg1;
     aes_block_t tmp0, tmp1;
@@ -138,12 +137,11 @@ crypto_aead_aegis128l_enc(unsigned char *const dst, const unsigned char *const s
     AES_BLOCK_STORE((aes_block_t *) (void *) dst, tmp0);
     AES_BLOCK_STORE((aes_block_t *) (void *) (dst + 16), tmp1);
 
-    crypto_aead_aegis128l_update(state, msg0, msg1);
+    aegis128l_update(state, msg0, msg1);
 }
 
 static void
-crypto_aead_aegis128l_dec(unsigned char *const dst, const unsigned char *const src,
-                          aes_block_t *const state)
+aegis128l_dec(unsigned char *const dst, const unsigned char *const src, aes_block_t *const state)
 {
     aes_block_t msg0, msg1;
 
@@ -158,15 +156,14 @@ crypto_aead_aegis128l_dec(unsigned char *const dst, const unsigned char *const s
     AES_BLOCK_STORE((aes_block_t *) (void *) dst, msg0);
     AES_BLOCK_STORE((aes_block_t *) (void *) (dst + 16), msg1);
 
-    crypto_aead_aegis128l_update(state, msg0, msg1);
+    aegis128l_update(state, msg0, msg1);
 }
 
-int
-crypto_aead_aegis128l_encrypt_detached(unsigned char *c, unsigned char *mac,
-                                       unsigned long long *maclen_p, const unsigned char *m,
-                                       unsigned long long mlen, const unsigned char *ad,
-                                       unsigned long long adlen, const unsigned char *nsec,
-                                       const unsigned char *npub, const unsigned char *k)
+static int
+aegis128l_encrypt_detached(unsigned char *c, unsigned char *mac, unsigned long long *maclen_p,
+                           const unsigned char *m, unsigned long long mlen, const unsigned char *ad,
+                           unsigned long long adlen, const unsigned char *nsec,
+                           const unsigned char *npub, const unsigned char *k)
 {
     aes_block_t                    state[8];
     CRYPTO_ALIGN(16) unsigned char src[32];
@@ -174,27 +171,27 @@ crypto_aead_aegis128l_encrypt_detached(unsigned char *c, unsigned char *mac,
     unsigned long long             i;
 
     (void) nsec;
-    crypto_aead_aegis128l_init(k, npub, state);
+    aegis128l_init(k, npub, state);
 
     for (i = 0ULL; i + 32ULL <= adlen; i += 32ULL) {
-        crypto_aead_aegis128l_absorb(ad + i, state);
+        aegis128l_absorb(ad + i, state);
     }
     if (adlen & 0x1f) {
         memset(src, 0, 32);
         memcpy(src, ad + i, adlen & 0x1f);
-        crypto_aead_aegis128l_absorb(src, state);
+        aegis128l_absorb(src, state);
     }
     for (i = 0ULL; i + 32ULL <= mlen; i += 32ULL) {
-        crypto_aead_aegis128l_enc(c + i, m + i, state);
+        aegis128l_enc(c + i, m + i, state);
     }
     if (mlen & 0x1f) {
         memset(src, 0, 32);
         memcpy(src, m + i, mlen & 0x1f);
-        crypto_aead_aegis128l_enc(dst, src, state);
+        aegis128l_enc(dst, src, state);
         memcpy(c + i, dst, mlen & 0x1f);
     }
 
-    crypto_aead_aegis128l_mac(mac, adlen, mlen, state);
+    aegis128l_mac(mac, adlen, mlen, state);
     sodium_memzero(state, sizeof state);
     sodium_memzero(src, sizeof src);
     sodium_memzero(dst, sizeof dst);
@@ -205,35 +202,11 @@ crypto_aead_aegis128l_encrypt_detached(unsigned char *c, unsigned char *mac,
     return 0;
 }
 
-int
-crypto_aead_aegis128l_encrypt(unsigned char *c, unsigned long long *clen_p, const unsigned char *m,
-                              unsigned long long mlen, const unsigned char *ad,
-                              unsigned long long adlen, const unsigned char *nsec,
-                              const unsigned char *npub, const unsigned char *k)
-{
-    unsigned long long clen = 0ULL;
-    int                ret;
-
-    if (mlen > crypto_aead_aegis128l_MESSAGEBYTES_MAX) {
-        sodium_misuse();
-    }
-    ret = crypto_aead_aegis128l_encrypt_detached(c, c + mlen, NULL, m, mlen, ad, adlen, nsec, npub,
-                                                 k);
-    if (clen_p != NULL) {
-        if (ret == 0) {
-            clen = mlen + 16ULL;
-        }
-        *clen_p = clen;
-    }
-    return ret;
-}
-
-int
-crypto_aead_aegis128l_decrypt_detached(unsigned char *m, unsigned char *nsec,
-                                       const unsigned char *c, unsigned long long clen,
-                                       const unsigned char *mac, const unsigned char *ad,
-                                       unsigned long long adlen, const unsigned char *npub,
-                                       const unsigned char *k)
+static int
+aegis128l_decrypt_detached(unsigned char *m, unsigned char *nsec, const unsigned char *c,
+                           unsigned long long clen, const unsigned char *mac,
+                           const unsigned char *ad, unsigned long long adlen,
+                           const unsigned char *npub, const unsigned char *k)
 {
     aes_block_t                    state[8];
     CRYPTO_ALIGN(16) unsigned char src[32];
@@ -245,29 +218,29 @@ crypto_aead_aegis128l_decrypt_detached(unsigned char *m, unsigned char *nsec,
 
     (void) nsec;
     mlen = clen;
-    crypto_aead_aegis128l_init(k, npub, state);
+    aegis128l_init(k, npub, state);
 
     for (i = 0ULL; i + 32ULL <= adlen; i += 32ULL) {
-        crypto_aead_aegis128l_absorb(ad + i, state);
+        aegis128l_absorb(ad + i, state);
     }
     if (adlen & 0x1f) {
         memset(src, 0, 32);
         memcpy(src, ad + i, adlen & 0x1f);
-        crypto_aead_aegis128l_absorb(src, state);
+        aegis128l_absorb(src, state);
     }
     if (m != NULL) {
         for (i = 0ULL; i + 32ULL <= mlen; i += 32ULL) {
-            crypto_aead_aegis128l_dec(m + i, c + i, state);
+            aegis128l_dec(m + i, c + i, state);
         }
     } else {
         for (i = 0ULL; i + 32ULL <= mlen; i += 32ULL) {
-            crypto_aead_aegis128l_dec(dst, c + i, state);
+            aegis128l_dec(dst, c + i, state);
         }
     }
     if (mlen & 0x1f) {
         memset(src, 0, 32);
         memcpy(src, c + i, mlen & 0x1f);
-        crypto_aead_aegis128l_dec(dst, src, state);
+        aegis128l_dec(dst, src, state);
         if (m != NULL) {
             memcpy(m + i, dst, mlen & 0x1f);
         }
@@ -278,7 +251,7 @@ crypto_aead_aegis128l_decrypt_detached(unsigned char *m, unsigned char *nsec,
                                  AES_BLOCK_LOAD((const aes_block_t *) (const void *) (dst + 16)));
     }
 
-    crypto_aead_aegis128l_mac(computed_mac, adlen, mlen, state);
+    aegis128l_mac(computed_mac, adlen, mlen, state);
     sodium_memzero(state, sizeof state);
     sodium_memzero(src, sizeof src);
     sodium_memzero(dst, sizeof dst);
@@ -294,32 +267,8 @@ crypto_aead_aegis128l_decrypt_detached(unsigned char *m, unsigned char *nsec,
     return 0;
 }
 
-int
-crypto_aead_aegis128l_decrypt(unsigned char *m, unsigned long long *mlen_p, unsigned char *nsec,
-                              const unsigned char *c, unsigned long long clen,
-                              const unsigned char *ad, unsigned long long adlen,
-                              const unsigned char *npub, const unsigned char *k)
-{
-    unsigned long long mlen = 0ULL;
-    int                ret  = -1;
-
-    if (clen >= 16ULL) {
-        ret = crypto_aead_aegis128l_decrypt_detached(m, nsec, c, clen - 16ULL, c + clen - 16ULL, ad,
-                                                     adlen, npub, k);
-    }
-    if (mlen_p != NULL) {
-        if (ret == 0) {
-            mlen = clen - 16ULL;
-        }
-        *mlen_p = mlen;
-    }
-    return ret;
-}
-
-int
-crypto_aead_aegis128l_is_available(void)
-{
-    return sodium_runtime_has_aesni();
-}
-
+struct crypto_aead_aegis128l_implementation crypto_aead_aegis128l_aesni_implementation = {
+    SODIUM_C99(.encrypt_detached =) aegis128l_encrypt_detached,
+    SODIUM_C99(.decrypt_detached =) aegis128l_decrypt_detached
+};
 #endif

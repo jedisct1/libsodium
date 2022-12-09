@@ -11,10 +11,7 @@
 extern "C" {
 #endif
 
-SODIUM_EXPORT
-int crypto_aead_aegis128l_is_available(void);
-
-#define crypto_aead_aegis128l_KEYBYTES  16U
+#define crypto_aead_aegis128l_KEYBYTES 16U
 SODIUM_EXPORT
 size_t crypto_aead_aegis128l_keybytes(void);
 

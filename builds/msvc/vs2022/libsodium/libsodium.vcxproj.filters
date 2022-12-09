@@ -321,6 +321,9 @@
     <ClCompile Include="..\..\..\..\src\libsodium\crypto_aead\aegis128l\aesni\aead_aegis128l_aesni.c">
       <Filter>crypto_aead\aegis128l\aesni</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\..\..\src\libsodium\crypto_aead\aegis128l\soft\aead_aegis128l_soft.c">
+      <Filter>crypto_aead\aegis128l\soft</Filter>
+    </ClCompile>
     <ClCompile Include="..\..\..\..\src\libsodium\crypto_aead\aegis128l\armcrypto\aead_aegis128l_armcrypto.c">
       <Filter>crypto_aead\aegis128l\armcrypto</Filter>
     </ClCompile>
@@ -359,6 +362,9 @@
     </ClCompile>
     <ClCompile Include="..\..\..\..\src\libsodium\crypto_core\hsalsa20\ref2\core_hsalsa20_ref2.c">
       <Filter>crypto_core\hsalsa20\ref2</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\src\libsodium\crypto_core\softaes\softaes.c">
+      <Filter>crypto_core\softaes</Filter>
     </ClCompile>
     <ClCompile Include="..\..\..\..\src\libsodium\crypto_core\ed25519\core_ed25519.c">
       <Filter>crypto_core\ed25519</Filter>
@@ -599,6 +605,9 @@
     <ClInclude Include="..\..\..\..\src\libsodium\include\sodium\private\ed25519_ref10.h">
       <Filter>include\sodium\private</Filter>
     </ClInclude>
+    <ClInclude Include="..\..\..\..\src\libsodium\include\sodium\private\softaes.h">
+      <Filter>include\sodium\private</Filter>
+    </ClInclude>
     <ClInclude Include="..\..\..\..\src\libsodium\include\sodium\private\quirks.h">
       <Filter>include\sodium\private</Filter>
     </ClInclude>
@@ -752,6 +761,18 @@
     <ClInclude Include="..\..\..\..\src\libsodium\crypto_stream\salsa20\xmm6\salsa20_xmm6.h">
       <Filter>crypto_stream\salsa20\xmm6</Filter>
     </ClInclude>
+    <ClInclude Include="..\..\..\..\src\libsodium\crypto_aead\aegis128l\aead_aegis128l.h">
+      <Filter>crypto_aead\aegis128l</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\src\libsodium\crypto_aead\aegis128l\aesni\aead_aegis128l_aesni.h">
+      <Filter>crypto_aead\aegis128l\aesni</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\src\libsodium\crypto_aead\aegis128l\soft\aead_aegis128l_soft.h">
+      <Filter>crypto_aead\aegis128l\soft</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\src\libsodium\crypto_aead\aegis128l\armcrypto\aead_aegis128l_armcrypto.h">
+      <Filter>crypto_aead\aegis128l\armcrypto</Filter>
+    </ClInclude>
     <ClInclude Include="..\..\..\..\src\libsodium\crypto_core\ed25519\core_h2c.h">
       <Filter>crypto_core\ed25519</Filter>
     </ClInclude>
@@ -792,6 +813,9 @@
     </Filter>
     <Filter Include="crypto_aead\aegis128l\armcrypto">
       <UniqueIdentifier>{2abca274-f068-3cf1-bd4e-5bfc5ee81de6}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="crypto_aead\aegis128l\soft">
+      <UniqueIdentifier>{f606c11a-a160-3619-b842-8e8cce100ba7}</UniqueIdentifier>
     </Filter>
     <Filter Include="crypto_aead\aegis256">
       <UniqueIdentifier>{6897a4cc-0091-3970-b712-c0ac75c16b67}</UniqueIdentifier>
@@ -873,6 +897,9 @@
     </Filter>
     <Filter Include="crypto_core\salsa\ref">
       <UniqueIdentifier>{eb259fd9-56f0-32db-a903-6bc1549a7326}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="crypto_core\softaes">
+      <UniqueIdentifier>{05997596-e3d7-3bf1-ad4d-39e4c5fd56f6}</UniqueIdentifier>
     </Filter>
     <Filter Include="crypto_generichash">
       <UniqueIdentifier>{e53b6258-fcdd-34c8-96c5-44510a34a390}</UniqueIdentifier>

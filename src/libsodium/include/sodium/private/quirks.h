@@ -78,6 +78,7 @@
 #define sc25519_mul _sodium_sc25519_mul
 #define sc25519_muladd _sodium_sc25519_muladd
 #define sc25519_reduce _sodium_sc25519_reduce
+#define softaes_block_encrypt _sodium_softaes_block_encrypt
 
 #endif
 #endif
