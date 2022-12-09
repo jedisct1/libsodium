@@ -5,7 +5,7 @@
 
 #include "private/common.h"
 
-typedef struct CRYPTO_ALIGN(64) SoftAesBlock {
+typedef struct SoftAesBlock {
     uint32_t w0;
     uint32_t w1;
     uint32_t w2;

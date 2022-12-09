@@ -48,11 +48,11 @@ static const uint32_t LUT[256] = {
 static SoftAesBlock
 _encrypt(const uint8_t ix0[4], const uint8_t ix1[4], const uint8_t ix2[4], const uint8_t ix3[4])
 {
-    CRYPTO_ALIGN(64) uint32_t t[4][4][256 / SOFTAES_STRIDE];
-    CRYPTO_ALIGN(64) uint8_t  of[4][4];
-    SoftAesBlock              out;
-    size_t                    i;
-    size_t                    j;
+    CRYPTO_ALIGN(64) uint32_t     t[4][4][256 / SOFTAES_STRIDE];
+    CRYPTO_ALIGN(64) uint8_t      of[4][4];
+    CRYPTO_ALIGN(64) SoftAesBlock out;
+    size_t                        i;
+    size_t                        j;
 
     for (j = 0; j < 4; j++) {
         of[j][0] = ix0[j] % SOFTAES_STRIDE;
@@ -99,12 +99,12 @@ _encrypt(const uint8_t ix0[4], const uint8_t ix1[4], const uint8_t ix2[4], const
 SoftAesBlock
 softaes_block_encrypt(const SoftAesBlock block, const SoftAesBlock rk)
 {
-    SoftAesBlock             out;
-    CRYPTO_ALIGN(64) uint8_t ix0[4], ix1[4], ix2[4], ix3[4];
-    const uint32_t           s0 = block.w0;
-    const uint32_t           s1 = block.w1;
-    const uint32_t           s2 = block.w2;
-    const uint32_t           s3 = block.w3;
+    CRYPTO_ALIGN(64) SoftAesBlock out;
+    CRYPTO_ALIGN(64) uint8_t      ix0[4], ix1[4], ix2[4], ix3[4];
+    const uint32_t                s0 = block.w0;
+    const uint32_t                s1 = block.w1;
+    const uint32_t                s2 = block.w2;
+    const uint32_t                s3 = block.w3;
 
     ix0[0] = (uint8_t) s0;
     ix0[1] = (uint8_t) s1;
