@@ -418,6 +418,7 @@
     <ClCompile Include="src\libsodium\crypto_aead\aegis128l\armcrypto\aead_aegis128l_armcrypto.c" />
     <ClCompile Include="src\libsodium\crypto_aead\aegis256\aead_aegis256.c" />
     <ClCompile Include="src\libsodium\crypto_aead\aegis256\aesni\aead_aegis256_aesni.c" />
+    <ClCompile Include="src\libsodium\crypto_aead\aegis256\soft\aead_aegis256_soft.c" />
     <ClCompile Include="src\libsodium\crypto_aead\aegis256\armcrypto\aead_aegis256_armcrypto.c" />
     <ClCompile Include="src\libsodium\crypto_aead\aes256gcm\aead_aes256gcm.c" />
     <ClCompile Include="src\libsodium\crypto_aead\aes256gcm\aesni\aead_aes256gcm_aesni.c" />
@@ -566,6 +567,10 @@
     <ClInclude Include="src\libsodium\crypto_aead\aegis128l\aesni\aead_aegis128l_aesni.h" />
     <ClInclude Include="src\libsodium\crypto_aead\aegis128l\soft\aead_aegis128l_soft.h" />
     <ClInclude Include="src\libsodium\crypto_aead\aegis128l\armcrypto\aead_aegis128l_armcrypto.h" />
+    <ClInclude Include="src\libsodium\crypto_aead\aegis256\aead_aegis256.h" />
+    <ClInclude Include="src\libsodium\crypto_aead\aegis256\aesni\aead_aegis256_aesni.h" />
+    <ClInclude Include="src\libsodium\crypto_aead\aegis256\soft\aead_aegis256_soft.h" />
+    <ClInclude Include="src\libsodium\crypto_aead\aegis256\armcrypto\aead_aegis256_armcrypto.h" />
     <ClInclude Include="src\libsodium\crypto_core\ed25519\core_h2c.h" />
     <ClInclude Include="src\libsodium\crypto_core\ed25519\ref10\fe_25_5\constants.h" />
     <ClInclude Include="src\libsodium\crypto_core\ed25519\ref10\fe_25_5\fe.h" />

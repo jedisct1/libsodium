@@ -1,12 +1,9 @@
-/*
- * AEGIS-128l based on https://bench.cr.yp.to/supercop/supercop-20200409.tar.xz
- */
-
 #include <errno.h>
 #include <stdlib.h>
 #include <string.h>
 
 #include "core.h"
+#include "crypto_aead_aegis128l.h"
 #include "crypto_verify_16.h"
 #include "export.h"
 #include "randombytes.h"
@@ -271,4 +268,5 @@ struct crypto_aead_aegis128l_implementation crypto_aead_aegis128l_aesni_implemen
     SODIUM_C99(.encrypt_detached =) aegis128l_encrypt_detached,
     SODIUM_C99(.decrypt_detached =) aegis128l_decrypt_detached
 };
+
 #endif

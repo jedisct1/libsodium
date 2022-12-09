@@ -48,7 +48,6 @@ crypto_aead_aegis256_decrypt
 crypto_aead_aegis256_decrypt_detached
 crypto_aead_aegis256_encrypt
 crypto_aead_aegis256_encrypt_detached
-crypto_aead_aegis256_is_available
 crypto_aead_aegis256_keybytes
 crypto_aead_aegis256_keygen
 crypto_aead_aegis256_messagebytes_max
@@ -731,3 +730,4 @@ sodium_stream_salsa20_xmm6_xor_ic
 sodium_sub
 sodium_unpad
 sodium_version_string
+softaes_block_encrypt

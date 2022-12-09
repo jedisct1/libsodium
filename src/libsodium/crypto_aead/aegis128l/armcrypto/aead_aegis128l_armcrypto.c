@@ -259,4 +259,5 @@ struct crypto_aead_aegis128l_implementation crypto_aead_aegis128l_armcrypto_impl
     SODIUM_C99(.encrypt_detached =) aegis128l_encrypt_detached,
     SODIUM_C99(.decrypt_detached =) aegis128l_decrypt_detached
 };
+
 #endif

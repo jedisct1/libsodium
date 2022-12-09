@@ -11,20 +11,17 @@
 #include "utils.h"
 
 #include "private/common.h"
+#include "private/softaes.h"
 
-#include "aead_aegis256_armcrypto.h"
+#include "aead_aegis256_soft.h"
 
-#if defined(HAVE_ARMCRYPTO) && defined(NATIVE_LITTLE_ENDIAN)
-
-# include <arm_neon.h>
-
-typedef uint8x16_t aes_block_t;
-#define AES_BLOCK_XOR(A, B)       veorq_u8((A), (B))
-#define AES_BLOCK_AND(A, B)       vandq_u8((A), (B))
-#define AES_BLOCK_LOAD(A)         vld1q_u8(A)
-#define AES_BLOCK_LOAD_64x2(A, B) vreinterpretq_u8_u64(vsetq_lane_u64((A), vmovq_n_u64(B), 1))
-#define AES_BLOCK_STORE(A, B)     vst1q_u8((A), (B))
-#define AES_ENC(A, B)             veorq_u8(vaesmcq_u8(vaeseq_u8((A), vmovq_n_u8(0))), (B))
+typedef SoftAesBlock aes_block_t;
+#define AES_BLOCK_XOR(A, B)       softaes_block_xor((A), (B))
+#define AES_BLOCK_AND(A, B)       softaes_block_and((A), (B))
+#define AES_BLOCK_LOAD(A)         softaes_block_load(A)
+#define AES_BLOCK_LOAD_64x2(A, B) softaes_block_load64x2((A), (B))
+#define AES_BLOCK_STORE(A, B)     softaes_block_store((A), (B))
+#define AES_ENC(A, B)             softaes_block_encrypt((A), (B))
 
 static inline void
 aegis256_update(aes_block_t *const state, const aes_block_t data)
@@ -43,19 +40,17 @@ aegis256_update(aes_block_t *const state, const aes_block_t data)
 static void
 aegis256_init(const unsigned char *key, const unsigned char *nonce, aes_block_t *const state)
 {
-    static CRYPTO_ALIGN(16) const unsigned char c0_[] = {
-        0xdb, 0x3d, 0x18, 0x55, 0x6d, 0xc2, 0x2f, 0xf1, 0x20, 0x11, 0x31, 0x42,
-        0x73, 0xb5, 0x28, 0xdd
-    };
-    static CRYPTO_ALIGN(16) const unsigned char c1_[] = {
-        0x00, 0x01, 0x01, 0x02, 0x03, 0x05, 0x08, 0x0d, 0x15, 0x22, 0x37, 0x59,
-        0x90, 0xe9, 0x79, 0x62
-    };
-    const aes_block_t c0 = AES_BLOCK_LOAD(c0_);
-    const aes_block_t c1 = AES_BLOCK_LOAD(c1_);
-    aes_block_t       k1, k2;
-    aes_block_t       kxn1, kxn2;
-    int              i;
+    static CRYPTO_ALIGN(16)
+        const unsigned char c0_[] = { 0xdb, 0x3d, 0x18, 0x55, 0x6d, 0xc2, 0x2f, 0xf1,
+                                      0x20, 0x11, 0x31, 0x42, 0x73, 0xb5, 0x28, 0xdd };
+    static CRYPTO_ALIGN(16)
+        const unsigned char c1_[] = { 0x00, 0x01, 0x01, 0x02, 0x03, 0x05, 0x08, 0x0d,
+                                      0x15, 0x22, 0x37, 0x59, 0x90, 0xe9, 0x79, 0x62 };
+    const aes_block_t       c0    = AES_BLOCK_LOAD(c0_);
+    const aes_block_t       c1    = AES_BLOCK_LOAD(c1_);
+    aes_block_t             k1, k2;
+    aes_block_t             kxn1, kxn2;
+    int                     i;
 
     k1   = AES_BLOCK_LOAD(&key[0]);
     k2   = AES_BLOCK_LOAD(&key[16]);
@@ -82,7 +77,7 @@ aegis256_mac(unsigned char *mac, unsigned long long adlen, unsigned long long ml
              aes_block_t *const state)
 {
     aes_block_t tmp;
-    int        i;
+    int         i;
 
     tmp = AES_BLOCK_LOAD_64x2(mlen << 3, adlen << 3);
     tmp = AES_BLOCK_XOR(tmp, state[3]);
@@ -149,7 +144,7 @@ aegis256_encrypt_detached(unsigned char *c, unsigned char *mac, unsigned long lo
     aes_block_t                    state[6];
     CRYPTO_ALIGN(16) unsigned char src[16];
     CRYPTO_ALIGN(16) unsigned char dst[16];
-    unsigned long long i;
+    unsigned long long             i;
 
     (void) nsec;
     aegis256_init(k, npub, state);
@@ -193,9 +188,9 @@ aegis256_decrypt_detached(unsigned char *m, unsigned char *nsec, const unsigned 
     CRYPTO_ALIGN(16) unsigned char src[16];
     CRYPTO_ALIGN(16) unsigned char dst[16];
     CRYPTO_ALIGN(16) unsigned char computed_mac[16];
-    unsigned long long i;
-    unsigned long long mlen;
-    int                ret;
+    unsigned long long             i;
+    unsigned long long             mlen;
+    int                            ret;
 
     (void) nsec;
     mlen = clen;
@@ -245,9 +240,7 @@ aegis256_decrypt_detached(unsigned char *m, unsigned char *nsec, const unsigned 
     return 0;
 }
 
-struct crypto_aead_aegis256_implementation crypto_aead_aegis256_armcrypto_implementation = {
+struct crypto_aead_aegis256_implementation crypto_aead_aegis256_soft_implementation = {
     SODIUM_C99(.encrypt_detached =) aegis256_encrypt_detached,
     SODIUM_C99(.decrypt_detached =) aegis256_decrypt_detached
 };
-
-#endif

@@ -657,9 +657,7 @@ tv(void)
 int
 main(void)
 {
-    if (crypto_aead_aegis256_is_available()) {
-        tv();
-    }
+    tv();
     assert(crypto_aead_aegis256_keybytes() == crypto_aead_aegis256_KEYBYTES);
     assert(crypto_aead_aegis256_nsecbytes() == crypto_aead_aegis256_NSECBYTES);
     assert(crypto_aead_aegis256_npubbytes() == crypto_aead_aegis256_NPUBBYTES);

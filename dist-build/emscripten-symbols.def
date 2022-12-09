@@ -13,7 +13,6 @@ _crypto_aead_aegis256_decrypt 0 1
 _crypto_aead_aegis256_decrypt_detached 0 1
 _crypto_aead_aegis256_encrypt 0 1
 _crypto_aead_aegis256_encrypt_detached 0 1
-_crypto_aead_aegis256_is_available 0 1
 _crypto_aead_aegis256_keybytes 0 1
 _crypto_aead_aegis256_keygen 0 1
 _crypto_aead_aegis256_messagebytes_max 0 1
