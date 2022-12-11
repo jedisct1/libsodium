@@ -3081,6 +3081,7 @@ tv(void)
 {
     unsigned char      *ad;
     unsigned char      *ciphertext;
+    unsigned char      *ciphertext2;
     unsigned char      *decrypted;
     unsigned char      *detached_ciphertext;
     unsigned char      *expected_ciphertext;
@@ -3210,18 +3211,32 @@ tv(void)
             printf("Incorrect decryption of test vector #%u\n", (unsigned int) i);
         }
 
-        memcpy(ciphertext, message, message_len);
-        crypto_aead_aes256gcm_encrypt(ciphertext, &found_ciphertext_len, ciphertext,
+        ciphertext2 = (unsigned char *) sodium_malloc(ciphertext_len);
+        crypto_aead_aes256gcm_encrypt(ciphertext, &found_ciphertext_len, message,
                                       message_len, ad, ad_len, NULL, nonce, key);
         assert(found_ciphertext_len == ciphertext_len);
-        if (crypto_aead_aes256gcm_decrypt(ciphertext, &found_message_len, NULL,
-                                          ciphertext, ciphertext_len, ad, ad_len,
+        memcpy(ciphertext2, message, message_len);
+        crypto_aead_aes256gcm_encrypt(ciphertext2, &found_ciphertext_len,
+                                      ciphertext2, message_len, ad, ad_len, NULL,
+                                      nonce, key);
+        assert(found_ciphertext_len == ciphertext_len);
+        assert(memcmp(ciphertext, ciphertext2, ciphertext_len) == 0);
+        if (crypto_aead_aes256gcm_decrypt(ciphertext2, &found_message_len, NULL,
+                                          ciphertext2, ciphertext_len, ad, ad_len,
                                           nonce, key) != 0) {
             printf("In-place decryption of vector #%u failed\n", (unsigned int) i);
         }
         assert(found_message_len == message_len);
-        assert(memcmp(ciphertext, message, message_len) == 0);
+        assert(memcmp(ciphertext2, message, message_len) == 0);
+        if (crypto_aead_aes256gcm_decrypt(message, &found_message_len, NULL,
+                                          ciphertext, ciphertext_len, ad, ad_len,
+                                          nonce, key) != 0) {
+            printf("Decryption of vector #%u failed\n", (unsigned int) i);
+        }
+        assert(found_message_len == message_len);
+        assert(memcmp(ciphertext2, message, message_len) == 0);
 
+        sodium_free(ciphertext2);
         sodium_free(message);
         sodium_free(ad);
         sodium_free(expected_ciphertext);
