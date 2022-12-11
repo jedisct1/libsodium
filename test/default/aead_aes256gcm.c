@@ -3210,6 +3210,18 @@ tv(void)
             printf("Incorrect decryption of test vector #%u\n", (unsigned int) i);
         }
 
+        memcpy(ciphertext, message, message_len);
+        crypto_aead_aes256gcm_encrypt(ciphertext, &found_ciphertext_len, ciphertext,
+                                      message_len, ad, ad_len, NULL, nonce, key);
+        assert(found_ciphertext_len == ciphertext_len);
+        if (crypto_aead_aes256gcm_decrypt(ciphertext, &found_message_len, NULL,
+                                          ciphertext, ciphertext_len, ad, ad_len,
+                                          nonce, key) != 0) {
+            printf("In-place decryption of vector #%u failed\n", (unsigned int) i);
+        }
+        assert(found_message_len == message_len);
+        assert(memcmp(ciphertext, message, message_len) == 0);
+
         sodium_free(message);
         sodium_free(ad);
         sodium_free(expected_ciphertext);
