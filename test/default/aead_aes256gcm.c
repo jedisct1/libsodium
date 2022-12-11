@@ -3298,7 +3298,7 @@ tv2(void)
                                           NULL, 0, nonce, key) != 0) {
             printf("Decryption of random ciphertext failed");
         }
-        assert(memcmp(message, message2, message_len) == 0);
+        assert(message_len == 0 || memcmp(message, message2, message_len) == 0);
         sodium_free(key);
         sodium_free(nonce);
         sodium_free(ciphertext);
