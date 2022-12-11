@@ -62,10 +62,10 @@ aegis256_init(const unsigned char *key, const unsigned char *nonce, aes_block_t 
     aes_block_t       kxn1, kxn2;
     int               i;
 
-    k1   = AES_BLOCK_LOAD((const aes_block_t *) (const void *) &key[0]);
-    k2   = AES_BLOCK_LOAD((const aes_block_t *) (const void *) &key[16]);
-    kxn1 = AES_BLOCK_XOR(k1, AES_BLOCK_LOAD((aes_block_t *) (void *) &nonce[0]));
-    kxn2 = AES_BLOCK_XOR(k2, AES_BLOCK_LOAD((aes_block_t *) (void *) &nonce[16]));
+    k1   = AES_BLOCK_LOAD(&key[0]);
+    k2   = AES_BLOCK_LOAD(&key[16]);
+    kxn1 = AES_BLOCK_XOR(k1, AES_BLOCK_LOAD(&nonce[0]));
+    kxn2 = AES_BLOCK_XOR(k2, AES_BLOCK_LOAD(&nonce[16]));
 
     state[0] = kxn1;
     state[1] = kxn2;
@@ -97,12 +97,10 @@ aegis256_mac(unsigned char *mac, unsigned long long adlen, unsigned long long ml
     }
 
     tmp = AES_BLOCK_XOR(state[5], state[4]);
-    tmp = AES_BLOCK_XOR(tmp, state[3]);
-    tmp = AES_BLOCK_XOR(tmp, state[2]);
-    tmp = AES_BLOCK_XOR(tmp, state[1]);
-    tmp = AES_BLOCK_XOR(tmp, state[0]);
+    tmp = AES_BLOCK_XOR(tmp, AES_BLOCK_XOR(state[3], state[2]));
+    tmp = AES_BLOCK_XOR(tmp, AES_BLOCK_XOR(state[1], state[0]));
 
-    AES_BLOCK_STORE((aes_block_t *) (void *) mac, tmp);
+    AES_BLOCK_STORE(mac, tmp);
 }
 
 static inline void
@@ -120,12 +118,12 @@ aegis256_enc(unsigned char *const dst, const unsigned char *const src, aes_block
     aes_block_t msg;
     aes_block_t tmp;
 
-    msg = AES_BLOCK_LOAD((const aes_block_t *) (const void *) src);
+    msg = AES_BLOCK_LOAD(src);
     tmp = AES_BLOCK_XOR(msg, state[5]);
     tmp = AES_BLOCK_XOR(tmp, state[4]);
     tmp = AES_BLOCK_XOR(tmp, state[1]);
     tmp = AES_BLOCK_XOR(tmp, AES_BLOCK_AND(state[2], state[3]));
-    AES_BLOCK_STORE((aes_block_t *) (void *) dst, tmp);
+    AES_BLOCK_STORE(dst, tmp);
 
     aegis256_update(state, msg);
 }
@@ -135,12 +133,12 @@ aegis256_dec(unsigned char *const dst, const unsigned char *const src, aes_block
 {
     aes_block_t msg;
 
-    msg = AES_BLOCK_LOAD((const aes_block_t *) (const void *) src);
+    msg = AES_BLOCK_LOAD(src);
     msg = AES_BLOCK_XOR(msg, state[5]);
     msg = AES_BLOCK_XOR(msg, state[4]);
     msg = AES_BLOCK_XOR(msg, state[1]);
     msg = AES_BLOCK_XOR(msg, AES_BLOCK_AND(state[2], state[3]));
-    AES_BLOCK_STORE((aes_block_t *) (void *) dst, msg);
+    AES_BLOCK_STORE(dst, msg);
 
     aegis256_update(state, msg);
 }
@@ -231,8 +229,7 @@ aegis256_decrypt_detached(unsigned char *m, unsigned char *nsec, const unsigned 
             memcpy(m + i, dst, mlen & 0xf);
         }
         memset(dst, 0, mlen & 0xf);
-        state[0] =
-            AES_BLOCK_XOR(state[0], AES_BLOCK_LOAD((const aes_block_t *) (const void *) dst));
+        state[0] = AES_BLOCK_XOR(state[0], AES_BLOCK_LOAD(dst));
     }
 
     aegis256_mac(computed_mac, adlen, mlen, state);

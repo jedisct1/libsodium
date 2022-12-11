@@ -67,8 +67,8 @@ aegis128l_init(const unsigned char *key, const unsigned char *nonce, aes_block_t
     aes_block_t       n;
     int               i;
 
-    k = AES_BLOCK_LOAD((const aes_block_t *) (const void *) key);
-    n = AES_BLOCK_LOAD((const aes_block_t *) (const void *) nonce);
+    k = AES_BLOCK_LOAD(key);
+    n = AES_BLOCK_LOAD(nonce);
 
     state[0] = AES_BLOCK_XOR(k, n);
     state[1] = c0;
@@ -97,14 +97,11 @@ aegis128l_mac(unsigned char *mac, unsigned long long adlen, unsigned long long m
         aegis128l_update(state, tmp, tmp);
     }
 
-    tmp = AES_BLOCK_XOR(state[6], state[5]);
-    tmp = AES_BLOCK_XOR(tmp, state[4]);
-    tmp = AES_BLOCK_XOR(tmp, state[3]);
-    tmp = AES_BLOCK_XOR(tmp, state[2]);
-    tmp = AES_BLOCK_XOR(tmp, state[1]);
-    tmp = AES_BLOCK_XOR(tmp, state[0]);
+    tmp = AES_BLOCK_XOR(state[6], AES_BLOCK_XOR(state[5], state[4]));
+    tmp = AES_BLOCK_XOR(tmp, AES_BLOCK_XOR(state[3], state[2]));
+    tmp = AES_BLOCK_XOR(tmp, AES_BLOCK_XOR(state[1], state[0]));
 
-    AES_BLOCK_STORE((aes_block_t *) (void *) mac, tmp);
+    AES_BLOCK_STORE(mac, tmp);
 }
 
 static inline void
@@ -123,16 +120,16 @@ aegis128l_enc(unsigned char *const dst, const unsigned char *const src, aes_bloc
     aes_block_t msg0, msg1;
     aes_block_t tmp0, tmp1;
 
-    msg0 = AES_BLOCK_LOAD((const aes_block_t *) (const void *) src);
-    msg1 = AES_BLOCK_LOAD((const aes_block_t *) (const void *) (src + 16));
+    msg0 = AES_BLOCK_LOAD(src);
+    msg1 = AES_BLOCK_LOAD(src + 16);
     tmp0 = AES_BLOCK_XOR(msg0, state[6]);
     tmp0 = AES_BLOCK_XOR(tmp0, state[1]);
-    tmp1 = AES_BLOCK_XOR(msg1, state[2]);
-    tmp1 = AES_BLOCK_XOR(tmp1, state[5]);
+    tmp1 = AES_BLOCK_XOR(msg1, state[5]);
+    tmp1 = AES_BLOCK_XOR(tmp1, state[2]);
     tmp0 = AES_BLOCK_XOR(tmp0, AES_BLOCK_AND(state[2], state[3]));
     tmp1 = AES_BLOCK_XOR(tmp1, AES_BLOCK_AND(state[6], state[7]));
-    AES_BLOCK_STORE((aes_block_t *) (void *) dst, tmp0);
-    AES_BLOCK_STORE((aes_block_t *) (void *) (dst + 16), tmp1);
+    AES_BLOCK_STORE(dst, tmp0);
+    AES_BLOCK_STORE(dst + 16, tmp1);
 
     aegis128l_update(state, msg0, msg1);
 }
@@ -142,16 +139,16 @@ aegis128l_dec(unsigned char *const dst, const unsigned char *const src, aes_bloc
 {
     aes_block_t msg0, msg1;
 
-    msg0 = AES_BLOCK_LOAD((const aes_block_t *) (const void *) src);
-    msg1 = AES_BLOCK_LOAD((const aes_block_t *) (const void *) (src + 16));
+    msg0 = AES_BLOCK_LOAD(src);
+    msg1 = AES_BLOCK_LOAD(src + 16);
     msg0 = AES_BLOCK_XOR(msg0, state[6]);
     msg0 = AES_BLOCK_XOR(msg0, state[1]);
-    msg1 = AES_BLOCK_XOR(msg1, state[2]);
     msg1 = AES_BLOCK_XOR(msg1, state[5]);
+    msg1 = AES_BLOCK_XOR(msg1, state[2]);
     msg0 = AES_BLOCK_XOR(msg0, AES_BLOCK_AND(state[2], state[3]));
     msg1 = AES_BLOCK_XOR(msg1, AES_BLOCK_AND(state[6], state[7]));
-    AES_BLOCK_STORE((aes_block_t *) (void *) dst, msg0);
-    AES_BLOCK_STORE((aes_block_t *) (void *) (dst + 16), msg1);
+    AES_BLOCK_STORE(dst, msg0);
+    AES_BLOCK_STORE(dst + 16, msg1);
 
     aegis128l_update(state, msg0, msg1);
 }
@@ -243,9 +240,8 @@ aegis128l_decrypt_detached(unsigned char *m, unsigned char *nsec, const unsigned
         }
         memset(dst, 0, mlen & 0x1f);
         state[0] =
-            AES_BLOCK_XOR(state[0], AES_BLOCK_LOAD((const aes_block_t *) (const void *) dst));
-        state[4] = AES_BLOCK_XOR(state[4],
-                                 AES_BLOCK_LOAD((const aes_block_t *) (const void *) (dst + 16)));
+            AES_BLOCK_XOR(state[0], AES_BLOCK_LOAD(dst));
+        state[4] = AES_BLOCK_XOR(state[4], AES_BLOCK_LOAD(dst + 16));
     }
 
     aegis128l_mac(computed_mac, adlen, mlen, state);

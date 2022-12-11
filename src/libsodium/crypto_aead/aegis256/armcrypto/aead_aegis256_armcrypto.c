@@ -92,10 +92,8 @@ aegis256_mac(unsigned char *mac, unsigned long long adlen, unsigned long long ml
     }
 
     tmp = AES_BLOCK_XOR(state[5], state[4]);
-    tmp = AES_BLOCK_XOR(tmp, state[3]);
-    tmp = AES_BLOCK_XOR(tmp, state[2]);
-    tmp = AES_BLOCK_XOR(tmp, state[1]);
-    tmp = AES_BLOCK_XOR(tmp, state[0]);
+    tmp = AES_BLOCK_XOR(tmp, AES_BLOCK_XOR(state[3], state[2]));
+    tmp = AES_BLOCK_XOR(tmp, AES_BLOCK_XOR(state[1], state[0]));
 
     AES_BLOCK_STORE(mac, tmp);
 }
