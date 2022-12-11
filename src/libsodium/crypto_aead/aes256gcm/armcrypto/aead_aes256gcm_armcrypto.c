@@ -616,7 +616,7 @@ aes_gcm_decrypt_generic(const State *st, GHash *sth, unsigned char mac[ABYTES], 
 
     /* 2*PARALLEL_BLOCKS aggregation */
 
-    for (; i + 2 * PARALLEL_BLOCKS * 16 <= src_len; i += 2 * PARALLEL_BLOCKS * 16) {
+    while (i + 2 * PARALLEL_BLOCKS * 16 <= src_len) {
         counter = incr_counters(rev_counters, counter, PARALLEL_BLOCKS);
 
         u = gh_update0(sth, src + i, st->hx[2 * PARALLEL_BLOCKS - 1 - 0]);
@@ -628,13 +628,14 @@ aes_gcm_decrypt_generic(const State *st, GHash *sth, unsigned char mac[ABYTES], 
 
         counter = incr_counters(rev_counters, counter, PARALLEL_BLOCKS);
 
+        i += PARALLEL_BLOCKS * 16;
         for (j = 0; j < PARALLEL_BLOCKS; j += 1) {
             gh_update(&u, src + i + j * 16, st->hx[PARALLEL_BLOCKS - 1 - j]);
         }
         sth->acc = gcm_reduce(u);
 
-        encrypt_xor_wide(st, dst + i + PARALLEL_BLOCKS * 16, src + i + PARALLEL_BLOCKS * 16,
-                         rev_counters);
+        encrypt_xor_wide(st, dst + i, src + i, rev_counters);
+        i += PARALLEL_BLOCKS * 16;
     }
 
     /* PARALLEL_BLOCKS aggregation */
