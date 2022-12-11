@@ -747,7 +747,7 @@ crypto_aead_aes256gcm_encrypt_detached_afternm(unsigned char *c, unsigned char *
     }
     gh_required_blocks = required_blocks(ad_len, m_len);
     if (gh_required_blocks == 0) {
-        memset(mac, 0xd0, ABYTES);
+        memset(mac, 0x00, ABYTES);
         memset(c, 0, m_len);
         return -1;
     }
@@ -922,7 +922,7 @@ crypto_aead_aes256gcm_decrypt_detached_afternm(unsigned char *m, unsigned char *
 
     if (crypto_verify_16(mac, computed_mac) != 0) {
         sodium_memzero(computed_mac, sizeof computed_mac);
-        memset(m, 0xd0, m_len);
+        memset(m, 0x00, m_len);
         return -1;
     }
     return 0;
