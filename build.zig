@@ -1,5 +1,4 @@
 const std = @import("std");
-const builtin = @import("builtin");
 const fmt = std.fmt;
 const fs = std.fs;
 const heap = std.heap;
@@ -16,10 +15,11 @@ pub fn build(b: *std.build.Builder) !void {
 
     const static = b.addStaticLibrary("sodium", null);
     const shared = b.addSharedLibrary("sodium", null, .unversioned);
-    shared.strip = true;
     static.strip = true;
+    shared.strip = true;
 
-    const libs = [_]*LibExeObjStep{ static, shared };
+    const libs_ = [_]*LibExeObjStep{ static, shared };
+    const libs = if (target.getOsTag() == .wasi) libs_[0..1] else libs_[0..];
 
     const prebuilt_version_file_path = "builds/msvc/version.h";
     const version_file_path = "include/sodium/version.h";
