@@ -1,7 +1,5 @@
 #! /bin/sh
 
-MAX_MEMORY_TESTS="67108864"
-
 unset LDFLAGS
 unset CFLAGS
 
@@ -17,8 +15,6 @@ if [ -z "$WASI_RUNTIME" ] || [ "$WASI_RUNTIME" = "wasmedge" ]; then
       exit 0
   fi
 fi
-
-
 
 if [ -z "$WASI_RUNTIME" ] || [ "$WASI_RUNTIME" = "wasmer" ]; then
   if command -v wasmer >/dev/null; then
