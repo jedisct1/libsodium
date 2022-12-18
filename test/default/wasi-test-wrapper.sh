@@ -45,7 +45,7 @@ if [ -z "$WASI_RUNTIME" ] || [ "$WASI_RUNTIME" = "node" ]; then
       echo "wasi.start(instance);"
     } >"${1}.mjs"
     cat "${1}.mjs" >/tmp/a
-    node --experimental-wasi-unstable-preview1 "${1}.mjs" 2>/tmp/err &&
+    node  --experimental-wasm-bigint --experimental-wasi-unstable-preview1 "${1}.mjs" 2>/tmp/err &&
       rm -f "${1}.mjs" && exit 0
   fi
 fi
