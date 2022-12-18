@@ -40,12 +40,13 @@ if [ -z "$WASI_RUNTIME" ] || [ "$WASI_RUNTIME" = "node" ]; then
       echo "import fs from 'fs'; import { WASI } from 'wasi';"
       echo "const wasi = new WASI({args: process.argv, env: process.env, preopens: {'.':'.'}});"
       echo "const importObject = { wasi_snapshot_preview1: wasi.wasiImport };"
-      echo "const wasm = await WebAssembly.compile(fs.readFileSync('${1}'));"
-      echo "const instance = await WebAssembly.instantiate(wasm, importObject);"
-      echo "wasi.start(instance);"
+      echo "(async function() {"
+      echo "  const wasm = await WebAssembly.compile(fs.readFileSync('${1}'));"
+      echo "  const instance = await WebAssembly.instantiate(wasm, importObject);"
+      echo "  wasi.start(instance);"
+      echo "})().catch(e => { console.error(e); process.exit(1); });"
     } >"${1}.mjs"
-    cat "${1}.mjs" >/tmp/a
-    node  --experimental-wasm-bigint --experimental-wasi-unstable-preview1 "${1}.mjs" 2>/tmp/err &&
+    node --experimental-wasm-bigint --experimental-wasi-unstable-preview1 "${1}.mjs" 2>/tmp/err &&
       rm -f "${1}.mjs" && exit 0
   fi
 fi
