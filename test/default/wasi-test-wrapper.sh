@@ -9,7 +9,7 @@ fi
 
 if [ -z "$WASI_RUNTIME" ] || [ "$WASI_RUNTIME" = "wasmedge" ]; then
   if command -v wasmedgec >/dev/null && command -v wasmedge >/dev/null; then
-    wasmedgec "$1" "${1}.so" &&
+    wasmedgec "$1" "${1}.so" >/dev/null &&
       wasmedge --dir=.:. "${1}.so" &&
       rm -f "${1}.so" &&
       exit 0
