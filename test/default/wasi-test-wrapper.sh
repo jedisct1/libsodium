@@ -39,7 +39,7 @@ if [ -z "$WASI_RUNTIME" ] || [ "$WASI_RUNTIME" = "bun" ]; then
     {
       echo "import fs from 'fs'; import { init, WASI } from '@wasmer/wasi';"
       echo "await init();"
-      echo "const wasi = new WASI({args: process.argv, env: process.env, preopens: {'.':'.'}});"
+      echo "const wasi = new WASI({args: process.argv, env: process.env, preopens: {'.':'/'}});"
       echo "await (async function() {"
       echo "  const wasm = await WebAssembly.compile(fs.readFileSync('${1}'));"
       echo "  await wasi.instantiate(wasm, {});"
