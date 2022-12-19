@@ -616,7 +616,7 @@ _sodium_malloc(const size_t size)
     memcpy(unprotected_ptr + unprotected_size, canary, sizeof canary);
 # endif
     _mprotect_noaccess(unprotected_ptr + unprotected_size, page_size);
-    sodium_mlock(unprotected_ptr, unprotected_size);
+    (void) sodium_mlock(unprotected_ptr, unprotected_size); /* not a hard error in the context of sodium_malloc() */
     canary_ptr =
         unprotected_ptr + _page_round(size_with_canary) - size_with_canary;
     user_ptr = canary_ptr + sizeof canary;
@@ -686,7 +686,7 @@ sodium_free(void *ptr)
         _out_of_bounds();
     }
 # endif
-    sodium_munlock(unprotected_ptr, unprotected_size);
+    (void) sodium_munlock(unprotected_ptr, unprotected_size);
     _free_aligned(base_ptr, total_size);
 }
 #endif /* HAVE_ALIGNED_MALLOC */
