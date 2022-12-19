@@ -34,13 +34,30 @@ if [ -z "$WASI_RUNTIME" ] || [ "$WASI_RUNTIME" = "wavm" ]; then
   fi
 fi
 
+if [ -z "$WASI_RUNTIME" ] || [ "$WASI_RUNTIME" = "bun" ]; then
+  if echo | bun help >/dev/null 2>&1; then
+    {
+      echo "import fs from 'fs'; import { init, WASI } from '@wasmer/wasi';"
+      echo "await init();"
+      echo "const wasi = new WASI({args: process.argv, env: process.env, preopens: {'.':'.'}});"
+      echo "await (async function() {"
+      echo "  const wasm = await WebAssembly.compile(fs.readFileSync('${1}'));"
+      echo "  await wasi.instantiate(wasm, {});"
+      echo "  wasi.start();"
+      echo "})().catch(e => { console.error(e); process.exit(1); });"
+    } >"${1}.mjs"
+    bun run "${1}.mjs" 2>/tmp/err &&
+      rm -f "${1}.mjs" && exit 0
+  fi
+fi
+
 if [ -z "$WASI_RUNTIME" ] || [ "$WASI_RUNTIME" = "node" ]; then
   if echo | node --experimental-wasi-unstable-preview1 >/dev/null 2>&1; then
     {
       echo "import fs from 'fs'; import { WASI } from 'wasi';"
       echo "const wasi = new WASI({args: process.argv, env: process.env, preopens: {'.':'.'}});"
       echo "const importObject = { wasi_snapshot_preview1: wasi.wasiImport };"
-      echo "(async function() {"
+      echo "await (async function() {"
       echo "  const wasm = await WebAssembly.compile(fs.readFileSync('${1}'));"
       echo "  const instance = await WebAssembly.instantiate(wasm, importObject);"
       echo "  wasi.start(instance);"
