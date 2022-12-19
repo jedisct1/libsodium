@@ -44,6 +44,7 @@ if [ -z "$WASI_RUNTIME" ] || [ "$WASI_RUNTIME" = "bun" ]; then
       echo "  const wasm = await WebAssembly.compile(fs.readFileSync('${1}'));"
       echo "  await wasi.instantiate(wasm, {});"
       echo "  wasi.start();"
+      echo "  console.log(wasi.getStdoutString());"
       echo "})().catch(e => { console.error(e); process.exit(1); });"
     } >"${1}.mjs"
     bun run "${1}.mjs" 2>/tmp/err &&
