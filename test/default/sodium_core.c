@@ -31,11 +31,11 @@ main(void)
     (void) sodium_runtime_has_rdrand();
 
     sodium_set_misuse_handler(misuse_handler);
-#ifndef __EMSCRIPTEN__
+#if defined(__EMSCRIPTEN__) || defined(__wasm__) || defined(BENCHMARKS)
+    printf("misuse_handler()\n");
+#else
     sodium_misuse();
     printf("Misuse handler returned\n");
-#else
-    printf("misuse_handler()\n");
 #endif
 
     return 0;
