@@ -16,7 +16,7 @@ make distclean >/dev/null
 
 if [ "x$1" = "x--bench" ]; then
   export BENCHMARKS=1
-  export CPPFLAGS="-DBENCHMARKS -DITERATIONS=100"
+  export CPPFLAGS="-DBENCHMARKS -DITERATIONS=200"
 else
   export CPPFLAGS="-DED25519_NONDETERMINISTIC=1"
 fi
