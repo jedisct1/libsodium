@@ -190,6 +190,17 @@ jobs:
           name: build-osx-arm64
           path: .libsodium-build/lib/libsodium.dylib
 
+  build-ios-maccatalyst-arm64-and-x86_64:
+    runs-on: macos-latest
+    steps:
+      - uses: actions/checkout@v3
+      - name: compile
+        run: $PWD/dist-build/apple-xcframework.sh
+      - uses: actions/upload-artifact@v3
+        with:
+          name: build-ios-maccatalyst-arm64_x86_64
+          path: libsodium-apple/Clibsodium.xcframework/ios-arm64_x86_64-maccatalyst/libsodium.a
+
   pack:
     runs-on: ubuntu-latest
     needs:
@@ -202,6 +213,7 @@ jobs:
       - build-linux-musl-arm64
       - build-macos-x64
       - build-macos-arm64
+      - build-ios-maccatalyst-arm64-and-x86_64
     container:
       image: mcr.microsoft.com/dotnet/sdk:6.0
     env:
@@ -250,6 +262,14 @@ jobs:
         with:
           name: build-osx-arm64
           path: .libsodium-pack/runtimes/osx-arm64/native/
+      - uses: actions/download-artifact@v3
+        with:
+          name: build-ios-maccatalyst-arm64_x86_64
+          path: .libsodium-pack/runtimes/maccatalyst-x64/native/
+      - uses: actions/download-artifact@v3
+        with:
+          name: build-ios-maccatalyst-arm64_x86_64
+          path: .libsodium-pack/runtimes/maccatalyst-arm64/native/
       - name: Copy files
         run: cp AUTHORS ChangeLog LICENSE packaging/dotnet-core/libsodium.pkgproj .libsodium-pack/
       - name: Create NuGet package
