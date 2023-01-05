@@ -8,19 +8,41 @@
 #include "utils.h"
 
 int
+crypto_kdf_hkdf_sha256_extract_init(crypto_kdf_hkdf_sha256_state *state,
+                                    const unsigned char *salt, size_t salt_len)
+{
+    return crypto_auth_hmacsha256_init(&state->st, salt, salt_len);
+}
+
+int
+crypto_kdf_hkdf_sha256_extract_update(crypto_kdf_hkdf_sha256_state *state,
+                                      const unsigned char *ikm, size_t ikm_len)
+{
+    return crypto_auth_hmacsha256_update(&state->st, ikm, ikm_len);
+}
+
+int
+crypto_kdf_hkdf_sha256_extract_final(crypto_kdf_hkdf_sha256_state *state,
+                                     unsigned char prk[crypto_kdf_hkdf_sha256_KEYBYTES])
+{
+    crypto_auth_hmacsha256_final(&state->st, prk);
+    sodium_memzero(state, sizeof state);
+
+    return 0;
+}
+
+int
 crypto_kdf_hkdf_sha256_extract(
     unsigned char prk[crypto_kdf_hkdf_sha256_KEYBYTES],
     const unsigned char *salt, size_t salt_len, const unsigned char *ikm,
     size_t ikm_len)
 {
-    crypto_auth_hmacsha256_state st;
+    crypto_kdf_hkdf_sha256_state state;
 
-    crypto_auth_hmacsha256_init(&st, salt, salt_len);
-    crypto_auth_hmacsha256_update(&st, ikm, ikm_len);
-    crypto_auth_hmacsha256_final(&st, prk);
-    sodium_memzero(&st, sizeof st);
+    crypto_kdf_hkdf_sha256_extract_init(&state, salt, salt_len);
+    crypto_kdf_hkdf_sha256_extract_update(&state, ikm, ikm_len);
 
-    return 0;
+    return crypto_kdf_hkdf_sha256_extract_final(&state, prk);
 }
 
 void
@@ -93,4 +115,9 @@ size_t
 crypto_kdf_hkdf_sha256_bytes_max(void)
 {
     return crypto_kdf_hkdf_sha256_BYTES_MAX;
+}
+
+size_t crypto_kdf_hkdf_sha256_statebytes(void)
+{
+    return sizeof(crypto_kdf_hkdf_sha256_state);
 }
