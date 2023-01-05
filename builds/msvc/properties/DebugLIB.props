@@ -12,7 +12,7 @@
   
   <ItemDefinitionGroup>
     <ClCompile>
-      <DebugInformationFormat>OldStyle</DebugInformationFormat>
+      <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
       <RuntimeLibrary>MultiThreadedDebug</RuntimeLibrary>
       <LinkIncremental>true</LinkIncremental>
     </ClCompile>
