@@ -202,13 +202,15 @@ jobs:
       - build-linux-musl-arm64
       - build-macos-x64
       - build-macos-arm64
-    container:
-      image: mcr.microsoft.com/dotnet/sdk:6.0
     env:
       DOTNET_CLI_TELEMETRY_OPTOUT: 1
       DOTNET_SKIP_FIRST_TIME_EXPERIENCE: 1
       DOTNET_SYSTEM_GLOBALIZATION_INVARIANT: 1
     steps:
+      - name: Setup .NET SDK 6.0.x
+        uses: actions/setup-dotnet@v3
+        with:
+          dotnet-version: 6.0.x
       - uses: actions/checkout@v3
       - uses: actions/download-artifact@v3
         with:
@@ -263,13 +265,15 @@ jobs:
     runs-on: ubuntu-latest
     needs:
       - pack
-    container:
-      image: mcr.microsoft.com/dotnet/sdk:6.0
     env:
       DOTNET_CLI_TELEMETRY_OPTOUT: 1
       DOTNET_SKIP_FIRST_TIME_EXPERIENCE: 1
       DOTNET_SYSTEM_GLOBALIZATION_INVARIANT: 1
     steps:
+      - name: Setup .NET SDK 6.0.x
+        uses: actions/setup-dotnet@v3
+        with:
+          dotnet-version: 6.0.x
       - uses: actions/checkout@v3
       - uses: actions/download-artifact@v3
         with:
