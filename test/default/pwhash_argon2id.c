@@ -304,10 +304,24 @@ str_tests(void)
     if (crypto_pwhash_str(str_out2, passwd, strlen(passwd), 0, MEMLIMIT) != -1) {
         printf("pwhash_argon2id_str() with a null opslimit should have failed\n");
     }
-    if (crypto_pwhash_str_verify("$argon2id$m=65536,t=2,p=1c29tZXNhbHQ"
-                                 "$9sTbSlTio3Biev89thdrlKKiCaYsjjYVJxGAL3swxpQ",
-                                 "password", 0x100000000ULL) != -1) {
-        printf("pwhash_str_verify(invalid(0)) failure\n");
+    {
+        const char *str_in_ ="$argon2id$m=65536,t=2,p=1c29tZXNhbHQ"
+            "$9sTbSlTio3Biev89thdrlKKiCaYsjjYVJxGAL3swxpQ";
+        char       *str_in = (char *) sodium_malloc(strlen(str_in_) + 1U);
+
+        const char *password_in_ = "password";
+        char       *password_in = (char *) sodium_malloc(strlen(password_in_) + 1U);
+
+        memcpy(str_in, str_in_, strlen(str_in_) + 1U);
+        memcpy(password_in, password_in_, strlen(password_in_) + 1U);
+
+        if (crypto_pwhash_argon2i_str_verify(str_in, password_in,
+                                             0x100000000ULL) != -1) {
+            printf("pwhash_str_verify(invalid(0)) failure\n");
+        }
+
+        sodium_free(password_in);
+        sodium_free(str_in);
     }
     if (crypto_pwhash_str_verify("$argon2id$m=65536,t=2,p=1c29tZXNhbHQ"
                                  "$9sTbSlTio3Biev89thdrlKKiCaYsjjYVJxGAL3swxpQ",
