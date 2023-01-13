@@ -444,6 +444,11 @@ aes_gcm_encrypt_generic(const State *st, GHash *sth, unsigned char mac[ABYTES], 
             counter = incr_counters(rev_counters, counter, PARALLEL_BLOCKS);
             encrypt_xor_wide(st, dst + i, src + i, rev_counters);
 
+            PREFETCH_READ(src + i + PARALLEL_BLOCKS * 16);
+#if PARALLEL_BLOCKS >= 64 / 16
+            PREFETCH_READ(src + i + PARALLEL_BLOCKS * 16 + 64);
+#endif
+
             pi = i - PARALLEL_BLOCKS * 16;
             u  = gh_update0(sth, dst + pi, st->hx[2 * PARALLEL_BLOCKS - 1 - 0]);
             for (j = 1; j < PARALLEL_BLOCKS; j += 1) {
@@ -454,6 +459,10 @@ aes_gcm_encrypt_generic(const State *st, GHash *sth, unsigned char mac[ABYTES], 
             encrypt_xor_wide(st, dst + i + PARALLEL_BLOCKS * 16, src + i + PARALLEL_BLOCKS * 16,
                              rev_counters);
 
+            PREFETCH_READ(src + i + 2 * PARALLEL_BLOCKS * 16);
+#if PARALLEL_BLOCKS >= 64 / 16
+            PREFETCH_READ(src + i + 2 * PARALLEL_BLOCKS * 16 + 64);
+#endif
             pi = i;
             for (j = 0; j < PARALLEL_BLOCKS; j += 1) {
                 gh_update(&u, dst + pi + j * 16, st->hx[PARALLEL_BLOCKS - 1 - j]);
