@@ -36,6 +36,12 @@ echo "Warnings related to headers being present but not usable are due to functi
 echo "that didn't exist in the specified minimum iOS version level."
 echo "They can be safely ignored."
 echo
+echo "Define the LIBSODIUM_FULL_BUILD environment variable to build the full"
+echo "library (including all deprecated/undocumented/low-level functions)."
+echo
+echo "Define the LIBSODIUM_SKIP_SIMULATORS environment variable to skip building"
+echo "the simulators libraries (iOS, watchOS, tvOS simulators)."
+echo
 
 if [ -z "$LIBSODIUM_FULL_BUILD" ]; then
   export LIBSODIUM_ENABLE_MINIMAL_FLAG="--enable-minimal"
@@ -286,22 +292,28 @@ build_catalyst() {
 }
 
 mkdir -p "${PREFIX}/tmp"
+
 echo "Building for macOS..."
 build_macos >"$LOG_FILE" 2>&1 || exit 1
 echo "Building for iOS..."
 build_ios >"$LOG_FILE" 2>&1 || exit 1
-echo "Building for the iOS simulator..."
-build_ios_simulator >"$LOG_FILE" 2>&1 || exit 1
 echo "Building for watchOS..."
 build_watchos >"$LOG_FILE" 2>&1 || exit 1
-echo "Building for the watchOS simulator..."
-build_watchos_simulator >"$LOG_FILE" 2>&1 || exit 1
 echo "Building for tvOS..."
 build_tvos >"$LOG_FILE" 2>&1 || exit 1
-echo "Building for the tvOS simulator..."
-build_tvos_simulator >"$LOG_FILE" 2>&1 || exit 1
 echo "Building for Catalyst..."
 build_catalyst >"$LOG_FILE" 2>&1 || exit 1
+
+if [ -z "$LIBSODIUM_SKIP_SIMULATORS" ]; then
+  echo "Building for the iOS simulator..."
+  build_ios_simulator >"$LOG_FILE" 2>&1 || exit 1
+  echo "Building for the watchOS simulator..."
+  build_watchos_simulator >"$LOG_FILE" 2>&1 || exit 1
+  echo "Building for the tvOS simulator..."
+  build_tvos_simulator >"$LOG_FILE" 2>&1 || exit 1
+  else
+  echo "[Skipping the simulators]"
+fi
 
 echo "Adding the Clibsodium module map for Swift..."
 
@@ -338,25 +350,6 @@ for ext in a dylib; do
     -output "$PREFIX/ios/lib/libsodium.${ext}"
 done
 
-echo "Bundling iOS simulators..."
-
-mkdir -p "${PREFIX}/ios-simulators/lib"
-cp -a "${IOS_SIMULATOR_X86_64_PREFIX}/include" "${PREFIX}/ios-simulators/"
-for ext in a dylib; do
-  if [ "$APPLE_SILICON_SUPPORTED" = "true" ]; then
-    lipo -create \
-      "${IOS_SIMULATOR_ARM64_PREFIX}/lib/libsodium.${ext}" \
-      "${IOS_SIMULATOR_I386_PREFIX}/lib/libsodium.${ext}" \
-      "${IOS_SIMULATOR_X86_64_PREFIX}/lib/libsodium.${ext}" \
-      -output "${PREFIX}/ios-simulators/lib/libsodium.${ext}" || exit 1
-  else
-    lipo -create \
-      "${IOS_SIMULATOR_I386_PREFIX}/lib/libsodium.${ext}" \
-      "${IOS_SIMULATOR_X86_64_PREFIX}/lib/libsodium.${ext}" \
-      -output "${PREFIX}/ios-simulators/lib/libsodium.${ext}" || exit 1
-  fi
-done
-
 echo "Bundling watchOS targets..."
 
 mkdir -p "${PREFIX}/watchos/lib"
@@ -369,25 +362,6 @@ for ext in a dylib; do
     -output "${PREFIX}/watchos/lib/libsodium.${ext}"
 done
 
-echo "Bundling watchOS simulators..."
-
-mkdir -p "${PREFIX}/watchos-simulators/lib"
-cp -a "${WATCHOS_SIMULATOR_X86_64_PREFIX}/include" "${PREFIX}/watchos-simulators/"
-for ext in a dylib; do
-  if [ "$APPLE_SILICON_SUPPORTED" = "true" ]; then
-    lipo -create \
-      "${WATCHOS_SIMULATOR_ARM64_PREFIX}/lib/libsodium.${ext}" \
-      "${WATCHOS_SIMULATOR_I386_PREFIX}/lib/libsodium.${ext}" \
-      "${WATCHOS_SIMULATOR_X86_64_PREFIX}/lib/libsodium.${ext}" \
-      -output "${PREFIX}/watchos-simulators/lib/libsodium.${ext}"
-  else
-    lipo -create \
-      "${WATCHOS_SIMULATOR_I386_PREFIX}/lib/libsodium.${ext}" \
-      "${WATCHOS_SIMULATOR_X86_64_PREFIX}/lib/libsodium.${ext}" \
-      -output "${PREFIX}/watchos-simulators/lib/libsodium.${ext}"
-  fi
-done
-
 echo "Bundling tvOS targets..."
 
 mkdir -p "${PREFIX}/tvos/lib"
@@ -396,23 +370,6 @@ for ext in a dylib; do
   lipo -create \
     "$TVOS64_PREFIX/lib/libsodium.${ext}" \
     -output "$PREFIX/tvos/lib/libsodium.${ext}"
-done
-
-echo "Bundling tvOS simulators..."
-
-mkdir -p "${PREFIX}/tvos-simulators/lib"
-cp -a "${TVOS_SIMULATOR_X86_64_PREFIX}/include" "${PREFIX}/tvos-simulators/"
-for ext in a dylib; do
-  if [ "$APPLE_SILICON_SUPPORTED" = "true" ]; then
-    lipo -create \
-      "${TVOS_SIMULATOR_ARM64_PREFIX}/lib/libsodium.${ext}" \
-      "${TVOS_SIMULATOR_X86_64_PREFIX}/lib/libsodium.${ext}" \
-      -output "${PREFIX}/tvos-simulators/lib/libsodium.${ext}" || exit 1
-  else
-    lipo -create \
-      "${TVOS_SIMULATOR_X86_64_PREFIX}/lib/libsodium.${ext}" \
-      -output "${PREFIX}/tvos-simulators/lib/libsodium.${ext}" || exit 1
-  fi
 done
 
 echo "Bundling Catalyst targets..."
@@ -435,15 +392,78 @@ for ext in a dylib; do
   fi
 done
 
+if [ -z "$LIBSODIUM_SKIP_SIMULATORS" ]; then
+  echo "Bundling iOS simulators..."
+
+  mkdir -p "${PREFIX}/ios-simulators/lib"
+  cp -a "${IOS_SIMULATOR_X86_64_PREFIX}/include" "${PREFIX}/ios-simulators/"
+  for ext in a dylib; do
+    if [ "$APPLE_SILICON_SUPPORTED" = "true" ]; then
+      lipo -create \
+        "${IOS_SIMULATOR_ARM64_PREFIX}/lib/libsodium.${ext}" \
+        "${IOS_SIMULATOR_I386_PREFIX}/lib/libsodium.${ext}" \
+        "${IOS_SIMULATOR_X86_64_PREFIX}/lib/libsodium.${ext}" \
+        -output "${PREFIX}/ios-simulators/lib/libsodium.${ext}" || exit 1
+    else
+      lipo -create \
+        "${IOS_SIMULATOR_I386_PREFIX}/lib/libsodium.${ext}" \
+        "${IOS_SIMULATOR_X86_64_PREFIX}/lib/libsodium.${ext}" \
+        -output "${PREFIX}/ios-simulators/lib/libsodium.${ext}" || exit 1
+    fi
+  done
+
+  echo "Bundling watchOS simulators..."
+
+  mkdir -p "${PREFIX}/watchos-simulators/lib"
+  cp -a "${WATCHOS_SIMULATOR_X86_64_PREFIX}/include" "${PREFIX}/watchos-simulators/"
+  for ext in a dylib; do
+    if [ "$APPLE_SILICON_SUPPORTED" = "true" ]; then
+      lipo -create \
+        "${WATCHOS_SIMULATOR_ARM64_PREFIX}/lib/libsodium.${ext}" \
+        "${WATCHOS_SIMULATOR_I386_PREFIX}/lib/libsodium.${ext}" \
+        "${WATCHOS_SIMULATOR_X86_64_PREFIX}/lib/libsodium.${ext}" \
+        -output "${PREFIX}/watchos-simulators/lib/libsodium.${ext}"
+    else
+      lipo -create \
+        "${WATCHOS_SIMULATOR_I386_PREFIX}/lib/libsodium.${ext}" \
+        "${WATCHOS_SIMULATOR_X86_64_PREFIX}/lib/libsodium.${ext}" \
+        -output "${PREFIX}/watchos-simulators/lib/libsodium.${ext}"
+    fi
+  done
+
+  echo "Bundling tvOS simulators..."
+
+  mkdir -p "${PREFIX}/tvos-simulators/lib"
+  cp -a "${TVOS_SIMULATOR_X86_64_PREFIX}/include" "${PREFIX}/tvos-simulators/"
+  for ext in a dylib; do
+    if [ "$APPLE_SILICON_SUPPORTED" = "true" ]; then
+      lipo -create \
+        "${TVOS_SIMULATOR_ARM64_PREFIX}/lib/libsodium.${ext}" \
+        "${TVOS_SIMULATOR_X86_64_PREFIX}/lib/libsodium.${ext}" \
+        -output "${PREFIX}/tvos-simulators/lib/libsodium.${ext}" || exit 1
+    else
+      lipo -create \
+        "${TVOS_SIMULATOR_X86_64_PREFIX}/lib/libsodium.${ext}" \
+        -output "${PREFIX}/tvos-simulators/lib/libsodium.${ext}" || exit 1
+    fi
+  done
+fi
+
 echo "Creating Clibsodium.xcframework..."
 
 rm -rf "${PREFIX}/Clibsodium.xcframework"
 
 XCFRAMEWORK_ARGS=""
-for f in macos ios ios-simulators watchos watchos-simulators tvos tvos-simulators catalyst; do
+for f in macos ios watchos tvos catalyst; do
   XCFRAMEWORK_ARGS="${XCFRAMEWORK_ARGS} -library ${PREFIX}/${f}/lib/libsodium.a"
   XCFRAMEWORK_ARGS="${XCFRAMEWORK_ARGS} -headers ${PREFIX}/${f}/include"
 done
+if [ -z "$LIBSODIUM_SKIP_SIMULATORS" ]; then
+  for f in ios-simulators watchos-simulators tvos-simulators; do
+    XCFRAMEWORK_ARGS="${XCFRAMEWORK_ARGS} -library ${PREFIX}/${f}/lib/libsodium.a"
+    XCFRAMEWORK_ARGS="${XCFRAMEWORK_ARGS} -headers ${PREFIX}/${f}/include"
+  done
+fi
 xcodebuild -create-xcframework \
   ${XCFRAMEWORK_ARGS} \
   -output "${PREFIX}/Clibsodium.xcframework" >/dev/null
