@@ -158,37 +158,31 @@ jobs:
           name: build-linux-musl-arm64
           path: zig-out/lib/libsodium.so
 
-  build-macos-x64:
+  build-apple:
     runs-on: macos-latest
     steps:
       - uses: actions/checkout@v3
-      - name: configure
-        run: env CFLAGS="-Ofast -arch x86_64 -mmacosx-version-min=10.15" LDFLAGS="-arch x86_64 -mmacosx-version-min=10.15" ./configure --host=arm-apple-darwin20 --prefix=$PWD/.libsodium-build
-      - name: make
-        run: make
-      - name: make check
-        run: make check
-      - name: make install
-        run: make install
+      - name: build-xcframework
+        run: env LIBSODIUM_FULL_BUILD=1 LIBSODIUM_SKIP_SIMULATORS=1 dist-build/apple-xcframework.sh
       - uses: actions/upload-artifact@v3
         with:
-          name: build-osx-x64
-          path: .libsodium-build/lib/libsodium.dylib
+          name: build-macos
+          path: libsodium-apple/macos/lib/libsodium.a
+      - uses: actions/upload-artifact@v3
+        with:
+          name: build-ios
+          path: libsodium-apple/ios/lib/libsodium.a
+      - uses: actions/upload-artifact@v3
+        with:
+          name: build-tvos
+          path: libsodium-apple/tvos/lib/libsodium.a
+      - uses: actions/upload-artifact@v3
+        with:
+          name: build-maccatalyst
+          path: libsodium-apple/catalyst/lib/libsodium.a
 
-  build-macos-arm64:
-    runs-on: macos-latest
-    steps:
-      - uses: actions/checkout@v3
-      - name: configure
-        run: env CFLAGS="-Ofast -arch arm64 -mmacosx-version-min=10.15" LDFLAGS="-arch arm64 -mmacosx-version-min=10.15" ./configure --host=arm-apple-darwin20 --prefix=$PWD/.libsodium-build
-      - name: make
-        run: make
-      - name: make install
-        run: make install
-      - uses: actions/upload-artifact@v3
-        with:
-          name: build-osx-arm64
-          path: .libsodium-build/lib/libsodium.dylib
+# The list of .NET targets can be found here:
+# https://learn.microsoft.com/en-us/dotnet/core/rid-catalog
 
   pack:
     runs-on: ubuntu-latest
@@ -200,17 +194,14 @@ jobs:
       - build-linux-musl
       - build-linux-musl-arm
       - build-linux-musl-arm64
-      - build-macos-x64
-      - build-macos-arm64
+      - build-apple
+    container:
+      image: mcr.microsoft.com/dotnet/sdk:6.0
     env:
       DOTNET_CLI_TELEMETRY_OPTOUT: 1
       DOTNET_SKIP_FIRST_TIME_EXPERIENCE: 1
       DOTNET_SYSTEM_GLOBALIZATION_INVARIANT: 1
     steps:
-      - name: Setup .NET SDK 6.0.x
-        uses: actions/setup-dotnet@v3
-        with:
-          dotnet-version: 6.0.x
       - uses: actions/checkout@v3
       - uses: actions/download-artifact@v3
         with:
@@ -226,12 +217,12 @@ jobs:
           path: .libsodium-pack/runtimes/linux-x64/native/
       - uses: actions/download-artifact@v3
         with:
-          name: build-linux-arm64
-          path: .libsodium-pack/runtimes/linux-arm64/native/
-      - uses: actions/download-artifact@v3
-        with:
           name: build-linux-arm
           path: .libsodium-pack/runtimes/linux-arm/native/
+      - uses: actions/download-artifact@v3
+        with:
+          name: build-linux-arm64
+          path: .libsodium-pack/runtimes/linux-arm64/native/
       - uses: actions/download-artifact@v3
         with:
           name: build-linux-musl-x64
@@ -246,12 +237,28 @@ jobs:
           path: .libsodium-pack/runtimes/linux-musl-arm64/native/
       - uses: actions/download-artifact@v3
         with:
-          name: build-osx-x64
+          name: build-macos
           path: .libsodium-pack/runtimes/osx-x64/native/
       - uses: actions/download-artifact@v3
         with:
-          name: build-osx-arm64
+          name: build-macos
           path: .libsodium-pack/runtimes/osx-arm64/native/
+      - uses: actions/download-artifact@v3
+        with:
+          name: build-ios
+          path: .libsodium-pack/runtimes/ios-arm64/native/
+      - uses: actions/download-artifact@v3
+        with:
+          name: build-tvos
+          path: .libsodium-pack/runtimes/tvos-arm64/native/
+      - uses: actions/download-artifact@v3
+        with:
+          name: build-maccatalyst
+          path: .libsodium-pack/runtimes/maccatalyst-x64/native/
+      - uses: actions/download-artifact@v3
+        with:
+          name: build-maccatalyst
+          path: .libsodium-pack/runtimes/maccatalyst-arm64/native/
       - name: Copy files
         run: cp AUTHORS ChangeLog LICENSE packaging/dotnet-core/libsodium.pkgproj .libsodium-pack/
       - name: Create NuGet package
@@ -265,15 +272,13 @@ jobs:
     runs-on: ubuntu-latest
     needs:
       - pack
+    container:
+      image: mcr.microsoft.com/dotnet/sdk:6.0
     env:
       DOTNET_CLI_TELEMETRY_OPTOUT: 1
       DOTNET_SKIP_FIRST_TIME_EXPERIENCE: 1
       DOTNET_SYSTEM_GLOBALIZATION_INVARIANT: 1
     steps:
-      - name: Setup .NET SDK 6.0.x
-        uses: actions/setup-dotnet@v3
-        with:
-          dotnet-version: 6.0.x
       - uses: actions/checkout@v3
       - uses: actions/download-artifact@v3
         with:
