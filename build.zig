@@ -16,13 +16,17 @@ pub fn build(b: *std.build.Builder) !void {
     const enable_benchmarks = b.option(bool, "enable_benchmarks", "Whether tests should be benchmarks.") orelse false;
     const benchmarks_iterations = b.option(u32, "iterations", "Number of iterations for benchmarks.") orelse 200;
 
+    const shared = b.addSharedLibrary(
+        if (target.isWindows()) "sodium_shared" else "sodium",
+        null,
+        .unversioned,
+    );
     const static = b.addStaticLibrary("sodium", null);
-    const shared = b.addSharedLibrary("sodium", null, .unversioned);
-    static.strip = true;
     shared.strip = true;
+    static.strip = true;
 
-    const libs_ = [_]*LibExeObjStep{ static, shared };
-    const libs = if (target.getOsTag() == .wasi) libs_[0..1] else libs_[0..];
+    const libs_ = [_]*LibExeObjStep{ shared, static };
+    const libs = if (target.getOsTag() == .wasi) libs_[1..] else libs_[0..];
 
     const prebuilt_version_file_path = "builds/msvc/version.h";
     const version_file_path = "include/sodium/version.h";
