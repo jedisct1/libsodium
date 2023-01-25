@@ -181,3 +181,4 @@ jobs:
           env ANDROID_NDK_HOME=/tmp/android/ndk ./dist-build/android-x86_64.sh
           env ANDROID_NDK_HOME=/tmp/android/ndk ./dist-build/android-armv7-a.sh
           env ANDROID_NDK_HOME=/tmp/android/ndk ./dist-build/android-armv8-a.sh
+          env ANDROID_NDK_HOME=/tmp/android/ndk ./dist-build/android-aar.sh
