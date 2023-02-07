@@ -7,8 +7,8 @@ export PREFIX="$(pwd)/libsodium-wasm32-wasi"
 mkdir -p $PREFIX || exit 1
 
 export CC="zig cc"
-export CFLAGS="--target=wasm32-wasi -O2"
-export LDFLAGS="-s -Wl,--stack-first"
+export CFLAGS="--target=wasm32-wasi -O3"
+export LDFLAGS="-s"
 export AR="zig ar"
 export RANLIB="zig ranlib"
 
