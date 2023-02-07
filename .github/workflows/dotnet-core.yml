@@ -30,7 +30,7 @@ jobs:
       - name: Install Zig
         uses: goto-bus-stop/setup-zig@869a4299cf8ac7db4ebffaec36ad82a682f88acb
         with:
-          version: master
+          version: 0.10.1
       - uses: actions/checkout@v3
       - name: build
         run: |
@@ -48,7 +48,7 @@ jobs:
       - name: Install Zig
         uses: goto-bus-stop/setup-zig@869a4299cf8ac7db4ebffaec36ad82a682f88acb
         with:
-          version: master
+          version: 0.10.1
       - name: Fix ARM support
         run: |
           curl -L https://raw.githubusercontent.com/ziglang/zig/master/lib/libc/glibc/sysdeps/arm/arm-features.h | sudo tee /opt/hostedtoolcache/zig/zig-linux-x86_64-*/x64/lib/libc/glibc/sysdeps/arm/sysdep.h >/dev/null
@@ -79,7 +79,7 @@ jobs:
       - name: Install Zig
         uses: goto-bus-stop/setup-zig@869a4299cf8ac7db4ebffaec36ad82a682f88acb
         with:
-          version: master
+          version: 0.10.1
       - name: Set up emulation environment
         run: |
           export DEBIAN_FRONTEND=noninteractive
@@ -113,7 +113,7 @@ jobs:
       - name: Install Zig
         uses: goto-bus-stop/setup-zig@869a4299cf8ac7db4ebffaec36ad82a682f88acb
         with:
-          version: master
+          version: 0.10.1
       - uses: actions/checkout@v3
       - name: build
         run: |
@@ -132,7 +132,7 @@ jobs:
       - name: Install Zig
         uses: goto-bus-stop/setup-zig@869a4299cf8ac7db4ebffaec36ad82a682f88acb
         with:
-          version: master
+          version: 0.10.1
       - uses: actions/checkout@v3
       - name: build
         run: |
@@ -148,7 +148,7 @@ jobs:
       - name: Install Zig
         uses: goto-bus-stop/setup-zig@869a4299cf8ac7db4ebffaec36ad82a682f88acb
         with:
-          version: master
+          version: 0.10.1
       - uses: actions/checkout@v3
       - name: build
         run: |

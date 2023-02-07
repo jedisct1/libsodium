@@ -42,7 +42,7 @@ jobs:
 
       - name: Install dependencies
         run: |
-          curl -sL -o - https://ziglang.org/download/0.10.0/zig-linux-x86_64-0.10.0.tar.xz | tar xJ -f - -C /opt/
+          curl -sL -o - https://ziglang.org/download/0.10.1/zig-linux-x86_64-0.10.1.tar.xz | tar xJ -f - -C /opt/
           sudo mv /opt/zig-* /opt/zig
 
       - name: Autogen
