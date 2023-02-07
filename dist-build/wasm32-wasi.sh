@@ -8,7 +8,7 @@ mkdir -p $PREFIX || exit 1
 
 export CC="zig cc"
 export CFLAGS="--target=wasm32-wasi -O3"
-export LDFLAGS="-s -Wl,--stack-first"
+export LDFLAGS="-s"
 export AR="zig ar"
 export RANLIB="zig ranlib"
 
