@@ -21,7 +21,8 @@ jobs:
           env PATH=/opt/zig/bin:/opt/zig:$PATH
         displayName: Install the Zig SDK
       - script: |
-          env WASMER_DIR=${HOME}/.wasmer PATH=${HOME}/.wasmer/bin:${HOME}/.cargo/bin:$PATH dist-build/wasm32-wasi.sh
+          . ~/.wasmer/wasmer.sh
+          dist-build/wasm32-wasi.sh
         displayName: Compile libsodium
       - task: PublishBuildArtifacts@1
         condition: not(canceled())
