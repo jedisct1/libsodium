@@ -1,10 +1,10 @@
 #! /bin/sh
 # Configuration validation subroutine script.
-#   Copyright 1992-2022 Free Software Foundation, Inc.
+#   Copyright 1992-2023 Free Software Foundation, Inc.
 
 # shellcheck disable=SC2006,SC2268 # see below for rationale
 
-timestamp='2022-09-17'
+timestamp='2023-01-21'
 
 # This file is free software; you can redistribute it and/or modify it
 # under the terms of the GNU General Public License as published by
@@ -76,7 +76,7 @@ Report bugs and patches to <config-patches@gnu.org>."
 version="\
 GNU config.sub ($timestamp)
 
-Copyright 1992-2022 Free Software Foundation, Inc.
+Copyright 1992-2023 Free Software Foundation, Inc.
 
 This is free software; see the source for copying conditions.  There is NO
 warranty; not even for MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE."
@@ -1075,7 +1075,7 @@ case $cpu-$vendor in
 	pentium-* | p5-* | k5-* | k6-* | nexgen-* | viac3-*)
 		cpu=i586
 		;;
-	pentiumpro-* | p6-* | 6x86-* | athlon-* | athalon_*-*)
+	pentiumpro-* | p6-* | 6x86-* | athlon-* | athlon_*-*)
 		cpu=i686
 		;;
 	pentiumii-* | pentium2-* | pentiumiii-* | pentium3-*)
