@@ -76,6 +76,7 @@ if [ -z "$WASI_RUNTIME" ] || [ "$WASI_RUNTIME" = "wasm3" ]; then
 fi
 
 if [ -z "$WASI_RUNTIME" ] || [ "$WASI_RUNTIME" = "iwasm" ]; then
+  if command -v iwasm >/dev/null; then
   if iwasm | grep -qi wasi >/dev/null 2>&1; then
     if wamrc --version; then
       wamrc -o "${1}.o" "$1" >/dev/null &&
@@ -83,6 +84,7 @@ if [ -z "$WASI_RUNTIME" ] || [ "$WASI_RUNTIME" = "iwasm" ]; then
     else
       iwasm --dir=. "$1" && exit 0
     fi
+  fi
   fi
 fi
 
