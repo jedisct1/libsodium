@@ -20919,6 +20919,12 @@ then :
   printf "%s\n" "#define HAVE_NANOSLEEP 1" >>confdefs.h
 
 fi
+ac_fn_c_check_func "$LINENO" "clock_gettime" "ac_cv_func_clock_gettime"
+if test "x$ac_cv_func_clock_gettime" = xyes
+then :
+  printf "%s\n" "#define HAVE_CLOCK_GETTIME 1" >>confdefs.h
+
+fi
 
 
 if test "x$WASI" = "x"
