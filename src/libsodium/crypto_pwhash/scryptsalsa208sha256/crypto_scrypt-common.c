@@ -24,6 +24,7 @@
 #include "crypto_pwhash_scryptsalsa208sha256.h"
 #include "crypto_scrypt.h"
 #include "private/common.h"
+#include "randombytes.h"
 #include "runtime.h"
 #include "utils.h"
 
@@ -149,6 +150,10 @@ escrypt_r(escrypt_local_t *local, const uint8_t *passwd, size_t passwdlen,
     uint32_t       N_log2;
     uint32_t       r;
     uint32_t       p;
+
+    if (buf != NULL) {
+        randombytes_buf(buf, buflen);
+    }
 
     src = escrypt_parse_setting(setting, &N_log2, &r, &p);
     if (!src) {
