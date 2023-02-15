@@ -95,9 +95,6 @@ if [ "$DIST" = yes ]; then
         root = window;
       }
     }
-    if (typeof root['sodium'] === 'object' && typeof root['sodium']['totalMemory'] === 'number') {
-      Module['TOTAL_MEMORY'] = root['sodium']['totalMemory'];
-    }
     var _Module = Module;
     Module.ready = new Promise(function(resolve, reject) {
       var Module = _Module;
