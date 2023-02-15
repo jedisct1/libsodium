@@ -118,16 +118,23 @@ static int mempool_free_all(void)
 
 static unsigned long long now(void)
 {
-    struct             timeval tp;
-    unsigned long long now;
+#if defined(HAVE_CLOCK_GETTIME) && defined(CLOCK_MONOTONIC)
+    struct timespec tp;
+
+    if (clock_gettime(CLOCK_MONOTONIC, &tp) != 0) {
+        abort();
+    }
+    return (unsigned long long) tp.tv_sec * 1000000ULL +
+        (unsigned long long) tp.tv_nsec / 1000ULL;
+#else
+    struct timeval tp;
 
     if (gettimeofday(&tp, NULL) != 0) {
         abort();
     }
-    now = ((unsigned long long) tp.tv_sec * 1000000ULL) +
+    return (unsigned long long) tp.tv_sec * 1000000ULL +
         (unsigned long long) tp.tv_usec;
-
-    return now;
+#endif
 }
 
 int main(void)

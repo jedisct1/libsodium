@@ -881,7 +881,7 @@ AS_IF([test "x$WASI" = "x"],[
   AC_CHECK_FUNCS([getauxva elf_aux_info])
 ])
 
-AC_CHECK_FUNCS([posix_memalign nanosleep])
+AC_CHECK_FUNCS([posix_memalign nanosleep clock_gettime])
 
 AS_IF([test "x$WASI" = "x"],[
   AC_CHECK_FUNCS([memset_s explicit_bzero memset_explicit explicit_memset])

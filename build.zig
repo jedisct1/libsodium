@@ -70,6 +70,7 @@ pub fn build(b: *std.build.Builder) !void {
 
                 lib.defineCMacro("HAVE_CATCHABLE_ABRT", "1");
                 lib.defineCMacro("HAVE_CATCHABLE_SEGV", "1");
+                lib.defineCMacro("HAVE_CLOCK_GETTIME", "1");
                 lib.defineCMacro("HAVE_GETPID", "1");
                 lib.defineCMacro("HAVE_INLINE_ASM", "1");
                 lib.defineCMacro("HAVE_MADVISE", "1");
@@ -100,6 +101,7 @@ pub fn build(b: *std.build.Builder) !void {
                 lib.defineCMacro("HAVE_ARC4RANDOM_BUF", "1");
                 lib.defineCMacro("HAVE_CATCHABLE_ABRT", "1");
                 lib.defineCMacro("HAVE_CATCHABLE_SEGV", "1");
+                lib.defineCMacro("HAVE_CLOCK_GETTIME", "1");
                 lib.defineCMacro("HAVE_GETENTROPY", "1");
                 lib.defineCMacro("HAVE_GETPID", "1");
                 lib.defineCMacro("HAVE_MADVISE", "1");
@@ -121,6 +123,7 @@ pub fn build(b: *std.build.Builder) !void {
             .wasi => {
                 lib.defineCMacro("HAVE_ARC4RANDOM", "1");
                 lib.defineCMacro("HAVE_ARC4RANDOM_BUF", "1");
+                lib.defineCMacro("HAVE_CLOCK_GETTIME", "1");
                 lib.defineCMacro("HAVE_GETENTROPY", "1");
                 lib.defineCMacro("HAVE_NANOSLEEP", "1");
                 lib.defineCMacro("HAVE_POSIX_MEMALIGN", "1");
