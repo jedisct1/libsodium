@@ -58,7 +58,7 @@ jobs:
           zig build -Dtarget=x86_64-macos
           zig build -Dtarget=aarch64-macos
           zig build -Dtarget=wasm32-wasi
-          zig build -Drelease-fast
+          zig build -Doptimize=ReleaseFast
           rm -fr zig-cache zig-out
 
   regular:
