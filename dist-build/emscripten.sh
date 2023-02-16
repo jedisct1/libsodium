@@ -80,7 +80,7 @@ if [ "$DIST" = yes ]; then
   }
   emmake make $MAKE_FLAGS install || exit 1
   emccLibsodium "${PREFIX}/lib/libsodium.asm.tmp.js" -Oz -s WASM=0
-  emccLibsodium "${PREFIX}/lib/libsodium.wasm.tmp.js" -O3 -s WASM=1
+  emccLibsodium "${PREFIX}/lib/libsodium.wasm.tmp.js" -O3 -s WASM=1 -s EVAL_CTORS=1
 
   cat >"${PREFIX}/lib/libsodium.js" <<-EOM
     var Module;
