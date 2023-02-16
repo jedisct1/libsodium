@@ -225,7 +225,6 @@ pub fn build(b: *std.build.Builder) !void {
         exe.addIncludePath("test/quirks");
         const full_path = try fmt.allocPrint(allocator, "{s}/{s}", .{ test_path, entry.path });
         exe.addCSourceFiles(&.{full_path}, &.{});
-        exe.strip = true;
 
         if (enable_benchmarks) {
             exe.defineCMacro("BENCHMARKS", "1");
