@@ -13,6 +13,7 @@ libsodium_la_SOURCES = \
 	crypto_aead/aes256gcm/aead_aes256gcm.c \
 	crypto_aead/chacha20poly1305/sodium/aead_chacha20poly1305.c \
 	crypto_aead/xchacha20poly1305/sodium/aead_xchacha20poly1305.c \
+	crypto_aead/xforro14poly1305/sodium/aead_xforro14poly1305.c \
 	crypto_auth/crypto_auth.c \
 	crypto_auth/hmacsha256/auth_hmacsha256.c \
 	crypto_auth/hmacsha512/auth_hmacsha512.c \
@@ -25,6 +26,7 @@ libsodium_la_SOURCES = \
 	crypto_core/ed25519/core_h2c.h \
 	crypto_core/ed25519/ref10/ed25519_ref10.c \
 	crypto_core/hchacha20/core_hchacha20.c \
+	crypto_core/hforro14/core_hforro14.c \
 	crypto_core/hsalsa20/ref2/core_hsalsa20_ref2.c \
 	crypto_core/hsalsa20/core_hsalsa20.c \
 	crypto_core/salsa/ref/core_salsa_ref.c \
@@ -75,6 +77,7 @@ libsodium_la_SOURCES = \
 	crypto_secretbox/crypto_secretbox_easy.c \
 	crypto_secretbox/xsalsa20poly1305/secretbox_xsalsa20poly1305.c \
 	crypto_secretstream/xchacha20poly1305/secretstream_xchacha20poly1305.c \
+	crypto_secretstream/xforro14poly1305/secretstream_xforro14poly1305.c \
 	crypto_shorthash/crypto_shorthash.c \
 	crypto_shorthash/siphash24/shorthash_siphash24.c \
 	crypto_shorthash/siphash24/ref/shorthash_siphash24_ref.c \
@@ -89,12 +92,17 @@ libsodium_la_SOURCES = \
 	crypto_stream/chacha20/stream_chacha20.h \
 	crypto_stream/chacha20/ref/chacha20_ref.h \
 	crypto_stream/chacha20/ref/chacha20_ref.c \
+	crypto_stream/forro14/stream_forro14.c \
+	crypto_stream/forro14/stream_forro14.h \
+	crypto_stream/forro14/ref/forro14f.h \
+	crypto_stream/forro14/ref/forro14f.c \
 	crypto_stream/crypto_stream.c \
 	crypto_stream/salsa20/stream_salsa20.c \
 	crypto_stream/salsa20/stream_salsa20.h \
 	crypto_stream/xsalsa20/stream_xsalsa20.c \
 	crypto_verify/sodium/verify.c \
 	include/sodium/private/chacha20_ietf_ext.h \
+	include/sodium/private/forro14_ietf_ext.h \
 	include/sodium/private/common.h \
 	include/sodium/private/ed25519_ref10.h \
 	include/sodium/private/implementations.h \
@@ -183,7 +191,8 @@ libsodium_la_SOURCES += \
 	crypto_stream/salsa2012/stream_salsa2012.c \
 	crypto_stream/salsa208/ref/stream_salsa208_ref.c \
 	crypto_stream/salsa208/stream_salsa208.c \
-	crypto_stream/xchacha20/stream_xchacha20.c
+	crypto_stream/xchacha20/stream_xchacha20.c \
+	crypto_stream/xforro14/stream_xforro14.c
 endif
 
 randombytes_internal_randombytes_internal_random_CFLAGS = @CFLAGS_RDRAND@
@@ -279,7 +288,12 @@ libssse3_la_SOURCES = \
 	crypto_stream/chacha20/dolbeau/chacha20_dolbeau-ssse3.h \
 	crypto_stream/chacha20/dolbeau/u0.h \
 	crypto_stream/chacha20/dolbeau/u1.h \
-	crypto_stream/chacha20/dolbeau/u4.h
+	crypto_stream/chacha20/dolbeau/u4.h \
+	crypto_stream/forro14/dolbeau/forro14_dolbeau-ssse3.c \
+	crypto_stream/forro14/dolbeau/forro14_dolbeau-ssse3.h \
+	crypto_stream/forro14/dolbeau/u0.h \
+	crypto_stream/forro14/dolbeau/u1.h \
+	crypto_stream/forro14/dolbeau/u4.h
 
 libsse41_la_LDFLAGS = $(libsodium_la_LDFLAGS)
 libsse41_la_CPPFLAGS = $(libsodium_la_CPPFLAGS) \
@@ -299,6 +313,9 @@ libavx2_la_SOURCES = \
 	crypto_stream/chacha20/dolbeau/chacha20_dolbeau-avx2.c \
 	crypto_stream/chacha20/dolbeau/chacha20_dolbeau-avx2.h \
 	crypto_stream/chacha20/dolbeau/u8.h \
+	crypto_stream/forro14/dolbeau/forro14_dolbeau-avx2.c \
+	crypto_stream/forro14/dolbeau/forro14_dolbeau-avx2.h \
+	crypto_stream/forro14/dolbeau/u8.h \
 	crypto_stream/salsa20/xmm6int/salsa20_xmm6int-avx2.c \
 	crypto_stream/salsa20/xmm6int/salsa20_xmm6int-avx2.h \
 	crypto_stream/salsa20/xmm6int/u0.h \
