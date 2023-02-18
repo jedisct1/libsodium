@@ -1,69 +1,65 @@
 
 #include <stdlib.h>
 
-#include "crypto_core_hchacha20.h"
-#include "crypto_stream_chacha20.h"
-#include "crypto_stream_xchacha20.h"
+#include "crypto_core_hforro14.h"
+#include "crypto_stream_forro14.h"
+#include "crypto_stream_xforro14.h"
 #include "private/common.h"
 #include "randombytes.h"
 
 size_t
-crypto_stream_xchacha20_keybytes(void)
+crypto_stream_xforro14_keybytes(void)
 {
-    return crypto_stream_xchacha20_KEYBYTES;
+    return crypto_stream_xforro14_KEYBYTES;
 }
 
 size_t
-crypto_stream_xchacha20_noncebytes(void)
+crypto_stream_xforro14_noncebytes(void)
 {
-    return crypto_stream_xchacha20_NONCEBYTES;
+    return crypto_stream_xforro14_NONCEBYTES;
 }
 
 size_t
-crypto_stream_xchacha20_messagebytes_max(void)
+crypto_stream_xforro14_messagebytes_max(void)
 {
-    return crypto_stream_xchacha20_MESSAGEBYTES_MAX;
+    return crypto_stream_xforro14_MESSAGEBYTES_MAX;
 }
 
-int
-crypto_stream_xchacha20(unsigned char *c, unsigned long long clen,
-                        const unsigned char *n, const unsigned char *k)
+int crypto_stream_xforro14(unsigned char *c, unsigned long long clen,
+                           const unsigned char *n, const unsigned char *k)
 {
-    unsigned char k2[crypto_core_hchacha20_OUTPUTBYTES];
+    unsigned char k2[crypto_core_hforro14_OUTPUTBYTES];
 
-    crypto_core_hchacha20(k2, n, k, NULL);
-    COMPILER_ASSERT(crypto_stream_chacha20_KEYBYTES <= sizeof k2);
-    COMPILER_ASSERT(crypto_stream_chacha20_NONCEBYTES ==
-                    crypto_stream_xchacha20_NONCEBYTES -
-                    crypto_core_hchacha20_INPUTBYTES);
+    crypto_core_hforro14(k2, n, k, NULL);
+    COMPILER_ASSERT(crypto_stream_forro14_KEYBYTES <= sizeof k2);
+    COMPILER_ASSERT(crypto_stream_forro14_NONCEBYTES ==
+                    crypto_stream_xforro14_NONCEBYTES -
+                        crypto_core_hforro14_INPUTBYTES);
 
-    return crypto_stream_chacha20(c, clen, n + crypto_core_hchacha20_INPUTBYTES,
-                                  k2);
+    return crypto_stream_forro14(c, clen, n + crypto_core_hforro14_INPUTBYTES,
+                                 k2);
 }
 
-int
-crypto_stream_xchacha20_xor_ic(unsigned char *c, const unsigned char *m,
+int crypto_stream_xforro14_xor_ic(unsigned char *c, const unsigned char *m,
+                                  unsigned long long mlen, const unsigned char *n,
+                                  uint64_t ic, const unsigned char *k)
+{
+    unsigned char k2[crypto_core_hforro14_OUTPUTBYTES];
+
+    crypto_core_hforro14(k2, n, k, NULL);
+    return crypto_stream_forro14_xor_ic(
+        c, m, mlen, n + crypto_core_hforro14_INPUTBYTES, ic, k2);
+}
+
+int crypto_stream_xforro14_xor(unsigned char *c, const unsigned char *m,
                                unsigned long long mlen, const unsigned char *n,
-                               uint64_t ic, const unsigned char *k)
+                               const unsigned char *k)
 {
-    unsigned char k2[crypto_core_hchacha20_OUTPUTBYTES];
-
-    crypto_core_hchacha20(k2, n, k, NULL);
-    return crypto_stream_chacha20_xor_ic(
-        c, m, mlen, n + crypto_core_hchacha20_INPUTBYTES, ic, k2);
+    return crypto_stream_xforro14_xor_ic(c, m, mlen, n, 0U, k);
 }
 
-int
-crypto_stream_xchacha20_xor(unsigned char *c, const unsigned char *m,
-                            unsigned long long mlen, const unsigned char *n,
-                            const unsigned char *k)
+void crypto_stream_xforro14_keygen(
+    unsigned char k[crypto_stream_xforro14_KEYBYTES])
 {
-    return crypto_stream_xchacha20_xor_ic(c, m, mlen, n, 0U, k);
-}
-
-void
-crypto_stream_xchacha20_keygen(
-    unsigned char k[crypto_stream_xchacha20_KEYBYTES])
-{
-    randombytes_buf(k, crypto_stream_xchacha20_KEYBYTES);
+    randombytes_buf(k, crypto_stream_xforro14_KEYBYTES);
 }

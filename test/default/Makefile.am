@@ -12,6 +12,7 @@ EXTRA_DIST = \
 	aead_chacha20poly1305.exp \
 	aead_chacha20poly13052.exp \
 	aead_xchacha20poly1305.exp \
+	aead_xforro14poly1305.exp \
 	auth.exp \
 	auth2.exp \
 	auth3.exp \
@@ -27,6 +28,7 @@ EXTRA_DIST = \
 	box_seal.exp \
 	box_seed.exp \
 	chacha20.exp \
+	forro14.exp \
 	codecs.exp \
 	core_ed25519.exp \
 	core_ed25519_h2c.exp \
@@ -86,7 +88,8 @@ EXTRA_DIST = \
 	stream3.exp \
 	stream4.exp \
 	verify1.exp \
-	xchacha20.exp
+	xchacha20.exp \
+	xforro14.exp
 
 DISTCLEANFILES = \
 	aead_aegis128l.res \
@@ -96,6 +99,7 @@ DISTCLEANFILES = \
 	aead_chacha20poly1305.res \
 	aead_chacha20poly13052.res \
 	aead_xchacha20poly1305.res \
+	aead_xforro14poly1305.res \
 	auth.res \
 	auth2.res \
 	auth3.res \
@@ -111,6 +115,7 @@ DISTCLEANFILES = \
 	box_seal.res \
 	box_seed.res \
 	chacha20.res \
+	forro14.res \
 	codecs.res \
 	core_ed25519.res \
 	core_ed25519_h2c.res \
@@ -171,7 +176,8 @@ DISTCLEANFILES = \
 	stream3.res \
 	stream4.res \
 	verify1.res \
-	xchacha20.res
+	xchacha20.res \
+	xforro14.res
 
 AM_CPPFLAGS = \
 	-DTEST_SRCDIR=\"@srcdir@\" \
@@ -191,6 +197,7 @@ TESTS_TARGETS = \
 	aead_chacha20poly1305 \
 	aead_chacha20poly13052 \
 	aead_xchacha20poly1305 \
+	aead_xforro14poly1305 \
 	auth \
 	auth2 \
 	auth3 \
@@ -206,6 +213,7 @@ TESTS_TARGETS = \
 	box_seal \
 	box_seed \
 	chacha20 \
+	forro14 \
 	codecs \
 	core1 \
 	core2 \
@@ -253,7 +261,8 @@ TESTS_TARGETS = \
 	stream2 \
 	stream3 \
 	stream4 \
-	verify1
+	verify1 \
+	xforro14
 
 if !EMSCRIPTEN
 TESTS_TARGETS += \
@@ -288,6 +297,9 @@ aead_chacha20poly13052_LDADD          = $(TESTS_LDADD)
 
 aead_xchacha20poly1305_SOURCE         = cmptest.h aead_xchacha20poly1305.c
 aead_xchacha20poly1305_LDADD          = $(TESTS_LDADD)
+
+aead_xforro14poly1305_SOURCE         = cmptest.h aead_xforro14poly1305.c
+aead_xforro14poly1305_LDADD          = $(TESTS_LDADD)
 
 auth_SOURCE               = cmptest.h auth.c
 auth_LDADD                = $(TESTS_LDADD)
@@ -333,6 +345,9 @@ box_seed_LDADD            = $(TESTS_LDADD)
 
 chacha20_SOURCE           = cmptest.h chacha20.c
 chacha20_LDADD            = $(TESTS_LDADD)
+
+forro14_SOURCE           = cmptest.h forro14.c
+forro14_LDADD            = $(TESTS_LDADD)
 
 codecs_SOURCE             = cmptest.h codecs.c
 codecs_LDADD              = $(TESTS_LDADD)
@@ -513,6 +528,9 @@ verify1_LDADD             = $(TESTS_LDADD)
 
 xchacha20_SOURCE          = cmptest.h xchacha20.c
 xchacha20_LDADD           = $(TESTS_LDADD)
+
+xforro14_SOURCE          = cmptest.h xforro14.c
+xforro14_LDADD           = $(TESTS_LDADD)
 
 if !MINIMAL
 TESTS_TARGETS += \

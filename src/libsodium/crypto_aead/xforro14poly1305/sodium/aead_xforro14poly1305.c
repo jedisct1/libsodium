@@ -5,19 +5,18 @@
 #include <string.h>
 
 #include "core.h"
-#include "crypto_aead_chacha20poly1305.h"
-#include "crypto_aead_xchacha20poly1305.h"
-#include "crypto_core_hchacha20.h"
+#include "crypto_aead_xforro14poly1305.h"
+#include "crypto_core_hforro14.h"
 #include "crypto_onetimeauth_poly1305.h"
-#include "crypto_stream_chacha20.h"
+#include "crypto_stream_forro14.h"
 #include "crypto_verify_16.h"
 #include "randombytes.h"
 #include "utils.h"
 
-#include "private/chacha20_ietf_ext.h"
+#include "private/forro14_ietf_ext.h"
 #include "private/common.h"
 
-static const unsigned char _pad0[16] = { 0 };
+static const unsigned char _pad0[16] = {0};
 
 static int
 _encrypt_detached(unsigned char *c,
@@ -32,33 +31,34 @@ _encrypt_detached(unsigned char *c,
                   const unsigned char *k)
 {
     crypto_onetimeauth_poly1305_state state;
-    unsigned char                     block0[64U];
-    unsigned char                     slen[8U];
+    unsigned char block0[64U];
+    unsigned char slen[8U];
 
-    (void) nsec;
-    crypto_stream_chacha20_ietf_ext(block0, sizeof block0, npub, k);
+    (void)nsec;
+    crypto_stream_forro14_ietf_ext(block0, sizeof block0, npub, k);
     crypto_onetimeauth_poly1305_init(&state, block0);
     sodium_memzero(block0, sizeof block0);
 
     crypto_onetimeauth_poly1305_update(&state, ad, adlen);
     crypto_onetimeauth_poly1305_update(&state, _pad0, (0x10 - adlen) & 0xf);
 
-    crypto_stream_chacha20_ietf_ext_xor_ic(c, m, mlen, npub, 1U, k);
+    crypto_stream_forro14_ietf_ext_xor_ic(c, m, mlen, npub, 1U, k);
 
     crypto_onetimeauth_poly1305_update(&state, c, mlen);
     crypto_onetimeauth_poly1305_update(&state, _pad0, (0x10 - mlen) & 0xf);
 
-    STORE64_LE(slen, (uint64_t) adlen);
+    STORE64_LE(slen, (uint64_t)adlen);
     crypto_onetimeauth_poly1305_update(&state, slen, sizeof slen);
 
-    STORE64_LE(slen, (uint64_t) mlen);
+    STORE64_LE(slen, (uint64_t)mlen);
     crypto_onetimeauth_poly1305_update(&state, slen, sizeof slen);
 
     crypto_onetimeauth_poly1305_final(&state, mac);
     sodium_memzero(&state, sizeof state);
 
-    if (maclen_p != NULL) {
-        *maclen_p = crypto_aead_chacha20poly1305_ietf_ABYTES;
+    if (maclen_p != NULL)
+    {
+        *maclen_p = crypto_aead_xforro14poly1305_ietf_ABYTES;
     }
     return 0;
 }
@@ -75,14 +75,14 @@ _decrypt_detached(unsigned char *m,
                   const unsigned char *k)
 {
     crypto_onetimeauth_poly1305_state state;
-    unsigned char                     block0[64U];
-    unsigned char                     slen[8U];
-    unsigned char                     computed_mac[crypto_aead_chacha20poly1305_ietf_ABYTES];
-    unsigned long long                mlen;
-    int                               ret;
+    unsigned char block0[64U];
+    unsigned char slen[8U];
+    unsigned char computed_mac[crypto_aead_xforro14poly1305_ietf_ABYTES];
+    unsigned long long mlen;
+    int ret;
 
-    (void) nsec;
-    crypto_stream_chacha20_ietf_ext(block0, sizeof block0, npub, k);
+    (void)nsec;
+    crypto_stream_forro14_ietf_ext(block0, sizeof block0, npub, k);
     crypto_onetimeauth_poly1305_init(&state, block0);
     sodium_memzero(block0, sizeof block0);
 
@@ -93,10 +93,10 @@ _decrypt_detached(unsigned char *m,
     crypto_onetimeauth_poly1305_update(&state, c, mlen);
     crypto_onetimeauth_poly1305_update(&state, _pad0, (0x10 - mlen) & 0xf);
 
-    STORE64_LE(slen, (uint64_t) adlen);
+    STORE64_LE(slen, (uint64_t)adlen);
     crypto_onetimeauth_poly1305_update(&state, slen, sizeof slen);
 
-    STORE64_LE(slen, (uint64_t) mlen);
+    STORE64_LE(slen, (uint64_t)mlen);
     crypto_onetimeauth_poly1305_update(&state, slen, sizeof slen);
 
     crypto_onetimeauth_poly1305_final(&state, computed_mac);
@@ -105,120 +105,122 @@ _decrypt_detached(unsigned char *m,
     COMPILER_ASSERT(sizeof computed_mac == 16U);
     ret = crypto_verify_16(computed_mac, mac);
     sodium_memzero(computed_mac, sizeof computed_mac);
-    if (m == NULL) {
+    if (m == NULL)
+    {
         return ret;
     }
-    if (ret != 0) {
+    if (ret != 0)
+    {
         memset(m, 0, mlen);
         return -1;
     }
-    crypto_stream_chacha20_ietf_ext_xor_ic(m, c, mlen, npub, 1U, k);
+    crypto_stream_forro14_ietf_ext_xor_ic(m, c, mlen, npub, 1U, k);
 
     return 0;
 }
 
-int
-crypto_aead_xchacha20poly1305_ietf_encrypt_detached(unsigned char *c,
-                                                    unsigned char *mac,
-                                                    unsigned long long *maclen_p,
-                                                    const unsigned char *m,
-                                                    unsigned long long mlen,
-                                                    const unsigned char *ad,
-                                                    unsigned long long adlen,
-                                                    const unsigned char *nsec,
-                                                    const unsigned char *npub,
-                                                    const unsigned char *k)
+int crypto_aead_xforro14poly1305_ietf_encrypt_detached(unsigned char *c,
+                                                       unsigned char *mac,
+                                                       unsigned long long *maclen_p,
+                                                       const unsigned char *m,
+                                                       unsigned long long mlen,
+                                                       const unsigned char *ad,
+                                                       unsigned long long adlen,
+                                                       const unsigned char *nsec,
+                                                       const unsigned char *npub,
+                                                       const unsigned char *k)
 {
-    unsigned char k2[crypto_core_hchacha20_OUTPUTBYTES];
-    unsigned char npub2[crypto_aead_chacha20poly1305_ietf_NPUBBYTES] = { 0 };
-    int           ret;
+    unsigned char k2[crypto_core_hforro14_OUTPUTBYTES];
+    unsigned char npub2[crypto_aead_xforro14poly1305_ietf_NPUBBYTES] = {0};
+    int ret;
 
-    crypto_core_hchacha20(k2, npub, k, NULL);
-    memcpy(npub2 + 4, npub + crypto_core_hchacha20_INPUTBYTES,
-           crypto_aead_chacha20poly1305_ietf_NPUBBYTES - 4);
+    crypto_core_hforro14(k2, npub, k, NULL);
+    memcpy(npub2 + 4, npub + crypto_core_hforro14_INPUTBYTES,
+           crypto_aead_xforro14poly1305_ietf_NPUBBYTES - 4);
     ret = _encrypt_detached(c, mac, maclen_p, m, mlen, ad, adlen,
                             nsec, npub2, k2);
-    sodium_memzero(k2, crypto_core_hchacha20_OUTPUTBYTES);
+    sodium_memzero(k2, crypto_core_hforro14_OUTPUTBYTES);
 
     return ret;
 }
 
-int
-crypto_aead_xchacha20poly1305_ietf_encrypt(unsigned char *c,
-                                           unsigned long long *clen_p,
-                                           const unsigned char *m,
-                                           unsigned long long mlen,
-                                           const unsigned char *ad,
-                                           unsigned long long adlen,
-                                           const unsigned char *nsec,
-                                           const unsigned char *npub,
-                                           const unsigned char *k)
+int crypto_aead_xforro14poly1305_ietf_encrypt(unsigned char *c,
+                                              unsigned long long *clen_p,
+                                              const unsigned char *m,
+                                              unsigned long long mlen,
+                                              const unsigned char *ad,
+                                              unsigned long long adlen,
+                                              const unsigned char *nsec,
+                                              const unsigned char *npub,
+                                              const unsigned char *k)
 {
     unsigned long long clen = 0ULL;
-    int                ret;
+    int ret;
 
-    if (mlen > crypto_aead_xchacha20poly1305_ietf_MESSAGEBYTES_MAX) {
+    if (mlen > crypto_aead_xforro14poly1305_ietf_MESSAGEBYTES_MAX)
+    {
         sodium_misuse();
     }
-    ret = crypto_aead_xchacha20poly1305_ietf_encrypt_detached
-        (c, c + mlen, NULL, m, mlen, ad, adlen, nsec, npub, k);
-    if (clen_p != NULL) {
-        if (ret == 0) {
-            clen = mlen + crypto_aead_xchacha20poly1305_ietf_ABYTES;
+    ret = crypto_aead_xforro14poly1305_ietf_encrypt_detached(c, c + mlen, NULL, m, mlen, ad, adlen, nsec, npub, k);
+    if (clen_p != NULL)
+    {
+        if (ret == 0)
+        {
+            clen = mlen + crypto_aead_xforro14poly1305_ietf_ABYTES;
         }
         *clen_p = clen;
     }
     return ret;
 }
 
-int
-crypto_aead_xchacha20poly1305_ietf_decrypt_detached(unsigned char *m,
-                                                    unsigned char *nsec,
-                                                    const unsigned char *c,
-                                                    unsigned long long clen,
-                                                    const unsigned char *mac,
-                                                    const unsigned char *ad,
-                                                    unsigned long long adlen,
-                                                    const unsigned char *npub,
-                                                    const unsigned char *k)
+int crypto_aead_xforro14poly1305_ietf_decrypt_detached(unsigned char *m,
+                                                       unsigned char *nsec,
+                                                       const unsigned char *c,
+                                                       unsigned long long clen,
+                                                       const unsigned char *mac,
+                                                       const unsigned char *ad,
+                                                       unsigned long long adlen,
+                                                       const unsigned char *npub,
+                                                       const unsigned char *k)
 {
-    unsigned char k2[crypto_core_hchacha20_OUTPUTBYTES];
-    unsigned char npub2[crypto_aead_chacha20poly1305_ietf_NPUBBYTES] = { 0 };
-    int           ret;
+    unsigned char k2[crypto_core_hforro14_OUTPUTBYTES];
+    unsigned char npub2[crypto_aead_xforro14poly1305_ietf_NPUBBYTES] = {0};
+    int ret;
 
-    crypto_core_hchacha20(k2, npub, k, NULL);
-    memcpy(npub2 + 4, npub + crypto_core_hchacha20_INPUTBYTES,
-           crypto_aead_chacha20poly1305_ietf_NPUBBYTES - 4);
+    crypto_core_hforro14(k2, npub, k, NULL);
+    memcpy(npub2 + 4, npub + crypto_core_hforro14_INPUTBYTES,
+           crypto_aead_xforro14poly1305_ietf_NPUBBYTES - 4);
     ret = _decrypt_detached(m, nsec, c, clen, mac, ad, adlen, npub2, k2);
-    sodium_memzero(k2, crypto_core_hchacha20_OUTPUTBYTES);
+    sodium_memzero(k2, crypto_core_hforro14_OUTPUTBYTES);
 
     return ret;
 }
 
-int
-crypto_aead_xchacha20poly1305_ietf_decrypt(unsigned char *m,
-                                           unsigned long long *mlen_p,
-                                           unsigned char *nsec,
-                                           const unsigned char *c,
-                                           unsigned long long clen,
-                                           const unsigned char *ad,
-                                           unsigned long long adlen,
-                                           const unsigned char *npub,
-                                           const unsigned char *k)
+int crypto_aead_xforro14poly1305_ietf_decrypt(unsigned char *m,
+                                              unsigned long long *mlen_p,
+                                              unsigned char *nsec,
+                                              const unsigned char *c,
+                                              unsigned long long clen,
+                                              const unsigned char *ad,
+                                              unsigned long long adlen,
+                                              const unsigned char *npub,
+                                              const unsigned char *k)
 {
     unsigned long long mlen = 0ULL;
-    int                ret  = -1;
+    int ret = -1;
 
-    if (clen >= crypto_aead_xchacha20poly1305_ietf_ABYTES) {
-        ret = crypto_aead_xchacha20poly1305_ietf_decrypt_detached
-            (m, nsec,
-             c, clen - crypto_aead_xchacha20poly1305_ietf_ABYTES,
-             c + clen - crypto_aead_xchacha20poly1305_ietf_ABYTES,
-             ad, adlen, npub, k);
+    if (clen >= crypto_aead_xforro14poly1305_ietf_ABYTES)
+    {
+        ret = crypto_aead_xforro14poly1305_ietf_decrypt_detached(m, nsec,
+                                                                 c, clen - crypto_aead_xforro14poly1305_ietf_ABYTES,
+                                                                 c + clen - crypto_aead_xforro14poly1305_ietf_ABYTES,
+                                                                 ad, adlen, npub, k);
     }
-    if (mlen_p != NULL) {
-        if (ret == 0) {
-            mlen = clen - crypto_aead_xchacha20poly1305_ietf_ABYTES;
+    if (mlen_p != NULL)
+    {
+        if (ret == 0)
+        {
+            mlen = clen - crypto_aead_xforro14poly1305_ietf_ABYTES;
         }
         *mlen_p = mlen;
     }
@@ -226,37 +228,36 @@ crypto_aead_xchacha20poly1305_ietf_decrypt(unsigned char *m,
 }
 
 size_t
-crypto_aead_xchacha20poly1305_ietf_keybytes(void)
+crypto_aead_xforro14poly1305_ietf_keybytes(void)
 {
-    return crypto_aead_xchacha20poly1305_ietf_KEYBYTES;
+    return crypto_aead_xforro14poly1305_ietf_KEYBYTES;
 }
 
 size_t
-crypto_aead_xchacha20poly1305_ietf_npubbytes(void)
+crypto_aead_xforro14poly1305_ietf_npubbytes(void)
 {
-    return crypto_aead_xchacha20poly1305_ietf_NPUBBYTES;
+    return crypto_aead_xforro14poly1305_ietf_NPUBBYTES;
 }
 
 size_t
-crypto_aead_xchacha20poly1305_ietf_nsecbytes(void)
+crypto_aead_xforro14poly1305_ietf_nsecbytes(void)
 {
-    return crypto_aead_xchacha20poly1305_ietf_NSECBYTES;
+    return crypto_aead_xforro14poly1305_ietf_NSECBYTES;
 }
 
 size_t
-crypto_aead_xchacha20poly1305_ietf_abytes(void)
+crypto_aead_xforro14poly1305_ietf_abytes(void)
 {
-    return crypto_aead_xchacha20poly1305_ietf_ABYTES;
+    return crypto_aead_xforro14poly1305_ietf_ABYTES;
 }
 
 size_t
-crypto_aead_xchacha20poly1305_ietf_messagebytes_max(void)
+crypto_aead_xforro14poly1305_ietf_messagebytes_max(void)
 {
-    return crypto_aead_xchacha20poly1305_ietf_MESSAGEBYTES_MAX;
+    return crypto_aead_xforro14poly1305_ietf_MESSAGEBYTES_MAX;
 }
 
-void
-crypto_aead_xchacha20poly1305_ietf_keygen(unsigned char k[crypto_aead_xchacha20poly1305_ietf_KEYBYTES])
+void crypto_aead_xforro14poly1305_ietf_keygen(unsigned char k[crypto_aead_xforro14poly1305_ietf_KEYBYTES])
 {
-    randombytes_buf(k, crypto_aead_xchacha20poly1305_ietf_KEYBYTES);
+    randombytes_buf(k, crypto_aead_xforro14poly1305_ietf_KEYBYTES);
 }
