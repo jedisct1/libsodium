@@ -1,10 +1,11 @@
 
-#ifndef stream_chacha20_H
-#define stream_chacha20_H
+#ifndef stream_forro14_H
+#define stream_forro14_H
 
 #include <stdint.h>
 
-typedef struct crypto_stream_chacha20_implementation {
+typedef struct crypto_stream_forro14_implementation
+{
     int (*stream)(unsigned char *c, unsigned long long clen,
                   const unsigned char *n, const unsigned char *k);
     int (*stream_ietf_ext)(unsigned char *c, unsigned long long clen,
@@ -17,6 +18,6 @@ typedef struct crypto_stream_chacha20_implementation {
                                   unsigned long long mlen,
                                   const unsigned char *n, uint32_t ic,
                                   const unsigned char *k);
-} crypto_stream_chacha20_implementation;
+} crypto_stream_forro14_implementation;
 
 #endif

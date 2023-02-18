@@ -1,8 +1,8 @@
 
 #include <stdint.h>
 
-#include "../stream_chacha20.h"
-#include "crypto_stream_chacha20.h"
+#include "../stream_forro14.h"
+#include "crypto_stream_forro14.h"
 
-extern struct crypto_stream_chacha20_implementation
-    crypto_stream_chacha20_ref_implementation;
+extern struct crypto_stream_forro14_implementation
+    crypto_stream_forro14_ref_implementation;
