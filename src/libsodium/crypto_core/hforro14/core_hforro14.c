@@ -5,6 +5,14 @@
 #include "crypto_core_hforro14.h"
 #include "private/common.h"
 
+#define U32C(v) (v##U)
+#define U32V(v) ((uint32_t)(v)&U32C(0xFFFFFFFF))
+
+#define ROTATE(v, c) (ROTL32(v, c))
+#define XOR(v, w) ((v) ^ (w))
+#define PLUS(v, w) (U32V((v) + (w)))
+#define PLUSONE(v) (PLUS((v), 1))
+
 #define QUARTERROUND(a, b, c, d, e) \
     d = PLUS(d, e);                 \
     c = XOR(c, d);                  \
