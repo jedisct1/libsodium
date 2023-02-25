@@ -5,60 +5,38 @@
 #include "crypto_core_hforro14.h"
 #include "private/common.h"
 
-#define U32C(v) (v##U)
-#define U32V(v) ((uint32_t)(v)&U32C(0xFFFFFFFF))
-
-#define ROTATE(v, c) (ROTL32(v, c))
-#define XOR(v, w) ((v) ^ (w))
-#define PLUS(v, w) (U32V((v) + (w)))
-#define PLUSONE(v) (PLUS((v), 1))
-
-#define QUARTERROUND(a, b, c, d, e) \
-    d = PLUS(d, e);                 \
-    c = XOR(c, d);                  \
-    b = ROTATE(PLUS(b, c), 10);     \
-    a = PLUS(a, b);                 \
-    e = XOR(e, a);                  \
-    d = ROTATE(PLUS(d, e), 27);     \
-    c = PLUS(c, d);                 \
-    b = XOR(b, c);                  \
-    a = ROTATE(PLUS(a, b), 8);
+#define ROUNDS 7
+#define ROTL(a, b) (((a) << (b)) | ((a) >> (32 - (b))))
+#define Q(a, b, c, d, e) (                   \
+    d += e, c ^= d, b += c, b = ROTL(b, 10), \
+    a += b, e ^= a, d += e, d = ROTL(d, 27), \
+    c += d, b ^= c, a += b, a = ROTL(a, 8))
 
 int crypto_core_hforro14(unsigned char *out, const unsigned char *in,
-                         const unsigned char *k, const unsigned char *c)
+                         const unsigned char *k)
 {
     int i;
     uint32_t x0, x1, x2, x3, x4, x5, x6, x7;
     uint32_t x8, x9, x10, x11, x12, x13, x14, x15;
 
-    if (c == NULL)
-    {
-        x6 = 0x746C6F76;
-        x7 = 0x61616461;
-        x14 = 0x72626173;
-        x15 = 0x61636E61;
-    }
-    else
-    {
-        x6 = LOAD32_LE(c + 0);
-        x7 = LOAD32_LE(c + 4);
-        x14 = LOAD32_LE(c + 8);
-        x15 = LOAD32_LE(c + 12);
-    }
     x0 = LOAD32_LE(k + 0);
     x1 = LOAD32_LE(k + 4);
     x2 = LOAD32_LE(k + 8);
     x3 = LOAD32_LE(k + 12);
+    x4 = LOAD32_LE(in + 0);
+    x5 = LOAD32_LE(in + 4);
+    x6 = 0x746C6F76;
+    x7 = 0x61616461;
     x8 = LOAD32_LE(k + 16);
     x9 = LOAD32_LE(k + 20);
     x10 = LOAD32_LE(k + 24);
     x11 = LOAD32_LE(k + 28);
-    x12 = LOAD32_LE(in + 0);
-    x13 = LOAD32_LE(in + 4);
-    x14 = LOAD32_LE(in + 8);
-    x15 = LOAD32_LE(in + 12);
+    x12 = LOAD32_LE(in + 8);
+    x13 = LOAD32_LE(in + 12);
+    x14 = 0x72626173;
+    x15 = 0x61636E61;
 
-    for (i = 0; i < 7; i++)
+    for (i = 0; i < ROUNDS; i++)
     {
         QUARTERROUND(x0, x4, x8, x12, x3);
         QUARTERROUND(x1, x5, x9, x13, x0);
