@@ -33,49 +33,50 @@ typedef struct forro_ctx forro_ctx;
 #define PLUS(v, w) (U32V((v) + (w)))
 #define PLUSONE(v) (PLUS((v), 1))
 
-#define QUARTERROUND(a, b, c, d) \
-    a = PLUS(a, b);              \
-    d = ROTATE(XOR(d, a), 16);   \
-    c = PLUS(c, d);              \
-    b = ROTATE(XOR(b, c), 12);   \
-    a = PLUS(a, b);              \
-    d = ROTATE(XOR(d, a), 8);    \
-    c = PLUS(c, d);              \
-    b = ROTATE(XOR(b, c), 7);
+#define QUARTERROUND(a, b, c, d, e) \
+    d = PLUS(d, e);                 \
+    c = XOR(c, d);                  \
+    b = ROTATE(PLUS(b, c), 10);     \
+    a = PLUS(a, b);                 \
+    e = XOR(e, a);                  \
+    d = ROTATE(PLUS(d, e), 27);     \
+    c = PLUS(c, d);                 \
+    b = XOR(b, c);                  \
+    a = ROTATE(PLUS(a, b), 8);
 
 static void
 forro_keysetup(forro_ctx *ctx, const uint8_t *k)
 {
-    ctx->input[0] = U32C(0x61707865);
-    ctx->input[1] = U32C(0x3320646e);
-    ctx->input[2] = U32C(0x79622d32);
-    ctx->input[3] = U32C(0x6b206574);
-    ctx->input[4] = LOAD32_LE(k + 0);
-    ctx->input[5] = LOAD32_LE(k + 4);
-    ctx->input[6] = LOAD32_LE(k + 8);
-    ctx->input[7] = LOAD32_LE(k + 12);
+    ctx->input[0] = LOAD32_LE(k + 0);
+    ctx->input[1] = LOAD32_LE(k + 4);
+    ctx->input[2] = LOAD32_LE(k + 8);
+    ctx->input[3] = LOAD32_LE(k + 12);
+    ctx->input[6] = U32C(0x746C6F76);
+    ctx->input[7] = U32C(0x61616461);
     ctx->input[8] = LOAD32_LE(k + 16);
     ctx->input[9] = LOAD32_LE(k + 20);
     ctx->input[10] = LOAD32_LE(k + 24);
     ctx->input[11] = LOAD32_LE(k + 28);
+    ctx->input[14] = U32C(0x72626173);
+    ctx->input[15] = U32C(0x61636E61);
 }
 
 static void
 forro_ivsetup(forro_ctx *ctx, const uint8_t *iv, const uint8_t *counter)
 {
-    ctx->input[12] = counter == NULL ? 0 : LOAD32_LE(counter + 0);
-    ctx->input[13] = counter == NULL ? 0 : LOAD32_LE(counter + 4);
-    ctx->input[14] = LOAD32_LE(iv + 0);
-    ctx->input[15] = LOAD32_LE(iv + 4);
+    ctx->input[4] = counter == NULL ? 0 : LOAD32_LE(counter + 0);
+    ctx->input[5] = counter == NULL ? 0 : LOAD32_LE(counter + 4);
+    ctx->input[12] = LOAD32_LE(iv + 0);
+    ctx->input[13] = LOAD32_LE(iv + 4);
 }
 
 static void
 forro_ietf_ivsetup(forro_ctx *ctx, const uint8_t *iv, const uint8_t *counter)
 {
-    ctx->input[12] = counter == NULL ? 0 : LOAD32_LE(counter);
-    ctx->input[13] = LOAD32_LE(iv + 0);
-    ctx->input[14] = LOAD32_LE(iv + 4);
-    ctx->input[15] = LOAD32_LE(iv + 8);
+    ctx->input[4] = counter == NULL ? 0 : LOAD32_LE(counter);
+    ctx->input[5] = LOAD32_LE(iv + 0);
+    ctx->input[12] = LOAD32_LE(iv + 4);
+    ctx->input[13] = LOAD32_LE(iv + 8);
 }
 
 static void
@@ -142,14 +143,14 @@ forro14_encrypt_bytes(forro_ctx *ctx, const uint8_t *m, uint8_t *c,
         x15 = j15;
         for (i = 20; i > 0; i -= 2)
         {
-            QUARTERROUND(x0, x4, x8, x12)
-            QUARTERROUND(x1, x5, x9, x13)
-            QUARTERROUND(x2, x6, x10, x14)
-            QUARTERROUND(x3, x7, x11, x15)
-            QUARTERROUND(x0, x5, x10, x15)
-            QUARTERROUND(x1, x6, x11, x12)
-            QUARTERROUND(x2, x7, x8, x13)
-            QUARTERROUND(x3, x4, x9, x14)
+            QUARTERROUND(x0, x4, x8, x12, x3)
+            QUARTERROUND(x1, x5, x9, x13, x0)
+            QUARTERROUND(x2, x6, x10, x14, x1)
+            QUARTERROUND(x3, x7, x11, x15, x2)
+            QUARTERROUND(x0, x5, x10, x15, x3)
+            QUARTERROUND(x1, x6, x11, x12, x0)
+            QUARTERROUND(x2, x7, x8, x13, x1)
+            QUARTERROUND(x3, x4, x9, x14, x2)
         }
         x0 = PLUS(x0, j0);
         x1 = PLUS(x1, j1);
@@ -185,11 +186,11 @@ forro14_encrypt_bytes(forro_ctx *ctx, const uint8_t *m, uint8_t *c,
         x14 = XOR(x14, LOAD32_LE(m + 56));
         x15 = XOR(x15, LOAD32_LE(m + 60));
 
-        j12 = PLUSONE(j12);
+        j4 = PLUSONE(j4);
         /* LCOV_EXCL_START */
-        if (!j12)
+        if (!j4)
         {
-            j13 = PLUSONE(j13);
+            j5 = PLUSONE(j5);
         }
         /* LCOV_EXCL_STOP */
 
@@ -219,8 +220,8 @@ forro14_encrypt_bytes(forro_ctx *ctx, const uint8_t *m, uint8_t *c,
                     ctarget[i] = c[i]; /* ctarget cannot be NULL */
                 }
             }
-            ctx->input[12] = j12;
-            ctx->input[13] = j13;
+            ctx->input[4] = j4;
+            ctx->input[5] = j5;
 
             return;
         }
