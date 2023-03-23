@@ -18,6 +18,7 @@ EXTRA_DIST = \
 	auth5.exp \
 	auth6.exp \
 	auth7.exp \
+	blobcrypt.exp \
 	box.exp \
 	box2.exp \
 	box7.exp \
@@ -37,6 +38,8 @@ EXTRA_DIST = \
 	core4.exp \
 	core5.exp \
 	core6.exp \
+	dovecot_1.exp \
+	dovecot_2.exp \
 	ed25519_convert.exp \
 	generichash.exp \
 	generichash2.exp \
@@ -102,6 +105,7 @@ DISTCLEANFILES = \
 	auth5.res \
 	auth6.res \
 	auth7.res \
+	blobcrypt.res \
 	box.res \
 	box2.res \
 	box7.res \
@@ -121,6 +125,8 @@ DISTCLEANFILES = \
 	core4.res \
 	core5.res \
 	core6.res \
+	dovecot_1.res \
+	dovecot_2.res \
 	ed25519_convert.res \
 	generichash.res \
 	generichash2.res \
@@ -197,6 +203,7 @@ TESTS_TARGETS = \
 	auth5 \
 	auth6 \
 	auth7 \
+	blobcrypt \
 	box \
 	box2 \
 	box7 \
@@ -213,6 +220,8 @@ TESTS_TARGETS = \
 	core4 \
 	core5 \
 	core6 \
+	dovecot_1 \
+	dovecot_2 \
 	ed25519_convert \
 	generichash \
 	generichash2 \
@@ -307,6 +316,9 @@ auth6_LDADD               = $(TESTS_LDADD)
 auth7_SOURCE              = cmptest.h auth7.c quirks.h
 auth7_LDADD               = $(TESTS_LDADD)
 
+blobcrypt_SOURCE          = cmptest.h blobcrypt.c
+blobcrypt_LDADD           = $(TESTS_LDADD)
+
 box_SOURCE                = cmptest.h box.c
 box_LDADD                 = $(TESTS_LDADD)
 
@@ -363,6 +375,12 @@ core5_LDADD               = $(TESTS_LDADD)
 
 core6_SOURCE              = cmptest.h core6.c
 core6_LDADD               = $(TESTS_LDADD)
+
+dovecot_1_SOURCE          = cmptest.h dovecot_1.c
+dovecot_1_LDADD           = $(TESTS_LDADD)
+
+dovecot_2_SOURCE          = cmptest.h dovecot_2.c
+dovecot_2_LDADD           = $(TESTS_LDADD)
 
 ed25519_convert_SOURCE    = cmptest.h ed25519_convert.c
 ed25519_convert_LDADD     = $(TESTS_LDADD)
