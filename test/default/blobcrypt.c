@@ -4,13 +4,11 @@
 #include <assert.h>
 #include <ctype.h>
 #include <errno.h>
-#include <poll.h>
 #include <sodium/crypto_generichash.h>
 #include <sodium/crypto_pwhash.h>
 #include <sodium/utils.h>
 #include <string.h>
 #include <sys/types.h>
-#include <termios.h>
 
 // This testcase has been extracted from https://github.com/jedisct1/blobcrypt
 // which is under the following licesning requirements:
