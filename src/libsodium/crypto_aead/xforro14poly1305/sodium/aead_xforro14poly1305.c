@@ -134,7 +134,7 @@ int crypto_aead_xforro14poly1305_ietf_encrypt_detached(unsigned char *c,
     unsigned char npub2[crypto_aead_xforro14poly1305_ietf_NPUBBYTES] = {0};
     int ret;
 
-    crypto_core_hforro14(k2, npub, k, NULL);
+    crypto_core_hforro14(k2, npub, k);
     memcpy(npub2 + 4, npub + crypto_core_hforro14_INPUTBYTES,
            crypto_aead_xforro14poly1305_ietf_NPUBBYTES - 4);
     ret = _encrypt_detached(c, mac, maclen_p, m, mlen, ad, adlen,
@@ -187,7 +187,7 @@ int crypto_aead_xforro14poly1305_ietf_decrypt_detached(unsigned char *m,
     unsigned char npub2[crypto_aead_xforro14poly1305_ietf_NPUBBYTES] = {0};
     int ret;
 
-    crypto_core_hforro14(k2, npub, k, NULL);
+    crypto_core_hforro14(k2, npub, k);
     memcpy(npub2 + 4, npub + crypto_core_hforro14_INPUTBYTES,
            crypto_aead_xforro14poly1305_ietf_NPUBBYTES - 4);
     ret = _decrypt_detached(m, nsec, c, clen, mac, ad, adlen, npub2, k2);

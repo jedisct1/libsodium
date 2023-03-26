@@ -34,16 +34,16 @@ static void
 tv_hforro14(void)
 {
     static const Hforro14TV tvs[] = {
-        {"24f11cce8a1b3d61e441561a696c1c1b7e173d084fd4812425435a8896a013dc", "d9660c5900ae19ddad28d6e06e45fe5e", "5966b3eec3bff1189f831f06afe4d4e3be97fa9235ec8c20d08acfbbb4e851e3"},
-        {"80a5f6272031e18bb9bcd84f3385da65e7731b7039f13f5e3d475364cd4d42f7", "c0eccc384b44c88e92c57eb2d5ca4dfa", "6ed11741f724009a640a44fce7320954c46e18e0d7ae063bdbc8d7cf372709df"},
-        {"cb1fc686c0eec11a89438b6f4013bf110e7171dace3297f3a657a309b3199629", "fcd49b93e5f8f299227e64d40dc864a3", "84b7e96937a1a0a406bb7162eeaad34308d49de60fd2f7ec9dc6a79cbab2ca34"},
-        {"6640f4d80af5496ca1bc2cfff1fefbe99638dbceaabd7d0ade118999d45f053d", "31f59ceeeafdbfe8cae7914caeba90d6", "9af4697d2f5574a44834a2c2ae1a0505af9f5d869dbe381a994a18eb374c36a0"},
-        {"0693ff36d971225a44ac92c092c60b399e672e4cc5aafd5e31426f123787ac27", "3a6293da061da405db45be1731d5fc4d", "f87b38609142c01095bfc425573bb3c698f9ae866b7e4216840b9c4caf3b0865"},
-        {"809539bd2639a23bf83578700f055f313561c7785a4a19fc9114086915eee551", "780c65d6a3318e479c02141d3f0b3918", "902ea8ce4680c09395ce71874d242f84274243a156938aaa2dd37ac5be382b42"},
-        {"1a170ddf25a4fd69b648926e6d794e73408805835c64b2c70efddd8cd1c56ce0", "05dbee10de87eb0c5acb2b66ebbe67d3", "a4e20b634c77d7db908d387b48ec2b370059db916e8ea7716dc07238532d5981"},
-        {"3b354e4bb69b5b4a1126f509e84cad49f18c9f5f29f0be0c821316a6986e15a6", "d8a89af02f4b8b2901d8321796388b6c", "9816cb1a5b61993735a4b161b51ed2265b696e7ded5309c229a5a99f53534fbc"},
-        {"4b9a818892e15a530db50dd2832e95ee192e5ed6afffb408bd624a0c4e12a081", "a9079c551de70501be0286d1bc78b045", "ebc5224cf41ea97473683b6c2f38a084bf6e1feaaeff62676db59d5b719d999b"},
-        {"c49758f00003714c38f1d4972bde57ee8271f543b91e07ebce56b554eb7fa6a7", "31f0204e10cf4f2035f9e62bb5ba7303", "0dd8cc400f702d2c06ed920be52048a287076b86480ae273c6d568a2e9e7518c"}};
+        {"fb5c38aeebfbf405f0a60b2296bfdf1a07b556fbc32ccb65b7a21de1b0fb007b", "6863370d90ce0bde35aec0088feace1a", "9ccfdfdf400d0de0d5dec1229b1cea3eb6392c0d89d345bffdd0382cf39e2cf7"},
+        {"18c34ee0ed3cf9bd9de5793b322a49427f57a86ac336b4ec1a1795aaeb20a252", "e362bcad548ac003aad3ba46ef1607e1", "5317d3b641940c2a471b776295f81f48668a5181b96e034e2293fbf893fca455"},
+        {"b37953420d6b02c5040ea748e132df76f7d155823f5d97763461b424034e1478", "5bd935c83d133210d9de9aae9d651441", "3d198914d01242f147b9340edc1ac8ecb176696b3a69bc5ac7b51dc59040685c"},
+        {"9bff51f895dd2da93864f43525eec5d62e8e83f5f5b5c682e520f6f2d7498937", "65530a0cbde7e040c891db5ff6008d2d", "1333aadaf4c90710a97b9facbbf4ac99ee30043682ffdedc1d69775be2b0ba09"},
+        {"0809d203ed3571ff3aa4ec4f6fc1de10b92e87c76f4b4ffdfad8fe37381d9d67", "8aa6100dda567d04614db23e38e548db", "64230964ce353b7886adf65f128dec980df7a5ff626c284e187848336a79e7fa"},
+        {"1eb598146ce623ad2f9862d71f7ac79ea7e4731b794ed28e32a8327831364309", "3ad23370a9be92f5c0e316f041becef6", "3ff7dde95bc81a01846c8a63d4c476ec82ac2b2006ef72a73948ca90cad543f9"},
+        {"6b0ab6913ac0be730e2a55df94a25de7ee45df5bb12e39e82d5ecc89e06835a5", "30c3e2daf14197054dc24097747cdecc", "15951461ee9144e6ad2231711156eb537a7e29c475e7fcbe2118f0c000b05735"},
+        {"342b874ca9a4103c1b4d7c1435a602fd7e6e31f3352468fb4d6d3635cf887f66", "41fa687d949788ca4305f4118d068150", "f101b37cf0b2e2af9a4fe98c098a5ccf6c8a4565647c0f30cc9c59ae6c03e1fb"},
+        {"2b90f875fc53683fa2bb3c0f592f2040ed0bb3db5e63817e15312518d7d0c458", "a255722a92b7c63f1292f4fef8cb0146", "0ec210f21643955859c28cec1721424ab1bd987b1a383401d91699999c424bf2"},
+        {"be875e8fd7ac02a9dd861b0f0c9be1b9c2df0dcbe131536ad0d08cde49de6e77", "7b155d82389c755f53ee85194da1c08f", "5759804ebdb0fa3e622bbddbc2490a14d6bf25211910636ec168f2a086cd4134"}};
     const Hforro14TV *tv;
     unsigned char *constant;
     unsigned char *key;
@@ -57,9 +57,6 @@ tv_hforro14(void)
     in = (unsigned char *)sodium_malloc(crypto_core_hforro14_INPUTBYTES);
     out = (unsigned char *)sodium_malloc(crypto_core_hforro14_OUTPUTBYTES);
     out2 = (unsigned char *)sodium_malloc(crypto_core_hforro14_OUTPUTBYTES);
-    FILE *fp;
-
-    fp = fopen("output_hforro14.txt", "w+");
 
     for (i = 0; i < (sizeof tvs) / (sizeof tvs[0]); i++)
     {
@@ -70,27 +67,9 @@ tv_hforro14(void)
                        tv->in, strlen(tv->in), NULL, NULL, NULL);
         sodium_hex2bin(out, crypto_core_hforro14_OUTPUTBYTES,
                        tv->out, strlen(tv->out), NULL, NULL, NULL);
-        crypto_core_hforro14(out2, in, key, NULL);
-        print_buffer_hex(fp, out2, crypto_core_hforro14_OUTPUTBYTES);
-        // assert(memcmp(out, out2, crypto_core_hforro14_OUTPUTBYTES) == 0);
+        crypto_core_hforro14(out2, in, key);
+        assert(memcmp(out, out2, crypto_core_hforro14_OUTPUTBYTES) == 0);
     }
-    fclose(fp);
-
-    sodium_hex2bin(constant, crypto_core_hforro14_CONSTBYTES,
-                   "0d29b795c1ca70c1652e823364d32417",
-                   crypto_core_hforro14_CONSTBYTES * 2 + 1, NULL, NULL, NULL);
-    sodium_hex2bin(out, crypto_core_hforro14_OUTPUTBYTES,
-                   "934d941d78eb9bfc2f0376f7ccd4a11ecf0c6a44104618a9749ef47fe97037a2",
-                   crypto_core_hforro14_OUTPUTBYTES * 2 + 1, NULL, NULL, NULL);
-
-    crypto_core_hforro14(out2, in, key, constant);
-    assert(memcmp(out, out2, crypto_core_hforro14_OUTPUTBYTES) == 0);
-
-    sodium_free(out2);
-    sodium_free(out);
-    sodium_free(in);
-    sodium_free(key);
-    sodium_free(constant);
 
     assert(crypto_core_hforro14_outputbytes() == crypto_core_hforro14_OUTPUTBYTES);
     assert(crypto_core_hforro14_inputbytes() == crypto_core_hforro14_INPUTBYTES);

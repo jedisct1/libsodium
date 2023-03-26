@@ -30,7 +30,7 @@ int crypto_stream_xforro14(unsigned char *c, unsigned long long clen,
 {
     unsigned char k2[crypto_core_hforro14_OUTPUTBYTES];
 
-    crypto_core_hforro14(k2, n, k, NULL);
+    crypto_core_hforro14(k2, n, k);
     COMPILER_ASSERT(crypto_stream_forro14_KEYBYTES <= sizeof k2);
     COMPILER_ASSERT(crypto_stream_forro14_NONCEBYTES ==
                     crypto_stream_xforro14_NONCEBYTES -
@@ -46,7 +46,7 @@ int crypto_stream_xforro14_xor_ic(unsigned char *c, const unsigned char *m,
 {
     unsigned char k2[crypto_core_hforro14_OUTPUTBYTES];
 
-    crypto_core_hforro14(k2, n, k, NULL);
+    crypto_core_hforro14(k2, n, k);
     return crypto_stream_forro14_xor_ic(
         c, m, mlen, n + crypto_core_hforro14_INPUTBYTES, ic, k2);
 }

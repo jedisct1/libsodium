@@ -7,7 +7,7 @@
 
 #define ROUNDS 7
 #define ROTL(a, b) (((a) << (b)) | ((a) >> (32 - (b))))
-#define Q(a, b, c, d, e) (                   \
+#define QUARTERROUND(a, b, c, d, e) (        \
     d += e, c ^= d, b += c, b = ROTL(b, 10), \
     a += b, e ^= a, d += e, d = ROTL(d, 27), \
     c += d, b ^= c, a += b, a = ROTL(a, 8))

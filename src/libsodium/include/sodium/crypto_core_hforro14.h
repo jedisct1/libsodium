@@ -27,8 +27,8 @@ extern "C"
 
     SODIUM_EXPORT
     int crypto_core_hforro14(unsigned char *out, const unsigned char *in,
-                             const unsigned char *k, const unsigned char *c)
-        __attribute__((nonnull(1, 2, 3)));
+                             const unsigned char *k)
+        __attribute__((nonnull));
 
 #ifdef __cplusplus
 }
