@@ -32,7 +32,7 @@ pub fn build(b: *std.build.Builder) !void {
     }
 
     for (libs) |lib| {
-        lib.install();
+        b.installArtifact(lib);
         if (optimize != .Debug) {
             lib.strip = true;
         }
@@ -227,6 +227,6 @@ pub fn build(b: *std.build.Builder) !void {
             exe.defineCMacro("ITERATIONS", std.fmt.bufPrintIntToSlice(&buf, benchmarks_iterations, 10, .lower, .{}));
         }
 
-        exe.install();
+        b.installArtifact(exe);
     }
 }
