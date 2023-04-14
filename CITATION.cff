@@ -1,0 +1,18 @@
+cff-version: 1.2.0
+title: libsodium
+message: >-
+  If you use this software, please cite it using the
+  metadata from this file.
+type: software
+authors:
+  - given-names: Frank
+    family-names: Denis
+    orcid: 'https://orcid.org/0009-0008-4417-1713'
+repository-code: 'https://github.com/jedisct1/libsodium'
+url: 'https://libsodium.org'
+abstract: 'A modern, portable, easy-to-use cryptographic library.'
+keywords:
+  - cryptography
+  - library
+  - nacl
+license: ISC
