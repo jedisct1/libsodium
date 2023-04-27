@@ -90,6 +90,9 @@ pub fn build(b: *std.build.Builder) !void {
             .windows => {
                 lib.defineCMacro("HAVE_RAISE", "1");
                 lib.defineCMacro("HAVE_SYS_PARAM_H", "1");
+                if (lib == static) {
+                    lib.defineCMacro("SODIUM_STATIC", "1");
+                }
             },
             .macos => {
                 lib.defineCMacro("ASM_HIDE_SYMBOL", ".private_extern");
