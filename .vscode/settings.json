@@ -1,5 +1,9 @@
 {
     "files.associations": {
-        "forro14_dolbeau-avx2.h": "c"
+        "forro14_dolbeau-avx2.h": "c",
+        "__locale": "c",
+        "format": "c",
+        "ios": "c",
+        "__node_handle": "c"
     }
 }
