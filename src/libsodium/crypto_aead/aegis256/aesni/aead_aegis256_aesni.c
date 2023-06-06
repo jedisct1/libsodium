@@ -219,7 +219,7 @@ aegis256_decrypt_detached(unsigned char *m, unsigned char *nsec, const unsigned 
         }
     } else {
         for (i = 0ULL; i + 16ULL <= mlen; i += 16ULL) {
-            aegis256_dec(dst, c + i, state);
+            aegis256_absorb(c + i, state);
         }
     }
     if (mlen & 0xf) {
