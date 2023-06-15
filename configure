@@ -1320,7 +1320,7 @@ if test "x$host_alias" != x; then
     cross_compiling=yes
   fi
 fi
-
+cross_compiling=yes
 ac_tool_prefix=
 test -n "$host_alias" && ac_tool_prefix=$host_alias-
 
