@@ -231,6 +231,10 @@ find_package_handle_standard_args(sodium
                                   VERSION_VAR
                                   sodium_VERSION_STRING)
 
+if (NOT sodium_FOUND)
+  return()
+endif()
+
 # mark file paths as advanced
 mark_as_advanced(sodium_INCLUDE_DIR)
 mark_as_advanced(sodium_LIBRARY_DEBUG)
