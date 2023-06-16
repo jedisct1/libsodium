@@ -49,6 +49,10 @@ main(void)
     size_t       size;
     unsigned int i;
 
+#ifdef BENCHMARKS
+    return 0;
+#endif
+
     if (sodium_malloc(SIZE_MAX - 1U) != NULL) {
         return 1;
     }
