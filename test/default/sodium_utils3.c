@@ -44,6 +44,10 @@ main(void)
     void * buf;
     size_t size;
 
+#ifdef BENCHMARKS
+    return 0;
+#endif
+
 #ifdef SIG_DFL
 # ifdef SIGSEGV
     signal(SIGSEGV, segv_handler);
