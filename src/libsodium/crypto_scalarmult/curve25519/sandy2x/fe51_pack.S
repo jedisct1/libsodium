@@ -4,6 +4,7 @@
    This file is the result of merging 
    amd64-51/fe25519_pack.c and amd64-51/fe25519_freeze.s.
 */
+#include "private/asm_cet.h"
 #include "fe51_namespace.h"
 #include "consts_namespace.h"
 .p2align 5
@@ -21,6 +22,7 @@ ASM_HIDE_SYMBOL _fe51_pack
 fe51_pack:
 _fe51_pack:
 
+_CET_ENDBR
 mov %rsp,%r11
 and $31,%r11
 add $32,%r11
