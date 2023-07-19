@@ -16,6 +16,8 @@
 # warning work as expected, and performance is likely to be suboptimal.
 #endif
 
+#ifndef __ASSEMBLER__
+
 #include <stdint.h>
 #include <stdlib.h>
 #include <string.h>
@@ -266,6 +268,20 @@ extern void ct_unpoison(const void *, size_t);
 # define ACQUIRE_FENCE atomic_thread_fence(memory_order_acquire)
 #else
 # define ACQUIRE_FENCE (void) 0
+#endif
+
+#else
+
+/*
+ * Clang got CET (-fcf-protection) support early, but the cet.h header was
+ * added in v11.
+ */
+# if (defined(__GNUC__) && __GNUC__ >= 8) || \
+     (defined(__clang__) && __clang_major__ >= 11)
+#  include <cet.h>
+# else
+#  define _CET_ENDBR
+# endif
 #endif
 
 #endif
