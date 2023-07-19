@@ -1,5 +1,7 @@
 #ifdef HAVE_AMD64_ASM
 
+#include "private/asm_cet.h"
+
 .text
 .p2align 5
 
@@ -15,6 +17,8 @@ ASM_HIDE_SYMBOL _stream_salsa20_xmm6
 #endif
 stream_salsa20_xmm6:
 _stream_salsa20_xmm6:
+
+_CET_ENDBR
 mov %rsp,%r11
 and $31,%r11
 add $512,%r11
@@ -56,6 +60,7 @@ ASM_HIDE_SYMBOL _stream_salsa20_xmm6_xor_ic
 stream_salsa20_xmm6_xor_ic:
 _stream_salsa20_xmm6_xor_ic:
 
+_CET_ENDBR
 mov %rsp,%r11
 and $31,%r11
 add $512,%r11

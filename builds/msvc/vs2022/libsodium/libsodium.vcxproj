@@ -260,6 +260,7 @@
     <ClInclude Include="..\..\..\..\src\libsodium\include\sodium\private\ed25519_ref10_fe_25_5.h" />
     <ClInclude Include="..\..\..\..\src\libsodium\include\sodium\private\ed25519_ref10_fe_51.h" />
     <ClInclude Include="..\..\..\..\src\libsodium\include\sodium\private\sse2_64_32.h" />
+    <ClInclude Include="..\..\..\..\src\libsodium\include\sodium\private\asm_cet.h" />
     <ClInclude Include="..\..\..\..\src\libsodium\include\sodium\private\common.h" />
     <ClInclude Include="..\..\..\..\src\libsodium\include\sodium\private\mutex.h" />
     <ClInclude Include="..\..\..\..\src\libsodium\include\sodium\private\chacha20_ietf_ext.h" />

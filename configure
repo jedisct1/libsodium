@@ -19767,6 +19767,13 @@ then :
 
 fi
 
+ac_fn_c_check_header_compile "$LINENO" "cet.h" "ac_cv_header_cet_h" "$ac_includes_default"
+if test "x$ac_cv_header_cet_h" = xyes
+then :
+  printf "%s\n" "#define HAVE_CET_H 1" >>confdefs.h
+
+fi
+
 
 { printf "%s\n" "$as_me:${as_lineno-$LINENO}: checking if _xgetbv() is available" >&5
 printf %s "checking if _xgetbv() is available... " >&6; }

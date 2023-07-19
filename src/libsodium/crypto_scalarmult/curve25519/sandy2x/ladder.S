@@ -1,5 +1,6 @@
 #ifdef IN_SANDY2X
 
+#include "private/asm_cet.h"
 #include "ladder_namespace.h"
 #include "consts_namespace.h"
 .p2align 5
@@ -17,6 +18,7 @@ ASM_HIDE_SYMBOL _ladder
 ladder:
 _ladder:
 
+_CET_ENDBR
 mov %rsp,%r11
 and $31,%r11
 add $1856,%r11

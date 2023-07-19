@@ -560,6 +560,9 @@
     <ClInclude Include="src\libsodium\include\sodium\private\sse2_64_32.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="src\libsodium\include\sodium\private\asm_cet.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
     <ClInclude Include="src\libsodium\include\sodium\private\common.h">
       <Filter>Header Files</Filter>
     </ClInclude>

@@ -585,6 +585,7 @@ AC_SUBST(CFLAGS_PCLMUL)
 AC_SUBST(CFLAGS_RDRAND)
 
 AC_CHECK_HEADERS([sys/mman.h sys/param.h sys/random.h intrin.h])
+AC_CHECK_HEADERS([cet.h])
 
 AC_MSG_CHECKING([if _xgetbv() is available])
 AC_LINK_IFELSE(

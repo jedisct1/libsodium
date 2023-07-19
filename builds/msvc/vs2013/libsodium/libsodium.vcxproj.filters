@@ -569,6 +569,9 @@
     <ClInclude Include="..\..\..\..\src\libsodium\include\sodium\private\sse2_64_32.h">
       <Filter>include\sodium\private</Filter>
     </ClInclude>
+    <ClInclude Include="..\..\..\..\src\libsodium\include\sodium\private\asm_cet.h">
+      <Filter>include\sodium\private</Filter>
+    </ClInclude>
     <ClInclude Include="..\..\..\..\src\libsodium\include\sodium\private\common.h">
       <Filter>include\sodium\private</Filter>
     </ClInclude>
