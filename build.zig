@@ -44,6 +44,7 @@ pub fn build(b: *std.build.Builder) !void {
         lib.defineCMacro("DEV_MODE", "1");
         lib.defineCMacro("HAVE_ATOMIC_OPS", "1");
         lib.defineCMacro("HAVE_C11_MEMORY_FENCES", "1");
+        lib.defineCMacro("HAVE_CET_H", "1");
         lib.defineCMacro("HAVE_GCC_MEMORY_FENCES", "1");
         lib.defineCMacro("HAVE_INLINE_ASM", "1");
         lib.defineCMacro("HAVE_INTTYPES_H", "1");
