@@ -64,7 +64,7 @@ if [ -z "$WASI_RUNTIME" ] || [ "$WASI_RUNTIME" = "node" ]; then
       echo "  wasi.start(instance);"
       echo "})().catch(e => { console.error(e); process.exit(1); });"
     } >"${1}.mjs"
-    node --experimental-wasm-bigint --experimental-wasi-unstable-preview1 "${1}.mjs" 2>/tmp/err &&
+    node --experimental-wasi-unstable-preview1 "${1}.mjs" 2>/tmp/err &&
       rm -f "${1}.mjs" && exit 0
   fi
 fi
