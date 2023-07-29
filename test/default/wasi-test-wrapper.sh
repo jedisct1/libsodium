@@ -28,12 +28,6 @@ if [ -z "$WASI_RUNTIME" ] || [ "$WASI_RUNTIME" = "wasmtime" ]; then
   fi
 fi
 
-if [ -z "$WASI_RUNTIME" ] || [ "$WASI_RUNTIME" = "wavm" ]; then
-  if command -v wavm >/dev/null; then
-    wavm run --abi=wasi "$1" && exit 0
-  fi
-fi
-
 if [ -z "$WASI_RUNTIME" ] || [ "$WASI_RUNTIME" = "bun" ]; then
   if echo | bun help >/dev/null 2>&1; then
     {
