@@ -6,7 +6,7 @@
 #include "private/common.h"
 #include "private/softaes.h"
 
-static const uint32_t LUT[256] = {
+uint32_t _aes_lut[256] __attribute__ ((visibility ("hidden"))) = {
     0xa56363c6, 0x847c7cf8, 0x997777ee, 0x8d7b7bf6, 0x0df2f2ff, 0xbd6b6bd6, 0xb16f6fde, 0x54c5c591,
     0x50303060, 0x03010102, 0xa96767ce, 0x7d2b2b56, 0x19fefee7, 0x62d7d7b5, 0xe6abab4d, 0x9a7676ec,
     0x45caca8f, 0x9d82821f, 0x40c9c989, 0x877d7dfa, 0x15fafaef, 0xeb5959b2, 0xc947478e, 0x0bf0f0fb,
@@ -40,6 +40,8 @@ static const uint32_t LUT[256] = {
     0x8f8c8c03, 0xf8a1a159, 0x80898909, 0x170d0d1a, 0xdabfbf65, 0x31e6e6d7, 0xc6424284, 0xb86868d0,
     0xc3414182, 0xb0999929, 0x772d2d5a, 0x110f0f1e, 0xcbb0b07b, 0xfc5454a8, 0xd6bbbb6d, 0x3a16162c
 };
+
+static const uint32_t * const LUT = _aes_lut;
 
 #ifndef SOFTAES_STRIDE
 #define SOFTAES_STRIDE 16
