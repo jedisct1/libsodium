@@ -11,20 +11,18 @@ pub fn build(b: *std.build.Builder) !void {
     const src_dir = try fs.Dir.openIterableDir(fs.cwd(), src_path, .{ .no_follow = true });
 
     const target = b.standardTargetOptions(.{});
-    const mode = b.standardReleaseOptions();
+    const optimize = b.standardOptimizeOption(.{});
 
     const enable_benchmarks = b.option(bool, "enable_benchmarks", "Whether tests should be benchmarks.") orelse false;
     const benchmarks_iterations = b.option(u32, "iterations", "Number of iterations for benchmarks.") orelse 200;
 
-    const shared = b.addSharedLibrary(
-        if (target.isWindows()) "sodium_shared" else "sodium",
-        null,
-        .unversioned,
-    );
-    const static = b.addStaticLibrary("sodium", null);
+    const static = b.addStaticLibrary(.{
+        .name = "sodium",
+        .target = target,
+        .optimize = optimize,
+    });
 
-    const libs_ = [_]*LibExeObjStep{ shared, static };
-    const libs = if (target.getOsTag() == .wasi) libs_[1..] else libs_[0..];
+    const libs = [_]*LibExeObjStep{static};
 
     const prebuilt_version_file_path = "builds/msvc/version.h";
     const version_file_path = "include/sodium/version.h";
@@ -34,20 +32,19 @@ pub fn build(b: *std.build.Builder) !void {
     }
 
     for (libs) |lib| {
-        lib.setTarget(target);
-        lib.setBuildMode(mode);
-        lib.install();
-        if (mode != .Debug) {
+        b.installArtifact(lib);
+        if (optimize != .Debug) {
             lib.strip = true;
         }
         lib.linkLibC();
 
-        lib.addIncludePath("src/libsodium/include/sodium");
+        lib.addIncludePath(.{ .path = "src/libsodium/include/sodium" });
         lib.defineCMacro("_GNU_SOURCE", "1");
         lib.defineCMacro("CONFIGURED", "1");
         lib.defineCMacro("DEV_MODE", "1");
         lib.defineCMacro("HAVE_ATOMIC_OPS", "1");
         lib.defineCMacro("HAVE_C11_MEMORY_FENCES", "1");
+        lib.defineCMacro("HAVE_CET_H", "1");
         lib.defineCMacro("HAVE_GCC_MEMORY_FENCES", "1");
         lib.defineCMacro("HAVE_INLINE_ASM", "1");
         lib.defineCMacro("HAVE_INTTYPES_H", "1");
@@ -149,8 +146,8 @@ pub fn build(b: *std.build.Builder) !void {
             },
             .aarch64, .aarch64_be => {
                 const cpu_features = target.getCpuFeatures();
-                const has_neon = cpu_features.isEnabled(@enumToInt(Target.aarch64.Feature.neon));
-                const has_crypto = cpu_features.isEnabled(@enumToInt(Target.aarch64.Feature.crypto));
+                const has_neon = cpu_features.isEnabled(@intFromEnum(Target.aarch64.Feature.neon));
+                const has_crypto = cpu_features.isEnabled(@intFromEnum(Target.aarch64.Feature.crypto));
                 if (has_neon and has_crypto) {
                     lib.defineCMacro("HAVE_ARMCRYPTO", "1");
                 }
@@ -170,9 +167,9 @@ pub fn build(b: *std.build.Builder) !void {
 
         switch (target.getCpuArch()) {
             .x86_64 => {
-                lib.target.cpu_features_add.addFeature(@enumToInt(Target.x86.Feature.sse4_1));
-                lib.target.cpu_features_add.addFeature(@enumToInt(Target.x86.Feature.aes));
-                lib.target.cpu_features_add.addFeature(@enumToInt(Target.x86.Feature.pclmul));
+                lib.target.cpu_features_add.addFeature(@intFromEnum(Target.x86.Feature.sse4_1));
+                lib.target.cpu_features_add.addFeature(@intFromEnum(Target.x86.Feature.aes));
+                lib.target.cpu_features_add.addFeature(@intFromEnum(Target.x86.Feature.pclmul));
             },
             else => {},
         }
@@ -192,7 +189,7 @@ pub fn build(b: *std.build.Builder) !void {
                 });
             } else if (mem.endsWith(u8, name, ".S")) {
                 const full_path = try fmt.allocPrint(allocator, "{s}/{s}", .{ src_path, entry.path });
-                lib.addAssemblyFile(full_path);
+                lib.addAssemblyFile(.{ .path = full_path });
             }
         }
     }
@@ -215,15 +212,16 @@ pub fn build(b: *std.build.Builder) !void {
             continue;
         }
         const exe_name = name[0 .. name.len - 2];
-        var exe = b.addExecutable(exe_name, null);
-        exe.setTarget(target);
-        exe.setBuildMode(mode);
+        var exe = b.addExecutable(.{
+            .name = exe_name,
+            .target = target,
+            .optimize = optimize,
+        });
         exe.linkLibC();
-        exe.want_lto = false;
         exe.strip = true;
         exe.linkLibrary(static);
-        exe.addIncludePath("src/libsodium/include");
-        exe.addIncludePath("test/quirks");
+        exe.addIncludePath(.{ .path = "src/libsodium/include" });
+        exe.addIncludePath(.{ .path = "test/quirks" });
         const full_path = try fmt.allocPrint(allocator, "{s}/{s}", .{ test_path, entry.path });
         exe.addCSourceFiles(&.{full_path}, &.{});
 
@@ -233,6 +231,6 @@ pub fn build(b: *std.build.Builder) !void {
             exe.defineCMacro("ITERATIONS", std.fmt.bufPrintIntToSlice(&buf, benchmarks_iterations, 10, .lower, .{}));
         }
 
-        exe.install();
+        b.installArtifact(exe);
     }
 }
