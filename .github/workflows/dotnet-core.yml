@@ -28,13 +28,13 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Install Zig
-        uses: goto-bus-stop/setup-zig@869a4299cf8ac7db4ebffaec36ad82a682f88acb
+        uses: goto-bus-stop/setup-zig@6fede2f0550d71291c0accf2834b216e69a2d67a
         with:
-          version: 0.10.1
+          version: 0.11.0
       - uses: actions/checkout@v3
       - name: build
         run: |
-          zig build -Drelease-fast -Dtarget=x86_64-linux-gnu.2.17
+          zig build -Doptimize=ReleaseFast -Dtarget=x86_64-linux-gnu.2.17
       - name: tests
         run: cd zig-out/bin && ./run.sh
       - uses: actions/upload-artifact@v3
@@ -46,9 +46,9 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Install Zig
-        uses: goto-bus-stop/setup-zig@869a4299cf8ac7db4ebffaec36ad82a682f88acb
+        uses: goto-bus-stop/setup-zig@6fede2f0550d71291c0accf2834b216e69a2d67a
         with:
-          version: 0.10.1
+          version: 0.11.0
       - name: Fix ARM support
         run: |
           curl -L https://raw.githubusercontent.com/ziglang/zig/master/lib/libc/glibc/sysdeps/arm/arm-features.h | sudo tee /opt/hostedtoolcache/zig/zig-linux-x86_64-*/x64/lib/libc/glibc/sysdeps/arm/sysdep.h >/dev/null
@@ -64,7 +64,7 @@ jobs:
       - uses: actions/checkout@v3
       - name: build
         run: |
-          zig build -Drelease-fast -Dtarget=arm-linux-gnueabihf.2.23
+          zig build -Doptimize=ReleaseFast -Dtarget=arm-linux-gnueabihf.2.23
       - name: tests
         run: |
           cd zig-out/bin && env LD_LIBRARY_PATH=/usr/arm-linux-gnueabihf/lib ./run.sh
@@ -77,9 +77,9 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Install Zig
-        uses: goto-bus-stop/setup-zig@869a4299cf8ac7db4ebffaec36ad82a682f88acb
+        uses: goto-bus-stop/setup-zig@6fede2f0550d71291c0accf2834b216e69a2d67a
         with:
-          version: 0.10.1
+          version: 0.11.0
       - name: Set up emulation environment
         run: |
           export DEBIAN_FRONTEND=noninteractive
@@ -92,7 +92,7 @@ jobs:
       - uses: actions/checkout@v3
       - name: build
         run: |
-          zig build -Drelease-fast -Dtarget=aarch64-linux-gnu.2.23
+          zig build -Doptimize=ReleaseFast -Dtarget=aarch64-linux-gnu.2.23
       - name: tests
         run: |
           cd zig-out/bin && env LD_LIBRARY_PATH=/usr/aarch64-linux-gnu/lib ./run.sh
@@ -111,13 +111,13 @@ jobs:
           apk update
           apk add alpine-sdk ca-certificates xz
       - name: Install Zig
-        uses: goto-bus-stop/setup-zig@869a4299cf8ac7db4ebffaec36ad82a682f88acb
+        uses: goto-bus-stop/setup-zig@6fede2f0550d71291c0accf2834b216e69a2d67a
         with:
-          version: 0.10.1
+          version: 0.11.0
       - uses: actions/checkout@v3
       - name: build
         run: |
-          zig build -Drelease-fast -Dtarget=x86_64-linux-musl
+          zig build -Doptimize=ReleaseFast -Dtarget=x86_64-linux-musl
       - name: tests
         run: |
           cd zig-out/bin && ./run.sh
@@ -130,13 +130,13 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Install Zig
-        uses: goto-bus-stop/setup-zig@869a4299cf8ac7db4ebffaec36ad82a682f88acb
+        uses: goto-bus-stop/setup-zig@6fede2f0550d71291c0accf2834b216e69a2d67a
         with:
-          version: 0.10.1
+          version: 0.11.0
       - uses: actions/checkout@v3
       - name: build
         run: |
-          zig build -Drelease-fast -Dtarget=arm-linux-musleabihf
+          zig build -Doptimize=ReleaseFast -Dtarget=arm-linux-musleabihf
       - uses: actions/upload-artifact@v3
         with:
           name: build-linux-musl-arm
@@ -146,13 +146,13 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Install Zig
-        uses: goto-bus-stop/setup-zig@869a4299cf8ac7db4ebffaec36ad82a682f88acb
+        uses: goto-bus-stop/setup-zig@6fede2f0550d71291c0accf2834b216e69a2d67a
         with:
-          version: 0.10.1
+          version: 0.11.0
       - uses: actions/checkout@v3
       - name: build
         run: |
-          zig build -Drelease-fast -Dtarget=aarch64-linux-musl
+          zig build -Doptimize=ReleaseFast -Dtarget=aarch64-linux-musl
       - uses: actions/upload-artifact@v3
         with:
           name: build-linux-musl-arm64

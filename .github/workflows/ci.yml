@@ -42,7 +42,7 @@ jobs:
 
       - name: Install dependencies
         run: |
-          curl -sL -o - https://ziglang.org/download/0.10.1/zig-linux-x86_64-0.10.1.tar.xz | tar xJ -f - -C /opt/
+          curl -sL -o - https://ziglang.org/download/0.11.0/zig-linux-x86_64-0.11.0.tar.xz | tar xJ -f - -C /opt/
           sudo mv /opt/zig-* /opt/zig
 
       - name: Autogen
@@ -59,7 +59,7 @@ jobs:
           zig build -Dtarget=x86_64-macos
           zig build -Dtarget=aarch64-macos
           zig build -Dtarget=wasm32-wasi
-          zig build -Drelease-fast
+          zig build -Doptimize=ReleaseFast
           rm -fr zig-cache zig-out
 
   regular:
