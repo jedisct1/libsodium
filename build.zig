@@ -38,7 +38,7 @@ pub fn build(b: *std.build.Builder) !void {
         }
         lib.linkLibC();
 
-        lib.addIncludePath("src/libsodium/include/sodium");
+        lib.addIncludePath(.{ .path = "src/libsodium/include/sodium" });
         lib.defineCMacro("_GNU_SOURCE", "1");
         lib.defineCMacro("CONFIGURED", "1");
         lib.defineCMacro("DEV_MODE", "1");
@@ -189,7 +189,7 @@ pub fn build(b: *std.build.Builder) !void {
                 });
             } else if (mem.endsWith(u8, name, ".S")) {
                 const full_path = try fmt.allocPrint(allocator, "{s}/{s}", .{ src_path, entry.path });
-                lib.addAssemblyFile(full_path);
+                lib.addAssemblyFile(.{ .path = full_path });
             }
         }
     }
@@ -220,8 +220,8 @@ pub fn build(b: *std.build.Builder) !void {
         exe.linkLibC();
         exe.strip = true;
         exe.linkLibrary(static);
-        exe.addIncludePath("src/libsodium/include");
-        exe.addIncludePath("test/quirks");
+        exe.addIncludePath(.{ .path = "src/libsodium/include" });
+        exe.addIncludePath(.{ .path = "test/quirks" });
         const full_path = try fmt.allocPrint(allocator, "{s}/{s}", .{ test_path, entry.path });
         exe.addCSourceFiles(&.{full_path}, &.{});
 
