@@ -28,7 +28,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Install Zig
-        uses: goto-bus-stop/setup-zig@869a4299cf8ac7db4ebffaec36ad82a682f88acb
+        uses: goto-bus-stop/setup-zig@6fede2f0550d71291c0accf2834b216e69a2d67a
         with:
           version: master
       - uses: actions/checkout@v3
@@ -46,7 +46,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Install Zig
-        uses: goto-bus-stop/setup-zig@869a4299cf8ac7db4ebffaec36ad82a682f88acb
+        uses: goto-bus-stop/setup-zig@6fede2f0550d71291c0accf2834b216e69a2d67a
         with:
           version: master
       - name: Fix ARM support
@@ -77,7 +77,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Install Zig
-        uses: goto-bus-stop/setup-zig@869a4299cf8ac7db4ebffaec36ad82a682f88acb
+        uses: goto-bus-stop/setup-zig@6fede2f0550d71291c0accf2834b216e69a2d67a
         with:
           version: master
       - name: Set up emulation environment
@@ -111,7 +111,7 @@ jobs:
           apk update
           apk add alpine-sdk ca-certificates xz
       - name: Install Zig
-        uses: goto-bus-stop/setup-zig@869a4299cf8ac7db4ebffaec36ad82a682f88acb
+        uses: goto-bus-stop/setup-zig@6fede2f0550d71291c0accf2834b216e69a2d67a
         with:
           version: master
       - uses: actions/checkout@v3
@@ -130,7 +130,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Install Zig
-        uses: goto-bus-stop/setup-zig@869a4299cf8ac7db4ebffaec36ad82a682f88acb
+        uses: goto-bus-stop/setup-zig@6fede2f0550d71291c0accf2834b216e69a2d67a
         with:
           version: master
       - uses: actions/checkout@v3
@@ -146,7 +146,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Install Zig
-        uses: goto-bus-stop/setup-zig@869a4299cf8ac7db4ebffaec36ad82a682f88acb
+        uses: goto-bus-stop/setup-zig@6fede2f0550d71291c0accf2834b216e69a2d67a
         with:
           version: master
       - uses: actions/checkout@v3
