@@ -4,7 +4,7 @@
 
 # shellcheck disable=SC2006,SC2268 # see below for rationale
 
-timestamp='2023-06-26'
+timestamp='2023-07-31'
 
 # This file is free software; you can redistribute it and/or modify it
 # under the terms of the GNU General Public License as published by
@@ -1206,6 +1206,7 @@ case $cpu-$vendor in
 			| i370 | i*86 | i860 | i960 | ia16 | ia64 \
 			| ip2k | iq2000 \
 			| k1om \
+			| kvx \
 			| le32 | le64 \
 			| lm32 \
 			| loongarch32 | loongarch64 \
@@ -1214,31 +1215,7 @@ case $cpu-$vendor in
 			| m6811 | m68hc11 | m6812 | m68hc12 | m68hcs12x \
 			| m88110 | m88k | maxq | mb | mcore | mep | metag \
 			| microblaze | microblazeel \
-			| mips | mipsbe | mipseb | mipsel | mipsle \
-			| mips16 \
-			| mips64 | mips64eb | mips64el \
-			| mips64octeon | mips64octeonel \
-			| mips64orion | mips64orionel \
-			| mips64r5900 | mips64r5900el \
-			| mips64vr | mips64vrel \
-			| mips64vr4100 | mips64vr4100el \
-			| mips64vr4300 | mips64vr4300el \
-			| mips64vr5000 | mips64vr5000el \
-			| mips64vr5900 | mips64vr5900el \
-			| mipsisa32 | mipsisa32el \
-			| mipsisa32r2 | mipsisa32r2el \
-			| mipsisa32r3 | mipsisa32r3el \
-			| mipsisa32r5 | mipsisa32r5el \
-			| mipsisa32r6 | mipsisa32r6el \
-			| mipsisa64 | mipsisa64el \
-			| mipsisa64r2 | mipsisa64r2el \
-			| mipsisa64r3 | mipsisa64r3el \
-			| mipsisa64r5 | mipsisa64r5el \
-			| mipsisa64r6 | mipsisa64r6el \
-			| mipsisa64sb1 | mipsisa64sb1el \
-			| mipsisa64sr71k | mipsisa64sr71kel \
-			| mipsr5900 | mipsr5900el \
-			| mipstx39 | mipstx39el \
+			| mips* \
 			| mmix \
 			| mn10200 | mn10300 \
 			| moxie \
@@ -1733,7 +1710,7 @@ case $os in
 	     | hpux* | unos* | osf* | luna* | dgux* | auroraux* | solaris* \
 	     | sym* |  plan9* | psp* | sim* | xray* | os68k* | v88r* \
 	     | hiux* | abug | nacl* | netware* | windows* \
-	     | os9* | macos* | osx* | ios* \
+	     | os9* | macos* | osx* | ios* | tvos* | watchos* \
 	     | mpw* | magic* | mmixware* | mon960* | lnews* \
 	     | amigaos* | amigados* | msdos* | newsos* | unicos* | aof* \
 	     | aos* | aros* | cloudabi* | sortix* | twizzler* \
@@ -1759,7 +1736,7 @@ case $os in
 	     | onefs* | tirtos* | phoenix* | fuchsia* | redox* | bme* \
 	     | midnightbsd* | amdhsa* | unleashed* | emscripten* | wasi* \
 	     | nsk* | powerunix* | genode* | zvmoe* | qnx* | emx* | zephyr* \
-	     | fiwix* | mlibc* )
+	     | fiwix* | mlibc* | cos* | mbr* )
 		;;
 	# This one is extra strict with allowed versions
 	sco3.2v2 | sco3.2v[4-9]* | sco5v6*)
@@ -1815,6 +1792,10 @@ case $kernel-$os in
 	os2-emx)
 		;;
 	*-eabi* | *-gnueabi*)
+		;;
+	none-coff* | none-elf*)
+		# None (no kernel, i.e. freestanding / bare metal),
+		# can be paired with an output format "OS"
 		;;
 	-*)
 		# Blank kernel with real OS is always fine.
