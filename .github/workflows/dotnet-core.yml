@@ -49,9 +49,6 @@ jobs:
         uses: goto-bus-stop/setup-zig@6fede2f0550d71291c0accf2834b216e69a2d67a
         with:
           version: 0.11.0
-      - name: Fix ARM support
-        run: |
-          curl -L https://raw.githubusercontent.com/ziglang/zig/master/lib/libc/glibc/sysdeps/arm/arm-features.h | sudo tee /opt/hostedtoolcache/zig/zig-linux-x86_64-*/x64/lib/libc/glibc/sysdeps/arm/sysdep.h >/dev/null
       - name: Set up emulation environment
         run: |
           export DEBIAN_FRONTEND=noninteractive
