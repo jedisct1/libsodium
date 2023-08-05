@@ -99,6 +99,8 @@ _sodium_runtime_arm_cpu_features(CPUFeatures * const cpu_features)
 
 #if __ARM_FEATURE_CRYPTO
     cpu_features->has_armcrypto = 1;
+#elif defined(_M_ARM64)
+    cpu_features->has_armcrypto = 1; /* assuming all CPUs supported by ARM Windows have the crypto extensions */
 #elif defined(__APPLE__) && defined(CPU_TYPE_ARM64) && defined(CPU_SUBTYPE_ARM64E)
     {
         cpu_type_t    cpu_type;
