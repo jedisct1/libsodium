@@ -240,7 +240,7 @@ libarmcrypto_la_SOURCES = \
 
 libaesni_la_LDFLAGS = $(libsodium_la_LDFLAGS)
 libaesni_la_CPPFLAGS = $(libsodium_la_CPPFLAGS) \
-	@CFLAGS_SSE2@ @CFLAGS_SSSE3@ @CFLAGS_AESNI@ @CFLAGS_PCLMUL@
+	@CFLAGS_SSE2@ @CFLAGS_SSSE3@ @CFLAGS_AVX@ @CFLAGS_AESNI@ @CFLAGS_PCLMUL@
 libaesni_la_SOURCES = \
 	crypto_aead/aegis128l/aesni/aead_aegis128l_aesni.c \
 	crypto_aead/aegis128l/aesni/aead_aegis128l_aesni.h \
