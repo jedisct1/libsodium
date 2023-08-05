@@ -137,7 +137,7 @@ _crypto_aead_aegis256_pick_best_implementation(void)
 #endif
 
 #if defined(HAVE_TMMINTRIN_H) && defined(HAVE_WMMINTRIN_H)
-    if (sodium_runtime_has_aesni()) {
+    if (sodium_runtime_has_aesni() & sodium_runtime_has_avx()) {
         implementation = &crypto_aead_aegis256_aesni_implementation;
         return 0;
     }

@@ -405,14 +405,14 @@ AS_IF([test "x$EMSCRIPTEN" = "x"], [
       [
         AC_MSG_RESULT(no)
         oldcflags="$CFLAGS"
-        AX_CHECK_COMPILE_FLAG([-march=armv8-a+crypto], [
-          CFLAGS="$CFLAGS -march=armv8-a+crypto"
-          AC_MSG_CHECKING(for ARM crypto instructions set with -march=armv8-a+crypto)
+        AX_CHECK_COMPILE_FLAG([-march=armv8-a+crypto+aes], [
+          CFLAGS="$CFLAGS -march=armv8-a+crypto+aes"
+          AC_MSG_CHECKING(for ARM crypto instructions set with -march=armv8-a+crypto+aes)
           AC_LINK_IFELSE([AC_LANG_PROGRAM([[#include <arm_neon.h>]], [[ vaeseq_u8(vmovq_n_u8(0), vmovq_n_u8(__ARM_FEATURE_CRYPTO)) ]])],
             [
-              AC_MSG_RESULT(yes - with addition of -march=armv8-a+crypto)
+              AC_MSG_RESULT(yes - with addition of -march=armv8-a+crypto+aes)
               have_armcrypto=yes
-              CFLAGS_ARMCRYPTO="-march=armv8-a+crypto"
+              CFLAGS_ARMCRYPTO="-march=armv8-a+crypto+aes"
             ],
             [AC_MSG_RESULT(no)])
           CFLAGS="$oldcflags"
