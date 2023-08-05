@@ -44,10 +44,10 @@ pub fn build(b: *std.build.Builder) !void {
         {
             continue;
         }
-        b.installArtifact(lib);
         if (optimize != .Debug and !target.isWindows() and lib != static) {
             lib.strip = true;
         }
+        b.installArtifact(lib);
         lib.linkLibC();
 
         lib.addIncludePath(.{ .path = "src/libsodium/include/sodium" });
