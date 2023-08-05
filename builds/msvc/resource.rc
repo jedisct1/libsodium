@@ -44,10 +44,10 @@ BEGIN
     BEGIN
         BLOCK "040904b0"
         BEGIN
-            VALUE "FileDescription", "The Sodium crypto library (libsodium) "
+            VALUE "FileDescription", "The Sodium crypto library (libsodium)"
             VALUE "FileVersion", LIBSODIUM_VERSION_STRING
             VALUE "InternalName", "libsodium"
-            VALUE "LegalCopyright", "Copyright (c) 2013-2019 The libsodium authors."
+            VALUE "LegalCopyright", "Copyright (c) 2013-2023 The libsodium authors."
             VALUE "OriginalFilename", "libsodium.dll"
             VALUE "ProductName", LIBSODIUM_PRODUCT_NAME
             VALUE "ProductVersion", LIBSODIUM_VERSION_STRING
