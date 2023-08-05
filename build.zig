@@ -22,7 +22,13 @@ pub fn build(b: *std.build.Builder) !void {
         .optimize = optimize,
     });
 
-    const libs = [_]*LibExeObjStep{static};
+    const shared = b.addSharedLibrary(.{
+        .name = if (target.isWindows()) "sodium_shared" else "sodium",
+        .target = target,
+        .optimize = optimize,
+    });
+
+    const libs = [_]*LibExeObjStep{ static, shared };
 
     const prebuilt_version_file_path = "builds/msvc/version.h";
     const version_file_path = "include/sodium/version.h";
@@ -33,7 +39,7 @@ pub fn build(b: *std.build.Builder) !void {
 
     for (libs) |lib| {
         b.installArtifact(lib);
-        if (optimize != .Debug) {
+        if (optimize != .Debug and !target.isWindows() and lib != static) {
             lib.strip = true;
         }
         lib.linkLibC();
