@@ -38,6 +38,12 @@ pub fn build(b: *std.build.Builder) !void {
     }
 
     for (libs) |lib| {
+        if (lib == shared and
+            !(target.isDarwin() or target.isDragonFlyBSD() or target.isFreeBSD() or
+            target.isLinux() or target.isNetBSD() or target.isOpenBSD() or target.isWindows()))
+        {
+            continue;
+        }
         b.installArtifact(lib);
         if (optimize != .Debug and !target.isWindows() and lib != static) {
             lib.strip = true;
