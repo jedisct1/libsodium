@@ -154,7 +154,7 @@ sodium_crit_enter(void)
         (void) nanosleep(&q, NULL);
 # elif defined(__x86_64__) || defined(__i386__)
         __asm__ __volatile__ ("pause":::"memory");
-# elif defined(__aarch64__)
+# elif defined(__aarch64__) || defined(_M_ARM64)
         __asm__ __volatile__ ("yield":::"memory");
 # endif
     }
