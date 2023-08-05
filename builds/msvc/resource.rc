@@ -12,6 +12,8 @@
     #define LIBSODIUM_PRODUCT_NAME "libsodium (x64)"
 #elif defined(Win32)
     #define LIBSODIUM_PRODUCT_NAME "libsodium (x86)"
+#elif defined(ARM64)
+    #define LIBSODIUM_PRODUCT_NAME "libsodium (arm64)"
 #else
     #define LIBSODIUM_PRODUCT_NAME "libsodium"
 #endif
