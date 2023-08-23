@@ -19,6 +19,10 @@
 #define __vectorcall
 #endif
 
+#ifndef __ARM_FEATURE_AES
+#define __ARM_FEATURE_AES 1
+#endif
+
 #include <arm_neon.h>
 
 #define ABYTES    crypto_aead_aes256gcm_ABYTES

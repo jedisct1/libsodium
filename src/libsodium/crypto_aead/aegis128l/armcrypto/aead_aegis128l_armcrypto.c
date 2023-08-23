@@ -17,6 +17,10 @@
 
 #if defined(HAVE_ARMCRYPTO) && defined(NATIVE_LITTLE_ENDIAN)
 
+#ifndef __ARM_FEATURE_AES
+#define __ARM_FEATURE_AES 1
+#endif
+
 #include <arm_neon.h>
 
 typedef uint8x16_t aes_block_t;
