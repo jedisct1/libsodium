@@ -19,20 +19,34 @@ pub fn build(b: *std.build.Builder) !void {
 
     const enable_benchmarks = b.option(bool, "enable_benchmarks", "Whether tests should be benchmarks.") orelse false;
     const benchmarks_iterations = b.option(u32, "iterations", "Number of iterations for benchmarks.") orelse 200;
+    var build_static = b.option(bool, "static", "Build libsodium as a static library.") orelse true;
+    const build_shared = b.option(bool, "shared", "Build libsodium as a shared library.") orelse true;
 
-    const static = b.addStaticLibrary(.{
+    const build_tests = b.option(bool, "test", "Build the tests (implies -Dstatic=true)") orelse true;
+
+    if (build_tests) {
+        build_static = true;
+    }
+    const static_lib = b.addStaticLibrary(.{
         .name = "sodium",
         .target = target,
         .optimize = optimize,
     });
-
-    const shared = b.addSharedLibrary(.{
+    const shared_lib = b.addSharedLibrary(.{
         .name = if (target.isWindows()) "sodium_shared" else "sodium",
         .target = target,
         .optimize = optimize,
     });
 
-    const libs = [_]*LibExeObjStep{ static, shared };
+    // work out which libraries we are building
+    var libs = std.ArrayList(*LibExeObjStep).init(b.allocator);
+    defer libs.deinit();
+    if (build_static) {
+        try libs.append(static_lib);
+    }
+    if (build_shared) {
+        try libs.append(shared_lib);
+    }
 
     const prebuilt_version_file_path = "builds/msvc/version.h";
     const version_file_path = "include/sodium/version.h";
@@ -41,14 +55,14 @@ pub fn build(b: *std.build.Builder) !void {
         try cwd.copyFile(prebuilt_version_file_path, src_dir.dir, version_file_path, .{});
     }
 
-    for (libs) |lib| {
-        if (lib == shared and
+    for (libs.items) |lib| {
+        if (lib.isDynamicLibrary() and
             !(target.isDarwin() or target.isDragonFlyBSD() or target.isFreeBSD() or
             target.isLinux() or target.isNetBSD() or target.isOpenBSD() or target.isWindows()))
         {
             continue;
         }
-        if (optimize != .Debug and !target.isWindows() and lib != static) {
+        if (optimize != .Debug and !target.isWindows() and !lib.isStaticLibrary()) {
             lib.strip = true;
         }
         b.installArtifact(lib);
@@ -103,7 +117,7 @@ pub fn build(b: *std.build.Builder) !void {
             .windows => {
                 lib.defineCMacro("HAVE_RAISE", "1");
                 lib.defineCMacro("HAVE_SYS_PARAM_H", "1");
-                if (lib == static) {
+                if (lib.isStaticLibrary()) {
                     lib.defineCMacro("SODIUM_STATIC", "1");
                 }
             },
@@ -218,35 +232,37 @@ pub fn build(b: *std.build.Builder) !void {
     try test_dir.dir.copyFile("run.sh", out_bin_dir, "run.sh", .{});
     var allocator = heap.page_allocator;
     var walker = try test_dir.walk(allocator);
-    while (try walker.next()) |entry| {
-        const name = entry.basename;
-        if (mem.endsWith(u8, name, ".exp")) {
-            try test_dir.dir.copyFile(name, out_bin_dir, name, .{});
-            continue;
-        }
-        if (!mem.endsWith(u8, name, ".c")) {
-            continue;
-        }
-        const exe_name = name[0 .. name.len - 2];
-        var exe = b.addExecutable(.{
-            .name = exe_name,
-            .target = target,
-            .optimize = optimize,
-        });
-        exe.linkLibC();
-        exe.strip = true;
-        exe.linkLibrary(static);
-        exe.addIncludePath(.{ .path = "src/libsodium/include" });
-        exe.addIncludePath(.{ .path = "test/quirks" });
-        const full_path = try fmt.allocPrint(allocator, "{s}/{s}", .{ test_path, entry.path });
-        exe.addCSourceFiles(&.{full_path}, &.{});
+    if (build_tests) {
+        while (try walker.next()) |entry| {
+            const name = entry.basename;
+            if (mem.endsWith(u8, name, ".exp")) {
+                try test_dir.dir.copyFile(name, out_bin_dir, name, .{});
+                continue;
+            }
+            if (!mem.endsWith(u8, name, ".c")) {
+                continue;
+            }
+            const exe_name = name[0 .. name.len - 2];
+            var exe = b.addExecutable(.{
+                .name = exe_name,
+                .target = target,
+                .optimize = optimize,
+            });
+            exe.linkLibC();
+            exe.strip = true;
+            exe.linkLibrary(static_lib);
+            exe.addIncludePath(.{ .path = "src/libsodium/include" });
+            exe.addIncludePath(.{ .path = "test/quirks" });
+            const full_path = try fmt.allocPrint(allocator, "{s}/{s}", .{ test_path, entry.path });
+            exe.addCSourceFiles(&.{full_path}, &.{});
 
-        if (enable_benchmarks) {
-            exe.defineCMacro("BENCHMARKS", "1");
-            var buf: [16]u8 = undefined;
-            exe.defineCMacro("ITERATIONS", std.fmt.bufPrintIntToSlice(&buf, benchmarks_iterations, 10, .lower, .{}));
-        }
+            if (enable_benchmarks) {
+                exe.defineCMacro("BENCHMARKS", "1");
+                var buf: [16]u8 = undefined;
+                exe.defineCMacro("ITERATIONS", std.fmt.bufPrintIntToSlice(&buf, benchmarks_iterations, 10, .lower, .{}));
+            }
 
-        b.installArtifact(exe);
+            b.installArtifact(exe);
+        }
     }
 }
