@@ -7,8 +7,12 @@ const LibExeObjStep = std.build.LibExeObjStep;
 const Target = std.Target;
 
 pub fn build(b: *std.build.Builder) !void {
+    const root_path = b.pathFromRoot(".");
+    var cwd = try fs.openDirAbsolute(root_path, .{});
+    defer cwd.close();
+
     const src_path = "src/libsodium";
-    const src_dir = try fs.Dir.openIterableDir(fs.cwd(), src_path, .{ .no_follow = true });
+    const src_dir = try fs.Dir.openIterableDir(cwd, src_path, .{ .no_follow = true });
 
     const target = b.standardTargetOptions(.{});
     const optimize = b.standardOptimizeOption(.{});
@@ -34,7 +38,7 @@ pub fn build(b: *std.build.Builder) !void {
     const version_file_path = "include/sodium/version.h";
 
     if (src_dir.dir.access(version_file_path, .{ .mode = .read_only })) {} else |_| {
-        try fs.cwd().copyFile(prebuilt_version_file_path, src_dir.dir, version_file_path, .{});
+        try cwd.copyFile(prebuilt_version_file_path, src_dir.dir, version_file_path, .{});
     }
 
     for (libs) |lib| {
@@ -208,9 +212,9 @@ pub fn build(b: *std.build.Builder) !void {
 
     const test_path = "test/default";
     const out_bin_path = "zig-out/bin";
-    const test_dir = try fs.Dir.openIterableDir(fs.cwd(), test_path, .{ .no_follow = true });
-    fs.Dir.makePath(fs.cwd(), out_bin_path) catch {};
-    const out_bin_dir = try fs.Dir.openDir(fs.cwd(), out_bin_path, .{});
+    const test_dir = try fs.Dir.openIterableDir(cwd, test_path, .{ .no_follow = true });
+    fs.Dir.makePath(cwd, out_bin_path) catch {};
+    const out_bin_dir = try fs.Dir.openDir(cwd, out_bin_path, .{});
     try test_dir.dir.copyFile("run.sh", out_bin_dir, "run.sh", .{});
     var allocator = heap.page_allocator;
     var walker = try test_dir.walk(allocator);
