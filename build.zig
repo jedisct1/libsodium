@@ -66,6 +66,8 @@ pub fn build(b: *std.build.Builder) !void {
             lib.strip = true;
         }
         b.installArtifact(lib);
+        lib.installHeader(src_path ++ "/include/sodium.h", "sodium.h");
+        lib.installHeadersDirectory(src_path ++ "/include/sodium", "sodium");
         lib.linkLibC();
 
         lib.addIncludePath(.{ .path = "src/libsodium/include/sodium" });
