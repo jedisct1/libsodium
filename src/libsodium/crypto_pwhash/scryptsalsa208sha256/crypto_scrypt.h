@@ -34,12 +34,6 @@
 #include <stddef.h>
 #include <stdint.h>
 
-#if SIZE_MAX > 0xffffffffULL
-#define ARCH_BITS 64
-#else
-#define ARCH_BITS 32
-#endif
-
 #define crypto_pwhash_scryptsalsa208sha256_STRPREFIXBYTES 14
 #define crypto_pwhash_scryptsalsa208sha256_STRSETTINGBYTES 57
 #define crypto_pwhash_scryptsalsa208sha256_STRSALTBYTES 32
