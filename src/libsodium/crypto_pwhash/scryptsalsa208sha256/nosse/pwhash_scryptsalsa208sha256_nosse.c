@@ -49,17 +49,9 @@ blkxor(uint32_t *dest, const uint32_t *src, size_t len)
 {
     size_t i;
 
-#if ARCH_BITS == 32
     for (i = 0; i < len * 16; i++) {
         dest[i] ^= src[i];
     }
-#else
-    uint64_t       *dest_ = (uint64_t *) (void *) dest;
-    const uint64_t *src_  = (const uint64_t *) (const void *) src;
-    for (i = 0; i < len * 8; i++) {
-        dest_[i] ^= src_[i];
-    }
-#endif
 }
 
 /*
