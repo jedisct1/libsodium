@@ -210,11 +210,13 @@ blockmix_salsa8_xor(const __m128i *Bin1, const __m128i *Bin2, __m128i *Bout,
  * Note that B's layout is permuted compared to the generic implementation.
  */
 static inline uint64_t
-integerify(const void *B, size_t r)
+integerify(const __m128i *B, size_t r)
 {
-    const uint64_t *X = ((const uint64_t *) B) + (2 * r - 1) * 8;
+    const __m128i * X  = B + (2*r - 1) * 4;
+    const uint32_t X0  = (uint32_t) _mm_cvtsi128_si32(X[0]);
+    const uint32_t X13 = (uint32_t) _mm_cvtsi128_si32(_mm_srli_si128(X[3], 4));
 
-    return *X;
+    return (((uint64_t)(X13) << 32) + X0);
 }
 
 /*
