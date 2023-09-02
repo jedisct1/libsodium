@@ -6,6 +6,7 @@
 #define STOREU(p, r) _mm_storeu_si128((__m128i *) (void *) (p), r)
 
 #if !(defined(_mm_roti_epi64) && defined(__XOP__))
+#undef  _mm_roti_epi64
 #define _mm_roti_epi64(x, c)                                         \
     (-(c) == 32)                                                     \
         ? _mm_shuffle_epi32((x), _MM_SHUFFLE(2, 3, 0, 1))            \
