@@ -5,18 +5,23 @@
 #define LOADU(p) _mm_loadu_si128((const __m128i *) (const void *) (p))
 #define STOREU(p, r) _mm_storeu_si128((__m128i *) (void *) (p), r)
 
-#define _mm_roti_epi64(x, c)                                         \
-    (-(c) == 32)                                                     \
-        ? _mm_shuffle_epi32((x), _MM_SHUFFLE(2, 3, 0, 1))            \
-        : (-(c) == 24)                                               \
-              ? _mm_shuffle_epi8((x), r24)                           \
-              : (-(c) == 16)                                         \
-                    ? _mm_shuffle_epi8((x), r16)                     \
-                    : (-(c) == 63)                                   \
-                          ? _mm_xor_si128(_mm_srli_epi64((x), -(c)), \
-                                          _mm_add_epi64((x), (x)))   \
-                          : _mm_xor_si128(_mm_srli_epi64((x), -(c)), \
-                                          _mm_slli_epi64((x), 64 - (-(c))))
+#ifndef __XOP__ // XOP feature set enabled implies _mm_roti_epi64 is existing AFAIK so no need to define the libsodium replacement.
+# ifdef _mm_roti_epi64 // If we have the function macro but not the feature set macro it will fail compiling.
+#  undef _mm_roti_epi64 // So we hide the existing one and use the one provided by libsodium. Hiding avoids warnings for macro redefinitions.
+# endif
+# define _mm_roti_epi64(x, c)                                         \
+     (-(c) == 32)                                                     \
+         ? _mm_shuffle_epi32((x), _MM_SHUFFLE(2, 3, 0, 1))            \
+         : (-(c) == 24)                                               \
+               ? _mm_shuffle_epi8((x), r24)                           \
+               : (-(c) == 16)                                         \
+                     ? _mm_shuffle_epi8((x), r16)                     \
+                     : (-(c) == 63)                                   \
+                           ? _mm_xor_si128(_mm_srli_epi64((x), -(c)), \
+                                           _mm_add_epi64((x), (x)))   \
+                           : _mm_xor_si128(_mm_srli_epi64((x), -(c)), \
+                                           _mm_slli_epi64((x), 64 - (-(c))))
+#endif
 
 #define G1(row1l, row2l, row3l, row4l, row1h, row2h, row3h, row4h, b0, b1) \
     row1l = _mm_add_epi64(_mm_add_epi64(row1l, b0), row2l);                \
