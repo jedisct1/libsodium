@@ -8,6 +8,9 @@
     (_mm_setr_epi8(2, 3, 4, 5, 6, 7, 0, 1, 10, 11, 12, 13, 14, 15, 8, 9))
 #define r24 \
     (_mm_setr_epi8(3, 4, 5, 6, 7, 0, 1, 2, 11, 12, 13, 14, 15, 8, 9, 10))
+
+#if !(defined(_mm_roti_epi64) && defined(__XOP__))
+#undef  _mm_roti_epi64
 #define _mm_roti_epi64(x, c)                                         \
     (-(c) == 32)                                                     \
         ? _mm_shuffle_epi32((x), _MM_SHUFFLE(2, 3, 0, 1))            \
@@ -20,6 +23,7 @@
                                           _mm_add_epi64((x), (x)))   \
                           : _mm_xor_si128(_mm_srli_epi64((x), -(c)), \
                                           _mm_slli_epi64((x), 64 - (-(c))))
+#endif
 
 static inline __m128i
 fBlaMka(__m128i x, __m128i y)
