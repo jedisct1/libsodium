@@ -1,5 +1,5 @@
-#ifndef vrf_ietfdraft12_H
-#define vrf_ietfdraft12_H
+#ifndef vrf_rfc9381_H
+#define vrf_rfc9381_H
 
 static const unsigned char SUITE = 0x04; /* ECVRF-ED25519-SHA512-ELL2 */
 

@@ -2,15 +2,15 @@
 #include <stdlib.h>
 
 #include "crypto_hash_sha512.h"
-#include "crypto_vrf_ietfdraft12.h"
+#include "crypto_vrf_rfc9381.h"
 #include "crypto_core_ed25519.h"
 #include "private/ed25519_ref10.h"
 #include "utils.h"
-#include "vrf_ietfdraft12.h"
+#include "vrf_rfc9381.h"
 
 
 int
-crypto_vrf_ietfdraft12_prove(unsigned char *proof,
+crypto_vrf_rfc9381_prove(unsigned char *proof,
                              const unsigned char *m, unsigned long long mlen,
                              const unsigned char *sk)
 {

@@ -3,14 +3,14 @@
 #include <stdio.h>
 
 #include "crypto_hash_sha512.h"
-#include "crypto_vrf_ietfdraft12.h"
+#include "crypto_vrf_rfc9381.h"
 #include "crypto_core_ed25519.h"
 #include "private/ed25519_ref10.h"
-#include "vrf_ietfdraft12.h"
+#include "vrf_rfc9381.h"
 #include "crypto_verify_16.h"
 
 int
-crypto_vrf_ietfdraft12_proof_to_hash(unsigned char *beta,
+crypto_vrf_rfc9381_proof_to_hash(unsigned char *beta,
                                      const unsigned char *pi)
 {
     ge25519_p3    Gamma;
@@ -102,7 +102,7 @@ vrf_verify(const unsigned char *pi,
 }
 
 int
-crypto_vrf_ietfdraft12_verify(unsigned char *output,
+crypto_vrf_rfc9381_verify(unsigned char *output,
                               const unsigned char *pk,
                               const unsigned char *proof,
                               const unsigned char *msg, const unsigned long long msglen)
@@ -110,7 +110,7 @@ crypto_vrf_ietfdraft12_verify(unsigned char *output,
     ge25519_p3 Y;
     if (ge25519_has_small_order(pk) == 0 && ge25519_is_canonical(pk) == 1 &&
     ge25519_frombytes(&Y, pk) == 0 && (vrf_verify(proof, msg, msglen, &Y) == 0)) {
-        return crypto_vrf_ietfdraft12_proof_to_hash(output, proof);
+        return crypto_vrf_rfc9381_proof_to_hash(output, proof);
     } else {
         return -1;
     }

@@ -10,7 +10,7 @@
 
 #include <stddef.h>
 
-#include "crypto_vrf_ietfdraft12.h"
+#include "crypto_vrf_rfc9381.h"
 #include "export.h"
 
 #ifdef __cplusplus
@@ -20,27 +20,27 @@
 extern "C" {
 #endif
 
-#define crypto_vrf_PROOFBYTES crypto_vrf_ietfdraft12_BYTES
+#define crypto_vrf_PROOFBYTES crypto_vrf_rfc9381_BYTES
 SODIUM_EXPORT
 size_t crypto_vrf_bytes(void);
 
-#define crypto_vrf_OUTPUTBYTES crypto_vrf_ietfdraft12_OUTPUTBYTES
+#define crypto_vrf_OUTPUTBYTES crypto_vrf_rfc9381_OUTPUTBYTES
 SODIUM_EXPORT
 size_t crypto_vrf_outputbytes(void);
 
-#define crypto_vrf_SEEDBYTES crypto_vrf_ietfdraft12_SEEDBYTES
+#define crypto_vrf_SEEDBYTES crypto_vrf_rfc9381_SEEDBYTES
 SODIUM_EXPORT
 size_t crypto_vrf_seedbytes(void);
 
-#define crypto_vrf_PUBLICKEYBYTES crypto_vrf_ietfdraft12_PUBLICKEYBYTES
+#define crypto_vrf_PUBLICKEYBYTES crypto_vrf_rfc9381_PUBLICKEYBYTES
 SODIUM_EXPORT
 size_t crypto_vrf_publickeybytes(void);
 
-#define crypto_vrf_SECRETKEYBYTES crypto_vrf_ietfdraft12_SECRETKEYBYTES
+#define crypto_vrf_SECRETKEYBYTES crypto_vrf_rfc9381_SECRETKEYBYTES
 SODIUM_EXPORT
 size_t crypto_vrf_secretkeybytes(void);
 
-#define crypto_vrf_PRIMITIVE "ietfdraft12"
+#define crypto_vrf_PRIMITIVE "rfc9381"
 SODIUM_EXPORT
 const char *crypto_vrf_primitive(void);
 

@@ -40,21 +40,21 @@ crypto_vrf_primitive(void)
 int
 crypto_vrf_keypair(unsigned char *pk, unsigned char *sk)
 {
-    return crypto_vrf_ietfdraft12_keypair(pk, sk);
+    return crypto_vrf_rfc9381_keypair(pk, sk);
 }
 
 int
 crypto_vrf_seed_keypair(unsigned char *pk, unsigned char *sk,
 			     const unsigned char *seed)
 {
-    return crypto_vrf_ietfdraft12_seed_keypair(pk, sk, seed);
+    return crypto_vrf_rfc9381_seed_keypair(pk, sk, seed);
 }
 
 int
 crypto_vrf_prove(unsigned char *proof, const unsigned char *m, const unsigned long long mlen,
                  const unsigned char *skpk)
 {
-    return crypto_vrf_ietfdraft12_prove(proof, m, mlen, skpk);
+    return crypto_vrf_rfc9381_prove(proof, m, mlen, skpk);
 }
 
 int
@@ -62,11 +62,11 @@ crypto_vrf_verify(unsigned char *output, const unsigned char *pk,
 		  const unsigned char *proof, const unsigned char *m,
 		  const unsigned long long mlen)
 {
-    return crypto_vrf_ietfdraft12_verify(output, pk, proof, m, mlen);
+    return crypto_vrf_rfc9381_verify(output, pk, proof, m, mlen);
 }
 
 int
 crypto_vrf_proof_to_hash(unsigned char *hash, const unsigned char *proof)
 {
-    return crypto_vrf_ietfdraft12_proof_to_hash(hash, proof);
+    return crypto_vrf_rfc9381_proof_to_hash(hash, proof);
 }

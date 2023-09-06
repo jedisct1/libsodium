@@ -98,11 +98,11 @@ libsodium_la_SOURCES = \
 	crypto_verify/verify.c \
 	include/sodium/private/asm_cet.h \
 	crypto_vrf/crypto_vrf.c \
-	crypto_vrf/ietfdraft12/keypair.c \
-	crypto_vrf/ietfdraft12/prove.c \
-	crypto_vrf/ietfdraft12/verify.c \
-	crypto_vrf/ietfdraft12/vrf.c \
-	crypto_vrf/ietfdraft12/vrf_ietfdraft12.h \
+	crypto_vrf/rfc9381/keypair.c \
+	crypto_vrf/rfc9381/prove.c \
+	crypto_vrf/rfc9381/verify.c \
+	crypto_vrf/rfc9381/vrf.c \
+	crypto_vrf/rfc9381/vrf_rfc9381.h \
 	include/sodium/private/chacha20_ietf_ext.h \
 	include/sodium/private/common.h \
 	include/sodium/private/ed25519_ref10.h \
