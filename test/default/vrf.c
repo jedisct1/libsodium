@@ -20,15 +20,15 @@ static const unsigned char messages[3][2] = {{0x00}, {0x72}, {0xaf, 0x82}};
 int main(void)
 {
     unsigned char *seed;
-    char pk_hex[32 * 2 + 1];
-    char proof_hex[80 * 2 + 1];
-    char output_hex[64 * 2 + 1];
-
     unsigned char sk[64];
     unsigned char pk[32];
     unsigned char proof[80];
     unsigned char output[64];
     unsigned int i;
+
+    char pk_hex[32 * 2 + 1];
+    char proof_hex[80 * 2 + 1];
+    char output_hex[64 * 2 + 1];
 
     seed            = (unsigned char *) sodium_malloc(crypto_vrf_rfc9381_SEEDBYTES);
 
