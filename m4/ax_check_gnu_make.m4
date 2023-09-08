@@ -4,7 +4,7 @@
 #
 # SYNOPSIS
 #
-#   AX_CHECK_GNU_MAKE()
+#   AX_CHECK_GNU_MAKE([run-if-true],[run-if-false])
 #
 # DESCRIPTION
 #
@@ -13,6 +13,10 @@
 #     * The makefile variable `ifGNUmake' is set to the empty string, otherwise
 #       it is set to "#". This is useful for including a special features in a
 #       Makefile, which cannot be handled by other versions of make.
+#     * The makefile variable `ifnGNUmake' is set to #, otherwise
+#       it is set to the empty string. This is useful for including a special
+#       features in a Makefile, which can be handled
+#       by other versions of make or to specify else like clause.
 #     * The variable `_cv_gnu_make_command` is set to the command to invoke
 #       GNU make if it exists, the empty string otherwise.
 #     * The variable `ax_cv_gnu_make_command` is set to the command to invoke
@@ -20,6 +24,8 @@
 #     * If GNU Make is found, its version is extracted from the output of
 #       `make --version` as the last field of a record of space-separated
 #       columns and saved into the variable `ax_check_gnu_make_version`.
+#     * Additionally if GNU Make is found, run shell code run-if-true
+#       else run shell code run-if-false.
 #
 #   Here is an example of its use:
 #
@@ -31,6 +37,8 @@
 #
 #     @ifGNUmake@ ifeq ($(DEPEND),$(wildcard $(DEPEND)))
 #     @ifGNUmake@ include $(DEPEND)
+#     @ifGNUmake@ else
+#     fallback code
 #     @ifGNUmake@ endif
 #
 #   Then configure.in would normally contain:
@@ -61,7 +69,7 @@
 #   and this notice are preserved. This file is offered as-is, without any
 #   warranty.
 
-#serial 9
+#serial 12
 
 AC_DEFUN([AX_CHECK_GNU_MAKE],dnl
   [AC_PROG_AWK
@@ -79,6 +87,9 @@ dnl Search all the common names for GNU make
     done ;])
 dnl If there was a GNU version, then set @ifGNUmake@ to the empty string, '#' otherwise
   AS_VAR_IF([_cv_gnu_make_command], [""], [AS_VAR_SET([ifGNUmake], ["#"])],   [AS_VAR_SET([ifGNUmake], [""])])
+  AS_VAR_IF([_cv_gnu_make_command], [""], [AS_VAR_SET([ifnGNUmake], [""])],   [AS_VAR_SET([ifnGNUmake], ["#"])])
   AS_VAR_IF([_cv_gnu_make_command], [""], [AS_UNSET(ax_cv_gnu_make_command)], [AS_VAR_SET([ax_cv_gnu_make_command], [${_cv_gnu_make_command}])])
+  AS_VAR_IF([_cv_gnu_make_command], [""],[$2],[$1])
   AC_SUBST([ifGNUmake])
+  AC_SUBST([ifnGNUmake])
 ])
