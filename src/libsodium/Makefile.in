@@ -228,6 +228,13 @@ am__v_lt_1 =
 libaesni_la_LINK = $(LIBTOOL) $(AM_V_lt) --tag=CC $(AM_LIBTOOLFLAGS) \
 	$(LIBTOOLFLAGS) --mode=link $(CCLD) $(AM_CFLAGS) $(CFLAGS) \
 	$(libaesni_la_LDFLAGS) $(LDFLAGS) -o $@
+libarmcrypto_la_LIBADD =
+am_libarmcrypto_la_OBJECTS = crypto_aead/aes256gcm/armcrypto/libarmcrypto_la-aead_aes256gcm_armcrypto.lo
+libarmcrypto_la_OBJECTS = $(am_libarmcrypto_la_OBJECTS)
+libarmcrypto_la_LINK = $(LIBTOOL) $(AM_V_lt) --tag=CC \
+	$(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=link $(CCLD) \
+	$(AM_CFLAGS) $(CFLAGS) $(libarmcrypto_la_LDFLAGS) $(LDFLAGS) \
+	-o $@
 libavx2_la_LIBADD =
 am_libavx2_la_OBJECTS = crypto_generichash/blake2b/ref/libavx2_la-blake2b-compress-avx2.lo \
 	crypto_pwhash/argon2/libavx2_la-argon2-fill-block-avx2.lo \
@@ -250,9 +257,11 @@ librdrand_la_LINK = $(LIBTOOL) $(AM_V_lt) --tag=CC $(AM_LIBTOOLFLAGS) \
 	$(LIBTOOLFLAGS) --mode=link $(CCLD) $(AM_CFLAGS) $(CFLAGS) \
 	$(librdrand_la_LDFLAGS) $(LDFLAGS) -o $@
 @EMSCRIPTEN_FALSE@am_librdrand_la_rpath =
-libsodium_la_DEPENDENCIES = libaesni.la libsse2.la libssse3.la \
-	libsse41.la libavx2.la libavx512f.la $(am__append_8)
+libsodium_la_DEPENDENCIES = libaesni.la libarmcrypto.la libsse2.la \
+	libssse3.la libsse41.la libavx2.la libavx512f.la \
+	$(am__append_8)
 am__libsodium_la_SOURCES_DIST =  \
+	crypto_aead/aes256gcm/aead_aes256gcm.c \
 	crypto_aead/chacha20poly1305/sodium/aead_chacha20poly1305.c \
 	crypto_aead/xchacha20poly1305/sodium/aead_xchacha20poly1305.c \
 	crypto_auth/crypto_auth.c \
@@ -412,7 +421,9 @@ am__objects_1 =
 @MINIMAL_FALSE@	crypto_stream/salsa208/libsodium_la-stream_salsa208.lo \
 @MINIMAL_FALSE@	crypto_stream/xchacha20/libsodium_la-stream_xchacha20.lo
 @EMSCRIPTEN_FALSE@am__objects_6 = randombytes/sysrandom/libsodium_la-randombytes_sysrandom.lo
-am_libsodium_la_OBJECTS = crypto_aead/chacha20poly1305/sodium/libsodium_la-aead_chacha20poly1305.lo \
+am_libsodium_la_OBJECTS =  \
+	crypto_aead/aes256gcm/libsodium_la-aead_aes256gcm.lo \
+	crypto_aead/chacha20poly1305/sodium/libsodium_la-aead_chacha20poly1305.lo \
 	crypto_aead/xchacha20poly1305/sodium/libsodium_la-aead_xchacha20poly1305.lo \
 	crypto_auth/libsodium_la-crypto_auth.lo \
 	crypto_auth/hmacsha256/libsodium_la-auth_hmacsha256.lo \
@@ -530,7 +541,9 @@ am__v_at_1 =
 DEFAULT_INCLUDES = -I.@am__isrc@
 depcomp = $(SHELL) $(top_srcdir)/build-aux/depcomp
 am__maybe_remake_depfiles = depfiles
-am__depfiles_remade = crypto_aead/aes256gcm/aesni/$(DEPDIR)/libaesni_la-aead_aes256gcm_aesni.Plo \
+am__depfiles_remade = crypto_aead/aes256gcm/$(DEPDIR)/libsodium_la-aead_aes256gcm.Plo \
+	crypto_aead/aes256gcm/aesni/$(DEPDIR)/libaesni_la-aead_aes256gcm_aesni.Plo \
+	crypto_aead/aes256gcm/armcrypto/$(DEPDIR)/libarmcrypto_la-aead_aes256gcm_armcrypto.Plo \
 	crypto_aead/chacha20poly1305/sodium/$(DEPDIR)/libsodium_la-aead_chacha20poly1305.Plo \
 	crypto_aead/xchacha20poly1305/sodium/$(DEPDIR)/libsodium_la-aead_xchacha20poly1305.Plo \
 	crypto_auth/$(DEPDIR)/libsodium_la-crypto_auth.Plo \
@@ -667,13 +680,14 @@ AM_V_CCLD = $(am__v_CCLD_@AM_V@)
 am__v_CCLD_ = $(am__v_CCLD_@AM_DEFAULT_V@)
 am__v_CCLD_0 = @echo "  CCLD    " $@;
 am__v_CCLD_1 = 
-SOURCES = $(libaesni_la_SOURCES) $(libavx2_la_SOURCES) \
-	$(libavx512f_la_SOURCES) $(librdrand_la_SOURCES) \
-	$(libsodium_la_SOURCES) $(libsse2_la_SOURCES) \
-	$(libsse41_la_SOURCES) $(libssse3_la_SOURCES)
-DIST_SOURCES = $(libaesni_la_SOURCES) $(libavx2_la_SOURCES) \
-	$(libavx512f_la_SOURCES) $(librdrand_la_SOURCES) \
-	$(am__libsodium_la_SOURCES_DIST) \
+SOURCES = $(libaesni_la_SOURCES) $(libarmcrypto_la_SOURCES) \
+	$(libavx2_la_SOURCES) $(libavx512f_la_SOURCES) \
+	$(librdrand_la_SOURCES) $(libsodium_la_SOURCES) \
+	$(libsse2_la_SOURCES) $(libsse41_la_SOURCES) \
+	$(libssse3_la_SOURCES)
+DIST_SOURCES = $(libaesni_la_SOURCES) $(libarmcrypto_la_SOURCES) \
+	$(libavx2_la_SOURCES) $(libavx512f_la_SOURCES) \
+	$(librdrand_la_SOURCES) $(am__libsodium_la_SOURCES_DIST) \
 	$(am__libsse2_la_SOURCES_DIST) $(libsse41_la_SOURCES) \
 	$(libssse3_la_SOURCES)
 RECURSIVE_TARGETS = all-recursive check-recursive cscopelist-recursive \
@@ -765,6 +779,7 @@ CCASFLAGS = @CCASFLAGS@
 CCDEPMODE = @CCDEPMODE@
 CFLAGS = @CFLAGS@
 CFLAGS_AESNI = @CFLAGS_AESNI@
+CFLAGS_ARMCRYPTO = @CFLAGS_ARMCRYPTO@
 CFLAGS_AVX = @CFLAGS_AVX@
 CFLAGS_AVX2 = @CFLAGS_AVX2@
 CFLAGS_AVX512F = @CFLAGS_AVX512F@
@@ -920,7 +935,7 @@ valgrind_tools = @valgrind_tools@
 lib_LTLIBRARIES = \
 	libsodium.la
 
-libsodium_la_SOURCES =  \
+libsodium_la_SOURCES = crypto_aead/aes256gcm/aead_aes256gcm.c \
 	crypto_aead/chacha20poly1305/sodium/aead_chacha20poly1305.c \
 	crypto_aead/xchacha20poly1305/sodium/aead_xchacha20poly1305.c \
 	crypto_auth/crypto_auth.c \
@@ -1026,16 +1041,25 @@ libsodium_la_CPPFLAGS = \
 SUBDIRS = \
 	include
 
-libsodium_la_LIBADD = libaesni.la libsse2.la libssse3.la libsse41.la \
-	libavx2.la libavx512f.la $(am__append_8)
-noinst_LTLIBRARIES = libaesni.la libsse2.la libssse3.la libsse41.la \
-	libavx2.la libavx512f.la $(am__append_9)
+libsodium_la_LIBADD = libaesni.la libarmcrypto.la libsse2.la \
+	libssse3.la libsse41.la libavx2.la libavx512f.la \
+	$(am__append_8)
+noinst_LTLIBRARIES = libaesni.la libarmcrypto.la libsse2.la \
+	libssse3.la libsse41.la libavx2.la libavx512f.la \
+	$(am__append_9)
 librdrand_la_LDFLAGS = $(libsodium_la_LDFLAGS)
 librdrand_la_CPPFLAGS = $(libsodium_la_CPPFLAGS) \
 	@CFLAGS_RDRAND@
 
 librdrand_la_SOURCES = \
 	randombytes/internal/randombytes_internal_random.c
+
+libarmcrypto_la_LDFLAGS = $(libsodium_la_LDFLAGS)
+libarmcrypto_la_CPPFLAGS = $(libsodium_la_CPPFLAGS) \
+	@CFLAGS_ARMCRYPTO@
+
+libarmcrypto_la_SOURCES = \
+	crypto_aead/aes256gcm/armcrypto/aead_aes256gcm_armcrypto.c
 
 libaesni_la_LDFLAGS = $(libsodium_la_LDFLAGS)
 libaesni_la_CPPFLAGS = $(libsodium_la_CPPFLAGS) \
@@ -1192,6 +1216,18 @@ crypto_aead/aes256gcm/aesni/libaesni_la-aead_aes256gcm_aesni.lo:  \
 
 libaesni.la: $(libaesni_la_OBJECTS) $(libaesni_la_DEPENDENCIES) $(EXTRA_libaesni_la_DEPENDENCIES) 
 	$(AM_V_CCLD)$(libaesni_la_LINK)  $(libaesni_la_OBJECTS) $(libaesni_la_LIBADD) $(LIBS)
+crypto_aead/aes256gcm/armcrypto/$(am__dirstamp):
+	@$(MKDIR_P) crypto_aead/aes256gcm/armcrypto
+	@: > crypto_aead/aes256gcm/armcrypto/$(am__dirstamp)
+crypto_aead/aes256gcm/armcrypto/$(DEPDIR)/$(am__dirstamp):
+	@$(MKDIR_P) crypto_aead/aes256gcm/armcrypto/$(DEPDIR)
+	@: > crypto_aead/aes256gcm/armcrypto/$(DEPDIR)/$(am__dirstamp)
+crypto_aead/aes256gcm/armcrypto/libarmcrypto_la-aead_aes256gcm_armcrypto.lo:  \
+	crypto_aead/aes256gcm/armcrypto/$(am__dirstamp) \
+	crypto_aead/aes256gcm/armcrypto/$(DEPDIR)/$(am__dirstamp)
+
+libarmcrypto.la: $(libarmcrypto_la_OBJECTS) $(libarmcrypto_la_DEPENDENCIES) $(EXTRA_libarmcrypto_la_DEPENDENCIES) 
+	$(AM_V_CCLD)$(libarmcrypto_la_LINK)  $(libarmcrypto_la_OBJECTS) $(libarmcrypto_la_LIBADD) $(LIBS)
 crypto_generichash/blake2b/ref/$(am__dirstamp):
 	@$(MKDIR_P) crypto_generichash/blake2b/ref
 	@: > crypto_generichash/blake2b/ref/$(am__dirstamp)
@@ -1249,6 +1285,15 @@ randombytes/internal/librdrand_la-randombytes_internal_random.lo:  \
 
 librdrand.la: $(librdrand_la_OBJECTS) $(librdrand_la_DEPENDENCIES) $(EXTRA_librdrand_la_DEPENDENCIES) 
 	$(AM_V_CCLD)$(librdrand_la_LINK) $(am_librdrand_la_rpath) $(librdrand_la_OBJECTS) $(librdrand_la_LIBADD) $(LIBS)
+crypto_aead/aes256gcm/$(am__dirstamp):
+	@$(MKDIR_P) crypto_aead/aes256gcm
+	@: > crypto_aead/aes256gcm/$(am__dirstamp)
+crypto_aead/aes256gcm/$(DEPDIR)/$(am__dirstamp):
+	@$(MKDIR_P) crypto_aead/aes256gcm/$(DEPDIR)
+	@: > crypto_aead/aes256gcm/$(DEPDIR)/$(am__dirstamp)
+crypto_aead/aes256gcm/libsodium_la-aead_aes256gcm.lo:  \
+	crypto_aead/aes256gcm/$(am__dirstamp) \
+	crypto_aead/aes256gcm/$(DEPDIR)/$(am__dirstamp)
 crypto_aead/chacha20poly1305/sodium/$(am__dirstamp):
 	@$(MKDIR_P) crypto_aead/chacha20poly1305/sodium
 	@: > crypto_aead/chacha20poly1305/sodium/$(am__dirstamp)
@@ -1945,8 +1990,12 @@ libssse3.la: $(libssse3_la_OBJECTS) $(libssse3_la_DEPENDENCIES) $(EXTRA_libssse3
 
 mostlyclean-compile:
 	-rm -f *.$(OBJEXT)
+	-rm -f crypto_aead/aes256gcm/*.$(OBJEXT)
+	-rm -f crypto_aead/aes256gcm/*.lo
 	-rm -f crypto_aead/aes256gcm/aesni/*.$(OBJEXT)
 	-rm -f crypto_aead/aes256gcm/aesni/*.lo
+	-rm -f crypto_aead/aes256gcm/armcrypto/*.$(OBJEXT)
+	-rm -f crypto_aead/aes256gcm/armcrypto/*.lo
 	-rm -f crypto_aead/chacha20poly1305/sodium/*.$(OBJEXT)
 	-rm -f crypto_aead/chacha20poly1305/sodium/*.lo
 	-rm -f crypto_aead/xchacha20poly1305/sodium/*.$(OBJEXT)
@@ -2091,7 +2140,9 @@ mostlyclean-compile:
 distclean-compile:
 	-rm -f *.tab.c
 
+@AMDEP_TRUE@@am__include@ @am__quote@crypto_aead/aes256gcm/$(DEPDIR)/libsodium_la-aead_aes256gcm.Plo@am__quote@ # am--include-marker
 @AMDEP_TRUE@@am__include@ @am__quote@crypto_aead/aes256gcm/aesni/$(DEPDIR)/libaesni_la-aead_aes256gcm_aesni.Plo@am__quote@ # am--include-marker
+@AMDEP_TRUE@@am__include@ @am__quote@crypto_aead/aes256gcm/armcrypto/$(DEPDIR)/libarmcrypto_la-aead_aes256gcm_armcrypto.Plo@am__quote@ # am--include-marker
 @AMDEP_TRUE@@am__include@ @am__quote@crypto_aead/chacha20poly1305/sodium/$(DEPDIR)/libsodium_la-aead_chacha20poly1305.Plo@am__quote@ # am--include-marker
 @AMDEP_TRUE@@am__include@ @am__quote@crypto_aead/xchacha20poly1305/sodium/$(DEPDIR)/libsodium_la-aead_xchacha20poly1305.Plo@am__quote@ # am--include-marker
 @AMDEP_TRUE@@am__include@ @am__quote@crypto_auth/$(DEPDIR)/libsodium_la-crypto_auth.Plo@am__quote@ # am--include-marker
@@ -2275,6 +2326,13 @@ crypto_aead/aes256gcm/aesni/libaesni_la-aead_aes256gcm_aesni.lo: crypto_aead/aes
 @AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
 @am__fastdepCC_FALSE@	$(AM_V_CC@am__nodep@)$(LIBTOOL) $(AM_V_lt) --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libaesni_la_CPPFLAGS) $(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS) -c -o crypto_aead/aes256gcm/aesni/libaesni_la-aead_aes256gcm_aesni.lo `test -f 'crypto_aead/aes256gcm/aesni/aead_aes256gcm_aesni.c' || echo '$(srcdir)/'`crypto_aead/aes256gcm/aesni/aead_aes256gcm_aesni.c
 
+crypto_aead/aes256gcm/armcrypto/libarmcrypto_la-aead_aes256gcm_armcrypto.lo: crypto_aead/aes256gcm/armcrypto/aead_aes256gcm_armcrypto.c
+@am__fastdepCC_TRUE@	$(AM_V_CC)$(LIBTOOL) $(AM_V_lt) --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libarmcrypto_la_CPPFLAGS) $(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS) -MT crypto_aead/aes256gcm/armcrypto/libarmcrypto_la-aead_aes256gcm_armcrypto.lo -MD -MP -MF crypto_aead/aes256gcm/armcrypto/$(DEPDIR)/libarmcrypto_la-aead_aes256gcm_armcrypto.Tpo -c -o crypto_aead/aes256gcm/armcrypto/libarmcrypto_la-aead_aes256gcm_armcrypto.lo `test -f 'crypto_aead/aes256gcm/armcrypto/aead_aes256gcm_armcrypto.c' || echo '$(srcdir)/'`crypto_aead/aes256gcm/armcrypto/aead_aes256gcm_armcrypto.c
+@am__fastdepCC_TRUE@	$(AM_V_at)$(am__mv) crypto_aead/aes256gcm/armcrypto/$(DEPDIR)/libarmcrypto_la-aead_aes256gcm_armcrypto.Tpo crypto_aead/aes256gcm/armcrypto/$(DEPDIR)/libarmcrypto_la-aead_aes256gcm_armcrypto.Plo
+@AMDEP_TRUE@@am__fastdepCC_FALSE@	$(AM_V_CC)source='crypto_aead/aes256gcm/armcrypto/aead_aes256gcm_armcrypto.c' object='crypto_aead/aes256gcm/armcrypto/libarmcrypto_la-aead_aes256gcm_armcrypto.lo' libtool=yes @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCC_FALSE@	$(AM_V_CC@am__nodep@)$(LIBTOOL) $(AM_V_lt) --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libarmcrypto_la_CPPFLAGS) $(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS) -c -o crypto_aead/aes256gcm/armcrypto/libarmcrypto_la-aead_aes256gcm_armcrypto.lo `test -f 'crypto_aead/aes256gcm/armcrypto/aead_aes256gcm_armcrypto.c' || echo '$(srcdir)/'`crypto_aead/aes256gcm/armcrypto/aead_aes256gcm_armcrypto.c
+
 crypto_generichash/blake2b/ref/libavx2_la-blake2b-compress-avx2.lo: crypto_generichash/blake2b/ref/blake2b-compress-avx2.c
 @am__fastdepCC_TRUE@	$(AM_V_CC)$(LIBTOOL) $(AM_V_lt) --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libavx2_la_CPPFLAGS) $(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS) -MT crypto_generichash/blake2b/ref/libavx2_la-blake2b-compress-avx2.lo -MD -MP -MF crypto_generichash/blake2b/ref/$(DEPDIR)/libavx2_la-blake2b-compress-avx2.Tpo -c -o crypto_generichash/blake2b/ref/libavx2_la-blake2b-compress-avx2.lo `test -f 'crypto_generichash/blake2b/ref/blake2b-compress-avx2.c' || echo '$(srcdir)/'`crypto_generichash/blake2b/ref/blake2b-compress-avx2.c
 @am__fastdepCC_TRUE@	$(AM_V_at)$(am__mv) crypto_generichash/blake2b/ref/$(DEPDIR)/libavx2_la-blake2b-compress-avx2.Tpo crypto_generichash/blake2b/ref/$(DEPDIR)/libavx2_la-blake2b-compress-avx2.Plo
@@ -2316,6 +2374,13 @@ randombytes/internal/librdrand_la-randombytes_internal_random.lo: randombytes/in
 @AMDEP_TRUE@@am__fastdepCC_FALSE@	$(AM_V_CC)source='randombytes/internal/randombytes_internal_random.c' object='randombytes/internal/librdrand_la-randombytes_internal_random.lo' libtool=yes @AMDEPBACKSLASH@
 @AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
 @am__fastdepCC_FALSE@	$(AM_V_CC@am__nodep@)$(LIBTOOL) $(AM_V_lt) --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(librdrand_la_CPPFLAGS) $(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS) -c -o randombytes/internal/librdrand_la-randombytes_internal_random.lo `test -f 'randombytes/internal/randombytes_internal_random.c' || echo '$(srcdir)/'`randombytes/internal/randombytes_internal_random.c
+
+crypto_aead/aes256gcm/libsodium_la-aead_aes256gcm.lo: crypto_aead/aes256gcm/aead_aes256gcm.c
+@am__fastdepCC_TRUE@	$(AM_V_CC)$(LIBTOOL) $(AM_V_lt) --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libsodium_la_CPPFLAGS) $(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS) -MT crypto_aead/aes256gcm/libsodium_la-aead_aes256gcm.lo -MD -MP -MF crypto_aead/aes256gcm/$(DEPDIR)/libsodium_la-aead_aes256gcm.Tpo -c -o crypto_aead/aes256gcm/libsodium_la-aead_aes256gcm.lo `test -f 'crypto_aead/aes256gcm/aead_aes256gcm.c' || echo '$(srcdir)/'`crypto_aead/aes256gcm/aead_aes256gcm.c
+@am__fastdepCC_TRUE@	$(AM_V_at)$(am__mv) crypto_aead/aes256gcm/$(DEPDIR)/libsodium_la-aead_aes256gcm.Tpo crypto_aead/aes256gcm/$(DEPDIR)/libsodium_la-aead_aes256gcm.Plo
+@AMDEP_TRUE@@am__fastdepCC_FALSE@	$(AM_V_CC)source='crypto_aead/aes256gcm/aead_aes256gcm.c' object='crypto_aead/aes256gcm/libsodium_la-aead_aes256gcm.lo' libtool=yes @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCC_FALSE@	$(AM_V_CC@am__nodep@)$(LIBTOOL) $(AM_V_lt) --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libsodium_la_CPPFLAGS) $(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS) -c -o crypto_aead/aes256gcm/libsodium_la-aead_aes256gcm.lo `test -f 'crypto_aead/aes256gcm/aead_aes256gcm.c' || echo '$(srcdir)/'`crypto_aead/aes256gcm/aead_aes256gcm.c
 
 crypto_aead/chacha20poly1305/sodium/libsodium_la-aead_chacha20poly1305.lo: crypto_aead/chacha20poly1305/sodium/aead_chacha20poly1305.c
 @am__fastdepCC_TRUE@	$(AM_V_CC)$(LIBTOOL) $(AM_V_lt) --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libsodium_la_CPPFLAGS) $(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS) -MT crypto_aead/chacha20poly1305/sodium/libsodium_la-aead_chacha20poly1305.lo -MD -MP -MF crypto_aead/chacha20poly1305/sodium/$(DEPDIR)/libsodium_la-aead_chacha20poly1305.Tpo -c -o crypto_aead/chacha20poly1305/sodium/libsodium_la-aead_chacha20poly1305.lo `test -f 'crypto_aead/chacha20poly1305/sodium/aead_chacha20poly1305.c' || echo '$(srcdir)/'`crypto_aead/chacha20poly1305/sodium/aead_chacha20poly1305.c
@@ -3015,7 +3080,9 @@ mostlyclean-libtool:
 
 clean-libtool:
 	-rm -rf .libs _libs
+	-rm -rf crypto_aead/aes256gcm/.libs crypto_aead/aes256gcm/_libs
 	-rm -rf crypto_aead/aes256gcm/aesni/.libs crypto_aead/aes256gcm/aesni/_libs
+	-rm -rf crypto_aead/aes256gcm/armcrypto/.libs crypto_aead/aes256gcm/armcrypto/_libs
 	-rm -rf crypto_aead/chacha20poly1305/sodium/.libs crypto_aead/chacha20poly1305/sodium/_libs
 	-rm -rf crypto_aead/xchacha20poly1305/sodium/.libs crypto_aead/xchacha20poly1305/sodium/_libs
 	-rm -rf crypto_auth/.libs crypto_auth/_libs
@@ -3304,8 +3371,12 @@ clean-generic:
 distclean-generic:
 	-test -z "$(CONFIG_CLEAN_FILES)" || rm -f $(CONFIG_CLEAN_FILES)
 	-test . = "$(srcdir)" || test -z "$(CONFIG_CLEAN_VPATH_FILES)" || rm -f $(CONFIG_CLEAN_VPATH_FILES)
+	-rm -f crypto_aead/aes256gcm/$(DEPDIR)/$(am__dirstamp)
+	-rm -f crypto_aead/aes256gcm/$(am__dirstamp)
 	-rm -f crypto_aead/aes256gcm/aesni/$(DEPDIR)/$(am__dirstamp)
 	-rm -f crypto_aead/aes256gcm/aesni/$(am__dirstamp)
+	-rm -f crypto_aead/aes256gcm/armcrypto/$(DEPDIR)/$(am__dirstamp)
+	-rm -f crypto_aead/aes256gcm/armcrypto/$(am__dirstamp)
 	-rm -f crypto_aead/chacha20poly1305/sodium/$(DEPDIR)/$(am__dirstamp)
 	-rm -f crypto_aead/chacha20poly1305/sodium/$(am__dirstamp)
 	-rm -f crypto_aead/xchacha20poly1305/sodium/$(DEPDIR)/$(am__dirstamp)
@@ -3476,7 +3547,9 @@ clean-am: clean-generic clean-libLTLIBRARIES clean-libtool \
 	clean-noinstLTLIBRARIES mostlyclean-am
 
 distclean: distclean-recursive
-		-rm -f crypto_aead/aes256gcm/aesni/$(DEPDIR)/libaesni_la-aead_aes256gcm_aesni.Plo
+		-rm -f crypto_aead/aes256gcm/$(DEPDIR)/libsodium_la-aead_aes256gcm.Plo
+	-rm -f crypto_aead/aes256gcm/aesni/$(DEPDIR)/libaesni_la-aead_aes256gcm_aesni.Plo
+	-rm -f crypto_aead/aes256gcm/armcrypto/$(DEPDIR)/libarmcrypto_la-aead_aes256gcm_armcrypto.Plo
 	-rm -f crypto_aead/chacha20poly1305/sodium/$(DEPDIR)/libsodium_la-aead_chacha20poly1305.Plo
 	-rm -f crypto_aead/xchacha20poly1305/sodium/$(DEPDIR)/libsodium_la-aead_xchacha20poly1305.Plo
 	-rm -f crypto_auth/$(DEPDIR)/libsodium_la-crypto_auth.Plo
@@ -3629,7 +3702,9 @@ install-ps-am:
 installcheck-am:
 
 maintainer-clean: maintainer-clean-recursive
-		-rm -f crypto_aead/aes256gcm/aesni/$(DEPDIR)/libaesni_la-aead_aes256gcm_aesni.Plo
+		-rm -f crypto_aead/aes256gcm/$(DEPDIR)/libsodium_la-aead_aes256gcm.Plo
+	-rm -f crypto_aead/aes256gcm/aesni/$(DEPDIR)/libaesni_la-aead_aes256gcm_aesni.Plo
+	-rm -f crypto_aead/aes256gcm/armcrypto/$(DEPDIR)/libarmcrypto_la-aead_aes256gcm_armcrypto.Plo
 	-rm -f crypto_aead/chacha20poly1305/sodium/$(DEPDIR)/libsodium_la-aead_chacha20poly1305.Plo
 	-rm -f crypto_aead/xchacha20poly1305/sodium/$(DEPDIR)/libsodium_la-aead_xchacha20poly1305.Plo
 	-rm -f crypto_auth/$(DEPDIR)/libsodium_la-crypto_auth.Plo

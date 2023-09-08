@@ -693,6 +693,7 @@ CFLAGS_SSSE3
 CFLAGS_SSE3
 CFLAGS_SSE2
 CFLAGS_MMX
+CFLAGS_ARMCRYPTO
 LIBTOOL_DEPS
 LT_SYS_LIBRARY_PATH
 OTOOL64
@@ -1570,7 +1571,7 @@ Optional Packages:
   --with-PACKAGE[=ARG]    use PACKAGE [ARG=yes]
   --without-PACKAGE       do not use PACKAGE (same as --with-PACKAGE=no)
   --with-pthreads         use pthreads library, or --without-pthreads to
-                          disable threading support.
+                          disable threading support
   --with-safecode         For maintainers only - please do not use
   --with-ctgrind          For maintainers only - please do not use
   --with-pic[=PKGS]       try to use only PIC/non-PIC objects [default=use
@@ -8598,82 +8599,6 @@ fi
      ;;
 esac
 
-{ printf "%s\n" "$as_me:${as_lineno-$LINENO}: checking for a broken Xcode version" >&5
-printf %s "checking for a broken Xcode version... " >&6; }
-cat confdefs.h - <<_ACEOF >conftest.$ac_ext
-/* end confdefs.h.  */
-
-int
-main (void)
-{
-
-#if !defined(__APPLE_CC__) || __APPLE_CC__ != 6000
-#error Not Apple
-#endif
-#if !defined(__clang_major__) || __clang_major__ != 11
-#error Not Xcode 11
-#endif
-
-  ;
-  return 0;
-}
-_ACEOF
-if ac_fn_c_try_compile "$LINENO"
-then :
-  { printf "%s\n" "$as_me:${as_lineno-$LINENO}: result: yes" >&5
-printf "%s\n" "yes" >&6; }
-   { printf "%s\n" "$as_me:${as_lineno-$LINENO}: WARNING: Using unsupported Xcode version" >&5
-printf "%s\n" "$as_me: WARNING: Using unsupported Xcode version" >&2;}
-   as_CACHEVAR=`printf "%s\n" "ax_cv_check_cflags__$CFLAGS -fno-stack-check" | $as_tr_sh`
-{ printf "%s\n" "$as_me:${as_lineno-$LINENO}: checking whether C compiler accepts $CFLAGS -fno-stack-check" >&5
-printf %s "checking whether C compiler accepts $CFLAGS -fno-stack-check... " >&6; }
-if eval test \${$as_CACHEVAR+y}
-then :
-  printf %s "(cached) " >&6
-else $as_nop
-
-  ax_check_save_flags=$CFLAGS
-  CFLAGS="$CFLAGS  $CFLAGS -fno-stack-check"
-  cat confdefs.h - <<_ACEOF >conftest.$ac_ext
-/* end confdefs.h.  */
-#include <time.h>
-int
-main (void)
-{
-time_t x; int fodder = 0; if (fodder > -1000 && time(&x)) return (int) x
-
-  ;
-  return 0;
-}
-_ACEOF
-if ac_fn_c_try_link "$LINENO"
-then :
-  eval "$as_CACHEVAR=yes"
-else $as_nop
-  eval "$as_CACHEVAR=no"
-fi
-rm -f core conftest.err conftest.$ac_objext conftest.beam \
-    conftest$ac_exeext conftest.$ac_ext
-  CFLAGS=$ax_check_save_flags
-fi
-eval ac_res=\$$as_CACHEVAR
-	       { printf "%s\n" "$as_me:${as_lineno-$LINENO}: result: $ac_res" >&5
-printf "%s\n" "$ac_res" >&6; }
-if eval test \"x\$"$as_CACHEVAR"\" = x"yes"
-then :
-  CFLAGS="$CFLAGS -fno-stack-check"
-else $as_nop
-  :
-fi
-
-
-else $as_nop
-  { printf "%s\n" "$as_me:${as_lineno-$LINENO}: result: no" >&5
-printf "%s\n" "no" >&6; }
-
-fi
-rm -f core conftest.err conftest.$ac_objext conftest.beam conftest.$ac_ext
-
 if test "x$enable_ssp" != "xno"
 then :
 
@@ -8809,6 +8734,48 @@ printf "%s\n" "$ac_res" >&6; }
 if eval test \"x\$"$as_CACHEVAR"\" = x"yes"
 then :
   CWFLAGS="$CFLAGS -Wall"
+else $as_nop
+  :
+fi
+
+as_CACHEVAR=`printf "%s\n" "ax_cv_check_cflags__$CFLAGS -Wno-deprecated-declarations" | $as_tr_sh`
+{ printf "%s\n" "$as_me:${as_lineno-$LINENO}: checking whether C compiler accepts $CFLAGS -Wno-deprecated-declarations" >&5
+printf %s "checking whether C compiler accepts $CFLAGS -Wno-deprecated-declarations... " >&6; }
+if eval test \${$as_CACHEVAR+y}
+then :
+  printf %s "(cached) " >&6
+else $as_nop
+
+  ax_check_save_flags=$CFLAGS
+  CFLAGS="$CFLAGS  $CFLAGS -Wno-deprecated-declarations"
+  cat confdefs.h - <<_ACEOF >conftest.$ac_ext
+/* end confdefs.h.  */
+#include <time.h>
+int
+main (void)
+{
+time_t x; int fodder = 0; if (fodder > -1000 && time(&x)) return (int) x
+
+  ;
+  return 0;
+}
+_ACEOF
+if ac_fn_c_try_link "$LINENO"
+then :
+  eval "$as_CACHEVAR=yes"
+else $as_nop
+  eval "$as_CACHEVAR=no"
+fi
+rm -f core conftest.err conftest.$ac_objext conftest.beam \
+    conftest$ac_exeext conftest.$ac_ext
+  CFLAGS=$ax_check_save_flags
+fi
+eval ac_res=\$$as_CACHEVAR
+	       { printf "%s\n" "$as_me:${as_lineno-$LINENO}: result: $ac_res" >&5
+printf "%s\n" "$ac_res" >&6; }
+if eval test \"x\$"$as_CACHEVAR"\" = x"yes"
+then :
+  CFLAGS="$CFLAGS -Wno-deprecated-declarations"
 else $as_nop
   :
 fi
@@ -18542,9 +18509,153 @@ fi
 
 
 
+target_cpu_aarch64=no
+{ printf "%s\n" "$as_me:${as_lineno-$LINENO}: checking for ARM64 target" >&5
+printf %s "checking for ARM64 target... " >&6; }
+cat confdefs.h - <<_ACEOF >conftest.$ac_ext
+/* end confdefs.h.  */
+
+#ifndef __aarch64__
+#error Not aarch64
+#endif
+#include <arm_neon.h>
+
+int
+main (void)
+{
+(void) 0
+  ;
+  return 0;
+}
+_ACEOF
+if ac_fn_c_try_link "$LINENO"
+then :
+  { printf "%s\n" "$as_me:${as_lineno-$LINENO}: result: yes" >&5
+printf "%s\n" "yes" >&6; }
+    target_cpu_aarch64=yes
+else $as_nop
+  { printf "%s\n" "$as_me:${as_lineno-$LINENO}: result: no" >&5
+printf "%s\n" "no" >&6; }
+    target_cpu_aarch64=no
+fi
+rm -f core conftest.err conftest.$ac_objext conftest.beam \
+    conftest$ac_exeext conftest.$ac_ext
+
 if test "x$EMSCRIPTEN" = "x"
 then :
 
+
+  if test "x$target_cpu_aarch64" = "xyes"
+then :
+
+    have_armcrypto=no
+    { printf "%s\n" "$as_me:${as_lineno-$LINENO}: checking for ARM crypto instructions set" >&5
+printf %s "checking for ARM crypto instructions set... " >&6; }
+    cat confdefs.h - <<_ACEOF >conftest.$ac_ext
+/* end confdefs.h.  */
+#include <arm_neon.h>
+int
+main (void)
+{
+ vaeseq_u8(vmovq_n_u8(0), vmovq_n_u8(__ARM_FEATURE_CRYPTO))
+  ;
+  return 0;
+}
+_ACEOF
+if ac_fn_c_try_link "$LINENO"
+then :
+
+        { printf "%s\n" "$as_me:${as_lineno-$LINENO}: result: yes" >&5
+printf "%s\n" "yes" >&6; }
+        have_armcrypto=yes
+
+else $as_nop
+
+        { printf "%s\n" "$as_me:${as_lineno-$LINENO}: result: no" >&5
+printf "%s\n" "no" >&6; }
+        oldcflags="$CFLAGS"
+        { printf "%s\n" "$as_me:${as_lineno-$LINENO}: checking whether C compiler accepts -march=armv8-a+crypto+aes" >&5
+printf %s "checking whether C compiler accepts -march=armv8-a+crypto+aes... " >&6; }
+if test ${ax_cv_check_cflags___march_armv8_apcryptopaes+y}
+then :
+  printf %s "(cached) " >&6
+else $as_nop
+
+  ax_check_save_flags=$CFLAGS
+  CFLAGS="$CFLAGS  -march=armv8-a+crypto+aes"
+  cat confdefs.h - <<_ACEOF >conftest.$ac_ext
+/* end confdefs.h.  */
+#include <time.h>
+int
+main (void)
+{
+time_t x; int fodder = 0; if (fodder > -1000 && time(&x)) return (int) x
+
+  ;
+  return 0;
+}
+_ACEOF
+if ac_fn_c_try_link "$LINENO"
+then :
+  ax_cv_check_cflags___march_armv8_apcryptopaes=yes
+else $as_nop
+  ax_cv_check_cflags___march_armv8_apcryptopaes=no
+fi
+rm -f core conftest.err conftest.$ac_objext conftest.beam \
+    conftest$ac_exeext conftest.$ac_ext
+  CFLAGS=$ax_check_save_flags
+fi
+{ printf "%s\n" "$as_me:${as_lineno-$LINENO}: result: $ax_cv_check_cflags___march_armv8_apcryptopaes" >&5
+printf "%s\n" "$ax_cv_check_cflags___march_armv8_apcryptopaes" >&6; }
+if test "x$ax_cv_check_cflags___march_armv8_apcryptopaes" = xyes
+then :
+
+          CFLAGS="$CFLAGS -march=armv8-a+crypto+aes"
+          { printf "%s\n" "$as_me:${as_lineno-$LINENO}: checking for ARM crypto instructions set with -march=armv8-a+crypto+aes" >&5
+printf %s "checking for ARM crypto instructions set with -march=armv8-a+crypto+aes... " >&6; }
+          cat confdefs.h - <<_ACEOF >conftest.$ac_ext
+/* end confdefs.h.  */
+#include <arm_neon.h>
+int
+main (void)
+{
+ vaeseq_u8(vmovq_n_u8(0), vmovq_n_u8(__ARM_FEATURE_CRYPTO))
+  ;
+  return 0;
+}
+_ACEOF
+if ac_fn_c_try_link "$LINENO"
+then :
+
+              { printf "%s\n" "$as_me:${as_lineno-$LINENO}: result: yes - with addition of -march=armv8-a+crypto+aes" >&5
+printf "%s\n" "yes - with addition of -march=armv8-a+crypto+aes" >&6; }
+              have_armcrypto=yes
+              CFLAGS_ARMCRYPTO="-march=armv8-a+crypto+aes"
+
+else $as_nop
+  { printf "%s\n" "$as_me:${as_lineno-$LINENO}: result: no" >&5
+printf "%s\n" "no" >&6; }
+fi
+rm -f core conftest.err conftest.$ac_objext conftest.beam \
+    conftest$ac_exeext conftest.$ac_ext
+          CFLAGS="$oldcflags"
+
+else $as_nop
+  :
+fi
+
+
+fi
+rm -f core conftest.err conftest.$ac_objext conftest.beam \
+    conftest$ac_exeext conftest.$ac_ext
+      if test "$have_armcrypto" = "yes"
+then :
+
+printf "%s\n" "#define HAVE_ARMCRYPTO 1" >>confdefs.h
+
+fi
+
+fi
 
   oldcflags="$CFLAGS"
   { printf "%s\n" "$as_me:${as_lineno-$LINENO}: checking whether C compiler accepts -mmmx" >&5
@@ -18603,7 +18714,7 @@ main (void)
   return 0;
 }
 _ACEOF
-if ac_fn_c_try_compile "$LINENO"
+if ac_fn_c_try_link "$LINENO"
 then :
   { printf "%s\n" "$as_me:${as_lineno-$LINENO}: result: yes" >&5
 printf "%s\n" "yes" >&6; }
@@ -18654,7 +18765,8 @@ else $as_nop
   { printf "%s\n" "$as_me:${as_lineno-$LINENO}: result: no" >&5
 printf "%s\n" "no" >&6; }
 fi
-rm -f core conftest.err conftest.$ac_objext conftest.beam conftest.$ac_ext
+rm -f core conftest.err conftest.$ac_objext conftest.beam \
+    conftest$ac_exeext conftest.$ac_ext
   CFLAGS="$oldcflags"
 
   oldcflags="$CFLAGS"
@@ -18718,7 +18830,7 @@ main (void)
   return 0;
 }
 _ACEOF
-if ac_fn_c_try_compile "$LINENO"
+if ac_fn_c_try_link "$LINENO"
 then :
   { printf "%s\n" "$as_me:${as_lineno-$LINENO}: result: yes" >&5
 printf "%s\n" "yes" >&6; }
@@ -18769,7 +18881,8 @@ else $as_nop
   { printf "%s\n" "$as_me:${as_lineno-$LINENO}: result: no" >&5
 printf "%s\n" "no" >&6; }
 fi
-rm -f core conftest.err conftest.$ac_objext conftest.beam conftest.$ac_ext
+rm -f core conftest.err conftest.$ac_objext conftest.beam \
+    conftest$ac_exeext conftest.$ac_ext
   CFLAGS="$oldcflags"
 
   oldcflags="$CFLAGS"
@@ -18830,7 +18943,7 @@ main (void)
   return 0;
 }
 _ACEOF
-if ac_fn_c_try_compile "$LINENO"
+if ac_fn_c_try_link "$LINENO"
 then :
   { printf "%s\n" "$as_me:${as_lineno-$LINENO}: result: yes" >&5
 printf "%s\n" "yes" >&6; }
@@ -18881,7 +18994,8 @@ else $as_nop
   { printf "%s\n" "$as_me:${as_lineno-$LINENO}: result: no" >&5
 printf "%s\n" "no" >&6; }
 fi
-rm -f core conftest.err conftest.$ac_objext conftest.beam conftest.$ac_ext
+rm -f core conftest.err conftest.$ac_objext conftest.beam \
+    conftest$ac_exeext conftest.$ac_ext
   CFLAGS="$oldcflags"
 
   oldcflags="$CFLAGS"
@@ -18941,7 +19055,7 @@ main (void)
   return 0;
 }
 _ACEOF
-if ac_fn_c_try_compile "$LINENO"
+if ac_fn_c_try_link "$LINENO"
 then :
   { printf "%s\n" "$as_me:${as_lineno-$LINENO}: result: yes" >&5
 printf "%s\n" "yes" >&6; }
@@ -18992,7 +19106,8 @@ else $as_nop
   { printf "%s\n" "$as_me:${as_lineno-$LINENO}: result: no" >&5
 printf "%s\n" "no" >&6; }
 fi
-rm -f core conftest.err conftest.$ac_objext conftest.beam conftest.$ac_ext
+rm -f core conftest.err conftest.$ac_objext conftest.beam \
+    conftest$ac_exeext conftest.$ac_ext
   CFLAGS="$oldcflags"
 
   oldcflags="$CFLAGS"
@@ -19052,7 +19167,7 @@ main (void)
   return 0;
 }
 _ACEOF
-if ac_fn_c_try_compile "$LINENO"
+if ac_fn_c_try_link "$LINENO"
 then :
   { printf "%s\n" "$as_me:${as_lineno-$LINENO}: result: yes" >&5
 printf "%s\n" "yes" >&6; }
@@ -19103,7 +19218,8 @@ else $as_nop
   { printf "%s\n" "$as_me:${as_lineno-$LINENO}: result: no" >&5
 printf "%s\n" "no" >&6; }
 fi
-rm -f core conftest.err conftest.$ac_objext conftest.beam conftest.$ac_ext
+rm -f core conftest.err conftest.$ac_objext conftest.beam \
+    conftest$ac_exeext conftest.$ac_ext
   CFLAGS="$oldcflags"
 
   oldcflags="$CFLAGS"
@@ -19163,7 +19279,7 @@ main (void)
   return 0;
 }
 _ACEOF
-if ac_fn_c_try_compile "$LINENO"
+if ac_fn_c_try_link "$LINENO"
 then :
   { printf "%s\n" "$as_me:${as_lineno-$LINENO}: result: yes" >&5
 printf "%s\n" "yes" >&6; }
@@ -19214,7 +19330,8 @@ else $as_nop
   { printf "%s\n" "$as_me:${as_lineno-$LINENO}: result: no" >&5
 printf "%s\n" "no" >&6; }
 fi
-rm -f core conftest.err conftest.$ac_objext conftest.beam conftest.$ac_ext
+rm -f core conftest.err conftest.$ac_objext conftest.beam \
+    conftest$ac_exeext conftest.$ac_ext
   CFLAGS="$oldcflags"
 
   oldcflags="$CFLAGS"
@@ -19278,7 +19395,7 @@ return _mm256_movemask_ps(_mm256_cmp_ps(x, y, _CMP_NEQ_OQ));
   return 0;
 }
 _ACEOF
-if ac_fn_c_try_compile "$LINENO"
+if ac_fn_c_try_link "$LINENO"
 then :
   { printf "%s\n" "$as_me:${as_lineno-$LINENO}: result: yes" >&5
 printf "%s\n" "yes" >&6; }
@@ -19341,7 +19458,7 @@ main (void)
   return 0;
 }
 _ACEOF
-if ac_fn_c_try_compile "$LINENO"
+if ac_fn_c_try_link "$LINENO"
 then :
   { printf "%s\n" "$as_me:${as_lineno-$LINENO}: result: yes" >&5
 printf "%s\n" "yes" >&6; }
@@ -19352,13 +19469,15 @@ printf "%s\n" "no" >&6; }
 printf "%s\n" "#define _mm256_broadcastsi128_si256 _mm_broadcastsi128_si256" >>confdefs.h
 
 fi
-rm -f core conftest.err conftest.$ac_objext conftest.beam conftest.$ac_ext
+rm -f core conftest.err conftest.$ac_objext conftest.beam \
+    conftest$ac_exeext conftest.$ac_ext
 
 else $as_nop
   { printf "%s\n" "$as_me:${as_lineno-$LINENO}: result: no" >&5
 printf "%s\n" "no" >&6; }
 fi
-rm -f core conftest.err conftest.$ac_objext conftest.beam conftest.$ac_ext
+rm -f core conftest.err conftest.$ac_objext conftest.beam \
+    conftest$ac_exeext conftest.$ac_ext
   CFLAGS="$oldcflags"
 
   oldcflags="$CFLAGS"
@@ -19434,7 +19553,7 @@ __m512i y = _mm512_permutexvar_epi64(_mm512_setr_epi64(0, 1, 4, 5, 2, 3, 6, 7), 
   return 0;
 }
 _ACEOF
-if ac_fn_c_try_compile "$LINENO"
+if ac_fn_c_try_link "$LINENO"
 then :
   { printf "%s\n" "$as_me:${as_lineno-$LINENO}: result: yes" >&5
 printf "%s\n" "yes" >&6; }
@@ -19528,7 +19647,8 @@ fi
 
 
 fi
-rm -f core conftest.err conftest.$ac_objext conftest.beam conftest.$ac_ext
+rm -f core conftest.err conftest.$ac_objext conftest.beam \
+    conftest$ac_exeext conftest.$ac_ext
   CFLAGS="$oldcflags"
 
   oldcflags="$CFLAGS"
@@ -19630,7 +19750,7 @@ main (void)
   return 0;
 }
 _ACEOF
-if ac_fn_c_try_compile "$LINENO"
+if ac_fn_c_try_link "$LINENO"
 then :
   { printf "%s\n" "$as_me:${as_lineno-$LINENO}: result: yes" >&5
 printf "%s\n" "yes" >&6; }
@@ -19722,7 +19842,8 @@ else $as_nop
   { printf "%s\n" "$as_me:${as_lineno-$LINENO}: result: no" >&5
 printf "%s\n" "no" >&6; }
 fi
-rm -f core conftest.err conftest.$ac_objext conftest.beam conftest.$ac_ext
+rm -f core conftest.err conftest.$ac_objext conftest.beam \
+    conftest$ac_exeext conftest.$ac_ext
   CFLAGS="$oldcflags"
 
   oldcflags="$CFLAGS"
@@ -19782,7 +19903,7 @@ main (void)
   return 0;
 }
 _ACEOF
-if ac_fn_c_try_compile "$LINENO"
+if ac_fn_c_try_link "$LINENO"
 then :
   { printf "%s\n" "$as_me:${as_lineno-$LINENO}: result: yes" >&5
 printf "%s\n" "yes" >&6; }
@@ -19834,11 +19955,13 @@ else $as_nop
   { printf "%s\n" "$as_me:${as_lineno-$LINENO}: result: no" >&5
 printf "%s\n" "no" >&6; }
 fi
-rm -f core conftest.err conftest.$ac_objext conftest.beam conftest.$ac_ext
+rm -f core conftest.err conftest.$ac_objext conftest.beam \
+    conftest$ac_exeext conftest.$ac_ext
   CFLAGS="$oldcflags"
 
 
 fi
+
 
 
 
@@ -19874,6 +19997,19 @@ ac_fn_c_check_header_compile "$LINENO" "intrin.h" "ac_cv_header_intrin_h" "$ac_i
 if test "x$ac_cv_header_intrin_h" = xyes
 then :
   printf "%s\n" "#define HAVE_INTRIN_H 1" >>confdefs.h
+
+fi
+ac_fn_c_check_header_compile "$LINENO" "sys/auxv.h" "ac_cv_header_sys_auxv_h" "$ac_includes_default"
+if test "x$ac_cv_header_sys_auxv_h" = xyes
+then :
+  printf "%s\n" "#define HAVE_SYS_AUXV_H 1" >>confdefs.h
+
+fi
+
+ac_fn_c_check_header_compile "$LINENO" "CommonCrypto/CommonRandom.h" "ac_cv_header_CommonCrypto_CommonRandom_h" "$ac_includes_default"
+if test "x$ac_cv_header_CommonCrypto_CommonRandom_h" = xyes
+then :
+  printf "%s\n" "#define HAVE_COMMONCRYPTO_COMMONRANDOM_H 1" >>confdefs.h
 
 fi
 
@@ -20218,7 +20354,7 @@ main (void)
   return 0;
 }
 _ACEOF
-if ac_fn_c_try_compile "$LINENO"
+if ac_fn_c_try_link "$LINENO"
 then :
   { printf "%s\n" "$as_me:${as_lineno-$LINENO}: result: no" >&5
 printf "%s\n" "no" >&6; }
@@ -20228,7 +20364,8 @@ printf "%s\n" "yes" >&6; }
    CPPFLAGS="$CPPFLAGS -D__STDC_LIMIT_MACROS -D__STDC_CONSTANT_MACROS"
 
 fi
-rm -f core conftest.err conftest.$ac_objext conftest.beam conftest.$ac_ext
+rm -f core conftest.err conftest.$ac_objext conftest.beam \
+    conftest$ac_exeext conftest.$ac_ext
 
 { printf "%s\n" "$as_me:${as_lineno-$LINENO}: checking whether we can use inline asm code" >&5
 printf %s "checking whether we can use inline asm code... " >&6; }
@@ -20606,49 +20743,6 @@ fi
 rm -f core conftest.err conftest.$ac_objext conftest.beam \
     conftest$ac_exeext conftest.$ac_ext
 
-{ printf "%s\n" "$as_me:${as_lineno-$LINENO}: checking if data alignment is required" >&5
-printf %s "checking if data alignment is required... " >&6; }
-aligned_access_required=yes
-case $host_cpu in #(
-  i?86|amd64|x86_64|powerpc*|s390*) :
-    aligned_access_required=no ;; #(
-  arm*) :
-    cat confdefs.h - <<_ACEOF >conftest.$ac_ext
-/* end confdefs.h.  */
-
-#ifndef __ARM_FEATURE_UNALIGNED
-# error data alignment is required
-#endif
-
-int
-main (void)
-{
-
-  ;
-  return 0;
-}
-_ACEOF
-if ac_fn_c_try_compile "$LINENO"
-then :
-  aligned_access_required=no
-fi
-rm -f core conftest.err conftest.$ac_objext conftest.beam conftest.$ac_ext
- ;; #(
-  *) :
-     ;;
-esac
-if test "x$aligned_access_required" = "xyes"
-then :
-  { printf "%s\n" "$as_me:${as_lineno-$LINENO}: result: yes" >&5
-printf "%s\n" "yes" >&6; }
-else $as_nop
-  { printf "%s\n" "$as_me:${as_lineno-$LINENO}: result: no" >&5
-printf "%s\n" "no" >&6; }
-
-printf "%s\n" "#define CPU_UNALIGNED_ACCESS 1" >>confdefs.h
-
-fi
-
 { printf "%s\n" "$as_me:${as_lineno-$LINENO}: checking if atomic operations are supported" >&5
 printf %s "checking if atomic operations are supported... " >&6; }
 cat confdefs.h - <<_ACEOF >conftest.$ac_ext
@@ -20673,6 +20767,68 @@ then :
 printf "%s\n" "yes" >&6; }
 
 printf "%s\n" "#define HAVE_ATOMIC_OPS 1" >>confdefs.h
+
+else $as_nop
+  { printf "%s\n" "$as_me:${as_lineno-$LINENO}: result: no" >&5
+printf "%s\n" "no" >&6; }
+fi
+rm -f core conftest.err conftest.$ac_objext conftest.beam \
+    conftest$ac_exeext conftest.$ac_ext
+
+{ printf "%s\n" "$as_me:${as_lineno-$LINENO}: checking if C11 memory fences are supported" >&5
+printf %s "checking if C11 memory fences are supported... " >&6; }
+cat confdefs.h - <<_ACEOF >conftest.$ac_ext
+/* end confdefs.h.  */
+
+#include <stdatomic.h>
+
+int
+main (void)
+{
+
+atomic_thread_fence(memory_order_acquire);
+
+
+  ;
+  return 0;
+}
+_ACEOF
+if ac_fn_c_try_link "$LINENO"
+then :
+  { printf "%s\n" "$as_me:${as_lineno-$LINENO}: result: yes" >&5
+printf "%s\n" "yes" >&6; }
+
+printf "%s\n" "#define HAVE_C11_MEMORY_FENCES 1" >>confdefs.h
+
+else $as_nop
+  { printf "%s\n" "$as_me:${as_lineno-$LINENO}: result: no" >&5
+printf "%s\n" "no" >&6; }
+fi
+rm -f core conftest.err conftest.$ac_objext conftest.beam \
+    conftest$ac_exeext conftest.$ac_ext
+
+{ printf "%s\n" "$as_me:${as_lineno-$LINENO}: checking if gcc memory fences are supported" >&5
+printf %s "checking if gcc memory fences are supported... " >&6; }
+cat confdefs.h - <<_ACEOF >conftest.$ac_ext
+/* end confdefs.h.  */
+
+int
+main (void)
+{
+
+__atomic_thread_fence(__ATOMIC_ACQUIRE);
+
+
+  ;
+  return 0;
+}
+_ACEOF
+if ac_fn_c_try_link "$LINENO"
+then :
+  { printf "%s\n" "$as_me:${as_lineno-$LINENO}: result: yes" >&5
+printf "%s\n" "yes" >&6; }
+
+printf "%s\n" "#define HAVE_GCC_MEMORY_FENCES 1" >>confdefs.h
 
 else $as_nop
   { printf "%s\n" "$as_me:${as_lineno-$LINENO}: result: no" >&5
@@ -20913,16 +21069,15 @@ printf %s "checking for getrandom with a standard API... " >&6; }
 #ifdef HAVE_SYS_RANDOM_H
 # include <sys/random.h>
 #endif
-#ifdef __SANITIZE_ADDRESS__
-# error A recent libasan version on an old system may intercept nonexistent functions
-#endif
 
 int
 main (void)
 {
 
 unsigned char buf;
-(void) getrandom((void *) &buf, 1U, 0U);
+if (&getrandom != NULL) {
+  (void) getrandom((void *) &buf, 1U, 0U);
+}
 
   ;
   return 0;
@@ -20959,16 +21114,12 @@ printf %s "checking for getentropy with a standard API... " >&6; }
 #ifdef HAVE_SYS_RANDOM_H
 # include <sys/random.h>
 #endif
-#ifdef __SANITIZE_ADDRESS__
-# error A recent libasan version on an old system may intercept nonexistent functions
-#endif
 
 int
 main (void)
 {
 
 unsigned char buf;
-
 if (&getentropy != NULL) {
   (void) getentropy((void *) &buf, 1U);
 }

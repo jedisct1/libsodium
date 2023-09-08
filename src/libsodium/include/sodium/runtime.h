@@ -12,6 +12,9 @@ SODIUM_EXPORT_WEAK
 int sodium_runtime_has_neon(void);
 
 SODIUM_EXPORT_WEAK
+int sodium_runtime_has_armcrypto(void);
+
+SODIUM_EXPORT_WEAK
 int sodium_runtime_has_sse2(void);
 
 SODIUM_EXPORT_WEAK
