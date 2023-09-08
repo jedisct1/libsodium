@@ -9,7 +9,7 @@
 
   <PropertyGroup>
     <PackageId>libsodium</PackageId>
-    <Version>1.0.18.4</Version>
+    <Version>1.0.19.0</Version>
     <Authors>Frank Denis</Authors>
     <Description>Internal implementation package not meant for direct consumption. Please do not reference directly.</Description>
     <Copyright>&#169; $([System.DateTime]::UtcNow.ToString(yyyy)) Frank Denis</Copyright>

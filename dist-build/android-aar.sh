@@ -5,7 +5,7 @@
 # The x86 static library will not work due to text relocation rules, so static x86 versions are limited to shared libraries.
 # To simplify linking, library variants have distinct names: sodium, sodium-static, sodium-minimal and sodium-minimal-static.
 
-SODIUM_VERSION="1.0.18.0"
+SODIUM_VERSION="1.0.19.0"
 NDK_VERSION=$(grep "Pkg.Revision = " <"${ANDROID_NDK_HOME}/source.properties" | cut -f 2 -d '=' | cut -f 2 -d' ' | cut -f 1 -d'.')
 DEST_PATH=$(mktemp -d)
 

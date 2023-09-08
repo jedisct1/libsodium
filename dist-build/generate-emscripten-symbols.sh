@@ -2,7 +2,7 @@
 
 set -e
 
-LIBSODIUM=${LIBSODIUM:-/tmp/sodium/lib/libsodium.23.dylib}
+LIBSODIUM=${LIBSODIUM:-/tmp/sodium/lib/libsodium.26.dylib}
 
 symbols() {
   {
