@@ -1,5 +1,5 @@
 AC_PREREQ([2.69])
-AC_INIT([libsodium],[1.0.18],[https://github.com/jedisct1/libsodium/issues],[libsodium],[https://libsodium.org])
+AC_INIT([libsodium],[1.0.20],[https://github.com/jedisct1/libsodium/issues],[libsodium],[https://libsodium.org])
 AC_CONFIG_AUX_DIR([build-aux])
 AC_CONFIG_MACRO_DIR([m4])
 AC_CONFIG_SRCDIR([src/libsodium/sodium/version.c])
@@ -12,10 +12,10 @@ AM_DEP_TRACK
 
 AC_SUBST(VERSION)
 
-SODIUM_LIBRARY_VERSION_MAJOR=11
+SODIUM_LIBRARY_VERSION_MAJOR=28
 SODIUM_LIBRARY_VERSION_MINOR=0
-DLL_VERSION=27
-SODIUM_LIBRARY_VERSION=27:0:0
+DLL_VERSION=28
+SODIUM_LIBRARY_VERSION=28:0:0
 #                       | | |
 #                +------+ | +---+
 #                |        |     |
