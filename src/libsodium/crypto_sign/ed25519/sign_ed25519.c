@@ -61,7 +61,23 @@ int
 crypto_sign_ed25519ph_init(crypto_sign_ed25519ph_state *state)
 {
     crypto_hash_sha512_init(&state->hs);
+    state->context = NULL;
+    state->context_length = 0;
     return 0;
+}
+
+int
+crypto_sign_ed25519ph_set_context(crypto_sign_ed25519ph_state *state,
+                                   const unsigned char *ctx,
+                                   unsigned long long ctxlen)
+{
+    if(ctxlen < 256) {
+        state->context = ctx;
+        state->context_length = ctxlen;
+        return 0;
+    } else {
+        return -1;
+    }
 }
 
 int
@@ -81,7 +97,8 @@ crypto_sign_ed25519ph_final_create(crypto_sign_ed25519ph_state *state,
 
     crypto_hash_sha512_final(&state->hs, ph);
 
-    return _crypto_sign_ed25519_detached(sig, siglen_p, ph, sizeof ph, sk, 1);
+    return _crypto_sign_ed25519_detached(sig, siglen_p, ph, sizeof ph, sk, 1,
+                                         state->context, state->context_length);
 }
 
 int
@@ -93,5 +110,7 @@ crypto_sign_ed25519ph_final_verify(crypto_sign_ed25519ph_state *state,
 
     crypto_hash_sha512_final(&state->hs, ph);
 
-    return _crypto_sign_ed25519_verify_detached(sig, ph, sizeof ph, pk, 1);
+    return _crypto_sign_ed25519_verify_detached(sig, ph, sizeof ph, pk, 1,
+                                                state->context,
+                                                state->context_length);
 }

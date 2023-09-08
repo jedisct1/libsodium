@@ -14,6 +14,8 @@ extern "C" {
 
 typedef struct crypto_sign_ed25519ph_state {
     crypto_hash_sha512_state hs;
+    const unsigned char *context;
+    unsigned long long context_length;
 } crypto_sign_ed25519ph_state;
 
 SODIUM_EXPORT
@@ -96,6 +98,12 @@ int crypto_sign_ed25519_sk_to_pk(unsigned char *pk, const unsigned char *sk)
 
 SODIUM_EXPORT
 int crypto_sign_ed25519ph_init(crypto_sign_ed25519ph_state *state)
+            __attribute__ ((nonnull));
+
+SODIUM_EXPORT
+int crypto_sign_ed25519ph_set_context(crypto_sign_ed25519ph_state *state,
+                                      const unsigned char *ctx,
+                                      unsigned long long ctxlen)
             __attribute__ ((nonnull));
 
 SODIUM_EXPORT
