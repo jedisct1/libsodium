@@ -1550,7 +1550,6 @@ Optional Features:
   --enable-opt            Optimize for the native CPU - The resulting library
                           will be faster but not portable
   --enable-valgrind       Whether to enable Valgrind on the unit tests
-                          (requires GNU make)
   --disable-valgrind-memcheck
                           Whether to skip memcheck during the Valgrind tests
   --disable-valgrind-helgrind
@@ -6122,7 +6121,7 @@ ax_pthread_flags="pthreads none -Kthread -pthread -pthreads -mthreads pthread --
 # --thread-safe: KAI C++
 # pthread-config: use pthread-config program (for GNU Pth library)
 
-case $target_os in
+case $host_os in
 
         freebsd*)
 
@@ -6240,7 +6239,7 @@ fi
 # definitions is, on some systems, a strong hint that pthreads support is
 # correctly enabled
 
-case $target_os in
+case $host_os in
         darwin* | hpux* | linux* | osf* | solaris*)
         ax_pthread_check_macro="_REENTRANT"
         ;;
@@ -6565,7 +6564,7 @@ then :
   printf %s "(cached) " >&6
 else $as_nop
   ax_cv_PTHREAD_SPECIAL_FLAGS=no
-             case $target_os in
+             case $host_os in
              solaris*)
              ax_cv_PTHREAD_SPECIAL_FLAGS="-D_POSIX_PTHREAD_SEMANTICS"
              ;;
@@ -6626,7 +6625,7 @@ fi
 
         # More AIX lossage: compile with *_r variant
         if test "x$GCC" != "xyes"; then
-            case $target_os in
+            case $host_os in
                 aix*)
                 case "x/$CC" in #(
   x*/c89|x*/c89_128|x*/c99|x*/c99_128|x*/cc|x*/cc128|x*/xlc|x*/xlc_v6|x*/xlc128|x*/xlc128_v6) :
@@ -7282,12 +7281,15 @@ fi
 
 
 
+
+
+
 		# Check whether --enable-valgrind was given.
 if test ${enable_valgrind+y}
 then :
   enableval=$enable_valgrind; enable_valgrind=$enableval
 else $as_nop
-  enable_valgrind=no
+  enable_valgrind=
 fi
 
 
@@ -7666,7 +7668,7 @@ valgrind_quiet_ = $(valgrind_quiet_$(AM_DEFAULT_VERBOSITY))
 valgrind_quiet_0 = --quiet
 valgrind_v_use   = $(valgrind_v_use_$(V))
 valgrind_v_use_  = $(valgrind_v_use_$(AM_DEFAULT_VERBOSITY))
-valgrind_v_use_0 = @echo "  USE   " $(patsubst check-valgrind-%,%,$''@):;
+valgrind_v_use_0 = @echo "  USE   " $(patsubst check-valgrind-%-local,%,$''@):;
 
 # Support running with and without libtool.
 ifneq ($(LIBTOOL),)
@@ -7676,12 +7678,12 @@ valgrind_lt =
 endif
 
 # Use recursive makes in order to ignore errors during check
-check-valgrind:
+check-valgrind-local:
 ifeq ($(VALGRIND_ENABLED),yes)
 	$(A''M_V_at)$(MAKE) $(AM_MAKEFLAGS) -k \
 		$(foreach tool, $(valgrind_enabled_tools), check-valgrind-$(tool))
 else
-	@echo "Need to use GNU make and reconfigure with --enable-valgrind"
+	@echo "Need to reconfigure with --enable-valgrind"
 endif
 
 # Valgrind running
@@ -7695,14 +7697,16 @@ VALGRIND_LOG_COMPILER = \
 	$(valgrind_lt) \
 	$(VALGRIND) $(VALGRIND_SUPPRESSIONS) --error-exitcode=1 $(VALGRIND_FLAGS)
 
-define valgrind_tool_rule =
-check-valgrind-$(1):
+define valgrind_tool_rule
+check-valgrind-$(1)-local:
 ifeq ($$(VALGRIND_ENABLED)-$$(ENABLE_VALGRIND_$(1)),yes-yes)
+ifneq ($$(TESTS),)
 	$$(valgrind_v_use)$$(MAKE) check-TESTS \
 		TESTS_ENVIRONMENT="$$(VALGRIND_TESTS_ENVIRONMENT)" \
 		LOG_COMPILER="$$(VALGRIND_LOG_COMPILER)" \
 		LOG_FLAGS="$$(valgrind_$(1)_flags)" \
 		TEST_SUITE_LOG=test-suite-$(1).log
+endif
 else ifeq ($$(VALGRIND_ENABLED),yes)
 	@echo "Need to reconfigure with --enable-valgrind-$(1)"
 else
@@ -7718,17 +7722,8 @@ A''M_DISTCHECK_CONFIGURE_FLAGS += --disable-valgrind
 MOSTLYCLEANFILES ?=
 MOSTLYCLEANFILES += $(valgrind_log_files)
 
-.PHONY: check-valgrind $(add-prefix check-valgrind-,$(valgrind_tools))
+.PHONY: check-valgrind $(addprefix check-valgrind-,$(valgrind_tools))
 '
-
-	if test "$enable_valgrind" != "yes"
-then :
-
-		VALGRIND_CHECK_RULES='
-check-valgrind:
-	@echo "Need to use GNU make and reconfigure with --enable-valgrind"'
-
-fi
 
 
 
@@ -7834,6 +7829,7 @@ main (void)
 
   #ifdef __wasi__
   int ok;
+  (void)ok;
   #else
   choke me
   #endif
@@ -7860,6 +7856,116 @@ fi
 case $host_os in #(
   linux-gnu) :
 
+    ac_save_cflags=$CFLAGS
+    ac_cwerror_flag=yes
+    { printf "%s\n" "$as_me:${as_lineno-$LINENO}: checking whether C compiler accepts -Werror" >&5
+printf %s "checking whether C compiler accepts -Werror... " >&6; }
+if test ${ax_cv_check_cflags___Werror+y}
+then :
+  printf %s "(cached) " >&6
+else $as_nop
+
+  ax_check_save_flags=$CFLAGS
+  CFLAGS="$CFLAGS  -Werror"
+  cat confdefs.h - <<_ACEOF >conftest.$ac_ext
+/* end confdefs.h.  */
+#include <time.h>
+int
+main (void)
+{
+time_t x; int fodder = 0; if (fodder > -1000 && time(&x)) return (int) x
+
+  ;
+  return 0;
+}
+_ACEOF
+if ac_fn_c_try_link "$LINENO"
+then :
+  ax_cv_check_cflags___Werror=yes
+else $as_nop
+  ax_cv_check_cflags___Werror=no
+fi
+rm -f core conftest.err conftest.$ac_objext conftest.beam \
+    conftest$ac_exeext conftest.$ac_ext
+  CFLAGS=$ax_check_save_flags
+fi
+{ printf "%s\n" "$as_me:${as_lineno-$LINENO}: result: $ax_cv_check_cflags___Werror" >&5
+printf "%s\n" "$ax_cv_check_cflags___Werror" >&6; }
+if test "x$ax_cv_check_cflags___Werror" = xyes
+then :
+  CFLAGS="$CFLAGS -Werror"
+else $as_nop
+  :
+fi
+
+    ax_add_fortify_3_failed=
+    { printf "%s\n" "$as_me:${as_lineno-$LINENO}: checking whether to add -D_FORTIFY_SOURCE=3 to CPPFLAGS" >&5
+printf %s "checking whether to add -D_FORTIFY_SOURCE=3 to CPPFLAGS... " >&6; }
+    cat confdefs.h - <<_ACEOF >conftest.$ac_ext
+/* end confdefs.h.  */
+
+
+int
+main (void)
+{
+
+                #ifndef _FORTIFY_SOURCE
+                    return 0;
+                #else
+                    _FORTIFY_SOURCE_already_defined;
+                #endif
+
+
+  ;
+  return 0;
+}
+_ACEOF
+if ac_fn_c_try_link "$LINENO"
+then :
+  cat confdefs.h - <<_ACEOF >conftest.$ac_ext
+/* end confdefs.h.  */
+
+
+                #define _FORTIFY_SOURCE 3
+                #include <string.h>
+                int main() {
+                    char *s = " ";
+                    strcpy(s, "x");
+                    return strlen(s)-1;
+                }
+
+
+_ACEOF
+if ac_fn_c_try_link "$LINENO"
+then :
+
+              { printf "%s\n" "$as_me:${as_lineno-$LINENO}: result: yes" >&5
+printf "%s\n" "yes" >&6; }
+              CFLAGS=$ac_save_cflags
+              CPPFLAGS="$CPPFLAGS -D_FORTIFY_SOURCE=3"
+
+else $as_nop
+
+              { printf "%s\n" "$as_me:${as_lineno-$LINENO}: result: no" >&5
+printf "%s\n" "no" >&6; }
+              CFLAGS=$ac_save_cflags
+              ax_add_fortify_3_failed=1
+
+fi
+rm -f core conftest.err conftest.$ac_objext conftest.beam \
+    conftest$ac_exeext conftest.$ac_ext
+else $as_nop
+
+          { printf "%s\n" "$as_me:${as_lineno-$LINENO}: result: no" >&5
+printf "%s\n" "no" >&6; }
+          CFLAGS=$ac_save_cflags
+          ax_add_fortify_3_failed=1
+
+fi
+rm -f core conftest.err conftest.$ac_objext conftest.beam \
+    conftest$ac_exeext conftest.$ac_ext
+    if test -n "$ax_add_fortify_3_failed"
+    then
     { printf "%s\n" "$as_me:${as_lineno-$LINENO}: checking whether to add -D_FORTIFY_SOURCE=2 to CPPFLAGS" >&5
 printf %s "checking whether to add -D_FORTIFY_SOURCE=2 to CPPFLAGS... " >&6; }
     cat confdefs.h - <<_ACEOF >conftest.$ac_ext
@@ -7873,7 +7979,7 @@ main (void)
                 #ifndef _FORTIFY_SOURCE
                     return 0;
                 #else
-                    this_is_an_error;
+                    _FORTIFY_SOURCE_already_defined;
                 #endif
 
 
@@ -7889,8 +7995,8 @@ then :
 
                 #define _FORTIFY_SOURCE 2
                 #include <string.h>
-                int main() {
-                    const char *s = " ";
+                int main(void) {
+                    char *s = " ";
                     strcpy(s, "x");
                     return strlen(s)-1;
                 }
@@ -7902,24 +8008,28 @@ then :
 
               { printf "%s\n" "$as_me:${as_lineno-$LINENO}: result: yes" >&5
 printf "%s\n" "yes" >&6; }
+              CFLAGS=$ac_save_cflags
               CPPFLAGS="$CPPFLAGS -D_FORTIFY_SOURCE=2"
 
 else $as_nop
 
               { printf "%s\n" "$as_me:${as_lineno-$LINENO}: result: no" >&5
 printf "%s\n" "no" >&6; }
+              CFLAGS=$ac_save_cflags
 
 fi
 rm -f core conftest.err conftest.$ac_objext conftest.beam \
     conftest$ac_exeext conftest.$ac_ext
 else $as_nop
 
-            { printf "%s\n" "$as_me:${as_lineno-$LINENO}: result: no" >&5
+          { printf "%s\n" "$as_me:${as_lineno-$LINENO}: result: no" >&5
 printf "%s\n" "no" >&6; }
+          CFLAGS=$ac_save_cflags
 
 fi
 rm -f core conftest.err conftest.$ac_objext conftest.beam \
     conftest$ac_exeext conftest.$ac_ext
+    fi
  ;; #(
   *) :
       ;;
