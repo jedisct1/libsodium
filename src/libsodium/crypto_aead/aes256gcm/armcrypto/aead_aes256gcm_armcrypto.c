@@ -34,8 +34,8 @@
 
 typedef uint64x2_t BlockVec;
 
-#define LOAD128(a)     vld1q_u64((const uint64_t *) (const void *) a)
-#define STORE128(a, b) vst1q_u64(((uint64_t *) (void *) a), (b))
+#define LOAD128(a)     vld1q_u64((const void *) a)
+#define STORE128(a, b) vst1q_u64(((void *) a), (b))
 #define AES_XENCRYPT(block_vec, rkey) \
     vreinterpretq_u64_u8(            \
         vaesmcq_u8(vaeseq_u8(vreinterpretq_u8_u64(block_vec), rkey)))
