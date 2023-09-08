@@ -87,11 +87,11 @@
 #   modified version of the Autoconf Macro, you may extend this special
 #   exception to the GPL to apply to your modified version as well.
 
-#serial 30
+#serial 31
 
 AU_ALIAS([ACX_PTHREAD], [AX_PTHREAD])
 AC_DEFUN([AX_PTHREAD], [
-AC_REQUIRE([AC_CANONICAL_TARGET])
+AC_REQUIRE([AC_CANONICAL_HOST])
 AC_REQUIRE([AC_PROG_CC])
 AC_REQUIRE([AC_PROG_SED])
 AC_LANG_PUSH([C])
@@ -158,7 +158,7 @@ ax_pthread_flags="pthreads none -Kthread -pthread -pthreads -mthreads pthread --
 # --thread-safe: KAI C++
 # pthread-config: use pthread-config program (for GNU Pth library)
 
-case $target_os in
+case $host_os in
 
         freebsd*)
 
@@ -248,7 +248,7 @@ AS_IF([test "x$ax_pthread_clang" = "xyes"],
 # definitions is, on some systems, a strong hint that pthreads support is
 # correctly enabled
 
-case $target_os in
+case $host_os in
         darwin* | hpux* | linux* | osf* | solaris*)
         ax_pthread_check_macro="_REENTRANT"
         ;;
@@ -450,7 +450,7 @@ if test "x$ax_pthread_ok" = "xyes"; then
         AC_CACHE_CHECK([whether more special flags are required for pthreads],
             [ax_cv_PTHREAD_SPECIAL_FLAGS],
             [ax_cv_PTHREAD_SPECIAL_FLAGS=no
-             case $target_os in
+             case $host_os in
              solaris*)
              ax_cv_PTHREAD_SPECIAL_FLAGS="-D_POSIX_PTHREAD_SEMANTICS"
              ;;
@@ -480,7 +480,7 @@ if test "x$ax_pthread_ok" = "xyes"; then
 
         # More AIX lossage: compile with *_r variant
         if test "x$GCC" != "xyes"; then
-            case $target_os in
+            case $host_os in
                 aix*)
                 AS_CASE(["x/$CC"],
                     [x*/c89|x*/c89_128|x*/c99|x*/c99_128|x*/cc|x*/cc128|x*/xlc|x*/xlc_v6|x*/xlc128|x*/xlc128_v6],
