@@ -48,9 +48,9 @@ segv_handler(int sig)
 int
 main(void)
 {
-    void *       buf;
-    size_t       size;
-    unsigned int i;
+    void         *buf;
+    size_t        size;
+    unsigned int  i;
 
 #ifdef BENCHMARKS
     return 0;

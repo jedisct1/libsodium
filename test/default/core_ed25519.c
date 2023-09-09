@@ -64,13 +64,15 @@ add_l64(unsigned char * const S)
 int
 main(void)
 {
-    unsigned char *r;
+    unsigned char *h, *r;
     unsigned char *p, *p2, *p3;
     unsigned char *sc, *sc2, *sc3;
     unsigned char *sc64;
+    unsigned char *seed;
     char          *hex;
     unsigned int   i, j;
 
+    h = (unsigned char *) sodium_malloc(crypto_core_ed25519_HASHBYTES);
     r = (unsigned char *) sodium_malloc(crypto_core_ed25519_UNIFORMBYTES);
     p = (unsigned char *) sodium_malloc(crypto_core_ed25519_BYTES);
     for (i = 0; i < 500; i++) {
@@ -81,7 +83,6 @@ main(void)
         if (crypto_core_ed25519_is_valid_point(p) == 0) {
             printf("crypto_core_ed25519_from_uniform() returned an invalid point\n");
         }
-
         crypto_core_ed25519_random(p);
         if (crypto_core_ed25519_is_valid_point(p) == 0) {
             printf("crypto_core_ed25519_random() returned an invalid point\n");
@@ -399,6 +400,17 @@ main(void)
         assert(memcmp(sc3, sc, crypto_core_ed25519_SCALARBYTES) != 0);
     }
 
+    seed = (unsigned char *) sodium_malloc(randombytes_SEEDBYTES);
+    for (i = 0; i < 15; i++) {
+        randombytes_buf_deterministic(r, crypto_core_ed25519_UNIFORMBYTES, seed);
+        if (crypto_core_ed25519_from_uniform(p, r) != 0) {
+            printf("crypto_core_ed25519_from_uniform() failed\n");
+        }
+        sodium_bin2hex(hex, crypto_core_ed25519_SCALARBYTES * 2 + 1,
+                       p, crypto_core_ed25519_BYTES);
+        printf("from_uniform_deterministic (%u): %s\n", i, hex);
+        sodium_increment(seed, randombytes_SEEDBYTES);
+    }
     crypto_core_ed25519_scalar_mul(sc, L_1, sc_8);
     sodium_bin2hex(hex, crypto_core_ed25519_SCALARBYTES * 2 + 1,
                    sc, crypto_core_ed25519_SCALARBYTES);
@@ -506,6 +518,7 @@ main(void)
                    sc, crypto_core_ed25519_SCALARBYTES);
     printf("h*2: %s\n", hex);
 
+    sodium_free(seed);
     sodium_free(hex);
     sodium_free(sc64);
     sodium_free(sc3);
@@ -515,6 +528,7 @@ main(void)
     sodium_free(p2);
     sodium_free(p);
     sodium_free(r);
+    sodium_free(h);
 
     assert(crypto_core_ed25519_BYTES == crypto_core_ed25519_bytes());
     assert(crypto_core_ed25519_SCALARBYTES == crypto_core_ed25519_scalarbytes());
@@ -522,6 +536,8 @@ main(void)
     assert(crypto_core_ed25519_NONREDUCEDSCALARBYTES >= crypto_core_ed25519_SCALARBYTES);
     assert(crypto_core_ed25519_UNIFORMBYTES == crypto_core_ed25519_uniformbytes());
     assert(crypto_core_ed25519_UNIFORMBYTES >= crypto_core_ed25519_BYTES);
+    assert(crypto_core_ed25519_HASHBYTES == crypto_core_ed25519_hashbytes());
+    assert(crypto_core_ed25519_HASHBYTES >= 2 * crypto_core_ed25519_BYTES);
 
     printf("OK\n");
 

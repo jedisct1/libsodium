@@ -19,6 +19,7 @@ main(void)
     assert(sodium_init() == 1);
 
     (void) sodium_runtime_has_neon();
+    (void) sodium_runtime_has_armcrypto();
     (void) sodium_runtime_has_sse2();
     (void) sodium_runtime_has_sse3();
     (void) sodium_runtime_has_ssse3();

@@ -117,6 +117,7 @@ test/default/generichash3
 test/default/hash
 test/default/hash3
 test/default/kdf
+test/default/kdf_hkdf
 test/default/keygen
 test/default/kx
 test/default/metamorphic
@@ -143,7 +144,7 @@ test/default/secretbox7
 test/default/secretbox8
 test/default/secretbox_easy
 test/default/secretbox_easy2
-test/default/secretstream
+test/default/secretstream_xchacha20poly1305
 test/default/shorthash
 test/default/sign
 test/default/siphashx24

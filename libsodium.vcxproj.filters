@@ -144,6 +144,12 @@
     <ClCompile Include="src\libsodium\crypto_kdf\blake2b\kdf_blake2b.c">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="src\libsodium\crypto_kdf\hkdf\kdf_hkdf_sha256.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\libsodium\crypto_kdf\hkdf\kdf_hkdf_sha512.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
     <ClCompile Include="src\libsodium\crypto_shorthash\crypto_shorthash.c">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -500,6 +506,9 @@
     <ClInclude Include="src\libsodium\include\sodium\crypto_shorthash.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="src\libsodium\include\sodium\crypto_kdf_hkdf_sha256.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
     <ClInclude Include="src\libsodium\include\sodium\crypto_pwhash_argon2id.h">
       <Filter>Header Files</Filter>
     </ClInclude>
@@ -522,6 +531,9 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="src\libsodium\include\sodium\crypto_core_ed25519.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\libsodium\include\sodium\crypto_kdf_hkdf_sha512.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="src\libsodium\include\sodium\crypto_pwhash_argon2i.h">

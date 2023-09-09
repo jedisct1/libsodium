@@ -15,7 +15,7 @@ tv_kdf(void)
     context = (char *) sodium_malloc(crypto_kdf_CONTEXTBYTES);
     master_key = (unsigned char *) sodium_malloc(crypto_kdf_KEYBYTES);
 
-    memcpy(context, "KDF test", sizeof "KDF test" -1U);
+    memcpy(context, "KDF test", sizeof "KDF test" - 1U);
     for (i = 0; i < crypto_kdf_KEYBYTES; i++) {
         master_key[i] = i;
     }

@@ -3098,6 +3098,7 @@ tv(void)
     size_t              detached_ciphertext_len;
     size_t              i = 0U;
     size_t              message_len;
+    int                 res;
 
     key = (unsigned char *) sodium_malloc(crypto_aead_aes256gcm_KEYBYTES);
     nonce = (unsigned char *) sodium_malloc(crypto_aead_aes256gcm_NPUBBYTES);
@@ -3136,34 +3137,48 @@ tv(void)
         ciphertext = (unsigned char *) sodium_malloc(ciphertext_len);
         detached_ciphertext = (unsigned char *) sodium_malloc(detached_ciphertext_len);
 
-        crypto_aead_aes256gcm_encrypt_detached(detached_ciphertext, mac,
-                                               &found_mac_len,
-                                               message, message_len,
-                                               ad, ad_len, NULL, nonce, key);
+        res = crypto_aead_aes256gcm_encrypt_detached(detached_ciphertext, mac,
+                                                     &found_mac_len,
+                                                     message, message_len,
+                                                     ad, ad_len, NULL, nonce, key);
         assert(found_mac_len == crypto_aead_aes256gcm_ABYTES);
         if (memcmp(detached_ciphertext, expected_ciphertext,
                    detached_ciphertext_len) != 0 ||
             memcmp(mac, expected_ciphertext + message_len,
                    crypto_aead_aes256gcm_ABYTES) != 0) {
-            printf("Detached encryption of test vector #%u failed\n", (unsigned int) i);
+            printf("Detached encryption of test vector #%u failed (res=%d)\n",
+                   (unsigned int) i, res);
             hex = (char *) sodium_malloc((size_t) ciphertext_len * 2 + 1);
-            sodium_bin2hex(hex, (size_t) ciphertext_len * 2 + 1,
-                           ciphertext, ciphertext_len);
+            sodium_bin2hex(hex, (size_t) detached_ciphertext_len * 2 + 1,
+                           detached_ciphertext, detached_ciphertext_len);
             printf("Computed: [%s]\n", hex);
+            sodium_bin2hex(hex, (size_t) detached_ciphertext_len * 2 + 1,
+                           expected_ciphertext, detached_ciphertext_len);
+            printf("Expected: [%s]\n", hex);
+            sodium_bin2hex(hex, (size_t) found_mac_len * 2 + 1,
+                           mac, found_mac_len);
+            printf("Computed mac: [%s]\n", hex);
+            sodium_bin2hex(hex, (size_t) found_mac_len * 2 + 1,
+                           expected_ciphertext + message_len, found_mac_len);
+            printf("Expected mac: [%s]\n", hex);
             sodium_free(hex);
         }
 
-        crypto_aead_aes256gcm_encrypt(ciphertext, &found_ciphertext_len,
-                                      message, message_len,
-                                      ad, ad_len, NULL, nonce, key);
+        res = crypto_aead_aes256gcm_encrypt(ciphertext, &found_ciphertext_len,
+                                            message, message_len,
+                                            ad, ad_len, NULL, nonce, key);
 
         assert((size_t) found_ciphertext_len == ciphertext_len);
         if (memcmp(ciphertext, expected_ciphertext, ciphertext_len) != 0) {
-            printf("Encryption of test vector #%u failed\n", (unsigned int) i);
+            printf("Encryption of test vector #%u failed (res=%d)\n",
+                   (unsigned int) i, res);
             hex = (char *) sodium_malloc((size_t) found_ciphertext_len * 2 + 1);
             sodium_bin2hex(hex, (size_t) found_ciphertext_len * 2 + 1,
                            ciphertext, ciphertext_len);
             printf("Computed: [%s]\n", hex);
+            sodium_bin2hex(hex, (size_t) ciphertext_len * 2 + 1,
+                           expected_ciphertext, ciphertext_len);
+            printf("Expected: [%s]\n", hex);
             sodium_free(hex);
         }
 
