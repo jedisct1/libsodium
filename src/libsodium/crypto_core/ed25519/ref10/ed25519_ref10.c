@@ -2512,6 +2512,21 @@ sc25519_is_canonical(const unsigned char s[32])
     return (c != 0);
 }
 
+/* multiply by the cofactor */
+static void
+ge25519_clear_cofactor(ge25519_p3 *p3)
+{
+    ge25519_p1p1 p1;
+    ge25519_p2   p2;
+
+    ge25519_p3_dbl(&p1, p3);
+    ge25519_p1p1_to_p2(&p2, &p1);
+    ge25519_p2_dbl(&p1, &p2);
+    ge25519_p1p1_to_p2(&p2, &p1);
+    ge25519_p2_dbl(&p1, &p2);
+    ge25519_p1p1_to_p3(p3, &p1);
+}
+
 static void
 ge25519_elligator2(unsigned char s[32], const fe25519 r, const unsigned char x_sign)
 {
@@ -2565,14 +2580,7 @@ ge25519_elligator2(unsigned char s[32], const fe25519 r, const unsigned char x_s
         abort(); /* LCOV_EXCL_LINE */
     }
 
-    /* multiply by the cofactor */
-    ge25519_p3_dbl(&p1, &p3);
-    ge25519_p1p1_to_p2(&p2, &p1);
-    ge25519_p2_dbl(&p1, &p2);
-    ge25519_p1p1_to_p2(&p2, &p1);
-    ge25519_p2_dbl(&p1, &p2);
-    ge25519_p1p1_to_p3(&p3, &p1);
-
+    ge25519_clear_cofactor(&p3);
     ge25519_p3_tobytes(s, &p3);
 }
 
