@@ -306,16 +306,16 @@
     <ClCompile Include="src\libsodium\crypto_aead\xchacha20poly1305\sodium\aead_xchacha20poly1305.c">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="src\libsodium\crypto_aead\aegis128l\aegis128l_soft.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
     <ClCompile Include="src\libsodium\crypto_aead\aegis128l\aead_aegis128l.c">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="src\libsodium\crypto_aead\aegis128l\aesni\aead_aegis128l_aesni.c">
+    <ClCompile Include="src\libsodium\crypto_aead\aegis128l\aegis128l_aesni.c">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="src\libsodium\crypto_aead\aegis128l\soft\aead_aegis128l_soft.c">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="src\libsodium\crypto_aead\aegis128l\armcrypto\aead_aegis128l_armcrypto.c">
+    <ClCompile Include="src\libsodium\crypto_aead\aegis128l\aegis128l_armcrypto.c">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="src\libsodium\crypto_aead\aegis256\aead_aegis256.c">
@@ -758,16 +758,19 @@
     <ClInclude Include="src\libsodium\crypto_stream\salsa20\xmm6\salsa20_xmm6.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="src\libsodium\crypto_aead\aegis128l\aead_aegis128l.h">
+    <ClInclude Include="src\libsodium\crypto_aead\aegis128l\aegis128l_armcrypto.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="src\libsodium\crypto_aead\aegis128l\aesni\aead_aegis128l_aesni.h">
+    <ClInclude Include="src\libsodium\crypto_aead\aegis128l\aegis128l_aesni.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="src\libsodium\crypto_aead\aegis128l\soft\aead_aegis128l_soft.h">
+    <ClInclude Include="src\libsodium\crypto_aead\aegis128l\aegis128l_soft.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="src\libsodium\crypto_aead\aegis128l\armcrypto\aead_aegis128l_armcrypto.h">
+    <ClInclude Include="src\libsodium\crypto_aead\aegis128l\aegis128l_common.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\libsodium\crypto_aead\aegis128l\implementations.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="src\libsodium\crypto_aead\aegis256\aead_aegis256.h">

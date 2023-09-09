@@ -44,7 +44,11 @@ uint32_t _aes_lut[256] __attribute__ ((visibility ("hidden"))) = {
 static const uint32_t * const LUT = _aes_lut;
 
 #ifndef SOFTAES_STRIDE
-#define SOFTAES_STRIDE 16
+# ifdef FAVOR_PERFORMANCE
+#  define SOFTAES_STRIDE 256
+# else
+#  define SOFTAES_STRIDE 16
+# endif
 #endif
 
 static SoftAesBlock
