@@ -3,8 +3,8 @@ lib_LTLIBRARIES = \
 
 libsodium_la_SOURCES = \
 	crypto_aead/aes256gcm/aead_aes256gcm.c \
-	crypto_aead/chacha20poly1305/sodium/aead_chacha20poly1305.c \
-	crypto_aead/xchacha20poly1305/sodium/aead_xchacha20poly1305.c \
+	crypto_aead/chacha20poly1305/aead_chacha20poly1305.c \
+	crypto_aead/xchacha20poly1305/aead_xchacha20poly1305.c \
 	crypto_auth/crypto_auth.c \
 	crypto_auth/hmacsha256/auth_hmacsha256.c \
 	crypto_auth/hmacsha512/auth_hmacsha512.c \
@@ -82,7 +82,7 @@ libsodium_la_SOURCES = \
 	crypto_stream/salsa20/stream_salsa20.c \
 	crypto_stream/salsa20/stream_salsa20.h \
 	crypto_stream/xsalsa20/stream_xsalsa20.c \
-	crypto_verify/sodium/verify.c \
+	crypto_verify/verify.c \
 	include/sodium/private/asm_cet.h \
 	include/sodium/private/chacha20_ietf_ext.h \
 	include/sodium/private/common.h \

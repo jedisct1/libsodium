@@ -262,8 +262,8 @@ libsodium_la_DEPENDENCIES = libaesni.la libarmcrypto.la libsse2.la \
 	$(am__append_8)
 am__libsodium_la_SOURCES_DIST =  \
 	crypto_aead/aes256gcm/aead_aes256gcm.c \
-	crypto_aead/chacha20poly1305/sodium/aead_chacha20poly1305.c \
-	crypto_aead/xchacha20poly1305/sodium/aead_xchacha20poly1305.c \
+	crypto_aead/chacha20poly1305/aead_chacha20poly1305.c \
+	crypto_aead/xchacha20poly1305/aead_xchacha20poly1305.c \
 	crypto_auth/crypto_auth.c \
 	crypto_auth/hmacsha256/auth_hmacsha256.c \
 	crypto_auth/hmacsha512/auth_hmacsha512.c \
@@ -335,7 +335,7 @@ am__libsodium_la_SOURCES_DIST =  \
 	crypto_stream/salsa20/stream_salsa20.c \
 	crypto_stream/salsa20/stream_salsa20.h \
 	crypto_stream/xsalsa20/stream_xsalsa20.c \
-	crypto_verify/sodium/verify.c include/sodium/private/asm_cet.h \
+	crypto_verify/verify.c include/sodium/private/asm_cet.h \
 	include/sodium/private/chacha20_ietf_ext.h \
 	include/sodium/private/common.h \
 	include/sodium/private/ed25519_ref10.h \
@@ -423,8 +423,8 @@ am__objects_1 =
 @EMSCRIPTEN_FALSE@am__objects_6 = randombytes/sysrandom/libsodium_la-randombytes_sysrandom.lo
 am_libsodium_la_OBJECTS =  \
 	crypto_aead/aes256gcm/libsodium_la-aead_aes256gcm.lo \
-	crypto_aead/chacha20poly1305/sodium/libsodium_la-aead_chacha20poly1305.lo \
-	crypto_aead/xchacha20poly1305/sodium/libsodium_la-aead_xchacha20poly1305.lo \
+	crypto_aead/chacha20poly1305/libsodium_la-aead_chacha20poly1305.lo \
+	crypto_aead/xchacha20poly1305/libsodium_la-aead_xchacha20poly1305.lo \
 	crypto_auth/libsodium_la-crypto_auth.lo \
 	crypto_auth/hmacsha256/libsodium_la-auth_hmacsha256.lo \
 	crypto_auth/hmacsha512/libsodium_la-auth_hmacsha512.lo \
@@ -482,7 +482,7 @@ am_libsodium_la_OBJECTS =  \
 	crypto_stream/libsodium_la-crypto_stream.lo \
 	crypto_stream/salsa20/libsodium_la-stream_salsa20.lo \
 	crypto_stream/xsalsa20/libsodium_la-stream_xsalsa20.lo \
-	crypto_verify/sodium/libsodium_la-verify.lo \
+	crypto_verify/libsodium_la-verify.lo \
 	randombytes/libsodium_la-randombytes.lo \
 	sodium/libsodium_la-codecs.lo sodium/libsodium_la-core.lo \
 	sodium/libsodium_la-runtime.lo sodium/libsodium_la-utils.lo \
@@ -544,8 +544,8 @@ am__maybe_remake_depfiles = depfiles
 am__depfiles_remade = crypto_aead/aes256gcm/$(DEPDIR)/libsodium_la-aead_aes256gcm.Plo \
 	crypto_aead/aes256gcm/aesni/$(DEPDIR)/libaesni_la-aead_aes256gcm_aesni.Plo \
 	crypto_aead/aes256gcm/armcrypto/$(DEPDIR)/libarmcrypto_la-aead_aes256gcm_armcrypto.Plo \
-	crypto_aead/chacha20poly1305/sodium/$(DEPDIR)/libsodium_la-aead_chacha20poly1305.Plo \
-	crypto_aead/xchacha20poly1305/sodium/$(DEPDIR)/libsodium_la-aead_xchacha20poly1305.Plo \
+	crypto_aead/chacha20poly1305/$(DEPDIR)/libsodium_la-aead_chacha20poly1305.Plo \
+	crypto_aead/xchacha20poly1305/$(DEPDIR)/libsodium_la-aead_xchacha20poly1305.Plo \
 	crypto_auth/$(DEPDIR)/libsodium_la-crypto_auth.Plo \
 	crypto_auth/hmacsha256/$(DEPDIR)/libsodium_la-auth_hmacsha256.Plo \
 	crypto_auth/hmacsha512/$(DEPDIR)/libsodium_la-auth_hmacsha512.Plo \
@@ -642,7 +642,7 @@ am__depfiles_remade = crypto_aead/aes256gcm/$(DEPDIR)/libsodium_la-aead_aes256gc
 	crypto_stream/salsa208/ref/$(DEPDIR)/libsodium_la-stream_salsa208_ref.Plo \
 	crypto_stream/xchacha20/$(DEPDIR)/libsodium_la-stream_xchacha20.Plo \
 	crypto_stream/xsalsa20/$(DEPDIR)/libsodium_la-stream_xsalsa20.Plo \
-	crypto_verify/sodium/$(DEPDIR)/libsodium_la-verify.Plo \
+	crypto_verify/$(DEPDIR)/libsodium_la-verify.Plo \
 	randombytes/$(DEPDIR)/libsodium_la-randombytes.Plo \
 	randombytes/internal/$(DEPDIR)/librdrand_la-randombytes_internal_random.Plo \
 	randombytes/sysrandom/$(DEPDIR)/libsodium_la-randombytes_sysrandom.Plo \
@@ -936,8 +936,8 @@ lib_LTLIBRARIES = \
 	libsodium.la
 
 libsodium_la_SOURCES = crypto_aead/aes256gcm/aead_aes256gcm.c \
-	crypto_aead/chacha20poly1305/sodium/aead_chacha20poly1305.c \
-	crypto_aead/xchacha20poly1305/sodium/aead_xchacha20poly1305.c \
+	crypto_aead/chacha20poly1305/aead_chacha20poly1305.c \
+	crypto_aead/xchacha20poly1305/aead_xchacha20poly1305.c \
 	crypto_auth/crypto_auth.c \
 	crypto_auth/hmacsha256/auth_hmacsha256.c \
 	crypto_auth/hmacsha512/auth_hmacsha512.c \
@@ -1009,7 +1009,7 @@ libsodium_la_SOURCES = crypto_aead/aes256gcm/aead_aes256gcm.c \
 	crypto_stream/salsa20/stream_salsa20.c \
 	crypto_stream/salsa20/stream_salsa20.h \
 	crypto_stream/xsalsa20/stream_xsalsa20.c \
-	crypto_verify/sodium/verify.c include/sodium/private/asm_cet.h \
+	crypto_verify/verify.c include/sodium/private/asm_cet.h \
 	include/sodium/private/chacha20_ietf_ext.h \
 	include/sodium/private/common.h \
 	include/sodium/private/ed25519_ref10.h \
@@ -1294,24 +1294,24 @@ crypto_aead/aes256gcm/$(DEPDIR)/$(am__dirstamp):
 crypto_aead/aes256gcm/libsodium_la-aead_aes256gcm.lo:  \
 	crypto_aead/aes256gcm/$(am__dirstamp) \
 	crypto_aead/aes256gcm/$(DEPDIR)/$(am__dirstamp)
-crypto_aead/chacha20poly1305/sodium/$(am__dirstamp):
-	@$(MKDIR_P) crypto_aead/chacha20poly1305/sodium
-	@: > crypto_aead/chacha20poly1305/sodium/$(am__dirstamp)
-crypto_aead/chacha20poly1305/sodium/$(DEPDIR)/$(am__dirstamp):
-	@$(MKDIR_P) crypto_aead/chacha20poly1305/sodium/$(DEPDIR)
-	@: > crypto_aead/chacha20poly1305/sodium/$(DEPDIR)/$(am__dirstamp)
-crypto_aead/chacha20poly1305/sodium/libsodium_la-aead_chacha20poly1305.lo:  \
-	crypto_aead/chacha20poly1305/sodium/$(am__dirstamp) \
-	crypto_aead/chacha20poly1305/sodium/$(DEPDIR)/$(am__dirstamp)
-crypto_aead/xchacha20poly1305/sodium/$(am__dirstamp):
-	@$(MKDIR_P) crypto_aead/xchacha20poly1305/sodium
-	@: > crypto_aead/xchacha20poly1305/sodium/$(am__dirstamp)
-crypto_aead/xchacha20poly1305/sodium/$(DEPDIR)/$(am__dirstamp):
-	@$(MKDIR_P) crypto_aead/xchacha20poly1305/sodium/$(DEPDIR)
-	@: > crypto_aead/xchacha20poly1305/sodium/$(DEPDIR)/$(am__dirstamp)
-crypto_aead/xchacha20poly1305/sodium/libsodium_la-aead_xchacha20poly1305.lo:  \
-	crypto_aead/xchacha20poly1305/sodium/$(am__dirstamp) \
-	crypto_aead/xchacha20poly1305/sodium/$(DEPDIR)/$(am__dirstamp)
+crypto_aead/chacha20poly1305/$(am__dirstamp):
+	@$(MKDIR_P) crypto_aead/chacha20poly1305
+	@: > crypto_aead/chacha20poly1305/$(am__dirstamp)
+crypto_aead/chacha20poly1305/$(DEPDIR)/$(am__dirstamp):
+	@$(MKDIR_P) crypto_aead/chacha20poly1305/$(DEPDIR)
+	@: > crypto_aead/chacha20poly1305/$(DEPDIR)/$(am__dirstamp)
+crypto_aead/chacha20poly1305/libsodium_la-aead_chacha20poly1305.lo:  \
+	crypto_aead/chacha20poly1305/$(am__dirstamp) \
+	crypto_aead/chacha20poly1305/$(DEPDIR)/$(am__dirstamp)
+crypto_aead/xchacha20poly1305/$(am__dirstamp):
+	@$(MKDIR_P) crypto_aead/xchacha20poly1305
+	@: > crypto_aead/xchacha20poly1305/$(am__dirstamp)
+crypto_aead/xchacha20poly1305/$(DEPDIR)/$(am__dirstamp):
+	@$(MKDIR_P) crypto_aead/xchacha20poly1305/$(DEPDIR)
+	@: > crypto_aead/xchacha20poly1305/$(DEPDIR)/$(am__dirstamp)
+crypto_aead/xchacha20poly1305/libsodium_la-aead_xchacha20poly1305.lo:  \
+	crypto_aead/xchacha20poly1305/$(am__dirstamp) \
+	crypto_aead/xchacha20poly1305/$(DEPDIR)/$(am__dirstamp)
 crypto_auth/$(am__dirstamp):
 	@$(MKDIR_P) crypto_auth
 	@: > crypto_auth/$(am__dirstamp)
@@ -1729,15 +1729,14 @@ crypto_stream/xsalsa20/$(DEPDIR)/$(am__dirstamp):
 crypto_stream/xsalsa20/libsodium_la-stream_xsalsa20.lo:  \
 	crypto_stream/xsalsa20/$(am__dirstamp) \
 	crypto_stream/xsalsa20/$(DEPDIR)/$(am__dirstamp)
-crypto_verify/sodium/$(am__dirstamp):
-	@$(MKDIR_P) crypto_verify/sodium
-	@: > crypto_verify/sodium/$(am__dirstamp)
-crypto_verify/sodium/$(DEPDIR)/$(am__dirstamp):
-	@$(MKDIR_P) crypto_verify/sodium/$(DEPDIR)
-	@: > crypto_verify/sodium/$(DEPDIR)/$(am__dirstamp)
-crypto_verify/sodium/libsodium_la-verify.lo:  \
-	crypto_verify/sodium/$(am__dirstamp) \
-	crypto_verify/sodium/$(DEPDIR)/$(am__dirstamp)
+crypto_verify/$(am__dirstamp):
+	@$(MKDIR_P) crypto_verify
+	@: > crypto_verify/$(am__dirstamp)
+crypto_verify/$(DEPDIR)/$(am__dirstamp):
+	@$(MKDIR_P) crypto_verify/$(DEPDIR)
+	@: > crypto_verify/$(DEPDIR)/$(am__dirstamp)
+crypto_verify/libsodium_la-verify.lo: crypto_verify/$(am__dirstamp) \
+	crypto_verify/$(DEPDIR)/$(am__dirstamp)
 randombytes/$(am__dirstamp):
 	@$(MKDIR_P) randombytes
 	@: > randombytes/$(am__dirstamp)
@@ -1996,10 +1995,10 @@ mostlyclean-compile:
 	-rm -f crypto_aead/aes256gcm/aesni/*.lo
 	-rm -f crypto_aead/aes256gcm/armcrypto/*.$(OBJEXT)
 	-rm -f crypto_aead/aes256gcm/armcrypto/*.lo
-	-rm -f crypto_aead/chacha20poly1305/sodium/*.$(OBJEXT)
-	-rm -f crypto_aead/chacha20poly1305/sodium/*.lo
-	-rm -f crypto_aead/xchacha20poly1305/sodium/*.$(OBJEXT)
-	-rm -f crypto_aead/xchacha20poly1305/sodium/*.lo
+	-rm -f crypto_aead/chacha20poly1305/*.$(OBJEXT)
+	-rm -f crypto_aead/chacha20poly1305/*.lo
+	-rm -f crypto_aead/xchacha20poly1305/*.$(OBJEXT)
+	-rm -f crypto_aead/xchacha20poly1305/*.lo
 	-rm -f crypto_auth/*.$(OBJEXT)
 	-rm -f crypto_auth/*.lo
 	-rm -f crypto_auth/hmacsha256/*.$(OBJEXT)
@@ -2126,8 +2125,8 @@ mostlyclean-compile:
 	-rm -f crypto_stream/xchacha20/*.lo
 	-rm -f crypto_stream/xsalsa20/*.$(OBJEXT)
 	-rm -f crypto_stream/xsalsa20/*.lo
-	-rm -f crypto_verify/sodium/*.$(OBJEXT)
-	-rm -f crypto_verify/sodium/*.lo
+	-rm -f crypto_verify/*.$(OBJEXT)
+	-rm -f crypto_verify/*.lo
 	-rm -f randombytes/*.$(OBJEXT)
 	-rm -f randombytes/*.lo
 	-rm -f randombytes/internal/*.$(OBJEXT)
@@ -2143,8 +2142,8 @@ distclean-compile:
 @AMDEP_TRUE@@am__include@ @am__quote@crypto_aead/aes256gcm/$(DEPDIR)/libsodium_la-aead_aes256gcm.Plo@am__quote@ # am--include-marker
 @AMDEP_TRUE@@am__include@ @am__quote@crypto_aead/aes256gcm/aesni/$(DEPDIR)/libaesni_la-aead_aes256gcm_aesni.Plo@am__quote@ # am--include-marker
 @AMDEP_TRUE@@am__include@ @am__quote@crypto_aead/aes256gcm/armcrypto/$(DEPDIR)/libarmcrypto_la-aead_aes256gcm_armcrypto.Plo@am__quote@ # am--include-marker
-@AMDEP_TRUE@@am__include@ @am__quote@crypto_aead/chacha20poly1305/sodium/$(DEPDIR)/libsodium_la-aead_chacha20poly1305.Plo@am__quote@ # am--include-marker
-@AMDEP_TRUE@@am__include@ @am__quote@crypto_aead/xchacha20poly1305/sodium/$(DEPDIR)/libsodium_la-aead_xchacha20poly1305.Plo@am__quote@ # am--include-marker
+@AMDEP_TRUE@@am__include@ @am__quote@crypto_aead/chacha20poly1305/$(DEPDIR)/libsodium_la-aead_chacha20poly1305.Plo@am__quote@ # am--include-marker
+@AMDEP_TRUE@@am__include@ @am__quote@crypto_aead/xchacha20poly1305/$(DEPDIR)/libsodium_la-aead_xchacha20poly1305.Plo@am__quote@ # am--include-marker
 @AMDEP_TRUE@@am__include@ @am__quote@crypto_auth/$(DEPDIR)/libsodium_la-crypto_auth.Plo@am__quote@ # am--include-marker
 @AMDEP_TRUE@@am__include@ @am__quote@crypto_auth/hmacsha256/$(DEPDIR)/libsodium_la-auth_hmacsha256.Plo@am__quote@ # am--include-marker
 @AMDEP_TRUE@@am__include@ @am__quote@crypto_auth/hmacsha512/$(DEPDIR)/libsodium_la-auth_hmacsha512.Plo@am__quote@ # am--include-marker
@@ -2241,7 +2240,7 @@ distclean-compile:
 @AMDEP_TRUE@@am__include@ @am__quote@crypto_stream/salsa208/ref/$(DEPDIR)/libsodium_la-stream_salsa208_ref.Plo@am__quote@ # am--include-marker
 @AMDEP_TRUE@@am__include@ @am__quote@crypto_stream/xchacha20/$(DEPDIR)/libsodium_la-stream_xchacha20.Plo@am__quote@ # am--include-marker
 @AMDEP_TRUE@@am__include@ @am__quote@crypto_stream/xsalsa20/$(DEPDIR)/libsodium_la-stream_xsalsa20.Plo@am__quote@ # am--include-marker
-@AMDEP_TRUE@@am__include@ @am__quote@crypto_verify/sodium/$(DEPDIR)/libsodium_la-verify.Plo@am__quote@ # am--include-marker
+@AMDEP_TRUE@@am__include@ @am__quote@crypto_verify/$(DEPDIR)/libsodium_la-verify.Plo@am__quote@ # am--include-marker
 @AMDEP_TRUE@@am__include@ @am__quote@randombytes/$(DEPDIR)/libsodium_la-randombytes.Plo@am__quote@ # am--include-marker
 @AMDEP_TRUE@@am__include@ @am__quote@randombytes/internal/$(DEPDIR)/librdrand_la-randombytes_internal_random.Plo@am__quote@ # am--include-marker
 @AMDEP_TRUE@@am__include@ @am__quote@randombytes/sysrandom/$(DEPDIR)/libsodium_la-randombytes_sysrandom.Plo@am__quote@ # am--include-marker
@@ -2382,19 +2381,19 @@ crypto_aead/aes256gcm/libsodium_la-aead_aes256gcm.lo: crypto_aead/aes256gcm/aead
 @AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
 @am__fastdepCC_FALSE@	$(AM_V_CC@am__nodep@)$(LIBTOOL) $(AM_V_lt) --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libsodium_la_CPPFLAGS) $(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS) -c -o crypto_aead/aes256gcm/libsodium_la-aead_aes256gcm.lo `test -f 'crypto_aead/aes256gcm/aead_aes256gcm.c' || echo '$(srcdir)/'`crypto_aead/aes256gcm/aead_aes256gcm.c
 
-crypto_aead/chacha20poly1305/sodium/libsodium_la-aead_chacha20poly1305.lo: crypto_aead/chacha20poly1305/sodium/aead_chacha20poly1305.c
-@am__fastdepCC_TRUE@	$(AM_V_CC)$(LIBTOOL) $(AM_V_lt) --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libsodium_la_CPPFLAGS) $(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS) -MT crypto_aead/chacha20poly1305/sodium/libsodium_la-aead_chacha20poly1305.lo -MD -MP -MF crypto_aead/chacha20poly1305/sodium/$(DEPDIR)/libsodium_la-aead_chacha20poly1305.Tpo -c -o crypto_aead/chacha20poly1305/sodium/libsodium_la-aead_chacha20poly1305.lo `test -f 'crypto_aead/chacha20poly1305/sodium/aead_chacha20poly1305.c' || echo '$(srcdir)/'`crypto_aead/chacha20poly1305/sodium/aead_chacha20poly1305.c
-@am__fastdepCC_TRUE@	$(AM_V_at)$(am__mv) crypto_aead/chacha20poly1305/sodium/$(DEPDIR)/libsodium_la-aead_chacha20poly1305.Tpo crypto_aead/chacha20poly1305/sodium/$(DEPDIR)/libsodium_la-aead_chacha20poly1305.Plo
-@AMDEP_TRUE@@am__fastdepCC_FALSE@	$(AM_V_CC)source='crypto_aead/chacha20poly1305/sodium/aead_chacha20poly1305.c' object='crypto_aead/chacha20poly1305/sodium/libsodium_la-aead_chacha20poly1305.lo' libtool=yes @AMDEPBACKSLASH@
+crypto_aead/chacha20poly1305/libsodium_la-aead_chacha20poly1305.lo: crypto_aead/chacha20poly1305/aead_chacha20poly1305.c
+@am__fastdepCC_TRUE@	$(AM_V_CC)$(LIBTOOL) $(AM_V_lt) --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libsodium_la_CPPFLAGS) $(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS) -MT crypto_aead/chacha20poly1305/libsodium_la-aead_chacha20poly1305.lo -MD -MP -MF crypto_aead/chacha20poly1305/$(DEPDIR)/libsodium_la-aead_chacha20poly1305.Tpo -c -o crypto_aead/chacha20poly1305/libsodium_la-aead_chacha20poly1305.lo `test -f 'crypto_aead/chacha20poly1305/aead_chacha20poly1305.c' || echo '$(srcdir)/'`crypto_aead/chacha20poly1305/aead_chacha20poly1305.c
+@am__fastdepCC_TRUE@	$(AM_V_at)$(am__mv) crypto_aead/chacha20poly1305/$(DEPDIR)/libsodium_la-aead_chacha20poly1305.Tpo crypto_aead/chacha20poly1305/$(DEPDIR)/libsodium_la-aead_chacha20poly1305.Plo
+@AMDEP_TRUE@@am__fastdepCC_FALSE@	$(AM_V_CC)source='crypto_aead/chacha20poly1305/aead_chacha20poly1305.c' object='crypto_aead/chacha20poly1305/libsodium_la-aead_chacha20poly1305.lo' libtool=yes @AMDEPBACKSLASH@
 @AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCC_FALSE@	$(AM_V_CC@am__nodep@)$(LIBTOOL) $(AM_V_lt) --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libsodium_la_CPPFLAGS) $(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS) -c -o crypto_aead/chacha20poly1305/sodium/libsodium_la-aead_chacha20poly1305.lo `test -f 'crypto_aead/chacha20poly1305/sodium/aead_chacha20poly1305.c' || echo '$(srcdir)/'`crypto_aead/chacha20poly1305/sodium/aead_chacha20poly1305.c
+@am__fastdepCC_FALSE@	$(AM_V_CC@am__nodep@)$(LIBTOOL) $(AM_V_lt) --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libsodium_la_CPPFLAGS) $(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS) -c -o crypto_aead/chacha20poly1305/libsodium_la-aead_chacha20poly1305.lo `test -f 'crypto_aead/chacha20poly1305/aead_chacha20poly1305.c' || echo '$(srcdir)/'`crypto_aead/chacha20poly1305/aead_chacha20poly1305.c
 
-crypto_aead/xchacha20poly1305/sodium/libsodium_la-aead_xchacha20poly1305.lo: crypto_aead/xchacha20poly1305/sodium/aead_xchacha20poly1305.c
-@am__fastdepCC_TRUE@	$(AM_V_CC)$(LIBTOOL) $(AM_V_lt) --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libsodium_la_CPPFLAGS) $(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS) -MT crypto_aead/xchacha20poly1305/sodium/libsodium_la-aead_xchacha20poly1305.lo -MD -MP -MF crypto_aead/xchacha20poly1305/sodium/$(DEPDIR)/libsodium_la-aead_xchacha20poly1305.Tpo -c -o crypto_aead/xchacha20poly1305/sodium/libsodium_la-aead_xchacha20poly1305.lo `test -f 'crypto_aead/xchacha20poly1305/sodium/aead_xchacha20poly1305.c' || echo '$(srcdir)/'`crypto_aead/xchacha20poly1305/sodium/aead_xchacha20poly1305.c
-@am__fastdepCC_TRUE@	$(AM_V_at)$(am__mv) crypto_aead/xchacha20poly1305/sodium/$(DEPDIR)/libsodium_la-aead_xchacha20poly1305.Tpo crypto_aead/xchacha20poly1305/sodium/$(DEPDIR)/libsodium_la-aead_xchacha20poly1305.Plo
-@AMDEP_TRUE@@am__fastdepCC_FALSE@	$(AM_V_CC)source='crypto_aead/xchacha20poly1305/sodium/aead_xchacha20poly1305.c' object='crypto_aead/xchacha20poly1305/sodium/libsodium_la-aead_xchacha20poly1305.lo' libtool=yes @AMDEPBACKSLASH@
+crypto_aead/xchacha20poly1305/libsodium_la-aead_xchacha20poly1305.lo: crypto_aead/xchacha20poly1305/aead_xchacha20poly1305.c
+@am__fastdepCC_TRUE@	$(AM_V_CC)$(LIBTOOL) $(AM_V_lt) --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libsodium_la_CPPFLAGS) $(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS) -MT crypto_aead/xchacha20poly1305/libsodium_la-aead_xchacha20poly1305.lo -MD -MP -MF crypto_aead/xchacha20poly1305/$(DEPDIR)/libsodium_la-aead_xchacha20poly1305.Tpo -c -o crypto_aead/xchacha20poly1305/libsodium_la-aead_xchacha20poly1305.lo `test -f 'crypto_aead/xchacha20poly1305/aead_xchacha20poly1305.c' || echo '$(srcdir)/'`crypto_aead/xchacha20poly1305/aead_xchacha20poly1305.c
+@am__fastdepCC_TRUE@	$(AM_V_at)$(am__mv) crypto_aead/xchacha20poly1305/$(DEPDIR)/libsodium_la-aead_xchacha20poly1305.Tpo crypto_aead/xchacha20poly1305/$(DEPDIR)/libsodium_la-aead_xchacha20poly1305.Plo
+@AMDEP_TRUE@@am__fastdepCC_FALSE@	$(AM_V_CC)source='crypto_aead/xchacha20poly1305/aead_xchacha20poly1305.c' object='crypto_aead/xchacha20poly1305/libsodium_la-aead_xchacha20poly1305.lo' libtool=yes @AMDEPBACKSLASH@
 @AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCC_FALSE@	$(AM_V_CC@am__nodep@)$(LIBTOOL) $(AM_V_lt) --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libsodium_la_CPPFLAGS) $(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS) -c -o crypto_aead/xchacha20poly1305/sodium/libsodium_la-aead_xchacha20poly1305.lo `test -f 'crypto_aead/xchacha20poly1305/sodium/aead_xchacha20poly1305.c' || echo '$(srcdir)/'`crypto_aead/xchacha20poly1305/sodium/aead_xchacha20poly1305.c
+@am__fastdepCC_FALSE@	$(AM_V_CC@am__nodep@)$(LIBTOOL) $(AM_V_lt) --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libsodium_la_CPPFLAGS) $(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS) -c -o crypto_aead/xchacha20poly1305/libsodium_la-aead_xchacha20poly1305.lo `test -f 'crypto_aead/xchacha20poly1305/aead_xchacha20poly1305.c' || echo '$(srcdir)/'`crypto_aead/xchacha20poly1305/aead_xchacha20poly1305.c
 
 crypto_auth/libsodium_la-crypto_auth.lo: crypto_auth/crypto_auth.c
 @am__fastdepCC_TRUE@	$(AM_V_CC)$(LIBTOOL) $(AM_V_lt) --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libsodium_la_CPPFLAGS) $(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS) -MT crypto_auth/libsodium_la-crypto_auth.lo -MD -MP -MF crypto_auth/$(DEPDIR)/libsodium_la-crypto_auth.Tpo -c -o crypto_auth/libsodium_la-crypto_auth.lo `test -f 'crypto_auth/crypto_auth.c' || echo '$(srcdir)/'`crypto_auth/crypto_auth.c
@@ -2795,12 +2794,12 @@ crypto_stream/xsalsa20/libsodium_la-stream_xsalsa20.lo: crypto_stream/xsalsa20/s
 @AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
 @am__fastdepCC_FALSE@	$(AM_V_CC@am__nodep@)$(LIBTOOL) $(AM_V_lt) --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libsodium_la_CPPFLAGS) $(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS) -c -o crypto_stream/xsalsa20/libsodium_la-stream_xsalsa20.lo `test -f 'crypto_stream/xsalsa20/stream_xsalsa20.c' || echo '$(srcdir)/'`crypto_stream/xsalsa20/stream_xsalsa20.c
 
-crypto_verify/sodium/libsodium_la-verify.lo: crypto_verify/sodium/verify.c
-@am__fastdepCC_TRUE@	$(AM_V_CC)$(LIBTOOL) $(AM_V_lt) --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libsodium_la_CPPFLAGS) $(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS) -MT crypto_verify/sodium/libsodium_la-verify.lo -MD -MP -MF crypto_verify/sodium/$(DEPDIR)/libsodium_la-verify.Tpo -c -o crypto_verify/sodium/libsodium_la-verify.lo `test -f 'crypto_verify/sodium/verify.c' || echo '$(srcdir)/'`crypto_verify/sodium/verify.c
-@am__fastdepCC_TRUE@	$(AM_V_at)$(am__mv) crypto_verify/sodium/$(DEPDIR)/libsodium_la-verify.Tpo crypto_verify/sodium/$(DEPDIR)/libsodium_la-verify.Plo
-@AMDEP_TRUE@@am__fastdepCC_FALSE@	$(AM_V_CC)source='crypto_verify/sodium/verify.c' object='crypto_verify/sodium/libsodium_la-verify.lo' libtool=yes @AMDEPBACKSLASH@
+crypto_verify/libsodium_la-verify.lo: crypto_verify/verify.c
+@am__fastdepCC_TRUE@	$(AM_V_CC)$(LIBTOOL) $(AM_V_lt) --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libsodium_la_CPPFLAGS) $(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS) -MT crypto_verify/libsodium_la-verify.lo -MD -MP -MF crypto_verify/$(DEPDIR)/libsodium_la-verify.Tpo -c -o crypto_verify/libsodium_la-verify.lo `test -f 'crypto_verify/verify.c' || echo '$(srcdir)/'`crypto_verify/verify.c
+@am__fastdepCC_TRUE@	$(AM_V_at)$(am__mv) crypto_verify/$(DEPDIR)/libsodium_la-verify.Tpo crypto_verify/$(DEPDIR)/libsodium_la-verify.Plo
+@AMDEP_TRUE@@am__fastdepCC_FALSE@	$(AM_V_CC)source='crypto_verify/verify.c' object='crypto_verify/libsodium_la-verify.lo' libtool=yes @AMDEPBACKSLASH@
 @AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCC_FALSE@	$(AM_V_CC@am__nodep@)$(LIBTOOL) $(AM_V_lt) --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libsodium_la_CPPFLAGS) $(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS) -c -o crypto_verify/sodium/libsodium_la-verify.lo `test -f 'crypto_verify/sodium/verify.c' || echo '$(srcdir)/'`crypto_verify/sodium/verify.c
+@am__fastdepCC_FALSE@	$(AM_V_CC@am__nodep@)$(LIBTOOL) $(AM_V_lt) --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libsodium_la_CPPFLAGS) $(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS) -c -o crypto_verify/libsodium_la-verify.lo `test -f 'crypto_verify/verify.c' || echo '$(srcdir)/'`crypto_verify/verify.c
 
 randombytes/libsodium_la-randombytes.lo: randombytes/randombytes.c
 @am__fastdepCC_TRUE@	$(AM_V_CC)$(LIBTOOL) $(AM_V_lt) --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libsodium_la_CPPFLAGS) $(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS) -MT randombytes/libsodium_la-randombytes.lo -MD -MP -MF randombytes/$(DEPDIR)/libsodium_la-randombytes.Tpo -c -o randombytes/libsodium_la-randombytes.lo `test -f 'randombytes/randombytes.c' || echo '$(srcdir)/'`randombytes/randombytes.c
@@ -3083,8 +3082,8 @@ clean-libtool:
 	-rm -rf crypto_aead/aes256gcm/.libs crypto_aead/aes256gcm/_libs
 	-rm -rf crypto_aead/aes256gcm/aesni/.libs crypto_aead/aes256gcm/aesni/_libs
 	-rm -rf crypto_aead/aes256gcm/armcrypto/.libs crypto_aead/aes256gcm/armcrypto/_libs
-	-rm -rf crypto_aead/chacha20poly1305/sodium/.libs crypto_aead/chacha20poly1305/sodium/_libs
-	-rm -rf crypto_aead/xchacha20poly1305/sodium/.libs crypto_aead/xchacha20poly1305/sodium/_libs
+	-rm -rf crypto_aead/chacha20poly1305/.libs crypto_aead/chacha20poly1305/_libs
+	-rm -rf crypto_aead/xchacha20poly1305/.libs crypto_aead/xchacha20poly1305/_libs
 	-rm -rf crypto_auth/.libs crypto_auth/_libs
 	-rm -rf crypto_auth/hmacsha256/.libs crypto_auth/hmacsha256/_libs
 	-rm -rf crypto_auth/hmacsha512/.libs crypto_auth/hmacsha512/_libs
@@ -3148,7 +3147,7 @@ clean-libtool:
 	-rm -rf crypto_stream/salsa208/ref/.libs crypto_stream/salsa208/ref/_libs
 	-rm -rf crypto_stream/xchacha20/.libs crypto_stream/xchacha20/_libs
 	-rm -rf crypto_stream/xsalsa20/.libs crypto_stream/xsalsa20/_libs
-	-rm -rf crypto_verify/sodium/.libs crypto_verify/sodium/_libs
+	-rm -rf crypto_verify/.libs crypto_verify/_libs
 	-rm -rf randombytes/.libs randombytes/_libs
 	-rm -rf randombytes/internal/.libs randombytes/internal/_libs
 	-rm -rf randombytes/sysrandom/.libs randombytes/sysrandom/_libs
@@ -3377,10 +3376,10 @@ distclean-generic:
 	-rm -f crypto_aead/aes256gcm/aesni/$(am__dirstamp)
 	-rm -f crypto_aead/aes256gcm/armcrypto/$(DEPDIR)/$(am__dirstamp)
 	-rm -f crypto_aead/aes256gcm/armcrypto/$(am__dirstamp)
-	-rm -f crypto_aead/chacha20poly1305/sodium/$(DEPDIR)/$(am__dirstamp)
-	-rm -f crypto_aead/chacha20poly1305/sodium/$(am__dirstamp)
-	-rm -f crypto_aead/xchacha20poly1305/sodium/$(DEPDIR)/$(am__dirstamp)
-	-rm -f crypto_aead/xchacha20poly1305/sodium/$(am__dirstamp)
+	-rm -f crypto_aead/chacha20poly1305/$(DEPDIR)/$(am__dirstamp)
+	-rm -f crypto_aead/chacha20poly1305/$(am__dirstamp)
+	-rm -f crypto_aead/xchacha20poly1305/$(DEPDIR)/$(am__dirstamp)
+	-rm -f crypto_aead/xchacha20poly1305/$(am__dirstamp)
 	-rm -f crypto_auth/$(DEPDIR)/$(am__dirstamp)
 	-rm -f crypto_auth/$(am__dirstamp)
 	-rm -f crypto_auth/hmacsha256/$(DEPDIR)/$(am__dirstamp)
@@ -3507,8 +3506,8 @@ distclean-generic:
 	-rm -f crypto_stream/xchacha20/$(am__dirstamp)
 	-rm -f crypto_stream/xsalsa20/$(DEPDIR)/$(am__dirstamp)
 	-rm -f crypto_stream/xsalsa20/$(am__dirstamp)
-	-rm -f crypto_verify/sodium/$(DEPDIR)/$(am__dirstamp)
-	-rm -f crypto_verify/sodium/$(am__dirstamp)
+	-rm -f crypto_verify/$(DEPDIR)/$(am__dirstamp)
+	-rm -f crypto_verify/$(am__dirstamp)
 	-rm -f randombytes/$(DEPDIR)/$(am__dirstamp)
 	-rm -f randombytes/$(am__dirstamp)
 	-rm -f randombytes/internal/$(DEPDIR)/$(am__dirstamp)
@@ -3550,8 +3549,8 @@ distclean: distclean-recursive
 		-rm -f crypto_aead/aes256gcm/$(DEPDIR)/libsodium_la-aead_aes256gcm.Plo
 	-rm -f crypto_aead/aes256gcm/aesni/$(DEPDIR)/libaesni_la-aead_aes256gcm_aesni.Plo
 	-rm -f crypto_aead/aes256gcm/armcrypto/$(DEPDIR)/libarmcrypto_la-aead_aes256gcm_armcrypto.Plo
-	-rm -f crypto_aead/chacha20poly1305/sodium/$(DEPDIR)/libsodium_la-aead_chacha20poly1305.Plo
-	-rm -f crypto_aead/xchacha20poly1305/sodium/$(DEPDIR)/libsodium_la-aead_xchacha20poly1305.Plo
+	-rm -f crypto_aead/chacha20poly1305/$(DEPDIR)/libsodium_la-aead_chacha20poly1305.Plo
+	-rm -f crypto_aead/xchacha20poly1305/$(DEPDIR)/libsodium_la-aead_xchacha20poly1305.Plo
 	-rm -f crypto_auth/$(DEPDIR)/libsodium_la-crypto_auth.Plo
 	-rm -f crypto_auth/hmacsha256/$(DEPDIR)/libsodium_la-auth_hmacsha256.Plo
 	-rm -f crypto_auth/hmacsha512/$(DEPDIR)/libsodium_la-auth_hmacsha512.Plo
@@ -3648,7 +3647,7 @@ distclean: distclean-recursive
 	-rm -f crypto_stream/salsa208/ref/$(DEPDIR)/libsodium_la-stream_salsa208_ref.Plo
 	-rm -f crypto_stream/xchacha20/$(DEPDIR)/libsodium_la-stream_xchacha20.Plo
 	-rm -f crypto_stream/xsalsa20/$(DEPDIR)/libsodium_la-stream_xsalsa20.Plo
-	-rm -f crypto_verify/sodium/$(DEPDIR)/libsodium_la-verify.Plo
+	-rm -f crypto_verify/$(DEPDIR)/libsodium_la-verify.Plo
 	-rm -f randombytes/$(DEPDIR)/libsodium_la-randombytes.Plo
 	-rm -f randombytes/internal/$(DEPDIR)/librdrand_la-randombytes_internal_random.Plo
 	-rm -f randombytes/sysrandom/$(DEPDIR)/libsodium_la-randombytes_sysrandom.Plo
@@ -3705,8 +3704,8 @@ maintainer-clean: maintainer-clean-recursive
 		-rm -f crypto_aead/aes256gcm/$(DEPDIR)/libsodium_la-aead_aes256gcm.Plo
 	-rm -f crypto_aead/aes256gcm/aesni/$(DEPDIR)/libaesni_la-aead_aes256gcm_aesni.Plo
 	-rm -f crypto_aead/aes256gcm/armcrypto/$(DEPDIR)/libarmcrypto_la-aead_aes256gcm_armcrypto.Plo
-	-rm -f crypto_aead/chacha20poly1305/sodium/$(DEPDIR)/libsodium_la-aead_chacha20poly1305.Plo
-	-rm -f crypto_aead/xchacha20poly1305/sodium/$(DEPDIR)/libsodium_la-aead_xchacha20poly1305.Plo
+	-rm -f crypto_aead/chacha20poly1305/$(DEPDIR)/libsodium_la-aead_chacha20poly1305.Plo
+	-rm -f crypto_aead/xchacha20poly1305/$(DEPDIR)/libsodium_la-aead_xchacha20poly1305.Plo
 	-rm -f crypto_auth/$(DEPDIR)/libsodium_la-crypto_auth.Plo
 	-rm -f crypto_auth/hmacsha256/$(DEPDIR)/libsodium_la-auth_hmacsha256.Plo
 	-rm -f crypto_auth/hmacsha512/$(DEPDIR)/libsodium_la-auth_hmacsha512.Plo
@@ -3803,7 +3802,7 @@ maintainer-clean: maintainer-clean-recursive
 	-rm -f crypto_stream/salsa208/ref/$(DEPDIR)/libsodium_la-stream_salsa208_ref.Plo
 	-rm -f crypto_stream/xchacha20/$(DEPDIR)/libsodium_la-stream_xchacha20.Plo
 	-rm -f crypto_stream/xsalsa20/$(DEPDIR)/libsodium_la-stream_xsalsa20.Plo
-	-rm -f crypto_verify/sodium/$(DEPDIR)/libsodium_la-verify.Plo
+	-rm -f crypto_verify/$(DEPDIR)/libsodium_la-verify.Plo
 	-rm -f randombytes/$(DEPDIR)/libsodium_la-randombytes.Plo
 	-rm -f randombytes/internal/$(DEPDIR)/librdrand_la-randombytes_internal_random.Plo
 	-rm -f randombytes/sysrandom/$(DEPDIR)/libsodium_la-randombytes_sysrandom.Plo
