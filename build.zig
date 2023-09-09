@@ -171,10 +171,26 @@ pub fn build(b: *std.build.Builder) !void {
                 lib.defineCMacro("HAVE_CPUID", "1");
                 lib.defineCMacro("HAVE_MMINTRIN_H", "1");
                 lib.defineCMacro("HAVE_EMMINTRIN_H", "1");
-                lib.defineCMacro("HAVE_PMMINTRIN_H", "1");
-                lib.defineCMacro("HAVE_SMMINTRIN_H", "1");
-                lib.defineCMacro("HAVE_TMMINTRIN_H", "1");
-                lib.defineCMacro("HAVE_WMMINTRIN_H", "1");
+
+                const cpu_features = target.getCpuFeatures();
+                const has_sse3 = cpu_features.isEnabled(@intFromEnum(Target.x86.Feature.sse3));
+                const has_ssse3 = cpu_features.isEnabled(@intFromEnum(Target.x86.Feature.ssse3));
+                const has_sse4_1 = cpu_features.isEnabled(@intFromEnum(Target.x86.Feature.sse4_1));
+                const has_avx = cpu_features.isEnabled(@intFromEnum(Target.x86.Feature.avx));
+                const has_avx2 = cpu_features.isEnabled(@intFromEnum(Target.x86.Feature.avx2));
+                const has_avx512f = cpu_features.isEnabled(@intFromEnum(Target.x86.Feature.avx512f));
+                const has_aes = cpu_features.isEnabled(@intFromEnum(Target.x86.Feature.aes));
+                const has_pclmul = cpu_features.isEnabled(@intFromEnum(Target.x86.Feature.pclmul));
+                const has_rdrnd = cpu_features.isEnabled(@intFromEnum(Target.x86.Feature.rdrnd));
+
+                if (has_sse3) lib.defineCMacro("HAVE_PMMINTRIN_H", "1");
+                if (has_ssse3) lib.defineCMacro("HAVE_TMMINTRIN_H", "1");
+                if (has_sse4_1) lib.defineCMacro("HAVE_SMMINTRIN_H", "1");
+                if (has_avx) lib.defineCMacro("HAVE_AVXINTRIN_H", "1");
+                if (has_avx2) lib.defineCMacro("HAVE_AVX2INTRIN_H", "1");
+                if (has_avx512f) lib.defineCMacro("HAVE_AVX512FINTRIN_H", "1");
+                if (has_aes and has_pclmul) lib.defineCMacro("HAVE_WMMINTRIN_H", "1");
+                if (has_rdrnd) lib.defineCMacro("HAVE_RDRAND", "1");
             },
             .aarch64, .aarch64_be => {
                 const cpu_features = target.getCpuFeatures();
