@@ -48,10 +48,8 @@ siphash                                Jean-Philippe Aumasson
 Implementors
 ============
 
-crypto_aead/aegis128l                  Hongjun Wu
-crypto_aead/aegis256                   Bart Preneel
-                                       Adrien Gallouet
-                                       Frank Denis
+crypto_aead/aegis128l                  Frank Denis
+crypto_aead/aegis256
 
 crypto_aead/aes256gcm/aesni            Frank Denis
 
