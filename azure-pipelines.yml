@@ -48,7 +48,7 @@ jobs:
       vmImage: "windows-2019"
     steps:
       - powershell: |
-          (New-Object Net.WebClient).DownloadFile("https://github.com/msys2/msys2-installer/releases/download/2023-05-26/msys2-base-x86_64-20230526.sfx.exe", "sfx.exe")
+          (New-Object Net.WebClient).DownloadFile("https://github.com/msys2/msys2-installer/releases/download/2023-07-18/msys2-base-x86_64-20230718.sfx.exe", "sfx.exe")
           .\sfx.exe -y -o\
           del sfx.exe
         displayName: Install MSYS2
@@ -87,7 +87,7 @@ jobs:
       vmImage: "windows-2019"
     steps:
       - powershell: |
-          (New-Object Net.WebClient).DownloadFile("https://github.com/msys2/msys2-installer/releases/download/2022-06-03/msys2-base-x86_64-20220603.sfx.exe", "sfx.exe")
+          (New-Object Net.WebClient).DownloadFile("https://github.com/msys2/msys2-installer/releases/download/2023-07-18/msys2-base-x86_64-20230718.sfx.exe", "sfx.exe")
           .\sfx.exe -y -o\
           del sfx.exe
         displayName: Install MSYS2
