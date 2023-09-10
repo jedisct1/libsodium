@@ -221,7 +221,10 @@ am__installdirs = "$(DESTDIR)$(libdir)" "$(DESTDIR)$(defexecdir)"
 LTLIBRARIES = $(lib_LTLIBRARIES) $(noinst_LTLIBRARIES)
 libaesni_la_LIBADD =
 am__dirstamp = $(am__leading_dot)dirstamp
-am_libaesni_la_OBJECTS = crypto_aead/aes256gcm/aesni/libaesni_la-aead_aes256gcm_aesni.lo
+am_libaesni_la_OBJECTS =  \
+	crypto_aead/aegis128l/libaesni_la-aegis128l_aesni.lo \
+	crypto_aead/aegis256/libaesni_la-aegis256_aesni.lo \
+	crypto_aead/aes256gcm/aesni/libaesni_la-aead_aes256gcm_aesni.lo
 libaesni_la_OBJECTS = $(am_libaesni_la_OBJECTS)
 AM_V_lt = $(am__v_lt_@AM_V@)
 am__v_lt_ = $(am__v_lt_@AM_DEFAULT_V@)
@@ -231,7 +234,10 @@ libaesni_la_LINK = $(LIBTOOL) $(AM_V_lt) --tag=CC $(AM_LIBTOOLFLAGS) \
 	$(LIBTOOLFLAGS) --mode=link $(CCLD) $(AM_CFLAGS) $(CFLAGS) \
 	$(libaesni_la_LDFLAGS) $(LDFLAGS) -o $@
 libarmcrypto_la_LIBADD =
-am_libarmcrypto_la_OBJECTS = crypto_aead/aes256gcm/armcrypto/libarmcrypto_la-aead_aes256gcm_armcrypto.lo
+am_libarmcrypto_la_OBJECTS =  \
+	crypto_aead/aegis128l/libarmcrypto_la-aegis128l_armcrypto.lo \
+	crypto_aead/aegis256/libarmcrypto_la-aegis256_armcrypto.lo \
+	crypto_aead/aes256gcm/armcrypto/libarmcrypto_la-aead_aes256gcm_armcrypto.lo
 libarmcrypto_la_OBJECTS = $(am_libarmcrypto_la_OBJECTS)
 libarmcrypto_la_LINK = $(LIBTOOL) $(AM_V_lt) --tag=CC \
 	$(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=link $(CCLD) \
@@ -263,6 +269,16 @@ libsodium_la_DEPENDENCIES = libaesni.la libarmcrypto.la libsse2.la \
 	libssse3.la libsse41.la libavx2.la libavx512f.la \
 	$(am__append_8)
 am__libsodium_la_SOURCES_DIST =  \
+	crypto_aead/aegis128l/aead_aegis128l.c \
+	crypto_aead/aegis128l/aegis128l_common.h \
+	crypto_aead/aegis128l/aegis128l_soft.c \
+	crypto_aead/aegis128l/aegis128l_soft.h \
+	crypto_aead/aegis128l/implementations.h \
+	crypto_aead/aegis256/aead_aegis256.c \
+	crypto_aead/aegis256/aegis256_common.h \
+	crypto_aead/aegis256/aegis256_soft.c \
+	crypto_aead/aegis256/aegis256_soft.h \
+	crypto_aead/aegis256/implementations.h \
 	crypto_aead/aes256gcm/aead_aes256gcm.c \
 	crypto_aead/chacha20poly1305/aead_chacha20poly1305.c \
 	crypto_aead/xchacha20poly1305/aead_xchacha20poly1305.c \
@@ -278,6 +294,7 @@ am__libsodium_la_SOURCES_DIST =  \
 	crypto_core/hsalsa20/ref2/core_hsalsa20_ref2.c \
 	crypto_core/hsalsa20/core_hsalsa20.c \
 	crypto_core/salsa/ref/core_salsa_ref.c \
+	crypto_core/softaes/softaes.c \
 	crypto_generichash/crypto_generichash.c \
 	crypto_generichash/blake2b/generichash_blake2.c \
 	crypto_generichash/blake2b/ref/blake2.h \
@@ -343,7 +360,8 @@ am__libsodium_la_SOURCES_DIST =  \
 	include/sodium/private/ed25519_ref10.h \
 	include/sodium/private/implementations.h \
 	include/sodium/private/mutex.h \
-	include/sodium/private/sse2_64_32.h randombytes/randombytes.c \
+	include/sodium/private/sse2_64_32.h \
+	include/sodium/private/softaes.h randombytes/randombytes.c \
 	sodium/codecs.c sodium/core.c sodium/runtime.c sodium/utils.c \
 	sodium/version.c crypto_core/ed25519/ref10/fe_51/base.h \
 	crypto_core/ed25519/ref10/fe_51/base2.h \
@@ -428,6 +446,10 @@ am__objects_1 =
 @MINIMAL_FALSE@	crypto_stream/xchacha20/libsodium_la-stream_xchacha20.lo
 @EMSCRIPTEN_FALSE@am__objects_6 = randombytes/sysrandom/libsodium_la-randombytes_sysrandom.lo
 am_libsodium_la_OBJECTS =  \
+	crypto_aead/aegis128l/libsodium_la-aead_aegis128l.lo \
+	crypto_aead/aegis128l/libsodium_la-aegis128l_soft.lo \
+	crypto_aead/aegis256/libsodium_la-aead_aegis256.lo \
+	crypto_aead/aegis256/libsodium_la-aegis256_soft.lo \
 	crypto_aead/aes256gcm/libsodium_la-aead_aes256gcm.lo \
 	crypto_aead/chacha20poly1305/libsodium_la-aead_chacha20poly1305.lo \
 	crypto_aead/xchacha20poly1305/libsodium_la-aead_xchacha20poly1305.lo \
@@ -444,6 +466,7 @@ am_libsodium_la_OBJECTS =  \
 	crypto_core/hsalsa20/ref2/libsodium_la-core_hsalsa20_ref2.lo \
 	crypto_core/hsalsa20/libsodium_la-core_hsalsa20.lo \
 	crypto_core/salsa/ref/libsodium_la-core_salsa_ref.lo \
+	crypto_core/softaes/libsodium_la-softaes.lo \
 	crypto_generichash/libsodium_la-crypto_generichash.lo \
 	crypto_generichash/blake2b/libsodium_la-generichash_blake2.lo \
 	crypto_generichash/blake2b/ref/libsodium_la-blake2b-compress-ref.lo \
@@ -547,7 +570,15 @@ am__v_at_1 =
 DEFAULT_INCLUDES = -I.@am__isrc@
 depcomp = $(SHELL) $(top_srcdir)/build-aux/depcomp
 am__maybe_remake_depfiles = depfiles
-am__depfiles_remade = crypto_aead/aes256gcm/$(DEPDIR)/libsodium_la-aead_aes256gcm.Plo \
+am__depfiles_remade = crypto_aead/aegis128l/$(DEPDIR)/libaesni_la-aegis128l_aesni.Plo \
+	crypto_aead/aegis128l/$(DEPDIR)/libarmcrypto_la-aegis128l_armcrypto.Plo \
+	crypto_aead/aegis128l/$(DEPDIR)/libsodium_la-aead_aegis128l.Plo \
+	crypto_aead/aegis128l/$(DEPDIR)/libsodium_la-aegis128l_soft.Plo \
+	crypto_aead/aegis256/$(DEPDIR)/libaesni_la-aegis256_aesni.Plo \
+	crypto_aead/aegis256/$(DEPDIR)/libarmcrypto_la-aegis256_armcrypto.Plo \
+	crypto_aead/aegis256/$(DEPDIR)/libsodium_la-aead_aegis256.Plo \
+	crypto_aead/aegis256/$(DEPDIR)/libsodium_la-aegis256_soft.Plo \
+	crypto_aead/aes256gcm/$(DEPDIR)/libsodium_la-aead_aes256gcm.Plo \
 	crypto_aead/aes256gcm/aesni/$(DEPDIR)/libaesni_la-aead_aes256gcm_aesni.Plo \
 	crypto_aead/aes256gcm/armcrypto/$(DEPDIR)/libarmcrypto_la-aead_aes256gcm_armcrypto.Plo \
 	crypto_aead/chacha20poly1305/$(DEPDIR)/libsodium_la-aead_chacha20poly1305.Plo \
@@ -569,6 +600,7 @@ am__depfiles_remade = crypto_aead/aes256gcm/$(DEPDIR)/libsodium_la-aead_aes256gc
 	crypto_core/hsalsa20/$(DEPDIR)/libsodium_la-core_hsalsa20.Plo \
 	crypto_core/hsalsa20/ref2/$(DEPDIR)/libsodium_la-core_hsalsa20_ref2.Plo \
 	crypto_core/salsa/ref/$(DEPDIR)/libsodium_la-core_salsa_ref.Plo \
+	crypto_core/softaes/$(DEPDIR)/libsodium_la-softaes.Plo \
 	crypto_generichash/$(DEPDIR)/libsodium_la-crypto_generichash.Plo \
 	crypto_generichash/blake2b/$(DEPDIR)/libsodium_la-generichash_blake2.Plo \
 	crypto_generichash/blake2b/ref/$(DEPDIR)/libavx2_la-blake2b-compress-avx2.Plo \
@@ -939,7 +971,17 @@ valgrind_tools = @valgrind_tools@
 lib_LTLIBRARIES = \
 	libsodium.la
 
-libsodium_la_SOURCES = crypto_aead/aes256gcm/aead_aes256gcm.c \
+libsodium_la_SOURCES = crypto_aead/aegis128l/aead_aegis128l.c \
+	crypto_aead/aegis128l/aegis128l_common.h \
+	crypto_aead/aegis128l/aegis128l_soft.c \
+	crypto_aead/aegis128l/aegis128l_soft.h \
+	crypto_aead/aegis128l/implementations.h \
+	crypto_aead/aegis256/aead_aegis256.c \
+	crypto_aead/aegis256/aegis256_common.h \
+	crypto_aead/aegis256/aegis256_soft.c \
+	crypto_aead/aegis256/aegis256_soft.h \
+	crypto_aead/aegis256/implementations.h \
+	crypto_aead/aes256gcm/aead_aes256gcm.c \
 	crypto_aead/chacha20poly1305/aead_chacha20poly1305.c \
 	crypto_aead/xchacha20poly1305/aead_xchacha20poly1305.c \
 	crypto_auth/crypto_auth.c \
@@ -954,6 +996,7 @@ libsodium_la_SOURCES = crypto_aead/aes256gcm/aead_aes256gcm.c \
 	crypto_core/hsalsa20/ref2/core_hsalsa20_ref2.c \
 	crypto_core/hsalsa20/core_hsalsa20.c \
 	crypto_core/salsa/ref/core_salsa_ref.c \
+	crypto_core/softaes/softaes.c \
 	crypto_generichash/crypto_generichash.c \
 	crypto_generichash/blake2b/generichash_blake2.c \
 	crypto_generichash/blake2b/ref/blake2.h \
@@ -1019,7 +1062,8 @@ libsodium_la_SOURCES = crypto_aead/aes256gcm/aead_aes256gcm.c \
 	include/sodium/private/ed25519_ref10.h \
 	include/sodium/private/implementations.h \
 	include/sodium/private/mutex.h \
-	include/sodium/private/sse2_64_32.h randombytes/randombytes.c \
+	include/sodium/private/sse2_64_32.h \
+	include/sodium/private/softaes.h randombytes/randombytes.c \
 	sodium/codecs.c sodium/core.c sodium/runtime.c sodium/utils.c \
 	sodium/version.c $(am__append_1) $(am__append_2) \
 	$(am__append_3) $(am__append_4) $(am__append_5) \
@@ -1063,6 +1107,10 @@ libarmcrypto_la_CPPFLAGS = $(libsodium_la_CPPFLAGS) \
 	@CFLAGS_ARMCRYPTO@
 
 libarmcrypto_la_SOURCES = \
+	crypto_aead/aegis128l/aegis128l_armcrypto.c \
+	crypto_aead/aegis128l/aegis128l_armcrypto.h \
+	crypto_aead/aegis256/aegis256_armcrypto.c \
+	crypto_aead/aegis256/aegis256_armcrypto.h \
 	crypto_aead/aes256gcm/armcrypto/aead_aes256gcm_armcrypto.c
 
 libaesni_la_LDFLAGS = $(libsodium_la_LDFLAGS)
@@ -1070,6 +1118,10 @@ libaesni_la_CPPFLAGS = $(libsodium_la_CPPFLAGS) \
 	@CFLAGS_SSE2@ @CFLAGS_SSSE3@ @CFLAGS_AVX@ @CFLAGS_AESNI@ @CFLAGS_PCLMUL@
 
 libaesni_la_SOURCES = \
+	crypto_aead/aegis128l/aegis128l_aesni.c \
+	crypto_aead/aegis128l/aegis128l_aesni.h \
+	crypto_aead/aegis256/aegis256_aesni.c \
+	crypto_aead/aegis256/aegis256_aesni.h \
 	crypto_aead/aes256gcm/aesni/aead_aes256gcm_aesni.c
 
 libsse2_la_LDFLAGS = $(libsodium_la_LDFLAGS)
@@ -1208,6 +1260,24 @@ clean-noinstLTLIBRARIES:
 	  echo rm -f $${locs}; \
 	  rm -f $${locs}; \
 	}
+crypto_aead/aegis128l/$(am__dirstamp):
+	@$(MKDIR_P) crypto_aead/aegis128l
+	@: > crypto_aead/aegis128l/$(am__dirstamp)
+crypto_aead/aegis128l/$(DEPDIR)/$(am__dirstamp):
+	@$(MKDIR_P) crypto_aead/aegis128l/$(DEPDIR)
+	@: > crypto_aead/aegis128l/$(DEPDIR)/$(am__dirstamp)
+crypto_aead/aegis128l/libaesni_la-aegis128l_aesni.lo:  \
+	crypto_aead/aegis128l/$(am__dirstamp) \
+	crypto_aead/aegis128l/$(DEPDIR)/$(am__dirstamp)
+crypto_aead/aegis256/$(am__dirstamp):
+	@$(MKDIR_P) crypto_aead/aegis256
+	@: > crypto_aead/aegis256/$(am__dirstamp)
+crypto_aead/aegis256/$(DEPDIR)/$(am__dirstamp):
+	@$(MKDIR_P) crypto_aead/aegis256/$(DEPDIR)
+	@: > crypto_aead/aegis256/$(DEPDIR)/$(am__dirstamp)
+crypto_aead/aegis256/libaesni_la-aegis256_aesni.lo:  \
+	crypto_aead/aegis256/$(am__dirstamp) \
+	crypto_aead/aegis256/$(DEPDIR)/$(am__dirstamp)
 crypto_aead/aes256gcm/aesni/$(am__dirstamp):
 	@$(MKDIR_P) crypto_aead/aes256gcm/aesni
 	@: > crypto_aead/aes256gcm/aesni/$(am__dirstamp)
@@ -1220,6 +1290,12 @@ crypto_aead/aes256gcm/aesni/libaesni_la-aead_aes256gcm_aesni.lo:  \
 
 libaesni.la: $(libaesni_la_OBJECTS) $(libaesni_la_DEPENDENCIES) $(EXTRA_libaesni_la_DEPENDENCIES) 
 	$(AM_V_CCLD)$(libaesni_la_LINK)  $(libaesni_la_OBJECTS) $(libaesni_la_LIBADD) $(LIBS)
+crypto_aead/aegis128l/libarmcrypto_la-aegis128l_armcrypto.lo:  \
+	crypto_aead/aegis128l/$(am__dirstamp) \
+	crypto_aead/aegis128l/$(DEPDIR)/$(am__dirstamp)
+crypto_aead/aegis256/libarmcrypto_la-aegis256_armcrypto.lo:  \
+	crypto_aead/aegis256/$(am__dirstamp) \
+	crypto_aead/aegis256/$(DEPDIR)/$(am__dirstamp)
 crypto_aead/aes256gcm/armcrypto/$(am__dirstamp):
 	@$(MKDIR_P) crypto_aead/aes256gcm/armcrypto
 	@: > crypto_aead/aes256gcm/armcrypto/$(am__dirstamp)
@@ -1289,6 +1365,18 @@ randombytes/internal/librdrand_la-randombytes_internal_random.lo:  \
 
 librdrand.la: $(librdrand_la_OBJECTS) $(librdrand_la_DEPENDENCIES) $(EXTRA_librdrand_la_DEPENDENCIES) 
 	$(AM_V_CCLD)$(librdrand_la_LINK) $(am_librdrand_la_rpath) $(librdrand_la_OBJECTS) $(librdrand_la_LIBADD) $(LIBS)
+crypto_aead/aegis128l/libsodium_la-aead_aegis128l.lo:  \
+	crypto_aead/aegis128l/$(am__dirstamp) \
+	crypto_aead/aegis128l/$(DEPDIR)/$(am__dirstamp)
+crypto_aead/aegis128l/libsodium_la-aegis128l_soft.lo:  \
+	crypto_aead/aegis128l/$(am__dirstamp) \
+	crypto_aead/aegis128l/$(DEPDIR)/$(am__dirstamp)
+crypto_aead/aegis256/libsodium_la-aead_aegis256.lo:  \
+	crypto_aead/aegis256/$(am__dirstamp) \
+	crypto_aead/aegis256/$(DEPDIR)/$(am__dirstamp)
+crypto_aead/aegis256/libsodium_la-aegis256_soft.lo:  \
+	crypto_aead/aegis256/$(am__dirstamp) \
+	crypto_aead/aegis256/$(DEPDIR)/$(am__dirstamp)
 crypto_aead/aes256gcm/$(am__dirstamp):
 	@$(MKDIR_P) crypto_aead/aes256gcm
 	@: > crypto_aead/aes256gcm/$(am__dirstamp)
@@ -1419,6 +1507,15 @@ crypto_core/salsa/ref/$(DEPDIR)/$(am__dirstamp):
 crypto_core/salsa/ref/libsodium_la-core_salsa_ref.lo:  \
 	crypto_core/salsa/ref/$(am__dirstamp) \
 	crypto_core/salsa/ref/$(DEPDIR)/$(am__dirstamp)
+crypto_core/softaes/$(am__dirstamp):
+	@$(MKDIR_P) crypto_core/softaes
+	@: > crypto_core/softaes/$(am__dirstamp)
+crypto_core/softaes/$(DEPDIR)/$(am__dirstamp):
+	@$(MKDIR_P) crypto_core/softaes/$(DEPDIR)
+	@: > crypto_core/softaes/$(DEPDIR)/$(am__dirstamp)
+crypto_core/softaes/libsodium_la-softaes.lo:  \
+	crypto_core/softaes/$(am__dirstamp) \
+	crypto_core/softaes/$(DEPDIR)/$(am__dirstamp)
 crypto_generichash/$(am__dirstamp):
 	@$(MKDIR_P) crypto_generichash
 	@: > crypto_generichash/$(am__dirstamp)
@@ -2005,6 +2102,10 @@ libssse3.la: $(libssse3_la_OBJECTS) $(libssse3_la_DEPENDENCIES) $(EXTRA_libssse3
 
 mostlyclean-compile:
 	-rm -f *.$(OBJEXT)
+	-rm -f crypto_aead/aegis128l/*.$(OBJEXT)
+	-rm -f crypto_aead/aegis128l/*.lo
+	-rm -f crypto_aead/aegis256/*.$(OBJEXT)
+	-rm -f crypto_aead/aegis256/*.lo
 	-rm -f crypto_aead/aes256gcm/*.$(OBJEXT)
 	-rm -f crypto_aead/aes256gcm/*.lo
 	-rm -f crypto_aead/aes256gcm/aesni/*.$(OBJEXT)
@@ -2041,6 +2142,8 @@ mostlyclean-compile:
 	-rm -f crypto_core/hsalsa20/ref2/*.lo
 	-rm -f crypto_core/salsa/ref/*.$(OBJEXT)
 	-rm -f crypto_core/salsa/ref/*.lo
+	-rm -f crypto_core/softaes/*.$(OBJEXT)
+	-rm -f crypto_core/softaes/*.lo
 	-rm -f crypto_generichash/*.$(OBJEXT)
 	-rm -f crypto_generichash/*.lo
 	-rm -f crypto_generichash/blake2b/*.$(OBJEXT)
@@ -2157,6 +2260,14 @@ mostlyclean-compile:
 distclean-compile:
 	-rm -f *.tab.c
 
+@AMDEP_TRUE@@am__include@ @am__quote@crypto_aead/aegis128l/$(DEPDIR)/libaesni_la-aegis128l_aesni.Plo@am__quote@ # am--include-marker
+@AMDEP_TRUE@@am__include@ @am__quote@crypto_aead/aegis128l/$(DEPDIR)/libarmcrypto_la-aegis128l_armcrypto.Plo@am__quote@ # am--include-marker
+@AMDEP_TRUE@@am__include@ @am__quote@crypto_aead/aegis128l/$(DEPDIR)/libsodium_la-aead_aegis128l.Plo@am__quote@ # am--include-marker
+@AMDEP_TRUE@@am__include@ @am__quote@crypto_aead/aegis128l/$(DEPDIR)/libsodium_la-aegis128l_soft.Plo@am__quote@ # am--include-marker
+@AMDEP_TRUE@@am__include@ @am__quote@crypto_aead/aegis256/$(DEPDIR)/libaesni_la-aegis256_aesni.Plo@am__quote@ # am--include-marker
+@AMDEP_TRUE@@am__include@ @am__quote@crypto_aead/aegis256/$(DEPDIR)/libarmcrypto_la-aegis256_armcrypto.Plo@am__quote@ # am--include-marker
+@AMDEP_TRUE@@am__include@ @am__quote@crypto_aead/aegis256/$(DEPDIR)/libsodium_la-aead_aegis256.Plo@am__quote@ # am--include-marker
+@AMDEP_TRUE@@am__include@ @am__quote@crypto_aead/aegis256/$(DEPDIR)/libsodium_la-aegis256_soft.Plo@am__quote@ # am--include-marker
 @AMDEP_TRUE@@am__include@ @am__quote@crypto_aead/aes256gcm/$(DEPDIR)/libsodium_la-aead_aes256gcm.Plo@am__quote@ # am--include-marker
 @AMDEP_TRUE@@am__include@ @am__quote@crypto_aead/aes256gcm/aesni/$(DEPDIR)/libaesni_la-aead_aes256gcm_aesni.Plo@am__quote@ # am--include-marker
 @AMDEP_TRUE@@am__include@ @am__quote@crypto_aead/aes256gcm/armcrypto/$(DEPDIR)/libarmcrypto_la-aead_aes256gcm_armcrypto.Plo@am__quote@ # am--include-marker
@@ -2179,6 +2290,7 @@ distclean-compile:
 @AMDEP_TRUE@@am__include@ @am__quote@crypto_core/hsalsa20/$(DEPDIR)/libsodium_la-core_hsalsa20.Plo@am__quote@ # am--include-marker
 @AMDEP_TRUE@@am__include@ @am__quote@crypto_core/hsalsa20/ref2/$(DEPDIR)/libsodium_la-core_hsalsa20_ref2.Plo@am__quote@ # am--include-marker
 @AMDEP_TRUE@@am__include@ @am__quote@crypto_core/salsa/ref/$(DEPDIR)/libsodium_la-core_salsa_ref.Plo@am__quote@ # am--include-marker
+@AMDEP_TRUE@@am__include@ @am__quote@crypto_core/softaes/$(DEPDIR)/libsodium_la-softaes.Plo@am__quote@ # am--include-marker
 @AMDEP_TRUE@@am__include@ @am__quote@crypto_generichash/$(DEPDIR)/libsodium_la-crypto_generichash.Plo@am__quote@ # am--include-marker
 @AMDEP_TRUE@@am__include@ @am__quote@crypto_generichash/blake2b/$(DEPDIR)/libsodium_la-generichash_blake2.Plo@am__quote@ # am--include-marker
 @AMDEP_TRUE@@am__include@ @am__quote@crypto_generichash/blake2b/ref/$(DEPDIR)/libavx2_la-blake2b-compress-avx2.Plo@am__quote@ # am--include-marker
@@ -2338,12 +2450,40 @@ crypto_scalarmult/curve25519/sandy2x/libsodium_la-sandy2x.lo: crypto_scalarmult/
 @AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
 @am__fastdepCC_FALSE@	$(AM_V_CC@am__nodep@)$(LTCOMPILE) -c -o $@ $<
 
+crypto_aead/aegis128l/libaesni_la-aegis128l_aesni.lo: crypto_aead/aegis128l/aegis128l_aesni.c
+@am__fastdepCC_TRUE@	$(AM_V_CC)$(LIBTOOL) $(AM_V_lt) --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libaesni_la_CPPFLAGS) $(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS) -MT crypto_aead/aegis128l/libaesni_la-aegis128l_aesni.lo -MD -MP -MF crypto_aead/aegis128l/$(DEPDIR)/libaesni_la-aegis128l_aesni.Tpo -c -o crypto_aead/aegis128l/libaesni_la-aegis128l_aesni.lo `test -f 'crypto_aead/aegis128l/aegis128l_aesni.c' || echo '$(srcdir)/'`crypto_aead/aegis128l/aegis128l_aesni.c
+@am__fastdepCC_TRUE@	$(AM_V_at)$(am__mv) crypto_aead/aegis128l/$(DEPDIR)/libaesni_la-aegis128l_aesni.Tpo crypto_aead/aegis128l/$(DEPDIR)/libaesni_la-aegis128l_aesni.Plo
+@AMDEP_TRUE@@am__fastdepCC_FALSE@	$(AM_V_CC)source='crypto_aead/aegis128l/aegis128l_aesni.c' object='crypto_aead/aegis128l/libaesni_la-aegis128l_aesni.lo' libtool=yes @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCC_FALSE@	$(AM_V_CC@am__nodep@)$(LIBTOOL) $(AM_V_lt) --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libaesni_la_CPPFLAGS) $(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS) -c -o crypto_aead/aegis128l/libaesni_la-aegis128l_aesni.lo `test -f 'crypto_aead/aegis128l/aegis128l_aesni.c' || echo '$(srcdir)/'`crypto_aead/aegis128l/aegis128l_aesni.c
+
+crypto_aead/aegis256/libaesni_la-aegis256_aesni.lo: crypto_aead/aegis256/aegis256_aesni.c
+@am__fastdepCC_TRUE@	$(AM_V_CC)$(LIBTOOL) $(AM_V_lt) --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libaesni_la_CPPFLAGS) $(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS) -MT crypto_aead/aegis256/libaesni_la-aegis256_aesni.lo -MD -MP -MF crypto_aead/aegis256/$(DEPDIR)/libaesni_la-aegis256_aesni.Tpo -c -o crypto_aead/aegis256/libaesni_la-aegis256_aesni.lo `test -f 'crypto_aead/aegis256/aegis256_aesni.c' || echo '$(srcdir)/'`crypto_aead/aegis256/aegis256_aesni.c
+@am__fastdepCC_TRUE@	$(AM_V_at)$(am__mv) crypto_aead/aegis256/$(DEPDIR)/libaesni_la-aegis256_aesni.Tpo crypto_aead/aegis256/$(DEPDIR)/libaesni_la-aegis256_aesni.Plo
+@AMDEP_TRUE@@am__fastdepCC_FALSE@	$(AM_V_CC)source='crypto_aead/aegis256/aegis256_aesni.c' object='crypto_aead/aegis256/libaesni_la-aegis256_aesni.lo' libtool=yes @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCC_FALSE@	$(AM_V_CC@am__nodep@)$(LIBTOOL) $(AM_V_lt) --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libaesni_la_CPPFLAGS) $(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS) -c -o crypto_aead/aegis256/libaesni_la-aegis256_aesni.lo `test -f 'crypto_aead/aegis256/aegis256_aesni.c' || echo '$(srcdir)/'`crypto_aead/aegis256/aegis256_aesni.c
+
 crypto_aead/aes256gcm/aesni/libaesni_la-aead_aes256gcm_aesni.lo: crypto_aead/aes256gcm/aesni/aead_aes256gcm_aesni.c
 @am__fastdepCC_TRUE@	$(AM_V_CC)$(LIBTOOL) $(AM_V_lt) --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libaesni_la_CPPFLAGS) $(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS) -MT crypto_aead/aes256gcm/aesni/libaesni_la-aead_aes256gcm_aesni.lo -MD -MP -MF crypto_aead/aes256gcm/aesni/$(DEPDIR)/libaesni_la-aead_aes256gcm_aesni.Tpo -c -o crypto_aead/aes256gcm/aesni/libaesni_la-aead_aes256gcm_aesni.lo `test -f 'crypto_aead/aes256gcm/aesni/aead_aes256gcm_aesni.c' || echo '$(srcdir)/'`crypto_aead/aes256gcm/aesni/aead_aes256gcm_aesni.c
 @am__fastdepCC_TRUE@	$(AM_V_at)$(am__mv) crypto_aead/aes256gcm/aesni/$(DEPDIR)/libaesni_la-aead_aes256gcm_aesni.Tpo crypto_aead/aes256gcm/aesni/$(DEPDIR)/libaesni_la-aead_aes256gcm_aesni.Plo
 @AMDEP_TRUE@@am__fastdepCC_FALSE@	$(AM_V_CC)source='crypto_aead/aes256gcm/aesni/aead_aes256gcm_aesni.c' object='crypto_aead/aes256gcm/aesni/libaesni_la-aead_aes256gcm_aesni.lo' libtool=yes @AMDEPBACKSLASH@
 @AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
 @am__fastdepCC_FALSE@	$(AM_V_CC@am__nodep@)$(LIBTOOL) $(AM_V_lt) --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libaesni_la_CPPFLAGS) $(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS) -c -o crypto_aead/aes256gcm/aesni/libaesni_la-aead_aes256gcm_aesni.lo `test -f 'crypto_aead/aes256gcm/aesni/aead_aes256gcm_aesni.c' || echo '$(srcdir)/'`crypto_aead/aes256gcm/aesni/aead_aes256gcm_aesni.c
+
+crypto_aead/aegis128l/libarmcrypto_la-aegis128l_armcrypto.lo: crypto_aead/aegis128l/aegis128l_armcrypto.c
+@am__fastdepCC_TRUE@	$(AM_V_CC)$(LIBTOOL) $(AM_V_lt) --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libarmcrypto_la_CPPFLAGS) $(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS) -MT crypto_aead/aegis128l/libarmcrypto_la-aegis128l_armcrypto.lo -MD -MP -MF crypto_aead/aegis128l/$(DEPDIR)/libarmcrypto_la-aegis128l_armcrypto.Tpo -c -o crypto_aead/aegis128l/libarmcrypto_la-aegis128l_armcrypto.lo `test -f 'crypto_aead/aegis128l/aegis128l_armcrypto.c' || echo '$(srcdir)/'`crypto_aead/aegis128l/aegis128l_armcrypto.c
+@am__fastdepCC_TRUE@	$(AM_V_at)$(am__mv) crypto_aead/aegis128l/$(DEPDIR)/libarmcrypto_la-aegis128l_armcrypto.Tpo crypto_aead/aegis128l/$(DEPDIR)/libarmcrypto_la-aegis128l_armcrypto.Plo
+@AMDEP_TRUE@@am__fastdepCC_FALSE@	$(AM_V_CC)source='crypto_aead/aegis128l/aegis128l_armcrypto.c' object='crypto_aead/aegis128l/libarmcrypto_la-aegis128l_armcrypto.lo' libtool=yes @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCC_FALSE@	$(AM_V_CC@am__nodep@)$(LIBTOOL) $(AM_V_lt) --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libarmcrypto_la_CPPFLAGS) $(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS) -c -o crypto_aead/aegis128l/libarmcrypto_la-aegis128l_armcrypto.lo `test -f 'crypto_aead/aegis128l/aegis128l_armcrypto.c' || echo '$(srcdir)/'`crypto_aead/aegis128l/aegis128l_armcrypto.c
+
+crypto_aead/aegis256/libarmcrypto_la-aegis256_armcrypto.lo: crypto_aead/aegis256/aegis256_armcrypto.c
+@am__fastdepCC_TRUE@	$(AM_V_CC)$(LIBTOOL) $(AM_V_lt) --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libarmcrypto_la_CPPFLAGS) $(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS) -MT crypto_aead/aegis256/libarmcrypto_la-aegis256_armcrypto.lo -MD -MP -MF crypto_aead/aegis256/$(DEPDIR)/libarmcrypto_la-aegis256_armcrypto.Tpo -c -o crypto_aead/aegis256/libarmcrypto_la-aegis256_armcrypto.lo `test -f 'crypto_aead/aegis256/aegis256_armcrypto.c' || echo '$(srcdir)/'`crypto_aead/aegis256/aegis256_armcrypto.c
+@am__fastdepCC_TRUE@	$(AM_V_at)$(am__mv) crypto_aead/aegis256/$(DEPDIR)/libarmcrypto_la-aegis256_armcrypto.Tpo crypto_aead/aegis256/$(DEPDIR)/libarmcrypto_la-aegis256_armcrypto.Plo
+@AMDEP_TRUE@@am__fastdepCC_FALSE@	$(AM_V_CC)source='crypto_aead/aegis256/aegis256_armcrypto.c' object='crypto_aead/aegis256/libarmcrypto_la-aegis256_armcrypto.lo' libtool=yes @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCC_FALSE@	$(AM_V_CC@am__nodep@)$(LIBTOOL) $(AM_V_lt) --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libarmcrypto_la_CPPFLAGS) $(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS) -c -o crypto_aead/aegis256/libarmcrypto_la-aegis256_armcrypto.lo `test -f 'crypto_aead/aegis256/aegis256_armcrypto.c' || echo '$(srcdir)/'`crypto_aead/aegis256/aegis256_armcrypto.c
 
 crypto_aead/aes256gcm/armcrypto/libarmcrypto_la-aead_aes256gcm_armcrypto.lo: crypto_aead/aes256gcm/armcrypto/aead_aes256gcm_armcrypto.c
 @am__fastdepCC_TRUE@	$(AM_V_CC)$(LIBTOOL) $(AM_V_lt) --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libarmcrypto_la_CPPFLAGS) $(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS) -MT crypto_aead/aes256gcm/armcrypto/libarmcrypto_la-aead_aes256gcm_armcrypto.lo -MD -MP -MF crypto_aead/aes256gcm/armcrypto/$(DEPDIR)/libarmcrypto_la-aead_aes256gcm_armcrypto.Tpo -c -o crypto_aead/aes256gcm/armcrypto/libarmcrypto_la-aead_aes256gcm_armcrypto.lo `test -f 'crypto_aead/aes256gcm/armcrypto/aead_aes256gcm_armcrypto.c' || echo '$(srcdir)/'`crypto_aead/aes256gcm/armcrypto/aead_aes256gcm_armcrypto.c
@@ -2393,6 +2533,34 @@ randombytes/internal/librdrand_la-randombytes_internal_random.lo: randombytes/in
 @AMDEP_TRUE@@am__fastdepCC_FALSE@	$(AM_V_CC)source='randombytes/internal/randombytes_internal_random.c' object='randombytes/internal/librdrand_la-randombytes_internal_random.lo' libtool=yes @AMDEPBACKSLASH@
 @AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
 @am__fastdepCC_FALSE@	$(AM_V_CC@am__nodep@)$(LIBTOOL) $(AM_V_lt) --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(librdrand_la_CPPFLAGS) $(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS) -c -o randombytes/internal/librdrand_la-randombytes_internal_random.lo `test -f 'randombytes/internal/randombytes_internal_random.c' || echo '$(srcdir)/'`randombytes/internal/randombytes_internal_random.c
+
+crypto_aead/aegis128l/libsodium_la-aead_aegis128l.lo: crypto_aead/aegis128l/aead_aegis128l.c
+@am__fastdepCC_TRUE@	$(AM_V_CC)$(LIBTOOL) $(AM_V_lt) --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libsodium_la_CPPFLAGS) $(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS) -MT crypto_aead/aegis128l/libsodium_la-aead_aegis128l.lo -MD -MP -MF crypto_aead/aegis128l/$(DEPDIR)/libsodium_la-aead_aegis128l.Tpo -c -o crypto_aead/aegis128l/libsodium_la-aead_aegis128l.lo `test -f 'crypto_aead/aegis128l/aead_aegis128l.c' || echo '$(srcdir)/'`crypto_aead/aegis128l/aead_aegis128l.c
+@am__fastdepCC_TRUE@	$(AM_V_at)$(am__mv) crypto_aead/aegis128l/$(DEPDIR)/libsodium_la-aead_aegis128l.Tpo crypto_aead/aegis128l/$(DEPDIR)/libsodium_la-aead_aegis128l.Plo
+@AMDEP_TRUE@@am__fastdepCC_FALSE@	$(AM_V_CC)source='crypto_aead/aegis128l/aead_aegis128l.c' object='crypto_aead/aegis128l/libsodium_la-aead_aegis128l.lo' libtool=yes @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCC_FALSE@	$(AM_V_CC@am__nodep@)$(LIBTOOL) $(AM_V_lt) --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libsodium_la_CPPFLAGS) $(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS) -c -o crypto_aead/aegis128l/libsodium_la-aead_aegis128l.lo `test -f 'crypto_aead/aegis128l/aead_aegis128l.c' || echo '$(srcdir)/'`crypto_aead/aegis128l/aead_aegis128l.c
+
+crypto_aead/aegis128l/libsodium_la-aegis128l_soft.lo: crypto_aead/aegis128l/aegis128l_soft.c
+@am__fastdepCC_TRUE@	$(AM_V_CC)$(LIBTOOL) $(AM_V_lt) --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libsodium_la_CPPFLAGS) $(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS) -MT crypto_aead/aegis128l/libsodium_la-aegis128l_soft.lo -MD -MP -MF crypto_aead/aegis128l/$(DEPDIR)/libsodium_la-aegis128l_soft.Tpo -c -o crypto_aead/aegis128l/libsodium_la-aegis128l_soft.lo `test -f 'crypto_aead/aegis128l/aegis128l_soft.c' || echo '$(srcdir)/'`crypto_aead/aegis128l/aegis128l_soft.c
+@am__fastdepCC_TRUE@	$(AM_V_at)$(am__mv) crypto_aead/aegis128l/$(DEPDIR)/libsodium_la-aegis128l_soft.Tpo crypto_aead/aegis128l/$(DEPDIR)/libsodium_la-aegis128l_soft.Plo
+@AMDEP_TRUE@@am__fastdepCC_FALSE@	$(AM_V_CC)source='crypto_aead/aegis128l/aegis128l_soft.c' object='crypto_aead/aegis128l/libsodium_la-aegis128l_soft.lo' libtool=yes @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCC_FALSE@	$(AM_V_CC@am__nodep@)$(LIBTOOL) $(AM_V_lt) --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libsodium_la_CPPFLAGS) $(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS) -c -o crypto_aead/aegis128l/libsodium_la-aegis128l_soft.lo `test -f 'crypto_aead/aegis128l/aegis128l_soft.c' || echo '$(srcdir)/'`crypto_aead/aegis128l/aegis128l_soft.c
+
+crypto_aead/aegis256/libsodium_la-aead_aegis256.lo: crypto_aead/aegis256/aead_aegis256.c
+@am__fastdepCC_TRUE@	$(AM_V_CC)$(LIBTOOL) $(AM_V_lt) --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libsodium_la_CPPFLAGS) $(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS) -MT crypto_aead/aegis256/libsodium_la-aead_aegis256.lo -MD -MP -MF crypto_aead/aegis256/$(DEPDIR)/libsodium_la-aead_aegis256.Tpo -c -o crypto_aead/aegis256/libsodium_la-aead_aegis256.lo `test -f 'crypto_aead/aegis256/aead_aegis256.c' || echo '$(srcdir)/'`crypto_aead/aegis256/aead_aegis256.c
+@am__fastdepCC_TRUE@	$(AM_V_at)$(am__mv) crypto_aead/aegis256/$(DEPDIR)/libsodium_la-aead_aegis256.Tpo crypto_aead/aegis256/$(DEPDIR)/libsodium_la-aead_aegis256.Plo
+@AMDEP_TRUE@@am__fastdepCC_FALSE@	$(AM_V_CC)source='crypto_aead/aegis256/aead_aegis256.c' object='crypto_aead/aegis256/libsodium_la-aead_aegis256.lo' libtool=yes @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCC_FALSE@	$(AM_V_CC@am__nodep@)$(LIBTOOL) $(AM_V_lt) --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libsodium_la_CPPFLAGS) $(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS) -c -o crypto_aead/aegis256/libsodium_la-aead_aegis256.lo `test -f 'crypto_aead/aegis256/aead_aegis256.c' || echo '$(srcdir)/'`crypto_aead/aegis256/aead_aegis256.c
+
+crypto_aead/aegis256/libsodium_la-aegis256_soft.lo: crypto_aead/aegis256/aegis256_soft.c
+@am__fastdepCC_TRUE@	$(AM_V_CC)$(LIBTOOL) $(AM_V_lt) --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libsodium_la_CPPFLAGS) $(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS) -MT crypto_aead/aegis256/libsodium_la-aegis256_soft.lo -MD -MP -MF crypto_aead/aegis256/$(DEPDIR)/libsodium_la-aegis256_soft.Tpo -c -o crypto_aead/aegis256/libsodium_la-aegis256_soft.lo `test -f 'crypto_aead/aegis256/aegis256_soft.c' || echo '$(srcdir)/'`crypto_aead/aegis256/aegis256_soft.c
+@am__fastdepCC_TRUE@	$(AM_V_at)$(am__mv) crypto_aead/aegis256/$(DEPDIR)/libsodium_la-aegis256_soft.Tpo crypto_aead/aegis256/$(DEPDIR)/libsodium_la-aegis256_soft.Plo
+@AMDEP_TRUE@@am__fastdepCC_FALSE@	$(AM_V_CC)source='crypto_aead/aegis256/aegis256_soft.c' object='crypto_aead/aegis256/libsodium_la-aegis256_soft.lo' libtool=yes @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCC_FALSE@	$(AM_V_CC@am__nodep@)$(LIBTOOL) $(AM_V_lt) --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libsodium_la_CPPFLAGS) $(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS) -c -o crypto_aead/aegis256/libsodium_la-aegis256_soft.lo `test -f 'crypto_aead/aegis256/aegis256_soft.c' || echo '$(srcdir)/'`crypto_aead/aegis256/aegis256_soft.c
 
 crypto_aead/aes256gcm/libsodium_la-aead_aes256gcm.lo: crypto_aead/aes256gcm/aead_aes256gcm.c
 @am__fastdepCC_TRUE@	$(AM_V_CC)$(LIBTOOL) $(AM_V_lt) --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libsodium_la_CPPFLAGS) $(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS) -MT crypto_aead/aes256gcm/libsodium_la-aead_aes256gcm.lo -MD -MP -MF crypto_aead/aes256gcm/$(DEPDIR)/libsodium_la-aead_aes256gcm.Tpo -c -o crypto_aead/aes256gcm/libsodium_la-aead_aes256gcm.lo `test -f 'crypto_aead/aes256gcm/aead_aes256gcm.c' || echo '$(srcdir)/'`crypto_aead/aes256gcm/aead_aes256gcm.c
@@ -2505,6 +2673,13 @@ crypto_core/salsa/ref/libsodium_la-core_salsa_ref.lo: crypto_core/salsa/ref/core
 @AMDEP_TRUE@@am__fastdepCC_FALSE@	$(AM_V_CC)source='crypto_core/salsa/ref/core_salsa_ref.c' object='crypto_core/salsa/ref/libsodium_la-core_salsa_ref.lo' libtool=yes @AMDEPBACKSLASH@
 @AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
 @am__fastdepCC_FALSE@	$(AM_V_CC@am__nodep@)$(LIBTOOL) $(AM_V_lt) --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libsodium_la_CPPFLAGS) $(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS) -c -o crypto_core/salsa/ref/libsodium_la-core_salsa_ref.lo `test -f 'crypto_core/salsa/ref/core_salsa_ref.c' || echo '$(srcdir)/'`crypto_core/salsa/ref/core_salsa_ref.c
+
+crypto_core/softaes/libsodium_la-softaes.lo: crypto_core/softaes/softaes.c
+@am__fastdepCC_TRUE@	$(AM_V_CC)$(LIBTOOL) $(AM_V_lt) --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libsodium_la_CPPFLAGS) $(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS) -MT crypto_core/softaes/libsodium_la-softaes.lo -MD -MP -MF crypto_core/softaes/$(DEPDIR)/libsodium_la-softaes.Tpo -c -o crypto_core/softaes/libsodium_la-softaes.lo `test -f 'crypto_core/softaes/softaes.c' || echo '$(srcdir)/'`crypto_core/softaes/softaes.c
+@am__fastdepCC_TRUE@	$(AM_V_at)$(am__mv) crypto_core/softaes/$(DEPDIR)/libsodium_la-softaes.Tpo crypto_core/softaes/$(DEPDIR)/libsodium_la-softaes.Plo
+@AMDEP_TRUE@@am__fastdepCC_FALSE@	$(AM_V_CC)source='crypto_core/softaes/softaes.c' object='crypto_core/softaes/libsodium_la-softaes.lo' libtool=yes @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCC_FALSE@	$(AM_V_CC@am__nodep@)$(LIBTOOL) $(AM_V_lt) --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libsodium_la_CPPFLAGS) $(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS) -c -o crypto_core/softaes/libsodium_la-softaes.lo `test -f 'crypto_core/softaes/softaes.c' || echo '$(srcdir)/'`crypto_core/softaes/softaes.c
 
 crypto_generichash/libsodium_la-crypto_generichash.lo: crypto_generichash/crypto_generichash.c
 @am__fastdepCC_TRUE@	$(AM_V_CC)$(LIBTOOL) $(AM_V_lt) --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libsodium_la_CPPFLAGS) $(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS) -MT crypto_generichash/libsodium_la-crypto_generichash.lo -MD -MP -MF crypto_generichash/$(DEPDIR)/libsodium_la-crypto_generichash.Tpo -c -o crypto_generichash/libsodium_la-crypto_generichash.lo `test -f 'crypto_generichash/crypto_generichash.c' || echo '$(srcdir)/'`crypto_generichash/crypto_generichash.c
@@ -3113,6 +3288,8 @@ mostlyclean-libtool:
 
 clean-libtool:
 	-rm -rf .libs _libs
+	-rm -rf crypto_aead/aegis128l/.libs crypto_aead/aegis128l/_libs
+	-rm -rf crypto_aead/aegis256/.libs crypto_aead/aegis256/_libs
 	-rm -rf crypto_aead/aes256gcm/.libs crypto_aead/aes256gcm/_libs
 	-rm -rf crypto_aead/aes256gcm/aesni/.libs crypto_aead/aes256gcm/aesni/_libs
 	-rm -rf crypto_aead/aes256gcm/armcrypto/.libs crypto_aead/aes256gcm/armcrypto/_libs
@@ -3131,6 +3308,7 @@ clean-libtool:
 	-rm -rf crypto_core/hsalsa20/.libs crypto_core/hsalsa20/_libs
 	-rm -rf crypto_core/hsalsa20/ref2/.libs crypto_core/hsalsa20/ref2/_libs
 	-rm -rf crypto_core/salsa/ref/.libs crypto_core/salsa/ref/_libs
+	-rm -rf crypto_core/softaes/.libs crypto_core/softaes/_libs
 	-rm -rf crypto_generichash/.libs crypto_generichash/_libs
 	-rm -rf crypto_generichash/blake2b/.libs crypto_generichash/blake2b/_libs
 	-rm -rf crypto_generichash/blake2b/ref/.libs crypto_generichash/blake2b/ref/_libs
@@ -3400,6 +3578,10 @@ clean-generic:
 distclean-generic:
 	-test -z "$(CONFIG_CLEAN_FILES)" || rm -f $(CONFIG_CLEAN_FILES)
 	-test . = "$(srcdir)" || test -z "$(CONFIG_CLEAN_VPATH_FILES)" || rm -f $(CONFIG_CLEAN_VPATH_FILES)
+	-rm -f crypto_aead/aegis128l/$(DEPDIR)/$(am__dirstamp)
+	-rm -f crypto_aead/aegis128l/$(am__dirstamp)
+	-rm -f crypto_aead/aegis256/$(DEPDIR)/$(am__dirstamp)
+	-rm -f crypto_aead/aegis256/$(am__dirstamp)
 	-rm -f crypto_aead/aes256gcm/$(DEPDIR)/$(am__dirstamp)
 	-rm -f crypto_aead/aes256gcm/$(am__dirstamp)
 	-rm -f crypto_aead/aes256gcm/aesni/$(DEPDIR)/$(am__dirstamp)
@@ -3436,6 +3618,8 @@ distclean-generic:
 	-rm -f crypto_core/hsalsa20/ref2/$(am__dirstamp)
 	-rm -f crypto_core/salsa/ref/$(DEPDIR)/$(am__dirstamp)
 	-rm -f crypto_core/salsa/ref/$(am__dirstamp)
+	-rm -f crypto_core/softaes/$(DEPDIR)/$(am__dirstamp)
+	-rm -f crypto_core/softaes/$(am__dirstamp)
 	-rm -f crypto_generichash/$(DEPDIR)/$(am__dirstamp)
 	-rm -f crypto_generichash/$(am__dirstamp)
 	-rm -f crypto_generichash/blake2b/$(DEPDIR)/$(am__dirstamp)
@@ -3558,7 +3742,15 @@ clean-am: clean-generic clean-libLTLIBRARIES clean-libtool \
 	clean-noinstLTLIBRARIES mostlyclean-am
 
 distclean: distclean-recursive
-		-rm -f crypto_aead/aes256gcm/$(DEPDIR)/libsodium_la-aead_aes256gcm.Plo
+		-rm -f crypto_aead/aegis128l/$(DEPDIR)/libaesni_la-aegis128l_aesni.Plo
+	-rm -f crypto_aead/aegis128l/$(DEPDIR)/libarmcrypto_la-aegis128l_armcrypto.Plo
+	-rm -f crypto_aead/aegis128l/$(DEPDIR)/libsodium_la-aead_aegis128l.Plo
+	-rm -f crypto_aead/aegis128l/$(DEPDIR)/libsodium_la-aegis128l_soft.Plo
+	-rm -f crypto_aead/aegis256/$(DEPDIR)/libaesni_la-aegis256_aesni.Plo
+	-rm -f crypto_aead/aegis256/$(DEPDIR)/libarmcrypto_la-aegis256_armcrypto.Plo
+	-rm -f crypto_aead/aegis256/$(DEPDIR)/libsodium_la-aead_aegis256.Plo
+	-rm -f crypto_aead/aegis256/$(DEPDIR)/libsodium_la-aegis256_soft.Plo
+	-rm -f crypto_aead/aes256gcm/$(DEPDIR)/libsodium_la-aead_aes256gcm.Plo
 	-rm -f crypto_aead/aes256gcm/aesni/$(DEPDIR)/libaesni_la-aead_aes256gcm_aesni.Plo
 	-rm -f crypto_aead/aes256gcm/armcrypto/$(DEPDIR)/libarmcrypto_la-aead_aes256gcm_armcrypto.Plo
 	-rm -f crypto_aead/chacha20poly1305/$(DEPDIR)/libsodium_la-aead_chacha20poly1305.Plo
@@ -3580,6 +3772,7 @@ distclean: distclean-recursive
 	-rm -f crypto_core/hsalsa20/$(DEPDIR)/libsodium_la-core_hsalsa20.Plo
 	-rm -f crypto_core/hsalsa20/ref2/$(DEPDIR)/libsodium_la-core_hsalsa20_ref2.Plo
 	-rm -f crypto_core/salsa/ref/$(DEPDIR)/libsodium_la-core_salsa_ref.Plo
+	-rm -f crypto_core/softaes/$(DEPDIR)/libsodium_la-softaes.Plo
 	-rm -f crypto_generichash/$(DEPDIR)/libsodium_la-crypto_generichash.Plo
 	-rm -f crypto_generichash/blake2b/$(DEPDIR)/libsodium_la-generichash_blake2.Plo
 	-rm -f crypto_generichash/blake2b/ref/$(DEPDIR)/libavx2_la-blake2b-compress-avx2.Plo
@@ -3715,7 +3908,15 @@ install-ps-am:
 installcheck-am:
 
 maintainer-clean: maintainer-clean-recursive
-		-rm -f crypto_aead/aes256gcm/$(DEPDIR)/libsodium_la-aead_aes256gcm.Plo
+		-rm -f crypto_aead/aegis128l/$(DEPDIR)/libaesni_la-aegis128l_aesni.Plo
+	-rm -f crypto_aead/aegis128l/$(DEPDIR)/libarmcrypto_la-aegis128l_armcrypto.Plo
+	-rm -f crypto_aead/aegis128l/$(DEPDIR)/libsodium_la-aead_aegis128l.Plo
+	-rm -f crypto_aead/aegis128l/$(DEPDIR)/libsodium_la-aegis128l_soft.Plo
+	-rm -f crypto_aead/aegis256/$(DEPDIR)/libaesni_la-aegis256_aesni.Plo
+	-rm -f crypto_aead/aegis256/$(DEPDIR)/libarmcrypto_la-aegis256_armcrypto.Plo
+	-rm -f crypto_aead/aegis256/$(DEPDIR)/libsodium_la-aead_aegis256.Plo
+	-rm -f crypto_aead/aegis256/$(DEPDIR)/libsodium_la-aegis256_soft.Plo
+	-rm -f crypto_aead/aes256gcm/$(DEPDIR)/libsodium_la-aead_aes256gcm.Plo
 	-rm -f crypto_aead/aes256gcm/aesni/$(DEPDIR)/libaesni_la-aead_aes256gcm_aesni.Plo
 	-rm -f crypto_aead/aes256gcm/armcrypto/$(DEPDIR)/libarmcrypto_la-aead_aes256gcm_armcrypto.Plo
 	-rm -f crypto_aead/chacha20poly1305/$(DEPDIR)/libsodium_la-aead_chacha20poly1305.Plo
@@ -3737,6 +3938,7 @@ maintainer-clean: maintainer-clean-recursive
 	-rm -f crypto_core/hsalsa20/$(DEPDIR)/libsodium_la-core_hsalsa20.Plo
 	-rm -f crypto_core/hsalsa20/ref2/$(DEPDIR)/libsodium_la-core_hsalsa20_ref2.Plo
 	-rm -f crypto_core/salsa/ref/$(DEPDIR)/libsodium_la-core_salsa_ref.Plo
+	-rm -f crypto_core/softaes/$(DEPDIR)/libsodium_la-softaes.Plo
 	-rm -f crypto_generichash/$(DEPDIR)/libsodium_la-crypto_generichash.Plo
 	-rm -f crypto_generichash/blake2b/$(DEPDIR)/libsodium_la-generichash_blake2.Plo
 	-rm -f crypto_generichash/blake2b/ref/$(DEPDIR)/libavx2_la-blake2b-compress-avx2.Plo

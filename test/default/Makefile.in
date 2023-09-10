@@ -134,7 +134,8 @@ CONFIG_CLEAN_VPATH_FILES =
 @MINIMAL_FALSE@	scalarmult_ed25519$(EXEEXT) \
 @MINIMAL_FALSE@	scalarmult_ristretto255$(EXEEXT) \
 @MINIMAL_FALSE@	siphashx24$(EXEEXT) xchacha20$(EXEEXT)
-am__EXEEXT_3 = aead_aes256gcm$(EXEEXT) aead_aes256gcm2$(EXEEXT) \
+am__EXEEXT_3 = aead_aegis128l$(EXEEXT) aead_aegis256$(EXEEXT) \
+	aead_aes256gcm$(EXEEXT) aead_aes256gcm2$(EXEEXT) \
 	aead_chacha20poly1305$(EXEEXT) aead_chacha20poly13052$(EXEEXT) \
 	aead_xchacha20poly1305$(EXEEXT) auth$(EXEEXT) auth2$(EXEEXT) \
 	auth3$(EXEEXT) auth5$(EXEEXT) auth6$(EXEEXT) auth7$(EXEEXT) \
@@ -159,13 +160,19 @@ am__EXEEXT_3 = aead_aes256gcm$(EXEEXT) aead_aes256gcm2$(EXEEXT) \
 	sodium_version$(EXEEXT) stream$(EXEEXT) stream2$(EXEEXT) \
 	stream3$(EXEEXT) stream4$(EXEEXT) verify1$(EXEEXT) \
 	$(am__EXEEXT_1) $(am__EXEEXT_2)
-aead_aes256gcm_SOURCES = aead_aes256gcm.c
-aead_aes256gcm_OBJECTS = aead_aes256gcm.$(OBJEXT)
-aead_aes256gcm_DEPENDENCIES = $(TESTS_LDADD)
+aead_aegis128l_SOURCES = aead_aegis128l.c
+aead_aegis128l_OBJECTS = aead_aegis128l.$(OBJEXT)
+aead_aegis128l_DEPENDENCIES = $(TESTS_LDADD)
 AM_V_lt = $(am__v_lt_@AM_V@)
 am__v_lt_ = $(am__v_lt_@AM_DEFAULT_V@)
 am__v_lt_0 = --silent
 am__v_lt_1 = 
+aead_aegis256_SOURCES = aead_aegis256.c
+aead_aegis256_OBJECTS = aead_aegis256.$(OBJEXT)
+aead_aegis256_DEPENDENCIES = $(TESTS_LDADD)
+aead_aes256gcm_SOURCES = aead_aes256gcm.c
+aead_aes256gcm_OBJECTS = aead_aes256gcm.$(OBJEXT)
+aead_aes256gcm_DEPENDENCIES = $(TESTS_LDADD)
 aead_aes256gcm2_SOURCES = aead_aes256gcm2.c
 aead_aes256gcm2_OBJECTS = aead_aes256gcm2.$(OBJEXT)
 aead_aes256gcm2_DEPENDENCIES = $(TESTS_LDADD)
@@ -414,7 +421,8 @@ am__v_at_1 =
 DEFAULT_INCLUDES = -I.@am__isrc@
 depcomp = $(SHELL) $(top_srcdir)/build-aux/depcomp
 am__maybe_remake_depfiles = depfiles
-am__depfiles_remade = ./$(DEPDIR)/aead_aes256gcm.Po \
+am__depfiles_remade = ./$(DEPDIR)/aead_aegis128l.Po \
+	./$(DEPDIR)/aead_aegis256.Po ./$(DEPDIR)/aead_aes256gcm.Po \
 	./$(DEPDIR)/aead_aes256gcm2.Po \
 	./$(DEPDIR)/aead_chacha20poly1305.Po \
 	./$(DEPDIR)/aead_chacha20poly13052.Po \
@@ -472,7 +480,8 @@ AM_V_CCLD = $(am__v_CCLD_@AM_V@)
 am__v_CCLD_ = $(am__v_CCLD_@AM_DEFAULT_V@)
 am__v_CCLD_0 = @echo "  CCLD    " $@;
 am__v_CCLD_1 = 
-SOURCES = aead_aes256gcm.c aead_aes256gcm2.c aead_chacha20poly1305.c \
+SOURCES = aead_aegis128l.c aead_aegis256.c aead_aes256gcm.c \
+	aead_aes256gcm2.c aead_chacha20poly1305.c \
 	aead_chacha20poly13052.c aead_xchacha20poly1305.c auth.c \
 	auth2.c auth3.c auth5.c auth6.c auth7.c box.c box2.c box7.c \
 	box8.c box_easy.c box_easy2.c box_seal.c box_seed.c chacha20.c \
@@ -490,16 +499,16 @@ SOURCES = aead_aes256gcm.c aead_aes256gcm2.c aead_chacha20poly1305.c \
 	siphashx24.c sodium_core.c sodium_utils.c sodium_utils2.c \
 	sodium_utils3.c sodium_version.c stream.c stream2.c stream3.c \
 	stream4.c verify1.c xchacha20.c
-DIST_SOURCES = aead_aes256gcm.c aead_aes256gcm2.c \
-	aead_chacha20poly1305.c aead_chacha20poly13052.c \
-	aead_xchacha20poly1305.c auth.c auth2.c auth3.c auth5.c \
-	auth6.c auth7.c box.c box2.c box7.c box8.c box_easy.c \
-	box_easy2.c box_seal.c box_seed.c chacha20.c codecs.c core1.c \
-	core2.c core3.c core4.c core5.c core6.c core_ed25519.c \
-	core_ristretto255.c ed25519_convert.c generichash.c \
-	generichash2.c generichash3.c hash.c hash3.c kdf.c kdf_hkdf.c \
-	keygen.c kx.c metamorphic.c misuse.c onetimeauth.c \
-	onetimeauth2.c onetimeauth7.c pwhash_argon2i.c \
+DIST_SOURCES = aead_aegis128l.c aead_aegis256.c aead_aes256gcm.c \
+	aead_aes256gcm2.c aead_chacha20poly1305.c \
+	aead_chacha20poly13052.c aead_xchacha20poly1305.c auth.c \
+	auth2.c auth3.c auth5.c auth6.c auth7.c box.c box2.c box7.c \
+	box8.c box_easy.c box_easy2.c box_seal.c box_seed.c chacha20.c \
+	codecs.c core1.c core2.c core3.c core4.c core5.c core6.c \
+	core_ed25519.c core_ristretto255.c ed25519_convert.c \
+	generichash.c generichash2.c generichash3.c hash.c hash3.c \
+	kdf.c kdf_hkdf.c keygen.c kx.c metamorphic.c misuse.c \
+	onetimeauth.c onetimeauth2.c onetimeauth7.c pwhash_argon2i.c \
 	pwhash_argon2id.c pwhash_scrypt.c pwhash_scrypt_ll.c \
 	randombytes.c scalarmult.c scalarmult2.c scalarmult5.c \
 	scalarmult6.c scalarmult7.c scalarmult8.c scalarmult_ed25519.c \
@@ -915,6 +924,8 @@ EXTRA_DIST = \
 	wasi-test-wrapper.sh \
 	wintest.bat \
 	pre.js.inc \
+	aead_aegis128l.exp \
+	aead_aegis256.exp \
 	aead_aes256gcm.exp \
 	aead_aes256gcm2.exp \
 	aead_chacha20poly1305.exp \
@@ -995,6 +1006,8 @@ EXTRA_DIST = \
 	xchacha20.exp
 
 DISTCLEANFILES = \
+	aead_aegis128l.res \
+	aead_aegis256.res \
 	aead_aes256gcm.res \
 	aead_aes256gcm2.res \
 	aead_chacha20poly1305.res \
@@ -1084,22 +1097,26 @@ AM_CPPFLAGS = \
 	-I$(top_srcdir)/test/quirks
 
 AM_LDFLAGS = @TEST_LDFLAGS@
-TESTS_TARGETS = aead_aes256gcm aead_aes256gcm2 aead_chacha20poly1305 \
-	aead_chacha20poly13052 aead_xchacha20poly1305 auth auth2 auth3 \
-	auth5 auth6 auth7 box box2 box7 box8 box_easy box_easy2 \
-	box_seal box_seed chacha20 codecs core1 core2 core3 core4 \
-	core5 core6 ed25519_convert generichash generichash2 \
-	generichash3 hash hash3 kdf keygen kx metamorphic misuse \
-	onetimeauth onetimeauth2 onetimeauth7 pwhash_argon2i \
-	pwhash_argon2id randombytes scalarmult scalarmult2 scalarmult5 \
-	scalarmult6 scalarmult7 scalarmult8 secretbox secretbox2 \
-	secretbox7 secretbox8 secretbox_easy secretbox_easy2 \
-	secretstream_xchacha20poly1305 shorthash sign sodium_core \
-	sodium_utils sodium_version stream stream2 stream3 stream4 \
-	verify1 $(am__append_1) $(am__append_2)
+TESTS_TARGETS = aead_aegis128l aead_aegis256 aead_aes256gcm \
+	aead_aes256gcm2 aead_chacha20poly1305 aead_chacha20poly13052 \
+	aead_xchacha20poly1305 auth auth2 auth3 auth5 auth6 auth7 box \
+	box2 box7 box8 box_easy box_easy2 box_seal box_seed chacha20 \
+	codecs core1 core2 core3 core4 core5 core6 ed25519_convert \
+	generichash generichash2 generichash3 hash hash3 kdf keygen kx \
+	metamorphic misuse onetimeauth onetimeauth2 onetimeauth7 \
+	pwhash_argon2i pwhash_argon2id randombytes scalarmult \
+	scalarmult2 scalarmult5 scalarmult6 scalarmult7 scalarmult8 \
+	secretbox secretbox2 secretbox7 secretbox8 secretbox_easy \
+	secretbox_easy2 secretstream_xchacha20poly1305 shorthash sign \
+	sodium_core sodium_utils sodium_version stream stream2 stream3 \
+	stream4 verify1 $(am__append_1) $(am__append_2)
 TESTS_LDADD = \
 	${top_builddir}/src/libsodium/libsodium.la
 
+aead_aegis128l_SOURCE = cmptest.h aead_aegis128l.c
+aead_aegis128l_LDADD = $(TESTS_LDADD)
+aead_aegis256_SOURCE = cmptest.h aead_aegis256.c
+aead_aegis256_LDADD = $(TESTS_LDADD)
 aead_aes256gcm_SOURCE = cmptest.h aead_aes256gcm.c
 aead_aes256gcm_LDADD = $(TESTS_LDADD)
 aead_aes256gcm2_SOURCE = cmptest.h aead_aes256gcm2.c
@@ -1299,6 +1316,14 @@ clean-checkPROGRAMS:
 	list=`for p in $$list; do echo "$$p"; done | sed 's/$(EXEEXT)$$//'`; \
 	echo " rm -f" $$list; \
 	rm -f $$list
+
+aead_aegis128l$(EXEEXT): $(aead_aegis128l_OBJECTS) $(aead_aegis128l_DEPENDENCIES) $(EXTRA_aead_aegis128l_DEPENDENCIES) 
+	@rm -f aead_aegis128l$(EXEEXT)
+	$(AM_V_CCLD)$(LINK) $(aead_aegis128l_OBJECTS) $(aead_aegis128l_LDADD) $(LIBS)
+
+aead_aegis256$(EXEEXT): $(aead_aegis256_OBJECTS) $(aead_aegis256_DEPENDENCIES) $(EXTRA_aead_aegis256_DEPENDENCIES) 
+	@rm -f aead_aegis256$(EXEEXT)
+	$(AM_V_CCLD)$(LINK) $(aead_aegis256_OBJECTS) $(aead_aegis256_LDADD) $(LIBS)
 
 aead_aes256gcm$(EXEEXT): $(aead_aes256gcm_OBJECTS) $(aead_aes256gcm_DEPENDENCIES) $(EXTRA_aead_aes256gcm_DEPENDENCIES) 
 	@rm -f aead_aes256gcm$(EXEEXT)
@@ -1618,6 +1643,8 @@ mostlyclean-compile:
 distclean-compile:
 	-rm -f *.tab.c
 
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/aead_aegis128l.Po@am__quote@ # am--include-marker
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/aead_aegis256.Po@am__quote@ # am--include-marker
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/aead_aes256gcm.Po@am__quote@ # am--include-marker
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/aead_aes256gcm2.Po@am__quote@ # am--include-marker
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/aead_chacha20poly1305.Po@am__quote@ # am--include-marker
@@ -1926,6 +1953,20 @@ recheck: all $(check_PROGRAMS)
 	        am__force_recheck=am--force-recheck \
 	        TEST_LOGS="$$log_list"; \
 	exit $$?
+aead_aegis128l.log: aead_aegis128l$(EXEEXT)
+	@p='aead_aegis128l$(EXEEXT)'; \
+	b='aead_aegis128l'; \
+	$(am__check_pre) $(LOG_DRIVER) --test-name "$$f" \
+	--log-file $$b.log --trs-file $$b.trs \
+	$(am__common_driver_flags) $(AM_LOG_DRIVER_FLAGS) $(LOG_DRIVER_FLAGS) -- $(LOG_COMPILE) \
+	"$$tst" $(AM_TESTS_FD_REDIRECT)
+aead_aegis256.log: aead_aegis256$(EXEEXT)
+	@p='aead_aegis256$(EXEEXT)'; \
+	b='aead_aegis256'; \
+	$(am__check_pre) $(LOG_DRIVER) --test-name "$$f" \
+	--log-file $$b.log --trs-file $$b.trs \
+	$(am__common_driver_flags) $(AM_LOG_DRIVER_FLAGS) $(LOG_DRIVER_FLAGS) -- $(LOG_COMPILE) \
+	"$$tst" $(AM_TESTS_FD_REDIRECT)
 aead_aes256gcm.log: aead_aes256gcm$(EXEEXT)
 	@p='aead_aes256gcm$(EXEEXT)'; \
 	b='aead_aes256gcm'; \
@@ -2565,7 +2606,9 @@ clean-am: clean-checkPROGRAMS clean-generic clean-libtool \
 	mostlyclean-am
 
 distclean: distclean-am
-		-rm -f ./$(DEPDIR)/aead_aes256gcm.Po
+		-rm -f ./$(DEPDIR)/aead_aegis128l.Po
+	-rm -f ./$(DEPDIR)/aead_aegis256.Po
+	-rm -f ./$(DEPDIR)/aead_aes256gcm.Po
 	-rm -f ./$(DEPDIR)/aead_aes256gcm2.Po
 	-rm -f ./$(DEPDIR)/aead_chacha20poly1305.Po
 	-rm -f ./$(DEPDIR)/aead_chacha20poly13052.Po
@@ -2688,7 +2731,9 @@ install-ps-am:
 installcheck-am:
 
 maintainer-clean: maintainer-clean-am
-		-rm -f ./$(DEPDIR)/aead_aes256gcm.Po
+		-rm -f ./$(DEPDIR)/aead_aegis128l.Po
+	-rm -f ./$(DEPDIR)/aead_aegis256.Po
+	-rm -f ./$(DEPDIR)/aead_aes256gcm.Po
 	-rm -f ./$(DEPDIR)/aead_aes256gcm2.Po
 	-rm -f ./$(DEPDIR)/aead_chacha20poly1305.Po
 	-rm -f ./$(DEPDIR)/aead_chacha20poly13052.Po

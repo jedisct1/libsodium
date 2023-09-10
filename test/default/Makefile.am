@@ -5,6 +5,8 @@ EXTRA_DIST = \
 	wasi-test-wrapper.sh \
 	wintest.bat \
 	pre.js.inc \
+	aead_aegis128l.exp \
+	aead_aegis256.exp \
 	aead_aes256gcm.exp \
 	aead_aes256gcm2.exp \
 	aead_chacha20poly1305.exp \
@@ -85,6 +87,8 @@ EXTRA_DIST = \
 	xchacha20.exp
 
 DISTCLEANFILES = \
+	aead_aegis128l.res \
+	aead_aegis256.res \
 	aead_aes256gcm.res \
 	aead_aes256gcm2.res \
 	aead_chacha20poly1305.res \
@@ -176,6 +180,8 @@ AM_CPPFLAGS = \
 AM_LDFLAGS = @TEST_LDFLAGS@
 
 TESTS_TARGETS = \
+	aead_aegis128l \
+	aead_aegis256 \
 	aead_aes256gcm \
 	aead_aes256gcm2 \
 	aead_chacha20poly1305 \
@@ -256,6 +262,12 @@ TESTS = $(TESTS_TARGETS)
 
 TESTS_LDADD = \
 	${top_builddir}/src/libsodium/libsodium.la
+
+aead_aegis128l_SOURCE                 = cmptest.h aead_aegis128l.c
+aead_aegis128l_LDADD                  = $(TESTS_LDADD)
+
+aead_aegis256_SOURCE                  = cmptest.h aead_aegis256.c
+aead_aegis256_LDADD                   = $(TESTS_LDADD)
 
 aead_aes256gcm_SOURCE                 = cmptest.h aead_aes256gcm.c
 aead_aes256gcm_LDADD                  = $(TESTS_LDADD)

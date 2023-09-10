@@ -5,6 +5,8 @@
 #include "sodium/version.h"
 
 #include "sodium/core.h"
+#include "sodium/crypto_aead_aegis128l.h"
+#include "sodium/crypto_aead_aegis256.h"
 #include "sodium/crypto_aead_aes256gcm.h"
 #include "sodium/crypto_aead_chacha20poly1305.h"
 #include "sodium/crypto_aead_xchacha20poly1305.h"
@@ -14,8 +16,8 @@
 #include "sodium/crypto_auth_hmacsha512256.h"
 #include "sodium/crypto_box.h"
 #include "sodium/crypto_box_curve25519xsalsa20poly1305.h"
-#include "sodium/crypto_core_hsalsa20.h"
 #include "sodium/crypto_core_hchacha20.h"
+#include "sodium/crypto_core_hsalsa20.h"
 #include "sodium/crypto_core_salsa20.h"
 #include "sodium/crypto_core_salsa2012.h"
 #include "sodium/crypto_core_salsa208.h"
@@ -56,16 +58,16 @@
 #include "sodium/utils.h"
 
 #ifndef SODIUM_LIBRARY_MINIMAL
-# include "sodium/crypto_box_curve25519xchacha20poly1305.h"
-# include "sodium/crypto_core_ed25519.h"
-# include "sodium/crypto_core_ristretto255.h"
-# include "sodium/crypto_scalarmult_ed25519.h"
-# include "sodium/crypto_scalarmult_ristretto255.h"
-# include "sodium/crypto_secretbox_xchacha20poly1305.h"
-# include "sodium/crypto_pwhash_scryptsalsa208sha256.h"
-# include "sodium/crypto_stream_salsa2012.h"
-# include "sodium/crypto_stream_salsa208.h"
-# include "sodium/crypto_stream_xchacha20.h"
+#include "sodium/crypto_box_curve25519xchacha20poly1305.h"
+#include "sodium/crypto_core_ed25519.h"
+#include "sodium/crypto_core_ristretto255.h"
+#include "sodium/crypto_pwhash_scryptsalsa208sha256.h"
+#include "sodium/crypto_scalarmult_ed25519.h"
+#include "sodium/crypto_scalarmult_ristretto255.h"
+#include "sodium/crypto_secretbox_xchacha20poly1305.h"
+#include "sodium/crypto_stream_salsa2012.h"
+#include "sodium/crypto_stream_salsa208.h"
+#include "sodium/crypto_stream_xchacha20.h"
 #endif
 
 #endif
