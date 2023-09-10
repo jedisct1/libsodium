@@ -69,4 +69,11 @@ EXTRA_DIST = \
 	msvc/vs2019/libsodium/libsodium.xml \
 	msvc/vs2019/libsodium.import.props \
 	msvc/vs2019/libsodium.import.xml \
-	msvc/vs2019/libsodium.sln
+	msvc/vs2022/libsodium.sln \
+	msvc/vs2022/libsodium/libsodium.props \
+	msvc/vs2022/libsodium/libsodium.vcxproj \
+	msvc/vs2022/libsodium/libsodium.vcxproj.filters \
+	msvc/vs2022/libsodium/libsodium.xml \
+	msvc/vs2022/libsodium.import.props \
+	msvc/vs2022/libsodium.import.xml \
+	msvc/vs2022/libsodium.sln
