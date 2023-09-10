@@ -34,7 +34,7 @@ jobs:
       - uses: actions/checkout@v3
       - name: build
         run: |
-          zig build -Doptimize=ReleaseFast -Dtarget=x86_64-linux-gnu.2.17 -Dcpu=baseline
+          zig build -Doptimize=ReleaseFast -Dtarget=x86_64-linux-gnu.2.17 -Dcpu=sandybridge
       - name: tests
         run: cd zig-out/bin && ./run.sh
       - uses: actions/upload-artifact@v3
@@ -114,7 +114,7 @@ jobs:
       - uses: actions/checkout@v3
       - name: build
         run: |
-          zig build -Doptimize=ReleaseFast -Dtarget=x86_64-linux-musl -Dcpu=baseline
+          zig build -Doptimize=ReleaseFast -Dtarget=x86_64-linux-musl -Dcpu=sandybridge
       - name: tests
         run: |
           cd zig-out/bin && ./run.sh
