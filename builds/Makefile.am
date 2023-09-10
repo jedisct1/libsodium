@@ -23,6 +23,7 @@ EXTRA_DIST = \
 	msvc/properties/ReleaseLIB.props \
 	msvc/properties/ReleaseLTCG.props \
 	msvc/properties/ReleaseSEXE.props \
+	msvc/properties/ARM64.props \
 	msvc/properties/Win32.props \
 	msvc/properties/x64.props \
 	msvc/resource.h \
