@@ -77,6 +77,39 @@ for dir in dirs:
     fd = fd + "    </Filter>\r\n"
 
 
+def get_project_configurations(vs_version):
+    projconfig = ""
+    configs = [
+        "DebugDLL",
+        "ReleaseDLL",
+        "DebugLIB",
+        "ReleaseLIB",
+        "DebugLTCG",
+        "ReleaseLTCG",
+    ]
+    platforms = ["Win32", "x64"]
+    # add arm64 platform only for v142+ toolchain
+    if vs_version >= 142:
+        platforms.append("ARM64")
+    for config in configs:
+        for platform in platforms:
+            projconfig = (
+                projconfig
+                + '    <ProjectConfiguration Include="{}|{}">\r\n'.format(
+                    config, platform
+                )
+            )
+            projconfig = (
+                projconfig
+                + "      <Configuration>{}</Configuration>\r\n".format(config)
+            )
+            projconfig = projconfig + "      <Platform>{}</Platform>\r\n".format(
+                platform
+            )
+            projconfig = projconfig + "    </ProjectConfiguration>\r\n"
+    return projconfig
+
+
 def apply_template(tplfile, outfile, sbox):
     tpl = ""
     with open(tplfile, "rb") as fd:
@@ -109,6 +142,7 @@ apply_template(
 )
 
 sbox.update({"platform": "v140"})
+sbox.update({"configurations": get_project_configurations(140)})
 apply_template(sd + "/tl_libsodium.vcxproj.tpl", "libsodium.vcxproj", sbox)
 
 apply_template(
@@ -148,6 +182,7 @@ apply_template(
 )
 
 sbox.update({"platform": "v143"})
+sbox.update({"configurations": get_project_configurations(143)})
 apply_template(
     sd + "/libsodium.vcxproj.tpl",
     "builds/msvc/vs2022/libsodium/libsodium.vcxproj",
@@ -155,6 +190,7 @@ apply_template(
 )
 
 sbox.update({"platform": "v142"})
+sbox.update({"configurations": get_project_configurations(142)})
 apply_template(
     sd + "/libsodium.vcxproj.tpl",
     "builds/msvc/vs2019/libsodium/libsodium.vcxproj",
@@ -162,6 +198,7 @@ apply_template(
 )
 
 sbox.update({"platform": "v141"})
+sbox.update({"configurations": get_project_configurations(141)})
 apply_template(
     sd + "/libsodium.vcxproj.tpl",
     "builds/msvc/vs2017/libsodium/libsodium.vcxproj",
@@ -169,6 +206,7 @@ apply_template(
 )
 
 sbox.update({"platform": "v140"})
+sbox.update({"configurations": get_project_configurations(140)})
 apply_template(
     sd + "/libsodium.vcxproj.tpl",
     "builds/msvc/vs2015/libsodium/libsodium.vcxproj",
@@ -176,6 +214,7 @@ apply_template(
 )
 
 sbox.update({"platform": "v120"})
+sbox.update({"configurations": get_project_configurations(120)})
 apply_template(
     sd + "/libsodium.vcxproj.tpl",
     "builds/msvc/vs2013/libsodium/libsodium.vcxproj",
@@ -183,6 +222,7 @@ apply_template(
 )
 
 sbox.update({"platform": "v110"})
+sbox.update({"configurations": get_project_configurations(110)})
 apply_template(
     sd + "/libsodium.vcxproj.tpl",
     "builds/msvc/vs2012/libsodium/libsodium.vcxproj",
@@ -190,6 +230,7 @@ apply_template(
 )
 
 sbox.update({"platform": "v100"})
+sbox.update({"configurations": get_project_configurations(100)})
 apply_template(
     sd + "/libsodium.vcxproj.tpl",
     "builds/msvc/vs2010/libsodium/libsodium.vcxproj",
