@@ -250,9 +250,10 @@ xor_buf(unsigned char *out, const unsigned char *in, size_t n)
 
 # elif defined(_M_ARM64)
 
-#  ifdef __ARM_NEON
-#   define HAVE_ARMCRYPTO 1
+#  ifndef __ARM_NEON
+#   define __ARM_NEON 1
 #  endif
+#  define HAVE_ARMCRYPTO 1
 
 # endif /* _MSC_VER */
 
