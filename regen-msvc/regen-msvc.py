@@ -76,20 +76,6 @@ for dir in dirs:
     fd = fd + "      <UniqueIdentifier>{{{}}}</UniqueIdentifier>\r\n".format(uid)
     fd = fd + "    </Filter>\r\n"
 
-def get_project_configurations(vs_version):
-    projconfig = ""
-    configs = ["DebugDLL", "ReleaseDLL", "DebugLIB", "ReleaseLIB", "DebugLTCG", "ReleaseLTCG"]
-    platforms = ["Win32", "x64"]
-    # add arm64 platform only for v142+ toolchain
-    if vs_version >= 142:
-        platforms.append("ARM64")
-    for config in configs:
-        for platform in platforms:
-            projconfig = projconfig + '    <ProjectConfiguration Include="{}|{}">\r\n'.format(config, platform)
-            projconfig = projconfig + "      <Configuration>{}</Configuration>\r\n".format(config)
-            projconfig = projconfig + "      <Platform>{}</Platform>\r\n".format(platform)
-            projconfig = projconfig + "    </ProjectConfiguration>\r\n"
-    return projconfig
 
 def apply_template(tplfile, outfile, sbox):
     tpl = ""
@@ -169,14 +155,12 @@ apply_template(
 )
 
 sbox.update({"platform": "v142"})
-sbox.update({"ProjectConfigurations": get_project_configurations(142)})
 apply_template(
     sd + "/libsodium.vcxproj.tpl",
     "builds/msvc/vs2019/libsodium/libsodium.vcxproj",
     sbox,
 )
 
-sbox.update({"ProjectConfigurations": get_project_configurations(141)})
 sbox.update({"platform": "v141"})
 apply_template(
     sd + "/libsodium.vcxproj.tpl",
@@ -184,7 +168,6 @@ apply_template(
     sbox,
 )
 
-sbox.update({"ProjectConfigurations": get_project_configurations(140)})
 sbox.update({"platform": "v140"})
 apply_template(
     sd + "/libsodium.vcxproj.tpl",
@@ -192,7 +175,6 @@ apply_template(
     sbox,
 )
 
-sbox.update({"ProjectConfigurations": get_project_configurations(120)})
 sbox.update({"platform": "v120"})
 apply_template(
     sd + "/libsodium.vcxproj.tpl",
@@ -200,7 +182,6 @@ apply_template(
     sbox,
 )
 
-sbox.update({"ProjectConfigurations": get_project_configurations(110)})
 sbox.update({"platform": "v110"})
 apply_template(
     sd + "/libsodium.vcxproj.tpl",
@@ -208,7 +189,6 @@ apply_template(
     sbox,
 )
 
-sbox.update({"ProjectConfigurations": get_project_configurations(100)})
 sbox.update({"platform": "v100"})
 apply_template(
     sd + "/libsodium.vcxproj.tpl",

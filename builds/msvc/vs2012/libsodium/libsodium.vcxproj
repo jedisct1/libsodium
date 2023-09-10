@@ -10,48 +10,48 @@
       <Configuration>DebugDLL</Configuration>
       <Platform>Win32</Platform>
     </ProjectConfiguration>
-    <ProjectConfiguration Include="DebugDLL|x64">
-      <Configuration>DebugDLL</Configuration>
-      <Platform>x64</Platform>
-    </ProjectConfiguration>
     <ProjectConfiguration Include="ReleaseDLL|Win32">
       <Configuration>ReleaseDLL</Configuration>
       <Platform>Win32</Platform>
     </ProjectConfiguration>
+    <ProjectConfiguration Include="DebugDLL|x64">
+      <Configuration>DebugDLL</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
     <ProjectConfiguration Include="ReleaseDLL|x64">
       <Configuration>ReleaseDLL</Configuration>
-      <Platform>x64</Platform>
-    </ProjectConfiguration>
-    <ProjectConfiguration Include="DebugLIB|Win32">
-      <Configuration>DebugLIB</Configuration>
-      <Platform>Win32</Platform>
-    </ProjectConfiguration>
-    <ProjectConfiguration Include="DebugLIB|x64">
-      <Configuration>DebugLIB</Configuration>
-      <Platform>x64</Platform>
-    </ProjectConfiguration>
-    <ProjectConfiguration Include="ReleaseLIB|Win32">
-      <Configuration>ReleaseLIB</Configuration>
-      <Platform>Win32</Platform>
-    </ProjectConfiguration>
-    <ProjectConfiguration Include="ReleaseLIB|x64">
-      <Configuration>ReleaseLIB</Configuration>
       <Platform>x64</Platform>
     </ProjectConfiguration>
     <ProjectConfiguration Include="DebugLTCG|Win32">
       <Configuration>DebugLTCG</Configuration>
       <Platform>Win32</Platform>
     </ProjectConfiguration>
-    <ProjectConfiguration Include="DebugLTCG|x64">
-      <Configuration>DebugLTCG</Configuration>
-      <Platform>x64</Platform>
-    </ProjectConfiguration>
     <ProjectConfiguration Include="ReleaseLTCG|Win32">
       <Configuration>ReleaseLTCG</Configuration>
       <Platform>Win32</Platform>
     </ProjectConfiguration>
+    <ProjectConfiguration Include="DebugLTCG|x64">
+      <Configuration>DebugLTCG</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
     <ProjectConfiguration Include="ReleaseLTCG|x64">
       <Configuration>ReleaseLTCG</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="DebugLIB|Win32">
+      <Configuration>DebugLIB</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="ReleaseLIB|Win32">
+      <Configuration>ReleaseLIB</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="DebugLIB|x64">
+      <Configuration>DebugLIB</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="ReleaseLIB|x64">
+      <Configuration>ReleaseLIB</Configuration>
       <Platform>x64</Platform>
     </ProjectConfiguration>
   </ItemGroup>
@@ -169,9 +169,9 @@
     <ClCompile Include="..\..\..\..\src\libsodium\crypto_aead\aegis128l\aegis128l_aesni.c" />
     <ClCompile Include="..\..\..\..\src\libsodium\crypto_aead\aegis128l\aegis128l_armcrypto.c" />
     <ClCompile Include="..\..\..\..\src\libsodium\crypto_aead\aegis256\aead_aegis256.c" />
-    <ClCompile Include="..\..\..\..\src\libsodium\crypto_aead\aegis256\aesni\aead_aegis256_aesni.c" />
-    <ClCompile Include="..\..\..\..\src\libsodium\crypto_aead\aegis256\soft\aead_aegis256_soft.c" />
-    <ClCompile Include="..\..\..\..\src\libsodium\crypto_aead\aegis256\armcrypto\aead_aegis256_armcrypto.c" />
+    <ClCompile Include="..\..\..\..\src\libsodium\crypto_aead\aegis256\aegis256_soft.c" />
+    <ClCompile Include="..\..\..\..\src\libsodium\crypto_aead\aegis256\aegis256_armcrypto.c" />
+    <ClCompile Include="..\..\..\..\src\libsodium\crypto_aead\aegis256\aegis256_aesni.c" />
     <ClCompile Include="..\..\..\..\src\libsodium\crypto_aead\aes256gcm\aead_aes256gcm.c" />
     <ClCompile Include="..\..\..\..\src\libsodium\crypto_aead\aes256gcm\aesni\aead_aes256gcm_aesni.c" />
     <ClCompile Include="..\..\..\..\src\libsodium\crypto_aead\aes256gcm\armcrypto\aead_aes256gcm_armcrypto.c" />
@@ -320,10 +320,11 @@
     <ClInclude Include="..\..\..\..\src\libsodium\crypto_aead\aegis128l\aegis128l_soft.h" />
     <ClInclude Include="..\..\..\..\src\libsodium\crypto_aead\aegis128l\aegis128l_common.h" />
     <ClInclude Include="..\..\..\..\src\libsodium\crypto_aead\aegis128l\implementations.h" />
-    <ClInclude Include="..\..\..\..\src\libsodium\crypto_aead\aegis256\aead_aegis256.h" />
-    <ClInclude Include="..\..\..\..\src\libsodium\crypto_aead\aegis256\aesni\aead_aegis256_aesni.h" />
-    <ClInclude Include="..\..\..\..\src\libsodium\crypto_aead\aegis256\soft\aead_aegis256_soft.h" />
-    <ClInclude Include="..\..\..\..\src\libsodium\crypto_aead\aegis256\armcrypto\aead_aegis256_armcrypto.h" />
+    <ClInclude Include="..\..\..\..\src\libsodium\crypto_aead\aegis256\aegis256_aesni.h" />
+    <ClInclude Include="..\..\..\..\src\libsodium\crypto_aead\aegis256\aegis256_common.h" />
+    <ClInclude Include="..\..\..\..\src\libsodium\crypto_aead\aegis256\implementations.h" />
+    <ClInclude Include="..\..\..\..\src\libsodium\crypto_aead\aegis256\aegis256_armcrypto.h" />
+    <ClInclude Include="..\..\..\..\src\libsodium\crypto_aead\aegis256\aegis256_soft.h" />
     <ClInclude Include="..\..\..\..\src\libsodium\crypto_core\ed25519\core_h2c.h" />
     <ClInclude Include="..\..\..\..\src\libsodium\crypto_core\ed25519\ref10\fe_25_5\constants.h" />
     <ClInclude Include="..\..\..\..\src\libsodium\crypto_core\ed25519\ref10\fe_25_5\fe.h" />
