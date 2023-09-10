@@ -14,7 +14,7 @@ pub fn build(b: *std.build.Builder) !void {
     const src_path = "src/libsodium";
     const src_dir = try fs.Dir.openIterableDir(cwd, src_path, .{ .no_follow = true });
 
-    const target = b.standardTargetOptions(.{});
+    var target = b.standardTargetOptions(.{});
     const optimize = b.standardOptimizeOption(.{});
 
     const enable_benchmarks = b.option(bool, "enable_benchmarks", "Whether tests should be benchmarks.") orelse false;
@@ -27,6 +27,25 @@ pub fn build(b: *std.build.Builder) !void {
     if (build_tests) {
         build_static = true;
     }
+
+    switch (target.getCpuArch()) {
+        // Features we assume are always available because they won't affect
+        // code generation in files that don't use them.
+        .x86_64 => {
+            target.cpu_features_add.addFeature(@intFromEnum(Target.x86.Feature.aes));
+            target.cpu_features_add.addFeature(@intFromEnum(Target.x86.Feature.pclmul));
+            target.cpu_features_add.addFeature(@intFromEnum(Target.x86.Feature.rdrnd));
+        },
+        .aarch64, .aarch64_be => {
+            target.cpu_features_add.addFeature(@intFromEnum(Target.aarch64.Feature.crypto));
+            // ARM CPUs supported by Windows also support NEON.
+            if (target.isWindows()) {
+                target.cpu_features_add.addFeature(@intFromEnum(Target.aarch64.Feature.neon));
+            }
+        },
+        else => {},
+    }
+
     const static_lib = b.addStaticLibrary(.{
         .name = "sodium",
         .target = target,
