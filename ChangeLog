@@ -12,6 +12,7 @@ safer to use than AES-GCM. They can also be used as high-performance MACs.
 now available in the `crypto_kdf_hkdf_*()` namespace. It is implemented for
 the SHA-256 and SHA-512 hash functions.
  - The `osx.sh` build script was renamed to `macos.sh`.
+ - Support for android-mips was removed.
 
 * Version 1.0.18-stable
  - Visual Studio: support for Windows/ARM64 builds has been added.

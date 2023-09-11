@@ -17,7 +17,7 @@ symbols() {
       else
         eval "defined_${symbol}=no"
       fi
-    done < emscripten-symbols.def
+    done <emscripten-symbols.def
 
     /usr/bin/nm "$LIBSODIUM" |
       fgrep ' T _' |
@@ -34,11 +34,11 @@ symbols() {
         fi
       done
     }
-  } | \
-    sort | \
+  } |
+    sort |
     {
       out='"_malloc","_free"'
-      while read symbol ; do
+      while read symbol; do
         if [ ! -z "$out" ]; then
           out="${out},"
         fi
@@ -49,11 +49,11 @@ symbols() {
 }
 
 out=$(symbols standard)
-sed s/EXPORTED_FUNCTIONS_STANDARD=\'.*\'/EXPORTED_FUNCTIONS_STANDARD=\'${out}\'/ < emscripten.sh > emscripten.sh.tmp && \
+sed s/EXPORTED_FUNCTIONS_STANDARD=\'.*\'/EXPORTED_FUNCTIONS_STANDARD=\'${out}\'/ <emscripten.sh >emscripten.sh.tmp &&
   mv -f emscripten.sh.tmp emscripten.sh
 
 out=$(symbols sumo)
-sed s/EXPORTED_FUNCTIONS_SUMO=\'.*\'/EXPORTED_FUNCTIONS_SUMO=\'${out}\'/ < emscripten.sh > emscripten.sh.tmp && \
+sed s/EXPORTED_FUNCTIONS_SUMO=\'.*\'/EXPORTED_FUNCTIONS_SUMO=\'${out}\'/ <emscripten.sh >emscripten.sh.tmp &&
   mv -f emscripten.sh.tmp emscripten.sh
 
 chmod +x emscripten.sh
