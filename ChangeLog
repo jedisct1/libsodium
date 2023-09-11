@@ -1,3 +1,44 @@
+* Version 1.0.18-stable
+ - Visual Studio: support for Windows/ARM64 builds has been added.
+ - Visual Studio: AVX512 implementations are enabled on supported CPUs.
+ - Visual Studio: an MSVC 2022 solution was added.
+ - Apple XCFramework: support for VisionOS was added.
+ - Apple XCFranework: support for Catalyst was added.
+ - Apple XCFramework: building the simulators is now optional.
+ - iOS: bitcode is not generated any more, as it was deprecated by Apple.
+ - watchOS: support for arm64 was added.
+ - The Zig toolchain can now be used as a modern build system to replace
+autoconf/automake/libtool/make/ccache and the compiler. This allows faster
+compilation times, easy cross compilation, and static libraries optimized
+for any CPU.
+ - The Zig toolchain is now the only supported way to compile `libsodium`
+to WebAssembly/WASI.
+ - `libsodium` can now be added as a dependency to Zig projects.
+ - Memory fences were added to remove some gadgets that could be used
+alongside speculative loads.
+ - The AES-GCM implementation was completely rewritten. It is now faster,
+and also available on aarch64, including Windows/ARM64.
+ - Compatibility with CET instrumentation / IBT / Shadow Stack was added.
+ - Emscripten: the `crypto_pwhash_*()` functions have been removed from Sumo
+builds, as they reserve a substantial amount of JavaScript memory, even when
+not used.
+ - Benchmarks now use `CLOCK_MONOTONIC` if possible.
+ - WebAssembly: tests can now run using Bun, WasmEdge, Wazero, wasm3 and
+wasmer-js. Support for WAVM and Lucet have been removed, as these projects
+have reached EOL.
+ - .NET: the minimum supported macOS version is now 1.0.15; this matches
+Microsoft guidelines.
+ - .NET: all the packages are now built using Zig, on all platforms. This
+allows us to easily match Microsoft's requirements, including supported glibc
+versions. However, on x86_64, targets are expected to support at least the
+AVX instruction set.
+ - .NET: packages for ARM64 are now available.
+ - C23 `memset_explicit()` is now used, when available.
+ - Compilation now uses `-Ofast` or `-O3` instead of `-O2` by default.
+ - Portability improvements to help compile libsodium to modern game consoles.
+ - JavaScript: a default `unhandledRejection` handler is not set any more.
+ - Slightly faster 25519 operations.
+ - OpenBSD: leverage `MAP_CONCEAL`.
 
 * Version 1.0.18
  - Enterprise versions of Visual Studio are now supported.
@@ -28,6 +69,12 @@ with wasm-crypto.
 to be `NULL`.
  - The `-ftree-vectorize` and `-ftree-slp-vectorize` compiler switches are
 now used, if available, for optimized builds.
+
+* Version 1.0.17-stable
+ - AVX512 detection has been improved.
+ - A compilation option was added to enable retpoline support.
+ - `-ftls-model=global-dynamic` is now set, if available.
+ - Portability and documentation improvements.
 
 * Version 1.0.17
  - Bug fix: `sodium_pad()` didn't properly support block sizes >= 256 bytes.
