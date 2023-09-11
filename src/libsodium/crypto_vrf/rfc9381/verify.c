@@ -108,8 +108,8 @@ crypto_vrf_rfc9381_verify(unsigned char *output,
                               const unsigned char *msg, const unsigned long long msglen)
 {
     ge25519_p3 Y;
-    if (ge25519_has_small_order(pk) == 0 && ge25519_is_canonical(pk) == 1 &&
-    ge25519_frombytes(&Y, pk) == 0 && (vrf_verify(proof, msg, msglen, &Y) == 0)) {
+    if (ge25519_frombytes(&Y, pk) == 0 && ge25519_has_small_order(&Y) == 0 &&
+    ge25519_is_canonical(pk) == 1 && (vrf_verify(proof, msg, msglen, &Y) == 0)) {
         return crypto_vrf_rfc9381_proof_to_hash(output, proof);
     } else {
         return -1;
