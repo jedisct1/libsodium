@@ -9,24 +9,24 @@ dirs = set()
 tlv1 = ""
 for file in glob.iglob("src/libsodium/**/*.c", recursive=True):
     file = file.replace("/", "\\")
-    tlv1 = tlv1 + '    <ClCompile Include="{}" />\r\n'.format(file)
+    tlv1 = tlv1 + '    <ClCompile Include="..\\..\\{}" />\r\n'.format(file)
 
 tlv2 = ""
 for file in glob.iglob("src/libsodium/**/*.h", recursive=True):
     file = file.replace("/", "\\")
-    tlv2 = tlv2 + '    <ClInclude Include="{}" />\r\n'.format(file)
+    tlv2 = tlv2 + '    <ClInclude Include="..\\..\\{}" />\r\n'.format(file)
 
 tlf1 = ""
 for file in glob.iglob("src/libsodium/**/*.c", recursive=True):
     file = file.replace("/", "\\")
-    tlf1 = tlf1 + '    <ClCompile Include="{}">\r\n'.format(file)
+    tlf1 = tlf1 + '    <ClCompile Include="..\\..\\{}">\r\n'.format(file)
     tlf1 = tlf1 + "      <Filter>Source Files</Filter>\r\n"
     tlf1 = tlf1 + "    </ClCompile>\r\n"
 
 tlf2 = ""
 for file in glob.iglob("src/libsodium/**/*.h", recursive=True):
     file = file.replace("/", "\\")
-    tlf2 = tlf2 + '    <ClInclude Include="{}">\r\n'.format(file)
+    tlf2 = tlf2 + '    <ClInclude Include="..\\..\\{}">\r\n'.format(file)
     tlf2 = tlf2 + "      <Filter>Header Files</Filter>\r\n"
     tlf2 = tlf2 + "    </ClInclude>\r\n"
 
@@ -138,12 +138,14 @@ sbox = {
 sd = os.path.dirname(os.path.realpath(__file__))
 
 apply_template(
-    sd + "/tl_libsodium.vcxproj.filters.tpl", "libsodium.vcxproj.filters", sbox
+    sd + "/tl_libsodium.vcxproj.filters.tpl",
+    "ci/appveyor/libsodium.vcxproj.filters",
+    sbox,
 )
 
 sbox.update({"platform": "v140"})
 sbox.update({"configurations": get_project_configurations(140)})
-apply_template(sd + "/tl_libsodium.vcxproj.tpl", "libsodium.vcxproj", sbox)
+apply_template(sd + "/tl_libsodium.vcxproj.tpl", "ci/appveyor/libsodium.vcxproj", sbox)
 
 apply_template(
     sd + "/libsodium.vcxproj.filters.tpl",

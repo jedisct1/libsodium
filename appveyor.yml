@@ -20,5 +20,5 @@ init: msbuild /version
 
 build:
   parallel: true
-  project: libsodium.vcxproj
-  verbosity: minimal
+  project: ci/appveyor/libsodium.vcxproj
+  verbosity: normal

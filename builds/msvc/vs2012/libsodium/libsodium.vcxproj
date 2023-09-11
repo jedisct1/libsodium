@@ -68,16 +68,6 @@
     <Import Project="$(ProjectDir)$(ProjectName).props" />
   </ImportGroup>
   <ItemGroup>
-    <None Include="..\..\..\..\packaging\nuget\package.bat" />
-    <None Include="..\..\..\..\packaging\nuget\package.config" />
-    <None Include="..\..\..\..\packaging\nuget\package.gsl" />
-    <None Include="..\..\..\..\packaging\nuget\package.nuspec" />
-    <None Include="..\..\..\..\packaging\nuget\package.targets" />
-  </ItemGroup>
-  <ItemGroup>
-    <Xml Include="..\..\..\..\packaging\nuget\package.xml" />
-  </ItemGroup>
-  <ItemGroup>
     <ClCompile Include="..\..\..\..\src\libsodium\crypto_generichash\crypto_generichash.c" />
     <ClCompile Include="..\..\..\..\src\libsodium\crypto_generichash\blake2b\generichash_blake2.c" />
     <ClCompile Include="..\..\..\..\src\libsodium\crypto_generichash\blake2b\ref\blake2b-compress-ref.c" />

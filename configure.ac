@@ -988,7 +988,6 @@ AC_CONFIG_FILES([Makefile
                  dist-build/Makefile
                  libsodium.pc
                  libsodium-uninstalled.pc
-                 msvc-scripts/Makefile
                  src/Makefile
                  src/libsodium/Makefile
                  src/libsodium/include/Makefile

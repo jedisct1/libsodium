@@ -21,16 +21,6 @@
     <Import Project="$(ProjectDir)$(ProjectName).props" />
   </ImportGroup>
   <ItemGroup>
-    <None Include="..\..\..\..\packaging\nuget\package.bat" />
-    <None Include="..\..\..\..\packaging\nuget\package.config" />
-    <None Include="..\..\..\..\packaging\nuget\package.gsl" />
-    <None Include="..\..\..\..\packaging\nuget\package.nuspec" />
-    <None Include="..\..\..\..\packaging\nuget\package.targets" />
-  </ItemGroup>
-  <ItemGroup>
-    <Xml Include="..\..\..\..\packaging\nuget\package.xml" />
-  </ItemGroup>
-  <ItemGroup>
     {{v1}}
   </ItemGroup>
   <ItemGroup>
