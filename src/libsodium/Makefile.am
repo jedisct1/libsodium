@@ -45,6 +45,8 @@ libsodium_la_SOURCES = \
 	crypto_hash/sha512/cp/hash_sha512_cp.c \
 	crypto_kdf/blake2b/kdf_blake2b.c \
 	crypto_kdf/crypto_kdf.c \
+	crypto_kdf/hkdf/kdf_hkdf_sha256.c \
+	crypto_kdf/hkdf/kdf_hkdf_sha512.c \
 	crypto_kx/crypto_kx.c \
 	crypto_onetimeauth/crypto_onetimeauth.c \
 	crypto_onetimeauth/poly1305/onetimeauth_poly1305.c \
@@ -164,8 +166,6 @@ libsodium_la_SOURCES += \
 	crypto_box/curve25519xchacha20poly1305/box_seal_curve25519xchacha20poly1305.c \
 	crypto_core/ed25519/core_ed25519.c \
 	crypto_core/ed25519/core_ristretto255.c \
-	crypto_kdf/hkdf/kdf_hkdf_sha256.c \
-	crypto_kdf/hkdf/kdf_hkdf_sha512.c \
 	crypto_pwhash/scryptsalsa208sha256/crypto_scrypt-common.c \
 	crypto_pwhash/scryptsalsa208sha256/crypto_scrypt.h \
 	crypto_pwhash/scryptsalsa208sha256/scrypt_platform.c \
