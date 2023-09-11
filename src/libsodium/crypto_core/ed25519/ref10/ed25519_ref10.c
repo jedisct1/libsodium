@@ -2535,8 +2535,6 @@ ge25519_elligator2(unsigned char s[32], const fe25519 r, const unsigned char x_s
     fe25519      rr2;
     fe25519      x, x2, x3;
     ge25519_p3   p3;
-    ge25519_p1p1 p1;
-    ge25519_p2   p2;
     unsigned int notsquare;
 
     fe25519_sq2(rr2, r);
