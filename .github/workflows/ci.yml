@@ -172,7 +172,7 @@ jobs:
       - name: Install Android NDK
         run: |
           mkdir /tmp/android && cd /tmp/android
-          curl -o ndk.zip -L https://dl.google.com/android/repository/android-ndk-r25b-linux.zip
+          curl -o ndk.zip -L https://dl.google.com/android/repository/android-ndk-r25c-linux.zip
           unzip ndk.zip && rm -f *.zip && mv android-ndk* ndk
 
       - name: Android compilation
