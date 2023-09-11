@@ -1,3 +1,18 @@
+* Version 1.0.19
+  This release includes all the changes from 1.0.18-stable, as well as two
+additions:
+
+ - New AEADs: AEGIS-128L and AEGIS-256 are now available in the
+`crypto_aead_aegis128l_*()` and `crypto_aead_aegis256_*()` namespaces.
+AEGIS is a family of authenticated ciphers for high-performance applications,
+leveraging hardware AES acceleration on `x86_64` and `aarch64`. In addition
+to performance, AEGIS ciphers have unique properties making them easier and
+safer to use than AES-GCM. They can also be used as high-performance MACs.
+ - The HKDF key derivation mechanism, required by many standard protocols, is
+now available in the `crypto_kdf_hkdf_*()` namespace. It is implemented for
+the SHA-256 and SHA-512 hash functions.
+ - The `osx.sh` build script was renamed to `macos.sh`.
+
 * Version 1.0.18-stable
  - Visual Studio: support for Windows/ARM64 builds has been added.
  - Visual Studio: AVX512 implementations are enabled on supported CPUs.
@@ -8,12 +23,12 @@
  - iOS: bitcode is not generated any more, as it was deprecated by Apple.
  - watchOS: support for arm64 was added.
  - The Zig toolchain can now be used as a modern build system to replace
-autoconf/automake/libtool/make/ccache and the compiler. This allows faster
-compilation times, easy cross compilation, and static libraries optimized
+autoconf/automake/libtool/make/ccache and the compiler. This enables faster
+compilation times, easier cross compilation, and static libraries optimized
 for any CPU.
- - The Zig toolchain is now the only supported way to compile `libsodium`
-to WebAssembly/WASI.
- - `libsodium` can now be added as a dependency to Zig projects.
+ - The Zig toolchain is now the recommended way to compile `libsodium`
+to WebAssembly/WASI(X).
+ - libsodium can now be added as a dependency to Zig projects.
  - Memory fences were added to remove some gadgets that could be used
 alongside speculative loads.
  - The AES-GCM implementation was completely rewritten. It is now faster,
