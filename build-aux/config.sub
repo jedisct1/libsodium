@@ -1181,7 +1181,7 @@ case $cpu-$vendor in
 		case $cpu in
 			1750a | 580 \
 			| a29k \
-			| aarch64 | aarch64_be \
+			| aarch64 | aarch64c | aarch64_be \
 			| abacus \
 			| alpha | alphaev[4-8] | alphaev56 | alphaev6[78] \
 			| alpha64 | alpha64ev[4-8] | alpha64ev56 | alpha64ev6[78] \
