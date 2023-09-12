@@ -20,9 +20,12 @@
 #ifdef __clang__
 #pragma clang attribute push(__attribute__((target("neon,crypto,aes"))), apply_to = function)
 #elif defined(__GNUC__)
-#pragma GCC target("neon,crypto,aes")
+#pragma GCC target("+simd+crypto")
 #endif
 
+#ifndef __ARM_FEATURE_CRYPTO
+#define __ARM_FEATURE_CRYPTO 1
+#endif
 #ifndef __ARM_FEATURE_AES
 #define __ARM_FEATURE_AES 1
 #endif

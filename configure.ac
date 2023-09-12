@@ -397,7 +397,28 @@ AS_IF([test "x$EMSCRIPTEN" = "x"], [
   AS_IF([test "x$target_cpu_aarch64" = "xyes"], [
     have_armcrypto=no
     AC_MSG_CHECKING(for ARM crypto instructions set)
-    AC_LINK_IFELSE([AC_LANG_PROGRAM([[#include <arm_neon.h>]], [[ vaeseq_u8(vmovq_n_u8(0), vmovq_n_u8(__ARM_FEATURE_CRYPTO)) ]])],
+    AC_LINK_IFELSE([AC_LANG_PROGRAM([[
+      #ifdef __clang__
+      #  pragma clang attribute push(__attribute__((target("neon,crypto,aes"))), apply_to = function)
+      #elif defined(__GNUC__)
+      #  pragma GCC target("+simd+crypto")
+      #endif
+      #ifndef __ARM_FEATURE_CRYPTO
+      #  define __ARM_FEATURE_CRYPTO 1
+      #endif
+      #ifndef __ARM_FEATURE_AES
+      #  define __ARM_FEATURE_AES 1
+      #endif
+
+      #include <arm_neon.h>
+    ]], [[
+      vaeseq_u8(vmovq_n_u8(0), vmovq_n_u8(0));
+
+      #ifdef __clang__
+      #  pragma clang attribute pop
+      #endif
+      (void) 0
+      ]])],
       [
         AC_MSG_RESULT(yes)
         have_armcrypto=yes
@@ -408,7 +429,26 @@ AS_IF([test "x$EMSCRIPTEN" = "x"], [
         AX_CHECK_COMPILE_FLAG([-march=armv8-a+crypto+aes], [
           CFLAGS="$CFLAGS -march=armv8-a+crypto+aes"
           AC_MSG_CHECKING(for ARM crypto instructions set with -march=armv8-a+crypto+aes)
-          AC_LINK_IFELSE([AC_LANG_PROGRAM([[#include <arm_neon.h>]], [[ vaeseq_u8(vmovq_n_u8(0), vmovq_n_u8(__ARM_FEATURE_CRYPTO)) ]])],
+          AC_LINK_IFELSE([AC_LANG_PROGRAM([[
+            #ifdef __clang__
+            #  pragma clang attribute push(__attribute__((target("neon,crypto,aes"))), apply_to = function)
+            #elif defined(__GNUC__)
+            #  pragma GCC target("+simd+crypto")
+            #endif
+            #ifndef __ARM_FEATURE_CRYPTO
+            #  define __ARM_FEATURE_CRYPTO 1
+            #endif
+            #ifndef __ARM_FEATURE_AES
+            #  define __ARM_FEATURE_AES 1
+            #endif
+          ]], [[
+            vaeseq_u8(vmovq_n_u8(0), vmovq_n_u8(0));
+
+            #ifdef __clang__
+            #  pragma clang attribute pop
+            #endif
+            (void) 0
+          ]])],
             [
               AC_MSG_RESULT(yes - with addition of -march=armv8-a+crypto+aes)
               have_armcrypto=yes
@@ -904,7 +944,7 @@ if (&getentropy != NULL) {
 
 AS_IF([test "x$WASI" = "x"],[
   AC_CHECK_FUNCS([getpid])
-  AC_CHECK_FUNCS([getauxva elf_aux_info])
+  AC_CHECK_FUNCS([getauxval elf_aux_info])
 ])
 
 AC_CHECK_FUNCS([posix_memalign nanosleep clock_gettime])

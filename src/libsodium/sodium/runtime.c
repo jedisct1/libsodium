@@ -97,7 +97,7 @@ _sodium_runtime_arm_cpu_features(CPUFeatures * const cpu_features)
         return 0;
     }
 
-#if __ARM_FEATURE_CRYPTO
+#if defined(__ARM_FEATURE_CRYPTO) && defined(__ARM_FEATURE_AES)
     cpu_features->has_armcrypto = 1;
 #elif defined(_M_ARM64)
     cpu_features->has_armcrypto = 1; /* assuming all CPUs supported by ARM Windows have the crypto extensions */
