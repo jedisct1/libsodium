@@ -18558,11 +18558,32 @@ then :
 printf %s "checking for ARM crypto instructions set... " >&6; }
     cat confdefs.h - <<_ACEOF >conftest.$ac_ext
 /* end confdefs.h.  */
-#include <arm_neon.h>
+
+      #ifdef __clang__
+      #  pragma clang attribute push(__attribute__((target("neon,crypto,aes"))), apply_to = function)
+      #elif defined(__GNUC__)
+      #  pragma GCC target("+simd+crypto")
+      #endif
+      #ifndef __ARM_FEATURE_CRYPTO
+      #  define __ARM_FEATURE_CRYPTO 1
+      #endif
+      #ifndef __ARM_FEATURE_AES
+      #  define __ARM_FEATURE_AES 1
+      #endif
+
+      #include <arm_neon.h>
+
 int
 main (void)
 {
- vaeseq_u8(vmovq_n_u8(0), vmovq_n_u8(__ARM_FEATURE_CRYPTO))
+
+      vaeseq_u8(vmovq_n_u8(0), vmovq_n_u8(0));
+
+      #ifdef __clang__
+      #  pragma clang attribute pop
+      #endif
+      (void) 0
+
   ;
   return 0;
 }
@@ -18620,11 +18641,30 @@ then :
 printf %s "checking for ARM crypto instructions set with -march=armv8-a+crypto+aes... " >&6; }
           cat confdefs.h - <<_ACEOF >conftest.$ac_ext
 /* end confdefs.h.  */
-#include <arm_neon.h>
+
+            #ifdef __clang__
+            #  pragma clang attribute push(__attribute__((target("neon,crypto,aes"))), apply_to = function)
+            #elif defined(__GNUC__)
+            #  pragma GCC target("+simd+crypto")
+            #endif
+            #ifndef __ARM_FEATURE_CRYPTO
+            #  define __ARM_FEATURE_CRYPTO 1
+            #endif
+            #ifndef __ARM_FEATURE_AES
+            #  define __ARM_FEATURE_AES 1
+            #endif
+
 int
 main (void)
 {
- vaeseq_u8(vmovq_n_u8(0), vmovq_n_u8(__ARM_FEATURE_CRYPTO))
+
+            vaeseq_u8(vmovq_n_u8(0), vmovq_n_u8(0));
+
+            #ifdef __clang__
+            #  pragma clang attribute pop
+            #endif
+            (void) 0
+
   ;
   return 0;
 }
@@ -21164,10 +21204,10 @@ then :
 
 fi
 
-  ac_fn_c_check_func "$LINENO" "getauxva" "ac_cv_func_getauxva"
-if test "x$ac_cv_func_getauxva" = xyes
+  ac_fn_c_check_func "$LINENO" "getauxval" "ac_cv_func_getauxval"
+if test "x$ac_cv_func_getauxval" = xyes
 then :
-  printf "%s\n" "#define HAVE_GETAUXVA 1" >>confdefs.h
+  printf "%s\n" "#define HAVE_GETAUXVAL 1" >>confdefs.h
 
 fi
 ac_fn_c_check_func "$LINENO" "elf_aux_info" "ac_cv_func_elf_aux_info"
