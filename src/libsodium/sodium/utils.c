@@ -79,6 +79,7 @@ void *alloca (size_t);
     defined(HAVE_POSIX_MEMALIGN)
 # define HAVE_ALIGNED_MALLOC
 #endif
+
 #if defined(HAVE_MPROTECT) && \
     !(defined(PROT_NONE) && defined(PROT_READ) && defined(PROT_WRITE))
 # undef HAVE_MPROTECT
@@ -507,7 +508,9 @@ __attribute__((noreturn)) static void
 _out_of_bounds(void)
 {
 # if defined(HAVE_RAISE) && !defined(__wasm__)
-#  ifdef SIGSEGV
+#  ifdef SIGPROT
+    raise(SIGPROT);
+#  elif defined(SIGSEGV)
     raise(SIGSEGV);
 #  elif defined(SIGKILL)
     raise(SIGKILL);
