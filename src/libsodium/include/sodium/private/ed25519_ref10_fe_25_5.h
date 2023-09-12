@@ -273,7 +273,7 @@ fe25519_cswap(fe25519 f, fe25519 g, unsigned int b)
 static inline void
 fe25519_copy(fe25519 h, const fe25519 f)
 {
-    memcpy(h, f, 10 * 4);
+    memcpy(h, f, 10 * sizeof h[0]);
 }
 
 /*
