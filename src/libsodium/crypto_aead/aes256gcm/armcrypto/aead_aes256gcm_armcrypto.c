@@ -1025,4 +1025,8 @@ crypto_aead_aes256gcm_is_available(void)
     return sodium_runtime_has_armcrypto();
 }
 
+#ifdef __clang__
+#pragma clang attribute pop
+#endif
+
 #endif
