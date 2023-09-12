@@ -3,7 +3,6 @@
 
 #include "crypto_hash_sha512.h"
 #include "crypto_vrf_rfc9381.h"
-#include "crypto_core_ed25519.h"
 #include "private/ed25519_ref10.h"
 #include "utils.h"
 #include "vrf_rfc9381.h"
@@ -30,7 +29,7 @@ crypto_vrf_rfc9381_prove(unsigned char *proof,
 
     memmove(string_to_hash, sk + 32, 32);
     memmove(string_to_hash + 32, m, mlen);
-    crypto_core_ed25519_from_string(H_string, "ECVRF_edwards25519_XMD:SHA-512_ELL2_NU_\4", string_to_hash, 32 + mlen, 2); /* elligator2 */
+    ge25519_from_string(H_string, "ECVRF_edwards25519_XMD:SHA-512_ELL2_NU_\4", string_to_hash, 32 + mlen, 2); /* elligator2 */
 
     ge25519_frombytes(&H, H_string);
     ge25519_scalarmult(&Gamma, az, &H);

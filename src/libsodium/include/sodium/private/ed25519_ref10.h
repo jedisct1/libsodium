@@ -116,6 +116,14 @@ void ge25519_from_uniform(unsigned char s[32], const unsigned char r[32]);
 
 void ge25519_from_hash(unsigned char s[32], const unsigned char h[64]);
 
+int ge25519_from_string(unsigned char p[32],
+                    const char *ctx, const unsigned char *msg,
+                    size_t msg_len, int hash_alg);
+
+int ge25519_from_string_ro(unsigned char p[32],
+                       const char *ctx, const unsigned char *msg,
+                       size_t msg_len, int hash_alg);
+
 /*
  Ristretto group
  */
@@ -132,6 +140,8 @@ void ristretto255_from_hash(unsigned char s[32], const unsigned char h[64]);
  */
 
 void sc25519_invert(unsigned char recip[32], const unsigned char s[32]);
+
+void sc25519_negate(unsigned char neg[32], const unsigned char s[32]);
 
 void sc25519_reduce(unsigned char s[64]);
 

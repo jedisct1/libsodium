@@ -4,6 +4,7 @@
 #include <string.h>
 
 #include "crypto_verify_32.h"
+#include "../core_h2c.h"
 #include "private/common.h"
 #include "private/ed25519_ref10.h"
 #include "utils.h"
@@ -2251,6 +2252,29 @@ sc25519_invert(unsigned char recip[32], const unsigned char s[32])
     sc25519_sqmul(recip, 8, _11101011);
 }
 
+/* 2^252+27742317777372353535851937790883648493 */
+static const unsigned char L[] = {
+        0xed, 0xd3, 0xf5, 0x5c, 0x1a, 0x63, 0x12, 0x58, 0xd6, 0x9c, 0xf7,
+        0xa2, 0xde, 0xf9, 0xde, 0x14, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
+        0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x10
+};
+
+void
+sc25519_negate(unsigned char neg[32], const unsigned char s[32])
+{
+    unsigned char t_[64];
+    unsigned char s_[64];
+
+    memset(t_, 0, sizeof t_);
+    memset(s_, 0, sizeof s_);
+    memcpy(t_ + 32, L,
+           32);
+    memcpy(s_, s, 32);
+    sodium_sub(t_, s_, sizeof t_);
+    sc25519_reduce(t_);
+    memcpy(neg, t_, 32);
+}
+
 /*
  Input:
  s[0]+256*s[1]+...+256^63*s[63] = s
@@ -2726,6 +2750,68 @@ ge25519_from_uniform(unsigned char s[32], const unsigned char r[32])
     ge25519_clear_cofactor(&p3);
     ge25519_p3_tobytes(s, &p3);
 }
+
+#define HASH_GE_L 48U
+
+static int
+_string_to_points(unsigned char * const px, const size_t n,
+                  const char *ctx, const unsigned char *msg, size_t msg_len,
+                  int hash_alg)
+{
+    unsigned char h[64];
+    unsigned char h_be[2U * HASH_GE_L];
+    size_t        i, j;
+
+    if (n > 2U) {
+        abort(); /* LCOV_EXCL_LINE */;
+    }
+    if (core_h2c_string_to_hash(h_be, n * HASH_GE_L, ctx, msg, msg_len,
+                                hash_alg) != 0) {
+        return -1;
+    }
+    COMPILER_ASSERT(sizeof h >= HASH_GE_L);
+    for (i = 0U; i < n; i++) {
+        for (j = 0U; j < HASH_GE_L; j++) {
+            h[j] = h_be[i * HASH_GE_L + HASH_GE_L - 1U - j];
+        }
+        memset(&h[j], 0, (sizeof h) - j);
+        ge25519_from_hash(&px[i * 32], h);
+    }
+    return 0;
+}
+
+int
+ge25519_from_string(unsigned char p[32],
+                    const char *ctx, const unsigned char *msg,
+                    size_t msg_len, int hash_alg)
+{
+    return _string_to_points(p, 1, ctx, msg, msg_len, hash_alg);
+
+
+}
+
+int
+ge25519_from_string_ro(unsigned char p[32],
+                       const char *ctx, const unsigned char *msg,
+                       size_t msg_len, int hash_alg)
+{
+    unsigned char  px[64];
+    ge25519_p3     p_p3, q_p3, r_p3;
+
+    if (_string_to_points(px, 2, ctx, msg, msg_len, hash_alg) != 0) {
+        return -1;
+    }
+
+    if (ge25519_frombytes(&p_p3, &px[0]) != 0 || ge25519_is_on_curve(&p_p3) == 0 ||
+        ge25519_frombytes(&q_p3, &px[32]) != 0 || ge25519_is_on_curve(&q_p3) == 0) {
+        return -1;
+    }
+    ge25519_p3_add(&r_p3, &p_p3, &q_p3);
+    ge25519_p3_tobytes(p, &r_p3);
+
+    return 0;
+}
+
 
 static void
 fe25519_reduce64(fe25519 fe_f, const unsigned char h[64])
