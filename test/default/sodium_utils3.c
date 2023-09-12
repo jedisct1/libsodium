@@ -25,6 +25,9 @@ segv_handler(int sig)
     printf("Intentional segfault / bus error caught\n");
     printf("OK\n");
 #ifdef SIG_DFL
+# ifdef SIGPROT
+    signal(SIGPROT, SIG_DFL);
+# endif
 # ifdef SIGSEGV
     signal(SIGSEGV, SIG_DFL);
 # endif
@@ -49,6 +52,9 @@ main(void)
 #endif
 
 #ifdef SIG_DFL
+# ifdef SIGPROT
+    signal(SIGPROT, segv_handler);
+# endif
 # ifdef SIGSEGV
     signal(SIGSEGV, segv_handler);
 # endif
