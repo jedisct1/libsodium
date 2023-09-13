@@ -413,6 +413,7 @@ AS_IF([test "x$EMSCRIPTEN" = "x"], [
       #include <arm_neon.h>
     ]], [[
       vaeseq_u8(vmovq_n_u8(0), vmovq_n_u8(0));
+      vmull_high_p64(vmovq_n_u8(0), vmovq_n_u8(0));
 
       #ifdef __clang__
       #  pragma clang attribute pop
@@ -441,8 +442,11 @@ AS_IF([test "x$EMSCRIPTEN" = "x"], [
             #ifndef __ARM_FEATURE_AES
             #  define __ARM_FEATURE_AES 1
             #endif
+
+            #include <arm_neon.h>
           ]], [[
             vaeseq_u8(vmovq_n_u8(0), vmovq_n_u8(0));
+            vmull_high_p64(vmovq_n_u8(0), vmovq_n_u8(0));
 
             #ifdef __clang__
             #  pragma clang attribute pop

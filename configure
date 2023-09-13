@@ -18581,6 +18581,7 @@ main (void)
 {
 
       vaeseq_u8(vmovq_n_u8(0), vmovq_n_u8(0));
+      vmull_high_p64(vmovq_n_u8(0), vmovq_n_u8(0));
 
       #ifdef __clang__
       #  pragma clang attribute pop
@@ -18657,11 +18658,14 @@ printf %s "checking for ARM crypto instructions set with -march=armv8-a+crypto+a
             #  define __ARM_FEATURE_AES 1
             #endif
 
+            #include <arm_neon.h>
+
 int
 main (void)
 {
 
             vaeseq_u8(vmovq_n_u8(0), vmovq_n_u8(0));
+            vmull_high_p64(vmovq_n_u8(0), vmovq_n_u8(0));
 
             #ifdef __clang__
             #  pragma clang attribute pop
