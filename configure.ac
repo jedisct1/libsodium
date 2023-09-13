@@ -412,8 +412,9 @@ AS_IF([test "x$EMSCRIPTEN" = "x"], [
 
       #include <arm_neon.h>
     ]], [[
+      int64x2_t x = { 0, 0 };
       vaeseq_u8(vmovq_n_u8(0), vmovq_n_u8(0));
-      vmull_high_p64(vmovq_n_u8(0), vmovq_n_u8(0));
+      vmull_high_p64(vreinterpretq_p64_s64(x), vreinterpretq_p64_s64(x));
 
       #ifdef __clang__
       #  pragma clang attribute pop
@@ -445,8 +446,9 @@ AS_IF([test "x$EMSCRIPTEN" = "x"], [
 
             #include <arm_neon.h>
           ]], [[
+            int64x2_t x = { 0, 0 };
             vaeseq_u8(vmovq_n_u8(0), vmovq_n_u8(0));
-            vmull_high_p64(vmovq_n_u8(0), vmovq_n_u8(0));
+            vmull_high_p64(vreinterpretq_p64_s64(x), vreinterpretq_p64_s64(x));
 
             #ifdef __clang__
             #  pragma clang attribute pop
