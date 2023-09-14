@@ -32,6 +32,8 @@
 #   define HAVE_LINUX_COMPATIBLE_GETRANDOM
 #  endif
 # endif
+#elif defined(__midipix__)
+# define HAVE_LINUX_COMPATIBLE_GETRANDOM
 #elif defined(__FreeBSD__)
 # include <sys/param.h>
 # if defined(__FreeBSD_version) && __FreeBSD_version >= 1200000

@@ -712,7 +712,7 @@ AS_IF([test "$enable_asm" != "no"],[
   AC_LINK_IFELSE([AC_LANG_PROGRAM([[
   ]], [[
 #if defined(__amd64) || defined(__amd64__) || defined(__x86_64__)
-# if defined(__CYGWIN__) || defined(__MINGW32__) || defined(__MINGW64__) || defined(_WIN32) || defined(_WIN64)
+# if defined(__CYGWIN__) || defined(__MINGW32__) || defined(__MINGW64__) || defined(_WIN32) || defined(_WIN64) || defined(__midipix__)
 #  error Windows x86_64 calling conventions are not supported yet
 # endif
 /* neat */
