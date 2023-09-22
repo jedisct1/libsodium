@@ -75,7 +75,7 @@ build_macos() {
     export LDFLAGS="-arch arm64 -mmacosx-version-min=${MACOS_VERSION_MIN}"
 
     make distclean >/dev/null 2>&1
-    ./configure --host=arm-apple-darwin23 --prefix="$MACOS_ARM64_PREFIX" \
+    ./configure --host=aarch64-apple-darwin23 --prefix="$MACOS_ARM64_PREFIX" \
       ${LIBSODIUM_ENABLE_MINIMAL_FLAG} || exit 1
     make -j${PROCESSORS} install || exit 1
   fi
@@ -118,7 +118,7 @@ build_ios() {
   export LDFLAGS="-arch arm64 -isysroot ${SDK} -mios-version-min=${IOS_VERSION_MIN}"
 
   make distclean >/dev/null 2>&1
-  ./configure --host=arm-apple-darwin23 --prefix="$IOS64_PREFIX" \
+  ./configure --host=aarch64-apple-darwin23 --prefix="$IOS64_PREFIX" \
     ${LIBSODIUM_ENABLE_MINIMAL_FLAG} || exit 1
   make -j${PROCESSORS} install || exit 1
 }
@@ -134,7 +134,7 @@ build_ios_simulator() {
     export LDFLAGS="-arch arm64 -isysroot ${SDK} -mios-simulator-version-min=${IOS_SIMULATOR_VERSION_MIN}"
 
     make distclean >/dev/null 2>&1
-    ./configure --host=arm-apple-darwin23 --prefix="$IOS_SIMULATOR_ARM64_PREFIX" \
+    ./configure --host=aarch64-apple-darwin23 --prefix="$IOS_SIMULATOR_ARM64_PREFIX" \
       ${LIBSODIUM_ENABLE_MINIMAL_FLAG} || exit 1
     make -j${PROCESSORS} install || exit 1
   fi
@@ -177,7 +177,7 @@ build_watchos() {
   export LDFLAGS="-mthumb -arch arm64_32 -isysroot ${SDK} -mwatchos-version-min=${WATCHOS_VERSION_MIN}"
 
   make distclean >/dev/null 2>&1
-  ./configure --host=arm-apple-darwin23 --prefix="$WATCHOS64_32_PREFIX" \
+  ./configure --host=aarch64-apple-darwin23 --prefix="$WATCHOS64_32_PREFIX" \
     ${LIBSODIUM_ENABLE_MINIMAL_FLAG} || exit 1
   make -j${PROCESSORS} install || exit 1
 
@@ -186,7 +186,7 @@ build_watchos() {
   export LDFLAGS="-mthumb -arch arm64 -isysroot ${SDK} -mwatchos-version-min=${WATCHOS_VERSION_MIN}"
 
   make distclean >/dev/null 2>&1
-  ./configure --host=arm-apple-darwin23 --prefix="$WATCHOS64_PREFIX" \
+  ./configure --host=aarch64-apple-darwin23 --prefix="$WATCHOS64_PREFIX" \
     ${LIBSODIUM_ENABLE_MINIMAL_FLAG} || exit 1
   make -j${PROCESSORS} install || exit 1
 }
@@ -202,7 +202,7 @@ build_watchos_simulator() {
     export LDFLAGS="-arch arm64 -isysroot ${SDK} -mwatchos-simulator-version-min=${WATCHOS_SIMULATOR_VERSION_MIN}"
 
     make distclean >/dev/null 2>&1
-    ./configure --host=arm-apple-darwin23 --prefix="$WATCHOS_SIMULATOR_ARM64_PREFIX" \
+    ./configure --host=aarch64-apple-darwin23 --prefix="$WATCHOS_SIMULATOR_ARM64_PREFIX" \
       ${LIBSODIUM_ENABLE_MINIMAL_FLAG} || exit 1
     make -j${PROCESSORS} install || exit 1
   fi
@@ -236,7 +236,7 @@ build_tvos() {
   export LDFLAGS="-arch arm64 -isysroot ${SDK} -mtvos-version-min=${TVOS_VERSION_MIN}"
 
   make distclean >/dev/null 2>&1
-  ./configure --host=arm-apple-darwin23 --prefix="$TVOS_PREFIX" \
+  ./configure --host=aarch64-apple-darwin23 --prefix="$TVOS_PREFIX" \
     ${LIBSODIUM_ENABLE_MINIMAL_FLAG} || exit 1
   make -j${PROCESSORS} install || exit 1
 }
@@ -252,7 +252,7 @@ build_tvos_simulator() {
     export LDFLAGS="-arch arm64 -isysroot ${SDK} -mtvos-simulator-version-min=${TVOS_SIMULATOR_VERSION_MIN}"
 
     make distclean >/dev/null 2>&1
-    ./configure --host=arm-apple-darwin23 --prefix="$TVOS_SIMULATOR_ARM64_PREFIX" \
+    ./configure --host=aarch64-apple-darwin23 --prefix="$TVOS_SIMULATOR_ARM64_PREFIX" \
       ${LIBSODIUM_ENABLE_MINIMAL_FLAG} || exit 1
     make -j${PROCESSORS} install || exit 1
   fi
@@ -276,7 +276,7 @@ build_visionos() {
   export LDFLAGS="-arch arm64 -isysroot ${SDK}"
 
   make distclean >/dev/null 2>&1
-  ./configure --host=arm-apple-darwin23 --prefix="$VISIONOS_PREFIX" \
+  ./configure --host=aarch64-apple-darwin23 --prefix="$VISIONOS_PREFIX" \
     ${LIBSODIUM_ENABLE_MINIMAL_FLAG} || exit 1
   make -j${PROCESSORS} install || exit 1
 }
@@ -291,7 +291,7 @@ build_visionos_simulator() {
     export LDFLAGS="-arch arm64 -isysroot ${SDK}"
 
     make distclean >/dev/null 2>&1
-    ./configure --host=arm-apple-darwin23 --prefix="$VISIONOS_SIMULATOR_PREFIX" \
+    ./configure --host=aarch64-apple-darwin23 --prefix="$VISIONOS_SIMULATOR_PREFIX" \
       ${LIBSODIUM_ENABLE_MINIMAL_FLAG} || exit 1
     make -j${PROCESSORS} install || exit 1
   fi
@@ -308,7 +308,7 @@ build_catalyst() {
     export LDFLAGS="-arch arm64 -target arm64-apple-ios13.1-macabi -isysroot ${SDK}"
 
     make distclean >/dev/null 2>&1
-    ./configure --host=arm-apple-ios --prefix="$CATALYST_ARM64_PREFIX" \
+    ./configure --host=aarch64-apple-ios --prefix="$CATALYST_ARM64_PREFIX" \
       ${LIBSODIUM_ENABLE_MINIMAL_FLAG} || exit 1
     make -j${PROCESSORS} install || exit 1
   fi
