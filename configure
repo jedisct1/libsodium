@@ -5294,43 +5294,6 @@ fi
 
 
 if test "$sodium_CFLAGS" != "set" ; then
-  { printf "%s\n" "$as_me:${as_lineno-$LINENO}: checking whether C compiler accepts -Ofast" >&5
-printf %s "checking whether C compiler accepts -Ofast... " >&6; }
-if test ${ax_cv_check_cflags___Ofast+y}
-then :
-  printf %s "(cached) " >&6
-else $as_nop
-
-  ax_check_save_flags=$CFLAGS
-  CFLAGS="$CFLAGS  -Ofast"
-  cat confdefs.h - <<_ACEOF >conftest.$ac_ext
-/* end confdefs.h.  */
-#include <time.h>
-int
-main (void)
-{
-time_t x; int fodder = 0; if (fodder > -1000 && time(&x)) return (int) x
-
-  ;
-  return 0;
-}
-_ACEOF
-if ac_fn_c_try_link "$LINENO"
-then :
-  ax_cv_check_cflags___Ofast=yes
-else $as_nop
-  ax_cv_check_cflags___Ofast=no
-fi
-rm -f core conftest.err conftest.$ac_objext conftest.beam \
-    conftest$ac_exeext conftest.$ac_ext
-  CFLAGS=$ax_check_save_flags
-fi
-{ printf "%s\n" "$as_me:${as_lineno-$LINENO}: result: $ax_cv_check_cflags___Ofast" >&5
-printf "%s\n" "$ax_cv_check_cflags___Ofast" >&6; }
-if test "x$ax_cv_check_cflags___Ofast" = xyes
-then :
-  CFLAGS="$CFLAGS -Ofast"
-else $as_nop
   { printf "%s\n" "$as_me:${as_lineno-$LINENO}: checking whether C compiler accepts -O3" >&5
 printf %s "checking whether C compiler accepts -O3... " >&6; }
 if test ${ax_cv_check_cflags___O3+y}
@@ -5480,8 +5443,6 @@ then :
   CFLAGS="$CFLAGS -O"
 else $as_nop
   :
-fi
-
 fi
 
 fi
