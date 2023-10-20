@@ -1,6 +1,6 @@
 #! /bin/sh
 
-export CFLAGS="-Ofast -fomit-frame-pointer -m32 -march=pentium3 -mtune=westmere"
+export CFLAGS="-O3 -fomit-frame-pointer -m32 -march=pentium3 -mtune=westmere"
 export PREFIX="$(pwd)/libsodium-win32"
 
 if (i686-w64-mingw32-gcc --version >/dev/null 2>&1); then

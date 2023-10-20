@@ -14,7 +14,7 @@ PROCESSORS=${NPROCESSORS:-3}
 
 mkdir -p $PREFIX || exit 1
 
-export CFLAGS="-mmacosx-version-min=${MACOS_VERSION_MIN} -Ofast"
+export CFLAGS="-mmacosx-version-min=${MACOS_VERSION_MIN} -O3"
 export LDFLAGS="-mmacosx-version-min=${MACOS_VERSION_MIN}"
 
 make distclean >/dev/null
