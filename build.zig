@@ -247,13 +247,18 @@ pub fn build(b: *std.build.Builder) !void {
             const name = entry.basename;
             if (mem.endsWith(u8, name, ".c")) {
                 const full_path = try fmt.allocPrint(allocator, "{s}/{s}", .{ src_path, entry.path });
-                lib.addCSourceFiles(&.{full_path}, &.{
+                const flags = &.{
                     "-fvisibility=hidden",
                     "-fno-strict-aliasing",
                     "-fno-strict-overflow",
                     "-fwrapv",
                     "-flax-vector-conversions",
-                });
+                };
+                if (@hasDecl(std.Build.Step.Compile, "AddCSourceFilesOptions")) {
+                    lib.addCSourceFiles(.{ .files = &.{full_path}, .flags = flags });
+                } else {
+                    lib.addCSourceFiles(&.{full_path}, flags);
+                }
             } else if (mem.endsWith(u8, name, ".S")) {
                 const full_path = try fmt.allocPrint(allocator, "{s}/{s}", .{ src_path, entry.path });
                 lib.addAssemblyFile(.{ .path = full_path });
@@ -291,8 +296,11 @@ pub fn build(b: *std.build.Builder) !void {
             exe.addIncludePath(.{ .path = "src/libsodium/include" });
             exe.addIncludePath(.{ .path = "test/quirks" });
             const full_path = try fmt.allocPrint(allocator, "{s}/{s}", .{ test_path, entry.path });
-            exe.addCSourceFiles(&.{full_path}, &.{});
-
+            if (@hasDecl(std.Build.Step.Compile, "AddCSourceFilesOptions")) {
+                exe.addCSourceFiles(.{ .files = &.{full_path} });
+            } else {
+                exe.addCSourceFiles(&.{full_path}, &.{});
+            }
             if (enable_benchmarks) {
                 exe.defineCMacro("BENCHMARKS", "1");
                 var buf: [16]u8 = undefined;
