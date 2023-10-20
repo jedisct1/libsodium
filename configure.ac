@@ -397,11 +397,6 @@ AS_IF([test "x$EMSCRIPTEN" = "x"], [
     have_armcrypto=no
     AC_MSG_CHECKING(for ARM crypto instructions set)
     AC_LINK_IFELSE([AC_LANG_PROGRAM([[
-      #ifdef __clang__
-      #  pragma clang attribute push(__attribute__((target("neon,crypto,aes"))), apply_to = function)
-      #elif defined(__GNUC__)
-      #  pragma GCC target("+simd+crypto")
-      #endif
       #ifndef __ARM_FEATURE_CRYPTO
       #  define __ARM_FEATURE_CRYPTO 1
       #endif
@@ -410,6 +405,12 @@ AS_IF([test "x$EMSCRIPTEN" = "x"], [
       #endif
 
       #include <arm_neon.h>
+
+      #ifdef __clang__
+      #  pragma clang attribute push(__attribute__((target("neon,crypto,aes"))), apply_to = function)
+      #elif defined(__GNUC__)
+      #  pragma GCC target("+simd+crypto")
+      #endif
     ]], [[
       int64x2_t x = { 0, 0 };
       vaeseq_u8(vmovq_n_u8(0), vmovq_n_u8(0));
