@@ -27,7 +27,7 @@ the SHA-256 and SHA-512 hash functions.
  - Visual Studio: AVX512 implementations are enabled on supported CPUs.
  - Visual Studio: an MSVC 2022 solution was added.
  - Apple XCFramework: support for VisionOS was added.
- - Apple XCFranework: support for Catalyst was added.
+ - Apple XCFramework: support for Catalyst was added.
  - Apple XCFramework: building the simulators is now optional.
  - iOS: bitcode is not generated any more, as it was deprecated by Apple.
  - watchOS: support for arm64 was added.
