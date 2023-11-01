@@ -34,7 +34,7 @@ aegis256_init(const uint8_t *key, const uint8_t *nonce, aes_block_t *const state
     }
 }
 
-static inline void
+static inline int
 aegis256_mac(uint8_t *mac, size_t maclen, uint64_t adlen, uint64_t mlen, aes_block_t *const state)
 {
     aes_block_t tmp;
@@ -61,7 +61,9 @@ aegis256_mac(uint8_t *mac, size_t maclen, uint64_t adlen, uint64_t mlen, aes_blo
         AES_BLOCK_STORE(mac + 16, tmp);
     } else {
         memset(mac, 0, maclen); /* LCOV_EXCL_LINE */
+        return -1;             /* LCOV_EXCL_LINE */
     }
+    return 0;
 }
 
 static inline void
@@ -171,9 +173,7 @@ encrypt_detached(uint8_t *c, uint8_t *mac, size_t maclen, const uint8_t *m, size
         memcpy(c + i, dst, mlen % RATE);
     }
 
-    aegis256_mac(mac, maclen, adlen, mlen, state);
-
-    return 0;
+    return aegis256_mac(mac, maclen, adlen, mlen, state);
 }
 
 static int
@@ -219,12 +219,13 @@ decrypt_detached(uint8_t *m, const uint8_t *c, size_t clen, const uint8_t *mac, 
     }
 
     COMPILER_ASSERT(sizeof computed_mac >= 32);
-    aegis256_mac(computed_mac, maclen, adlen, mlen, state);
     ret = -1;
-    if (maclen == 16) {
-        ret = crypto_verify_16(computed_mac, mac); /* LCOV_EXCL_LINE */
-    } else if (maclen == 32) {
-        ret = crypto_verify_32(computed_mac, mac);
+    if (aegis256_mac(computed_mac, maclen, adlen, mlen, state) == 0) {
+        if (maclen == 16) {
+            ret = crypto_verify_16(computed_mac, mac); /* LCOV_EXCL_LINE */
+        } else if (maclen == 32) {
+            ret = crypto_verify_32(computed_mac, mac);
+        }
     }
     if (ret != 0) {
         if (m != NULL) {
