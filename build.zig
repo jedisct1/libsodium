@@ -103,9 +103,17 @@ pub fn build(b: *std.build.Builder) !void {
         lib.defineCMacro("HAVE_TI_MODE", "1");
 
         if (target.cpu_arch) |arch| {
-            switch (arch.endian()) {
-                .Big => lib.defineCMacro("NATIVE_BIG_ENDIAN", "1"),
-                .Little => lib.defineCMacro("NATIVE_LITTLE_ENDIAN", "1"),
+            const endian = arch.endian();
+            if (@hasField(@TypeOf(endian), "big")) {
+                switch (endian) {
+                    .big => lib.defineCMacro("NATIVE_BIG_ENDIAN", "1"),
+                    .little => lib.defineCMacro("NATIVE_LITTLE_ENDIAN", "1"),
+                }
+            } else {
+                switch (endian) {
+                    .Big => lib.defineCMacro("NATIVE_BIG_ENDIAN", "1"),
+                    .Little => lib.defineCMacro("NATIVE_LITTLE_ENDIAN", "1"),
+                }
             }
         }
 
