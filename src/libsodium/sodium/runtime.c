@@ -150,8 +150,7 @@ _sodium_runtime_arm_cpu_features(CPUFeatures * const cpu_features)
 static void
 _cpuid(unsigned int cpu_info[4U], const unsigned int cpu_info_type)
 {
-#if defined(_MSC_VER) && \
-    (defined(_M_X64) || defined(_M_AMD64) || defined(_M_IX86))
+#if defined(_MSC_VER) && (defined(_M_X64) || defined(_M_IX86))
     __cpuid((int *) cpu_info, cpu_info_type);
 #elif defined(HAVE_CPUID)
     cpu_info[0] = cpu_info[1] = cpu_info[2] = cpu_info[3] = 0;
