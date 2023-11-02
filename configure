@@ -18523,11 +18523,6 @@ printf %s "checking for ARM crypto instructions set... " >&6; }
     cat confdefs.h - <<_ACEOF >conftest.$ac_ext
 /* end confdefs.h.  */
 
-      #ifdef __clang__
-      #  pragma clang attribute push(__attribute__((target("neon,crypto,aes"))), apply_to = function)
-      #elif defined(__GNUC__)
-      #  pragma GCC target("+simd+crypto")
-      #endif
       #ifndef __ARM_FEATURE_CRYPTO
       #  define __ARM_FEATURE_CRYPTO 1
       #endif
@@ -18536,6 +18531,12 @@ printf %s "checking for ARM crypto instructions set... " >&6; }
       #endif
 
       #include <arm_neon.h>
+
+      #ifdef __clang__
+      #  pragma clang attribute push(__attribute__((target("neon,crypto,aes"))), apply_to = function)
+      #elif defined(__GNUC__)
+      #  pragma GCC target("+simd+crypto")
+      #endif
 
 int
 main (void)
