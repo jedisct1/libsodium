@@ -9,7 +9,7 @@
 
 #if defined(HAVE_EMMINTRIN_H) && \
     !(defined(__amd64) || defined(__amd64__) || defined(__x86_64__) || \
-      defined(_M_X64) || defined(_M_AMD64))
+      defined(_M_X64))
 
 # include <emmintrin.h>
 # include <stdint.h>
