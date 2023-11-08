@@ -56,6 +56,7 @@ crypto_sign_ed25519_pk_to_curve25519(unsigned char *curve25519_pk,
         return -1;
     }
     fe25519_1(one_minus_y);
+    /* assumes A.Z=1 */
     fe25519_sub(one_minus_y, one_minus_y, A.Y);
     fe25519_1(x);
     fe25519_add(x, x, A.Y);
