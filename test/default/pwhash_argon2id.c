@@ -432,7 +432,7 @@ main(void)
     assert(crypto_pwhash_memlimit_moderate() > 0U);
     assert(crypto_pwhash_opslimit_sensitive() > 0U);
     assert(crypto_pwhash_memlimit_sensitive() > 0U);
-    assert(strcmp(crypto_pwhash_primitive(), "argon2i") == 0);
+    assert(strcmp(crypto_pwhash_primitive(), "argon2id,argon2i") == 0);
 
     assert(crypto_pwhash_bytes_min() == crypto_pwhash_BYTES_MIN);
     assert(crypto_pwhash_bytes_max() == crypto_pwhash_BYTES_MAX);
