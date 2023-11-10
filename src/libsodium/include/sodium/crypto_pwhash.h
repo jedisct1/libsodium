@@ -135,7 +135,7 @@ int crypto_pwhash_str_needs_rehash(const char *str,
                                    unsigned long long opslimit, size_t memlimit)
             __attribute__ ((warn_unused_result)) __attribute__ ((nonnull));
 
-#define crypto_pwhash_PRIMITIVE "argon2i"
+#define crypto_pwhash_PRIMITIVE "argon2id,argon2i"
 SODIUM_EXPORT
 const char *crypto_pwhash_primitive(void)
             __attribute__ ((warn_unused_result));
