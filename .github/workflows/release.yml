@@ -1,0 +1,181 @@
+name: build all binaries
+on:
+  workflow_dispatch:
+
+jobs:
+  build-android:
+    name: build binaries for android
+    strategy:
+      fail-fast: false
+      matrix:
+        arch:
+          - x86_64
+          - x86
+          - armv7-a
+          - armv8-a
+    runs-on: ubuntu-latest
+    steps:
+      - name: set output dir name based on arch
+        shell: bash
+        id: set-result-path-part
+        run: |
+          case "${{ matrix.arch }}" in
+            x86_64) RESULT_NAME=westmere
+              ;;
+            x86) RESULT_NAME=i686
+              ;;
+            *) RESULT_NAME="${{ matrix.arch }}"
+              ;;
+          esac
+          echo "result_path_part=$RESULT_NAME" | tee -a "$GITHUB_OUTPUT"
+      - name: checkout code
+        uses: actions/checkout@v3
+        with:
+          fetch-depth: 1
+      - name: run autogen
+        shell: bash
+        run: |
+          ./autogen.sh -s
+      - name: build binaries
+        shell: bash
+        run: |
+          ./dist-build/android-${{ matrix.arch }}.sh
+      - name: upload built binaries
+        uses: actions/upload-artifact@v3
+        with:
+          name: libsodium-android-${{ matrix.arch }}
+          path: libsodium-android-${{ steps.set-result-path-part.outputs.result_path_part }}*
+  build-linux:
+    name: build binaries for linux
+    strategy:
+      fail-fast: false
+      matrix:
+        arch:
+          - i686
+          - x86_64
+          - armv7-a
+          - aarch64
+    runs-on: ubuntu-latest
+    steps:
+      - name: checkout code
+        uses: actions/checkout@v3
+        with:
+          fetch-depth: 1
+      - name: run autogen
+        shell: bash
+        run: |
+          ./autogen.sh -s
+      - name: run configure
+        shell: bash
+        run: |
+          case "${{ matrix.arch }}" in
+            "i686")
+               TARGET_TRIPLET="i686-unknown-linux-gnu"
+               ;;
+            "x86_64")
+               TARGET_TRIPLET="x86_64-unknown-linux-gnu"
+               ;;
+            "armv7-a")
+               TARGET_TRIPLET="armv7-unknown-linux-gnueabi"
+               ;;
+            "aarch64")
+               TARGET_TRIPLET="aarch64-unknown-linux-gnu"
+               ;;
+            *)
+               echo "target triplet can not be determined"
+               exit 1
+               ;;
+          esac
+          ./configure --prefix=$(pwd)/libsodium-${{ matrix.arch }} --host=${TARGET_TRIPLET}
+      - name: build binaries
+        shell: bash
+        run: |
+          NPROCESSORS=$(getconf NPROCESSORS_ONLN 2>/dev/null || getconf _NPROCESSORS_ONLN 2>/dev/null)
+          make clean && \
+            make -j${PROCESSORS} install
+      - name: upload built binaries
+        uses: actions/upload-artifact@v3
+        with:
+          name: libsodium-linux-${{ matrix.arch }}
+          path: libsodium-${{ matrix.arch }}
+  build-windows-mingw:
+    name: build binaries for windows (mingw)
+    strategy:
+      fail-fast: false
+      matrix:
+        arch:
+          - win32
+          - win64
+    runs-on: ubuntu-latest
+    steps:
+      - name: install build tools
+        shell: bash
+        run: |
+          sudo dpkg --add-architecture i386
+          sudo apt-get update
+          sudo apt-get install gcc-mingw-w64 gcc-mingw-w64-i686 build-essential mingw-w64-i686-dev gcc-mingw-w64-i686-win32-runtime wine32 autoconf libtool wine wine64 wine-binfmt
+          sudo update-binfmts --disable cli #disable mono binfmt because it confuses mono 'executables' with real ones
+      - name: checkout code
+        uses: actions/checkout@v3
+        with:
+          fetch-depth: 1
+      - name: run autogen
+        shell: bash
+        run: |
+          ./autogen.sh -s
+      - name: build windows binaries
+        shell: bash
+        run: |
+          if [ "${{ matrix.arch }}" = "win32" ]; then
+            export WINEPATH="/usr/i686-w64-mingw32/lib;/usr/lib/gcc/i686-w64-mingw32/10-win32/"
+          else
+            export WINEPATH="/usr/x86_64-w64-mingw32/lib;/usr/lib/gcc/x86_64-w64-mingw32/10-win32/"
+          fi
+          ./dist-build/msys2-${{ matrix.arch }}.sh
+      - name: upload built binaries
+        uses: actions/upload-artifact@v3
+        with:
+          name: libsodium-windows-mingw-${{ matrix.arch }}
+          path: libsodium-${{ matrix.arch }}
+  build-apple:
+    name: build binaries for apple
+    runs-on: macos-latest
+    steps:
+      - name: install automake
+        shell: bash
+        run: |
+          brew install automake
+      - name: checkout code
+        uses: actions/checkout@v3
+        with:
+          fetch-depth: 1
+      - name: run autogen
+        shell: bash
+        run: |
+          ./autogen.sh -s
+      - name: build binaries
+        shell: bash
+        run: |
+          ./dist-build/apple-xcframework.sh
+      - name: upload built binaries
+        uses: actions/upload-artifact@v3
+        with:
+          name: libsodium-apple-all
+          path: libsodium-apple
+  build-windows-msvc:
+    name: build binaries for windows (msvc)
+    runs-on: windows-latest
+    steps:
+      - name: checkout code
+        uses: actions/checkout@v3
+        with:
+          fetch-depth: 1
+      - name: build binaries
+        shell: cmd
+        run: |
+          CALL builds\msvc\build\buildbase.bat builds\msvc\vs2022\libsodium.sln 17
+      - name: upload built binaries
+        uses: actions/upload-artifact@v3
+        with:
+          name: libsodium-windows-msvc-all
+          path: bin
