@@ -249,7 +249,7 @@ pub fn build(b: *std.build.Builder) !void {
             else => {},
         }
 
-        var allocator = heap.page_allocator;
+        const allocator = heap.page_allocator;
         var walker = try src_dir.walk(allocator);
         while (try walker.next()) |entry| {
             const name = entry.basename;
@@ -280,7 +280,7 @@ pub fn build(b: *std.build.Builder) !void {
     fs.Dir.makePath(cwd, out_bin_path) catch {};
     const out_bin_dir = try fs.Dir.openDir(cwd, out_bin_path, .{});
     try test_dir.dir.copyFile("run.sh", out_bin_dir, "run.sh", .{});
-    var allocator = heap.page_allocator;
+    const allocator = heap.page_allocator;
     var walker = try test_dir.walk(allocator);
     if (build_tests) {
         while (try walker.next()) |entry| {
