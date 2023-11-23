@@ -62,7 +62,7 @@ fi
   --with-sysroot="${TOOLCHAIN_DIR}/sysroot" || exit 1
 
 if [ "$NDK_PLATFORM" != "$NDK_PLATFORM_COMPAT" ]; then
-  egrep '^#define ' config.log | sort -u >config-def-compat.log
+  grep -E '^#define ' config.log | sort -u >config-def-compat.log
   echo
   echo "Configuring again for platform [${NDK_PLATFORM}]"
   echo
