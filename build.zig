@@ -12,7 +12,7 @@ pub fn build(b: *std.build.Builder) !void {
     defer cwd.close();
 
     const src_path = "src/libsodium";
-    const src_dir = try fs.Dir.openIterableDir(cwd, src_path, .{ .no_follow = true });
+    const src_dir = try fs.Dir.openDir(cwd, src_path, .{ .no_follow = true });
 
     var target = b.standardTargetOptions(.{});
     const optimize = b.standardOptimizeOption(.{});
@@ -70,8 +70,8 @@ pub fn build(b: *std.build.Builder) !void {
     const prebuilt_version_file_path = "builds/msvc/version.h";
     const version_file_path = "include/sodium/version.h";
 
-    if (src_dir.dir.access(version_file_path, .{ .mode = .read_only })) {} else |_| {
-        try cwd.copyFile(prebuilt_version_file_path, src_dir.dir, version_file_path, .{});
+    if (src_dir.access(version_file_path, .{ .mode = .read_only })) {} else |_| {
+        try cwd.copyFile(prebuilt_version_file_path, src_dir, version_file_path, .{});
     }
 
     for (libs.items) |lib| {
@@ -104,16 +104,9 @@ pub fn build(b: *std.build.Builder) !void {
 
         if (target.cpu_arch) |arch| {
             const endian = arch.endian();
-            if (@hasField(@TypeOf(endian), "big")) {
-                switch (endian) {
-                    .big => lib.defineCMacro("NATIVE_BIG_ENDIAN", "1"),
-                    .little => lib.defineCMacro("NATIVE_LITTLE_ENDIAN", "1"),
-                }
-            } else {
-                switch (endian) {
-                    .Big => lib.defineCMacro("NATIVE_BIG_ENDIAN", "1"),
-                    .Little => lib.defineCMacro("NATIVE_LITTLE_ENDIAN", "1"),
-                }
+            switch (endian) {
+                .big => lib.defineCMacro("NATIVE_BIG_ENDIAN", "1"),
+                .little => lib.defineCMacro("NATIVE_LITTLE_ENDIAN", "1"),
             }
         }
 
@@ -262,11 +255,7 @@ pub fn build(b: *std.build.Builder) !void {
                     "-fwrapv",
                     "-flax-vector-conversions",
                 };
-                if (@hasDecl(std.Build.Step.Compile, "AddCSourceFilesOptions")) {
-                    lib.addCSourceFiles(.{ .files = &.{full_path}, .flags = flags });
-                } else {
-                    lib.addCSourceFiles(&.{full_path}, flags);
-                }
+                lib.addCSourceFiles(.{ .files = &.{full_path}, .flags = flags });
             } else if (mem.endsWith(u8, name, ".S")) {
                 const full_path = try fmt.allocPrint(allocator, "{s}/{s}", .{ src_path, entry.path });
                 lib.addAssemblyFile(.{ .path = full_path });
@@ -276,17 +265,17 @@ pub fn build(b: *std.build.Builder) !void {
 
     const test_path = "test/default";
     const out_bin_path = "zig-out/bin";
-    const test_dir = try fs.Dir.openIterableDir(cwd, test_path, .{ .no_follow = true });
+    const test_dir = try fs.Dir.openDir(cwd, test_path, .{ .no_follow = true });
     fs.Dir.makePath(cwd, out_bin_path) catch {};
     const out_bin_dir = try fs.Dir.openDir(cwd, out_bin_path, .{});
-    try test_dir.dir.copyFile("run.sh", out_bin_dir, "run.sh", .{});
+    try test_dir.copyFile("run.sh", out_bin_dir, "run.sh", .{});
     const allocator = heap.page_allocator;
     var walker = try test_dir.walk(allocator);
     if (build_tests) {
         while (try walker.next()) |entry| {
             const name = entry.basename;
             if (mem.endsWith(u8, name, ".exp")) {
-                try test_dir.dir.copyFile(name, out_bin_dir, name, .{});
+                try test_dir.copyFile(name, out_bin_dir, name, .{});
                 continue;
             }
             if (!mem.endsWith(u8, name, ".c")) {
@@ -304,11 +293,7 @@ pub fn build(b: *std.build.Builder) !void {
             exe.addIncludePath(.{ .path = "src/libsodium/include" });
             exe.addIncludePath(.{ .path = "test/quirks" });
             const full_path = try fmt.allocPrint(allocator, "{s}/{s}", .{ test_path, entry.path });
-            if (@hasDecl(std.Build.Step.Compile, "AddCSourceFilesOptions")) {
-                exe.addCSourceFiles(.{ .files = &.{full_path} });
-            } else {
-                exe.addCSourceFiles(&.{full_path}, &.{});
-            }
+            exe.addCSourceFiles(.{ .files = &.{full_path} });
             if (enable_benchmarks) {
                 exe.defineCMacro("BENCHMARKS", "1");
                 var buf: [16]u8 = undefined;
