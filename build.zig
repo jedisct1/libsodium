@@ -12,7 +12,7 @@ pub fn build(b: *std.build.Builder) !void {
     defer cwd.close();
 
     const src_path = "src/libsodium";
-    const src_dir = try fs.Dir.openDir(cwd, src_path, .{ .no_follow = true });
+    const src_dir = try fs.Dir.openDir(cwd, src_path, .{ .iterate = true, .no_follow = true });
 
     var target = b.standardTargetOptions(.{});
     const optimize = b.standardOptimizeOption(.{});
@@ -265,7 +265,7 @@ pub fn build(b: *std.build.Builder) !void {
 
     const test_path = "test/default";
     const out_bin_path = "zig-out/bin";
-    const test_dir = try fs.Dir.openDir(cwd, test_path, .{ .no_follow = true });
+    const test_dir = try fs.Dir.openDir(cwd, test_path, .{ .iterate = true, .no_follow = true });
     fs.Dir.makePath(cwd, out_bin_path) catch {};
     const out_bin_dir = try fs.Dir.openDir(cwd, out_bin_path, .{});
     try test_dir.copyFile("run.sh", out_bin_dir, "run.sh", .{});
