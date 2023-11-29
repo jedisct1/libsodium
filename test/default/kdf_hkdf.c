@@ -81,10 +81,12 @@ tv_kdf_hkdf(void)
     assert(crypto_kdf_hkdf_sha512_bytes_min() == crypto_kdf_hkdf_sha512_BYTES_MIN);
     assert(crypto_kdf_hkdf_sha512_bytes_max() == crypto_kdf_hkdf_sha512_BYTES_MAX);
     assert(crypto_kdf_hkdf_sha512_keybytes() == crypto_kdf_hkdf_sha512_KEYBYTES);
+    assert(crypto_kdf_hkdf_sha512_statebytes() >= sizeof (crypto_kdf_hkdf_sha512_state));
 
     assert(crypto_kdf_hkdf_sha256_bytes_min() == crypto_kdf_hkdf_sha256_BYTES_MIN);
     assert(crypto_kdf_hkdf_sha256_bytes_max() == crypto_kdf_hkdf_sha256_BYTES_MAX);
     assert(crypto_kdf_hkdf_sha256_keybytes() == crypto_kdf_hkdf_sha256_KEYBYTES);
+    assert(crypto_kdf_hkdf_sha256_statebytes() >= sizeof (crypto_kdf_hkdf_sha256_state));
 
     assert(crypto_kdf_hkdf_sha256_KEYBYTES < crypto_kdf_hkdf_sha512_KEYBYTES);
 
