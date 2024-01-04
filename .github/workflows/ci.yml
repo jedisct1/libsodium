@@ -41,7 +41,7 @@ jobs:
         run: sudo apt-get update
 
       - name: Install Zig
-        uses: goto-bus-stop/setup-zig@6fede2f0550d71291c0accf2834b216e69a2d67a
+        uses: goto-bus-stop/setup-zig@d866436887ad1b24590684f9d00480376663dd36
         with:
           version: master
 
