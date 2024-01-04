@@ -40,17 +40,16 @@ jobs:
       - name: Update packages list
         run: sudo apt-get update
 
-      - name: Install dependencies
-        run: |
-          curl -sL -o - https://ziglang.org/download/0.11.0/zig-linux-x86_64-0.11.0.tar.xz | tar xJ -f - -C /opt/
-          sudo mv /opt/zig-* /opt/zig
+      - name: Install Zig
+        uses: goto-bus-stop/setup-zig@d866436887ad1b24590684f9d00480376663dd36
+        with:
+          version: 0.11.0
 
       - name: Autogen
         run: ./autogen.sh -s
 
       - name: Compilation with zig
         run: |
-          export PATH=/opt/zig:$PATH
           zig build
           zig build -Dtarget=x86_64-linux
           zig build -Dtarget=aarch64-linux
@@ -177,5 +176,4 @@ jobs:
 
       - name: Android compilation
         run: |
-          env ANDROID_NDK_HOME=/tmp/android/ndk ./dist-build/android-x86.sh
-          env ANDROID_NDK_HOME=/tmp/android/ndk ./dist-build/android-armv8-a.sh
+          env ANDROID_NDK_HOME=/tmp/android/ndk ./dist-build/android-aar.sh
