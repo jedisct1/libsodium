@@ -3,10 +3,10 @@ const fmt = std.fmt;
 const fs = std.fs;
 const heap = std.heap;
 const mem = std.mem;
-const LibExeObjStep = std.build.LibExeObjStep;
+const Compile = std.Build.Step.Compile;
 const Target = std.Target;
 
-pub fn build(b: *std.build.Builder) !void {
+pub fn build(b: *std.Build) !void {
     const root_path = b.pathFromRoot(".");
     var cwd = try fs.openDirAbsolute(root_path, .{});
     defer cwd.close();
@@ -28,19 +28,20 @@ pub fn build(b: *std.build.Builder) !void {
         build_static = true;
     }
 
-    switch (target.getCpuArch()) {
+    switch (target.result.cpu.arch) {
         // Features we assume are always available because they won't affect
         // code generation in files that don't use them.
         .x86_64 => {
-            target.cpu_features_add.addFeature(@intFromEnum(Target.x86.Feature.aes));
-            target.cpu_features_add.addFeature(@intFromEnum(Target.x86.Feature.pclmul));
-            target.cpu_features_add.addFeature(@intFromEnum(Target.x86.Feature.rdrnd));
+            target.query.cpu_features_add.addFeature(@intFromEnum(Target.x86.Feature.sse4_1));
+            target.query.cpu_features_add.addFeature(@intFromEnum(Target.x86.Feature.aes));
+            target.query.cpu_features_add.addFeature(@intFromEnum(Target.x86.Feature.pclmul));
+            target.query.cpu_features_add.addFeature(@intFromEnum(Target.x86.Feature.rdrnd));
         },
         .aarch64, .aarch64_be => {
-            target.cpu_features_add.addFeature(@intFromEnum(Target.aarch64.Feature.crypto));
+            target.query.cpu_features_add.addFeature(@intFromEnum(Target.aarch64.Feature.crypto));
             // ARM CPUs supported by Windows also support NEON.
-            if (target.isWindows()) {
-                target.cpu_features_add.addFeature(@intFromEnum(Target.aarch64.Feature.neon));
+            if (target.result.isMinGW()) {
+                target.query.cpu_features_add.addFeature(@intFromEnum(Target.aarch64.Feature.neon));
             }
         },
         else => {},
@@ -52,13 +53,14 @@ pub fn build(b: *std.build.Builder) !void {
         .optimize = optimize,
     });
     const shared_lib = b.addSharedLibrary(.{
-        .name = if (target.isWindows()) "sodium_shared" else "sodium",
+        .name = if (target.result.isMinGW()) "sodium_shared" else "sodium",
         .target = target,
         .optimize = optimize,
+        .strip = optimize != .Debug and !target.result.isMinGW(),
     });
 
     // work out which libraries we are building
-    var libs = std.ArrayList(*LibExeObjStep).init(b.allocator);
+    var libs = std.ArrayList(*Compile).init(b.allocator);
     defer libs.deinit();
     if (build_static) {
         try libs.append(static_lib);
@@ -76,13 +78,9 @@ pub fn build(b: *std.build.Builder) !void {
 
     for (libs.items) |lib| {
         if (lib.isDynamicLibrary() and
-            !(target.isDarwin() or target.isDragonFlyBSD() or target.isFreeBSD() or
-            target.isLinux() or target.isNetBSD() or target.isOpenBSD() or target.isWindows()))
+            !(target.result.isDarwin() or target.result.isBSD() or target.result.isGnu() or target.result.isAndroid() or target.result.isMinGW()))
         {
             continue;
-        }
-        if (optimize != .Debug and !target.isWindows() and !lib.isStaticLibrary()) {
-            lib.strip = true;
         }
         b.installArtifact(lib);
         lib.installHeader(src_path ++ "/include/sodium.h", "sodium.h");
@@ -102,15 +100,13 @@ pub fn build(b: *std.build.Builder) !void {
         lib.defineCMacro("HAVE_STDINT_H", "1");
         lib.defineCMacro("HAVE_TI_MODE", "1");
 
-        if (target.cpu_arch) |arch| {
-            const endian = arch.endian();
-            switch (endian) {
-                .big => lib.defineCMacro("NATIVE_BIG_ENDIAN", "1"),
-                .little => lib.defineCMacro("NATIVE_LITTLE_ENDIAN", "1"),
-            }
+        const endian = target.result.cpu.arch.endian();
+        switch (endian) {
+            .big => lib.defineCMacro("NATIVE_BIG_ENDIAN", "1"),
+            .little => lib.defineCMacro("NATIVE_LITTLE_ENDIAN", "1"),
         }
 
-        switch (target.getOsTag()) {
+        switch (target.result.os.tag) {
             .linux => {
                 lib.defineCMacro("ASM_HIDE_SYMBOL", ".hidden");
                 lib.defineCMacro("TLS", "_Thread_local");
@@ -184,7 +180,7 @@ pub fn build(b: *std.build.Builder) !void {
             else => {},
         }
 
-        switch (target.getCpuArch()) {
+        switch (target.result.cpu.arch) {
             .x86_64 => {
                 lib.defineCMacro("HAVE_AMD64_ASM", "1");
                 lib.defineCMacro("HAVE_AVX_ASM", "1");
@@ -192,7 +188,7 @@ pub fn build(b: *std.build.Builder) !void {
                 lib.defineCMacro("HAVE_MMINTRIN_H", "1");
                 lib.defineCMacro("HAVE_EMMINTRIN_H", "1");
 
-                const cpu_features = target.getCpuFeatures();
+                const cpu_features = target.result.cpu.features;
                 const has_sse3 = cpu_features.isEnabled(@intFromEnum(Target.x86.Feature.sse3));
                 const has_ssse3 = cpu_features.isEnabled(@intFromEnum(Target.x86.Feature.ssse3));
                 const has_sse4_1 = cpu_features.isEnabled(@intFromEnum(Target.x86.Feature.sse4_1));
@@ -213,7 +209,7 @@ pub fn build(b: *std.build.Builder) !void {
                 if (has_rdrnd) lib.defineCMacro("HAVE_RDRAND", "1");
             },
             .aarch64, .aarch64_be => {
-                const cpu_features = target.getCpuFeatures();
+                const cpu_features = target.result.cpu.features;
                 const has_neon = cpu_features.isEnabled(@intFromEnum(Target.aarch64.Feature.neon));
                 const has_crypto = cpu_features.isEnabled(@intFromEnum(Target.aarch64.Feature.crypto));
                 if (has_neon and has_crypto) {
@@ -226,18 +222,9 @@ pub fn build(b: *std.build.Builder) !void {
             else => {},
         }
 
-        switch (target.getOsTag()) {
+        switch (target.result.os.tag) {
             .wasi => {
                 lib.defineCMacro("__wasi__", "1");
-            },
-            else => {},
-        }
-
-        switch (target.getCpuArch()) {
-            .x86_64 => {
-                lib.target.cpu_features_add.addFeature(@intFromEnum(Target.x86.Feature.sse4_1));
-                lib.target.cpu_features_add.addFeature(@intFromEnum(Target.x86.Feature.aes));
-                lib.target.cpu_features_add.addFeature(@intFromEnum(Target.x86.Feature.pclmul));
             },
             else => {},
         }
@@ -286,9 +273,9 @@ pub fn build(b: *std.build.Builder) !void {
                 .name = exe_name,
                 .target = target,
                 .optimize = optimize,
+                .strip = true,
             });
             exe.linkLibC();
-            exe.strip = true;
             exe.linkLibrary(static_lib);
             exe.addIncludePath(.{ .path = "src/libsodium/include" });
             exe.addIncludePath(.{ .path = "test/quirks" });
