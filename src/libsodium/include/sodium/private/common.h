@@ -250,6 +250,9 @@ xor_buf(unsigned char *out, const unsigned char *in, size_t n)
 
 # elif defined(_M_ARM64)
 
+#  ifndef __ARM_ARCH
+#   define __ARM_ARCH 1
+#  endif
 #  ifndef __ARM_NEON
 #   define __ARM_NEON 1
 #  endif
