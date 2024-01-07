@@ -6,6 +6,8 @@
  - apple-xcframework: VisionOS packages are not built if Xcode doesn't
 include that SDK.
  - `crypto_kdf_hkdf_sha512_statebytes()` was added.
+ - When using Visual Studio, runtime CPU feature detection is now enabled
+on Windows/aarch64.
 
 * Version 1.0.19
   This release includes all the changes from 1.0.18-stable, as well as two
