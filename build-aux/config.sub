@@ -1766,7 +1766,7 @@ case $os in
 	     | onefs* | tirtos* | phoenix* | fuchsia* | redox* | bme* \
 	     | midnightbsd* | amdhsa* | unleashed* | emscripten* | wasi* \
 	     | nsk* | powerunix* | genode* | zvmoe* | qnx* | emx* | zephyr* \
-	     | fiwix* | mlibc* | cos* | mbr* )
+	     | fiwix* | mlibc* | cos* | mbr*| ohos* )
 		;;
 	# This one is extra strict with allowed versions
 	sco3.2v2 | sco3.2v[4-9]* | sco5v6*)
@@ -1818,7 +1818,7 @@ esac
 # As a final step for OS-related things, validate the OS-kernel combination
 # (given a valid OS), if there is a kernel.
 case $kernel-$os-$obj in
-	linux-gnu*- | linux-dietlibc*- | linux-android*- | linux-newlib*- \
+	linux-gnu*- | linux-dietlibc*- | linux-android*- | linux-ohos*- | linux-newlib*- \
 		   | linux-musl*- | linux-relibc*- | linux-uclibc*- | linux-mlibc*- )
 		;;
 	uclinux-uclibc*- )
