@@ -1,7 +1,9 @@
 name: Release nuget package
 
 on:
-  workflow_dispatch:
+  push:
+    tags:
+      - andrzej/**
 
 jobs:
   windows:
