@@ -1,0 +1,203 @@
+name: Release nuget package
+
+on:
+  workflow_dispatch:
+
+jobs:
+  windows:
+    runs-on: windows-latest
+
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - arch: 'amd64'
+          - arch: 'arm64'
+
+    steps:
+      - name: Checkout the latest code
+        uses: actions/checkout@v4.1.1
+        with:
+          token: ${{ secrets.BOT_GITHUB_TOKEN }}
+          fetch-depth: 0
+
+      - uses: compnerd/gha-setup-vsdevenv@main
+        with:
+          host_arch: amd64
+          components: 'Microsoft.VisualStudio.Component.VC.Tools.x86.x64;Microsoft.VisualStudio.Component.VC.Tools.ARM64'
+          arch: ${{ matrix.arch }}
+
+      - uses: actions/setup-python@v4
+        id: python
+        with:
+          python-version: 3.9
+          architecture: 'x64'
+
+      - name: Build StaticRelease
+        run:
+          msbuild .\builds\msvc\vs2022\libsodium.sln /p:Configuration=StaticRelease /p:Platform=${{ matrix.arch }}
+
+      - name: Build DynRelease
+        run:
+          msbuild .\builds\msvc\vs2022\libsodium.sln /p:Configuration=DynRelease /p:Platform=${{ matrix.arch }}
+
+      - name: Build LtcgRelease
+        run:
+          msbuild .\builds\msvc\vs2022\libsodium.sln /p:Configuration=LtcgRelease /p:Platform=${{ matrix.arch }}
+
+      # - name: Package firebase-cpp-sdk
+      #   run: |
+      #     @"
+      #     <?xml version="1.0" encoding="utf-8"?>
+      #     <package xmlns="http://schemas.microsoft.com/packaging/2010/07/nuspec.xsd">
+      #       <metadata>
+      #         <id>com.google.firebase.windows.${{ matrix.arch }}</id>
+      #         <version>0.0.0.0</version>
+      #         <title>Firebase C++ SDK</title>
+      #         <description>C++ Firebase SDK</description>
+      #         <authors>Google, Inc.</authors>
+      #         <projectUrl>https://firebase.google.com</projectUrl>
+      #         <repository type="git" url="https://github.com/google/firebase-cpp-sdk" branch="main" />
+      #       </metadata>
+      #       <files>
+      #         <file src="`$BUILDROOT`$\usr\include\firebase\app.h" target="include/firebase" />
+      #         <file src="`$BUILDROOT`$\usr\include\firebase\auth.h" target="include/firebase" />
+      #         <file src="`$BUILDROOT`$\usr\include\firebase\firestore.h" target="include/firebase" />
+      #         <file src="`$BUILDROOT`$\usr\include\firebase\future.h" target="include/firebase" />
+      #         <file src="`$BUILDROOT`$\usr\include\firebase\log.h" target="include/firebase" />
+      #         <file src="`$BUILDROOT`$\usr\include\firebase\util.h" target="include/firebase" />
+      #         <file src="`$BUILDROOT`$\usr\include\firebase\variant.h" target="include/firebase" />
+      #         <file src="`$BUILDROOT`$\usr\include\firebase\auth\credential.h" target="include/firebase/auth" />
+      #         <file src="`$BUILDROOT`$\usr\include\firebase\auth\types.h" target="include/firebase/auth" />
+      #         <file src="`$BUILDROOT`$\usr\include\firebase\auth\user.h" target="include/firebase/auth" />
+      #         <file src="`$BUILDROOT`$\usr\include\firebase\firestore\aggregate_query.h" target="include/firebase/firestore" />
+      #         <file src="`$BUILDROOT`$\usr\include\firebase\firestore\aggregate_query_snapshot.h" target="include/firebase/firestore" />
+      #         <file src="`$BUILDROOT`$\usr\include\firebase\firestore\aggregate_source.h" target="include/firebase/firestore" />
+      #         <file src="`$BUILDROOT`$\usr\include\firebase\firestore\collection_reference.h" target="include/firebase/firestore" />
+      #         <file src="`$BUILDROOT`$\usr\include\firebase\firestore\document_change.h" target="include/firebase/firestore" />
+      #         <file src="`$BUILDROOT`$\usr\include\firebase\firestore\document_reference.h" target="include/firebase/firestore" />
+      #         <file src="`$BUILDROOT`$\usr\include\firebase\firestore\document_snapshot.h" target="include/firebase/firestore" />
+      #         <file src="`$BUILDROOT`$\usr\include\firebase\firestore\field_path.h" target="include/firebase/firestore" />
+      #         <file src="`$BUILDROOT`$\usr\include\firebase\firestore\field_value.h" target="include/firebase/firestore" />
+      #         <file src="`$BUILDROOT`$\usr\include\firebase\firestore\firestore_errors.h" target="include/firebase/firestore" />
+      #         <file src="`$BUILDROOT`$\usr\include\firebase\firestore\geo_point.h" target="include/firebase/firestore" />
+      #         <file src="`$BUILDROOT`$\usr\include\firebase\firestore\listener_registration.h" target="include/firebase/firestore" />
+      #         <file src="`$BUILDROOT`$\usr\include\firebase\firestore\load_bundle_task_progress.h" target="include/firebase/firestore" />
+      #         <file src="`$BUILDROOT`$\usr\include\firebase\firestore\map_field_value.h" target="include/firebase/firestore" />
+      #         <file src="`$BUILDROOT`$\usr\include\firebase\firestore\metadata_changes.h" target="include/firebase/firestore" />
+      #         <file src="`$BUILDROOT`$\usr\include\firebase\firestore\query.h" target="include/firebase/firestore" />
+      #         <file src="`$BUILDROOT`$\usr\include\firebase\firestore\query_snapshot.h" target="include/firebase/firestore" />
+      #         <file src="`$BUILDROOT`$\usr\include\firebase\firestore\settings.h" target="include/firebase/firestore" />
+      #         <file src="`$BUILDROOT`$\usr\include\firebase\firestore\set_options.h" target="include/firebase/firestore" />
+      #         <file src="`$BUILDROOT`$\usr\include\firebase\firestore\snapshot_metadata.h" target="include/firebase/firestore" />
+      #         <file src="`$BUILDROOT`$\usr\include\firebase\firestore\source.h" target="include/firebase/firestore" />
+      #         <file src="`$BUILDROOT`$\usr\include\firebase\firestore\timestamp.h" target="include/firebase/firestore" />
+      #         <file src="`$BUILDROOT`$\usr\include\firebase\firestore\transaction.h" target="include/firebase/firestore" />
+      #         <file src="`$BUILDROOT`$\usr\include\firebase\firestore\transaction_options.h" target="include/firebase/firestore" />
+      #         <file src="`$BUILDROOT`$\usr\include\firebase\firestore\write_batch.h" target="include/firebase/firestore" />
+      #         <file src="`$BUILDROOT`$\usr\include\firebase\internal\common.h" target="include/firebase/internal" />
+      #         <file src="`$BUILDROOT`$\usr\include\firebase\internal\future_impl.h" target="include/firebase/internal" />
+      #         <file src="`$BUILDROOT`$\usr\include\firebase\internal\mutex.h" target="include/firebase/internal" />
+      #         <file src="`$BUILDROOT`$\usr\include\firebase\internal\platform.h" target="include/firebase/internal" />
+      #         <file src="`$BUILDROOT`$\usr\include\firebase\internal\type_traits.h" target="include/firebase/internal" />
+      #         <!-- FIXME(compnerd) is this header actually required? -->
+      #         <file src="`$BUILDROOT`$\usr\include\google_play_services\availability.h" target="include/google_play_services" />
+      #         <file src="`$BUILDROOT`$\usr\libs\windows\firebase_app.lib" target="lib" />
+      #         <file src="`$BUILDROOT`$\usr\libs\windows\firebase_auth.lib" target="lib" />
+      #         <file src="`$BUILDROOT`$\usr\libs\windows\firebase_firestore.lib" target="lib" />
+      #         <file src="`$BUILDROOT`$\usr\libs\windows\firebase_rest_lib.lib" target="lib" />
+      #         <file src="`$BUILDROOT`$\usr\libs\windows\firestore_core.lib" target="lib" />
+      #         <file src="`$BUILDROOT`$\usr\libs\windows\firestore_nanopb.lib" target="lib" />
+      #         <file src="`$BUILDROOT`$\usr\libs\windows\firestore_protos_nanopb.lib" target="lib" />
+      #         <file src="`$BUILDROOT`$\usr\libs\windows\firestore_util.lib" target="lib" />
+      #         <!-- dependencies -->
+      #         <file src="`$BUILDROOT`$\usr\libs\windows\absl_bad_optional_access.lib" target="lib" />
+      #         <file src="`$BUILDROOT`$\usr\libs\windows\absl_bad_variant_access.lib" target="lib" />
+      #         <file src="`$BUILDROOT`$\usr\libs\windows\absl_base.lib" target="lib" />
+      #         <file src="`$BUILDROOT`$\usr\libs\windows\absl_city.lib" target="lib" />
+      #         <file src="`$BUILDROOT`$\usr\libs\windows\absl_civil_time.lib" target="lib" />
+      #         <file src="`$BUILDROOT`$\usr\libs\windows\absl_cord.lib" target="lib" />
+      #         <file src="`$BUILDROOT`$\usr\libs\windows\absl_cord_internal.lib" target="lib" />
+      #         <file src="`$BUILDROOT`$\usr\libs\windows\absl_cordz_functions.lib" target="lib" />
+      #         <file src="`$BUILDROOT`$\usr\libs\windows\absl_cordz_handle.lib" target="lib" />
+      #         <file src="`$BUILDROOT`$\usr\libs\windows\absl_cordz_info.lib" target="lib" />
+      #         <file src="`$BUILDROOT`$\usr\libs\windows\absl_debugging_internal.lib" target="lib" />
+      #         <file src="`$BUILDROOT`$\usr\libs\windows\absl_demangle_internal.lib" target="lib" />
+      #         <file src="`$BUILDROOT`$\usr\libs\windows\absl_exponential_biased.lib" target="lib" />
+      #         <file src="`$BUILDROOT`$\usr\libs\windows\absl_graphcycles_internal.lib" target="lib" />
+      #         <file src="`$BUILDROOT`$\usr\libs\windows\absl_hash.lib" target="lib" />
+      #         <file src="`$BUILDROOT`$\usr\libs\windows\absl_hashtablez_sampler.lib" target="lib" />
+      #         <file src="`$BUILDROOT`$\usr\libs\windows\absl_int128.lib" target="lib" />
+      #         <file src="`$BUILDROOT`$\usr\libs\windows\absl_log_severity.lib" target="lib" />
+      #         <file src="`$BUILDROOT`$\usr\libs\windows\absl_low_level_hash.lib" target="lib" />
+      #         <file src="`$BUILDROOT`$\usr\libs\windows\absl_malloc_internal.lib" target="lib" />
+      #         <file src="`$BUILDROOT`$\usr\libs\windows\absl_random_distributions.lib" target="lib" />
+      #         <file src="`$BUILDROOT`$\usr\libs\windows\absl_random_internal_seed_material.lib" target="lib" />
+      #         <file src="`$BUILDROOT`$\usr\libs\windows\absl_random_internal_platform.lib" target="lib" />
+      #         <file src="`$BUILDROOT`$\usr\libs\windows\absl_random_internal_pool_urbg.lib" target="lib" />
+      #         <file src="`$BUILDROOT`$\usr\libs\windows\absl_random_internal_randen.lib" target="lib" />
+      #         <file src="`$BUILDROOT`$\usr\libs\windows\absl_random_internal_randen_hwaes.lib" target="lib" />
+      #         <file src="`$BUILDROOT`$\usr\libs\windows\absl_random_internal_randen_hwaes_impl.lib" target="lib" />
+      #         <file src="`$BUILDROOT`$\usr\libs\windows\absl_random_internal_randen_slow.lib" target="lib" />
+      #         <file src="`$BUILDROOT`$\usr\libs\windows\absl_random_seed_gen_exception.lib" target="lib" />
+      #         <file src="`$BUILDROOT`$\usr\libs\windows\absl_random_seed_sequences.lib" target="lib" />
+      #         <file src="`$BUILDROOT`$\usr\libs\windows\absl_raw_hash_set.lib" target="lib" />
+      #         <file src="`$BUILDROOT`$\usr\libs\windows\absl_raw_logging_internal.lib" target="lib" />
+      #         <file src="`$BUILDROOT`$\usr\libs\windows\absl_spinlock_wait.lib" target="lib" />
+      #         <file src="`$BUILDROOT`$\usr\libs\windows\absl_stacktrace.lib" target="lib" />
+      #         <file src="`$BUILDROOT`$\usr\libs\windows\absl_status.lib" target="lib" />
+      #         <file src="`$BUILDROOT`$\usr\libs\windows\absl_statusor.lib" target="lib" />
+      #         <file src="`$BUILDROOT`$\usr\libs\windows\absl_str_format_internal.lib" target="lib" />
+      #         <file src="`$BUILDROOT`$\usr\libs\windows\absl_strerror.lib" target="lib" />
+      #         <file src="`$BUILDROOT`$\usr\libs\windows\absl_strings.lib" target="lib" />
+      #         <file src="`$BUILDROOT`$\usr\libs\windows\absl_strings_internal.lib" target="lib" />
+      #         <file src="`$BUILDROOT`$\usr\libs\windows\absl_symbolize.lib" target="lib" />
+      #         <file src="`$BUILDROOT`$\usr\libs\windows\absl_synchronization.lib" target="lib" />
+      #         <file src="`$BUILDROOT`$\usr\libs\windows\absl_throw_delegate.lib" target="lib" />
+      #         <file src="`$BUILDROOT`$\usr\libs\windows\absl_time.lib" target="lib" />
+      #         <file src="`$BUILDROOT`$\usr\libs\windows\absl_time_zone.lib" target="lib" />
+      #         <file src="`$BUILDROOT`$\usr\libs\windows\address_sorting.lib" target="lib" />
+      #         <file src="`$BUILDROOT`$\usr\libs\windows\cares.lib" target="lib" />
+      #         <file src="`$BUILDROOT`$\usr\libs\windows\crypto.lib" target="lib" />
+      #         <file src="`$BUILDROOT`$\usr\libs\windows\fipsmodule.lib" target="lib" />
+      #         <file src="`$BUILDROOT`$\usr\libs\windows\flatbuffers.lib" target="lib" />
+      #         <file src="`$BUILDROOT`$\usr\libs\windows\gpr.lib" target="lib" />
+      #         <file src="`$BUILDROOT`$\usr\libs\windows\grpc.lib" target="lib" />
+      #         <file src="`$BUILDROOT`$\usr\libs\windows\grpc++.lib" target="lib" />
+      #         <file src="`$BUILDROOT`$\usr\libs\windows\leveldb.lib" target="lib" />
+      #         <file src="`$BUILDROOT`$\usr\libs\windows\libcurl.lib" target="lib" />
+      #         <file src="`$BUILDROOT`$\usr\libs\windows\libprotobuf.lib" target="lib" />
+      #         <file src="`$BUILDROOT`$\usr\libs\windows\libuWS.lib" target="lib" />
+      #         <file src="`$BUILDROOT`$\usr\libs\windows\protobuf-nanopb.lib" target="lib" />
+      #         <file src="`$BUILDROOT`$\usr\libs\windows\re2.lib" target="lib" />
+      #         <file src="`$BUILDROOT`$\usr\libs\windows\snappy.lib" target="lib" />
+      #         <file src="`$BUILDROOT`$\usr\libs\windows\ssl.lib" target="lib" />
+      #         <file src="`$BUILDROOT`$\usr\libs\windows\upb.lib" target="lib" />
+      #         <file src="`$BUILDROOT`$\usr\libs\windows\uv_a.lib" target="lib" />
+      #         <file src="`$BUILDROOT`$\usr\libs\windows\zlibstatic.lib" target="lib" />
+      #       </files>
+      #     </package>
+      #     "@ | Out-File -Encoding UTF8 firebase.nuspec
+      #     nuget pack -Properties BUILDROOT=${{ github.workspace }}\BuildRoot\Library\firebase -Suffix (git -C ${{ github.workspace }}/SourceCache/firebase-cpp-sdk log -1 --format=%h) firebase.nuspec
+      #   shell: pwsh
+      # - uses: actions/upload-artifact@v3
+      #   with:
+      #     name: windows-${{ matrix.arch }}.nupkg
+      #     path: com.google.firebase.windows.${{ matrix.arch }}.*.nupkg
+
+      # - name: Publish NuGet Packages
+      #   env:
+      #     NUGET_SOURCE_NAME: TheBrowserCompany
+      #     NUGET_SOURCE_URL: https://nuget.pkg.github.com/thebrowsercompany/index.json
+      #     NUGET_SOURCE_USERNAME: thebrowsercompany-bot2
+      #     NUGET_SOURCE_PASSWORD: ${{ secrets.GITHUB_TOKEN }}
+      #     NUGET_API_KEY: ${{ secrets.GITHUB_TOKEN }}
+      #   run: |
+      #     if ((nuget sources List | Select-String "${env:NUGET_SOURCE_NAME}").Count -gt 0) {
+      #       nuget sources Remove -Name "${env:NUGET_SOURCE_NAME}"
+      #     }
+      #     nuget sources Add -Name ${env:NUGET_SOURCE_NAME} -Source ${env:NUGET_SOURCE_URL} -Username ${env:NUGET_SOURCE_USERNAME} -Password ${env:NUGET_SOURCE_PASSWORD} -StorePasswordInClearText
+      #     nuget setApiKey ${env:NUGET_API_KEY} -Source ${env:NUGET_SOURCE_URL}
+      #     $pkgs = Get-ChildItem -Path com.google.firebase.windows.${{ matrix.arch }}.*.nupkg
+      #     nuget push $pkgs[0].Name -Source ${env:NUGET_SOURCE_URL} -SkipDuplicate
+      #   shell: pwsh
