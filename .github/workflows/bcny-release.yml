@@ -1,9 +1,10 @@
 name: Release nuget package
 
 on:
-  push:
-    tags:
-      - andrzej/**
+  workflow_dispatch:
+  pull_request:
+    branches:
+      - main
 
 jobs:
   windows:
