@@ -12,7 +12,6 @@
 
   <ItemDefinitionGroup>
     <ClCompile>
-      <DebugInformationFormat>OldStyle</DebugInformationFormat>
       <RuntimeLibrary>MultiThreadedDebug</RuntimeLibrary>
     </ClCompile>
   </ItemDefinitionGroup>
