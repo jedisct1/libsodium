@@ -7,8 +7,8 @@
 ![libsodium](https://raw.github.com/jedisct1/libsodium/master/logo.png)
 ============
 
-Sodium is a new, easy-to-use software library for encryption,
-decryption, signatures, password hashing and more.
+Sodium is an easy-to-use software library for encryption,
+decryption, signatures, password hashing, and more.
 
 It is a portable, cross-compilable, installable, packageable
 fork of [NaCl](http://nacl.cr.yp.to/), with a compatible API, and an
