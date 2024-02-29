@@ -477,16 +477,16 @@ for f in macos ios watchos tvos visionos catalyst; do
   if [ "$VISIONOS_SUPPORTED" = false ] && [ "$f" = "visionos" ]; then
     continue
   fi
-  XCFRAMEWORK_ARGS="${XCFRAMEWORK_ARGS} -library ${PREFIX}/${f}/lib/libsodium.a"
-  XCFRAMEWORK_ARGS="${XCFRAMEWORK_ARGS} -headers ${PREFIX}/${f}/include"
+  XCFRAMEWORK_ARGS="${XCFRAMEWORK_ARGS} -library $(readlink -f ${PREFIX}/${f}/lib/libsodium.a)"
+  XCFRAMEWORK_ARGS="${XCFRAMEWORK_ARGS} -headers $(readlink -f ${PREFIX}/${f}/include)"
 done
 if [ -z "$LIBSODIUM_SKIP_SIMULATORS" ]; then
   for f in ios-simulators watchos-simulators tvos-simulators visionos-simulators; do
     if [ "$VISIONOS_SUPPORTED" = false ] && [ "$f" = "visionos-simulators" ]; then
       continue
     fi
-    XCFRAMEWORK_ARGS="${XCFRAMEWORK_ARGS} -library ${PREFIX}/${f}/lib/libsodium.a"
-    XCFRAMEWORK_ARGS="${XCFRAMEWORK_ARGS} -headers ${PREFIX}/${f}/include"
+    XCFRAMEWORK_ARGS="${XCFRAMEWORK_ARGS} -library $(readlink -f ${PREFIX}/${f}/lib/libsodium.a)"
+    XCFRAMEWORK_ARGS="${XCFRAMEWORK_ARGS} -headers $(readlink -f ${PREFIX}/${f}/include)"
   done
 fi
 xcodebuild -create-xcframework \
