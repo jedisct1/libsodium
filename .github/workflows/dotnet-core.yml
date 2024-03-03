@@ -10,7 +10,7 @@ jobs:
   build-windows:
     runs-on: windows-latest
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
       - name: buildbase.bat
         run: buildbase.bat ..\vs2022\libsodium.sln 17
         working-directory: builds/msvc/build/
@@ -31,7 +31,7 @@ jobs:
         uses: goto-bus-stop/setup-zig@d866436887ad1b24590684f9d00480376663dd36
         with:
           version: master
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
       - name: build
         run: |
           zig build -Doptimize=ReleaseFast -Dtarget=x86_64-linux-gnu.2.17 -Dcpu=sandybridge
@@ -58,7 +58,7 @@ jobs:
           sudo update-binfmts --enable qemu-arm
           sudo update-binfmts --display
           sudo ln -s /usr/arm-linux-gnueabihf/lib/ld-linux-armhf.so.* /lib
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
       - name: build
         run: |
           zig build -Doptimize=ReleaseFast -Dtarget=arm-linux-gnueabihf.2.23 -Dcpu=baseline
@@ -86,7 +86,7 @@ jobs:
           sudo update-binfmts --enable qemu-aarch64
           sudo update-binfmts --display
           sudo ln -s /usr/aarch64-linux-gnu/lib/ld-linux-aarch64.so.* /lib
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
       - name: build
         run: |
           zig build -Doptimize=ReleaseFast -Dtarget=aarch64-linux-gnu.2.23 -Dcpu=baseline
@@ -111,7 +111,7 @@ jobs:
         uses: goto-bus-stop/setup-zig@d866436887ad1b24590684f9d00480376663dd36
         with:
           version: master
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
       - name: build
         run: |
           zig build -Doptimize=ReleaseFast -Dtarget=x86_64-linux-musl -Dcpu=sandybridge
@@ -130,7 +130,7 @@ jobs:
         uses: goto-bus-stop/setup-zig@d866436887ad1b24590684f9d00480376663dd36
         with:
           version: master
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
       - name: build
         run: |
           zig build -Doptimize=ReleaseFast -Dtarget=arm-linux-musleabihf -Dcpu=baseline
@@ -146,7 +146,7 @@ jobs:
         uses: goto-bus-stop/setup-zig@d866436887ad1b24590684f9d00480376663dd36
         with:
           version: master
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
       - name: build
         run: |
           zig build -Doptimize=ReleaseFast -Dtarget=aarch64-linux-musl -Dcpu=baseline
@@ -158,7 +158,7 @@ jobs:
   build-apple:
     runs-on: macos-latest
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
       - name: build-xcframework
         run: env LIBSODIUM_FULL_BUILD=1 LIBSODIUM_SKIP_SIMULATORS=1 dist-build/apple-xcframework.sh
       - uses: actions/upload-artifact@v3
@@ -199,7 +199,7 @@ jobs:
       DOTNET_SKIP_FIRST_TIME_EXPERIENCE: 1
       DOTNET_SYSTEM_GLOBALIZATION_INVARIANT: 1
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
       - uses: actions/download-artifact@v3
         with:
           name: build-win-x64
@@ -276,7 +276,7 @@ jobs:
       DOTNET_SKIP_FIRST_TIME_EXPERIENCE: 1
       DOTNET_SYSTEM_GLOBALIZATION_INVARIANT: 1
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
       - uses: actions/download-artifact@v3
         with:
           name: nuget-package
