@@ -21976,7 +21976,7 @@ if test "x$EMSCRIPTEN" != "x"
 then :
 
   EXEEXT=.js
-  TEST_LDFLAGS='--memory-init-file 0 --pre-js pre.js.inc -s RESERVED_FUNCTION_POINTERS=8'
+  TEST_LDFLAGS='--pre-js pre.js.inc -s RESERVED_FUNCTION_POINTERS=8'
 
 fi
 
