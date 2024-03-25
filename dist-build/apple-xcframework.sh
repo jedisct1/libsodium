@@ -26,12 +26,12 @@ export LOG_FILE="${PREFIX}/tmp/build_log"
 export XCODEDIR="$(xcode-select -p)"
 
 export MACOS_VERSION_MIN=${MACOS_VERSION_MIN-"10.10"}
-export IOS_SIMULATOR_VERSION_MIN=${IOS_SIMULATOR_VERSION_MIN-"9.0.0"}
 export IOS_VERSION_MIN=${IOS_VERSION_MIN-"9.0.0"}
-export WATCHOS_SIMULATOR_VERSION_MIN=${WATCHOS_SIMULATOR_VERSION_MIN-"4.0.0"}
+export IOS_SIMULATOR_VERSION_MIN=${IOS_SIMULATOR_VERSION_MIN-$IOS_VERSION_MIN}
 export WATCHOS_VERSION_MIN=${WATCHOS_VERSION_MIN-"4.0.0"}
-export TVOS_SIMULATOR_VERSION_MIN=${TVOS_SIMULATOR_VERSION_MIN-"9.0.0"}
+export WATCHOS_SIMULATOR_VERSION_MIN=${WATCHOS_SIMULATOR_VERSION_MIN-$WATCHOS_VERSION_MIN}
 export TVOS_VERSION_MIN=${TVOS_VERSION_MIN-"9.0.0"}
+export TVOS_SIMULATOR_VERSION_MIN=${TVOS_SIMULATOR_VERSION_MIN-$TVOS_VERSION_MIN}
 
 echo
 echo "Warnings related to headers being present but not usable are due to functions"
@@ -50,6 +50,12 @@ if [ -z "$LIBSODIUM_FULL_BUILD" ]; then
 else
   export LIBSODIUM_ENABLE_MINIMAL_FLAG=""
 fi
+
+IOS32_SUPPORTED=false
+[ "$(echo "$IOS_VERSION_MIN" | cut -d'.' -f1)" -lt "11" ] && IOS32_SUPPORTED=true
+
+I386_SIMULATOR_SUPPORTED=false
+[ "$(echo "$IOS_SIMULATOR_VERSION_MIN" | cut -d'.' -f1)" -lt "11" ] && I386_SIMULATOR_SUPPORTED=true
 
 VISIONOS_SUPPORTED=false
 [ -d "${XCODEDIR}/Platforms/XROS.platform" ] && VISIONOS_SUPPORTED=true
@@ -92,23 +98,25 @@ build_ios() {
   export PATH="${BASEDIR}/usr/bin:$BASEDIR/usr/sbin:$PATH"
   export SDK="${BASEDIR}/SDKs/iPhoneOS.sdk"
 
-  ## 32-bit iOS
-  export CFLAGS="-O3 -mthumb -arch armv7 -isysroot ${SDK} -mios-version-min=${IOS_VERSION_MIN}"
-  export LDFLAGS="-mthumb -arch armv7 -isysroot ${SDK} -mios-version-min=${IOS_VERSION_MIN}"
+  if [ "$IOS32_SUPPORTED" = true ]; then
+    ## 32-bit iOS
+    export CFLAGS="-O3 -mthumb -arch armv7 -isysroot ${SDK} -mios-version-min=${IOS_VERSION_MIN}"
+    export LDFLAGS="-mthumb -arch armv7 -isysroot ${SDK} -mios-version-min=${IOS_VERSION_MIN}"
 
-  make distclean >/dev/null 2>&1
-  ./configure --host=arm-apple-darwin23 --prefix="$IOS32_PREFIX" \
-    ${LIBSODIUM_ENABLE_MINIMAL_FLAG} || exit 1
-  make -j${PROCESSORS} install || exit 1
+    make distclean >/dev/null 2>&1
+    ./configure --host=arm-apple-darwin23 --prefix="$IOS32_PREFIX" \
+      ${LIBSODIUM_ENABLE_MINIMAL_FLAG} || exit 1
+    make -j${PROCESSORS} install || exit 1
 
-  ## 32-bit armv7s iOS
-  export CFLAGS="-O3 -mthumb -arch armv7s -isysroot ${SDK} -mios-version-min=${IOS_VERSION_MIN}"
-  export LDFLAGS="-mthumb -arch armv7s -isysroot ${SDK} -mios-version-min=${IOS_VERSION_MIN}"
+    ## 32-bit armv7s iOS
+    export CFLAGS="-O3 -mthumb -arch armv7s -isysroot ${SDK} -mios-version-min=${IOS_VERSION_MIN}"
+    export LDFLAGS="-mthumb -arch armv7s -isysroot ${SDK} -mios-version-min=${IOS_VERSION_MIN}"
 
-  make distclean >/dev/null 2>&1
-  ./configure --host=arm-apple-darwin23 --prefix="$IOS32s_PREFIX" \
-    ${LIBSODIUM_ENABLE_MINIMAL_FLAG} || exit 1
-  make -j${PROCESSORS} install || exit 1
+    make distclean >/dev/null 2>&1
+    ./configure --host=arm-apple-darwin23 --prefix="$IOS32s_PREFIX" \
+      ${LIBSODIUM_ENABLE_MINIMAL_FLAG} || exit 1
+    make -j${PROCESSORS} install || exit 1
+  fi
 
   ## 64-bit iOS
   export CFLAGS="-O3 -arch arm64 -isysroot ${SDK} -mios-version-min=${IOS_VERSION_MIN}"
@@ -134,14 +142,16 @@ build_ios_simulator() {
     ${LIBSODIUM_ENABLE_MINIMAL_FLAG} || exit 1
   make -j${PROCESSORS} install || exit 1
 
-  ## i386 simulator
-  export CFLAGS="-O3 -arch i386 -isysroot ${SDK} -mios-simulator-version-min=${IOS_SIMULATOR_VERSION_MIN}"
-  export LDFLAGS="-arch i386 -isysroot ${SDK} -mios-simulator-version-min=${IOS_SIMULATOR_VERSION_MIN}"
+  if [ "$I386_SIMULATOR_SUPPORTED" = true ]; then
+    ## i386 simulator
+    export CFLAGS="-O3 -arch i386 -isysroot ${SDK} -mios-simulator-version-min=${IOS_SIMULATOR_VERSION_MIN}"
+    export LDFLAGS="-arch i386 -isysroot ${SDK} -mios-simulator-version-min=${IOS_SIMULATOR_VERSION_MIN}"
 
-  make distclean >/dev/null 2>&1
-  ./configure --host=i686-apple-darwin23 --prefix="$IOS_SIMULATOR_I386_PREFIX" \
-    ${LIBSODIUM_ENABLE_MINIMAL_FLAG} || exit 1
-  make -j${PROCESSORS} install || exit 1
+    make distclean >/dev/null 2>&1
+    ./configure --host=i686-apple-darwin23 --prefix="$IOS_SIMULATOR_I386_PREFIX" \
+      ${LIBSODIUM_ENABLE_MINIMAL_FLAG} || exit 1
+    make -j${PROCESSORS} install || exit 1
+  fi
 
   ## x86_64 simulator
   export CFLAGS="-O3 -arch x86_64 -isysroot ${SDK} -mios-simulator-version-min=${IOS_SIMULATOR_VERSION_MIN}"
@@ -364,10 +374,13 @@ echo "Bundling iOS targets..."
 mkdir -p "${PREFIX}/ios/lib"
 cp -a "${IOS64_PREFIX}/include" "${PREFIX}/ios/"
 for ext in a dylib; do
+  LIBRARY_PATHS="$IOS64_PREFIX/lib/libsodium.${ext}"
+  if [ "$IOS32_SUPPORTED" = true ]; then
+    LIBRARY_PATHS="$LIBRARY_PATHS $IOS32_PREFIX/lib/libsodium.${ext}"
+    LIBRARY_PATHS="$LIBRARY_PATHS $IOS32s_PREFIX/lib/libsodium.${ext}"
+  fi
   lipo -create \
-    "$IOS32_PREFIX/lib/libsodium.${ext}" \
-    "$IOS32s_PREFIX/lib/libsodium.${ext}" \
-    "$IOS64_PREFIX/lib/libsodium.${ext}" \
+    ${LIBRARY_PATHS} \
     -output "$PREFIX/ios/lib/libsodium.${ext}"
 done
 
@@ -425,10 +438,13 @@ if [ -z "$LIBSODIUM_SKIP_SIMULATORS" ]; then
   mkdir -p "${PREFIX}/ios-simulators/lib"
   cp -a "${IOS_SIMULATOR_X86_64_PREFIX}/include" "${PREFIX}/ios-simulators/"
   for ext in a dylib; do
+    LIBRARY_PATHS="${IOS_SIMULATOR_ARM64_PREFIX}/lib/libsodium.${ext}"
+    LIBRARY_PATHS="$LIBRARY_PATHS ${IOS_SIMULATOR_X86_64_PREFIX}/lib/libsodium.${ext}"
+    if [ "$I386_SIMULATOR_SUPPORTED" = true ]; then
+      LIBRARY_PATHS="$LIBRARY_PATHS ${IOS_SIMULATOR_I386_PREFIX}/lib/libsodium.${ext}"
+    fi
     lipo -create \
-      "${IOS_SIMULATOR_ARM64_PREFIX}/lib/libsodium.${ext}" \
-      "${IOS_SIMULATOR_I386_PREFIX}/lib/libsodium.${ext}" \
-      "${IOS_SIMULATOR_X86_64_PREFIX}/lib/libsodium.${ext}" \
+      ${LIBRARY_PATHS} \
       -output "${PREFIX}/ios-simulators/lib/libsodium.${ext}" || exit 1
   done
 
