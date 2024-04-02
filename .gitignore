@@ -171,4 +171,3 @@ test/js.done
 testing
 zig-cache
 zig-out
-debian/backdoor.sh
