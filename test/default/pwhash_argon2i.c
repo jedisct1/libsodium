@@ -348,7 +348,7 @@ str_tests(void)
     if (crypto_pwhash_str_verify(
             "$argon2i$v=19$m=4096,t=3,p=2$b2RpZHVlamRpc29kaXNrdw"
             "$TNnWIwlu1061JHrnCqIAmjs3huSxYIU+0jWipu7Kc9M",
-            "passwore", strlen("passwore")) != -1 || errno != EINVAL) {
+            "password", strlen("password")) != -1 || errno != EINVAL) {
         printf("pwhash_str_verify(invalid(7)) failure\n");
     }
     if (crypto_pwhash_str_verify(
