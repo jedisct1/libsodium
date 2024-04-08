@@ -91,7 +91,7 @@ AS_IF([test "x$EMSCRIPTEN" != "x"], [
     enable_asm="no"
     AC_MSG_WARN([compiling to JavaScript - asm implementations disabled])
   ], [
-    AC_MSG_WARN([EMSCRIPTEN environment variable defined, but emcc doesn't appear to be used - Assuming compilation to native code])
+    AC_MSG_WARN([EMSCRIPTEN environment variable defined, but emcc doesn\'t appear to be used - Assuming compilation to native code])
     CFLAGS="$CFLAGS -U__EMSCRIPTEN__"
     unset EMSCRIPTEN
   ])
