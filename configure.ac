@@ -770,8 +770,8 @@ AC_COMPILE_IFELSE([AC_LANG_PROGRAM([[
 #ifndef NATIVE_LITTLE_ENDIAN
 # error libsodium currently expects a little endian CPU for the 128-bit type
 #endif
-#ifdef __EMSCRIPTEN__
-# error emscripten currently doesn't support some operations on integers larger than 64 bits
+#ifdef __wasm__
+# error 128-bit arithmetic in WebAssembly is slow
 #endif
 #include <stddef.h>
 #include <stdint.h>
