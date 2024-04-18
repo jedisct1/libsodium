@@ -118,10 +118,13 @@ jobs:
       - name: tests
         run: |
           cd zig-out/bin && ./run.sh
+      - name: debug-ls
+        run: |
+          ls -l -R zig-out/
       - uses: actions/upload-artifact@v3
         with:
           name: build-linux-musl-x64
-          path: zig-out/lib/libsodium.so
+          path: zig-out/lib/libsodium.a
 
   build-linux-musl-arm:
     runs-on: ubuntu-latest
@@ -134,10 +137,13 @@ jobs:
       - name: build
         run: |
           zig build -Doptimize=ReleaseFast -Dtarget=arm-linux-musleabihf -Dcpu=baseline
+      - name: debug-ls
+        run: |
+          ls -l -R zig-out/
       - uses: actions/upload-artifact@v3
         with:
           name: build-linux-musl-arm
-          path: zig-out/lib/libsodium.so
+          path: zig-out/lib/libsodium.a
 
   build-linux-musl-arm64:
     runs-on: ubuntu-latest
@@ -153,12 +159,20 @@ jobs:
       - uses: actions/upload-artifact@v3
         with:
           name: build-linux-musl-arm64
-          path: zig-out/lib/libsodium.so
+          path: zig-out/lib/libsodium.a
 
   build-apple:
     runs-on: macos-latest
     steps:
       - uses: actions/checkout@v4
+      - name: Install Automake
+        run: |
+          brew update
+          brew install automake
+      - name: Autogen
+        run: ./autogen.sh -s
+      - name: Configure
+        run: ./configure
       - name: build-xcframework
         run: env LIBSODIUM_FULL_BUILD=1 LIBSODIUM_SKIP_SIMULATORS=1 dist-build/apple-xcframework.sh
       - uses: actions/upload-artifact@v3
@@ -258,6 +272,9 @@ jobs:
           path: .libsodium-pack/runtimes/maccatalyst-arm64/native/
       - name: Copy files
         run: cp AUTHORS ChangeLog LICENSE packaging/dotnet-core/libsodium.pkgproj .libsodium-pack/
+      - name: debug-ls
+        run: |
+          ls -l -R .libsodium-pack/
       - name: Create NuGet package
         run: dotnet pack -c Release .libsodium-pack/libsodium.pkgproj
       - uses: actions/upload-artifact@v3
