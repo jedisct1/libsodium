@@ -118,9 +118,6 @@ jobs:
       - name: tests
         run: |
           cd zig-out/bin && ./run.sh
-      - name: debug-ls
-        run: |
-          ls -l -R zig-out/
       - uses: actions/upload-artifact@v3
         with:
           name: build-linux-musl-x64
@@ -137,9 +134,6 @@ jobs:
       - name: build
         run: |
           zig build -Doptimize=ReleaseFast -Dtarget=arm-linux-musleabihf -Dcpu=baseline
-      - name: debug-ls
-        run: |
-          ls -l -R zig-out/
       - uses: actions/upload-artifact@v3
         with:
           name: build-linux-musl-arm
@@ -272,9 +266,6 @@ jobs:
           path: .libsodium-pack/runtimes/maccatalyst-arm64/native/
       - name: Copy files
         run: cp AUTHORS ChangeLog LICENSE packaging/dotnet-core/libsodium.pkgproj .libsodium-pack/
-      - name: debug-ls
-        run: |
-          ls -l -R .libsodium-pack/
       - name: Create NuGet package
         run: dotnet pack -c Release .libsodium-pack/libsodium.pkgproj
       - uses: actions/upload-artifact@v3
