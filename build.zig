@@ -339,9 +339,10 @@ pub fn build(b: *std.Build) !void {
         };
 
         const allocator = heap.page_allocator;
+
+        // compile CPU-specific library code
         for (&mlibs) |*mlib| {
             var target2 = target;
-
             for (mlib.arches) |arch| {
                 if (target.result.cpu.arch == arch) {
                     for (mlib.flags) |flag| {
@@ -371,35 +372,33 @@ pub fn build(b: *std.Build) !void {
                 });
             }
             lib.linkLibrary(elib);
-            b.installArtifact(elib);
         }
 
-        { // compile generic library code
-            var walker = try src_dir.walk(allocator);
-            files: while (try walker.next()) |entry| {
-                var flags = std.ArrayList([]const u8).init(allocator);
-                defer flags.deinit();
-                try flags.appendSlice(base_flags);
+        // compile generic library code
+        var walker = try src_dir.walk(allocator);
+        files: while (try walker.next()) |entry| {
+            var flags = std.ArrayList([]const u8).init(allocator);
+            defer flags.deinit();
+            try flags.appendSlice(base_flags);
 
-                const name = entry.basename;
+            const name = entry.basename;
 
-                if (mem.endsWith(u8, name, ".c")) {
-                    for (mlibs) |mlib| {
-                        for (mlib.sources) |path| {
-                            if (mem.eql(u8, entry.path, path)) continue :files;
-                        }
+            if (mem.endsWith(u8, name, ".c")) {
+                for (mlibs) |mlib| {
+                    for (mlib.sources) |path| {
+                        if (mem.eql(u8, entry.path, path)) continue :files;
                     }
-
-                    const full_path = try fmt.allocPrint(allocator, "{s}/{s}", .{ src_path, entry.path });
-
-                    lib.addCSourceFiles(.{
-                        .files = &.{full_path},
-                        .flags = flags.items,
-                    });
-                } else if (mem.endsWith(u8, name, ".S")) {
-                    const full_path = try fmt.allocPrint(allocator, "{s}/{s}", .{ src_path, entry.path });
-                    lib.addAssemblyFile(.{ .path = full_path });
                 }
+
+                const full_path = try fmt.allocPrint(allocator, "{s}/{s}", .{ src_path, entry.path });
+
+                lib.addCSourceFiles(.{
+                    .files = &.{full_path},
+                    .flags = flags.items,
+                });
+            } else if (mem.endsWith(u8, name, ".S")) {
+                const full_path = try fmt.allocPrint(allocator, "{s}/{s}", .{ src_path, entry.path });
+                lib.addAssemblyFile(.{ .path = full_path });
             }
         }
     }
