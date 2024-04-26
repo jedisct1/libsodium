@@ -29,17 +29,8 @@ pub fn build(b: *std.Build) !void {
     }
 
     switch (target.result.cpu.arch) {
-        // Features we assume are always available because they won't affect
-        // code generation in files that don't use them.
-        .x86_64 => {
-            target.query.cpu_features_add.addFeature(@intFromEnum(Target.x86.Feature.sse4_1));
-            target.query.cpu_features_add.addFeature(@intFromEnum(Target.x86.Feature.aes));
-            target.query.cpu_features_add.addFeature(@intFromEnum(Target.x86.Feature.pclmul));
-            target.query.cpu_features_add.addFeature(@intFromEnum(Target.x86.Feature.rdrnd));
-        },
-        .aarch64, .aarch64_be => {
-            target.query.cpu_features_add.addFeature(@intFromEnum(Target.aarch64.Feature.crypto));
-            // ARM CPUs supported by Windows also support NEON.
+        .aarch64, .aarch64_be, .aarch64_32 => {
+            // ARM CPUs supported by Windows are assumed to have NEON support
             if (target.result.isMinGW()) {
                 target.query.cpu_features_add.addFeature(@intFromEnum(Target.aarch64.Feature.neon));
             }
@@ -187,34 +178,17 @@ pub fn build(b: *std.Build) !void {
                 lib.defineCMacro("HAVE_CPUID", "1");
                 lib.defineCMacro("HAVE_MMINTRIN_H", "1");
                 lib.defineCMacro("HAVE_EMMINTRIN_H", "1");
-
-                const cpu_features = target.result.cpu.features;
-                const has_sse3 = cpu_features.isEnabled(@intFromEnum(Target.x86.Feature.sse3));
-                const has_ssse3 = cpu_features.isEnabled(@intFromEnum(Target.x86.Feature.ssse3));
-                const has_sse4_1 = cpu_features.isEnabled(@intFromEnum(Target.x86.Feature.sse4_1));
-                const has_avx = cpu_features.isEnabled(@intFromEnum(Target.x86.Feature.avx));
-                const has_avx2 = cpu_features.isEnabled(@intFromEnum(Target.x86.Feature.avx2));
-                const has_avx512f = cpu_features.isEnabled(@intFromEnum(Target.x86.Feature.avx512f));
-                const has_aes = cpu_features.isEnabled(@intFromEnum(Target.x86.Feature.aes));
-                const has_pclmul = cpu_features.isEnabled(@intFromEnum(Target.x86.Feature.pclmul));
-                const has_rdrnd = cpu_features.isEnabled(@intFromEnum(Target.x86.Feature.rdrnd));
-
-                if (has_sse3) lib.defineCMacro("HAVE_PMMINTRIN_H", "1");
-                if (has_ssse3) lib.defineCMacro("HAVE_TMMINTRIN_H", "1");
-                if (has_sse4_1) lib.defineCMacro("HAVE_SMMINTRIN_H", "1");
-                if (has_avx) lib.defineCMacro("HAVE_AVXINTRIN_H", "1");
-                if (has_avx2) lib.defineCMacro("HAVE_AVX2INTRIN_H", "1");
-                if (has_avx512f) lib.defineCMacro("HAVE_AVX512FINTRIN_H", "1");
-                if (has_aes and has_pclmul) lib.defineCMacro("HAVE_WMMINTRIN_H", "1");
-                if (has_rdrnd) lib.defineCMacro("HAVE_RDRAND", "1");
+                lib.defineCMacro("HAVE_PMMINTRIN_H", "1");
+                lib.defineCMacro("HAVE_TMMINTRIN_H", "1");
+                lib.defineCMacro("HAVE_SMMINTRIN_H", "1");
+                lib.defineCMacro("HAVE_AVXINTRIN_H", "1");
+                lib.defineCMacro("HAVE_AVX2INTRIN_H", "1");
+                lib.defineCMacro("HAVE_AVX512FINTRIN_H", "1");
+                lib.defineCMacro("HAVE_WMMINTRIN_H", "1");
+                lib.defineCMacro("HAVE_RDRAND", "1");
             },
             .aarch64, .aarch64_be => {
-                const cpu_features = target.result.cpu.features;
-                const has_neon = cpu_features.isEnabled(@intFromEnum(Target.aarch64.Feature.neon));
-                const has_crypto = cpu_features.isEnabled(@intFromEnum(Target.aarch64.Feature.crypto));
-                if (has_neon and has_crypto) {
-                    lib.defineCMacro("HAVE_ARMCRYPTO", "1");
-                }
+                lib.defineCMacro("HAVE_ARMCRYPTO", "1");
             },
             .wasm32, .wasm64 => {
                 lib.defineCMacro("__wasm__", "1");
@@ -229,23 +203,176 @@ pub fn build(b: *std.Build) !void {
             else => {},
         }
 
+        const MFlags = enum {
+            sse2,
+            ssse3,
+            sse41,
+            avx,
+            avx2,
+            avx512f,
+            aes,
+            pclmul,
+            rdrnd,
+            crypto,
+
+            fn f(flag: @This()) []const u8 {
+                return switch (flag) {
+                    .sse2 => "-msse2",
+                    .ssse3 => "-mssse3",
+                    .sse41 => "-msse4.1",
+                    .avx => "-mavx",
+                    .avx2 => "-mavx2",
+                    .avx512f => "-mavx512f",
+                    .aes => "-maes",
+                    .pclmul => "-mpclmul",
+                    .rdrnd => "-mrdrnd",
+                    .crypto => "-mcrypto",
+                };
+            }
+        };
+
+        const MLib = struct {
+            name: []const u8,
+            count: usize,
+            sources: []const []const u8,
+            flags: []const MFlags,
+            arches: []const std.Target.Cpu.Arch,
+        };
+
+        var mlibs: [8]MLib = .{
+            .{
+                .name = "armcrypto",
+                .count = 3,
+                .sources = &.{
+                    "crypto_aead/aegis128l/aegis128l_armcrypto.c",
+                    "crypto_aead/aegis256/aegis256_armcrypto.c",
+                    "crypto_aead/aes256gcm/armcrypto/aead_aes256gcm_armcrypto.c",
+                },
+                .flags = &.{.aes},
+                .arches = &.{ .aarch64, .aarch64_be, .aarch64_32 },
+            },
+
+            .{
+                .name = "sse2",
+                .count = 1,
+                .sources = &.{
+                    "crypto_stream/salsa20/xmm6int/salsa20_xmm6int-sse2.c",
+                },
+                .flags = &.{.sse2},
+                .arches = &.{ .x86_64, .x86 },
+            },
+            .{
+                .name = "ssse3",
+                .count = 3,
+                .sources = &.{
+                    "crypto_generichash/blake2b/ref/blake2b-compress-ssse3.c",
+                    "crypto_pwhash/argon2/argon2-fill-block-ssse3.c",
+                    "crypto_stream/chacha20/dolbeau/chacha20_dolbeau-ssse3.c",
+                },
+                .flags = &.{.ssse3},
+                .arches = &.{ .x86_64, .x86 },
+            },
+            .{
+                .name = "sse41",
+                .count = 1,
+                .sources = &.{
+                    "crypto_generichash/blake2b/ref/blake2b-compress-sse41.c",
+                },
+                .flags = &.{.sse41},
+                .arches = &.{ .x86_64, .x86 },
+            },
+            .{
+                .name = "avx2",
+                .count = 4,
+                .sources = &.{
+                    "crypto_generichash/blake2b/ref/blake2b-compress-avx2.c",
+                    "crypto_pwhash/argon2/argon2-fill-block-avx2.c",
+                    "crypto_stream/chacha20/dolbeau/chacha20_dolbeau-avx2.c",
+                    "crypto_stream/salsa20/xmm6int/salsa20_xmm6int-avx2.c",
+                },
+                .flags = &.{.avx2},
+                .arches = &.{.x86_64},
+            },
+            .{
+                .name = "avx512f",
+                .count = 1,
+                .sources = &.{
+                    "crypto_pwhash/argon2/argon2-fill-block-avx512f.c",
+                },
+                .flags = &.{.avx512f},
+                .arches = &.{.x86_64},
+            },
+            .{
+                .name = "aesni",
+                .count = 3,
+                .sources = &.{
+                    "crypto_aead/aegis128l/aegis128l_aesni.c",
+                    "crypto_aead/aegis256/aegis256_aesni.c",
+                    "crypto_aead/aes256gcm/aesni/aead_aes256gcm_aesni.c",
+                },
+                .flags = &.{ .avx, .aes, .pclmul },
+                .arches = &.{.x86_64},
+            },
+            .{
+                .name = "mrdrnd",
+                .count = 1,
+                .sources = &.{
+                    "randombytes/internal/randombytes_internal_random.c",
+                },
+                .flags = &.{.rdrnd},
+                .arches = &.{ .x86_64, .x86 },
+            },
+        };
+        const base_flags = &.{
+            "-fvisibility=hidden",
+            "-fno-strict-aliasing",
+            "-fno-strict-overflow",
+            "-fwrapv",
+            "-flax-vector-conversions",
+        };
+
         const allocator = heap.page_allocator;
         var walker = try src_dir.walk(allocator);
         while (try walker.next()) |entry| {
+            var flags = std.ArrayList([]const u8).init(allocator);
+            defer flags.deinit();
+            try flags.appendSlice(base_flags);
+
             const name = entry.basename;
+
             if (mem.endsWith(u8, name, ".c")) {
+                for (&mlibs) |*mlib| {
+                    const found = found: for (mlib.sources) |path| {
+                        if (mem.eql(u8, entry.path, path)) break :found true;
+                    } else false;
+                    if (found) {
+                        for (mlib.arches) |arch| {
+                            if (target.result.cpu.arch == arch) {
+                                for (mlib.flags) |flag| try flags.append(flag.f());
+                                break;
+                            }
+                        }
+                        if (mlib.count == 0) {
+                            std.debug.panic("mlib[{s}].count = -1", .{mlib.name});
+                        }
+                        mlib.count -= 1;
+                    }
+                }
+
                 const full_path = try fmt.allocPrint(allocator, "{s}/{s}", .{ src_path, entry.path });
-                const flags = &.{
-                    "-fvisibility=hidden",
-                    "-fno-strict-aliasing",
-                    "-fno-strict-overflow",
-                    "-fwrapv",
-                    "-flax-vector-conversions",
-                };
-                lib.addCSourceFiles(.{ .files = &.{full_path}, .flags = flags });
+
+                lib.addCSourceFiles(.{
+                    .files = &.{full_path},
+                    .flags = flags.items,
+                });
             } else if (mem.endsWith(u8, name, ".S")) {
                 const full_path = try fmt.allocPrint(allocator, "{s}/{s}", .{ src_path, entry.path });
                 lib.addAssemblyFile(.{ .path = full_path });
+            }
+        }
+        for (mlibs) |mlib| {
+            if (mlib.count != 0) {
+                std.debug.panic("mlib[{s}].count = {}", .{ mlib.name, mlib.count });
             }
         }
     }
