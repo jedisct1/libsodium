@@ -189,8 +189,6 @@ libsodium_la_SOURCES += \
 	crypto_stream/xchacha20/stream_xchacha20.c
 endif
 
-randombytes_internal_randombytes_internal_random_CFLAGS = @CFLAGS_RDRAND@
-
 libsodium_la_LDFLAGS = \
 	$(AM_LDFLAGS) \
 	-export-dynamic \
