@@ -6,135 +6,6 @@ const mem = std.mem;
 const Compile = std.Build.Step.Compile;
 const Target = std.Target;
 
-fn initLibConfig(target: std.Build.ResolvedTarget, lib: *Compile) void {
-    lib.linkLibC();
-    lib.addIncludePath(.{ .path = "src/libsodium/include/sodium" });
-    lib.defineCMacro("_GNU_SOURCE", "1");
-    lib.defineCMacro("CONFIGURED", "1");
-    lib.defineCMacro("DEV_MODE", "1");
-    lib.defineCMacro("HAVE_ATOMIC_OPS", "1");
-    lib.defineCMacro("HAVE_C11_MEMORY_FENCES", "1");
-    lib.defineCMacro("HAVE_CET_H", "1");
-    lib.defineCMacro("HAVE_GCC_MEMORY_FENCES", "1");
-    lib.defineCMacro("HAVE_INLINE_ASM", "1");
-    lib.defineCMacro("HAVE_INTTYPES_H", "1");
-    lib.defineCMacro("HAVE_STDINT_H", "1");
-    lib.defineCMacro("HAVE_TI_MODE", "1");
-    lib.want_lto = false;
-
-    const endian = target.result.cpu.arch.endian();
-    switch (endian) {
-        .big => lib.defineCMacro("NATIVE_BIG_ENDIAN", "1"),
-        .little => lib.defineCMacro("NATIVE_LITTLE_ENDIAN", "1"),
-    }
-
-    switch (target.result.os.tag) {
-        .linux => {
-            lib.defineCMacro("ASM_HIDE_SYMBOL", ".hidden");
-            lib.defineCMacro("TLS", "_Thread_local");
-
-            lib.defineCMacro("HAVE_CATCHABLE_ABRT", "1");
-            lib.defineCMacro("HAVE_CATCHABLE_SEGV", "1");
-            lib.defineCMacro("HAVE_CLOCK_GETTIME", "1");
-            lib.defineCMacro("HAVE_GETPID", "1");
-            lib.defineCMacro("HAVE_INLINE_ASM", "1");
-            lib.defineCMacro("HAVE_MADVISE", "1");
-            lib.defineCMacro("HAVE_MLOCK", "1");
-            lib.defineCMacro("HAVE_MMAP", "1");
-            lib.defineCMacro("HAVE_MPROTECT", "1");
-            lib.defineCMacro("HAVE_NANOSLEEP", "1");
-            lib.defineCMacro("HAVE_POSIX_MEMALIGN", "1");
-            lib.defineCMacro("HAVE_PTHREAD_PRIO_INHERIT", "1");
-            lib.defineCMacro("HAVE_PTHREAD", "1");
-            lib.defineCMacro("HAVE_RAISE", "1");
-            lib.defineCMacro("HAVE_SYSCONF", "1");
-            lib.defineCMacro("HAVE_SYS_AUXV_H", "1");
-            lib.defineCMacro("HAVE_SYS_MMAN_H", "1");
-            lib.defineCMacro("HAVE_SYS_PARAM_H", "1");
-            lib.defineCMacro("HAVE_SYS_RANDOM_H", "1");
-            lib.defineCMacro("HAVE_WEAK_SYMBOLS", "1");
-        },
-        .windows => {
-            lib.defineCMacro("HAVE_RAISE", "1");
-            lib.defineCMacro("HAVE_SYS_PARAM_H", "1");
-            if (lib.isStaticLibrary()) {
-                lib.defineCMacro("SODIUM_STATIC", "1");
-            }
-        },
-        .macos => {
-            lib.defineCMacro("ASM_HIDE_SYMBOL", ".private_extern");
-            lib.defineCMacro("TLS", "_Thread_local");
-
-            lib.defineCMacro("HAVE_ARC4RANDOM", "1");
-            lib.defineCMacro("HAVE_ARC4RANDOM_BUF", "1");
-            lib.defineCMacro("HAVE_CATCHABLE_ABRT", "1");
-            lib.defineCMacro("HAVE_CATCHABLE_SEGV", "1");
-            lib.defineCMacro("HAVE_CLOCK_GETTIME", "1");
-            lib.defineCMacro("HAVE_GETENTROPY", "1");
-            lib.defineCMacro("HAVE_GETPID", "1");
-            lib.defineCMacro("HAVE_MADVISE", "1");
-            lib.defineCMacro("HAVE_MEMSET_S", "1");
-            lib.defineCMacro("HAVE_MLOCK", "1");
-            lib.defineCMacro("HAVE_MMAP", "1");
-            lib.defineCMacro("HAVE_MPROTECT", "1");
-            lib.defineCMacro("HAVE_NANOSLEEP", "1");
-            lib.defineCMacro("HAVE_POSIX_MEMALIGN", "1");
-            lib.defineCMacro("HAVE_PTHREAD", "1");
-            lib.defineCMacro("HAVE_PTHREAD_PRIO_INHERIT", "1");
-            lib.defineCMacro("HAVE_RAISE", "1");
-            lib.defineCMacro("HAVE_SYSCONF", "1");
-            lib.defineCMacro("HAVE_SYS_MMAN_H", "1");
-            lib.defineCMacro("HAVE_SYS_PARAM_H", "1");
-            lib.defineCMacro("HAVE_SYS_RANDOM_H", "1");
-            lib.defineCMacro("HAVE_WEAK_SYMBOLS", "1");
-        },
-        .wasi => {
-            lib.defineCMacro("HAVE_ARC4RANDOM", "1");
-            lib.defineCMacro("HAVE_ARC4RANDOM_BUF", "1");
-            lib.defineCMacro("HAVE_CLOCK_GETTIME", "1");
-            lib.defineCMacro("HAVE_GETENTROPY", "1");
-            lib.defineCMacro("HAVE_NANOSLEEP", "1");
-            lib.defineCMacro("HAVE_POSIX_MEMALIGN", "1");
-            lib.defineCMacro("HAVE_SYS_AUXV_H", "1");
-            lib.defineCMacro("HAVE_SYS_PARAM_H", "1");
-            lib.defineCMacro("HAVE_SYS_RANDOM_H", "1");
-        },
-        else => {},
-    }
-
-    switch (target.result.cpu.arch) {
-        .x86_64 => {
-            lib.defineCMacro("HAVE_AMD64_ASM", "1");
-            lib.defineCMacro("HAVE_AVX_ASM", "1");
-            lib.defineCMacro("HAVE_CPUID", "1");
-            lib.defineCMacro("HAVE_MMINTRIN_H", "1");
-            lib.defineCMacro("HAVE_EMMINTRIN_H", "1");
-            lib.defineCMacro("HAVE_PMMINTRIN_H", "1");
-            lib.defineCMacro("HAVE_TMMINTRIN_H", "1");
-            lib.defineCMacro("HAVE_SMMINTRIN_H", "1");
-            lib.defineCMacro("HAVE_AVXINTRIN_H", "1");
-            lib.defineCMacro("HAVE_AVX2INTRIN_H", "1");
-            lib.defineCMacro("HAVE_AVX512FINTRIN_H", "1");
-            lib.defineCMacro("HAVE_WMMINTRIN_H", "1");
-            lib.defineCMacro("HAVE_RDRAND", "1");
-        },
-        .aarch64, .aarch64_be => {
-            lib.defineCMacro("HAVE_ARMCRYPTO", "1");
-        },
-        .wasm32, .wasm64 => {
-            lib.defineCMacro("__wasm__", "1");
-        },
-        else => {},
-    }
-
-    switch (target.result.os.tag) {
-        .wasi => {
-            lib.defineCMacro("__wasi__", "1");
-        },
-        else => {},
-    }
-}
-
 pub fn build(b: *std.Build) !void {
     const root_path = b.pathFromRoot(".");
     var cwd = try fs.openDirAbsolute(root_path, .{});
@@ -205,8 +76,132 @@ pub fn build(b: *std.Build) !void {
         b.installArtifact(lib);
         lib.installHeader(.{ .path = src_path ++ "/include/sodium.h" }, "sodium.h");
         lib.installHeadersDirectory(.{ .path = src_path ++ "/include/sodium" }, "sodium", .{});
+        lib.linkLibC();
 
-        initLibConfig(target, lib);
+        lib.addIncludePath(.{ .path = "src/libsodium/include/sodium" });
+        lib.defineCMacro("_GNU_SOURCE", "1");
+        lib.defineCMacro("CONFIGURED", "1");
+        lib.defineCMacro("DEV_MODE", "1");
+        lib.defineCMacro("HAVE_ATOMIC_OPS", "1");
+        lib.defineCMacro("HAVE_C11_MEMORY_FENCES", "1");
+        lib.defineCMacro("HAVE_CET_H", "1");
+        lib.defineCMacro("HAVE_GCC_MEMORY_FENCES", "1");
+        lib.defineCMacro("HAVE_INLINE_ASM", "1");
+        lib.defineCMacro("HAVE_INTTYPES_H", "1");
+        lib.defineCMacro("HAVE_STDINT_H", "1");
+        lib.defineCMacro("HAVE_TI_MODE", "1");
+
+        const endian = target.result.cpu.arch.endian();
+        switch (endian) {
+            .big => lib.defineCMacro("NATIVE_BIG_ENDIAN", "1"),
+            .little => lib.defineCMacro("NATIVE_LITTLE_ENDIAN", "1"),
+        }
+
+        switch (target.result.os.tag) {
+            .linux => {
+                lib.defineCMacro("ASM_HIDE_SYMBOL", ".hidden");
+                lib.defineCMacro("TLS", "_Thread_local");
+
+                lib.defineCMacro("HAVE_CATCHABLE_ABRT", "1");
+                lib.defineCMacro("HAVE_CATCHABLE_SEGV", "1");
+                lib.defineCMacro("HAVE_CLOCK_GETTIME", "1");
+                lib.defineCMacro("HAVE_GETPID", "1");
+                lib.defineCMacro("HAVE_INLINE_ASM", "1");
+                lib.defineCMacro("HAVE_MADVISE", "1");
+                lib.defineCMacro("HAVE_MLOCK", "1");
+                lib.defineCMacro("HAVE_MMAP", "1");
+                lib.defineCMacro("HAVE_MPROTECT", "1");
+                lib.defineCMacro("HAVE_NANOSLEEP", "1");
+                lib.defineCMacro("HAVE_POSIX_MEMALIGN", "1");
+                lib.defineCMacro("HAVE_PTHREAD_PRIO_INHERIT", "1");
+                lib.defineCMacro("HAVE_PTHREAD", "1");
+                lib.defineCMacro("HAVE_RAISE", "1");
+                lib.defineCMacro("HAVE_SYSCONF", "1");
+                lib.defineCMacro("HAVE_SYS_AUXV_H", "1");
+                lib.defineCMacro("HAVE_SYS_MMAN_H", "1");
+                lib.defineCMacro("HAVE_SYS_PARAM_H", "1");
+                lib.defineCMacro("HAVE_SYS_RANDOM_H", "1");
+                lib.defineCMacro("HAVE_WEAK_SYMBOLS", "1");
+            },
+            .windows => {
+                lib.defineCMacro("HAVE_RAISE", "1");
+                lib.defineCMacro("HAVE_SYS_PARAM_H", "1");
+                if (lib.isStaticLibrary()) {
+                    lib.defineCMacro("SODIUM_STATIC", "1");
+                }
+            },
+            .macos => {
+                lib.defineCMacro("ASM_HIDE_SYMBOL", ".private_extern");
+                lib.defineCMacro("TLS", "_Thread_local");
+
+                lib.defineCMacro("HAVE_ARC4RANDOM", "1");
+                lib.defineCMacro("HAVE_ARC4RANDOM_BUF", "1");
+                lib.defineCMacro("HAVE_CATCHABLE_ABRT", "1");
+                lib.defineCMacro("HAVE_CATCHABLE_SEGV", "1");
+                lib.defineCMacro("HAVE_CLOCK_GETTIME", "1");
+                lib.defineCMacro("HAVE_GETENTROPY", "1");
+                lib.defineCMacro("HAVE_GETPID", "1");
+                lib.defineCMacro("HAVE_MADVISE", "1");
+                lib.defineCMacro("HAVE_MEMSET_S", "1");
+                lib.defineCMacro("HAVE_MLOCK", "1");
+                lib.defineCMacro("HAVE_MMAP", "1");
+                lib.defineCMacro("HAVE_MPROTECT", "1");
+                lib.defineCMacro("HAVE_NANOSLEEP", "1");
+                lib.defineCMacro("HAVE_POSIX_MEMALIGN", "1");
+                lib.defineCMacro("HAVE_PTHREAD", "1");
+                lib.defineCMacro("HAVE_PTHREAD_PRIO_INHERIT", "1");
+                lib.defineCMacro("HAVE_RAISE", "1");
+                lib.defineCMacro("HAVE_SYSCONF", "1");
+                lib.defineCMacro("HAVE_SYS_MMAN_H", "1");
+                lib.defineCMacro("HAVE_SYS_PARAM_H", "1");
+                lib.defineCMacro("HAVE_SYS_RANDOM_H", "1");
+                lib.defineCMacro("HAVE_WEAK_SYMBOLS", "1");
+            },
+            .wasi => {
+                lib.defineCMacro("HAVE_ARC4RANDOM", "1");
+                lib.defineCMacro("HAVE_ARC4RANDOM_BUF", "1");
+                lib.defineCMacro("HAVE_CLOCK_GETTIME", "1");
+                lib.defineCMacro("HAVE_GETENTROPY", "1");
+                lib.defineCMacro("HAVE_NANOSLEEP", "1");
+                lib.defineCMacro("HAVE_POSIX_MEMALIGN", "1");
+                lib.defineCMacro("HAVE_SYS_AUXV_H", "1");
+                lib.defineCMacro("HAVE_SYS_PARAM_H", "1");
+                lib.defineCMacro("HAVE_SYS_RANDOM_H", "1");
+            },
+            else => {},
+        }
+
+        switch (target.result.cpu.arch) {
+            .x86_64 => {
+                lib.defineCMacro("HAVE_AMD64_ASM", "1");
+                lib.defineCMacro("HAVE_AVX_ASM", "1");
+                lib.defineCMacro("HAVE_CPUID", "1");
+                lib.defineCMacro("HAVE_MMINTRIN_H", "1");
+                lib.defineCMacro("HAVE_EMMINTRIN_H", "1");
+                lib.defineCMacro("HAVE_PMMINTRIN_H", "1");
+                lib.defineCMacro("HAVE_TMMINTRIN_H", "1");
+                lib.defineCMacro("HAVE_SMMINTRIN_H", "1");
+                lib.defineCMacro("HAVE_AVXINTRIN_H", "1");
+                lib.defineCMacro("HAVE_AVX2INTRIN_H", "1");
+                lib.defineCMacro("HAVE_AVX512FINTRIN_H", "1");
+                lib.defineCMacro("HAVE_WMMINTRIN_H", "1");
+                lib.defineCMacro("HAVE_RDRAND", "1");
+            },
+            .aarch64, .aarch64_be => {
+                lib.defineCMacro("HAVE_ARMCRYPTO", "1");
+            },
+            .wasm32, .wasm64 => {
+                lib.defineCMacro("__wasm__", "1");
+            },
+            else => {},
+        }
+
+        switch (target.result.os.tag) {
+            .wasi => {
+                lib.defineCMacro("__wasi__", "1");
+            },
+            else => {},
+        }
 
         const MFlags = enum {
             sse2,
@@ -220,18 +215,18 @@ pub fn build(b: *std.Build) !void {
             rdrnd,
             crypto,
 
-            fn f(flag: @This()) Target.Cpu.Feature.Set.Index {
+            fn f(flag: @This()) []const u8 {
                 return switch (flag) {
-                    .sse2 => @intFromEnum(Target.x86.Feature.sse2),
-                    .ssse3 => @intFromEnum(Target.x86.Feature.ssse3),
-                    .sse41 => @intFromEnum(Target.x86.Feature.sse4_1),
-                    .avx => @intFromEnum(Target.x86.Feature.avx),
-                    .avx2 => @intFromEnum(Target.x86.Feature.avx2),
-                    .avx512f => @intFromEnum(Target.x86.Feature.avx512f),
-                    .aes => @intFromEnum(Target.x86.Feature.aes),
-                    .pclmul => @intFromEnum(Target.x86.Feature.pclmul),
-                    .rdrnd => @intFromEnum(Target.x86.Feature.rdrnd),
-                    .crypto => @intFromEnum(Target.aarch64.Feature.crypto),
+                    .sse2 => "-msse2",
+                    .ssse3 => "-mssse3",
+                    .sse41 => "-msse4.1",
+                    .avx => "-mavx",
+                    .avx2 => "-mavx2",
+                    .avx512f => "-mavx512f",
+                    .aes => "-maes",
+                    .pclmul => "-mpclmul",
+                    .rdrnd => "-mrdrnd",
+                    .crypto => "-mcrypto",
                 };
             }
         };
@@ -242,7 +237,6 @@ pub fn build(b: *std.Build) !void {
             sources: []const []const u8,
             flags: []const MFlags,
             arches: []const std.Target.Cpu.Arch,
-            lib: *Compile = undefined,
         };
 
         var mlibs: [8]MLib = .{
@@ -275,7 +269,7 @@ pub fn build(b: *std.Build) !void {
                     "crypto_pwhash/argon2/argon2-fill-block-ssse3.c",
                     "crypto_stream/chacha20/dolbeau/chacha20_dolbeau-ssse3.c",
                 },
-                .flags = &.{ .sse2, .ssse3 },
+                .flags = &.{.ssse3},
                 .arches = &.{ .x86_64, .x86 },
             },
             .{
@@ -284,7 +278,7 @@ pub fn build(b: *std.Build) !void {
                 .sources = &.{
                     "crypto_generichash/blake2b/ref/blake2b-compress-sse41.c",
                 },
-                .flags = &.{ .sse2, .ssse3, .sse41 },
+                .flags = &.{.sse41},
                 .arches = &.{ .x86_64, .x86 },
             },
             .{
@@ -296,7 +290,7 @@ pub fn build(b: *std.Build) !void {
                     "crypto_stream/chacha20/dolbeau/chacha20_dolbeau-avx2.c",
                     "crypto_stream/salsa20/xmm6int/salsa20_xmm6int-avx2.c",
                 },
-                .flags = &.{ .sse2, .ssse3, .sse41, .avx, .avx2 },
+                .flags = &.{.avx2},
                 .arches = &.{.x86_64},
             },
             .{
@@ -305,7 +299,7 @@ pub fn build(b: *std.Build) !void {
                 .sources = &.{
                     "crypto_pwhash/argon2/argon2-fill-block-avx512f.c",
                 },
-                .flags = &.{ .sse2, .ssse3, .sse41, .avx, .avx2, .avx512f },
+                .flags = &.{.avx512f},
                 .arches = &.{.x86_64},
             },
             .{
@@ -329,7 +323,6 @@ pub fn build(b: *std.Build) !void {
                 .arches = &.{ .x86_64, .x86 },
             },
         };
-
         const base_flags = &.{
             "-fvisibility=hidden",
             "-fno-strict-aliasing",
@@ -339,67 +332,47 @@ pub fn build(b: *std.Build) !void {
         };
 
         const allocator = heap.page_allocator;
-        for (&mlibs) |*mlib| {
-            var target2 = target;
-
-            for (mlib.arches) |arch| {
-                if (target.result.cpu.arch == arch) {
-                    for (mlib.flags) |flag| {
-                        target2.query.cpu_features_add.addFeature(flag.f());
-                    }
-                    break;
-                }
-            }
-
-            mlib.lib = b.addStaticLibrary(.{
-                .name = mlib.name,
-                .target = target2,
-                .optimize = optimize,
-            });
-            const elib = mlib.lib;
-            initLibConfig(target, elib);
-
+        var walker = try src_dir.walk(allocator);
+        while (try walker.next()) |entry| {
             var flags = std.ArrayList([]const u8).init(allocator);
             defer flags.deinit();
             try flags.appendSlice(base_flags);
 
-            for (mlib.sources) |path| {
-                const full_path = try fmt.allocPrint(allocator, "{s}/{s}", .{ src_path, path });
-                elib.addCSourceFiles(.{
+            const name = entry.basename;
+
+            if (mem.endsWith(u8, name, ".c")) {
+                for (&mlibs) |*mlib| {
+                    const found = found: for (mlib.sources) |path| {
+                        if (mem.eql(u8, entry.path, path)) break :found true;
+                    } else false;
+                    if (found) {
+                        for (mlib.arches) |arch| {
+                            if (target.result.cpu.arch == arch) {
+                                for (mlib.flags) |flag| try flags.append(flag.f());
+                                break;
+                            }
+                        }
+                        if (mlib.count == 0) {
+                            std.debug.panic("mlib[{s}].count = -1", .{mlib.name});
+                        }
+                        mlib.count -= 1;
+                    }
+                }
+
+                const full_path = try fmt.allocPrint(allocator, "{s}/{s}", .{ src_path, entry.path });
+
+                lib.addCSourceFiles(.{
                     .files = &.{full_path},
                     .flags = flags.items,
                 });
+            } else if (mem.endsWith(u8, name, ".S")) {
+                const full_path = try fmt.allocPrint(allocator, "{s}/{s}", .{ src_path, entry.path });
+                lib.addAssemblyFile(.{ .path = full_path });
             }
-            lib.linkLibrary(elib);
-            b.installArtifact(elib);
         }
-
-        { // compile generic library code
-            var walker = try src_dir.walk(allocator);
-            files: while (try walker.next()) |entry| {
-                var flags = std.ArrayList([]const u8).init(allocator);
-                defer flags.deinit();
-                try flags.appendSlice(base_flags);
-
-                const name = entry.basename;
-
-                if (mem.endsWith(u8, name, ".c")) {
-                    for (mlibs) |mlib| {
-                        for (mlib.sources) |path| {
-                            if (mem.eql(u8, entry.path, path)) continue :files;
-                        }
-                    }
-
-                    const full_path = try fmt.allocPrint(allocator, "{s}/{s}", .{ src_path, entry.path });
-
-                    lib.addCSourceFiles(.{
-                        .files = &.{full_path},
-                        .flags = flags.items,
-                    });
-                } else if (mem.endsWith(u8, name, ".S")) {
-                    const full_path = try fmt.allocPrint(allocator, "{s}/{s}", .{ src_path, entry.path });
-                    lib.addAssemblyFile(.{ .path = full_path });
-                }
+        for (mlibs) |mlib| {
+            if (mlib.count != 0) {
+                std.debug.panic("mlib[{s}].count = {}", .{ mlib.name, mlib.count });
             }
         }
     }
