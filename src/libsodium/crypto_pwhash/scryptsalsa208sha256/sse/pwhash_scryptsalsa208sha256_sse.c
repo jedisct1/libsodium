@@ -38,13 +38,14 @@
 
 #ifdef HAVE_EMMINTRIN_H
 
-# ifdef __GNUC__
+# ifdef __clang__
+#  pragma clang attribute push(__attribute__((target("sse2"))), apply_to = function)
+# elif defined(__GNUC__)
 #  pragma GCC target("sse2")
 # endif
+
 # include <emmintrin.h>
-# if defined(__XOP__) && defined(DISABLED)
-#  include <x86intrin.h>
-# endif
+
 # include "private/sse2_64_32.h"
 
 # include "../crypto_scrypt.h"
@@ -397,4 +398,9 @@ escrypt_kdf_sse(escrypt_local_t *local, const uint8_t *passwd, size_t passwdlen,
     /* Success! */
     return 0;
 }
+
+# ifdef __clang__
+#  pragma clang attribute pop
+# endif
+
 #endif

@@ -26,9 +26,6 @@ crypto_verify_64_bytes(void)
 
 #if defined(HAVE_EMMINTRIN_H) && defined(__SSE2__)
 
-# ifdef __GNUC__
-#  pragma GCC target("sse2")
-# endif
 # include <emmintrin.h>
 
 static inline int

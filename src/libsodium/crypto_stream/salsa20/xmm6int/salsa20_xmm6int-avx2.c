@@ -10,18 +10,17 @@
 #if defined(HAVE_AVX2INTRIN_H) && defined(HAVE_EMMINTRIN_H) && \
     defined(HAVE_TMMINTRIN_H) && defined(HAVE_SMMINTRIN_H)
 
-# ifdef __GNUC__
-#  pragma GCC target("sse2")
-#  pragma GCC target("ssse3")
-#  pragma GCC target("sse4.1")
-#  pragma GCC target("avx2")
+# ifdef __clang__
+#  pragma clang attribute push(__attribute__((target("sse2,ssse3,sse4.1,avx2"))), apply_to = function)
+# elif defined(__GNUC__)
+#  pragma GCC target("sse2,ssse3,sse4.1,avx2")
 # endif
 
-#include <emmintrin.h>
-#include <immintrin.h>
-#include <smmintrin.h>
-#include <tmmintrin.h>
-#include "private/sse2_64_32.h"
+# include <emmintrin.h>
+# include <immintrin.h>
+# include <smmintrin.h>
+# include <tmmintrin.h>
+# include "private/sse2_64_32.h"
 
 # include "../stream_salsa20.h"
 # include "salsa20_xmm6int-avx2.h"
@@ -127,5 +126,9 @@ struct crypto_stream_salsa20_implementation
         SODIUM_C99(.stream =) stream_avx2,
         SODIUM_C99(.stream_xor_ic =) stream_avx2_xor_ic
     };
+
+#ifdef __clang__
+# pragma clang attribute pop
+#endif
 
 #endif

@@ -11,11 +11,10 @@
 #if defined(HAVE_AVX2INTRIN_H) && defined(HAVE_EMMINTRIN_H) && \
         defined(HAVE_TMMINTRIN_H) && defined(HAVE_SMMINTRIN_H)
 
-# ifdef __GNUC__
-#  pragma GCC target("sse2")
-#  pragma GCC target("ssse3")
-#  pragma GCC target("sse4.1")
-#  pragma GCC target("avx2")
+# ifdef __clang__
+#  pragma clang attribute push(__attribute__((target("sse2,ssse3,sse4.1,avx2"))), apply_to = function)
+# elif defined(__GNUC__)
+#  pragma GCC target("sse2,ssse3,sse4.1,avx2")
 # endif
 
 # include <emmintrin.h>
@@ -173,5 +172,9 @@ struct crypto_stream_chacha20_implementation
         SODIUM_C99(.stream_xor_ic =) stream_ref_xor_ic,
         SODIUM_C99(.stream_ietf_ext_xor_ic =) stream_ietf_ext_ref_xor_ic
     };
+
+# ifdef __clang__
+#  pragma clang attribute pop
+# endif
 
 #endif

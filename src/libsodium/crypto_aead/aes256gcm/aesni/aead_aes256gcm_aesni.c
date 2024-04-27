@@ -16,9 +16,11 @@
 
 #if defined(HAVE_TMMINTRIN_H) && defined(HAVE_WMMINTRIN_H)
 
-#ifdef __GNUC__
-#pragma GCC target("avx,aes,pclmul")
-#endif
+# ifdef __clang__
+#  pragma clang attribute push(__attribute__((target("aes,avx,pclmul"))), apply_to = function)
+# elif defined(__GNUC__)
+#  pragma GCC target("aes,avx,pclmul")
+# endif
 
 #if !defined(_MSC_VER) || _MSC_VER < 1800
 #define __vectorcall
@@ -1005,5 +1007,9 @@ crypto_aead_aes256gcm_is_available(void)
 {
     return sodium_runtime_has_pclmul() & sodium_runtime_has_aesni() & sodium_runtime_has_avx();
 }
+
+#ifdef __clang__
+# pragma clang attribute pop
+#endif
 
 #endif

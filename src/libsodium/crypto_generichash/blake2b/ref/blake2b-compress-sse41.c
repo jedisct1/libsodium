@@ -11,10 +11,10 @@
 #if defined(HAVE_EMMINTRIN_H) && defined(HAVE_TMMINTRIN_H) && \
     defined(HAVE_SMMINTRIN_H)
 
-# ifdef __GNUC__
-#  pragma GCC target("sse2")
-#  pragma GCC target("ssse3")
-#  pragma GCC target("sse4.1")
+# ifdef __clang__
+#  pragma clang attribute push(__attribute__((target("sse2,ssse3,sse4.1"))), apply_to = function)
+# elif defined(__GNUC__)
+#  pragma GCC target("sse2,ssse3,sse4.1")
 # endif
 
 # include <emmintrin.h>
@@ -83,5 +83,9 @@ blake2b_compress_sse41(blake2b_state *S,
     STOREU(&S->h[6], _mm_xor_si128(LOADU(&S->h[6]), row2h));
     return 0;
 }
+
+# ifdef __clang__
+#  pragma clang attribute pop
+# endif
 
 #endif
