@@ -168,12 +168,12 @@ pub fn build(b: *std.Build) !void {
     }
 
     const static_lib = b.addStaticLibrary(.{
-        .name = "sodium",
+        .name = if (target.result.isMinGW()) "libsodium-static" else "sodium",
         .target = target,
         .optimize = optimize,
     });
     const shared_lib = b.addSharedLibrary(.{
-        .name = if (target.result.isMinGW()) "sodium_shared" else "sodium",
+        .name = if (target.result.isMinGW()) "libsodium" else "sodium",
         .target = target,
         .optimize = optimize,
         .strip = optimize != .Debug and !target.result.isMinGW(),
@@ -208,129 +208,7 @@ pub fn build(b: *std.Build) !void {
 
         initLibConfig(target, lib);
 
-        const MFlags = enum {
-            sse2,
-            ssse3,
-            sse41,
-            avx,
-            avx2,
-            avx512f,
-            aes,
-            pclmul,
-            rdrnd,
-            crypto,
-
-            fn f(flag: @This()) Target.Cpu.Feature.Set.Index {
-                return switch (flag) {
-                    .sse2 => @intFromEnum(Target.x86.Feature.sse2),
-                    .ssse3 => @intFromEnum(Target.x86.Feature.ssse3),
-                    .sse41 => @intFromEnum(Target.x86.Feature.sse4_1),
-                    .avx => @intFromEnum(Target.x86.Feature.avx),
-                    .avx2 => @intFromEnum(Target.x86.Feature.avx2),
-                    .avx512f => @intFromEnum(Target.x86.Feature.avx512f),
-                    .aes => @intFromEnum(Target.x86.Feature.aes),
-                    .pclmul => @intFromEnum(Target.x86.Feature.pclmul),
-                    .rdrnd => @intFromEnum(Target.x86.Feature.rdrnd),
-                    .crypto => @intFromEnum(Target.aarch64.Feature.crypto),
-                };
-            }
-        };
-
-        const MLib = struct {
-            name: []const u8,
-            count: usize,
-            sources: []const []const u8,
-            flags: []const MFlags,
-            arches: []const std.Target.Cpu.Arch,
-            lib: *Compile = undefined,
-        };
-
-        var mlibs: [8]MLib = .{
-            .{
-                .name = "armcrypto",
-                .count = 3,
-                .sources = &.{
-                    "crypto_aead/aegis128l/aegis128l_armcrypto.c",
-                    "crypto_aead/aegis256/aegis256_armcrypto.c",
-                    "crypto_aead/aes256gcm/armcrypto/aead_aes256gcm_armcrypto.c",
-                },
-                .flags = &.{.aes},
-                .arches = &.{ .aarch64, .aarch64_be, .aarch64_32 },
-            },
-
-            .{
-                .name = "sse2",
-                .count = 1,
-                .sources = &.{
-                    "crypto_stream/salsa20/xmm6int/salsa20_xmm6int-sse2.c",
-                },
-                .flags = &.{.sse2},
-                .arches = &.{ .x86_64, .x86 },
-            },
-            .{
-                .name = "ssse3",
-                .count = 3,
-                .sources = &.{
-                    "crypto_generichash/blake2b/ref/blake2b-compress-ssse3.c",
-                    "crypto_pwhash/argon2/argon2-fill-block-ssse3.c",
-                    "crypto_stream/chacha20/dolbeau/chacha20_dolbeau-ssse3.c",
-                },
-                .flags = &.{ .sse2, .ssse3 },
-                .arches = &.{ .x86_64, .x86 },
-            },
-            .{
-                .name = "sse41",
-                .count = 1,
-                .sources = &.{
-                    "crypto_generichash/blake2b/ref/blake2b-compress-sse41.c",
-                },
-                .flags = &.{ .sse2, .ssse3, .sse41 },
-                .arches = &.{ .x86_64, .x86 },
-            },
-            .{
-                .name = "avx2",
-                .count = 4,
-                .sources = &.{
-                    "crypto_generichash/blake2b/ref/blake2b-compress-avx2.c",
-                    "crypto_pwhash/argon2/argon2-fill-block-avx2.c",
-                    "crypto_stream/chacha20/dolbeau/chacha20_dolbeau-avx2.c",
-                    "crypto_stream/salsa20/xmm6int/salsa20_xmm6int-avx2.c",
-                },
-                .flags = &.{ .sse2, .ssse3, .sse41, .avx, .avx2 },
-                .arches = &.{.x86_64},
-            },
-            .{
-                .name = "avx512f",
-                .count = 1,
-                .sources = &.{
-                    "crypto_pwhash/argon2/argon2-fill-block-avx512f.c",
-                },
-                .flags = &.{ .sse2, .ssse3, .sse41, .avx, .avx2, .avx512f },
-                .arches = &.{.x86_64},
-            },
-            .{
-                .name = "aesni",
-                .count = 3,
-                .sources = &.{
-                    "crypto_aead/aegis128l/aegis128l_aesni.c",
-                    "crypto_aead/aegis256/aegis256_aesni.c",
-                    "crypto_aead/aes256gcm/aesni/aead_aes256gcm_aesni.c",
-                },
-                .flags = &.{ .avx, .aes, .pclmul },
-                .arches = &.{.x86_64},
-            },
-            .{
-                .name = "mrdrnd",
-                .count = 1,
-                .sources = &.{
-                    "randombytes/internal/randombytes_internal_random.c",
-                },
-                .flags = &.{.rdrnd},
-                .arches = &.{ .x86_64, .x86 },
-            },
-        };
-
-        const base_flags = &.{
+        const flags = &.{
             "-fvisibility=hidden",
             "-fno-strict-aliasing",
             "-fno-strict-overflow",
@@ -340,61 +218,15 @@ pub fn build(b: *std.Build) !void {
 
         const allocator = heap.page_allocator;
 
-        // compile CPU-specific library code
-        for (&mlibs) |*mlib| {
-            var target2 = target;
-            for (mlib.arches) |arch| {
-                if (target.result.cpu.arch == arch) {
-                    for (mlib.flags) |flag| {
-                        target2.query.cpu_features_add.addFeature(flag.f());
-                    }
-                    break;
-                }
-            }
-
-            mlib.lib = b.addStaticLibrary(.{
-                .name = mlib.name,
-                .target = target2,
-                .optimize = optimize,
-            });
-            const elib = mlib.lib;
-            initLibConfig(target, elib);
-
-            var flags = std.ArrayList([]const u8).init(allocator);
-            defer flags.deinit();
-            try flags.appendSlice(base_flags);
-
-            for (mlib.sources) |path| {
-                const full_path = try fmt.allocPrint(allocator, "{s}/{s}", .{ src_path, path });
-                elib.addCSourceFiles(.{
-                    .files = &.{full_path},
-                    .flags = flags.items,
-                });
-            }
-            lib.linkLibrary(elib);
-        }
-
-        // compile generic library code
         var walker = try src_dir.walk(allocator);
-        files: while (try walker.next()) |entry| {
-            var flags = std.ArrayList([]const u8).init(allocator);
-            defer flags.deinit();
-            try flags.appendSlice(base_flags);
-
+        while (try walker.next()) |entry| {
             const name = entry.basename;
-
             if (mem.endsWith(u8, name, ".c")) {
-                for (mlibs) |mlib| {
-                    for (mlib.sources) |path| {
-                        if (mem.eql(u8, entry.path, path)) continue :files;
-                    }
-                }
-
                 const full_path = try fmt.allocPrint(allocator, "{s}/{s}", .{ src_path, entry.path });
 
                 lib.addCSourceFiles(.{
                     .files = &.{full_path},
-                    .flags = flags.items,
+                    .flags = flags,
                 });
             } else if (mem.endsWith(u8, name, ".S")) {
                 const full_path = try fmt.allocPrint(allocator, "{s}/{s}", .{ src_path, entry.path });

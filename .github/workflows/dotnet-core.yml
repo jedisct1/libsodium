@@ -7,10 +7,10 @@ on:
       - next
 
 jobs:
-  build-windows:
+  build-windows-msvc:
     runs-on: windows-latest
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
       - name: buildbase.bat
         run: buildbase.bat ..\vs2022\libsodium.sln 17
         working-directory: builds/msvc/build/
@@ -24,17 +24,26 @@ jobs:
           name: build-win-x86
           path: bin/Win32/Release/v143/dynamic/libsodium.dll
 
-  build-linux-glibc:
+  build-others:
     runs-on: ubuntu-latest
     steps:
       - name: Install Zig
-        uses: goto-bus-stop/setup-zig@d866436887ad1b24590684f9d00480376663dd36
+        uses: goto-bus-stop/setup-zig@2a9625d550eefc3a9b1a43d342ad655f563f8241
         with:
-          version: 0.11.0
-      - uses: actions/checkout@v3
-      - name: build
+          version: 0.12.0
+      - uses: actions/checkout@v4
+
+      - name: build-win-arm64
         run: |
-          zig build -Doptimize=ReleaseFast -Dtarget=x86_64-linux-gnu.2.17 -Dcpu=sandybridge
+          rm -fr zig-out zig-cache; zig build -Doptimize=ReleaseFast -Dtarget=aarch64-windows; ls -lR zig-out
+      - uses: actions/upload-artifact@v3
+        with:
+          name: build-win-arm64
+          path: zig-out/lib/libsodium.dll
+
+      - name: build-linux-x64
+        run: |
+          rm -fr zig-out zig-cache; zig build -Doptimize=ReleaseFast -Dtarget=x86_64-linux-gnu.2.17
       - name: tests
         run: cd zig-out/bin && ./run.sh
       - uses: actions/upload-artifact@v3
@@ -42,26 +51,23 @@ jobs:
           name: build-linux-x64
           path: zig-out/lib/libsodium.so
 
-  build-linux-glibc-arm:
-    runs-on: ubuntu-latest
-    steps:
-      - name: Install Zig
-        uses: goto-bus-stop/setup-zig@d866436887ad1b24590684f9d00480376663dd36
-        with:
-          version: 0.11.0
-      - name: Set up emulation environment
+      - name: Set up arm and aarch64 emulation environment
         run: |
           export DEBIAN_FRONTEND=noninteractive
           sudo apt-get update
-          sudo apt-get install -y build-essential qemu binfmt-support qemu-user-static qemu-system-arm gcc-arm-linux-gnueabihf libc6-armhf-cross
+          sudo apt-get install -y build-essential qemu binfmt-support qemu-user-static qemu-system-arm gcc-arm-linux-gnueabihf libc6-armhf-cross gcc-aarch64-linux-gnu libc6-arm64-cross
           sudo dpkg --add-architecture armhf
           sudo update-binfmts --enable qemu-arm
           sudo update-binfmts --display
           sudo ln -s /usr/arm-linux-gnueabihf/lib/ld-linux-armhf.so.* /lib
-      - uses: actions/checkout@v3
-      - name: build
+          sudo dpkg --add-architecture arm64
+          sudo update-binfmts --enable qemu-aarch64
+          sudo update-binfmts --display
+          sudo ln -s /usr/aarch64-linux-gnu/lib/ld-linux-aarch64.so.* /lib
+
+      - name: build-linux-arm
         run: |
-          zig build -Doptimize=ReleaseFast -Dtarget=arm-linux-gnueabihf.2.23 -Dcpu=baseline
+          rm -fr zig-out zig-cache; zig build -Doptimize=ReleaseFast -Dtarget=arm-linux-gnueabihf.2.23
       - name: tests
         run: |
           cd zig-out/bin && env LD_LIBRARY_PATH=/usr/arm-linux-gnueabihf/lib ./run.sh
@@ -70,26 +76,9 @@ jobs:
           name: build-linux-arm
           path: zig-out/lib/libsodium.so
 
-  build-linux-glibc-arm64:
-    runs-on: ubuntu-latest
-    steps:
-      - name: Install Zig
-        uses: goto-bus-stop/setup-zig@d866436887ad1b24590684f9d00480376663dd36
-        with:
-          version: 0.11.0
-      - name: Set up emulation environment
+      - name: build-linux-arm64
         run: |
-          export DEBIAN_FRONTEND=noninteractive
-          sudo apt-get update
-          sudo apt-get install -y qemu binfmt-support qemu-user-static qemu-system-arm gcc-aarch64-linux-gnu libc6-arm64-cross
-          sudo dpkg --add-architecture arm64
-          sudo update-binfmts --enable qemu-aarch64
-          sudo update-binfmts --display
-          sudo ln -s /usr/aarch64-linux-gnu/lib/ld-linux-aarch64.so.* /lib
-      - uses: actions/checkout@v3
-      - name: build
-        run: |
-          zig build -Doptimize=ReleaseFast -Dtarget=aarch64-linux-gnu.2.23 -Dcpu=baseline
+          rm -fr zig-out zig-cache; zig build -Doptimize=ReleaseFast -Dtarget=aarch64-linux-gnu.2.23
       - name: tests
         run: |
           cd zig-out/bin && env LD_LIBRARY_PATH=/usr/aarch64-linux-gnu/lib ./run.sh
@@ -98,67 +87,34 @@ jobs:
           name: build-linux-arm64
           path: zig-out/lib/libsodium.so
 
-  build-linux-musl:
-    runs-on: ubuntu-latest
-    container:
-      image: alpine:3.13
-    steps:
-      - name: Set up build environment
+      - name: build-linux-musl-x64
         run: |
-          apk update
-          apk add alpine-sdk ca-certificates xz
-      - name: Install Zig
-        uses: goto-bus-stop/setup-zig@d866436887ad1b24590684f9d00480376663dd36
-        with:
-          version: 0.11.0
-      - uses: actions/checkout@v3
-      - name: build
-        run: |
-          zig build -Doptimize=ReleaseFast -Dtarget=x86_64-linux-musl -Dcpu=sandybridge
-      - name: tests
-        run: |
-          cd zig-out/bin && ./run.sh
+          rm -fr zig-out zig-cache; zig build -Doptimize=ReleaseFast -Dtarget=x86_64-linux-musl
       - uses: actions/upload-artifact@v3
         with:
           name: build-linux-musl-x64
-          path: zig-out/lib/libsodium.so
+          path: zig-out/lib/libsodium.a
 
-  build-linux-musl-arm:
-    runs-on: ubuntu-latest
-    steps:
-      - name: Install Zig
-        uses: goto-bus-stop/setup-zig@d866436887ad1b24590684f9d00480376663dd36
-        with:
-          version: 0.11.0
-      - uses: actions/checkout@v3
-      - name: build
+      - name: build-linux-musl-arm
         run: |
-          zig build -Doptimize=ReleaseFast -Dtarget=arm-linux-musleabihf -Dcpu=baseline
+          rm -fr zig-out zig-cache; zig build -Doptimize=ReleaseFast -Dtarget=arm-linux-musleabihf
       - uses: actions/upload-artifact@v3
         with:
           name: build-linux-musl-arm
-          path: zig-out/lib/libsodium.so
+          path: zig-out/lib/libsodium.a
 
-  build-linux-musl-arm64:
-    runs-on: ubuntu-latest
-    steps:
-      - name: Install Zig
-        uses: goto-bus-stop/setup-zig@d866436887ad1b24590684f9d00480376663dd36
-        with:
-          version: 0.11.0
-      - uses: actions/checkout@v3
-      - name: build
+      - name: build-linux-musl-arm64
         run: |
-          zig build -Doptimize=ReleaseFast -Dtarget=aarch64-linux-musl -Dcpu=baseline
+          rm -fr zig-out zig-cache; zig build -Doptimize=ReleaseFast -Dtarget=aarch64-linux-musl
       - uses: actions/upload-artifact@v3
         with:
           name: build-linux-musl-arm64
-          path: zig-out/lib/libsodium.so
+          path: zig-out/lib/libsodium.a
 
   build-macos-x64:
     runs-on: macos-latest
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
       - name: configure
         run: env CFLAGS="-Ofast -arch x86_64 -mmacosx-version-min=10.15" LDFLAGS="-arch x86_64 -mmacosx-version-min=10.15" ./configure --host=arm-apple-darwin20 --prefix=$PWD/.libsodium-build
       - name: make
@@ -175,7 +131,7 @@ jobs:
   build-macos-arm64:
     runs-on: macos-latest
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
       - name: configure
         run: env CFLAGS="-Ofast -arch arm64 -mmacosx-version-min=10.15" LDFLAGS="-arch arm64 -mmacosx-version-min=10.15" ./configure --host=arm-apple-darwin20 --prefix=$PWD/.libsodium-build
       - name: make
@@ -190,13 +146,8 @@ jobs:
   pack:
     runs-on: ubuntu-latest
     needs:
-      - build-windows
-      - build-linux-glibc
-      - build-linux-glibc-arm
-      - build-linux-glibc-arm64
-      - build-linux-musl
-      - build-linux-musl-arm
-      - build-linux-musl-arm64
+      - build-windows-msvc
+      - build-others
       - build-macos-x64
       - build-macos-arm64
     container:
@@ -206,7 +157,7 @@ jobs:
       DOTNET_SKIP_FIRST_TIME_EXPERIENCE: 1
       DOTNET_SYSTEM_GLOBALIZATION_INVARIANT: 1
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
       - uses: actions/download-artifact@v3
         with:
           name: build-win-x64
@@ -215,6 +166,10 @@ jobs:
         with:
           name: build-win-x86
           path: .libsodium-pack/runtimes/win-x86/native/
+      - uses: actions/download-artifact@v3
+        with:
+          name: build-win-arm64
+          path: .libsodium-pack/runtimes/win-arm64/native/
       - uses: actions/download-artifact@v3
         with:
           name: build-linux-x64
@@ -267,7 +222,7 @@ jobs:
       DOTNET_SKIP_FIRST_TIME_EXPERIENCE: 1
       DOTNET_SYSTEM_GLOBALIZATION_INVARIANT: 1
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
       - uses: actions/download-artifact@v3
         with:
           name: nuget-package
