@@ -9,7 +9,9 @@
 
 #ifdef HAVE_EMMINTRIN_H
 
-# ifdef __GNUC__
+# ifdef __clang__
+#  pragma clang attribute push(__attribute__((target("sse2"))), apply_to = function)
+# elif defined(__GNUC__)
 #  pragma GCC target("sse2")
 # endif
 # include <emmintrin.h>
@@ -118,5 +120,9 @@ struct crypto_stream_salsa20_implementation
         SODIUM_C99(.stream =) stream_sse2,
         SODIUM_C99(.stream_xor_ic =) stream_sse2_xor_ic
     };
+
+#ifdef __clang__
+# pragma clang attribute pop
+#endif
 
 #endif
