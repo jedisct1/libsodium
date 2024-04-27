@@ -8,6 +8,15 @@ include that SDK.
  - `crypto_kdf_hkdf_sha512_statebytes()` was added.
  - When using Visual Studio, runtime CPU feature detection is now enabled
 on Windows/aarch64.
+ - There were issues with C++ guards affecting usage of libsodium
+using Swift on Windows. This has been fixed.
+ - Emscripten: crypto_aead_aegis*() functions are now exported in
+JavaScript builds
+ - Emscripten: unsupported --memory-init-file option has been removed.
+ - apple-xcframework: the minimal deployment target can be set to iOS 11+.
+ - .NET packages now include precompiled libraries for Windows/arm64.
+ - .NET precompiled libraries now work on any CPUs, using only runtime
+feature detection.
 
 * Version 1.0.19
   This release includes all the changes from 1.0.18-stable, as well as two
