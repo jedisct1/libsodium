@@ -12,7 +12,7 @@ jobs:
   tcc:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
 
       - name: Update packages list
         run: sudo apt-get update
@@ -35,7 +35,7 @@ jobs:
   zig:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
 
       - name: Update packages list
         run: sudo apt-get update
@@ -64,7 +64,7 @@ jobs:
   regular:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
 
       - name: Update packages list
         run: sudo apt-get update
@@ -93,7 +93,7 @@ jobs:
   check-globals:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
 
       - name: Update packages list
         run: sudo apt-get update
@@ -111,7 +111,7 @@ jobs:
   other-comp:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
 
       - name: Update packages list
         run: sudo apt-get update
@@ -137,7 +137,7 @@ jobs:
   other-arch:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
 
       - name: Update packages list
         run: sudo apt-get update
@@ -157,7 +157,7 @@ jobs:
   android:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
 
       - name: Update packages list
         run: sudo apt-get update
