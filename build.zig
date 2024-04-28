@@ -198,7 +198,7 @@ pub fn build(b: *std.Build) !void {
 
     for (libs.items) |lib| {
         if (lib.isDynamicLibrary() and
-            !(target.result.isDarwin() or target.result.isBSD() or target.result.isGnu() or target.result.isAndroid() or target.result.isMinGW()))
+            !(target.result.isDarwin() or target.result.isBSD() or target.result.isGnu() or target.result.isMusl() or target.result.isMinGW()))
         {
             continue;
         }
