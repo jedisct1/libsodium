@@ -149,10 +149,13 @@ pub fn build(b: *std.Build) !void {
     const enable_benchmarks = b.option(bool, "enable_benchmarks", "Whether tests should be benchmarks.") orelse false;
     const benchmarks_iterations = b.option(u32, "iterations", "Number of iterations for benchmarks.") orelse 200;
     var build_static = b.option(bool, "static", "Build libsodium as a static library.") orelse true;
-    const build_shared = b.option(bool, "shared", "Build libsodium as a shared library.") orelse true;
+    var build_shared = b.option(bool, "shared", "Build libsodium as a shared library.") orelse true;
 
     const build_tests = b.option(bool, "test", "Build the tests (implies -Dstatic=true)") orelse true;
 
+    if (target.result.isWasm()) {
+        build_shared = false;
+    }
     if (build_tests) {
         build_static = true;
     }
@@ -197,11 +200,6 @@ pub fn build(b: *std.Build) !void {
     }
 
     for (libs.items) |lib| {
-        if (lib.isDynamicLibrary() and
-            !(target.result.isDarwin() or target.result.isBSD() or target.result.isGnu() or target.result.isMusl() or target.result.isMinGW()))
-        {
-            continue;
-        }
         b.installArtifact(lib);
         lib.installHeader(.{ .path = src_path ++ "/include/sodium.h" }, "sodium.h");
         lib.installHeadersDirectory(.{ .path = src_path ++ "/include/sodium" }, "sodium", .{});
