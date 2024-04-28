@@ -15,11 +15,11 @@ jobs:
         run: buildbase.bat ..\vs2022\libsodium.sln 17
         working-directory: builds/msvc/build/
         shell: cmd
-      - uses: actions/upload-artifact@v4
+      - uses: actions/upload-artifact@v3
         with:
           name: build-win-x64
           path: bin/x64/Release/v143/dynamic/libsodium.dll
-      - uses: actions/upload-artifact@v4
+      - uses: actions/upload-artifact@v3
         with:
           name: build-win-x86
           path: bin/Win32/Release/v143/dynamic/libsodium.dll
@@ -36,7 +36,7 @@ jobs:
       - name: build-win-arm64
         run: |
           rm -fr zig-out zig-cache; zig build -Doptimize=ReleaseFast -Dtarget=aarch64-windows; ls -lR zig-out
-      - uses: actions/upload-artifact@v4
+      - uses: actions/upload-artifact@v3
         with:
           name: build-win-arm64
           path: zig-out/lib/libsodium.dll
@@ -46,7 +46,7 @@ jobs:
           rm -fr zig-out zig-cache; zig build -Doptimize=ReleaseFast -Dtarget=x86_64-linux-gnu.2.17
       - name: tests
         run: cd zig-out/bin && ./run.sh
-      - uses: actions/upload-artifact@v4
+      - uses: actions/upload-artifact@v3
         with:
           name: build-linux-x64
           path: zig-out/lib/libsodium.so
@@ -71,7 +71,7 @@ jobs:
       - name: tests
         run: |
           cd zig-out/bin && env LD_LIBRARY_PATH=/usr/arm-linux-gnueabihf/lib ./run.sh
-      - uses: actions/upload-artifact@v4
+      - uses: actions/upload-artifact@v3
         with:
           name: build-linux-arm
           path: zig-out/lib/libsodium.so
@@ -82,7 +82,7 @@ jobs:
       - name: tests
         run: |
           cd zig-out/bin && env LD_LIBRARY_PATH=/usr/aarch64-linux-gnu/lib ./run.sh
-      - uses: actions/upload-artifact@v4
+      - uses: actions/upload-artifact@v3
         with:
           name: build-linux-arm64
           path: zig-out/lib/libsodium.so
@@ -90,7 +90,7 @@ jobs:
       - name: build-linux-musl-x64
         run: |
           rm -fr zig-out zig-cache; zig build -Doptimize=ReleaseFast -Dtarget=x86_64-linux-musl
-      - uses: actions/upload-artifact@v4
+      - uses: actions/upload-artifact@v3
         with:
           name: build-linux-musl-x64
           path: zig-out/lib/libsodium.so
@@ -98,7 +98,7 @@ jobs:
       - name: build-linux-musl-arm
         run: |
           rm -fr zig-out zig-cache; zig build -Doptimize=ReleaseFast -Dtarget=arm-linux-musleabihf
-      - uses: actions/upload-artifact@v4
+      - uses: actions/upload-artifact@v3
         with:
           name: build-linux-musl-arm
           path: zig-out/lib/libsodium.so
@@ -106,7 +106,7 @@ jobs:
       - name: build-linux-musl-arm64
         run: |
           rm -fr zig-out zig-cache; zig build -Doptimize=ReleaseFast -Dtarget=aarch64-linux-musl
-      - uses: actions/upload-artifact@v4
+      - uses: actions/upload-artifact@v3
         with:
           name: build-linux-musl-arm64
           path: zig-out/lib/libsodium.so
@@ -119,19 +119,19 @@ jobs:
         run: ./configure
       - name: build-xcframework
         run: env LIBSODIUM_FULL_BUILD=1 LIBSODIUM_SKIP_SIMULATORS=1 dist-build/apple-xcframework.sh
-      - uses: actions/upload-artifact@v4
+      - uses: actions/upload-artifact@v3
         with:
           name: build-macos
           path: libsodium-apple/macos/lib/libsodium.dylib
-      - uses: actions/upload-artifact@v4
+      - uses: actions/upload-artifact@v3
         with:
           name: build-ios
           path: libsodium-apple/ios/lib/libsodium.a
-      - uses: actions/upload-artifact@v4
+      - uses: actions/upload-artifact@v3
         with:
           name: build-tvos
           path: libsodium-apple/tvos/lib/libsodium.a
-      - uses: actions/upload-artifact@v4
+      - uses: actions/upload-artifact@v3
         with:
           name: build-maccatalyst
           path: libsodium-apple/catalyst/lib/libsodium.a
@@ -149,65 +149,65 @@ jobs:
       DOTNET_SYSTEM_GLOBALIZATION_INVARIANT: 1
     steps:
       - uses: actions/checkout@v4
-      - uses: actions/download-artifact@v4
+      - uses: actions/download-artifact@v3
         with:
           name: build-win-x64
           path: .libsodium-pack/runtimes/win-x64/native/
-      - uses: actions/download-artifact@v4
+      - uses: actions/download-artifact@v3
         with:
           name: build-win-x86
           path: .libsodium-pack/runtimes/win-x86/native/
-      - uses: actions/download-artifact@v4
+      - uses: actions/download-artifact@v3
         with:
           name: build-win-arm64
           path: .libsodium-pack/runtimes/win-arm64/native/
 
-      - uses: actions/download-artifact@v4
+      - uses: actions/download-artifact@v3
         with:
           name: build-linux-x64
           path: .libsodium-pack/runtimes/linux-x64/native/
-      - uses: actions/download-artifact@v4
+      - uses: actions/download-artifact@v3
         with:
           name: build-linux-arm64
           path: .libsodium-pack/runtimes/linux-arm64/native/
-      - uses: actions/download-artifact@v4
+      - uses: actions/download-artifact@v3
         with:
           name: build-linux-arm
           path: .libsodium-pack/runtimes/linux-arm/native/
-      - uses: actions/download-artifact@v4
+      - uses: actions/download-artifact@v3
         with:
           name: build-linux-musl-x64
           path: .libsodium-pack/runtimes/linux-musl-x64/native/
-      - uses: actions/download-artifact@v4
+      - uses: actions/download-artifact@v3
         with:
           name: build-linux-musl-arm
           path: .libsodium-pack/runtimes/linux-musl-arm/native/
-      - uses: actions/download-artifact@v4
+      - uses: actions/download-artifact@v3
         with:
           name: build-linux-musl-arm64
           path: .libsodium-pack/runtimes/linux-musl-arm64/native/
 
-      - uses: actions/download-artifact@v4
+      - uses: actions/download-artifact@v3
         with:
           name: build-macos
           path: .libsodium-pack/runtimes/osx-x64/native/
-      - uses: actions/download-artifact@v4
+      - uses: actions/download-artifact@v3
         with:
           name: build-macos
           path: .libsodium-pack/runtimes/osx-arm64/native/
-      - uses: actions/download-artifact@v4
+      - uses: actions/download-artifact@v3
         with:
           name: build-ios
           path: .libsodium-pack/runtimes/ios-arm64/native/
-      - uses: actions/download-artifact@v4
+      - uses: actions/download-artifact@v3
         with:
           name: build-tvos
           path: .libsodium-pack/runtimes/tvos-arm64/native/
-      - uses: actions/download-artifact@v4
+      - uses: actions/download-artifact@v3
         with:
           name: build-maccatalyst
           path: .libsodium-pack/runtimes/maccatalyst-x64/native/
-      - uses: actions/download-artifact@v4
+      - uses: actions/download-artifact@v3
         with:
           name: build-maccatalyst
           path: .libsodium-pack/runtimes/maccatalyst-arm64/native/
@@ -216,7 +216,7 @@ jobs:
         run: cp AUTHORS ChangeLog LICENSE packaging/dotnet-core/libsodium.pkgproj .libsodium-pack/
       - name: Create NuGet package
         run: dotnet pack -c Release .libsodium-pack/libsodium.pkgproj
-      - uses: actions/upload-artifact@v4
+      - uses: actions/upload-artifact@v3
         with:
           name: nuget-package
           path: .libsodium-pack/bin/Release/*.nupkg
@@ -233,7 +233,7 @@ jobs:
       DOTNET_SYSTEM_GLOBALIZATION_INVARIANT: 1
     steps:
       - uses: actions/checkout@v4
-      - uses: actions/download-artifact@v4
+      - uses: actions/download-artifact@v3
         with:
           name: nuget-package
           path: .libsodium-pack/
@@ -258,7 +258,7 @@ jobs:
           mv .libsodium-test/bin/Release/net6.0/linux-arm/publish .libsodium-builds/linux-arm
           mv .libsodium-test/bin/Release/net6.0/linux-arm64/publish .libsodium-builds/linux-arm64
           mv .libsodium-test/bin/Release/net6.0/linux-x64/publish .libsodium-builds/linux-x64
-      - uses: actions/upload-artifact@v4
+      - uses: actions/upload-artifact@v3
         with:
           name: test-builds
           path: .libsodium-builds/*
@@ -321,7 +321,7 @@ jobs:
           sudo ln -s /usr/aarch64-linux-gnu/lib/ld-linux-aarch64.so.* /lib
           sudo ln -s /usr/arm-linux-gnueabihf/lib/ld-linux-armhf.so.* /lib
 
-      - uses: actions/download-artifact@v4
+      - uses: actions/download-artifact@v3
         with:
           name: test-builds
           path: .libsodium-builds/
