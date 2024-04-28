@@ -35,7 +35,11 @@
     <Content Include="runtimes/linux-musl-arm/native/libsodium.a" PackagePath="runtimes/linux-musl-arm/native/" />
     <Content Include="runtimes/linux-musl-arm64/native/libsodium.a" PackagePath="runtimes/linux-musl-arm64/native/" />
     <Content Include="runtimes/osx-x64/native/libsodium.dylib" PackagePath="runtimes/osx-x64/native/" />
-    <Content Include="runtimes/osx-arm64/native/libsodium.dylib" PackagePath="runtimes/osx-arm64/native/" />    
+    <Content Include="runtimes/osx-arm64/native/libsodium.dylib" PackagePath="runtimes/osx-arm64/native/" />
+    <Content Include="runtimes/ios-arm64/native/libsodium.a" PackagePath="runtimes/ios-arm64/native/" />
+    <Content Include="runtimes/tvos-arm64/native/libsodium.a" PackagePath="runtimes/tvos-arm64/native/" />
+    <Content Include="runtimes/maccatalyst-x64/native/libsodium.a" PackagePath="runtimes/maccatalyst-x64/native/" />
+    <Content Include="runtimes/maccatalyst-arm64/native/libsodium.a" PackagePath="runtimes/maccatalyst-arm64/native/" />
   </ItemGroup>
 
 </Project>
