@@ -14,7 +14,8 @@ using Swift on Windows. This has been fixed.
 JavaScript builds
  - Emscripten: unsupported --memory-init-file option has been removed.
  - apple-xcframework: the minimal deployment target can be set to iOS 11+.
- - .NET packages now include precompiled libraries for Windows/arm64.
+ - .NET packages now include precompiled libraries for Windows/arm64,
+iOS, TvOS and Catalyst.
  - .NET precompiled libraries now work on any CPUs, using only runtime
 feature detection.
 
