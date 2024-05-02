@@ -6,6 +6,11 @@ on:
       - stable
       - next
 
+permissions:
+  id-token: write
+  attestations: write
+  contents: read
+
 jobs:
   build-windows-msvc:
     runs-on: windows-latest
@@ -220,6 +225,11 @@ jobs:
         with:
           name: nuget-package
           path: .libsodium-pack/bin/Release/*.nupkg
+
+      - name: Attest Build Provenance
+        uses: actions/attest-build-provenance@897ed5eab6ed058a474202017ada7f40bfa52940
+        with:
+         subject-path: .libsodium-pack/bin/Release/*.nupkg
 
   build-test-binaries:
     runs-on: ubuntu-latest
