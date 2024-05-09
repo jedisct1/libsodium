@@ -6,9 +6,9 @@ const mem = std.mem;
 const Compile = std.Build.Step.Compile;
 const Target = std.Target;
 
-fn initLibConfig(target: std.Build.ResolvedTarget, lib: *Compile) void {
+fn initLibConfig(b: *std.Build, target: std.Build.ResolvedTarget, lib: *Compile) void {
     lib.linkLibC();
-    lib.addIncludePath(.{ .path = "src/libsodium/include/sodium" });
+    lib.addIncludePath(b.path("src/libsodium/include/sodium"));
     lib.defineCMacro("_GNU_SOURCE", "1");
     lib.defineCMacro("CONFIGURED", "1");
     lib.defineCMacro("DEV_MODE", "1");
@@ -201,10 +201,10 @@ pub fn build(b: *std.Build) !void {
 
     for (libs.items) |lib| {
         b.installArtifact(lib);
-        lib.installHeader(.{ .path = src_path ++ "/include/sodium.h" }, "sodium.h");
-        lib.installHeadersDirectory(.{ .path = src_path ++ "/include/sodium" }, "sodium", .{});
+        lib.installHeader(b.path(src_path ++ "/include/sodium.h"), "sodium.h");
+        lib.installHeadersDirectory(b.path(src_path ++ "/include/sodium"), "sodium", .{});
 
-        initLibConfig(target, lib);
+        initLibConfig(b, target, lib);
 
         const flags = &.{
             "-fvisibility=hidden",
@@ -228,7 +228,7 @@ pub fn build(b: *std.Build) !void {
                 });
             } else if (mem.endsWith(u8, name, ".S")) {
                 const full_path = try fmt.allocPrint(allocator, "{s}/{s}", .{ src_path, entry.path });
-                lib.addAssemblyFile(.{ .path = full_path });
+                lib.addAssemblyFile(b.path(full_path));
             }
         }
     }
@@ -260,8 +260,8 @@ pub fn build(b: *std.Build) !void {
             });
             exe.linkLibC();
             exe.linkLibrary(static_lib);
-            exe.addIncludePath(.{ .path = "src/libsodium/include" });
-            exe.addIncludePath(.{ .path = "test/quirks" });
+            exe.addIncludePath(b.path("src/libsodium/include"));
+            exe.addIncludePath(b.path("test/quirks"));
             const full_path = try fmt.allocPrint(allocator, "{s}/{s}", .{ test_path, entry.path });
             exe.addCSourceFiles(.{ .files = &.{full_path} });
             if (enable_benchmarks) {
