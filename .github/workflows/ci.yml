@@ -51,7 +51,6 @@ jobs:
       - name: Compilation with zig
         run: |
           zig build
-          zig build -Dtarget=x86-linux
           zig build -Dtarget=x86_64-linux
           zig build -Dtarget=aarch64-linux
           zig build -Dtarget=x86-windows
