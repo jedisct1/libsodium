@@ -23,7 +23,11 @@
     defined(HAVE_EMMINTRIN_H) &&  defined(HAVE_TMMINTRIN_H) && defined(HAVE_SMMINTRIN_H)
 
 # ifdef __clang__
-#  pragma clang attribute push(__attribute__((target("sse2,ssse3,sse4.1,avx2,avx512f"))), apply_to = function)
+#  if __clang_major__ >= 18
+#   pragma clang attribute push(__attribute__((target("sse2,ssse3,sse4.1,avx2,avx512f,evex512"))), apply_to = function)
+#  else
+#   pragma clang attribute push(__attribute__((target("sse2,ssse3,sse4.1,avx2,avx512f"))), apply_to = function)
+#  endif
 # elif defined(__GNUC__)
 #  pragma GCC target("sse2,ssse3,sse4.1,avx2,avx512f")
 # endif
