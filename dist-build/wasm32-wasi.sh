@@ -30,7 +30,7 @@ fi
 if ! ./configure ${LIBSODIUM_ENABLE_MINIMAL_FLAG} \
   --prefix="$PREFIX" \
   --host=wasm32-wasi \
-  --disable-ssp --disable-shared --without-pthreads; then
+  --disable-pie --disable-ssp --disable-shared --without-pthreads; then
   cat config.log
   exit 1
 fi
