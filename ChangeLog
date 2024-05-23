@@ -18,6 +18,11 @@ JavaScript builds
 iOS, TvOS and Catalyst.
  - .NET precompiled libraries now work on any CPUs, using only runtime
 feature detection.
+ - SYSV assembly should not be used when targeting Windows (reported by
+@meiyese, thanks!)
+ - Compatibility issues with LLVM 18 and AVX512 have been addressed.
+ - GitHub attestation build provenance are now added to NuGet packages.
+ - JavaScript tests can now use Bun as an alternative to Node.
 
 * Version 1.0.19
   This release includes all the changes from 1.0.18-stable, as well as two
