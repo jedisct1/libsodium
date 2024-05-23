@@ -37,7 +37,6 @@ fn initLibConfig(b: *std.Build, target: std.Build.ResolvedTarget, lib: *Compile)
             lib.defineCMacro("HAVE_CATCHABLE_SEGV", "1");
             lib.defineCMacro("HAVE_CLOCK_GETTIME", "1");
             lib.defineCMacro("HAVE_GETPID", "1");
-            lib.defineCMacro("HAVE_INLINE_ASM", "1");
             lib.defineCMacro("HAVE_MADVISE", "1");
             lib.defineCMacro("HAVE_MLOCK", "1");
             lib.defineCMacro("HAVE_MMAP", "1");
@@ -104,8 +103,13 @@ fn initLibConfig(b: *std.Build, target: std.Build.ResolvedTarget, lib: *Compile)
 
     switch (target.result.cpu.arch) {
         .x86_64 => {
-            lib.defineCMacro("HAVE_AMD64_ASM", "1");
-            lib.defineCMacro("HAVE_AVX_ASM", "1");
+            switch (target.result.os.tag) {
+                .windows => {},
+                else => {
+                    lib.defineCMacro("HAVE_AMD64_ASM", "1");
+                    lib.defineCMacro("HAVE_AVX_ASM", "1");
+                },
+            }
             lib.defineCMacro("HAVE_CPUID", "1");
             lib.defineCMacro("HAVE_MMINTRIN_H", "1");
             lib.defineCMacro("HAVE_EMMINTRIN_H", "1");
