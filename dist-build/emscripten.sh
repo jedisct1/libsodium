@@ -82,7 +82,28 @@ if [ "$DIST" = yes ]; then
       "${PREFIX}/lib/libsodium.a" -o "${outFile}" || exit 1
   }
   emmake make $MAKE_FLAGS install || exit 1
-  emccLibsodium "${PREFIX}/lib/libsodium.asm.tmp.js" -Oz -s WASM=0 $LDFLAGS_JS
+
+  # JS-only build
+  emccLibsodium "${PREFIX}/lib/libsodium.tmp.mjs" -Oz -s WASM=0 $LDFLAGS_JS
+
+  cat >"${PREFIX}/lib/libsodium-jsonly.mjs" <<-EOM
+$(grep -Fv "export default Module" "${PREFIX}/lib/libsodium.tmp.mjs")
+
+    Module.print = function(what) {
+      typeof(console) !== 'undefined' && console.log(what);
+    }
+    Module.printErr = function(what) {
+      typeof(console) !== 'undefined' && console.warn(what);
+    }
+    Module['getRandomValue'] = undefined;
+
+    export default Module;
+EOM
+
+  rm "${PREFIX}/lib/libsodium.tmp.mjs"
+
+  # Hybrid JS + WASM build
+  emccLibsodium "${PREFIX}/lib/libsodium.tmp.js" -Oz -s WASM=0 $LDFLAGS_JS
   emccLibsodium "${PREFIX}/lib/libsodium.wasm.tmp.js" -O3 -s WASM=1 -s EVAL_CTORS=1 -s INITIAL_MEMORY=${WASM_INITIAL_MEMORY}
 
   cat >"${PREFIX}/lib/libsodium.js" <<-EOM
@@ -134,7 +155,7 @@ if [ "$DIST" = yes ]; then
             resolve();
           };
 
-          $(sed "s|use asm||g" "${PREFIX}/lib/libsodium.asm.tmp.js")
+          $(sed "s|use asm||g" "${PREFIX}/lib/libsodium.tmp.js")
         });
       };
       $(cat "${PREFIX}/lib/libsodium.wasm.tmp.js")
@@ -143,7 +164,7 @@ if [ "$DIST" = yes ]; then
     });
 EOM
 
-  rm "${PREFIX}/lib/libsodium.asm.tmp.js" "${PREFIX}/lib/libsodium.wasm.tmp.js"
+  rm "${PREFIX}/lib/libsodium.tmp.js" "${PREFIX}/lib/libsodium.wasm.tmp.js"
   touch -r "${PREFIX}/lib/libsodium.js" "$DONE_FILE"
   ls -l "${PREFIX}/lib/libsodium.js"
   exit 0
