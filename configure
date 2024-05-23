@@ -5633,8 +5633,8 @@ printf "%s\n" "$as_me: WARNING: compiling to JavaScript - asm implementations di
 
 else case e in #(
   e)
-    { printf "%s\n" "$as_me:${as_lineno-$LINENO}: WARNING: EMSCRIPTEN environment variable defined, but emcc doesn't appear to be used - Assuming compilation to native code" >&5
-printf "%s\n" "$as_me: WARNING: EMSCRIPTEN environment variable defined, but emcc doesn't appear to be used - Assuming compilation to native code" >&2;}
+    { printf "%s\n" "$as_me:${as_lineno-$LINENO}: WARNING: EMSCRIPTEN environment variable defined, but emcc doesn\'t appear to be used - Assuming compilation to native code" >&5
+printf "%s\n" "$as_me: WARNING: EMSCRIPTEN environment variable defined, but emcc doesn\'t appear to be used - Assuming compilation to native code" >&2;}
     CFLAGS="$CFLAGS -U__EMSCRIPTEN__"
     unset EMSCRIPTEN
    ;;
