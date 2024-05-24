@@ -1,4 +1,4 @@
-version: 1.0.19.{build}
+version: 1.0.20.{build}
 
 os: Visual Studio 2017
 

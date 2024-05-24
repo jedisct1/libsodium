@@ -1,3 +1,8 @@
+* Version 1.0.20
+  This point release includes all the changes from 1.0.19-stable,
+mainly addressing compilation issues and improvements to the .NET
+packages.
+
 * Version 1.0.19-stable
  - Building with `zig build` now requires Zig 0.12.
  - When using the traditional build system, -O3 is used instead of -Ofast.
