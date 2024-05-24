@@ -10,9 +10,9 @@ include that SDK.
 on Windows/aarch64.
  - There were issues with C++ guards affecting usage of libsodium
 using Swift on Windows. This has been fixed.
- - Emscripten: crypto_aead_aegis*() functions are now exported in
+ - Emscripten: `crypto_aead_aegis*()` functions are now exported in
 JavaScript builds
- - Emscripten: unsupported --memory-init-file option has been removed.
+ - Emscripten: unsupported `--memory-init-file` option has been removed.
  - apple-xcframework: the minimal deployment target can be set to iOS 11+.
  - .NET packages now include precompiled libraries for Windows/arm64,
 iOS, TvOS and Catalyst.
