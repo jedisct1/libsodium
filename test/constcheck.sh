@@ -14,6 +14,8 @@ done
 echo "return 0; }" >> "$CT"
 
 CPPFLAGS="${CPPFLAGS} -Wno-deprecated-declarations"
+CPPFLAGS="${CPPFLAGS} -I/opt/homebrew/include"
+LDFLAGS="${LDFLAGS} -L/opt/homebrew/lib"
 ${CC:-cc} "$CT" $CPPFLAGS $CFLAGS $LDFLAGS -lsodium || exit 1
 ./a.out || exit 1
 rm -f a.out "$CT"
