@@ -1,4 +1,4 @@
-version: 1.0.20.{build}
+version: 1.0.21.{build}
 
 os: Visual Studio 2017
 
@@ -20,5 +20,5 @@ init: msbuild /version
 
 build:
   parallel: true
-  project: libsodium.vcxproj
-  verbosity: minimal
+  project: ci/appveyor/libsodium.vcxproj
+  verbosity: normal

@@ -66,9 +66,9 @@ _sodium_runtime_arm_cpu_features(CPUFeatures * const cpu_features)
 
 #if defined(__ARM_NEON) || defined(__aarch64__) || defined(_M_ARM64)
     cpu_features->has_neon = 1;
-#elif defined(HAVE_ANDROID_GETCPUFEATURES) && defined(ANDROID_CPU_ARM_FEATURE_NEON)
+#elif defined(HAVE_ANDROID_GETCPUFEATURES)
     cpu_features->has_neon =
-        (android_getCpuFeatures() & ANDROID_CPU_ARM_FEATURE_NEON) != 0x0;
+        (android_getCpuFeatures() & ANDROID_CPU_ARM64_FEATURE_ASIMD) != 0x0;
 #elif (defined(__aarch64__) || defined(_M_ARM64)) && defined(AT_HWCAP)
 # ifdef HAVE_GETAUXVAL
     cpu_features->has_neon = (getauxval(AT_HWCAP) & (1L << 1)) != 0;
@@ -97,7 +97,7 @@ _sodium_runtime_arm_cpu_features(CPUFeatures * const cpu_features)
         return 0;
     }
 
-#if __ARM_FEATURE_CRYPTO
+#if defined(__ARM_FEATURE_CRYPTO) && defined(__ARM_FEATURE_AES)
     cpu_features->has_armcrypto = 1;
 #elif defined(_M_ARM64)
     cpu_features->has_armcrypto = 1; /* assuming all CPUs supported by ARM Windows have the crypto extensions */
@@ -117,9 +117,9 @@ _sodium_runtime_arm_cpu_features(CPUFeatures * const cpu_features)
             cpu_features->has_armcrypto = 1;
         }
     }
-#elif defined(HAVE_ANDROID_GETCPUFEATURES) && defined(ANDROID_CPU_ARM_FEATURE_AES)
+#elif defined(HAVE_ANDROID_GETCPUFEATURES)
     cpu_features->has_armcrypto =
-        (android_getCpuFeatures() & ANDROID_CPU_ARM_FEATURE_AES) != 0x0;
+        (android_getCpuFeatures() & ANDROID_CPU_ARM64_FEATURE_AES) != 0x0;
 #elif (defined(__aarch64__) || defined(_M_ARM64)) && defined(AT_HWCAP)
 # ifdef HAVE_GETAUXVAL
     cpu_features->has_armcrypto = (getauxval(AT_HWCAP) & (1L << 3)) != 0;
@@ -150,8 +150,7 @@ _sodium_runtime_arm_cpu_features(CPUFeatures * const cpu_features)
 static void
 _cpuid(unsigned int cpu_info[4U], const unsigned int cpu_info_type)
 {
-#if defined(_MSC_VER) && \
-    (defined(_M_X64) || defined(_M_AMD64) || defined(_M_IX86))
+#if defined(_MSC_VER) && (defined(_M_X64) || defined(_M_IX86))
     __cpuid((int *) cpu_info, cpu_info_type);
 #elif defined(HAVE_CPUID)
     cpu_info[0] = cpu_info[1] = cpu_info[2] = cpu_info[3] = 0;

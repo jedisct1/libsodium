@@ -70,7 +70,7 @@ crypto_aead_aegis256_encrypt(unsigned char *c, unsigned long long *clen_p, const
         crypto_aead_aegis256_encrypt_detached(c, c + mlen, NULL, m, mlen, ad, adlen, nsec, npub, k);
     if (clen_p != NULL) {
         if (ret == 0) {
-            clen = mlen + 16ULL;
+            clen = mlen + crypto_aead_aegis256_ABYTES;
         }
         *clen_p = clen;
     }
@@ -86,13 +86,14 @@ crypto_aead_aegis256_decrypt(unsigned char *m, unsigned long long *mlen_p, unsig
     unsigned long long mlen = 0ULL;
     int                ret  = -1;
 
-    if (clen >= 16ULL) {
-        ret = crypto_aead_aegis256_decrypt_detached(m, nsec, c, clen - 16ULL, c + clen - 16ULL, ad,
+    if (clen >= crypto_aead_aegis256_ABYTES) {
+        ret = crypto_aead_aegis256_decrypt_detached(m, nsec, c, clen - crypto_aead_aegis256_ABYTES,
+                                                    c + clen - crypto_aead_aegis256_ABYTES, ad,
                                                     adlen, npub, k);
     }
     if (mlen_p != NULL) {
         if (ret == 0) {
-            mlen = clen - 16ULL;
+            mlen = clen - crypto_aead_aegis256_ABYTES;
         }
         *mlen_p = mlen;
     }

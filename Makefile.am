@@ -2,9 +2,9 @@ ACLOCAL_AMFLAGS = -I m4
 
 EXTRA_DIST = \
 	autogen.sh \
-	libsodium.sln \
-	libsodium.vcxproj \
-	libsodium.vcxproj.filters \
+	build.zig \
+	ChangeLog \
+	CITATION.cff \
 	LICENSE \
 	README.markdown \
 	THANKS
@@ -12,7 +12,6 @@ EXTRA_DIST = \
 SUBDIRS = \
 	builds \
 	dist-build \
-	msvc-scripts \
 	src \
 	test
 

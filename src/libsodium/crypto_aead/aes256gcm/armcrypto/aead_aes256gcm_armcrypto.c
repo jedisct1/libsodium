@@ -19,11 +19,20 @@
 #define __vectorcall
 #endif
 
+#ifndef __ARM_FEATURE_CRYPTO
+#define __ARM_FEATURE_CRYPTO 1
+#endif
 #ifndef __ARM_FEATURE_AES
 #define __ARM_FEATURE_AES 1
 #endif
 
 #include <arm_neon.h>
+
+#ifdef __clang__
+#pragma clang attribute push(__attribute__((target("neon,crypto,aes"))), apply_to = function)
+#elif defined(__GNUC__)
+#pragma GCC target("+simd+crypto")
+#endif
 
 #define ABYTES    crypto_aead_aes256gcm_ABYTES
 #define NPUBBYTES crypto_aead_aes256gcm_NPUBBYTES
@@ -1016,5 +1025,9 @@ crypto_aead_aes256gcm_is_available(void)
 {
     return sodium_runtime_has_armcrypto();
 }
+
+#ifdef __clang__
+#pragma clang attribute pop
+#endif
 
 #endif

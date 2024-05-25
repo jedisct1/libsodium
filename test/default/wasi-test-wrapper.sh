@@ -4,7 +4,8 @@ unset LDFLAGS
 unset CFLAGS
 
 if command -v wasm-opt >/dev/null; then
-  wasm-opt -O4 -o "${1}.tmp" "$1" && mv -f "${1}.tmp" "$1"
+  wasm-opt -O4 --enable-sign-ext --emit-target-features $WASMOPT_FLAGS \
+    -o "${1}.tmp" "$1" && mv -f "${1}.tmp" "$1"
 fi
 
 if [ -z "$WASI_RUNTIME" ] || [ "$WASI_RUNTIME" = "wasmedge" ]; then
@@ -71,14 +72,14 @@ fi
 
 if [ -z "$WASI_RUNTIME" ] || [ "$WASI_RUNTIME" = "iwasm" ]; then
   if command -v iwasm >/dev/null; then
-  if iwasm | grep -qi wasi >/dev/null 2>&1; then
-    if wamrc --version; then
-      wamrc -o "${1}.o" "$1" >/dev/null &&
-        iwasm --dir=. "${1}.o" && exit 0
-    else
-      iwasm --dir=. "$1" && exit 0
+    if iwasm | grep -qi wasi >/dev/null 2>&1; then
+      if wamrc --version; then
+        wamrc -o "${1}.o" "$1" >/dev/null &&
+          iwasm --dir=. "${1}.o" && exit 0
+      else
+        iwasm --dir=. "$1" && exit 0
+      fi
     fi
-  fi
   fi
 fi
 

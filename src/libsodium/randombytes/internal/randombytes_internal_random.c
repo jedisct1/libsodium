@@ -32,6 +32,8 @@
 #   define HAVE_LINUX_COMPATIBLE_GETRANDOM
 #  endif
 # endif
+#elif defined(__midipix__)
+# define HAVE_LINUX_COMPATIBLE_GETRANDOM
 #elif defined(__FreeBSD__)
 # include <sys/param.h>
 # if defined(__FreeBSD_version) && __FreeBSD_version >= 1200000
@@ -48,7 +50,11 @@
 # include <poll.h>
 #endif
 #ifdef HAVE_RDRAND
-# pragma GCC target("rdrnd")
+# ifdef __clang__
+#  pragma clang attribute push(__attribute__((target("rdrnd"))), apply_to = function)
+# elif defined(__GNUC__)
+#  pragma GCC target("rdrnd")
+# endif
 # include <immintrin.h>
 #endif
 
@@ -653,3 +659,9 @@ struct randombytes_implementation randombytes_internal_implementation = {
     SODIUM_C99(.buf =) randombytes_internal_random_buf,
     SODIUM_C99(.close =) randombytes_internal_random_close
 };
+
+#ifdef HAVE_RDRAND
+# ifdef __clang__
+#  pragma clang attribute pop
+# endif
+#endif

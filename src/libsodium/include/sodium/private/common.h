@@ -230,7 +230,7 @@ xor_buf(unsigned char *out, const unsigned char *in, size_t n)
 
 #ifdef _MSC_VER
 
-# if defined(_M_X64) || defined(_M_AMD64) || defined(_M_IX86)
+# if defined(_M_X64) || defined(_M_IX86)
 #  include <intrin.h>
 
 #  define HAVE_INTRIN_H    1
@@ -252,6 +252,9 @@ xor_buf(unsigned char *out, const unsigned char *in, size_t n)
 
 # elif defined(_M_ARM64)
 
+#  ifndef __ARM_ARCH
+#   define __ARM_ARCH 1
+#  endif
 #  ifndef __ARM_NEON
 #   define __ARM_NEON 1
 #  endif

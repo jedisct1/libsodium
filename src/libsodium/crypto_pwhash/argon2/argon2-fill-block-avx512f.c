@@ -22,12 +22,14 @@
 #if defined(HAVE_AVX512FINTRIN_H) && defined(HAVE_AVX2INTRIN_H) && \
     defined(HAVE_EMMINTRIN_H) &&  defined(HAVE_TMMINTRIN_H) && defined(HAVE_SMMINTRIN_H)
 
-# ifdef __GNUC__
-#  pragma GCC target("sse2")
-#  pragma GCC target("ssse3")
-#  pragma GCC target("sse4.1")
-#  pragma GCC target("avx2")
-#  pragma GCC target("avx512f")
+# ifdef __clang__
+#  if __clang_major__ >= 18
+#   pragma clang attribute push(__attribute__((target("sse2,ssse3,sse4.1,avx2,avx512f,evex512"))), apply_to = function)
+#  else
+#   pragma clang attribute push(__attribute__((target("sse2,ssse3,sse4.1,avx2,avx512f"))), apply_to = function)
+#  endif
+# elif defined(__GNUC__)
+#  pragma GCC target("sse2,ssse3,sse4.1,avx2,avx512f")
 # endif
 
 # ifdef _MSC_VER
@@ -241,4 +243,9 @@ argon2_fill_segment_avx512f(const argon2_instance_t *instance,
         }
     }
 }
+
+#ifdef __clang__
+# pragma clang attribute pop
+#endif
+
 #endif

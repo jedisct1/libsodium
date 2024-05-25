@@ -21,9 +21,10 @@
 
 #if defined(HAVE_EMMINTRIN_H) && defined(HAVE_TMMINTRIN_H)
 
-# ifdef __GNUC__
-#  pragma GCC target("sse2")
-#  pragma GCC target("ssse3")
+# ifdef __clang__
+#  pragma clang attribute push(__attribute__((target("sse2,ssse3"))), apply_to = function)
+# elif defined(__GNUC__)
+#  pragma GCC target("sse2,ssse3")
 # endif
 
 # ifdef _MSC_VER
@@ -235,4 +236,9 @@ argon2_fill_segment_ssse3(const argon2_instance_t *instance,
         }
     }
 }
+
+#ifdef __clang__
+# pragma clang attribute pop
+#endif
+
 #endif

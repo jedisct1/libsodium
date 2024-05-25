@@ -32,7 +32,7 @@ aegis128l_init(const uint8_t *key, const uint8_t *nonce, aes_block_t *const stat
     }
 }
 
-static void
+static int
 aegis128l_mac(uint8_t *mac, size_t maclen, size_t adlen, size_t mlen, aes_block_t *const state)
 {
     aes_block_t tmp;
@@ -59,7 +59,9 @@ aegis128l_mac(uint8_t *mac, size_t maclen, size_t adlen, size_t mlen, aes_block_
         AES_BLOCK_STORE(mac + 16, tmp);
     } else {
         memset(mac, 0, maclen);
+        return -1;
     }
+    return 0;
 }
 
 static inline void
@@ -70,6 +72,19 @@ aegis128l_absorb(const uint8_t *const src, aes_block_t *const state)
     msg0 = AES_BLOCK_LOAD(src);
     msg1 = AES_BLOCK_LOAD(src + AES_BLOCK_LENGTH);
     aegis128l_update(state, msg0, msg1);
+}
+
+static inline void
+aegis128l_absorb2(const uint8_t *const src, aes_block_t *const state)
+{
+    aes_block_t msg0, msg1, msg2, msg3;
+
+    msg0 = AES_BLOCK_LOAD(src + 0 * AES_BLOCK_LENGTH);
+    msg1 = AES_BLOCK_LOAD(src + 1 * AES_BLOCK_LENGTH);
+    msg2 = AES_BLOCK_LOAD(src + 2 * AES_BLOCK_LENGTH);
+    msg3 = AES_BLOCK_LOAD(src + 3 * AES_BLOCK_LENGTH);
+    aegis128l_update(state, msg0, msg1);
+    aegis128l_update(state, msg2, msg3);
 }
 
 static void
@@ -152,7 +167,10 @@ encrypt_detached(uint8_t *c, uint8_t *mac, size_t maclen, const uint8_t *m, size
 
     aegis128l_init(k, npub, state);
 
-    for (i = 0; i + RATE <= adlen; i += RATE) {
+    for (i = 0; i + RATE * 2 <= adlen; i += RATE * 2) {
+        aegis128l_absorb2(ad + i, state);
+    }
+    for (; i + RATE <= adlen; i += RATE) {
         aegis128l_absorb(ad + i, state);
     }
     if (adlen % RATE) {
@@ -170,9 +188,7 @@ encrypt_detached(uint8_t *c, uint8_t *mac, size_t maclen, const uint8_t *m, size
         memcpy(c + i, dst, mlen % RATE);
     }
 
-    aegis128l_mac(mac, maclen, adlen, mlen, state);
-
-    return 0;
+    return aegis128l_mac(mac, maclen, adlen, mlen, state);
 }
 
 static int
@@ -189,7 +205,10 @@ decrypt_detached(uint8_t *m, const uint8_t *c, size_t clen, const uint8_t *mac, 
 
     aegis128l_init(k, npub, state);
 
-    for (i = 0; i + RATE <= adlen; i += RATE) {
+    for (i = 0; i + RATE * 2 <= adlen; i += RATE * 2) {
+        aegis128l_absorb2(ad + i, state);
+    }
+    for (; i + RATE <= adlen; i += RATE) {
         aegis128l_absorb(ad + i, state);
     }
     if (adlen % RATE) {
@@ -215,12 +234,13 @@ decrypt_detached(uint8_t *m, const uint8_t *c, size_t clen, const uint8_t *mac, 
     }
 
     COMPILER_ASSERT(sizeof computed_mac >= 32);
-    aegis128l_mac(computed_mac, maclen, adlen, mlen, state);
     ret = -1;
-    if (maclen == 16) {
-        ret = crypto_verify_16(computed_mac, mac);
-    } else if (maclen == 32) {
-        ret = crypto_verify_32(computed_mac, mac);
+    if (aegis128l_mac(computed_mac, maclen, adlen, mlen, state) == 0) {
+        if (maclen == 16) {
+            ret = crypto_verify_16(computed_mac, mac);
+        } else if (maclen == 32) {
+            ret = crypto_verify_32(computed_mac, mac);
+        }
     }
     if (ret != 0 && m != NULL) {
         memset(m, 0, mlen);

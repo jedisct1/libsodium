@@ -1,5 +1,5 @@
 AC_PREREQ([2.69])
-AC_INIT([libsodium],[1.0.20],[https://github.com/jedisct1/libsodium/issues],[libsodium],[https://libsodium.org])
+AC_INIT([libsodium],[1.0.21],[https://github.com/jedisct1/libsodium/issues],[libsodium],[https://libsodium.org])
 AC_CONFIG_AUX_DIR([build-aux])
 AC_CONFIG_MACRO_DIR([m4])
 AC_CONFIG_SRCDIR([src/libsodium/sodium/version.c])
@@ -52,11 +52,10 @@ AC_USE_SYSTEM_EXTENSIONS
 dnl Default optimization flags
 
 if test "$sodium_CFLAGS" != "set" ; then
-  AX_CHECK_COMPILE_FLAG([-Ofast], [CFLAGS="$CFLAGS -Ofast"],
-    [AX_CHECK_COMPILE_FLAG([-O3], [CFLAGS="$CFLAGS -O3"],
-      [AX_CHECK_COMPILE_FLAG([-O2], [CFLAGS="$CFLAGS -O2"],
-        [AX_CHECK_COMPILE_FLAG([-O1], [CFLAGS="$CFLAGS -O1"],
-          [AX_CHECK_COMPILE_FLAG([-O], [CFLAGS="$CFLAGS -O"])])])])])
+  AX_CHECK_COMPILE_FLAG([-O3], [CFLAGS="$CFLAGS -O3"],
+    [AX_CHECK_COMPILE_FLAG([-O2], [CFLAGS="$CFLAGS -O2"],
+      [AX_CHECK_COMPILE_FLAG([-O1], [CFLAGS="$CFLAGS -O1"],
+        [AX_CHECK_COMPILE_FLAG([-O], [CFLAGS="$CFLAGS -O"])])])])
 fi
 
 dnl Switches
@@ -92,7 +91,7 @@ AS_IF([test "x$EMSCRIPTEN" != "x"], [
     enable_asm="no"
     AC_MSG_WARN([compiling to JavaScript - asm implementations disabled])
   ], [
-    AC_MSG_WARN([EMSCRIPTEN environment variable defined, but emcc doesn't appear to be used - Assuming compilation to native code])
+    AC_MSG_WARN([EMSCRIPTEN environment variable defined, but emcc doesn\'t appear to be used - Assuming compilation to native code])
     CFLAGS="$CFLAGS -U__EMSCRIPTEN__"
     unset EMSCRIPTEN
   ])
@@ -397,7 +396,31 @@ AS_IF([test "x$EMSCRIPTEN" = "x"], [
   AS_IF([test "x$target_cpu_aarch64" = "xyes"], [
     have_armcrypto=no
     AC_MSG_CHECKING(for ARM crypto instructions set)
-    AC_LINK_IFELSE([AC_LANG_PROGRAM([[#include <arm_neon.h>]], [[ vaeseq_u8(vmovq_n_u8(0), vmovq_n_u8(__ARM_FEATURE_CRYPTO)) ]])],
+    AC_LINK_IFELSE([AC_LANG_PROGRAM([[
+      #ifndef __ARM_FEATURE_CRYPTO
+      #  define __ARM_FEATURE_CRYPTO 1
+      #endif
+      #ifndef __ARM_FEATURE_AES
+      #  define __ARM_FEATURE_AES 1
+      #endif
+
+      #include <arm_neon.h>
+
+      #ifdef __clang__
+      #  pragma clang attribute push(__attribute__((target("neon,crypto,aes"))), apply_to = function)
+      #elif defined(__GNUC__)
+      #  pragma GCC target("+simd+crypto")
+      #endif
+    ]], [[
+      int64x2_t x = { 0, 0 };
+      vaeseq_u8(vmovq_n_u8(0), vmovq_n_u8(0));
+      vmull_high_p64(vreinterpretq_p64_s64(x), vreinterpretq_p64_s64(x));
+
+      #ifdef __clang__
+      #  pragma clang attribute pop
+      #endif
+      (void) 0
+      ]])],
       [
         AC_MSG_RESULT(yes)
         have_armcrypto=yes
@@ -408,7 +431,30 @@ AS_IF([test "x$EMSCRIPTEN" = "x"], [
         AX_CHECK_COMPILE_FLAG([-march=armv8-a+crypto+aes], [
           CFLAGS="$CFLAGS -march=armv8-a+crypto+aes"
           AC_MSG_CHECKING(for ARM crypto instructions set with -march=armv8-a+crypto+aes)
-          AC_LINK_IFELSE([AC_LANG_PROGRAM([[#include <arm_neon.h>]], [[ vaeseq_u8(vmovq_n_u8(0), vmovq_n_u8(__ARM_FEATURE_CRYPTO)) ]])],
+          AC_LINK_IFELSE([AC_LANG_PROGRAM([[
+            #ifdef __clang__
+            #  pragma clang attribute push(__attribute__((target("neon,crypto,aes"))), apply_to = function)
+            #elif defined(__GNUC__)
+            #  pragma GCC target("+simd+crypto")
+            #endif
+            #ifndef __ARM_FEATURE_CRYPTO
+            #  define __ARM_FEATURE_CRYPTO 1
+            #endif
+            #ifndef __ARM_FEATURE_AES
+            #  define __ARM_FEATURE_AES 1
+            #endif
+
+            #include <arm_neon.h>
+          ]], [[
+            int64x2_t x = { 0, 0 };
+            vaeseq_u8(vmovq_n_u8(0), vmovq_n_u8(0));
+            vmull_high_p64(vreinterpretq_p64_s64(x), vreinterpretq_p64_s64(x));
+
+            #ifdef __clang__
+            #  pragma clang attribute pop
+            #endif
+            (void) 0
+          ]])],
             [
               AC_MSG_RESULT(yes - with addition of -march=armv8-a+crypto+aes)
               have_armcrypto=yes
@@ -666,7 +712,7 @@ AS_IF([test "$enable_asm" != "no"],[
   AC_LINK_IFELSE([AC_LANG_PROGRAM([[
   ]], [[
 #if defined(__amd64) || defined(__amd64__) || defined(__x86_64__)
-# if defined(__CYGWIN__) || defined(__MINGW32__) || defined(__MINGW64__) || defined(_WIN32) || defined(_WIN64)
+# if defined(__CYGWIN__) || defined(__MINGW32__) || defined(__MINGW64__) || defined(_WIN32) || defined(_WIN64) || defined(__midipix__)
 #  error Windows x86_64 calling conventions are not supported yet
 # endif
 /* neat */
@@ -904,7 +950,7 @@ if (&getentropy != NULL) {
 
 AS_IF([test "x$WASI" = "x"],[
   AC_CHECK_FUNCS([getpid])
-  AC_CHECK_FUNCS([getauxva elf_aux_info])
+  AC_CHECK_FUNCS([getauxval elf_aux_info])
 ])
 
 AC_CHECK_FUNCS([posix_memalign nanosleep clock_gettime])
@@ -918,7 +964,7 @@ AC_SUBST([LIBTOOL_EXTRA_FLAGS])
 TEST_LDFLAGS=''
 AS_IF([test "x$EMSCRIPTEN" != "x"],[
   EXEEXT=.js
-  TEST_LDFLAGS='--memory-init-file 0 --pre-js pre.js.inc -s RESERVED_FUNCTION_POINTERS=8'
+  TEST_LDFLAGS='--pre-js pre.js.inc -s RESERVED_FUNCTION_POINTERS=8'
 ])
 AC_SUBST(TEST_LDFLAGS)
 AM_CONDITIONAL([EMSCRIPTEN], [test "x$EMSCRIPTEN" != "x"])
@@ -947,7 +993,6 @@ AC_CONFIG_FILES([Makefile
                  dist-build/Makefile
                  libsodium.pc
                  libsodium-uninstalled.pc
-                 msvc-scripts/Makefile
                  src/Makefile
                  src/libsodium/Makefile
                  src/libsodium/include/Makefile
