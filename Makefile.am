@@ -2,6 +2,9 @@ ACLOCAL_AMFLAGS = -I m4
 
 EXTRA_DIST = \
 	autogen.sh \
+	build.zig \
+	ChangeLog \
+	CITATION.cff \
 	LICENSE \
 	README.markdown \
 	THANKS
