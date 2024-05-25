@@ -1,6 +1,7 @@
 EXTRA_DIST = \
 	msvc/build/buildall.bat \
 	msvc/build/buildbase.bat \
+	msvc/properties/ARM64.props \
 	msvc/properties/Common.props \
 	msvc/properties/Debug.props \
 	msvc/properties/DebugDEXE.props \
@@ -69,6 +70,7 @@ EXTRA_DIST = \
 	msvc/vs2019/libsodium/libsodium.xml \
 	msvc/vs2019/libsodium.import.props \
 	msvc/vs2019/libsodium.import.xml \
+	msvc/vs2019/libsodium.sln \
 	msvc/vs2022/libsodium.sln \
 	msvc/vs2022/libsodium/libsodium.props \
 	msvc/vs2022/libsodium/libsodium.vcxproj \
