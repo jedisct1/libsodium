@@ -173,19 +173,18 @@ fe25519_pow22523(fe25519 out, const fe25519 z)
 }
 
 static inline void
-fe25519_cneg(fe25519 h, const fe25519 f, unsigned int b)
+fe25519_cneg(fe25519 h, unsigned int b)
 {
     fe25519 negf;
 
-    fe25519_neg(negf, f);
-    fe25519_copy(h, f);
+    fe25519_neg(negf, h);
     fe25519_cmov(h, negf, b);
 }
 
 static inline void
-fe25519_abs(fe25519 h, const fe25519 f)
+fe25519_abs(fe25519 h)
 {
-    fe25519_cneg(h, f, fe25519_isnegative(f));
+    fe25519_cneg(h, fe25519_isnegative(h));
 }
 
 static void
@@ -2891,7 +2890,7 @@ ristretto255_sqrt_ratio_m1(fe25519 x, const fe25519 u, const fe25519 v)
     fe25519_mul(x_sqrtm1, x, fe25519_sqrtm1); /* x*sqrt(-1) */
 
     fe25519_cmov(x, x_sqrtm1, has_p_root | has_f_root);
-    fe25519_abs(x, x);
+    fe25519_abs(x);
 
     return has_m_root | has_p_root;
 }
@@ -2956,7 +2955,7 @@ ristretto255_frombytes(ge25519_p3 *h, const unsigned char *s)
 
     fe25519_mul(h->X, h->X, s_);
     fe25519_add(h->X, h->X, h->X);
-    fe25519_abs(h->X, h->X);
+    fe25519_abs(h->X);
     fe25519_mul(h->Y, u1, h->Y);
     fe25519_1(h->Z);
     fe25519_mul(h->T, h->X, h->Y);
@@ -3015,11 +3014,11 @@ ristretto255_p3_tobytes(unsigned char *s, const ge25519_p3 *h)
     fe25519_cmov(den_inv, eden, rotate);
 
     fe25519_mul(x_z_inv, x_, z_inv);
-    fe25519_cneg(y_, y_, fe25519_isnegative(x_z_inv));
+    fe25519_cneg(y_, fe25519_isnegative(x_z_inv));
 
     fe25519_sub(s_, h->Z, y_);
     fe25519_mul(s_, den_inv, s_);
-    fe25519_abs(s_, s_);
+    fe25519_abs(s_);
     fe25519_tobytes(s, s_);
 }
 
@@ -3051,7 +3050,7 @@ ristretto255_elligator(ge25519_p3 *p, const fe25519 t)
 
     wasnt_square = 1 - ristretto255_sqrt_ratio_m1(s, u, v);
     fe25519_mul(s_prime, s, t);
-    fe25519_abs(s_prime, s_prime);
+    fe25519_abs(s_prime);
     fe25519_neg(s_prime, s_prime);     /* s_prime = -|s*t| */
     fe25519_cmov(s, s_prime, wasnt_square);
     fe25519_cmov(c, r, wasnt_square);
