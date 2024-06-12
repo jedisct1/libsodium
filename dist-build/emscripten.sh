@@ -83,6 +83,9 @@ if [ "$DIST" = yes ]; then
   }
   emmake make $MAKE_FLAGS install || exit 1
 
+  # ESM and WASM build
+  emccLibsodium "${PREFIX}/lib/libsodium.esm.js" -O3 -s WASM=1 -s EXPORT_ES6=1 -s EVAL_CTORS=1 -s INITIAL_MEMORY=${WASM_INITIAL_MEMORY}
+
   # JS-only build
   emccLibsodium "${PREFIX}/lib/libsodium.tmp.mjs" -Oz -s WASM=0 $LDFLAGS_JS
 
