@@ -170,5 +170,6 @@ test/default/vrf
 test/default/xchacha20
 test/js.done
 testing
+.zig-cache
 zig-cache
 zig-out
