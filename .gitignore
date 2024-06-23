@@ -163,5 +163,6 @@ test/default/verify1
 test/default/xchacha20
 test/js.done
 testing
+.zig-cache
 zig-cache
 zig-out
