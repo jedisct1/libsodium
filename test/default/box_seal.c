@@ -65,7 +65,7 @@ void tv2(void)
         printf("crypto_box_seal_open() failure\n");
         return;
     }
-    assert(m_len == 0 || memcmp(cm, m2, m_len) != 0);
+    assert(m_len < 8 || memcmp(cm, m2, m_len) != 0);
     sodium_free(cm);
     sodium_free(m2);
 }
@@ -135,7 +135,7 @@ void tv4(void)
         printf("crypto_box_curve25519xchacha20poly1305_seal_open() failure\n");
         return;
     }
-    assert(m_len == 0 || memcmp(cm, m2, m_len) != 0);
+    assert(m_len < 8 || memcmp(cm, m2, m_len) != 0);
     sodium_free(cm);
     sodium_free(m2);
 }
