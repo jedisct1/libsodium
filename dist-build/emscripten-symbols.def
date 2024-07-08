@@ -28,7 +28,7 @@ _crypto_aead_aes256gcm_encrypt 0 0
 _crypto_aead_aes256gcm_encrypt_afternm 0 0
 _crypto_aead_aes256gcm_encrypt_detached 0 0
 _crypto_aead_aes256gcm_encrypt_detached_afternm 0 0
-_crypto_aead_aes256gcm_is_available 0 0
+_crypto_aead_aes256gcm_is_available 1 1
 _crypto_aead_aes256gcm_keybytes 0 0
 _crypto_aead_aes256gcm_keygen 0 0
 _crypto_aead_aes256gcm_messagebytes_max 0 0
