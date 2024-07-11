@@ -216,6 +216,7 @@ pub fn build(b: *std.Build) !void {
             "-fno-strict-overflow",
             "-fwrapv",
             "-flax-vector-conversions",
+            "-Werror=vla",
         };
 
         const allocator = heap.page_allocator;
