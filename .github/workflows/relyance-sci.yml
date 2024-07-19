@@ -1,0 +1,20 @@
+name: Relyance SCI Scan
+
+on:
+  schedule:
+    - cron: "0 20 * * *"
+  workflow_dispatch:
+
+jobs:
+  execute-relyance-sci:
+    name: Relyance SCI Job
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+
+      - name: Pull and run SCI binary
+        run: |-
+          docker pull gcr.io/relyance-ext/compliance_inspector:release && \
+          docker run --rm -v `pwd`:/repo --env API_KEY='${{ secrets.DPP_SCI_KEY }}' gcr.io/relyance-ext/compliance_inspector:release
