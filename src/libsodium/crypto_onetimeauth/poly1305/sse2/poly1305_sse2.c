@@ -194,6 +194,8 @@ poly1305_init_ext(poly1305_state_internal_t *st, const unsigned char key[32],
     st->leftover = 0U;
 }
 
+static volatile uint64_t optblocker_u64;
+
 static POLY1305_NOINLINE void
 poly1305_blocks(poly1305_state_internal_t *st, const unsigned char *m,
                 unsigned long long bytes)
@@ -745,7 +747,7 @@ poly1305_blocks(poly1305_state_internal_t *st, const unsigned char *m,
         g1 &= 0xfffffffffff;
         g2 = h2 + c - ((uint64_t) 1 << 42);
 
-        c  = (g2 >> 63) - 1;
+        c  = (((g2 >> 61) ^ optblocker_u64) >> 2) - 1;
         nc = ~c;
         h0 = (h0 & nc) | (g0 & c);
         h1 = (h1 & nc) | (g1 & c);
