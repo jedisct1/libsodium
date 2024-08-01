@@ -30,6 +30,15 @@ typedef unsigned uint128_t __attribute__((mode(TI)));
 # endif
 #endif
 
+# if defined(_MSC_VER)
+
+#define ROTL32(X, B) _rotl((X), (B))
+#define ROTL64(X, B) _rotl64((X), (B))
+#define ROTR32(X, B) _rotr((X), (B))
+#define ROTR64(X, B) _rotr64((X), (B))
+
+#else
+
 #define ROTL32(X, B) rotl32((X), (B))
 static inline uint32_t
 rotl32(const uint32_t x, const int b)
@@ -57,6 +66,8 @@ rotr64(const uint64_t x, const int b)
 {
     return (x >> b) | (x << (64 - b));
 }
+
+#endif
 
 #define LOAD64_LE(SRC) load64_le(SRC)
 static inline uint64_t
