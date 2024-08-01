@@ -288,6 +288,8 @@ slide_vartime(signed char *r, const unsigned char *a)
     }
 }
 
+static volatile unsigned char optblocker_u8;
+
 int
 ge25519_frombytes(ge25519_p3 *h, const unsigned char *s)
 {
@@ -320,7 +322,7 @@ ge25519_frombytes(ge25519_p3 *h, const unsigned char *s)
     fe25519_cmov(h->X, x_sqrtm1, 1 - has_m_root);
 
     fe25519_neg(negx, h->X);
-    fe25519_cmov(h->X, negx, fe25519_isnegative(h->X) ^ (s[31] >> 7));
+    fe25519_cmov(h->X, negx, fe25519_isnegative(h->X) ^ (((s[31] >> 5) ^ optblocker_u8) >> 2));
     fe25519_mul(h->T, h->X, h->Y);
 
     return (has_m_root | has_p_root) - 1;
