@@ -165,7 +165,7 @@ pub fn build(b: *std.Build) !void {
     }
 
     switch (target.result.cpu.arch) {
-        .aarch64, .aarch64_be, .aarch64_32 => {
+        .aarch64, .aarch64_be => {
             // ARM CPUs supported by Windows are assumed to have NEON support
             if (target.result.isMinGW()) {
                 target.query.cpu_features_add.addFeature(@intFromEnum(Target.aarch64.Feature.neon));
