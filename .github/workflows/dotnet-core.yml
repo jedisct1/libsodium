@@ -279,8 +279,7 @@ jobs:
     - build-test-binaries
     strategy:
       matrix:
-        # CentOS 7 and Debian 10 use an older GCC version; make sure we can run on those platforms.
-        arch: [ 'centos:7', 'debian:10' ]
+        arch: [ 'centos:8', 'debian:10' ]
     container:
       image: ${{ matrix.arch }}
     env:
