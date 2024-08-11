@@ -8892,7 +8892,7 @@ then :
 
 
 case $host_os in #(
-  cygwin*|mingw*|msys|pw32*|cegcc*|haiku|none|eabi*) :
+  solaris*|cygwin*|mingw*|msys|pw32*|cegcc*|haiku|none|eabi*) :
       ;; #(
   *) :
 
