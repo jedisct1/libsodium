@@ -1,17 +1,19 @@
 #! /bin/sh
 
-if [ -z "$NDK_PLATFORM" ]; then
-  export NDK_PLATFORM="android-19"
-fi
-export NDK_PLATFORM_COMPAT="${NDK_PLATFORM_COMPAT:-${NDK_PLATFORM}}"
-export NDK_API_VERSION="$(echo "$NDK_PLATFORM" | sed 's/^android-//')"
-export NDK_API_VERSION_COMPAT="$(echo "$NDK_PLATFORM_COMPAT" | sed 's/^android-//')"
-
 if [ -z "$ANDROID_NDK_HOME" ]; then
   echo "You should probably set ANDROID_NDK_HOME to the directory containing"
   echo "the Android NDK"
   exit 1
 fi
+
+#read NDK version 
+export NDK_API_VERSION=$(awk -F'=' '/Pkg.Revision/ {gsub(/^[ \t]+|[ \t]+$/, "", $2); split($2, a, "."); print a[1]}' ${ANDROID_NDK_HOME}/source.properties)
+if [ -z "$NDK_API_VERSION" ]; then
+  NDK_API_VERSION=19
+fi
+export NDK_PLATFORM=android-${NDK_API_VERSION}
+export NDK_PLATFORM_COMPAT="${NDK_PLATFORM_COMPAT:-${NDK_PLATFORM}}"
+export NDK_API_VERSION_COMPAT="$(echo "$NDK_PLATFORM_COMPAT" | sed 's/^android-//')"
 
 if [ ! -f ./configure ]; then
   echo "Can't find ./configure. Wrong directory or haven't run autogen.sh?" >&2
