@@ -19,7 +19,6 @@ main(void)
 {
     unsigned char k[32];
     char          hex[65];
-    int           i;
     int           ret;
 
     ret = crypto_scalarmult(k, alicesk, bobpk);
