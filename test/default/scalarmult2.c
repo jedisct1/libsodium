@@ -13,7 +13,6 @@ main(void)
 {
     unsigned char bobpk[32];
     char          hex[65];
-    int           i;
 
     crypto_scalarmult_base(bobpk, bobsk);
     sodium_bin2hex(hex, sizeof hex, bobpk, sizeof bobpk);
