@@ -46,7 +46,6 @@ else
 fi
 echo
 
-
 if [ -z "$LIBSODIUM_FULL_BUILD" ]; then
   export LIBSODIUM_ENABLE_MINIMAL_FLAG="--enable-minimal"
 else
