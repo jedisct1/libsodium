@@ -59,8 +59,6 @@ SODIUM_EXPORT = \
 	sodium/crypto_verify_16.h \
 	sodium/crypto_verify_32.h \
 	sodium/crypto_verify_64.h \
-	sodium/crypto_vrf.h \
-	sodium/crypto_vrf_rfc9381.h \
 	sodium/export.h \
 	sodium/randombytes.h \
 	sodium/randombytes_internal_random.h \

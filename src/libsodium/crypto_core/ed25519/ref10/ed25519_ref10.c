@@ -4,7 +4,6 @@
 #include <string.h>
 
 #include "crypto_verify_32.h"
-#include "../core_h2c.h"
 #include "private/common.h"
 #include "private/ed25519_ref10.h"
 #include "utils.h"
@@ -744,76 +743,68 @@ ge25519_tobytes(unsigned char *s, const ge25519_p2 *h)
 }
 
 /*
- * Precomputation of a base point, to use in multiscalar multiplication algorithm A,3A,5A,7A,9A,11A,13A,15A
- */
-static void point_precomputation(ge25519_cached cached[8], const ge25519_p3 *base) {
-    ge25519_p1p1   t;
-    ge25519_p3     u;
-    ge25519_p3     A;
-
-    // Precomputation of values of A
-    ge25519_p3_to_cached(&cached[0], base);
-
-    ge25519_p3_dbl(&t, base);
-    ge25519_p1p1_to_p3(&A, &t);
-
-    ge25519_add_cached(&t, &A, &cached[0]);
-    ge25519_p1p1_to_p3(&u, &t);
-    ge25519_p3_to_cached(&cached[1], &u);
-
-    ge25519_add_cached(&t, &A, &cached[1]);
-    ge25519_p1p1_to_p3(&u, &t);
-    ge25519_p3_to_cached(&cached[2], &u);
-
-    ge25519_add_cached(&t, &A, &cached[2]);
-    ge25519_p1p1_to_p3(&u, &t);
-    ge25519_p3_to_cached(&cached[3], &u);
-
-    ge25519_add_cached(&t, &A, &cached[3]);
-    ge25519_p1p1_to_p3(&u, &t);
-    ge25519_p3_to_cached(&cached[4], &u);
-
-    ge25519_add_cached(&t, &A, &cached[4]);
-    ge25519_p1p1_to_p3(&u, &t);
-    ge25519_p3_to_cached(&cached[5], &u);
-
-    ge25519_add_cached(&t, &A, &cached[5]);
-    ge25519_p1p1_to_p3(&u, &t);
-    ge25519_p3_to_cached(&cached[6], &u);
-
-    ge25519_add_cached(&t, &A, &cached[6]);
-    ge25519_p1p1_to_p3(&u, &t);
-    ge25519_p3_to_cached(&cached[7], &u);
-}
-
-/*
- Variable time double scalar multiplication with variable bases
  r = a * A + b * B
  where a = a[0]+256*a[1]+...+256^31 a[31].
  and b = b[0]+256*b[1]+...+256^31 b[31].
+ B is the Ed25519 base point (x,4/5) with x positive.
 
- If a null pointer is passed as an argument for B, the function uses
- the precomputed values of the base point for the scalar multiplication.
-
- Only used for ed25519 and VRF verification.
+ Only used for signatures verification.
  */
 
 void
 ge25519_double_scalarmult_vartime(ge25519_p2 *r, const unsigned char *a,
-                                           const ge25519_p3 *A, const unsigned char *b,
-                                           const ge25519_p3 *B)
+                                  const ge25519_p3 *A, const unsigned char *b)
 {
+    static const ge25519_precomp Bi[8] = {
+#ifdef HAVE_TI_MODE
+# include "fe_51/base2.h"
+#else
+# include "fe_25_5/base2.h"
+#endif
+    };
     signed char    aslide[256];
     signed char    bslide[256];
-    ge25519_cached Ai[8];
+    ge25519_cached Ai[8]; /* A,3A,5A,7A,9A,11A,13A,15A */
     ge25519_p1p1   t;
     ge25519_p3     u;
+    ge25519_p3     A2;
     int            i;
 
     slide_vartime(aslide, a);
     slide_vartime(bslide, b);
 
-    point_precomputation(Ai, A);
+    ge25519_p3_to_cached(&Ai[0], A);
+
+    ge25519_p3_dbl(&t, A);
+    ge25519_p1p1_to_p3(&A2, &t);
+
+    ge25519_add_cached(&t, &A2, &Ai[0]);
+    ge25519_p1p1_to_p3(&u, &t);
+    ge25519_p3_to_cached(&Ai[1], &u);
+
+    ge25519_add_cached(&t, &A2, &Ai[1]);
+    ge25519_p1p1_to_p3(&u, &t);
+    ge25519_p3_to_cached(&Ai[2], &u);
+
+    ge25519_add_cached(&t, &A2, &Ai[2]);
+    ge25519_p1p1_to_p3(&u, &t);
+    ge25519_p3_to_cached(&Ai[3], &u);
+
+    ge25519_add_cached(&t, &A2, &Ai[3]);
+    ge25519_p1p1_to_p3(&u, &t);
+    ge25519_p3_to_cached(&Ai[4], &u);
+
+    ge25519_add_cached(&t, &A2, &Ai[4]);
+    ge25519_p1p1_to_p3(&u, &t);
+    ge25519_p3_to_cached(&Ai[5], &u);
+
+    ge25519_add_cached(&t, &A2, &Ai[5]);
+    ge25519_p1p1_to_p3(&u, &t);
+    ge25519_p3_to_cached(&Ai[6], &u);
+
+    ge25519_add_cached(&t, &A2, &Ai[6]);
+    ge25519_p1p1_to_p3(&u, &t);
+    ge25519_p3_to_cached(&Ai[7], &u);
 
     ge25519_p2_0(r);
 
@@ -834,31 +825,12 @@ ge25519_double_scalarmult_vartime(ge25519_p2 *r, const unsigned char *a,
             ge25519_sub_cached(&t, &u, &Ai[(-aslide[i]) / 2]);
         }
 
-        if (B == NULL) {
-            static const ge25519_precomp Bi[8] = {
-#ifdef HAVE_TI_MODE
-# include "fe_51/base2.h"
-#else
-# include "fe_25_5/base2.h"
-#endif
-            };
-            if (bslide[i] > 0) {
-                ge25519_p1p1_to_p3(&u, &t);
-                ge25519_add_precomp(&t, &u, &Bi[bslide[i] / 2]);
-            } else if (bslide[i] < 0) {
-                ge25519_p1p1_to_p3(&u, &t);
-                ge25519_sub_precomp(&t, &u, &Bi[(-bslide[i]) / 2]);
-            }
-        } else {
-            ge25519_cached Bi[8];
-            point_precomputation(Bi, B);
-            if (bslide[i] > 0) {
-                ge25519_p1p1_to_p3(&u, &t);
-                ge25519_add_cached(&t, &u, &Bi[bslide[i] / 2]);
-            } else if (bslide[i] < 0) {
-                ge25519_p1p1_to_p3(&u, &t);
-                ge25519_sub_cached(&t, &u, &Bi[(-bslide[i]) / 2]);
-            }
+        if (bslide[i] > 0) {
+            ge25519_p1p1_to_p3(&u, &t);
+            ge25519_add_precomp(&t, &u, &Bi[bslide[i] / 2]);
+        } else if (bslide[i] < 0) {
+            ge25519_p1p1_to_p3(&u, &t);
+            ge25519_sub_precomp(&t, &u, &Bi[(-bslide[i]) / 2]);
         }
 
         ge25519_p1p1_to_p2(r, &t);
@@ -2253,29 +2225,6 @@ sc25519_invert(unsigned char recip[32], const unsigned char s[32])
     sc25519_sqmul(recip, 8, _11101011);
 }
 
-/* 2^252+27742317777372353535851937790883648493 */
-static const unsigned char L[] = {
-        0xed, 0xd3, 0xf5, 0x5c, 0x1a, 0x63, 0x12, 0x58, 0xd6, 0x9c, 0xf7,
-        0xa2, 0xde, 0xf9, 0xde, 0x14, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
-        0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x10
-};
-
-void
-sc25519_negate(unsigned char neg[32], const unsigned char s[32])
-{
-    unsigned char t_[64];
-    unsigned char s_[64];
-
-    memset(t_, 0, sizeof t_);
-    memset(s_, 0, sizeof s_);
-    memcpy(t_ + 32, L,
-           32);
-    memcpy(s_, s, 32);
-    sodium_sub(t_, s_, sizeof t_);
-    sc25519_reduce(t_);
-    memcpy(neg, t_, 32);
-}
-
 /*
  Input:
  s[0]+256*s[1]+...+256^63*s[63] = s
@@ -2751,68 +2700,6 @@ ge25519_from_uniform(unsigned char s[32], const unsigned char r[32])
     ge25519_clear_cofactor(&p3);
     ge25519_p3_tobytes(s, &p3);
 }
-
-#define HASH_GE_L 48U
-
-static int
-_string_to_points(unsigned char * const px, const size_t n,
-                  const char *ctx, const unsigned char *msg, size_t msg_len,
-                  int hash_alg)
-{
-    unsigned char h[64];
-    unsigned char h_be[2U * HASH_GE_L];
-    size_t        i, j;
-
-    if (n > 2U) {
-        abort(); /* LCOV_EXCL_LINE */;
-    }
-    if (core_h2c_string_to_hash(h_be, n * HASH_GE_L, ctx, msg, msg_len,
-                                hash_alg) != 0) {
-        return -1;
-    }
-    COMPILER_ASSERT(sizeof h >= HASH_GE_L);
-    for (i = 0U; i < n; i++) {
-        for (j = 0U; j < HASH_GE_L; j++) {
-            h[j] = h_be[i * HASH_GE_L + HASH_GE_L - 1U - j];
-        }
-        memset(&h[j], 0, (sizeof h) - j);
-        ge25519_from_hash(&px[i * 32], h);
-    }
-    return 0;
-}
-
-int
-ge25519_from_string(unsigned char p[32],
-                    const char *ctx, const unsigned char *msg,
-                    size_t msg_len, int hash_alg)
-{
-    return _string_to_points(p, 1, ctx, msg, msg_len, hash_alg);
-
-
-}
-
-int
-ge25519_from_string_ro(unsigned char p[32],
-                       const char *ctx, const unsigned char *msg,
-                       size_t msg_len, int hash_alg)
-{
-    unsigned char  px[64];
-    ge25519_p3     p_p3, q_p3, r_p3;
-
-    if (_string_to_points(px, 2, ctx, msg, msg_len, hash_alg) != 0) {
-        return -1;
-    }
-
-    if (ge25519_frombytes(&p_p3, &px[0]) != 0 || ge25519_is_on_curve(&p_p3) == 0 ||
-        ge25519_frombytes(&q_p3, &px[32]) != 0 || ge25519_is_on_curve(&q_p3) == 0) {
-        return -1;
-    }
-    ge25519_p3_add(&r_p3, &p_p3, &q_p3);
-    ge25519_p3_tobytes(p, &r_p3);
-
-    return 0;
-}
-
 
 static void
 fe25519_reduce64(fe25519 fe_f, const unsigned char h[64])

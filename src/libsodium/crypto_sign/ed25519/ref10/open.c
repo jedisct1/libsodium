@@ -55,7 +55,7 @@ _crypto_sign_ed25519_verify_detached(const unsigned char *sig,
     crypto_hash_sha512_final(&hs, h);
     sc25519_reduce(h);
 
-    ge25519_double_scalarmult_vartime(&sb_ah_p2, h, &A, sig + 32, NULL);
+    ge25519_double_scalarmult_vartime(&sb_ah_p2, h, &A, sig + 32);
     ge25519_p2_to_p3(&sb_ah, &sb_ah_p2);
     ge25519_p3_sub(&check, &expected_r, &sb_ah);
 

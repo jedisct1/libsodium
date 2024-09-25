@@ -96,8 +96,7 @@ void ge25519_scalarmult_base(ge25519_p3 *h, const unsigned char *a);
 
 void ge25519_double_scalarmult_vartime(ge25519_p2 *r, const unsigned char *a,
                                        const ge25519_p3 *A,
-                                       const unsigned char *b,
-                                       const ge25519_p3 *B);
+                                       const unsigned char *b);
 
 void ge25519_scalarmult(ge25519_p3 *h, const unsigned char *a,
                         const ge25519_p3 *p);
@@ -116,14 +115,6 @@ void ge25519_from_uniform(unsigned char s[32], const unsigned char r[32]);
 
 void ge25519_from_hash(unsigned char s[32], const unsigned char h[64]);
 
-int ge25519_from_string(unsigned char p[32],
-                    const char *ctx, const unsigned char *msg,
-                    size_t msg_len, int hash_alg);
-
-int ge25519_from_string_ro(unsigned char p[32],
-                       const char *ctx, const unsigned char *msg,
-                       size_t msg_len, int hash_alg);
-
 /*
  Ristretto group
  */
@@ -141,8 +132,6 @@ void ristretto255_from_hash(unsigned char s[32], const unsigned char h[64]);
 
 void sc25519_invert(unsigned char recip[32], const unsigned char s[32]);
 
-void sc25519_negate(unsigned char neg[32], const unsigned char s[32]);
-
 void sc25519_reduce(unsigned char s[64]);
 
 void sc25519_mul(unsigned char s[32], const unsigned char a[32],
@@ -152,7 +141,5 @@ void sc25519_muladd(unsigned char s[32], const unsigned char a[32],
                     const unsigned char b[32], const unsigned char c[32]);
 
 int sc25519_is_canonical(const unsigned char s[32]);
-
-void ge25519_clear_cofactor(ge25519_p3 *p3);
 
 #endif

@@ -54,8 +54,6 @@
 #define ge25519_clear_cofactor _sodium_ge25519_clear_cofactor
 #define ge25519_double_scalarmult_vartime _sodium_ge25519_double_scalarmult_vartime
 #define ge25519_from_hash _sodium_ge25519_from_hash
-#define ge25519_from_string _sodium_ge25519_from_string
-#define ge25519_from_string_ro _sodium_ge25519_from_string_ro
 #define ge25519_from_uniform _sodium_ge25519_from_uniform
 #define ge25519_frombytes _sodium_ge25519_frombytes
 #define ge25519_frombytes_negate_vartime _sodium_ge25519_frombytes_negate_vartime
@@ -79,7 +77,6 @@
 #define sc25519_is_canonical _sodium_sc25519_is_canonical
 #define sc25519_mul _sodium_sc25519_mul
 #define sc25519_muladd _sodium_sc25519_muladd
-#define sc25519_negate _sodium_sc25519_negate
 #define sc25519_reduce _sodium_sc25519_reduce
 #define softaes_block_encrypt _sodium_softaes_block_encrypt
 
