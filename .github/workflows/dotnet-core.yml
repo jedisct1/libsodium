@@ -272,6 +272,7 @@ jobs:
         with:
           name: test-builds
           path: .libsodium-builds/*
+          include-hidden-files: true
 
   run-test-binaries-os-versions:
     runs-on: ubuntu-latest
