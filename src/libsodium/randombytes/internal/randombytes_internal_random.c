@@ -44,14 +44,6 @@
 #ifdef BLOCK_ON_DEV_RANDOM
 # include <poll.h>
 #endif
-#ifdef HAVE_RDRAND
-# ifdef __clang__
-#  pragma clang attribute push(__attribute__((target("rdrnd"))), apply_to = function)
-# elif defined(__GNUC__)
-#  pragma GCC target("rdrnd")
-# endif
-# include <immintrin.h>
-#endif
 
 #include "core.h"
 #include "crypto_core_hchacha20.h"
@@ -107,6 +99,15 @@ BOOLEAN NTAPI RtlGenRandom(PVOID RandomBuffer, ULONG RandomBufferLength);
 # else
 #  define TLS
 # endif
+#endif
+
+#ifdef HAVE_RDRAND
+# ifdef __clang__
+#  pragma clang attribute push(__attribute__((target("rdrnd"))), apply_to = function)
+# elif defined(__GNUC__)
+#  pragma GCC target("rdrnd")
+# endif
+# include <immintrin.h>
 #endif
 
 typedef struct InternalRandomGlobal_ {
