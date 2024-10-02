@@ -431,6 +431,12 @@ blake2b_pick_best_implementation(void)
         return 0;
     }
 #endif
+#if defined(__aarch64__)
+    if (sodium_runtime_has_neon()) {
+        blake2b_compress = blake2b_compress_neon;
+        return 0;
+    }
+#endif
     blake2b_compress = blake2b_compress_ref;
 
     return 0;

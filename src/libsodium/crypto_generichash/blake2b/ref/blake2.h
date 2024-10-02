@@ -103,5 +103,7 @@ int blake2b_compress_sse41(blake2b_state *S,
                            const uint8_t  block[BLAKE2B_BLOCKBYTES]);
 int blake2b_compress_avx2(blake2b_state *S,
                           const uint8_t  block[BLAKE2B_BLOCKBYTES]);
+int blake2b_compress_neon(blake2b_state *S,
+                          const uint8_t  block[BLAKE2B_BLOCKBYTES]);
 
 #endif

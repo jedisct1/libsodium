@@ -35,6 +35,9 @@ libsodium_la_SOURCES = \
 	crypto_generichash/blake2b/generichash_blake2.c \
 	crypto_generichash/blake2b/ref/blake2.h \
 	crypto_generichash/blake2b/ref/blake2b-compress-ref.c \
+	crypto_generichash/blake2b/ref/blake2b-compress-neon.c \
+	crypto_generichash/blake2b/ref/blake2b-compress-neon.h \
+	crypto_generichash/blake2b/ref/blake2b-load-neon.h \
 	crypto_generichash/blake2b/ref/blake2b-load-sse2.h \
 	crypto_generichash/blake2b/ref/blake2b-load-sse41.h \
 	crypto_generichash/blake2b/ref/blake2b-load-avx2.h \
