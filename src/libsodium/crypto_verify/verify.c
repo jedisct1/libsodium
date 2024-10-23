@@ -57,6 +57,8 @@ crypto_verify_n(const unsigned char *x_, const unsigned char *y_,
 
 #else
 
+static volatile uint16_t optblocker_u16;
+
 static inline int
 crypto_verify_n(const unsigned char *x_, const unsigned char *y_,
                 const int n)
@@ -65,13 +67,19 @@ crypto_verify_n(const unsigned char *x_, const unsigned char *y_,
         (const volatile unsigned char *volatile) x_;
     const volatile unsigned char *volatile y =
         (const volatile unsigned char *volatile) y_;
-    volatile uint_fast16_t d = 0U;
-    int i;
+    volatile uint16_t d = 0U;
+    int               i;
 
     for (i = 0; i < n; i++) {
         d |= x[i] ^ y[i];
     }
-    return (1 & ((d - 1) >> 8)) - 1;
+# ifdef HAVE_INLINE_ASM
+    __asm__ __volatile__("" : "+r"(d) :);
+# endif
+    d--;
+    d = ((d >> 13) ^ optblocker_u16) >> 2;
+
+    return (int) d - 1;
 }
 
 #endif
