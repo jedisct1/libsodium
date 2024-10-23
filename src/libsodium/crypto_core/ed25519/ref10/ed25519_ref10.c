@@ -574,12 +574,9 @@ equal(signed char b, signed char c)
 static unsigned char
 negative(signed char b)
 {
-    /* 18446744073709551361..18446744073709551615: yes; 0..255: no */
-    uint64_t x = b;
+    const uint8_t x = (uint8_t) b; /* 0..127: no 128..255: yes */
 
-    x >>= 63; /* 1: yes; 0: no */
-
-    return x;
+    return ((x >> 5) ^ optblocker_u8) >> 2; /* 1: yes; 0: no */
 }
 
 static void
