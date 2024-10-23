@@ -621,9 +621,10 @@ equal(signed char b, signed char c)
     return z;
 #else
     const unsigned char x  = (unsigned char) b ^ (unsigned char) c; /* 0: yes; 1..255: no */
-    const uint32_t      y  = (uint32_t) x; /* 0: yes; 1..255: no */
+    uint32_t            y  = (uint32_t) x; /* 0: yes; 1..255: no */
 
-    return (((y - 1) >> 29) ^ optblocker_u8) >> 2; /* 1: yes; 0: no */
+    y--;
+    return ((y >> 29) ^ optblocker_u8) >> 2; /* 1: yes; 0: no */
 #endif
 }
 
