@@ -565,15 +565,10 @@ ge25519_precomp_0(ge25519_precomp *h)
 static unsigned char
 equal(signed char b, signed char c)
 {
-    unsigned char ub = b;
-    unsigned char uc = c;
-    unsigned char x  = ub ^ uc; /* 0: yes; 1..255: no */
-    uint32_t      y  = (uint32_t) x; /* 0: yes; 1..255: no */
+    const unsigned char x  = (unsigned char) b ^ (unsigned char) c; /* 0: yes; 1..255: no */
+    const uint32_t      y  = (uint32_t) x; /* 0: yes; 1..255: no */
 
-    y -= 1;   /* 4294967295: yes; 0..254: no */
-    y >>= 31; /* 1: yes; 0: no */
-
-    return y;
+    return (((y - 1) >> 29) ^ optblocker_u8) >> 2; /* 1: yes; 0: no */
 }
 
 static unsigned char
