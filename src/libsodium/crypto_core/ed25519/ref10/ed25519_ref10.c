@@ -609,18 +609,38 @@ ge25519_precomp_0(ge25519_precomp *h)
 static unsigned char
 equal(signed char b, signed char c)
 {
+#if defined(HAVE_INLINE_ASM) && defined(__x86_64__)
+    int32_t b32 = (int32_t) b, c32 = (int32_t) c, q32, z32;
+    __asm__ ("xorl %0,%0\n movl $1,%1\n cmpb %b3,%b2\n cmovel %1,%0" :
+             "=&r"(z32), "=&r"(q32) : "q"(b32), "q"(c32) : "cc");
+    return (unsigned char) z32;
+#elif defined(HAVE_INLINE_ASM) && defined(__aarch64__)
+    unsigned char z;
+    __asm__ ("and %w0,%w1,255\n cmp %w0,%w2,uxtb\n cset %w0,eq" :
+             "=&r"(z) : "r"(b), "r"(c) : "cc");
+    return z;
+#else
     const unsigned char x  = (unsigned char) b ^ (unsigned char) c; /* 0: yes; 1..255: no */
     const uint32_t      y  = (uint32_t) x; /* 0: yes; 1..255: no */
 
     return (((y - 1) >> 29) ^ optblocker_u8) >> 2; /* 1: yes; 0: no */
+#endif
 }
 
 static unsigned char
 negative(signed char b)
 {
+#if defined(HAVE_INLINE_ASM) && defined(__x86_64__)
+    __asm__ ("shrb $7,%0" : "+r"(b) : : "cc");
+    return b;
+#elif defined(HAVE_INLINE_ASM) && defined(__aarch64__)
+    uint8_t x;
+    __asm__ ("ubfx %w0,%w1,7,1" : "=r"(x) : "r"(b) : );
+    return x;
+#else
     const uint8_t x = (uint8_t) b; /* 0..127: no 128..255: yes */
-
     return ((x >> 5) ^ optblocker_u8) >> 2; /* 1: yes; 0: no */
+#endif
 }
 
 static void
