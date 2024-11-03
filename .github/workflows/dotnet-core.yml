@@ -33,7 +33,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Install Zig
-        uses: goto-bus-stop/setup-zig@2a9625d550eefc3a9b1a43d342ad655f563f8241
+        uses: mlugg/setup-zig@v1
         with:
           version: 0.12.0
       - uses: actions/checkout@v4
