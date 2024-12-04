@@ -43,7 +43,7 @@ jobs:
       - name: Install Zig
         uses: mlugg/setup-zig@v1
         with:
-          version: 0.12.0
+          version: 0.13.0
 
       - name: Autogen
         run: ./autogen.sh -s
@@ -53,6 +53,7 @@ jobs:
           zig build
           zig build -Dtarget=x86_64-linux
           zig build -Dtarget=aarch64-linux
+          zig build -Dtarget=x86-windows
           zig build -Dtarget=x86_64-windows
           zig build -Dtarget=aarch64-windows
           zig build -Dtarget=x86_64-macos
