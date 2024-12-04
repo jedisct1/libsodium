@@ -2,29 +2,47 @@ name: "CodeQL scan"
 
 on:
   push:
+    branches: [ "master stable next" ]
   pull_request:
+    # The branches below must be a subset of the branches above
+    branches: [ "master stable next" ]
   schedule:
-    - cron: "0 17 * * 2"
+    - cron: '0 17 * * 2'
 
 jobs:
-  CodeQL-Build:
-    runs-on: ubuntu-latest
+  analyze:
+    name: Analyze
+    runs-on: ${{ (matrix.language == 'swift' && 'macos-latest') || 'ubuntu-latest' }}
+    timeout-minutes: ${{ (matrix.language == 'swift' && 120) || 360 }}
+    permissions:
+      actions: read
+      contents: read
+      security-events: write
+
+    strategy:
+      fail-fast: false
+      matrix:
+        language: [ 'c-cpp' ]
 
     steps:
-      - name: Checkout repository
-        uses: actions/checkout@v4
-        with:
-          fetch-depth: 2
+    - name: Checkout repository
+      uses: actions/checkout@v4
+      with:
+        fetch-depth: 2
 
-      - name: Initialize CodeQL
-        uses: github/codeql-action/init@v2
-        with:
-          languages: cpp
+    # Initializes the CodeQL tools for scanning.
+    - name: Initialize CodeQL
+      uses: github/codeql-action/init@v2
+      with:
+        languages: ${{ matrix.language }}
 
-      - run: |
-          ./autogen.sh -s
-          env CPPFLAGS="-DDEV_MODE=1" ./configure --disable-dependency-tracking
-          make -j $(nproc) check
+    - run: |
+        echo "Run, Build Application using script"
+        ./autogen.sh -s
+        env CPPFLAGS="-DDEV_MODE=1" ./configure --disable-dependency-tracking
+        make -j $(nproc) check
 
-      - name: Perform CodeQL Analysis
-        uses: github/codeql-action/analyze@v2
+    - name: Perform CodeQL Analysis
+      uses: github/codeql-action/analyze@v2
+      with:
+        category: "/language:${{matrix.language}}"
