@@ -10914,8 +10914,8 @@ esac
 
 
 
-macro_version='2.5.3'
-macro_revision='2.5.3'
+macro_version='2.5.4'
+macro_revision='2.5.4'
 
 
 
@@ -11704,9 +11704,9 @@ else case e in #(
     lt_cv_sys_max_cmd_len=12288;    # 12K is about right
     ;;
 
-  gnu*)
-    # Under GNU Hurd, this test is not required because there is
-    # no limit to the length of command line arguments.
+  gnu* | ironclad*)
+    # Under GNU Hurd and Ironclad, this test is not required because there
+    # is no limit to the length of command line arguments.
     # Libtool will interpret -1 as no limit whatsoever
     lt_cv_sys_max_cmd_len=-1;
     ;;
@@ -12271,7 +12271,11 @@ linux* | k*bsd*-gnu | kopensolaris*-gnu | gnu*)
   lt_cv_deplibs_check_method=pass_all
   ;;
 
-netbsd*)
+*-mlibc)
+  lt_cv_deplibs_check_method=pass_all
+  ;;
+
+netbsd* | netbsdelf*-gnu)
   if echo __ELF__ | $CC -E - | $GREP __ELF__ > /dev/null; then
     lt_cv_deplibs_check_method='match_pattern /lib[^/]+(\.so\.[0-9]+\.[0-9]+|_pic\.a)$'
   else
@@ -12302,6 +12306,10 @@ osf3* | osf4* | osf5*)
   ;;
 
 rdos*)
+  lt_cv_deplibs_check_method=pass_all
+  ;;
+
+serenity*)
   lt_cv_deplibs_check_method=pass_all
   ;;
 
@@ -13199,11 +13207,8 @@ _LT_EOF
   test $ac_status = 0; }; then
     # Now try to grab the symbols.
     nlist=conftest.nm
-    if { { eval echo "\"\$as_me\":${as_lineno-$LINENO}: \"$NM conftest.$ac_objext \| "$lt_cv_sys_global_symbol_pipe" \> $nlist\""; } >&5
-  (eval $NM conftest.$ac_objext \| "$lt_cv_sys_global_symbol_pipe" \> $nlist) 2>&5
-  ac_status=$?
-  printf "%s\n" "$as_me:${as_lineno-$LINENO}: \$? = $ac_status" >&5
-  test $ac_status = 0; } && test -s "$nlist"; then
+    $ECHO "$as_me:$LINENO: $NM conftest.$ac_objext | $lt_cv_sys_global_symbol_pipe > $nlist" >&5
+    if eval "$NM" conftest.$ac_objext \| "$lt_cv_sys_global_symbol_pipe" \> $nlist 2>&5 && test -s "$nlist"; then
       # Try sorting and uniquifying the output.
       if sort "$nlist" | uniq > "$nlist"T; then
 	mv -f "$nlist"T "$nlist"
@@ -14606,6 +14611,21 @@ printf "%s\n" "$lt_cv_ld_force_load" >&6; }
     if test yes = "$lt_cv_apple_cc_single_mod"; then
       _lt_dar_single_mod='$single_module'
     fi
+    _lt_dar_needs_single_mod=no
+    case $host_os in
+    rhapsody* | darwin1.*)
+      _lt_dar_needs_single_mod=yes ;;
+    darwin*)
+      # When targeting Mac OS X 10.4 (darwin 8) or later,
+      # -single_module is the default and -multi_module is unsupported.
+      # The toolchain on macOS 10.14 (darwin 18) and later cannot
+      # target any OS version that needs -single_module.
+      case ${MACOSX_DEPLOYMENT_TARGET-10.0},$host in
+      10.0,*-darwin[567].*|10.[0-3],*-darwin[5-9].*|10.[0-3],*-darwin1[0-7].*)
+        _lt_dar_needs_single_mod=yes ;;
+      esac
+    ;;
+    esac
     if test yes = "$lt_cv_ld_exported_symbols_list"; then
       _lt_dar_export_syms=' $wl-exported_symbols_list,$output_objdir/$libname-symbols.expsym'
     else
@@ -15475,7 +15495,7 @@ lt_prog_compiler_static=
 	lt_prog_compiler_pic='-KPIC'
 	lt_prog_compiler_static='-static'
         ;;
-      *flang* | ftn)
+      *flang* | ftn | f18* | f95*)
         # Flang compiler.
 	lt_prog_compiler_wl='-Wl,'
 	lt_prog_compiler_pic='-fPIC'
@@ -15563,6 +15583,12 @@ lt_prog_compiler_static=
       lt_prog_compiler_static='-Bstatic'
       ;;
 
+    *-mlibc)
+      lt_prog_compiler_wl='-Wl,'
+      lt_prog_compiler_pic='-fPIC'
+      lt_prog_compiler_static='-static'
+      ;;
+
     *nto* | *qnx*)
       # QNX uses GNU C++, but need to define -shared option too, otherwise
       # it will coredump.
@@ -15577,6 +15603,9 @@ lt_prog_compiler_static=
 
     rdos*)
       lt_prog_compiler_static='-non_shared'
+      ;;
+
+    serenity*)
       ;;
 
     solaris*)
@@ -15964,9 +15993,6 @@ printf %s "checking whether the $compiler linker ($LD) supports shared libraries
     # we just hope/assume this is gcc and not c89 (= MSVC++ or ICC)
     with_gnu_ld=yes
     ;;
-  openbsd*)
-    with_gnu_ld=no
-    ;;
   esac
 
   ld_shlibs=yes
@@ -16077,6 +16103,7 @@ _LT_EOF
       enable_shared_with_static_runtimes=yes
       export_symbols_cmds='$NM $libobjs $convenience | $global_symbol_pipe | $SED -e '\''/^[BCDGRS][ ]/s/.*[ ]\([^ ]*\)/\1 DATA/;s/^.*[ ]__nm__\([^ ]*\)[ ][^ ]*/\1 DATA/;/^I[ ]/d;/^[AITW][ ]/s/.* //'\'' | sort | uniq > $export_symbols'
       exclude_expsyms='[_]+GLOBAL_OFFSET_TABLE_|[_]+GLOBAL__[FID]_.*|[_]+head_[A-Za-z0-9_]+_dll|[A-Za-z0-9_]+_dll_iname'
+      file_list_spec='@'
 
       if $LD --help 2>&1 | $GREP 'auto-import' > /dev/null; then
         archive_cmds='$CC -shared $libobjs $deplibs $compiler_flags -o $output_objdir/$soname $wl--enable-auto-image-base -Xlinker --out-implib -Xlinker $lib'
@@ -16096,7 +16123,7 @@ _LT_EOF
 
     haiku*)
       archive_cmds='$CC -shared $libobjs $deplibs $compiler_flags $wl-soname $wl$soname -o $lib'
-      link_all_deplibs=yes
+      link_all_deplibs=no
       ;;
 
     os2*)
@@ -16202,6 +16229,7 @@ _LT_EOF
 
 	case $cc_basename in
 	tcc*)
+	  hardcode_libdir_flag_spec='$wl-rpath $wl$libdir'
 	  export_dynamic_flag_spec='-rdynamic'
 	  ;;
 	xlf* | bgf* | bgxlf* | mpixlf*)
@@ -16222,7 +16250,12 @@ _LT_EOF
       fi
       ;;
 
-    netbsd*)
+    *-mlibc)
+	archive_cmds='$CC -shared $pic_flag $libobjs $deplibs $compiler_flags $wl-soname $wl$soname -o $lib'
+	archive_expsym_cmds='$CC -shared $pic_flag $libobjs $deplibs $compiler_flags $wl-soname $wl$soname $wl-retain-symbols-file $wl$export_symbols -o $lib'
+      ;;
+
+    netbsd* | netbsdelf*-gnu)
       if echo __ELF__ | $CC -E - | $GREP __ELF__ >/dev/null; then
 	archive_cmds='$LD -Bshareable $libobjs $deplibs $linker_flags -o $lib'
 	wlarc=
@@ -16631,14 +16664,14 @@ fi
 	# Tell ltmain to make .dll files, not .so files.
 	shrext_cmds=.dll
 	# FIXME: Setting linknames here is a bad hack.
-	archive_cmds='$CC -Fe $output_objdir/$soname $libobjs $compiler_flags $deplibs -Wl,-DLL,-IMPLIB:"$tool_output_objdir$libname.dll.lib"~linknames='
+	archive_cmds='$CC -Fe$output_objdir/$soname $libobjs $compiler_flags $deplibs -Wl,-DLL,-IMPLIB:"$tool_output_objdir$libname.dll.lib"~linknames='
 	archive_expsym_cmds='if   test DEF = "`$SED -n     -e '\''s/^[	 ]*//'\''     -e '\''/^\(;.*\)*$/d'\''     -e '\''s/^\(EXPORTS\|LIBRARY\)\([	 ].*\)*$/DEF/p'\''     -e q     $export_symbols`" ; then
             cp "$export_symbols" "$output_objdir/$soname.def";
             echo "$tool_output_objdir$soname.def" > "$output_objdir/$soname.exp";
           else
             $SED -e '\''s/^/-link -EXPORT:/'\'' < $export_symbols > $output_objdir/$soname.exp;
           fi~
-          $CC -Fe $tool_output_objdir$soname $libobjs $compiler_flags $deplibs "@$tool_output_objdir$soname.exp" -Wl,-DLL,-IMPLIB:"$tool_output_objdir$libname.dll.lib"~
+          $CC -Fe$tool_output_objdir$soname $libobjs $compiler_flags $deplibs "@$tool_output_objdir$soname.exp" -Wl,-DLL,-IMPLIB:"$tool_output_objdir$libname.dll.lib"~
           linknames='
 	# The linker will not automatically build a static lib if we build a DLL.
 	# _LT_TAGVAR(old_archive_from_new_cmds, )='true'
@@ -16921,11 +16954,15 @@ printf "%s\n" "$lt_cv_irix_exported_symbol" >&6; }
 	# Fabrice Bellard et al's Tiny C Compiler
 	ld_shlibs=yes
 	archive_cmds='$CC -shared $pic_flag -o $lib $libobjs $deplibs $compiler_flags'
+	hardcode_libdir_flag_spec='$wl-rpath $wl$libdir'
 	;;
       esac
       ;;
 
-    netbsd*)
+    *-mlibc)
+      ;;
+
+    netbsd* | netbsdelf*-gnu)
       if echo __ELF__ | $CC -E - | $GREP __ELF__ >/dev/null; then
 	archive_cmds='$LD -Bshareable -o $lib $libobjs $deplibs $linker_flags'  # a.out
       else
@@ -17024,6 +17061,9 @@ printf "%s\n" "$lt_cv_irix_exported_symbol" >&6; }
       fi
       archive_cmds_need_lc='no'
       hardcode_libdir_separator=:
+      ;;
+
+    serenity*)
       ;;
 
     solaris*)
@@ -17669,28 +17709,28 @@ cygwin* | mingw* | windows* | pw32* | cegcc*)
     # gcc
     library_names_spec='$libname.dll.a'
     # DLL is installed to $(libdir)/../bin by postinstall_cmds
-    # If user builds GCC with mulitlibs enabled,
+    # If user builds GCC with multilib enabled,
     # it should just install on $(libdir)
     # not on $(libdir)/../bin or 32 bits dlls would override 64 bit ones.
-    if test yes = $multilib; then
-    postinstall_cmds='base_file=`basename \$file`~
-      dlpath=`$SHELL 2>&1 -c '\''. $dir/'\''\$base_file'\''i; echo \$dlname'\''`~
-      dldir=$destdir/`dirname \$dlpath`~
-      $install_prog $dir/$dlname $destdir/$dlname~
-      chmod a+x $destdir/$dlname~
-      if test -n '\''$stripme'\'' && test -n '\''$striplib'\''; then
-        eval '\''$striplib $destdir/$dlname'\'' || exit \$?;
-      fi'
+    if test xyes = x"$multilib"; then
+      postinstall_cmds='base_file=`basename \$file`~
+        dlpath=`$SHELL 2>&1 -c '\''. $dir/'\''\$base_file'\''i; echo \$dlname'\''`~
+        dldir=$destdir/`dirname \$dlpath`~
+        $install_prog $dir/$dlname $destdir/$dlname~
+        chmod a+x $destdir/$dlname~
+        if test -n '\''$stripme'\'' && test -n '\''$striplib'\''; then
+          eval '\''$striplib $destdir/$dlname'\'' || exit \$?;
+        fi'
     else
-    postinstall_cmds='base_file=`basename \$file`~
-      dlpath=`$SHELL 2>&1 -c '\''. $dir/'\''\$base_file'\''i; echo \$dlname'\''`~
-      dldir=$destdir/`dirname \$dlpath`~
-      test -d \$dldir || mkdir -p \$dldir~
-      $install_prog $dir/$dlname \$dldir/$dlname~
-      chmod a+x \$dldir/$dlname~
-      if test -n '\''$stripme'\'' && test -n '\''$striplib'\''; then
-        eval '\''$striplib \$dldir/$dlname'\'' || exit \$?;
-      fi'
+      postinstall_cmds='base_file=`basename \$file`~
+        dlpath=`$SHELL 2>&1 -c '\''. $dir/'\''\$base_file'\''i; echo \$dlname'\''`~
+        dldir=$destdir/`dirname \$dlpath`~
+        test -d \$dldir || mkdir -p \$dldir~
+        $install_prog $dir/$dlname \$dldir/$dlname~
+        chmod a+x \$dldir/$dlname~
+        if test -n '\''$stripme'\'' && test -n '\''$striplib'\''; then
+          eval '\''$striplib \$dldir/$dlname'\'' || exit \$?;
+        fi'
     fi
     postuninstall_cmds='dldll=`$SHELL 2>&1 -c '\''. $file; echo \$dlname'\''`~
       dlpath=$dir/\$dldll~
@@ -17881,8 +17921,9 @@ haiku*)
   soname_spec='$libname$release$shared_ext$major'
   shlibpath_var=LIBRARY_PATH
   shlibpath_overrides_runpath=no
-  sys_lib_dlsearch_path_spec='/boot/home/config/lib /boot/common/lib /boot/system/lib'
-  hardcode_into_libs=yes
+  sys_lib_search_path_spec='/boot/system/non-packaged/develop/lib /boot/system/develop/lib'
+  sys_lib_dlsearch_path_spec='/boot/home/config/non-packaged/lib /boot/home/config/lib /boot/system/non-packaged/lib /boot/system/lib'
+  hardcode_into_libs=no
   ;;
 
 hpux9* | hpux10* | hpux11*)
@@ -18083,6 +18124,18 @@ fi
   dynamic_linker='GNU/Linux ld.so'
   ;;
 
+netbsdelf*-gnu)
+  version_type=linux
+  need_lib_prefix=no
+  need_version=no
+  library_names_spec='$libname$release$shared_ext$versuffix $libname$release$shared_ext$major $libname$shared_ext'
+  soname_spec='$libname$release$shared_ext$major'
+  shlibpath_var=LD_LIBRARY_PATH
+  shlibpath_overrides_runpath=no
+  hardcode_into_libs=yes
+  dynamic_linker='NetBSD ld.elf_so'
+  ;;
+
 netbsd*)
   version_type=sunos
   need_lib_prefix=no
@@ -18098,6 +18151,18 @@ netbsd*)
   fi
   shlibpath_var=LD_LIBRARY_PATH
   shlibpath_overrides_runpath=yes
+  hardcode_into_libs=yes
+  ;;
+
+*-mlibc)
+  version_type=linux # correct to gnu/linux during the next big refactor
+  need_lib_prefix=no
+  need_version=no
+  library_names_spec='$libname$release$shared_ext$versuffix $libname$release$shared_ext$major $libname$shared_ext'
+  soname_spec='$libname$release$shared_ext$major'
+  dynamic_linker='mlibc ld.so'
+  shlibpath_var=LD_LIBRARY_PATH
+  shlibpath_overrides_runpath=no
   hardcode_into_libs=yes
   ;;
 
@@ -18178,6 +18243,17 @@ osf3* | osf4* | osf5*)
 
 rdos*)
   dynamic_linker=no
+  ;;
+
+serenity*)
+  version_type=linux # correct to gnu/linux during the next big refactor
+  need_lib_prefix=no
+  need_version=no
+  library_names_spec='$libname$release$shared_ext$versuffix $libname$release$shared_ext$major $libname$shared_ext'
+  soname_spec='$libname$release$shared_ext$major'
+  shlibpath_var=LD_LIBRARY_PATH
+  shlibpath_overrides_runpath=no
+  dynamic_linker='SerenityOS LibELF'
   ;;
 
 solaris*)
@@ -18275,6 +18351,496 @@ uts4*)
   library_names_spec='$libname$release$shared_ext$versuffix $libname$release$shared_ext$major $libname$shared_ext'
   soname_spec='$libname$release$shared_ext$major'
   shlibpath_var=LD_LIBRARY_PATH
+  ;;
+
+emscripten*)
+  version_type=none
+  need_lib_prefix=no
+  need_version=no
+  library_names_spec='$libname$release$shared_ext'
+  soname_spec='$libname$release$shared_ext'
+  finish_cmds=
+  dynamic_linker="Emscripten linker"
+  lt_prog_compiler_wl=
+lt_prog_compiler_pic=
+lt_prog_compiler_static=
+
+
+  if test yes = "$GCC"; then
+    lt_prog_compiler_wl='-Wl,'
+    lt_prog_compiler_static='-static'
+
+    case $host_os in
+      aix*)
+      # All AIX code is PIC.
+      if test ia64 = "$host_cpu"; then
+	# AIX 5 now supports IA64 processor
+	lt_prog_compiler_static='-Bstatic'
+      fi
+      lt_prog_compiler_pic='-fPIC'
+      ;;
+
+    amigaos*)
+      case $host_cpu in
+      powerpc)
+            # see comment about AmigaOS4 .so support
+            lt_prog_compiler_pic='-fPIC'
+        ;;
+      m68k)
+            # FIXME: we need at least 68020 code to build shared libraries, but
+            # adding the '-m68020' flag to GCC prevents building anything better,
+            # like '-m68040'.
+            lt_prog_compiler_pic='-m68020 -resident32 -malways-restore-a4'
+        ;;
+      esac
+      ;;
+
+    beos* | irix5* | irix6* | nonstopux* | osf3* | osf4* | osf5*)
+      # PIC is the default for these OSes.
+      ;;
+
+    mingw* | windows* | cygwin* | pw32* | os2* | cegcc*)
+      # This hack is so that the source file can tell whether it is being
+      # built for inclusion in a dll (and should export symbols for example).
+      # Although the cygwin gcc ignores -fPIC, still need this for old-style
+      # (--disable-auto-import) libraries
+      lt_prog_compiler_pic='-DDLL_EXPORT'
+      case $host_os in
+      os2*)
+	lt_prog_compiler_static='$wl-static'
+	;;
+      esac
+      ;;
+
+    darwin* | rhapsody*)
+      # PIC is the default on this platform
+      # Common symbols not allowed in MH_DYLIB files
+      lt_prog_compiler_pic='-fno-common'
+      ;;
+
+    haiku*)
+      # PIC is the default for Haiku.
+      # The "-static" flag exists, but is broken.
+      lt_prog_compiler_static=
+      ;;
+
+    hpux*)
+      # PIC is the default for 64-bit PA HP-UX, but not for 32-bit
+      # PA HP-UX.  On IA64 HP-UX, PIC is the default but the pic flag
+      # sets the default TLS model and affects inlining.
+      case $host_cpu in
+      hppa*64*)
+	# +Z the default
+	;;
+      *)
+	lt_prog_compiler_pic='-fPIC'
+	;;
+      esac
+      ;;
+
+    interix[3-9]*)
+      # Interix 3.x gcc -fpic/-fPIC options generate broken code.
+      # Instead, we relocate shared libraries at runtime.
+      ;;
+
+    msdosdjgpp*)
+      # Just because we use GCC doesn't mean we suddenly get shared libraries
+      # on systems that don't support them.
+      lt_prog_compiler_can_build_shared=no
+      enable_shared=no
+      ;;
+
+    *nto* | *qnx*)
+      # QNX uses GNU C++, but need to define -shared option too, otherwise
+      # it will coredump.
+      lt_prog_compiler_pic='-fPIC -shared'
+      ;;
+
+    sysv4*MP*)
+      if test -d /usr/nec; then
+	lt_prog_compiler_pic=-Kconform_pic
+      fi
+      ;;
+
+    *)
+      lt_prog_compiler_pic='-fPIC'
+      ;;
+    esac
+
+    case $cc_basename in
+    nvcc*) # Cuda Compiler Driver 2.2
+      lt_prog_compiler_wl='-Xlinker '
+      if test -n "$lt_prog_compiler_pic"; then
+        lt_prog_compiler_pic="-Xcompiler $lt_prog_compiler_pic"
+      fi
+      ;;
+    esac
+  else
+    # PORTME Check for flag to pass linker flags through the system compiler.
+    case $host_os in
+    aix*)
+      lt_prog_compiler_wl='-Wl,'
+      if test ia64 = "$host_cpu"; then
+	# AIX 5 now supports IA64 processor
+	lt_prog_compiler_static='-Bstatic'
+      else
+	lt_prog_compiler_static='-bnso -bI:/lib/syscalls.exp'
+      fi
+      ;;
+
+    darwin* | rhapsody*)
+      # PIC is the default on this platform
+      # Common symbols not allowed in MH_DYLIB files
+      lt_prog_compiler_pic='-fno-common'
+      case $cc_basename in
+      nagfor*)
+        # NAG Fortran compiler
+        lt_prog_compiler_wl='-Wl,-Wl,,'
+        lt_prog_compiler_pic='-PIC'
+        lt_prog_compiler_static='-Bstatic'
+        ;;
+      esac
+      ;;
+
+    mingw* | windows* | cygwin* | pw32* | os2* | cegcc*)
+      # This hack is so that the source file can tell whether it is being
+      # built for inclusion in a dll (and should export symbols for example).
+      lt_prog_compiler_pic='-DDLL_EXPORT'
+      case $host_os in
+      os2*)
+	lt_prog_compiler_static='$wl-static'
+	;;
+      esac
+      ;;
+
+    hpux9* | hpux10* | hpux11*)
+      lt_prog_compiler_wl='-Wl,'
+      # PIC is the default for IA64 HP-UX and 64-bit HP-UX, but
+      # not for PA HP-UX.
+      case $host_cpu in
+      hppa*64*|ia64*)
+	# +Z the default
+	;;
+      *)
+	lt_prog_compiler_pic='+Z'
+	;;
+      esac
+      # Is there a better lt_prog_compiler_static that works with the bundled CC?
+      lt_prog_compiler_static='$wl-a ${wl}archive'
+      ;;
+
+    irix5* | irix6* | nonstopux*)
+      lt_prog_compiler_wl='-Wl,'
+      # PIC (with -KPIC) is the default.
+      lt_prog_compiler_static='-non_shared'
+      ;;
+
+    linux* | k*bsd*-gnu | kopensolaris*-gnu | gnu*)
+      case $cc_basename in
+      # old Intel for x86_64, which still supported -KPIC.
+      ecc*)
+	lt_prog_compiler_wl='-Wl,'
+	lt_prog_compiler_pic='-KPIC'
+	lt_prog_compiler_static='-static'
+        ;;
+      *flang* | ftn | f18* | f95*)
+        # Flang compiler.
+	lt_prog_compiler_wl='-Wl,'
+	lt_prog_compiler_pic='-fPIC'
+	lt_prog_compiler_static='-static'
+        ;;
+      # icc used to be incompatible with GCC.
+      # ICC 10 doesn't accept -KPIC any more.
+      icc* | ifort*)
+	lt_prog_compiler_wl='-Wl,'
+	lt_prog_compiler_pic='-fPIC'
+	lt_prog_compiler_static='-static'
+        ;;
+      # Lahey Fortran 8.1.
+      lf95*)
+	lt_prog_compiler_wl='-Wl,'
+	lt_prog_compiler_pic='--shared'
+	lt_prog_compiler_static='--static'
+	;;
+      nagfor*)
+	# NAG Fortran compiler
+	lt_prog_compiler_wl='-Wl,-Wl,,'
+	lt_prog_compiler_pic='-PIC'
+	lt_prog_compiler_static='-Bstatic'
+	;;
+      tcc*)
+	# Fabrice Bellard et al's Tiny C Compiler
+	lt_prog_compiler_wl='-Wl,'
+	lt_prog_compiler_pic='-fPIC'
+	lt_prog_compiler_static='-static'
+	;;
+      pgcc* | pgf77* | pgf90* | pgf95* | pgfortran*)
+        # Portland Group compilers (*not* the Pentium gcc compiler,
+	# which looks to be a dead project)
+	lt_prog_compiler_wl='-Wl,'
+	lt_prog_compiler_pic='-fpic'
+	lt_prog_compiler_static='-Bstatic'
+        ;;
+      ccc*)
+        lt_prog_compiler_wl='-Wl,'
+        # All Alpha code is PIC.
+        lt_prog_compiler_static='-non_shared'
+        ;;
+      xl* | bgxl* | bgf* | mpixl*)
+	# IBM XL C 8.0/Fortran 10.1, 11.1 on PPC and BlueGene
+	lt_prog_compiler_wl='-Wl,'
+	lt_prog_compiler_pic='-qpic'
+	lt_prog_compiler_static='-qstaticlink'
+	;;
+      *)
+	case `$CC -V 2>&1 | $SED 5q` in
+	*Sun\ Ceres\ Fortran* | *Sun*Fortran*\ [1-7].* | *Sun*Fortran*\ 8.[0-3]*)
+	  # Sun Fortran 8.3 passes all unrecognized flags to the linker
+	  lt_prog_compiler_pic='-KPIC'
+	  lt_prog_compiler_static='-Bstatic'
+	  lt_prog_compiler_wl=''
+	  ;;
+	*Sun\ F* | *Sun*Fortran*)
+	  lt_prog_compiler_pic='-KPIC'
+	  lt_prog_compiler_static='-Bstatic'
+	  lt_prog_compiler_wl='-Qoption ld '
+	  ;;
+	*Sun\ C*)
+	  # Sun C 5.9
+	  lt_prog_compiler_pic='-KPIC'
+	  lt_prog_compiler_static='-Bstatic'
+	  lt_prog_compiler_wl='-Wl,'
+	  ;;
+        *Intel*\ [CF]*Compiler*)
+	  lt_prog_compiler_wl='-Wl,'
+	  lt_prog_compiler_pic='-fPIC'
+	  lt_prog_compiler_static='-static'
+	  ;;
+	*Portland\ Group*)
+	  lt_prog_compiler_wl='-Wl,'
+	  lt_prog_compiler_pic='-fpic'
+	  lt_prog_compiler_static='-Bstatic'
+	  ;;
+	esac
+	;;
+      esac
+      ;;
+
+    newsos6)
+      lt_prog_compiler_pic='-KPIC'
+      lt_prog_compiler_static='-Bstatic'
+      ;;
+
+    *-mlibc)
+      lt_prog_compiler_wl='-Wl,'
+      lt_prog_compiler_pic='-fPIC'
+      lt_prog_compiler_static='-static'
+      ;;
+
+    *nto* | *qnx*)
+      # QNX uses GNU C++, but need to define -shared option too, otherwise
+      # it will coredump.
+      lt_prog_compiler_pic='-fPIC -shared'
+      ;;
+
+    osf3* | osf4* | osf5*)
+      lt_prog_compiler_wl='-Wl,'
+      # All OSF/1 code is PIC.
+      lt_prog_compiler_static='-non_shared'
+      ;;
+
+    rdos*)
+      lt_prog_compiler_static='-non_shared'
+      ;;
+
+    serenity*)
+      ;;
+
+    solaris*)
+      lt_prog_compiler_pic='-KPIC'
+      lt_prog_compiler_static='-Bstatic'
+      case $cc_basename in
+      f77* | f90* | f95* | sunf77* | sunf90* | sunf95*)
+	lt_prog_compiler_wl='-Qoption ld ';;
+      *)
+	lt_prog_compiler_wl='-Wl,';;
+      esac
+      ;;
+
+    sunos4*)
+      lt_prog_compiler_wl='-Qoption ld '
+      lt_prog_compiler_pic='-PIC'
+      lt_prog_compiler_static='-Bstatic'
+      ;;
+
+    sysv4 | sysv4.2uw2* | sysv4.3*)
+      lt_prog_compiler_wl='-Wl,'
+      lt_prog_compiler_pic='-KPIC'
+      lt_prog_compiler_static='-Bstatic'
+      ;;
+
+    sysv4*MP*)
+      if test -d /usr/nec; then
+	lt_prog_compiler_pic='-Kconform_pic'
+	lt_prog_compiler_static='-Bstatic'
+      fi
+      ;;
+
+    sysv5* | unixware* | sco3.2v5* | sco5v6* | OpenUNIX*)
+      lt_prog_compiler_wl='-Wl,'
+      lt_prog_compiler_pic='-KPIC'
+      lt_prog_compiler_static='-Bstatic'
+      ;;
+
+    unicos*)
+      lt_prog_compiler_wl='-Wl,'
+      lt_prog_compiler_can_build_shared=no
+      ;;
+
+    uts4*)
+      lt_prog_compiler_pic='-pic'
+      lt_prog_compiler_static='-Bstatic'
+      ;;
+
+    *)
+      lt_prog_compiler_can_build_shared=no
+      ;;
+    esac
+  fi
+
+case $host_os in
+  # For platforms that do not support PIC, -DPIC is meaningless:
+  *djgpp*)
+    lt_prog_compiler_pic=
+    ;;
+  *)
+    lt_prog_compiler_pic="$lt_prog_compiler_pic -DPIC"
+    ;;
+esac
+
+{ printf "%s\n" "$as_me:${as_lineno-$LINENO}: checking for $compiler option to produce PIC" >&5
+printf %s "checking for $compiler option to produce PIC... " >&6; }
+if test ${lt_cv_prog_compiler_pic+y}
+then :
+  printf %s "(cached) " >&6
+else case e in #(
+  e) lt_cv_prog_compiler_pic=$lt_prog_compiler_pic ;;
+esac
+fi
+{ printf "%s\n" "$as_me:${as_lineno-$LINENO}: result: $lt_cv_prog_compiler_pic" >&5
+printf "%s\n" "$lt_cv_prog_compiler_pic" >&6; }
+lt_prog_compiler_pic=$lt_cv_prog_compiler_pic
+
+#
+# Check to make sure the PIC flag actually works.
+#
+if test -n "$lt_prog_compiler_pic"; then
+  { printf "%s\n" "$as_me:${as_lineno-$LINENO}: checking if $compiler PIC flag $lt_prog_compiler_pic works" >&5
+printf %s "checking if $compiler PIC flag $lt_prog_compiler_pic works... " >&6; }
+if test ${lt_cv_prog_compiler_pic_works+y}
+then :
+  printf %s "(cached) " >&6
+else case e in #(
+  e) lt_cv_prog_compiler_pic_works=no
+   ac_outfile=conftest.$ac_objext
+   echo "$lt_simple_compile_test_code" > conftest.$ac_ext
+   lt_compiler_flag="$lt_prog_compiler_pic -DPIC"  ## exclude from sc_useless_quotes_in_assignment
+   # Insert the option either (1) after the last *FLAGS variable, or
+   # (2) before a word containing "conftest.", or (3) at the end.
+   # Note that $ac_compile itself does not contain backslashes and begins
+   # with a dollar sign (not a hyphen), so the echo should work correctly.
+   # The option is referenced via a variable to avoid confusing sed.
+   lt_compile=`echo "$ac_compile" | $SED \
+   -e 's:.*FLAGS}\{0,1\} :&$lt_compiler_flag :; t' \
+   -e 's: [^ ]*conftest\.: $lt_compiler_flag&:; t' \
+   -e 's:$: $lt_compiler_flag:'`
+   (eval echo "\"\$as_me:$LINENO: $lt_compile\"" >&5)
+   (eval "$lt_compile" 2>conftest.err)
+   ac_status=$?
+   cat conftest.err >&5
+   echo "$as_me:$LINENO: \$? = $ac_status" >&5
+   if (exit $ac_status) && test -s "$ac_outfile"; then
+     # The compiler can only warn and ignore the option if not recognized
+     # So say no if there are warnings other than the usual output.
+     $ECHO "$_lt_compiler_boilerplate" | $SED '/^$/d' >conftest.exp
+     $SED '/^$/d; /^ *+/d' conftest.err >conftest.er2
+     if test ! -s conftest.er2 || diff conftest.exp conftest.er2 >/dev/null; then
+       lt_cv_prog_compiler_pic_works=yes
+     fi
+   fi
+   $RM conftest*
+ ;;
+esac
+fi
+{ printf "%s\n" "$as_me:${as_lineno-$LINENO}: result: $lt_cv_prog_compiler_pic_works" >&5
+printf "%s\n" "$lt_cv_prog_compiler_pic_works" >&6; }
+
+if test yes = "$lt_cv_prog_compiler_pic_works"; then
+    case $lt_prog_compiler_pic in
+     "" | " "*) ;;
+     *) lt_prog_compiler_pic=" $lt_prog_compiler_pic" ;;
+     esac
+else
+    lt_prog_compiler_pic=
+     lt_prog_compiler_can_build_shared=no
+fi
+
+fi
+
+
+
+
+
+#
+# Check to make sure the static flag actually works.
+#
+wl=$lt_prog_compiler_wl eval lt_tmp_static_flag=\"$lt_prog_compiler_static\"
+{ printf "%s\n" "$as_me:${as_lineno-$LINENO}: checking if $compiler static flag $lt_tmp_static_flag works" >&5
+printf %s "checking if $compiler static flag $lt_tmp_static_flag works... " >&6; }
+if test ${lt_cv_prog_compiler_static_works+y}
+then :
+  printf %s "(cached) " >&6
+else case e in #(
+  e) lt_cv_prog_compiler_static_works=no
+   save_LDFLAGS=$LDFLAGS
+   LDFLAGS="$LDFLAGS $lt_tmp_static_flag"
+   echo "$lt_simple_link_test_code" > conftest.$ac_ext
+   if (eval $ac_link 2>conftest.err) && test -s conftest$ac_exeext; then
+     # The linker can only warn and ignore the option if not recognized
+     # So say no if there are warnings
+     if test -s conftest.err; then
+       # Append any errors to the config.log.
+       cat conftest.err 1>&5
+       $ECHO "$_lt_linker_boilerplate" | $SED '/^$/d' > conftest.exp
+       $SED '/^$/d; /^ *+/d' conftest.err >conftest.er2
+       if diff conftest.exp conftest.er2 >/dev/null; then
+         lt_cv_prog_compiler_static_works=yes
+       fi
+     else
+       lt_cv_prog_compiler_static_works=yes
+     fi
+   fi
+   $RM -r conftest*
+   LDFLAGS=$save_LDFLAGS
+ ;;
+esac
+fi
+{ printf "%s\n" "$as_me:${as_lineno-$LINENO}: result: $lt_cv_prog_compiler_static_works" >&5
+printf "%s\n" "$lt_cv_prog_compiler_static_works" >&6; }
+
+if test yes = "$lt_cv_prog_compiler_static_works"; then
+    :
+else
+    lt_prog_compiler_static=
+fi
+
+
+
+='-fPIC'
+  archive_cmds='$CC -sSIDE_MODULE=2 -shared $libobjs $deplibs $compiler_flags -o $lib'
+  archive_expsym_cmds='$SED "s|^|_|" $export_symbols >$output_objdir/$soname.expsym~$CC -sSIDE_MODULE=2 -shared $libobjs $deplibs $compiler_flags -o $lib -s EXPORTED_FUNCTIONS=@$output_objdir/$soname.expsym'
+  archive_cmds_need_lc=no
+  no_undefined_flag=
   ;;
 
 *)

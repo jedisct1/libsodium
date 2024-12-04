@@ -2,7 +2,7 @@
 ## DO NOT EDIT - This file generated from ./build-aux/ltmain.in
 ##               by inline-source v2019-02-19.15
 
-# libtool (GNU libtool) 2.5.3
+# libtool (GNU libtool) 2.5.4
 # Provide generalized library-building support services.
 # Written by Gordon Matzigkeit <gord@gnu.ai.mit.edu>, 1996
 
@@ -31,8 +31,8 @@
 
 PROGRAM=libtool
 PACKAGE=libtool
-VERSION=2.5.3
-package_revision=2.5.3
+VERSION=2.5.4
+package_revision=2.5.4
 
 
 ## ------ ##
@@ -589,7 +589,7 @@ func_require_term_colors ()
 
   # _G_HAVE_PLUSEQ_OP
   # Can be empty, in which case the shell is probed, "yes" if += is
-  # useable or anything else if it does not work.
+  # usable or anything else if it does not work.
   test -z "$_G_HAVE_PLUSEQ_OP" \
     && (eval 'x=a; x+=" b"; test "a b" = "$x"') 2>/dev/null \
     && _G_HAVE_PLUSEQ_OP=yes
@@ -739,7 +739,7 @@ eval 'func_dirname ()
 #             to NONDIR_REPLACEMENT.
 #             value returned in "$func_dirname_result"
 #   basename: Compute filename of FILE.
-#             value retuned in "$func_basename_result"
+#             value returned in "$func_basename_result"
 # For efficiency, we do not delegate to the functions above but instead
 # duplicate the functionality here.
 eval 'func_dirname_and_basename ()
@@ -897,7 +897,7 @@ func_mkdir_p ()
       # While some portion of DIR does not yet exist...
       while test ! -d "$_G_directory_path"; do
         # ...make a list in topmost first order.  Use a colon delimited
-	# list incase some portion of path contains whitespace.
+	# list in case some portion of path contains whitespace.
         _G_dir_list=$_G_directory_path:$_G_dir_list
 
         # If the last portion added has no slash in it, the list is done
@@ -2215,7 +2215,30 @@ func_version ()
 # End:
 
 # Set a version string.
-scriptversion='(GNU libtool) 2.5.3'
+scriptversion='(GNU libtool) 2.5.4'
+
+# func_version
+# ------------
+# Echo version message to standard output and exit.
+func_version ()
+{
+    $debug_cmd
+
+	year=`date +%Y`
+
+	cat <<EOF
+$progname $scriptversion
+Copyright (C) $year Free Software Foundation, Inc.
+License GPLv2+: GNU GPL version 2 or later <https://gnu.org/licenses/gpl.html>
+This is free software: you are free to change and redistribute it.
+There is NO WARRANTY, to the extent permitted by law.
+
+Originally written by Gordon Matzigkeit, 1996
+(See AUTHORS for complete contributor listing)
+EOF
+
+    exit $?
+}
 
 
 # func_echo ARG...
@@ -2238,18 +2261,6 @@ func_echo ()
 }
 
 
-# func_warning ARG...
-# -------------------
-# Libtool warnings are not categorized, so override funclib.sh
-# func_warning with this simpler definition.
-func_warning ()
-{
-    $debug_cmd
-
-    $warning_func ${1+"$@"}
-}
-
-
 ## ---------------- ##
 ## Options parsing. ##
 ## ---------------- ##
@@ -2261,19 +2272,23 @@ usage='$progpath [OPTION]... [MODE-ARG]...'
 
 # Short help message in response to '-h'.
 usage_message="Options:
-       --config             show all configuration variables
-       --debug              enable verbose shell tracing
-   -n, --dry-run            display commands without modifying any files
-       --features           display basic configuration information and exit
-       --mode=MODE          use operation mode MODE
-       --no-warnings        equivalent to '-Wnone'
-       --preserve-dup-deps  don't remove duplicate dependency libraries
-       --quiet, --silent    don't print informational messages
-       --tag=TAG            use configuration variables from tag TAG
-   -v, --verbose            print more informational messages than default
-       --version            print version information
-   -W, --warnings=CATEGORY  report the warnings falling in CATEGORY [all]
-   -h, --help, --help-all   print short, long, or detailed help message
+       --config                 show all configuration variables
+       --debug                  enable verbose shell tracing
+   -n, --dry-run                display commands without modifying any files
+       --features               display basic configuration information
+       --finish                 use operation '--mode=finish'
+       --mode=MODE              use operation mode MODE
+       --no-finish              don't update shared library cache
+       --no-quiet, --no-silent  print default informational messages
+       --no-warnings            equivalent to '-Wnone'
+       --preserve-dup-deps      don't remove duplicate dependency libraries
+       --quiet, --silent        don't print informational messages
+       --reorder-cache=DIRS     reorder shared library cache for preferred DIRS
+       --tag=TAG                use configuration variables from tag TAG
+   -v, --verbose                print more informational messages than default
+       --version                print version information
+   -W, --warnings=CATEGORY      report the warnings falling in CATEGORY [all]
+   -h, --help, --help-all       print short, long, or detailed help message
 "
 
 # Additional text appended to 'usage_message' in response to '--help'.
@@ -2306,7 +2321,7 @@ include the following information:
        compiler:       $LTCC
        compiler flags: $LTCFLAGS
        linker:         $LD (gnu? $with_gnu_ld)
-       version:        $progname (GNU libtool) 2.5.3
+       version:        $progname $scriptversion
        automake:       `($AUTOMAKE --version) 2>/dev/null |$SED 1q`
        autoconf:       `($AUTOCONF --version) 2>/dev/null |$SED 1q`
 
@@ -2502,8 +2517,11 @@ libtool_options_prep ()
     opt_dry_run=false
     opt_help=false
     opt_mode=
+    opt_reorder_cache=false
     opt_preserve_dup_deps=false
     opt_quiet=false
+    opt_finishing=true
+    opt_warning=
 
     nonopt=
     preserve_args=
@@ -2593,12 +2611,16 @@ libtool_parse_options ()
                           clean|compile|execute|finish|install|link|relink|uninstall) ;;
 
                           # Catch anything else as an error
-                          *) func_error "invalid argument for $_G_opt"
+                          *) func_error "invalid argument '$1' for $_G_opt"
                              exit_cmd=exit
-                             break
                              ;;
                         esac
                         shift
+                        ;;
+
+        --no-finish)
+                        opt_finishing=false
+                        func_append preserve_args " $_G_opt"
                         ;;
 
         --no-silent|--no-quiet)
@@ -2614,6 +2636,24 @@ libtool_parse_options ()
         --no-verbose)
                         opt_verbose=false
                         func_append preserve_args " $_G_opt"
+                        ;;
+
+        --reorder-cache)
+                        opt_reorder_cache=true
+                        shared_lib_dirs=$1
+                        if test -n "$shared_lib_dirs"; then
+                          case $1 in
+                            # Must begin with /:
+                            /*) ;;
+
+                            # Catch anything else as an error (relative paths)
+                            *) func_error "invalid argument '$1' for $_G_opt"
+                               func_error "absolute paths are required for $_G_opt"
+                               exit_cmd=exit
+                               ;;
+                          esac
+                        fi
+                        shift
                         ;;
 
         --silent|--quiet)
@@ -2651,6 +2691,18 @@ libtool_parse_options ()
 }
 func_add_hook func_parse_options libtool_parse_options
 
+
+# func_warning ARG...
+# -------------------
+# Libtool warnings are not categorized, so override funclib.sh
+# func_warning with this simpler definition.
+func_warning ()
+{
+    if $opt_warning; then
+        $debug_cmd
+        $warning_func ${1+"$@"}
+    fi
+}
 
 
 # libtool_validate_options [ARG]...
@@ -3181,6 +3233,15 @@ func_convert_path_front_back_pathsep ()
 # end func_convert_path_front_back_pathsep
 
 
+# func_convert_delimited_path PATH ORIG_DELIMITER NEW_DELIMITER
+# Replaces a delimiter for a given path.
+func_convert_delimited_path ()
+{
+	converted_path=`$ECHO "$1" | $SED "s#$2#$3#g"`
+}
+# end func_convert_delimited_path
+
+
 ##################################################
 # $build to $host FILE NAME CONVERSION FUNCTIONS #
 ##################################################
@@ -3513,6 +3574,65 @@ func_dll_def_p ()
     "$1"`
   test DEF = "$func_dll_def_p_tmp"
 }
+
+
+# func_reorder_shared_lib_cache DIRS
+# Reorder the shared library cache by unconfiguring previous shared library cache
+# and configuring preferred search directories before previous search directories.
+# Previous shared library cache: /usr/lib /usr/local/lib
+# Preferred search directories: /tmp/testing
+# Reordered shared library cache: /tmp/testing /usr/lib /usr/local/lib
+func_reorder_shared_lib_cache ()
+{
+	$debug_cmd
+
+	case $host_os in
+	  openbsd*)
+	    get_search_directories=`PATH="$PATH:/sbin" ldconfig -r | $GREP "search directories" | $SED "s#.*search directories:\ ##g"`
+	    func_convert_delimited_path "$get_search_directories" ':' '\ '
+	    save_search_directories=$converted_path
+	    func_convert_delimited_path "$1" ':' '\ '
+
+	    # Ensure directories exist
+	    for dir in $converted_path; do
+	      # Ensure each directory is an absolute path
+	      case $dir in
+	        /*) ;;
+	        *) func_error "Directory '$dir' is not an absolute path"
+	           exit $EXIT_FAILURE ;;
+	      esac
+	      # Ensure no trailing slashes
+	      func_stripname '' '/' "$dir"
+	      dir=$func_stripname_result
+	      if test -d "$dir"; then
+	        if test -n "$preferred_search_directories"; then
+	          preferred_search_directories="$preferred_search_directories $dir"
+	        else
+	          preferred_search_directories=$dir
+	        fi
+	      else
+	        func_error "Directory '$dir' does not exist"
+	        exit $EXIT_FAILURE
+	      fi
+	    done
+
+	    PATH="$PATH:/sbin" ldconfig -U $save_search_directories
+	    PATH="$PATH:/sbin" ldconfig -m $preferred_search_directories $save_search_directories
+	    get_search_directories=`PATH="$PATH:/sbin" ldconfig -r | $GREP "search directories" | $SED "s#.*search directories:\ ##g"`
+	    func_convert_delimited_path "$get_search_directories" ':' '\ '
+	    reordered_search_directories=$converted_path
+
+	    $ECHO "Original: $save_search_directories"
+	    $ECHO "Reordered: $reordered_search_directories"
+	    exit $EXIT_SUCCESS
+	  ;;
+	  *)
+	    func_error "--reorder-cache is not supported for host_os=$host_os."
+	    exit $EXIT_FAILURE
+	  ;;
+	esac
+}
+# end func_reorder_shared_lib_cache
 
 
 # func_mode_compile arg...
@@ -4087,6 +4207,12 @@ if $opt_help; then
 fi
 
 
+# If option '--reorder-cache', reorder the shared library cache and exit.
+if $opt_reorder_cache; then
+    func_reorder_shared_lib_cache $shared_lib_dirs
+fi
+
+
 # func_mode_execute arg...
 func_mode_execute ()
 {
@@ -4271,7 +4397,7 @@ func_mode_finish ()
       fi
     fi
 
-    if test -n "$finish_cmds$finish_eval" && test -n "$libdirs"; then
+    if test -n "$finish_cmds$finish_eval" && test -n "$libdirs" && $opt_finishing; then
       for libdir in $libdirs; do
 	if test -n "$finish_cmds"; then
 	  # Do each command in the finish commands.
@@ -4296,6 +4422,12 @@ func_mode_finish ()
       for libdir in $libdirs; do
 	$ECHO "   $libdir"
       done
+      if test "false" = "$opt_finishing"; then
+        echo
+        echo "NOTE: finish_cmds were not executed during testing, so you must"
+        echo "manually run ldconfig to add a given test directory, LIBDIR, to"
+        echo "the search path for generated executables."
+      fi
       echo
       echo "If you ever happen to want to link against installed libraries"
       echo "in a given directory, LIBDIR, you must either use libtool, and"
@@ -4532,8 +4664,15 @@ func_mode_install ()
 	func_append dir "$objdir"
 
 	if test -n "$relink_command"; then
+	  # Strip any trailing slash from the destination.
+	  func_stripname '' '/' "$libdir"
+	  destlibdir=$func_stripname_result
+
+	  func_stripname '' '/' "$destdir"
+	  s_destdir=$func_stripname_result
+
 	  # Determine the prefix the user has applied to our future dir.
-	  inst_prefix_dir=`$ECHO "$destdir" | $SED -e "s%$libdir\$%%"`
+	  inst_prefix_dir=`$ECHO "X$s_destdir" | $Xsed -e "s%$destlibdir\$%%"`
 
 	  # Don't allow the user to place us outside of our expected
 	  # location b/c this prevents finding dependent libraries that
@@ -6782,6 +6921,7 @@ func_mode_link ()
     finalize_command=$nonopt
 
     compile_rpath=
+    compile_rpath_tail=
     finalize_rpath=
     compile_shlibpath=
     finalize_shlibpath=
@@ -7337,7 +7477,8 @@ func_mode_link ()
       # Tru64 UNIX uses -model [arg] to determine the layout of C++
       # classes, name mangling, and exception handling.
       # Darwin uses the -arch flag to determine output architecture.
-      -model|-arch|-isysroot|--sysroot)
+      # -q <option> for IBM XL C/C++ compiler.
+      -model|-arch|-isysroot|--sysroot|-q)
 	func_append compiler_flags " $arg"
 	func_append compile_command " $arg"
 	func_append finalize_command " $arg"
@@ -8423,10 +8564,11 @@ func_mode_link ()
 	    case " $sys_lib_dlsearch_path " in
 	    *" $absdir "*) ;;
 	    *)
-	      case "$compile_rpath " in
+	      case "$compile_rpath$compile_rpath_tail " in
 	      *" $absdir "*) ;;
 	      *) case $absdir in
                  "$progdir/"*) func_append compile_rpath " $absdir" ;;
+                 *) func_append compile_rpath_tail " $absdir" ;;
 		 esac
 	      esac
 	      ;;
@@ -8499,10 +8641,11 @@ func_mode_link ()
 	    case " $sys_lib_dlsearch_path " in
 	    *" $absdir "*) ;;
 	    *)
-	      case "$compile_rpath " in
+	      case "$compile_rpath$compile_rpath_tail " in
 	      *" $absdir "*) ;;
 	      *) case $absdir in
                  "$progdir/"*) func_append compile_rpath " $absdir" ;;
+                 *) func_append compile_rpath_tail " $absdir" ;;
 		 esac
 	      esac
 	      ;;
@@ -8578,6 +8721,7 @@ func_mode_link ()
 		case $host in
 		  *-*-sco3.2v5.0.[024]*) add_dir=-L$dir ;;
 		  *-*-sysv4*uw2*) add_dir=-L$dir ;;
+		  *-*-emscripten*) add_dir=-L$dir ;;
 		  *-*-sysv5OpenUNIX* | *-*-sysv5UnixWare7.[01].[10]* | \
 		    *-*-unixware7*) add_dir=-L$dir ;;
 		  *-*-darwin* )
@@ -8866,6 +9010,8 @@ func_mode_link ()
       done # for deplib in $libs
 
       func_append temp_rpath "$temp_rpath_tail"
+      func_append compile_rpath "$compile_rpath_tail"
+
       if test link = "$pass"; then
 	if test prog = "$linkmode"; then
 	  compile_deplibs="$new_inherited_linker_flags $compile_deplibs"
@@ -9152,6 +9298,9 @@ func_mode_link ()
 	    age=$number_minor
 	    revision=$number_minor
 	    lt_irix_increment=no
+	    ;;
+	  *)
+	    func_fatal_configuration "$modename: unknown library version type '$version_type'"
 	    ;;
 	  esac
 	  ;;
@@ -10049,20 +10198,7 @@ func_mode_link ()
 	  last_robj=
 	  k=1
 
-	  if test -n "$save_libobjs" && test : != "$skipped_export" && test yes = "$with_gnu_ld"; then
-	    output=$output_objdir/$output_la.lnkscript
-	    func_verbose "creating GNU ld script: $output"
-	    echo 'INPUT (' > $output
-	    for obj in $save_libobjs
-	    do
-	      func_to_tool_file "$obj"
-	      $ECHO "$func_to_tool_file_result" >> $output
-	    done
-	    echo ')' >> $output
-	    func_append delfiles " $output"
-	    func_to_tool_file "$output"
-	    output=$func_to_tool_file_result
-	  elif test -n "$save_libobjs" && test : != "$skipped_export" && test -n "$file_list_spec"; then
+	  if test -n "$save_libobjs" && test : != "$skipped_export" && test -n "$file_list_spec"; then
 	    output=$output_objdir/$output_la.lnk
 	    func_verbose "creating linker input file list: $output"
 	    : > $output
@@ -10081,6 +10217,19 @@ func_mode_link ()
 	    func_append delfiles " $output"
 	    func_to_tool_file "$output"
 	    output=$firstobj\"$file_list_spec$func_to_tool_file_result\"
+	  elif test -n "$save_libobjs" && test : != "$skipped_export" && test yes = "$with_gnu_ld"; then
+	    output=$output_objdir/$output_la.lnkscript
+	    func_verbose "creating GNU ld script: $output"
+	    echo 'INPUT (' > $output
+	    for obj in $save_libobjs
+	    do
+	      func_to_tool_file "$obj"
+	      $ECHO "$func_to_tool_file_result" >> $output
+	    done
+	    echo ')' >> $output
+	    func_append delfiles " $output"
+	    func_to_tool_file "$output"
+	    output=$func_to_tool_file_result
 	  else
 	    if test -n "$save_libobjs"; then
 	      func_verbose "creating reloadable object files..."
