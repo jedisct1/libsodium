@@ -33,12 +33,12 @@ aegis128l_init(const uint8_t *key, const uint8_t *nonce, aes_block_t *const stat
 }
 
 static void
-aegis128l_mac(uint8_t *mac, size_t maclen, size_t adlen, size_t mlen, aes_block_t *const state)
+aegis128l_mac(uint8_t *mac, size_t maclen, uint64_t adlen, uint64_t mlen, aes_block_t *const state)
 {
     aes_block_t tmp;
     int         i;
 
-    tmp = AES_BLOCK_LOAD_64x2(((uint64_t) mlen) << 3, ((uint64_t) adlen) << 3);
+    tmp = AES_BLOCK_LOAD_64x2(mlen << 3, adlen << 3);
     tmp = AES_BLOCK_XOR(tmp, state[2]);
 
     for (i = 0; i < 7; i++) {
