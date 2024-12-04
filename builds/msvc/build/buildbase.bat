@@ -93,9 +93,9 @@ ECHO Configuration=StaticRelease
 msbuild /m /v:n /p:Configuration=StaticRelease /p:Platform=x64 %solution% >> %log%
 IF errorlevel 1 GOTO error
 
-@REM Build ARM64 packages only for Visual studio 19 and later
-IF %version% == 16 (
-  CALL !environment! x86_arm64 > nul
+@REM Build ARM64 packages only for Visual studio 2019 and later
+IF %version% GEQ 16 (
+  CALL !environment! ARM64 > nul
   ECHO Platform=ARM64
 
   ECHO Configuration=DynDebug
