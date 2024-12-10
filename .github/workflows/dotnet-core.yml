@@ -28,6 +28,10 @@ jobs:
         with:
           name: build-win-x86
           path: bin/Win32/Release/v143/dynamic/libsodium.dll
+      - uses: actions/upload-artifact@v4
+        with:
+          name: build-win-arm64
+          path: bin/ARM64/Release/v143/dynamic/libsodium.dll
 
   build-others:
     runs-on: ubuntu-latest
@@ -37,14 +41,6 @@ jobs:
         with:
           version: master
       - uses: actions/checkout@v4
-
-      - name: build-win-arm64
-        run: |
-          rm -fr zig-out .zig-cache; zig build -Doptimize=ReleaseFast -Dtarget=aarch64-windows
-      - uses: actions/upload-artifact@v4
-        with:
-          name: build-win-arm64
-          path: zig-out/bin/libsodium.dll
 
       - name: build-linux-x64
         run: |
