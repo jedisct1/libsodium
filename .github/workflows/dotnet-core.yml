@@ -40,15 +40,15 @@ jobs:
 
       - name: build-win-arm64
         run: |
-          rm -fr zig-out zig-cache; zig build -Doptimize=ReleaseFast -Dtarget=aarch64-windows
+          rm -fr zig-out .zig-cache; zig build -Doptimize=ReleaseFast -Dtarget=aarch64-windows
       - uses: actions/upload-artifact@v4
         with:
           name: build-win-arm64
-          path: zig-out/lib/libsodium.dll
+          path: zig-out/bin/libsodium.dll
 
       - name: build-linux-x64
         run: |
-          rm -fr zig-out zig-cache; zig build -Doptimize=ReleaseFast -Dtarget=x86_64-linux-gnu.2.17
+          rm -fr zig-out .zig-cache; zig build -Doptimize=ReleaseFast -Dtarget=x86_64-linux-gnu.2.17
       - name: tests
         run: cd zig-out/bin && ./run.sh
       - uses: actions/upload-artifact@v4
@@ -72,7 +72,7 @@ jobs:
 
       - name: build-linux-arm
         run: |
-          rm -fr zig-out zig-cache; zig build -Doptimize=ReleaseFast -Dtarget=arm-linux-gnueabihf.2.23
+          rm -fr zig-out .zig-cache; zig build -Doptimize=ReleaseFast -Dtarget=arm-linux-gnueabihf.2.23
       - name: tests
         run: |
           cd zig-out/bin && env LD_LIBRARY_PATH=/usr/arm-linux-gnueabihf/lib ./run.sh
@@ -83,7 +83,7 @@ jobs:
 
       - name: build-linux-arm64
         run: |
-          rm -fr zig-out zig-cache; zig build -Doptimize=ReleaseFast -Dtarget=aarch64-linux-gnu.2.23
+          rm -fr zig-out .zig-cache; zig build -Doptimize=ReleaseFast -Dtarget=aarch64-linux-gnu.2.23
       - name: tests
         run: |
           cd zig-out/bin && env LD_LIBRARY_PATH=/usr/aarch64-linux-gnu/lib ./run.sh
@@ -94,7 +94,7 @@ jobs:
 
       - name: build-linux-musl-x64
         run: |
-          rm -fr zig-out zig-cache; zig build -Doptimize=ReleaseFast -Dtarget=x86_64-linux-musl
+          rm -fr zig-out .zig-cache; zig build -Doptimize=ReleaseFast -Dtarget=x86_64-linux-musl
       - uses: actions/upload-artifact@v4
         with:
           name: build-linux-musl-x64
@@ -102,7 +102,7 @@ jobs:
 
       - name: build-linux-musl-arm
         run: |
-          rm -fr zig-out zig-cache; zig build -Doptimize=ReleaseFast -Dtarget=arm-linux-musleabihf
+          rm -fr zig-out .zig-cache; zig build -Doptimize=ReleaseFast -Dtarget=arm-linux-musleabihf
       - uses: actions/upload-artifact@v4
         with:
           name: build-linux-musl-arm
@@ -110,7 +110,7 @@ jobs:
 
       - name: build-linux-musl-arm64
         run: |
-          rm -fr zig-out zig-cache; zig build -Doptimize=ReleaseFast -Dtarget=aarch64-linux-musl
+          rm -fr zig-out .zig-cache; zig build -Doptimize=ReleaseFast -Dtarget=aarch64-linux-musl
       - uses: actions/upload-artifact@v4
         with:
           name: build-linux-musl-arm64
