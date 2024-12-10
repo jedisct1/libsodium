@@ -38,14 +38,14 @@ echo "Warnings related to headers being present but not usable are due to functi
 echo "that didn't exist in the specified minimum iOS version level."
 echo "They can be safely ignored."
 echo
-echo "Define the LIBSODIUM_FULL_BUILD environment variable to build the full"
-echo "library (including all deprecated/undocumented/low-level functions)."
+echo "Define the LIBSODIUM_MINIMAL_BUILD environment variable to build a"
+echo "library without deprecated/undocumented/low-level functions."
 echo
 echo "Define the LIBSODIUM_SKIP_SIMULATORS environment variable to skip building"
 echo "the simulators libraries (iOS, watchOS, tvOS, visionOS simulators)."
 echo
 
-if [ -z "$LIBSODIUM_FULL_BUILD" ]; then
+if [ "$LIBSODIUM_MINIMAL_BUILD" ]; then
   export LIBSODIUM_ENABLE_MINIMAL_FLAG="--enable-minimal"
 else
   export LIBSODIUM_ENABLE_MINIMAL_FLAG=""
