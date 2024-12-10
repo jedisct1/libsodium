@@ -31,7 +31,7 @@ jobs:
       - uses: actions/upload-artifact@v4
         with:
           name: build-win-arm64
-          path: bin/ARM64/Release/v143/dynamic/libsodium.dll
+          path: bin/ARM64/Release/v143/dynamic/libsodium.dll             
 
   build-others:
     runs-on: ubuntu-latest
@@ -44,7 +44,7 @@ jobs:
 
       - name: build-linux-x64
         run: |
-          rm -fr zig-out zig-cache; zig build -Doptimize=ReleaseFast -Dtarget=x86_64-linux-gnu.2.17
+          rm -fr zig-out .zig-cache; zig build -Doptimize=ReleaseFast -Dtarget=x86_64-linux-gnu.2.17
       - name: tests
         run: cd zig-out/bin && ./run.sh
       - uses: actions/upload-artifact@v4
@@ -68,7 +68,7 @@ jobs:
 
       - name: build-linux-arm
         run: |
-          rm -fr zig-out zig-cache; zig build -Doptimize=ReleaseFast -Dtarget=arm-linux-gnueabihf.2.23
+          rm -fr zig-out .zig-cache; zig build -Doptimize=ReleaseFast -Dtarget=arm-linux-gnueabihf.2.23
       - name: tests
         run: |
           cd zig-out/bin && env LD_LIBRARY_PATH=/usr/arm-linux-gnueabihf/lib ./run.sh
@@ -79,7 +79,7 @@ jobs:
 
       - name: build-linux-arm64
         run: |
-          rm -fr zig-out zig-cache; zig build -Doptimize=ReleaseFast -Dtarget=aarch64-linux-gnu.2.23
+          rm -fr zig-out .zig-cache; zig build -Doptimize=ReleaseFast -Dtarget=aarch64-linux-gnu.2.23
       - name: tests
         run: |
           cd zig-out/bin && env LD_LIBRARY_PATH=/usr/aarch64-linux-gnu/lib ./run.sh
@@ -90,7 +90,7 @@ jobs:
 
       - name: build-linux-musl-x64
         run: |
-          rm -fr zig-out zig-cache; zig build -Doptimize=ReleaseFast -Dtarget=x86_64-linux-musl
+          rm -fr zig-out .zig-cache; zig build -Doptimize=ReleaseFast -Dtarget=x86_64-linux-musl
       - uses: actions/upload-artifact@v4
         with:
           name: build-linux-musl-x64
@@ -98,7 +98,7 @@ jobs:
 
       - name: build-linux-musl-arm
         run: |
-          rm -fr zig-out zig-cache; zig build -Doptimize=ReleaseFast -Dtarget=arm-linux-musleabihf
+          rm -fr zig-out .zig-cache; zig build -Doptimize=ReleaseFast -Dtarget=arm-linux-musleabihf
       - uses: actions/upload-artifact@v4
         with:
           name: build-linux-musl-arm
@@ -106,7 +106,7 @@ jobs:
 
       - name: build-linux-musl-arm64
         run: |
-          rm -fr zig-out zig-cache; zig build -Doptimize=ReleaseFast -Dtarget=aarch64-linux-musl
+          rm -fr zig-out .zig-cache; zig build -Doptimize=ReleaseFast -Dtarget=aarch64-linux-musl
       - uses: actions/upload-artifact@v4
         with:
           name: build-linux-musl-arm64
@@ -143,7 +143,7 @@ jobs:
       - build-apple
       - build-others
     container:
-      image: mcr.microsoft.com/dotnet/sdk:8.0
+      image: mcr.microsoft.com/dotnet/sdk:6.0
     env:
       DOTNET_CLI_TELEMETRY_OPTOUT: 1
       DOTNET_SKIP_FIRST_TIME_EXPERIENCE: 1
@@ -232,7 +232,7 @@ jobs:
     needs:
       - pack
     container:
-      image: mcr.microsoft.com/dotnet/sdk:8.0
+      image: mcr.microsoft.com/dotnet/sdk:6.0
     env:
       DOTNET_CLI_TELEMETRY_OPTOUT: 1
       DOTNET_SKIP_FIRST_TIME_EXPERIENCE: 1
@@ -261,9 +261,9 @@ jobs:
       - name: Move Build Output
         run: |
           mkdir .libsodium-builds
-          mv .libsodium-test/bin/Release/net8.0/linux-arm/publish .libsodium-builds/linux-arm
-          mv .libsodium-test/bin/Release/net8.0/linux-arm64/publish .libsodium-builds/linux-arm64
-          mv .libsodium-test/bin/Release/net8.0/linux-x64/publish .libsodium-builds/linux-x64
+          mv .libsodium-test/bin/Release/net6.0/linux-arm/publish .libsodium-builds/linux-arm
+          mv .libsodium-test/bin/Release/net6.0/linux-arm64/publish .libsodium-builds/linux-arm64
+          mv .libsodium-test/bin/Release/net6.0/linux-x64/publish .libsodium-builds/linux-x64
       - uses: actions/upload-artifact@v4
         with:
           name: test-builds
@@ -276,7 +276,7 @@ jobs:
     - build-test-binaries
     strategy:
       matrix:
-        arch: [ 'centos:8', 'debian:11' ]
+        arch: [ 'centos:8', 'debian:10' ]
     container:
       image: ${{ matrix.arch }}
     env:
@@ -292,7 +292,7 @@ jobs:
         .libsodium-builds/linux-x64/Tests
 
   run-test-binaries-cross-plat:
-    runs-on: ubuntu-20.04
+    runs-on: ubuntu-22.04
     needs:
       - build-test-binaries
     env:
