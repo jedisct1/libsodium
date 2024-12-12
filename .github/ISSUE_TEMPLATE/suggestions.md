@@ -8,9 +8,9 @@ assignees: ""
 
 Please do not post features requests directly.
 
-The starting point should be a discussion, after having checked the [roadmap](https://doc.libsodium.org/roadmap).
+The starting point should be a discussion, after having checked the roadmap: https://doc.libsodium.org/roadmap
 
-Suggestions should be raised as an "Ideas" [discussion](https://github.com/jedisct1/libsodium/discussions/).
+Suggestions should be raised as an "Ideas" discussion: https://github.com/jedisct1/libsodium/discussions
 
 We can then determine if the discussion needs to be escalated into a "planned change" or not.
 
