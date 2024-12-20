@@ -9,94 +9,94 @@ const Target = std.Target;
 fn initLibConfig(b: *std.Build, target: std.Build.ResolvedTarget, lib: *Compile) void {
     lib.linkLibC();
     lib.addIncludePath(b.path("src/libsodium/include/sodium"));
-    lib.defineCMacro("_GNU_SOURCE", "1");
-    lib.defineCMacro("CONFIGURED", "1");
-    lib.defineCMacro("DEV_MODE", "1");
-    lib.defineCMacro("HAVE_ATOMIC_OPS", "1");
-    lib.defineCMacro("HAVE_C11_MEMORY_FENCES", "1");
-    lib.defineCMacro("HAVE_CET_H", "1");
-    lib.defineCMacro("HAVE_GCC_MEMORY_FENCES", "1");
-    lib.defineCMacro("HAVE_INLINE_ASM", "1");
-    lib.defineCMacro("HAVE_INTTYPES_H", "1");
-    lib.defineCMacro("HAVE_STDINT_H", "1");
-    lib.defineCMacro("HAVE_TI_MODE", "1");
+    lib.root_module.addCMacro("_GNU_SOURCE", "1");
+    lib.root_module.addCMacro("CONFIGURED", "1");
+    lib.root_module.addCMacro("DEV_MODE", "1");
+    lib.root_module.addCMacro("HAVE_ATOMIC_OPS", "1");
+    lib.root_module.addCMacro("HAVE_C11_MEMORY_FENCES", "1");
+    lib.root_module.addCMacro("HAVE_CET_H", "1");
+    lib.root_module.addCMacro("HAVE_GCC_MEMORY_FENCES", "1");
+    lib.root_module.addCMacro("HAVE_INLINE_ASM", "1");
+    lib.root_module.addCMacro("HAVE_INTTYPES_H", "1");
+    lib.root_module.addCMacro("HAVE_STDINT_H", "1");
+    lib.root_module.addCMacro("HAVE_TI_MODE", "1");
     lib.want_lto = false;
 
     const endian = target.result.cpu.arch.endian();
     switch (endian) {
-        .big => lib.defineCMacro("NATIVE_BIG_ENDIAN", "1"),
-        .little => lib.defineCMacro("NATIVE_LITTLE_ENDIAN", "1"),
+        .big => lib.root_module.addCMacro("NATIVE_BIG_ENDIAN", "1"),
+        .little => lib.root_module.addCMacro("NATIVE_LITTLE_ENDIAN", "1"),
     }
 
     switch (target.result.os.tag) {
         .linux => {
-            lib.defineCMacro("ASM_HIDE_SYMBOL", ".hidden");
-            lib.defineCMacro("TLS", "_Thread_local");
+            lib.root_module.addCMacro("ASM_HIDE_SYMBOL", ".hidden");
+            lib.root_module.addCMacro("TLS", "_Thread_local");
 
-            lib.defineCMacro("HAVE_CATCHABLE_ABRT", "1");
-            lib.defineCMacro("HAVE_CATCHABLE_SEGV", "1");
-            lib.defineCMacro("HAVE_CLOCK_GETTIME", "1");
-            lib.defineCMacro("HAVE_GETPID", "1");
-            lib.defineCMacro("HAVE_MADVISE", "1");
-            lib.defineCMacro("HAVE_MLOCK", "1");
-            lib.defineCMacro("HAVE_MMAP", "1");
-            lib.defineCMacro("HAVE_MPROTECT", "1");
-            lib.defineCMacro("HAVE_NANOSLEEP", "1");
-            lib.defineCMacro("HAVE_POSIX_MEMALIGN", "1");
-            lib.defineCMacro("HAVE_PTHREAD_PRIO_INHERIT", "1");
-            lib.defineCMacro("HAVE_PTHREAD", "1");
-            lib.defineCMacro("HAVE_RAISE", "1");
-            lib.defineCMacro("HAVE_SYSCONF", "1");
-            lib.defineCMacro("HAVE_SYS_AUXV_H", "1");
-            lib.defineCMacro("HAVE_SYS_MMAN_H", "1");
-            lib.defineCMacro("HAVE_SYS_PARAM_H", "1");
-            lib.defineCMacro("HAVE_SYS_RANDOM_H", "1");
-            lib.defineCMacro("HAVE_WEAK_SYMBOLS", "1");
+            lib.root_module.addCMacro("HAVE_CATCHABLE_ABRT", "1");
+            lib.root_module.addCMacro("HAVE_CATCHABLE_SEGV", "1");
+            lib.root_module.addCMacro("HAVE_CLOCK_GETTIME", "1");
+            lib.root_module.addCMacro("HAVE_GETPID", "1");
+            lib.root_module.addCMacro("HAVE_MADVISE", "1");
+            lib.root_module.addCMacro("HAVE_MLOCK", "1");
+            lib.root_module.addCMacro("HAVE_MMAP", "1");
+            lib.root_module.addCMacro("HAVE_MPROTECT", "1");
+            lib.root_module.addCMacro("HAVE_NANOSLEEP", "1");
+            lib.root_module.addCMacro("HAVE_POSIX_MEMALIGN", "1");
+            lib.root_module.addCMacro("HAVE_PTHREAD_PRIO_INHERIT", "1");
+            lib.root_module.addCMacro("HAVE_PTHREAD", "1");
+            lib.root_module.addCMacro("HAVE_RAISE", "1");
+            lib.root_module.addCMacro("HAVE_SYSCONF", "1");
+            lib.root_module.addCMacro("HAVE_SYS_AUXV_H", "1");
+            lib.root_module.addCMacro("HAVE_SYS_MMAN_H", "1");
+            lib.root_module.addCMacro("HAVE_SYS_PARAM_H", "1");
+            lib.root_module.addCMacro("HAVE_SYS_RANDOM_H", "1");
+            lib.root_module.addCMacro("HAVE_WEAK_SYMBOLS", "1");
         },
         .windows => {
-            lib.defineCMacro("HAVE_RAISE", "1");
-            lib.defineCMacro("HAVE_SYS_PARAM_H", "1");
+            lib.root_module.addCMacro("HAVE_RAISE", "1");
+            lib.root_module.addCMacro("HAVE_SYS_PARAM_H", "1");
             if (lib.isStaticLibrary()) {
-                lib.defineCMacro("SODIUM_STATIC", "1");
+                lib.root_module.addCMacro("SODIUM_STATIC", "1");
             }
         },
         .macos => {
-            lib.defineCMacro("ASM_HIDE_SYMBOL", ".private_extern");
-            lib.defineCMacro("TLS", "_Thread_local");
+            lib.root_module.addCMacro("ASM_HIDE_SYMBOL", ".private_extern");
+            lib.root_module.addCMacro("TLS", "_Thread_local");
 
-            lib.defineCMacro("HAVE_ARC4RANDOM", "1");
-            lib.defineCMacro("HAVE_ARC4RANDOM_BUF", "1");
-            lib.defineCMacro("HAVE_CATCHABLE_ABRT", "1");
-            lib.defineCMacro("HAVE_CATCHABLE_SEGV", "1");
-            lib.defineCMacro("HAVE_CLOCK_GETTIME", "1");
-            lib.defineCMacro("HAVE_GETENTROPY", "1");
-            lib.defineCMacro("HAVE_GETPID", "1");
-            lib.defineCMacro("HAVE_MADVISE", "1");
-            lib.defineCMacro("HAVE_MEMSET_S", "1");
-            lib.defineCMacro("HAVE_MLOCK", "1");
-            lib.defineCMacro("HAVE_MMAP", "1");
-            lib.defineCMacro("HAVE_MPROTECT", "1");
-            lib.defineCMacro("HAVE_NANOSLEEP", "1");
-            lib.defineCMacro("HAVE_POSIX_MEMALIGN", "1");
-            lib.defineCMacro("HAVE_PTHREAD", "1");
-            lib.defineCMacro("HAVE_PTHREAD_PRIO_INHERIT", "1");
-            lib.defineCMacro("HAVE_RAISE", "1");
-            lib.defineCMacro("HAVE_SYSCONF", "1");
-            lib.defineCMacro("HAVE_SYS_MMAN_H", "1");
-            lib.defineCMacro("HAVE_SYS_PARAM_H", "1");
-            lib.defineCMacro("HAVE_SYS_RANDOM_H", "1");
-            lib.defineCMacro("HAVE_WEAK_SYMBOLS", "1");
+            lib.root_module.addCMacro("HAVE_ARC4RANDOM", "1");
+            lib.root_module.addCMacro("HAVE_ARC4RANDOM_BUF", "1");
+            lib.root_module.addCMacro("HAVE_CATCHABLE_ABRT", "1");
+            lib.root_module.addCMacro("HAVE_CATCHABLE_SEGV", "1");
+            lib.root_module.addCMacro("HAVE_CLOCK_GETTIME", "1");
+            lib.root_module.addCMacro("HAVE_GETENTROPY", "1");
+            lib.root_module.addCMacro("HAVE_GETPID", "1");
+            lib.root_module.addCMacro("HAVE_MADVISE", "1");
+            lib.root_module.addCMacro("HAVE_MEMSET_S", "1");
+            lib.root_module.addCMacro("HAVE_MLOCK", "1");
+            lib.root_module.addCMacro("HAVE_MMAP", "1");
+            lib.root_module.addCMacro("HAVE_MPROTECT", "1");
+            lib.root_module.addCMacro("HAVE_NANOSLEEP", "1");
+            lib.root_module.addCMacro("HAVE_POSIX_MEMALIGN", "1");
+            lib.root_module.addCMacro("HAVE_PTHREAD", "1");
+            lib.root_module.addCMacro("HAVE_PTHREAD_PRIO_INHERIT", "1");
+            lib.root_module.addCMacro("HAVE_RAISE", "1");
+            lib.root_module.addCMacro("HAVE_SYSCONF", "1");
+            lib.root_module.addCMacro("HAVE_SYS_MMAN_H", "1");
+            lib.root_module.addCMacro("HAVE_SYS_PARAM_H", "1");
+            lib.root_module.addCMacro("HAVE_SYS_RANDOM_H", "1");
+            lib.root_module.addCMacro("HAVE_WEAK_SYMBOLS", "1");
         },
         .wasi => {
-            lib.defineCMacro("HAVE_ARC4RANDOM", "1");
-            lib.defineCMacro("HAVE_ARC4RANDOM_BUF", "1");
-            lib.defineCMacro("HAVE_CLOCK_GETTIME", "1");
-            lib.defineCMacro("HAVE_GETENTROPY", "1");
-            lib.defineCMacro("HAVE_NANOSLEEP", "1");
-            lib.defineCMacro("HAVE_POSIX_MEMALIGN", "1");
-            lib.defineCMacro("HAVE_SYS_AUXV_H", "1");
-            lib.defineCMacro("HAVE_SYS_PARAM_H", "1");
-            lib.defineCMacro("HAVE_SYS_RANDOM_H", "1");
+            lib.root_module.addCMacro("HAVE_ARC4RANDOM", "1");
+            lib.root_module.addCMacro("HAVE_ARC4RANDOM_BUF", "1");
+            lib.root_module.addCMacro("HAVE_CLOCK_GETTIME", "1");
+            lib.root_module.addCMacro("HAVE_GETENTROPY", "1");
+            lib.root_module.addCMacro("HAVE_NANOSLEEP", "1");
+            lib.root_module.addCMacro("HAVE_POSIX_MEMALIGN", "1");
+            lib.root_module.addCMacro("HAVE_SYS_AUXV_H", "1");
+            lib.root_module.addCMacro("HAVE_SYS_PARAM_H", "1");
+            lib.root_module.addCMacro("HAVE_SYS_RANDOM_H", "1");
         },
         else => {},
     }
@@ -106,34 +106,34 @@ fn initLibConfig(b: *std.Build, target: std.Build.ResolvedTarget, lib: *Compile)
             switch (target.result.os.tag) {
                 .windows => {},
                 else => {
-                    lib.defineCMacro("HAVE_AMD64_ASM", "1");
-                    lib.defineCMacro("HAVE_AVX_ASM", "1");
+                    lib.root_module.addCMacro("HAVE_AMD64_ASM", "1");
+                    lib.root_module.addCMacro("HAVE_AVX_ASM", "1");
                 },
             }
-            lib.defineCMacro("HAVE_CPUID", "1");
-            lib.defineCMacro("HAVE_MMINTRIN_H", "1");
-            lib.defineCMacro("HAVE_EMMINTRIN_H", "1");
-            lib.defineCMacro("HAVE_PMMINTRIN_H", "1");
-            lib.defineCMacro("HAVE_TMMINTRIN_H", "1");
-            lib.defineCMacro("HAVE_SMMINTRIN_H", "1");
-            lib.defineCMacro("HAVE_AVXINTRIN_H", "1");
-            lib.defineCMacro("HAVE_AVX2INTRIN_H", "1");
-            lib.defineCMacro("HAVE_AVX512FINTRIN_H", "1");
-            lib.defineCMacro("HAVE_WMMINTRIN_H", "1");
-            lib.defineCMacro("HAVE_RDRAND", "1");
+            lib.root_module.addCMacro("HAVE_CPUID", "1");
+            lib.root_module.addCMacro("HAVE_MMINTRIN_H", "1");
+            lib.root_module.addCMacro("HAVE_EMMINTRIN_H", "1");
+            lib.root_module.addCMacro("HAVE_PMMINTRIN_H", "1");
+            lib.root_module.addCMacro("HAVE_TMMINTRIN_H", "1");
+            lib.root_module.addCMacro("HAVE_SMMINTRIN_H", "1");
+            lib.root_module.addCMacro("HAVE_AVXINTRIN_H", "1");
+            lib.root_module.addCMacro("HAVE_AVX2INTRIN_H", "1");
+            lib.root_module.addCMacro("HAVE_AVX512FINTRIN_H", "1");
+            lib.root_module.addCMacro("HAVE_WMMINTRIN_H", "1");
+            lib.root_module.addCMacro("HAVE_RDRAND", "1");
         },
         .aarch64, .aarch64_be => {
-            lib.defineCMacro("HAVE_ARMCRYPTO", "1");
+            lib.root_module.addCMacro("HAVE_ARMCRYPTO", "1");
         },
         .wasm32, .wasm64 => {
-            lib.defineCMacro("__wasm__", "1");
+            lib.root_module.addCMacro("__wasm__", "1");
         },
         else => {},
     }
 
     switch (target.result.os.tag) {
         .wasi => {
-            lib.defineCMacro("__wasi__", "1");
+            lib.root_module.addCMacro("__wasi__", "1");
         },
         else => {},
     }
@@ -270,9 +270,9 @@ pub fn build(b: *std.Build) !void {
             const full_path = try fmt.allocPrint(allocator, "{s}/{s}", .{ test_path, entry.path });
             exe.addCSourceFiles(.{ .files = &.{full_path} });
             if (enable_benchmarks) {
-                exe.defineCMacro("BENCHMARKS", "1");
+                exe.root_module.addCMacro("BENCHMARKS", "1");
                 var buf: [16]u8 = undefined;
-                exe.defineCMacro("ITERATIONS", std.fmt.bufPrintIntToSlice(&buf, benchmarks_iterations, 10, .lower, .{}));
+                exe.root_module.addCMacro("ITERATIONS", std.fmt.bufPrintIntToSlice(&buf, benchmarks_iterations, 10, .lower, .{}));
             }
 
             b.installArtifact(exe);
