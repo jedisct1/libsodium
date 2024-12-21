@@ -2,25 +2,35 @@
 
 export PREFIX="$(pwd)/libsodium-apple"
 export MACOS_ARM64_PREFIX="${PREFIX}/tmp/macos-arm64"
+export MACOS_ARM64E_PREFIX="${PREFIX}/tmp/macos-arm64e"
 export MACOS_X86_64_PREFIX="${PREFIX}/tmp/macos-x86_64"
 export IOS32_PREFIX="${PREFIX}/tmp/ios32"
 export IOS32s_PREFIX="${PREFIX}/tmp/ios32s"
 export IOS64_PREFIX="${PREFIX}/tmp/ios64"
+export IOS64E_PREFIX="${PREFIX}/tmp/ios64e"
 export IOS_SIMULATOR_ARM64_PREFIX="${PREFIX}/tmp/ios-simulator-arm64"
+export IOS_SIMULATOR_ARM64E_PREFIX="${PREFIX}/tmp/ios-simulator-arm64e"
 export IOS_SIMULATOR_I386_PREFIX="${PREFIX}/tmp/ios-simulator-i386"
 export IOS_SIMULATOR_X86_64_PREFIX="${PREFIX}/tmp/ios-simulator-x86_64"
 export WATCHOS32_PREFIX="${PREFIX}/tmp/watchos32"
 export WATCHOS64_32_PREFIX="${PREFIX}/tmp/watchos64_32"
 export WATCHOS64_PREFIX="${PREFIX}/tmp/watchos64"
+export WATCHOS64E_PREFIX="${PREFIX}/tmp/watchos64e"
 export WATCHOS_SIMULATOR_ARM64_PREFIX="${PREFIX}/tmp/watchos-simulator-arm64"
+export WATCHOS_SIMULATOR_ARM64E_PREFIX="${PREFIX}/tmp/watchos-simulator-arm64e"
 export WATCHOS_SIMULATOR_I386_PREFIX="${PREFIX}/tmp/watchos-simulator-i386"
 export WATCHOS_SIMULATOR_X86_64_PREFIX="${PREFIX}/tmp/watchos-simulator-x86_64"
 export TVOS_PREFIX="${PREFIX}/tmp/tvos"
+export TVOSE_PREFIX="${PREFIX}/tmp/tvose"
 export TVOS_SIMULATOR_ARM64_PREFIX="${PREFIX}/tmp/tvos-simulator-arm64"
+export TVOS_SIMULATOR_ARM64E_PREFIX="${PREFIX}/tmp/tvos-simulator-arm644"
 export TVOS_SIMULATOR_X86_64_PREFIX="${PREFIX}/tmp/tvos-simulator-x86_64"
 export VISIONOS_PREFIX="${PREFIX}/tmp/visionos"
+export VISIONOSE_PREFIX="${PREFIX}/tmp/visionose"
 export VISIONOS_SIMULATOR_PREFIX="${PREFIX}/tmp/visionos-simulator"
+export VISIONOSE_SIMULATOR_PREFIX="${PREFIX}/tmp/visionose-simulator"
 export CATALYST_ARM64_PREFIX="${PREFIX}/tmp/catalyst-arm64"
+export CATALYST_ARM64E_PREFIX="${PREFIX}/tmp/catalyst-arm64e"
 export CATALYST_X86_64_PREFIX="${PREFIX}/tmp/catalyst-x86_64"
 export LOG_FILE="${PREFIX}/tmp/build_log"
 export XCODEDIR="$(xcode-select -p)"
@@ -83,6 +93,15 @@ build_macos() {
     ${LIBSODIUM_ENABLE_MINIMAL_FLAG} || exit 1
   make -j${PROCESSORS} install || exit 1
 
+  ## macOS arm64e
+  export CFLAGS="-O3 -arch arm64e -mmacosx-version-min=${MACOS_VERSION_MIN}"
+  export LDFLAGS="-arch arm64e -mmacosx-version-min=${MACOS_VERSION_MIN}"
+
+  make distclean >/dev/null 2>&1
+  ./configure --host=aarch64-apple-darwin23 --prefix="$MACOS_ARM64E_PREFIX" \
+    ${LIBSODIUM_ENABLE_MINIMAL_FLAG} || exit 1
+  make -j${PROCESSORS} install || exit 1
+
   ## macOS x86_64
   export CFLAGS="-O3 -arch x86_64 -mmacosx-version-min=${MACOS_VERSION_MIN}"
   export LDFLAGS="-arch x86_64 -mmacosx-version-min=${MACOS_VERSION_MIN}"
@@ -126,6 +145,15 @@ build_ios() {
   ./configure --host=aarch64-apple-darwin23 --prefix="$IOS64_PREFIX" \
     ${LIBSODIUM_ENABLE_MINIMAL_FLAG} || exit 1
   make -j${PROCESSORS} install || exit 1
+
+  ## 64-bit iOS arm64e
+  export CFLAGS="-O3 -arch arm64e -isysroot ${SDK} -mios-version-min=${IOS_VERSION_MIN}"
+  export LDFLAGS="-arch arm64e -isysroot ${SDK} -mios-version-min=${IOS_VERSION_MIN}"
+
+  make distclean >/dev/null 2>&1
+  ./configure --host=aarch64-apple-darwin23 --prefix="$IOS64E_PREFIX" \
+    ${LIBSODIUM_ENABLE_MINIMAL_FLAG} || exit 1
+  make -j${PROCESSORS} install || exit 1
 }
 
 build_ios_simulator() {
@@ -139,6 +167,15 @@ build_ios_simulator() {
 
   make distclean >/dev/null 2>&1
   ./configure --host=aarch64-apple-darwin23 --prefix="$IOS_SIMULATOR_ARM64_PREFIX" \
+    ${LIBSODIUM_ENABLE_MINIMAL_FLAG} || exit 1
+  make -j${PROCESSORS} install || exit 1
+
+  ## arm64e simulator
+  export CFLAGS="-O3 -arch arm64e -isysroot ${SDK} -mios-simulator-version-min=${IOS_SIMULATOR_VERSION_MIN}"
+  export LDFLAGS="-arch arm64e -isysroot ${SDK} -mios-simulator-version-min=${IOS_SIMULATOR_VERSION_MIN}"
+
+  make distclean >/dev/null 2>&1
+  ./configure --host=aarch64-apple-darwin23 --prefix="$IOS_SIMULATOR_ARM64E_PREFIX" \
     ${LIBSODIUM_ENABLE_MINIMAL_FLAG} || exit 1
   make -j${PROCESSORS} install || exit 1
 
@@ -194,6 +231,15 @@ build_watchos() {
   ./configure --host=aarch64-apple-darwin23 --prefix="$WATCHOS64_PREFIX" \
     ${LIBSODIUM_ENABLE_MINIMAL_FLAG} || exit 1
   make -j${PROCESSORS} install || exit 1
+
+  ## 64-bit arm64e watchOS
+  export CFLAGS="-O3 -mthumb -arch arm64e -isysroot ${SDK} -mwatchos-version-min=${WATCHOS_VERSION_MIN}"
+  export LDFLAGS="-mthumb -arch arm64e -isysroot ${SDK} -mwatchos-version-min=${WATCHOS_VERSION_MIN}"
+
+  make distclean >/dev/null 2>&1
+  ./configure --host=aarch64-apple-darwin23 --prefix="$WATCHOS64E_PREFIX" \
+    ${LIBSODIUM_ENABLE_MINIMAL_FLAG} || exit 1
+  make -j${PROCESSORS} install || exit 1
 }
 
 build_watchos_simulator() {
@@ -207,6 +253,15 @@ build_watchos_simulator() {
 
   make distclean >/dev/null 2>&1
   ./configure --host=aarch64-apple-darwin23 --prefix="$WATCHOS_SIMULATOR_ARM64_PREFIX" \
+    ${LIBSODIUM_ENABLE_MINIMAL_FLAG} || exit 1
+  make -j${PROCESSORS} install || exit 1
+
+  ## arm64e simulator
+  export CFLAGS="-O3 -arch arm64e -isysroot ${SDK} -mwatchos-simulator-version-min=${WATCHOS_SIMULATOR_VERSION_MIN}"
+  export LDFLAGS="-arch arm64e -isysroot ${SDK} -mwatchos-simulator-version-min=${WATCHOS_SIMULATOR_VERSION_MIN}"
+
+  make distclean >/dev/null 2>&1
+  ./configure --host=aarch64-apple-darwin23 --prefix="$WATCHOS_SIMULATOR_ARM64E_PREFIX" \
     ${LIBSODIUM_ENABLE_MINIMAL_FLAG} || exit 1
   make -j${PROCESSORS} install || exit 1
 
@@ -242,6 +297,15 @@ build_tvos() {
   ./configure --host=aarch64-apple-darwin23 --prefix="$TVOS_PREFIX" \
     ${LIBSODIUM_ENABLE_MINIMAL_FLAG} || exit 1
   make -j${PROCESSORS} install || exit 1
+
+  ## 64-bit tvOS
+  export CFLAGS="-O3 -arch arm64e -isysroot ${SDK} -mtvos-version-min=${TVOS_VERSION_MIN}"
+  export LDFLAGS="-arch arm64e -isysroot ${SDK} -mtvos-version-min=${TVOS_VERSION_MIN}"
+
+  make distclean >/dev/null 2>&1
+  ./configure --host=aarch64-apple-darwin23 --prefix="$TVOSE_PREFIX" \
+    ${LIBSODIUM_ENABLE_MINIMAL_FLAG} || exit 1
+  make -j${PROCESSORS} install || exit 1
 }
 
 build_tvos_simulator() {
@@ -255,6 +319,15 @@ build_tvos_simulator() {
 
   make distclean >/dev/null 2>&1
   ./configure --host=aarch64-apple-darwin23 --prefix="$TVOS_SIMULATOR_ARM64_PREFIX" \
+    ${LIBSODIUM_ENABLE_MINIMAL_FLAG} || exit 1
+  make -j${PROCESSORS} install || exit 1
+
+  ## arm64e simulator
+  export CFLAGS="-O3 -arch arm64e -isysroot ${SDK} -mtvos-simulator-version-min=${TVOS_SIMULATOR_VERSION_MIN}"
+  export LDFLAGS="-arch arm64e -isysroot ${SDK} -mtvos-simulator-version-min=${TVOS_SIMULATOR_VERSION_MIN}"
+
+  make distclean >/dev/null 2>&1
+  ./configure --host=aarch64-apple-darwin23 --prefix="$TVOS_SIMULATOR_ARM64E_PREFIX" \
     ${LIBSODIUM_ENABLE_MINIMAL_FLAG} || exit 1
   make -j${PROCESSORS} install || exit 1
 
@@ -280,6 +353,14 @@ build_visionos() {
   ./configure --host=aarch64-apple-darwin23 --prefix="$VISIONOS_PREFIX" \
     ${LIBSODIUM_ENABLE_MINIMAL_FLAG} || exit 1
   make -j${PROCESSORS} install || exit 1
+
+  export CFLAGS="-O3 -arch arm64e -isysroot ${SDK}"
+  export LDFLAGS="-arch arm64e -isysroot ${SDK}"
+
+  make distclean >/dev/null 2>&1
+  ./configure --host=aarch64-apple-darwin23 --prefix="$VISIONOSE_PREFIX" \
+    ${LIBSODIUM_ENABLE_MINIMAL_FLAG} || exit 1
+  make -j${PROCESSORS} install || exit 1
 }
 
 build_visionos_simulator() {
@@ -292,6 +373,14 @@ build_visionos_simulator() {
 
   make distclean >/dev/null 2>&1
   ./configure --host=aarch64-apple-darwin23 --prefix="$VISIONOS_SIMULATOR_PREFIX" \
+    ${LIBSODIUM_ENABLE_MINIMAL_FLAG} || exit 1
+  make -j${PROCESSORS} install || exit 1
+
+  export CFLAGS="-O3 -arch arm64e -isysroot ${SDK}"
+  export LDFLAGS="-arch arm64e -isysroot ${SDK}"
+
+  make distclean >/dev/null 2>&1
+  ./configure --host=aarch64-apple-darwin23 --prefix="$VISIONOSE_SIMULATOR_PREFIX" \
     ${LIBSODIUM_ENABLE_MINIMAL_FLAG} || exit 1
   make -j${PROCESSORS} install || exit 1
 }
@@ -307,6 +396,15 @@ build_catalyst() {
 
   make distclean >/dev/null 2>&1
   ./configure --host=aarch64-apple-ios --prefix="$CATALYST_ARM64_PREFIX" \
+    ${LIBSODIUM_ENABLE_MINIMAL_FLAG} || exit 1
+  make -j${PROCESSORS} install || exit 1
+
+  ## arm64e catalyst
+  export CFLAGS="-O3 -arch arm64e -target arm64e-apple-ios13.1-macabi -isysroot ${SDK}"
+  export LDFLAGS="-arch arm64e -target arm64e-apple-ios13.1-macabi -isysroot ${SDK}"
+
+  make distclean >/dev/null 2>&1
+  ./configure --host=aarch64-apple-ios --prefix="$CATALYST_ARM64E_PREFIX" \
     ${LIBSODIUM_ENABLE_MINIMAL_FLAG} || exit 1
   make -j${PROCESSORS} install || exit 1
 
@@ -365,6 +463,7 @@ cp -a "${MACOS_X86_64_PREFIX}/include" "${PREFIX}/macos/"
 for ext in a dylib; do
   lipo -create \
     "${MACOS_ARM64_PREFIX}/lib/libsodium.${ext}" \
+    "${MACOS_ARM64E_PREFIX}/lib/libsodium.${ext}" \
     "${MACOS_X86_64_PREFIX}/lib/libsodium.${ext}" \
     -output "${PREFIX}/macos/lib/libsodium.${ext}"
 done
@@ -375,6 +474,7 @@ mkdir -p "${PREFIX}/ios/lib"
 cp -a "${IOS64_PREFIX}/include" "${PREFIX}/ios/"
 for ext in a dylib; do
   LIBRARY_PATHS="$IOS64_PREFIX/lib/libsodium.${ext}"
+  LIBRARY_PATHS="$LIBRARY_PATHS $IOS64E_PREFIX/lib/libsodium.${ext}"
   if [ "$IOS32_SUPPORTED" = true ]; then
     LIBRARY_PATHS="$LIBRARY_PATHS $IOS32_PREFIX/lib/libsodium.${ext}"
     LIBRARY_PATHS="$LIBRARY_PATHS $IOS32s_PREFIX/lib/libsodium.${ext}"
@@ -393,6 +493,7 @@ for ext in a dylib; do
     "${WATCHOS32_PREFIX}/lib/libsodium.${ext}" \
     "${WATCHOS64_32_PREFIX}/lib/libsodium.${ext}" \
     "${WATCHOS64_PREFIX}/lib/libsodium.${ext}" \
+    "${WATCHOS64E_PREFIX}/lib/libsodium.${ext}" \
     -output "${PREFIX}/watchos/lib/libsodium.${ext}"
 done
 
@@ -403,6 +504,7 @@ cp -a "${TVOS_PREFIX}/include" "${PREFIX}/tvos/"
 for ext in a dylib; do
   lipo -create \
     "$TVOS_PREFIX/lib/libsodium.${ext}" \
+    "$TVOSE_PREFIX/lib/libsodium.${ext}" \
     -output "$PREFIX/tvos/lib/libsodium.${ext}"
 done
 
@@ -414,6 +516,7 @@ if [ "$VISIONOS_SUPPORTED" = true ]; then
   for ext in a dylib; do
     lipo -create \
       "$VISIONOS_PREFIX/lib/libsodium.${ext}" \
+      "$VISIONOSE_PREFIX/lib/libsodium.${ext}" \
       -output "$PREFIX/visionos/lib/libsodium.${ext}"
   done
 fi
@@ -428,6 +531,7 @@ for ext in a dylib; do
   fi
   lipo -create \
     "${CATALYST_ARM64_PREFIX}/lib/libsodium.${ext}" \
+    "${CATALYST_ARM64E_PREFIX}/lib/libsodium.${ext}" \
     "${CATALYST_X86_64_PREFIX}/lib/libsodium.${ext}" \
     -output "${PREFIX}/catalyst/lib/libsodium.${ext}"
 done
@@ -439,6 +543,7 @@ if [ -z "$LIBSODIUM_SKIP_SIMULATORS" ]; then
   cp -a "${IOS_SIMULATOR_X86_64_PREFIX}/include" "${PREFIX}/ios-simulators/"
   for ext in a dylib; do
     LIBRARY_PATHS="${IOS_SIMULATOR_ARM64_PREFIX}/lib/libsodium.${ext}"
+    LIBRARY_PATHS="$LIBRARY_PATHS ${IOS_SIMULATOR_ARM64E_PREFIX}/lib/libsodium.${ext}"
     LIBRARY_PATHS="$LIBRARY_PATHS ${IOS_SIMULATOR_X86_64_PREFIX}/lib/libsodium.${ext}"
     if [ "$I386_SIMULATOR_SUPPORTED" = true ]; then
       LIBRARY_PATHS="$LIBRARY_PATHS ${IOS_SIMULATOR_I386_PREFIX}/lib/libsodium.${ext}"
@@ -455,6 +560,7 @@ if [ -z "$LIBSODIUM_SKIP_SIMULATORS" ]; then
   for ext in a dylib; do
     lipo -create \
       "${WATCHOS_SIMULATOR_ARM64_PREFIX}/lib/libsodium.${ext}" \
+      "${WATCHOS_SIMULATOR_ARM64E_PREFIX}/lib/libsodium.${ext}" \
       "${WATCHOS_SIMULATOR_I386_PREFIX}/lib/libsodium.${ext}" \
       "${WATCHOS_SIMULATOR_X86_64_PREFIX}/lib/libsodium.${ext}" \
       -output "${PREFIX}/watchos-simulators/lib/libsodium.${ext}"
@@ -467,6 +573,7 @@ if [ -z "$LIBSODIUM_SKIP_SIMULATORS" ]; then
   for ext in a dylib; do
     lipo -create \
       "${TVOS_SIMULATOR_ARM64_PREFIX}/lib/libsodium.${ext}" \
+      "${TVOS_SIMULATOR_ARM64E_PREFIX}/lib/libsodium.${ext}" \
       "${TVOS_SIMULATOR_X86_64_PREFIX}/lib/libsodium.${ext}" \
       -output "${PREFIX}/tvos-simulators/lib/libsodium.${ext}" || exit 1
   done
@@ -479,6 +586,7 @@ if [ -z "$LIBSODIUM_SKIP_SIMULATORS" ]; then
     for ext in a dylib; do
       lipo -create \
         "${VISIONOS_SIMULATOR_PREFIX}/lib/libsodium.${ext}" \
+        "${VISIONOSE_SIMULATOR_PREFIX}/lib/libsodium.${ext}" \
         -output "${PREFIX}/visionos-simulators/lib/libsodium.${ext}" || exit 1
     done
   fi
