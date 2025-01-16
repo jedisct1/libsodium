@@ -9,6 +9,13 @@ SODIUM_VERSION="1.0.20.0"
 NDK_VERSION=$(grep "Pkg.Revision = " <"${ANDROID_NDK_HOME}/source.properties" | cut -f 2 -d '=' | cut -f 2 -d' ' | cut -f 1 -d'.')
 DEST_PATH=$(mktemp -d)
 
+if which zip >/dev/null; then
+  echo "The 'zip' command is installed."
+else
+  echo "The 'zip' command is not installed. Please install it before running this script."
+  exit 1
+fi
+
 cd "$(dirname "$0")/../" || exit
 
 make_abi_json() {
