@@ -11,6 +11,9 @@
 #ifdef HAVE_SYS_AUXV_H
 # include <sys/auxv.h>
 #endif
+#if defined(_MSC_VER) && (defined(_M_X64) || defined(_M_IX86))
+# include <intrin.h>
+#endif
 
 #include "private/common.h"
 #include "runtime.h"
@@ -150,7 +153,13 @@ _sodium_runtime_arm_cpu_features(CPUFeatures * const cpu_features)
 static void
 _cpuid(unsigned int cpu_info[4U], const unsigned int cpu_info_type)
 {
-#if defined(_MSC_VER) && (defined(_M_X64) || defined(_M_IX86))
+    /*
+     * Visual Studio has a __cpuid() intrinsic with 2 parameters,
+     * but clang defines _MSC_VER as an incompatible __cpuid() macro
+     * with 5 parameters, that may be defined if <cpuid.h> is
+     * unintentionally included.
+     */
+#if defined(_MSC_VER) && (defined(_M_X64) || defined(_M_IX86)) && !defined(__cpuid)
     __cpuid((int *) cpu_info, cpu_info_type);
 #elif defined(HAVE_CPUID)
     cpu_info[0] = cpu_info[1] = cpu_info[2] = cpu_info[3] = 0;
