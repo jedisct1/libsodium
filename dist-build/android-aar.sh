@@ -2,12 +2,19 @@
 
 # Create an AAR with libsodium in all combinations of static | shared | minimal | full.
 #
-# The x86 static library will not work due to text relocation rules, so static x86 versions are limited to shared libraries.
 # To simplify linking, library variants have distinct names: sodium, sodium-static, sodium-minimal and sodium-minimal-static.
 
 SODIUM_VERSION="1.0.21.0"
 NDK_VERSION=$(grep "Pkg.Revision = " <"${ANDROID_NDK_HOME}/source.properties" | cut -f 2 -d '=' | cut -f 2 -d' ' | cut -f 1 -d'.')
 DEST_PATH=$(mktemp -d)
+
+if [ -z "$NDK_PLATFORM" ]; then
+  export NDK_PLATFORM="android-21"
+  echo "Compiling for default platform: [${NDK_PLATFORM}] - That can be changed by setting an NDK_PLATFORM environment variable."
+fi
+
+export SDK_VERSION=$( echo "$NDK_PLATFORM" | cut -f2 -d"-" )
+
 
 if which zip >/dev/null; then
   echo "The 'zip' command is installed."
@@ -28,7 +35,7 @@ make_prefab_json() {
 
 make_manifest() {
   echo "<manifest xmlns:android=\"http://schemas.android.com/apk/res/android\" package=\"com.android.ndk.thirdparty.sodium\" android:versionCode=\"1\" android:versionName=\"1.0\">
-        <uses-sdk android:minSdkVersion=\"19\" android:targetSdkVersion=\"21\"/>
+        <uses-sdk android:minSdkVersion=\"$SDK_VERSION\" android:targetSdkVersion=\"$SDK_VERSION\"/>
 </manifest>" >"${1}/AndroidManifest.xml"
 }
 
@@ -60,11 +67,7 @@ make_prefab_structure() {
       mkdir "$DEST_PATH/${variant}/libs/android.${arch}"
       mkdir "$DEST_PATH/${variant}/libs/android.${arch}/include"
       NDK_ARCH="$arch"
-      if [ $arch = "arm64-v8a" ] || [ $arch = "x86_64" ]; then
-        SDK_VERSION="21"
-      else
-        SDK_VERSION="19"
-      fi
+
 
       make_abi_json "$DEST_PATH/${variant}/libs/android.${arch}"
     done
@@ -118,8 +121,13 @@ zip -9 -r "$AAR_PATH" META-INF prefab AndroidManifest.xml
 cd .. || exit
 rm -r "$DEST_PATH"
 
-echo
-echo "Congrats you have built an AAR containing libsodium! To use it with
+
+echo "Congrats you have built an AAR containing libsodium! 
+The build used a min Android SDK of version $SDK_VERSION
+You can build for a different SDK version by specifying NDK_PLATFORM=\"android-{SDK_VERSION}\"
+as an environment variable before running this script but the defaults should be fine.
+
+To use the aar with
 gradle or cmake (as set by default for Android Studio projects):
 
 - Edit the app/build.gradle file to add:
