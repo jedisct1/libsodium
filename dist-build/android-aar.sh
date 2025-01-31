@@ -13,7 +13,7 @@ if [ -z "$NDK_PLATFORM" ]; then
   echo "Compiling for default platform: [${NDK_PLATFORM}] - That can be changed by setting an NDK_PLATFORM environment variable."
 fi
 
-export SDK_VERSION=$( echo "$NDK_PLATFORM" | cut -f2 -d"-" )
+SDK_VERSION=$( echo "$NDK_PLATFORM" | cut -f2 -d"-" )
 
 
 if which zip >/dev/null; then
