@@ -12,14 +12,19 @@ if [ -z "$ANDROID_NDK_HOME" ]; then
   exit 1
 fi
 
+if [ ! -f "${ANDROID_NDK_HOME}/ndk-build" ]; then
+  echo "The ANDROID_NDK_HOME directory does not contain an 'ndk-build' file."
+  exit 1
+fi
+
+if [ ! -d "${ANDROID_NDK_HOME}/toolchains" ]; then
+  echo "The ANDROID_NDK_HOME directory does not contain a 'toolchains' directory."
+  exit 1
+fi
+
 if [ ! -f "${ANDROID_NDK_HOME}/source.properties" ]; then
-  sp=$(find "${ANDROID_NDK_HOME}" -depth 2 -type f -name source.properties | head -n1)
-  if [ -n "$sp" ]; then
-    export ANDROID_NDK_HOME=$(dirname "$sp")
-  else
-    echo "The ANDROID_NDK_HOME directory does not contain a 'source.properties' file."
-    exit 1
-  fi
+  echo "The ANDROID_NDK_HOME directory does not contain a 'source.properties' file."
+  exit 1
 fi
 
 NDK_VERSION=$(grep "Pkg.Revision = " <"${ANDROID_NDK_HOME}/source.properties" | cut -f 2 -d '=' | cut -f 2 -d' ' | cut -f 1 -d'.')
@@ -40,6 +45,8 @@ else
 fi
 
 cd "$(dirname "$0")/../" || exit
+
+trap 'kill -TERM -$$' INT
 
 make_abi_json() {
   echo "{\"abi\":\"${NDK_ARCH}\",\"api\":${SDK_VERSION},\"ndk\":${NDK_VERSION},\"stl\":\"none\"}" >"$1/abi.json"
