@@ -60,6 +60,10 @@ fi
   --prefix="${PREFIX}" \
   --with-sysroot="${TOOLCHAIN_DIR}/sysroot" || exit 1
 
+if [ -z "$NDK_PLATFORM" ]; then
+  echo "Aborting"
+  exit 1
+fi
 if [ "$NDK_PLATFORM" != "$NDK_PLATFORM_COMPAT" ]; then
   grep -E '^#define ' config.log | sort -u >config-def-compat.log
   echo
