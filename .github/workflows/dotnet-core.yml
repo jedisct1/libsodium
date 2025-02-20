@@ -56,7 +56,7 @@ jobs:
         run: |
           export DEBIAN_FRONTEND=noninteractive
           sudo apt-get update
-          sudo apt-get install -y build-essential qemu binfmt-support qemu-user-static qemu-system-arm gcc-arm-linux-gnueabihf libc6-armhf-cross gcc-aarch64-linux-gnu libc6-arm64-cross
+          sudo apt-get install -y build-essential qemu-system binfmt-support qemu-user-static qemu-system-arm gcc-arm-linux-gnueabihf libc6-armhf-cross gcc-aarch64-linux-gnu libc6-arm64-cross
           sudo dpkg --add-architecture armhf
           sudo update-binfmts --enable qemu-arm
           sudo update-binfmts --display
@@ -318,7 +318,7 @@ jobs:
           # gcrypt, which the apt-get command relies on.
           sudo mkdir -p /etc/gcrypt && echo all | sudo tee /etc/gcrypt/hwf.deny
 
-          sudo apt-get update && sudo apt-get install -y qemu binfmt-support qemu-user-static qemu-system-arm gcc-arm-linux-gnueabihf gcc-aarch64-linux-gnu libc6-armhf-cross libc6-arm64-cross
+          sudo apt-get update && sudo apt-get install -y qemu-system binfmt-support qemu-user-static qemu-system-arm gcc-arm-linux-gnueabihf gcc-aarch64-linux-gnu libc6-armhf-cross libc6-arm64-cross
           sudo dpkg --add-architecture armhf
           sudo dpkg --add-architecture arm64
           sudo update-binfmts --enable qemu-aarch64
