@@ -31,10 +31,23 @@ DEST_PATH=$(mktemp -d)
 
 if [ -z "$NDK_PLATFORM" ]; then
   export NDK_PLATFORM="android-21"
-  echo "Compiling for default platform: [${NDK_PLATFORM}] - That can be changed by setting an NDK_PLATFORM environment variable."
+  echo "Compiling for default platform: [${NDK_PLATFORM}]"
+  echo "That can be changed by setting an NDK_PLATFORM environment variable."
 fi
 
 SDK_VERSION=$(echo "$NDK_PLATFORM" | cut -f2 -d"-")
+if [ -z "$NDK_VERSION" ]; then
+  echo "Failed to determine the NDK version."
+  exit 1
+fi
+if [ -z "$SDK_VERSION" ]; then
+  echo "Failed to determine the SDK version."
+  exit 1
+fi
+echo "NDK version: [$NDK_VERSION]"
+echo "SDK version: [$SDK_VERSION]"
+
+echo
 
 if which zip >/dev/null; then
   echo "The 'zip' command is installed."
@@ -140,7 +153,9 @@ zip -9 -r "$AAR_PATH" META-INF prefab AndroidManifest.xml
 cd .. || exit
 rm -r "$DEST_PATH"
 
-echo "Congrats you have built an AAR containing libsodium!
+echo "
+
+Congrats you have built an AAR containing libsodium!
 The build used a min Android SDK of version $SDK_VERSION
 You can build for a different SDK version by specifying NDK_PLATFORM=\"android-{SDK_VERSION}\"
 as an environment variable before running this script but the defaults should be fine.
@@ -174,4 +189,6 @@ gradle or cmake (as set by default for Android Studio projects):
       - 'sodium' for the full shared library,
       - 'sodium-static' for the full static library
       - 'sodium-minimal' for the minimal shared library, or
-      - 'sodium-minimal-static' for the minimal static library."
+      - 'sodium-minimal-static' for the minimal static library.
+
+  "
