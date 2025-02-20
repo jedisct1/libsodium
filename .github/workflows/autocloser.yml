@@ -1,0 +1,12 @@
+name: Autocloser
+on: [issues]
+jobs:
+  autoclose:
+    runs-on: ubuntu-latest
+    steps:
+    - name: Autoclose issues that did not follow issue template
+      uses: roots/issue-closer@v1.2
+      with:
+        repo-token: ${{ secrets.GITHUB_TOKEN }}
+        issue-close-message: "This issue was automatically closed because it did not follow the issue template. We use the issue tracker exclusively for bug reports and feature additions that have been previously discussed. However, this issue appears to be a support request. Please use the discussion forums for support requests."
+        issue-pattern: ".*(do we replicate the issue|Expected behavior|raised as discussion|# Impact).*"
