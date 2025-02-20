@@ -7,19 +7,23 @@
 SODIUM_VERSION="1.0.21.0"
 
 if [ -z "$ANDROID_NDK_HOME" ]; then
-  echo "You should probably set ANDROID_NDK_HOME to the directory containing"
-  echo "the Android NDK."
+  echo "ANDROID_NDK_HOME must be set to the directory containing the Android NDK."
+  exit 1
+fi
+
+if [ ! -f "${ANDROID_NDK_HOME}/ndk-build" ]; then
+  echo "The ANDROID_NDK_HOME directory does not contain an 'ndk-build' file."
+  exit 1
+fi
+
+if [ ! -d "${ANDROID_NDK_HOME}/toolchains" ]; then
+  echo "The ANDROID_NDK_HOME directory does not contain a 'toolchains' directory."
   exit 1
 fi
 
 if [ ! -f "${ANDROID_NDK_HOME}/source.properties" ]; then
-  sp=$(find "${ANDROID_NDK_HOME}" -depth 2 -type f -name source.properties | head -n1)
-  if [ -n "$sp" ]; then
-    export ANDROID_NDK_HOME=$(dirname "$sp")
-  else
-    echo "The ANDROID_NDK_HOME directory does not contain a 'source.properties' file."
-    exit 1
-  fi
+  echo "The ANDROID_NDK_HOME directory does not contain a 'source.properties' file."
+  exit 1
 fi
 
 NDK_VERSION=$(grep "Pkg.Revision = " <"${ANDROID_NDK_HOME}/source.properties" | cut -f 2 -d '=' | cut -f 2 -d' ' | cut -f 1 -d'.')
@@ -27,10 +31,23 @@ DEST_PATH=$(mktemp -d)
 
 if [ -z "$NDK_PLATFORM" ]; then
   export NDK_PLATFORM="android-21"
-  echo "Compiling for default platform: [${NDK_PLATFORM}] - That can be changed by setting an NDK_PLATFORM environment variable."
+  echo "Compiling for default platform: [${NDK_PLATFORM}]"
+  echo "That can be changed by setting an NDK_PLATFORM environment variable."
 fi
 
 SDK_VERSION=$(echo "$NDK_PLATFORM" | cut -f2 -d"-")
+if [ -z "$NDK_VERSION" ]; then
+  echo "Failed to determine the NDK version."
+  exit 1
+fi
+if [ -z "$SDK_VERSION" ]; then
+  echo "Failed to determine the SDK version."
+  exit 1
+fi
+echo "NDK version: [$NDK_VERSION]"
+echo "SDK version: [$SDK_VERSION]"
+
+echo
 
 if which zip >/dev/null; then
   echo "The 'zip' command is installed."
@@ -40,6 +57,8 @@ else
 fi
 
 cd "$(dirname "$0")/../" || exit
+
+trap 'kill -TERM -$$' INT
 
 make_abi_json() {
   echo "{\"abi\":\"${NDK_ARCH}\",\"api\":${SDK_VERSION},\"ndk\":${NDK_VERSION},\"stl\":\"none\"}" >"$1/abi.json"
@@ -134,7 +153,9 @@ zip -9 -r "$AAR_PATH" META-INF prefab AndroidManifest.xml
 cd .. || exit
 rm -r "$DEST_PATH"
 
-echo "Congrats you have built an AAR containing libsodium!
+echo "
+
+Congrats you have built an AAR containing libsodium!
 The build used a min Android SDK of version $SDK_VERSION
 You can build for a different SDK version by specifying NDK_PLATFORM=\"android-{SDK_VERSION}\"
 as an environment variable before running this script but the defaults should be fine.
@@ -168,4 +189,6 @@ gradle or cmake (as set by default for Android Studio projects):
       - 'sodium' for the full shared library,
       - 'sodium-static' for the full static library
       - 'sodium-minimal' for the minimal shared library, or
-      - 'sodium-minimal-static' for the minimal static library."
+      - 'sodium-minimal-static' for the minimal static library.
+
+  "
