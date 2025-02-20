@@ -157,7 +157,7 @@ pub fn build(b: *std.Build) !void {
 
     const build_tests = b.option(bool, "test", "Build the tests (implies -Dstatic=true)") orelse true;
 
-    if (target.result.isWasm()) {
+    if (target.result.cpu.arch.isWasm()) {
         build_shared = false;
     }
     if (build_tests) {
