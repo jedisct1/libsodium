@@ -1,9 +1,10 @@
 #! /bin/sh
 
 if [ -z "$NDK_PLATFORM" ]; then
-  export NDK_PLATFORM="android-21"
-  echo "Compiling for default platform: [${NDK_PLATFORM}] - That can be changed by setting an NDK_PLATFORM environment variable."
+  echo "No NDK_PLATFORM specified, set to value such as \"android-{Min_SDK_VERSION}\" or just use android-aar.sh"
+  exit
 fi
+SDK_VERSION=$(echo "$NDK_PLATFORM" | cut -f2 -d"-")
 export NDK_PLATFORM_COMPAT="${NDK_PLATFORM_COMPAT:-${NDK_PLATFORM}}"
 export NDK_API_VERSION="$(echo "$NDK_PLATFORM" | sed 's/^android-//')"
 export NDK_API_VERSION_COMPAT="$(echo "$NDK_PLATFORM_COMPAT" | sed 's/^android-//')"
@@ -30,8 +31,8 @@ export TOOLCHAIN_DIR="$ANDROID_NDK_HOME/toolchains/llvm/prebuilt/${TOOLCHAIN_OS_
 echo "$ANDROID_NDK_HOME/toolchains/llvm/prebuilt/${TOOLCHAIN_OS_DIR}/${HOST_COMPILER}"
 
 export PATH="${PATH}:${TOOLCHAIN_DIR}/bin"
-SDK_VERSION_NUM=$(echo $NDK_PLATFORM | cut -d'-' -f2)
-export CC=${CC:-"${HOST_COMPILER}${SDK_VERSION_NUM}-clang"}
+
+export CC=${CC:-"${HOST_COMPILER}${SDK_VERSION}-clang"}
 
 echo
 echo "Warnings related to headers being present but not usable are due to functions"
@@ -88,5 +89,5 @@ NPROCESSORS=$(getconf NPROCESSORS_ONLN 2>/dev/null || getconf _NPROCESSORS_ONLN 
 PROCESSORS=${NPROCESSORS:-3}
 
 make clean &&
-  make -j${PROCESSORS} install &&
+  make -j"${PROCESSORS}" install &&
   echo "libsodium has been installed into ${PREFIX}"
