@@ -4,7 +4,7 @@ if [ -z "$NDK_PLATFORM" ]; then
   echo "No NDK_PLATFORM specified, set to value such as \"android-{Min_SDK_VERSION}\" or just use android-aar.sh"
   exit
 fi
-SDK_VERSION=$( echo "$NDK_PLATFORM" | cut -f2 -d"-" )
+SDK_VERSION=$(echo "$NDK_PLATFORM" | cut -f2 -d"-")
 export NDK_PLATFORM_COMPAT="${NDK_PLATFORM_COMPAT:-${NDK_PLATFORM}}"
 export NDK_API_VERSION="$(echo "$NDK_PLATFORM" | sed 's/^android-//')"
 export NDK_API_VERSION_COMPAT="$(echo "$NDK_PLATFORM_COMPAT" | sed 's/^android-//')"

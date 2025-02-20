@@ -13,8 +13,7 @@ if [ -z "$NDK_PLATFORM" ]; then
   echo "Compiling for default platform: [${NDK_PLATFORM}] - That can be changed by setting an NDK_PLATFORM environment variable."
 fi
 
-SDK_VERSION=$( echo "$NDK_PLATFORM" | cut -f2 -d"-" )
-
+SDK_VERSION=$(echo "$NDK_PLATFORM" | cut -f2 -d"-")
 
 if which zip >/dev/null; then
   echo "The 'zip' command is installed."
@@ -68,7 +67,6 @@ make_prefab_structure() {
       mkdir "$DEST_PATH/${variant}/libs/android.${arch}/include"
       NDK_ARCH="$arch"
 
-
       make_abi_json "$DEST_PATH/${variant}/libs/android.${arch}"
     done
   done
@@ -121,8 +119,7 @@ zip -9 -r "$AAR_PATH" META-INF prefab AndroidManifest.xml
 cd .. || exit
 rm -r "$DEST_PATH"
 
-
-echo "Congrats you have built an AAR containing libsodium! 
+echo "Congrats you have built an AAR containing libsodium!
 The build used a min Android SDK of version $SDK_VERSION
 You can build for a different SDK version by specifying NDK_PLATFORM=\"android-{SDK_VERSION}\"
 as an environment variable before running this script but the defaults should be fine.
