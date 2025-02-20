@@ -12,6 +12,16 @@ if [ -z "$ANDROID_NDK_HOME" ]; then
   exit 1
 fi
 
+if [ ! -f "${ANDROID_NDK_HOME}/source.properties" ]; then
+  sp=$(find "${ANDROID_NDK_HOME}" -depth 2 -type f -name source.properties | head -n1)
+  if [ -n "$sp" ]; then
+    export ANDROID_NDK_HOME=$(dirname "$sp")
+  else
+    echo "The ANDROID_NDK_HOME directory does not contain a 'source.properties' file."
+    exit 1
+  fi
+fi
+
 NDK_VERSION=$(grep "Pkg.Revision = " <"${ANDROID_NDK_HOME}/source.properties" | cut -f 2 -d '=' | cut -f 2 -d' ' | cut -f 1 -d'.')
 DEST_PATH=$(mktemp -d)
 
@@ -46,8 +56,6 @@ make_manifest() {
 }
 
 make_prefab_structure() {
-  mkdir "$DEST_PATH"
-
   for variant_dirs in "prefab" "prefab/modules" "META-INF"; do
     mkdir "${DEST_PATH}/${variant_dirs}"
   done

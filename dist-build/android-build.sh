@@ -28,7 +28,6 @@ fi
 export PREFIX="$(pwd)/libsodium-android-${TARGET_ARCH}"
 export TOOLCHAIN_OS_DIR="$(uname | tr '[:upper:]' '[:lower:]')-x86_64/"
 export TOOLCHAIN_DIR="$ANDROID_NDK_HOME/toolchains/llvm/prebuilt/${TOOLCHAIN_OS_DIR}"
-echo "$ANDROID_NDK_HOME/toolchains/llvm/prebuilt/${TOOLCHAIN_OS_DIR}/${HOST_COMPILER}"
 
 export PATH="${PATH}:${TOOLCHAIN_DIR}/bin"
 
