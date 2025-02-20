@@ -7,8 +7,7 @@
 SODIUM_VERSION="1.0.20.0"
 
 if [ -z "$ANDROID_NDK_HOME" ]; then
-  echo "You should probably set ANDROID_NDK_HOME to the directory containing"
-  echo "the Android NDK."
+  echo "ANDROID_NDK_HOME must be set to the directory containing the Android NDK."
   exit 1
 fi
 
