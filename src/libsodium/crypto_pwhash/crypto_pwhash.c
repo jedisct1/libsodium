@@ -5,6 +5,7 @@
 #include "core.h"
 #include "crypto_pwhash.h"
 
+
 int
 crypto_pwhash_alg_argon2i13(void)
 {
@@ -57,6 +58,12 @@ size_t
 crypto_pwhash_strbytes(void)
 {
     return crypto_pwhash_STRBYTES;
+}
+
+size_t
+crypto_pwhash_relief_strbytes(void)
+{
+    return crypto_pwhash_relief_STRBYTES;
 }
 
 const char *
@@ -152,6 +159,22 @@ crypto_pwhash_str(char out[crypto_pwhash_STRBYTES],
     return crypto_pwhash_argon2id_str(out, passwd, passwdlen,
                                       opslimit, memlimit);
 }
+
+int
+crypto_pwhash_relief_str(char out[crypto_pwhash_relief_STRBYTES],
+                  const char * const pwhash_str,
+                  unsigned long long client_opslimit, size_t client_memlimit,
+                  unsigned long long server_opslimit, size_t server_memlimit)
+{
+    //TODO need to fix crypto_pwhash_relief_STRBYTES and crypto_pwhash_argon2id_relief_STRBYTES
+    //they are set to the defaults without relief
+    return crypto_pwhash_argon2id_relief_str(out, pwhash_str,
+                                      client_opslimit, client_memlimit,
+                                      server_opslimit, server_memlimit);
+}
+
+
+
 
 int
 crypto_pwhash_str_alg(char out[crypto_pwhash_STRBYTES],

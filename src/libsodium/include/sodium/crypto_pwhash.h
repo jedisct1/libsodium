@@ -50,6 +50,10 @@ size_t crypto_pwhash_saltbytes(void);
 SODIUM_EXPORT
 size_t crypto_pwhash_strbytes(void);
 
+#define crypto_pwhash_relief_STRBYTES crypto_pwhash_argon2id_STRBYTES
+SODIUM_EXPORT
+size_t crypto_pwhash_relief_strbytes(void);
+
 #define crypto_pwhash_STRPREFIX crypto_pwhash_argon2id_STRPREFIX
 SODIUM_EXPORT
 const char *crypto_pwhash_strprefix(void);
@@ -116,6 +120,13 @@ SODIUM_EXPORT
 int crypto_pwhash_str(char out[crypto_pwhash_STRBYTES],
                       const char * const passwd, unsigned long long passwdlen,
                       unsigned long long opslimit, size_t memlimit)
+            __attribute__ ((warn_unused_result)) __attribute__ ((nonnull));
+
+SODIUM_EXPORT
+int crypto_pwhash_relief_str(char out[crypto_pwhash_relief_STRBYTES],
+                             const char * const pwhash_str,
+                             unsigned long long client_opslimit, size_t client_memlimit,
+                             unsigned long long server_opslimit, size_t server_memlimit)
             __attribute__ ((warn_unused_result)) __attribute__ ((nonnull));
 
 SODIUM_EXPORT

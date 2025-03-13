@@ -42,6 +42,10 @@ size_t crypto_pwhash_argon2id_saltbytes(void);
 SODIUM_EXPORT
 size_t crypto_pwhash_argon2id_strbytes(void);
 
+#define crypto_pwhash_argon2id_relief_STRBYTES 128U
+SODIUM_EXPORT
+        size_t crypto_pwhash_argon2id_strbytes(void);
+
 #define crypto_pwhash_argon2id_STRPREFIX "$argon2id$"
 SODIUM_EXPORT
 const char *crypto_pwhash_argon2id_strprefix(void);
@@ -103,6 +107,22 @@ int crypto_pwhash_argon2id_str(char out[crypto_pwhash_argon2id_STRBYTES],
                                unsigned long long passwdlen,
                                unsigned long long opslimit, size_t memlimit)
             __attribute__ ((warn_unused_result)) __attribute__ ((nonnull));
+
+SODIUM_EXPORT
+int
+crypto_pwhash_argon2id_salt_str(char out[crypto_pwhash_argon2id_STRBYTES],
+                                const char *const passwd,
+                                unsigned long long passwdlen,
+                                const unsigned char * const salt,
+                                unsigned long long opslimit, size_t memlimit)
+            __attribute__ ((warn_unused_result)) __attribute__ ((nonnull));
+
+SODIUM_EXPORT
+int crypto_pwhash_argon2id_relief_str(char out[crypto_pwhash_argon2id_relief_STRBYTES],
+                                      const char * const pwhash_str,
+                                      unsigned long long client_opslimit, size_t client_memlimit,
+                                      unsigned long long server_opslimit, size_t server_memlimit)
+__attribute__ ((warn_unused_result)) __attribute__ ((nonnull));
 
 SODIUM_EXPORT
 int crypto_pwhash_argon2id_str_verify(const char * str,
