@@ -315,7 +315,7 @@ crypto_pwhash_argon2id_relief_str(char out[crypto_pwhash_argon2id_relief_STRBYTE
     // out[last_out_delim_loc++] = '$';
 
 
-    fast_pwhash_result = crypto_pwhash_argon2id_salt_str(sub_str, ctx.out, ctx.outlen, ctx.salt,
+    fast_pwhash_result = crypto_pwhash_argon2id_salt_str(sub_str, (const char *) ctx.out, ctx.outlen, ctx.salt,
                                                          server_opslimit, server_memlimit);
 
     RDELIMN(sub_str_hash_loc, sub_str, crypto_pwhash_argon2id_STRBYTES, '$', 1);
