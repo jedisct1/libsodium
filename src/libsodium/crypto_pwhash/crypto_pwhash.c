@@ -166,8 +166,6 @@ crypto_pwhash_relief_str(char out[crypto_pwhash_relief_STRBYTES],
                   unsigned long long client_opslimit, size_t client_memlimit,
                   unsigned long long server_opslimit, size_t server_memlimit)
 {
-    //TODO need to fix crypto_pwhash_relief_STRBYTES and crypto_pwhash_argon2id_relief_STRBYTES
-    //they are set to the defaults without relief
     return crypto_pwhash_argon2id_relief_str(out, pwhash_str,
                                       client_opslimit, client_memlimit,
                                       server_opslimit, server_memlimit);
