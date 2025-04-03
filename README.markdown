@@ -1,14 +1,14 @@
-# libsodium
+[![GitHub CI](https://github.com/jedisct1/libsodium/workflows/CI/badge.svg)](https://github.com/jedisct1/libsodium/actions)
+[![Windows build status](https://ci.appveyor.com/api/projects/status/fu8s2elx25il98hj?svg=true)](https://ci.appveyor.com/project/jedisct1/libsodium)
+[![Coverity Scan Build Status](https://scan.coverity.com/projects/2397/badge.svg)](https://scan.coverity.com/projects/2397)
+[![Azure build status](https://jedisct1.visualstudio.com/Libsodium/_apis/build/status/jedisct1.libsodium?branchName=stable)](https://jedisct1.visualstudio.com/Libsodium/_build/latest?definitionId=3&branchName=stable)
+[![CodeQL scan](https://github.com/jedisct1/libsodium/workflows/CodeQL%20scan/badge.svg)](https://github.com/jedisct1/libsodium/actions)
 
-[![GitHub CI](https://github.com/jedisct1/libsodium/workflows/CI/badge.svg)](https://github.com/jedisct1/libsodium/actions)  
-[![Windows Build Status](https://ci.appveyor.com/api/projects/status/fu8s2elx25il98hj?svg=true)](https://ci.appveyor.com/project/jedisct1/libsodium)  
-[![Coverity Scan Build Status](https://scan.coverity.com/projects/2397/badge.svg)](https://scan.coverity.com/projects/2397)  
-[![Azure Build Status](https://jedisct1.visualstudio.com/Libsodium/_apis/build/status/jedisct1.libsodium?branchName=stable)](https://jedisct1.visualstudio.com/Libsodium/_build/latest?definitionId=3&branchName=stable)  
-[![CodeQL Scan](https://github.com/jedisct1/libsodium/workflows/CodeQL%20scan/badge.svg)](https://github.com/jedisct1/libsodium/actions)
+# ![libsodium](https://raw.github.com/jedisct1/libsodium/master/logo.png)
 
-![libsodium](https://raw.github.com/jedisct1/libsodium/master/logo.png)
+Sodium is an easy-to-use software library that provides a wide range of cryptographic operations including encryption, decryption, digital signatures, and secure password hashing.
 
-Sodium is an easy-to-use software library that provides a wide range of cryptographic operations including encryption, decryption, digital signatures, and secure password hashing. It is a portable, cross-compilable, installable, and packageable fork of [NaCl](http://nacl.cr.yp.to/). While maintaining API compatibility, libsodium extends functionality to improve usability and simplify the development of secure applications.
+It is a portable, cross-compilable, installable, and packageable fork of [NaCl](http://nacl.cr.yp.to/). While maintaining API compatibility, libsodium extends functionality to improve usability and simplify the development of secure applications.
 
 ---
 
@@ -16,7 +16,6 @@ Sodium is an easy-to-use software library that provides a wide range of cryptogr
 
 - **Encryption & Decryption:** Securely encrypt and decrypt data with modern algorithms.
 - **Digital Signatures:** Create and verify signatures to ensure data authenticity.
-- **Password Hashing:** Safeguard credentials with robust password hashing techniques.
 - **Cross-Platform Compatibility:** Supported on Windows (MinGW and Visual Studio, both x86 and x64), iOS, Android, JavaScript, and WebAssembly.
 - **User-Friendly API:** Designed to provide all core cryptographic operations while remaining easy to integrate into your projects.
 
