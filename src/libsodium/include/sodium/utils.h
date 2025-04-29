@@ -109,33 +109,33 @@ int sodium_munlock(void * const addr, const size_t len)
  * allocation functions.
  *
  * They return a pointer to a region filled with 0xd0 bytes, immediately
- * followed by a guard page.
- * As a result, accessing a single byte after the requested allocation size
- * will intentionally trigger a segmentation fault.
+ * followed by a guard page. As a result, accessing a single byte after the
+ * requested allocation size will intentionally trigger a segmentation fault.
  *
  * A canary and an additional guard page placed before the beginning of the
  * region may also kill the process if a buffer underflow is detected.
  *
  * The memory layout is:
  * [unprotected region size (read only)][guard page (no access)][unprotected pages (read/write)][guard page (no access)]
- * With the layout of the unprotected pages being:
+ *
+ * The layout of the unprotected pages is:
  * [optional padding][16-bytes canary][user region]
  *
- * However:
- * - These functions are significantly slower than standard functions
- * - Each allocation requires 3 or 4 additional pages
+ * Important limitations:
+ * - These functions are significantly slower than standard allocation functions.
+ * - Each allocation requires 3 or 4 additional pages.
  * - The returned address will not be aligned if the allocation size is not
  *   a multiple of the required alignment. For this reason, these functions
- *   are designed to store data, such as secret keys and messages.
+ *   are designed to store data such as secret keys and messages.
  *
  * sodium_malloc() can be used to allocate any libsodium data structure.
  *
  * The crypto_generichash_state structure is packed and its length is
- * either 357 or 361 bytes. For this reason, when using sodium_malloc() to
- * allocate a crypto_generichash_state structure, padding must be added in
- * order to ensure proper alignment. crypto_generichash_statebytes()
- * returns the rounded up structure size, and should be preferred to sizeof():
- * state = sodium_malloc(crypto_generichash_statebytes());
+ * either 357 or 361 bytes. When using sodium_malloc() to allocate a
+ * crypto_generichash_state structure, padding must be added to ensure
+ * proper alignment. Use crypto_generichash_statebytes() rather than sizeof():
+ *
+ *     state = sodium_malloc(crypto_generichash_statebytes());
  */
 
 SODIUM_EXPORT
