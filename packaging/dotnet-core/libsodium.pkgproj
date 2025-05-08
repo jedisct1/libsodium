@@ -40,6 +40,10 @@
     <Content Include="runtimes/tvos-arm64/native/libsodium.a" PackagePath="runtimes/tvos-arm64/native/" />
     <Content Include="runtimes/maccatalyst-x64/native/libsodium.a" PackagePath="runtimes/maccatalyst-x64/native/" />
     <Content Include="runtimes/maccatalyst-arm64/native/libsodium.a" PackagePath="runtimes/maccatalyst-arm64/native/" />
+    <Content Include="runtimes/android-arm64/native/libsodium.so" PackagePath="runtimes/android-arm64/native/" />
+    <Content Include="runtimes/android-arm/native/libsodium.so" PackagePath="runtimes/android-arm/native/" />
+    <Content Include="runtimes/android-x64/native/libsodium.so" PackagePath="runtimes/android-x64/native/" />
+    <Content Include="runtimes/android-x86/native/libsodium.so" PackagePath="runtimes/android-x86/native/" />
   </ItemGroup>
 
 </Project>
