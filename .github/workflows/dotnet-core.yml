@@ -175,7 +175,7 @@ jobs:
       - build-apple
       - build-others
     container:
-      image: mcr.microsoft.com/dotnet/sdk:6.0
+      image: mcr.microsoft.com/dotnet/sdk:8.0
     env:
       DOTNET_CLI_TELEMETRY_OPTOUT: 1
       DOTNET_SKIP_FIRST_TIME_EXPERIENCE: 1
@@ -281,7 +281,7 @@ jobs:
     needs:
       - pack
     container:
-      image: mcr.microsoft.com/dotnet/sdk:6.0
+      image: mcr.microsoft.com/dotnet/sdk:8.0
     env:
       DOTNET_CLI_TELEMETRY_OPTOUT: 1
       DOTNET_SKIP_FIRST_TIME_EXPERIENCE: 1
@@ -311,9 +311,9 @@ jobs:
       - name: Move Build Output
         run: |
           mkdir .libsodium-builds
-          mv .libsodium-test/bin/Release/net6.0/linux-arm/publish .libsodium-builds/linux-arm
-          mv .libsodium-test/bin/Release/net6.0/linux-arm64/publish .libsodium-builds/linux-arm64
-          mv .libsodium-test/bin/Release/net6.0/linux-x64/publish .libsodium-builds/linux-x64
+          mv .libsodium-test/bin/Release/net8.0/linux-arm/publish .libsodium-builds/linux-arm
+          mv .libsodium-test/bin/Release/net8.0/linux-arm64/publish .libsodium-builds/linux-arm64
+          mv .libsodium-test/bin/Release/net8.0/linux-x64/publish .libsodium-builds/linux-x64
       - uses: actions/upload-artifact@v4
         with:
           name: test-builds
@@ -326,7 +326,7 @@ jobs:
     - build-test-binaries
     strategy:
       matrix:
-        arch: [ 'centos:8', 'debian:10' ]
+        arch: [ 'centos:8', 'debian:11' ]
     container:
       image: ${{ matrix.arch }}
     env:
@@ -342,7 +342,7 @@ jobs:
         .libsodium-builds/linux-x64/Tests
 
   run-test-binaries-cross-plat:
-    runs-on: ubuntu-22.04
+    runs-on: ubuntu-20.04
     needs:
       - build-test-binaries
     env:
