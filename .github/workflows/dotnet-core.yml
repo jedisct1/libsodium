@@ -42,6 +42,38 @@ jobs:
           version: master
       - uses: actions/checkout@v4
 
+      - name: Build Android AAR
+        run: sh ./dist-build/android-aar.sh
+
+      - name: Extract android AAR file
+        run: |
+          mkdir -p extracted-aar
+          unzip libsodium-*.aar -d extracted-aar
+            
+      - name: Upload Android arm64
+        uses: actions/upload-artifact@v4
+        with:
+          name: build-android-arm64
+          path: extracted-aar/prefab/modules/sodium/libs/android.arm64-v8a/libsodium.so
+        
+      - name: Upload Android arm
+        uses: actions/upload-artifact@v4
+        with:
+          name: build-android-arm
+          path: extracted-aar/prefab/modules/sodium/libs/android.armeabi-v7a/libsodium.so
+      
+      - name: Upload Android x64
+        uses: actions/upload-artifact@v4
+        with:
+          name: build-android-x64
+          path: extracted-aar/prefab/modules/sodium/libs/android.x86_64/libsodium.so
+      
+      - name: Upload Android x86
+        uses: actions/upload-artifact@v4
+        with:
+          name: build-android-x86
+          path: extracted-aar/prefab/modules/sodium/libs/android.x86/libsodium.so
+
       - name: build-linux-x64
         run: |
           rm -fr zig-out .zig-cache; zig build -Doptimize=ReleaseFast -Dtarget=x86_64-linux-gnu.2.17
@@ -212,9 +244,26 @@ jobs:
         with:
           name: build-maccatalyst
           path: .libsodium-pack/runtimes/maccatalyst-arm64/native/
+      - uses: actions/download-artifact@v4
+        with:
+          name: build-android-arm64
+          path: .libsodium-pack/runtimes/android-arm64/native/
+      - uses: actions/download-artifact@v4
+        with:
+          name: build-android-arm
+          path: .libsodium-pack/runtimes/android-arm/native/
+      - uses: actions/download-artifact@v4
+        with:
+          name: build-android-x64
+          path: .libsodium-pack/runtimes/android-x64/native/
+      - uses: actions/download-artifact@v4
+        with:
+          name: build-android-x86
+          path: .libsodium-pack/runtimes/android-x86/native/
 
       - name: Copy files
         run: cp AUTHORS ChangeLog LICENSE packaging/dotnet-core/libsodium.pkgproj .libsodium-pack/
+
       - name: Create NuGet package
         run: dotnet pack -c Release .libsodium-pack/libsodium.pkgproj
       - uses: actions/upload-artifact@v4
@@ -245,6 +294,7 @@ jobs:
           path: .libsodium-pack/
       - name: dotnet new
         run: dotnet new console -n Tests -o .libsodium-test/
+
       - name: dotnet add package libsodium
         run: dotnet add .libsodium-test/Tests.csproj package libsodium -s $PWD/.libsodium-pack
       - name: Copy files
