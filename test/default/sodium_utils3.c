@@ -16,6 +16,9 @@
 #ifdef __SANITIZE_ADDRESS__
 # warning The sodium_utils3 test is expected to fail with address sanitizer
 #endif
+#ifdef __SANITIZE_THREAD__
+# warning The sodium_utils3 test is expected to fail with thread sanitizer
+#endif
 
 __attribute__((noreturn)) static void
 segv_handler(int sig)
@@ -75,7 +78,7 @@ main(void)
     sodium_mprotect_readwrite(buf);
 #endif
 
-#if defined(HAVE_CATCHABLE_SEGV) && !defined(__EMSCRIPTEN__) && !defined(__SANITIZE_ADDRESS__)
+#if defined(HAVE_CATCHABLE_SEGV) && !defined(__EMSCRIPTEN__) && !defined(__SANITIZE_ADDRESS__) && !defined(__SANITIZE_THREAD__)
     sodium_memzero(((unsigned char *) buf) - 8, 8U);
     sodium_mprotect_readonly(buf);
     sodium_free(buf);
