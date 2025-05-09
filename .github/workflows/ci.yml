@@ -178,3 +178,27 @@ jobs:
       - name: Android compilation
         run: |
           env ANDROID_NDK_HOME=/tmp/android/ndk ./dist-build/android-aar.sh
+
+  ios:
+    runs-on: macos-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Update packages list
+        run: brew update
+
+      - name: Install base dependencies
+        run: brew install libtool autoconf automake
+
+      - name: Autogen
+        run: ./autogen.sh -s
+
+      - name: ios framework compilation
+        run: |
+          ./dist-build/apple-xcframework.sh
+
+      # TODO
+      # - zip xcframework
+      #   - add version to zip name
+      # - upload artifact
+
