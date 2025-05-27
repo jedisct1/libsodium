@@ -34,6 +34,21 @@ main(void)
     printf("%d\n", sodium_memcmp(guard_page, guard_page, 0U));
     sodium_memzero(guard_page, 0U);
 
+    /* Test the new sodium_memequal() function */
+    randombytes_buf(buf1, sizeof buf1);
+    memcpy(buf2, buf1, sizeof buf2);
+    printf("%d\n", sodium_memequal(buf1, buf2, sizeof buf1));
+    printf("%d\n", sodium_memequal(buf1, buf2, 0U));
+    buf2[randombytes_uniform(sizeof buf2)] ^= 1U;
+    printf("%d\n", sodium_memequal(buf1, buf2, sizeof buf1));
+    printf("%d\n", sodium_memequal(buf1, NULL, sizeof buf1));
+    printf("%d\n", sodium_memequal(NULL, buf2, sizeof buf2));
+    printf("%d\n", sodium_memequal(NULL, NULL, sizeof buf1));
+    printf("%d\n", sodium_memequal(buf1, buf1, sizeof buf1));
+    printf("%d\n", sodium_memequal(buf1, guard_page, 0U));
+    printf("%d\n", sodium_memequal(guard_page, buf2, 0U));
+    printf("%d\n", sodium_memequal(guard_page, guard_page, 0U));
+
     memset(nonce, 0, sizeof nonce);
     sodium_increment(nonce, sizeof nonce);
     printf("%s\n",

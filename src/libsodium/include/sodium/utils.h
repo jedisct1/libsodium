@@ -1,4 +1,3 @@
-
 #ifndef sodium_utils_H
 #define sodium_utils_H
 
@@ -32,6 +31,17 @@ void sodium_stackzero(const size_t len);
  */
 SODIUM_EXPORT
 int sodium_memcmp(const void * const b1_, const void * const b2_, size_t len)
+            __attribute__ ((warn_unused_result));
+
+/*
+ * sodium_memequal() checks if two non-sensitive memory regions are equal.
+ * This is not a constant-time comparison and should NOT be used for secrets.
+ * It returns 1 if the regions are equal, 0 if they differ.
+ * Unlike sodium_memcmp(), this function is optimized for performance and
+ * is suitable for comparing non-sensitive data like public keys or identifiers.
+ */
+SODIUM_EXPORT
+int sodium_memequal(const void * const b1_, const void * const b2_, size_t len)
             __attribute__ ((warn_unused_result));
 
 /*

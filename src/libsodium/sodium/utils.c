@@ -810,3 +810,27 @@ sodium_unpad(size_t *unpadded_buflen_p, const unsigned char *buf,
 
     return (int) (valid - 1U);
 }
+
+int
+sodium_memequal(const void *const b1_, const void *const b2_, size_t len)
+{
+    const unsigned char *b1 = (const unsigned char *) b1_;
+    const unsigned char *b2 = (const unsigned char *) b2_;
+    size_t i;
+
+    if (b1 == NULL || b2 == NULL) {
+        return 0;
+    }
+    
+    if (b1 == b2) {
+        return 1;
+    }
+    
+    for (i = 0; i < len; i++) {
+        if (b1[i] != b2[i]) {
+            return 0;
+        }
+    }
+    
+    return 1;
+}
