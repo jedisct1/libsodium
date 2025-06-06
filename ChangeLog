@@ -1,3 +1,22 @@
+* Version 1.0.20-stable
+ - Performance of AES256-GCM and AEGIS on ARM has been improved.
+ - Android binaries have been added to the NuGet package
+ - Windows ARM binaries have been added to the NuGet package
+ - The Android build script has been improved. The base SDK is
+now 27c, and the default platform is 21
+ - The library can now be compiled with Zig 0.14+
+ - arm64e builds have been added to the XCFramework packages
+ - XCFramework packages are now full builds instead of minimal
+builds
+ - MSVC builds have been enabled for ARM64
+ - A cross-compilation issue with old clang versions has been
+fixed
+ - 16K page sizes are now supported on Android
+ - JavaScript: support for Cloudflare Workers has been added
+ - A compilation issue with old toolchains on Solaris has been
+fixed
+ - `crypto_aead_aes256gcm_is_available` is exported to JavaScript
+
 * Version 1.0.20
   This point release includes all the changes from 1.0.19-stable,
 mainly addressing compilation issues and improvements to the .NET
