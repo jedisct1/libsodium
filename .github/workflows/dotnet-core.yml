@@ -37,7 +37,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Install Zig
-        uses: mlugg/setup-zig@v1
+        uses: mlugg/setup-zig@v2
         with:
           version: master
       - uses: actions/checkout@v4
