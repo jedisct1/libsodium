@@ -41,7 +41,7 @@ jobs:
         run: sudo apt-get update
 
       - name: Install Zig
-        uses: mlugg/setup-zig@v1
+        uses: mlugg/setup-zig@v2
         with:
           version: master
 
