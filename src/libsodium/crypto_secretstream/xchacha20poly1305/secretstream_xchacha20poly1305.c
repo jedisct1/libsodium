@@ -147,7 +147,7 @@ crypto_secretstream_xchacha20poly1305_push
     crypto_stream_chacha20_ietf_xor_ic(c, m, mlen, state->nonce, 2U, state->k);
     crypto_onetimeauth_poly1305_update(&poly1305_state, c, mlen);
     crypto_onetimeauth_poly1305_update
-        (&poly1305_state, _pad0, (0x10 - (sizeof block) + mlen) & 0xf);
+        (&poly1305_state, _pad0, (0x10 - (sizeof block + mlen)) & 0xf);
     /* should have been (0x10 - (sizeof block + mlen)) & 0xf to keep input blocks aligned */
 
     STORE64_LE(slen, (uint64_t) adlen);
@@ -224,7 +224,7 @@ crypto_secretstream_xchacha20poly1305_pull
     c = in + (sizeof tag);
     crypto_onetimeauth_poly1305_update(&poly1305_state, c, mlen);
     crypto_onetimeauth_poly1305_update
-        (&poly1305_state, _pad0, (0x10 - (sizeof block) + mlen) & 0xf);
+        (&poly1305_state, _pad0, (0x10 - (sizeof block + mlen)) & 0xf);
     /* should have been (0x10 - (sizeof block + mlen)) & 0xf to keep input blocks aligned */
 
     STORE64_LE(slen, (uint64_t) adlen);
