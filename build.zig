@@ -174,16 +174,22 @@ pub fn build(b: *std.Build) !void {
         else => {},
     }
 
-    const static_lib = b.addStaticLibrary(.{
+    const static_lib = b.addLibrary(.{
         .name = if (target.result.isMinGW()) "libsodium-static" else "sodium",
-        .target = target,
-        .optimize = optimize,
+        .linkage = .static,
+        .root_module = b.createModule(.{
+            .target = target,
+            .optimize = optimize,
+        }),
     });
-    const shared_lib = b.addSharedLibrary(.{
+    const shared_lib = b.addLibrary(.{
         .name = if (target.result.isMinGW()) "libsodium" else "sodium",
-        .target = target,
-        .optimize = optimize,
-        .strip = optimize != .Debug and !target.result.isMinGW(),
+        .linkage = .dynamic,
+        .root_module = b.createModule(.{
+            .target = target,
+            .optimize = optimize,
+            .strip = optimize != .Debug and !target.result.isMinGW(),
+        }),
     });
 
     // work out which libraries we are building
@@ -258,9 +264,11 @@ pub fn build(b: *std.Build) !void {
             const exe_name = name[0 .. name.len - 2];
             var exe = b.addExecutable(.{
                 .name = exe_name,
-                .target = target,
-                .optimize = optimize,
-                .strip = true,
+                .root_module = b.createModule(.{
+                    .target = target,
+                    .optimize = optimize,
+                    .strip = true,
+                }),
             });
             exe.linkLibC();
             exe.linkLibrary(static_lib);
@@ -271,7 +279,8 @@ pub fn build(b: *std.Build) !void {
             if (enable_benchmarks) {
                 exe.root_module.addCMacro("BENCHMARKS", "1");
                 var buf: [16]u8 = undefined;
-                exe.root_module.addCMacro("ITERATIONS", std.fmt.bufPrintIntToSlice(&buf, benchmarks_iterations, 10, .lower, .{}));
+                const n = std.fmt.bufPrint(&buf, "{d}", .{benchmarks_iterations}) catch unreachable;
+                exe.root_module.addCMacro("ITERATIONS", n);
             }
 
             b.installArtifact(exe);
