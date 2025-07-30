@@ -659,7 +659,7 @@ AC_SUBST(CFLAGS_RDRAND)
 
 AC_CHECK_HEADERS([sys/mman.h sys/param.h sys/random.h intrin.h sys/auxv.h])
 AC_CHECK_HEADERS([CommonCrypto/CommonRandom.h])
-AC_CHECK_HEADERS([cet.h])
+AC_CHECK_HEADERS([cet.h threads.h])
 
 AC_MSG_CHECKING([if _xgetbv() is available])
 AC_LINK_IFELSE(
