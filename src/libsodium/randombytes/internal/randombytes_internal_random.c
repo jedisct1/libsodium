@@ -5,7 +5,6 @@
 #include <limits.h>
 #include <stdint.h>
 #include <stdlib.h>
-#include <stdlib.h>
 #include <string.h>
 #if !defined(_MSC_VER) && !defined(__BORLANDC__)
 # include <unistd.h>
