@@ -36,7 +36,7 @@
 #   and this notice are preserved.  This file is offered as-is, without any
 #   warranty.
 
-#serial 8
+#serial 10
 
 AC_DEFUN([AX_ADD_FORTIFY_SOURCE],[
     ac_save_cflags=$CFLAGS
@@ -58,7 +58,7 @@ AC_DEFUN([AX_ADD_FORTIFY_SOURCE],[
             AC_LANG_SOURCE([[
                 #define _FORTIFY_SOURCE 3
                 #include <string.h>
-                int main() {
+                int main(void) {
                     char *s = " ";
                     strcpy(s, "x");
                     return strlen(s)-1;
@@ -71,13 +71,11 @@ AC_DEFUN([AX_ADD_FORTIFY_SOURCE],[
               CPPFLAGS="$CPPFLAGS -D_FORTIFY_SOURCE=3"
             ], [
               AC_MSG_RESULT([no])
-              CFLAGS=$ac_save_cflags
               ax_add_fortify_3_failed=1
             ],
         ),
         [
           AC_MSG_RESULT([no])
-          CFLAGS=$ac_save_cflags
           ax_add_fortify_3_failed=1
         ])
     if test -n "$ax_add_fortify_3_failed"
