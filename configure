@@ -1548,7 +1548,6 @@ Optional Features:
   --enable-opt            Optimize for the native CPU - The resulting library
                           will be faster but not portable
   --enable-valgrind       Whether to enable Valgrind on the unit tests
-                          (requires GNU make)
   --disable-valgrind-memcheck
                           Whether to skip memcheck during the Valgrind tests
   --disable-valgrind-helgrind
@@ -7510,12 +7509,15 @@ fi
 
 
 
+
+
+
 		# Check whether --enable-valgrind was given.
 if test ${enable_valgrind+y}
 then :
   enableval=$enable_valgrind; enable_valgrind=$enableval
 else case e in #(
-  e) enable_valgrind=no ;;
+  e) enable_valgrind= ;;
 esac
 fi
 
@@ -7914,7 +7916,7 @@ valgrind_quiet_ = $(valgrind_quiet_$(AM_DEFAULT_VERBOSITY))
 valgrind_quiet_0 = --quiet
 valgrind_v_use   = $(valgrind_v_use_$(V))
 valgrind_v_use_  = $(valgrind_v_use_$(AM_DEFAULT_VERBOSITY))
-valgrind_v_use_0 = @echo "  USE   " $(patsubst check-valgrind-%,%,$''@):;
+valgrind_v_use_0 = @echo "  USE   " $(patsubst check-valgrind-%-local,%,$''@):;
 
 # Support running with and without libtool.
 ifneq ($(LIBTOOL),)
@@ -7924,12 +7926,12 @@ valgrind_lt =
 endif
 
 # Use recursive makes in order to ignore errors during check
-check-valgrind:
+check-valgrind-local:
 ifeq ($(VALGRIND_ENABLED),yes)
 	$(A''M_V_at)$(MAKE) $(AM_MAKEFLAGS) -k \
 		$(foreach tool, $(valgrind_enabled_tools), check-valgrind-$(tool))
 else
-	@echo "Need to use GNU make and reconfigure with --enable-valgrind"
+	@echo "Need to reconfigure with --enable-valgrind"
 endif
 
 # Valgrind running
@@ -7943,14 +7945,16 @@ VALGRIND_LOG_COMPILER = \
 	$(valgrind_lt) \
 	$(VALGRIND) $(VALGRIND_SUPPRESSIONS) --error-exitcode=1 $(VALGRIND_FLAGS)
 
-define valgrind_tool_rule =
-check-valgrind-$(1):
+define valgrind_tool_rule
+check-valgrind-$(1)-local:
 ifeq ($$(VALGRIND_ENABLED)-$$(ENABLE_VALGRIND_$(1)),yes-yes)
+ifneq ($$(TESTS),)
 	$$(valgrind_v_use)$$(MAKE) check-TESTS \
 		TESTS_ENVIRONMENT="$$(VALGRIND_TESTS_ENVIRONMENT)" \
 		LOG_COMPILER="$$(VALGRIND_LOG_COMPILER)" \
 		LOG_FLAGS="$$(valgrind_$(1)_flags)" \
 		TEST_SUITE_LOG=test-suite-$(1).log
+endif
 else ifeq ($$(VALGRIND_ENABLED),yes)
 	@echo "Need to reconfigure with --enable-valgrind-$(1)"
 else
@@ -7966,17 +7970,8 @@ A''M_DISTCHECK_CONFIGURE_FLAGS += --disable-valgrind
 MOSTLYCLEANFILES ?=
 MOSTLYCLEANFILES += $(valgrind_log_files)
 
-.PHONY: check-valgrind $(add-prefix check-valgrind-,$(valgrind_tools))
+.PHONY: check-valgrind $(addprefix check-valgrind-,$(valgrind_tools))
 '
-
-	if test "$enable_valgrind" != "yes"
-then :
-
-		VALGRIND_CHECK_RULES='
-check-valgrind:
-	@echo "Need to use GNU make and reconfigure with --enable-valgrind"'
-
-fi
 
 
 
@@ -8187,7 +8182,7 @@ then :
 
                 #define _FORTIFY_SOURCE 3
                 #include <string.h>
-                int main() {
+                int main(void) {
                     char *s = " ";
                     strcpy(s, "x");
                     return strlen(s)-1;
@@ -8207,7 +8202,6 @@ else case e in #(
   e)
               { printf "%s\n" "$as_me:${as_lineno-$LINENO}: result: no" >&5
 printf "%s\n" "no" >&6; }
-              CFLAGS=$ac_save_cflags
               ax_add_fortify_3_failed=1
              ;;
 esac
@@ -8218,7 +8212,6 @@ else case e in #(
   e)
           { printf "%s\n" "$as_me:${as_lineno-$LINENO}: result: no" >&5
 printf "%s\n" "no" >&6; }
-          CFLAGS=$ac_save_cflags
           ax_add_fortify_3_failed=1
          ;;
 esac
