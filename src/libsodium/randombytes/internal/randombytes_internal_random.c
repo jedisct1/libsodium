@@ -9,6 +9,9 @@
 #if !defined(_MSC_VER) && !defined(__BORLANDC__)
 # include <unistd.h>
 #endif
+#if !defined(__STDC_NO_THREADS__) && defined(HAVE_THREADS_H)
+# include <threads.h>
+#endif
 
 #include <sys/types.h>
 #ifndef _WIN32
