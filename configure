@@ -21473,6 +21473,12 @@ then :
   printf "%s\n" "#define HAVE_CET_H 1" >>confdefs.h
 
 fi
+ac_fn_c_check_header_compile "$LINENO" "threads.h" "ac_cv_header_threads_h" "$ac_includes_default"
+if test "x$ac_cv_header_threads_h" = xyes
+then :
+  printf "%s\n" "#define HAVE_THREADS_H 1" >>confdefs.h
+
+fi
 
 
 { printf "%s\n" "$as_me:${as_lineno-$LINENO}: checking if _xgetbv() is available" >&5
