@@ -71,6 +71,11 @@ libsodium_la_SOURCES = \
 	crypto_pwhash/argon2/pwhash_argon2id.c \
 	crypto_pwhash/crypto_pwhash.c \
 	crypto_scalarmult/crypto_scalarmult.c \
+	crypto_scalarmult/curve25519/aarch64/curve25519_x25519.c \
+	crypto_scalarmult/curve25519/aarch64/curve25519_x25519.h \
+	crypto_scalarmult/curve25519/aarch64/curve25519_x25519_byte.S \
+	crypto_scalarmult/curve25519/aarch64/curve25519_x25519base_byte.S \
+	crypto_scalarmult/curve25519/aarch64/_internal_s2n_bignum.h \
 	crypto_scalarmult/curve25519/ref10/x25519_ref10.c \
 	crypto_scalarmult/curve25519/ref10/x25519_ref10.h \
 	crypto_scalarmult/curve25519/scalarmult_curve25519.c \
