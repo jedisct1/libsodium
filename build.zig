@@ -193,13 +193,13 @@ pub fn build(b: *std.Build) !void {
     });
 
     // work out which libraries we are building
-    var libs = std.ArrayList(*Compile).init(b.allocator);
-    defer libs.deinit();
+    var libs = std.ArrayList(*Compile){};
+    defer libs.deinit(heap.page_allocator);
     if (build_static) {
-        try libs.append(static_lib);
+        try libs.append(heap.page_allocator, static_lib);
     }
     if (build_shared) {
-        try libs.append(shared_lib);
+        try libs.append(heap.page_allocator, shared_lib);
     }
 
     const prebuilt_version_file_path = "builds/msvc/version.h";
