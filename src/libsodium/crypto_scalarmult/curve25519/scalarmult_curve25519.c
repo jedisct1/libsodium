@@ -4,7 +4,9 @@
 #include "scalarmult_curve25519.h"
 #include "runtime.h"
 
-#ifdef HAVE_AVX_ASM
+#ifdef __aarch64__
+# include "aarch64/curve25519_x25519.h"
+#elif defined(HAVE_AVX_ASM)
 # include "sandy2x/curve25519_sandy2x.h"
 #endif
 #include "ref10/x25519_ref10.h"
@@ -30,8 +32,13 @@ crypto_scalarmult_curve25519(unsigned char *q, const unsigned char *n,
 int
 crypto_scalarmult_curve25519_base(unsigned char *q, const unsigned char *n)
 {
+#ifdef __aarch64__
+    return crypto_scalarmult_curve25519_aarch64_implementation
+        .mult_base(q, n);
+#else
     return crypto_scalarmult_curve25519_ref10_implementation
         .mult_base(q, n);
+#endif
 }
 
 size_t
@@ -51,7 +58,9 @@ _crypto_scalarmult_curve25519_pick_best_implementation(void)
 {
     implementation = &crypto_scalarmult_curve25519_ref10_implementation;
 
-#ifdef HAVE_AVX_ASM
+#ifdef __aarch64__
+    implementation = &crypto_scalarmult_curve25519_aarch64_implementation;
+#elif defined(HAVE_AVX_ASM)
     if (sodium_runtime_has_avx()) {
         implementation = &crypto_scalarmult_curve25519_sandy2x_implementation;
     }
