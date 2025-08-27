@@ -18,7 +18,7 @@ fi
 
 if [ -z "$WASI_RUNTIME" ] || [ "$WASI_RUNTIME" = "wasmer" ]; then
   if command -v wasmer >/dev/null; then
-    wasmer run "$1" "--${WASMER_BACKEND:-cranelift}" --dir=. && exit 0
+    wasmer run "$1" "--${WASMER_BACKEND:-cranelift}" --mapdir=./:. && exit 0
   fi
 fi
 
