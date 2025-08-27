@@ -2629,7 +2629,7 @@ ge25519_from_hash(unsigned char s[32], const unsigned char h[64])
     gl[31] &= 0x7f;
     fe25519_frombytes(fe_f, fl);
     fe25519_frombytes(fe_g, gl);
-    fe_f[0] += (h[32] >> 7) * 19;
+    fe_f[0] += (((h[32] >> 5) ^ optblocker_u8) >> 2) * 19;
     for (i = 0; i < sizeof (fe25519) / sizeof fe_f[0]; i++) {
         fe_f[i] += 38 * fe_g[i];
     }
@@ -2689,7 +2689,7 @@ ristretto255_is_canonical(const unsigned char *s)
     }
     c = (((unsigned int) c) - 1U) >> 8;
     d = (0xed - 1U - (unsigned int) s[0]) >> 8;
-    e = s[31] >> 7;
+    e = ((s[31] >> 5) ^ optblocker_u8) >> 2;
 
     return 1 - (((c & d) | e | s[0]) & 1);
 }
