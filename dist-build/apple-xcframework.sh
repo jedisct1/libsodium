@@ -8,7 +8,6 @@ export IOS64_PREFIX="${PREFIX}/tmp/ios64"
 export IOS64E_PREFIX="${PREFIX}/tmp/ios64e"
 export IOS_SIMULATOR_ARM64_PREFIX="${PREFIX}/tmp/ios-simulator-arm64"
 export IOS_SIMULATOR_ARM64E_PREFIX="${PREFIX}/tmp/ios-simulator-arm64e"
-export IOS_SIMULATOR_I386_PREFIX="${PREFIX}/tmp/ios-simulator-i386"
 export IOS_SIMULATOR_X86_64_PREFIX="${PREFIX}/tmp/ios-simulator-x86_64"
 export WATCHOS32_PREFIX="${PREFIX}/tmp/watchos32"
 export WATCHOS64_32_PREFIX="${PREFIX}/tmp/watchos64_32"
@@ -58,9 +57,6 @@ if [ "$LIBSODIUM_MINIMAL_BUILD" ]; then
 else
   export LIBSODIUM_ENABLE_MINIMAL_FLAG=""
 fi
-
-I386_SIMULATOR_SUPPORTED=false
-[ "$(echo "$IOS_SIMULATOR_VERSION_MIN" | cut -d'.' -f1)" -lt "11" ] && I386_SIMULATOR_SUPPORTED=true
 
 VISIONOS_SUPPORTED=false
 [ -d "${XCODEDIR}/Platforms/XROS.platform" ] && VISIONOS_SUPPORTED=true
@@ -153,17 +149,6 @@ build_ios_simulator() {
   ./configure --build=aarch64-apple-darwin --host=aarch64-apple-darwin23 --prefix="$IOS_SIMULATOR_ARM64E_PREFIX" \
     ${LIBSODIUM_ENABLE_MINIMAL_FLAG} || exit 1
   make -j${PROCESSORS} install || exit 1
-
-  if [ "$I386_SIMULATOR_SUPPORTED" = true ]; then
-    ## i386 simulator
-    export CFLAGS="-O3 -arch i386 -isysroot ${SDK} -mios-simulator-version-min=${IOS_SIMULATOR_VERSION_MIN}"
-    export LDFLAGS="-arch i386 -isysroot ${SDK} -mios-simulator-version-min=${IOS_SIMULATOR_VERSION_MIN}"
-
-    make distclean >/dev/null 2>&1
-    ./configure --build=aarch64-apple-darwin --host=i686-apple-darwin23 --prefix="$IOS_SIMULATOR_I386_PREFIX" \
-      ${LIBSODIUM_ENABLE_MINIMAL_FLAG} || exit 1
-    make -j${PROCESSORS} install || exit 1
-  fi
 
   ## x86_64 simulator
   export CFLAGS="-O3 -arch x86_64 -isysroot ${SDK} -mios-simulator-version-min=${IOS_SIMULATOR_VERSION_MIN}"
@@ -516,9 +501,6 @@ if [ -z "$LIBSODIUM_SKIP_SIMULATORS" ]; then
     LIBRARY_PATHS="${IOS_SIMULATOR_ARM64_PREFIX}/lib/libsodium.${ext}"
     LIBRARY_PATHS="$LIBRARY_PATHS ${IOS_SIMULATOR_ARM64E_PREFIX}/lib/libsodium.${ext}"
     LIBRARY_PATHS="$LIBRARY_PATHS ${IOS_SIMULATOR_X86_64_PREFIX}/lib/libsodium.${ext}"
-    if [ "$I386_SIMULATOR_SUPPORTED" = true ]; then
-      LIBRARY_PATHS="$LIBRARY_PATHS ${IOS_SIMULATOR_I386_PREFIX}/lib/libsodium.${ext}"
-    fi
     lipo -create \
       ${LIBRARY_PATHS} \
       -output "${PREFIX}/ios-simulators/lib/libsodium.${ext}" || exit 1
