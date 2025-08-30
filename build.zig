@@ -154,7 +154,6 @@ pub fn build(b: *std.Build) !void {
     const benchmarks_iterations = b.option(u32, "iterations", "Number of iterations for benchmarks.") orelse 200;
     var build_static = b.option(bool, "static", "Build libsodium as a static library.") orelse true;
     var build_shared = b.option(bool, "shared", "Build libsodium as a shared library.") orelse true;
-    const build_pie = b.option(bool, "pie", "Build libsodium as position-independent code.") orelse true;
 
     const build_tests = b.option(bool, "test", "Build the tests (implies -Dstatic=true)") orelse true;
 
@@ -222,7 +221,7 @@ pub fn build(b: *std.Build) !void {
             "-fno-strict-aliasing",
             "-fno-strict-overflow",
             "-fwrapv",
-            if (build_pie) "-fPIC" else "-fno-PIC",
+            "-fPIC",
             "-flax-vector-conversions",
         };
 
