@@ -43,7 +43,7 @@ SODIUM_EXPORT
 int crypto_stream_salsa208_xor(unsigned char *c, const unsigned char *m,
                                unsigned long long mlen, const unsigned char *n,
                                const unsigned char *k)
-            __attribute__ ((deprecated)) __attribute__ ((nonnull));
+            __attribute__ ((deprecated)) __attribute__ ((nonnull(1, 4, 5)));
 
 SODIUM_EXPORT
 void crypto_stream_salsa208_keygen(unsigned char k[crypto_stream_salsa208_KEYBYTES])

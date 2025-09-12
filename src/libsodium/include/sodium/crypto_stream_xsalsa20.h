@@ -41,14 +41,14 @@ SODIUM_EXPORT
 int crypto_stream_xsalsa20_xor(unsigned char *c, const unsigned char *m,
                                unsigned long long mlen, const unsigned char *n,
                                const unsigned char *k)
-            __attribute__ ((nonnull));
+            __attribute__ ((nonnull(1, 4, 5)));
 
 SODIUM_EXPORT
 int crypto_stream_xsalsa20_xor_ic(unsigned char *c, const unsigned char *m,
                                   unsigned long long mlen,
                                   const unsigned char *n, uint64_t ic,
                                   const unsigned char *k)
-            __attribute__ ((nonnull));
+            __attribute__ ((nonnull(1, 4, 6)));
 
 SODIUM_EXPORT
 void crypto_stream_xsalsa20_keygen(unsigned char k[crypto_stream_xsalsa20_KEYBYTES])
