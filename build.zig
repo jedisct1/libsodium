@@ -182,6 +182,7 @@ pub fn build(b: *std.Build) !void {
             .optimize = optimize,
         }),
     });
+    static_lib.pie = true;
     const shared_lib = b.addLibrary(.{
         .name = if (target.result.isMinGW()) "libsodium" else "sodium",
         .linkage = .dynamic,
