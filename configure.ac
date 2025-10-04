@@ -324,7 +324,7 @@ AC_COMPILE_IFELSE([AC_LANG_PROGRAM([[]], [[
   [AC_MSG_RESULT(no)
 ])
 
-AX_CHECK_COMPILE_FLAG([$CWFLAGS -Wextra], [CWFLAGS="$WCFLAGS -Wextra"])
+AX_CHECK_COMPILE_FLAG([$CWFLAGS -Wextra], [CWFLAGS="$CWFLAGS -Wextra"])
 AX_CHECK_COMPILE_FLAG([$CWFLAGS -Warray-bounds], [CWFLAGS="$CWFLAGS -Warray-bounds"])
 AX_CHECK_COMPILE_FLAG([$CWFLAGS -Wbad-function-cast], [CWFLAGS="$CWFLAGS -Wbad-function-cast"])
 AX_CHECK_COMPILE_FLAG([$CWFLAGS -Wcast-qual], [CWFLAGS="$CWFLAGS -Wcast-qual"])
@@ -352,7 +352,7 @@ AX_CHECK_COMPILE_FLAG([$CWFLAGS -Wsometimes-uninitialized], [CWFLAGS="$CWFLAGS -
 AX_CHECK_COMPILE_FLAG([$CWFLAGS -Wstrict-prototypes], [CWFLAGS="$CWFLAGS -Wstrict-prototypes"])
 AX_CHECK_COMPILE_FLAG([$CWFLAGS -Wswitch-enum], [CWFLAGS="$CWFLAGS -Wswitch-enum"])
 AX_CHECK_COMPILE_FLAG([$CWFLAGS -Wvariable-decl], [CWFLAGS="$CWFLAGS -Wvariable-decl"])
-AX_CHECK_COMPILE_FLAG([$CWFLAGS -Wvla], [CWFLAGS="$WCFLAGS -Wvla"])
+AX_CHECK_COMPILE_FLAG([$CWFLAGS -Wvla], [CWFLAGS="$CWFLAGS -Wvla"])
 AX_CHECK_COMPILE_FLAG([$CWFLAGS -Wwrite-strings], [CWFLAGS="$CWFLAGS -Wwrite-strings"])
 
 AS_IF([test "x$EMSCRIPTEN" = "x"], [
