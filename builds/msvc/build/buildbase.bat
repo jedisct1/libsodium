@@ -49,7 +49,7 @@ IF NOT EXIST !environment! GOTO no_tools
 
 ECHO Building: %solution%
 
-CALL !environment! x86 > nul
+CALL !environment! x86 > nul 2>&1
 ECHO Platform=x86
 
 ECHO Configuration=DynDebug
@@ -71,7 +71,10 @@ ECHO Configuration=StaticRelease
 msbuild /m /v:n /p:Configuration=StaticRelease /p:Platform=Win32 %solution% >> %log%
 IF errorlevel 1 GOTO error
 
-CALL !environment! x86_amd64 > nul
+ENDLOCAL & SET solution=%solution% & SET version=%version% & SET log=%log% & SET tools=%tools% & SET environment=%environment%
+SETLOCAL enabledelayedexpansion
+
+CALL !environment! x86_amd64 > nul 2>&1
 ECHO Platform=x64
 
 ECHO Configuration=DynDebug
@@ -95,7 +98,10 @@ IF errorlevel 1 GOTO error
 
 @REM Build ARM64 packages only for Visual studio 2019 and later
 IF %version% GEQ 16 (
-  CALL !environment! ARM64 > nul
+  ENDLOCAL & SET solution=%solution% & SET version=%version% & SET log=%log% & SET tools=%tools% & SET environment=%environment%
+  SETLOCAL enabledelayedexpansion
+
+  CALL !environment! ARM64 > nul 2>&1
   ECHO Platform=ARM64
 
   ECHO Configuration=DynDebug
