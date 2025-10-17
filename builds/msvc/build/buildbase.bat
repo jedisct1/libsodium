@@ -71,7 +71,7 @@ ECHO Configuration=StaticRelease
 msbuild /m /v:n /p:Configuration=StaticRelease /p:Platform=Win32 %solution% >> %log%
 IF errorlevel 1 GOTO error
 
-ENDLOCAL & SET "solution=%solution%" & SET "version=%version%" & SET "log=%log%" & SET "tools=%tools%" & SET "environment=%environment%"
+ENDLOCAL & SET solution=%solution% & SET version=%version% & SET log=%log% & SET tools=%tools% & SET environment=%environment%
 SETLOCAL enabledelayedexpansion
 
 CALL !environment! x86_amd64 > nul 2>&1
@@ -98,7 +98,7 @@ IF errorlevel 1 GOTO error
 
 @REM Build ARM64 packages only for Visual studio 2019 and later
 IF %version% GEQ 16 (
-  ENDLOCAL & SET "solution=%solution%" & SET "version=%version%" & SET "log=%log%" & SET "tools=%tools%" & SET "environment=%environment%"
+  ENDLOCAL & SET solution=%solution% & SET version=%version% & SET log=%log% & SET tools=%tools% & SET environment=%environment%
   SETLOCAL enabledelayedexpansion
 
   CALL !environment! ARM64 > nul 2>&1
