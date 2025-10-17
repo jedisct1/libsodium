@@ -37,6 +37,7 @@ EXTRA_DIST = \
 	core4.exp \
 	core5.exp \
 	core6.exp \
+	core_keccak1600.exp \
 	ed25519_convert.exp \
 	generichash.exp \
 	generichash2.exp \
@@ -86,7 +87,11 @@ EXTRA_DIST = \
 	stream3.exp \
 	stream4.exp \
 	verify1.exp \
-	xchacha20.exp
+	xchacha20.exp \
+	xof_shake128.exp \
+	xof_shake256.exp \
+	xof_turboshake128.exp \
+	xof_turboshake256.exp
 
 DISTCLEANFILES = \
 	aead_aegis128l.res \
@@ -121,6 +126,7 @@ DISTCLEANFILES = \
 	core4.res \
 	core5.res \
 	core6.res \
+	core_keccak1600.res \
 	ed25519_convert.res \
 	generichash.res \
 	generichash2.res \
@@ -171,7 +177,11 @@ DISTCLEANFILES = \
 	stream3.res \
 	stream4.res \
 	verify1.res \
-	xchacha20.res
+	xchacha20.res \
+	xof_shake128.res \
+	xof_shake256.res \
+	xof_turboshake128.res \
+	xof_turboshake256.res
 
 AM_CPPFLAGS = \
 	-DTEST_SRCDIR=\"@srcdir@\" \
@@ -213,6 +223,7 @@ TESTS_TARGETS = \
 	core4 \
 	core5 \
 	core6 \
+	core_keccak1600 \
 	ed25519_convert \
 	generichash \
 	generichash2 \
@@ -253,7 +264,11 @@ TESTS_TARGETS = \
 	stream2 \
 	stream3 \
 	stream4 \
-	verify1
+	verify1 \
+	xof_shake128 \
+	xof_shake256 \
+	xof_turboshake128 \
+	xof_turboshake256
 
 if !EMSCRIPTEN
 TESTS_TARGETS += \
@@ -363,6 +378,9 @@ core5_LDADD               = $(TESTS_LDADD)
 
 core6_SOURCE              = cmptest.h core6.c
 core6_LDADD               = $(TESTS_LDADD)
+
+core_keccak1600_SOURCE    = cmptest.h core_keccak1600.c
+core_keccak1600_LDADD     = $(TESTS_LDADD)
 
 ed25519_convert_SOURCE    = cmptest.h ed25519_convert.c
 ed25519_convert_LDADD     = $(TESTS_LDADD)
@@ -513,6 +531,18 @@ verify1_LDADD             = $(TESTS_LDADD)
 
 xchacha20_SOURCE          = cmptest.h xchacha20.c
 xchacha20_LDADD           = $(TESTS_LDADD)
+
+xof_shake128_SOURCE       = cmptest.h xof_shake128.c
+xof_shake128_LDADD        = $(TESTS_LDADD)
+
+xof_shake256_SOURCE       = cmptest.h xof_shake256.c
+xof_shake256_LDADD        = $(TESTS_LDADD)
+
+xof_turboshake128_SOURCE  = cmptest.h xof_turboshake128.c
+xof_turboshake128_LDADD   = $(TESTS_LDADD)
+
+xof_turboshake256_SOURCE  = cmptest.h xof_turboshake256.c
+xof_turboshake256_LDADD   = $(TESTS_LDADD)
 
 if !MINIMAL
 TESTS_TARGETS += \
