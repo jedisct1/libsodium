@@ -4,11 +4,19 @@
  - Windows ARM binaries have been added to the NuGet package
  - The Android build script has been improved. The base SDK is
 now 27c, and the default platform is 21
- - The library can now be compiled with Zig 0.14+
+ - The library can now be compiled with Zig 0.15+
+ - Zig builds now generate position-independent static libraries by
+default on targets that support PIC
  - arm64e builds have been added to the XCFramework packages
  - XCFramework packages are now full builds instead of minimal
 builds
  - MSVC builds have been enabled for ARM64
+ - iOS 32-bit (armv7/armv7s) support has been removed from the
+XCFramework build script
+ - Security: optblockers have been introduced in critical code paths
+to prevent compilers from introducing unwanted conditional jumps
+ - `((nonnull))` attributes have been relaxed on some `crypto_stream*`
+functions to allow NULL output buffers when the output length is zero
  - A cross-compilation issue with old clang versions has been
 fixed
  - 16K page sizes are now supported on Android
