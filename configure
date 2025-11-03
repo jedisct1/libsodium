@@ -5765,6 +5765,37 @@ fi
 
 fi
 
+{ printf "%s\n" "$as_me:${as_lineno-$LINENO}: checking if we are using FilC" >&5
+printf %s "checking if we are using FilC... " >&6; }
+cat confdefs.h - <<_ACEOF >conftest.$ac_ext
+/* end confdefs.h.  */
+
+#ifndef __FILC__
+# error __FILC__ is not defined
+#endif
+
+int
+main (void)
+{
+
+  ;
+  return 0;
+}
+_ACEOF
+if ac_fn_c_try_compile "$LINENO"
+then :
+  { printf "%s\n" "$as_me:${as_lineno-$LINENO}: result: yes" >&5
+printf "%s\n" "yes" >&6; }
+   enable_asm="no"
+   { printf "%s\n" "$as_me:${as_lineno-$LINENO}: WARNING: compiling with FilC - asm implementations disabled" >&5
+printf "%s\n" "$as_me: WARNING: compiling with FilC - asm implementations disabled" >&2;}
+else case e in #(
+  e) { printf "%s\n" "$as_me:${as_lineno-$LINENO}: result: no" >&5
+printf "%s\n" "no" >&6; } ;;
+esac
+fi
+rm -f core conftest.err conftest.$ac_objext conftest.beam conftest.$ac_ext
+
 # Check whether --enable-pie was given.
 if test ${enable_pie+y}
 then :
@@ -21842,6 +21873,9 @@ printf %s "checking whether we can use inline asm code... " >&6; }
 cat confdefs.h - <<_ACEOF >conftest.$ac_ext
 /* end confdefs.h.  */
 
+#ifdef __FILC__
+# error inline assembly is not supported with FilC
+#endif
 
 int
 main (void)

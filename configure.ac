@@ -97,6 +97,17 @@ AS_IF([test "x$EMSCRIPTEN" != "x"], [
   ])
 ])
 
+AC_MSG_CHECKING([if we are using FilC])
+AC_COMPILE_IFELSE([AC_LANG_PROGRAM([[
+#ifndef __FILC__
+# error __FILC__ is not defined
+#endif
+]], [[]])],
+  [AC_MSG_RESULT(yes)
+   enable_asm="no"
+   AC_MSG_WARN([compiling with FilC - asm implementations disabled])],
+  [AC_MSG_RESULT(no)])
+
 AC_ARG_ENABLE(pie,
 [AS_HELP_STRING(--disable-pie,Do not produce position independent executables)],
  enable_pie=$enableval, enable_pie="maybe")
@@ -696,6 +707,9 @@ AC_LINK_IFELSE([AC_LANG_PROGRAM([[
 
 AC_MSG_CHECKING(whether we can use inline asm code)
 AC_LINK_IFELSE([AC_LANG_PROGRAM([[
+#ifdef __FILC__
+# error inline assembly is not supported with FilC
+#endif
 ]], [[
 int a = 42;
 int *pnt = &a;
