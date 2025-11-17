@@ -4,4 +4,5 @@
 *.vcxproj.user
 *.aps
 *.log
+*.vs/
 !build
