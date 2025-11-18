@@ -88,7 +88,7 @@ def get_project_configurations(vs_version):
         "ReleaseLTCG",
     ]
     platforms = ["Win32", "x64"]
-    # add arm64 platform only for v142+ toolchain
+    # add arm64 platform only for v142+ toolchain (VS2019+)
     if vs_version >= 142:
         platforms.append("ARM64")
     for config in configs:
@@ -149,6 +149,11 @@ apply_template(sd + "/tl_libsodium.vcxproj.tpl", "ci/appveyor/libsodium.vcxproj"
 
 apply_template(
     sd + "/libsodium.vcxproj.filters.tpl",
+    "builds/msvc/vs2026/libsodium/libsodium.vcxproj.filters",
+    sbox,
+)
+apply_template(
+    sd + "/libsodium.vcxproj.filters.tpl",
     "builds/msvc/vs2022/libsodium/libsodium.vcxproj.filters",
     sbox,
 )
@@ -180,6 +185,14 @@ apply_template(
 apply_template(
     sd + "/libsodium.vcxproj.filters.tpl",
     "builds/msvc/vs2010/libsodium/libsodium.vcxproj.filters",
+    sbox,
+)
+
+sbox.update({"platform": "v145"})
+sbox.update({"configurations": get_project_configurations(145)})
+apply_template(
+    sd + "/libsodium.vcxproj.tpl",
+    "builds/msvc/vs2026/libsodium/libsodium.vcxproj",
     sbox,
 )
 
