@@ -28,7 +28,7 @@ crypto_xof_shake128(unsigned char *out, size_t outlen, const unsigned char *in,
 
     COMPILER_ASSERT(sizeof(crypto_xof_shake128_state) >= sizeof(shake128_state_internal));
 
-    return shake128_ref(out, outlen, in, inlen);
+    return shake128_ref(out, outlen, in, (size_t) inlen);
 }
 
 int
@@ -58,7 +58,7 @@ crypto_xof_shake128_update(crypto_xof_shake128_state *state,
 {
     shake128_state_internal *st = (shake128_state_internal *) (void *) state;
 
-    return shake128_ref_update(st, in, inlen);
+    return shake128_ref_update(st, in, (size_t) inlen);
 }
 
 int

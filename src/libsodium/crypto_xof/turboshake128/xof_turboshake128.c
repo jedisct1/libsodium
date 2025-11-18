@@ -28,7 +28,7 @@ crypto_xof_turboshake128(unsigned char *out, size_t outlen, const unsigned char 
 
     COMPILER_ASSERT(sizeof(crypto_xof_turboshake128_state) >= sizeof(turboshake128_state_internal));
 
-    return turboshake128_ref(out, outlen, in, inlen);
+    return turboshake128_ref(out, outlen, in, (size_t) inlen);
 }
 
 int
@@ -59,7 +59,7 @@ crypto_xof_turboshake128_update(crypto_xof_turboshake128_state *state,
 {
     turboshake128_state_internal *st = (turboshake128_state_internal *) (void *) state;
 
-    return turboshake128_ref_update(st, in, inlen);
+    return turboshake128_ref_update(st, in, (size_t) inlen);
 }
 
 int

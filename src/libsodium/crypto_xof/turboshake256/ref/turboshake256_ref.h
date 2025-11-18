@@ -18,8 +18,7 @@ typedef struct turboshake256_state_internal_ {
     unsigned char domain; /* Domain separation byte */
 } turboshake256_state_internal;
 
-int turboshake256_ref(unsigned char *out, size_t outlen, const unsigned char *in,
-                      unsigned long long inlen);
+int turboshake256_ref(unsigned char *out, size_t outlen, const unsigned char *in, size_t inlen);
 
 int turboshake256_ref_init(turboshake256_state_internal *state);
 
@@ -27,7 +26,7 @@ int turboshake256_ref_init_with_domain(turboshake256_state_internal *state, unsi
 
 int turboshake256_ref_update(turboshake256_state_internal *state,
                              const unsigned char          *in,
-                             unsigned long long            inlen);
+                             size_t                        inlen);
 
 int turboshake256_ref_squeeze(turboshake256_state_internal *state, unsigned char *out,
                               size_t outlen);

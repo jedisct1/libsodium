@@ -25,14 +25,12 @@ shake128_ref_init(shake128_state_internal *state)
 }
 
 int
-shake128_ref_update(shake128_state_internal *state,
-                    const unsigned char     *in,
-                    unsigned long long       inlen)
+shake128_ref_update(shake128_state_internal *state, const unsigned char *in, size_t inlen)
 {
     size_t i;
 
     if (state->phase != SHAKE128_PHASE_ABSORBING) {
-        state->phase = SHAKE128_PHASE_ABSORBING;
+        state->phase  = SHAKE128_PHASE_ABSORBING;
         state->offset = 0;
     }
 
@@ -94,7 +92,7 @@ shake128_ref_squeeze(shake128_state_internal *state, unsigned char *out, size_t 
 }
 
 int
-shake128_ref(unsigned char *out, size_t outlen, const unsigned char *in, unsigned long long inlen)
+shake128_ref(unsigned char *out, size_t outlen, const unsigned char *in, size_t inlen)
 {
     shake128_state_internal state;
 

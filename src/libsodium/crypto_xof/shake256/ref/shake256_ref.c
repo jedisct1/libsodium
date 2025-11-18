@@ -25,14 +25,12 @@ shake256_ref_init(shake256_state_internal *state)
 }
 
 int
-shake256_ref_update(shake256_state_internal *state,
-                    const unsigned char     *in,
-                    unsigned long long       inlen)
+shake256_ref_update(shake256_state_internal *state, const unsigned char *in, size_t inlen)
 {
     size_t i;
 
     if (state->phase != SHAKE256_PHASE_ABSORBING) {
-        state->phase = SHAKE256_PHASE_ABSORBING;
+        state->phase  = SHAKE256_PHASE_ABSORBING;
         state->offset = 0;
     }
 
@@ -94,7 +92,7 @@ shake256_ref_squeeze(shake256_state_internal *state, unsigned char *out, size_t 
 }
 
 int
-shake256_ref(unsigned char *out, size_t outlen, const unsigned char *in, unsigned long long inlen)
+shake256_ref(unsigned char *out, size_t outlen, const unsigned char *in, size_t inlen)
 {
     shake256_state_internal state;
 

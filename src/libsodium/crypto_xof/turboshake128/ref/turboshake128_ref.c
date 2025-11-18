@@ -25,14 +25,12 @@ turboshake128_ref_init(turboshake128_state_internal *state)
 }
 
 int
-turboshake128_ref_update(turboshake128_state_internal *state,
-                         const unsigned char          *in,
-                         unsigned long long            inlen)
+turboshake128_ref_update(turboshake128_state_internal *state, const unsigned char *in, size_t inlen)
 {
     size_t i;
 
     if (state->phase != TURBOSHAKE128_PHASE_ABSORBING) {
-        state->phase = TURBOSHAKE128_PHASE_ABSORBING;
+        state->phase  = TURBOSHAKE128_PHASE_ABSORBING;
         state->offset = 0;
     }
 
@@ -94,8 +92,7 @@ turboshake128_ref_squeeze(turboshake128_state_internal *state, unsigned char *ou
 }
 
 int
-turboshake128_ref(unsigned char *out, size_t outlen, const unsigned char *in,
-                  unsigned long long inlen)
+turboshake128_ref(unsigned char *out, size_t outlen, const unsigned char *in, size_t inlen)
 {
     turboshake128_state_internal state;
 

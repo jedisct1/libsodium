@@ -25,14 +25,12 @@ turboshake256_ref_init(turboshake256_state_internal *state)
 }
 
 int
-turboshake256_ref_update(turboshake256_state_internal *state,
-                         const unsigned char          *in,
-                         unsigned long long            inlen)
+turboshake256_ref_update(turboshake256_state_internal *state, const unsigned char *in, size_t inlen)
 {
     size_t i;
 
     if (state->phase != TURBOSHAKE256_PHASE_ABSORBING) {
-        state->phase = TURBOSHAKE256_PHASE_ABSORBING;
+        state->phase  = TURBOSHAKE256_PHASE_ABSORBING;
         state->offset = 0;
     }
 
@@ -94,8 +92,7 @@ turboshake256_ref_squeeze(turboshake256_state_internal *state, unsigned char *ou
 }
 
 int
-turboshake256_ref(unsigned char *out, size_t outlen, const unsigned char *in,
-                  unsigned long long inlen)
+turboshake256_ref(unsigned char *out, size_t outlen, const unsigned char *in, size_t inlen)
 {
     turboshake256_state_internal state;
 
