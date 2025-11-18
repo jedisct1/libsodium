@@ -29,8 +29,6 @@ int turboshake256_ref_update(turboshake256_state_internal *state,
                              const unsigned char          *in,
                              unsigned long long            inlen);
 
-int turboshake256_ref_final(turboshake256_state_internal *state, unsigned char *out, size_t outlen);
-
 int turboshake256_ref_squeeze(turboshake256_state_internal *state, unsigned char *out,
                               size_t outlen);
 

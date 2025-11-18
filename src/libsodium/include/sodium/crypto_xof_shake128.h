@@ -45,10 +45,6 @@ int crypto_xof_shake128_update(crypto_xof_shake128_state *state,
                                unsigned long long         inlen) __attribute__((nonnull(1)));
 
 SODIUM_EXPORT
-int crypto_xof_shake128_final(crypto_xof_shake128_state *state, unsigned char *out, size_t outlen)
-    __attribute__((nonnull));
-
-SODIUM_EXPORT
 int crypto_xof_shake128_squeeze(crypto_xof_shake128_state *state, unsigned char *out, size_t outlen)
     __attribute__((nonnull));
 

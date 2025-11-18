@@ -32,7 +32,8 @@ shake128_ref_update(shake128_state_internal *state,
     size_t i;
 
     if (state->phase != SHAKE128_PHASE_ABSORBING) {
-        return -1; /* Cannot absorb after squeezing */
+        state->phase = SHAKE128_PHASE_ABSORBING;
+        state->offset = 0;
     }
 
     for (i = 0; i < inlen; i++) {
@@ -72,16 +73,6 @@ shake128_finalize(shake128_state_internal *state)
 }
 
 int
-shake128_ref_final(shake128_state_internal *state, unsigned char *out, size_t outlen)
-{
-    if (state->phase == SHAKE128_PHASE_ABSORBING) {
-        shake128_finalize(state);
-    }
-
-    return shake128_ref_squeeze(state, out, outlen);
-}
-
-int
 shake128_ref_squeeze(shake128_state_internal *state, unsigned char *out, size_t outlen)
 {
     size_t i;
@@ -109,7 +100,7 @@ shake128_ref(unsigned char *out, size_t outlen, const unsigned char *in, unsigne
 
     shake128_ref_init(&state);
     shake128_ref_update(&state, in, inlen);
-    shake128_ref_final(&state, out, outlen);
+    shake128_ref_squeeze(&state, out, outlen);
 
     return 0;
 }

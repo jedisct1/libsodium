@@ -62,14 +62,6 @@ crypto_xof_shake128_update(crypto_xof_shake128_state *state,
 }
 
 int
-crypto_xof_shake128_final(crypto_xof_shake128_state *state, unsigned char *out, size_t outlen)
-{
-    shake128_state_internal *st = (shake128_state_internal *) (void *) state;
-
-    return shake128_ref_final(st, out, outlen);
-}
-
-int
 crypto_xof_shake128_squeeze(crypto_xof_shake128_state *state, unsigned char *out, size_t outlen)
 {
     shake128_state_internal *st = (shake128_state_internal *) (void *) state;

@@ -80,7 +80,7 @@ main(void)
     for (i = 0; i < sizeof(vectors) / sizeof(vectors[0]); i++) {
         crypto_xof_turboshake128_init(&state);
         crypto_xof_turboshake128_update(&state, vectors[i].msg, vectors[i].msg_len);
-        crypto_xof_turboshake128_final(&state, out, vectors[i].out_len);
+        crypto_xof_turboshake128_squeeze(&state, out, vectors[i].out_len);
         if (memcmp(out, vectors[i].out, vectors[i].out_len) != 0) {
             printf("Test vector %zu failed (streaming)\n", i);
             return 1;
@@ -90,7 +90,7 @@ main(void)
     /* Test multiple squeeze calls */
     crypto_xof_turboshake128_init(&state);
     crypto_xof_turboshake128_update(&state, msg_abc, 3);
-    crypto_xof_turboshake128_final(&state, out, 16);
+    crypto_xof_turboshake128_squeeze(&state, out, 16);
     crypto_xof_turboshake128_squeeze(&state, out + 16, 16);
     if (memcmp(out, out_abc_32, 32) != 0) {
         printf("Multiple squeeze test failed\n");
@@ -100,11 +100,11 @@ main(void)
     /* Test custom domain byte produces different output */
     crypto_xof_turboshake128_init(&state);
     crypto_xof_turboshake128_update(&state, msg_abc, 3);
-    crypto_xof_turboshake128_final(&state, out, 32);
+    crypto_xof_turboshake128_squeeze(&state, out, 32);
 
     crypto_xof_turboshake128_init_with_domain(&state, 0x99);
     crypto_xof_turboshake128_update(&state, msg_abc, 3);
-    crypto_xof_turboshake128_final(&state, out + 32, 32);
+    crypto_xof_turboshake128_squeeze(&state, out + 32, 32);
 
     if (memcmp(out, out + 32, 32) == 0) {
         printf("Custom domain byte test failed (outputs should differ)\n");
@@ -114,18 +114,10 @@ main(void)
     /* Test standard domain constant */
     crypto_xof_turboshake128_init_with_domain(&state, crypto_xof_turboshake128_domain_standard());
     crypto_xof_turboshake128_update(&state, msg_abc, 3);
-    crypto_xof_turboshake128_final(&state, out + 64, 32);
+    crypto_xof_turboshake128_squeeze(&state, out + 64, 32);
 
     if (memcmp(out, out + 64, 32) != 0) {
         printf("Domain constant test failed (should match standard init)\n");
-        return 1;
-    }
-
-    /* Test cannot absorb after squeezing */
-    crypto_xof_turboshake128_init(&state);
-    crypto_xof_turboshake128_final(&state, out, 32);
-    if (crypto_xof_turboshake128_update(&state, msg_abc, 3) == 0) {
-        printf("Should not be able to absorb after squeezing\n");
         return 1;
     }
 

@@ -26,8 +26,6 @@ int shake256_ref_update(shake256_state_internal *state,
                         const unsigned char     *in,
                         unsigned long long       inlen);
 
-int shake256_ref_final(shake256_state_internal *state, unsigned char *out, size_t outlen);
-
 int shake256_ref_squeeze(shake256_state_internal *state, unsigned char *out, size_t outlen);
 
 #endif /* shake256_ref_H */

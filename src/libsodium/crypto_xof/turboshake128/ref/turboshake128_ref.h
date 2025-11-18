@@ -29,8 +29,6 @@ int turboshake128_ref_update(turboshake128_state_internal *state,
                              const unsigned char          *in,
                              unsigned long long            inlen);
 
-int turboshake128_ref_final(turboshake128_state_internal *state, unsigned char *out, size_t outlen);
-
 int turboshake128_ref_squeeze(turboshake128_state_internal *state, unsigned char *out,
                               size_t outlen);
 

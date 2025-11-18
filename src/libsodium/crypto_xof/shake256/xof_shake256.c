@@ -62,14 +62,6 @@ crypto_xof_shake256_update(crypto_xof_shake256_state *state,
 }
 
 int
-crypto_xof_shake256_final(crypto_xof_shake256_state *state, unsigned char *out, size_t outlen)
-{
-    shake256_state_internal *st = (shake256_state_internal *) (void *) state;
-
-    return shake256_ref_final(st, out, outlen);
-}
-
-int
 crypto_xof_shake256_squeeze(crypto_xof_shake256_state *state, unsigned char *out, size_t outlen)
 {
     shake256_state_internal *st = (shake256_state_internal *) (void *) state;

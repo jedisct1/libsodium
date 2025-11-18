@@ -32,7 +32,8 @@ turboshake256_ref_update(turboshake256_state_internal *state,
     size_t i;
 
     if (state->phase != TURBOSHAKE256_PHASE_ABSORBING) {
-        return -1; /* Cannot absorb after squeezing */
+        state->phase = TURBOSHAKE256_PHASE_ABSORBING;
+        state->offset = 0;
     }
 
     for (i = 0; i < inlen; i++) {
@@ -72,16 +73,6 @@ turboshake256_finalize(turboshake256_state_internal *state)
 }
 
 int
-turboshake256_ref_final(turboshake256_state_internal *state, unsigned char *out, size_t outlen)
-{
-    if (state->phase == TURBOSHAKE256_PHASE_ABSORBING) {
-        turboshake256_finalize(state);
-    }
-
-    return turboshake256_ref_squeeze(state, out, outlen);
-}
-
-int
 turboshake256_ref_squeeze(turboshake256_state_internal *state, unsigned char *out, size_t outlen)
 {
     size_t i;
@@ -110,7 +101,7 @@ turboshake256_ref(unsigned char *out, size_t outlen, const unsigned char *in,
 
     turboshake256_ref_init(&state);
     turboshake256_ref_update(&state, in, inlen);
-    turboshake256_ref_final(&state, out, outlen);
+    turboshake256_ref_squeeze(&state, out, outlen);
 
     return 0;
 }

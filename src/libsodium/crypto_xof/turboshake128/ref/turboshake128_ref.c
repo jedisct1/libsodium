@@ -32,7 +32,8 @@ turboshake128_ref_update(turboshake128_state_internal *state,
     size_t i;
 
     if (state->phase != TURBOSHAKE128_PHASE_ABSORBING) {
-        return -1; /* Cannot absorb after squeezing */
+        state->phase = TURBOSHAKE128_PHASE_ABSORBING;
+        state->offset = 0;
     }
 
     for (i = 0; i < inlen; i++) {
@@ -72,16 +73,6 @@ turboshake128_finalize(turboshake128_state_internal *state)
 }
 
 int
-turboshake128_ref_final(turboshake128_state_internal *state, unsigned char *out, size_t outlen)
-{
-    if (state->phase == TURBOSHAKE128_PHASE_ABSORBING) {
-        turboshake128_finalize(state);
-    }
-
-    return turboshake128_ref_squeeze(state, out, outlen);
-}
-
-int
 turboshake128_ref_squeeze(turboshake128_state_internal *state, unsigned char *out, size_t outlen)
 {
     size_t i;
@@ -110,7 +101,7 @@ turboshake128_ref(unsigned char *out, size_t outlen, const unsigned char *in,
 
     turboshake128_ref_init(&state);
     turboshake128_ref_update(&state, in, inlen);
-    turboshake128_ref_final(&state, out, outlen);
+    turboshake128_ref_squeeze(&state, out, outlen);
 
     return 0;
 }

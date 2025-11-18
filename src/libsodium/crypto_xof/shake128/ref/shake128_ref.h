@@ -26,8 +26,6 @@ int shake128_ref_update(shake128_state_internal *state,
                         const unsigned char     *in,
                         unsigned long long       inlen);
 
-int shake128_ref_final(shake128_state_internal *state, unsigned char *out, size_t outlen);
-
 int shake128_ref_squeeze(shake128_state_internal *state, unsigned char *out, size_t outlen);
 
 #endif /* shake128_ref_H */

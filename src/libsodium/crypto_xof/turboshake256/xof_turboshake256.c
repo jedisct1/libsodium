@@ -63,15 +63,6 @@ crypto_xof_turboshake256_update(crypto_xof_turboshake256_state *state,
 }
 
 int
-crypto_xof_turboshake256_final(crypto_xof_turboshake256_state *state, unsigned char *out,
-                               size_t outlen)
-{
-    turboshake256_state_internal *st = (turboshake256_state_internal *) (void *) state;
-
-    return turboshake256_ref_final(st, out, outlen);
-}
-
-int
 crypto_xof_turboshake256_squeeze(crypto_xof_turboshake256_state *state, unsigned char *out,
                                  size_t outlen)
 {
