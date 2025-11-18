@@ -27,20 +27,26 @@ turboshake256_ref_init(turboshake256_state_internal *state)
 int
 turboshake256_ref_update(turboshake256_state_internal *state, const unsigned char *in, size_t inlen)
 {
-    size_t i;
+    size_t consumed = 0;
+    size_t chunk_size;
 
     if (state->phase != TURBOSHAKE256_PHASE_ABSORBING) {
         state->phase  = TURBOSHAKE256_PHASE_ABSORBING;
         state->offset = 0;
     }
 
-    for (i = 0; i < inlen; i++) {
+    while (consumed < inlen) {
         if (state->offset == TURBOSHAKE256_RATE) {
             crypto_core_keccak1600_permute_12(state->state);
             state->offset = 0;
         }
-        crypto_core_keccak1600_xor_bytes(state->state, &in[i], state->offset, 1);
-        state->offset++;
+        chunk_size = TURBOSHAKE256_RATE - state->offset;
+        if (chunk_size > inlen - consumed) {
+            chunk_size = inlen - consumed;
+        }
+        crypto_core_keccak1600_xor_bytes(state->state, &in[consumed], state->offset, chunk_size);
+        state->offset += chunk_size;
+        consumed += chunk_size;
     }
 
     return 0;
@@ -73,19 +79,26 @@ turboshake256_finalize(turboshake256_state_internal *state)
 int
 turboshake256_ref_squeeze(turboshake256_state_internal *state, unsigned char *out, size_t outlen)
 {
-    size_t i;
+    size_t extracted = 0;
+    size_t chunk_size;
 
     if (state->phase == TURBOSHAKE256_PHASE_ABSORBING) {
         turboshake256_finalize(state);
     }
 
-    for (i = 0; i < outlen; i++) {
+    while (extracted < outlen) {
         if (state->offset == TURBOSHAKE256_RATE) {
             crypto_core_keccak1600_permute_12(state->state);
             state->offset = 0;
         }
-        crypto_core_keccak1600_extract_bytes(state->state, &out[i], state->offset, 1);
-        state->offset++;
+        chunk_size = TURBOSHAKE256_RATE - state->offset;
+        if (chunk_size > outlen - extracted) {
+            chunk_size = outlen - extracted;
+        }
+        crypto_core_keccak1600_extract_bytes(state->state, &out[extracted], state->offset,
+                                             chunk_size);
+        state->offset += chunk_size;
+        extracted += chunk_size;
     }
 
     return 0;
