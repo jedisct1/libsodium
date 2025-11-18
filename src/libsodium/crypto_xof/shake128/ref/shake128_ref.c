@@ -2,10 +2,9 @@
 #include <string.h>
 
 #include "crypto_core_keccak1600.h"
+#include "crypto_xof_shake128.h"
 #include "private/common.h"
 #include "shake128_ref.h"
-
-#define SHAKE128_DOMAIN_BYTE_STANDARD 0x1F
 
 int
 shake128_ref_init_with_domain(shake128_state_internal *state, unsigned char domain)
@@ -21,7 +20,7 @@ shake128_ref_init_with_domain(shake128_state_internal *state, unsigned char doma
 int
 shake128_ref_init(shake128_state_internal *state)
 {
-    return shake128_ref_init_with_domain(state, SHAKE128_DOMAIN_BYTE_STANDARD);
+    return shake128_ref_init_with_domain(state, crypto_xof_shake128_DOMAIN_STANDARD);
 }
 
 int

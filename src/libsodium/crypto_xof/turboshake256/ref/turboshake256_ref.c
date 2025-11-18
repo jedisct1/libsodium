@@ -2,10 +2,9 @@
 #include <string.h>
 
 #include "crypto_core_keccak1600.h"
+#include "crypto_xof_turboshake256.h"
 #include "private/common.h"
 #include "turboshake256_ref.h"
-
-#define TURBOSHAKE256_DOMAIN_BYTE_STANDARD 0x01
 
 int
 turboshake256_ref_init_with_domain(turboshake256_state_internal *state, unsigned char domain)
@@ -21,7 +20,7 @@ turboshake256_ref_init_with_domain(turboshake256_state_internal *state, unsigned
 int
 turboshake256_ref_init(turboshake256_state_internal *state)
 {
-    return turboshake256_ref_init_with_domain(state, TURBOSHAKE256_DOMAIN_BYTE_STANDARD);
+    return turboshake256_ref_init_with_domain(state, crypto_xof_turboshake256_DOMAIN_STANDARD);
 }
 
 int

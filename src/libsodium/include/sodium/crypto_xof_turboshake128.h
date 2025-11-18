@@ -16,7 +16,7 @@ size_t crypto_xof_turboshake128_blockbytes(void);
 SODIUM_EXPORT
 size_t crypto_xof_turboshake128_statebytes(void);
 
-#define crypto_xof_turboshake128_DOMAIN_STANDARD 0x01U
+#define crypto_xof_turboshake128_DOMAIN_STANDARD 0x1FU
 SODIUM_EXPORT
 unsigned char crypto_xof_turboshake128_domain_standard(void);
 
