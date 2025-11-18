@@ -145,7 +145,10 @@ pub fn build(b: *std.Build) !void {
     defer cwd.close();
 
     const src_path = "src/libsodium";
-    const src_dir = try fs.Dir.openDir(cwd, src_path, .{ .iterate = true, .no_follow = true });
+    const src_dir = if (@hasField(fs.Dir.OpenOptions, "follow_symlinks"))
+        try fs.Dir.openDir(cwd, src_path, .{ .iterate = true, .follow_symlinks = false })
+    else
+        try fs.Dir.openDir(cwd, src_path, .{ .iterate = true, .no_follow = true });
 
     var target = b.standardTargetOptions(.{});
     const optimize = b.standardOptimizeOption(.{});
@@ -206,9 +209,14 @@ pub fn build(b: *std.Build) !void {
     const prebuilt_version_file_path = "builds/msvc/version.h";
     const version_file_path = "include/sodium/version.h";
 
-    if (src_dir.access(version_file_path, .{ .mode = .read_only })) {} else |_| {
-        try cwd.copyFile(prebuilt_version_file_path, src_dir, version_file_path, .{});
-    }
+    if (@hasField(fs.Dir.OpenOptions, "follow_symlinks"))
+        src_dir.access(version_file_path, .{ .read = true }) catch {
+            try cwd.copyFile(prebuilt_version_file_path, src_dir, version_file_path, .{});
+        }
+    else
+        src_dir.access(version_file_path, .{ .mode = .read_only }) catch {
+            try cwd.copyFile(prebuilt_version_file_path, src_dir, version_file_path, .{});
+        };
 
     for (libs.items) |lib| {
         b.installArtifact(lib);
@@ -247,7 +255,10 @@ pub fn build(b: *std.Build) !void {
 
     const test_path = "test/default";
     const out_bin_path = "zig-out/bin";
-    const test_dir = try fs.Dir.openDir(cwd, test_path, .{ .iterate = true, .no_follow = true });
+    const test_dir = if (@hasField(fs.Dir.OpenOptions, "follow_symlinks"))
+        try fs.Dir.openDir(cwd, test_path, .{ .iterate = true, .follow_symlinks = false })
+    else
+        try fs.Dir.openDir(cwd, test_path, .{ .iterate = true, .no_follow = true });
     fs.Dir.makePath(cwd, out_bin_path) catch {};
     const out_bin_dir = try fs.Dir.openDir(cwd, out_bin_path, .{});
     try test_dir.copyFile("run.sh", out_bin_dir, "run.sh", .{});
