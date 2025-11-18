@@ -1,6 +1,6 @@
 version: 1.0.21.{build}
 
-os: Visual Studio 2017
+os: Visual Studio 2022
 
 environment:
   matrix:
