@@ -1,5 +1,8 @@
 * Version 1.0.20-stable
- - Performance of AES256-GCM and AEGIS on ARM has been improved.
+ - The Fil-C compiler is supported out of the box
+ - MSVC 2026 (Visual Studio 2026) is now supported
+ - Performance of AES256-GCM and AEGIS on ARM has been improved
+with some compilers
  - Android binaries have been added to the NuGet package
  - Windows ARM binaries have been added to the NuGet package
  - The Android build script has been improved. The base SDK is
