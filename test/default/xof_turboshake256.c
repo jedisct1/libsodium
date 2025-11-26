@@ -20,6 +20,7 @@ main(void)
                                                0x78, 0x20, 0x6a, 0x75, 0x6d, 0x70, 0x73, 0x20, 0x6f,
                                                0x76, 0x65, 0x72, 0x20, 0x74, 0x68, 0x65, 0x20, 0x6c,
                                                0x61, 0x7a, 0x79, 0x20, 0x64, 0x6f, 0x67 };
+    static const unsigned char msg_rate_block[136] = { 0 };
 
     static const unsigned char out_empty_32[] = { 0x36, 0x7a, 0x32, 0x9d, 0xaf, 0xea, 0x87, 0x1c,
                                                   0x78, 0x02, 0xec, 0x67, 0xf9, 0x05, 0xae, 0x13,
@@ -52,11 +53,18 @@ main(void)
         0xf5, 0x07, 0xc9, 0xb4, 0xf0, 0x41, 0x7e, 0x2b, 0x66, 0x31, 0x60, 0x90
     };
 
+    static const unsigned char out_rate_block_32[] = { 0x91, 0xef, 0xfd, 0x08, 0xdd, 0x4c, 0xcc,
+                                                       0xb6, 0x89, 0xc6, 0x26, 0xb4, 0x64, 0x93,
+                                                       0x67, 0xad, 0x5a, 0x2e, 0xbf, 0xab, 0x61,
+                                                       0x61, 0x17, 0x69, 0xa3, 0x74, 0x93, 0xfa,
+                                                       0x70, 0x12, 0x28, 0xea };
+
     testvector vectors[] = { { msg_empty, 0, out_empty_32, 32 },
                              { msg_empty, 0, out_empty_64, 64 },
                              { msg_abc, 3, out_abc_32, 32 },
                              { msg_fox, 43, out_fox_32, 32 },
-                             { msg_fox, 43, out_fox_64, 64 } };
+                             { msg_fox, 43, out_fox_64, 64 },
+                             { msg_rate_block, sizeof msg_rate_block, out_rate_block_32, 32 } };
 
     unsigned char                  out[256];
     crypto_xof_turboshake256_state state;
