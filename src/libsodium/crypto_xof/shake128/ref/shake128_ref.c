@@ -56,6 +56,12 @@ shake128_finalize(shake128_state_internal *state)
 {
     unsigned char pad;
 
+    /* If the rate is exactly full, process that block before padding */
+    if (state->offset == SHAKE128_RATE) {
+        crypto_core_keccak1600_permute_24(state->state);
+        state->offset = 0;
+    }
+
     /* Apply padding: domain byte at current position, 0x80 at last byte */
     if (state->offset == SHAKE128_RATE - 1) {
         /* Special case: padding fits in one byte */
