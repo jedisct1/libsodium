@@ -1,0 +1,43 @@
+crypto_ipcrypt_INPUTBYTES: 16
+crypto_ipcrypt_KEYBYTES: 16
+crypto_ipcrypt_ND_KEYBYTES: 16
+crypto_ipcrypt_ND_TWEAKBYTES: 8
+crypto_ipcrypt_ND_BYTES: 24
+crypto_ipcrypt_NDX_KEYBYTES: 32
+crypto_ipcrypt_NDX_TWEAKBYTES: 16
+crypto_ipcrypt_NDX_BYTES: 32
+
+Test 1: Format-preserving encryption
+Key: 0102030405060708090a0b0c0d0e0f10
+Input: 00000000000000000000ffffc0000201
+Encrypted: 574549939d262d3dc317324ac05a8d59
+Decrypted: 00000000000000000000ffffc0000201
+OK: Round-trip successful
+
+Test 2: Non-deterministic encryption (ND mode)
+Tweak: aabbccddeeff1122
+ND Encrypted: aabbccddeeff1122377e9a17198d908604f3261d45fd639a
+ND Decrypted: 00000000000000000000ffffc0000201
+OK: ND round-trip successful
+
+Test 3: Non-deterministic encryption (NDX mode with 16-byte tweak)
+NDX Key: 0102030405060708090a0b0c0d0e0f101112131415161718191a1b1c1d1e1f20
+NDX Tweak: aaabacadaeafb0b1b2b3b4b5b6b7b8b9
+NDX Encrypted: aaabacadaeafb0b1b2b3b4b5b6b7b8b97df52c417f76ef314bbe7bea5b30bcea
+NDX Decrypted: 00000000000000000000ffffc0000201
+OK: NDX round-trip successful
+
+Test 4: Key generation
+Random key generated (skipped in output)
+Random NDX key generated (skipped in output)
+
+Test 5: Different inputs produce different outputs
+Input[0]: 00000000000000000000ffff00000000 -> 05406dbec71c4163c3033a3a76b9ebad
+Input[1]: 00000000000000000000ffff00000001 -> 1672fc1d4626d0db668088eb5b54a40e
+Input[2]: 00000000000000000000ffff00000002 -> 748c9d664ca12e3669ae344a280202c8
+Input[3]: 00000000000000000000ffff00000003 -> 524ca1315033ea4509bbaabf93c3ec80
+
+Test 6: Verify deterministic encryption
+OK: Deterministic encryption verified
+
+All tests passed!
