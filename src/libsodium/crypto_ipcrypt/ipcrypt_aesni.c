@@ -41,7 +41,7 @@ typedef __m128i BlockVec;
 typedef BlockVec KeySchedule[1 + ROUNDS];
 
 static void
-expand_key(KeySchedule rkeys, const uint8_t key[16])
+expand_key(BlockVec *rkeys, const uint8_t key[16])
 {
     BlockVec t, s;
     size_t   i = 0;
@@ -68,7 +68,7 @@ expand_key(KeySchedule rkeys, const uint8_t key[16])
 }
 
 static void
-aes_encrypt(uint8_t out[16], const uint8_t in[16], const KeySchedule rkeys)
+aes_encrypt(uint8_t out[16], const uint8_t in[16], const BlockVec *rkeys)
 {
     BlockVec t;
     size_t   i;
@@ -82,7 +82,7 @@ aes_encrypt(uint8_t out[16], const uint8_t in[16], const KeySchedule rkeys)
 }
 
 static void
-aes_decrypt(uint8_t out[16], const uint8_t in[16], const KeySchedule rkeys)
+aes_decrypt(uint8_t out[16], const uint8_t in[16], const BlockVec *rkeys)
 {
     KeySchedule rkeys_inv;
     BlockVec    t;
@@ -109,7 +109,7 @@ tweak_expand(const uint8_t tweak[8])
 
 static void
 aes_encrypt_with_tweak(uint8_t out[16], const uint8_t in[16], const uint8_t tweak[8],
-                       const KeySchedule rkeys)
+                       const BlockVec *rkeys)
 {
     const BlockVec tweak_block = tweak_expand(tweak);
     BlockVec       t;
@@ -125,7 +125,7 @@ aes_encrypt_with_tweak(uint8_t out[16], const uint8_t in[16], const uint8_t twea
 
 static void
 aes_decrypt_with_tweak(uint8_t out[16], const uint8_t in[16], const uint8_t tweak[8],
-                       const KeySchedule rkeys)
+                       const BlockVec *rkeys)
 {
     KeySchedule    rkeys_inv;
     const BlockVec tweak_block     = tweak_expand(tweak);
@@ -145,7 +145,7 @@ aes_decrypt_with_tweak(uint8_t out[16], const uint8_t in[16], const uint8_t twea
 }
 
 static BlockVec
-aes_xex_tweak(const uint8_t tweak[16], const KeySchedule tkeys)
+aes_xex_tweak(const uint8_t tweak[16], const BlockVec *tkeys)
 {
     BlockVec tt;
     size_t   i;
@@ -160,7 +160,7 @@ aes_xex_tweak(const uint8_t tweak[16], const KeySchedule tkeys)
 
 static void
 aes_xex_encrypt(uint8_t out[16], const uint8_t in[16], const uint8_t tweak[16],
-                const KeySchedule tkeys, const KeySchedule rkeys)
+                const BlockVec *tkeys, const BlockVec *rkeys)
 {
     const BlockVec tt = aes_xex_tweak(tweak, tkeys);
     BlockVec       t;
@@ -176,7 +176,7 @@ aes_xex_encrypt(uint8_t out[16], const uint8_t in[16], const uint8_t tweak[16],
 
 static void
 aes_xex_decrypt(uint8_t out[16], const uint8_t in[16], const uint8_t tweak[16],
-                const KeySchedule tkeys, const KeySchedule rkeys)
+                const BlockVec *tkeys, const BlockVec *rkeys)
 {
     KeySchedule    rkeys_inv;
     const BlockVec tt = aes_xex_tweak(tweak, tkeys);
