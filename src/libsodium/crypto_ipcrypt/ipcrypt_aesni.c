@@ -102,7 +102,7 @@ aes_decrypt(uint8_t out[16], const uint8_t in[16], const BlockVec *rkeys)
 static BlockVec
 tweak_expand(const uint8_t tweak[8])
 {
-    return _mm_shuffle_epi8(_mm_loadu_si64((const void *) tweak),
+    return _mm_shuffle_epi8(_mm_loadl_epi64((const __m128i *) (const void *) tweak),
                             _mm_setr_epi8(0x00, 0x01, -128, -128, 0x02, 0x03, -128, -128, 0x04,
                                           0x05, -128, -128, 0x06, 0x07, -128, -128));
 }
