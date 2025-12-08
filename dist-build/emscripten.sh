@@ -158,6 +158,8 @@ if test "$JS_RUNTIME" = ""; then
   done
 fi
 
+find test/default -type f -name '*.js' -exec rm -f {} \;
+
 if [ "x$BROWSER_TESTS" != "x" ]; then
   echo 'Compiling the test suite for web browsers...' &&
     emmake make $MAKE_FLAGS CPPFLAGS="$CPPFLAGS -DBROWSER_TESTS=1" check >/dev/null 2>&1
