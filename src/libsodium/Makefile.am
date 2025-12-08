@@ -56,6 +56,9 @@ libsodium_la_SOURCES = \
 	crypto_kdf/crypto_kdf.c \
 	crypto_kdf/hkdf/kdf_hkdf_sha256.c \
 	crypto_kdf/hkdf/kdf_hkdf_sha512.c \
+	crypto_kem/mlkem768/kem_mlkem768.c \
+	crypto_kem/mlkem768/ref/kem_mlkem768_ref.c \
+	crypto_kem/mlkem768/ref/kem_mlkem768_ref.h \
 	crypto_kx/crypto_kx.c \
 	crypto_onetimeauth/crypto_onetimeauth.c \
 	crypto_onetimeauth/poly1305/onetimeauth_poly1305.c \

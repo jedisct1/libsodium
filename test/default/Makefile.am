@@ -47,6 +47,7 @@ EXTRA_DIST = \
 	ipcrypt.exp \
 	kdf.exp \
 	kdf_hkdf.exp \
+	kem_mlkem768.exp \
 	keygen.exp \
 	kx.exp \
 	metamorphic.exp \
@@ -138,6 +139,7 @@ DISTCLEANFILES = \
 	ipcrypt.res \
 	kdf.res \
 	kdf_hkdf.res \
+	kem_mlkem768.res \
 	keygen.res \
 	kx.res \
 	metamorphic.res \
@@ -234,6 +236,7 @@ TESTS_TARGETS = \
 	hash3 \
 	ipcrypt \
 	kdf \
+	kem_mlkem768 \
 	keygen \
 	kx \
 	metamorphic \
@@ -411,6 +414,9 @@ kdf_LDADD                 = $(TESTS_LDADD)
 
 kdf_hkdf_SOURCE            = cmptest.h kdf_hkdf.c
 kdf_hkdf_LDADD             = $(TESTS_LDADD)
+
+kem_mlkem768_SOURCE        = cmptest.h kem_mlkem768.c
+kem_mlkem768_LDADD         = $(TESTS_LDADD)
 
 keygen_SOURCE             = cmptest.h keygen.c
 keygen_LDADD              = $(TESTS_LDADD)

@@ -128,6 +128,7 @@ test/default/kdf_hkdf
 test/default/keygen
 test/default/kx
 test/default/metamorphic
+test/default/kem_mlkem768
 test/default/misuse
 test/default/onetimeauth
 test/default/onetimeauth2

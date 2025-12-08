@@ -1,0 +1,14 @@
+pk (first 32 bytes): [298aa10d423c8dda069d02bc59e6cdf03a096b8b3da4cab9b80ca4a14907672c]
+sk (first 32 bytes): [27d2a77f33756f61208ef113abe82595873d4abc730e5b5d679529bf6a4ceb63]
+ct (first 32 bytes): [695a60d9c79f08343ed9ff5802582063c2ca3a648e543d924affbb39ef4de656]
+ss_enc: [9cddd089ffe70e3996e76f7c8d06746df34d07e8657bc0fcf2bb0e1c3084aea1]
+ss_dec: [9cddd089ffe70e3996e76f7c8d06746df34d07e8657bc0fcf2bb0e1c3084aea1]
+shared secrets match: ok
+random keypair test: ok
+modified ciphertext rejected: ok
+constants: ok
+tv_kem_mlkem768: ok
+NIST KAT vector 1: ok
+NIST KAT vector 2: ok
+Wycheproof decapsulation (tcId 1): ok
+Wycheproof modulus overflow: ok (rejected invalid ek)
