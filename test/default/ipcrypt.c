@@ -1,22 +1,13 @@
 #define TEST_NAME "ipcrypt"
 #include "cmptest.h"
 
-#ifdef DEBUG_TEST
-#    define DPRINT(...) fprintf(stderr, __VA_ARGS__)
-#else
-#    define DPRINT(...) \
-        do {            \
-        } while (0)
-#endif
-
 static void
-print_hex(const unsigned char *data, size_t len)
+dump_hex(const unsigned char *data, size_t len)
 {
-    size_t i;
+    char hex[129];
 
-    for (i = 0; i < len; i++) {
-        printf("%02x", data[i]);
-    }
+    sodium_bin2hex(hex, sizeof hex, data, len);
+    printf("%s\n", hex);
 }
 
 int
@@ -72,20 +63,17 @@ main(void)
 
     printf("\nTest 1: Format-preserving encryption\n");
     printf("Key: ");
-    print_hex(key, sizeof key);
-    printf("\nInput: ");
-    print_hex(input, sizeof input);
-    printf("\n");
+    dump_hex(key, sizeof key);
+    printf("Input: ");
+    dump_hex(input, sizeof input);
 
     crypto_ipcrypt_encrypt(output, input, key);
     printf("Encrypted: ");
-    print_hex(output, sizeof output);
-    printf("\n");
+    dump_hex(output, sizeof output);
 
     crypto_ipcrypt_decrypt(decrypted, output, key);
     printf("Decrypted: ");
-    print_hex(decrypted, sizeof decrypted);
-    printf("\n");
+    dump_hex(decrypted, sizeof decrypted);
 
     if (memcmp(input, decrypted, sizeof input) != 0) {
         printf("FAILED: Decrypted does not match input\n");
@@ -106,18 +94,15 @@ main(void)
 
     printf("\nTest 2: Non-deterministic encryption (ND mode)\n");
     printf("Tweak: ");
-    print_hex(tweak_nd, sizeof tweak_nd);
-    printf("\n");
+    dump_hex(tweak_nd, sizeof tweak_nd);
 
     crypto_ipcrypt_nd_encrypt(nd_output, input, tweak_nd, key);
     printf("ND Encrypted: ");
-    print_hex(nd_output, sizeof nd_output);
-    printf("\n");
+    dump_hex(nd_output, sizeof nd_output);
 
     crypto_ipcrypt_nd_decrypt(decrypted, nd_output, key);
     printf("ND Decrypted: ");
-    print_hex(decrypted, sizeof decrypted);
-    printf("\n");
+    dump_hex(decrypted, sizeof decrypted);
 
     if (memcmp(input, decrypted, sizeof input) != 0) {
         printf("FAILED: ND decrypted does not match input\n");
@@ -138,20 +123,17 @@ main(void)
 
     printf("\nTest 3: Non-deterministic encryption (NDX mode with 16-byte tweak)\n");
     printf("NDX Key: ");
-    print_hex(ndx_key, sizeof ndx_key);
-    printf("\nNDX Tweak: ");
-    print_hex(tweak_ndx, sizeof tweak_ndx);
-    printf("\n");
+    dump_hex(ndx_key, sizeof ndx_key);
+    printf("NDX Tweak: ");
+    dump_hex(tweak_ndx, sizeof tweak_ndx);
 
     crypto_ipcrypt_ndx_encrypt(ndx_output, input, tweak_ndx, ndx_key);
     printf("NDX Encrypted: ");
-    print_hex(ndx_output, sizeof ndx_output);
-    printf("\n");
+    dump_hex(ndx_output, sizeof ndx_output);
 
     crypto_ipcrypt_ndx_decrypt(decrypted, ndx_output, ndx_key);
     printf("NDX Decrypted: ");
-    print_hex(decrypted, sizeof decrypted);
-    printf("\n");
+    dump_hex(decrypted, sizeof decrypted);
 
     if (memcmp(input, decrypted, sizeof input) != 0) {
         printf("FAILED: NDX decrypted does not match input\n");
@@ -179,10 +161,8 @@ main(void)
 
         crypto_ipcrypt_encrypt(output, input, key);
         printf("Input[%zu]: ", i);
-        print_hex(input, sizeof input);
-        printf(" -> ");
-        print_hex(output, sizeof output);
-        printf("\n");
+        dump_hex(input, sizeof input);
+        dump_hex(output, sizeof output);
     }
 
     /* Test 6: Verify deterministic encryption */
