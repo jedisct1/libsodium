@@ -170,10 +170,10 @@ EOM
   exit 0
 fi
 
-if test "$NODE" = ""; then
+if test "$JS_RUNTIME" = ""; then
   for candidate in bun nodejs node /usr/local/bin/bun /usr/local/bin/nodejs /usr/local/bin/node; do
     if command -v $candidate >/dev/null; then
-      NODE=$candidate
+      JS_RUNTIME=$candidate
       break
     fi
   done
@@ -183,11 +183,11 @@ if [ "x$BROWSER_TESTS" != "x" ]; then
   echo 'Compiling the test suite for web browsers...' &&
     emmake make $MAKE_FLAGS CPPFLAGS="$CPPFLAGS -DBROWSER_TESTS=1" check >/dev/null 2>&1
 else
-  if test "$NODE" = ""; then
+  if test "$JS_RUNTIME" = ""; then
     echo 'Javascript runtime not found - test suite skipped' >&2
     exit 1
   fi
-  echo "Using [${NODE}] as a Javascript runtime"
+  echo "Using [${JS_RUNTIME}] as a Javascript runtime"
   echo 'Compiling the test suite...' &&
     emmake make $MAKE_FLAGS check >/dev/null 2>&1
 fi
@@ -199,7 +199,7 @@ if [ "x$BROWSER_TESTS" != "x" ]; then
       mkdir -p browser &&
       rm -f browser/tests.txt &&
       for file in *.js; do
-        grep -Fv "#! /usr/bin/env ${NODE}" "$file" >"browser/${file}"
+        cp "$file" "browser/${file}"
         tname=$(echo "$file" | sed 's/.js$//')
         cp -f "${tname}.exp" "browser/${tname}.exp"
         sed "s/{{tname}}/${tname}/" index.html.tpl >"browser/${tname}.html"
@@ -212,8 +212,8 @@ else
   (
     cd test/default &&
       for file in *.js; do
-        echo "#! /usr/bin/env ${NODE}" >"${file}.tmp"
-        grep -Fv "#! /usr/bin/env ${NODE}" "$file" >>"${file}.tmp"
+        echo "#! /usr/bin/env ${JS_RUNTIME}" >"${file}.tmp"
+        cat "$file" >> "${file}.tmp"
         chmod +x "${file}.tmp"
         mv -f "${file}.tmp" "$file"
       done
