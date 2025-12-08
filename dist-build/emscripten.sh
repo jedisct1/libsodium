@@ -151,12 +151,10 @@ fi
 
 if test "$NODE" = ""; then
   for candidate in bun nodejs node /usr/local/bin/bun /usr/local/bin/nodejs /usr/local/bin/node; do
-    case $($candidate --version 2>&1) in #(
-    v*)
+    if command -v $candidate >/dev/null; then
       NODE=$candidate
       break
-      ;;
-    esac
+    fi
   done
 fi
 
@@ -165,7 +163,7 @@ if [ "x$BROWSER_TESTS" != "x" ]; then
     emmake make $MAKE_FLAGS CPPFLAGS="$CPPFLAGS -DBROWSER_TESTS=1" check >/dev/null 2>&1
 else
   if test "$NODE" = ""; then
-    echo 'node.js not found - test suite skipped' >&2
+    echo 'Javascript runtime not found - test suite skipped' >&2
     exit 1
   fi
   echo "Using [${NODE}] as a Javascript runtime"
