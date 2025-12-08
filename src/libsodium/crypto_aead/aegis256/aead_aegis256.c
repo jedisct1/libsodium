@@ -109,6 +109,7 @@ crypto_aead_aegis256_encrypt_detached(unsigned char *c, unsigned char *mac,
 {
     const size_t maclen = crypto_aead_aegis256_ABYTES;
 
+    (void) nsec;
     if (maclen_p != NULL) {
         *maclen_p = maclen;
     }
@@ -128,6 +129,7 @@ crypto_aead_aegis256_decrypt_detached(unsigned char *m, unsigned char *nsec, con
 {
     const size_t maclen = crypto_aead_aegis256_ABYTES;
 
+    (void) nsec;
     if (clen > crypto_aead_aegis256_MESSAGEBYTES_MAX ||
         adlen > crypto_aead_aegis256_MESSAGEBYTES_MAX) {
         return -1;
