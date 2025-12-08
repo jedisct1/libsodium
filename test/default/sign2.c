@@ -99,13 +99,9 @@ static TestData test_data[] = {
 int
 main(void)
 {
-    crypto_sign_state st;
     unsigned char     m[1024];
     unsigned char     sig[crypto_sign_BYTES];
     unsigned char     pk[crypto_sign_PUBLICKEYBYTES];
-    char              m_hex[1024 * 2 + 1];
-    char              sig_hex[crypto_sign_BYTES * 2 + 1];
-    char              pk_hex[crypto_sign_PUBLICKEYBYTES * 2 + 1];
     size_t            m_len;
     unsigned int      i;
     int               ret;
