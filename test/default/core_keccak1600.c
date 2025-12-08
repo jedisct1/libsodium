@@ -3,19 +3,6 @@
 #include "cmptest.h"
 
 static void
-print_state(const unsigned char *state, size_t len)
-{
-    size_t i;
-    for (i = 0; i < len; i++) {
-        if (i > 0 && i % 16 == 0) {
-            printf("\n");
-        }
-        printf("%02x", state[i]);
-    }
-    printf("\n");
-}
-
-static void
 print_hex(const char *label, const unsigned char *data, size_t len)
 {
     size_t i;

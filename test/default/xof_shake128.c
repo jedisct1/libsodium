@@ -68,7 +68,7 @@ main(void)
 
     unsigned char             out[256];
     crypto_xof_shake128_state state;
-    size_t                    i, j;
+    size_t                    i;
 
     /* Test constants */
     assert(crypto_xof_shake128_blockbytes() == 168);
