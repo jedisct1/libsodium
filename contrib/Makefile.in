@@ -129,10 +129,6 @@ am__can_run_installinfo = \
     n|no|NO) false;; \
     *) (install-info --version) >/dev/null 2>&1;; \
   esac
-am__extra_recursive_targets = check-valgrind-recursive \
-	check-valgrind-memcheck-recursive \
-	check-valgrind-helgrind-recursive check-valgrind-drd-recursive \
-	check-valgrind-sgcheck-recursive
 am__tagged_files = $(HEADERS) $(SOURCES) $(TAGS_FILES) $(LISP)
 am__DIST_COMMON = $(srcdir)/Makefile.in
 DISTFILES = $(DIST_COMMON) $(DIST_SOURCES) $(TEXINFOS) $(EXTRA_DIST)
@@ -348,11 +344,6 @@ mostlyclean-libtool:
 
 clean-libtool:
 	-rm -rf .libs _libs
-check-valgrind-local: 
-check-valgrind-memcheck-local: 
-check-valgrind-helgrind-local: 
-check-valgrind-drd-local: 
-check-valgrind-sgcheck-local: 
 tags TAGS:
 
 ctags CTAGS:
@@ -427,26 +418,6 @@ distclean-generic:
 maintainer-clean-generic:
 	@echo "This command is intended for maintainers to use"
 	@echo "it deletes files that may require special tools to rebuild."
-check-valgrind: check-valgrind-am
-
-check-valgrind-am: check-valgrind-local
-
-check-valgrind-drd: check-valgrind-drd-am
-
-check-valgrind-drd-am: check-valgrind-drd-local
-
-check-valgrind-helgrind: check-valgrind-helgrind-am
-
-check-valgrind-helgrind-am: check-valgrind-helgrind-local
-
-check-valgrind-memcheck: check-valgrind-memcheck-am
-
-check-valgrind-memcheck-am: check-valgrind-memcheck-local
-
-check-valgrind-sgcheck: check-valgrind-sgcheck-am
-
-check-valgrind-sgcheck-am: check-valgrind-sgcheck-local
-
 clean: clean-am
 
 clean-am: clean-generic clean-libtool mostlyclean-am
@@ -515,12 +486,7 @@ uninstall-am:
 
 .MAKE: install-am install-strip
 
-.PHONY: all all-am check check-am check-valgrind-am \
-	check-valgrind-drd-am check-valgrind-drd-local \
-	check-valgrind-helgrind-am check-valgrind-helgrind-local \
-	check-valgrind-local check-valgrind-memcheck-am \
-	check-valgrind-memcheck-local check-valgrind-sgcheck-am \
-	check-valgrind-sgcheck-local clean clean-generic clean-libtool \
+.PHONY: all all-am check check-am clean clean-generic clean-libtool \
 	cscopelist-am ctags-am distclean distclean-generic \
 	distclean-libtool distdir dvi dvi-am html html-am info info-am \
 	install install-am install-data install-data-am install-dvi \

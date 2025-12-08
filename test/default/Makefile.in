@@ -525,10 +525,6 @@ am__can_run_installinfo = \
     n|no|NO) false;; \
     *) (install-info --version) >/dev/null 2>&1;; \
   esac
-am__extra_recursive_targets = check-valgrind-recursive \
-	check-valgrind-memcheck-recursive \
-	check-valgrind-helgrind-recursive check-valgrind-drd-recursive \
-	check-valgrind-sgcheck-recursive
 am__tagged_files = $(HEADERS) $(SOURCES) $(TAGS_FILES) $(LISP)
 # Read a list of newline-separated strings from the standard input,
 # and print each of them once, without duplicates.  Input order is
@@ -1767,11 +1763,6 @@ mostlyclean-libtool:
 
 clean-libtool:
 	-rm -rf .libs _libs
-check-valgrind-local: 
-check-valgrind-memcheck-local: 
-check-valgrind-helgrind-local: 
-check-valgrind-drd-local: 
-check-valgrind-sgcheck-local: 
 
 ID: $(am__tagged_files)
 	$(am__define_uniq_tagged_files); mkid -fID $$unique
@@ -2639,26 +2630,6 @@ distclean-generic:
 maintainer-clean-generic:
 	@echo "This command is intended for maintainers to use"
 	@echo "it deletes files that may require special tools to rebuild."
-check-valgrind: check-valgrind-am
-
-check-valgrind-am: check-valgrind-local
-
-check-valgrind-drd: check-valgrind-drd-am
-
-check-valgrind-drd-am: check-valgrind-drd-local
-
-check-valgrind-helgrind: check-valgrind-helgrind-am
-
-check-valgrind-helgrind-am: check-valgrind-helgrind-local
-
-check-valgrind-memcheck: check-valgrind-memcheck-am
-
-check-valgrind-memcheck-am: check-valgrind-memcheck-local
-
-check-valgrind-sgcheck: check-valgrind-sgcheck-am
-
-check-valgrind-sgcheck-am: check-valgrind-sgcheck-local
-
 clean: clean-am
 
 clean-am: clean-checkPROGRAMS clean-generic clean-libtool \
@@ -2891,20 +2862,15 @@ uninstall-am:
 .MAKE: check-am install-am install-strip
 
 .PHONY: CTAGS GTAGS TAGS all all-am am--depfiles check check-TESTS \
-	check-am check-valgrind-am check-valgrind-drd-am \
-	check-valgrind-drd-local check-valgrind-helgrind-am \
-	check-valgrind-helgrind-local check-valgrind-local \
-	check-valgrind-memcheck-am check-valgrind-memcheck-local \
-	check-valgrind-sgcheck-am check-valgrind-sgcheck-local clean \
-	clean-checkPROGRAMS clean-generic clean-libtool cscopelist-am \
-	ctags ctags-am distclean distclean-compile distclean-generic \
-	distclean-libtool distclean-tags distdir dvi dvi-am html \
-	html-am info info-am install install-am install-data \
-	install-data-am install-dvi install-dvi-am install-exec \
-	install-exec-am install-html install-html-am install-info \
-	install-info-am install-man install-pdf install-pdf-am \
-	install-ps install-ps-am install-strip installcheck \
-	installcheck-am installdirs maintainer-clean \
+	check-am clean clean-checkPROGRAMS clean-generic clean-libtool \
+	cscopelist-am ctags ctags-am distclean distclean-compile \
+	distclean-generic distclean-libtool distclean-tags distdir dvi \
+	dvi-am html html-am info info-am install install-am \
+	install-data install-data-am install-dvi install-dvi-am \
+	install-exec install-exec-am install-html install-html-am \
+	install-info install-info-am install-man install-pdf \
+	install-pdf-am install-ps install-ps-am install-strip \
+	installcheck installcheck-am installdirs maintainer-clean \
 	maintainer-clean-generic mostlyclean mostlyclean-compile \
 	mostlyclean-generic mostlyclean-libtool pdf pdf-am ps ps-am \
 	recheck tags tags-am uninstall uninstall-am
