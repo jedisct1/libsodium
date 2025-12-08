@@ -48,6 +48,10 @@ libsodium_la_SOURCES = \
 	crypto_hash/sha256/cp/hash_sha256_cp.c \
 	crypto_hash/sha512/hash_sha512.c \
 	crypto_hash/sha512/cp/hash_sha512_cp.c \
+	crypto_ipcrypt/crypto_ipcrypt.c \
+	crypto_ipcrypt/ipcrypt_soft.c \
+	crypto_ipcrypt/ipcrypt_soft.h \
+	crypto_ipcrypt/implementations.h \
 	crypto_kdf/blake2b/kdf_blake2b.c \
 	crypto_kdf/crypto_kdf.c \
 	crypto_kdf/hkdf/kdf_hkdf_sha256.c \
@@ -251,7 +255,9 @@ libarmcrypto_la_SOURCES = \
 	crypto_aead/aegis128l/aegis128l_armcrypto.h \
 	crypto_aead/aegis256/aegis256_armcrypto.c \
 	crypto_aead/aegis256/aegis256_armcrypto.h \
-	crypto_aead/aes256gcm/armcrypto/aead_aes256gcm_armcrypto.c
+	crypto_aead/aes256gcm/armcrypto/aead_aes256gcm_armcrypto.c \
+	crypto_ipcrypt/ipcrypt_armcrypto.c \
+	crypto_ipcrypt/ipcrypt_armcrypto.h
 
 libaesni_la_LDFLAGS = $(libsodium_la_LDFLAGS)
 libaesni_la_CPPFLAGS = $(libsodium_la_CPPFLAGS) \
@@ -261,7 +267,9 @@ libaesni_la_SOURCES = \
 	crypto_aead/aegis128l/aegis128l_aesni.h \
 	crypto_aead/aegis256/aegis256_aesni.c \
 	crypto_aead/aegis256/aegis256_aesni.h \
-	crypto_aead/aes256gcm/aesni/aead_aes256gcm_aesni.c
+	crypto_aead/aes256gcm/aesni/aead_aes256gcm_aesni.c \
+	crypto_ipcrypt/ipcrypt_aesni.c \
+	crypto_ipcrypt/ipcrypt_aesni.h
 
 libsse2_la_LDFLAGS = $(libsodium_la_LDFLAGS)
 libsse2_la_CPPFLAGS = $(libsodium_la_CPPFLAGS) \

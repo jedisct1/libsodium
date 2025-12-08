@@ -44,6 +44,7 @@ EXTRA_DIST = \
 	generichash3.exp \
 	hash.exp \
 	hash3.exp \
+	ipcrypt.exp \
 	kdf.exp \
 	kdf_hkdf.exp \
 	keygen.exp \
@@ -134,6 +135,7 @@ DISTCLEANFILES = \
 	hash.res \
 	hash2.res \
 	hash3.res \
+	ipcrypt.res \
 	kdf.res \
 	kdf_hkdf.res \
 	keygen.res \
@@ -230,6 +232,7 @@ TESTS_TARGETS = \
 	generichash3 \
 	hash \
 	hash3 \
+	ipcrypt \
 	kdf \
 	keygen \
 	kx \
@@ -399,6 +402,9 @@ hash_LDADD                = $(TESTS_LDADD)
 
 hash3_SOURCE              = cmptest.h hash3.c
 hash3_LDADD               = $(TESTS_LDADD)
+
+ipcrypt_SOURCE            = cmptest.h ipcrypt.c
+ipcrypt_LDADD             = $(TESTS_LDADD)
 
 kdf_SOURCE                = cmptest.h kdf.c
 kdf_LDADD                 = $(TESTS_LDADD)

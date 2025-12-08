@@ -399,6 +399,10 @@
     <ClCompile Include="..\..\src\libsodium\sodium\core.c" />
     <ClCompile Include="..\..\src\libsodium\sodium\utils.c" />
     <ClCompile Include="..\..\src\libsodium\sodium\version.c" />
+    <ClCompile Include="..\..\src\libsodium\crypto_ipcrypt\ipcrypt_armcrypto.c" />
+    <ClCompile Include="..\..\src\libsodium\crypto_ipcrypt\crypto_ipcrypt.c" />
+    <ClCompile Include="..\..\src\libsodium\crypto_ipcrypt\ipcrypt_soft.c" />
+    <ClCompile Include="..\..\src\libsodium\crypto_ipcrypt\ipcrypt_aesni.c" />
     <ClCompile Include="..\..\src\libsodium\crypto_stream\crypto_stream.c" />
     <ClCompile Include="..\..\src\libsodium\crypto_stream\xchacha20\stream_xchacha20.c" />
     <ClCompile Include="..\..\src\libsodium\crypto_stream\chacha20\stream_chacha20.c" />
@@ -524,6 +528,7 @@
     <ClInclude Include="..\..\src\libsodium\include\sodium\crypto_secretbox_xsalsa20poly1305.h" />
     <ClInclude Include="..\..\src\libsodium\include\sodium\crypto_secretbox.h" />
     <ClInclude Include="..\..\src\libsodium\include\sodium\crypto_scalarmult_ed25519.h" />
+    <ClInclude Include="..\..\src\libsodium\include\sodium\crypto_ipcrypt.h" />
     <ClInclude Include="..\..\src\libsodium\include\sodium\crypto_box_curve25519xsalsa20poly1305.h" />
     <ClInclude Include="..\..\src\libsodium\include\sodium\crypto_generichash_blake2b.h" />
     <ClInclude Include="..\..\src\libsodium\include\sodium\private\ed25519_ref10.h" />
@@ -566,6 +571,10 @@
     <ClInclude Include="..\..\src\libsodium\crypto_onetimeauth\poly1305\donna\poly1305_donna64.h" />
     <ClInclude Include="..\..\src\libsodium\crypto_onetimeauth\poly1305\donna\poly1305_donna32.h" />
     <ClInclude Include="..\..\src\libsodium\crypto_onetimeauth\poly1305\sse2\poly1305_sse2.h" />
+    <ClInclude Include="..\..\src\libsodium\crypto_ipcrypt\ipcrypt_soft.h" />
+    <ClInclude Include="..\..\src\libsodium\crypto_ipcrypt\ipcrypt_aesni.h" />
+    <ClInclude Include="..\..\src\libsodium\crypto_ipcrypt\ipcrypt_armcrypto.h" />
+    <ClInclude Include="..\..\src\libsodium\crypto_ipcrypt\implementations.h" />
     <ClInclude Include="..\..\src\libsodium\crypto_stream\chacha20\stream_chacha20.h" />
     <ClInclude Include="..\..\src\libsodium\crypto_stream\chacha20\ref\chacha20_ref.h" />
     <ClInclude Include="..\..\src\libsodium\crypto_stream\chacha20\dolbeau\u4.h" />

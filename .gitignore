@@ -122,6 +122,7 @@ test/default/generichash2
 test/default/generichash3
 test/default/hash
 test/default/hash3
+test/default/ipcrypt
 test/default/kdf
 test/default/kdf_hkdf
 test/default/keygen
