@@ -56,7 +56,7 @@ typedef struct poly1305_state_internal_t {
 /*
  * _mm_loadl_epi64() is turned into a simple MOVQ. So, unaligned accesses are
  * totally fine, even though this intrinsic requires a __m128i* input.
- * This confuses dynamic analysis, so force alignment, only in debug mode.
+ * This confuses static analysis, so force alignment, only in debug mode.
  */
 # ifdef DEBUG
 static xmmi
