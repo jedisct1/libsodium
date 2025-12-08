@@ -19,7 +19,6 @@ tv_kdf_hkdf(void)
     size_t         out_len = 99;
     char           hex[99 * 2 + 1];
     size_t         i;
-    int            ret;
 
     master_key = (unsigned char *) sodium_malloc(master_key_len);
     prk256 = (unsigned char *) sodium_malloc(prk256_len);
