@@ -154,7 +154,7 @@ test_kat_vector(const char *d_hex, const char *z_hex, const char *pk_prefix_hex,
         return -1;
     }
 
-    crypto_kem_mlkem768_enc_deterministic(ct, ss_enc, pk, enc_seed);
+    assert(crypto_kem_mlkem768_enc_deterministic(ct, ss_enc, pk, enc_seed) == 0);
 
     if (memcmp(ct, expected_ct_prefix, 32) != 0) {
         sodium_bin2hex(hex, sizeof hex, ct, 32);
@@ -168,7 +168,7 @@ test_kat_vector(const char *d_hex, const char *z_hex, const char *pk_prefix_hex,
         return -1;
     }
 
-    crypto_kem_mlkem768_dec(ss_dec, ct, sk);
+    assert(crypto_kem_mlkem768_dec(ss_dec, ct, sk) == 0);
 
     if (memcmp(ss_dec, expected_ss, 32) != 0) {
         sodium_bin2hex(hex, sizeof hex, ss_dec, 32);
@@ -213,14 +213,14 @@ tv_kem_mlkem768(void)
     for (i = 0; i < 32; i++) {
         enc_seed[i] = (unsigned char)(i + 64);
     }
-    crypto_kem_mlkem768_enc_deterministic(ct, ss_enc, pk, enc_seed);
+    assert(crypto_kem_mlkem768_enc_deterministic(ct, ss_enc, pk, enc_seed) == 0);
 
     sodium_bin2hex(hex, sizeof hex, ct, 32);
     printf("ct (first 32 bytes): [%s]\n", hex);
     sodium_bin2hex(hex, sizeof hex, ss_enc, crypto_kem_mlkem768_SHAREDSECRETBYTES);
     printf("ss_enc: [%s]\n", hex);
 
-    crypto_kem_mlkem768_dec(ss_dec, ct, sk);
+    assert(crypto_kem_mlkem768_dec(ss_dec, ct, sk) == 0);
 
     sodium_bin2hex(hex, sizeof hex, ss_dec, crypto_kem_mlkem768_SHAREDSECRETBYTES);
     printf("ss_dec: [%s]\n", hex);
@@ -232,8 +232,8 @@ tv_kem_mlkem768(void)
     }
 
     crypto_kem_mlkem768_keypair(pk, sk);
-    crypto_kem_mlkem768_enc(ct, ss_enc, pk);
-    crypto_kem_mlkem768_dec(ss_dec, ct, sk);
+    assert(crypto_kem_mlkem768_enc(ct, ss_enc, pk) == 0);
+    assert(crypto_kem_mlkem768_dec(ss_dec, ct, sk) == 0);
     if (memcmp(ss_enc, ss_dec, crypto_kem_mlkem768_SHAREDSECRETBYTES) != 0) {
         printf("ERROR: shared secrets don't match (random keys)!\n");
     } else {
@@ -241,7 +241,7 @@ tv_kem_mlkem768(void)
     }
 
     ct[0] ^= 0x01;
-    crypto_kem_mlkem768_dec(ss_dec, ct, sk);
+    assert(crypto_kem_mlkem768_dec(ss_dec, ct, sk) == 0);
     if (memcmp(ss_enc, ss_dec, crypto_kem_mlkem768_SHAREDSECRETBYTES) == 0) {
         printf("ERROR: decapsulation succeeded with modified ciphertext!\n");
     } else {
@@ -319,7 +319,7 @@ tv_wycheproof_decapsulation(void)
         return;
     }
 
-    crypto_kem_mlkem768_dec(ss, ct, sk);
+    assert(crypto_kem_mlkem768_dec(ss, ct, sk) == 0);
 
     if (memcmp(ss, expected_ss, 32) == 0) {
         printf("ok\n");
