@@ -235,7 +235,10 @@ sha3_512(unsigned char out[64], const unsigned char *in, size_t inlen)
         offset += chunk_size;
         consumed += chunk_size;
     }
-
+    if (offset == SHA3_512_RATE) {
+        crypto_core_keccak1600_permute_24(state);
+        offset = 0;
+    }
     if (offset == SHA3_512_RATE - 1) {
         pad = SHA3_DOMAIN | 0x80;
         crypto_core_keccak1600_xor_bytes(state, &pad, offset, 1);
