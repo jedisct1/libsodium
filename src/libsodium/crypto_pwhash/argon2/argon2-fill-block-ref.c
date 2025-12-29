@@ -29,7 +29,7 @@ fill_block(const block *prev_block, const block *ref_block, block *next_block)
     copy_block(&blockR, ref_block);
     xor_block(&blockR, prev_block);
     copy_block(&block_tmp, &blockR);
-    /* Now blockR = ref_block + prev_block and bloc_tmp = ref_block + prev_block
+    /* Now blockR = ref_block + prev_block and block_tmp = ref_block + prev_block
        Apply Blake2 on columns of 64-bit words: (0,1,...,15), then
        (16,17,..31)... finally (112,113,...127) */
     for (i = 0; i < 8; ++i) {
@@ -70,7 +70,7 @@ fill_block_with_xor(const block *prev_block, const block *ref_block,
     copy_block(&block_tmp, &blockR);
     xor_block(&block_tmp,
               next_block); /* Saving the next block contents for XOR over */
-    /* Now blockR = ref_block + prev_block and bloc_tmp = ref_block + prev_block
+    /* Now blockR = ref_block + prev_block and block_tmp = ref_block + prev_block
      * + next_block */
     /* Apply Blake2 on columns of 64-bit words: (0,1,...,15) , then
        (16,17,..31)... finally (112,113,...127) */
