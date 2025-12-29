@@ -69,10 +69,10 @@ tweak_expand(const uint8_t tweak[8])
 {
     aes_block_t out;
 
-    out.w0 = ((uint32_t) tweak[0]) | ((uint32_t) tweak[1] << 16);
-    out.w1 = ((uint32_t) tweak[2]) | ((uint32_t) tweak[3] << 16);
-    out.w2 = ((uint32_t) tweak[4]) | ((uint32_t) tweak[5] << 16);
-    out.w3 = ((uint32_t) tweak[6]) | ((uint32_t) tweak[7] << 16);
+    out.w0 = ((uint32_t) tweak[0]) | ((uint32_t) tweak[1] << 8);
+    out.w1 = ((uint32_t) tweak[2]) | ((uint32_t) tweak[3] << 8);
+    out.w2 = ((uint32_t) tweak[4]) | ((uint32_t) tweak[5] << 8);
+    out.w3 = ((uint32_t) tweak[6]) | ((uint32_t) tweak[7] << 8);
 
     return out;
 }
