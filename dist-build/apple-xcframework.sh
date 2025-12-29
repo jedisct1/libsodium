@@ -60,7 +60,11 @@ else
 fi
 
 I386_SIMULATOR_SUPPORTED=false
-[ "$(echo "$IOS_SIMULATOR_VERSION_MIN" | cut -d'.' -f1)" -lt "11" ] && I386_SIMULATOR_SUPPORTED=true
+if [ "$(echo "$IOS_SIMULATOR_VERSION_MIN" | cut -d'.' -f1)" -lt "11" ]; then
+  if echo 'int main(void){return 0;}' | xcrun -sdk iphonesimulator clang -arch i386 -x c - -o /dev/null 2>/dev/null; then
+    I386_SIMULATOR_SUPPORTED=true
+  fi
+fi
 
 VISIONOS_SUPPORTED=false
 [ -d "${XCODEDIR}/Platforms/XROS.platform" ] && VISIONOS_SUPPORTED=true
