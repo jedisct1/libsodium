@@ -145,7 +145,7 @@ fn initLibConfig(b: *std.Build, target: std.Build.ResolvedTarget, lib: *Compile)
 
 pub fn build(b: *std.Build) !void {
     const io: Io = if (is_zig_16) b.graph.io else {};
-    const cwd = Dir.cwd();
+    const cwd = if (is_zig_16) Dir.cwd() else std.fs.cwd();
 
     const src_path = "src/libsodium";
     const src_dir = if (is_zig_16)
