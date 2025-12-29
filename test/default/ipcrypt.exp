@@ -46,4 +46,7 @@ Input[3]: 00000000000000000000ffff00000003
 Test 6: Verify deterministic encryption
 OK: Deterministic encryption verified
 
+Test 7: In-place encryption and decryption
+OK: In-place round-trip successful
+
 All tests passed!

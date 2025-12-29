@@ -181,6 +181,22 @@ main(void)
     }
     printf("OK: Deterministic encryption verified\n");
 
+    printf("\nTest 7: In-place encryption and decryption\n");
+
+    crypto_ipcrypt_encrypt(output, input, key);
+    memcpy(decrypted, input, sizeof input);
+    crypto_ipcrypt_encrypt(decrypted, decrypted, key);
+    if (memcmp(output, decrypted, sizeof output) != 0) {
+        printf("FAILED: In-place encryption differs from out-of-place\n");
+        return 1;
+    }
+    crypto_ipcrypt_decrypt(decrypted, decrypted, key);
+    if (memcmp(input, decrypted, sizeof input) != 0) {
+        printf("FAILED: In-place decryption does not match original\n");
+        return 1;
+    }
+    printf("OK: In-place round-trip successful\n");
+
     printf("\nAll tests passed!\n");
 
     return 0;
