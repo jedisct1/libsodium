@@ -42,6 +42,10 @@ int crypto_core_ed25519_sub(unsigned char *r,
                             const unsigned char *p, const unsigned char *q)
             __attribute__ ((nonnull));
 
+/*
+ * Removal notice: this function is undocumented and has been marked as
+ * deprecated since 2019. It will be removed. Bindings should not refer to it.
+ */
 SODIUM_EXPORT
 int crypto_core_ed25519_from_uniform(unsigned char *p, const unsigned char *r)
             __attribute__ ((nonnull));
