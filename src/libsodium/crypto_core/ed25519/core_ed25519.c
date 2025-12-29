@@ -57,14 +57,6 @@ crypto_core_ed25519_sub(unsigned char *r,
     return 0;
 }
 
-int
-crypto_core_ed25519_from_uniform(unsigned char *p, const unsigned char *r)
-{
-    ge25519_from_uniform(p, r);
-
-    return 0;
-}
-
 #define HASH_GE_L 48U
 
 static int
@@ -121,7 +113,7 @@ crypto_core_ed25519_random(unsigned char *p)
     unsigned char h[crypto_core_ed25519_UNIFORMBYTES];
 
     randombytes_buf(h, sizeof h);
-    (void) crypto_core_ed25519_from_uniform(p, h);
+    ge25519_from_uniform(p, h);
 }
 
 void
