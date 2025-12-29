@@ -65,7 +65,7 @@ shake256_finalize(shake256_state_internal *state)
     /* Apply padding: domain byte at current position, 0x80 at last byte */
     if (state->offset == SHAKE256_RATE - 1) {
         /* Special case: padding fits in one byte */
-        pad = state->domain | 0x80;
+        pad = (unsigned char) (state->domain ^ 0x80);
         crypto_core_keccak1600_xor_bytes(state->state, &pad, state->offset, 1);
     } else {
         /* Normal case: domain and 0x80 at different positions */
