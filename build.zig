@@ -1,10 +1,14 @@
 const std = @import("std");
 const fmt = std.fmt;
-const fs = std.fs;
 const heap = std.heap;
 const mem = std.mem;
 const Compile = std.Build.Step.Compile;
 const Target = std.Target;
+
+// Zig 0.16+ uses std.Io.Dir, 0.15 uses std.fs
+const is_zig_16 = @hasDecl(std, "Io") and @hasDecl(std.Io, "Dir");
+const Dir = if (is_zig_16) std.Io.Dir else std.fs.Dir;
+const Io = if (is_zig_16) std.Io else void;
 
 fn initLibConfig(b: *std.Build, target: std.Build.ResolvedTarget, lib: *Compile) void {
     lib.root_module.link_libc = true;
@@ -140,15 +144,16 @@ fn initLibConfig(b: *std.Build, target: std.Build.ResolvedTarget, lib: *Compile)
 }
 
 pub fn build(b: *std.Build) !void {
-    const root_path = b.pathFromRoot(".");
-    var cwd = try fs.openDirAbsolute(root_path, .{});
-    defer cwd.close();
+    const io: Io = if (is_zig_16) b.graph.io else {};
+    const cwd = Dir.cwd();
 
     const src_path = "src/libsodium";
-    const src_dir = if (@hasField(fs.Dir.OpenOptions, "follow_symlinks"))
-        try fs.Dir.openDir(cwd, src_path, .{ .iterate = true, .follow_symlinks = false })
+    const src_dir = if (is_zig_16)
+        try cwd.openDir(io, src_path, .{ .iterate = true })
+    else if (@hasField(Dir.OpenOptions, "follow_symlinks"))
+        try cwd.openDir(src_path, .{ .iterate = true, .follow_symlinks = false })
     else
-        try fs.Dir.openDir(cwd, src_path, .{ .iterate = true, .no_follow = true });
+        try cwd.openDir(src_path, .{ .iterate = true, .no_follow = true });
 
     var target = b.standardTargetOptions(.{});
     const optimize = b.standardOptimizeOption(.{});
@@ -209,14 +214,19 @@ pub fn build(b: *std.Build) !void {
     const prebuilt_version_file_path = "builds/msvc/version.h";
     const version_file_path = "include/sodium/version.h";
 
-    if (@hasField(fs.Dir.OpenOptions, "follow_symlinks"))
+    if (is_zig_16) {
+        src_dir.access(io, version_file_path, .{}) catch {
+            try Dir.copyFile(cwd, prebuilt_version_file_path, src_dir, version_file_path, io, .{});
+        };
+    } else if (@hasField(Dir.OpenOptions, "follow_symlinks")) {
         src_dir.access(version_file_path, .{ .read = true }) catch {
             try cwd.copyFile(prebuilt_version_file_path, src_dir, version_file_path, .{});
-        }
-    else
+        };
+    } else {
         src_dir.access(version_file_path, .{ .mode = .read_only }) catch {
             try cwd.copyFile(prebuilt_version_file_path, src_dir, version_file_path, .{});
         };
+    }
 
     for (libs.items) |lib| {
         b.installArtifact(lib);
@@ -237,7 +247,7 @@ pub fn build(b: *std.Build) !void {
         const allocator = heap.page_allocator;
 
         var walker = try src_dir.walk(allocator);
-        while (try walker.next()) |entry| {
+        while (if (is_zig_16) try walker.next(io) else try walker.next()) |entry| {
             const name = entry.basename;
             if (mem.endsWith(u8, name, ".c")) {
                 const full_path = try fmt.allocPrint(allocator, "{s}/{s}", .{ src_path, entry.path });
@@ -255,20 +265,40 @@ pub fn build(b: *std.Build) !void {
 
     const test_path = "test/default";
     const out_bin_path = "zig-out/bin";
-    const test_dir = if (@hasField(fs.Dir.OpenOptions, "follow_symlinks"))
-        try fs.Dir.openDir(cwd, test_path, .{ .iterate = true, .follow_symlinks = false })
+    const test_dir = if (is_zig_16)
+        try cwd.openDir(io, test_path, .{ .iterate = true })
+    else if (@hasField(Dir.OpenOptions, "follow_symlinks"))
+        try cwd.openDir(test_path, .{ .iterate = true, .follow_symlinks = false })
     else
-        try fs.Dir.openDir(cwd, test_path, .{ .iterate = true, .no_follow = true });
-    fs.Dir.makePath(cwd, out_bin_path) catch {};
-    const out_bin_dir = try fs.Dir.openDir(cwd, out_bin_path, .{});
-    try test_dir.copyFile("run.sh", out_bin_dir, "run.sh", .{});
+        try cwd.openDir(test_path, .{ .iterate = true, .no_follow = true });
+
+    if (is_zig_16) {
+        cwd.createDirPath(io, out_bin_path) catch {};
+    } else {
+        cwd.makePath(out_bin_path) catch {};
+    }
+    const out_bin_dir = if (is_zig_16)
+        try cwd.openDir(io, out_bin_path, .{})
+    else
+        try cwd.openDir(out_bin_path, .{});
+
+    if (is_zig_16) {
+        try Dir.copyFile(test_dir, "run.sh", out_bin_dir, "run.sh", io, .{});
+    } else {
+        try test_dir.copyFile("run.sh", out_bin_dir, "run.sh", .{});
+    }
+
     const allocator = heap.page_allocator;
     var walker = try test_dir.walk(allocator);
     if (build_tests) {
-        while (try walker.next()) |entry| {
+        while (if (is_zig_16) try walker.next(io) else try walker.next()) |entry| {
             const name = entry.basename;
             if (mem.endsWith(u8, name, ".exp")) {
-                try test_dir.copyFile(name, out_bin_dir, name, .{});
+                if (is_zig_16) {
+                    try Dir.copyFile(test_dir, name, out_bin_dir, name, io, .{});
+                } else {
+                    try test_dir.copyFile(name, out_bin_dir, name, .{});
+                }
                 continue;
             }
             if (!mem.endsWith(u8, name, ".c")) {
