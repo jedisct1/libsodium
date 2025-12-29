@@ -15,23 +15,25 @@ main(void)
 {
     unsigned char key[crypto_ipcrypt_KEYBYTES];
     unsigned char ndx_key[crypto_ipcrypt_NDX_KEYBYTES];
-    unsigned char input[crypto_ipcrypt_INPUTBYTES];
-    unsigned char output[crypto_ipcrypt_INPUTBYTES];
-    unsigned char nd_output[crypto_ipcrypt_ND_BYTES];
-    unsigned char ndx_output[crypto_ipcrypt_NDX_BYTES];
+    unsigned char input[crypto_ipcrypt_BYTES];
+    unsigned char output[crypto_ipcrypt_BYTES];
+    unsigned char nd_output[crypto_ipcrypt_ND_OUTPUTBYTES];
+    unsigned char ndx_output[crypto_ipcrypt_NDX_OUTPUTBYTES];
     unsigned char tweak_nd[crypto_ipcrypt_ND_TWEAKBYTES];
     unsigned char tweak_ndx[crypto_ipcrypt_NDX_TWEAKBYTES];
-    unsigned char decrypted[crypto_ipcrypt_INPUTBYTES];
+    unsigned char decrypted[crypto_ipcrypt_BYTES];
     size_t        i;
 
-    printf("crypto_ipcrypt_INPUTBYTES: %zu\n", crypto_ipcrypt_inputbytes());
+    printf("crypto_ipcrypt_BYTES: %zu\n", crypto_ipcrypt_bytes());
     printf("crypto_ipcrypt_KEYBYTES: %zu\n", crypto_ipcrypt_keybytes());
     printf("crypto_ipcrypt_ND_KEYBYTES: %zu\n", crypto_ipcrypt_nd_keybytes());
     printf("crypto_ipcrypt_ND_TWEAKBYTES: %zu\n", crypto_ipcrypt_nd_tweakbytes());
-    printf("crypto_ipcrypt_ND_BYTES: %zu\n", crypto_ipcrypt_nd_bytes());
+    printf("crypto_ipcrypt_ND_INPUTBYTES: %zu\n", crypto_ipcrypt_nd_inputbytes());
+    printf("crypto_ipcrypt_ND_OUTPUTBYTES: %zu\n", crypto_ipcrypt_nd_outputbytes());
     printf("crypto_ipcrypt_NDX_KEYBYTES: %zu\n", crypto_ipcrypt_ndx_keybytes());
     printf("crypto_ipcrypt_NDX_TWEAKBYTES: %zu\n", crypto_ipcrypt_ndx_tweakbytes());
-    printf("crypto_ipcrypt_NDX_BYTES: %zu\n", crypto_ipcrypt_ndx_bytes());
+    printf("crypto_ipcrypt_NDX_INPUTBYTES: %zu\n", crypto_ipcrypt_ndx_inputbytes());
+    printf("crypto_ipcrypt_NDX_OUTPUTBYTES: %zu\n", crypto_ipcrypt_ndx_outputbytes());
 
     /* Test 1: Format-preserving encryption with known key/input */
     memset(key, 0x00, sizeof key);

@@ -12,9 +12,9 @@
 extern "C" {
 #endif
 
-#define crypto_ipcrypt_INPUTBYTES 16U
+#define crypto_ipcrypt_BYTES 16U
 SODIUM_EXPORT
-size_t crypto_ipcrypt_inputbytes(void);
+size_t crypto_ipcrypt_bytes(void);
 
 #define crypto_ipcrypt_KEYBYTES 16U
 SODIUM_EXPORT
@@ -28,9 +28,13 @@ size_t crypto_ipcrypt_nd_keybytes(void);
 SODIUM_EXPORT
 size_t crypto_ipcrypt_nd_tweakbytes(void);
 
-#define crypto_ipcrypt_ND_BYTES 24U
+#define crypto_ipcrypt_ND_INPUTBYTES 16U
 SODIUM_EXPORT
-size_t crypto_ipcrypt_nd_bytes(void);
+size_t crypto_ipcrypt_nd_inputbytes(void);
+
+#define crypto_ipcrypt_ND_OUTPUTBYTES 24U
+SODIUM_EXPORT
+size_t crypto_ipcrypt_nd_outputbytes(void);
 
 #define crypto_ipcrypt_NDX_KEYBYTES 32U
 SODIUM_EXPORT
@@ -40,9 +44,13 @@ size_t crypto_ipcrypt_ndx_keybytes(void);
 SODIUM_EXPORT
 size_t crypto_ipcrypt_ndx_tweakbytes(void);
 
-#define crypto_ipcrypt_NDX_BYTES 32U
+#define crypto_ipcrypt_NDX_INPUTBYTES 16U
 SODIUM_EXPORT
-size_t crypto_ipcrypt_ndx_bytes(void);
+size_t crypto_ipcrypt_ndx_inputbytes(void);
+
+#define crypto_ipcrypt_NDX_OUTPUTBYTES 32U
+SODIUM_EXPORT
+size_t crypto_ipcrypt_ndx_outputbytes(void);
 
 SODIUM_EXPORT
 void crypto_ipcrypt_keygen(unsigned char k[crypto_ipcrypt_KEYBYTES]) __attribute__((nonnull));
@@ -52,40 +60,40 @@ void crypto_ipcrypt_ndx_keygen(unsigned char k[crypto_ipcrypt_NDX_KEYBYTES])
     __attribute__((nonnull));
 
 SODIUM_EXPORT
-void crypto_ipcrypt_encrypt(unsigned char       out[crypto_ipcrypt_INPUTBYTES],
-                            const unsigned char in[crypto_ipcrypt_INPUTBYTES],
+void crypto_ipcrypt_encrypt(unsigned char       out[crypto_ipcrypt_BYTES],
+                            const unsigned char in[crypto_ipcrypt_BYTES],
                             const unsigned char k[crypto_ipcrypt_KEYBYTES])
     __attribute__((nonnull));
 
 SODIUM_EXPORT
-void crypto_ipcrypt_decrypt(unsigned char       out[crypto_ipcrypt_INPUTBYTES],
-                            const unsigned char in[crypto_ipcrypt_INPUTBYTES],
+void crypto_ipcrypt_decrypt(unsigned char       out[crypto_ipcrypt_BYTES],
+                            const unsigned char in[crypto_ipcrypt_BYTES],
                             const unsigned char k[crypto_ipcrypt_KEYBYTES])
     __attribute__((nonnull));
 
 SODIUM_EXPORT
-void crypto_ipcrypt_nd_encrypt(unsigned char       out[crypto_ipcrypt_ND_BYTES],
-                               const unsigned char in[crypto_ipcrypt_INPUTBYTES],
+void crypto_ipcrypt_nd_encrypt(unsigned char       out[crypto_ipcrypt_ND_OUTPUTBYTES],
+                               const unsigned char in[crypto_ipcrypt_ND_INPUTBYTES],
                                const unsigned char t[crypto_ipcrypt_ND_TWEAKBYTES],
                                const unsigned char k[crypto_ipcrypt_ND_KEYBYTES])
     __attribute__((nonnull));
 
 SODIUM_EXPORT
-void crypto_ipcrypt_nd_decrypt(unsigned char       out[crypto_ipcrypt_INPUTBYTES],
-                               const unsigned char in[crypto_ipcrypt_ND_BYTES],
+void crypto_ipcrypt_nd_decrypt(unsigned char       out[crypto_ipcrypt_ND_INPUTBYTES],
+                               const unsigned char in[crypto_ipcrypt_ND_OUTPUTBYTES],
                                const unsigned char k[crypto_ipcrypt_ND_KEYBYTES])
     __attribute__((nonnull));
 
 SODIUM_EXPORT
-void crypto_ipcrypt_ndx_encrypt(unsigned char       out[crypto_ipcrypt_NDX_BYTES],
-                                const unsigned char in[crypto_ipcrypt_INPUTBYTES],
+void crypto_ipcrypt_ndx_encrypt(unsigned char       out[crypto_ipcrypt_NDX_OUTPUTBYTES],
+                                const unsigned char in[crypto_ipcrypt_NDX_INPUTBYTES],
                                 const unsigned char t[crypto_ipcrypt_NDX_TWEAKBYTES],
                                 const unsigned char k[crypto_ipcrypt_NDX_KEYBYTES])
     __attribute__((nonnull));
 
 SODIUM_EXPORT
-void crypto_ipcrypt_ndx_decrypt(unsigned char       out[crypto_ipcrypt_INPUTBYTES],
-                                const unsigned char in[crypto_ipcrypt_NDX_BYTES],
+void crypto_ipcrypt_ndx_decrypt(unsigned char       out[crypto_ipcrypt_NDX_INPUTBYTES],
+                                const unsigned char in[crypto_ipcrypt_NDX_OUTPUTBYTES],
                                 const unsigned char k[crypto_ipcrypt_NDX_KEYBYTES])
     __attribute__((nonnull));
 

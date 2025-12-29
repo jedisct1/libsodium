@@ -1,11 +1,13 @@
-crypto_ipcrypt_INPUTBYTES: 16
+crypto_ipcrypt_BYTES: 16
 crypto_ipcrypt_KEYBYTES: 16
 crypto_ipcrypt_ND_KEYBYTES: 16
 crypto_ipcrypt_ND_TWEAKBYTES: 8
-crypto_ipcrypt_ND_BYTES: 24
+crypto_ipcrypt_ND_INPUTBYTES: 16
+crypto_ipcrypt_ND_OUTPUTBYTES: 24
 crypto_ipcrypt_NDX_KEYBYTES: 32
 crypto_ipcrypt_NDX_TWEAKBYTES: 16
-crypto_ipcrypt_NDX_BYTES: 32
+crypto_ipcrypt_NDX_INPUTBYTES: 16
+crypto_ipcrypt_NDX_OUTPUTBYTES: 32
 
 Test 1: Format-preserving encryption
 Key: 0102030405060708090a0b0c0d0e0f10

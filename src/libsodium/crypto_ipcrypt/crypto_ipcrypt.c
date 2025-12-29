@@ -21,9 +21,9 @@
 static const ipcrypt_implementation *implementation = &ipcrypt_soft_implementation;
 
 size_t
-crypto_ipcrypt_inputbytes(void)
+crypto_ipcrypt_bytes(void)
 {
-    return crypto_ipcrypt_INPUTBYTES;
+    return crypto_ipcrypt_BYTES;
 }
 
 size_t
@@ -45,9 +45,15 @@ crypto_ipcrypt_nd_tweakbytes(void)
 }
 
 size_t
-crypto_ipcrypt_nd_bytes(void)
+crypto_ipcrypt_nd_inputbytes(void)
 {
-    return crypto_ipcrypt_ND_BYTES;
+    return crypto_ipcrypt_ND_INPUTBYTES;
+}
+
+size_t
+crypto_ipcrypt_nd_outputbytes(void)
+{
+    return crypto_ipcrypt_ND_OUTPUTBYTES;
 }
 
 size_t
@@ -63,9 +69,15 @@ crypto_ipcrypt_ndx_tweakbytes(void)
 }
 
 size_t
-crypto_ipcrypt_ndx_bytes(void)
+crypto_ipcrypt_ndx_inputbytes(void)
 {
-    return crypto_ipcrypt_NDX_BYTES;
+    return crypto_ipcrypt_NDX_INPUTBYTES;
+}
+
+size_t
+crypto_ipcrypt_ndx_outputbytes(void)
+{
+    return crypto_ipcrypt_NDX_OUTPUTBYTES;
 }
 
 void
