@@ -4,7 +4,7 @@
 #
 # To simplify linking, library variants have distinct names: sodium, sodium-static, sodium-minimal and sodium-minimal-static.
 
-SODIUM_VERSION="1.0.20.0"
+SODIUM_VERSION="1.0.20.2"
 
 if [ -z "$ANDROID_NDK_HOME" ]; then
   echo "ANDROID_NDK_HOME must be set to the directory containing the Android NDK."
