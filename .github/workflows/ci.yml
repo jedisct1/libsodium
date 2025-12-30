@@ -178,7 +178,7 @@ jobs:
           for wasm in *.wasm; do
             name="${wasm%.wasm}"
             echo "[$name]"
-            if ! wasmer run --dir . "$wasm" 2>&1; then
+            if ! wasmer run "$wasm" --mapdir=./:.  2>&1; then
               echo "*** [$name] FAILED" >&2
               failed=1
             fi
