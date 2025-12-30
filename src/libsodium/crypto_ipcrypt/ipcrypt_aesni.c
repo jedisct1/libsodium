@@ -316,11 +316,13 @@ pfx_set_bit(uint8_t ip16[16], const unsigned int bit_index, const uint8_t bit_va
 static void
 pfx_shift_left(uint8_t ip16[16])
 {
-    BlockVec v   = LOAD128(ip16);
-    BlockVec shl = _mm_slli_epi64(v, 1);
-    BlockVec shr = _mm_srli_epi64(v, 63);
-    BlockVec car = _mm_slli_si128(shr, 8);
-    v            = _mm_or_si128(shl, car);
+    BlockVec       v       = LOAD128(ip16);
+    const BlockVec mask_fe = _mm_set1_epi8((char) 0xfe);
+    const BlockVec mask_01 = _mm_set1_epi8(0x01);
+    const BlockVec shl     = _mm_and_si128(_mm_slli_epi16(v, 1), mask_fe);
+    const BlockVec msb     = _mm_and_si128(_mm_srli_epi16(v, 7), mask_01);
+    const BlockVec carries = _mm_srli_si128(msb, 1);
+    v                      = _mm_or_si128(shl, carries);
     STORE128(ip16, v);
 }
 
