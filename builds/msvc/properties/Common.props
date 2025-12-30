@@ -18,4 +18,10 @@
     </ClCompile>
   </ItemDefinitionGroup>
 
+  <ItemDefinitionGroup Condition="'$(PlatformToolsetVersion)' &gt;= '143'">
+    <ClCompile>
+      <AdditionalOptions>/UndefIntOverflow- %(AdditionalOptions)</AdditionalOptions>
+    </ClCompile>
+  </ItemDefinitionGroup>
+
 </Project>
