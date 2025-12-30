@@ -155,6 +155,51 @@ jobs:
           make -j $(nproc)
           make clean > /dev/null
 
+  wasi:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v6
+
+      - name: Install Zig
+        uses: mlugg/setup-zig@v2
+        with:
+          version: master
+
+      - name: Install Wasmer
+        uses: wasmerio/setup-wasmer@v3.1
+
+      - name: Build for WASI
+        run: zig build -Dtarget=wasm32-wasi -Doptimize=ReleaseSafe
+
+      - name: Run tests with Wasmer
+        run: |
+          cd zig-out/bin
+          failed=0
+          for wasm in *.wasm; do
+            name="${wasm%.wasm}"
+            exp="../../test/default/${name}.exp"
+            echo "[$name]"
+            if [ -f "$exp" ]; then
+              if ! wasmer run "$wasm" > output.txt 2>&1; then
+                echo "*** [$name] EXECUTION FAILED" >&2
+                cat output.txt
+                failed=1
+                continue
+              fi
+              if ! diff -q output.txt "$exp" > /dev/null 2>&1; then
+                echo "*** [$name] OUTPUT MISMATCH" >&2
+                echo "Expected:"
+                cat "$exp"
+                echo "Got:"
+                cat output.txt
+                failed=1
+              fi
+            else
+              echo "*** [$name] NO .exp file found, skipping validation"
+            fi
+          done
+          exit $failed
+
   android:
     runs-on: ubuntu-latest
     steps:
