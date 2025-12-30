@@ -19,6 +19,8 @@ void         softaes_invert_key_schedule128(SoftAesBlock rkeys[11]);
 void         softaes_invert_key_schedule256(SoftAesBlock rkeys[15]);
 SoftAesBlock softaes_block_encrypt(const SoftAesBlock block, const SoftAesBlock rk);
 SoftAesBlock softaes_block_decrypt(const SoftAesBlock block, const SoftAesBlock rk);
+SoftAesBlock softaes_block_encryptlast(const SoftAesBlock block, const SoftAesBlock rk);
+SoftAesBlock softaes_block_decryptlast(const SoftAesBlock block, const SoftAesBlock rk);
 
 static inline SoftAesBlock
 softaes_block_load(const uint8_t in[16])

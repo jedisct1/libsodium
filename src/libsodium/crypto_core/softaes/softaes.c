@@ -420,33 +420,98 @@ softaes_block_decrypt(const SoftAesBlock block, const SoftAesBlock rk)
     uint32_t     s0, s1, s2, s3;
     uint32_t     t0, t1, t2, t3;
 
-    s0 = block.w0 ^ rk.w0;
-    s1 = block.w1 ^ rk.w1;
-    s2 = block.w2 ^ rk.w2;
-    s3 = block.w3 ^ rk.w3;
-
-    s0 = inv_mix_column(s0);
-    s1 = inv_mix_column(s1);
-    s2 = inv_mix_column(s2);
-    s3 = inv_mix_column(s3);
+    s0 = block.w0;
+    s1 = block.w1;
+    s2 = block.w2;
+    s3 = block.w3;
 
     t0 = (s0 & 0x000000ff) | (s3 & 0x0000ff00) | (s2 & 0x00ff0000) | (s1 & 0xff000000);
     t1 = (s1 & 0x000000ff) | (s0 & 0x0000ff00) | (s3 & 0x00ff0000) | (s2 & 0xff000000);
     t2 = (s2 & 0x000000ff) | (s1 & 0x0000ff00) | (s0 & 0x00ff0000) | (s3 & 0xff000000);
     t3 = (s3 & 0x000000ff) | (s2 & 0x0000ff00) | (s1 & 0x00ff0000) | (s0 & 0xff000000);
 
-    out.w0 = (uint32_t) INV_SBOX[t0 & 0xff] | ((uint32_t) INV_SBOX[(t0 >> 8) & 0xff] << 8) |
-             ((uint32_t) INV_SBOX[(t0 >> 16) & 0xff] << 16) |
-             ((uint32_t) INV_SBOX[(t0 >> 24) & 0xff] << 24);
-    out.w1 = (uint32_t) INV_SBOX[t1 & 0xff] | ((uint32_t) INV_SBOX[(t1 >> 8) & 0xff] << 8) |
-             ((uint32_t) INV_SBOX[(t1 >> 16) & 0xff] << 16) |
-             ((uint32_t) INV_SBOX[(t1 >> 24) & 0xff] << 24);
-    out.w2 = (uint32_t) INV_SBOX[t2 & 0xff] | ((uint32_t) INV_SBOX[(t2 >> 8) & 0xff] << 8) |
-             ((uint32_t) INV_SBOX[(t2 >> 16) & 0xff] << 16) |
-             ((uint32_t) INV_SBOX[(t2 >> 24) & 0xff] << 24);
-    out.w3 = (uint32_t) INV_SBOX[t3 & 0xff] | ((uint32_t) INV_SBOX[(t3 >> 8) & 0xff] << 8) |
-             ((uint32_t) INV_SBOX[(t3 >> 16) & 0xff] << 16) |
-             ((uint32_t) INV_SBOX[(t3 >> 24) & 0xff] << 24);
+    s0 = (uint32_t) INV_SBOX[t0 & 0xff] | ((uint32_t) INV_SBOX[(t0 >> 8) & 0xff] << 8) |
+         ((uint32_t) INV_SBOX[(t0 >> 16) & 0xff] << 16) |
+         ((uint32_t) INV_SBOX[(t0 >> 24) & 0xff] << 24);
+    s1 = (uint32_t) INV_SBOX[t1 & 0xff] | ((uint32_t) INV_SBOX[(t1 >> 8) & 0xff] << 8) |
+         ((uint32_t) INV_SBOX[(t1 >> 16) & 0xff] << 16) |
+         ((uint32_t) INV_SBOX[(t1 >> 24) & 0xff] << 24);
+    s2 = (uint32_t) INV_SBOX[t2 & 0xff] | ((uint32_t) INV_SBOX[(t2 >> 8) & 0xff] << 8) |
+         ((uint32_t) INV_SBOX[(t2 >> 16) & 0xff] << 16) |
+         ((uint32_t) INV_SBOX[(t2 >> 24) & 0xff] << 24);
+    s3 = (uint32_t) INV_SBOX[t3 & 0xff] | ((uint32_t) INV_SBOX[(t3 >> 8) & 0xff] << 8) |
+         ((uint32_t) INV_SBOX[(t3 >> 16) & 0xff] << 16) |
+         ((uint32_t) INV_SBOX[(t3 >> 24) & 0xff] << 24);
+
+    out.w0 = inv_mix_column(s0) ^ rk.w0;
+    out.w1 = inv_mix_column(s1) ^ rk.w1;
+    out.w2 = inv_mix_column(s2) ^ rk.w2;
+    out.w3 = inv_mix_column(s3) ^ rk.w3;
+
+    return out;
+}
+
+SoftAesBlock
+softaes_block_encryptlast(const SoftAesBlock block, const SoftAesBlock rk)
+{
+    SoftAesBlock   out;
+    const uint32_t s0 = block.w0;
+    const uint32_t s1 = block.w1;
+    const uint32_t s2 = block.w2;
+    const uint32_t s3 = block.w3;
+
+    out.w0 = ((uint32_t) SBOX[(s0 >> 0) & 0xff] << 0) | ((uint32_t) SBOX[(s1 >> 8) & 0xff] << 8) |
+             ((uint32_t) SBOX[(s2 >> 16) & 0xff] << 16) |
+             ((uint32_t) SBOX[(s3 >> 24) & 0xff] << 24);
+    out.w1 = ((uint32_t) SBOX[(s1 >> 0) & 0xff] << 0) | ((uint32_t) SBOX[(s2 >> 8) & 0xff] << 8) |
+             ((uint32_t) SBOX[(s3 >> 16) & 0xff] << 16) |
+             ((uint32_t) SBOX[(s0 >> 24) & 0xff] << 24);
+    out.w2 = ((uint32_t) SBOX[(s2 >> 0) & 0xff] << 0) | ((uint32_t) SBOX[(s3 >> 8) & 0xff] << 8) |
+             ((uint32_t) SBOX[(s0 >> 16) & 0xff] << 16) |
+             ((uint32_t) SBOX[(s1 >> 24) & 0xff] << 24);
+    out.w3 = ((uint32_t) SBOX[(s3 >> 0) & 0xff] << 0) | ((uint32_t) SBOX[(s0 >> 8) & 0xff] << 8) |
+             ((uint32_t) SBOX[(s1 >> 16) & 0xff] << 16) |
+             ((uint32_t) SBOX[(s2 >> 24) & 0xff] << 24);
+
+    out.w0 ^= rk.w0;
+    out.w1 ^= rk.w1;
+    out.w2 ^= rk.w2;
+    out.w3 ^= rk.w3;
+
+    return out;
+}
+
+SoftAesBlock
+softaes_block_decryptlast(const SoftAesBlock block, const SoftAesBlock rk)
+{
+    SoftAesBlock   out;
+    const uint32_t s0 = block.w0;
+    const uint32_t s1 = block.w1;
+    const uint32_t s2 = block.w2;
+    const uint32_t s3 = block.w3;
+    uint32_t       t0, t1, t2, t3;
+
+    t0 = (s0 & 0x000000ff) | (s3 & 0x0000ff00) | (s2 & 0x00ff0000) | (s1 & 0xff000000);
+    t1 = (s1 & 0x000000ff) | (s0 & 0x0000ff00) | (s3 & 0x00ff0000) | (s2 & 0xff000000);
+    t2 = (s2 & 0x000000ff) | (s1 & 0x0000ff00) | (s0 & 0x00ff0000) | (s3 & 0xff000000);
+    t3 = (s3 & 0x000000ff) | (s2 & 0x0000ff00) | (s1 & 0x00ff0000) | (s0 & 0xff000000);
+
+    out.w0 = ((uint32_t) INV_SBOX[t0 & 0xff] | ((uint32_t) INV_SBOX[(t0 >> 8) & 0xff] << 8) |
+              ((uint32_t) INV_SBOX[(t0 >> 16) & 0xff] << 16) |
+              ((uint32_t) INV_SBOX[(t0 >> 24) & 0xff] << 24)) ^
+             rk.w0;
+    out.w1 = ((uint32_t) INV_SBOX[t1 & 0xff] | ((uint32_t) INV_SBOX[(t1 >> 8) & 0xff] << 8) |
+              ((uint32_t) INV_SBOX[(t1 >> 16) & 0xff] << 16) |
+              ((uint32_t) INV_SBOX[(t1 >> 24) & 0xff] << 24)) ^
+             rk.w1;
+    out.w2 = ((uint32_t) INV_SBOX[t2 & 0xff] | ((uint32_t) INV_SBOX[(t2 >> 8) & 0xff] << 8) |
+              ((uint32_t) INV_SBOX[(t2 >> 16) & 0xff] << 16) |
+              ((uint32_t) INV_SBOX[(t2 >> 24) & 0xff] << 24)) ^
+             rk.w2;
+    out.w3 = ((uint32_t) INV_SBOX[t3 & 0xff] | ((uint32_t) INV_SBOX[(t3 >> 8) & 0xff] << 8) |
+              ((uint32_t) INV_SBOX[(t3 >> 16) & 0xff] << 16) |
+              ((uint32_t) INV_SBOX[(t3 >> 24) & 0xff] << 24)) ^
+             rk.w3;
 
     return out;
 }
@@ -606,33 +671,165 @@ softaes_block_decrypt(const SoftAesBlock block, const SoftAesBlock rk)
     uint32_t                      s0, s1, s2, s3;
     uint32_t                      t0, t1, t2, t3;
 
-    s0 = block.w0 ^ rk.w0;
-    s1 = block.w1 ^ rk.w1;
-    s2 = block.w2 ^ rk.w2;
-    s3 = block.w3 ^ rk.w3;
-
-    s0 = inv_mix_column(s0);
-    s1 = inv_mix_column(s1);
-    s2 = inv_mix_column(s2);
-    s3 = inv_mix_column(s3);
+    s0 = block.w0;
+    s1 = block.w1;
+    s2 = block.w2;
+    s3 = block.w3;
 
     t0 = (s0 & 0x000000ff) | (s3 & 0x0000ff00) | (s2 & 0x00ff0000) | (s1 & 0xff000000);
     t1 = (s1 & 0x000000ff) | (s0 & 0x0000ff00) | (s3 & 0x00ff0000) | (s2 & 0xff000000);
     t2 = (s2 & 0x000000ff) | (s1 & 0x0000ff00) | (s0 & 0x00ff0000) | (s3 & 0xff000000);
     t3 = (s3 & 0x000000ff) | (s2 & 0x0000ff00) | (s1 & 0x00ff0000) | (s0 & 0xff000000);
 
-    out.w0 = (uint32_t) INV_SBOX[t0 & 0xff] | ((uint32_t) INV_SBOX[(t0 >> 8) & 0xff] << 8) |
-             ((uint32_t) INV_SBOX[(t0 >> 16) & 0xff] << 16) |
-             ((uint32_t) INV_SBOX[(t0 >> 24) & 0xff] << 24);
-    out.w1 = (uint32_t) INV_SBOX[t1 & 0xff] | ((uint32_t) INV_SBOX[(t1 >> 8) & 0xff] << 8) |
-             ((uint32_t) INV_SBOX[(t1 >> 16) & 0xff] << 16) |
-             ((uint32_t) INV_SBOX[(t1 >> 24) & 0xff] << 24);
-    out.w2 = (uint32_t) INV_SBOX[t2 & 0xff] | ((uint32_t) INV_SBOX[(t2 >> 8) & 0xff] << 8) |
-             ((uint32_t) INV_SBOX[(t2 >> 16) & 0xff] << 16) |
-             ((uint32_t) INV_SBOX[(t2 >> 24) & 0xff] << 24);
-    out.w3 = (uint32_t) INV_SBOX[t3 & 0xff] | ((uint32_t) INV_SBOX[(t3 >> 8) & 0xff] << 8) |
-             ((uint32_t) INV_SBOX[(t3 >> 16) & 0xff] << 16) |
-             ((uint32_t) INV_SBOX[(t3 >> 24) & 0xff] << 24);
+    s0 = (uint32_t) INV_SBOX[t0 & 0xff] | ((uint32_t) INV_SBOX[(t0 >> 8) & 0xff] << 8) |
+         ((uint32_t) INV_SBOX[(t0 >> 16) & 0xff] << 16) |
+         ((uint32_t) INV_SBOX[(t0 >> 24) & 0xff] << 24);
+    s1 = (uint32_t) INV_SBOX[t1 & 0xff] | ((uint32_t) INV_SBOX[(t1 >> 8) & 0xff] << 8) |
+         ((uint32_t) INV_SBOX[(t1 >> 16) & 0xff] << 16) |
+         ((uint32_t) INV_SBOX[(t1 >> 24) & 0xff] << 24);
+    s2 = (uint32_t) INV_SBOX[t2 & 0xff] | ((uint32_t) INV_SBOX[(t2 >> 8) & 0xff] << 8) |
+         ((uint32_t) INV_SBOX[(t2 >> 16) & 0xff] << 16) |
+         ((uint32_t) INV_SBOX[(t2 >> 24) & 0xff] << 24);
+    s3 = (uint32_t) INV_SBOX[t3 & 0xff] | ((uint32_t) INV_SBOX[(t3 >> 8) & 0xff] << 8) |
+         ((uint32_t) INV_SBOX[(t3 >> 16) & 0xff] << 16) |
+         ((uint32_t) INV_SBOX[(t3 >> 24) & 0xff] << 24);
+
+    out.w0 = inv_mix_column(s0) ^ rk.w0;
+    out.w1 = inv_mix_column(s1) ^ rk.w1;
+    out.w2 = inv_mix_column(s2) ^ rk.w2;
+    out.w3 = inv_mix_column(s3) ^ rk.w3;
+
+    return out;
+}
+
+SoftAesBlock
+softaes_block_encryptlast(const SoftAesBlock block, const SoftAesBlock rk)
+{
+    CRYPTO_ALIGN(64) SoftAesBlock out;
+    CRYPTO_ALIGN(64) uint8_t      ix[4][4];
+    CRYPTO_ALIGN(64) uint8_t      t[4][256 / SOFTAES_STRIDE];
+    const uint32_t                s0 = block.w0;
+    const uint32_t                s1 = block.w1;
+    const uint32_t                s2 = block.w2;
+    const uint32_t                s3 = block.w3;
+    size_t                        i;
+    size_t                        j;
+
+    ix[0][0] = (uint8_t) s0;
+    ix[0][1] = (uint8_t) (s1 >> 8);
+    ix[0][2] = (uint8_t) (s2 >> 16);
+    ix[0][3] = (uint8_t) (s3 >> 24);
+
+    ix[1][0] = (uint8_t) s1;
+    ix[1][1] = (uint8_t) (s2 >> 8);
+    ix[1][2] = (uint8_t) (s3 >> 16);
+    ix[1][3] = (uint8_t) (s0 >> 24);
+
+    ix[2][0] = (uint8_t) s2;
+    ix[2][1] = (uint8_t) (s3 >> 8);
+    ix[2][2] = (uint8_t) (s0 >> 16);
+    ix[2][3] = (uint8_t) (s1 >> 24);
+
+    ix[3][0] = (uint8_t) s3;
+    ix[3][1] = (uint8_t) (s0 >> 8);
+    ix[3][2] = (uint8_t) (s1 >> 16);
+    ix[3][3] = (uint8_t) (s2 >> 24);
+
+    for (i = 0; i < 256 / SOFTAES_STRIDE; i++) {
+        for (j = 0; j < 4; j++) {
+            t[j][i] = SBOX[(i * SOFTAES_STRIDE) | (ix[0][j] % SOFTAES_STRIDE)];
+        }
+    }
+#    ifdef HAVE_INLINE_ASM
+    __asm__ __volatile__("" : : "r"(t) : "memory");
+#    endif
+
+    out.w0 = ((uint32_t) t[0][ix[0][0] / SOFTAES_STRIDE] << 0) |
+             ((uint32_t) t[1][ix[0][1] / SOFTAES_STRIDE] << 8) |
+             ((uint32_t) t[2][ix[0][2] / SOFTAES_STRIDE] << 16) |
+             ((uint32_t) t[3][ix[0][3] / SOFTAES_STRIDE] << 24);
+
+    for (i = 0; i < 256 / SOFTAES_STRIDE; i++) {
+        for (j = 0; j < 4; j++) {
+            t[j][i] = SBOX[(i * SOFTAES_STRIDE) | (ix[1][j] % SOFTAES_STRIDE)];
+        }
+    }
+#    ifdef HAVE_INLINE_ASM
+    __asm__ __volatile__("" : : "r"(t) : "memory");
+#    endif
+
+    out.w1 = ((uint32_t) t[0][ix[1][0] / SOFTAES_STRIDE] << 0) |
+             ((uint32_t) t[1][ix[1][1] / SOFTAES_STRIDE] << 8) |
+             ((uint32_t) t[2][ix[1][2] / SOFTAES_STRIDE] << 16) |
+             ((uint32_t) t[3][ix[1][3] / SOFTAES_STRIDE] << 24);
+
+    for (i = 0; i < 256 / SOFTAES_STRIDE; i++) {
+        for (j = 0; j < 4; j++) {
+            t[j][i] = SBOX[(i * SOFTAES_STRIDE) | (ix[2][j] % SOFTAES_STRIDE)];
+        }
+    }
+#    ifdef HAVE_INLINE_ASM
+    __asm__ __volatile__("" : : "r"(t) : "memory");
+#    endif
+
+    out.w2 = ((uint32_t) t[0][ix[2][0] / SOFTAES_STRIDE] << 0) |
+             ((uint32_t) t[1][ix[2][1] / SOFTAES_STRIDE] << 8) |
+             ((uint32_t) t[2][ix[2][2] / SOFTAES_STRIDE] << 16) |
+             ((uint32_t) t[3][ix[2][3] / SOFTAES_STRIDE] << 24);
+
+    for (i = 0; i < 256 / SOFTAES_STRIDE; i++) {
+        for (j = 0; j < 4; j++) {
+            t[j][i] = SBOX[(i * SOFTAES_STRIDE) | (ix[3][j] % SOFTAES_STRIDE)];
+        }
+    }
+#    ifdef HAVE_INLINE_ASM
+    __asm__ __volatile__("" : : "r"(t) : "memory");
+#    endif
+
+    out.w3 = ((uint32_t) t[0][ix[3][0] / SOFTAES_STRIDE] << 0) |
+             ((uint32_t) t[1][ix[3][1] / SOFTAES_STRIDE] << 8) |
+             ((uint32_t) t[2][ix[3][2] / SOFTAES_STRIDE] << 16) |
+             ((uint32_t) t[3][ix[3][3] / SOFTAES_STRIDE] << 24);
+
+    out.w0 ^= rk.w0;
+    out.w1 ^= rk.w1;
+    out.w2 ^= rk.w2;
+    out.w3 ^= rk.w3;
+
+    return out;
+}
+
+SoftAesBlock
+softaes_block_decryptlast(const SoftAesBlock block, const SoftAesBlock rk)
+{
+    CRYPTO_ALIGN(64) SoftAesBlock out;
+    const uint32_t                s0 = block.w0;
+    const uint32_t                s1 = block.w1;
+    const uint32_t                s2 = block.w2;
+    const uint32_t                s3 = block.w3;
+    uint32_t                      t0, t1, t2, t3;
+
+    t0 = (s0 & 0x000000ff) | (s3 & 0x0000ff00) | (s2 & 0x00ff0000) | (s1 & 0xff000000);
+    t1 = (s1 & 0x000000ff) | (s0 & 0x0000ff00) | (s3 & 0x00ff0000) | (s2 & 0xff000000);
+    t2 = (s2 & 0x000000ff) | (s1 & 0x0000ff00) | (s0 & 0x00ff0000) | (s3 & 0xff000000);
+    t3 = (s3 & 0x000000ff) | (s2 & 0x0000ff00) | (s1 & 0x00ff0000) | (s0 & 0xff000000);
+
+    out.w0 = ((uint32_t) INV_SBOX[t0 & 0xff] | ((uint32_t) INV_SBOX[(t0 >> 8) & 0xff] << 8) |
+              ((uint32_t) INV_SBOX[(t0 >> 16) & 0xff] << 16) |
+              ((uint32_t) INV_SBOX[(t0 >> 24) & 0xff] << 24)) ^
+             rk.w0;
+    out.w1 = ((uint32_t) INV_SBOX[t1 & 0xff] | ((uint32_t) INV_SBOX[(t1 >> 8) & 0xff] << 8) |
+              ((uint32_t) INV_SBOX[(t1 >> 16) & 0xff] << 16) |
+              ((uint32_t) INV_SBOX[(t1 >> 24) & 0xff] << 24)) ^
+             rk.w1;
+    out.w2 = ((uint32_t) INV_SBOX[t2 & 0xff] | ((uint32_t) INV_SBOX[(t2 >> 8) & 0xff] << 8) |
+              ((uint32_t) INV_SBOX[(t2 >> 16) & 0xff] << 16) |
+              ((uint32_t) INV_SBOX[(t2 >> 24) & 0xff] << 24)) ^
+             rk.w2;
+    out.w3 = ((uint32_t) INV_SBOX[t3 & 0xff] | ((uint32_t) INV_SBOX[(t3 >> 8) & 0xff] << 8) |
+              ((uint32_t) INV_SBOX[(t3 >> 16) & 0xff] << 16) |
+              ((uint32_t) INV_SBOX[(t3 >> 24) & 0xff] << 24)) ^
+             rk.w3;
 
     return out;
 }
