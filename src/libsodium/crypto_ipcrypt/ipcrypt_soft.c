@@ -19,7 +19,9 @@ typedef SoftAesBlock aes_block_t;
 #define AES_BLOCK_LOAD_64x2(A, B) softaes_block_load64x2((A), (B))
 #define AES_BLOCK_STORE(A, B)     softaes_block_store((A), (B))
 #define AES_ENC(A, B)             softaes_block_encrypt((A), (B))
+#define AES_ENCLAST(A, B)         softaes_block_encryptlast((A), (B))
 #define AES_DEC(A, B)             softaes_block_decrypt((A), (B))
+#define AES_DECLAST(A, B)         softaes_block_decryptlast((A), (B))
 #define AES_INV_MIX(A)            softaes_inv_mix_columns((A))
 
 typedef aes_block_t KeySchedule[1 + ROUNDS];
@@ -40,7 +42,7 @@ aes_encrypt(uint8_t out[16], const uint8_t in[16], const KeySchedule rkeys)
     for (i = 1; i < ROUNDS; i++) {
         t = AES_ENC(t, rkeys[i]);
     }
-    t = AES_ENC(t, rkeys[ROUNDS]);
+    t = AES_ENCLAST(t, rkeys[ROUNDS]);
     AES_BLOCK_STORE(out, t);
 }
 
@@ -60,7 +62,7 @@ aes_decrypt(uint8_t out[16], const uint8_t in[16], const KeySchedule rkeys)
     for (i = ROUNDS - 1; i > 0; i--) {
         t = AES_DEC(t, rkeys_inv[i]);
     }
-    t = AES_DEC(t, rkeys_inv[0]);
+    t = AES_DECLAST(t, rkeys_inv[0]);
     AES_BLOCK_STORE(out, t);
 }
 
@@ -89,7 +91,7 @@ aes_encrypt_with_tweak(uint8_t out[16], const uint8_t in[16], const uint8_t twea
     for (i = 1; i < ROUNDS; i++) {
         t = AES_ENC(t, AES_BLOCK_XOR(tweak_block, rkeys[i]));
     }
-    t = AES_ENC(t, AES_BLOCK_XOR(tweak_block, rkeys[ROUNDS]));
+    t = AES_ENCLAST(t, AES_BLOCK_XOR(tweak_block, rkeys[ROUNDS]));
     AES_BLOCK_STORE(out, t);
 }
 
@@ -112,7 +114,7 @@ aes_decrypt_with_tweak(uint8_t out[16], const uint8_t in[16], const uint8_t twea
     for (i = ROUNDS - 1; i > 0; i--) {
         t = AES_DEC(t, AES_BLOCK_XOR(tweak_block_inv, rkeys_inv[i]));
     }
-    t = AES_DEC(t, AES_BLOCK_XOR(tweak_block, rkeys_inv[0]));
+    t = AES_DECLAST(t, AES_BLOCK_XOR(tweak_block, rkeys_inv[0]));
     AES_BLOCK_STORE(out, t);
 }
 
@@ -126,7 +128,7 @@ aes_xex_tweak(const uint8_t tweak[16], const KeySchedule tkeys)
     for (i = 1; i < ROUNDS; i++) {
         tt = AES_ENC(tt, tkeys[i]);
     }
-    tt = AES_ENC(tt, tkeys[ROUNDS]);
+    tt = AES_ENCLAST(tt, tkeys[ROUNDS]);
     return tt;
 }
 
@@ -142,7 +144,7 @@ aes_xex_encrypt(uint8_t out[16], const uint8_t in[16], const uint8_t tweak[16],
     for (i = 1; i < ROUNDS; i++) {
         t = AES_ENC(t, rkeys[i]);
     }
-    t = AES_ENC(t, AES_BLOCK_XOR(rkeys[ROUNDS], tt));
+    t = AES_ENCLAST(t, AES_BLOCK_XOR(rkeys[ROUNDS], tt));
     AES_BLOCK_STORE(out, t);
 }
 
@@ -164,7 +166,7 @@ aes_xex_decrypt(uint8_t out[16], const uint8_t in[16], const uint8_t tweak[16],
     for (i = ROUNDS - 1; i > 0; i--) {
         t = AES_DEC(t, rkeys_inv[i]);
     }
-    t = AES_DEC(t, AES_BLOCK_XOR(rkeys_inv[0], tt));
+    t = AES_DECLAST(t, AES_BLOCK_XOR(rkeys_inv[0], tt));
     AES_BLOCK_STORE(out, t);
 }
 
@@ -363,8 +365,8 @@ pfx_encrypt(uint8_t *out, const uint8_t *in, const uint8_t *k)
             e1 = AES_ENC(e1, k1keys[i]);
             e2 = AES_ENC(e2, k2keys[i]);
         }
-        e1 = AES_ENC(e1, k1keys[ROUNDS]);
-        e2 = AES_ENC(e2, k2keys[ROUNDS]);
+        e1 = AES_ENCLAST(e1, k1keys[ROUNDS]);
+        e2 = AES_ENCLAST(e2, k2keys[ROUNDS]);
 
         e = AES_BLOCK_XOR(e1, e2);
         AES_BLOCK_STORE(t, e);
@@ -434,8 +436,8 @@ pfx_decrypt(uint8_t *out, const uint8_t *in, const uint8_t *k)
             e1 = AES_ENC(e1, k1keys[i]);
             e2 = AES_ENC(e2, k2keys[i]);
         }
-        e1 = AES_ENC(e1, k1keys[ROUNDS]);
-        e2 = AES_ENC(e2, k2keys[ROUNDS]);
+        e1 = AES_ENCLAST(e1, k1keys[ROUNDS]);
+        e2 = AES_ENCLAST(e2, k2keys[ROUNDS]);
 
         e = AES_BLOCK_XOR(e1, e2);
         AES_BLOCK_STORE(t, e);
