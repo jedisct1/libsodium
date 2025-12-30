@@ -14,9 +14,9 @@ done
 echo "return 0; }" >> "$CT"
 
 CPPFLAGS="${CPPFLAGS} -Wno-deprecated-declarations"
-CPPFLAGS="${CPPFLAGS} -I/opt/homebrew/include"
-LDFLAGS="${LDFLAGS} -L/opt/homebrew/lib"
+CPPFLAGS="${CPPFLAGS} -Isrc/libsodium/include"
+LDFLAGS="${LDFLAGS} -Lsrc/libsodium/.libs"
 ${CC:-cc} "$CT" $CPPFLAGS $CFLAGS $LDFLAGS -lsodium || exit 1
-./a.out || exit 1
+DYLD_LIBRARY_PATH=src/libsodium/.libs:$DYLD_LIBRARY_PATH ./a.out || exit 1
 rm -f a.out "$CT"
 
