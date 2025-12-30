@@ -144,23 +144,25 @@ am__EXEEXT_3 = aead_aegis128l$(EXEEXT) aead_aegis256$(EXEEXT) \
 	box$(EXEEXT) box2$(EXEEXT) box7$(EXEEXT) box8$(EXEEXT) \
 	box_easy$(EXEEXT) box_easy2$(EXEEXT) box_seal$(EXEEXT) \
 	box_seed$(EXEEXT) chacha20$(EXEEXT) codecs$(EXEEXT) \
-	core1$(EXEEXT) core2$(EXEEXT) core3$(EXEEXT) core4$(EXEEXT) \
-	core5$(EXEEXT) core6$(EXEEXT) ed25519_convert$(EXEEXT) \
-	generichash$(EXEEXT) generichash2$(EXEEXT) \
-	generichash3$(EXEEXT) hash$(EXEEXT) hash3$(EXEEXT) \
-	kdf$(EXEEXT) keygen$(EXEEXT) kx$(EXEEXT) metamorphic$(EXEEXT) \
-	misuse$(EXEEXT) onetimeauth$(EXEEXT) onetimeauth2$(EXEEXT) \
-	onetimeauth7$(EXEEXT) pwhash_argon2i$(EXEEXT) \
-	pwhash_argon2id$(EXEEXT) randombytes$(EXEEXT) \
-	scalarmult$(EXEEXT) scalarmult2$(EXEEXT) scalarmult5$(EXEEXT) \
-	scalarmult6$(EXEEXT) scalarmult7$(EXEEXT) scalarmult8$(EXEEXT) \
-	secretbox$(EXEEXT) secretbox2$(EXEEXT) secretbox7$(EXEEXT) \
-	secretbox8$(EXEEXT) secretbox_easy$(EXEEXT) \
-	secretbox_easy2$(EXEEXT) \
+	core_keccak1600$(EXEEXT) core1$(EXEEXT) core2$(EXEEXT) \
+	core3$(EXEEXT) core4$(EXEEXT) core5$(EXEEXT) core6$(EXEEXT) \
+	ed25519_convert$(EXEEXT) generichash$(EXEEXT) \
+	generichash2$(EXEEXT) generichash3$(EXEEXT) hash$(EXEEXT) \
+	hash3$(EXEEXT) kdf$(EXEEXT) keygen$(EXEEXT) kx$(EXEEXT) \
+	metamorphic$(EXEEXT) misuse$(EXEEXT) onetimeauth$(EXEEXT) \
+	onetimeauth2$(EXEEXT) onetimeauth7$(EXEEXT) \
+	pwhash_argon2i$(EXEEXT) pwhash_argon2id$(EXEEXT) \
+	randombytes$(EXEEXT) scalarmult$(EXEEXT) scalarmult2$(EXEEXT) \
+	scalarmult5$(EXEEXT) scalarmult6$(EXEEXT) scalarmult7$(EXEEXT) \
+	scalarmult8$(EXEEXT) secretbox$(EXEEXT) secretbox2$(EXEEXT) \
+	secretbox7$(EXEEXT) secretbox8$(EXEEXT) \
+	secretbox_easy$(EXEEXT) secretbox_easy2$(EXEEXT) \
 	secretstream_xchacha20poly1305$(EXEEXT) shorthash$(EXEEXT) \
 	sign$(EXEEXT) sodium_core$(EXEEXT) sodium_utils$(EXEEXT) \
 	sodium_version$(EXEEXT) stream$(EXEEXT) stream2$(EXEEXT) \
 	stream3$(EXEEXT) stream4$(EXEEXT) verify1$(EXEEXT) \
+	xof_shake128$(EXEEXT) xof_shake256$(EXEEXT) \
+	xof_turboshake128$(EXEEXT) xof_turboshake256$(EXEEXT) \
 	$(am__EXEEXT_1) $(am__EXEEXT_2)
 aead_aegis128l_SOURCES = aead_aegis128l.c
 aead_aegis128l_OBJECTS = aead_aegis128l.$(OBJEXT)
@@ -256,6 +258,9 @@ core6_DEPENDENCIES = $(TESTS_LDADD)
 core_ed25519_SOURCES = core_ed25519.c
 core_ed25519_OBJECTS = core_ed25519.$(OBJEXT)
 core_ed25519_DEPENDENCIES = $(TESTS_LDADD)
+core_keccak1600_SOURCES = core_keccak1600.c
+core_keccak1600_OBJECTS = core_keccak1600.$(OBJEXT)
+core_keccak1600_DEPENDENCIES = $(TESTS_LDADD)
 core_ristretto255_SOURCES = core_ristretto255.c
 core_ristretto255_OBJECTS = core_ristretto255.$(OBJEXT)
 core_ristretto255_DEPENDENCIES = $(TESTS_LDADD)
@@ -408,6 +413,18 @@ verify1_DEPENDENCIES = $(TESTS_LDADD)
 xchacha20_SOURCES = xchacha20.c
 xchacha20_OBJECTS = xchacha20.$(OBJEXT)
 xchacha20_DEPENDENCIES = $(TESTS_LDADD)
+xof_shake128_SOURCES = xof_shake128.c
+xof_shake128_OBJECTS = xof_shake128.$(OBJEXT)
+xof_shake128_DEPENDENCIES = $(TESTS_LDADD)
+xof_shake256_SOURCES = xof_shake256.c
+xof_shake256_OBJECTS = xof_shake256.$(OBJEXT)
+xof_shake256_DEPENDENCIES = $(TESTS_LDADD)
+xof_turboshake128_SOURCES = xof_turboshake128.c
+xof_turboshake128_OBJECTS = xof_turboshake128.$(OBJEXT)
+xof_turboshake128_DEPENDENCIES = $(TESTS_LDADD)
+xof_turboshake256_SOURCES = xof_turboshake256.c
+xof_turboshake256_OBJECTS = xof_turboshake256.$(OBJEXT)
+xof_turboshake256_DEPENDENCIES = $(TESTS_LDADD)
 AM_V_P = $(am__v_P_@AM_V@)
 am__v_P_ = $(am__v_P_@AM_DEFAULT_V@)
 am__v_P_0 = false
@@ -437,7 +454,8 @@ am__depfiles_remade = ./$(DEPDIR)/aead_aegis128l.Po \
 	./$(DEPDIR)/chacha20.Po ./$(DEPDIR)/codecs.Po \
 	./$(DEPDIR)/core1.Po ./$(DEPDIR)/core2.Po ./$(DEPDIR)/core3.Po \
 	./$(DEPDIR)/core4.Po ./$(DEPDIR)/core5.Po ./$(DEPDIR)/core6.Po \
-	./$(DEPDIR)/core_ed25519.Po ./$(DEPDIR)/core_ristretto255.Po \
+	./$(DEPDIR)/core_ed25519.Po ./$(DEPDIR)/core_keccak1600.Po \
+	./$(DEPDIR)/core_ristretto255.Po \
 	./$(DEPDIR)/ed25519_convert.Po ./$(DEPDIR)/generichash.Po \
 	./$(DEPDIR)/generichash2.Po ./$(DEPDIR)/generichash3.Po \
 	./$(DEPDIR)/hash.Po ./$(DEPDIR)/hash3.Po ./$(DEPDIR)/kdf.Po \
@@ -462,7 +480,10 @@ am__depfiles_remade = ./$(DEPDIR)/aead_aegis128l.Po \
 	./$(DEPDIR)/sodium_utils3.Po ./$(DEPDIR)/sodium_version.Po \
 	./$(DEPDIR)/stream.Po ./$(DEPDIR)/stream2.Po \
 	./$(DEPDIR)/stream3.Po ./$(DEPDIR)/stream4.Po \
-	./$(DEPDIR)/verify1.Po ./$(DEPDIR)/xchacha20.Po
+	./$(DEPDIR)/verify1.Po ./$(DEPDIR)/xchacha20.Po \
+	./$(DEPDIR)/xof_shake128.Po ./$(DEPDIR)/xof_shake256.Po \
+	./$(DEPDIR)/xof_turboshake128.Po \
+	./$(DEPDIR)/xof_turboshake256.Po
 am__mv = mv -f
 COMPILE = $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) \
 	$(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS)
@@ -488,38 +509,42 @@ SOURCES = aead_aegis128l.c aead_aegis256.c aead_aes256gcm.c \
 	auth2.c auth3.c auth5.c auth6.c auth7.c box.c box2.c box7.c \
 	box8.c box_easy.c box_easy2.c box_seal.c box_seed.c chacha20.c \
 	codecs.c core1.c core2.c core3.c core4.c core5.c core6.c \
-	core_ed25519.c core_ristretto255.c ed25519_convert.c \
-	generichash.c generichash2.c generichash3.c hash.c hash3.c \
-	kdf.c kdf_hkdf.c keygen.c kx.c metamorphic.c misuse.c \
-	onetimeauth.c onetimeauth2.c onetimeauth7.c pwhash_argon2i.c \
-	pwhash_argon2id.c pwhash_scrypt.c pwhash_scrypt_ll.c \
-	randombytes.c scalarmult.c scalarmult2.c scalarmult5.c \
-	scalarmult6.c scalarmult7.c scalarmult8.c scalarmult_ed25519.c \
-	scalarmult_ristretto255.c secretbox.c secretbox2.c \
-	secretbox7.c secretbox8.c secretbox_easy.c secretbox_easy2.c \
-	secretstream_xchacha20poly1305.c shorthash.c sign.c \
-	siphashx24.c sodium_core.c sodium_utils.c sodium_utils2.c \
-	sodium_utils3.c sodium_version.c stream.c stream2.c stream3.c \
-	stream4.c verify1.c xchacha20.c
+	core_ed25519.c core_keccak1600.c core_ristretto255.c \
+	ed25519_convert.c generichash.c generichash2.c generichash3.c \
+	hash.c hash3.c kdf.c kdf_hkdf.c keygen.c kx.c metamorphic.c \
+	misuse.c onetimeauth.c onetimeauth2.c onetimeauth7.c \
+	pwhash_argon2i.c pwhash_argon2id.c pwhash_scrypt.c \
+	pwhash_scrypt_ll.c randombytes.c scalarmult.c scalarmult2.c \
+	scalarmult5.c scalarmult6.c scalarmult7.c scalarmult8.c \
+	scalarmult_ed25519.c scalarmult_ristretto255.c secretbox.c \
+	secretbox2.c secretbox7.c secretbox8.c secretbox_easy.c \
+	secretbox_easy2.c secretstream_xchacha20poly1305.c shorthash.c \
+	sign.c siphashx24.c sodium_core.c sodium_utils.c \
+	sodium_utils2.c sodium_utils3.c sodium_version.c stream.c \
+	stream2.c stream3.c stream4.c verify1.c xchacha20.c \
+	xof_shake128.c xof_shake256.c xof_turboshake128.c \
+	xof_turboshake256.c
 DIST_SOURCES = aead_aegis128l.c aead_aegis256.c aead_aes256gcm.c \
 	aead_aes256gcm2.c aead_chacha20poly1305.c \
 	aead_chacha20poly13052.c aead_xchacha20poly1305.c auth.c \
 	auth2.c auth3.c auth5.c auth6.c auth7.c box.c box2.c box7.c \
 	box8.c box_easy.c box_easy2.c box_seal.c box_seed.c chacha20.c \
 	codecs.c core1.c core2.c core3.c core4.c core5.c core6.c \
-	core_ed25519.c core_ristretto255.c ed25519_convert.c \
-	generichash.c generichash2.c generichash3.c hash.c hash3.c \
-	kdf.c kdf_hkdf.c keygen.c kx.c metamorphic.c misuse.c \
-	onetimeauth.c onetimeauth2.c onetimeauth7.c pwhash_argon2i.c \
-	pwhash_argon2id.c pwhash_scrypt.c pwhash_scrypt_ll.c \
-	randombytes.c scalarmult.c scalarmult2.c scalarmult5.c \
-	scalarmult6.c scalarmult7.c scalarmult8.c scalarmult_ed25519.c \
-	scalarmult_ristretto255.c secretbox.c secretbox2.c \
-	secretbox7.c secretbox8.c secretbox_easy.c secretbox_easy2.c \
-	secretstream_xchacha20poly1305.c shorthash.c sign.c \
-	siphashx24.c sodium_core.c sodium_utils.c sodium_utils2.c \
-	sodium_utils3.c sodium_version.c stream.c stream2.c stream3.c \
-	stream4.c verify1.c xchacha20.c
+	core_ed25519.c core_keccak1600.c core_ristretto255.c \
+	ed25519_convert.c generichash.c generichash2.c generichash3.c \
+	hash.c hash3.c kdf.c kdf_hkdf.c keygen.c kx.c metamorphic.c \
+	misuse.c onetimeauth.c onetimeauth2.c onetimeauth7.c \
+	pwhash_argon2i.c pwhash_argon2id.c pwhash_scrypt.c \
+	pwhash_scrypt_ll.c randombytes.c scalarmult.c scalarmult2.c \
+	scalarmult5.c scalarmult6.c scalarmult7.c scalarmult8.c \
+	scalarmult_ed25519.c scalarmult_ristretto255.c secretbox.c \
+	secretbox2.c secretbox7.c secretbox8.c secretbox_easy.c \
+	secretbox_easy2.c secretstream_xchacha20poly1305.c shorthash.c \
+	sign.c siphashx24.c sodium_core.c sodium_utils.c \
+	sodium_utils2.c sodium_utils3.c sodium_version.c stream.c \
+	stream2.c stream3.c stream4.c verify1.c xchacha20.c \
+	xof_shake128.c xof_shake256.c xof_turboshake128.c \
+	xof_turboshake256.c
 am__can_run_installinfo = \
   case $$AM_UPDATE_INFO_DIR in \
     n|no|NO) false;; \
@@ -957,6 +982,7 @@ EXTRA_DIST = \
 	chacha20.exp \
 	codecs.exp \
 	core_ed25519.exp \
+	core_keccak1600.exp \
 	core_ristretto255.exp \
 	core1.exp \
 	core2.exp \
@@ -1012,7 +1038,11 @@ EXTRA_DIST = \
 	stream3.exp \
 	stream4.exp \
 	verify1.exp \
-	xchacha20.exp
+	xchacha20.exp \
+	xof_shake128.exp \
+	xof_shake256.exp \
+	xof_turboshake128.exp \
+	xof_turboshake256.exp
 
 DISTCLEANFILES = \
 	aead_aegis128l.res \
@@ -1039,6 +1069,7 @@ DISTCLEANFILES = \
 	chacha20.res \
 	codecs.res \
 	core_ed25519.res \
+	core_keccak1600.res \
 	core_ristretto255.res \
 	core1.res \
 	core2.res \
@@ -1095,7 +1126,11 @@ DISTCLEANFILES = \
 	stream3.res \
 	stream4.res \
 	verify1.res \
-	xchacha20.res
+	xchacha20.res \
+	xof_shake128.res \
+	xof_shake256.res \
+	xof_turboshake128.res \
+	xof_turboshake256.res
 
 AM_CPPFLAGS = \
 	-DTEST_SRCDIR=\"@srcdir@\" \
@@ -1110,15 +1145,17 @@ TESTS_TARGETS = aead_aegis128l aead_aegis256 aead_aes256gcm \
 	aead_aes256gcm2 aead_chacha20poly1305 aead_chacha20poly13052 \
 	aead_xchacha20poly1305 auth auth2 auth3 auth5 auth6 auth7 box \
 	box2 box7 box8 box_easy box_easy2 box_seal box_seed chacha20 \
-	codecs core1 core2 core3 core4 core5 core6 ed25519_convert \
-	generichash generichash2 generichash3 hash hash3 kdf keygen kx \
-	metamorphic misuse onetimeauth onetimeauth2 onetimeauth7 \
-	pwhash_argon2i pwhash_argon2id randombytes scalarmult \
-	scalarmult2 scalarmult5 scalarmult6 scalarmult7 scalarmult8 \
-	secretbox secretbox2 secretbox7 secretbox8 secretbox_easy \
-	secretbox_easy2 secretstream_xchacha20poly1305 shorthash sign \
-	sodium_core sodium_utils sodium_version stream stream2 stream3 \
-	stream4 verify1 $(am__append_1) $(am__append_2)
+	codecs core_keccak1600 core1 core2 core3 core4 core5 core6 \
+	ed25519_convert generichash generichash2 generichash3 hash \
+	hash3 kdf keygen kx metamorphic misuse onetimeauth \
+	onetimeauth2 onetimeauth7 pwhash_argon2i pwhash_argon2id \
+	randombytes scalarmult scalarmult2 scalarmult5 scalarmult6 \
+	scalarmult7 scalarmult8 secretbox secretbox2 secretbox7 \
+	secretbox8 secretbox_easy secretbox_easy2 \
+	secretstream_xchacha20poly1305 shorthash sign sodium_core \
+	sodium_utils sodium_version stream stream2 stream3 stream4 \
+	verify1 xof_shake128 xof_shake256 xof_turboshake128 \
+	xof_turboshake256 $(am__append_1) $(am__append_2)
 TESTS_LDADD = \
 	${top_builddir}/src/libsodium/libsodium.la
 
@@ -1170,6 +1207,8 @@ codecs_SOURCE = cmptest.h codecs.c
 codecs_LDADD = $(TESTS_LDADD)
 core_ed25519_SOURCE = cmptest.h core_ed25519.c
 core_ed25519_LDADD = $(TESTS_LDADD)
+core_keccak1600_SOURCE = cmptest.h core_keccak1600.c
+core_keccak1600_LDADD = $(TESTS_LDADD)
 core_ristretto255_SOURCE = cmptest.h core_ristretto255.c
 core_ristretto255_LDADD = $(TESTS_LDADD)
 core1_SOURCE = cmptest.h core1.c
@@ -1282,6 +1321,14 @@ verify1_SOURCE = cmptest.h verify1.c
 verify1_LDADD = $(TESTS_LDADD)
 xchacha20_SOURCE = cmptest.h xchacha20.c
 xchacha20_LDADD = $(TESTS_LDADD)
+xof_shake128_SOURCE = cmptest.h xof_shake128.c
+xof_shake128_LDADD = $(TESTS_LDADD)
+xof_shake256_SOURCE = cmptest.h xof_shake256.c
+xof_shake256_LDADD = $(TESTS_LDADD)
+xof_turboshake128_SOURCE = cmptest.h xof_turboshake128.c
+xof_turboshake128_LDADD = $(TESTS_LDADD)
+xof_turboshake256_SOURCE = cmptest.h xof_turboshake256.c
+xof_turboshake256_LDADD = $(TESTS_LDADD)
 @WASI_TRUE@LOG_COMPILER = ./wasi-test-wrapper.sh
 all: all-am
 
@@ -1440,6 +1487,10 @@ core6$(EXEEXT): $(core6_OBJECTS) $(core6_DEPENDENCIES) $(EXTRA_core6_DEPENDENCIE
 core_ed25519$(EXEEXT): $(core_ed25519_OBJECTS) $(core_ed25519_DEPENDENCIES) $(EXTRA_core_ed25519_DEPENDENCIES) 
 	@rm -f core_ed25519$(EXEEXT)
 	$(AM_V_CCLD)$(LINK) $(core_ed25519_OBJECTS) $(core_ed25519_LDADD) $(LIBS)
+
+core_keccak1600$(EXEEXT): $(core_keccak1600_OBJECTS) $(core_keccak1600_DEPENDENCIES) $(EXTRA_core_keccak1600_DEPENDENCIES) 
+	@rm -f core_keccak1600$(EXEEXT)
+	$(AM_V_CCLD)$(LINK) $(core_keccak1600_OBJECTS) $(core_keccak1600_LDADD) $(LIBS)
 
 core_ristretto255$(EXEEXT): $(core_ristretto255_OBJECTS) $(core_ristretto255_DEPENDENCIES) $(EXTRA_core_ristretto255_DEPENDENCIES) 
 	@rm -f core_ristretto255$(EXEEXT)
@@ -1641,6 +1692,22 @@ xchacha20$(EXEEXT): $(xchacha20_OBJECTS) $(xchacha20_DEPENDENCIES) $(EXTRA_xchac
 	@rm -f xchacha20$(EXEEXT)
 	$(AM_V_CCLD)$(LINK) $(xchacha20_OBJECTS) $(xchacha20_LDADD) $(LIBS)
 
+xof_shake128$(EXEEXT): $(xof_shake128_OBJECTS) $(xof_shake128_DEPENDENCIES) $(EXTRA_xof_shake128_DEPENDENCIES) 
+	@rm -f xof_shake128$(EXEEXT)
+	$(AM_V_CCLD)$(LINK) $(xof_shake128_OBJECTS) $(xof_shake128_LDADD) $(LIBS)
+
+xof_shake256$(EXEEXT): $(xof_shake256_OBJECTS) $(xof_shake256_DEPENDENCIES) $(EXTRA_xof_shake256_DEPENDENCIES) 
+	@rm -f xof_shake256$(EXEEXT)
+	$(AM_V_CCLD)$(LINK) $(xof_shake256_OBJECTS) $(xof_shake256_LDADD) $(LIBS)
+
+xof_turboshake128$(EXEEXT): $(xof_turboshake128_OBJECTS) $(xof_turboshake128_DEPENDENCIES) $(EXTRA_xof_turboshake128_DEPENDENCIES) 
+	@rm -f xof_turboshake128$(EXEEXT)
+	$(AM_V_CCLD)$(LINK) $(xof_turboshake128_OBJECTS) $(xof_turboshake128_LDADD) $(LIBS)
+
+xof_turboshake256$(EXEEXT): $(xof_turboshake256_OBJECTS) $(xof_turboshake256_DEPENDENCIES) $(EXTRA_xof_turboshake256_DEPENDENCIES) 
+	@rm -f xof_turboshake256$(EXEEXT)
+	$(AM_V_CCLD)$(LINK) $(xof_turboshake256_OBJECTS) $(xof_turboshake256_LDADD) $(LIBS)
+
 mostlyclean-compile:
 	-rm -f *.$(OBJEXT)
 
@@ -1677,6 +1744,7 @@ distclean-compile:
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/core5.Po@am__quote@ # am--include-marker
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/core6.Po@am__quote@ # am--include-marker
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/core_ed25519.Po@am__quote@ # am--include-marker
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/core_keccak1600.Po@am__quote@ # am--include-marker
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/core_ristretto255.Po@am__quote@ # am--include-marker
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/ed25519_convert.Po@am__quote@ # am--include-marker
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/generichash.Po@am__quote@ # am--include-marker
@@ -1727,6 +1795,10 @@ distclean-compile:
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/stream4.Po@am__quote@ # am--include-marker
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/verify1.Po@am__quote@ # am--include-marker
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/xchacha20.Po@am__quote@ # am--include-marker
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/xof_shake128.Po@am__quote@ # am--include-marker
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/xof_shake256.Po@am__quote@ # am--include-marker
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/xof_turboshake128.Po@am__quote@ # am--include-marker
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/xof_turboshake256.Po@am__quote@ # am--include-marker
 
 $(am__depfiles_remade):
 	@$(MKDIR_P) $(@D)
@@ -2143,6 +2215,13 @@ codecs.log: codecs$(EXEEXT)
 	--log-file $$b.log --trs-file $$b.trs \
 	$(am__common_driver_flags) $(AM_LOG_DRIVER_FLAGS) $(LOG_DRIVER_FLAGS) -- $(LOG_COMPILE) \
 	"$$tst" $(AM_TESTS_FD_REDIRECT)
+core_keccak1600.log: core_keccak1600$(EXEEXT)
+	@p='core_keccak1600$(EXEEXT)'; \
+	b='core_keccak1600'; \
+	$(am__check_pre) $(LOG_DRIVER) --test-name "$$f" \
+	--log-file $$b.log --trs-file $$b.trs \
+	$(am__common_driver_flags) $(AM_LOG_DRIVER_FLAGS) $(LOG_DRIVER_FLAGS) -- $(LOG_COMPILE) \
+	"$$tst" $(AM_TESTS_FD_REDIRECT)
 core1.log: core1$(EXEEXT)
 	@p='core1$(EXEEXT)'; \
 	b='core1'; \
@@ -2465,6 +2544,34 @@ verify1.log: verify1$(EXEEXT)
 	--log-file $$b.log --trs-file $$b.trs \
 	$(am__common_driver_flags) $(AM_LOG_DRIVER_FLAGS) $(LOG_DRIVER_FLAGS) -- $(LOG_COMPILE) \
 	"$$tst" $(AM_TESTS_FD_REDIRECT)
+xof_shake128.log: xof_shake128$(EXEEXT)
+	@p='xof_shake128$(EXEEXT)'; \
+	b='xof_shake128'; \
+	$(am__check_pre) $(LOG_DRIVER) --test-name "$$f" \
+	--log-file $$b.log --trs-file $$b.trs \
+	$(am__common_driver_flags) $(AM_LOG_DRIVER_FLAGS) $(LOG_DRIVER_FLAGS) -- $(LOG_COMPILE) \
+	"$$tst" $(AM_TESTS_FD_REDIRECT)
+xof_shake256.log: xof_shake256$(EXEEXT)
+	@p='xof_shake256$(EXEEXT)'; \
+	b='xof_shake256'; \
+	$(am__check_pre) $(LOG_DRIVER) --test-name "$$f" \
+	--log-file $$b.log --trs-file $$b.trs \
+	$(am__common_driver_flags) $(AM_LOG_DRIVER_FLAGS) $(LOG_DRIVER_FLAGS) -- $(LOG_COMPILE) \
+	"$$tst" $(AM_TESTS_FD_REDIRECT)
+xof_turboshake128.log: xof_turboshake128$(EXEEXT)
+	@p='xof_turboshake128$(EXEEXT)'; \
+	b='xof_turboshake128'; \
+	$(am__check_pre) $(LOG_DRIVER) --test-name "$$f" \
+	--log-file $$b.log --trs-file $$b.trs \
+	$(am__common_driver_flags) $(AM_LOG_DRIVER_FLAGS) $(LOG_DRIVER_FLAGS) -- $(LOG_COMPILE) \
+	"$$tst" $(AM_TESTS_FD_REDIRECT)
+xof_turboshake256.log: xof_turboshake256$(EXEEXT)
+	@p='xof_turboshake256$(EXEEXT)'; \
+	b='xof_turboshake256'; \
+	$(am__check_pre) $(LOG_DRIVER) --test-name "$$f" \
+	--log-file $$b.log --trs-file $$b.trs \
+	$(am__common_driver_flags) $(AM_LOG_DRIVER_FLAGS) $(LOG_DRIVER_FLAGS) -- $(LOG_COMPILE) \
+	"$$tst" $(AM_TESTS_FD_REDIRECT)
 sodium_utils2.log: sodium_utils2$(EXEEXT)
 	@p='sodium_utils2$(EXEEXT)'; \
 	b='sodium_utils2'; \
@@ -2666,6 +2773,7 @@ distclean: distclean-am
 	-rm -f ./$(DEPDIR)/core5.Po
 	-rm -f ./$(DEPDIR)/core6.Po
 	-rm -f ./$(DEPDIR)/core_ed25519.Po
+	-rm -f ./$(DEPDIR)/core_keccak1600.Po
 	-rm -f ./$(DEPDIR)/core_ristretto255.Po
 	-rm -f ./$(DEPDIR)/ed25519_convert.Po
 	-rm -f ./$(DEPDIR)/generichash.Po
@@ -2716,6 +2824,10 @@ distclean: distclean-am
 	-rm -f ./$(DEPDIR)/stream4.Po
 	-rm -f ./$(DEPDIR)/verify1.Po
 	-rm -f ./$(DEPDIR)/xchacha20.Po
+	-rm -f ./$(DEPDIR)/xof_shake128.Po
+	-rm -f ./$(DEPDIR)/xof_shake256.Po
+	-rm -f ./$(DEPDIR)/xof_turboshake128.Po
+	-rm -f ./$(DEPDIR)/xof_turboshake256.Po
 	-rm -f Makefile
 distclean-am: clean-am distclean-compile distclean-generic \
 	distclean-tags
@@ -2791,6 +2903,7 @@ maintainer-clean: maintainer-clean-am
 	-rm -f ./$(DEPDIR)/core5.Po
 	-rm -f ./$(DEPDIR)/core6.Po
 	-rm -f ./$(DEPDIR)/core_ed25519.Po
+	-rm -f ./$(DEPDIR)/core_keccak1600.Po
 	-rm -f ./$(DEPDIR)/core_ristretto255.Po
 	-rm -f ./$(DEPDIR)/ed25519_convert.Po
 	-rm -f ./$(DEPDIR)/generichash.Po
@@ -2841,6 +2954,10 @@ maintainer-clean: maintainer-clean-am
 	-rm -f ./$(DEPDIR)/stream4.Po
 	-rm -f ./$(DEPDIR)/verify1.Po
 	-rm -f ./$(DEPDIR)/xchacha20.Po
+	-rm -f ./$(DEPDIR)/xof_shake128.Po
+	-rm -f ./$(DEPDIR)/xof_shake256.Po
+	-rm -f ./$(DEPDIR)/xof_turboshake128.Po
+	-rm -f ./$(DEPDIR)/xof_turboshake256.Po
 	-rm -f Makefile
 maintainer-clean-am: distclean-am maintainer-clean-generic
 

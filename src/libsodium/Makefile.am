@@ -27,6 +27,9 @@ libsodium_la_SOURCES = \
 	crypto_core/hchacha20/core_hchacha20.c \
 	crypto_core/hsalsa20/ref2/core_hsalsa20_ref2.c \
 	crypto_core/hsalsa20/core_hsalsa20.c \
+	crypto_core/keccak1600/keccak1600.c \
+	crypto_core/keccak1600/ref/keccak1600_ref.c \
+	crypto_core/keccak1600/ref/keccak1600_ref.h \
 	crypto_core/salsa/ref/core_salsa_ref.c \
 	crypto_core/softaes/softaes.c \
 	crypto_generichash/crypto_generichash.c \
@@ -96,12 +99,25 @@ libsodium_la_SOURCES = \
 	crypto_stream/salsa20/stream_salsa20.h \
 	crypto_stream/xsalsa20/stream_xsalsa20.c \
 	crypto_verify/verify.c \
+	crypto_xof/shake128/xof_shake128.c \
+	crypto_xof/shake128/ref/shake128_ref.c \
+	crypto_xof/shake128/ref/shake128_ref.h \
+	crypto_xof/shake256/xof_shake256.c \
+	crypto_xof/shake256/ref/shake256_ref.c \
+	crypto_xof/shake256/ref/shake256_ref.h \
+	crypto_xof/turboshake128/xof_turboshake128.c \
+	crypto_xof/turboshake128/ref/turboshake128_ref.c \
+	crypto_xof/turboshake128/ref/turboshake128_ref.h \
+	crypto_xof/turboshake256/xof_turboshake256.c \
+	crypto_xof/turboshake256/ref/turboshake256_ref.c \
+	crypto_xof/turboshake256/ref/turboshake256_ref.h \
 	include/sodium/private/asm_cet.h \
 	include/sodium/private/chacha20_ietf_ext.h \
 	include/sodium/private/common.h \
 	include/sodium/private/ed25519_ref10.h \
 	include/sodium/private/implementations.h \
 	include/sodium/private/mutex.h \
+	include/sodium/private/quirks.h \
 	include/sodium/private/sse2_64_32.h \
 	include/sodium/private/softaes.h \
 	randombytes/randombytes.c \
