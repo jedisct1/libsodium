@@ -80,6 +80,18 @@ crypto_ipcrypt_ndx_outputbytes(void)
     return crypto_ipcrypt_NDX_OUTPUTBYTES;
 }
 
+size_t
+crypto_ipcrypt_pfx_keybytes(void)
+{
+    return crypto_ipcrypt_PFX_KEYBYTES;
+}
+
+size_t
+crypto_ipcrypt_pfx_bytes(void)
+{
+    return crypto_ipcrypt_PFX_BYTES;
+}
+
 void
 crypto_ipcrypt_keygen(unsigned char k[crypto_ipcrypt_KEYBYTES])
 {
@@ -90,6 +102,12 @@ void
 crypto_ipcrypt_ndx_keygen(unsigned char k[crypto_ipcrypt_NDX_KEYBYTES])
 {
     randombytes_buf(k, crypto_ipcrypt_NDX_KEYBYTES);
+}
+
+void
+crypto_ipcrypt_pfx_keygen(unsigned char k[crypto_ipcrypt_PFX_KEYBYTES])
+{
+    randombytes_buf(k, crypto_ipcrypt_PFX_KEYBYTES);
 }
 
 void
@@ -132,6 +150,18 @@ void
 crypto_ipcrypt_ndx_decrypt(unsigned char *out, const unsigned char *in, const unsigned char *k)
 {
     implementation->ndx_decrypt(out, in, k);
+}
+
+void
+crypto_ipcrypt_pfx_encrypt(unsigned char *out, const unsigned char *in, const unsigned char *k)
+{
+    implementation->pfx_encrypt(out, in, k);
+}
+
+void
+crypto_ipcrypt_pfx_decrypt(unsigned char *out, const unsigned char *in, const unsigned char *k)
+{
+    implementation->pfx_decrypt(out, in, k);
 }
 
 int

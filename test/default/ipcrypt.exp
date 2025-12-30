@@ -8,6 +8,8 @@ crypto_ipcrypt_NDX_KEYBYTES: 32
 crypto_ipcrypt_NDX_TWEAKBYTES: 16
 crypto_ipcrypt_NDX_INPUTBYTES: 16
 crypto_ipcrypt_NDX_OUTPUTBYTES: 32
+crypto_ipcrypt_PFX_KEYBYTES: 32
+crypto_ipcrypt_PFX_BYTES: 16
 
 Test 1: Format-preserving encryption
 Key: 0102030405060708090a0b0c0d0e0f10
@@ -48,5 +50,25 @@ OK: Deterministic encryption verified
 
 Test 7: In-place encryption and decryption
 OK: In-place round-trip successful
+
+Test 8: Prefix-preserving encryption (PFX mode)
+PFX Key: 0123456789abcdeffedcba98765432101032547698badcfeefcdab8967452301
+Input (0.0.0.0): 00000000000000000000ffff00000000
+PFX Encrypted: 00000000000000000000ffff97529b86
+PFX Decrypted: 00000000000000000000ffff00000000
+OK: PFX round-trip successful
+
+Test 9: Verify prefix preservation
+10.0.0.47 encrypted: 00000000000000000000ffff13d6d2f4
+10.0.0.129 encrypted: 00000000000000000000ffff13d6d250
+OK: /24 prefix preserved
+
+Test 10: PFX key generation
+Random PFX key generated (skipped in output)
+
+Test 11: IPv6 prefix-preserving encryption
+2001:db8::1 encrypted: 7cec702c12430f70d5ff5bae0021b09b
+2001:db8::2 encrypted: 7cec702c12430f70d5ff5bae0021b098
+OK: IPv6 /64 prefix preserved
 
 All tests passed!

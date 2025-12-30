@@ -15,13 +15,17 @@ main(void)
 {
     unsigned char key[crypto_ipcrypt_KEYBYTES];
     unsigned char ndx_key[crypto_ipcrypt_NDX_KEYBYTES];
+    unsigned char pfx_key[crypto_ipcrypt_PFX_KEYBYTES];
     unsigned char input[crypto_ipcrypt_BYTES];
     unsigned char output[crypto_ipcrypt_BYTES];
     unsigned char nd_output[crypto_ipcrypt_ND_OUTPUTBYTES];
     unsigned char ndx_output[crypto_ipcrypt_NDX_OUTPUTBYTES];
+    unsigned char pfx_output[crypto_ipcrypt_PFX_BYTES];
     unsigned char tweak_nd[crypto_ipcrypt_ND_TWEAKBYTES];
     unsigned char tweak_ndx[crypto_ipcrypt_NDX_TWEAKBYTES];
     unsigned char decrypted[crypto_ipcrypt_BYTES];
+    unsigned char encrypted1[crypto_ipcrypt_PFX_BYTES];
+    unsigned char encrypted2[crypto_ipcrypt_PFX_BYTES];
     size_t        i;
 
     printf("crypto_ipcrypt_BYTES: %zu\n", crypto_ipcrypt_bytes());
@@ -34,6 +38,8 @@ main(void)
     printf("crypto_ipcrypt_NDX_TWEAKBYTES: %zu\n", crypto_ipcrypt_ndx_tweakbytes());
     printf("crypto_ipcrypt_NDX_INPUTBYTES: %zu\n", crypto_ipcrypt_ndx_inputbytes());
     printf("crypto_ipcrypt_NDX_OUTPUTBYTES: %zu\n", crypto_ipcrypt_ndx_outputbytes());
+    printf("crypto_ipcrypt_PFX_KEYBYTES: %zu\n", crypto_ipcrypt_pfx_keybytes());
+    printf("crypto_ipcrypt_PFX_BYTES: %zu\n", crypto_ipcrypt_pfx_bytes());
 
     /* Test 1: Format-preserving encryption with known key/input */
     memset(key, 0x00, sizeof key);
@@ -196,6 +202,115 @@ main(void)
         return 1;
     }
     printf("OK: In-place round-trip successful\n");
+
+    /* Test 8: Prefix-preserving encryption (PFX mode) */
+    printf("\nTest 8: Prefix-preserving encryption (PFX mode)\n");
+
+    /* Test vector from the specification:
+     * Key: 0123456789abcdeffedcba98765432101032547698badcfeefcdab8967452301
+     * Input IP: 0.0.0.0 (IPv4-mapped)
+     * Expected: 151.82.155.134
+     */
+    sodium_hex2bin(pfx_key, sizeof pfx_key,
+                   "0123456789abcdeffedcba98765432101032547698badcfeefcdab8967452301",
+                   64, NULL, NULL, NULL);
+
+    memset(input, 0, sizeof input);
+    input[10] = 0xff;
+    input[11] = 0xff;
+    /* 0.0.0.0 */
+
+    printf("PFX Key: ");
+    dump_hex(pfx_key, sizeof pfx_key);
+    printf("Input (0.0.0.0): ");
+    dump_hex(input, sizeof input);
+
+    crypto_ipcrypt_pfx_encrypt(pfx_output, input, pfx_key);
+    printf("PFX Encrypted: ");
+    dump_hex(pfx_output, sizeof pfx_output);
+
+    crypto_ipcrypt_pfx_decrypt(decrypted, pfx_output, pfx_key);
+    printf("PFX Decrypted: ");
+    dump_hex(decrypted, sizeof decrypted);
+
+    if (memcmp(input, decrypted, sizeof input) != 0) {
+        printf("FAILED: PFX decrypted does not match input\n");
+        return 1;
+    }
+    printf("OK: PFX round-trip successful\n");
+
+    /* Test 9: Verify prefix preservation - IPs in same /24 should share encrypted prefix */
+    printf("\nTest 9: Verify prefix preservation\n");
+
+    /* Use test vector key from spec */
+    sodium_hex2bin(pfx_key, sizeof pfx_key,
+                   "2b7e151628aed2a6abf7158809cf4f3ca9f5ba40db214c3798f2e1c23456789a",
+                   64, NULL, NULL, NULL);
+
+    /* 10.0.0.47 */
+    memset(input, 0, sizeof input);
+    input[10] = 0xff;
+    input[11] = 0xff;
+    input[12] = 10;
+    input[13] = 0;
+    input[14] = 0;
+    input[15] = 47;
+
+    crypto_ipcrypt_pfx_encrypt(encrypted1, input, pfx_key);
+    printf("10.0.0.47 encrypted: ");
+    dump_hex(encrypted1, sizeof encrypted1);
+
+    /* 10.0.0.129 */
+    input[15] = 129;
+
+    crypto_ipcrypt_pfx_encrypt(encrypted2, input, pfx_key);
+    printf("10.0.0.129 encrypted: ");
+    dump_hex(encrypted2, sizeof encrypted2);
+
+    /* Check that the first 24 bits of the encrypted IPv4 addresses match (bytes 12-14) */
+    if (memcmp(encrypted1 + 12, encrypted2 + 12, 3) != 0) {
+        printf("FAILED: Prefix not preserved for /24 addresses\n");
+        return 1;
+    }
+    printf("OK: /24 prefix preserved\n");
+
+    /* Test 10: PFX keygen */
+    printf("\nTest 10: PFX key generation\n");
+    crypto_ipcrypt_pfx_keygen(pfx_key);
+    printf("Random PFX key generated (skipped in output)\n");
+
+    /* Test 11: IPv6 prefix preservation */
+    printf("\nTest 11: IPv6 prefix-preserving encryption\n");
+
+    sodium_hex2bin(pfx_key, sizeof pfx_key,
+                   "2b7e151628aed2a6abf7158809cf4f3ca9f5ba40db214c3798f2e1c23456789a",
+                   64, NULL, NULL, NULL);
+
+    /* 2001:db8::1 */
+    memset(input, 0, sizeof input);
+    input[0] = 0x20;
+    input[1] = 0x01;
+    input[2] = 0x0d;
+    input[3] = 0xb8;
+    input[15] = 0x01;
+
+    crypto_ipcrypt_pfx_encrypt(encrypted1, input, pfx_key);
+    printf("2001:db8::1 encrypted: ");
+    dump_hex(encrypted1, sizeof encrypted1);
+
+    /* 2001:db8::2 */
+    input[15] = 0x02;
+
+    crypto_ipcrypt_pfx_encrypt(encrypted2, input, pfx_key);
+    printf("2001:db8::2 encrypted: ");
+    dump_hex(encrypted2, sizeof encrypted2);
+
+    /* Check that the first 64 bits match (bytes 0-7 for /64 prefix) */
+    if (memcmp(encrypted1, encrypted2, 8) != 0) {
+        printf("FAILED: IPv6 /64 prefix not preserved\n");
+        return 1;
+    }
+    printf("OK: IPv6 /64 prefix preserved\n");
 
     printf("\nAll tests passed!\n");
 

@@ -52,11 +52,23 @@ size_t crypto_ipcrypt_ndx_inputbytes(void);
 SODIUM_EXPORT
 size_t crypto_ipcrypt_ndx_outputbytes(void);
 
+#define crypto_ipcrypt_PFX_KEYBYTES 32U
+SODIUM_EXPORT
+size_t crypto_ipcrypt_pfx_keybytes(void);
+
+#define crypto_ipcrypt_PFX_BYTES 16U
+SODIUM_EXPORT
+size_t crypto_ipcrypt_pfx_bytes(void);
+
 SODIUM_EXPORT
 void crypto_ipcrypt_keygen(unsigned char k[crypto_ipcrypt_KEYBYTES]) __attribute__((nonnull));
 
 SODIUM_EXPORT
 void crypto_ipcrypt_ndx_keygen(unsigned char k[crypto_ipcrypt_NDX_KEYBYTES])
+    __attribute__((nonnull));
+
+SODIUM_EXPORT
+void crypto_ipcrypt_pfx_keygen(unsigned char k[crypto_ipcrypt_PFX_KEYBYTES])
     __attribute__((nonnull));
 
 SODIUM_EXPORT
@@ -95,6 +107,18 @@ SODIUM_EXPORT
 void crypto_ipcrypt_ndx_decrypt(unsigned char       out[crypto_ipcrypt_NDX_INPUTBYTES],
                                 const unsigned char in[crypto_ipcrypt_NDX_OUTPUTBYTES],
                                 const unsigned char k[crypto_ipcrypt_NDX_KEYBYTES])
+    __attribute__((nonnull));
+
+SODIUM_EXPORT
+void crypto_ipcrypt_pfx_encrypt(unsigned char       out[crypto_ipcrypt_PFX_BYTES],
+                                const unsigned char in[crypto_ipcrypt_PFX_BYTES],
+                                const unsigned char k[crypto_ipcrypt_PFX_KEYBYTES])
+    __attribute__((nonnull));
+
+SODIUM_EXPORT
+void crypto_ipcrypt_pfx_decrypt(unsigned char       out[crypto_ipcrypt_PFX_BYTES],
+                                const unsigned char in[crypto_ipcrypt_PFX_BYTES],
+                                const unsigned char k[crypto_ipcrypt_PFX_KEYBYTES])
     __attribute__((nonnull));
 
 #ifdef __cplusplus

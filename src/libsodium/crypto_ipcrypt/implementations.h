@@ -13,6 +13,8 @@ typedef struct ipcrypt_implementation {
     void (*nd_decrypt)(uint8_t *out, const uint8_t *in, const uint8_t *k);
     void (*ndx_encrypt)(uint8_t *out, const uint8_t *in, const uint8_t *t, const uint8_t *k);
     void (*ndx_decrypt)(uint8_t *out, const uint8_t *in, const uint8_t *k);
+    void (*pfx_encrypt)(uint8_t *out, const uint8_t *in, const uint8_t *k);
+    void (*pfx_decrypt)(uint8_t *out, const uint8_t *in, const uint8_t *k);
 } ipcrypt_implementation;
 
 #endif
