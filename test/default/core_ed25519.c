@@ -130,11 +130,12 @@ main(void)
     assert(crypto_core_ed25519_is_valid_point(p) == 0);
 
     p[0] = 9;
-    assert(crypto_core_ed25519_is_valid_point(p) == 1);
+    assert(crypto_core_ed25519_is_valid_point(p) == 0);
 
     assert(crypto_core_ed25519_is_valid_point(max_canonical_p) == 1);
     assert(crypto_core_ed25519_is_valid_point(non_canonical_invalid_p) == 0);
     assert(crypto_core_ed25519_is_valid_point(non_canonical_p) == 0);
+    assert(crypto_core_ed25519_is_valid_point(not_main_subgroup_p) == 0);
 
     memcpy(p2, p, crypto_core_ed25519_BYTES);
     add_P(p2);
