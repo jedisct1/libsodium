@@ -276,6 +276,18 @@
     <ClCompile Include="..\..\..\..\src\libsodium\sodium\version.c">
       <Filter>sodium</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\..\..\src\libsodium\crypto_ipcrypt\ipcrypt_armcrypto.c">
+      <Filter>crypto_ipcrypt</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\src\libsodium\crypto_ipcrypt\crypto_ipcrypt.c">
+      <Filter>crypto_ipcrypt</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\src\libsodium\crypto_ipcrypt\ipcrypt_soft.c">
+      <Filter>crypto_ipcrypt</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\src\libsodium\crypto_ipcrypt\ipcrypt_aesni.c">
+      <Filter>crypto_ipcrypt</Filter>
+    </ClCompile>
     <ClCompile Include="..\..\..\..\src\libsodium\crypto_stream\crypto_stream.c">
       <Filter>crypto_stream</Filter>
     </ClCompile>
@@ -461,6 +473,9 @@
     <ClInclude Include="..\..\..\..\src\libsodium\include\sodium\core.h">
       <Filter>include\sodium</Filter>
     </ClInclude>
+    <ClInclude Include="..\..\..\..\src\libsodium\include\sodium\version.h">
+      <Filter>include\sodium</Filter>
+    </ClInclude>
     <ClInclude Include="..\..\..\..\src\libsodium\include\sodium\export.h">
       <Filter>include\sodium</Filter>
     </ClInclude>
@@ -641,6 +656,9 @@
     <ClInclude Include="..\..\..\..\src\libsodium\include\sodium\crypto_scalarmult_ed25519.h">
       <Filter>include\sodium</Filter>
     </ClInclude>
+    <ClInclude Include="..\..\..\..\src\libsodium\include\sodium\crypto_ipcrypt.h">
+      <Filter>include\sodium</Filter>
+    </ClInclude>
     <ClInclude Include="..\..\..\..\src\libsodium\include\sodium\crypto_box_curve25519xsalsa20poly1305.h">
       <Filter>include\sodium</Filter>
     </ClInclude>
@@ -769,6 +787,18 @@
     </ClInclude>
     <ClInclude Include="..\..\..\..\src\libsodium\crypto_onetimeauth\poly1305\sse2\poly1305_sse2.h">
       <Filter>crypto_onetimeauth\poly1305\sse2</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\src\libsodium\crypto_ipcrypt\ipcrypt_soft.h">
+      <Filter>crypto_ipcrypt</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\src\libsodium\crypto_ipcrypt\ipcrypt_aesni.h">
+      <Filter>crypto_ipcrypt</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\src\libsodium\crypto_ipcrypt\ipcrypt_armcrypto.h">
+      <Filter>crypto_ipcrypt</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\src\libsodium\crypto_ipcrypt\implementations.h">
+      <Filter>crypto_ipcrypt</Filter>
     </ClInclude>
     <ClInclude Include="..\..\..\..\src\libsodium\crypto_stream\chacha20\stream_chacha20.h">
       <Filter>crypto_stream\chacha20</Filter>
@@ -987,6 +1017,9 @@
     </Filter>
     <Filter Include="crypto_hash\sha512\cp">
       <UniqueIdentifier>{f2d6a22b-dd67-3561-90a4-88696169cb7b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="crypto_ipcrypt">
+      <UniqueIdentifier>{5c3b1fe7-203f-36fd-bca5-8d0c4b466d80}</UniqueIdentifier>
     </Filter>
     <Filter Include="crypto_kdf">
       <UniqueIdentifier>{aaf59186-1c0d-33cf-a34d-93e14bb87226}</UniqueIdentifier>

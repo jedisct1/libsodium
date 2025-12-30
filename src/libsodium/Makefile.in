@@ -223,7 +223,8 @@ am__dirstamp = $(am__leading_dot)dirstamp
 am_libaesni_la_OBJECTS =  \
 	crypto_aead/aegis128l/libaesni_la-aegis128l_aesni.lo \
 	crypto_aead/aegis256/libaesni_la-aegis256_aesni.lo \
-	crypto_aead/aes256gcm/aesni/libaesni_la-aead_aes256gcm_aesni.lo
+	crypto_aead/aes256gcm/aesni/libaesni_la-aead_aes256gcm_aesni.lo \
+	crypto_ipcrypt/libaesni_la-ipcrypt_aesni.lo
 libaesni_la_OBJECTS = $(am_libaesni_la_OBJECTS)
 AM_V_lt = $(am__v_lt_@AM_V@)
 am__v_lt_ = $(am__v_lt_@AM_DEFAULT_V@)
@@ -236,7 +237,8 @@ libarmcrypto_la_LIBADD =
 am_libarmcrypto_la_OBJECTS =  \
 	crypto_aead/aegis128l/libarmcrypto_la-aegis128l_armcrypto.lo \
 	crypto_aead/aegis256/libarmcrypto_la-aegis256_armcrypto.lo \
-	crypto_aead/aes256gcm/armcrypto/libarmcrypto_la-aead_aes256gcm_armcrypto.lo
+	crypto_aead/aes256gcm/armcrypto/libarmcrypto_la-aead_aes256gcm_armcrypto.lo \
+	crypto_ipcrypt/libarmcrypto_la-ipcrypt_armcrypto.lo
 libarmcrypto_la_OBJECTS = $(am_libarmcrypto_la_OBJECTS)
 libarmcrypto_la_LINK = $(LIBTOOL) $(AM_V_lt) --tag=CC \
 	$(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=link $(CCLD) \
@@ -310,6 +312,8 @@ am__libsodium_la_SOURCES_DIST =  \
 	crypto_hash/sha256/cp/hash_sha256_cp.c \
 	crypto_hash/sha512/hash_sha512.c \
 	crypto_hash/sha512/cp/hash_sha512_cp.c \
+	crypto_ipcrypt/crypto_ipcrypt.c crypto_ipcrypt/ipcrypt_soft.c \
+	crypto_ipcrypt/ipcrypt_soft.h crypto_ipcrypt/implementations.h \
 	crypto_kdf/blake2b/kdf_blake2b.c crypto_kdf/crypto_kdf.c \
 	crypto_kdf/hkdf/kdf_hkdf_sha256.c \
 	crypto_kdf/hkdf/kdf_hkdf_sha512.c crypto_kx/crypto_kx.c \
@@ -491,6 +495,8 @@ am_libsodium_la_OBJECTS =  \
 	crypto_hash/sha256/cp/libsodium_la-hash_sha256_cp.lo \
 	crypto_hash/sha512/libsodium_la-hash_sha512.lo \
 	crypto_hash/sha512/cp/libsodium_la-hash_sha512_cp.lo \
+	crypto_ipcrypt/libsodium_la-crypto_ipcrypt.lo \
+	crypto_ipcrypt/libsodium_la-ipcrypt_soft.lo \
 	crypto_kdf/blake2b/libsodium_la-kdf_blake2b.lo \
 	crypto_kdf/libsodium_la-crypto_kdf.lo \
 	crypto_kdf/hkdf/libsodium_la-kdf_hkdf_sha256.lo \
@@ -640,6 +646,10 @@ am__depfiles_remade = crypto_aead/aegis128l/$(DEPDIR)/libaesni_la-aegis128l_aesn
 	crypto_hash/sha256/cp/$(DEPDIR)/libsodium_la-hash_sha256_cp.Plo \
 	crypto_hash/sha512/$(DEPDIR)/libsodium_la-hash_sha512.Plo \
 	crypto_hash/sha512/cp/$(DEPDIR)/libsodium_la-hash_sha512_cp.Plo \
+	crypto_ipcrypt/$(DEPDIR)/libaesni_la-ipcrypt_aesni.Plo \
+	crypto_ipcrypt/$(DEPDIR)/libarmcrypto_la-ipcrypt_armcrypto.Plo \
+	crypto_ipcrypt/$(DEPDIR)/libsodium_la-crypto_ipcrypt.Plo \
+	crypto_ipcrypt/$(DEPDIR)/libsodium_la-ipcrypt_soft.Plo \
 	crypto_kdf/$(DEPDIR)/libsodium_la-crypto_kdf.Plo \
 	crypto_kdf/blake2b/$(DEPDIR)/libsodium_la-kdf_blake2b.Plo \
 	crypto_kdf/hkdf/$(DEPDIR)/libsodium_la-kdf_hkdf_sha256.Plo \
@@ -1049,6 +1059,8 @@ libsodium_la_SOURCES = crypto_aead/aegis128l/aead_aegis128l.c \
 	crypto_hash/sha256/cp/hash_sha256_cp.c \
 	crypto_hash/sha512/hash_sha512.c \
 	crypto_hash/sha512/cp/hash_sha512_cp.c \
+	crypto_ipcrypt/crypto_ipcrypt.c crypto_ipcrypt/ipcrypt_soft.c \
+	crypto_ipcrypt/ipcrypt_soft.h crypto_ipcrypt/implementations.h \
 	crypto_kdf/blake2b/kdf_blake2b.c crypto_kdf/crypto_kdf.c \
 	crypto_kdf/hkdf/kdf_hkdf_sha256.c \
 	crypto_kdf/hkdf/kdf_hkdf_sha512.c crypto_kx/crypto_kx.c \
@@ -1164,7 +1176,9 @@ libarmcrypto_la_SOURCES = \
 	crypto_aead/aegis128l/aegis128l_armcrypto.h \
 	crypto_aead/aegis256/aegis256_armcrypto.c \
 	crypto_aead/aegis256/aegis256_armcrypto.h \
-	crypto_aead/aes256gcm/armcrypto/aead_aes256gcm_armcrypto.c
+	crypto_aead/aes256gcm/armcrypto/aead_aes256gcm_armcrypto.c \
+	crypto_ipcrypt/ipcrypt_armcrypto.c \
+	crypto_ipcrypt/ipcrypt_armcrypto.h
 
 libaesni_la_LDFLAGS = $(libsodium_la_LDFLAGS)
 libaesni_la_CPPFLAGS = $(libsodium_la_CPPFLAGS) \
@@ -1175,7 +1189,9 @@ libaesni_la_SOURCES = \
 	crypto_aead/aegis128l/aegis128l_aesni.h \
 	crypto_aead/aegis256/aegis256_aesni.c \
 	crypto_aead/aegis256/aegis256_aesni.h \
-	crypto_aead/aes256gcm/aesni/aead_aes256gcm_aesni.c
+	crypto_aead/aes256gcm/aesni/aead_aes256gcm_aesni.c \
+	crypto_ipcrypt/ipcrypt_aesni.c \
+	crypto_ipcrypt/ipcrypt_aesni.h
 
 libsse2_la_LDFLAGS = $(libsodium_la_LDFLAGS)
 libsse2_la_CPPFLAGS = $(libsodium_la_CPPFLAGS) \
@@ -1336,6 +1352,15 @@ crypto_aead/aes256gcm/aesni/$(DEPDIR)/$(am__dirstamp):
 crypto_aead/aes256gcm/aesni/libaesni_la-aead_aes256gcm_aesni.lo:  \
 	crypto_aead/aes256gcm/aesni/$(am__dirstamp) \
 	crypto_aead/aes256gcm/aesni/$(DEPDIR)/$(am__dirstamp)
+crypto_ipcrypt/$(am__dirstamp):
+	@$(MKDIR_P) crypto_ipcrypt
+	@: >>crypto_ipcrypt/$(am__dirstamp)
+crypto_ipcrypt/$(DEPDIR)/$(am__dirstamp):
+	@$(MKDIR_P) crypto_ipcrypt/$(DEPDIR)
+	@: >>crypto_ipcrypt/$(DEPDIR)/$(am__dirstamp)
+crypto_ipcrypt/libaesni_la-ipcrypt_aesni.lo:  \
+	crypto_ipcrypt/$(am__dirstamp) \
+	crypto_ipcrypt/$(DEPDIR)/$(am__dirstamp)
 
 libaesni.la: $(libaesni_la_OBJECTS) $(libaesni_la_DEPENDENCIES) $(EXTRA_libaesni_la_DEPENDENCIES) 
 	$(AM_V_CCLD)$(libaesni_la_LINK)  $(libaesni_la_OBJECTS) $(libaesni_la_LIBADD) $(LIBS)
@@ -1354,6 +1379,9 @@ crypto_aead/aes256gcm/armcrypto/$(DEPDIR)/$(am__dirstamp):
 crypto_aead/aes256gcm/armcrypto/libarmcrypto_la-aead_aes256gcm_armcrypto.lo:  \
 	crypto_aead/aes256gcm/armcrypto/$(am__dirstamp) \
 	crypto_aead/aes256gcm/armcrypto/$(DEPDIR)/$(am__dirstamp)
+crypto_ipcrypt/libarmcrypto_la-ipcrypt_armcrypto.lo:  \
+	crypto_ipcrypt/$(am__dirstamp) \
+	crypto_ipcrypt/$(DEPDIR)/$(am__dirstamp)
 
 libarmcrypto.la: $(libarmcrypto_la_OBJECTS) $(libarmcrypto_la_DEPENDENCIES) $(EXTRA_libarmcrypto_la_DEPENDENCIES) 
 	$(AM_V_CCLD)$(libarmcrypto_la_LINK)  $(libarmcrypto_la_OBJECTS) $(libarmcrypto_la_LIBADD) $(LIBS)
@@ -1654,6 +1682,12 @@ crypto_hash/sha512/cp/$(DEPDIR)/$(am__dirstamp):
 crypto_hash/sha512/cp/libsodium_la-hash_sha512_cp.lo:  \
 	crypto_hash/sha512/cp/$(am__dirstamp) \
 	crypto_hash/sha512/cp/$(DEPDIR)/$(am__dirstamp)
+crypto_ipcrypt/libsodium_la-crypto_ipcrypt.lo:  \
+	crypto_ipcrypt/$(am__dirstamp) \
+	crypto_ipcrypt/$(DEPDIR)/$(am__dirstamp)
+crypto_ipcrypt/libsodium_la-ipcrypt_soft.lo:  \
+	crypto_ipcrypt/$(am__dirstamp) \
+	crypto_ipcrypt/$(DEPDIR)/$(am__dirstamp)
 crypto_kdf/blake2b/$(am__dirstamp):
 	@$(MKDIR_P) crypto_kdf/blake2b
 	@: >>crypto_kdf/blake2b/$(am__dirstamp)
@@ -2303,6 +2337,8 @@ mostlyclean-compile:
 	-rm -f crypto_hash/sha512/*.lo
 	-rm -f crypto_hash/sha512/cp/*.$(OBJEXT)
 	-rm -f crypto_hash/sha512/cp/*.lo
+	-rm -f crypto_ipcrypt/*.$(OBJEXT)
+	-rm -f crypto_ipcrypt/*.lo
 	-rm -f crypto_kdf/*.$(OBJEXT)
 	-rm -f crypto_kdf/*.lo
 	-rm -f crypto_kdf/blake2b/*.$(OBJEXT)
@@ -2465,6 +2501,10 @@ distclean-compile:
 @AMDEP_TRUE@@am__include@ @am__quote@crypto_hash/sha256/cp/$(DEPDIR)/libsodium_la-hash_sha256_cp.Plo@am__quote@ # am--include-marker
 @AMDEP_TRUE@@am__include@ @am__quote@crypto_hash/sha512/$(DEPDIR)/libsodium_la-hash_sha512.Plo@am__quote@ # am--include-marker
 @AMDEP_TRUE@@am__include@ @am__quote@crypto_hash/sha512/cp/$(DEPDIR)/libsodium_la-hash_sha512_cp.Plo@am__quote@ # am--include-marker
+@AMDEP_TRUE@@am__include@ @am__quote@crypto_ipcrypt/$(DEPDIR)/libaesni_la-ipcrypt_aesni.Plo@am__quote@ # am--include-marker
+@AMDEP_TRUE@@am__include@ @am__quote@crypto_ipcrypt/$(DEPDIR)/libarmcrypto_la-ipcrypt_armcrypto.Plo@am__quote@ # am--include-marker
+@AMDEP_TRUE@@am__include@ @am__quote@crypto_ipcrypt/$(DEPDIR)/libsodium_la-crypto_ipcrypt.Plo@am__quote@ # am--include-marker
+@AMDEP_TRUE@@am__include@ @am__quote@crypto_ipcrypt/$(DEPDIR)/libsodium_la-ipcrypt_soft.Plo@am__quote@ # am--include-marker
 @AMDEP_TRUE@@am__include@ @am__quote@crypto_kdf/$(DEPDIR)/libsodium_la-crypto_kdf.Plo@am__quote@ # am--include-marker
 @AMDEP_TRUE@@am__include@ @am__quote@crypto_kdf/blake2b/$(DEPDIR)/libsodium_la-kdf_blake2b.Plo@am__quote@ # am--include-marker
 @AMDEP_TRUE@@am__include@ @am__quote@crypto_kdf/hkdf/$(DEPDIR)/libsodium_la-kdf_hkdf_sha256.Plo@am__quote@ # am--include-marker
@@ -2640,6 +2680,13 @@ crypto_aead/aes256gcm/aesni/libaesni_la-aead_aes256gcm_aesni.lo: crypto_aead/aes
 @AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
 @am__fastdepCC_FALSE@	$(AM_V_CC@am__nodep@)$(LIBTOOL) $(AM_V_lt) --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libaesni_la_CPPFLAGS) $(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS) -c -o crypto_aead/aes256gcm/aesni/libaesni_la-aead_aes256gcm_aesni.lo `test -f 'crypto_aead/aes256gcm/aesni/aead_aes256gcm_aesni.c' || echo '$(srcdir)/'`crypto_aead/aes256gcm/aesni/aead_aes256gcm_aesni.c
 
+crypto_ipcrypt/libaesni_la-ipcrypt_aesni.lo: crypto_ipcrypt/ipcrypt_aesni.c
+@am__fastdepCC_TRUE@	$(AM_V_CC)$(LIBTOOL) $(AM_V_lt) --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libaesni_la_CPPFLAGS) $(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS) -MT crypto_ipcrypt/libaesni_la-ipcrypt_aesni.lo -MD -MP -MF crypto_ipcrypt/$(DEPDIR)/libaesni_la-ipcrypt_aesni.Tpo -c -o crypto_ipcrypt/libaesni_la-ipcrypt_aesni.lo `test -f 'crypto_ipcrypt/ipcrypt_aesni.c' || echo '$(srcdir)/'`crypto_ipcrypt/ipcrypt_aesni.c
+@am__fastdepCC_TRUE@	$(AM_V_at)$(am__mv) crypto_ipcrypt/$(DEPDIR)/libaesni_la-ipcrypt_aesni.Tpo crypto_ipcrypt/$(DEPDIR)/libaesni_la-ipcrypt_aesni.Plo
+@AMDEP_TRUE@@am__fastdepCC_FALSE@	$(AM_V_CC)source='crypto_ipcrypt/ipcrypt_aesni.c' object='crypto_ipcrypt/libaesni_la-ipcrypt_aesni.lo' libtool=yes @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCC_FALSE@	$(AM_V_CC@am__nodep@)$(LIBTOOL) $(AM_V_lt) --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libaesni_la_CPPFLAGS) $(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS) -c -o crypto_ipcrypt/libaesni_la-ipcrypt_aesni.lo `test -f 'crypto_ipcrypt/ipcrypt_aesni.c' || echo '$(srcdir)/'`crypto_ipcrypt/ipcrypt_aesni.c
+
 crypto_aead/aegis128l/libarmcrypto_la-aegis128l_armcrypto.lo: crypto_aead/aegis128l/aegis128l_armcrypto.c
 @am__fastdepCC_TRUE@	$(AM_V_CC)$(LIBTOOL) $(AM_V_lt) --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libarmcrypto_la_CPPFLAGS) $(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS) -MT crypto_aead/aegis128l/libarmcrypto_la-aegis128l_armcrypto.lo -MD -MP -MF crypto_aead/aegis128l/$(DEPDIR)/libarmcrypto_la-aegis128l_armcrypto.Tpo -c -o crypto_aead/aegis128l/libarmcrypto_la-aegis128l_armcrypto.lo `test -f 'crypto_aead/aegis128l/aegis128l_armcrypto.c' || echo '$(srcdir)/'`crypto_aead/aegis128l/aegis128l_armcrypto.c
 @am__fastdepCC_TRUE@	$(AM_V_at)$(am__mv) crypto_aead/aegis128l/$(DEPDIR)/libarmcrypto_la-aegis128l_armcrypto.Tpo crypto_aead/aegis128l/$(DEPDIR)/libarmcrypto_la-aegis128l_armcrypto.Plo
@@ -2660,6 +2707,13 @@ crypto_aead/aes256gcm/armcrypto/libarmcrypto_la-aead_aes256gcm_armcrypto.lo: cry
 @AMDEP_TRUE@@am__fastdepCC_FALSE@	$(AM_V_CC)source='crypto_aead/aes256gcm/armcrypto/aead_aes256gcm_armcrypto.c' object='crypto_aead/aes256gcm/armcrypto/libarmcrypto_la-aead_aes256gcm_armcrypto.lo' libtool=yes @AMDEPBACKSLASH@
 @AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
 @am__fastdepCC_FALSE@	$(AM_V_CC@am__nodep@)$(LIBTOOL) $(AM_V_lt) --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libarmcrypto_la_CPPFLAGS) $(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS) -c -o crypto_aead/aes256gcm/armcrypto/libarmcrypto_la-aead_aes256gcm_armcrypto.lo `test -f 'crypto_aead/aes256gcm/armcrypto/aead_aes256gcm_armcrypto.c' || echo '$(srcdir)/'`crypto_aead/aes256gcm/armcrypto/aead_aes256gcm_armcrypto.c
+
+crypto_ipcrypt/libarmcrypto_la-ipcrypt_armcrypto.lo: crypto_ipcrypt/ipcrypt_armcrypto.c
+@am__fastdepCC_TRUE@	$(AM_V_CC)$(LIBTOOL) $(AM_V_lt) --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libarmcrypto_la_CPPFLAGS) $(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS) -MT crypto_ipcrypt/libarmcrypto_la-ipcrypt_armcrypto.lo -MD -MP -MF crypto_ipcrypt/$(DEPDIR)/libarmcrypto_la-ipcrypt_armcrypto.Tpo -c -o crypto_ipcrypt/libarmcrypto_la-ipcrypt_armcrypto.lo `test -f 'crypto_ipcrypt/ipcrypt_armcrypto.c' || echo '$(srcdir)/'`crypto_ipcrypt/ipcrypt_armcrypto.c
+@am__fastdepCC_TRUE@	$(AM_V_at)$(am__mv) crypto_ipcrypt/$(DEPDIR)/libarmcrypto_la-ipcrypt_armcrypto.Tpo crypto_ipcrypt/$(DEPDIR)/libarmcrypto_la-ipcrypt_armcrypto.Plo
+@AMDEP_TRUE@@am__fastdepCC_FALSE@	$(AM_V_CC)source='crypto_ipcrypt/ipcrypt_armcrypto.c' object='crypto_ipcrypt/libarmcrypto_la-ipcrypt_armcrypto.lo' libtool=yes @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCC_FALSE@	$(AM_V_CC@am__nodep@)$(LIBTOOL) $(AM_V_lt) --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libarmcrypto_la_CPPFLAGS) $(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS) -c -o crypto_ipcrypt/libarmcrypto_la-ipcrypt_armcrypto.lo `test -f 'crypto_ipcrypt/ipcrypt_armcrypto.c' || echo '$(srcdir)/'`crypto_ipcrypt/ipcrypt_armcrypto.c
 
 crypto_generichash/blake2b/ref/libavx2_la-blake2b-compress-avx2.lo: crypto_generichash/blake2b/ref/blake2b-compress-avx2.c
 @am__fastdepCC_TRUE@	$(AM_V_CC)$(LIBTOOL) $(AM_V_lt) --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libavx2_la_CPPFLAGS) $(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS) -MT crypto_generichash/blake2b/ref/libavx2_la-blake2b-compress-avx2.lo -MD -MP -MF crypto_generichash/blake2b/ref/$(DEPDIR)/libavx2_la-blake2b-compress-avx2.Tpo -c -o crypto_generichash/blake2b/ref/libavx2_la-blake2b-compress-avx2.lo `test -f 'crypto_generichash/blake2b/ref/blake2b-compress-avx2.c' || echo '$(srcdir)/'`crypto_generichash/blake2b/ref/blake2b-compress-avx2.c
@@ -2933,6 +2987,20 @@ crypto_hash/sha512/cp/libsodium_la-hash_sha512_cp.lo: crypto_hash/sha512/cp/hash
 @AMDEP_TRUE@@am__fastdepCC_FALSE@	$(AM_V_CC)source='crypto_hash/sha512/cp/hash_sha512_cp.c' object='crypto_hash/sha512/cp/libsodium_la-hash_sha512_cp.lo' libtool=yes @AMDEPBACKSLASH@
 @AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
 @am__fastdepCC_FALSE@	$(AM_V_CC@am__nodep@)$(LIBTOOL) $(AM_V_lt) --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libsodium_la_CPPFLAGS) $(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS) -c -o crypto_hash/sha512/cp/libsodium_la-hash_sha512_cp.lo `test -f 'crypto_hash/sha512/cp/hash_sha512_cp.c' || echo '$(srcdir)/'`crypto_hash/sha512/cp/hash_sha512_cp.c
+
+crypto_ipcrypt/libsodium_la-crypto_ipcrypt.lo: crypto_ipcrypt/crypto_ipcrypt.c
+@am__fastdepCC_TRUE@	$(AM_V_CC)$(LIBTOOL) $(AM_V_lt) --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libsodium_la_CPPFLAGS) $(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS) -MT crypto_ipcrypt/libsodium_la-crypto_ipcrypt.lo -MD -MP -MF crypto_ipcrypt/$(DEPDIR)/libsodium_la-crypto_ipcrypt.Tpo -c -o crypto_ipcrypt/libsodium_la-crypto_ipcrypt.lo `test -f 'crypto_ipcrypt/crypto_ipcrypt.c' || echo '$(srcdir)/'`crypto_ipcrypt/crypto_ipcrypt.c
+@am__fastdepCC_TRUE@	$(AM_V_at)$(am__mv) crypto_ipcrypt/$(DEPDIR)/libsodium_la-crypto_ipcrypt.Tpo crypto_ipcrypt/$(DEPDIR)/libsodium_la-crypto_ipcrypt.Plo
+@AMDEP_TRUE@@am__fastdepCC_FALSE@	$(AM_V_CC)source='crypto_ipcrypt/crypto_ipcrypt.c' object='crypto_ipcrypt/libsodium_la-crypto_ipcrypt.lo' libtool=yes @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCC_FALSE@	$(AM_V_CC@am__nodep@)$(LIBTOOL) $(AM_V_lt) --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libsodium_la_CPPFLAGS) $(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS) -c -o crypto_ipcrypt/libsodium_la-crypto_ipcrypt.lo `test -f 'crypto_ipcrypt/crypto_ipcrypt.c' || echo '$(srcdir)/'`crypto_ipcrypt/crypto_ipcrypt.c
+
+crypto_ipcrypt/libsodium_la-ipcrypt_soft.lo: crypto_ipcrypt/ipcrypt_soft.c
+@am__fastdepCC_TRUE@	$(AM_V_CC)$(LIBTOOL) $(AM_V_lt) --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libsodium_la_CPPFLAGS) $(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS) -MT crypto_ipcrypt/libsodium_la-ipcrypt_soft.lo -MD -MP -MF crypto_ipcrypt/$(DEPDIR)/libsodium_la-ipcrypt_soft.Tpo -c -o crypto_ipcrypt/libsodium_la-ipcrypt_soft.lo `test -f 'crypto_ipcrypt/ipcrypt_soft.c' || echo '$(srcdir)/'`crypto_ipcrypt/ipcrypt_soft.c
+@am__fastdepCC_TRUE@	$(AM_V_at)$(am__mv) crypto_ipcrypt/$(DEPDIR)/libsodium_la-ipcrypt_soft.Tpo crypto_ipcrypt/$(DEPDIR)/libsodium_la-ipcrypt_soft.Plo
+@AMDEP_TRUE@@am__fastdepCC_FALSE@	$(AM_V_CC)source='crypto_ipcrypt/ipcrypt_soft.c' object='crypto_ipcrypt/libsodium_la-ipcrypt_soft.lo' libtool=yes @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCC_FALSE@	$(AM_V_CC@am__nodep@)$(LIBTOOL) $(AM_V_lt) --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libsodium_la_CPPFLAGS) $(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS) -c -o crypto_ipcrypt/libsodium_la-ipcrypt_soft.lo `test -f 'crypto_ipcrypt/ipcrypt_soft.c' || echo '$(srcdir)/'`crypto_ipcrypt/ipcrypt_soft.c
 
 crypto_kdf/blake2b/libsodium_la-kdf_blake2b.lo: crypto_kdf/blake2b/kdf_blake2b.c
 @am__fastdepCC_TRUE@	$(AM_V_CC)$(LIBTOOL) $(AM_V_lt) --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libsodium_la_CPPFLAGS) $(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS) -MT crypto_kdf/blake2b/libsodium_la-kdf_blake2b.lo -MD -MP -MF crypto_kdf/blake2b/$(DEPDIR)/libsodium_la-kdf_blake2b.Tpo -c -o crypto_kdf/blake2b/libsodium_la-kdf_blake2b.lo `test -f 'crypto_kdf/blake2b/kdf_blake2b.c' || echo '$(srcdir)/'`crypto_kdf/blake2b/kdf_blake2b.c
@@ -3558,6 +3626,7 @@ clean-libtool:
 	-rm -rf crypto_hash/sha256/cp/.libs crypto_hash/sha256/cp/_libs
 	-rm -rf crypto_hash/sha512/.libs crypto_hash/sha512/_libs
 	-rm -rf crypto_hash/sha512/cp/.libs crypto_hash/sha512/cp/_libs
+	-rm -rf crypto_ipcrypt/.libs crypto_ipcrypt/_libs
 	-rm -rf crypto_kdf/.libs crypto_kdf/_libs
 	-rm -rf crypto_kdf/blake2b/.libs crypto_kdf/blake2b/_libs
 	-rm -rf crypto_kdf/hkdf/.libs crypto_kdf/hkdf/_libs
@@ -3890,6 +3959,8 @@ distclean-generic:
 	-$(am__rm_f) crypto_hash/sha512/$(am__dirstamp)
 	-$(am__rm_f) crypto_hash/sha512/cp/$(DEPDIR)/$(am__dirstamp)
 	-$(am__rm_f) crypto_hash/sha512/cp/$(am__dirstamp)
+	-$(am__rm_f) crypto_ipcrypt/$(DEPDIR)/$(am__dirstamp)
+	-$(am__rm_f) crypto_ipcrypt/$(am__dirstamp)
 	-$(am__rm_f) crypto_kdf/$(DEPDIR)/$(am__dirstamp)
 	-$(am__rm_f) crypto_kdf/$(am__dirstamp)
 	-$(am__rm_f) crypto_kdf/blake2b/$(DEPDIR)/$(am__dirstamp)
@@ -4058,6 +4129,10 @@ distclean: distclean-recursive
 	-rm -f crypto_hash/sha256/cp/$(DEPDIR)/libsodium_la-hash_sha256_cp.Plo
 	-rm -f crypto_hash/sha512/$(DEPDIR)/libsodium_la-hash_sha512.Plo
 	-rm -f crypto_hash/sha512/cp/$(DEPDIR)/libsodium_la-hash_sha512_cp.Plo
+	-rm -f crypto_ipcrypt/$(DEPDIR)/libaesni_la-ipcrypt_aesni.Plo
+	-rm -f crypto_ipcrypt/$(DEPDIR)/libarmcrypto_la-ipcrypt_armcrypto.Plo
+	-rm -f crypto_ipcrypt/$(DEPDIR)/libsodium_la-crypto_ipcrypt.Plo
+	-rm -f crypto_ipcrypt/$(DEPDIR)/libsodium_la-ipcrypt_soft.Plo
 	-rm -f crypto_kdf/$(DEPDIR)/libsodium_la-crypto_kdf.Plo
 	-rm -f crypto_kdf/blake2b/$(DEPDIR)/libsodium_la-kdf_blake2b.Plo
 	-rm -f crypto_kdf/hkdf/$(DEPDIR)/libsodium_la-kdf_hkdf_sha256.Plo
@@ -4234,6 +4309,10 @@ maintainer-clean: maintainer-clean-recursive
 	-rm -f crypto_hash/sha256/cp/$(DEPDIR)/libsodium_la-hash_sha256_cp.Plo
 	-rm -f crypto_hash/sha512/$(DEPDIR)/libsodium_la-hash_sha512.Plo
 	-rm -f crypto_hash/sha512/cp/$(DEPDIR)/libsodium_la-hash_sha512_cp.Plo
+	-rm -f crypto_ipcrypt/$(DEPDIR)/libaesni_la-ipcrypt_aesni.Plo
+	-rm -f crypto_ipcrypt/$(DEPDIR)/libarmcrypto_la-ipcrypt_armcrypto.Plo
+	-rm -f crypto_ipcrypt/$(DEPDIR)/libsodium_la-crypto_ipcrypt.Plo
+	-rm -f crypto_ipcrypt/$(DEPDIR)/libsodium_la-ipcrypt_soft.Plo
 	-rm -f crypto_kdf/$(DEPDIR)/libsodium_la-crypto_kdf.Plo
 	-rm -f crypto_kdf/blake2b/$(DEPDIR)/libsodium_la-kdf_blake2b.Plo
 	-rm -f crypto_kdf/hkdf/$(DEPDIR)/libsodium_la-kdf_hkdf_sha256.Plo

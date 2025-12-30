@@ -1,0 +1,59 @@
+crypto_ipcrypt_BYTES: 16
+crypto_ipcrypt_KEYBYTES: 16
+crypto_ipcrypt_ND_KEYBYTES: 16
+crypto_ipcrypt_ND_TWEAKBYTES: 8
+crypto_ipcrypt_ND_INPUTBYTES: 16
+crypto_ipcrypt_ND_OUTPUTBYTES: 24
+crypto_ipcrypt_NDX_KEYBYTES: 32
+crypto_ipcrypt_NDX_TWEAKBYTES: 16
+crypto_ipcrypt_NDX_INPUTBYTES: 16
+crypto_ipcrypt_NDX_OUTPUTBYTES: 32
+crypto_ipcrypt_PFX_KEYBYTES: 32
+crypto_ipcrypt_PFX_BYTES: 16
+
+ipcrypt-deterministic test vectors
+OK: deterministic vector 1 (0.0.0.0)
+OK: deterministic vector 2 (255.255.255.255)
+OK: deterministic vector 3 (192.0.2.1)
+
+ipcrypt-nd test vectors
+OK: nd vector 1 (0.0.0.0)
+OK: nd vector 2 (192.0.2.1)
+OK: nd vector 3 (2001:db8::1)
+
+ipcrypt-ndx test vectors
+OK: ndx vector 1 (0.0.0.0)
+OK: ndx vector 2 (192.0.2.1)
+OK: ndx vector 3 (2001:db8::1)
+
+ipcrypt-pfx test vectors
+OK: pfx vector 1 (0.0.0.0)
+OK: pfx vector 2 (255.255.255.255)
+OK: pfx vector 3 (192.0.2.1)
+OK: pfx vector 4 (2001:db8::1)
+
+ipcrypt-pfx prefix preservation
+OK: pfx /24 test (10.0.0.47)
+OK: pfx /24 test (10.0.0.129)
+OK: pfx /24 test (10.0.0.234)
+OK: IPv4 /24 prefix preserved for 10.0.0.x
+OK: pfx /16 test (172.16.5.193)
+OK: pfx /16 test (172.16.97.42)
+OK: pfx /16 test (172.16.248.177)
+OK: IPv4 /16 prefix preserved for 172.16.x.x
+OK: pfx /64 test (2001:db8::a5c9:4e2f:bb91:5a7d)
+OK: pfx /64 test (2001:db8::7234:d8f1:3c6e:9a52)
+OK: pfx /64 test (2001:db8::f1e0:937b:26d4:8c1a)
+OK: IPv6 /64 prefix preserved for 2001:db8::/64
+OK: pfx /32 test (2001:db8:3a5c:0:e7d1:4b9f:2c8a:f673)
+OK: pfx /32 test (2001:db8:9f27:0:b4e2:7a3d:5f91:c8e6)
+OK: pfx /32 test (2001:db8:d8b4:0:193c:a5e7:8b2f:46d1)
+OK: IPv6 /32 prefix preserved for 2001:db8::/32
+
+functional tests
+OK: Key generation functions
+OK: In-place encryption/decryption
+OK: Deterministic encryption
+OK: Different inputs produce different outputs
+
+All specification test vectors passed!
