@@ -140,6 +140,10 @@ GOTO end
 
 :error
 ECHO *** ERROR, build terminated early, see: %log%
+ECHO.
+ECHO === Last errors from %log% ===
+findstr /i /c:"error " /c:"error:" /c:"fatal error" %log%
+ECHO.
 GOTO end
 
 :no_tools
