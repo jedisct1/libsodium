@@ -6,7 +6,7 @@ with some compilers
  - Android binaries have been added to the NuGet package
  - Windows ARM binaries have been added to the NuGet package
  - The Android build script has been improved. The base SDK is
-now 27c, and the default platform is 21
+now 27c, and the default platform is 21, supporting 16 KB page sizes.
  - The library can now be compiled with Zig 0.15 and Zig 0.16
  - Zig builds now generate position-independent static libraries by
 default on targets that support PIC
