@@ -1,9 +1,9 @@
 #ifndef softaes_H
-#define softaes_H 1
+#    define softaes_H 1
 
-#include <stdint.h>
+#    include <stdint.h>
 
-#include "private/common.h"
+#    include "private/common.h"
 
 typedef struct SoftAesBlock {
     uint32_t w0;
@@ -12,7 +12,15 @@ typedef struct SoftAesBlock {
     uint32_t w3;
 } SoftAesBlock;
 
+void         softaes_expand_key128(SoftAesBlock rkeys[11], const uint8_t key[16]);
+void         softaes_expand_key256(SoftAesBlock rkeys[15], const uint8_t key[32]);
+SoftAesBlock softaes_inv_mix_columns(const SoftAesBlock block);
+void         softaes_invert_key_schedule128(SoftAesBlock rkeys[11]);
+void         softaes_invert_key_schedule256(SoftAesBlock rkeys[15]);
 SoftAesBlock softaes_block_encrypt(const SoftAesBlock block, const SoftAesBlock rk);
+SoftAesBlock softaes_block_decrypt(const SoftAesBlock block, const SoftAesBlock rk);
+SoftAesBlock softaes_block_encryptlast(const SoftAesBlock block, const SoftAesBlock rk);
+SoftAesBlock softaes_block_decryptlast(const SoftAesBlock block, const SoftAesBlock rk);
 
 static inline SoftAesBlock
 softaes_block_load(const uint8_t in[16])
