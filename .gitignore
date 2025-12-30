@@ -107,6 +107,7 @@ test/default/browser
 test/default/chacha20
 test/default/codecs
 test/default/core_ed25519
+test/default/core_keccak1600
 test/default/core_ristretto255
 test/default/core1
 test/default/core2
@@ -120,6 +121,7 @@ test/default/generichash2
 test/default/generichash3
 test/default/hash
 test/default/hash3
+test/default/ipcrypt
 test/default/kdf
 test/default/kdf_hkdf
 test/default/keygen
@@ -163,6 +165,10 @@ test/default/stream3
 test/default/stream4
 test/default/verify1
 test/default/xchacha20
+test/default/xof_shake128
+test/default/xof_shake256
+test/default/xof_turboshake128
+test/default/xof_turboshake256
 test/js.done
 testing
 Vagrantfile
