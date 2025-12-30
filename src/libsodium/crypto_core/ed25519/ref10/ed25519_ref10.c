@@ -1040,14 +1040,27 @@ ge25519_is_on_curve(const ge25519_p3 *p)
     return fe25519_iszero(t0);
 }
 
-int
-ge25519_is_on_main_subgroup(const ge25519_p3 *p)
+int ge25519_is_point_at_infinity(const unsigned char *p)
+{
+    // just Edwards point at infinity (0, 1) in compressed form:
+    const unsigned char short_infinity_point[32] = {0x01, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
+                                                0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
+                                                0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
+                                                0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00};
+
+    return sodium_memcmp(short_infinity_point, p, 32) == 0 ? 1 : 0;
+}
+
+int ge25519_is_on_main_subgroup(const ge25519_p3 *p)
 {
     ge25519_p3 pl;
+    unsigned char short_pl[32];
 
     ge25519_mul_l(&pl, p);
 
-    return fe25519_iszero(pl.X);
+    ge25519_p3_tobytes(short_pl, &pl);
+
+    return ge25519_is_point_at_infinity(short_pl);
 }
 
 int
