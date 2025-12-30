@@ -51,20 +51,20 @@ typedef uint64x2_t BlockVec;
         vreinterpretq_u64_u8(vaesdq_u8(vreinterpretq_u8_u64(rkey), vreinterpretq_u8_u64(block_vec)))
 #    define RKINVERT(rkey) vreinterpretq_u64_u8(vaesimcq_u8(vreinterpretq_u8_u64(rkey)))
 
-#    define SHUFFLE32x4(x, a, b, c, d)                 \
-        vreinterpretq_u64_u32(__builtin_shufflevector( \
-            vreinterpretq_u32_u64(x), vreinterpretq_u32_u64(x), (a), (b), (c), (d)))
+#    define SHUFFLE32x4_3333(x) vreinterpretq_u64_u32(vdupq_laneq_u32(vreinterpretq_u32_u64(x), 3))
 
 typedef BlockVec KeySchedule[1 + ROUNDS];
 
 static BlockVec
 AES_KEYGEN(BlockVec block_vec, const int rc)
 {
+    static const uint8_t aes_keygen_shuffle[16] = {
+        4, 1, 14, 11, 1, 14, 11, 4, 12, 9, 6, 3, 9, 6, 3, 12,
+    };
     uint8x16_t       a = vaeseq_u8(vreinterpretq_u8_u64(block_vec), vmovq_n_u8(0));
-    const uint8x16_t b =
-        __builtin_shufflevector(a, a, 4, 1, 14, 11, 1, 14, 11, 4, 12, 9, 6, 3, 9, 6, 3, 12);
+    const BlockVec   b = vreinterpretq_u64_u8(vqtbl1q_u8(a, vld1q_u8(aes_keygen_shuffle)));
     const uint64x2_t c = SET64x2((uint64_t) rc << 32, (uint64_t) rc << 32);
-    return XOR128(vreinterpretq_u64_u8(b), c);
+    return XOR128(b, c);
 }
 
 static void
@@ -78,7 +78,7 @@ expand_key(BlockVec *rkeys, const uint8_t key[16])
         s          = AES_KEYGEN(t, RC);           \
         t          = XOR128(t, BYTESHL128(t, 4)); \
         t          = XOR128(t, BYTESHL128(t, 8)); \
-        t          = XOR128(t, SHUFFLE32x4(s, 3, 3, 3, 3));
+        t          = XOR128(t, SHUFFLE32x4_3333(s));
 
     t = LOAD128(key);
     EXPAND_KEY(0x01);
