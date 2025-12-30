@@ -37,7 +37,7 @@ typedef uint64x2_t BlockVec;
 #    define XOR128_3(a, b, c) veorq_u64(veorq_u64((a), (b)), (c))
 #    define SET64x2(a, b)     vsetq_lane_u64((uint64_t) (a), vmovq_n_u64((uint64_t) (b)), 1)
 #    define BYTESHL128(a, b) \
-        vreinterpretq_u64_u8(vextq_s8(vdupq_n_s8(0), (int8x16_t) vreinterpretq_u8_u64(a), 16 - (b)))
+        vreinterpretq_u64_u8(vextq_s8(vdupq_n_s8(0), vreinterpretq_s8_u64(a), 16 - (b)))
 
 #    define AES_XENCRYPT(block_vec, rkey) \
         vreinterpretq_u64_u8(             \
