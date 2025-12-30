@@ -1,0 +1,31 @@
+=== Keccak-1600 Core Function Tests ===
+
+Test 1: API constants
+  statebytes: 200
+  PASS: statebytes = 200
+
+Test 2: crypto_core_keccak1600_init
+  PASS: State initialized to zeros
+
+Test 3: crypto_core_keccak1600_xor_bytes and extract_bytes
+  PASS: XOR and extract work correctly
+
+Test 4: Keccak-f[1600] (24 rounds) - Zero input
+PASS:   Keccak-f[1600] zero
+
+Test 5: Keccak-f[1600] (24 rounds) - Pattern 0xa3 input
+PASS:   Keccak-f[1600] pattern
+
+Test 6: Keccak-p[1600,12] (12 rounds) - Zero input
+PASS:   Keccak-p[1600,12] zero
+
+Test 7: Verify 12-round and 24-round differ
+  PASS: 12-round and 24-round produce different outputs
+    First difference at byte 0: 12-round=0x17, 24-round=0xe7
+
+Test 8: Double permutation consistency
+  After 24+24 rounds: 3ccb6ef94d955c2d6db55770d02c336a6c6bd770128d3d0994d06955b2d9208a
+  After 12+12 rounds: 048cbb36dc66034bc96a2de69835165f46e73b55de051b436c7a6154c9469f48
+
+=== Test Summary ===
+All tests PASSED!

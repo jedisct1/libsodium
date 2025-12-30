@@ -292,6 +292,9 @@ am__libsodium_la_SOURCES_DIST =  \
 	crypto_core/hchacha20/core_hchacha20.c \
 	crypto_core/hsalsa20/ref2/core_hsalsa20_ref2.c \
 	crypto_core/hsalsa20/core_hsalsa20.c \
+	crypto_core/keccak1600/keccak1600.c \
+	crypto_core/keccak1600/ref/keccak1600_ref.c \
+	crypto_core/keccak1600/ref/keccak1600_ref.h \
 	crypto_core/salsa/ref/core_salsa_ref.c \
 	crypto_core/softaes/softaes.c \
 	crypto_generichash/crypto_generichash.c \
@@ -355,12 +358,24 @@ am__libsodium_la_SOURCES_DIST =  \
 	crypto_stream/salsa20/stream_salsa20.c \
 	crypto_stream/salsa20/stream_salsa20.h \
 	crypto_stream/xsalsa20/stream_xsalsa20.c \
-	crypto_verify/verify.c include/sodium/private/asm_cet.h \
+	crypto_verify/verify.c crypto_xof/shake128/xof_shake128.c \
+	crypto_xof/shake128/ref/shake128_ref.c \
+	crypto_xof/shake128/ref/shake128_ref.h \
+	crypto_xof/shake256/xof_shake256.c \
+	crypto_xof/shake256/ref/shake256_ref.c \
+	crypto_xof/shake256/ref/shake256_ref.h \
+	crypto_xof/turboshake128/xof_turboshake128.c \
+	crypto_xof/turboshake128/ref/turboshake128_ref.c \
+	crypto_xof/turboshake128/ref/turboshake128_ref.h \
+	crypto_xof/turboshake256/xof_turboshake256.c \
+	crypto_xof/turboshake256/ref/turboshake256_ref.c \
+	crypto_xof/turboshake256/ref/turboshake256_ref.h \
+	include/sodium/private/asm_cet.h \
 	include/sodium/private/chacha20_ietf_ext.h \
 	include/sodium/private/common.h \
 	include/sodium/private/ed25519_ref10.h \
 	include/sodium/private/implementations.h \
-	include/sodium/private/mutex.h \
+	include/sodium/private/mutex.h include/sodium/private/quirks.h \
 	include/sodium/private/sse2_64_32.h \
 	include/sodium/private/softaes.h randombytes/randombytes.c \
 	sodium/codecs.c sodium/core.c sodium/runtime.c sodium/utils.c \
@@ -462,6 +477,8 @@ am_libsodium_la_OBJECTS =  \
 	crypto_core/hchacha20/libsodium_la-core_hchacha20.lo \
 	crypto_core/hsalsa20/ref2/libsodium_la-core_hsalsa20_ref2.lo \
 	crypto_core/hsalsa20/libsodium_la-core_hsalsa20.lo \
+	crypto_core/keccak1600/libsodium_la-keccak1600.lo \
+	crypto_core/keccak1600/ref/libsodium_la-keccak1600_ref.lo \
 	crypto_core/salsa/ref/libsodium_la-core_salsa_ref.lo \
 	crypto_core/softaes/libsodium_la-softaes.lo \
 	crypto_generichash/libsodium_la-crypto_generichash.lo \
@@ -511,6 +528,14 @@ am_libsodium_la_OBJECTS =  \
 	crypto_stream/salsa20/libsodium_la-stream_salsa20.lo \
 	crypto_stream/xsalsa20/libsodium_la-stream_xsalsa20.lo \
 	crypto_verify/libsodium_la-verify.lo \
+	crypto_xof/shake128/libsodium_la-xof_shake128.lo \
+	crypto_xof/shake128/ref/libsodium_la-shake128_ref.lo \
+	crypto_xof/shake256/libsodium_la-xof_shake256.lo \
+	crypto_xof/shake256/ref/libsodium_la-shake256_ref.lo \
+	crypto_xof/turboshake128/libsodium_la-xof_turboshake128.lo \
+	crypto_xof/turboshake128/ref/libsodium_la-turboshake128_ref.lo \
+	crypto_xof/turboshake256/libsodium_la-xof_turboshake256.lo \
+	crypto_xof/turboshake256/ref/libsodium_la-turboshake256_ref.lo \
 	randombytes/libsodium_la-randombytes.lo \
 	sodium/libsodium_la-codecs.lo sodium/libsodium_la-core.lo \
 	sodium/libsodium_la-runtime.lo sodium/libsodium_la-utils.lo \
@@ -598,6 +623,8 @@ am__depfiles_remade = crypto_aead/aegis128l/$(DEPDIR)/libaesni_la-aegis128l_aesn
 	crypto_core/hchacha20/$(DEPDIR)/libsodium_la-core_hchacha20.Plo \
 	crypto_core/hsalsa20/$(DEPDIR)/libsodium_la-core_hsalsa20.Plo \
 	crypto_core/hsalsa20/ref2/$(DEPDIR)/libsodium_la-core_hsalsa20_ref2.Plo \
+	crypto_core/keccak1600/$(DEPDIR)/libsodium_la-keccak1600.Plo \
+	crypto_core/keccak1600/ref/$(DEPDIR)/libsodium_la-keccak1600_ref.Plo \
 	crypto_core/salsa/ref/$(DEPDIR)/libsodium_la-core_salsa_ref.Plo \
 	crypto_core/softaes/$(DEPDIR)/libsodium_la-softaes.Plo \
 	crypto_generichash/$(DEPDIR)/libsodium_la-crypto_generichash.Plo \
@@ -682,6 +709,14 @@ am__depfiles_remade = crypto_aead/aegis128l/$(DEPDIR)/libaesni_la-aegis128l_aesn
 	crypto_stream/xchacha20/$(DEPDIR)/libsodium_la-stream_xchacha20.Plo \
 	crypto_stream/xsalsa20/$(DEPDIR)/libsodium_la-stream_xsalsa20.Plo \
 	crypto_verify/$(DEPDIR)/libsodium_la-verify.Plo \
+	crypto_xof/shake128/$(DEPDIR)/libsodium_la-xof_shake128.Plo \
+	crypto_xof/shake128/ref/$(DEPDIR)/libsodium_la-shake128_ref.Plo \
+	crypto_xof/shake256/$(DEPDIR)/libsodium_la-xof_shake256.Plo \
+	crypto_xof/shake256/ref/$(DEPDIR)/libsodium_la-shake256_ref.Plo \
+	crypto_xof/turboshake128/$(DEPDIR)/libsodium_la-xof_turboshake128.Plo \
+	crypto_xof/turboshake128/ref/$(DEPDIR)/libsodium_la-turboshake128_ref.Plo \
+	crypto_xof/turboshake256/$(DEPDIR)/libsodium_la-xof_turboshake256.Plo \
+	crypto_xof/turboshake256/ref/$(DEPDIR)/libsodium_la-turboshake256_ref.Plo \
 	randombytes/$(DEPDIR)/libsodium_la-randombytes.Plo \
 	randombytes/internal/$(DEPDIR)/librdrand_la-randombytes_internal_random.Plo \
 	randombytes/sysrandom/$(DEPDIR)/libsodium_la-randombytes_sysrandom.Plo \
@@ -996,6 +1031,9 @@ libsodium_la_SOURCES = crypto_aead/aegis128l/aead_aegis128l.c \
 	crypto_core/hchacha20/core_hchacha20.c \
 	crypto_core/hsalsa20/ref2/core_hsalsa20_ref2.c \
 	crypto_core/hsalsa20/core_hsalsa20.c \
+	crypto_core/keccak1600/keccak1600.c \
+	crypto_core/keccak1600/ref/keccak1600_ref.c \
+	crypto_core/keccak1600/ref/keccak1600_ref.h \
 	crypto_core/salsa/ref/core_salsa_ref.c \
 	crypto_core/softaes/softaes.c \
 	crypto_generichash/crypto_generichash.c \
@@ -1059,12 +1097,24 @@ libsodium_la_SOURCES = crypto_aead/aegis128l/aead_aegis128l.c \
 	crypto_stream/salsa20/stream_salsa20.c \
 	crypto_stream/salsa20/stream_salsa20.h \
 	crypto_stream/xsalsa20/stream_xsalsa20.c \
-	crypto_verify/verify.c include/sodium/private/asm_cet.h \
+	crypto_verify/verify.c crypto_xof/shake128/xof_shake128.c \
+	crypto_xof/shake128/ref/shake128_ref.c \
+	crypto_xof/shake128/ref/shake128_ref.h \
+	crypto_xof/shake256/xof_shake256.c \
+	crypto_xof/shake256/ref/shake256_ref.c \
+	crypto_xof/shake256/ref/shake256_ref.h \
+	crypto_xof/turboshake128/xof_turboshake128.c \
+	crypto_xof/turboshake128/ref/turboshake128_ref.c \
+	crypto_xof/turboshake128/ref/turboshake128_ref.h \
+	crypto_xof/turboshake256/xof_turboshake256.c \
+	crypto_xof/turboshake256/ref/turboshake256_ref.c \
+	crypto_xof/turboshake256/ref/turboshake256_ref.h \
+	include/sodium/private/asm_cet.h \
 	include/sodium/private/chacha20_ietf_ext.h \
 	include/sodium/private/common.h \
 	include/sodium/private/ed25519_ref10.h \
 	include/sodium/private/implementations.h \
-	include/sodium/private/mutex.h \
+	include/sodium/private/mutex.h include/sodium/private/quirks.h \
 	include/sodium/private/sse2_64_32.h \
 	include/sodium/private/softaes.h randombytes/randombytes.c \
 	sodium/codecs.c sodium/core.c sodium/runtime.c sodium/utils.c \
@@ -1497,6 +1547,24 @@ crypto_core/hsalsa20/$(DEPDIR)/$(am__dirstamp):
 crypto_core/hsalsa20/libsodium_la-core_hsalsa20.lo:  \
 	crypto_core/hsalsa20/$(am__dirstamp) \
 	crypto_core/hsalsa20/$(DEPDIR)/$(am__dirstamp)
+crypto_core/keccak1600/$(am__dirstamp):
+	@$(MKDIR_P) crypto_core/keccak1600
+	@: >>crypto_core/keccak1600/$(am__dirstamp)
+crypto_core/keccak1600/$(DEPDIR)/$(am__dirstamp):
+	@$(MKDIR_P) crypto_core/keccak1600/$(DEPDIR)
+	@: >>crypto_core/keccak1600/$(DEPDIR)/$(am__dirstamp)
+crypto_core/keccak1600/libsodium_la-keccak1600.lo:  \
+	crypto_core/keccak1600/$(am__dirstamp) \
+	crypto_core/keccak1600/$(DEPDIR)/$(am__dirstamp)
+crypto_core/keccak1600/ref/$(am__dirstamp):
+	@$(MKDIR_P) crypto_core/keccak1600/ref
+	@: >>crypto_core/keccak1600/ref/$(am__dirstamp)
+crypto_core/keccak1600/ref/$(DEPDIR)/$(am__dirstamp):
+	@$(MKDIR_P) crypto_core/keccak1600/ref/$(DEPDIR)
+	@: >>crypto_core/keccak1600/ref/$(DEPDIR)/$(am__dirstamp)
+crypto_core/keccak1600/ref/libsodium_la-keccak1600_ref.lo:  \
+	crypto_core/keccak1600/ref/$(am__dirstamp) \
+	crypto_core/keccak1600/ref/$(DEPDIR)/$(am__dirstamp)
 crypto_core/salsa/ref/$(am__dirstamp):
 	@$(MKDIR_P) crypto_core/salsa/ref
 	@: >>crypto_core/salsa/ref/$(am__dirstamp)
@@ -1849,6 +1917,78 @@ crypto_verify/$(DEPDIR)/$(am__dirstamp):
 	@: >>crypto_verify/$(DEPDIR)/$(am__dirstamp)
 crypto_verify/libsodium_la-verify.lo: crypto_verify/$(am__dirstamp) \
 	crypto_verify/$(DEPDIR)/$(am__dirstamp)
+crypto_xof/shake128/$(am__dirstamp):
+	@$(MKDIR_P) crypto_xof/shake128
+	@: >>crypto_xof/shake128/$(am__dirstamp)
+crypto_xof/shake128/$(DEPDIR)/$(am__dirstamp):
+	@$(MKDIR_P) crypto_xof/shake128/$(DEPDIR)
+	@: >>crypto_xof/shake128/$(DEPDIR)/$(am__dirstamp)
+crypto_xof/shake128/libsodium_la-xof_shake128.lo:  \
+	crypto_xof/shake128/$(am__dirstamp) \
+	crypto_xof/shake128/$(DEPDIR)/$(am__dirstamp)
+crypto_xof/shake128/ref/$(am__dirstamp):
+	@$(MKDIR_P) crypto_xof/shake128/ref
+	@: >>crypto_xof/shake128/ref/$(am__dirstamp)
+crypto_xof/shake128/ref/$(DEPDIR)/$(am__dirstamp):
+	@$(MKDIR_P) crypto_xof/shake128/ref/$(DEPDIR)
+	@: >>crypto_xof/shake128/ref/$(DEPDIR)/$(am__dirstamp)
+crypto_xof/shake128/ref/libsodium_la-shake128_ref.lo:  \
+	crypto_xof/shake128/ref/$(am__dirstamp) \
+	crypto_xof/shake128/ref/$(DEPDIR)/$(am__dirstamp)
+crypto_xof/shake256/$(am__dirstamp):
+	@$(MKDIR_P) crypto_xof/shake256
+	@: >>crypto_xof/shake256/$(am__dirstamp)
+crypto_xof/shake256/$(DEPDIR)/$(am__dirstamp):
+	@$(MKDIR_P) crypto_xof/shake256/$(DEPDIR)
+	@: >>crypto_xof/shake256/$(DEPDIR)/$(am__dirstamp)
+crypto_xof/shake256/libsodium_la-xof_shake256.lo:  \
+	crypto_xof/shake256/$(am__dirstamp) \
+	crypto_xof/shake256/$(DEPDIR)/$(am__dirstamp)
+crypto_xof/shake256/ref/$(am__dirstamp):
+	@$(MKDIR_P) crypto_xof/shake256/ref
+	@: >>crypto_xof/shake256/ref/$(am__dirstamp)
+crypto_xof/shake256/ref/$(DEPDIR)/$(am__dirstamp):
+	@$(MKDIR_P) crypto_xof/shake256/ref/$(DEPDIR)
+	@: >>crypto_xof/shake256/ref/$(DEPDIR)/$(am__dirstamp)
+crypto_xof/shake256/ref/libsodium_la-shake256_ref.lo:  \
+	crypto_xof/shake256/ref/$(am__dirstamp) \
+	crypto_xof/shake256/ref/$(DEPDIR)/$(am__dirstamp)
+crypto_xof/turboshake128/$(am__dirstamp):
+	@$(MKDIR_P) crypto_xof/turboshake128
+	@: >>crypto_xof/turboshake128/$(am__dirstamp)
+crypto_xof/turboshake128/$(DEPDIR)/$(am__dirstamp):
+	@$(MKDIR_P) crypto_xof/turboshake128/$(DEPDIR)
+	@: >>crypto_xof/turboshake128/$(DEPDIR)/$(am__dirstamp)
+crypto_xof/turboshake128/libsodium_la-xof_turboshake128.lo:  \
+	crypto_xof/turboshake128/$(am__dirstamp) \
+	crypto_xof/turboshake128/$(DEPDIR)/$(am__dirstamp)
+crypto_xof/turboshake128/ref/$(am__dirstamp):
+	@$(MKDIR_P) crypto_xof/turboshake128/ref
+	@: >>crypto_xof/turboshake128/ref/$(am__dirstamp)
+crypto_xof/turboshake128/ref/$(DEPDIR)/$(am__dirstamp):
+	@$(MKDIR_P) crypto_xof/turboshake128/ref/$(DEPDIR)
+	@: >>crypto_xof/turboshake128/ref/$(DEPDIR)/$(am__dirstamp)
+crypto_xof/turboshake128/ref/libsodium_la-turboshake128_ref.lo:  \
+	crypto_xof/turboshake128/ref/$(am__dirstamp) \
+	crypto_xof/turboshake128/ref/$(DEPDIR)/$(am__dirstamp)
+crypto_xof/turboshake256/$(am__dirstamp):
+	@$(MKDIR_P) crypto_xof/turboshake256
+	@: >>crypto_xof/turboshake256/$(am__dirstamp)
+crypto_xof/turboshake256/$(DEPDIR)/$(am__dirstamp):
+	@$(MKDIR_P) crypto_xof/turboshake256/$(DEPDIR)
+	@: >>crypto_xof/turboshake256/$(DEPDIR)/$(am__dirstamp)
+crypto_xof/turboshake256/libsodium_la-xof_turboshake256.lo:  \
+	crypto_xof/turboshake256/$(am__dirstamp) \
+	crypto_xof/turboshake256/$(DEPDIR)/$(am__dirstamp)
+crypto_xof/turboshake256/ref/$(am__dirstamp):
+	@$(MKDIR_P) crypto_xof/turboshake256/ref
+	@: >>crypto_xof/turboshake256/ref/$(am__dirstamp)
+crypto_xof/turboshake256/ref/$(DEPDIR)/$(am__dirstamp):
+	@$(MKDIR_P) crypto_xof/turboshake256/ref/$(DEPDIR)
+	@: >>crypto_xof/turboshake256/ref/$(DEPDIR)/$(am__dirstamp)
+crypto_xof/turboshake256/ref/libsodium_la-turboshake256_ref.lo:  \
+	crypto_xof/turboshake256/ref/$(am__dirstamp) \
+	crypto_xof/turboshake256/ref/$(DEPDIR)/$(am__dirstamp)
 randombytes/$(am__dirstamp):
 	@$(MKDIR_P) randombytes
 	@: >>randombytes/$(am__dirstamp)
@@ -2139,6 +2279,10 @@ mostlyclean-compile:
 	-rm -f crypto_core/hsalsa20/*.lo
 	-rm -f crypto_core/hsalsa20/ref2/*.$(OBJEXT)
 	-rm -f crypto_core/hsalsa20/ref2/*.lo
+	-rm -f crypto_core/keccak1600/*.$(OBJEXT)
+	-rm -f crypto_core/keccak1600/*.lo
+	-rm -f crypto_core/keccak1600/ref/*.$(OBJEXT)
+	-rm -f crypto_core/keccak1600/ref/*.lo
 	-rm -f crypto_core/salsa/ref/*.$(OBJEXT)
 	-rm -f crypto_core/salsa/ref/*.lo
 	-rm -f crypto_core/softaes/*.$(OBJEXT)
@@ -2247,6 +2391,22 @@ mostlyclean-compile:
 	-rm -f crypto_stream/xsalsa20/*.lo
 	-rm -f crypto_verify/*.$(OBJEXT)
 	-rm -f crypto_verify/*.lo
+	-rm -f crypto_xof/shake128/*.$(OBJEXT)
+	-rm -f crypto_xof/shake128/*.lo
+	-rm -f crypto_xof/shake128/ref/*.$(OBJEXT)
+	-rm -f crypto_xof/shake128/ref/*.lo
+	-rm -f crypto_xof/shake256/*.$(OBJEXT)
+	-rm -f crypto_xof/shake256/*.lo
+	-rm -f crypto_xof/shake256/ref/*.$(OBJEXT)
+	-rm -f crypto_xof/shake256/ref/*.lo
+	-rm -f crypto_xof/turboshake128/*.$(OBJEXT)
+	-rm -f crypto_xof/turboshake128/*.lo
+	-rm -f crypto_xof/turboshake128/ref/*.$(OBJEXT)
+	-rm -f crypto_xof/turboshake128/ref/*.lo
+	-rm -f crypto_xof/turboshake256/*.$(OBJEXT)
+	-rm -f crypto_xof/turboshake256/*.lo
+	-rm -f crypto_xof/turboshake256/ref/*.$(OBJEXT)
+	-rm -f crypto_xof/turboshake256/ref/*.lo
 	-rm -f randombytes/*.$(OBJEXT)
 	-rm -f randombytes/*.lo
 	-rm -f randombytes/internal/*.$(OBJEXT)
@@ -2288,6 +2448,8 @@ distclean-compile:
 @AMDEP_TRUE@@am__include@ @am__quote@crypto_core/hchacha20/$(DEPDIR)/libsodium_la-core_hchacha20.Plo@am__quote@ # am--include-marker
 @AMDEP_TRUE@@am__include@ @am__quote@crypto_core/hsalsa20/$(DEPDIR)/libsodium_la-core_hsalsa20.Plo@am__quote@ # am--include-marker
 @AMDEP_TRUE@@am__include@ @am__quote@crypto_core/hsalsa20/ref2/$(DEPDIR)/libsodium_la-core_hsalsa20_ref2.Plo@am__quote@ # am--include-marker
+@AMDEP_TRUE@@am__include@ @am__quote@crypto_core/keccak1600/$(DEPDIR)/libsodium_la-keccak1600.Plo@am__quote@ # am--include-marker
+@AMDEP_TRUE@@am__include@ @am__quote@crypto_core/keccak1600/ref/$(DEPDIR)/libsodium_la-keccak1600_ref.Plo@am__quote@ # am--include-marker
 @AMDEP_TRUE@@am__include@ @am__quote@crypto_core/salsa/ref/$(DEPDIR)/libsodium_la-core_salsa_ref.Plo@am__quote@ # am--include-marker
 @AMDEP_TRUE@@am__include@ @am__quote@crypto_core/softaes/$(DEPDIR)/libsodium_la-softaes.Plo@am__quote@ # am--include-marker
 @AMDEP_TRUE@@am__include@ @am__quote@crypto_generichash/$(DEPDIR)/libsodium_la-crypto_generichash.Plo@am__quote@ # am--include-marker
@@ -2372,6 +2534,14 @@ distclean-compile:
 @AMDEP_TRUE@@am__include@ @am__quote@crypto_stream/xchacha20/$(DEPDIR)/libsodium_la-stream_xchacha20.Plo@am__quote@ # am--include-marker
 @AMDEP_TRUE@@am__include@ @am__quote@crypto_stream/xsalsa20/$(DEPDIR)/libsodium_la-stream_xsalsa20.Plo@am__quote@ # am--include-marker
 @AMDEP_TRUE@@am__include@ @am__quote@crypto_verify/$(DEPDIR)/libsodium_la-verify.Plo@am__quote@ # am--include-marker
+@AMDEP_TRUE@@am__include@ @am__quote@crypto_xof/shake128/$(DEPDIR)/libsodium_la-xof_shake128.Plo@am__quote@ # am--include-marker
+@AMDEP_TRUE@@am__include@ @am__quote@crypto_xof/shake128/ref/$(DEPDIR)/libsodium_la-shake128_ref.Plo@am__quote@ # am--include-marker
+@AMDEP_TRUE@@am__include@ @am__quote@crypto_xof/shake256/$(DEPDIR)/libsodium_la-xof_shake256.Plo@am__quote@ # am--include-marker
+@AMDEP_TRUE@@am__include@ @am__quote@crypto_xof/shake256/ref/$(DEPDIR)/libsodium_la-shake256_ref.Plo@am__quote@ # am--include-marker
+@AMDEP_TRUE@@am__include@ @am__quote@crypto_xof/turboshake128/$(DEPDIR)/libsodium_la-xof_turboshake128.Plo@am__quote@ # am--include-marker
+@AMDEP_TRUE@@am__include@ @am__quote@crypto_xof/turboshake128/ref/$(DEPDIR)/libsodium_la-turboshake128_ref.Plo@am__quote@ # am--include-marker
+@AMDEP_TRUE@@am__include@ @am__quote@crypto_xof/turboshake256/$(DEPDIR)/libsodium_la-xof_turboshake256.Plo@am__quote@ # am--include-marker
+@AMDEP_TRUE@@am__include@ @am__quote@crypto_xof/turboshake256/ref/$(DEPDIR)/libsodium_la-turboshake256_ref.Plo@am__quote@ # am--include-marker
 @AMDEP_TRUE@@am__include@ @am__quote@randombytes/$(DEPDIR)/libsodium_la-randombytes.Plo@am__quote@ # am--include-marker
 @AMDEP_TRUE@@am__include@ @am__quote@randombytes/internal/$(DEPDIR)/librdrand_la-randombytes_internal_random.Plo@am__quote@ # am--include-marker
 @AMDEP_TRUE@@am__include@ @am__quote@randombytes/sysrandom/$(DEPDIR)/libsodium_la-randombytes_sysrandom.Plo@am__quote@ # am--include-marker
@@ -2665,6 +2835,20 @@ crypto_core/hsalsa20/libsodium_la-core_hsalsa20.lo: crypto_core/hsalsa20/core_hs
 @AMDEP_TRUE@@am__fastdepCC_FALSE@	$(AM_V_CC)source='crypto_core/hsalsa20/core_hsalsa20.c' object='crypto_core/hsalsa20/libsodium_la-core_hsalsa20.lo' libtool=yes @AMDEPBACKSLASH@
 @AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
 @am__fastdepCC_FALSE@	$(AM_V_CC@am__nodep@)$(LIBTOOL) $(AM_V_lt) --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libsodium_la_CPPFLAGS) $(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS) -c -o crypto_core/hsalsa20/libsodium_la-core_hsalsa20.lo `test -f 'crypto_core/hsalsa20/core_hsalsa20.c' || echo '$(srcdir)/'`crypto_core/hsalsa20/core_hsalsa20.c
+
+crypto_core/keccak1600/libsodium_la-keccak1600.lo: crypto_core/keccak1600/keccak1600.c
+@am__fastdepCC_TRUE@	$(AM_V_CC)$(LIBTOOL) $(AM_V_lt) --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libsodium_la_CPPFLAGS) $(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS) -MT crypto_core/keccak1600/libsodium_la-keccak1600.lo -MD -MP -MF crypto_core/keccak1600/$(DEPDIR)/libsodium_la-keccak1600.Tpo -c -o crypto_core/keccak1600/libsodium_la-keccak1600.lo `test -f 'crypto_core/keccak1600/keccak1600.c' || echo '$(srcdir)/'`crypto_core/keccak1600/keccak1600.c
+@am__fastdepCC_TRUE@	$(AM_V_at)$(am__mv) crypto_core/keccak1600/$(DEPDIR)/libsodium_la-keccak1600.Tpo crypto_core/keccak1600/$(DEPDIR)/libsodium_la-keccak1600.Plo
+@AMDEP_TRUE@@am__fastdepCC_FALSE@	$(AM_V_CC)source='crypto_core/keccak1600/keccak1600.c' object='crypto_core/keccak1600/libsodium_la-keccak1600.lo' libtool=yes @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCC_FALSE@	$(AM_V_CC@am__nodep@)$(LIBTOOL) $(AM_V_lt) --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libsodium_la_CPPFLAGS) $(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS) -c -o crypto_core/keccak1600/libsodium_la-keccak1600.lo `test -f 'crypto_core/keccak1600/keccak1600.c' || echo '$(srcdir)/'`crypto_core/keccak1600/keccak1600.c
+
+crypto_core/keccak1600/ref/libsodium_la-keccak1600_ref.lo: crypto_core/keccak1600/ref/keccak1600_ref.c
+@am__fastdepCC_TRUE@	$(AM_V_CC)$(LIBTOOL) $(AM_V_lt) --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libsodium_la_CPPFLAGS) $(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS) -MT crypto_core/keccak1600/ref/libsodium_la-keccak1600_ref.lo -MD -MP -MF crypto_core/keccak1600/ref/$(DEPDIR)/libsodium_la-keccak1600_ref.Tpo -c -o crypto_core/keccak1600/ref/libsodium_la-keccak1600_ref.lo `test -f 'crypto_core/keccak1600/ref/keccak1600_ref.c' || echo '$(srcdir)/'`crypto_core/keccak1600/ref/keccak1600_ref.c
+@am__fastdepCC_TRUE@	$(AM_V_at)$(am__mv) crypto_core/keccak1600/ref/$(DEPDIR)/libsodium_la-keccak1600_ref.Tpo crypto_core/keccak1600/ref/$(DEPDIR)/libsodium_la-keccak1600_ref.Plo
+@AMDEP_TRUE@@am__fastdepCC_FALSE@	$(AM_V_CC)source='crypto_core/keccak1600/ref/keccak1600_ref.c' object='crypto_core/keccak1600/ref/libsodium_la-keccak1600_ref.lo' libtool=yes @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCC_FALSE@	$(AM_V_CC@am__nodep@)$(LIBTOOL) $(AM_V_lt) --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libsodium_la_CPPFLAGS) $(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS) -c -o crypto_core/keccak1600/ref/libsodium_la-keccak1600_ref.lo `test -f 'crypto_core/keccak1600/ref/keccak1600_ref.c' || echo '$(srcdir)/'`crypto_core/keccak1600/ref/keccak1600_ref.c
 
 crypto_core/salsa/ref/libsodium_la-core_salsa_ref.lo: crypto_core/salsa/ref/core_salsa_ref.c
 @am__fastdepCC_TRUE@	$(AM_V_CC)$(LIBTOOL) $(AM_V_lt) --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libsodium_la_CPPFLAGS) $(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS) -MT crypto_core/salsa/ref/libsodium_la-core_salsa_ref.lo -MD -MP -MF crypto_core/salsa/ref/$(DEPDIR)/libsodium_la-core_salsa_ref.Tpo -c -o crypto_core/salsa/ref/libsodium_la-core_salsa_ref.lo `test -f 'crypto_core/salsa/ref/core_salsa_ref.c' || echo '$(srcdir)/'`crypto_core/salsa/ref/core_salsa_ref.c
@@ -3009,6 +3193,62 @@ crypto_verify/libsodium_la-verify.lo: crypto_verify/verify.c
 @AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
 @am__fastdepCC_FALSE@	$(AM_V_CC@am__nodep@)$(LIBTOOL) $(AM_V_lt) --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libsodium_la_CPPFLAGS) $(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS) -c -o crypto_verify/libsodium_la-verify.lo `test -f 'crypto_verify/verify.c' || echo '$(srcdir)/'`crypto_verify/verify.c
 
+crypto_xof/shake128/libsodium_la-xof_shake128.lo: crypto_xof/shake128/xof_shake128.c
+@am__fastdepCC_TRUE@	$(AM_V_CC)$(LIBTOOL) $(AM_V_lt) --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libsodium_la_CPPFLAGS) $(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS) -MT crypto_xof/shake128/libsodium_la-xof_shake128.lo -MD -MP -MF crypto_xof/shake128/$(DEPDIR)/libsodium_la-xof_shake128.Tpo -c -o crypto_xof/shake128/libsodium_la-xof_shake128.lo `test -f 'crypto_xof/shake128/xof_shake128.c' || echo '$(srcdir)/'`crypto_xof/shake128/xof_shake128.c
+@am__fastdepCC_TRUE@	$(AM_V_at)$(am__mv) crypto_xof/shake128/$(DEPDIR)/libsodium_la-xof_shake128.Tpo crypto_xof/shake128/$(DEPDIR)/libsodium_la-xof_shake128.Plo
+@AMDEP_TRUE@@am__fastdepCC_FALSE@	$(AM_V_CC)source='crypto_xof/shake128/xof_shake128.c' object='crypto_xof/shake128/libsodium_la-xof_shake128.lo' libtool=yes @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCC_FALSE@	$(AM_V_CC@am__nodep@)$(LIBTOOL) $(AM_V_lt) --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libsodium_la_CPPFLAGS) $(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS) -c -o crypto_xof/shake128/libsodium_la-xof_shake128.lo `test -f 'crypto_xof/shake128/xof_shake128.c' || echo '$(srcdir)/'`crypto_xof/shake128/xof_shake128.c
+
+crypto_xof/shake128/ref/libsodium_la-shake128_ref.lo: crypto_xof/shake128/ref/shake128_ref.c
+@am__fastdepCC_TRUE@	$(AM_V_CC)$(LIBTOOL) $(AM_V_lt) --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libsodium_la_CPPFLAGS) $(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS) -MT crypto_xof/shake128/ref/libsodium_la-shake128_ref.lo -MD -MP -MF crypto_xof/shake128/ref/$(DEPDIR)/libsodium_la-shake128_ref.Tpo -c -o crypto_xof/shake128/ref/libsodium_la-shake128_ref.lo `test -f 'crypto_xof/shake128/ref/shake128_ref.c' || echo '$(srcdir)/'`crypto_xof/shake128/ref/shake128_ref.c
+@am__fastdepCC_TRUE@	$(AM_V_at)$(am__mv) crypto_xof/shake128/ref/$(DEPDIR)/libsodium_la-shake128_ref.Tpo crypto_xof/shake128/ref/$(DEPDIR)/libsodium_la-shake128_ref.Plo
+@AMDEP_TRUE@@am__fastdepCC_FALSE@	$(AM_V_CC)source='crypto_xof/shake128/ref/shake128_ref.c' object='crypto_xof/shake128/ref/libsodium_la-shake128_ref.lo' libtool=yes @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCC_FALSE@	$(AM_V_CC@am__nodep@)$(LIBTOOL) $(AM_V_lt) --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libsodium_la_CPPFLAGS) $(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS) -c -o crypto_xof/shake128/ref/libsodium_la-shake128_ref.lo `test -f 'crypto_xof/shake128/ref/shake128_ref.c' || echo '$(srcdir)/'`crypto_xof/shake128/ref/shake128_ref.c
+
+crypto_xof/shake256/libsodium_la-xof_shake256.lo: crypto_xof/shake256/xof_shake256.c
+@am__fastdepCC_TRUE@	$(AM_V_CC)$(LIBTOOL) $(AM_V_lt) --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libsodium_la_CPPFLAGS) $(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS) -MT crypto_xof/shake256/libsodium_la-xof_shake256.lo -MD -MP -MF crypto_xof/shake256/$(DEPDIR)/libsodium_la-xof_shake256.Tpo -c -o crypto_xof/shake256/libsodium_la-xof_shake256.lo `test -f 'crypto_xof/shake256/xof_shake256.c' || echo '$(srcdir)/'`crypto_xof/shake256/xof_shake256.c
+@am__fastdepCC_TRUE@	$(AM_V_at)$(am__mv) crypto_xof/shake256/$(DEPDIR)/libsodium_la-xof_shake256.Tpo crypto_xof/shake256/$(DEPDIR)/libsodium_la-xof_shake256.Plo
+@AMDEP_TRUE@@am__fastdepCC_FALSE@	$(AM_V_CC)source='crypto_xof/shake256/xof_shake256.c' object='crypto_xof/shake256/libsodium_la-xof_shake256.lo' libtool=yes @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCC_FALSE@	$(AM_V_CC@am__nodep@)$(LIBTOOL) $(AM_V_lt) --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libsodium_la_CPPFLAGS) $(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS) -c -o crypto_xof/shake256/libsodium_la-xof_shake256.lo `test -f 'crypto_xof/shake256/xof_shake256.c' || echo '$(srcdir)/'`crypto_xof/shake256/xof_shake256.c
+
+crypto_xof/shake256/ref/libsodium_la-shake256_ref.lo: crypto_xof/shake256/ref/shake256_ref.c
+@am__fastdepCC_TRUE@	$(AM_V_CC)$(LIBTOOL) $(AM_V_lt) --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libsodium_la_CPPFLAGS) $(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS) -MT crypto_xof/shake256/ref/libsodium_la-shake256_ref.lo -MD -MP -MF crypto_xof/shake256/ref/$(DEPDIR)/libsodium_la-shake256_ref.Tpo -c -o crypto_xof/shake256/ref/libsodium_la-shake256_ref.lo `test -f 'crypto_xof/shake256/ref/shake256_ref.c' || echo '$(srcdir)/'`crypto_xof/shake256/ref/shake256_ref.c
+@am__fastdepCC_TRUE@	$(AM_V_at)$(am__mv) crypto_xof/shake256/ref/$(DEPDIR)/libsodium_la-shake256_ref.Tpo crypto_xof/shake256/ref/$(DEPDIR)/libsodium_la-shake256_ref.Plo
+@AMDEP_TRUE@@am__fastdepCC_FALSE@	$(AM_V_CC)source='crypto_xof/shake256/ref/shake256_ref.c' object='crypto_xof/shake256/ref/libsodium_la-shake256_ref.lo' libtool=yes @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCC_FALSE@	$(AM_V_CC@am__nodep@)$(LIBTOOL) $(AM_V_lt) --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libsodium_la_CPPFLAGS) $(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS) -c -o crypto_xof/shake256/ref/libsodium_la-shake256_ref.lo `test -f 'crypto_xof/shake256/ref/shake256_ref.c' || echo '$(srcdir)/'`crypto_xof/shake256/ref/shake256_ref.c
+
+crypto_xof/turboshake128/libsodium_la-xof_turboshake128.lo: crypto_xof/turboshake128/xof_turboshake128.c
+@am__fastdepCC_TRUE@	$(AM_V_CC)$(LIBTOOL) $(AM_V_lt) --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libsodium_la_CPPFLAGS) $(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS) -MT crypto_xof/turboshake128/libsodium_la-xof_turboshake128.lo -MD -MP -MF crypto_xof/turboshake128/$(DEPDIR)/libsodium_la-xof_turboshake128.Tpo -c -o crypto_xof/turboshake128/libsodium_la-xof_turboshake128.lo `test -f 'crypto_xof/turboshake128/xof_turboshake128.c' || echo '$(srcdir)/'`crypto_xof/turboshake128/xof_turboshake128.c
+@am__fastdepCC_TRUE@	$(AM_V_at)$(am__mv) crypto_xof/turboshake128/$(DEPDIR)/libsodium_la-xof_turboshake128.Tpo crypto_xof/turboshake128/$(DEPDIR)/libsodium_la-xof_turboshake128.Plo
+@AMDEP_TRUE@@am__fastdepCC_FALSE@	$(AM_V_CC)source='crypto_xof/turboshake128/xof_turboshake128.c' object='crypto_xof/turboshake128/libsodium_la-xof_turboshake128.lo' libtool=yes @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCC_FALSE@	$(AM_V_CC@am__nodep@)$(LIBTOOL) $(AM_V_lt) --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libsodium_la_CPPFLAGS) $(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS) -c -o crypto_xof/turboshake128/libsodium_la-xof_turboshake128.lo `test -f 'crypto_xof/turboshake128/xof_turboshake128.c' || echo '$(srcdir)/'`crypto_xof/turboshake128/xof_turboshake128.c
+
+crypto_xof/turboshake128/ref/libsodium_la-turboshake128_ref.lo: crypto_xof/turboshake128/ref/turboshake128_ref.c
+@am__fastdepCC_TRUE@	$(AM_V_CC)$(LIBTOOL) $(AM_V_lt) --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libsodium_la_CPPFLAGS) $(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS) -MT crypto_xof/turboshake128/ref/libsodium_la-turboshake128_ref.lo -MD -MP -MF crypto_xof/turboshake128/ref/$(DEPDIR)/libsodium_la-turboshake128_ref.Tpo -c -o crypto_xof/turboshake128/ref/libsodium_la-turboshake128_ref.lo `test -f 'crypto_xof/turboshake128/ref/turboshake128_ref.c' || echo '$(srcdir)/'`crypto_xof/turboshake128/ref/turboshake128_ref.c
+@am__fastdepCC_TRUE@	$(AM_V_at)$(am__mv) crypto_xof/turboshake128/ref/$(DEPDIR)/libsodium_la-turboshake128_ref.Tpo crypto_xof/turboshake128/ref/$(DEPDIR)/libsodium_la-turboshake128_ref.Plo
+@AMDEP_TRUE@@am__fastdepCC_FALSE@	$(AM_V_CC)source='crypto_xof/turboshake128/ref/turboshake128_ref.c' object='crypto_xof/turboshake128/ref/libsodium_la-turboshake128_ref.lo' libtool=yes @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCC_FALSE@	$(AM_V_CC@am__nodep@)$(LIBTOOL) $(AM_V_lt) --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libsodium_la_CPPFLAGS) $(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS) -c -o crypto_xof/turboshake128/ref/libsodium_la-turboshake128_ref.lo `test -f 'crypto_xof/turboshake128/ref/turboshake128_ref.c' || echo '$(srcdir)/'`crypto_xof/turboshake128/ref/turboshake128_ref.c
+
+crypto_xof/turboshake256/libsodium_la-xof_turboshake256.lo: crypto_xof/turboshake256/xof_turboshake256.c
+@am__fastdepCC_TRUE@	$(AM_V_CC)$(LIBTOOL) $(AM_V_lt) --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libsodium_la_CPPFLAGS) $(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS) -MT crypto_xof/turboshake256/libsodium_la-xof_turboshake256.lo -MD -MP -MF crypto_xof/turboshake256/$(DEPDIR)/libsodium_la-xof_turboshake256.Tpo -c -o crypto_xof/turboshake256/libsodium_la-xof_turboshake256.lo `test -f 'crypto_xof/turboshake256/xof_turboshake256.c' || echo '$(srcdir)/'`crypto_xof/turboshake256/xof_turboshake256.c
+@am__fastdepCC_TRUE@	$(AM_V_at)$(am__mv) crypto_xof/turboshake256/$(DEPDIR)/libsodium_la-xof_turboshake256.Tpo crypto_xof/turboshake256/$(DEPDIR)/libsodium_la-xof_turboshake256.Plo
+@AMDEP_TRUE@@am__fastdepCC_FALSE@	$(AM_V_CC)source='crypto_xof/turboshake256/xof_turboshake256.c' object='crypto_xof/turboshake256/libsodium_la-xof_turboshake256.lo' libtool=yes @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCC_FALSE@	$(AM_V_CC@am__nodep@)$(LIBTOOL) $(AM_V_lt) --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libsodium_la_CPPFLAGS) $(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS) -c -o crypto_xof/turboshake256/libsodium_la-xof_turboshake256.lo `test -f 'crypto_xof/turboshake256/xof_turboshake256.c' || echo '$(srcdir)/'`crypto_xof/turboshake256/xof_turboshake256.c
+
+crypto_xof/turboshake256/ref/libsodium_la-turboshake256_ref.lo: crypto_xof/turboshake256/ref/turboshake256_ref.c
+@am__fastdepCC_TRUE@	$(AM_V_CC)$(LIBTOOL) $(AM_V_lt) --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libsodium_la_CPPFLAGS) $(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS) -MT crypto_xof/turboshake256/ref/libsodium_la-turboshake256_ref.lo -MD -MP -MF crypto_xof/turboshake256/ref/$(DEPDIR)/libsodium_la-turboshake256_ref.Tpo -c -o crypto_xof/turboshake256/ref/libsodium_la-turboshake256_ref.lo `test -f 'crypto_xof/turboshake256/ref/turboshake256_ref.c' || echo '$(srcdir)/'`crypto_xof/turboshake256/ref/turboshake256_ref.c
+@am__fastdepCC_TRUE@	$(AM_V_at)$(am__mv) crypto_xof/turboshake256/ref/$(DEPDIR)/libsodium_la-turboshake256_ref.Tpo crypto_xof/turboshake256/ref/$(DEPDIR)/libsodium_la-turboshake256_ref.Plo
+@AMDEP_TRUE@@am__fastdepCC_FALSE@	$(AM_V_CC)source='crypto_xof/turboshake256/ref/turboshake256_ref.c' object='crypto_xof/turboshake256/ref/libsodium_la-turboshake256_ref.lo' libtool=yes @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCC_FALSE@	$(AM_V_CC@am__nodep@)$(LIBTOOL) $(AM_V_lt) --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libsodium_la_CPPFLAGS) $(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS) -c -o crypto_xof/turboshake256/ref/libsodium_la-turboshake256_ref.lo `test -f 'crypto_xof/turboshake256/ref/turboshake256_ref.c' || echo '$(srcdir)/'`crypto_xof/turboshake256/ref/turboshake256_ref.c
+
 randombytes/libsodium_la-randombytes.lo: randombytes/randombytes.c
 @am__fastdepCC_TRUE@	$(AM_V_CC)$(LIBTOOL) $(AM_V_lt) --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libsodium_la_CPPFLAGS) $(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS) -MT randombytes/libsodium_la-randombytes.lo -MD -MP -MF randombytes/$(DEPDIR)/libsodium_la-randombytes.Tpo -c -o randombytes/libsodium_la-randombytes.lo `test -f 'randombytes/randombytes.c' || echo '$(srcdir)/'`randombytes/randombytes.c
 @am__fastdepCC_TRUE@	$(AM_V_at)$(am__mv) randombytes/$(DEPDIR)/libsodium_la-randombytes.Tpo randombytes/$(DEPDIR)/libsodium_la-randombytes.Plo
@@ -3306,6 +3546,8 @@ clean-libtool:
 	-rm -rf crypto_core/hchacha20/.libs crypto_core/hchacha20/_libs
 	-rm -rf crypto_core/hsalsa20/.libs crypto_core/hsalsa20/_libs
 	-rm -rf crypto_core/hsalsa20/ref2/.libs crypto_core/hsalsa20/ref2/_libs
+	-rm -rf crypto_core/keccak1600/.libs crypto_core/keccak1600/_libs
+	-rm -rf crypto_core/keccak1600/ref/.libs crypto_core/keccak1600/ref/_libs
 	-rm -rf crypto_core/salsa/ref/.libs crypto_core/salsa/ref/_libs
 	-rm -rf crypto_core/softaes/.libs crypto_core/softaes/_libs
 	-rm -rf crypto_generichash/.libs crypto_generichash/_libs
@@ -3360,6 +3602,14 @@ clean-libtool:
 	-rm -rf crypto_stream/xchacha20/.libs crypto_stream/xchacha20/_libs
 	-rm -rf crypto_stream/xsalsa20/.libs crypto_stream/xsalsa20/_libs
 	-rm -rf crypto_verify/.libs crypto_verify/_libs
+	-rm -rf crypto_xof/shake128/.libs crypto_xof/shake128/_libs
+	-rm -rf crypto_xof/shake128/ref/.libs crypto_xof/shake128/ref/_libs
+	-rm -rf crypto_xof/shake256/.libs crypto_xof/shake256/_libs
+	-rm -rf crypto_xof/shake256/ref/.libs crypto_xof/shake256/ref/_libs
+	-rm -rf crypto_xof/turboshake128/.libs crypto_xof/turboshake128/_libs
+	-rm -rf crypto_xof/turboshake128/ref/.libs crypto_xof/turboshake128/ref/_libs
+	-rm -rf crypto_xof/turboshake256/.libs crypto_xof/turboshake256/_libs
+	-rm -rf crypto_xof/turboshake256/ref/.libs crypto_xof/turboshake256/ref/_libs
 	-rm -rf randombytes/.libs randombytes/_libs
 	-rm -rf randombytes/internal/.libs randombytes/internal/_libs
 	-rm -rf randombytes/sysrandom/.libs randombytes/sysrandom/_libs
@@ -3616,6 +3866,10 @@ distclean-generic:
 	-$(am__rm_f) crypto_core/hsalsa20/$(am__dirstamp)
 	-$(am__rm_f) crypto_core/hsalsa20/ref2/$(DEPDIR)/$(am__dirstamp)
 	-$(am__rm_f) crypto_core/hsalsa20/ref2/$(am__dirstamp)
+	-$(am__rm_f) crypto_core/keccak1600/$(DEPDIR)/$(am__dirstamp)
+	-$(am__rm_f) crypto_core/keccak1600/$(am__dirstamp)
+	-$(am__rm_f) crypto_core/keccak1600/ref/$(DEPDIR)/$(am__dirstamp)
+	-$(am__rm_f) crypto_core/keccak1600/ref/$(am__dirstamp)
 	-$(am__rm_f) crypto_core/salsa/ref/$(DEPDIR)/$(am__dirstamp)
 	-$(am__rm_f) crypto_core/salsa/ref/$(am__dirstamp)
 	-$(am__rm_f) crypto_core/softaes/$(DEPDIR)/$(am__dirstamp)
@@ -3724,6 +3978,22 @@ distclean-generic:
 	-$(am__rm_f) crypto_stream/xsalsa20/$(am__dirstamp)
 	-$(am__rm_f) crypto_verify/$(DEPDIR)/$(am__dirstamp)
 	-$(am__rm_f) crypto_verify/$(am__dirstamp)
+	-$(am__rm_f) crypto_xof/shake128/$(DEPDIR)/$(am__dirstamp)
+	-$(am__rm_f) crypto_xof/shake128/$(am__dirstamp)
+	-$(am__rm_f) crypto_xof/shake128/ref/$(DEPDIR)/$(am__dirstamp)
+	-$(am__rm_f) crypto_xof/shake128/ref/$(am__dirstamp)
+	-$(am__rm_f) crypto_xof/shake256/$(DEPDIR)/$(am__dirstamp)
+	-$(am__rm_f) crypto_xof/shake256/$(am__dirstamp)
+	-$(am__rm_f) crypto_xof/shake256/ref/$(DEPDIR)/$(am__dirstamp)
+	-$(am__rm_f) crypto_xof/shake256/ref/$(am__dirstamp)
+	-$(am__rm_f) crypto_xof/turboshake128/$(DEPDIR)/$(am__dirstamp)
+	-$(am__rm_f) crypto_xof/turboshake128/$(am__dirstamp)
+	-$(am__rm_f) crypto_xof/turboshake128/ref/$(DEPDIR)/$(am__dirstamp)
+	-$(am__rm_f) crypto_xof/turboshake128/ref/$(am__dirstamp)
+	-$(am__rm_f) crypto_xof/turboshake256/$(DEPDIR)/$(am__dirstamp)
+	-$(am__rm_f) crypto_xof/turboshake256/$(am__dirstamp)
+	-$(am__rm_f) crypto_xof/turboshake256/ref/$(DEPDIR)/$(am__dirstamp)
+	-$(am__rm_f) crypto_xof/turboshake256/ref/$(am__dirstamp)
 	-$(am__rm_f) randombytes/$(DEPDIR)/$(am__dirstamp)
 	-$(am__rm_f) randombytes/$(am__dirstamp)
 	-$(am__rm_f) randombytes/internal/$(DEPDIR)/$(am__dirstamp)
@@ -3771,6 +4041,8 @@ distclean: distclean-recursive
 	-rm -f crypto_core/hchacha20/$(DEPDIR)/libsodium_la-core_hchacha20.Plo
 	-rm -f crypto_core/hsalsa20/$(DEPDIR)/libsodium_la-core_hsalsa20.Plo
 	-rm -f crypto_core/hsalsa20/ref2/$(DEPDIR)/libsodium_la-core_hsalsa20_ref2.Plo
+	-rm -f crypto_core/keccak1600/$(DEPDIR)/libsodium_la-keccak1600.Plo
+	-rm -f crypto_core/keccak1600/ref/$(DEPDIR)/libsodium_la-keccak1600_ref.Plo
 	-rm -f crypto_core/salsa/ref/$(DEPDIR)/libsodium_la-core_salsa_ref.Plo
 	-rm -f crypto_core/softaes/$(DEPDIR)/libsodium_la-softaes.Plo
 	-rm -f crypto_generichash/$(DEPDIR)/libsodium_la-crypto_generichash.Plo
@@ -3855,6 +4127,14 @@ distclean: distclean-recursive
 	-rm -f crypto_stream/xchacha20/$(DEPDIR)/libsodium_la-stream_xchacha20.Plo
 	-rm -f crypto_stream/xsalsa20/$(DEPDIR)/libsodium_la-stream_xsalsa20.Plo
 	-rm -f crypto_verify/$(DEPDIR)/libsodium_la-verify.Plo
+	-rm -f crypto_xof/shake128/$(DEPDIR)/libsodium_la-xof_shake128.Plo
+	-rm -f crypto_xof/shake128/ref/$(DEPDIR)/libsodium_la-shake128_ref.Plo
+	-rm -f crypto_xof/shake256/$(DEPDIR)/libsodium_la-xof_shake256.Plo
+	-rm -f crypto_xof/shake256/ref/$(DEPDIR)/libsodium_la-shake256_ref.Plo
+	-rm -f crypto_xof/turboshake128/$(DEPDIR)/libsodium_la-xof_turboshake128.Plo
+	-rm -f crypto_xof/turboshake128/ref/$(DEPDIR)/libsodium_la-turboshake128_ref.Plo
+	-rm -f crypto_xof/turboshake256/$(DEPDIR)/libsodium_la-xof_turboshake256.Plo
+	-rm -f crypto_xof/turboshake256/ref/$(DEPDIR)/libsodium_la-turboshake256_ref.Plo
 	-rm -f randombytes/$(DEPDIR)/libsodium_la-randombytes.Plo
 	-rm -f randombytes/internal/$(DEPDIR)/librdrand_la-randombytes_internal_random.Plo
 	-rm -f randombytes/sysrandom/$(DEPDIR)/libsodium_la-randombytes_sysrandom.Plo
@@ -3937,6 +4217,8 @@ maintainer-clean: maintainer-clean-recursive
 	-rm -f crypto_core/hchacha20/$(DEPDIR)/libsodium_la-core_hchacha20.Plo
 	-rm -f crypto_core/hsalsa20/$(DEPDIR)/libsodium_la-core_hsalsa20.Plo
 	-rm -f crypto_core/hsalsa20/ref2/$(DEPDIR)/libsodium_la-core_hsalsa20_ref2.Plo
+	-rm -f crypto_core/keccak1600/$(DEPDIR)/libsodium_la-keccak1600.Plo
+	-rm -f crypto_core/keccak1600/ref/$(DEPDIR)/libsodium_la-keccak1600_ref.Plo
 	-rm -f crypto_core/salsa/ref/$(DEPDIR)/libsodium_la-core_salsa_ref.Plo
 	-rm -f crypto_core/softaes/$(DEPDIR)/libsodium_la-softaes.Plo
 	-rm -f crypto_generichash/$(DEPDIR)/libsodium_la-crypto_generichash.Plo
@@ -4021,6 +4303,14 @@ maintainer-clean: maintainer-clean-recursive
 	-rm -f crypto_stream/xchacha20/$(DEPDIR)/libsodium_la-stream_xchacha20.Plo
 	-rm -f crypto_stream/xsalsa20/$(DEPDIR)/libsodium_la-stream_xsalsa20.Plo
 	-rm -f crypto_verify/$(DEPDIR)/libsodium_la-verify.Plo
+	-rm -f crypto_xof/shake128/$(DEPDIR)/libsodium_la-xof_shake128.Plo
+	-rm -f crypto_xof/shake128/ref/$(DEPDIR)/libsodium_la-shake128_ref.Plo
+	-rm -f crypto_xof/shake256/$(DEPDIR)/libsodium_la-xof_shake256.Plo
+	-rm -f crypto_xof/shake256/ref/$(DEPDIR)/libsodium_la-shake256_ref.Plo
+	-rm -f crypto_xof/turboshake128/$(DEPDIR)/libsodium_la-xof_turboshake128.Plo
+	-rm -f crypto_xof/turboshake128/ref/$(DEPDIR)/libsodium_la-turboshake128_ref.Plo
+	-rm -f crypto_xof/turboshake256/$(DEPDIR)/libsodium_la-xof_turboshake256.Plo
+	-rm -f crypto_xof/turboshake256/ref/$(DEPDIR)/libsodium_la-turboshake256_ref.Plo
 	-rm -f randombytes/$(DEPDIR)/libsodium_la-randombytes.Plo
 	-rm -f randombytes/internal/$(DEPDIR)/librdrand_la-randombytes_internal_random.Plo
 	-rm -f randombytes/sysrandom/$(DEPDIR)/libsodium_la-randombytes_sysrandom.Plo
