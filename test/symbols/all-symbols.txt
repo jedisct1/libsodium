@@ -790,7 +790,7 @@ sodium_base642bin
 sodium_base64_encoded_len
 sodium_bin2base64
 sodium_bin2hex
-sodium_bytes2ip
+sodium_bin2ip
 sodium_compare
 sodium_crit_enter
 sodium_crit_leave
@@ -798,7 +798,7 @@ sodium_free
 sodium_hex2bin
 sodium_increment
 sodium_init
-sodium_ip2bytes
+sodium_ip2bin
 sodium_is_zero
 sodium_library_minimal
 sodium_library_version_major

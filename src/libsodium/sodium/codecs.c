@@ -474,7 +474,7 @@ parse_ipv6(const char *src, const char *end, unsigned char out[16])
 }
 
 int
-sodium_ip2bytes(unsigned char out[16], const char *src)
+sodium_ip2bin(unsigned char out[16], const char *src)
 {
     const char   *end;
     const char   *z;
@@ -536,7 +536,7 @@ ip_write_num(char **p, unsigned int val, int base)
 }
 
 char *
-sodium_bytes2ip(char *dst, size_t dst_len, const unsigned char in[16])
+sodium_bin2ip(char *dst, size_t dst_len, const unsigned char in[16])
 {
     char   buf[46];
     char  *p = buf;
