@@ -671,11 +671,13 @@ _sodium_base64_encoded_len 1 1
 _sodium_base642bin 1 1
 _sodium_bin2base64 1 1
 _sodium_bin2hex 1 1
+_sodium_bin2ip 1 1
 _sodium_compare 0 0
 _sodium_free 0 0
 _sodium_hex2bin 1 1
 _sodium_increment 0 0
 _sodium_init 1 1
+_sodium_ip2bin 1 1
 _sodium_is_zero 0 0
 _sodium_library_minimal 1 1
 _sodium_library_version_major 1 1
