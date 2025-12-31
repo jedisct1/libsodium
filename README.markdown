@@ -15,7 +15,7 @@ It is a portable, cross-compilable, installable, and packageable fork of [NaCl](
 
 - **Encryption & Decryption:** Securely encrypt and decrypt data with modern algorithms.
 - **Digital Signatures:** Create and verify signatures to ensure data authenticity.
-- **Cross-Platform Compatibility:** Supported on Windows (MinGW and Visual Studio, both x86 and x64), iOS, Android, JavaScript, and WebAssembly.
+- **Cross-Platform Compatibility:** Supported on Windows (MinGW and Visual Studio, x86, x64 and arm64), iOS, Android, JavaScript, and WebAssembly.
 - **User-Friendly API:** Designed to provide all core cryptographic operations while remaining easy to integrate into your projects.
 
 ---
