@@ -247,5 +247,184 @@ main(void)
         sodium_free(bin);
         sodium_free(b64_);
     }
+
+    {
+        unsigned char ip_bytes[16];
+        unsigned char ip_expected[16];
+        char          ip_str[46];
+
+        assert(sodium_ip2bin(ip_bytes, "192.168.1.1") == 0);
+        memset(ip_expected, 0, 10);
+        ip_expected[10] = 0xff;
+        ip_expected[11] = 0xff;
+        ip_expected[12] = 192;
+        ip_expected[13] = 168;
+        ip_expected[14] = 1;
+        ip_expected[15] = 1;
+        assert(memcmp(ip_bytes, ip_expected, 16) == 0);
+        printf("ip2bytes(192.168.1.1): OK\n");
+
+        assert(sodium_ip2bin(ip_bytes, "0.0.0.0") == 0);
+        assert(sodium_ip2bin(ip_bytes, "255.255.255.255") == 0);
+        assert(sodium_ip2bin(ip_bytes, "127.0.0.1") == 0);
+        printf("ip2bytes IPv4 basic: OK\n");
+
+        assert(sodium_ip2bin(ip_bytes, "256.1.1.1") == -1);
+        assert(sodium_ip2bin(ip_bytes, "1.999.1.1") == -1);
+        assert(sodium_ip2bin(ip_bytes, "192.168.1") == -1);
+        assert(sodium_ip2bin(ip_bytes, "192.168.1.1.1") == -1);
+        assert(sodium_ip2bin(ip_bytes, "") == -1);
+        assert(sodium_ip2bin(ip_bytes, ".1.2.3") == -1);
+        assert(sodium_ip2bin(ip_bytes, "1.2.3.") == -1);
+        assert(sodium_ip2bin(ip_bytes, "1..2.3") == -1);
+        assert(sodium_ip2bin(ip_bytes, "1.2.a.3") == -1);
+        printf("ip2bytes IPv4 invalid: OK\n");
+
+        assert(sodium_ip2bin(ip_bytes, "2001:db8:85a3:0:0:8a2e:370:7334") == 0);
+        ip_expected[0]  = 0x20; ip_expected[1]  = 0x01;
+        ip_expected[2]  = 0x0d; ip_expected[3]  = 0xb8;
+        ip_expected[4]  = 0x85; ip_expected[5]  = 0xa3;
+        ip_expected[6]  = 0x00; ip_expected[7]  = 0x00;
+        ip_expected[8]  = 0x00; ip_expected[9]  = 0x00;
+        ip_expected[10] = 0x8a; ip_expected[11] = 0x2e;
+        ip_expected[12] = 0x03; ip_expected[13] = 0x70;
+        ip_expected[14] = 0x73; ip_expected[15] = 0x34;
+        assert(memcmp(ip_bytes, ip_expected, 16) == 0);
+        printf("ip2bytes(2001:db8:85a3:0:0:8a2e:370:7334): OK\n");
+
+        assert(sodium_ip2bin(ip_bytes, "::1") == 0);
+        memset(ip_expected, 0, 16);
+        ip_expected[15] = 1;
+        assert(memcmp(ip_bytes, ip_expected, 16) == 0);
+
+        assert(sodium_ip2bin(ip_bytes, "::") == 0);
+        memset(ip_expected, 0, 16);
+        assert(memcmp(ip_bytes, ip_expected, 16) == 0);
+
+        assert(sodium_ip2bin(ip_bytes, "2001:db8::1") == 0);
+        assert(sodium_ip2bin(ip_bytes, "fe80::1") == 0);
+        printf("ip2bytes IPv6 compressed: OK\n");
+
+        assert(sodium_ip2bin(ip_bytes, "fe80::1%eth0") == 0);
+        assert(sodium_ip2bin(ip_bytes, "fe80::1%15") == 0);
+        printf("ip2bytes IPv6 zone: OK\n");
+
+        assert(sodium_ip2bin(ip_bytes, "2001:::1") == -1);
+        assert(sodium_ip2bin(ip_bytes, "2001::1::1") == -1);
+        assert(sodium_ip2bin(ip_bytes, "1:2:3:4:5:6:7:8:9") == -1);
+        assert(sodium_ip2bin(ip_bytes, "12345:1:1:1:1:1:1:1") == -1);
+        assert(sodium_ip2bin(ip_bytes, "2001:db8:g:1:1:1:1:1") == -1);
+        assert(sodium_ip2bin(ip_bytes, ":2001:db8::1") == -1);
+        assert(sodium_ip2bin(ip_bytes, "2001:db8:1:") == -1);
+        assert(sodium_ip2bin(ip_bytes, "fe80::1%") == -1);
+        printf("ip2bytes IPv6 invalid: OK\n");
+
+        assert(sodium_ip2bin(ip_bytes, "::ffff:192.168.1.1") == 0);
+        memset(ip_expected, 0, 10);
+        ip_expected[10] = 0xff;
+        ip_expected[11] = 0xff;
+        ip_expected[12] = 192;
+        ip_expected[13] = 168;
+        ip_expected[14] = 1;
+        ip_expected[15] = 1;
+        assert(memcmp(ip_bytes, ip_expected, 16) == 0);
+        printf("ip2bytes IPv4-mapped: OK\n");
+
+        printf("ip NULL handling: OK\n");
+
+        memset(ip_bytes, 0, 10);
+        ip_bytes[10] = 0xff;
+        ip_bytes[11] = 0xff;
+        ip_bytes[12] = 192;
+        ip_bytes[13] = 168;
+        ip_bytes[14] = 1;
+        ip_bytes[15] = 1;
+        assert(sodium_bin2ip(ip_str, sizeof(ip_str), ip_bytes) != NULL);
+        assert(strcmp(ip_str, "192.168.1.1") == 0);
+
+        ip_bytes[12] = 0;
+        ip_bytes[13] = 0;
+        ip_bytes[14] = 0;
+        ip_bytes[15] = 0;
+        assert(sodium_bin2ip(ip_str, sizeof(ip_str), ip_bytes) != NULL);
+        assert(strcmp(ip_str, "0.0.0.0") == 0);
+
+        ip_bytes[12] = 255;
+        ip_bytes[13] = 255;
+        ip_bytes[14] = 255;
+        ip_bytes[15] = 255;
+        assert(sodium_bin2ip(ip_str, sizeof(ip_str), ip_bytes) != NULL);
+        assert(strcmp(ip_str, "255.255.255.255") == 0);
+        printf("bytes2ip IPv4: OK\n");
+
+        memset(ip_bytes, 0, 16);
+        ip_bytes[15] = 1;
+        assert(sodium_bin2ip(ip_str, sizeof(ip_str), ip_bytes) != NULL);
+        assert(strcmp(ip_str, "::1") == 0);
+
+        memset(ip_bytes, 0, 16);
+        assert(sodium_bin2ip(ip_str, sizeof(ip_str), ip_bytes) != NULL);
+        assert(strcmp(ip_str, "::") == 0);
+
+        memset(ip_bytes, 0xff, 16);
+        assert(sodium_bin2ip(ip_str, sizeof(ip_str), ip_bytes) != NULL);
+        assert(strcmp(ip_str, "ffff:ffff:ffff:ffff:ffff:ffff:ffff:ffff") == 0);
+        printf("bytes2ip IPv6: OK\n");
+
+        memset(ip_bytes, 0, 10);
+        ip_bytes[10] = 0xff;
+        ip_bytes[11] = 0xff;
+        ip_bytes[12] = 255;
+        ip_bytes[13] = 255;
+        ip_bytes[14] = 255;
+        ip_bytes[15] = 255;
+        assert(sodium_bin2ip(ip_str, 16, ip_bytes) != NULL);
+        assert(sodium_bin2ip(ip_str, 15, ip_bytes) == NULL);
+
+        memset(ip_bytes, 0xff, 16);
+        assert(sodium_bin2ip(ip_str, 40, ip_bytes) != NULL);
+        assert(sodium_bin2ip(ip_str, 39, ip_bytes) == NULL);
+
+        memset(ip_bytes, 0, 16);
+        assert(sodium_bin2ip(ip_str, 3, ip_bytes) != NULL);
+        assert(sodium_bin2ip(ip_str, 2, ip_bytes) == NULL);
+        printf("bytes2ip buffer size: OK\n");
+
+        assert(sodium_ip2bin(ip_bytes, "10.20.30.40") == 0);
+        assert(sodium_bin2ip(ip_str, sizeof(ip_str), ip_bytes) != NULL);
+        assert(strcmp(ip_str, "10.20.30.40") == 0);
+
+        assert(sodium_ip2bin(ip_bytes, "::1") == 0);
+        assert(sodium_bin2ip(ip_str, sizeof(ip_str), ip_bytes) != NULL);
+        assert(strcmp(ip_str, "::1") == 0);
+
+        assert(sodium_ip2bin(ip_bytes, "2001:db8::1") == 0);
+        assert(sodium_bin2ip(ip_str, sizeof(ip_str), ip_bytes) != NULL);
+        assert(strcmp(ip_str, "2001:db8::1") == 0);
+
+        assert(sodium_ip2bin(ip_bytes, "2001:db8:85a3:1234:5678:8a2e:370:7334") == 0);
+        assert(sodium_bin2ip(ip_str, sizeof(ip_str), ip_bytes) != NULL);
+        assert(strcmp(ip_str, "2001:db8:85a3:1234:5678:8a2e:370:7334") == 0);
+        printf("ip round-trip: OK\n");
+
+        {
+            unsigned char lower[16], upper[16], mixed[16];
+            assert(sodium_ip2bin(lower, "abcd:ef01:2345:6789:abcd:ef01:2345:6789") == 0);
+            assert(sodium_ip2bin(upper, "ABCD:EF01:2345:6789:ABCD:EF01:2345:6789") == 0);
+            assert(sodium_ip2bin(mixed, "AbCd:eF01:2345:6789:aBcD:Ef01:2345:6789") == 0);
+            assert(memcmp(lower, upper, 16) == 0);
+            assert(memcmp(lower, mixed, 16) == 0);
+        }
+        printf("ip case insensitive: OK\n");
+
+        {
+            unsigned char direct[16], mapped[16];
+            assert(sodium_ip2bin(direct, "192.168.1.1") == 0);
+            assert(sodium_ip2bin(mapped, "::ffff:192.168.1.1") == 0);
+            assert(memcmp(direct, mapped, 16) == 0);
+        }
+        printf("ip IPv4-mapped equivalence: OK\n");
+    }
+
     return 0;
 }

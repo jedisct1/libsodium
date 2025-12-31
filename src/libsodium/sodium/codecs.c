@@ -1,4 +1,5 @@
 #include <assert.h>
+#include <ctype.h>
 #include <errno.h>
 #include <limits.h>
 #include <stddef.h>
@@ -332,4 +333,281 @@ sodium_base642bin(unsigned char * const bin, const size_t bin_maxlen,
         *bin_len = bin_pos;
     }
     return ret;
+}
+
+static int
+ip_hex_digit(int ch)
+{
+    if (ch >= '0' && ch <= '9') {
+        return ch - '0';
+    }
+    if (((unsigned int) ch | 32U) >= 'a' && ((unsigned int) ch | 32U) <= 'f') {
+        return ((unsigned int) ch | 32U) - 'a' + 10;
+    }
+    return -1;
+}
+
+static int
+parse_ipv4(const char *src, const char *end, unsigned char out[4])
+{
+    const char *p = src;
+    int         i;
+
+    if (src == NULL || end == NULL || out == NULL || src >= end) {
+        return 0;
+    }
+    for (i = 0; i < 4; i++) {
+        unsigned int val    = 0U;
+        int          digits = 0;
+
+        while (p < end && *p >= '0' && *p <= '9') {
+            val = val * 10U + (unsigned int) (*p++ - '0');
+            if (++digits > 3 || val > 255U) {
+                return 0;
+            }
+        }
+        if (digits == 0) {
+            return 0;
+        }
+        out[i] = (unsigned char) val;
+
+        if (i < 3) {
+            if (p >= end || *p++ != '.') {
+                return 0;
+            }
+        }
+    }
+    return p == end;
+}
+
+static int
+parse_ipv6(const char *src, const char *end, unsigned char out[16])
+{
+    unsigned char  tmp[16]    = { 0 };
+    unsigned char *tp         = tmp;
+    unsigned char *endp       = tmp + 16;
+    unsigned char *colonp     = NULL;
+    const char    *p          = src;
+    const char    *curtok     = src;
+    unsigned int   val        = 0U;
+    int            saw_xdigit = 0;
+    int            xdigits    = 0;
+    int            ch;
+    int            hv;
+
+    if (src == NULL || end == NULL || out == NULL || src >= end) {
+        return 0;
+    }
+    if (*p == ':') {
+        if (++p >= end || *p != ':') {
+            return 0;
+        }
+        colonp = tp;
+        curtok = ++p;
+    }
+    while (p < end) {
+        ch = *p;
+
+        if (ch == ':') {
+            if (!saw_xdigit) {
+                if (colonp != NULL) {
+                    return 0;
+                }
+                colonp = tp;
+                curtok = ++p;
+                continue;
+            }
+            if (tp + 2 > endp) {
+                return 0;
+            }
+            *tp++      = (unsigned char) (val >> 8);
+            *tp++      = (unsigned char) (val & 0xffU);
+            val        = 0U;
+            saw_xdigit = 0;
+            xdigits    = 0;
+            curtok     = ++p;
+            if (p >= end) {
+                return 0;
+            }
+            continue;
+        }
+        if (ch == '.') {
+            if (tp + 4 > endp || parse_ipv4(curtok, end, tp) == 0) {
+                return 0;
+            }
+            tp += 4;
+            saw_xdigit = 0;
+            break;
+        }
+        hv = ip_hex_digit(ch);
+        if (hv < 0 || xdigits >= 4) {
+            return 0;
+        }
+        val        = (val << 4) | (unsigned int) hv;
+        saw_xdigit = 1;
+        xdigits++;
+        p++;
+    }
+    if (saw_xdigit) {
+        if (tp + 2 > endp) {
+            return 0;
+        }
+        *tp++ = (unsigned char) (val >> 8);
+        *tp++ = (unsigned char) (val & 0xffU);
+    }
+    if (colonp != NULL) {
+        size_t n = (size_t) (tp - colonp);
+
+        if (tp == endp) {
+            return 0;
+        }
+        memmove(endp - n, colonp, n);
+        memset(colonp, 0, (size_t) (endp - n - colonp));
+        tp = endp;
+    }
+    if (tp != endp) {
+        return 0;
+    }
+    memcpy(out, tmp, 16U);
+
+    return 1;
+}
+
+int
+sodium_ip2bin(unsigned char out[16], const char *src)
+{
+    const char   *end;
+    const char   *z;
+    unsigned char v4[4];
+
+    if (src == NULL || out == NULL) {
+        return -1;
+    }
+
+    for (end = src; *end != 0 && *end != '%'; end++) {
+        /* empty */
+    }
+    if (*end == '%') {
+        for (z = end + 1; *z != 0; z++) {
+            if (isspace((unsigned char) *z)) {
+                return -1;
+            }
+        }
+        if (z == end + 1) {
+            return -1;
+        }
+    }
+    if (memchr(src, ':', (size_t) (end - src)) != NULL) {
+        return parse_ipv6(src, end, out) != 0 ? 0 : -1;
+    }
+    if (*end == '%') {
+        return -1;
+    }
+    if (parse_ipv4(src, end, v4) == 0) {
+        return -1;
+    }
+    memset(out, 0, 10U);
+    out[10] = 0xffU;
+    out[11] = 0xffU;
+    memcpy(out + 12, v4, 4U);
+
+    return 0;
+}
+
+static const unsigned char ipv4_mapped_prefix[12] = { 0U, 0U, 0U, 0U, 0U,    0U,
+                                                      0U, 0U, 0U, 0U, 0xffU, 0xffU };
+
+static void
+ip_write_num(char **p, unsigned int val, int base)
+{
+    char buf[4];
+    int  n = 0;
+
+    do {
+        unsigned int d = val % (unsigned int) base;
+
+        buf[n++] = (char) (d < 10U ? '0' + d : 'a' + d - 10U);
+        val /= (unsigned int) base;
+    } while (val != 0U);
+
+    while (n-- > 0) {
+        *(*p)++ = buf[n];
+    }
+}
+
+char *
+sodium_bin2ip(char *dst, size_t dst_len, const unsigned char in[16])
+{
+    char   buf[46];
+    char  *p = buf;
+    int    i;
+    int    best_start = -1;
+    int    best_len   = 0;
+    int    cur_start  = -1;
+    int    cur_len    = 0;
+    size_t len;
+
+    if (dst == NULL || in == NULL || dst_len == 0U) {
+        return NULL;
+    }
+    if (memcmp(in, ipv4_mapped_prefix, 12U) == 0) {
+        for (i = 0; i < 4; i++) {
+            if (i != 0) {
+                *p++ = '.';
+            }
+            ip_write_num(&p, (unsigned int) in[12 + i], 10);
+        }
+        len = (size_t) (p - buf);
+        if (len >= dst_len) {
+            return NULL;
+        }
+        memcpy(dst, buf, len + 1U);
+        dst[len] = 0;
+
+        return dst;
+    }
+    for (i = 0; i < 8; i++) {
+        unsigned int word = ((unsigned int) in[i * 2] << 8) | (unsigned int) in[i * 2 + 1];
+
+        if (word == 0U) {
+            if (cur_start < 0) {
+                cur_start = i;
+            }
+            cur_len++;
+        } else {
+            if (cur_len > best_len) {
+                best_start = cur_start;
+                best_len   = cur_len;
+            }
+            cur_start = -1;
+            cur_len   = 0;
+        }
+    }
+    if (cur_len > best_len) {
+        best_start = cur_start;
+        best_len   = cur_len;
+    }
+    if (best_len < 2) {
+        best_start = -1;
+    }
+    for (i = 0; i < 8; i++) {
+        if (i == best_start) {
+            *p++ = ':';
+            *p++ = ':';
+            i += best_len - 1;
+            continue;
+        }
+        if (i != 0 && (best_start < 0 || i != best_start + best_len)) {
+            *p++ = ':';
+        }
+        ip_write_num(&p, ((unsigned int) in[i * 2] << 8) | (unsigned int) in[i * 2 + 1], 16);
+    }
+    len = (size_t) (p - buf);
+    if (len >= dst_len) {
+        return NULL;
+    }
+    memcpy(dst, buf, len);
+    dst[len] = 0;
+
+    return dst;
 }
