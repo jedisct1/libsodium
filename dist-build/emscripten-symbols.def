@@ -297,6 +297,11 @@ _crypto_ipcrypt_ndx_keybytes 1 1
 _crypto_ipcrypt_ndx_keygen 1 1
 _crypto_ipcrypt_ndx_outputbytes 1 1
 _crypto_ipcrypt_ndx_tweakbytes 1 1
+_crypto_ipcrypt_pfx_bytes 1 1
+_crypto_ipcrypt_pfx_decrypt 1 1
+_crypto_ipcrypt_pfx_encrypt 1 1
+_crypto_ipcrypt_pfx_keybytes 1 1
+_crypto_ipcrypt_pfx_keygen 1 1
 _crypto_kdf_blake2b_bytes_max 0 1
 _crypto_kdf_blake2b_bytes_min 0 1
 _crypto_kdf_blake2b_contextbytes 0 1
@@ -677,11 +682,13 @@ _sodium_allocarray 0 0
 _sodium_base64_encoded_len 1 1
 _sodium_base642bin 1 1
 _sodium_bin2base64 1 1
+_sodium_bin2ip 1 1
 _sodium_bin2hex 1 1
 _sodium_compare 0 0
 _sodium_free 0 0
 _sodium_hex2bin 1 1
 _sodium_increment 0 0
+_sodium_ip2bin 1 1
 _sodium_init 1 1
 _sodium_is_zero 0 0
 _sodium_library_minimal 1 1
