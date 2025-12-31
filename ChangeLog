@@ -33,6 +33,7 @@ compatibility with older runtimes
  - A compilation issue with old toolchains on Solaris has been
 fixed
  - `crypto_aead_aes256gcm_is_available` is exported to JavaScript
+ - libsodium is now compatible with Emscripten 4.x
 
 * Version 1.0.20
   This point release includes all the changes from 1.0.19-stable,
