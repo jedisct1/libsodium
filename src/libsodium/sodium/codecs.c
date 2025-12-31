@@ -481,7 +481,7 @@ sodium_ip2bytes(unsigned char out[16], const char *src)
     unsigned char v4[4];
 
     if (src == NULL || out == NULL) {
-        return 0;
+        return -1;
     }
 
     for (end = src; *end != 0 && *end != '%'; end++) {
@@ -490,28 +490,28 @@ sodium_ip2bytes(unsigned char out[16], const char *src)
     if (*end == '%') {
         for (z = end + 1; *z != 0; z++) {
             if (isspace((unsigned char) *z)) {
-                return 0;
+                return -1;
             }
         }
         if (z == end + 1) {
-            return 0;
+            return -1;
         }
     }
     if (memchr(src, ':', (size_t) (end - src)) != NULL) {
-        return parse_ipv6(src, end, out);
+        return parse_ipv6(src, end, out) != 0 ? 0 : -1;
     }
     if (*end == '%') {
-        return 0;
+        return -1;
     }
     if (parse_ipv4(src, end, v4) == 0) {
-        return 0;
+        return -1;
     }
     memset(out, 0, 10U);
     out[10] = 0xffU;
     out[11] = 0xffU;
     memcpy(out + 12, v4, 4U);
 
-    return 1;
+    return 0;
 }
 
 static const unsigned char ipv4_mapped_prefix[12] = { 0U, 0U, 0U, 0U, 0U,    0U,
