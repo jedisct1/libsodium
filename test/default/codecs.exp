@@ -28,3 +28,18 @@ ZXkgaW50by Bzb3VuZA==]
 [This is a journ]
 [
 ZXkgaW50by Bzb3VuZA==]
+ip2bytes(192.168.1.1): OK
+ip2bytes IPv4 basic: OK
+ip2bytes IPv4 invalid: OK
+ip2bytes(2001:db8:85a3:0:0:8a2e:370:7334): OK
+ip2bytes IPv6 compressed: OK
+ip2bytes IPv6 zone: OK
+ip2bytes IPv6 invalid: OK
+ip2bytes IPv4-mapped: OK
+ip NULL handling: OK
+bytes2ip IPv4: OK
+bytes2ip IPv6: OK
+bytes2ip buffer size: OK
+ip round-trip: OK
+ip case insensitive: OK
+ip IPv4-mapped equivalence: OK
