@@ -1,3 +1,19 @@
+* Version 1.0.21
+  This point release includes all the changes from 1.0.20-stable, which
+includes a security fix for the `crypto_core_ed25519_is_valid_point()`
+function, as well as two new sets of functions:
+ - The new `crypto_ipcrypt_*` functions implement mechanisms for securely
+encrypting and anonymizing IP addresses as specified in https://ipcrypt-std.github.io
+ - The `sodium_bin2ip` and `sodium_ip2bin` helper functions have been added
+to complement the `crypto_ipcrypt_*` functions and easily convert addresses
+between bytes and strings.
+ - XOF: the `crypto_xof_shake*` and `crypto_xof_turboshake*` functions
+are standard extendable output functions. From input of any length, they can
+derive output of any length with the same properties as hash functions. These
+primitives are required by many post-quantum mechanisms, but can also be used
+for a wide range of applications, including key derivation, session encryption
+and more.
+
 * Version 1.0.20-stable
  - XCFramework: cross-compilation is now forced on Apple Silicon to
 avoid Rosetta-related build issues
