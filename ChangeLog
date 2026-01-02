@@ -1,6 +1,6 @@
 * Version 1.0.21
   This point release includes all the changes from 1.0.20-stable, which
-includes a security fix for the `crypto_core_ed25519_is_valid_point()`
+include a security fix for the `crypto_core_ed25519_is_valid_point()`
 function, as well as two new sets of functions:
  - The new `crypto_ipcrypt_*` functions implement mechanisms for securely
 encrypting and anonymizing IP addresses as specified in https://ipcrypt-std.github.io
