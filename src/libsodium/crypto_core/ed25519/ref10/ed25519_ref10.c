@@ -1180,8 +1180,7 @@ ge25519_has_small_order(const ge25519_p3 *p)
     fe25519_mul(y_sqrtm1, p->Y, fe25519_sqrtm1);
     fe25519_sub(c, y_sqrtm1, p->X);
     ret |= fe25519_iszero(c);
-    fe25519_mul(c, p->X, p->Z);
-    fe25519_add(c, y_sqrtm1, c);
+    fe25519_add(c, y_sqrtm1, p->X);
     ret |= fe25519_iszero(c);
 
     return ret;
