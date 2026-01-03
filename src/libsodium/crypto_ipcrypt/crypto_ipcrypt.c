@@ -111,55 +111,67 @@ crypto_ipcrypt_pfx_keygen(unsigned char k[crypto_ipcrypt_PFX_KEYBYTES])
 }
 
 void
-crypto_ipcrypt_encrypt(unsigned char *out, const unsigned char *in, const unsigned char *k)
+crypto_ipcrypt_encrypt(unsigned char       out[crypto_ipcrypt_BYTES],
+                       const unsigned char in[crypto_ipcrypt_BYTES],
+                       const unsigned char k[crypto_ipcrypt_KEYBYTES])
 {
     implementation->encrypt(out, in, k);
 }
 
 void
-crypto_ipcrypt_decrypt(unsigned char *out, const unsigned char *in, const unsigned char *k)
+crypto_ipcrypt_decrypt(unsigned char       out[crypto_ipcrypt_BYTES],
+                       const unsigned char in[crypto_ipcrypt_BYTES],
+                       const unsigned char k[crypto_ipcrypt_KEYBYTES])
 {
     implementation->decrypt(out, in, k);
 }
 
 void
-crypto_ipcrypt_nd_encrypt(unsigned char       *out,
-                          const unsigned char *in,
-                          const unsigned char *t,
-                          const unsigned char *k)
+crypto_ipcrypt_nd_encrypt(unsigned char       out[crypto_ipcrypt_ND_OUTPUTBYTES],
+                          const unsigned char in[crypto_ipcrypt_ND_INPUTBYTES],
+                          const unsigned char t[crypto_ipcrypt_ND_TWEAKBYTES],
+                          const unsigned char k[crypto_ipcrypt_ND_KEYBYTES])
 {
     implementation->nd_encrypt(out, in, t, k);
 }
 
 void
-crypto_ipcrypt_nd_decrypt(unsigned char *out, const unsigned char *in, const unsigned char *k)
+crypto_ipcrypt_nd_decrypt(unsigned char       out[crypto_ipcrypt_ND_INPUTBYTES],
+                          const unsigned char in[crypto_ipcrypt_ND_OUTPUTBYTES],
+                          const unsigned char k[crypto_ipcrypt_ND_KEYBYTES])
 {
     implementation->nd_decrypt(out, in, k);
 }
 
 void
-crypto_ipcrypt_ndx_encrypt(unsigned char       *out,
-                           const unsigned char *in,
-                           const unsigned char *t,
-                           const unsigned char *k)
+crypto_ipcrypt_ndx_encrypt(unsigned char       out[crypto_ipcrypt_NDX_OUTPUTBYTES],
+                           const unsigned char in[crypto_ipcrypt_NDX_INPUTBYTES],
+                           const unsigned char t[crypto_ipcrypt_NDX_TWEAKBYTES],
+                           const unsigned char k[crypto_ipcrypt_NDX_KEYBYTES])
 {
     implementation->ndx_encrypt(out, in, t, k);
 }
 
 void
-crypto_ipcrypt_ndx_decrypt(unsigned char *out, const unsigned char *in, const unsigned char *k)
+crypto_ipcrypt_ndx_decrypt(unsigned char       out[crypto_ipcrypt_NDX_INPUTBYTES],
+                           const unsigned char in[crypto_ipcrypt_NDX_OUTPUTBYTES],
+                           const unsigned char k[crypto_ipcrypt_NDX_KEYBYTES])
 {
     implementation->ndx_decrypt(out, in, k);
 }
 
 void
-crypto_ipcrypt_pfx_encrypt(unsigned char *out, const unsigned char *in, const unsigned char *k)
+crypto_ipcrypt_pfx_encrypt(unsigned char       out[crypto_ipcrypt_PFX_BYTES],
+                           const unsigned char in[crypto_ipcrypt_PFX_BYTES],
+                           const unsigned char k[crypto_ipcrypt_PFX_KEYBYTES])
 {
     implementation->pfx_encrypt(out, in, k);
 }
 
 void
-crypto_ipcrypt_pfx_decrypt(unsigned char *out, const unsigned char *in, const unsigned char *k)
+crypto_ipcrypt_pfx_decrypt(unsigned char       out[crypto_ipcrypt_PFX_BYTES],
+                           const unsigned char in[crypto_ipcrypt_PFX_BYTES],
+                           const unsigned char k[crypto_ipcrypt_PFX_KEYBYTES])
 {
     implementation->pfx_decrypt(out, in, k);
 }
