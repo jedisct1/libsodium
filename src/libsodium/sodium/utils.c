@@ -368,7 +368,6 @@ sodium_sub(unsigned char *a, const unsigned char *b, const size_t len)
 #ifdef HAVE_AMD64_ASM
     uint64_t t64_1, t64_2, t64_3, t64_4;
     uint64_t t64_5, t64_6, t64_7, t64_8;
-    uint32_t t32;
 
     if (len == 64U) {
         __asm__ __volatile__(
