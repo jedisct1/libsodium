@@ -381,6 +381,21 @@ AS_IF([test "x$with_threads" = "xyes"], [
          [AC_MSG_RESULT(thread local storage is not supported)]) ])
 
 LT_INIT
+
+dnl CompCert compiler support
+AC_MSG_CHECKING([if we are using CompCert])
+AC_COMPILE_IFELSE([AC_LANG_PROGRAM([[
+#ifndef __COMPCERT__
+# error __COMPCERT__ is not defined
+#endif
+]], [[]])],
+  [AC_MSG_RESULT(yes)
+   lt_prog_compiler_wl='-Wl,'
+   enable_asm="no"
+   CFLAGS="$CFLAGS -fstruct-passing"
+   AC_MSG_WARN([compiling with CompCert - asm implementations disabled])],
+  [AC_MSG_RESULT(no)])
+
 AC_SUBST(LIBTOOL_DEPS)
 
 AC_ARG_VAR([AR], [path to the ar utility])
