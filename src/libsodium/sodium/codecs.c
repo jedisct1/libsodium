@@ -480,10 +480,6 @@ sodium_ip2bin(unsigned char out[16], const char *src)
     const char   *z;
     unsigned char v4[4];
 
-    if (src == NULL || out == NULL) {
-        return -1;
-    }
-
     for (end = src; *end != 0 && *end != '%'; end++) {
         /* empty */
     }
@@ -547,7 +543,7 @@ sodium_bin2ip(char *dst, size_t dst_len, const unsigned char in[16])
     int    cur_len    = 0;
     size_t len;
 
-    if (dst == NULL || in == NULL || dst_len == 0U) {
+    if (dst_len <= 2U) {
         return NULL;
     }
     if (memcmp(in, ipv4_mapped_prefix, 12U) == 0) {
