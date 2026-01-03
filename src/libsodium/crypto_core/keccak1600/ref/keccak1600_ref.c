@@ -15,14 +15,6 @@ static const uint64_t keccak_round_constants[24] = {
     0x8000000080008081ULL, 0x8000000000008080ULL, 0x0000000080000001ULL, 0x8000000080008008ULL
 };
 
-static const unsigned int keccak_rotc[24] = { 1U,  3U,  6U,  10U, 15U, 21U, 28U, 36U,
-                                              45U, 55U, 2U,  14U, 27U, 41U, 56U, 8U,
-                                              25U, 43U, 62U, 18U, 39U, 61U, 20U, 44U };
-
-static const unsigned int keccak_piln[24] = { 10U, 7U,  11U, 17U, 18U, 3U,  5U,  16U,
-                                              8U,  21U, 24U, 4U,  15U, 23U, 19U, 13U,
-                                              12U, 2U,  20U, 14U, 22U, 9U,  6U,  1U };
-
 #define KECCAK_DECLARE_STATE          \
     uint64_t Aba, Abe, Abi, Abo, Abu; \
     uint64_t Aga, Age, Agi, Ago, Agu; \
