@@ -99,6 +99,31 @@ fn initLibConfig(b: *std.Build, target: std.Build.ResolvedTarget, lib: *Compile)
             lib.root_module.addCMacro("HAVE_SYS_PARAM_H", "1");
             lib.root_module.addCMacro("HAVE_SYS_RANDOM_H", "1");
         },
+        .freebsd => {
+            lib.root_module.addCMacro("ASM_HIDE_SYMBOL", ".hidden");
+            lib.root_module.addCMacro("TLS", "_Thread_local");
+
+            lib.root_module.addCMacro("HAVE_ARC4RANDOM", "1");
+            lib.root_module.addCMacro("HAVE_ARC4RANDOM_BUF", "1");
+            lib.root_module.addCMacro("HAVE_CATCHABLE_ABRT", "1");
+            lib.root_module.addCMacro("HAVE_CATCHABLE_SEGV", "1");
+            lib.root_module.addCMacro("HAVE_CLOCK_GETTIME", "1");
+            lib.root_module.addCMacro("HAVE_GETPID", "1");
+            lib.root_module.addCMacro("HAVE_MADVISE", "1");
+            lib.root_module.addCMacro("HAVE_MLOCK", "1");
+            lib.root_module.addCMacro("HAVE_MMAP", "1");
+            lib.root_module.addCMacro("HAVE_MPROTECT", "1");
+            lib.root_module.addCMacro("HAVE_NANOSLEEP", "1");
+            lib.root_module.addCMacro("HAVE_POSIX_MEMALIGN", "1");
+            lib.root_module.addCMacro("HAVE_PTHREAD_PRIO_INHERIT", "1");
+            lib.root_module.addCMacro("HAVE_PTHREAD", "1");
+            lib.root_module.addCMacro("HAVE_RAISE", "1");
+            lib.root_module.addCMacro("HAVE_SYSCONF", "1");
+            lib.root_module.addCMacro("HAVE_SYS_MMAN_H", "1");
+            lib.root_module.addCMacro("HAVE_SYS_PARAM_H", "1");
+            lib.root_module.addCMacro("HAVE_SYS_RANDOM_H", "1");
+            lib.root_module.addCMacro("HAVE_WEAK_SYMBOLS", "1");
+        },
         else => {},
     }
 
