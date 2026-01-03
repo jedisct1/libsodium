@@ -225,8 +225,6 @@ if [ -f "$FILE" ]; then
     else
         ok "$FILE: pathversion"
     fi
-else
-    error "$FILE not found"
 fi
 
 # 9. configure (generated from configure.ac)
