@@ -19758,6 +19758,40 @@ CC=$lt_save_CC
 
 
 
+{ printf "%s\n" "$as_me:${as_lineno-$LINENO}: checking if we are using CompCert" >&5
+printf %s "checking if we are using CompCert... " >&6; }
+cat confdefs.h - <<_ACEOF >conftest.$ac_ext
+/* end confdefs.h.  */
+
+#ifndef __COMPCERT__
+# error __COMPCERT__ is not defined
+#endif
+
+int
+main (void)
+{
+
+  ;
+  return 0;
+}
+_ACEOF
+if ac_fn_c_try_compile "$LINENO"
+then :
+  { printf "%s\n" "$as_me:${as_lineno-$LINENO}: result: yes" >&5
+printf "%s\n" "yes" >&6; }
+   lt_prog_compiler_wl='-Wl,'
+   enable_asm="no"
+   CFLAGS="$CFLAGS -fstruct-passing"
+   { printf "%s\n" "$as_me:${as_lineno-$LINENO}: WARNING: compiling with CompCert - asm implementations disabled" >&5
+printf "%s\n" "$as_me: WARNING: compiling with CompCert - asm implementations disabled" >&2;}
+else case e in #(
+  e) { printf "%s\n" "$as_me:${as_lineno-$LINENO}: result: no" >&5
+printf "%s\n" "no" >&6; } ;;
+esac
+fi
+rm -f core conftest.err conftest.$ac_objext conftest.beam conftest.$ac_ext
+
+
 
 
 if test -n "$ac_tool_prefix"; then
