@@ -58,6 +58,8 @@ jobs:
           zig build -Dtarget=aarch64-windows
           zig build -Dtarget=x86_64-macos
           zig build -Dtarget=aarch64-macos
+          zig build -Dtarget=x86_64-freebsd
+          zig build -Dtarget=aarch64-freebsd
           zig build -Dtarget=wasm32-wasi
           zig build -Doptimize=ReleaseFast
           rm -fr zig-cache zig-out
