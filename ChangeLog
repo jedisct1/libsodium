@@ -65,7 +65,7 @@ feature detection.
  - SYSV assembly should not be used when targeting Windows (reported by
 @meiyese, thanks!)
  - Compatibility issues with LLVM 18 and AVX512 have been addressed.
- - GitHub attestation build provenance are now added to NuGet packages.
+ - GitHub attestation build provenance is now added to NuGet packages.
  - JavaScript tests can now use Bun as an alternative to Node.
 
 * Version 1.0.19
@@ -112,7 +112,7 @@ not used.
  - WebAssembly: tests can now run using Bun, WasmEdge, Wazero, wasm3 and
 wasmer-js. Support for WAVM and Lucet have been removed, as these projects
 have reached EOL.
- - .NET: the minimum supported macOS version is now 1.0.15; this matches
+ - .NET: the minimum supported macOS version is now 10.15; this matches
 Microsoft guidelines.
  - .NET: all the packages are now built using Zig, on all platforms. This
 allows us to easily match Microsoft's requirements, including supported glibc
@@ -165,7 +165,7 @@ now used, if available, for optimized builds.
 * Version 1.0.17
  - Bug fix: `sodium_pad()` didn't properly support block sizes >= 256 bytes.
  - JS/WebAssembly: some old iOS versions can't instantiate the WebAssembly
-module; fall back to Javascript on these.
+module; fall back to JavaScript on these.
  - JS/WebAssembly: compatibility with newer Emscripten versions.
  - Bug fix: `crypto_pwhash_scryptsalsa208sha256_str_verify()` and
 `crypto_pwhash_scryptsalsa208sha256_str_needs_rehash()` didn't return
@@ -189,7 +189,7 @@ for blinding.
  - getrandom(2) is now used on FreeBSD 12+.
  - The `nonnull` attribute has been added to all relevant prototypes.
  - More reliable AVX512 detection.
- - Javascript/Webassembly builds now use dynamic memory growth.
+ - JavaScript/WebAssembly builds now use dynamic memory growth.
 
 * Version 1.0.16
  - Signatures computations and verifications are now way faster on
@@ -200,12 +200,12 @@ clang, icc). This includes the WebAssembly target.
 `crypto_core_ed25519_is_valid_point()`, `crypto_core_ed25519_add()`,
 `crypto_core_ed25519_sub()` and `crypto_core_ed25519_from_uniform()`
 (elligator representative to point).
- - `crypto_sign_open()`, `crypto_sign_verify_detached() and
-`crypto_sign_edwards25519sha512batch_open` now reject public keys in
+ - `crypto_sign_open()`, `crypto_sign_verify_detached()` and
+`crypto_sign_edwards25519sha512batch_open()` now reject public keys in
 non-canonical form in addition to low-order points.
  - The library can be built with `ED25519_NONDETERMINISTIC` defined in
 order to use synthetic nonces for EdDSA. This is disabled by default.
- - Webassembly: `crypto_pwhash_*()` functions are now included in
+ - WebAssembly: `crypto_pwhash_*()` functions are now included in
 non-sumo builds.
  - `sodium_stackzero()` was added to wipe content off the stack.
  - Android: support new SDKs where unified headers have become the
@@ -227,9 +227,9 @@ authenticated, and didn't seem to be used by any opensource project.
 of `1` as defined by the `OPSLIMIT_MIN` constant. This has been fixed.
  - The secretstream construction was slightly changed to be consistent
 with forthcoming variants.
- - The Javascript and Webassembly versions have been merged, and the
+ - The JavaScript and WebAssembly versions have been merged, and the
 module now returns a `.ready` promise that will resolve after the
-Webassembly code is loaded and compiled.
+WebAssembly code is loaded and compiled.
  - Note that due to these incompatible changes, the library version
 major was bumped up.
 
@@ -281,7 +281,7 @@ emscripten/binaryen that don't allow multiple variables declarations
 using a single `var` statement.
 
 * Version 1.0.13
- - Javascript: the sumo builds now include all symbols. They were
+ - JavaScript: the sumo builds now include all symbols. They were
 previously limited to symbols defined in minimal builds.
  - The public `crypto_pwhash_argon2i_MEMLIMIT_MAX` constant was
 incorrectly defined on 32-bit platforms. This has been fixed.
@@ -370,7 +370,7 @@ This checks the MAC without writing the decrypted message.
 gcc versions. There are no functional changes over the previous release.
 
 * Version 1.0.9
- - The Javascript target now includes a `--sumo` option to include all
+ - The JavaScript target now includes a `--sumo` option to include all
 the symbols of the original C library.
  - A detached API was added to the ChaCha20-Poly1305 and AES256-GCM
 implementations.
@@ -448,13 +448,13 @@ been added.
 directives were added (required at least on RHEL-6/i386), a workaround
 for a VRP bug on gcc/armv7 was added, and the library can now be compiled
 with the SunPro compiler.
- - Javascript target: io.js is not supported any more. Use nodejs.
+ - JavaScript target: io.js is not supported any more. Use Node.js.
 
 * Version 1.0.4
  - Support for AES256-GCM has been added. This requires
 a CPU with the aesni and pclmul extensions, and is accessible via the
 crypto_aead_aes256gcm_*() functions.
- - The Javascript target doesn't use eval() any more, so that the
+ - The JavaScript target doesn't use eval() any more, so that the
 library can be used in Chrome packaged applications.
  - QNX and CloudABI are now supported.
  - Support for NaCl has finally been added.
@@ -480,7 +480,7 @@ crypto_hash_*_statebytes() have been added in order to retrieve the
 size of structures keeping states from foreign languages.
  - The JavaScript target doesn't require /dev/urandom or an external
 randombytes() implementation any more. Other minor Emscripten-related
-improvements have been made in order to support libsodium.js
+improvements have been made in order to support libsodium.js.
  - Custom randombytes implementations do not need to provide their own
 implementation of randombytes_uniform() any more. randombytes_stir()
 and randombytes_close() can also be NULL pointers if they are not
@@ -507,8 +507,8 @@ libsodium is not installed, has been added.
  - The iOS target now includes armv7s and arm64 optimized code, as well
 as i386 and x86_64 code for the iOS simulator.
  - sodium_free() can now be called on regions with PROT_NONE protection.
- - The Javascript tests can run on Ubuntu, where the node binary was
-renamed nodejs. io.js can also be used instead of node.
+ - The JavaScript tests can run on Ubuntu, where the node binary was
+renamed nodejs. io.js can also be used instead of Node.
 
 * Version 1.0.1
  - DLL_EXPORT was renamed SODIUM_DLL_EXPORT in order to avoid
