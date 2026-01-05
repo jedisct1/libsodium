@@ -43,3 +43,5 @@ bytes2ip buffer size: OK
 ip round-trip: OK
 ip case insensitive: OK
 ip IPv4-mapped equivalence: OK
+ip src_len larger than string: OK
+ip src_len shorter than IP: OK

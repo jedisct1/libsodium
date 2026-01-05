@@ -474,17 +474,18 @@ parse_ipv6(const char *src, const char *end, unsigned char out[16])
 }
 
 int
-sodium_ip2bin(unsigned char out[16], const char *src)
+sodium_ip2bin(unsigned char out[16], const char *src, size_t src_len)
 {
+    const char   *src_end = src + src_len;
     const char   *end;
     const char   *z;
     unsigned char v4[4];
 
-    for (end = src; *end != 0 && *end != '%'; end++) {
+    for (end = src; end < src_end && *end != 0 && *end != '%'; end++) {
         /* empty */
     }
-    if (*end == '%') {
-        for (z = end + 1; *z != 0; z++) {
+    if (end < src_end && *end == '%') {
+        for (z = end + 1; z < src_end && *z != 0; z++) {
             if (isspace((unsigned char) *z)) {
                 return -1;
             }
@@ -496,7 +497,7 @@ sodium_ip2bin(unsigned char out[16], const char *src)
     if (memchr(src, ':', (size_t) (end - src)) != NULL) {
         return parse_ipv6(src, end, out) != 0 ? 0 : -1;
     }
-    if (*end == '%') {
+    if (end < src_end && *end == '%') {
         return -1;
     }
     if (parse_ipv4(src, end, v4) == 0) {
