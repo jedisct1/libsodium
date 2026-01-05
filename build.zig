@@ -315,6 +315,9 @@ pub fn build(b: *std.Build) !void {
 
     const allocator = heap.page_allocator;
     var walker = try test_dir.walk(allocator);
+
+    const test_step = b.step("test", "Run all libsodium tests");
+
     if (build_tests) {
         while (if (is_zig_16) try walker.next(io) else try walker.next()) |entry| {
             const name = entry.basename;
@@ -352,6 +355,11 @@ pub fn build(b: *std.Build) !void {
             }
 
             b.installArtifact(exe);
+
+            // Add a run step for this test
+            const run_test = b.addRunArtifact(exe);
+            run_test.setCwd(b.path(test_path));
+            test_step.dependOn(&run_test.step);
         }
     }
 }
