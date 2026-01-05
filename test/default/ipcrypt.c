@@ -1,7 +1,7 @@
 #define TEST_NAME "ipcrypt"
 #include "cmptest.h"
 
-static const unsigned char ipv4_mapped_prefix[12] = { 0U, 0U, 0U, 0U, 0U, 0U,
+static const unsigned char ipv4_mapped_prefix[12] = { 0U, 0U, 0U, 0U, 0U,    0U,
                                                       0U, 0U, 0U, 0U, 0xffU, 0xffU };
 
 static int
@@ -19,6 +19,39 @@ check_expected(const char *test_name, const unsigned char *actual, const char *e
     }
     printf("OK: %s\n", test_name);
     return 0;
+}
+
+static void
+flip_bit_msb(unsigned char buf[16], unsigned int bit_index)
+{
+    unsigned int byte_index;
+    unsigned int bit_in_byte;
+
+    if (bit_index >= 128U) {
+        return;
+    }
+    byte_index  = bit_index / 8U;
+    bit_in_byte = 7U - (bit_index % 8U);
+    buf[byte_index] ^= (unsigned char) (1U << bit_in_byte);
+}
+
+static int
+prefix_equal_msb(const unsigned char *a, const unsigned char *b, unsigned int prefix_len_bits)
+{
+    unsigned int full_bytes = prefix_len_bits / 8U;
+    unsigned int rem_bits   = prefix_len_bits % 8U;
+
+    if (prefix_len_bits == 0U) {
+        return 1;
+    }
+    if (memcmp(a, b, full_bytes) != 0) {
+        return 0;
+    }
+    if (rem_bits == 0U) {
+        return 1;
+    }
+    return (a[full_bytes] & (unsigned char) (0xffU << (8U - rem_bits))) ==
+           (b[full_bytes] & (unsigned char) (0xffU << (8U - rem_bits)));
 }
 
 int
@@ -42,6 +75,7 @@ main(void)
     unsigned char encrypted1[crypto_ipcrypt_PFX_BYTES];
     unsigned char encrypted2[crypto_ipcrypt_PFX_BYTES];
     size_t        i;
+    unsigned int  prefix_len_bits;
 
     printf("crypto_ipcrypt_BYTES: %zu\n", crypto_ipcrypt_bytes());
     printf("crypto_ipcrypt_KEYBYTES: %zu\n", crypto_ipcrypt_keybytes());
@@ -552,6 +586,49 @@ main(void)
     }
     printf("OK: IPv6 /32 prefix preserved for 2001:db8::/32\n");
 
+    printf("\nsystematic prefix-length coverage\n");
+
+    memset(pfx_key, 0x6a, sizeof pfx_key);
+    for (prefix_len_bits = 0; prefix_len_bits <= 128U; prefix_len_bits++) {
+        unsigned char in1[16];
+        unsigned char in2[16];
+        unsigned char out1[16];
+        unsigned char out2[16];
+
+        randombytes_buf(in1, sizeof in1);
+        in1[0] = 0x20;
+        in1[1] = 0x01;
+        memcpy(in2, in1, sizeof in1);
+        flip_bit_msb(in2, prefix_len_bits);
+        crypto_ipcrypt_pfx_encrypt(out1, in1, pfx_key);
+        crypto_ipcrypt_pfx_encrypt(out2, in2, pfx_key);
+        if (prefix_equal_msb(out1, out2, prefix_len_bits) == 0) {
+            printf("FAILED: IPv6 prefix length %u\n", prefix_len_bits);
+            return 1;
+        }
+    }
+    printf("OK: IPv6 prefix preservation for /0..128\n");
+
+    for (prefix_len_bits = 0; prefix_len_bits <= 32U; prefix_len_bits++) {
+        unsigned char in1[16];
+        unsigned char in2[16];
+        unsigned char out1[16];
+        unsigned char out2[16];
+
+        memset(in1, 0, sizeof in1);
+        memcpy(in1, ipv4_mapped_prefix, 12);
+        randombytes_buf(in1 + 12, 4U);
+        memcpy(in2, in1, sizeof in1);
+        flip_bit_msb(in2, 96U + prefix_len_bits);
+        crypto_ipcrypt_pfx_encrypt(out1, in1, pfx_key);
+        crypto_ipcrypt_pfx_encrypt(out2, in2, pfx_key);
+        if (prefix_equal_msb(out1, out2, 96U + prefix_len_bits) == 0) {
+            printf("FAILED: IPv4-mapped prefix length %u\n", prefix_len_bits);
+            return 1;
+        }
+    }
+    printf("OK: IPv4-mapped prefix preservation for /0..32\n");
+
     printf("\nfunctional tests\n");
 
     crypto_ipcrypt_keygen(key);
@@ -739,6 +816,90 @@ main(void)
         return 1;
     }
     printf("OK: IPv6 all-ones round-trips\n");
+
+    printf("\nrandomized property tests\n");
+
+    for (i = 0; i < 128U; i++) {
+        randombytes_buf(key, sizeof key);
+        randombytes_buf(ndx_key, sizeof ndx_key);
+        randombytes_buf(pfx_key, sizeof pfx_key);
+        randombytes_buf(tweak_nd, sizeof tweak_nd);
+        randombytes_buf(tweak_ndx, sizeof tweak_ndx);
+        randombytes_buf(input, sizeof input);
+
+        crypto_ipcrypt_encrypt(output, input, key);
+        crypto_ipcrypt_decrypt(decrypted, output, key);
+        if (memcmp(input, decrypted, sizeof input) != 0) {
+            printf("FAILED: randomized ipcrypt round-trip\n");
+            return 1;
+        }
+
+        crypto_ipcrypt_nd_encrypt(nd_output, input, tweak_nd, key);
+        crypto_ipcrypt_nd_decrypt(decrypted, nd_output, key);
+        if (memcmp(input, decrypted, sizeof input) != 0) {
+            printf("FAILED: randomized nd round-trip\n");
+            return 1;
+        }
+
+        crypto_ipcrypt_ndx_encrypt(ndx_output, input, tweak_ndx, ndx_key);
+        crypto_ipcrypt_ndx_decrypt(decrypted, ndx_output, ndx_key);
+        if (memcmp(input, decrypted, sizeof input) != 0) {
+            printf("FAILED: randomized ndx round-trip\n");
+            return 1;
+        }
+
+        crypto_ipcrypt_pfx_encrypt(pfx_output, input, pfx_key);
+        crypto_ipcrypt_pfx_decrypt(decrypted, pfx_output, pfx_key);
+        if (memcmp(input, decrypted, sizeof input) != 0) {
+            printf("FAILED: randomized pfx round-trip\n");
+            return 1;
+        }
+    }
+    printf("OK: randomized round-trip tests\n");
+
+    for (i = 0; i < 128U; i++) {
+        unsigned char in1[16];
+        unsigned char in2[16];
+        unsigned char out1[16];
+        unsigned char out2[16];
+
+        randombytes_buf(pfx_key, sizeof pfx_key);
+        randombytes_buf(in1, sizeof in1);
+        in1[0] = 0x20;
+        in1[1] = 0x01;
+        memcpy(in2, in1, sizeof in1);
+        prefix_len_bits = (unsigned int) randombytes_uniform(129U);
+        flip_bit_msb(in2, prefix_len_bits);
+        crypto_ipcrypt_pfx_encrypt(out1, in1, pfx_key);
+        crypto_ipcrypt_pfx_encrypt(out2, in2, pfx_key);
+        if (prefix_equal_msb(out1, out2, prefix_len_bits) == 0) {
+            printf("FAILED: randomized IPv6 prefix length %u\n", prefix_len_bits);
+            return 1;
+        }
+    }
+    printf("OK: randomized IPv6 prefix preservation\n");
+
+    for (i = 0; i < 128U; i++) {
+        unsigned char in1[16];
+        unsigned char in2[16];
+        unsigned char out1[16];
+        unsigned char out2[16];
+
+        randombytes_buf(pfx_key, sizeof pfx_key);
+        memset(in1, 0, sizeof in1);
+        memcpy(in1, ipv4_mapped_prefix, 12);
+        randombytes_buf(in1 + 12, 4U);
+        memcpy(in2, in1, sizeof in1);
+        prefix_len_bits = (unsigned int) randombytes_uniform(33U);
+        flip_bit_msb(in2, 96U + prefix_len_bits);
+        crypto_ipcrypt_pfx_encrypt(out1, in1, pfx_key);
+        crypto_ipcrypt_pfx_encrypt(out2, in2, pfx_key);
+        if (prefix_equal_msb(out1, out2, 96U + prefix_len_bits) == 0) {
+            printf("FAILED: randomized IPv4-mapped prefix length %u\n", prefix_len_bits);
+            return 1;
+        }
+    }
+    printf("OK: randomized IPv4-mapped prefix preservation\n");
 
     printf("\nAll specification test vectors passed!\n");
 

@@ -17,16 +17,16 @@ static int
 compare_states(const char *label, const unsigned char *actual, const unsigned char *expected,
                size_t len)
 {
-    size_t i;
+    size_t i, j;
     for (i = 0; i < len; i++) {
         if (actual[i] != expected[i]) {
             printf("FAIL: %s mismatch at byte %u\n", label, (unsigned int) i);
             printf("  Expected: ");
-            for (size_t j = 0; j < len; j++) {
+            for (j = 0; j < len; j++) {
                 printf("%02x", expected[j]);
             }
             printf("\n  Got:      ");
-            for (size_t j = 0; j < len; j++) {
+            for (j = 0; j < len; j++) {
                 printf("%02x", actual[j]);
             }
             printf("\n");
@@ -42,8 +42,13 @@ main(void)
 {
     unsigned char state[crypto_core_keccak1600_STATEBYTES];
     unsigned char extracted[64];
+    unsigned char test_data[64];
+    unsigned char sentinel[64];
+    unsigned char state_12[200], state_24[200];
+    unsigned char last_byte;
     size_t        i;
     int           test_failures = 0;
+    int           differs;
 
     /* Test vectors for Keccak-f[1600] (24 rounds) */
     /* Test vector 1: All-zero input for Keccak-f[1600] */
@@ -145,10 +150,50 @@ main(void)
     /* Test 3: XOR and extract functions */
     printf("Test 3: crypto_core_keccak1600_xor_bytes and extract_bytes\n");
     crypto_core_keccak1600_init(state);
-    unsigned char test_data[64];
     for (i = 0; i < sizeof test_data; i++) {
         test_data[i] = (unsigned char) i;
     }
+
+    /* Edge case: zero-length XOR/extract should be a no-op (test at offset 0 and at end) */
+    {
+        static const size_t offsets[] = { 0, crypto_core_keccak1600_STATEBYTES };
+        size_t              t;
+        for (t = 0; t < sizeof offsets / sizeof offsets[0]; t++) {
+            crypto_core_keccak1600_init(state);
+            memset(extracted, 0xA5, sizeof extracted);
+            memset(sentinel, 0xA5, sizeof sentinel);
+            crypto_core_keccak1600_xor_bytes(state, test_data, offsets[t], 0);
+            crypto_core_keccak1600_extract_bytes(state, extracted, offsets[t], 0);
+            for (i = 0; i < sizeof state; i++) {
+                if (state[i] != 0) {
+                    printf("  FAIL: XOR length 0 at offset %u modified state\n\n",
+                           (unsigned) offsets[t]);
+                    test_failures++;
+                    break;
+                }
+            }
+            if (memcmp(extracted, sentinel, sizeof extracted) != 0) {
+                printf("  FAIL: extract length 0 at offset %u modified output\n\n",
+                       (unsigned) offsets[t]);
+                test_failures++;
+            }
+        }
+    }
+
+    /* Edge case: XOR/extract last byte */
+    crypto_core_keccak1600_init(state);
+    memset(extracted, 0, sizeof extracted);
+    last_byte = 0x5A;
+    crypto_core_keccak1600_xor_bytes(state, &last_byte,
+                                     crypto_core_keccak1600_STATEBYTES - 1, 1);
+    crypto_core_keccak1600_extract_bytes(state, extracted,
+                                         crypto_core_keccak1600_STATEBYTES - 1, 1);
+    if (extracted[0] != last_byte) {
+        printf("  FAIL: XOR/extract last byte mismatch\n\n");
+        test_failures++;
+    }
+
+    crypto_core_keccak1600_init(state);
     crypto_core_keccak1600_xor_bytes(state, test_data, 0, sizeof test_data);
     crypto_core_keccak1600_extract_bytes(state, extracted, 0, sizeof test_data);
     if (memcmp(extracted, test_data, sizeof test_data) == 0) {
@@ -184,13 +229,12 @@ main(void)
 
     /* Test 7: Verify 12 and 24 rounds produce different outputs */
     printf("Test 7: Verify 12-round and 24-round differ\n");
-    unsigned char state_12[200], state_24[200];
     crypto_core_keccak1600_init(state_12);
     crypto_core_keccak1600_init(state_24);
     crypto_core_keccak1600_permute_12(state_12);
     crypto_core_keccak1600_permute_24(state_24);
 
-    int differs = 0;
+    differs = 0;
     for (i = 0; i < 200; i++) {
         if (state_12[i] != state_24[i]) {
             differs = 1;

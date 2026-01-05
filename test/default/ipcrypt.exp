@@ -51,6 +51,10 @@ OK: pfx /32 test (2001:db8:9f27:0:b4e2:7a3d:5f91:c8e6)
 OK: pfx /32 test (2001:db8:d8b4:0:193c:a5e7:8b2f:46d1)
 OK: IPv6 /32 prefix preserved for 2001:db8::/32
 
+systematic prefix-length coverage
+OK: IPv6 prefix preservation for /0..128
+OK: IPv4-mapped prefix preservation for /0..32
+
 functional tests
 OK: Key generation functions
 OK: In-place encryption/decryption
@@ -65,5 +69,10 @@ OK: pfx equal-halves key round-trip
 OK: pfx in-place encryption/decryption
 OK: IPv6 :: round-trips
 OK: IPv6 all-ones round-trips
+
+randomized property tests
+OK: randomized round-trip tests
+OK: randomized IPv6 prefix preservation
+OK: randomized IPv4-mapped prefix preservation
 
 All specification test vectors passed!
