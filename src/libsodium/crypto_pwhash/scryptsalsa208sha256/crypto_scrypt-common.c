@@ -171,7 +171,7 @@ escrypt_r(escrypt_local_t *local, const uint8_t *passwd, size_t passwdlen,
     }
     need = prefixlen + saltlen + 1 +
            crypto_pwhash_scryptsalsa208sha256_STRHASHBYTES_ENCODED + 1;
-    if (need > buflen || need < saltlen) {
+    if (buf == NULL || need > buflen || need < saltlen) {
         return NULL;
     }
 #ifdef HAVE_EMMINTRIN_H
