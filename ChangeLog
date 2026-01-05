@@ -28,7 +28,6 @@ rejects small-order points that are not in the main subgroup
 functions to allow NULL output buffers when the output length is zero
  - A cross-compilation issue with old clang versions has been
 fixed
- - 16K page sizes are now supported on Android
  - JavaScript: support for Cloudflare Workers has been added
  - JavaScript: WASM_BIGINT is forcibly disabled to retain
 compatibility with older runtimes
