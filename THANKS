@@ -1,18 +1,30 @@
 Special thanks to people, companies and organizations having written
 libsodium bindings for their favorite programming languages:
 
+@ada23
 @alethia7
 @artemisc
+@buu700
 @carblue
+@Chewhern
+@didactic-drunk
 @dnaq
 @ektrah
+@freevryheid
 @graxrabble
+@gryor
 @harleqin
+@Jack-Edwards
 @joshjdevl
+@jprjr
 @jrmarino
 @jshahbazi
+@k0001
 @lvh
+@muquit
 @neheb
+@rj-calvin
+@tom25519
 
 Adam Caudill (@adamcaudill)
 Alexander Ilin (@AlexIljin)
@@ -26,7 +38,6 @@ Caolan McMahon (@caolan)
 Chris Rebert (@cvrebert)
 Christian Hermann (@bitbeans)
 Christian Wiese (@morfoh)
-Christian Wiese (@morfoh)
 Colm MacCárthaigh (@colmmacc)
 David Parrish (@dmp1ce)
 Donald Stufft (@dstufft)
@@ -36,12 +47,15 @@ Emil Bay (@emilbayes)
 Eric Dong (@quantum1423)
 Eric Voskuil (@evoskuil)
 Farid Hajji (@fhajji)
+Felix Brandtner (@Skycoder42)
 Frank Siebenlist (@franks42)
 Gabriel Handford (@gabriel)
 Geo Carncross (@geocar)
+Gurpreet Paul (@gurpreet-)
 Henrik Gassmann (BurningEnlightenment)
 Jachym Holecek (@freza)
 Jack Wink (@jackwink)
+Jaco Malan (@JacoMalan1)
 James Ruan (@jamesruan)
 Jan de Muijnck-Hughes (@jfdm)
 Jason McCampbell (@jasonmccampbell)
@@ -54,33 +68,54 @@ Joseph Abrahamson (@tel)
 Julien Kauffmann (@ereOn)
 Kenneth Ballenegger (@kballenegger)
 Loic Maury (@loicmaury)
+Mathias Lang (@Geod24)
 Michael Gorlick (@mgorlick)
 Michael Gregorowicz (@mgregoro)
 Michał Zieliński (@zielmicha)
 Omar Ayub (@electricFeel)
+Paul Kehrer (@reaperhulk)
 Pedro Paixao (@paixaop)
+Pierre Yager (@zedalaye)
 Project ArteMisc (@artemisc)
 Rich FitzJohn (@richfitz)
 Ruben De Visscher (@rubendv)
 Rudolf Von Krugstein (@rudolfvonkrugstein)
+Samuel Lucas (@samuel-lucas6)
 Samuel Neves (@sneves)
 Scott Arciszewski (@paragonie-scott)
+Soatok Dreamseeker (@soatok)
 Stanislav Ovsiannikov (@naphaso)
 Stefan Marsiske (@stef)
 Stephan Touset (@stouset)
 Stephen Chavez (@redragonx)
 Steve Gibson (@sggrc)
+Thomas S Hatch (@thatch45)
 Tony Arcieri (@bascule)
 Tony Garnock-Jones (@tonyg)
+Ugljesa Jovanovic (@ionspin)
 Y. T. Chung (@zonyitoo)
 
+BetterCallSodium
+BundleFeed
 Bytecurry Software
 Cryptotronix
 Facebook
 FSF France
+Haskell Cryptography Group
+Holochain
+Holepunch
 MaidSafe
+Object Guild
 Paragonie Initiative Enterprises
 Python Cryptographic Authority
+r-lib
+rOpenSci
+RubyCrypto
+SaltStack
+Serokell
+Space Wizards
+Terl
+Vlang
 
 (this list may not be complete, if you don't see your name, please
 submit a pull request!)
