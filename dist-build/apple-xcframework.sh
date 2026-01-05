@@ -31,7 +31,17 @@ export CATALYST_ARM64_PREFIX="${PREFIX}/tmp/catalyst-arm64"
 export CATALYST_ARM64E_PREFIX="${PREFIX}/tmp/catalyst-arm64e"
 export CATALYST_X86_64_PREFIX="${PREFIX}/tmp/catalyst-x86_64"
 export LOG_FILE="${PREFIX}/tmp/build_log"
-export XCODEDIR="$(xcode-select -p)"
+XCODEDIR="$(xcode-select -p)"
+if [ ! -d "${XCODEDIR}/Platforms/iPhoneOS.platform" ]; then
+  if [ -d "/Applications/Xcode.app/Contents/Developer/Platforms/iPhoneOS.platform" ]; then
+    XCODEDIR="/Applications/Xcode.app/Contents/Developer"
+  else
+    echo "Error: Xcode with iOS SDK not found." >&2
+    echo "Please install Xcode or run: sudo xcode-select -s /Applications/Xcode.app/Contents/Developer" >&2
+    exit 1
+  fi
+fi
+export XCODEDIR
 
 export MACOS_VERSION_MIN=${MACOS_VERSION_MIN-"10.10"}
 export IOS_VERSION_MIN=${IOS_VERSION_MIN-"9.0.0"}
