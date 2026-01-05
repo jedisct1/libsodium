@@ -26,7 +26,7 @@ crypto_kdf_hkdf_sha256_extract_final(crypto_kdf_hkdf_sha256_state *state,
                                      unsigned char prk[crypto_kdf_hkdf_sha256_KEYBYTES])
 {
     crypto_auth_hmacsha256_final(&state->st, prk);
-    sodium_memzero(state, sizeof state);
+    sodium_memzero(state, sizeof *state);
 
     return 0;
 }
