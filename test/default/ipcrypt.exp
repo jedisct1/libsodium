@@ -41,6 +41,7 @@ OK: pfx /16 test (172.16.5.193)
 OK: pfx /16 test (172.16.97.42)
 OK: pfx /16 test (172.16.248.177)
 OK: IPv4 /16 prefix preserved for 172.16.x.x
+OK: IPv4-mapped prefix preserved in output
 OK: pfx /64 test (2001:db8::a5c9:4e2f:bb91:5a7d)
 OK: pfx /64 test (2001:db8::7234:d8f1:3c6e:9a52)
 OK: pfx /64 test (2001:db8::f1e0:937b:26d4:8c1a)
@@ -55,5 +56,14 @@ OK: Key generation functions
 OK: In-place encryption/decryption
 OK: Deterministic encryption
 OK: Different inputs produce different outputs
+
+edge case tests
+OK: nd tweak changes output
+OK: ndx tweak changes output
+OK: ndx equal-halves key round-trip
+OK: pfx equal-halves key round-trip
+OK: pfx in-place encryption/decryption
+OK: IPv6 :: round-trips
+OK: IPv6 all-ones round-trips
 
 All specification test vectors passed!
