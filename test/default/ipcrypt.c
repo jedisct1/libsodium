@@ -1,6 +1,9 @@
 #define TEST_NAME "ipcrypt"
 #include "cmptest.h"
 
+static const unsigned char ipv4_mapped_prefix[12] = { 0U, 0U, 0U, 0U, 0U, 0U,
+                                                      0U, 0U, 0U, 0U, 0xffU, 0xffU };
+
 static int
 check_expected(const char *test_name, const unsigned char *actual, const char *expected_hex,
                size_t len)
@@ -27,10 +30,14 @@ main(void)
     unsigned char input[crypto_ipcrypt_BYTES];
     unsigned char output[crypto_ipcrypt_BYTES];
     unsigned char nd_output[crypto_ipcrypt_ND_OUTPUTBYTES];
+    unsigned char nd_output2[crypto_ipcrypt_ND_OUTPUTBYTES];
     unsigned char ndx_output[crypto_ipcrypt_NDX_OUTPUTBYTES];
+    unsigned char ndx_output2[crypto_ipcrypt_NDX_OUTPUTBYTES];
     unsigned char pfx_output[crypto_ipcrypt_PFX_BYTES];
     unsigned char tweak_nd[crypto_ipcrypt_ND_TWEAKBYTES];
+    unsigned char tweak_nd2[crypto_ipcrypt_ND_TWEAKBYTES];
     unsigned char tweak_ndx[crypto_ipcrypt_NDX_TWEAKBYTES];
+    unsigned char tweak_ndx2[crypto_ipcrypt_NDX_TWEAKBYTES];
     unsigned char decrypted[crypto_ipcrypt_BYTES];
     unsigned char encrypted1[crypto_ipcrypt_PFX_BYTES];
     unsigned char encrypted2[crypto_ipcrypt_PFX_BYTES];
@@ -393,6 +400,14 @@ main(void)
     }
     printf("OK: IPv4 /16 prefix preserved for 172.16.x.x\n");
 
+    if (memcmp(pfx_output, ipv4_mapped_prefix, 12) != 0 ||
+        memcmp(encrypted1, ipv4_mapped_prefix, 12) != 0 ||
+        memcmp(encrypted2, ipv4_mapped_prefix, 12) != 0) {
+        printf("FAILED: IPv4-mapped prefix not preserved in output\n");
+        return 1;
+    }
+    printf("OK: IPv4-mapped prefix preserved in output\n");
+
     /* 2001:db8::a5c9:4e2f:bb91:5a7d */
     memset(input, 0, sizeof input);
     input[0]  = 0x20;
@@ -584,6 +599,146 @@ main(void)
         memcpy(decrypted, output, sizeof output);
     }
     printf("OK: Different inputs produce different outputs\n");
+
+    printf("\nedge case tests\n");
+
+    memset(key, 0x11, sizeof key);
+    memset(input, 0, sizeof input);
+    input[10] = 0xff;
+    input[11] = 0xff;
+    memset(tweak_nd, 0, sizeof tweak_nd);
+    memset(tweak_nd2, 0, sizeof tweak_nd2);
+    tweak_nd2[sizeof tweak_nd2 - 1] = 1U;
+    crypto_ipcrypt_nd_encrypt(nd_output, input, tweak_nd, key);
+    crypto_ipcrypt_nd_encrypt(nd_output2, input, tweak_nd2, key);
+    if (memcmp(nd_output, nd_output2, sizeof nd_output) == 0) {
+        printf("FAILED: nd tweak change did not affect output\n");
+        return 1;
+    }
+    printf("OK: nd tweak changes output\n");
+
+    memset(ndx_key, 0x22, 16);
+    memset(ndx_key + 16, 0x33, 16);
+    memset(tweak_ndx, 0, sizeof tweak_ndx);
+    memset(tweak_ndx2, 0, sizeof tweak_ndx2);
+    tweak_ndx2[0] = 1U;
+    crypto_ipcrypt_ndx_encrypt(ndx_output, input, tweak_ndx, ndx_key);
+    crypto_ipcrypt_ndx_encrypt(ndx_output2, input, tweak_ndx2, ndx_key);
+    if (memcmp(ndx_output, ndx_output2, sizeof ndx_output) == 0) {
+        printf("FAILED: ndx tweak change did not affect output\n");
+        return 1;
+    }
+    printf("OK: ndx tweak changes output\n");
+
+    memset(ndx_key, 0x44, 16);
+    memcpy(ndx_key + 16, ndx_key, 16);
+    memset(input, 0xaa, sizeof input);
+    memset(tweak_ndx, 0x5a, sizeof tweak_ndx);
+    crypto_ipcrypt_ndx_encrypt(ndx_output, input, tweak_ndx, ndx_key);
+    crypto_ipcrypt_ndx_decrypt(decrypted, ndx_output, ndx_key);
+    if (memcmp(input, decrypted, sizeof input) != 0) {
+        printf("FAILED: ndx equal-halves key round-trip\n");
+        return 1;
+    }
+    printf("OK: ndx equal-halves key round-trip\n");
+
+    memset(pfx_key, 0x5b, 16);
+    memcpy(pfx_key + 16, pfx_key, 16);
+    memset(input, 0, sizeof input);
+    input[10] = 0xff;
+    input[11] = 0xff;
+    input[12] = 203;
+    input[13] = 0;
+    input[14] = 113;
+    input[15] = 7;
+    crypto_ipcrypt_pfx_encrypt(pfx_output, input, pfx_key);
+    crypto_ipcrypt_pfx_decrypt(decrypted, pfx_output, pfx_key);
+    if (memcmp(input, decrypted, sizeof input) != 0) {
+        printf("FAILED: pfx equal-halves key round-trip\n");
+        return 1;
+    }
+    printf("OK: pfx equal-halves key round-trip\n");
+
+    memset(pfx_key, 0x7a, sizeof pfx_key);
+    memset(input, 0, sizeof input);
+    input[0]  = 0x20;
+    input[1]  = 0x01;
+    input[2]  = 0x0d;
+    input[3]  = 0xb8;
+    input[15] = 0x01;
+    crypto_ipcrypt_pfx_encrypt(pfx_output, input, pfx_key);
+    memcpy(decrypted, input, sizeof input);
+    crypto_ipcrypt_pfx_encrypt(decrypted, decrypted, pfx_key);
+    if (memcmp(pfx_output, decrypted, sizeof pfx_output) != 0) {
+        printf("FAILED: pfx in-place encryption differs\n");
+        return 1;
+    }
+    crypto_ipcrypt_pfx_decrypt(decrypted, decrypted, pfx_key);
+    if (memcmp(input, decrypted, sizeof input) != 0) {
+        printf("FAILED: pfx in-place round-trip\n");
+        return 1;
+    }
+    printf("OK: pfx in-place encryption/decryption\n");
+
+    memset(key, 0x13, sizeof key);
+    memset(ndx_key, 0x37, sizeof ndx_key);
+    memset(pfx_key, 0x59, sizeof pfx_key);
+    memset(tweak_nd, 0x1a, sizeof tweak_nd);
+    memset(tweak_ndx, 0x2b, sizeof tweak_ndx);
+
+    memset(input, 0, sizeof input);
+    crypto_ipcrypt_encrypt(output, input, key);
+    crypto_ipcrypt_decrypt(decrypted, output, key);
+    if (memcmp(input, decrypted, sizeof input) != 0) {
+        printf("FAILED: ipcrypt IPv6 :: round-trip\n");
+        return 1;
+    }
+    crypto_ipcrypt_nd_encrypt(nd_output, input, tweak_nd, key);
+    crypto_ipcrypt_nd_decrypt(decrypted, nd_output, key);
+    if (memcmp(input, decrypted, sizeof input) != 0) {
+        printf("FAILED: nd IPv6 :: round-trip\n");
+        return 1;
+    }
+    crypto_ipcrypt_ndx_encrypt(ndx_output, input, tweak_ndx, ndx_key);
+    crypto_ipcrypt_ndx_decrypt(decrypted, ndx_output, ndx_key);
+    if (memcmp(input, decrypted, sizeof input) != 0) {
+        printf("FAILED: ndx IPv6 :: round-trip\n");
+        return 1;
+    }
+    crypto_ipcrypt_pfx_encrypt(pfx_output, input, pfx_key);
+    crypto_ipcrypt_pfx_decrypt(decrypted, pfx_output, pfx_key);
+    if (memcmp(input, decrypted, sizeof input) != 0) {
+        printf("FAILED: pfx IPv6 :: round-trip\n");
+        return 1;
+    }
+    printf("OK: IPv6 :: round-trips\n");
+
+    memset(input, 0xff, sizeof input);
+    crypto_ipcrypt_encrypt(output, input, key);
+    crypto_ipcrypt_decrypt(decrypted, output, key);
+    if (memcmp(input, decrypted, sizeof input) != 0) {
+        printf("FAILED: ipcrypt IPv6 all-ones round-trip\n");
+        return 1;
+    }
+    crypto_ipcrypt_nd_encrypt(nd_output, input, tweak_nd, key);
+    crypto_ipcrypt_nd_decrypt(decrypted, nd_output, key);
+    if (memcmp(input, decrypted, sizeof input) != 0) {
+        printf("FAILED: nd IPv6 all-ones round-trip\n");
+        return 1;
+    }
+    crypto_ipcrypt_ndx_encrypt(ndx_output, input, tweak_ndx, ndx_key);
+    crypto_ipcrypt_ndx_decrypt(decrypted, ndx_output, ndx_key);
+    if (memcmp(input, decrypted, sizeof input) != 0) {
+        printf("FAILED: ndx IPv6 all-ones round-trip\n");
+        return 1;
+    }
+    crypto_ipcrypt_pfx_encrypt(pfx_output, input, pfx_key);
+    crypto_ipcrypt_pfx_decrypt(decrypted, pfx_output, pfx_key);
+    if (memcmp(input, decrypted, sizeof input) != 0) {
+        printf("FAILED: pfx IPv6 all-ones round-trip\n");
+        return 1;
+    }
+    printf("OK: IPv6 all-ones round-trips\n");
 
     printf("\nAll specification test vectors passed!\n");
 
