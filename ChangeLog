@@ -37,6 +37,11 @@ compatibility with older runtimes
 fixed
  - `crypto_aead_aes256gcm_is_available` is exported to JavaScript
  - libsodium is now compatible with Emscripten 4.x
+ - Security: memory fences have been added after MAC verification in
+AEAD to prevent speculative access to plaintext before authentication
+is complete
+ - Assembly files now include .gnu.property notes for proper IBT and
+Shadow Stack support when building with CET instrumentation
 
 * Version 1.0.20
   This point release includes all the changes from 1.0.19-stable,
