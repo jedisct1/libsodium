@@ -15,7 +15,7 @@ jobs:
   build-windows-msvc:
     runs-on: windows-latest
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v6
       - name: buildbase.bat
         run: buildbase.bat ..\vs2022\libsodium.sln 17
         working-directory: builds/msvc/build/
@@ -40,7 +40,7 @@ jobs:
         uses: mlugg/setup-zig@v2
         with:
           version: master
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v6
 
       - name: Build Android AAR
         run: sh ./dist-build/android-aar.sh
@@ -147,7 +147,7 @@ jobs:
   build-apple:
     runs-on: macos-latest
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v6
       - name: configure
         run: ./configure
       - name: build-xcframework
@@ -181,7 +181,7 @@ jobs:
       DOTNET_SKIP_FIRST_TIME_EXPERIENCE: 1
       DOTNET_SYSTEM_GLOBALIZATION_INVARIANT: 1
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v6
       - uses: actions/download-artifact@v4
         with:
           name: build-win-x64
@@ -272,7 +272,7 @@ jobs:
           path: .libsodium-pack/bin/Release/*.nupkg
 
       - name: Attest Build Provenance
-        uses: actions/attest-build-provenance@897ed5eab6ed058a474202017ada7f40bfa52940
+        uses: actions/attest-build-provenance@v3
         with:
          subject-path: .libsodium-pack/bin/Release/*.nupkg
 
@@ -287,7 +287,7 @@ jobs:
       DOTNET_SKIP_FIRST_TIME_EXPERIENCE: 1
       DOTNET_SYSTEM_GLOBALIZATION_INVARIANT: 1
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v6
       - uses: actions/download-artifact@v4
         with:
           name: nuget-package
