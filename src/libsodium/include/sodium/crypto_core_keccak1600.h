@@ -12,35 +12,51 @@
 extern "C" {
 #endif
 
-#define crypto_core_keccak1600_STATEBYTES 200U
+#ifdef __IBMC__
+# pragma pack(1)
+#elif defined(__SUNPRO_C) || defined(__SUNPRO_CC)
+# pragma pack(1)
+#else
+# pragma pack(push, 1)
+#endif
+
+typedef struct CRYPTO_ALIGN(16) crypto_core_keccak1600_state {
+    unsigned char opaque[224];
+} crypto_core_keccak1600_state;
+
+#ifdef __IBMC__
+# pragma pack(pop)
+#elif defined(__SUNPRO_C) || defined(__SUNPRO_CC)
+# pragma pack()
+#else
+# pragma pack(pop)
+#endif
+
 SODIUM_EXPORT
 size_t crypto_core_keccak1600_statebytes(void);
 
-/* Initialize state to all zeros */
 SODIUM_EXPORT
-void crypto_core_keccak1600_init(void *state)
+void crypto_core_keccak1600_init(crypto_core_keccak1600_state *state)
             __attribute__ ((nonnull));
 
-/* XOR bytes into state (for absorbing) */
 SODIUM_EXPORT
-void crypto_core_keccak1600_xor_bytes(void *state, const unsigned char *bytes,
+void crypto_core_keccak1600_xor_bytes(crypto_core_keccak1600_state *state,
+                                      const unsigned char *bytes,
                                       size_t offset, size_t length)
             __attribute__ ((nonnull));
 
-/* Extract bytes from state (for squeezing) */
 SODIUM_EXPORT
-void crypto_core_keccak1600_extract_bytes(const void *state, unsigned char *bytes,
+void crypto_core_keccak1600_extract_bytes(const crypto_core_keccak1600_state *state,
+                                          unsigned char *bytes,
                                           size_t offset, size_t length)
             __attribute__ ((nonnull));
 
-/* Keccak-f[1600]: 24 rounds (for SHAKE) */
 SODIUM_EXPORT
-void crypto_core_keccak1600_permute_24(void *state)
+void crypto_core_keccak1600_permute_24(crypto_core_keccak1600_state *state)
             __attribute__ ((nonnull));
 
-/* Keccak-p[1600,12]: 12 rounds (for TurboSHAKE) */
 SODIUM_EXPORT
-void crypto_core_keccak1600_permute_12(void *state)
+void crypto_core_keccak1600_permute_12(crypto_core_keccak1600_state *state)
             __attribute__ ((nonnull));
 
 #ifdef __cplusplus

@@ -4,15 +4,17 @@
 #include <stddef.h>
 #include <stdint.h>
 
+#include "crypto_core_keccak1600.h"
+
 #define SHAKE128_RATE 168
 
 typedef enum { SHAKE128_PHASE_ABSORBING = 0, SHAKE128_PHASE_SQUEEZING = 1 } shake128_phase;
 
 typedef struct shake128_state_internal_ {
-    unsigned char state[200];
-    size_t        offset;
-    uint8_t       phase;
-    unsigned char domain; /* Domain separation byte */
+    crypto_core_keccak1600_state state;
+    size_t                       offset;
+    uint8_t                      phase;
+    unsigned char                domain;
 } shake128_state_internal;
 
 int shake128_ref(unsigned char *out, size_t outlen, const unsigned char *in, size_t inlen);

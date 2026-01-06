@@ -40,15 +40,15 @@ compare_states(const char *label, const unsigned char *actual, const unsigned ch
 int
 main(void)
 {
-    unsigned char state[crypto_core_keccak1600_STATEBYTES];
-    unsigned char extracted[64];
-    unsigned char test_data[64];
-    unsigned char sentinel[64];
-    unsigned char state_12[200], state_24[200];
-    unsigned char last_byte;
-    size_t        i;
-    int           test_failures = 0;
-    int           differs;
+    crypto_core_keccak1600_state state;
+    unsigned char                extracted[64];
+    unsigned char                test_data[64];
+    unsigned char                sentinel[64];
+    crypto_core_keccak1600_state state_12, state_24;
+    unsigned char                last_byte;
+    size_t                       i;
+    int                          test_failures = 0;
+    int                          differs;
 
     /* Test vectors for Keccak-f[1600] (24 rounds) */
     /* Test vector 1: All-zero input for Keccak-f[1600] */
@@ -125,47 +125,40 @@ main(void)
 
     printf("=== Keccak-1600 Core Function Tests ===\n\n");
 
-    /* Basic API tests */
-    printf("Test 1: API constants\n");
-    printf("  statebytes: %u\n", (unsigned int) crypto_core_keccak1600_statebytes());
-    assert(crypto_core_keccak1600_statebytes() == crypto_core_keccak1600_STATEBYTES);
-    assert(crypto_core_keccak1600_STATEBYTES == 200U);
-    printf("  PASS: statebytes = 200\n\n");
-
-    /* Test 2: Init function */
-    printf("Test 2: crypto_core_keccak1600_init\n");
-    memset(state, 0xFF, sizeof state);
-    crypto_core_keccak1600_init(state);
-    for (i = 0; i < crypto_core_keccak1600_STATEBYTES; i++) {
-        if (state[i] != 0) {
+    /* Test 1: Init function */
+    printf("Test 1: crypto_core_keccak1600_init\n");
+    memset(state.opaque, 0xFF, 200);
+    crypto_core_keccak1600_init(&state);
+    for (i = 0; i < 200; i++) {
+        if (state.opaque[i] != 0) {
             printf("  FAIL: State not zeroed at byte %u\n", (unsigned int) i);
             test_failures++;
             break;
         }
     }
-    if (i == crypto_core_keccak1600_STATEBYTES) {
+    if (i == 200) {
         printf("  PASS: State initialized to zeros\n\n");
     }
 
-    /* Test 3: XOR and extract functions */
-    printf("Test 3: crypto_core_keccak1600_xor_bytes and extract_bytes\n");
-    crypto_core_keccak1600_init(state);
+    /* Test 2: XOR and extract functions */
+    printf("Test 2: crypto_core_keccak1600_xor_bytes and extract_bytes\n");
+    crypto_core_keccak1600_init(&state);
     for (i = 0; i < sizeof test_data; i++) {
         test_data[i] = (unsigned char) i;
     }
 
     /* Edge case: zero-length XOR/extract should be a no-op (test at offset 0 and at end) */
     {
-        static const size_t offsets[] = { 0, crypto_core_keccak1600_STATEBYTES };
+        static const size_t offsets[] = { 0, 200 };
         size_t              t;
         for (t = 0; t < sizeof offsets / sizeof offsets[0]; t++) {
-            crypto_core_keccak1600_init(state);
+            crypto_core_keccak1600_init(&state);
             memset(extracted, 0xA5, sizeof extracted);
             memset(sentinel, 0xA5, sizeof sentinel);
-            crypto_core_keccak1600_xor_bytes(state, test_data, offsets[t], 0);
-            crypto_core_keccak1600_extract_bytes(state, extracted, offsets[t], 0);
-            for (i = 0; i < sizeof state; i++) {
-                if (state[i] != 0) {
+            crypto_core_keccak1600_xor_bytes(&state, test_data, offsets[t], 0);
+            crypto_core_keccak1600_extract_bytes(&state, extracted, offsets[t], 0);
+            for (i = 0; i < 200; i++) {
+                if (state.opaque[i] != 0) {
                     printf("  FAIL: XOR length 0 at offset %u modified state\n\n",
                            (unsigned) offsets[t]);
                     test_failures++;
@@ -181,21 +174,19 @@ main(void)
     }
 
     /* Edge case: XOR/extract last byte */
-    crypto_core_keccak1600_init(state);
+    crypto_core_keccak1600_init(&state);
     memset(extracted, 0, sizeof extracted);
     last_byte = 0x5A;
-    crypto_core_keccak1600_xor_bytes(state, &last_byte,
-                                     crypto_core_keccak1600_STATEBYTES - 1, 1);
-    crypto_core_keccak1600_extract_bytes(state, extracted,
-                                         crypto_core_keccak1600_STATEBYTES - 1, 1);
+    crypto_core_keccak1600_xor_bytes(&state, &last_byte, 199, 1);
+    crypto_core_keccak1600_extract_bytes(&state, extracted, 199, 1);
     if (extracted[0] != last_byte) {
         printf("  FAIL: XOR/extract last byte mismatch\n\n");
         test_failures++;
     }
 
-    crypto_core_keccak1600_init(state);
-    crypto_core_keccak1600_xor_bytes(state, test_data, 0, sizeof test_data);
-    crypto_core_keccak1600_extract_bytes(state, extracted, 0, sizeof test_data);
+    crypto_core_keccak1600_init(&state);
+    crypto_core_keccak1600_xor_bytes(&state, test_data, 0, sizeof test_data);
+    crypto_core_keccak1600_extract_bytes(&state, extracted, 0, sizeof test_data);
     if (memcmp(extracted, test_data, sizeof test_data) == 0) {
         printf("  PASS: XOR and extract work correctly\n\n");
     } else {
@@ -203,40 +194,40 @@ main(void)
         test_failures++;
     }
 
-    /* Test 4: Keccak-f[1600] with all-zero input (24 rounds) */
-    printf("Test 4: Keccak-f[1600] (24 rounds) - Zero input\n");
-    memcpy(state, keccak_f_1600_zero_input, 200);
-    crypto_core_keccak1600_permute_24(state);
+    /* Test 3: Keccak-f[1600] with all-zero input (24 rounds) */
+    printf("Test 3: Keccak-f[1600] (24 rounds) - Zero input\n");
+    memcpy(state.opaque, keccak_f_1600_zero_input, 200);
+    crypto_core_keccak1600_permute_24(&state);
     test_failures +=
-        compare_states("  Keccak-f[1600] zero", state, keccak_f_1600_zero_expected, 200);
+        compare_states("  Keccak-f[1600] zero", state.opaque, keccak_f_1600_zero_expected, 200);
     printf("\n");
 
-    /* Test 5: Keccak-f[1600] with pattern input (24 rounds) */
-    printf("Test 5: Keccak-f[1600] (24 rounds) - Pattern 0xa3 input\n");
-    memcpy(state, keccak_f_1600_pattern_input, 200);
-    crypto_core_keccak1600_permute_24(state);
+    /* Test 4: Keccak-f[1600] with pattern input (24 rounds) */
+    printf("Test 4: Keccak-f[1600] (24 rounds) - Pattern 0xa3 input\n");
+    memcpy(state.opaque, keccak_f_1600_pattern_input, 200);
+    crypto_core_keccak1600_permute_24(&state);
     test_failures +=
-        compare_states("  Keccak-f[1600] pattern", state, keccak_f_1600_pattern_expected, 200);
+        compare_states("  Keccak-f[1600] pattern", state.opaque, keccak_f_1600_pattern_expected, 200);
     printf("\n");
 
-    /* Test 6: Keccak-p[1600,12] with all-zero input (12 rounds) */
-    printf("Test 6: Keccak-p[1600,12] (12 rounds) - Zero input\n");
-    crypto_core_keccak1600_init(state);
-    crypto_core_keccak1600_permute_12(state);
+    /* Test 5: Keccak-p[1600,12] with all-zero input (12 rounds) */
+    printf("Test 5: Keccak-p[1600,12] (12 rounds) - Zero input\n");
+    crypto_core_keccak1600_init(&state);
+    crypto_core_keccak1600_permute_12(&state);
     test_failures +=
-        compare_states("  Keccak-p[1600,12] zero", state, keccak_p_12_zero_expected, 200);
+        compare_states("  Keccak-p[1600,12] zero", state.opaque, keccak_p_12_zero_expected, 200);
     printf("\n");
 
-    /* Test 7: Verify 12 and 24 rounds produce different outputs */
-    printf("Test 7: Verify 12-round and 24-round differ\n");
-    crypto_core_keccak1600_init(state_12);
-    crypto_core_keccak1600_init(state_24);
-    crypto_core_keccak1600_permute_12(state_12);
-    crypto_core_keccak1600_permute_24(state_24);
+    /* Test 6: Verify 12 and 24 rounds produce different outputs */
+    printf("Test 6: Verify 12-round and 24-round differ\n");
+    crypto_core_keccak1600_init(&state_12);
+    crypto_core_keccak1600_init(&state_24);
+    crypto_core_keccak1600_permute_12(&state_12);
+    crypto_core_keccak1600_permute_24(&state_24);
 
     differs = 0;
     for (i = 0; i < 200; i++) {
-        if (state_12[i] != state_24[i]) {
+        if (state_12.opaque[i] != state_24.opaque[i]) {
             differs = 1;
             break;
         }
@@ -244,27 +235,27 @@ main(void)
     if (differs) {
         printf("  PASS: 12-round and 24-round produce different outputs\n");
         printf("    First difference at byte %u: 12-round=0x%02x, 24-round=0x%02x\n\n",
-               (unsigned int) i, state_12[i], state_24[i]);
+               (unsigned int) i, state_12.opaque[i], state_24.opaque[i]);
     } else {
         printf("  FAIL: 12-round and 24-round produce identical outputs\n\n");
         test_failures++;
     }
 
-    /* Test 8: Multiple permutations */
-    printf("Test 8: Double permutation consistency\n");
-    crypto_core_keccak1600_init(state);
-    crypto_core_keccak1600_permute_24(state);
-    memcpy(state_24, state, 200);
-    crypto_core_keccak1600_permute_24(state);
+    /* Test 7: Multiple permutations */
+    printf("Test 7: Double permutation consistency\n");
+    crypto_core_keccak1600_init(&state);
+    crypto_core_keccak1600_permute_24(&state);
+    memcpy(state_24.opaque, state.opaque, 200);
+    crypto_core_keccak1600_permute_24(&state);
     printf("  After 24+24 rounds: ");
-    print_hex("", state, 32);
+    print_hex("", state.opaque, 32);
 
-    crypto_core_keccak1600_init(state);
-    crypto_core_keccak1600_permute_12(state);
-    memcpy(state_12, state, 200);
-    crypto_core_keccak1600_permute_12(state);
+    crypto_core_keccak1600_init(&state);
+    crypto_core_keccak1600_permute_12(&state);
+    memcpy(state_12.opaque, state.opaque, 200);
+    crypto_core_keccak1600_permute_12(&state);
     printf("  After 12+12 rounds: ");
-    print_hex("", state, 32);
+    print_hex("", state.opaque, 32);
     printf("\n");
 
     /* Final summary */

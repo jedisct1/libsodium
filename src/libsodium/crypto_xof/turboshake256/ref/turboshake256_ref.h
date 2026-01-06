@@ -4,6 +4,8 @@
 #include <stddef.h>
 #include <stdint.h>
 
+#include "crypto_core_keccak1600.h"
+
 #define TURBOSHAKE256_RATE 136
 
 typedef enum {
@@ -12,10 +14,10 @@ typedef enum {
 } turboshake256_phase;
 
 typedef struct turboshake256_state_internal_ {
-    unsigned char state[200];
-    size_t        offset;
-    uint8_t       phase;
-    unsigned char domain; /* Domain separation byte */
+    crypto_core_keccak1600_state state;
+    size_t                       offset;
+    uint8_t                      phase;
+    unsigned char                domain;
 } turboshake256_state_internal;
 
 int turboshake256_ref(unsigned char *out, size_t outlen, const unsigned char *in, size_t inlen);

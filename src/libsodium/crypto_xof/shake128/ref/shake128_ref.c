@@ -9,7 +9,7 @@
 int
 shake128_ref_init_with_domain(shake128_state_internal *state, unsigned char domain)
 {
-    crypto_core_keccak1600_init(state->state);
+    crypto_core_keccak1600_init(&state->state);
     state->offset = 0;
     state->phase  = SHAKE128_PHASE_ABSORBING;
     state->domain = domain;
@@ -36,14 +36,14 @@ shake128_ref_update(shake128_state_internal *state, const unsigned char *in, siz
 
     while (consumed < inlen) {
         if (state->offset == SHAKE128_RATE) {
-            crypto_core_keccak1600_permute_24(state->state);
+            crypto_core_keccak1600_permute_24(&state->state);
             state->offset = 0;
         }
         chunk_size = SHAKE128_RATE - state->offset;
         if (chunk_size > inlen - consumed) {
             chunk_size = inlen - consumed;
         }
-        crypto_core_keccak1600_xor_bytes(state->state, &in[consumed], state->offset, chunk_size);
+        crypto_core_keccak1600_xor_bytes(&state->state, &in[consumed], state->offset, chunk_size);
         state->offset += chunk_size;
         consumed += chunk_size;
     }
@@ -58,7 +58,7 @@ shake128_finalize(shake128_state_internal *state)
 
     /* If the rate is exactly full, process that block before padding */
     if (state->offset == SHAKE128_RATE) {
-        crypto_core_keccak1600_permute_24(state->state);
+        crypto_core_keccak1600_permute_24(&state->state);
         state->offset = 0;
     }
 
@@ -66,16 +66,16 @@ shake128_finalize(shake128_state_internal *state)
     if (state->offset == SHAKE128_RATE - 1) {
         /* Special case: padding fits in one byte */
         pad = (unsigned char) (state->domain ^ 0x80);
-        crypto_core_keccak1600_xor_bytes(state->state, &pad, state->offset, 1);
+        crypto_core_keccak1600_xor_bytes(&state->state, &pad, state->offset, 1);
     } else {
         /* Normal case: domain and 0x80 at different positions */
-        crypto_core_keccak1600_xor_bytes(state->state, &state->domain, state->offset, 1);
+        crypto_core_keccak1600_xor_bytes(&state->state, &state->domain, state->offset, 1);
         pad = 0x80;
-        crypto_core_keccak1600_xor_bytes(state->state, &pad, SHAKE128_RATE - 1, 1);
+        crypto_core_keccak1600_xor_bytes(&state->state, &pad, SHAKE128_RATE - 1, 1);
     }
 
     /* Final permutation */
-    crypto_core_keccak1600_permute_24(state->state);
+    crypto_core_keccak1600_permute_24(&state->state);
 
     state->offset = 0;
     state->phase  = SHAKE128_PHASE_SQUEEZING;
@@ -93,14 +93,14 @@ shake128_ref_squeeze(shake128_state_internal *state, unsigned char *out, size_t 
 
     while (extracted < outlen) {
         if (state->offset == SHAKE128_RATE) {
-            crypto_core_keccak1600_permute_24(state->state);
+            crypto_core_keccak1600_permute_24(&state->state);
             state->offset = 0;
         }
         chunk_size = SHAKE128_RATE - state->offset;
         if (chunk_size > outlen - extracted) {
             chunk_size = outlen - extracted;
         }
-        crypto_core_keccak1600_extract_bytes(state->state, &out[extracted], state->offset,
+        crypto_core_keccak1600_extract_bytes(&state->state, &out[extracted], state->offset,
                                              chunk_size);
         state->offset += chunk_size;
         extracted += chunk_size;
