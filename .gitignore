@@ -109,6 +109,7 @@ test/default/chacha20
 test/default/codecs
 test/default/core_ed25519
 test/default/core_ed25519_h2c
+test/default/core_keccak1600
 test/default/core_ristretto255
 test/default/core1
 test/default/core2
@@ -168,6 +169,10 @@ test/default/stream3
 test/default/stream4
 test/default/verify1
 test/default/xchacha20
+test/default/xof_shake128
+test/default/xof_shake256
+test/default/xof_turboshake128
+test/default/xof_turboshake256
 test/js.done
 test/symbols/all-host-symbols.txt
 test/symbols/internal-host-symbols.txt
