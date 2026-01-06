@@ -214,43 +214,43 @@ sha3_256(unsigned char out[32], const unsigned char *in, size_t inlen)
 static void
 sha3_512(unsigned char out[64], const unsigned char *in, size_t inlen)
 {
-    unsigned char state[200];
-    size_t        offset   = 0;
-    size_t        consumed = 0;
-    size_t        chunk_size;
-    unsigned char pad;
+    crypto_core_keccak1600_state state;
+    size_t                       offset   = 0;
+    size_t                       consumed = 0;
+    size_t                       chunk_size;
+    unsigned char                pad;
 
-    crypto_core_keccak1600_init(state);
+    crypto_core_keccak1600_init(&state);
 
     while (consumed < inlen) {
         if (offset == SHA3_512_RATE) {
-            crypto_core_keccak1600_permute_24(state);
+            crypto_core_keccak1600_permute_24(&state);
             offset = 0;
         }
         chunk_size = SHA3_512_RATE - offset;
         if (chunk_size > inlen - consumed) {
             chunk_size = inlen - consumed;
         }
-        crypto_core_keccak1600_xor_bytes(state, &in[consumed], offset, chunk_size);
+        crypto_core_keccak1600_xor_bytes(&state, &in[consumed], offset, chunk_size);
         offset += chunk_size;
         consumed += chunk_size;
     }
     if (offset == SHA3_512_RATE) {
-        crypto_core_keccak1600_permute_24(state);
+        crypto_core_keccak1600_permute_24(&state);
         offset = 0;
     }
     if (offset == SHA3_512_RATE - 1) {
         pad = SHA3_DOMAIN | 0x80;
-        crypto_core_keccak1600_xor_bytes(state, &pad, offset, 1);
+        crypto_core_keccak1600_xor_bytes(&state, &pad, offset, 1);
     } else {
         pad = SHA3_DOMAIN;
-        crypto_core_keccak1600_xor_bytes(state, &pad, offset, 1);
+        crypto_core_keccak1600_xor_bytes(&state, &pad, offset, 1);
         pad = 0x80;
-        crypto_core_keccak1600_xor_bytes(state, &pad, SHA3_512_RATE - 1, 1);
+        crypto_core_keccak1600_xor_bytes(&state, &pad, SHA3_512_RATE - 1, 1);
     }
 
-    crypto_core_keccak1600_permute_24(state);
-    crypto_core_keccak1600_extract_bytes(state, out, 0, 64);
+    crypto_core_keccak1600_permute_24(&state);
+    crypto_core_keccak1600_extract_bytes(&state, out, 0, 64);
 }
 
 static void

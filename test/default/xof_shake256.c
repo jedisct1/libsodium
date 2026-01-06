@@ -13,57 +13,57 @@ static void
 shake256_manual_with_domain(unsigned char *out, size_t outlen, const unsigned char *in,
                             size_t inlen, unsigned char domain)
 {
-    unsigned char state[crypto_core_keccak1600_STATEBYTES];
-    size_t        rate     = crypto_xof_shake256_blockbytes();
-    size_t        offset   = 0;
-    size_t        consumed = 0;
-    size_t        chunk_size;
-    size_t        extracted = 0;
-    unsigned char pad;
+    crypto_core_keccak1600_state state;
+    size_t                       rate      = crypto_xof_shake256_blockbytes();
+    size_t                       offset    = 0;
+    size_t                       consumed  = 0;
+    size_t                       chunk_size;
+    size_t                       extracted = 0;
+    unsigned char                pad;
 
-    crypto_core_keccak1600_init(state);
+    crypto_core_keccak1600_init(&state);
 
     while (consumed < inlen) {
         if (offset == rate) {
-            crypto_core_keccak1600_permute_24(state);
+            crypto_core_keccak1600_permute_24(&state);
             offset = 0;
         }
         chunk_size = rate - offset;
         if (chunk_size > inlen - consumed) {
             chunk_size = inlen - consumed;
         }
-        crypto_core_keccak1600_xor_bytes(state, &in[consumed], offset, chunk_size);
+        crypto_core_keccak1600_xor_bytes(&state, &in[consumed], offset, chunk_size);
         offset += chunk_size;
         consumed += chunk_size;
     }
 
     if (offset == rate) {
-        crypto_core_keccak1600_permute_24(state);
+        crypto_core_keccak1600_permute_24(&state);
         offset = 0;
     }
 
     if (offset == rate - 1) {
         pad = (unsigned char) (domain ^ 0x80);
-        crypto_core_keccak1600_xor_bytes(state, &pad, offset, 1);
+        crypto_core_keccak1600_xor_bytes(&state, &pad, offset, 1);
     } else {
-        crypto_core_keccak1600_xor_bytes(state, &domain, offset, 1);
+        crypto_core_keccak1600_xor_bytes(&state, &domain, offset, 1);
         pad = 0x80;
-        crypto_core_keccak1600_xor_bytes(state, &pad, rate - 1, 1);
+        crypto_core_keccak1600_xor_bytes(&state, &pad, rate - 1, 1);
     }
 
-    crypto_core_keccak1600_permute_24(state);
+    crypto_core_keccak1600_permute_24(&state);
     offset = 0;
 
     while (extracted < outlen) {
         if (offset == rate) {
-            crypto_core_keccak1600_permute_24(state);
+            crypto_core_keccak1600_permute_24(&state);
             offset = 0;
         }
         chunk_size = rate - offset;
         if (chunk_size > outlen - extracted) {
             chunk_size = outlen - extracted;
         }
-        crypto_core_keccak1600_extract_bytes(state, &out[extracted], offset, chunk_size);
+        crypto_core_keccak1600_extract_bytes(&state, &out[extracted], offset, chunk_size);
         offset += chunk_size;
         extracted += chunk_size;
     }

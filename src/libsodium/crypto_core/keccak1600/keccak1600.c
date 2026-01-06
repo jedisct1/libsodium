@@ -4,37 +4,39 @@
 size_t
 crypto_core_keccak1600_statebytes(void)
 {
-    return crypto_core_keccak1600_STATEBYTES;
+    return sizeof(crypto_core_keccak1600_state);
 }
 
 void
-crypto_core_keccak1600_init(void *state)
+crypto_core_keccak1600_init(crypto_core_keccak1600_state *state)
 {
-    keccak1600_ref_init(state);
+    keccak1600_ref_init(state->opaque);
 }
 
 void
-crypto_core_keccak1600_xor_bytes(void *state, const unsigned char *bytes, size_t offset,
+crypto_core_keccak1600_xor_bytes(crypto_core_keccak1600_state *state,
+                                 const unsigned char *bytes, size_t offset,
                                  size_t length)
 {
-    keccak1600_ref_xor_bytes(state, bytes, offset, length);
+    keccak1600_ref_xor_bytes(state->opaque, bytes, offset, length);
 }
 
 void
-crypto_core_keccak1600_extract_bytes(const void *state, unsigned char *bytes, size_t offset,
+crypto_core_keccak1600_extract_bytes(const crypto_core_keccak1600_state *state,
+                                     unsigned char *bytes, size_t offset,
                                      size_t length)
 {
-    keccak1600_ref_extract_bytes(state, bytes, offset, length);
+    keccak1600_ref_extract_bytes(state->opaque, bytes, offset, length);
 }
 
 void
-crypto_core_keccak1600_permute_24(void *state)
+crypto_core_keccak1600_permute_24(crypto_core_keccak1600_state *state)
 {
-    keccak1600_ref_permute_24(state);
+    keccak1600_ref_permute_24(state->opaque);
 }
 
 void
-crypto_core_keccak1600_permute_12(void *state)
+crypto_core_keccak1600_permute_12(crypto_core_keccak1600_state *state)
 {
-    keccak1600_ref_permute_12(state);
+    keccak1600_ref_permute_12(state->opaque);
 }
