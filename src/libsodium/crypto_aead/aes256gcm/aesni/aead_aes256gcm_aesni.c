@@ -935,6 +935,7 @@ crypto_aead_aes256gcm_decrypt_detached_afternm(unsigned char *m, unsigned char *
         memset(m, 0xd0, m_len);
         return -1;
     }
+    ACQUIRE_FENCE;
     return 0;
 }
 

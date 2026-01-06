@@ -101,6 +101,7 @@ crypto_secretbox_open_detached(unsigned char *m, const unsigned char *c,
     if (m == NULL) {
         return 0;
     }
+    ACQUIRE_FENCE;
     if (((uintptr_t) c > (uintptr_t) m &&
          (uintptr_t) c - (uintptr_t) m < clen) ||
         ((uintptr_t) m > (uintptr_t) c &&

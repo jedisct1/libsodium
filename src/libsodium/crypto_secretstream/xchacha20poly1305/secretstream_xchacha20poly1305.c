@@ -239,6 +239,7 @@ crypto_secretstream_xchacha20poly1305_pull
         return -1;
     }
 
+    ACQUIRE_FENCE;
     crypto_stream_chacha20_ietf_xor_ic(m, c, mlen, state->nonce, 2U, state->k);
     XOR_BUF(STATE_INONCE(state), mac,
             crypto_secretstream_xchacha20poly1305_INONCEBYTES);

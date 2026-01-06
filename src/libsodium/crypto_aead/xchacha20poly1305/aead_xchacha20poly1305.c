@@ -112,6 +112,7 @@ _decrypt_detached(unsigned char *m,
         memset(m, 0, mlen);
         return -1;
     }
+    ACQUIRE_FENCE;
     crypto_stream_chacha20_ietf_ext_xor_ic(m, c, mlen, npub, 1U, k);
 
     return 0;

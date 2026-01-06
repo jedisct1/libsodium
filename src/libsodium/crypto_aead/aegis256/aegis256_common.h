@@ -224,8 +224,12 @@ decrypt_detached(uint8_t *m, const uint8_t *c, size_t clen, const uint8_t *mac, 
     } else if (maclen == 32) {
         ret = crypto_verify_32(computed_mac, mac);
     }
-    if (ret != 0 && m != NULL) {
-        memset(m, 0, mlen);
+    if (ret != 0) {
+        if (m != NULL) {
+            memset(m, 0, mlen);
+        }
+        return ret;
     }
-    return ret;
+    ACQUIRE_FENCE;
+    return 0;
 }
