@@ -1,4 +1,6 @@
 * Version 1.0.20-stable
+ - XCFramework: cross-compilation is now forced on Apple Silicon to
+avoid Rosetta-related build issues
  - The Fil-C compiler is supported out of the box
  - The CompCert compiler is supported out of the box
  - MSVC 2026 (Visual Studio 2026) is now supported
