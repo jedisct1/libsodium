@@ -399,6 +399,9 @@
     <ClCompile Include="..\..\..\..\src\libsodium\crypto_core\keccak1600\ref\keccak1600_ref.c">
       <Filter>crypto_core\keccak1600\ref</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\..\..\src\libsodium\crypto_core\keccak1600\armsha3\keccak1600_armsha3.c">
+      <Filter>crypto_core\keccak1600\armsha3</Filter>
+    </ClCompile>
     <ClCompile Include="..\..\..\..\src\libsodium\crypto_core\salsa\ref\core_salsa_ref.c">
       <Filter>crypto_core\salsa\ref</Filter>
     </ClCompile>
@@ -884,6 +887,9 @@
     <ClInclude Include="..\..\..\..\src\libsodium\crypto_core\keccak1600\ref\keccak1600_ref.h">
       <Filter>crypto_core\keccak1600\ref</Filter>
     </ClInclude>
+    <ClInclude Include="..\..\..\..\src\libsodium\crypto_core\keccak1600\armsha3\keccak1600_armsha3.h">
+      <Filter>crypto_core\keccak1600\armsha3</Filter>
+    </ClInclude>
     <ClInclude Include="..\..\..\..\src\libsodium\crypto_core\ed25519\ref10\fe_25_5\constants.h">
       <Filter>crypto_core\ed25519\ref10\fe_25_5</Filter>
     </ClInclude>
@@ -981,6 +987,9 @@
     </Filter>
     <Filter Include="crypto_core\keccak1600">
       <UniqueIdentifier>{85c1722f-2d65-30a8-aefb-ebf1cbfe185e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="crypto_core\keccak1600\armsha3">
+      <UniqueIdentifier>{855cc78f-1fe0-3ad2-a2ac-5e2b0c01c235}</UniqueIdentifier>
     </Filter>
     <Filter Include="crypto_core\keccak1600\ref">
       <UniqueIdentifier>{9462f285-fee0-3779-983b-2811dc621f7d}</UniqueIdentifier>

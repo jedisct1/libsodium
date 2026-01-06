@@ -297,6 +297,8 @@ am__libsodium_la_SOURCES_DIST =  \
 	crypto_core/keccak1600/keccak1600.c \
 	crypto_core/keccak1600/ref/keccak1600_ref.c \
 	crypto_core/keccak1600/ref/keccak1600_ref.h \
+	crypto_core/keccak1600/armsha3/keccak1600_armsha3.c \
+	crypto_core/keccak1600/armsha3/keccak1600_armsha3.h \
 	crypto_core/salsa/ref/core_salsa_ref.c \
 	crypto_core/softaes/softaes.c \
 	crypto_generichash/crypto_generichash.c \
@@ -483,6 +485,7 @@ am_libsodium_la_OBJECTS =  \
 	crypto_core/hsalsa20/libsodium_la-core_hsalsa20.lo \
 	crypto_core/keccak1600/libsodium_la-keccak1600.lo \
 	crypto_core/keccak1600/ref/libsodium_la-keccak1600_ref.lo \
+	crypto_core/keccak1600/armsha3/libsodium_la-keccak1600_armsha3.lo \
 	crypto_core/salsa/ref/libsodium_la-core_salsa_ref.lo \
 	crypto_core/softaes/libsodium_la-softaes.lo \
 	crypto_generichash/libsodium_la-crypto_generichash.lo \
@@ -630,6 +633,7 @@ am__depfiles_remade = crypto_aead/aegis128l/$(DEPDIR)/libaesni_la-aegis128l_aesn
 	crypto_core/hsalsa20/$(DEPDIR)/libsodium_la-core_hsalsa20.Plo \
 	crypto_core/hsalsa20/ref2/$(DEPDIR)/libsodium_la-core_hsalsa20_ref2.Plo \
 	crypto_core/keccak1600/$(DEPDIR)/libsodium_la-keccak1600.Plo \
+	crypto_core/keccak1600/armsha3/$(DEPDIR)/libsodium_la-keccak1600_armsha3.Plo \
 	crypto_core/keccak1600/ref/$(DEPDIR)/libsodium_la-keccak1600_ref.Plo \
 	crypto_core/salsa/ref/$(DEPDIR)/libsodium_la-core_salsa_ref.Plo \
 	crypto_core/softaes/$(DEPDIR)/libsodium_la-softaes.Plo \
@@ -1044,6 +1048,8 @@ libsodium_la_SOURCES = crypto_aead/aegis128l/aead_aegis128l.c \
 	crypto_core/keccak1600/keccak1600.c \
 	crypto_core/keccak1600/ref/keccak1600_ref.c \
 	crypto_core/keccak1600/ref/keccak1600_ref.h \
+	crypto_core/keccak1600/armsha3/keccak1600_armsha3.c \
+	crypto_core/keccak1600/armsha3/keccak1600_armsha3.h \
 	crypto_core/salsa/ref/core_salsa_ref.c \
 	crypto_core/softaes/softaes.c \
 	crypto_generichash/crypto_generichash.c \
@@ -1593,6 +1599,15 @@ crypto_core/keccak1600/ref/$(DEPDIR)/$(am__dirstamp):
 crypto_core/keccak1600/ref/libsodium_la-keccak1600_ref.lo:  \
 	crypto_core/keccak1600/ref/$(am__dirstamp) \
 	crypto_core/keccak1600/ref/$(DEPDIR)/$(am__dirstamp)
+crypto_core/keccak1600/armsha3/$(am__dirstamp):
+	@$(MKDIR_P) crypto_core/keccak1600/armsha3
+	@: >>crypto_core/keccak1600/armsha3/$(am__dirstamp)
+crypto_core/keccak1600/armsha3/$(DEPDIR)/$(am__dirstamp):
+	@$(MKDIR_P) crypto_core/keccak1600/armsha3/$(DEPDIR)
+	@: >>crypto_core/keccak1600/armsha3/$(DEPDIR)/$(am__dirstamp)
+crypto_core/keccak1600/armsha3/libsodium_la-keccak1600_armsha3.lo:  \
+	crypto_core/keccak1600/armsha3/$(am__dirstamp) \
+	crypto_core/keccak1600/armsha3/$(DEPDIR)/$(am__dirstamp)
 crypto_core/salsa/ref/$(am__dirstamp):
 	@$(MKDIR_P) crypto_core/salsa/ref
 	@: >>crypto_core/salsa/ref/$(am__dirstamp)
@@ -2315,6 +2330,8 @@ mostlyclean-compile:
 	-rm -f crypto_core/hsalsa20/ref2/*.lo
 	-rm -f crypto_core/keccak1600/*.$(OBJEXT)
 	-rm -f crypto_core/keccak1600/*.lo
+	-rm -f crypto_core/keccak1600/armsha3/*.$(OBJEXT)
+	-rm -f crypto_core/keccak1600/armsha3/*.lo
 	-rm -f crypto_core/keccak1600/ref/*.$(OBJEXT)
 	-rm -f crypto_core/keccak1600/ref/*.lo
 	-rm -f crypto_core/salsa/ref/*.$(OBJEXT)
@@ -2485,6 +2502,7 @@ distclean-compile:
 @AMDEP_TRUE@@am__include@ @am__quote@crypto_core/hsalsa20/$(DEPDIR)/libsodium_la-core_hsalsa20.Plo@am__quote@ # am--include-marker
 @AMDEP_TRUE@@am__include@ @am__quote@crypto_core/hsalsa20/ref2/$(DEPDIR)/libsodium_la-core_hsalsa20_ref2.Plo@am__quote@ # am--include-marker
 @AMDEP_TRUE@@am__include@ @am__quote@crypto_core/keccak1600/$(DEPDIR)/libsodium_la-keccak1600.Plo@am__quote@ # am--include-marker
+@AMDEP_TRUE@@am__include@ @am__quote@crypto_core/keccak1600/armsha3/$(DEPDIR)/libsodium_la-keccak1600_armsha3.Plo@am__quote@ # am--include-marker
 @AMDEP_TRUE@@am__include@ @am__quote@crypto_core/keccak1600/ref/$(DEPDIR)/libsodium_la-keccak1600_ref.Plo@am__quote@ # am--include-marker
 @AMDEP_TRUE@@am__include@ @am__quote@crypto_core/salsa/ref/$(DEPDIR)/libsodium_la-core_salsa_ref.Plo@am__quote@ # am--include-marker
 @AMDEP_TRUE@@am__include@ @am__quote@crypto_core/softaes/$(DEPDIR)/libsodium_la-softaes.Plo@am__quote@ # am--include-marker
@@ -2903,6 +2921,13 @@ crypto_core/keccak1600/ref/libsodium_la-keccak1600_ref.lo: crypto_core/keccak160
 @AMDEP_TRUE@@am__fastdepCC_FALSE@	$(AM_V_CC)source='crypto_core/keccak1600/ref/keccak1600_ref.c' object='crypto_core/keccak1600/ref/libsodium_la-keccak1600_ref.lo' libtool=yes @AMDEPBACKSLASH@
 @AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
 @am__fastdepCC_FALSE@	$(AM_V_CC@am__nodep@)$(LIBTOOL) $(AM_V_lt) --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libsodium_la_CPPFLAGS) $(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS) -c -o crypto_core/keccak1600/ref/libsodium_la-keccak1600_ref.lo `test -f 'crypto_core/keccak1600/ref/keccak1600_ref.c' || echo '$(srcdir)/'`crypto_core/keccak1600/ref/keccak1600_ref.c
+
+crypto_core/keccak1600/armsha3/libsodium_la-keccak1600_armsha3.lo: crypto_core/keccak1600/armsha3/keccak1600_armsha3.c
+@am__fastdepCC_TRUE@	$(AM_V_CC)$(LIBTOOL) $(AM_V_lt) --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libsodium_la_CPPFLAGS) $(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS) -MT crypto_core/keccak1600/armsha3/libsodium_la-keccak1600_armsha3.lo -MD -MP -MF crypto_core/keccak1600/armsha3/$(DEPDIR)/libsodium_la-keccak1600_armsha3.Tpo -c -o crypto_core/keccak1600/armsha3/libsodium_la-keccak1600_armsha3.lo `test -f 'crypto_core/keccak1600/armsha3/keccak1600_armsha3.c' || echo '$(srcdir)/'`crypto_core/keccak1600/armsha3/keccak1600_armsha3.c
+@am__fastdepCC_TRUE@	$(AM_V_at)$(am__mv) crypto_core/keccak1600/armsha3/$(DEPDIR)/libsodium_la-keccak1600_armsha3.Tpo crypto_core/keccak1600/armsha3/$(DEPDIR)/libsodium_la-keccak1600_armsha3.Plo
+@AMDEP_TRUE@@am__fastdepCC_FALSE@	$(AM_V_CC)source='crypto_core/keccak1600/armsha3/keccak1600_armsha3.c' object='crypto_core/keccak1600/armsha3/libsodium_la-keccak1600_armsha3.lo' libtool=yes @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCC_FALSE@	$(AM_V_CC@am__nodep@)$(LIBTOOL) $(AM_V_lt) --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libsodium_la_CPPFLAGS) $(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS) -c -o crypto_core/keccak1600/armsha3/libsodium_la-keccak1600_armsha3.lo `test -f 'crypto_core/keccak1600/armsha3/keccak1600_armsha3.c' || echo '$(srcdir)/'`crypto_core/keccak1600/armsha3/keccak1600_armsha3.c
 
 crypto_core/salsa/ref/libsodium_la-core_salsa_ref.lo: crypto_core/salsa/ref/core_salsa_ref.c
 @am__fastdepCC_TRUE@	$(AM_V_CC)$(LIBTOOL) $(AM_V_lt) --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libsodium_la_CPPFLAGS) $(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS) -MT crypto_core/salsa/ref/libsodium_la-core_salsa_ref.lo -MD -MP -MF crypto_core/salsa/ref/$(DEPDIR)/libsodium_la-core_salsa_ref.Tpo -c -o crypto_core/salsa/ref/libsodium_la-core_salsa_ref.lo `test -f 'crypto_core/salsa/ref/core_salsa_ref.c' || echo '$(srcdir)/'`crypto_core/salsa/ref/core_salsa_ref.c
@@ -3615,6 +3640,7 @@ clean-libtool:
 	-rm -rf crypto_core/hsalsa20/.libs crypto_core/hsalsa20/_libs
 	-rm -rf crypto_core/hsalsa20/ref2/.libs crypto_core/hsalsa20/ref2/_libs
 	-rm -rf crypto_core/keccak1600/.libs crypto_core/keccak1600/_libs
+	-rm -rf crypto_core/keccak1600/armsha3/.libs crypto_core/keccak1600/armsha3/_libs
 	-rm -rf crypto_core/keccak1600/ref/.libs crypto_core/keccak1600/ref/_libs
 	-rm -rf crypto_core/salsa/ref/.libs crypto_core/salsa/ref/_libs
 	-rm -rf crypto_core/softaes/.libs crypto_core/softaes/_libs
@@ -3937,6 +3963,8 @@ distclean-generic:
 	-$(am__rm_f) crypto_core/hsalsa20/ref2/$(am__dirstamp)
 	-$(am__rm_f) crypto_core/keccak1600/$(DEPDIR)/$(am__dirstamp)
 	-$(am__rm_f) crypto_core/keccak1600/$(am__dirstamp)
+	-$(am__rm_f) crypto_core/keccak1600/armsha3/$(DEPDIR)/$(am__dirstamp)
+	-$(am__rm_f) crypto_core/keccak1600/armsha3/$(am__dirstamp)
 	-$(am__rm_f) crypto_core/keccak1600/ref/$(DEPDIR)/$(am__dirstamp)
 	-$(am__rm_f) crypto_core/keccak1600/ref/$(am__dirstamp)
 	-$(am__rm_f) crypto_core/salsa/ref/$(DEPDIR)/$(am__dirstamp)
@@ -4113,6 +4141,7 @@ distclean: distclean-recursive
 	-rm -f crypto_core/hsalsa20/$(DEPDIR)/libsodium_la-core_hsalsa20.Plo
 	-rm -f crypto_core/hsalsa20/ref2/$(DEPDIR)/libsodium_la-core_hsalsa20_ref2.Plo
 	-rm -f crypto_core/keccak1600/$(DEPDIR)/libsodium_la-keccak1600.Plo
+	-rm -f crypto_core/keccak1600/armsha3/$(DEPDIR)/libsodium_la-keccak1600_armsha3.Plo
 	-rm -f crypto_core/keccak1600/ref/$(DEPDIR)/libsodium_la-keccak1600_ref.Plo
 	-rm -f crypto_core/salsa/ref/$(DEPDIR)/libsodium_la-core_salsa_ref.Plo
 	-rm -f crypto_core/softaes/$(DEPDIR)/libsodium_la-softaes.Plo
@@ -4293,6 +4322,7 @@ maintainer-clean: maintainer-clean-recursive
 	-rm -f crypto_core/hsalsa20/$(DEPDIR)/libsodium_la-core_hsalsa20.Plo
 	-rm -f crypto_core/hsalsa20/ref2/$(DEPDIR)/libsodium_la-core_hsalsa20_ref2.Plo
 	-rm -f crypto_core/keccak1600/$(DEPDIR)/libsodium_la-keccak1600.Plo
+	-rm -f crypto_core/keccak1600/armsha3/$(DEPDIR)/libsodium_la-keccak1600_armsha3.Plo
 	-rm -f crypto_core/keccak1600/ref/$(DEPDIR)/libsodium_la-keccak1600_ref.Plo
 	-rm -f crypto_core/salsa/ref/$(DEPDIR)/libsodium_la-core_salsa_ref.Plo
 	-rm -f crypto_core/softaes/$(DEPDIR)/libsodium_la-softaes.Plo
