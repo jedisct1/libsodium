@@ -124,6 +124,7 @@ crypto_secretbox_xchacha20poly1305_open_detached(unsigned char *m,
     if (m == NULL) {
         return 0;
     }
+    ACQUIRE_FENCE;
 
     /*
      * Allow the m and c buffers to partially overlap, by calling

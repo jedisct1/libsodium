@@ -208,6 +208,7 @@ crypto_aead_chacha20poly1305_decrypt_detached(unsigned char *m,
         memset(m, 0, mlen);
         return -1;
     }
+    ACQUIRE_FENCE;
     crypto_stream_chacha20_xor_ic(m, c, mlen, npub, 1U, k);
 
     return 0;
@@ -292,6 +293,7 @@ crypto_aead_chacha20poly1305_ietf_decrypt_detached(unsigned char *m,
         memset(m, 0, mlen);
         return -1;
     }
+    ACQUIRE_FENCE;
     crypto_stream_chacha20_ietf_xor_ic(m, c, mlen, npub, 1U, k);
 
     return 0;
