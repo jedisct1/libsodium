@@ -24,7 +24,7 @@ size_t crypto_xof_shake128_statebytes(void);
 SODIUM_EXPORT
 unsigned char crypto_xof_shake128_domain_standard(void);
 
-typedef struct CRYPTO_ALIGN(64) crypto_xof_shake128_state {
+typedef struct CRYPTO_ALIGN(16) crypto_xof_shake128_state {
     unsigned char opaque[256];
 } crypto_xof_shake128_state;
 

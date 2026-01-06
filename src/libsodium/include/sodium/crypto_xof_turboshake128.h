@@ -20,7 +20,7 @@ size_t crypto_xof_turboshake128_statebytes(void);
 SODIUM_EXPORT
 unsigned char crypto_xof_turboshake128_domain_standard(void);
 
-typedef struct CRYPTO_ALIGN(64) crypto_xof_turboshake128_state {
+typedef struct CRYPTO_ALIGN(16) crypto_xof_turboshake128_state {
     unsigned char opaque[256];
 } crypto_xof_turboshake128_state;
 
