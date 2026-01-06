@@ -746,6 +746,11 @@ ge25519_p3_tobytes
 ge25519_scalarmult
 ge25519_scalarmult_base
 ge25519_tobytes
+keccak1600_armsha3_extract_bytes
+keccak1600_armsha3_init
+keccak1600_armsha3_permute_12
+keccak1600_armsha3_permute_24
+keccak1600_armsha3_xor_bytes
 keccak1600_ref_extract_bytes
 keccak1600_ref_init
 keccak1600_ref_permute_12

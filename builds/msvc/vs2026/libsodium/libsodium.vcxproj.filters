@@ -387,6 +387,12 @@
     <ClCompile Include="..\..\..\..\src\libsodium\crypto_aead\chacha20poly1305\aead_chacha20poly1305.c">
       <Filter>crypto_aead\chacha20poly1305</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\..\..\src\libsodium\crypto_kem\mlkem768\kem_mlkem768.c">
+      <Filter>crypto_kem\mlkem768</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\src\libsodium\crypto_kem\mlkem768\ref\kem_mlkem768_ref.c">
+      <Filter>crypto_kem\mlkem768\ref</Filter>
+    </ClCompile>
     <ClCompile Include="..\..\..\..\src\libsodium\crypto_secretstream\xchacha20poly1305\secretstream_xchacha20poly1305.c">
       <Filter>crypto_secretstream\xchacha20poly1305</Filter>
     </ClCompile>
@@ -395,6 +401,9 @@
     </ClCompile>
     <ClCompile Include="..\..\..\..\src\libsodium\crypto_core\keccak1600\ref\keccak1600_ref.c">
       <Filter>crypto_core\keccak1600\ref</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\src\libsodium\crypto_core\keccak1600\armsha3\keccak1600_armsha3.c">
+      <Filter>crypto_core\keccak1600\armsha3</Filter>
     </ClCompile>
     <ClCompile Include="..\..\..\..\src\libsodium\crypto_core\salsa\ref\core_salsa_ref.c">
       <Filter>crypto_core\salsa\ref</Filter>
@@ -473,9 +482,6 @@
     <ClInclude Include="..\..\..\..\src\libsodium\include\sodium\core.h">
       <Filter>include\sodium</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\..\..\src\libsodium\include\sodium\version.h">
-      <Filter>include\sodium</Filter>
-    </ClInclude>
     <ClInclude Include="..\..\..\..\src\libsodium\include\sodium\export.h">
       <Filter>include\sodium</Filter>
     </ClInclude>
@@ -507,6 +513,9 @@
       <Filter>include\sodium</Filter>
     </ClInclude>
     <ClInclude Include="..\..\..\..\src\libsodium\include\sodium\crypto_onetimeauth_poly1305.h">
+      <Filter>include\sodium</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\src\libsodium\include\sodium\crypto_kem_mlkem768.h">
       <Filter>include\sodium</Filter>
     </ClInclude>
     <ClInclude Include="..\..\..\..\src\libsodium\include\sodium\crypto_scalarmult_ristretto255.h">
@@ -881,8 +890,14 @@
     <ClInclude Include="..\..\..\..\src\libsodium\crypto_aead\aegis256\aegis256_soft.h">
       <Filter>crypto_aead\aegis256</Filter>
     </ClInclude>
+    <ClInclude Include="..\..\..\..\src\libsodium\crypto_kem\mlkem768\ref\kem_mlkem768_ref.h">
+      <Filter>crypto_kem\mlkem768\ref</Filter>
+    </ClInclude>
     <ClInclude Include="..\..\..\..\src\libsodium\crypto_core\keccak1600\ref\keccak1600_ref.h">
       <Filter>crypto_core\keccak1600\ref</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\src\libsodium\crypto_core\keccak1600\armsha3\keccak1600_armsha3.h">
+      <Filter>crypto_core\keccak1600\armsha3</Filter>
     </ClInclude>
     <ClInclude Include="..\..\..\..\src\libsodium\crypto_core\ed25519\core_h2c.h">
       <Filter>crypto_core\ed25519</Filter>
@@ -985,6 +1000,9 @@
     <Filter Include="crypto_core\keccak1600">
       <UniqueIdentifier>{85c1722f-2d65-30a8-aefb-ebf1cbfe185e}</UniqueIdentifier>
     </Filter>
+    <Filter Include="crypto_core\keccak1600\armsha3">
+      <UniqueIdentifier>{855cc78f-1fe0-3ad2-a2ac-5e2b0c01c235}</UniqueIdentifier>
+    </Filter>
     <Filter Include="crypto_core\keccak1600\ref">
       <UniqueIdentifier>{9462f285-fee0-3779-983b-2811dc621f7d}</UniqueIdentifier>
     </Filter>
@@ -1032,6 +1050,15 @@
     </Filter>
     <Filter Include="crypto_kdf\hkdf">
       <UniqueIdentifier>{baf7d894-9298-391d-8dc2-e4c3010f5ddc}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="crypto_kem">
+      <UniqueIdentifier>{b9009d4a-dd97-341d-aafb-eeeb77191a49}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="crypto_kem\mlkem768">
+      <UniqueIdentifier>{ab0c8a55-3e1f-307e-82be-8291a3b43735}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="crypto_kem\mlkem768\ref">
+      <UniqueIdentifier>{70a10765-f8fb-3898-8514-966e48719bc4}</UniqueIdentifier>
     </Filter>
     <Filter Include="crypto_kx">
       <UniqueIdentifier>{898b6bd5-1360-3a34-adcd-0fade7561685}</UniqueIdentifier>
