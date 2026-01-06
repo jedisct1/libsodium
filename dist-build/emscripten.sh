@@ -12,12 +12,12 @@ export LDFLAGS="-s RESERVED_FUNCTION_POINTERS=8"
 export LDFLAGS="${LDFLAGS} -s ALLOW_MEMORY_GROWTH=1"
 export LDFLAGS="${LDFLAGS} -s SINGLE_FILE=1 -s SINGLE_FILE_BINARY_ENCODE=0"
 export LDFLAGS="${LDFLAGS} -s ASSERTIONS=0"
-export LDFLAGS="${LDFLAGS} -s AGGRESSIVE_VARIABLE_ELIMINATION=1 -s ALIASING_FUNCTION_POINTERS=1"
 export LDFLAGS="${LDFLAGS} -s DISABLE_EXCEPTION_CATCHING=1"
-export LDFLAGS="${LDFLAGS} -s ELIMINATE_DUPLICATE_FUNCTIONS=1"
 export LDFLAGS="${LDFLAGS} -s NODEJS_CATCH_EXIT=0"
 export LDFLAGS="${LDFLAGS} -s NODEJS_CATCH_REJECTION=0"
 export LDFLAGS="${LDFLAGS} -s WASM_BIGINT=0"
+export LDFLAGS="${LDFLAGS} -flto"
+export CFLAGS="${CFLAGS} -flto"
 
 echo
 if [ "$1" = "--standard" ]; then
@@ -79,12 +79,12 @@ if [ "$DIST" = yes ]; then
   emccLibsodium() {
     outFile="${1}"
     shift
-    emcc "$CFLAGS" --llvm-lto 1 $CPPFLAGS $LDFLAGS $JS_EXPORTS_FLAGS "${@}" \
+    emcc "$CFLAGS" $CPPFLAGS $LDFLAGS $JS_EXPORTS_FLAGS "${@}" \
       "${PREFIX}/lib/libsodium.a" -o "${outFile}" || exit 1
   }
   emmake make $MAKE_FLAGS install || exit 1
   emccLibsodium "${PREFIX}/lib/libsodium.asm.tmp.js" -Oz -s WASM=0 $LDFLAGS_JS
-  emccLibsodium "${PREFIX}/lib/libsodium.wasm.tmp.js" -O3 -s WASM=1 -s EVAL_CTORS=1 -s INITIAL_MEMORY=${WASM_INITIAL_MEMORY}
+  emccLibsodium "${PREFIX}/lib/libsodium.wasm.tmp.js" -O3 -s WASM=1 -s EVAL_CTORS=2 -s INITIAL_MEMORY=${WASM_INITIAL_MEMORY}
 
   # Build the output file by concatenating parts to preserve null bytes
   # (command substitution in heredoc strips null bytes from WASM binary)
