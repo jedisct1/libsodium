@@ -1,4 +1,5 @@
 * Version 1.0.21-stable
+ - Export missing crypto_ipcrypt_nd_keygen() helper function.
  - Fixed compilation with GCC on aarch64.
 
 * Version 1.0.21
