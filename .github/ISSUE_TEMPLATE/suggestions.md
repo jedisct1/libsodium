@@ -1,22 +1,19 @@
 ---
 name: "🙋🏽 Planned changes"
-about: List of planned changes
+about: Track planned changes (maintainers only)
 title: ""
 labels: ""
 assignees: ""
 ---
 
-Please do not post features requests directly.
+Hey there! Got an idea for libsodium?
 
-The starting point should be a discussion, after having checked the roadmap: https://doc.libsodium.org/roadmap
+This template is for tracking work that's already been planned. For new feature suggestions, here's the best path forward:
 
-Suggestions should be raised as an "Ideas" discussion: https://github.com/jedisct1/libsodium/discussions
+1. Check the [roadmap](https://doc.libsodium.org/roadmap) to see if it's already on our radar
+2. Start an "Ideas" thread in [Discussions](https://github.com/jedisct1/libsodium/discussions)
 
-We can then determine if the discussion needs to be escalated into a "planned change" or not.
-
-This will help us ensure that the issue tracker properly reflects ongoing or needed work on the project.
-
-Thank you! 😊🙏
+From there, we can chat about it and decide together if it should become a planned change. This helps keep the issue tracker focused on active work.
 
 ---
 
