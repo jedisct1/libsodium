@@ -326,6 +326,7 @@ crypto_ipcrypt_nd_decrypt
 crypto_ipcrypt_nd_encrypt
 crypto_ipcrypt_nd_inputbytes
 crypto_ipcrypt_nd_keybytes
+crypto_ipcrypt_nd_keygen
 crypto_ipcrypt_nd_outputbytes
 crypto_ipcrypt_nd_tweakbytes
 crypto_ipcrypt_ndx_decrypt
