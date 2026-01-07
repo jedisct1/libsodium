@@ -58,6 +58,7 @@ int
 main(void)
 {
     unsigned char key[crypto_ipcrypt_KEYBYTES];
+    unsigned char nd_key[crypto_ipcrypt_ND_KEYBYTES];
     unsigned char ndx_key[crypto_ipcrypt_NDX_KEYBYTES];
     unsigned char pfx_key[crypto_ipcrypt_PFX_KEYBYTES];
     unsigned char input[crypto_ipcrypt_BYTES];
@@ -632,6 +633,7 @@ main(void)
     printf("\nfunctional tests\n");
 
     crypto_ipcrypt_keygen(key);
+    crypto_ipcrypt_nd_keygen(nd_key);
     crypto_ipcrypt_ndx_keygen(ndx_key);
     crypto_ipcrypt_pfx_keygen(pfx_key);
     printf("OK: Key generation functions\n");

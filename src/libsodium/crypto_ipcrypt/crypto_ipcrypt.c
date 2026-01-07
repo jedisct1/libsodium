@@ -99,6 +99,12 @@ crypto_ipcrypt_keygen(unsigned char k[crypto_ipcrypt_KEYBYTES])
 }
 
 void
+crypto_ipcrypt_nd_keygen(unsigned char k[crypto_ipcrypt_ND_KEYBYTES])
+{
+    randombytes_buf(k, crypto_ipcrypt_ND_KEYBYTES);
+}
+
+void
 crypto_ipcrypt_ndx_keygen(unsigned char k[crypto_ipcrypt_NDX_KEYBYTES])
 {
     randombytes_buf(k, crypto_ipcrypt_NDX_KEYBYTES);
