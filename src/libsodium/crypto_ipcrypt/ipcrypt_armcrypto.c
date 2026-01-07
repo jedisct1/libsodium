@@ -37,7 +37,7 @@ typedef uint64x2_t BlockVec;
 #    define XOR128_3(a, b, c) veorq_u64(veorq_u64((a), (b)), (c))
 #    define SET64x2(a, b)     vsetq_lane_u64((uint64_t) (a), vmovq_n_u64((uint64_t) (b)), 1)
 #    define BYTESHL128(a, b) \
-        vreinterpretq_u64_u8(vextq_s8(vdupq_n_s8(0), vreinterpretq_s8_u64(a), 16 - (b)))
+        vreinterpretq_u64_u8(vextq_u8(vdupq_n_u8(0), vreinterpretq_u8_u64(a), 16 - (b)))
 
 #    define AES_XENCRYPT(block_vec, rkey) \
         vreinterpretq_u64_u8(             \
@@ -348,12 +348,12 @@ pfx_set_bit(uint8_t ip16[16], const unsigned int bit_index, const uint8_t bit_va
 static void
 pfx_shift_left(uint8_t ip16[16])
 {
-    BlockVec       v       = LOAD128(ip16);
-    const BlockVec shl     = vshlq_n_u8(vreinterpretq_u8_u64(v), 1);
-    const BlockVec msb     = vshrq_n_u8(vreinterpretq_u8_u64(v), 7);
-    const BlockVec zero    = vdupq_n_u8(0);
-    const BlockVec carries = vextq_u8(vreinterpretq_u8_u64(msb), zero, 1);
-    v                      = vreinterpretq_u64_u8(vorrq_u8(shl, carries));
+    BlockVec         v       = LOAD128(ip16);
+    const uint8x16_t shl     = vshlq_n_u8(vreinterpretq_u8_u64(v), 1);
+    const uint8x16_t msb     = vshrq_n_u8(vreinterpretq_u8_u64(v), 7);
+    const uint8x16_t zero    = vdupq_n_u8(0);
+    const uint8x16_t carries = vextq_u8(msb, zero, 1);
+    v                        = vreinterpretq_u64_u8(vorrq_u8(shl, carries));
     STORE128(ip16, v);
 }
 
