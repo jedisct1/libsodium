@@ -43,6 +43,28 @@ jobs:
           pathToPublish: bin
           artifactName: libsodium
 
+  - job: "windows_2019"
+    pool:
+      vmImage: "windows-2022"
+    steps:
+      - powershell: |
+          choco install visualstudio2019buildtools --package-parameters "--add Microsoft.VisualStudio.Workload.VCTools --includeRecommended --quiet --wait" -y
+        displayName: Install VS2019 Build Tools
+      - powershell: |
+          cd builds\msvc\build
+          & .\buildbase.bat ..\vs2019\libsodium.sln 16
+        displayName: Compile it all
+      - powershell: |
+          mkdir bin\include\sodium
+          Copy-Item "src\libsodium\include\sodium\*.h" -Destination "bin\include\sodium" -Recurse
+          Copy-Item "src\libsodium\include\*.h" -Destination "bin\include\"
+        displayName: Copy header files
+      - task: PublishBuildArtifacts@1
+        condition: not(canceled())
+        inputs:
+          pathToPublish: bin
+          artifactName: libsodium
+
   - job: mingw64
     pool:
       vmImage: "windows-2022"
