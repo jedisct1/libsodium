@@ -43,28 +43,9 @@ jobs:
           pathToPublish: bin
           artifactName: libsodium
 
-  - job: "windows_2019"
-    pool:
-      vmImage: "windows-2019"
-    steps:
-      - powershell: |
-          cd builds\msvc\build
-          & .\buildbase.bat ..\vs2019\libsodium.sln 16
-        displayName: Compile it all
-      - powershell: |
-          mkdir bin\include\sodium
-          Copy-Item "src\libsodium\include\sodium\*.h" -Destination "bin\include\sodium" -Recurse
-          Copy-Item "src\libsodium\include\*.h" -Destination "bin\include\"
-        displayName: Copy header files
-      - task: PublishBuildArtifacts@1
-        condition: not(canceled())
-        inputs:
-          pathToPublish: bin
-          artifactName: libsodium
-
   - job: mingw64
     pool:
-      vmImage: "windows-2019"
+      vmImage: "windows-2022"
     steps:
       - powershell: |
           (New-Object Net.WebClient).DownloadFile("https://github.com/msys2/msys2-installer/releases/download/2025-12-13/msys2-base-x86_64-20251213.sfx.exe", "sfx.exe")
@@ -103,7 +84,7 @@ jobs:
 
   - job: mingw32
     pool:
-      vmImage: "windows-2019"
+      vmImage: "windows-2022"
     steps:
       - powershell: |
           (New-Object Net.WebClient).DownloadFile("https://github.com/msys2/msys2-installer/releases/download/2025-12-13/msys2-base-x86_64-20251213.sfx.exe", "sfx.exe")
