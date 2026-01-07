@@ -1,3 +1,6 @@
+* Version 1.0.21-stable
+ - Fixed compilation with GCC on aarch64.
+
 * Version 1.0.21
   This point release includes all the changes from 1.0.20-stable, which
 include a security fix for the `crypto_core_ed25519_is_valid_point()`
