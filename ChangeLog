@@ -1,6 +1,7 @@
 * Version 1.0.21-stable
  - Export missing crypto_ipcrypt_nd_keygen() helper function.
  - Fixed compilation with GCC on aarch64.
+ - Libsodium can be directly used as a dependency in a Zig project.
 
 * Version 1.0.21
   This point release includes all the changes from 1.0.20-stable, which
