@@ -229,6 +229,27 @@ jobs:
           make check
           make distclean > /dev/null
 
+  aarch64-gcc-sha3:
+    runs-on: ubuntu-24.04-arm
+    steps:
+      - uses: actions/checkout@v6
+
+      - name: Update packages list
+        run: sudo apt-get update
+
+      - name: Install dependencies
+        run: sudo apt-get install -y build-essential libtool autoconf automake
+
+      - name: Autogen
+        run: ./autogen.sh -s
+
+      - name: Compilation with GCC on aarch64 with NEON, ARM Crypto, and SHA3 extensions
+        run: |
+          env CFLAGS="-march=armv8-a+crypto+sha3" CPPFLAGS="-DDEV_MODE=1" ./configure --disable-dependency-tracking
+          make -j $(nproc)
+          make check
+          make distclean > /dev/null
+
   android:
     runs-on: ubuntu-latest
     steps:
