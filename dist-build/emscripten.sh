@@ -120,6 +120,20 @@ if [ "$DIST" = yes ]; then
         };
         randomValuesStandard();
         Module.getRandomValue = randomValuesStandard;
+        Module.getRandomBytes = function(ptr, size) {
+          var heapu8 = Module.HEAPU8;
+          var chunk = 65536;
+          while (size > chunk) {
+            var buf = new Uint8Array(chunk);
+            crypto_.getRandomValues(buf);
+            heapu8.set(buf, ptr);
+            ptr += chunk;
+            size -= chunk;
+          }
+          var buf = new Uint8Array(size);
+          crypto_.getRandomValues(buf);
+          heapu8.set(buf, ptr);
+        };
       } catch (e) {
         try {
           var crypto = require('crypto');
@@ -129,6 +143,10 @@ if [ "$DIST" = yes ]; then
           };
           randomValueNodeJS();
           Module.getRandomValue = randomValueNodeJS;
+          Module.getRandomBytes = function(ptr, size) {
+            var buf = crypto['randomBytes'](size);
+            Module.HEAPU8.set(buf, ptr);
+          };
         } catch (e) {
           throw 'No secure random number generator found';
         }
