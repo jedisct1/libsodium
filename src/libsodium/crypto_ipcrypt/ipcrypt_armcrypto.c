@@ -340,7 +340,7 @@ pfx_set_bit(uint8_t ip16[16], const unsigned int bit_index, const uint8_t bit_va
     uint8_t       mask       = (uint8_t) -((bit_value & 1));
 
 #    if defined(__GNUC__) || defined(__clang__)
-    __asm__ __volatile__("" : "+r"(mask)::);
+    __asm__ __volatile__("" : "+r"(mask) :);
 #    endif
     ip16[byte_index] = (ip16[byte_index] & ~bit_mask) | (bit_mask & mask);
 }
