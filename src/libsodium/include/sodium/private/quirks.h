@@ -93,6 +93,14 @@
 #define sc25519_mul _sodium_sc25519_mul
 #define sc25519_muladd _sodium_sc25519_muladd
 #define sc25519_reduce _sodium_sc25519_reduce
+#define sha3256_ref _sodium_sha3256_ref
+#define sha3256_ref_final _sodium_sha3256_ref_final
+#define sha3256_ref_init _sodium_sha3256_ref_init
+#define sha3256_ref_update _sodium_sha3256_ref_update
+#define sha3512_ref _sodium_sha3512_ref
+#define sha3512_ref_final _sodium_sha3512_ref_final
+#define sha3512_ref_init _sodium_sha3512_ref_init
+#define sha3512_ref_update _sodium_sha3512_ref_update
 #define shake128_ref _sodium_shake128_ref
 #define shake128_ref_init _sodium_shake128_ref_init
 #define shake128_ref_init_with_domain _sodium_shake128_ref_init_with_domain
