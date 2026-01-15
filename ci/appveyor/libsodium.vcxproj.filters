@@ -381,6 +381,9 @@
     <ClCompile Include="..\..\src\libsodium\crypto_aead\chacha20poly1305\aead_chacha20poly1305.c">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\src\libsodium\crypto_kem\xwing\kem_xwing.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
     <ClCompile Include="..\..\src\libsodium\crypto_kem\mlkem768\kem_mlkem768.c">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -624,6 +627,9 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="..\..\src\libsodium\include\sodium\crypto_hash_sha3.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\libsodium\include\sodium\crypto_kem_xwing.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="..\..\src\libsodium\include\sodium\crypto_sign_ed25519.h">

@@ -34,6 +34,7 @@ SODIUM_EXPORT = \
 	sodium/crypto_kdf_hkdf_sha256.h \
 	sodium/crypto_kdf_hkdf_sha512.h \
 	sodium/crypto_kem_mlkem768.h \
+	sodium/crypto_kem_xwing.h \
 	sodium/crypto_kx.h \
 	sodium/crypto_onetimeauth.h \
 	sodium/crypto_onetimeauth_poly1305.h \

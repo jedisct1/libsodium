@@ -390,6 +390,9 @@
     <ClCompile Include="..\..\..\..\src\libsodium\crypto_aead\chacha20poly1305\aead_chacha20poly1305.c">
       <Filter>crypto_aead\chacha20poly1305</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\..\..\src\libsodium\crypto_kem\xwing\kem_xwing.c">
+      <Filter>crypto_kem\xwing</Filter>
+    </ClCompile>
     <ClCompile Include="..\..\..\..\src\libsodium\crypto_kem\mlkem768\kem_mlkem768.c">
       <Filter>crypto_kem\mlkem768</Filter>
     </ClCompile>
@@ -633,6 +636,9 @@
       <Filter>include\sodium</Filter>
     </ClInclude>
     <ClInclude Include="..\..\..\..\src\libsodium\include\sodium\crypto_hash_sha3.h">
+      <Filter>include\sodium</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\src\libsodium\include\sodium\crypto_kem_xwing.h">
       <Filter>include\sodium</Filter>
     </ClInclude>
     <ClInclude Include="..\..\..\..\src\libsodium\include\sodium\crypto_sign_ed25519.h">
@@ -1068,6 +1074,9 @@
     </Filter>
     <Filter Include="crypto_kem\mlkem768\ref">
       <UniqueIdentifier>{70a10765-f8fb-3898-8514-966e48719bc4}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="crypto_kem\xwing">
+      <UniqueIdentifier>{2ef7c851-6598-3be5-88be-9ac5ec867cb0}</UniqueIdentifier>
     </Filter>
     <Filter Include="crypto_kx">
       <UniqueIdentifier>{898b6bd5-1360-3a34-adcd-0fade7561685}</UniqueIdentifier>
