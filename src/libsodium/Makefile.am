@@ -59,6 +59,7 @@ libsodium_la_SOURCES = \
 	crypto_kdf/crypto_kdf.c \
 	crypto_kdf/hkdf/kdf_hkdf_sha256.c \
 	crypto_kdf/hkdf/kdf_hkdf_sha512.c \
+	crypto_kem/crypto_kem.c \
 	crypto_kem/mlkem768/kem_mlkem768.c \
 	crypto_kem/mlkem768/ref/kem_mlkem768_ref.c \
 	crypto_kem/mlkem768/ref/kem_mlkem768_ref.h \

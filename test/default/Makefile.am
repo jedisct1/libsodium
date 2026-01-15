@@ -49,6 +49,7 @@ EXTRA_DIST = \
 	ipcrypt.exp \
 	kdf.exp \
 	kdf_hkdf.exp \
+	kem.exp \
 	kem_mlkem768.exp \
 	kem_xwing.exp \
 	keygen.exp \
@@ -144,6 +145,7 @@ DISTCLEANFILES = \
 	ipcrypt.res \
 	kdf.res \
 	kdf_hkdf.res \
+	kem.res \
 	kem_mlkem768.res \
 	kem_xwing.res \
 	keygen.res \
@@ -244,6 +246,7 @@ TESTS_TARGETS = \
 	hash_sha3512 \
 	ipcrypt \
 	kdf \
+	kem \
 	kem_mlkem768 \
 	kem_xwing \
 	keygen \
@@ -429,6 +432,9 @@ kdf_LDADD                 = $(TESTS_LDADD)
 
 kdf_hkdf_SOURCE            = cmptest.h kdf_hkdf.c
 kdf_hkdf_LDADD             = $(TESTS_LDADD)
+
+kem_SOURCE                 = cmptest.h kem.c
+kem_LDADD                  = $(TESTS_LDADD)
 
 kem_mlkem768_SOURCE        = cmptest.h kem_mlkem768.c
 kem_mlkem768_LDADD         = $(TESTS_LDADD)
