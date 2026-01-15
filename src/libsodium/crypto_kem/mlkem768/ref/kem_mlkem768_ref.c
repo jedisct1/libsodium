@@ -1,7 +1,7 @@
 #include <stdint.h>
 #include <string.h>
 
-#include "crypto_core_keccak1600.h"
+#include "crypto_hash_sha3.h"
 #include "crypto_kem_mlkem768.h"
 #include "crypto_verify_32.h"
 #include "crypto_xof_shake128.h"
@@ -24,9 +24,6 @@
 #define MLKEM768_POLYCOMPRESSEDBYTES_DU    320
 #define MLKEM768_POLYCOMPRESSEDBYTES_DV    128
 #define MLKEM768_POLYVECCOMPRESSEDBYTES_DU (MLKEM768_K * MLKEM768_POLYCOMPRESSEDBYTES_DU)
-
-#define SHA3_512_RATE 72
-#define SHA3_DOMAIN   0x06
 
 typedef struct poly {
     int16_t coeffs[MLKEM768_N];
@@ -199,58 +196,6 @@ poly_csubq(poly *r)
     for (i = 0; i < MLKEM768_N; i++) {
         r->coeffs[i] = csubq(r->coeffs[i]);
     }
-}
-
-static void
-sha3_256(unsigned char out[32], const unsigned char *in, size_t inlen)
-{
-    crypto_xof_shake256_state state;
-
-    crypto_xof_shake256_init_with_domain(&state, SHA3_DOMAIN);
-    crypto_xof_shake256_update(&state, in, inlen);
-    crypto_xof_shake256_squeeze(&state, out, 32);
-}
-
-static void
-sha3_512(unsigned char out[64], const unsigned char *in, size_t inlen)
-{
-    crypto_core_keccak1600_state state;
-    size_t                       offset   = 0;
-    size_t                       consumed = 0;
-    size_t                       chunk_size;
-    unsigned char                pad;
-
-    crypto_core_keccak1600_init(&state);
-
-    while (consumed < inlen) {
-        if (offset == SHA3_512_RATE) {
-            crypto_core_keccak1600_permute_24(&state);
-            offset = 0;
-        }
-        chunk_size = SHA3_512_RATE - offset;
-        if (chunk_size > inlen - consumed) {
-            chunk_size = inlen - consumed;
-        }
-        crypto_core_keccak1600_xor_bytes(&state, &in[consumed], offset, chunk_size);
-        offset += chunk_size;
-        consumed += chunk_size;
-    }
-    if (offset == SHA3_512_RATE) {
-        crypto_core_keccak1600_permute_24(&state);
-        offset = 0;
-    }
-    if (offset == SHA3_512_RATE - 1) {
-        pad = SHA3_DOMAIN | 0x80;
-        crypto_core_keccak1600_xor_bytes(&state, &pad, offset, 1);
-    } else {
-        pad = SHA3_DOMAIN;
-        crypto_core_keccak1600_xor_bytes(&state, &pad, offset, 1);
-        pad = 0x80;
-        crypto_core_keccak1600_xor_bytes(&state, &pad, SHA3_512_RATE - 1, 1);
-    }
-
-    crypto_core_keccak1600_permute_24(&state);
-    crypto_core_keccak1600_extract_bytes(&state, out, 0, 64);
 }
 
 static void
@@ -620,7 +565,7 @@ indcpa_keypair(unsigned char       pk[crypto_kem_mlkem768_PUBLICKEYBYTES],
     unsigned int   i;
     uint8_t        nonce = 0;
 
-    sha3_512(buf, seed, 33);
+    crypto_hash_sha3512(buf, seed, 33);
 
     gen_matrix(a, publicseed, 0);
 
@@ -755,8 +700,8 @@ mlkem768_ref_seed_keypair(unsigned char *pk, unsigned char *sk, const unsigned c
 
     indcpa_keypair(pk, sk, indseed);
     memcpy(sk + MLKEM768_POLYVECBYTES, pk, crypto_kem_mlkem768_PUBLICKEYBYTES);
-    sha3_256(sk + MLKEM768_POLYVECBYTES + crypto_kem_mlkem768_PUBLICKEYBYTES, pk,
-             crypto_kem_mlkem768_PUBLICKEYBYTES);
+    crypto_hash_sha3256(sk + MLKEM768_POLYVECBYTES + crypto_kem_mlkem768_PUBLICKEYBYTES, pk,
+                        crypto_kem_mlkem768_PUBLICKEYBYTES);
     memcpy(sk + MLKEM768_POLYVECBYTES + crypto_kem_mlkem768_PUBLICKEYBYTES + 32, seed + 32, 32);
 
     return 0;
@@ -785,9 +730,9 @@ mlkem768_ref_enc_deterministic(unsigned char *ct, unsigned char *ss, const unsig
     }
 
     memcpy(buf, seed, 32);
-    sha3_256(buf + 32, pk, crypto_kem_mlkem768_PUBLICKEYBYTES);
+    crypto_hash_sha3256(buf + 32, pk, crypto_kem_mlkem768_PUBLICKEYBYTES);
 
-    sha3_512(kr, buf, 64);
+    crypto_hash_sha3512(kr, buf, 64);
 
     indcpa_enc(ct, buf, pk, kr + 32);
 
@@ -822,7 +767,7 @@ mlkem768_ref_dec(unsigned char *ss, const unsigned char *ct, const unsigned char
 
     memcpy(buf + 32, hpk, 32);
 
-    sha3_512(kr, buf, 64);
+    crypto_hash_sha3512(kr, buf, 64);
 
     indcpa_enc(cmp, buf, pk, kr + 32);
 
