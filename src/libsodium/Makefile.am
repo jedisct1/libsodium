@@ -51,8 +51,6 @@ libsodium_la_SOURCES = \
 	crypto_hash/sha512/hash_sha512.c \
 	crypto_hash/sha512/cp/hash_sha512_cp.c \
 	crypto_hash/sha3/hash_sha3.c \
-	crypto_hash/sha3/ref/sha3_ref.c \
-	crypto_hash/sha3/ref/sha3_ref.h \
 	crypto_ipcrypt/crypto_ipcrypt.c \
 	crypto_ipcrypt/ipcrypt_soft.c \
 	crypto_ipcrypt/ipcrypt_soft.h \

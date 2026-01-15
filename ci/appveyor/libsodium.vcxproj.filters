@@ -336,9 +336,6 @@
     <ClCompile Include="..\..\src\libsodium\crypto_hash\sha3\hash_sha3.c">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\src\libsodium\crypto_hash\sha3\ref\sha3_ref.c">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="..\..\src\libsodium\crypto_hash\sha256\hash_sha256.c">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -477,9 +474,6 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="..\..\src\libsodium\include\sodium\core.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\src\libsodium\include\sodium\version.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="..\..\src\libsodium\include\sodium\export.h">
@@ -861,9 +855,6 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="..\..\src\libsodium\crypto_stream\salsa20\xmm6\salsa20_xmm6.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\src\libsodium\crypto_hash\sha3\ref\sha3_ref.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="..\..\src\libsodium\crypto_aead\aegis128l\aegis128l_armcrypto.h">
