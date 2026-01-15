@@ -7,7 +7,10 @@
 #define argon2_decode_string _sodium_argon2_decode_string
 #define argon2_encode_string _sodium_argon2_encode_string
 #define argon2_fill_memory_blocks _sodium_argon2_fill_memory_blocks
+#define argon2_fill_segment_avx2 _sodium_argon2_fill_segment_avx2
+#define argon2_fill_segment_avx512f _sodium_argon2_fill_segment_avx512f
 #define argon2_fill_segment_ref _sodium_argon2_fill_segment_ref
+#define argon2_fill_segment_ssse3 _sodium_argon2_fill_segment_ssse3
 #define argon2_finalize _sodium_argon2_finalize
 #define argon2_hash _sodium_argon2_hash
 #define argon2_initialize _sodium_argon2_initialize
@@ -20,7 +23,10 @@
 #define argon2id_hash_raw _sodium_argon2id_hash_raw
 #define argon2id_verify _sodium_argon2id_verify
 #define blake2b _sodium_blake2b
+#define blake2b_compress_avx2 _sodium_blake2b_compress_avx2
 #define blake2b_compress_ref _sodium_blake2b_compress_ref
+#define blake2b_compress_sse41 _sodium_blake2b_compress_sse41
+#define blake2b_compress_ssse3 _sodium_blake2b_compress_ssse3
 #define blake2b_final _sodium_blake2b_final
 #define blake2b_init _sodium_blake2b_init
 #define blake2b_init_key _sodium_blake2b_init_key
@@ -39,6 +45,7 @@
 #define escrypt_gensalt_r _sodium_escrypt_gensalt_r
 #define escrypt_init_local _sodium_escrypt_init_local
 #define escrypt_kdf_nosse _sodium_escrypt_kdf_nosse
+#define escrypt_kdf_sse _sodium_escrypt_kdf_sse
 #define escrypt_parse_setting _sodium_escrypt_parse_setting
 #define escrypt_r _sodium_escrypt_r
 #define fe25519_frombytes _sodium_fe25519_frombytes
