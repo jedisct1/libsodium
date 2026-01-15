@@ -2,10 +2,7 @@ argon2_ctx
 argon2_decode_string
 argon2_encode_string
 argon2_fill_memory_blocks
-argon2_fill_segment_avx2
-argon2_fill_segment_avx512f
 argon2_fill_segment_ref
-argon2_fill_segment_ssse3
 argon2_finalize
 argon2_hash
 argon2_initialize
@@ -18,10 +15,7 @@ argon2id_hash_encoded
 argon2id_hash_raw
 argon2id_verify
 blake2b
-blake2b_compress_avx2
 blake2b_compress_ref
-blake2b_compress_sse41
-blake2b_compress_ssse3
 blake2b_final
 blake2b_init
 blake2b_init_key
@@ -38,7 +32,6 @@ crypto_aead_aegis128l_decrypt
 crypto_aead_aegis128l_decrypt_detached
 crypto_aead_aegis128l_encrypt
 crypto_aead_aegis128l_encrypt_detached
-crypto_aead_aegis128l_is_available
 crypto_aead_aegis128l_keybytes
 crypto_aead_aegis128l_keygen
 crypto_aead_aegis128l_messagebytes_max
@@ -49,7 +42,6 @@ crypto_aead_aegis256_decrypt
 crypto_aead_aegis256_decrypt_detached
 crypto_aead_aegis256_encrypt
 crypto_aead_aegis256_encrypt_detached
-crypto_aead_aegis256_is_available
 crypto_aead_aegis256_keybytes
 crypto_aead_aegis256_keygen
 crypto_aead_aegis256_messagebytes_max
@@ -204,7 +196,6 @@ crypto_core_ed25519_add
 crypto_core_ed25519_bytes
 crypto_core_ed25519_from_string
 crypto_core_ed25519_from_string_ro
-crypto_core_ed25519_from_uniform
 crypto_core_ed25519_hashbytes
 crypto_core_ed25519_is_valid_point
 crypto_core_ed25519_nonreducedscalarbytes
@@ -515,13 +506,10 @@ crypto_pwhash_strbytes
 crypto_pwhash_strprefix
 crypto_scalarmult
 crypto_scalarmult_base
-crypto_scalarmult_base_noclamp
 crypto_scalarmult_bytes
 crypto_scalarmult_curve25519
 crypto_scalarmult_curve25519_base
-crypto_scalarmult_curve25519_base_noclamp
 crypto_scalarmult_curve25519_bytes
-crypto_scalarmult_curve25519_noclamp
 crypto_scalarmult_curve25519_scalarbytes
 crypto_scalarmult_ed25519
 crypto_scalarmult_ed25519_base
@@ -529,7 +517,6 @@ crypto_scalarmult_ed25519_base_noclamp
 crypto_scalarmult_ed25519_bytes
 crypto_scalarmult_ed25519_noclamp
 crypto_scalarmult_ed25519_scalarbytes
-crypto_scalarmult_noclamp
 crypto_scalarmult_primitive
 crypto_scalarmult_ristretto255
 crypto_scalarmult_ristretto255_base
@@ -598,7 +585,6 @@ crypto_sign_bytes
 crypto_sign_detached
 crypto_sign_ed25519
 crypto_sign_ed25519_bytes
-crypto_sign_ed25519_contextbytes_max
 crypto_sign_ed25519_detached
 crypto_sign_ed25519_keypair
 crypto_sign_ed25519_messagebytes_max
@@ -613,8 +599,6 @@ crypto_sign_ed25519_sk_to_pk
 crypto_sign_ed25519_sk_to_seed
 crypto_sign_ed25519_verify_detached
 crypto_sign_ed25519ph_final_create
-crypto_sign_ed25519ph_final_ctx_create
-crypto_sign_ed25519ph_final_ctx_verify
 crypto_sign_ed25519ph_final_verify
 crypto_sign_ed25519ph_init
 crypto_sign_ed25519ph_statebytes
@@ -734,7 +718,6 @@ escrypt_free_region
 escrypt_gensalt_r
 escrypt_init_local
 escrypt_kdf_nosse
-escrypt_kdf_sse
 escrypt_parse_setting
 escrypt_r
 fe25519_frombytes
@@ -792,14 +775,6 @@ sc25519_is_canonical
 sc25519_mul
 sc25519_muladd
 sc25519_reduce
-sha3256_ref
-sha3256_ref_final
-sha3256_ref_init
-sha3256_ref_update
-sha3512_ref
-sha3512_ref_final
-sha3512_ref_init
-sha3512_ref_update
 shake128_ref
 shake128_ref_init
 shake128_ref_init_with_domain
@@ -817,7 +792,6 @@ sodium_base64_encoded_len
 sodium_bin2base64
 sodium_bin2hex
 sodium_bin2ip
-sodium_bytes2ip
 sodium_compare
 sodium_crit_enter
 sodium_crit_leave
@@ -826,7 +800,6 @@ sodium_hex2bin
 sodium_increment
 sodium_init
 sodium_ip2bin
-sodium_ip2bytes
 sodium_is_zero
 sodium_library_minimal
 sodium_library_version_major
@@ -853,14 +826,8 @@ sodium_runtime_has_sse2
 sodium_runtime_has_sse3
 sodium_runtime_has_sse41
 sodium_runtime_has_ssse3
-sodium_scalarmult_curve25519_sandy2x_fe51_mul
-sodium_scalarmult_curve25519_sandy2x_fe51_nsquare
-sodium_scalarmult_curve25519_sandy2x_fe51_pack
-sodium_scalarmult_curve25519_sandy2x_ladder
 sodium_set_misuse_handler
 sodium_stackzero
-sodium_stream_salsa20_xmm6
-sodium_stream_salsa20_xmm6_xor_ic
 sodium_sub
 sodium_unpad
 sodium_version_string
