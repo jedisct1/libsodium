@@ -26,6 +26,7 @@ SODIUM_EXPORT = \
 	sodium/crypto_generichash_blake2b.h \
 	sodium/crypto_hash.h \
 	sodium/crypto_hash_sha256.h \
+	sodium/crypto_hash_sha3.h \
 	sodium/crypto_hash_sha512.h \
 	sodium/crypto_ipcrypt.h \
 	sodium/crypto_kdf.h \

@@ -123,6 +123,8 @@ test/default/generichash2
 test/default/generichash3
 test/default/hash
 test/default/hash3
+test/default/hash_sha3256
+test/default/hash_sha3512
 test/default/ipcrypt
 test/default/kdf
 test/default/kdf_hkdf

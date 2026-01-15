@@ -44,6 +44,8 @@ EXTRA_DIST = \
 	generichash3.exp \
 	hash.exp \
 	hash3.exp \
+	hash_sha3256.exp \
+	hash_sha3512.exp \
 	ipcrypt.exp \
 	kdf.exp \
 	kdf_hkdf.exp \
@@ -136,6 +138,8 @@ DISTCLEANFILES = \
 	hash.res \
 	hash2.res \
 	hash3.res \
+	hash_sha3256.res \
+	hash_sha3512.res \
 	ipcrypt.res \
 	kdf.res \
 	kdf_hkdf.res \
@@ -234,6 +238,8 @@ TESTS_TARGETS = \
 	generichash3 \
 	hash \
 	hash3 \
+	hash_sha3256 \
+	hash_sha3512 \
 	ipcrypt \
 	kdf \
 	kem_mlkem768 \
@@ -405,6 +411,12 @@ hash_LDADD                = $(TESTS_LDADD)
 
 hash3_SOURCE              = cmptest.h hash3.c
 hash3_LDADD               = $(TESTS_LDADD)
+
+hash_sha3256_SOURCE       = cmptest.h hash_sha3256.c
+hash_sha3256_LDADD        = $(TESTS_LDADD)
+
+hash_sha3512_SOURCE       = cmptest.h hash_sha3512.c
+hash_sha3512_LDADD        = $(TESTS_LDADD)
 
 ipcrypt_SOURCE            = cmptest.h ipcrypt.c
 ipcrypt_LDADD             = $(TESTS_LDADD)

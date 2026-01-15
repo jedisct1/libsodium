@@ -26,6 +26,7 @@
 #include "sodium/crypto_generichash_blake2b.h"
 #include "sodium/crypto_hash.h"
 #include "sodium/crypto_hash_sha256.h"
+#include "sodium/crypto_hash_sha3.h"
 #include "sodium/crypto_hash_sha512.h"
 #include "sodium/crypto_ipcrypt.h"
 #include "sodium/crypto_kdf.h"
