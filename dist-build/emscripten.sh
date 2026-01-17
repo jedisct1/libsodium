@@ -16,8 +16,6 @@ export LDFLAGS="${LDFLAGS} -s DISABLE_EXCEPTION_CATCHING=1"
 export LDFLAGS="${LDFLAGS} -s NODEJS_CATCH_EXIT=0"
 export LDFLAGS="${LDFLAGS} -s NODEJS_CATCH_REJECTION=0"
 export LDFLAGS="${LDFLAGS} -s WASM_BIGINT=0"
-export LDFLAGS="${LDFLAGS} -flto"
-export CFLAGS="${CFLAGS:+${CFLAGS} }-flto"
 
 echo
 if [ "$1" = "--standard" ]; then
