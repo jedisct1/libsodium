@@ -261,7 +261,9 @@ libarmcrypto_la_SOURCES = \
 	crypto_aead/aegis256/aegis256_armcrypto.h \
 	crypto_aead/aes256gcm/armcrypto/aead_aes256gcm_armcrypto.c \
 	crypto_ipcrypt/ipcrypt_armcrypto.c \
-	crypto_ipcrypt/ipcrypt_armcrypto.h
+	crypto_ipcrypt/ipcrypt_armcrypto.h \
+	crypto_pwhash/argon2/argon2-fill-block-neon.c \
+	crypto_pwhash/argon2/blamka-round-neon.h
 
 libaesni_la_LDFLAGS = $(libsodium_la_LDFLAGS)
 libaesni_la_CPPFLAGS = $(libsodium_la_CPPFLAGS) \
