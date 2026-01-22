@@ -45,7 +45,12 @@
 # define MAP_POPULATE 0
 #endif
 
+#if (defined(__aarch64__) || defined(_M_ARM64)) && \
+    (defined(__ARM_NEON) || defined(__ARM_NEON__))
+static fill_segment_fn fill_segment = argon2_fill_segment_neon;
+#else
 static fill_segment_fn fill_segment = argon2_fill_segment_ref;
+#endif
 
 static void
 load_block(block *dst, const void *input)
@@ -520,7 +525,12 @@ argon2_pick_best_implementation(void)
         return 0;
     }
 #endif
+#if (defined(__aarch64__) || defined(_M_ARM64)) && \
+    (defined(__ARM_NEON) || defined(__ARM_NEON__))
+    fill_segment = argon2_fill_segment_neon;
+#else
     fill_segment = argon2_fill_segment_ref;
+#endif
 
     return 0;
     /* LCOV_EXCL_STOP */
