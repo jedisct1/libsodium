@@ -87,6 +87,9 @@
     <ClCompile Include="..\..\..\..\src\libsodium\crypto_pwhash\argon2\blake2b-long.c">
       <Filter>crypto_pwhash\argon2</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\..\..\src\libsodium\crypto_pwhash\argon2\argon2-fill-block-wasm32.c">
+      <Filter>crypto_pwhash\argon2</Filter>
+    </ClCompile>
     <ClCompile Include="..\..\..\..\src\libsodium\crypto_pwhash\argon2\argon2-core.c">
       <Filter>crypto_pwhash\argon2</Filter>
     </ClCompile>
@@ -476,9 +479,6 @@
     <ClInclude Include="..\..\..\..\src\libsodium\include\sodium\core.h">
       <Filter>include\sodium</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\..\..\src\libsodium\include\sodium\version.h">
-      <Filter>include\sodium</Filter>
-    </ClInclude>
     <ClInclude Include="..\..\..\..\src\libsodium\include\sodium\export.h">
       <Filter>include\sodium</Filter>
     </ClInclude>
@@ -708,6 +708,9 @@
       <Filter>crypto_pwhash\argon2</Filter>
     </ClInclude>
     <ClInclude Include="..\..\..\..\src\libsodium\crypto_pwhash\argon2\blamka-round-avx2.h">
+      <Filter>crypto_pwhash\argon2</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\src\libsodium\crypto_pwhash\argon2\blamka-round-wasm32.h">
       <Filter>crypto_pwhash\argon2</Filter>
     </ClInclude>
     <ClInclude Include="..\..\..\..\src\libsodium\crypto_pwhash\argon2\argon2.h">

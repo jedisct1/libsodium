@@ -522,6 +522,10 @@ static int
 argon2_pick_best_implementation(void)
 {
 /* LCOV_EXCL_START */
+#if defined(__wasm_simd128__)
+    fill_segment = argon2_fill_segment_wasm32;
+    return 0;
+#endif
 #if defined(HAVE_AVX512FINTRIN_H) && defined(HAVE_AVX2INTRIN_H) && \
     defined(HAVE_TMMINTRIN_H) && defined(HAVE_SMMINTRIN_H) && \
     !defined(__APPLE__)
