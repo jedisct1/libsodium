@@ -238,7 +238,8 @@ am_libarmcrypto_la_OBJECTS =  \
 	crypto_aead/aegis128l/libarmcrypto_la-aegis128l_armcrypto.lo \
 	crypto_aead/aegis256/libarmcrypto_la-aegis256_armcrypto.lo \
 	crypto_aead/aes256gcm/armcrypto/libarmcrypto_la-aead_aes256gcm_armcrypto.lo \
-	crypto_ipcrypt/libarmcrypto_la-ipcrypt_armcrypto.lo
+	crypto_ipcrypt/libarmcrypto_la-ipcrypt_armcrypto.lo \
+	crypto_pwhash/argon2/libarmcrypto_la-argon2-fill-block-neon.lo
 libarmcrypto_la_OBJECTS = $(am_libarmcrypto_la_OBJECTS)
 libarmcrypto_la_LINK = $(LIBTOOL) $(AM_V_lt) --tag=CC \
 	$(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=link $(CCLD) \
@@ -667,6 +668,7 @@ am__depfiles_remade = crypto_aead/aegis128l/$(DEPDIR)/libaesni_la-aegis128l_aesn
 	crypto_onetimeauth/poly1305/donna/$(DEPDIR)/libsodium_la-poly1305_donna.Plo \
 	crypto_onetimeauth/poly1305/sse2/$(DEPDIR)/libsse2_la-poly1305_sse2.Plo \
 	crypto_pwhash/$(DEPDIR)/libsodium_la-crypto_pwhash.Plo \
+	crypto_pwhash/argon2/$(DEPDIR)/libarmcrypto_la-argon2-fill-block-neon.Plo \
 	crypto_pwhash/argon2/$(DEPDIR)/libavx2_la-argon2-fill-block-avx2.Plo \
 	crypto_pwhash/argon2/$(DEPDIR)/libavx512f_la-argon2-fill-block-avx512f.Plo \
 	crypto_pwhash/argon2/$(DEPDIR)/libsodium_la-argon2-core.Plo \
@@ -1190,7 +1192,9 @@ libarmcrypto_la_SOURCES = \
 	crypto_aead/aegis256/aegis256_armcrypto.h \
 	crypto_aead/aes256gcm/armcrypto/aead_aes256gcm_armcrypto.c \
 	crypto_ipcrypt/ipcrypt_armcrypto.c \
-	crypto_ipcrypt/ipcrypt_armcrypto.h
+	crypto_ipcrypt/ipcrypt_armcrypto.h \
+	crypto_pwhash/argon2/argon2-fill-block-neon.c \
+	crypto_pwhash/argon2/blamka-round-neon.h
 
 libaesni_la_LDFLAGS = $(libsodium_la_LDFLAGS)
 libaesni_la_CPPFLAGS = $(libsodium_la_CPPFLAGS) \
@@ -1394,6 +1398,15 @@ crypto_aead/aes256gcm/armcrypto/libarmcrypto_la-aead_aes256gcm_armcrypto.lo:  \
 crypto_ipcrypt/libarmcrypto_la-ipcrypt_armcrypto.lo:  \
 	crypto_ipcrypt/$(am__dirstamp) \
 	crypto_ipcrypt/$(DEPDIR)/$(am__dirstamp)
+crypto_pwhash/argon2/$(am__dirstamp):
+	@$(MKDIR_P) crypto_pwhash/argon2
+	@: >>crypto_pwhash/argon2/$(am__dirstamp)
+crypto_pwhash/argon2/$(DEPDIR)/$(am__dirstamp):
+	@$(MKDIR_P) crypto_pwhash/argon2/$(DEPDIR)
+	@: >>crypto_pwhash/argon2/$(DEPDIR)/$(am__dirstamp)
+crypto_pwhash/argon2/libarmcrypto_la-argon2-fill-block-neon.lo:  \
+	crypto_pwhash/argon2/$(am__dirstamp) \
+	crypto_pwhash/argon2/$(DEPDIR)/$(am__dirstamp)
 
 libarmcrypto.la: $(libarmcrypto_la_OBJECTS) $(libarmcrypto_la_DEPENDENCIES) $(EXTRA_libarmcrypto_la_DEPENDENCIES) 
 	$(AM_V_CCLD)$(libarmcrypto_la_LINK)  $(libarmcrypto_la_OBJECTS) $(libarmcrypto_la_LIBADD) $(LIBS)
@@ -1406,12 +1419,6 @@ crypto_generichash/blake2b/ref/$(DEPDIR)/$(am__dirstamp):
 crypto_generichash/blake2b/ref/libavx2_la-blake2b-compress-avx2.lo:  \
 	crypto_generichash/blake2b/ref/$(am__dirstamp) \
 	crypto_generichash/blake2b/ref/$(DEPDIR)/$(am__dirstamp)
-crypto_pwhash/argon2/$(am__dirstamp):
-	@$(MKDIR_P) crypto_pwhash/argon2
-	@: >>crypto_pwhash/argon2/$(am__dirstamp)
-crypto_pwhash/argon2/$(DEPDIR)/$(am__dirstamp):
-	@$(MKDIR_P) crypto_pwhash/argon2/$(DEPDIR)
-	@: >>crypto_pwhash/argon2/$(DEPDIR)/$(am__dirstamp)
 crypto_pwhash/argon2/libavx2_la-argon2-fill-block-avx2.lo:  \
 	crypto_pwhash/argon2/$(am__dirstamp) \
 	crypto_pwhash/argon2/$(DEPDIR)/$(am__dirstamp)
@@ -2542,6 +2549,7 @@ distclean-compile:
 @AMDEP_TRUE@@am__include@ @am__quote@crypto_onetimeauth/poly1305/donna/$(DEPDIR)/libsodium_la-poly1305_donna.Plo@am__quote@ # am--include-marker
 @AMDEP_TRUE@@am__include@ @am__quote@crypto_onetimeauth/poly1305/sse2/$(DEPDIR)/libsse2_la-poly1305_sse2.Plo@am__quote@ # am--include-marker
 @AMDEP_TRUE@@am__include@ @am__quote@crypto_pwhash/$(DEPDIR)/libsodium_la-crypto_pwhash.Plo@am__quote@ # am--include-marker
+@AMDEP_TRUE@@am__include@ @am__quote@crypto_pwhash/argon2/$(DEPDIR)/libarmcrypto_la-argon2-fill-block-neon.Plo@am__quote@ # am--include-marker
 @AMDEP_TRUE@@am__include@ @am__quote@crypto_pwhash/argon2/$(DEPDIR)/libavx2_la-argon2-fill-block-avx2.Plo@am__quote@ # am--include-marker
 @AMDEP_TRUE@@am__include@ @am__quote@crypto_pwhash/argon2/$(DEPDIR)/libavx512f_la-argon2-fill-block-avx512f.Plo@am__quote@ # am--include-marker
 @AMDEP_TRUE@@am__include@ @am__quote@crypto_pwhash/argon2/$(DEPDIR)/libsodium_la-argon2-core.Plo@am__quote@ # am--include-marker
@@ -2742,6 +2750,13 @@ crypto_ipcrypt/libarmcrypto_la-ipcrypt_armcrypto.lo: crypto_ipcrypt/ipcrypt_armc
 @AMDEP_TRUE@@am__fastdepCC_FALSE@	$(AM_V_CC)source='crypto_ipcrypt/ipcrypt_armcrypto.c' object='crypto_ipcrypt/libarmcrypto_la-ipcrypt_armcrypto.lo' libtool=yes @AMDEPBACKSLASH@
 @AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
 @am__fastdepCC_FALSE@	$(AM_V_CC@am__nodep@)$(LIBTOOL) $(AM_V_lt) --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libarmcrypto_la_CPPFLAGS) $(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS) -c -o crypto_ipcrypt/libarmcrypto_la-ipcrypt_armcrypto.lo `test -f 'crypto_ipcrypt/ipcrypt_armcrypto.c' || echo '$(srcdir)/'`crypto_ipcrypt/ipcrypt_armcrypto.c
+
+crypto_pwhash/argon2/libarmcrypto_la-argon2-fill-block-neon.lo: crypto_pwhash/argon2/argon2-fill-block-neon.c
+@am__fastdepCC_TRUE@	$(AM_V_CC)$(LIBTOOL) $(AM_V_lt) --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libarmcrypto_la_CPPFLAGS) $(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS) -MT crypto_pwhash/argon2/libarmcrypto_la-argon2-fill-block-neon.lo -MD -MP -MF crypto_pwhash/argon2/$(DEPDIR)/libarmcrypto_la-argon2-fill-block-neon.Tpo -c -o crypto_pwhash/argon2/libarmcrypto_la-argon2-fill-block-neon.lo `test -f 'crypto_pwhash/argon2/argon2-fill-block-neon.c' || echo '$(srcdir)/'`crypto_pwhash/argon2/argon2-fill-block-neon.c
+@am__fastdepCC_TRUE@	$(AM_V_at)$(am__mv) crypto_pwhash/argon2/$(DEPDIR)/libarmcrypto_la-argon2-fill-block-neon.Tpo crypto_pwhash/argon2/$(DEPDIR)/libarmcrypto_la-argon2-fill-block-neon.Plo
+@AMDEP_TRUE@@am__fastdepCC_FALSE@	$(AM_V_CC)source='crypto_pwhash/argon2/argon2-fill-block-neon.c' object='crypto_pwhash/argon2/libarmcrypto_la-argon2-fill-block-neon.lo' libtool=yes @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCC_FALSE@	$(AM_V_CC@am__nodep@)$(LIBTOOL) $(AM_V_lt) --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libarmcrypto_la_CPPFLAGS) $(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS) -c -o crypto_pwhash/argon2/libarmcrypto_la-argon2-fill-block-neon.lo `test -f 'crypto_pwhash/argon2/argon2-fill-block-neon.c' || echo '$(srcdir)/'`crypto_pwhash/argon2/argon2-fill-block-neon.c
 
 crypto_generichash/blake2b/ref/libavx2_la-blake2b-compress-avx2.lo: crypto_generichash/blake2b/ref/blake2b-compress-avx2.c
 @am__fastdepCC_TRUE@	$(AM_V_CC)$(LIBTOOL) $(AM_V_lt) --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libavx2_la_CPPFLAGS) $(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS) -MT crypto_generichash/blake2b/ref/libavx2_la-blake2b-compress-avx2.lo -MD -MP -MF crypto_generichash/blake2b/ref/$(DEPDIR)/libavx2_la-blake2b-compress-avx2.Tpo -c -o crypto_generichash/blake2b/ref/libavx2_la-blake2b-compress-avx2.lo `test -f 'crypto_generichash/blake2b/ref/blake2b-compress-avx2.c' || echo '$(srcdir)/'`crypto_generichash/blake2b/ref/blake2b-compress-avx2.c
@@ -4189,6 +4204,7 @@ distclean: distclean-recursive
 	-rm -f crypto_onetimeauth/poly1305/donna/$(DEPDIR)/libsodium_la-poly1305_donna.Plo
 	-rm -f crypto_onetimeauth/poly1305/sse2/$(DEPDIR)/libsse2_la-poly1305_sse2.Plo
 	-rm -f crypto_pwhash/$(DEPDIR)/libsodium_la-crypto_pwhash.Plo
+	-rm -f crypto_pwhash/argon2/$(DEPDIR)/libarmcrypto_la-argon2-fill-block-neon.Plo
 	-rm -f crypto_pwhash/argon2/$(DEPDIR)/libavx2_la-argon2-fill-block-avx2.Plo
 	-rm -f crypto_pwhash/argon2/$(DEPDIR)/libavx512f_la-argon2-fill-block-avx512f.Plo
 	-rm -f crypto_pwhash/argon2/$(DEPDIR)/libsodium_la-argon2-core.Plo
@@ -4371,6 +4387,7 @@ maintainer-clean: maintainer-clean-recursive
 	-rm -f crypto_onetimeauth/poly1305/donna/$(DEPDIR)/libsodium_la-poly1305_donna.Plo
 	-rm -f crypto_onetimeauth/poly1305/sse2/$(DEPDIR)/libsse2_la-poly1305_sse2.Plo
 	-rm -f crypto_pwhash/$(DEPDIR)/libsodium_la-crypto_pwhash.Plo
+	-rm -f crypto_pwhash/argon2/$(DEPDIR)/libarmcrypto_la-argon2-fill-block-neon.Plo
 	-rm -f crypto_pwhash/argon2/$(DEPDIR)/libavx2_la-argon2-fill-block-avx2.Plo
 	-rm -f crypto_pwhash/argon2/$(DEPDIR)/libavx512f_la-argon2-fill-block-avx512f.Plo
 	-rm -f crypto_pwhash/argon2/$(DEPDIR)/libsodium_la-argon2-core.Plo
