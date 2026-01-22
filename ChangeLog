@@ -1,4 +1,7 @@
 * Version 1.0.21-stable
+ - LTO is now disabled when using Emscripten: with Emscripten 4, LTO
+produced WebAssembly modules with functions that ran significantly
+slower than without it.
  - JavaScript sumo builds now allow up to 80 MiB memory usage, so that
 `crypto_pwhash` with the interactive settings can be used in pure
 JavaScript, not just WebAssembly.
