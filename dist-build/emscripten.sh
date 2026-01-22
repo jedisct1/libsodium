@@ -17,8 +17,32 @@ export LDFLAGS="${LDFLAGS} -s NODEJS_CATCH_EXIT=0"
 export LDFLAGS="${LDFLAGS} -s NODEJS_CATCH_REJECTION=0"
 export LDFLAGS="${LDFLAGS} -s WASM_BIGINT=0"
 
+# Parse arguments
+BUILD_TYPE=""
+ENABLE_SIMD="no"
+
+for arg in "$@"; do
+  case "$arg" in
+    --standard|--sumo|--browser-tests|--tests)
+      BUILD_TYPE="$arg"
+      ;;
+    --simd)
+      ENABLE_SIMD="yes"
+      ;;
+    *)
+      echo "Unknown argument: $arg"
+      echo "Usage: $0 <build_type> [--simd]"
+      echo "<build_type> := --standard | --sumo | --browser-tests | --tests"
+      echo "Options:"
+      echo "  --simd    Enable WebAssembly SIMD128 (faster Argon2, requires WASM SIMD support)"
+      echo
+      exit 1
+      ;;
+  esac
+done
+
 echo
-if [ "$1" = "--standard" ]; then
+if [ "$BUILD_TYPE" = "--standard" ]; then
   export EXPORTED_FUNCTIONS="$EXPORTED_FUNCTIONS_STANDARD"
   export LDFLAGS="${LDFLAGS} ${LDFLAGS_DIST}"
   export LDFLAGS_JS="-s TOTAL_MEMORY=${JS_RESERVED_MEMORY_STANDARD}"
@@ -27,7 +51,7 @@ if [ "$1" = "--standard" ]; then
   export CONFIG_EXTRA="--enable-minimal"
   export DIST='yes'
   echo "Building a standard distribution in [${PREFIX}]"
-elif [ "$1" = "--sumo" ]; then
+elif [ "$BUILD_TYPE" = "--sumo" ]; then
   export EXPORTED_FUNCTIONS="$EXPORTED_FUNCTIONS_SUMO"
   export LDFLAGS="${LDFLAGS} ${LDFLAGS_DIST}"
   export LDFLAGS_JS="-s TOTAL_MEMORY=${JS_RESERVED_MEMORY_SUMO}"
@@ -35,7 +59,7 @@ elif [ "$1" = "--sumo" ]; then
   export DONE_FILE="$(pwd)/js-sumo.done"
   export DIST='yes'
   echo "Building a sumo distribution in [${PREFIX}]"
-elif [ "$1" = "--browser-tests" ]; then
+elif [ "$BUILD_TYPE" = "--browser-tests" ]; then
   export EXPORTED_FUNCTIONS="$EXPORTED_FUNCTIONS_SUMO"
   export CPPFLAGS="${CPPFLAGS} -s FORCE_FILESYSTEM=1"
   export LDFLAGS="${LDFLAGS}"
@@ -45,7 +69,7 @@ elif [ "$1" = "--browser-tests" ]; then
   export BROWSER_TESTS='yes'
   export DIST='no'
   echo "Building tests for web browsers in [${PREFIX}]"
-elif [ "$1" = "--tests" ]; then
+elif [ "$BUILD_TYPE" = "--tests" ]; then
   echo "Building for testing"
   export EXPORTED_FUNCTIONS="$EXPORTED_FUNCTIONS_SUMO"
   export CPPFLAGS="${CPPFLAGS} -s FORCE_FILESYSTEM=1 -DBENCHMARKS -DITERATIONS=10"
@@ -56,10 +80,16 @@ elif [ "$1" = "--tests" ]; then
   export DIST='no'
   echo "Building for testing in [${PREFIX}]"
 else
-  echo "Usage: $0 <build_type>"
+  echo "Usage: $0 <build_type> [--simd]"
   echo "<build_type> := --standard | --sumo | --browser-tests | --tests"
+  echo "Options:"
+  echo "  --simd    Enable WebAssembly SIMD128 (faster Argon2, requires WASM SIMD support)"
   echo
   exit 1
+fi
+
+if [ "$ENABLE_SIMD" = "yes" ]; then
+  echo "SIMD128 enabled"
 fi
 export JS_EXPORTS_FLAGS="-s EXPORTED_FUNCTIONS=${EXPORTED_FUNCTIONS} -s EXPORTED_RUNTIME_METHODS=${EXPORTED_RUNTIME_METHODS}"
 
@@ -67,6 +97,13 @@ rm -f "$DONE_FILE"
 
 echo
 
+if [ "$ENABLE_SIMD" = "yes" ]; then
+  export SIMD_CFLAGS="-msimd128"
+else
+  export SIMD_CFLAGS=""
+fi
+
+# First build without SIMD for asm.js fallback (always needed)
 emconfigure ./configure $CONFIG_EXTRA --disable-shared --prefix="$PREFIX" \
   --without-pthreads \
   --disable-ssp --disable-asm --disable-pie &&
@@ -77,12 +114,23 @@ if [ "$DIST" = yes ]; then
   emccLibsodium() {
     outFile="${1}"
     shift
-    emcc "$CFLAGS" $CPPFLAGS $LDFLAGS $JS_EXPORTS_FLAGS "${@}" \
+    emcc $CPPFLAGS $LDFLAGS $JS_EXPORTS_FLAGS "${@}" \
       "${PREFIX}/lib/libsodium.a" -o "${outFile}" || exit 1
   }
   emmake make $MAKE_FLAGS install || exit 1
+
+  # Build asm.js fallback (without SIMD)
   emccLibsodium "${PREFIX}/lib/libsodium.asm.tmp.js" -Oz -s WASM=0 $LDFLAGS_JS
-  emccLibsodium "${PREFIX}/lib/libsodium.wasm.tmp.js" -O3 -s WASM=1 -s EVAL_CTORS=2 -s INITIAL_MEMORY=${WASM_INITIAL_MEMORY}
+
+  if [ "$ENABLE_SIMD" = "yes" ]; then
+    # Rebuild with SIMD for WASM
+    emmake make clean
+    export CFLAGS="${CFLAGS:+$CFLAGS }${SIMD_CFLAGS}"
+    emmake make $MAKE_FLAGS install || exit 1
+  fi
+
+  # Build WASM (with SIMD if enabled)
+  emccLibsodium "${PREFIX}/lib/libsodium.wasm.tmp.js" -O3 ${SIMD_CFLAGS} -s WASM=1 -s EVAL_CTORS=2 -s INITIAL_MEMORY=${WASM_INITIAL_MEMORY}
 
   # Build the output file by concatenating parts to preserve null bytes
   # (command substitution in heredoc strips null bytes from WASM binary)
