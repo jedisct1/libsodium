@@ -1,3 +1,12 @@
+* Version 1.0.21-stable
+ - Performance: SHA3 (Keccak1600) now leverages ARM SHA3 instructions when
+available on ARM platforms.
+ - Performance: Argon2 has an optimized implementation for arch64 and
+webassembly/SIMD.
+ - Export missing crypto_ipcrypt_nd_keygen() helper function.
+ - Fixed compilation with GCC on aarch64 and gcc 4.1
+ - Libsodium can be directly used as a dependency in a Zig project.
+
 * Version 1.0.21
   This point release includes all the changes from 1.0.20-stable, which
 include a security fix for the `crypto_core_ed25519_is_valid_point()`
@@ -15,6 +24,8 @@ for a wide range of applications, including key derivation, session encryption
 and more.
 
 * Version 1.0.20-stable
+ - XCFramework: cross-compilation is now forced on Apple Silicon to
+avoid Rosetta-related build issues
  - The Fil-C compiler is supported out of the box
  - The CompCert compiler is supported out of the box
  - MSVC 2026 (Visual Studio 2026) is now supported
@@ -51,6 +62,11 @@ compatibility with older runtimes
 fixed
  - `crypto_aead_aes256gcm_is_available` is exported to JavaScript
  - libsodium is now compatible with Emscripten 4.x
+ - Security: memory fences have been added after MAC verification in
+AEAD to prevent speculative access to plaintext before authentication
+is complete
+ - Assembly files now include .gnu.property notes for proper IBT and
+Shadow Stack support when building with CET instrumentation
 
 * Version 1.0.20
   This point release includes all the changes from 1.0.19-stable,

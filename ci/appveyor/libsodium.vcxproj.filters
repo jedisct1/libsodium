@@ -75,6 +75,9 @@
     <ClCompile Include="..\..\src\libsodium\crypto_pwhash\argon2\blake2b-long.c">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\src\libsodium\crypto_pwhash\argon2\argon2-fill-block-wasm32.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
     <ClCompile Include="..\..\src\libsodium\crypto_pwhash\argon2\argon2-core.c">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -88,6 +91,9 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="..\..\src\libsodium\crypto_pwhash\argon2\pwhash_argon2i.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\libsodium\crypto_pwhash\argon2\argon2-fill-block-neon.c">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="..\..\src\libsodium\crypto_pwhash\argon2\pwhash_argon2id.c">
@@ -333,6 +339,9 @@
     <ClCompile Include="..\..\src\libsodium\crypto_hash\sha512\cp\hash_sha512_cp.c">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\src\libsodium\crypto_hash\sha3\hash_sha3.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
     <ClCompile Include="..\..\src\libsodium\crypto_hash\sha256\hash_sha256.c">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -378,6 +387,18 @@
     <ClCompile Include="..\..\src\libsodium\crypto_aead\chacha20poly1305\aead_chacha20poly1305.c">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\src\libsodium\crypto_kem\crypto_kem.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\libsodium\crypto_kem\xwing\kem_xwing.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\libsodium\crypto_kem\mlkem768\kem_mlkem768.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\libsodium\crypto_kem\mlkem768\ref\kem_mlkem768_ref.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
     <ClCompile Include="..\..\src\libsodium\crypto_secretstream\xchacha20poly1305\secretstream_xchacha20poly1305.c">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -385,6 +406,9 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="..\..\src\libsodium\crypto_core\keccak1600\ref\keccak1600_ref.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\libsodium\crypto_core\keccak1600\armsha3\keccak1600_armsha3.c">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="..\..\src\libsodium\crypto_core\salsa\ref\core_salsa_ref.c">
@@ -464,9 +488,6 @@
     <ClInclude Include="..\..\src\libsodium\include\sodium\core.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\src\libsodium\include\sodium\version.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="..\..\src\libsodium\include\sodium\export.h">
       <Filter>Header Files</Filter>
     </ClInclude>
@@ -498,6 +519,9 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="..\..\src\libsodium\include\sodium\crypto_onetimeauth_poly1305.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\libsodium\include\sodium\crypto_kem_mlkem768.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="..\..\src\libsodium\include\sodium\crypto_scalarmult_ristretto255.h">
@@ -566,6 +590,9 @@
     <ClInclude Include="..\..\src\libsodium\include\sodium\crypto_secretbox_xchacha20poly1305.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="..\..\src\libsodium\include\sodium\crypto_kem.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
     <ClInclude Include="..\..\src\libsodium\include\sodium\crypto_core_keccak1600.h">
       <Filter>Header Files</Filter>
     </ClInclude>
@@ -609,6 +636,12 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="..\..\src\libsodium\include\sodium\crypto_pwhash_scryptsalsa208sha256.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\libsodium\include\sodium\crypto_hash_sha3.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\libsodium\include\sodium\crypto_kem_xwing.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="..\..\src\libsodium\include\sodium\crypto_sign_ed25519.h">
@@ -693,6 +726,12 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="..\..\src\libsodium\crypto_pwhash\argon2\blamka-round-avx2.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\libsodium\crypto_pwhash\argon2\blamka-round-neon.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\libsodium\crypto_pwhash\argon2\blamka-round-wasm32.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="..\..\src\libsodium\crypto_pwhash\argon2\argon2.h">
@@ -872,7 +911,13 @@
     <ClInclude Include="..\..\src\libsodium\crypto_aead\aegis256\aegis256_soft.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="..\..\src\libsodium\crypto_kem\mlkem768\ref\kem_mlkem768_ref.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
     <ClInclude Include="..\..\src\libsodium\crypto_core\keccak1600\ref\keccak1600_ref.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\libsodium\crypto_core\keccak1600\armsha3\keccak1600_armsha3.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="..\..\src\libsodium\crypto_core\ed25519\core_h2c.h">

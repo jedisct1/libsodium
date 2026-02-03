@@ -12,7 +12,7 @@ jobs:
   tcc:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v6
 
       - name: Update packages list
         run: sudo apt-get update
@@ -35,7 +35,7 @@ jobs:
   zig:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v6
 
       - name: Update packages list
         run: sudo apt-get update
@@ -67,7 +67,7 @@ jobs:
   regular:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v6
 
       - name: Update packages list
         run: sudo apt-get update
@@ -96,7 +96,7 @@ jobs:
   check-globals:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v6
 
       - name: Update packages list
         run: sudo apt-get update
@@ -114,7 +114,7 @@ jobs:
   other-comp:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v6
 
       - name: Update packages list
         run: sudo apt-get update
@@ -140,7 +140,7 @@ jobs:
   other-arch:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v6
 
       - name: Update packages list
         run: sudo apt-get update
@@ -187,10 +187,73 @@ jobs:
           done
           exit $failed
 
+  aarch64-gcc:
+    runs-on: ubuntu-24.04-arm
+    steps:
+      - uses: actions/checkout@v6
+
+      - name: Update packages list
+        run: sudo apt-get update
+
+      - name: Install dependencies
+        run: sudo apt-get install -y build-essential libtool autoconf automake
+
+      - name: Autogen
+        run: ./autogen.sh -s
+
+      - name: Compilation with GCC on aarch64
+        run: |
+          env CPPFLAGS="-DDEV_MODE=1" ./configure --disable-dependency-tracking
+          make -j $(nproc)
+          make check
+          make distclean > /dev/null
+
+  aarch64-gcc-crypto:
+    runs-on: ubuntu-24.04-arm
+    steps:
+      - uses: actions/checkout@v6
+
+      - name: Update packages list
+        run: sudo apt-get update
+
+      - name: Install dependencies
+        run: sudo apt-get install -y build-essential libtool autoconf automake
+
+      - name: Autogen
+        run: ./autogen.sh -s
+
+      - name: Compilation with GCC on aarch64 with NEON and ARM Crypto extensions
+        run: |
+          env CFLAGS="-march=armv8-a+crypto" CPPFLAGS="-DDEV_MODE=1" ./configure --disable-dependency-tracking
+          make -j $(nproc)
+          make check
+          make distclean > /dev/null
+
+  aarch64-gcc-sha3:
+    runs-on: ubuntu-24.04-arm
+    steps:
+      - uses: actions/checkout@v6
+
+      - name: Update packages list
+        run: sudo apt-get update
+
+      - name: Install dependencies
+        run: sudo apt-get install -y build-essential libtool autoconf automake
+
+      - name: Autogen
+        run: ./autogen.sh -s
+
+      - name: Compilation with GCC on aarch64 with NEON, ARM Crypto, and SHA3 extensions
+        run: |
+          env CFLAGS="-march=armv8-a+crypto+sha3" CPPFLAGS="-DDEV_MODE=1" ./configure --disable-dependency-tracking
+          make -j $(nproc)
+          make check
+          make distclean > /dev/null
+
   android:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v6
 
       - name: Update packages list
         run: sudo apt-get update

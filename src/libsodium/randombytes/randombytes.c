@@ -65,6 +65,20 @@ javascript_stir(void)
                 };
                 randomValuesStandard();
                 Module.getRandomValue = randomValuesStandard;
+                Module.getRandomBytes = function(ptr, size) {
+                    var heapu8 = Module.HEAPU8;
+                    var chunk = 65536;
+                    while (size > chunk) {
+                        var buf = new Uint8Array(chunk);
+                        crypto_.getRandomValues(buf);
+                        heapu8.set(buf, ptr);
+                        ptr += chunk;
+                        size -= chunk;
+                    }
+                    var buf = new Uint8Array(size);
+                    crypto_.getRandomValues(buf);
+                    heapu8.set(buf, ptr);
+                };
             } catch (e) {
                 try {
                     var crypto = require('crypto');
@@ -74,10 +88,22 @@ javascript_stir(void)
                     };
                     randomValueNodeJS();
                     Module.getRandomValue = randomValueNodeJS;
+                    Module.getRandomBytes = function(ptr, size) {
+                        var buf = crypto['randomBytes'](size);
+                        Module.HEAPU8.set(buf, ptr);
+                    };
                 } catch (e) {
                     throw 'No secure random number generator found';
                 }
             }
+        }
+        if (Module.getRandomBytes === undefined) {
+            Module.getRandomBytes = function(ptr, size) {
+                var heapu8 = Module.HEAPU8;
+                for (var i = 0; i < size; i++) {
+                    heapu8[ptr + i] = Module.getRandomValue() & 0xff;
+                }
+            };
         }
     });
 }
@@ -85,11 +111,18 @@ javascript_stir(void)
 static void
 javascript_buf(void * const buf, const size_t size)
 {
-    unsigned char *p = (unsigned char *) buf;
-    size_t         i;
-
-    for (i = (size_t) 0U; i < size; i++) {
-        p[i] = (unsigned char) randombytes_random();
+    if (size > (size_t) 0U) {
+        EM_ASM({
+            if (Module.getRandomBytes === undefined) {
+                Module.getRandomBytes = function(ptr, size) {
+                    var heapu8 = Module.HEAPU8;
+                    for (var i = 0; i < size; i++) {
+                        heapu8[ptr + i] = Module.getRandomValue() & 0xff;
+                    }
+                };
+            }
+            Module.getRandomBytes($0, $1);
+        }, buf, size);
     }
 }
 #endif

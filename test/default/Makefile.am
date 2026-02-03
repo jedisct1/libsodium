@@ -44,10 +44,14 @@ EXTRA_DIST = \
 	generichash3.exp \
 	hash.exp \
 	hash3.exp \
+	hash_sha3256.exp \
+	hash_sha3512.exp \
 	ipcrypt.exp \
 	kdf.exp \
 	kdf_hkdf.exp \
+	kem.exp \
 	kem_mlkem768.exp \
+	kem_xwing.exp \
 	keygen.exp \
 	kx.exp \
 	metamorphic.exp \
@@ -136,10 +140,14 @@ DISTCLEANFILES = \
 	hash.res \
 	hash2.res \
 	hash3.res \
+	hash_sha3256.res \
+	hash_sha3512.res \
 	ipcrypt.res \
 	kdf.res \
 	kdf_hkdf.res \
+	kem.res \
 	kem_mlkem768.res \
+	kem_xwing.res \
 	keygen.res \
 	kx.res \
 	metamorphic.res \
@@ -234,9 +242,13 @@ TESTS_TARGETS = \
 	generichash3 \
 	hash \
 	hash3 \
+	hash_sha3256 \
+	hash_sha3512 \
 	ipcrypt \
 	kdf \
+	kem \
 	kem_mlkem768 \
+	kem_xwing \
 	keygen \
 	kx \
 	metamorphic \
@@ -406,6 +418,12 @@ hash_LDADD                = $(TESTS_LDADD)
 hash3_SOURCE              = cmptest.h hash3.c
 hash3_LDADD               = $(TESTS_LDADD)
 
+hash_sha3256_SOURCE       = cmptest.h hash_sha3256.c
+hash_sha3256_LDADD        = $(TESTS_LDADD)
+
+hash_sha3512_SOURCE       = cmptest.h hash_sha3512.c
+hash_sha3512_LDADD        = $(TESTS_LDADD)
+
 ipcrypt_SOURCE            = cmptest.h ipcrypt.c
 ipcrypt_LDADD             = $(TESTS_LDADD)
 
@@ -415,8 +433,14 @@ kdf_LDADD                 = $(TESTS_LDADD)
 kdf_hkdf_SOURCE            = cmptest.h kdf_hkdf.c
 kdf_hkdf_LDADD             = $(TESTS_LDADD)
 
+kem_SOURCE                 = cmptest.h kem.c
+kem_LDADD                  = $(TESTS_LDADD)
+
 kem_mlkem768_SOURCE        = cmptest.h kem_mlkem768.c
 kem_mlkem768_LDADD         = $(TESTS_LDADD)
+
+kem_xwing_SOURCE           = cmptest.h kem_xwing.c
+kem_xwing_LDADD            = $(TESTS_LDADD)
 
 keygen_SOURCE             = cmptest.h keygen.c
 keygen_LDADD              = $(TESTS_LDADD)

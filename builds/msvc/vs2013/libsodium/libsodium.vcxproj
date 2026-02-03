@@ -88,11 +88,13 @@
     <ClCompile Include="..\..\..\..\src\libsodium\crypto_secretbox\xchacha20poly1305\secretbox_xchacha20poly1305.c" />
     <ClCompile Include="..\..\..\..\src\libsodium\crypto_pwhash\crypto_pwhash.c" />
     <ClCompile Include="..\..\..\..\src\libsodium\crypto_pwhash\argon2\blake2b-long.c" />
+    <ClCompile Include="..\..\..\..\src\libsodium\crypto_pwhash\argon2\argon2-fill-block-wasm32.c" />
     <ClCompile Include="..\..\..\..\src\libsodium\crypto_pwhash\argon2\argon2-core.c" />
     <ClCompile Include="..\..\..\..\src\libsodium\crypto_pwhash\argon2\argon2-fill-block-avx512f.c" />
     <ClCompile Include="..\..\..\..\src\libsodium\crypto_pwhash\argon2\argon2-fill-block-ref.c" />
     <ClCompile Include="..\..\..\..\src\libsodium\crypto_pwhash\argon2\argon2-fill-block-ssse3.c" />
     <ClCompile Include="..\..\..\..\src\libsodium\crypto_pwhash\argon2\pwhash_argon2i.c" />
+    <ClCompile Include="..\..\..\..\src\libsodium\crypto_pwhash\argon2\argon2-fill-block-neon.c" />
     <ClCompile Include="..\..\..\..\src\libsodium\crypto_pwhash\argon2\pwhash_argon2id.c" />
     <ClCompile Include="..\..\..\..\src\libsodium\crypto_pwhash\argon2\argon2.c" />
     <ClCompile Include="..\..\..\..\src\libsodium\crypto_pwhash\argon2\argon2-fill-block-avx2.c" />
@@ -174,6 +176,7 @@
     <ClCompile Include="..\..\..\..\src\libsodium\crypto_hash\crypto_hash.c" />
     <ClCompile Include="..\..\..\..\src\libsodium\crypto_hash\sha512\hash_sha512.c" />
     <ClCompile Include="..\..\..\..\src\libsodium\crypto_hash\sha512\cp\hash_sha512_cp.c" />
+    <ClCompile Include="..\..\..\..\src\libsodium\crypto_hash\sha3\hash_sha3.c" />
     <ClCompile Include="..\..\..\..\src\libsodium\crypto_hash\sha256\hash_sha256.c" />
     <ClCompile Include="..\..\..\..\src\libsodium\crypto_hash\sha256\cp\hash_sha256_cp.c" />
     <ClCompile Include="..\..\..\..\src\libsodium\crypto_aead\xchacha20poly1305\aead_xchacha20poly1305.c" />
@@ -189,9 +192,14 @@
     <ClCompile Include="..\..\..\..\src\libsodium\crypto_aead\aes256gcm\aesni\aead_aes256gcm_aesni.c" />
     <ClCompile Include="..\..\..\..\src\libsodium\crypto_aead\aes256gcm\armcrypto\aead_aes256gcm_armcrypto.c" />
     <ClCompile Include="..\..\..\..\src\libsodium\crypto_aead\chacha20poly1305\aead_chacha20poly1305.c" />
+    <ClCompile Include="..\..\..\..\src\libsodium\crypto_kem\crypto_kem.c" />
+    <ClCompile Include="..\..\..\..\src\libsodium\crypto_kem\xwing\kem_xwing.c" />
+    <ClCompile Include="..\..\..\..\src\libsodium\crypto_kem\mlkem768\kem_mlkem768.c" />
+    <ClCompile Include="..\..\..\..\src\libsodium\crypto_kem\mlkem768\ref\kem_mlkem768_ref.c" />
     <ClCompile Include="..\..\..\..\src\libsodium\crypto_secretstream\xchacha20poly1305\secretstream_xchacha20poly1305.c" />
     <ClCompile Include="..\..\..\..\src\libsodium\crypto_core\keccak1600\keccak1600.c" />
     <ClCompile Include="..\..\..\..\src\libsodium\crypto_core\keccak1600\ref\keccak1600_ref.c" />
+    <ClCompile Include="..\..\..\..\src\libsodium\crypto_core\keccak1600\armsha3\keccak1600_armsha3.c" />
     <ClCompile Include="..\..\..\..\src\libsodium\crypto_core\salsa\ref\core_salsa_ref.c" />
     <ClCompile Include="..\..\..\..\src\libsodium\crypto_core\hchacha20\core_hchacha20.c" />
     <ClCompile Include="..\..\..\..\src\libsodium\crypto_core\hsalsa20\core_hsalsa20.c" />
@@ -219,7 +227,6 @@
     <ClInclude Include="..\..\..\..\src\libsodium\include\sodium\crypto_aead_aegis256.h" />
     <ClInclude Include="..\..\..\..\src\libsodium\include\sodium\crypto_hash_sha512.h" />
     <ClInclude Include="..\..\..\..\src\libsodium\include\sodium\core.h" />
-    <ClInclude Include="..\..\..\..\src\libsodium\include\sodium\version.h" />
     <ClInclude Include="..\..\..\..\src\libsodium\include\sodium\export.h" />
     <ClInclude Include="..\..\..\..\src\libsodium\include\sodium\crypto_core_salsa20.h" />
     <ClInclude Include="..\..\..\..\src\libsodium\include\sodium\crypto_shorthash_siphash24.h" />
@@ -231,6 +238,7 @@
     <ClInclude Include="..\..\..\..\src\libsodium\include\sodium\crypto_aead_xchacha20poly1305.h" />
     <ClInclude Include="..\..\..\..\src\libsodium\include\sodium\crypto_stream_salsa20.h" />
     <ClInclude Include="..\..\..\..\src\libsodium\include\sodium\crypto_onetimeauth_poly1305.h" />
+    <ClInclude Include="..\..\..\..\src\libsodium\include\sodium\crypto_kem_mlkem768.h" />
     <ClInclude Include="..\..\..\..\src\libsodium\include\sodium\crypto_scalarmult_ristretto255.h" />
     <ClInclude Include="..\..\..\..\src\libsodium\include\sodium\crypto_kx.h" />
     <ClInclude Include="..\..\..\..\src\libsodium\include\sodium\crypto_hash.h" />
@@ -253,6 +261,7 @@
     <ClInclude Include="..\..\..\..\src\libsodium\include\sodium\crypto_aead_aes256gcm.h" />
     <ClInclude Include="..\..\..\..\src\libsodium\include\sodium\crypto_core_salsa2012.h" />
     <ClInclude Include="..\..\..\..\src\libsodium\include\sodium\crypto_secretbox_xchacha20poly1305.h" />
+    <ClInclude Include="..\..\..\..\src\libsodium\include\sodium\crypto_kem.h" />
     <ClInclude Include="..\..\..\..\src\libsodium\include\sodium\crypto_core_keccak1600.h" />
     <ClInclude Include="..\..\..\..\src\libsodium\include\sodium\crypto_scalarmult.h" />
     <ClInclude Include="..\..\..\..\src\libsodium\include\sodium\crypto_pwhash.h" />
@@ -268,6 +277,8 @@
     <ClInclude Include="..\..\..\..\src\libsodium\include\sodium\crypto_pwhash_argon2id.h" />
     <ClInclude Include="..\..\..\..\src\libsodium\include\sodium\crypto_secretstream_xchacha20poly1305.h" />
     <ClInclude Include="..\..\..\..\src\libsodium\include\sodium\crypto_pwhash_scryptsalsa208sha256.h" />
+    <ClInclude Include="..\..\..\..\src\libsodium\include\sodium\crypto_hash_sha3.h" />
+    <ClInclude Include="..\..\..\..\src\libsodium\include\sodium\crypto_kem_xwing.h" />
     <ClInclude Include="..\..\..\..\src\libsodium\include\sodium\crypto_sign_ed25519.h" />
     <ClInclude Include="..\..\..\..\src\libsodium\include\sodium\crypto_onetimeauth.h" />
     <ClInclude Include="..\..\..\..\src\libsodium\include\sodium\crypto_verify_64.h" />
@@ -296,6 +307,8 @@
     <ClInclude Include="..\..\..\..\src\libsodium\include\sodium\private\implementations.h" />
     <ClInclude Include="..\..\..\..\src\libsodium\crypto_pwhash\argon2\blamka-round-ref.h" />
     <ClInclude Include="..\..\..\..\src\libsodium\crypto_pwhash\argon2\blamka-round-avx2.h" />
+    <ClInclude Include="..\..\..\..\src\libsodium\crypto_pwhash\argon2\blamka-round-neon.h" />
+    <ClInclude Include="..\..\..\..\src\libsodium\crypto_pwhash\argon2\blamka-round-wasm32.h" />
     <ClInclude Include="..\..\..\..\src\libsodium\crypto_pwhash\argon2\argon2.h" />
     <ClInclude Include="..\..\..\..\src\libsodium\crypto_pwhash\argon2\blamka-round-ssse3.h" />
     <ClInclude Include="..\..\..\..\src\libsodium\crypto_pwhash\argon2\argon2-encoding.h" />
@@ -355,7 +368,9 @@
     <ClInclude Include="..\..\..\..\src\libsodium\crypto_aead\aegis256\implementations.h" />
     <ClInclude Include="..\..\..\..\src\libsodium\crypto_aead\aegis256\aegis256_armcrypto.h" />
     <ClInclude Include="..\..\..\..\src\libsodium\crypto_aead\aegis256\aegis256_soft.h" />
+    <ClInclude Include="..\..\..\..\src\libsodium\crypto_kem\mlkem768\ref\kem_mlkem768_ref.h" />
     <ClInclude Include="..\..\..\..\src\libsodium\crypto_core\keccak1600\ref\keccak1600_ref.h" />
+    <ClInclude Include="..\..\..\..\src\libsodium\crypto_core\keccak1600\armsha3\keccak1600_armsha3.h" />
     <ClInclude Include="..\..\..\..\src\libsodium\crypto_core\ed25519\core_h2c.h" />
     <ClInclude Include="..\..\..\..\src\libsodium\crypto_core\ed25519\ref10\fe_25_5\constants.h" />
     <ClInclude Include="..\..\..\..\src\libsodium\crypto_core\ed25519\ref10\fe_25_5\fe.h" />

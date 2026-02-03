@@ -64,6 +64,10 @@ SODIUM_EXPORT
 void crypto_ipcrypt_keygen(unsigned char k[crypto_ipcrypt_KEYBYTES]) __attribute__((nonnull));
 
 SODIUM_EXPORT
+void crypto_ipcrypt_nd_keygen(unsigned char k[crypto_ipcrypt_ND_KEYBYTES])
+    __attribute__((nonnull));
+
+SODIUM_EXPORT
 void crypto_ipcrypt_ndx_keygen(unsigned char k[crypto_ipcrypt_NDX_KEYBYTES])
     __attribute__((nonnull));
 

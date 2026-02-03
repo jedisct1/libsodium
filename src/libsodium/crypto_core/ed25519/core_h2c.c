@@ -1,7 +1,6 @@
 #include <assert.h>
 #include <errno.h>
 #include <stdlib.h>
-#include <string.h>
 
 #include "core_h2c.h"
 #include "crypto_hash_sha256.h"
@@ -12,7 +11,8 @@
 #define HASH_BLOCKBYTES 64U
 
 static int
-core_h2c_string_to_hash_sha256(unsigned char *h, const size_t h_len, const char *ctx,
+core_h2c_string_to_hash_sha256(unsigned char *h, const size_t h_len,
+                               const unsigned char *ctx, size_t ctx_len,
                                const unsigned char *msg, size_t msg_len)
 {
     crypto_hash_sha256_state st;
@@ -21,7 +21,6 @@ core_h2c_string_to_hash_sha256(unsigned char *h, const size_t h_len, const char 
     unsigned char            ux[HASH_BYTES] = { 0 };
     unsigned char            t[3] = { 0U, (unsigned char) h_len, 0U};
     unsigned char            ctx_len_u8;
-    size_t                   ctx_len = ctx != NULL ? strlen(ctx) : 0U;
     size_t                   i, j;
 
     assert(h_len <= 0xff);
@@ -30,9 +29,9 @@ core_h2c_string_to_hash_sha256(unsigned char *h, const size_t h_len, const char 
         crypto_hash_sha256_update(&st,
                                   (const unsigned char *) "H2C-OVERSIZE-DST-",
                                   sizeof "H2C-OVERSIZE-DST-" - 1U);
-        crypto_hash_sha256_update(&st, (const unsigned char *) ctx, ctx_len);
+        crypto_hash_sha256_update(&st, ctx, ctx_len);
         crypto_hash_sha256_final(&st, u0);
-        ctx = (const char *) u0;
+        ctx = u0;
         ctx_len = HASH_BYTES;
         COMPILER_ASSERT(HASH_BYTES <= (size_t) 0xff);
     }
@@ -41,7 +40,7 @@ core_h2c_string_to_hash_sha256(unsigned char *h, const size_t h_len, const char 
     crypto_hash_sha256_update(&st, empty_block, sizeof empty_block);
     crypto_hash_sha256_update(&st, msg, msg_len);
     crypto_hash_sha256_update(&st, t, 3U);
-    crypto_hash_sha256_update(&st, (const unsigned char *) ctx, ctx_len);
+    crypto_hash_sha256_update(&st, ctx, ctx_len);
     crypto_hash_sha256_update(&st, &ctx_len_u8, 1U);
     crypto_hash_sha256_final(&st, u0);
 
@@ -53,7 +52,7 @@ core_h2c_string_to_hash_sha256(unsigned char *h, const size_t h_len, const char 
         crypto_hash_sha256_init(&st);
         crypto_hash_sha256_update(&st, ux, HASH_BYTES);
         crypto_hash_sha256_update(&st, &t[2], 1U);
-        crypto_hash_sha256_update(&st, (const unsigned char *) ctx, ctx_len);
+        crypto_hash_sha256_update(&st, ctx, ctx_len);
         crypto_hash_sha256_update(&st, &ctx_len_u8, 1U);
         crypto_hash_sha256_final(&st, ux);
         memcpy(&h[i], ux, h_len - i >= (sizeof ux) ? (sizeof ux) : h_len - i);
@@ -68,7 +67,8 @@ core_h2c_string_to_hash_sha256(unsigned char *h, const size_t h_len, const char 
 #define HASH_BLOCKBYTES 128U
 
 static int
-core_h2c_string_to_hash_sha512(unsigned char *h, const size_t h_len, const char *ctx,
+core_h2c_string_to_hash_sha512(unsigned char *h, const size_t h_len,
+                               const unsigned char *ctx, size_t ctx_len,
                                const unsigned char *msg, size_t msg_len)
 {
     crypto_hash_sha512_state st;
@@ -77,7 +77,6 @@ core_h2c_string_to_hash_sha512(unsigned char *h, const size_t h_len, const char 
     unsigned char            ux[HASH_BYTES] = { 0 };
     unsigned char            t[3] = { 0U, (unsigned char) h_len, 0U};
     unsigned char            ctx_len_u8;
-    size_t                   ctx_len = ctx != NULL ? strlen(ctx) : 0U;
     size_t                   i, j;
 
     assert(h_len <= 0xff);
@@ -86,9 +85,9 @@ core_h2c_string_to_hash_sha512(unsigned char *h, const size_t h_len, const char 
         crypto_hash_sha512_update(&st,
                                   (const unsigned char *) "H2C-OVERSIZE-DST-",
                                   sizeof "H2C-OVERSIZE-DST-" - 1U);
-        crypto_hash_sha512_update(&st, (const unsigned char *) ctx, ctx_len);
+        crypto_hash_sha512_update(&st, ctx, ctx_len);
         crypto_hash_sha512_final(&st, u0);
-        ctx = (const char *) u0;
+        ctx = u0;
         ctx_len = HASH_BYTES;
         COMPILER_ASSERT(HASH_BYTES <= (size_t) 0xff);
     }
@@ -97,7 +96,7 @@ core_h2c_string_to_hash_sha512(unsigned char *h, const size_t h_len, const char 
     crypto_hash_sha512_update(&st, empty_block, sizeof empty_block);
     crypto_hash_sha512_update(&st, msg, msg_len);
     crypto_hash_sha512_update(&st, t, 3U);
-    crypto_hash_sha512_update(&st, (const unsigned char *) ctx, ctx_len);
+    crypto_hash_sha512_update(&st, ctx, ctx_len);
     crypto_hash_sha512_update(&st, &ctx_len_u8, 1U);
     crypto_hash_sha512_final(&st, u0);
 
@@ -109,7 +108,7 @@ core_h2c_string_to_hash_sha512(unsigned char *h, const size_t h_len, const char 
         crypto_hash_sha512_init(&st);
         crypto_hash_sha512_update(&st, ux, HASH_BYTES);
         crypto_hash_sha512_update(&st, &t[2], 1U);
-        crypto_hash_sha512_update(&st, (const unsigned char *) ctx, ctx_len);
+        crypto_hash_sha512_update(&st, ctx, ctx_len);
         crypto_hash_sha512_update(&st, &ctx_len_u8, 1U);
         crypto_hash_sha512_final(&st, ux);
         memcpy(&h[i], ux, h_len - i >= (sizeof ux) ? (sizeof ux) : h_len - i);
@@ -118,14 +117,15 @@ core_h2c_string_to_hash_sha512(unsigned char *h, const size_t h_len, const char 
 }
 
 int
-core_h2c_string_to_hash(unsigned char *h, const size_t h_len, const char *ctx,
+core_h2c_string_to_hash(unsigned char *h, const size_t h_len,
+                        const unsigned char *ctx, size_t ctx_len,
                         const unsigned char *msg, size_t msg_len, int hash_alg)
 {
     switch (hash_alg) {
     case CORE_H2C_SHA256:
-        return core_h2c_string_to_hash_sha256(h, h_len, ctx, msg, msg_len);
+        return core_h2c_string_to_hash_sha256(h, h_len, ctx, ctx_len, msg, msg_len);
     case CORE_H2C_SHA512:
-        return core_h2c_string_to_hash_sha512(h, h_len, ctx, msg, msg_len);
+        return core_h2c_string_to_hash_sha512(h, h_len, ctx, ctx_len, msg, msg_len);
     default:
         errno = EINVAL;
         return -1;

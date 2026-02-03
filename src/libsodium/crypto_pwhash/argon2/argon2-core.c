@@ -45,7 +45,12 @@
 # define MAP_POPULATE 0
 #endif
 
+#if (defined(__aarch64__) || defined(_M_ARM64)) && \
+    (defined(__ARM_NEON) || defined(__ARM_NEON__))
+static fill_segment_fn fill_segment = argon2_fill_segment_neon;
+#else
 static fill_segment_fn fill_segment = argon2_fill_segment_ref;
+#endif
 
 static void
 load_block(block *dst, const void *input)
@@ -496,6 +501,10 @@ static int
 argon2_pick_best_implementation(void)
 {
 /* LCOV_EXCL_START */
+#if defined(__wasm_simd128__)
+    fill_segment = argon2_fill_segment_wasm32;
+    return 0;
+#endif
 #if defined(HAVE_AVX512FINTRIN_H) && defined(HAVE_AVX2INTRIN_H) && \
     defined(HAVE_TMMINTRIN_H) && defined(HAVE_SMMINTRIN_H)
     if (sodium_runtime_has_avx512f()) {
@@ -516,7 +525,12 @@ argon2_pick_best_implementation(void)
         return 0;
     }
 #endif
+#if (defined(__aarch64__) || defined(_M_ARM64)) && \
+    (defined(__ARM_NEON) || defined(__ARM_NEON__))
+    fill_segment = argon2_fill_segment_neon;
+#else
     fill_segment = argon2_fill_segment_ref;
+#endif
 
     return 0;
     /* LCOV_EXCL_STOP */

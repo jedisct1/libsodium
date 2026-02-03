@@ -2,6 +2,7 @@
 #include "crypto_secretbox_xsalsa20poly1305.h"
 #include "crypto_stream_xsalsa20.h"
 #include "randombytes.h"
+#include "private/common.h"
 
 int
 crypto_secretbox_xsalsa20poly1305(unsigned char *c, const unsigned char *m,
@@ -39,6 +40,7 @@ crypto_secretbox_xsalsa20poly1305_open(unsigned char *m, const unsigned char *c,
                                            clen - 32, subkey) != 0) {
         return -1;
     }
+    ACQUIRE_FENCE;
     crypto_stream_xsalsa20_xor(m, c, clen, n, k);
     for (i = 0; i < 32; ++i) {
         m[i] = 0;

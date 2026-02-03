@@ -65,12 +65,13 @@ crypto_core_ristretto255_from_hash(unsigned char *p, const unsigned char *r)
 
 static int
 _string_to_element(unsigned char *p,
-                   const char *ctx, const unsigned char *msg, size_t msg_len,
+                   const unsigned char *ctx, size_t ctx_len,
+                   const unsigned char *msg, size_t msg_len,
                    int hash_alg)
 {
     unsigned char h[crypto_core_ristretto255_HASHBYTES];
 
-    if (core_h2c_string_to_hash(h, sizeof h, ctx, msg, msg_len,
+    if (core_h2c_string_to_hash(h, sizeof h, ctx, ctx_len, msg, msg_len,
                                 hash_alg) != 0) {
         return -1;
     }
@@ -81,18 +82,20 @@ _string_to_element(unsigned char *p,
 
 int
 crypto_core_ristretto255_from_string(unsigned char p[crypto_core_ristretto255_BYTES],
-                                     const char *ctx, const unsigned char *msg,
-                                     size_t msg_len, int hash_alg)
+                                     const unsigned char *ctx, size_t ctx_len,
+                                     const unsigned char *msg, size_t msg_len,
+                                     int hash_alg)
 {
-    return _string_to_element(p, ctx, msg, msg_len, hash_alg);
+    return _string_to_element(p, ctx, ctx_len, msg, msg_len, hash_alg);
 }
 
 int
 crypto_core_ristretto255_from_string_ro(unsigned char p[crypto_core_ristretto255_BYTES],
-                                        const char *ctx, const unsigned char *msg,
-                                        size_t msg_len, int hash_alg)
+                                        const unsigned char *ctx, size_t ctx_len,
+                                        const unsigned char *msg, size_t msg_len,
+                                        int hash_alg)
 {
-    return crypto_core_ristretto255_from_string(p, ctx, msg, msg_len, hash_alg);
+    return crypto_core_ristretto255_from_string(p, ctx, ctx_len, msg, msg_len, hash_alg);
 }
 
 void
@@ -169,14 +172,15 @@ crypto_core_ristretto255_scalar_is_canonical(const unsigned char *s)
 
 int
 crypto_core_ristretto255_scalar_from_string(unsigned char *s,
-                                            const char *ctx, const unsigned char *msg,
-                                            size_t msg_len, int hash_alg)
+                                            const unsigned char *ctx, size_t ctx_len,
+                                            const unsigned char *msg, size_t msg_len,
+                                            int hash_alg)
 {
     unsigned char h[crypto_core_ristretto255_NONREDUCEDSCALARBYTES];
     unsigned char h_be[HASH_SC_L];
     size_t        i;
 
-    if (core_h2c_string_to_hash(h_be, sizeof h_be, ctx, msg, msg_len,
+    if (core_h2c_string_to_hash(h_be, sizeof h_be, ctx, ctx_len, msg, msg_len,
                                 hash_alg) != 0) {
         return -1;
     }

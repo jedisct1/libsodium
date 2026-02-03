@@ -71,6 +71,21 @@ swift_module_map() {
   echo '}'
 }
 
+# Move headers into a Clibsodium subdirectory to avoid module.modulemap collisions
+# when multiple xcframeworks are used together (see swift-sodium issue #276)
+reorganize_headers() {
+  local include_dir="$1"
+  if [ -d "$include_dir" ] && [ ! -d "$include_dir/Clibsodium" ]; then
+    mkdir -p "$include_dir/Clibsodium"
+    # Move all files and directories (except Clibsodium itself) into Clibsodium/
+    for item in "$include_dir"/*; do
+      if [ "$(basename "$item")" != "Clibsodium" ]; then
+        mv "$item" "$include_dir/Clibsodium/"
+      fi
+    done
+  fi
+}
+
 build_macos() {
   export BASEDIR="${XCODEDIR}/Platforms/MacOSX.platform/Developer"
   export PATH="${BASEDIR}/usr/bin:$BASEDIR/usr/sbin:$PATH"
@@ -420,6 +435,7 @@ echo "Bundling macOS targets..."
 
 mkdir -p "${PREFIX}/macos/lib"
 cp -a "${MACOS_X86_64_PREFIX}/include" "${PREFIX}/macos/"
+reorganize_headers "${PREFIX}/macos/include"
 for ext in a dylib; do
   lipo -create \
     "${MACOS_ARM64_PREFIX}/lib/libsodium.${ext}" \
@@ -432,6 +448,7 @@ echo "Bundling iOS targets..."
 
 mkdir -p "${PREFIX}/ios/lib"
 cp -a "${IOS64_PREFIX}/include" "${PREFIX}/ios/"
+reorganize_headers "${PREFIX}/ios/include"
 for ext in a dylib; do
   LIBRARY_PATHS="$IOS64_PREFIX/lib/libsodium.${ext}"
   LIBRARY_PATHS="$LIBRARY_PATHS $IOS64E_PREFIX/lib/libsodium.${ext}"
@@ -444,6 +461,7 @@ echo "Bundling watchOS targets..."
 
 mkdir -p "${PREFIX}/watchos/lib"
 cp -a "${WATCHOS64_32_PREFIX}/include" "${PREFIX}/watchos/"
+reorganize_headers "${PREFIX}/watchos/include"
 for ext in a dylib; do
   lipo -create \
     "${WATCHOS32_PREFIX}/lib/libsodium.${ext}" \
@@ -457,6 +475,7 @@ echo "Bundling tvOS targets..."
 
 mkdir -p "${PREFIX}/tvos/lib"
 cp -a "${TVOS_PREFIX}/include" "${PREFIX}/tvos/"
+reorganize_headers "${PREFIX}/tvos/include"
 for ext in a dylib; do
   lipo -create \
     "$TVOS_PREFIX/lib/libsodium.${ext}" \
@@ -469,6 +488,7 @@ if [ "$VISIONOS_SUPPORTED" = true ]; then
 
   mkdir -p "${PREFIX}/visionos/lib"
   cp -a "${VISIONOS_PREFIX}/include" "${PREFIX}/visionos/"
+  reorganize_headers "${PREFIX}/visionos/include"
   for ext in a dylib; do
     lipo -create \
       "$VISIONOS_PREFIX/lib/libsodium.${ext}" \
@@ -481,6 +501,7 @@ echo "Bundling Catalyst targets..."
 
 mkdir -p "${PREFIX}/catalyst/lib"
 cp -a "${CATALYST_X86_64_PREFIX}/include" "${PREFIX}/catalyst/"
+reorganize_headers "${PREFIX}/catalyst/include"
 for ext in a dylib; do
   if [ ! -f "${CATALYST_X86_64_PREFIX}/lib/libsodium.${ext}" ]; then
     continue
@@ -497,6 +518,7 @@ if [ -z "$LIBSODIUM_SKIP_SIMULATORS" ]; then
 
   mkdir -p "${PREFIX}/ios-simulators/lib"
   cp -a "${IOS_SIMULATOR_X86_64_PREFIX}/include" "${PREFIX}/ios-simulators/"
+  reorganize_headers "${PREFIX}/ios-simulators/include"
   for ext in a dylib; do
     LIBRARY_PATHS="${IOS_SIMULATOR_ARM64_PREFIX}/lib/libsodium.${ext}"
     LIBRARY_PATHS="$LIBRARY_PATHS ${IOS_SIMULATOR_ARM64E_PREFIX}/lib/libsodium.${ext}"
@@ -510,6 +532,7 @@ if [ -z "$LIBSODIUM_SKIP_SIMULATORS" ]; then
 
   mkdir -p "${PREFIX}/watchos-simulators/lib"
   cp -a "${WATCHOS_SIMULATOR_X86_64_PREFIX}/include" "${PREFIX}/watchos-simulators/"
+  reorganize_headers "${PREFIX}/watchos-simulators/include"
   for ext in a dylib; do
     lipo -create \
       "${WATCHOS_SIMULATOR_ARM64_PREFIX}/lib/libsodium.${ext}" \
@@ -523,6 +546,7 @@ if [ -z "$LIBSODIUM_SKIP_SIMULATORS" ]; then
 
   mkdir -p "${PREFIX}/tvos-simulators/lib"
   cp -a "${TVOS_SIMULATOR_X86_64_PREFIX}/include" "${PREFIX}/tvos-simulators/"
+  reorganize_headers "${PREFIX}/tvos-simulators/include"
   for ext in a dylib; do
     lipo -create \
       "${TVOS_SIMULATOR_ARM64_PREFIX}/lib/libsodium.${ext}" \
@@ -536,6 +560,7 @@ if [ -z "$LIBSODIUM_SKIP_SIMULATORS" ]; then
 
     mkdir -p "${PREFIX}/visionos-simulators/lib"
     cp -a "${VISIONOS_SIMULATOR_PREFIX}/include" "${PREFIX}/visionos-simulators/"
+    reorganize_headers "${PREFIX}/visionos-simulators/include"
     for ext in a dylib; do
       lipo -create \
         "${VISIONOS_SIMULATOR_PREFIX}/lib/libsodium.${ext}" \

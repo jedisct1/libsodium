@@ -61,7 +61,8 @@ crypto_core_ed25519_sub(unsigned char *r,
 
 static int
 _string_to_points(unsigned char * const px, const size_t n,
-                  const char *ctx, const unsigned char *msg, size_t msg_len,
+                  const unsigned char *ctx, size_t ctx_len,
+                  const unsigned char *msg, size_t msg_len,
                   int hash_alg)
 {
     unsigned char h[crypto_core_ed25519_HASHBYTES];
@@ -71,7 +72,7 @@ _string_to_points(unsigned char * const px, const size_t n,
     if (n > 2U) {
         abort(); /* LCOV_EXCL_LINE */
     }
-    if (core_h2c_string_to_hash(h_be, n * HASH_GE_L, ctx, msg, msg_len,
+    if (core_h2c_string_to_hash(h_be, n * HASH_GE_L, ctx, ctx_len, msg, msg_len,
                                 hash_alg) != 0) {
         return -1;
     }
@@ -88,20 +89,22 @@ _string_to_points(unsigned char * const px, const size_t n,
 
 int
 crypto_core_ed25519_from_string(unsigned char p[crypto_core_ed25519_BYTES],
-                                const char *ctx, const unsigned char *msg,
-                                size_t msg_len, int hash_alg)
+                                const unsigned char *ctx, size_t ctx_len,
+                                const unsigned char *msg, size_t msg_len,
+                                int hash_alg)
 {
-    return _string_to_points(p, 1, ctx, msg, msg_len, hash_alg);
+    return _string_to_points(p, 1, ctx, ctx_len, msg, msg_len, hash_alg);
 }
 
 int
 crypto_core_ed25519_from_string_ro(unsigned char p[crypto_core_ed25519_BYTES],
-                                   const char *ctx, const unsigned char *msg,
-                                   size_t msg_len, int hash_alg)
+                                   const unsigned char *ctx, size_t ctx_len,
+                                   const unsigned char *msg, size_t msg_len,
+                                   int hash_alg)
 {
     unsigned char px[2 * crypto_core_ed25519_BYTES];
 
-    if (_string_to_points(px, 2, ctx, msg, msg_len, hash_alg) != 0) {
+    if (_string_to_points(px, 2, ctx, ctx_len, msg, msg_len, hash_alg) != 0) {
         return -1;
     }
     return crypto_core_ed25519_add(p, &px[0], &px[crypto_core_ed25519_BYTES]);

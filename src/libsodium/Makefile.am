@@ -32,6 +32,8 @@ libsodium_la_SOURCES = \
 	crypto_core/keccak1600/keccak1600.c \
 	crypto_core/keccak1600/ref/keccak1600_ref.c \
 	crypto_core/keccak1600/ref/keccak1600_ref.h \
+	crypto_core/keccak1600/armsha3/keccak1600_armsha3.c \
+	crypto_core/keccak1600/armsha3/keccak1600_armsha3.h \
 	crypto_core/salsa/ref/core_salsa_ref.c \
 	crypto_core/softaes/softaes.c \
 	crypto_generichash/crypto_generichash.c \
@@ -48,6 +50,7 @@ libsodium_la_SOURCES = \
 	crypto_hash/sha256/cp/hash_sha256_cp.c \
 	crypto_hash/sha512/hash_sha512.c \
 	crypto_hash/sha512/cp/hash_sha512_cp.c \
+	crypto_hash/sha3/hash_sha3.c \
 	crypto_ipcrypt/crypto_ipcrypt.c \
 	crypto_ipcrypt/ipcrypt_soft.c \
 	crypto_ipcrypt/ipcrypt_soft.h \
@@ -56,9 +59,11 @@ libsodium_la_SOURCES = \
 	crypto_kdf/crypto_kdf.c \
 	crypto_kdf/hkdf/kdf_hkdf_sha256.c \
 	crypto_kdf/hkdf/kdf_hkdf_sha512.c \
+	crypto_kem/crypto_kem.c \
 	crypto_kem/mlkem768/kem_mlkem768.c \
 	crypto_kem/mlkem768/ref/kem_mlkem768_ref.c \
 	crypto_kem/mlkem768/ref/kem_mlkem768_ref.h \
+	crypto_kem/xwing/kem_xwing.c \
 	crypto_kx/crypto_kx.c \
 	crypto_onetimeauth/crypto_onetimeauth.c \
 	crypto_onetimeauth/poly1305/onetimeauth_poly1305.c \
@@ -72,11 +77,13 @@ libsodium_la_SOURCES = \
 	crypto_pwhash/argon2/argon2-encoding.c \
 	crypto_pwhash/argon2/argon2-encoding.h \
 	crypto_pwhash/argon2/argon2-fill-block-ref.c \
+	crypto_pwhash/argon2/argon2-fill-block-wasm32.c \
 	crypto_pwhash/argon2/argon2.c \
 	crypto_pwhash/argon2/argon2.h \
 	crypto_pwhash/argon2/blake2b-long.c \
 	crypto_pwhash/argon2/blake2b-long.h \
 	crypto_pwhash/argon2/blamka-round-ref.h \
+	crypto_pwhash/argon2/blamka-round-wasm32.h \
 	crypto_pwhash/argon2/pwhash_argon2i.c \
 	crypto_pwhash/argon2/pwhash_argon2id.c \
 	crypto_pwhash/crypto_pwhash.c \
@@ -260,7 +267,9 @@ libarmcrypto_la_SOURCES = \
 	crypto_aead/aegis256/aegis256_armcrypto.h \
 	crypto_aead/aes256gcm/armcrypto/aead_aes256gcm_armcrypto.c \
 	crypto_ipcrypt/ipcrypt_armcrypto.c \
-	crypto_ipcrypt/ipcrypt_armcrypto.h
+	crypto_ipcrypt/ipcrypt_armcrypto.h \
+	crypto_pwhash/argon2/argon2-fill-block-neon.c \
+	crypto_pwhash/argon2/blamka-round-neon.h
 
 libaesni_la_LDFLAGS = $(libsodium_la_LDFLAGS)
 libaesni_la_CPPFLAGS = $(libsodium_la_CPPFLAGS) \

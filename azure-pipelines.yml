@@ -45,8 +45,11 @@ jobs:
 
   - job: "windows_2019"
     pool:
-      vmImage: "windows-2019"
+      vmImage: "windows-2022"
     steps:
+      - powershell: |
+          choco install visualstudio2019buildtools --package-parameters "--add Microsoft.VisualStudio.Workload.VCTools --includeRecommended --quiet --wait" -y
+        displayName: Install VS2019 Build Tools
       - powershell: |
           cd builds\msvc\build
           & .\buildbase.bat ..\vs2019\libsodium.sln 16
@@ -64,10 +67,10 @@ jobs:
 
   - job: mingw64
     pool:
-      vmImage: "windows-2019"
+      vmImage: "windows-2022"
     steps:
       - powershell: |
-          (New-Object Net.WebClient).DownloadFile("https://github.com/msys2/msys2-installer/releases/download/2025-08-30/msys2-base-x86_64-20250830.sfx.exe", "sfx.exe")
+          (New-Object Net.WebClient).DownloadFile("https://github.com/msys2/msys2-installer/releases/download/2025-12-13/msys2-base-x86_64-20251213.sfx.exe", "sfx.exe")
           .\sfx.exe -y -o\
           del sfx.exe
         displayName: Install MSYS2
@@ -103,10 +106,10 @@ jobs:
 
   - job: mingw32
     pool:
-      vmImage: "windows-2019"
+      vmImage: "windows-2022"
     steps:
       - powershell: |
-          (New-Object Net.WebClient).DownloadFile("https://github.com/msys2/msys2-installer/releases/download/2025-08-30/msys2-base-x86_64-20250830.sfx.exe", "sfx.exe")
+          (New-Object Net.WebClient).DownloadFile("https://github.com/msys2/msys2-installer/releases/download/2025-12-13/msys2-base-x86_64-20251213.sfx.exe", "sfx.exe")
           .\sfx.exe -y -o\
           del sfx.exe
         displayName: Install MSYS2

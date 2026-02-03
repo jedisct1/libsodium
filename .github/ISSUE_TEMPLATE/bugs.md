@@ -1,23 +1,34 @@
 ---
-name: "\U0001F41E Issues"
-about: Bug reports
+name: "\U0001F41E Bug report"
+about: Report a bug in libsodium
 title: ""
 labels: ""
 assignees: ""
 ---
 
-THE TRACKER IS DEDICATED TO KEEPING TRACK OF _BUGS_,
-preferably after they have been already discussed and confirmed to be reproducible.
+Thanks for taking the time to report a bug!
 
-FOR ASSISTANCE, PLEASE CLOSE THIS FORM AND USE THE DISCUSSIONS SECTION INSTEAD:
-https://github.com/jedisct1/libsodium/discussions
+This tracker is for confirmed, reproducible bugs. If you're looking for help with installation, configuration, usage, or issues with third-party packages, the [Discussions](https://github.com/jedisct1/libsodium/discussions) section is a better place to start.
 
-Installation, configuration, usage guidance and issues in 3rd party packages are not bugs, but individual assistance requests.
+### Before you file
 
-If the bug is not trivial to reproduce on any platform, please include ALL the steps required to reliably duplicate it, on a vanilla, generic install of macOS, Windows, OpenBSD or Ubuntu Linux system, in their most current version.
+- Try reproducing the issue with the current `libsodium-stable` package, installed as documented at https://doc.libsodium.org/installation
+- If the bug isn't obvious, please describe all the steps needed to reproduce it on a fresh install of macOS, Windows, OpenBSD, or Ubuntu Linux
 
-Try to reproduce it using the current `libsodium-stable` package, installed as documented in https://doc.libsodium.org/installation .
+### Not sure if it's a bug?
 
-If you don't have any clear understanding of the issue or can't enumerate the steps to reproduce it, open a discussion instead: https://github.com/jedisct1/libsodium/discussions
+No worries! Feel free to [start a discussion](https://github.com/jedisct1/libsodium/discussions) first and we can figure it out together.
 
-Thank you! 😊🙏
+---
+
+### How do we replicate the issue?
+
+(Describe the steps to reproduce the bug)
+
+### Expected behavior
+
+(What did you expect to happen?)
+
+### Actual behavior
+
+(What actually happened?)
