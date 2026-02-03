@@ -10,6 +10,13 @@
     <Import Project="$(Platform).props" />
   </ImportGroup>  
 
+  <PropertyGroup>
+    <!-- VS 2026 toolsets may not define PlatformToolsetVersion. Derive it from PlatformToolset when needed. -->
+    <_SodiumToolsetVersion Condition="'$(PlatformToolsetVersion)' != ''">$(PlatformToolsetVersion)</_SodiumToolsetVersion>
+    <_SodiumToolsetVersion Condition="'$(PlatformToolsetVersion)' == '' and $(PlatformToolset.StartsWith('v'))">$(PlatformToolset.Substring(1))</_SodiumToolsetVersion>
+    <_SodiumToolsetVersion Condition="'$(_SodiumToolsetVersion)' == ''">0</_SodiumToolsetVersion>
+  </PropertyGroup>
+
   <ItemDefinitionGroup>
     <ClCompile>
       <MultiProcessorCompilation>true</MultiProcessorCompilation>
@@ -18,7 +25,7 @@
     </ClCompile>
   </ItemDefinitionGroup>
 
-  <ItemDefinitionGroup Condition="'$(PlatformToolsetVersion)' &gt;= '143'">
+  <ItemDefinitionGroup Condition="$(_SodiumToolsetVersion) &gt;= 143">
     <ClCompile>
       <AdditionalOptions>/UndefIntOverflow- %(AdditionalOptions)</AdditionalOptions>
     </ClCompile>
