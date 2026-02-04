@@ -7,8 +7,12 @@ slower than without it.
 JavaScript, not just WebAssembly.
  - Performance: SHA3 (Keccak1600) now leverages ARM SHA3 instructions when
 available on ARM platforms.
+ - Performance: WebAssembly SIMD implementations of Argon2 have been added.
+ - Emscripten: a new option allows compilation with SIMD support.
  - Export missing crypto_ipcrypt_nd_keygen() helper function.
- - Fixed compilation with GCC on aarch64 and gcc 4.1
+ - Fixed compilation with GCC on aarch64 and gcc 4.1.
+ - Added dompatibility with Visual Studio 2026  when toolsets do not define
+PlatformToolsetVersion.
  - Libsodium can be directly used as a dependency in a Zig project.
 
 * Version 1.0.21
