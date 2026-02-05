@@ -28,10 +28,13 @@ turboshake256_ref_update(turboshake256_state_internal *state, const unsigned cha
 {
     size_t consumed = 0;
     size_t chunk_size;
+    int    ret = 0;
 
     if (state->phase != TURBOSHAKE256_PHASE_ABSORBING) {
+        crypto_core_keccak1600_permute_12(&state->state);
         state->phase  = TURBOSHAKE256_PHASE_ABSORBING;
         state->offset = 0;
+        ret = -1;
     }
 
     while (consumed < inlen) {
@@ -48,7 +51,7 @@ turboshake256_ref_update(turboshake256_state_internal *state, const unsigned cha
         consumed += chunk_size;
     }
 
-    return 0;
+    return ret;
 }
 
 static void
