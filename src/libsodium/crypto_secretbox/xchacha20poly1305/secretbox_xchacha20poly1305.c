@@ -106,6 +106,8 @@ crypto_secretbox_xchacha20poly1305_open_detached(unsigned char *m,
         return -1;
     }
     if (m == NULL) {
+        sodium_memzero(subkey, sizeof subkey);
+        sodium_memzero(block0, sizeof block0);
         return 0;
     }
     ACQUIRE_FENCE;
