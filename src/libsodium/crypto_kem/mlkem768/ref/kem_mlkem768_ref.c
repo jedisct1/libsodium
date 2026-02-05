@@ -234,6 +234,8 @@ poly_getnoise_eta2(poly *r, const unsigned char seed[32], uint8_t nonce)
     crypto_xof_shake256_squeeze(&state, buf, sizeof(buf));
 
     poly_cbd_eta2(r, buf);
+    sodium_memzero(&state, sizeof state);
+    sodium_memzero(buf, sizeof buf);
 }
 
 static void
@@ -592,6 +594,9 @@ indcpa_keypair(unsigned char       pk[crypto_kem_mlkem768_PUBLICKEYBYTES],
     polyvec_tobytes(sk, &skpv);
     polyvec_tobytes(pk, &pkpv);
     memcpy(pk + MLKEM768_POLYVECBYTES, publicseed, 32);
+    sodium_memzero(buf, sizeof buf);
+    sodium_memzero(&skpv, sizeof skpv);
+    sodium_memzero(&e, sizeof e);
 }
 
 static void
@@ -645,6 +650,10 @@ indcpa_enc(unsigned char       ct[crypto_kem_mlkem768_CIPHERTEXTBYTES],
 
     polyvec_compress(ct, &b);
     poly_compress_dv(ct + MLKEM768_POLYVECCOMPRESSEDBYTES_DU, &v);
+    sodium_memzero(&sp, sizeof sp);
+    sodium_memzero(&ep, sizeof ep);
+    sodium_memzero(&epp, sizeof epp);
+    sodium_memzero(&k, sizeof k);
 }
 
 static void
@@ -670,6 +679,8 @@ indcpa_dec(unsigned char       m[32],
     poly_csubq(&mp);
 
     poly_tomsg(m, &mp);
+    sodium_memzero(&skpv, sizeof skpv);
+    sodium_memzero(&mp, sizeof mp);
 }
 
 static void
@@ -698,6 +709,7 @@ mlkem768_ref_seed_keypair(unsigned char *pk, unsigned char *sk, const unsigned c
     indseed[32] = MLKEM768_K;
 
     indcpa_keypair(pk, sk, indseed);
+    sodium_memzero(indseed, sizeof indseed);
     memcpy(sk + MLKEM768_POLYVECBYTES, pk, crypto_kem_mlkem768_PUBLICKEYBYTES);
     crypto_hash_sha3256(sk + MLKEM768_POLYVECBYTES + crypto_kem_mlkem768_PUBLICKEYBYTES, pk,
                         crypto_kem_mlkem768_PUBLICKEYBYTES);
@@ -736,6 +748,8 @@ mlkem768_ref_enc_deterministic(unsigned char *ct, unsigned char *ss, const unsig
     indcpa_enc(ct, buf, pk, kr + 32);
 
     memcpy(ss, kr, crypto_kem_mlkem768_SHAREDSECRETBYTES);
+    sodium_memzero(buf, sizeof buf);
+    sodium_memzero(kr, sizeof kr);
 
     return 0;
 }
@@ -783,6 +797,11 @@ mlkem768_ref_dec(unsigned char *ss, const unsigned char *ct, const unsigned char
     cmov(kr, k_bar, crypto_kem_mlkem768_SHAREDSECRETBYTES, (unsigned char) fail_mask);
 
     memcpy(ss, kr, crypto_kem_mlkem768_SHAREDSECRETBYTES);
+    sodium_memzero(buf, sizeof buf);
+    sodium_memzero(kr, sizeof kr);
+    sodium_memzero(k_bar, sizeof k_bar);
+    sodium_memzero(cmp, sizeof cmp);
+    sodium_memzero(&state, sizeof state);
 
     return 0;
 }
