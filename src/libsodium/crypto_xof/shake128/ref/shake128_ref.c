@@ -28,10 +28,13 @@ shake128_ref_update(shake128_state_internal *state, const unsigned char *in, siz
 {
     size_t consumed = 0;
     size_t chunk_size;
+    int    ret = 0;
 
     if (state->phase != SHAKE128_PHASE_ABSORBING) {
+        crypto_core_keccak1600_permute_24(&state->state);
         state->phase  = SHAKE128_PHASE_ABSORBING;
         state->offset = 0;
+        ret = -1;
     }
 
     while (consumed < inlen) {
@@ -48,7 +51,7 @@ shake128_ref_update(shake128_state_internal *state, const unsigned char *in, siz
         consumed += chunk_size;
     }
 
-    return 0;
+    return ret;
 }
 
 static void
