@@ -1,0 +1,79 @@
+Test #0:
+	RFC9497 Test Vector Specified Values:
+		Blind:                  64d37aed22a27f5191de1c1d69fadb899d8862b58eb4220029e036ec4c1f6706
+		Blinded Element:        609a0ae68c15a3cf6903766461307e5c8bb2f95e7e6550e1ffa2dc99e412803c
+	Precalculated value from the above:
+		Expected H2C element:   5873db2e5f8f4f544ce3e574c74c487f03bc64a2cf63b7c913908091aab03357
+	Dynamically calculated:
+		Unblinded H2C element:  5873db2e5f8f4f544ce3e574c74c487f03bc64a2cf63b7c913908091aab03357
+		Hashed H2C element:     5873db2e5f8f4f544ce3e574c74c487f03bc64a2cf63b7c913908091aab03357
+		Blinded H2C element:    609a0ae68c15a3cf6903766461307e5c8bb2f95e7e6550e1ffa2dc99e412803c
+Test [0] outcome:   Success
+
+
+Test #1:
+	RFC9497 Test Vector Specified Values:
+		Blind:                  64d37aed22a27f5191de1c1d69fadb899d8862b58eb4220029e036ec4c1f6706
+		Blinded Element:        da27ef466870f5f15296299850aa088629945a17d1f5b7f5ff043f76b3c06418
+	Precalculated value from the above:
+		Expected H2C element:   743d49d207339ae67aef8f4d0777744e5a604b94df5cbcc13e3dd87e79985a39
+	Dynamically calculated:
+		Unblinded H2C element:  743d49d207339ae67aef8f4d0777744e5a604b94df5cbcc13e3dd87e79985a39
+		Hashed H2C element:     743d49d207339ae67aef8f4d0777744e5a604b94df5cbcc13e3dd87e79985a39
+		Blinded H2C element:    da27ef466870f5f15296299850aa088629945a17d1f5b7f5ff043f76b3c06418
+Test [1] outcome:   Success
+
+
+Test #2:
+	RFC9497 Test Vector Specified Values:
+		Blind:                  64d37aed22a27f5191de1c1d69fadb899d8862b58eb4220029e036ec4c1f6706
+		Blinded Element:        863f330cc1a1259ed5a5998a23acfd37fb4351a793a5b3c090b642ddc439b945
+	Precalculated value from the above:
+		Expected H2C element:   868c9140811d0dc38291c7bbc0bd8f301d0d4e8b15f65e442184a233b8791703
+	Dynamically calculated:
+		Unblinded H2C element:  868c9140811d0dc38291c7bbc0bd8f301d0d4e8b15f65e442184a233b8791703
+		Hashed H2C element:     868c9140811d0dc38291c7bbc0bd8f301d0d4e8b15f65e442184a233b8791703
+		Blinded H2C element:    863f330cc1a1259ed5a5998a23acfd37fb4351a793a5b3c090b642ddc439b945
+Test [2] outcome:   Success
+
+
+Test #3:
+	RFC9497 Test Vector Specified Values:
+		Blind:                  64d37aed22a27f5191de1c1d69fadb899d8862b58eb4220029e036ec4c1f6706
+		Blinded Element:        cc0b2a350101881d8a4cba4c80241d74fb7dcbfde4a61fde2f91443c2bf9ef0c
+	Precalculated value from the above:
+		Expected H2C element:   caff66fcdc41da4d87ccc72aaac70c6e267a4b55c3dc9489bb365a70a04f1a52
+	Dynamically calculated:
+		Unblinded H2C element:  caff66fcdc41da4d87ccc72aaac70c6e267a4b55c3dc9489bb365a70a04f1a52
+		Hashed H2C element:     caff66fcdc41da4d87ccc72aaac70c6e267a4b55c3dc9489bb365a70a04f1a52
+		Blinded H2C element:    cc0b2a350101881d8a4cba4c80241d74fb7dcbfde4a61fde2f91443c2bf9ef0c
+Test [3] outcome:   Success
+
+
+Test #4:
+	RFC9497 Test Vector Specified Values:
+		Blind:                  64d37aed22a27f5191de1c1d69fadb899d8862b58eb4220029e036ec4c1f6706
+		Blinded Element:        c8713aa89241d6989ac142f22dba30596db635c772cbf25021fdd8f3d461f715
+	Precalculated value from the above:
+		Expected H2C element:   5e121666a7c49e1f24b59fef212aa9c8556e096d3f1598cc02f5c70215b32d73
+	Dynamically calculated:
+		Unblinded H2C element:  5e121666a7c49e1f24b59fef212aa9c8556e096d3f1598cc02f5c70215b32d73
+		Hashed H2C element:     5e121666a7c49e1f24b59fef212aa9c8556e096d3f1598cc02f5c70215b32d73
+		Blinded H2C element:    c8713aa89241d6989ac142f22dba30596db635c772cbf25021fdd8f3d461f715
+Test [4] outcome:   Success
+
+
+Test #5:
+	RFC9497 Test Vector Specified Values:
+		Blind:                  64d37aed22a27f5191de1c1d69fadb899d8862b58eb4220029e036ec4c1f6706
+		Blinded Element:        f0f0b209dd4d5f1844dac679acc7761b91a2e704879656cb7c201e82a99ab07d
+	Precalculated value from the above:
+		Expected H2C element:   785596d91746f8ff32f9f95af448408435284e5935932572caa9e7e0b04fdb03
+	Dynamically calculated:
+		Unblinded H2C element:  785596d91746f8ff32f9f95af448408435284e5935932572caa9e7e0b04fdb03
+		Hashed H2C element:     785596d91746f8ff32f9f95af448408435284e5935932572caa9e7e0b04fdb03
+		Blinded H2C element:    f0f0b209dd4d5f1844dac679acc7761b91a2e704879656cb7c201e82a99ab07d
+Test [5] outcome:   Success
+
+
+OK
