@@ -1,4 +1,7 @@
-* Version 1.0.21-stable
+* Version 1.0.22
+  This point release includes all the changes from 1.0.21-stable.
+ - Performance: NEON optimizations for Argon2 on ARM platforms.
+>>>>>>> ca15ecc5 (Prepare for 1.0.22)
  - Performance: SHA3 (Keccak1600) now leverages ARM SHA3 instructions when
 available on ARM platforms.
  - Performance: WebAssembly SIMD implementations of Argon2 have been added.
