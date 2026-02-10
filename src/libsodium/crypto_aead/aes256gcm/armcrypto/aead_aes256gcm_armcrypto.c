@@ -95,11 +95,11 @@ SHUFFLE32x4_(uint64x2_t x, const int a, const int b, const int c, const int d)
 #define SHUFFLE32x4(x, a, b, c, d) SHUFFLE32x4_((x), (a), (b), (c), (d))
 
 #define CLMULLO128(a, b) \
-    vreinterpretq_u64_p128(vmull_p64((poly64_t) vgetq_lane_u64(a, 0), (poly64_t) vgetq_lane_u64(b, 0)))
+    vreinterpretq_u64_p128(vmull_p64(vget_low_p64(vreinterpretq_p64_u64(a)), vget_low_p64(vreinterpretq_p64_u64(b))))
 #define CLMULLOHI128(a, b) \
-    vreinterpretq_u64_p128(vmull_p64((poly64_t) vgetq_lane_u64(a, 0), (poly64_t) vgetq_lane_u64(b, 1)))
+    vreinterpretq_u64_p128(vmull_p64(vget_low_p64(vreinterpretq_p64_u64(a)), vget_high_p64(vreinterpretq_p64_u64(b))))
 #define CLMULHILO128(a, b) \
-    vreinterpretq_u64_p128(vmull_p64((poly64_t) vgetq_lane_u64(a, 1), (poly64_t) vgetq_lane_u64(b, 0)))
+    vreinterpretq_u64_p128(vmull_p64(vget_high_p64(vreinterpretq_p64_u64(a)), vget_low_p64(vreinterpretq_p64_u64(b))))
 
 #define PREFETCH_READ(x)
 #define PREFETCH_WRITE(x)
