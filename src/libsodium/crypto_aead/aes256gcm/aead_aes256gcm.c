@@ -47,7 +47,7 @@ crypto_aead_aes256gcm_keygen(unsigned char k[crypto_aead_aes256gcm_KEYBYTES])
     randombytes_buf(k, crypto_aead_aes256gcm_KEYBYTES);
 }
 
-#if !((defined(HAVE_ARMCRYPTO) && defined(__clang__) && defined(NATIVE_LITTLE_ENDIAN)) || \
+#if !((defined(HAVE_ARMCRYPTO) && defined(NATIVE_LITTLE_ENDIAN)) || \
       (defined(HAVE_TMMINTRIN_H) && defined(HAVE_WMMINTRIN_H)))
 
 #ifndef ENOSYS

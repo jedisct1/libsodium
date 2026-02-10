@@ -13,7 +13,7 @@
 #include "runtime.h"
 #include "utils.h"
 
-#if defined(HAVE_ARMCRYPTO) && defined(__clang__) && defined(NATIVE_LITTLE_ENDIAN)
+#if defined(HAVE_ARMCRYPTO) && defined(NATIVE_LITTLE_ENDIAN)
 
 #if !defined(_MSC_VER) || _MSC_VER < 1800
 #define __vectorcall
