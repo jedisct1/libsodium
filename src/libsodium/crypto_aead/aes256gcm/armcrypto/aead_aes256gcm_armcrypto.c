@@ -60,6 +60,52 @@ typedef uint64x2_t BlockVec;
 #define SUB64x2(a, b) vsubq_u64((a), (b))
 #define SHL64x2(a, b) vshlq_n_u64((a), (b))
 #define SHR64x2(a, b) vshrq_n_u64((a), (b))
+#define BYTESHL128(a, b) vreinterpretq_u64_u8(vextq_u8(vdupq_n_u8(0), vreinterpretq_u8_u64(a), 16 - (b)))
+#define BYTESHR128(a, b) vreinterpretq_u64_u8(vextq_u8(vreinterpretq_u8_u64(a), vdupq_n_u8(0), (b)))
+
+#define SHL128(a, b) OR128(SHL64x2((a), (b)), SHR64x2(BYTESHL128((a), 8), 64 - (b)))
+#define CLMULHI128(a, b) \
+    vreinterpretq_u64_p128(vmull_high_p64(vreinterpretq_p64_u64(a), vreinterpretq_p64_u64(b)))
+
+#ifdef _MSC_VER
+
+static __forceinline uint64x2_t
+REV128_(uint64x2_t x)
+{
+    uint8x16_t t = vrev64q_u8(vreinterpretq_u8_u64(x));
+    return vreinterpretq_u64_u8(vextq_u8(t, t, 8));
+}
+#define REV128(x) REV128_(x)
+
+static __forceinline uint64x2_t
+SHUFFLE32x4_(uint64x2_t x, const int a, const int b, const int c, const int d)
+{
+    uint8_t idx[16];
+
+    idx[0]  = (uint8_t) (a * 4);     idx[1]  = (uint8_t) (a * 4 + 1);
+    idx[2]  = (uint8_t) (a * 4 + 2); idx[3]  = (uint8_t) (a * 4 + 3);
+    idx[4]  = (uint8_t) (b * 4);     idx[5]  = (uint8_t) (b * 4 + 1);
+    idx[6]  = (uint8_t) (b * 4 + 2); idx[7]  = (uint8_t) (b * 4 + 3);
+    idx[8]  = (uint8_t) (c * 4);     idx[9]  = (uint8_t) (c * 4 + 1);
+    idx[10] = (uint8_t) (c * 4 + 2); idx[11] = (uint8_t) (c * 4 + 3);
+    idx[12] = (uint8_t) (d * 4);     idx[13] = (uint8_t) (d * 4 + 1);
+    idx[14] = (uint8_t) (d * 4 + 2); idx[15] = (uint8_t) (d * 4 + 3);
+    return vreinterpretq_u64_u8(vqtbl1q_u8(vreinterpretq_u8_u64(x), vld1q_u8(idx)));
+}
+#define SHUFFLE32x4(x, a, b, c, d) SHUFFLE32x4_((x), (a), (b), (c), (d))
+
+#define CLMULLO128(a, b) \
+    vreinterpretq_u64_p128(vmull_p64(vget_low_p64(vreinterpretq_p64_u64(a)), vget_low_p64(vreinterpretq_p64_u64(b))))
+#define CLMULLOHI128(a, b) \
+    vreinterpretq_u64_p128(vmull_p64(vget_low_p64(vreinterpretq_p64_u64(a)), vget_high_p64(vreinterpretq_p64_u64(b))))
+#define CLMULHILO128(a, b) \
+    vreinterpretq_u64_p128(vmull_p64(vget_high_p64(vreinterpretq_p64_u64(a)), vget_low_p64(vreinterpretq_p64_u64(b))))
+
+#define PREFETCH_READ(x)
+#define PREFETCH_WRITE(x)
+
+#else
+
 #define REV128(x)                                                                                  \
     vreinterpretq_u64_u8(__builtin_shufflevector(vreinterpretq_u8_u64(x), vreinterpretq_u8_u64(x), \
                                                  15, 14, 13, 12, 11, 10, 9, 8, 7, 6, 5, 4, 3, 2,   \
@@ -67,27 +113,33 @@ typedef uint64x2_t BlockVec;
 #define SHUFFLE32x4(x, a, b, c, d)                                          \
     vreinterpretq_u64_u32(__builtin_shufflevector(vreinterpretq_u32_u64(x), \
                                                   vreinterpretq_u32_u64(x), (a), (b), (c), (d)))
-#define BYTESHL128(a, b) vreinterpretq_u64_u8(vextq_u8(vdupq_n_u8(0), vreinterpretq_u8_u64(a), 16 - (b)))
-#define BYTESHR128(a, b) vreinterpretq_u64_u8(vextq_u8(vreinterpretq_u8_u64(a), vdupq_n_u8(0), (b)))
 
-#define SHL128(a, b) OR128(SHL64x2((a), (b)), SHR64x2(BYTESHL128((a), 8), 64 - (b)))
 #define CLMULLO128(a, b) \
     vreinterpretq_u64_p128(vmull_p64((poly64_t) vget_low_u64(a), (poly64_t) vget_low_u64(b)))
-#define CLMULHI128(a, b) \
-    vreinterpretq_u64_p128(vmull_high_p64(vreinterpretq_p64_u64(a), vreinterpretq_p64_u64(b)))
 #define CLMULLOHI128(a, b) \
     vreinterpretq_u64_p128(vmull_p64((poly64_t) vget_low_u64(a), (poly64_t) vget_high_u64(b)))
 #define CLMULHILO128(a, b) \
     vreinterpretq_u64_p128(vmull_p64((poly64_t) vget_high_u64(a), (poly64_t) vget_low_u64(b)))
+
 #define PREFETCH_READ(x)  __builtin_prefetch((x), 0, 2)
 #define PREFETCH_WRITE(x) __builtin_prefetch((x), 1, 2);
+
+#endif
 
 static inline BlockVec
 AES_KEYGEN(BlockVec block_vec, const int rc)
 {
+#ifdef _MSC_VER
+    static const uint8_t keygen_shuf[16] = {
+        4, 1, 14, 11, 1, 14, 11, 4, 12, 9, 6, 3, 9, 6, 3, 12
+    };
+    uint8x16_t       a = vaeseq_u8(vreinterpretq_u8_u64(block_vec), vdupq_n_u8(0));
+    const uint8x16_t b = vqtbl1q_u8(a, vld1q_u8(keygen_shuf));
+#else
     uint8x16_t       a = vaeseq_u8(vreinterpretq_u8_u64(block_vec), vmovq_n_u8(0));
     const uint8x16_t b =
         __builtin_shufflevector(a, a, 4, 1, 14, 11, 1, 14, 11, 4, 12, 9, 6, 3, 9, 6, 3, 12);
+#endif
     const uint64x2_t c = SET64x2((uint64_t) rc << 32, (uint64_t) rc << 32);
     return XOR128(vreinterpretq_u64_u8(b), c);
 }
