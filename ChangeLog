@@ -1,18 +1,23 @@
 * Version 1.0.21-stable
- - LTO is now disabled when using Emscripten: with Emscripten 4, LTO
-produced WebAssembly modules with functions that ran significantly
-slower than without it.
- - JavaScript sumo builds now allow up to 80 MiB memory usage, so that
-`crypto_pwhash` with the interactive settings can be used in pure
-JavaScript, not just WebAssembly.
  - Performance: SHA3 (Keccak1600) now leverages ARM SHA3 instructions when
 available on ARM platforms.
  - Performance: WebAssembly SIMD implementations of Argon2 have been added.
+ - Emscripten: LTO is now disabled. With Emscripten 4, LTO produced
+WebAssembly modules with functions that ran significantly slower than
+without it.
  - Emscripten: a new option allows compilation with SIMD support.
- - Export missing crypto_ipcrypt_nd_keygen() helper function.
- - Fixed compilation with GCC on aarch64 and gcc 4.1.
- - Added dompatibility with Visual Studio 2026  when toolsets do not define
-PlatformToolsetVersion.
+ - JavaScript sumo builds now allow up to 80 MiB memory usage, so that
+`crypto_pwhash` with the interactive settings can be used in pure
+JavaScript, not just WebAssembly.
+ - XOF state alignment has been relaxed.
+ - `crypto_core_keccak1600_state` has been added.
+ - Export missing `crypto_ipcrypt_nd_keygen()` helper function.
+ - apple-xcframework: headers are now in a Clibsodium subdirectory
+to prevent module.modulemap collisions with other xcframeworks.
+ - Fixed compilation with GCC on aarch64 and gcc 4.x.
+ - On aarch64, aes256-gcm is now enabled even when not using clang.
+ - Added compatibility with Visual Studio 2026 when toolsets do not
+define PlatformToolsetVersion.
  - Libsodium can be directly used as a dependency in a Zig project.
 
 * Version 1.0.21
