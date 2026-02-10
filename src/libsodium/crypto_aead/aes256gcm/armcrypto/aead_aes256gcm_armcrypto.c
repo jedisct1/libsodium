@@ -47,14 +47,14 @@ typedef uint64x2_t BlockVec;
 #define STORE128(a, b) vst1q_u64((uint64_t *) (void *) (a), (b))
 #define AES_XENCRYPT(block_vec, rkey) \
     vreinterpretq_u64_u8(             \
-        vaesmcq_u8(vaeseq_u8(rkey, vreinterpretq_u8_u64(block_vec))))
+        vaesmcq_u8(vaeseq_u8(vreinterpretq_u8_u64(rkey), vreinterpretq_u8_u64(block_vec))))
 #define AES_XENCRYPTLAST(block_vec, rkey) \
-    vreinterpretq_u64_u8(vaeseq_u8(rkey, vreinterpretq_u8_u64(block_vec)))
+    vreinterpretq_u64_u8(vaeseq_u8(vreinterpretq_u8_u64(rkey), vreinterpretq_u8_u64(block_vec)))
 #define XOR128(a, b)  veorq_u64((a), (b))
 #define AND128(a, b)  vandq_u64((a), (b))
 #define OR128(a, b)   vorrq_u64((a), (b))
 #define SET64x2(a, b) vsetq_lane_u64((uint64_t) (a), vmovq_n_u64((uint64_t) (b)), 1)
-#define ZERO128       vmovq_n_u8(0)
+#define ZERO128       vmovq_n_u64(0)
 #define ONE128        SET64x2(0, 1)
 #define ADD64x2(a, b) vaddq_u64((a), (b))
 #define SUB64x2(a, b) vsubq_u64((a), (b))
@@ -67,14 +67,14 @@ typedef uint64x2_t BlockVec;
 #define SHUFFLE32x4(x, a, b, c, d)                                          \
     vreinterpretq_u64_u32(__builtin_shufflevector(vreinterpretq_u32_u64(x), \
                                                   vreinterpretq_u32_u64(x), (a), (b), (c), (d)))
-#define BYTESHL128(a, b) vreinterpretq_u64_u8(vextq_s8(vdupq_n_s8(0), (int8x16_t) a, 16 - (b)))
-#define BYTESHR128(a, b) vreinterpretq_u64_u8(vextq_s8((int8x16_t) a, vdupq_n_s8(0), (b)))
+#define BYTESHL128(a, b) vreinterpretq_u64_u8(vextq_u8(vdupq_n_u8(0), vreinterpretq_u8_u64(a), 16 - (b)))
+#define BYTESHR128(a, b) vreinterpretq_u64_u8(vextq_u8(vreinterpretq_u8_u64(a), vdupq_n_u8(0), (b)))
 
 #define SHL128(a, b) OR128(SHL64x2((a), (b)), SHR64x2(BYTESHL128((a), 8), 64 - (b)))
 #define CLMULLO128(a, b) \
     vreinterpretq_u64_p128(vmull_p64((poly64_t) vget_low_u64(a), (poly64_t) vget_low_u64(b)))
 #define CLMULHI128(a, b) \
-    vreinterpretq_u64_p128(vmull_high_p64(vreinterpretq_p64_s64(a), vreinterpretq_p64_s64(b)))
+    vreinterpretq_u64_p128(vmull_high_p64(vreinterpretq_p64_u64(a), vreinterpretq_p64_u64(b)))
 #define CLMULLOHI128(a, b) \
     vreinterpretq_u64_p128(vmull_p64((poly64_t) vget_low_u64(a), (poly64_t) vget_high_u64(b)))
 #define CLMULHILO128(a, b) \
@@ -89,7 +89,7 @@ AES_KEYGEN(BlockVec block_vec, const int rc)
     const uint8x16_t b =
         __builtin_shufflevector(a, a, 4, 1, 14, 11, 1, 14, 11, 4, 12, 9, 6, 3, 9, 6, 3, 12);
     const uint64x2_t c = SET64x2((uint64_t) rc << 32, (uint64_t) rc << 32);
-    return XOR128(b, c);
+    return XOR128(vreinterpretq_u64_u8(b), c);
 }
 
 #define ROUNDS 14
