@@ -240,9 +240,14 @@ ENDJS
 
   rm "${PREFIX}/lib/libsodium.pre.tmp.js" "${PREFIX}/lib/libsodium.mid.tmp.js" "${PREFIX}/lib/libsodium.end.tmp.js"
 
-  #KEEP rm "${PREFIX}/lib/libsodium.asm.tmp.js" "${PREFIX}/lib/libsodium.wasm.tmp.js"
+  # Build native ESM module (WASM-only, factory pattern, no asm.js fallback)
+  emccLibsodium "${PREFIX}/lib/libsodium.esm.mjs" -O3 ${SIMD_CFLAGS} \
+    -s WASM=1 -s EVAL_CTORS=2 -s INITIAL_MEMORY=${WASM_INITIAL_MEMORY} \
+    -s MODULARIZE=1 -s EXPORT_ES6=1 -s EXPORT_NAME=createLibsodium \
+    -s ENVIRONMENT=web,worker
+
   touch -r "${PREFIX}/lib/libsodium.js" "$DONE_FILE"
-  ls -l "${PREFIX}/lib/libsodium.js"
+  ls -l "${PREFIX}/lib/libsodium.js" "${PREFIX}/lib/libsodium.esm.mjs"
   exit 0
 fi
 
