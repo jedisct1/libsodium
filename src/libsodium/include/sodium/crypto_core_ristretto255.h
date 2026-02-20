@@ -48,9 +48,9 @@ int crypto_core_ristretto255_from_hash(unsigned char *p,
 
 SODIUM_EXPORT
 int crypto_core_ristretto255_from_string(unsigned char p[crypto_core_ristretto255_BYTES],
-                                            const unsigned char *ctx, size_t ctx_len,
-                                            const unsigned char *msg, size_t msg_len,
-                                            int hash_alg)
+                                         const unsigned char *ctx, size_t ctx_len,
+                                         const unsigned char *msg, size_t msg_len,
+                                         int hash_alg)
             __attribute__ ((nonnull(1)));
 
 SODIUM_EXPORT
