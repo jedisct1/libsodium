@@ -85,7 +85,7 @@ test_scalar_from_string(void)
         { 2, "abc", 3U, "test-dst", 8U,
           "cc954e2d86fdba2af74270642bd6375bdf13e485077bb56a648aaf243d4a8007" },
         { 2, "", 0U, "", 0U,
-          "c9fb227ffae5fa378f3e6cbbafe054989748daae21c9ebe907f7b68d14093a06" },
+          "c9fb227ffae5fa378f3e6cbbafe054989748daae21c9ebe907f7b68d14093a06" }
     };
     unsigned char  s_ed[crypto_core_ed25519_SCALARBYTES];
     unsigned char  expected_s[crypto_core_ed25519_SCALARBYTES];
