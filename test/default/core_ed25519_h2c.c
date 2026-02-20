@@ -65,10 +65,102 @@ static TestData test_data[] = {
       "6dc2fc04f266c5c27f236a80b14f92ccd051ef1ff027f26a07f8c0f327d8f995" }
 };
 
+static void
+test_scalar_from_string(void)
+{
+    static const struct {
+        int         hash_alg;
+        const char *msg;
+        size_t      msg_len;
+        const char *ctx;
+        size_t      ctx_len;
+        const char  expected[65];
+    } scalar_tvs[] = {
+        { 1, "", 0U, "test-dst", 8U,
+          "28dae5fcb05a81163b41a90fc54e3e815613194ddd44b1e718bfab7457536705" },
+        { 2, "", 0U, "test-dst", 8U,
+          "110d25b6c0f2ab15d9387d4d77847e62c3b133da1bcc71e588076765c74e0b03" },
+        { 1, "abc", 3U, "test-dst", 8U,
+          "8a2383018254b8b57b624f049bc2e72c1c401ad0959b10d1d24ad863fcb5060c" },
+        { 2, "abc", 3U, "test-dst", 8U,
+          "cc954e2d86fdba2af74270642bd6375bdf13e485077bb56a648aaf243d4a8007" },
+        { 2, "", 0U, "", 0U,
+          "c9fb227ffae5fa378f3e6cbbafe054989748daae21c9ebe907f7b68d14093a06" },
+    };
+    unsigned char  s_ed[crypto_core_ed25519_SCALARBYTES];
+    unsigned char  expected_s[crypto_core_ed25519_SCALARBYTES];
+    char           s_hex[crypto_core_ed25519_SCALARBYTES * 2U + 1U];
+    size_t         oversized_len = 256U;
+    unsigned char *big_ctx;
+    size_t         t;
+
+    for (t = 0U; t < sizeof scalar_tvs / sizeof scalar_tvs[0]; t++) {
+        sodium_hex2bin(expected_s, sizeof expected_s,
+                       scalar_tvs[t].expected, (size_t) -1U,
+                       NULL, NULL, NULL);
+        if (crypto_core_ed25519_scalar_from_string(
+                s_ed,
+                (const unsigned char *) scalar_tvs[t].ctx,
+                scalar_tvs[t].ctx_len,
+                (const unsigned char *) scalar_tvs[t].msg,
+                scalar_tvs[t].msg_len,
+                scalar_tvs[t].hash_alg) != 0) {
+            printf("scalar_from_string: ed25519 call failed for tv %u\n",
+                   (unsigned) t);
+            continue;
+        }
+        if (memcmp(s_ed, expected_s, sizeof expected_s) != 0) {
+            sodium_bin2hex(s_hex, sizeof s_hex, s_ed, sizeof s_ed);
+            printf("scalar_from_string: ed25519 KAT %u mismatch: %s\n",
+                   (unsigned) t, s_hex);
+        }
+        if (crypto_core_ed25519_scalar_is_canonical(s_ed) != 1) {
+            printf("scalar_from_string: ed25519 result %u not canonical\n",
+                   (unsigned) t);
+        }
+    }
+
+    if (crypto_core_ed25519_scalar_from_string(
+            s_ed,
+            (const unsigned char *) "test-dst", 8U,
+            (const unsigned char *) "abc", 3U,
+            0) != -1) {
+        printf("scalar_from_string: invalid hash_alg 0 should fail\n");
+    }
+    if (crypto_core_ed25519_scalar_from_string(
+            s_ed,
+            (const unsigned char *) "test-dst", 8U,
+            (const unsigned char *) "abc", 3U,
+            99) != -1) {
+        printf("scalar_from_string: invalid hash_alg 99 should fail\n");
+    }
+
+    big_ctx = (unsigned char *) sodium_malloc(oversized_len);
+    memset(big_ctx, 'X', oversized_len);
+
+    if (crypto_core_ed25519_scalar_from_string(
+            s_ed, big_ctx, oversized_len,
+            (const unsigned char *) "abc", 3U, 2) != 0) {
+        printf("scalar_from_string: oversized DST SHA-512 failed\n");
+    }
+    sodium_bin2hex(s_hex, sizeof s_hex, s_ed, sizeof s_ed);
+    printf("scalar_from_string oversized DST/sha512: %s\n", s_hex);
+
+    if (crypto_core_ed25519_scalar_from_string(
+            s_ed, big_ctx, oversized_len,
+            (const unsigned char *) "abc", 3U, 1) != 0) {
+        printf("scalar_from_string: oversized DST SHA-256 failed\n");
+    }
+    sodium_bin2hex(s_hex, sizeof s_hex, s_ed, sizeof s_ed);
+    printf("scalar_from_string oversized DST/sha256: %s\n", s_hex);
+
+    sodium_free(big_ctx);
+}
+
 #define H2CHASH crypto_core_ed25519_H2CSHA512
 
-int
-main(void)
+static void
+test_from_string(void)
 {
     unsigned char *expected_xr, *expected_x;
     unsigned char *expected_yr, *expected_y, *y;
@@ -167,6 +259,13 @@ main(void)
     sodium_free(expected_yr);
     sodium_free(expected_x);
     sodium_free(expected_xr);
+}
+
+int
+main(void)
+{
+    test_scalar_from_string();
+    test_from_string();
 
     printf("OK\n");
 

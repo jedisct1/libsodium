@@ -1,2 +1,4 @@
 RO with oversized context: eedf0384646af8a94b9c8153490ce78f2e79f301800b33f4bfa655bcdc4fb135
+scalar_from_string oversized DST/sha512: 65a9285a623f62fb45d3f7f1598bb32d361c0e504d70d8401f28784af854cc09
+scalar_from_string oversized DST/sha256: 9520c0e0dc6af766f5708c4a4b355dba66cf15462f2556c6fa8ccc03aaa0e102
 OK

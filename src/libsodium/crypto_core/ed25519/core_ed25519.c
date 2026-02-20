@@ -232,6 +232,32 @@ crypto_core_ed25519_scalar_is_canonical(const unsigned char *s)
     return sc25519_is_canonical(s);
 }
 
+#define HASH_SC_L 48U
+
+int
+crypto_core_ed25519_scalar_from_string(unsigned char *s,
+                                       const unsigned char *ctx, size_t ctx_len,
+                                       const unsigned char *msg, size_t msg_len,
+                                       int hash_alg)
+{
+    unsigned char h[crypto_core_ed25519_NONREDUCEDSCALARBYTES];
+    unsigned char h_be[HASH_SC_L];
+    size_t        i;
+
+    if (core_h2c_string_to_hash(h_be, sizeof h_be, ctx, ctx_len, msg, msg_len,
+                                hash_alg) != 0) {
+        return -1;
+    }
+    COMPILER_ASSERT(sizeof h >= sizeof h_be);
+    for (i = 0U; i < HASH_SC_L; i++) {
+        h[i] = h_be[HASH_SC_L - 1U - i];
+    }
+    memset(&h[i], 0, (sizeof h) - i);
+    crypto_core_ed25519_scalar_reduce(s, h);
+
+    return 0;
+}
+
 size_t
 crypto_core_ed25519_bytes(void)
 {
