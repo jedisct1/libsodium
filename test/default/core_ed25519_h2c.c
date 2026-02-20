@@ -201,13 +201,13 @@ test_from_string(void)
                 printf("crypto_core_ed25519_from_string_nu() failed\n");
             }
         } else {
-            if (crypto_core_ed25519_from_string_ro(
+            if (crypto_core_ed25519_from_string(
                     y,
                     (const unsigned char *) "QUUX-V01-CS02-with-edwards25519_XMD:SHA-512_ELL2_RO_",
                     sizeof("QUUX-V01-CS02-with-edwards25519_XMD:SHA-512_ELL2_RO_") - 1U,
                     (const unsigned char *) test_data[i].msg,
                     strlen(test_data[i].msg), H2CHASH) != 0) {
-                printf("crypto_core_ed25519_from_string_ro() failed\n");
+                printf("crypto_core_ed25519_from_string() failed\n");
             }
         }
         if (((y[crypto_core_ed25519_BYTES - 1U] >> 7) & 1) != expected_x_sign) {
@@ -228,9 +228,9 @@ test_from_string(void)
                                            3U, H2CHASH) != 0 ||
         crypto_core_ed25519_from_string_nu(y, (const unsigned char *) "", 0U,
                                            guard_page, 0U, H2CHASH) != 0 ||
-        crypto_core_ed25519_from_string_ro(
+        crypto_core_ed25519_from_string(
             y, NULL, 0U, (const unsigned char *) "msg", 3U, H2CHASH) != 0 ||
-        crypto_core_ed25519_from_string_ro(y, (const unsigned char *) "", 0U,
+        crypto_core_ed25519_from_string(y, (const unsigned char *) "", 0U,
                                            guard_page, 0U, H2CHASH) != 0) {
         printf("Failed with empty parameters");
     }
@@ -244,7 +244,7 @@ test_from_string(void)
     sodium_bin2hex(y_hex, crypto_core_ed25519_BYTES * 2U + 1U, y,
                    crypto_core_ed25519_BYTES);
     printf("NU with oversized context: %s\n", y_hex);
-    crypto_core_ed25519_from_string_ro(y, (const unsigned char *) oversized_ctx,
+    crypto_core_ed25519_from_string(y, (const unsigned char *) oversized_ctx,
                                        oversized_ctx_len - 1U,
                                        (const unsigned char *) "msg", 3U,
                                        H2CHASH);

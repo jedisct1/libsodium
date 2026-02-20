@@ -121,7 +121,7 @@ test_scalar_from_string(void)
 #define H2CHASH crypto_core_ristretto255_H2CSHA512
 
 static void
-test_from_string_ro(void)
+test_from_string(void)
 {
     unsigned char *p, *expected, *input;
     char          *p_hex, *expected_hex;
@@ -155,9 +155,9 @@ test_from_string_ro(void)
         sodium_hex2bin(expected, crypto_core_ristretto255_BYTES,
                        test_data[i].expected_hex, 64U, NULL, NULL, NULL);
 
-        if (crypto_core_ristretto255_from_string_ro(
+        if (crypto_core_ristretto255_from_string(
                 p, dst, dst_len, input, input_len, H2CHASH) != 0) {
-            printf("crypto_core_ristretto255_from_string_ro() failed (test #%u)\n",
+            printf("crypto_core_ristretto255_from_string() failed (test #%u)\n",
                    (unsigned) i);
             continue;
         }
@@ -171,16 +171,16 @@ test_from_string_ro(void)
         }
     }
 
-    if (crypto_core_ristretto255_from_string_ro(
+    if (crypto_core_ristretto255_from_string(
             p, NULL, 0U, (const unsigned char *) "msg", 3U, H2CHASH) != 0 ||
-        crypto_core_ristretto255_from_string_ro(
+        crypto_core_ristretto255_from_string(
             p, (const unsigned char *) "", 0U, guard_page, 0U, H2CHASH) != 0) {
         printf("Failed with empty parameters\n");
     }
 
     oversized_ctx = (char *) sodium_malloc(oversized_ctx_len);
     memset(oversized_ctx, 'X', oversized_ctx_len);
-    crypto_core_ristretto255_from_string_ro(
+    crypto_core_ristretto255_from_string(
         p, (const unsigned char *) oversized_ctx, oversized_ctx_len - 1U,
         (const unsigned char *) "msg", 3U, H2CHASH);
     sodium_bin2hex(p_hex, crypto_core_ristretto255_BYTES * 2U + 1U,
@@ -199,7 +199,7 @@ int
 main(void)
 {
     test_scalar_from_string();
-    test_from_string_ro();
+    test_from_string();
 
     printf("OK\n");
 

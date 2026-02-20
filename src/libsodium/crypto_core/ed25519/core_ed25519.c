@@ -97,7 +97,7 @@ crypto_core_ed25519_from_string_nu(unsigned char p[crypto_core_ed25519_BYTES],
 }
 
 int
-crypto_core_ed25519_from_string_ro(unsigned char p[crypto_core_ed25519_BYTES],
+crypto_core_ed25519_from_string(unsigned char p[crypto_core_ed25519_BYTES],
                                    const unsigned char *ctx, size_t ctx_len,
                                    const unsigned char *msg, size_t msg_len,
                                    int hash_alg)
