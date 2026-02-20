@@ -192,13 +192,13 @@ test_from_string(void)
             expected_y[j] = expected_yr[crypto_core_ed25519_BYTES - 1U - j];
         }
         if (test_data[i].ro == 0) {
-            if (crypto_core_ed25519_from_string(
+            if (crypto_core_ed25519_from_string_nu(
                     y,
                     (const unsigned char *) "QUUX-V01-CS02-with-edwards25519_XMD:SHA-512_ELL2_NU_",
                     sizeof("QUUX-V01-CS02-with-edwards25519_XMD:SHA-512_ELL2_NU_") - 1U,
                     (const unsigned char *) test_data[i].msg,
                     strlen(test_data[i].msg), H2CHASH) != 0) {
-                printf("crypto_core_ed25519_from_string() failed\n");
+                printf("crypto_core_ed25519_from_string_nu() failed\n");
             }
         } else {
             if (crypto_core_ed25519_from_string_ro(
@@ -224,10 +224,10 @@ test_from_string(void)
         }
     }
 
-    if (crypto_core_ed25519_from_string(y, NULL, 0U, (const unsigned char *) "msg",
-                                        3U, H2CHASH) != 0 ||
-        crypto_core_ed25519_from_string(y, (const unsigned char *) "", 0U,
-                                        guard_page, 0U, H2CHASH) != 0 ||
+    if (crypto_core_ed25519_from_string_nu(y, NULL, 0U, (const unsigned char *) "msg",
+                                           3U, H2CHASH) != 0 ||
+        crypto_core_ed25519_from_string_nu(y, (const unsigned char *) "", 0U,
+                                           guard_page, 0U, H2CHASH) != 0 ||
         crypto_core_ed25519_from_string_ro(
             y, NULL, 0U, (const unsigned char *) "msg", 3U, H2CHASH) != 0 ||
         crypto_core_ed25519_from_string_ro(y, (const unsigned char *) "", 0U,
@@ -237,10 +237,10 @@ test_from_string(void)
 
     oversized_ctx = (char *) sodium_malloc(oversized_ctx_len);
     memset(oversized_ctx, 'X', oversized_ctx_len);
-    crypto_core_ed25519_from_string(y, (const unsigned char *) oversized_ctx,
-                                    oversized_ctx_len - 1U,
-                                    (const unsigned char *) "msg", 3U,
-                                    H2CHASH);
+    crypto_core_ed25519_from_string_nu(y, (const unsigned char *) oversized_ctx,
+                                       oversized_ctx_len - 1U,
+                                       (const unsigned char *) "msg", 3U,
+                                       H2CHASH);
     sodium_bin2hex(y_hex, crypto_core_ed25519_BYTES * 2U + 1U, y,
                    crypto_core_ed25519_BYTES);
     printf("NU with oversized context: %s\n", y_hex);

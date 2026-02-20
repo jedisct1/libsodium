@@ -165,7 +165,7 @@ _crypto_box_seedbytes 1 1
 _crypto_box_zerobytes 0 1
 _crypto_core_ed25519_add 0 1
 _crypto_core_ed25519_bytes 0 1
-_crypto_core_ed25519_from_string 0 1
+_crypto_core_ed25519_from_string_nu 0 1
 _crypto_core_ed25519_from_string_ro 0 1
 _crypto_core_ed25519_hashbytes 0 1
 _crypto_core_ed25519_is_valid_point 0 1
