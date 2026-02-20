@@ -202,7 +202,6 @@ _crypto_core_keccak1600_xor_bytes 0 1
 _crypto_core_ristretto255_add 0 1
 _crypto_core_ristretto255_bytes 0 1
 _crypto_core_ristretto255_from_hash 0 1
-_crypto_core_ristretto255_from_string 0 1
 _crypto_core_ristretto255_from_string_ro 0 1
 _crypto_core_ristretto255_hashbytes 0 1
 _crypto_core_ristretto255_is_valid_point 0 1
