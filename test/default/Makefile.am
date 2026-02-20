@@ -31,6 +31,7 @@ EXTRA_DIST = \
 	core_ed25519.exp \
 	core_ed25519_h2c.exp \
 	core_ristretto255.exp \
+	core_ristretto255_h2c.exp \
 	core1.exp \
 	core2.exp \
 	core3.exp \
@@ -126,6 +127,7 @@ DISTCLEANFILES = \
 	core_ed25519.res \
 	core_ed25519_h2c.res \
 	core_ristretto255.res \
+	core_ristretto255_h2c.res \
 	core1.res \
 	core2.res \
 	core3.res \
@@ -379,6 +381,9 @@ core_ed25519_h2c_LDADD    = $(TESTS_LDADD)
 core_ristretto255_SOURCE  = cmptest.h core_ristretto255.c
 core_ristretto255_LDADD   = $(TESTS_LDADD)
 
+core_ristretto255_h2c_SOURCE  = cmptest.h core_ristretto255_h2c.c
+core_ristretto255_h2c_LDADD   = $(TESTS_LDADD)
+
 core1_SOURCE              = cmptest.h core1.c
 core1_LDADD               = $(TESTS_LDADD)
 
@@ -585,6 +590,7 @@ TESTS_TARGETS += \
 	core_ed25519 \
 	core_ed25519_h2c \
 	core_ristretto255 \
+	core_ristretto255_h2c \
 	kdf_hkdf \
 	pwhash_scrypt \
 	pwhash_scrypt_ll \

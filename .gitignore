@@ -111,6 +111,7 @@ test/default/core_ed25519
 test/default/core_ed25519_h2c
 test/default/core_keccak1600
 test/default/core_ristretto255
+test/default/core_ristretto255_h2c
 test/default/core1
 test/default/core2
 test/default/core3
