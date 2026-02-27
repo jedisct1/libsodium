@@ -23,7 +23,13 @@ static TestData test_data[] = {
       "868c9140811d0dc38291c7bbc0bd8f301d0d4e8b15f65e442184a233b8791703" },
     /* VOPRF mode 1, RFC 9497 A.1.2, Test Vector 2 */
     { 0x01, "5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a",
-      "caff66fcdc41da4d87ccc72aaac70c6e267a4b55c3dc9489bb365a70a04f1a52" }
+      "caff66fcdc41da4d87ccc72aaac70c6e267a4b55c3dc9489bb365a70a04f1a52" },
+    /* POPRF mode 2, RFC 9497 A.1.3, Test Vector 1 */
+    { 0x02, "00",
+      "5e121666a7c49e1f24b59fef212aa9c8556e096d3f1598cc02f5c70215b32d73" },
+    /* POPRF mode 2, RFC 9497 A.1.3, Test Vector 2 */
+    { 0x02, "5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a",
+      "785596d91746f8ff32f9f95af448408435284e5935932572caa9e7e0b04fdb03" }
 };
 
 static void
