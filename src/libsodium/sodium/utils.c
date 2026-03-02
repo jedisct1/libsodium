@@ -96,6 +96,10 @@ void *alloca (size_t);
 # define MADV_DONTDUMP MADV_NOCORE
 #endif
 
+#if defined(__GNUC__) && __GNUC__ >= 11
+#  define HAVE_ZERO_CALL_USED_REGS
+#endif
+
 #ifndef DEFAULT_PAGE_SIZE
 # ifdef PAGE_SIZE
 #  define DEFAULT_PAGE_SIZE PAGE_SIZE
@@ -122,6 +126,9 @@ _sodium_dummy_symbol_to_prevent_memzero_lto(void *const  pnt,
 #endif
 /* LCOV_EXCL_STOP */
 
+#ifdef HAVE_ZERO_CALL_USED_REGS
+__attribute__((zero_call_used_regs("all")))
+#endif
 void
 sodium_memzero(void * const pnt, const size_t len)
 {
