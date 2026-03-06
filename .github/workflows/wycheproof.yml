@@ -1,0 +1,32 @@
+name: Wycheproof
+
+on:
+  push:
+    branches: [master, stable, next]
+  pull_request:
+    branches: [master, stable, next]
+
+  workflow_dispatch:
+
+jobs:
+  wycheproof:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v6
+
+      - name: Install build dependencies
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y build-essential libtool autoconf automake
+
+      - name: Build libsodium
+        run: |
+          ./autogen.sh -s
+          ./configure --disable-shared --enable-static --disable-dependency-tracking
+          make -j$(nproc)
+
+      - name: Generate Wycheproof test vectors
+        run: python3 test/wycheproof/generate.py
+
+      - name: Build and run Wycheproof tests
+        run: make -C test/wycheproof test
