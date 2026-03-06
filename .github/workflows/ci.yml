@@ -8,11 +8,16 @@ on:
 
   workflow_dispatch:
 
+permissions:
+  contents: read
+
 jobs:
   tcc:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v6
+      - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6
+        with:
+          persist-credentials: false
 
       - name: Update packages list
         run: sudo apt-get update
@@ -35,13 +40,15 @@ jobs:
   zig:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v6
+      - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6
+        with:
+          persist-credentials: false
 
       - name: Update packages list
         run: sudo apt-get update
 
       - name: Install Zig
-        uses: mlugg/setup-zig@v2
+        uses: mlugg/setup-zig@d1434d08867e3ee9daa34448df10607b98908d29 # v2
         with:
           version: master
 
@@ -67,7 +74,9 @@ jobs:
   regular:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v6
+      - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6
+        with:
+          persist-credentials: false
 
       - name: Update packages list
         run: sudo apt-get update
@@ -96,7 +105,9 @@ jobs:
   check-globals:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v6
+      - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6
+        with:
+          persist-credentials: false
 
       - name: Update packages list
         run: sudo apt-get update
@@ -114,7 +125,9 @@ jobs:
   other-comp:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v6
+      - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6
+        with:
+          persist-credentials: false
 
       - name: Update packages list
         run: sudo apt-get update
@@ -140,7 +153,9 @@ jobs:
   other-arch:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v6
+      - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6
+        with:
+          persist-credentials: false
 
       - name: Update packages list
         run: sudo apt-get update
@@ -160,15 +175,17 @@ jobs:
   wasi:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v6
+      - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6
+        with:
+          persist-credentials: false
 
       - name: Install Zig
-        uses: mlugg/setup-zig@v2
+        uses: mlugg/setup-zig@d1434d08867e3ee9daa34448df10607b98908d29 # v2
         with:
           version: master
 
       - name: Install Wasmer
-        uses: wasmerio/setup-wasmer@v3.1
+        uses: wasmerio/setup-wasmer@24b15c95293d23f89c68bd40dac76338f773e924 # v3.1
 
       - name: Build for wasi-core
         run: zig build -Dtarget=wasm32-wasi -Doptimize=ReleaseSafe
@@ -190,7 +207,9 @@ jobs:
   aarch64-gcc:
     runs-on: ubuntu-24.04-arm
     steps:
-      - uses: actions/checkout@v6
+      - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6
+        with:
+          persist-credentials: false
 
       - name: Update packages list
         run: sudo apt-get update
@@ -211,7 +230,9 @@ jobs:
   aarch64-gcc-crypto:
     runs-on: ubuntu-24.04-arm
     steps:
-      - uses: actions/checkout@v6
+      - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6
+        with:
+          persist-credentials: false
 
       - name: Update packages list
         run: sudo apt-get update
@@ -232,7 +253,9 @@ jobs:
   aarch64-gcc-sha3:
     runs-on: ubuntu-24.04-arm
     steps:
-      - uses: actions/checkout@v6
+      - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6
+        with:
+          persist-credentials: false
 
       - name: Update packages list
         run: sudo apt-get update
@@ -253,7 +276,9 @@ jobs:
   android:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v6
+      - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6
+        with:
+          persist-credentials: false
 
       - name: Update packages list
         run: sudo apt-get update
