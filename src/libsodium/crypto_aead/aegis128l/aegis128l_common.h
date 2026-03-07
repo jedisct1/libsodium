@@ -164,6 +164,7 @@ encrypt_detached(uint8_t *c, uint8_t *mac, size_t maclen, const uint8_t *m, size
     CRYPTO_ALIGN(RATE) uint8_t src[RATE];
     CRYPTO_ALIGN(RATE) uint8_t dst[RATE];
     size_t                     i;
+    int                        ret;
 
     aegis128l_init(k, npub, state);
 
@@ -188,7 +189,13 @@ encrypt_detached(uint8_t *c, uint8_t *mac, size_t maclen, const uint8_t *m, size
         memcpy(c + i, dst, mlen % RATE);
     }
 
-    return aegis128l_mac(mac, maclen, adlen, mlen, state);
+    ret = aegis128l_mac(mac, maclen, adlen, mlen, state);
+
+    sodium_memzero(state, sizeof state);
+    sodium_memzero(src, sizeof src);
+    sodium_memzero(dst, sizeof dst);
+
+    return ret;
 }
 
 static int
@@ -242,9 +249,13 @@ decrypt_detached(uint8_t *m, const uint8_t *c, size_t clen, const uint8_t *mac, 
             ret = crypto_verify_32(computed_mac, mac);
         }
     }
+    sodium_memzero(state, sizeof state);
+    sodium_memzero(src, sizeof src);
+    sodium_memzero(dst, sizeof dst);
+    sodium_memzero(computed_mac, sizeof computed_mac);
     if (ret != 0) {
         if (m != NULL) {
-            memset(m, 0, mlen);
+            sodium_memzero(m, mlen);
         }
         return ret;
     }
