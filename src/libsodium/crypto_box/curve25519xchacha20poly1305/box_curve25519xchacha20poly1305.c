@@ -48,7 +48,10 @@ crypto_box_curve25519xchacha20poly1305_beforenm(unsigned char *k,
     if (crypto_scalarmult_curve25519(s, sk, pk) != 0) {
         return -1;
     }
-    return crypto_core_hchacha20(k, zero, s, NULL);
+    crypto_core_hchacha20(k, zero, s, NULL);
+    sodium_memzero(s, sizeof s);
+
+    return 0;
 }
 
 int
