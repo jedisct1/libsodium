@@ -1,4 +1,6 @@
 * Version 1.0.21-stable
+ - Emscripten: a native ESM module (`libsodium.esm.mjs`) is now
+built alongside the regular JavaScript bundle.
  - Performance: SHA3 (Keccak1600) now leverages ARM SHA3 instructions when
 available on ARM platforms.
  - Performance: WebAssembly SIMD implementations of Argon2 have been added.
