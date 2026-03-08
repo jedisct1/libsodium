@@ -97,6 +97,7 @@ aes_decrypt(uint8_t out[16], const uint8_t in[16], const BlockVec *rkeys)
     }
     t = AES_DECRYPTLAST(t, rkeys[0]);
     STORE128(out, t);
+    sodium_memzero(rkeys_inv, sizeof rkeys_inv);
 }
 
 static BlockVec
@@ -142,6 +143,7 @@ aes_decrypt_with_tweak(uint8_t out[16], const uint8_t in[16], const uint8_t twea
     }
     t = AES_DECRYPTLAST(t, XOR128(tweak_block, rkeys[0]));
     STORE128(out, t);
+    sodium_memzero(rkeys_inv, sizeof rkeys_inv);
 }
 
 static BlockVec
@@ -192,6 +194,7 @@ aes_xex_decrypt(uint8_t out[16], const uint8_t in[16], const uint8_t tweak[16],
     }
     t = AES_DECRYPTLAST(t, XOR128(rkeys[0], tt));
     STORE128(out, t);
+    sodium_memzero(rkeys_inv, sizeof rkeys_inv);
 }
 
 static void
@@ -201,6 +204,7 @@ encrypt(uint8_t *out, const uint8_t *in, const uint8_t *k)
 
     expand_key(rkeys, k);
     aes_encrypt(out, in, rkeys);
+    sodium_memzero(rkeys, sizeof rkeys);
 }
 
 static void
@@ -210,6 +214,7 @@ decrypt(uint8_t *out, const uint8_t *in, const uint8_t *k)
 
     expand_key(rkeys, k);
     aes_decrypt(out, in, rkeys);
+    sodium_memzero(rkeys, sizeof rkeys);
 }
 
 static void
@@ -220,6 +225,7 @@ nd_encrypt(uint8_t *out, const uint8_t *in, const uint8_t *t, const uint8_t *k)
     expand_key(rkeys, k);
     memcpy(out, t, 8);
     aes_encrypt_with_tweak(out + 8, in, t, rkeys);
+    sodium_memzero(rkeys, sizeof rkeys);
 }
 
 static void
@@ -229,6 +235,7 @@ nd_decrypt(uint8_t *out, const uint8_t *in, const uint8_t *k)
 
     expand_key(rkeys, k);
     aes_decrypt_with_tweak(out, in + 8, in, rkeys);
+    sodium_memzero(rkeys, sizeof rkeys);
 }
 
 static void
@@ -257,6 +264,9 @@ ndx_encrypt(uint8_t *out, const uint8_t *in, const uint8_t *t, const uint8_t *k)
 
     memcpy(out, t, 16);
     aes_xex_encrypt(out + 16, in, t, tkeys, rkeys);
+    sodium_memzero(diff, sizeof diff);
+    sodium_memzero(rkeys, sizeof rkeys);
+    sodium_memzero(tkeys, sizeof tkeys);
 }
 
 static void
@@ -284,6 +294,9 @@ ndx_decrypt(uint8_t *out, const uint8_t *in, const uint8_t *k)
     }
 
     aes_xex_decrypt(out, in + 16, in, tkeys, rkeys);
+    sodium_memzero(diff, sizeof diff);
+    sodium_memzero(rkeys, sizeof rkeys);
+    sodium_memzero(tkeys, sizeof tkeys);
 }
 
 static int
@@ -405,6 +418,9 @@ pfx_encrypt(uint8_t *out, const uint8_t *in, const uint8_t *k)
     }
 
     memcpy(out, encrypted, 16);
+    sodium_memzero(diff, sizeof diff);
+    sodium_memzero(k2keys, sizeof k2keys);
+    sodium_memzero(k1keys, sizeof k1keys);
 }
 
 static void
@@ -477,6 +493,9 @@ pfx_decrypt(uint8_t *out, const uint8_t *in, const uint8_t *k)
     }
 
     memcpy(out, decrypted, 16);
+    sodium_memzero(diff, sizeof diff);
+    sodium_memzero(k2keys, sizeof k2keys);
+    sodium_memzero(k1keys, sizeof k1keys);
 }
 
 struct ipcrypt_implementation ipcrypt_aesni_implementation = {
