@@ -44,8 +44,6 @@ crypto_box_curve25519xchacha20poly1305_seal(unsigned char *c, const unsigned cha
          nonce, pk, esk);
     memcpy(c, epk, crypto_box_curve25519xchacha20poly1305_PUBLICKEYBYTES);
     sodium_memzero(esk, sizeof esk);
-    sodium_memzero(epk, sizeof epk);
-    sodium_memzero(nonce, sizeof nonce);
 
     return ret;
 }

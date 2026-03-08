@@ -37,8 +37,6 @@ crypto_box_seal(unsigned char *c, const unsigned char *m,
                           nonce, pk, esk);
     memcpy(c, epk, crypto_box_PUBLICKEYBYTES);
     sodium_memzero(esk, sizeof esk);
-    sodium_memzero(epk, sizeof epk);
-    sodium_memzero(nonce, sizeof nonce);
 
     return ret;
 }
