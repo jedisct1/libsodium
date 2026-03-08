@@ -15,13 +15,13 @@ jobs:
     steps:
       - name: Build Fuzzers
         id: build
-        uses: google/oss-fuzz/infra/cifuzz/actions/build_fuzzers@2dc71767a7483e3035f57c9fc3a0f21ad3b28599 # master 2026-03-06
+        uses: google/oss-fuzz/infra/cifuzz/actions/build_fuzzers@745471a8a36fb54f1306e6157e105a3628e40318 # master 2026-03-08
         with:
           oss-fuzz-project-name: "libsodium"
           dry-run: false
           language: c++
       - name: Run Fuzzers
-        uses: google/oss-fuzz/infra/cifuzz/actions/run_fuzzers@2dc71767a7483e3035f57c9fc3a0f21ad3b28599 # master 2026-03-06
+        uses: google/oss-fuzz/infra/cifuzz/actions/run_fuzzers@745471a8a36fb54f1306e6157e105a3628e40318 # master 2026-03-08
         with:
           oss-fuzz-project-name: "libsodium"
           fuzz-seconds: 300
