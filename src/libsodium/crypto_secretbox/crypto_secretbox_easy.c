@@ -113,6 +113,7 @@ crypto_secretbox_open_detached(unsigned char *m, const unsigned char *c,
         return -1;
     }
     if (m == NULL) {
+        sodium_memzero(subkey, sizeof subkey);
         return 0;
     }
     ACQUIRE_FENCE;
