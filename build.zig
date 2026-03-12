@@ -228,7 +228,7 @@ pub fn build(b: *std.Build) !void {
     });
 
     // work out which libraries we are building
-    var libs = std.ArrayList(*Compile){};
+    var libs: std.ArrayListUnmanaged(*Compile) = .empty;
     defer libs.deinit(heap.page_allocator);
     if (build_static) {
         try libs.append(heap.page_allocator, static_lib);
