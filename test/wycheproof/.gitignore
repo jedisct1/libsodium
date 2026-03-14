@@ -1,0 +1,7 @@
+vectors/
+wycheproof_chacha20poly1305
+wycheproof_xchacha20poly1305
+wycheproof_aes256gcm
+wycheproof_ed25519
+wycheproof_x25519
+wycheproof_hkdf_sha256
