@@ -1,6 +1,6 @@
 #define RATE 32
 
-static void
+static inline void
 aegis128l_init(const uint8_t *key, const uint8_t *nonce, aes_block_t *const state)
 {
     static CRYPTO_ALIGN(AES_BLOCK_LENGTH)
@@ -32,7 +32,7 @@ aegis128l_init(const uint8_t *key, const uint8_t *nonce, aes_block_t *const stat
     }
 }
 
-static void
+static inline void
 aegis128l_mac(uint8_t *mac, size_t maclen, uint64_t adlen, uint64_t mlen, aes_block_t *const state)
 {
     aes_block_t tmp;
@@ -85,7 +85,7 @@ aegis128l_absorb2(const uint8_t *const src, aes_block_t *const state)
     aegis128l_update(state, msg2, msg3);
 }
 
-static void
+static inline void
 aegis128l_enc(uint8_t *const dst, const uint8_t *const src, aes_block_t *const state)
 {
     aes_block_t msg0, msg1;
@@ -105,7 +105,7 @@ aegis128l_enc(uint8_t *const dst, const uint8_t *const src, aes_block_t *const s
     aegis128l_update(state, msg0, msg1);
 }
 
-static void
+static inline void
 aegis128l_dec(uint8_t *const dst, const uint8_t *const src, aes_block_t *const state)
 {
     aes_block_t msg0, msg1;
@@ -124,7 +124,7 @@ aegis128l_dec(uint8_t *const dst, const uint8_t *const src, aes_block_t *const s
     aegis128l_update(state, msg0, msg1);
 }
 
-static void
+static inline void
 aegis128l_declast(uint8_t *const dst, const uint8_t *const src, size_t len,
                   aes_block_t *const state)
 {
