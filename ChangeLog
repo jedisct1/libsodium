@@ -21,6 +21,7 @@ to prevent module.modulemap collisions with other xcframeworks.
  - Added compatibility with Visual Studio 2026 when toolsets do not
 define PlatformToolsetVersion.
  - Libsodium can be directly used as a dependency in a Zig project.
+ - Performance of MSVC builds has been improved.
 
 * Version 1.0.21
   This point release includes all the changes from 1.0.20-stable, which
