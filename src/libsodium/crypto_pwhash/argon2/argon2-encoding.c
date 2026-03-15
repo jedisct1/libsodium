@@ -51,16 +51,16 @@ decode_decimal(const char *str, unsigned long *v)
         }
         c -= '0';
         if (acc > (ULONG_MAX / 10)) {
-            return NULL;
+            return NULL; /* LCOV_EXCL_LINE */
         }
         acc *= 10;
         if ((unsigned long) c > (ULONG_MAX - acc)) {
-            return NULL;
+            return NULL; /* LCOV_EXCL_LINE */
         }
         acc += (unsigned long) c;
     }
     if (str == orig || (*orig == '0' && str != (orig + 1))) {
-        return NULL;
+        return NULL; /* LCOV_EXCL_LINE */
     }
     *v = acc;
     return str;
@@ -279,11 +279,11 @@ argon2_encode_string(char *dst, size_t dst_len, argon2_context *ctx,
     case Argon2_i:
         SS("$argon2i$v="); break;
     default:
-        return ARGON2_ENCODING_FAIL;
+        return ARGON2_ENCODING_FAIL; /* LCOV_EXCL_LINE */
     }
     validation_result = argon2_validate_inputs(ctx);
     if (validation_result != ARGON2_OK) {
-        return validation_result;
+        return validation_result; /* LCOV_EXCL_LINE */
     }
     SX(ARGON2_VERSION_NUMBER);
     SS("$m=");

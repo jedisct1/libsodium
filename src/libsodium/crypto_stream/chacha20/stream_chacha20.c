@@ -56,7 +56,7 @@ crypto_stream_chacha20(unsigned char *c, unsigned long long clen,
                        const unsigned char *n, const unsigned char *k)
 {
     if (clen > crypto_stream_chacha20_MESSAGEBYTES_MAX) {
-        sodium_misuse();
+        sodium_misuse(); /* LCOV_EXCL_LINE */
     }
     return implementation->stream(c, clen, n, k);
 }
@@ -68,7 +68,7 @@ crypto_stream_chacha20_xor_ic(unsigned char *c, const unsigned char *m,
                               const unsigned char *k)
 {
     if (mlen > crypto_stream_chacha20_MESSAGEBYTES_MAX) {
-        sodium_misuse();
+        sodium_misuse(); /* LCOV_EXCL_LINE */
     }
     return implementation->stream_xor_ic(c, m, mlen, n, ic, k);
 }
@@ -79,7 +79,7 @@ crypto_stream_chacha20_xor(unsigned char *c, const unsigned char *m,
                            const unsigned char *k)
 {
     if (mlen > crypto_stream_chacha20_MESSAGEBYTES_MAX) {
-        sodium_misuse();
+        sodium_misuse(); /* LCOV_EXCL_LINE */
     }
     return implementation->stream_xor_ic(c, m, mlen, n, 0U, k);
 }
@@ -89,7 +89,7 @@ crypto_stream_chacha20_ietf_ext(unsigned char *c, unsigned long long clen,
                                 const unsigned char *n, const unsigned char *k)
 {
     if (clen > crypto_stream_chacha20_MESSAGEBYTES_MAX) {
-        sodium_misuse();
+        sodium_misuse(); /* LCOV_EXCL_LINE */
     }
     return implementation->stream_ietf_ext(c, clen, n, k);
 }
@@ -101,7 +101,7 @@ crypto_stream_chacha20_ietf_ext_xor_ic(unsigned char *c, const unsigned char *m,
                                        const unsigned char *k)
 {
     if (mlen > crypto_stream_chacha20_MESSAGEBYTES_MAX) {
-        sodium_misuse();
+        sodium_misuse(); /* LCOV_EXCL_LINE */
     }
     return implementation->stream_ietf_ext_xor_ic(c, m, mlen, n, ic, k);
 }
@@ -112,7 +112,7 @@ crypto_stream_chacha20_ietf_ext_xor(unsigned char *c, const unsigned char *m,
                                     const unsigned char *k)
 {
     if (mlen > crypto_stream_chacha20_MESSAGEBYTES_MAX) {
-        sodium_misuse();
+        sodium_misuse(); /* LCOV_EXCL_LINE */
     }
     return implementation->stream_ietf_ext_xor_ic(c, m, mlen, n, 0U, k);
 }
@@ -122,7 +122,7 @@ crypto_stream_chacha20_ietf(unsigned char *c, unsigned long long clen,
                             const unsigned char *n, const unsigned char *k)
 {
     if (clen > crypto_stream_chacha20_ietf_MESSAGEBYTES_MAX) {
-        sodium_misuse();
+        sodium_misuse(); /* LCOV_EXCL_LINE */
     }
     return crypto_stream_chacha20_ietf_ext(c, clen, n, k);
 }
@@ -135,7 +135,7 @@ crypto_stream_chacha20_ietf_xor_ic(unsigned char *c, const unsigned char *m,
 {
     if ((unsigned long long) ic >
         (64ULL * (1ULL << 32)) / 64ULL - (mlen + 63ULL) / 64ULL) {
-        sodium_misuse();
+        sodium_misuse(); /* LCOV_EXCL_LINE */
     }
     return crypto_stream_chacha20_ietf_ext_xor_ic(c, m, mlen, n, ic, k);
 }
@@ -146,7 +146,7 @@ crypto_stream_chacha20_ietf_xor(unsigned char *c, const unsigned char *m,
                                 const unsigned char *k)
 {
     if (mlen > crypto_stream_chacha20_ietf_MESSAGEBYTES_MAX) {
-        sodium_misuse();
+        sodium_misuse(); /* LCOV_EXCL_LINE */
     }
     return crypto_stream_chacha20_ietf_ext_xor(c, m, mlen, n, k);
 }

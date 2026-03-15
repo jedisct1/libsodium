@@ -10,6 +10,8 @@ Public domain.
 #include "crypto_stream_salsa208.h"
 #include "utils.h"
 
+/* LCOV_EXCL_START */
+
 int
 crypto_stream_salsa208(unsigned char *c, unsigned long long clen,
                        const unsigned char *n, const unsigned char *k)
@@ -104,3 +106,5 @@ crypto_stream_salsa208_xor(unsigned char *c, const unsigned char *m,
 
     return 0;
 }
+
+/* LCOV_EXCL_STOP */

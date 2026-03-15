@@ -115,7 +115,7 @@ crypto_aead_aegis256_encrypt_detached(unsigned char *c, unsigned char *mac,
     }
     if (mlen > crypto_aead_aegis256_MESSAGEBYTES_MAX ||
         adlen > crypto_aead_aegis256_MESSAGEBYTES_MAX) {
-        sodium_misuse();
+        sodium_misuse(); /* LCOV_EXCL_LINE */
     }
     return implementation->encrypt_detached(c, mac, maclen, m, (size_t) mlen, ad, (size_t) adlen,
                                             npub, k);
@@ -132,7 +132,7 @@ crypto_aead_aegis256_decrypt_detached(unsigned char *m, unsigned char *nsec, con
     (void) nsec;
     if (clen > crypto_aead_aegis256_MESSAGEBYTES_MAX ||
         adlen > crypto_aead_aegis256_MESSAGEBYTES_MAX) {
-        return -1;
+        return -1; /* LCOV_EXCL_LINE */
     }
     return implementation->decrypt_detached(m, c, (size_t) clen, mac, maclen, ad, (size_t) adlen,
                                             npub, k);

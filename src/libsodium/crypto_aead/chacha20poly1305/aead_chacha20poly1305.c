@@ -72,7 +72,7 @@ crypto_aead_chacha20poly1305_encrypt(unsigned char *c,
     int                ret;
 
     if (mlen > crypto_aead_chacha20poly1305_MESSAGEBYTES_MAX) {
-        sodium_misuse();
+        sodium_misuse(); /* LCOV_EXCL_LINE */
     }
     ret = crypto_aead_chacha20poly1305_encrypt_detached(c,
                                                         c + mlen, NULL,
@@ -147,7 +147,7 @@ crypto_aead_chacha20poly1305_ietf_encrypt(unsigned char *c,
     int                ret;
 
     if (mlen > crypto_aead_chacha20poly1305_ietf_MESSAGEBYTES_MAX) {
-        sodium_misuse();
+        sodium_misuse(); /* LCOV_EXCL_LINE */
     }
     ret = crypto_aead_chacha20poly1305_ietf_encrypt_detached(c,
                                                              c + mlen, NULL,

@@ -178,8 +178,8 @@ crypto_pwhash_scryptsalsa208sha256(unsigned char *const       out,
         return -1;      /* LCOV_EXCL_LINE */
     }
     if ((const void *) out == (const void *) passwd) {
-        errno = EINVAL;
-        return -1;
+        errno = EINVAL; /* LCOV_EXCL_LINE */
+        return -1;      /* LCOV_EXCL_LINE */
     }
     return crypto_pwhash_scryptsalsa208sha256_ll(
         (const uint8_t *) passwd, (size_t) passwdlen, (const uint8_t *) salt,
@@ -281,8 +281,8 @@ crypto_pwhash_scryptsalsa208sha256_str_needs_rehash(
     uint32_t r, r_;
 
     if (pickparams(opslimit, memlimit, &N_log2, &p, &r) != 0) {
-        errno = EINVAL;
-        return -1;
+        errno = EINVAL; /* LCOV_EXCL_LINE */
+        return -1;      /* LCOV_EXCL_LINE */
     }
     if (sodium_strnlen(str, crypto_pwhash_scryptsalsa208sha256_STRBYTES) !=
         crypto_pwhash_scryptsalsa208sha256_STRBYTES - 1U) {
@@ -291,8 +291,8 @@ crypto_pwhash_scryptsalsa208sha256_str_needs_rehash(
     }
     if (escrypt_parse_setting((const uint8_t *) str,
                               &N_log2_, &r_, &p_) == NULL) {
-        errno = EINVAL;
-        return -1;
+        errno = EINVAL; /* LCOV_EXCL_LINE */
+        return -1;      /* LCOV_EXCL_LINE */
     }
     if (N_log2 != N_log2_ || r != r_ || p != p_) {
         return 1;

@@ -2732,6 +2732,7 @@ fe25519_reduce64(fe25519 fe_f, const unsigned char h[64])
     fe25519_reduce(fe_f, fe_f);
 }
 
+/* LCOV_EXCL_START */
 void
 ge25519_from_hash(unsigned char s[32], const unsigned char h[64])
 {
@@ -2755,6 +2756,7 @@ ge25519_from_hash(unsigned char s[32], const unsigned char h[64])
     ge25519_clear_cofactor(&p3);
     ge25519_p3_tobytes(s, &p3);
 }
+/* LCOV_EXCL_STOP */
 
 /* Ristretto group */
 

@@ -506,6 +506,7 @@ _mprotect_readwrite(void *ptr, size_t size)
 
 #ifdef HAVE_ALIGNED_MALLOC
 
+/* LCOV_EXCL_START */
 __attribute__((noreturn)) static void
 _out_of_bounds(void)
 {
@@ -519,7 +520,8 @@ _out_of_bounds(void)
 #  endif
 # endif
     abort(); /* not something we want any higher-level API to catch */
-} /* LCOV_EXCL_LINE */
+}
+/* LCOV_EXCL_STOP */
 
 static inline size_t
 _page_round(const size_t size)

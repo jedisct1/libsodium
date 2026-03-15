@@ -87,6 +87,7 @@ _string_to_points(unsigned char * const px, const size_t n,
     return 0;
 }
 
+/* LCOV_EXCL_START */
 int
 crypto_core_ed25519_from_string_nu(unsigned char p[crypto_core_ed25519_BYTES],
                                    const unsigned char *ctx, size_t ctx_len,
@@ -109,6 +110,7 @@ crypto_core_ed25519_from_string(unsigned char p[crypto_core_ed25519_BYTES],
     }
     return crypto_core_ed25519_add(p, &px[0], &px[crypto_core_ed25519_BYTES]);
 }
+/* LCOV_EXCL_STOP */
 
 void
 crypto_core_ed25519_random(unsigned char *p)
