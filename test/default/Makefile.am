@@ -46,6 +46,7 @@ EXTRA_DIST = \
 	ipcrypt.exp \
 	kdf.exp \
 	kdf_hkdf.exp \
+	kdf_hkdf2.exp \
 	keygen.exp \
 	kx.exp \
 	metamorphic.exp \
@@ -85,6 +86,7 @@ EXTRA_DIST = \
 	stream2.exp \
 	stream3.exp \
 	stream4.exp \
+	stream5.exp \
 	verify1.exp \
 	xchacha20.exp \
 	xof_shake128.exp \
@@ -135,6 +137,7 @@ DISTCLEANFILES = \
 	ipcrypt.res \
 	kdf.res \
 	kdf_hkdf.res \
+	kdf_hkdf2.res \
 	keygen.res \
 	kx.res \
 	metamorphic.res \
@@ -174,6 +177,7 @@ DISTCLEANFILES = \
 	stream2.res \
 	stream3.res \
 	stream4.res \
+	stream5.res \
 	verify1.res \
 	xchacha20.res \
 	xof_shake128.res \
@@ -404,6 +408,9 @@ kdf_LDADD                 = $(TESTS_LDADD)
 kdf_hkdf_SOURCE            = cmptest.h kdf_hkdf.c
 kdf_hkdf_LDADD             = $(TESTS_LDADD)
 
+kdf_hkdf2_SOURCE           = cmptest.h kdf_hkdf2.c
+kdf_hkdf2_LDADD            = $(TESTS_LDADD)
+
 keygen_SOURCE             = cmptest.h keygen.c
 keygen_LDADD              = $(TESTS_LDADD)
 
@@ -521,6 +528,9 @@ stream3_LDADD             = $(TESTS_LDADD)
 stream4_SOURCE            = cmptest.h stream4.c
 stream4_LDADD             = $(TESTS_LDADD)
 
+stream5_SOURCE            = cmptest.h stream5.c
+stream5_LDADD             = $(TESTS_LDADD)
+
 verify1_SOURCE            = cmptest.h verify1.c
 verify1_LDADD             = $(TESTS_LDADD)
 
@@ -544,7 +554,9 @@ TESTS_TARGETS += \
 	core_ed25519 \
 	core_ristretto255 \
 	kdf_hkdf \
+	kdf_hkdf2 \
 	pwhash_scrypt \
+	stream5 \
 	pwhash_scrypt_ll \
 	scalarmult_ed25519 \
 	scalarmult_ristretto255 \
