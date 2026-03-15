@@ -166,7 +166,7 @@ static void
 sodium_base64_check_variant(const int variant)
 {
     if ((((unsigned int) variant) & ~ 0x6U) != 0x1U) {
-        sodium_misuse();
+        sodium_misuse(); /* LCOV_EXCL_LINE */
     }
 }
 
@@ -209,7 +209,7 @@ sodium_bin2base64(char * const b64, const size_t b64_maxlen,
         }
     }
     if (b64_maxlen <= b64_len) {
-        sodium_misuse();
+        sodium_misuse(); /* LCOV_EXCL_LINE */
     }
     if ((((unsigned int) variant) & VARIANT_URLSAFE_MASK) != 0U) {
         while (bin_pos < bin_len) {

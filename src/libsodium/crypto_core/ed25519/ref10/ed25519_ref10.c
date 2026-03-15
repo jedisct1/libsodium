@@ -697,6 +697,7 @@ ge25519_sub(ge25519_p1p1 *r, const ge25519_p3 *p, const ge25519_cached *q)
     fe25519_add(r->T, t0, r->T);
 }
 
+/* LCOV_EXCL_START */
 void
 ge25519_tobytes(unsigned char *s, const ge25519_p2 *h)
 {
@@ -710,6 +711,7 @@ ge25519_tobytes(unsigned char *s, const ge25519_p2 *h)
     fe25519_tobytes(s, y);
     s[31] ^= fe25519_isnegative(x) << 7;
 }
+/* LCOV_EXCL_STOP */
 
 /*
  r = a * A + b * B

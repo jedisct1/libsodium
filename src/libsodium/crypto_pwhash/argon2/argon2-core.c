@@ -489,20 +489,20 @@ argon2_initialize(argon2_instance_t *instance, argon2_context *context)
     int     result = ARGON2_OK;
 
     if (instance == NULL || context == NULL) {
-        return ARGON2_INCORRECT_PARAMETER;
+        return ARGON2_INCORRECT_PARAMETER; /* LCOV_EXCL_LINE */
     }
 
     /* 1. Memory allocation */
 
     if ((instance->pseudo_rands = (uint64_t *)
          malloc(sizeof(uint64_t) * instance->segment_length)) == NULL) {
-        return ARGON2_MEMORY_ALLOCATION_ERROR;
+        return ARGON2_MEMORY_ALLOCATION_ERROR; /* LCOV_EXCL_LINE */
     }
 
     result = allocate_memory(&(instance->region), instance->memory_blocks);
     if (ARGON2_OK != result) {
-        argon2_free_instance(instance, context->flags);
-        return result;
+        argon2_free_instance(instance, context->flags); /* LCOV_EXCL_LINE */
+        return result;                                   /* LCOV_EXCL_LINE */
     }
 
     /* 2. Initial hashing */
