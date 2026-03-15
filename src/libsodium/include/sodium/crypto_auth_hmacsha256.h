@@ -46,7 +46,7 @@ size_t crypto_auth_hmacsha256_statebytes(void);
 SODIUM_EXPORT
 int crypto_auth_hmacsha256_init(crypto_auth_hmacsha256_state *state,
                                 const unsigned char *key,
-                                size_t keylen) __attribute__ ((nonnull));
+                                size_t keylen) __attribute__ ((nonnull(1)));
 
 SODIUM_EXPORT
 int crypto_auth_hmacsha256_update(crypto_auth_hmacsha256_state *state,

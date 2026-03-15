@@ -3,6 +3,7 @@
 #include <stdint.h>
 #include <string.h>
 
+#include "core.h"
 #include "crypto_auth_hmacsha256.h"
 #include "crypto_hash_sha256.h"
 #include "crypto_verify_32.h"
@@ -47,6 +48,10 @@ crypto_auth_hmacsha256_init(crypto_auth_hmacsha256_state *state,
         crypto_hash_sha256_final(&state->ictx, khash);
         key    = khash;
         keylen = 32;
+    } else if (key == NULL) {
+        if (keylen > 0) {
+            sodium_misuse();
+        }
     }
     crypto_hash_sha256_init(&state->ictx);
     memset(pad, 0x36, 64);
