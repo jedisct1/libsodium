@@ -107,6 +107,7 @@ test/default/browser
 test/default/chacha20
 test/default/codecs
 test/default/codecs2
+test/default/codecs3
 test/default/core_ed25519
 test/default/core_keccak1600
 test/default/core_ristretto255
@@ -127,6 +128,7 @@ test/default/kdf
 test/default/kdf_hkdf
 test/default/kdf_hkdf2
 test/default/kdf_hkdf3
+test/default/kdf_hkdf4
 test/default/keygen
 test/default/kx
 test/default/metamorphic
@@ -136,6 +138,7 @@ test/default/onetimeauth2
 test/default/onetimeauth7
 test/default/pwhash_argon2i
 test/default/pwhash_argon2id
+test/default/pwhash_argon2id2
 test/default/pwhash_scrypt
 test/default/pwhash_scrypt_ll
 test/default/randombytes
@@ -161,12 +164,14 @@ test/default/sodium_core
 test/default/sodium_utils
 test/default/sodium_utils2
 test/default/sodium_utils3
+test/default/sodium_utils4
 test/default/sodium_version
 test/default/stream
 test/default/stream2
 test/default/stream3
 test/default/stream4
 test/default/stream5
+test/default/stream6
 test/default/verify1
 test/default/xchacha20
 test/default/xof_shake128

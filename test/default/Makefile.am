@@ -29,6 +29,7 @@ EXTRA_DIST = \
 	chacha20.exp \
 	codecs.exp \
 	codecs2.exp \
+	codecs3.exp \
 	core_ed25519.exp \
 	core_keccak1600.exp \
 	core_ristretto255.exp \
@@ -49,6 +50,10 @@ EXTRA_DIST = \
 	kdf_hkdf.exp \
 	kdf_hkdf2.exp \
 	kdf_hkdf3.exp \
+	kdf_hkdf4.exp \
+	kem.exp \
+	kem_mlkem768.exp \
+	kem_xwing.exp \
 	keygen.exp \
 	kx.exp \
 	metamorphic.exp \
@@ -58,6 +63,7 @@ EXTRA_DIST = \
 	onetimeauth7.exp \
 	pwhash_argon2i.exp \
 	pwhash_argon2id.exp \
+	pwhash_argon2id2.exp \
 	pwhash_scrypt.exp \
 	pwhash_scrypt_ll.exp \
 	randombytes.exp \
@@ -83,12 +89,14 @@ EXTRA_DIST = \
 	sodium_utils.exp \
 	sodium_utils2.exp \
 	sodium_utils3.exp \
+	sodium_utils4.exp \
 	sodium_version.exp \
 	stream.exp \
 	stream2.exp \
 	stream3.exp \
 	stream4.exp \
 	stream5.exp \
+	stream6.exp \
 	verify1.exp \
 	xchacha20.exp \
 	xof_shake128.exp \
@@ -122,6 +130,7 @@ DISTCLEANFILES = \
 	chacha20.res \
 	codecs.res \
 	codecs2.res \
+	codecs3.res \
 	core_ed25519.res \
 	core_keccak1600.res \
 	core_ristretto255.res \
@@ -143,6 +152,10 @@ DISTCLEANFILES = \
 	kdf_hkdf.res \
 	kdf_hkdf2.res \
 	kdf_hkdf3.res \
+	kdf_hkdf4.res \
+	kem.res \
+	kem_mlkem768.res \
+	kem_xwing.res \
 	keygen.res \
 	kx.res \
 	metamorphic.res \
@@ -152,6 +165,7 @@ DISTCLEANFILES = \
 	onetimeauth7.res \
 	pwhash_argon2i.res \
 	pwhash_argon2id.res \
+	pwhash_argon2id2.res \
 	pwhash_scrypt.res \
 	pwhash_scrypt_ll.res \
 	randombytes.res \
@@ -177,12 +191,14 @@ DISTCLEANFILES = \
 	sodium_utils.res \
 	sodium_utils2.res \
 	sodium_utils3.res \
+	sodium_utils4.res \
 	sodium_version.res \
 	stream.res \
 	stream2.res \
 	stream3.res \
 	stream4.res \
 	stream5.res \
+	stream6.res \
 	verify1.res \
 	xchacha20.res \
 	xof_shake128.res \
@@ -226,6 +242,7 @@ TESTS_TARGETS = \
 	chacha20 \
 	codecs \
 	codecs2 \
+	codecs3 \
 	core_keccak1600 \
 	core1 \
 	core2 \
@@ -250,6 +267,7 @@ TESTS_TARGETS = \
 	onetimeauth7 \
 	pwhash_argon2i \
 	pwhash_argon2id \
+	pwhash_argon2id2 \
 	randombytes \
 	scalarmult \
 	scalarmult2 \
@@ -283,7 +301,8 @@ TESTS_TARGETS = \
 if !EMSCRIPTEN
 TESTS_TARGETS += \
 	sodium_utils2 \
-	sodium_utils3
+	sodium_utils3 \
+	sodium_utils4
 endif
 
 check_PROGRAMS = $(TESTS_TARGETS)
@@ -365,6 +384,9 @@ codecs_LDADD              = $(TESTS_LDADD)
 codecs2_SOURCE            = cmptest.h codecs2.c
 codecs2_LDADD             = $(TESTS_LDADD)
 
+codecs3_SOURCE            = cmptest.h codecs3.c
+codecs3_LDADD             = $(TESTS_LDADD)
+
 core_ed25519_SOURCE       = cmptest.h core_ed25519.c
 core_ed25519_LDADD        = $(TESTS_LDADD)
 
@@ -425,6 +447,19 @@ kdf_hkdf2_LDADD            = $(TESTS_LDADD)
 kdf_hkdf3_SOURCE           = cmptest.h kdf_hkdf3.c
 kdf_hkdf3_LDADD            = $(TESTS_LDADD)
 
+kdf_hkdf4_SOURCE           = cmptest.h kdf_hkdf4.c
+kdf_hkdf4_LDADD            = $(TESTS_LDADD)
+
+kem_SOURCE                 = cmptest.h kem.c
+kem_LDADD                  = $(TESTS_LDADD)
+
+kem_mlkem768_SOURCE        = cmptest.h kem_mlkem768.c
+kem_mlkem768_LDADD         = $(TESTS_LDADD)
+
+kem_xwing_SOURCE           = cmptest.h kem_xwing.c
+kem_xwing_LDADD            = $(TESTS_LDADD)
+
+
 keygen_SOURCE             = cmptest.h keygen.c
 keygen_LDADD              = $(TESTS_LDADD)
 
@@ -451,6 +486,9 @@ pwhash_argon2i_LDADD      = $(TESTS_LDADD)
 
 pwhash_argon2id_SOURCE    = cmptest.h pwhash_argon2id.c
 pwhash_argon2id_LDADD     = $(TESTS_LDADD)
+
+pwhash_argon2id2_SOURCE   = cmptest.h pwhash_argon2id2.c
+pwhash_argon2id2_LDADD    = $(TESTS_LDADD)
 
 pwhash_scrypt_SOURCE      = cmptest.h pwhash_scrypt.c
 pwhash_scrypt_LDADD       = $(TESTS_LDADD)
@@ -527,6 +565,9 @@ sodium_utils2_LDADD       = $(TESTS_LDADD)
 sodium_utils3_SOURCE      = cmptest.h sodium_utils3.c
 sodium_utils3_LDADD       = $(TESTS_LDADD)
 
+sodium_utils4_SOURCE      = cmptest.h sodium_utils4.c
+sodium_utils4_LDADD       = $(TESTS_LDADD)
+
 sodium_version_SOURCE     = cmptest.h sodium_version.c
 sodium_version_LDADD      = $(TESTS_LDADD)
 
@@ -544,6 +585,9 @@ stream4_LDADD             = $(TESTS_LDADD)
 
 stream5_SOURCE            = cmptest.h stream5.c
 stream5_LDADD             = $(TESTS_LDADD)
+
+stream6_SOURCE            = cmptest.h stream6.c
+stream6_LDADD             = $(TESTS_LDADD)
 
 verify1_SOURCE            = cmptest.h verify1.c
 verify1_LDADD             = $(TESTS_LDADD)
@@ -573,8 +617,10 @@ TESTS_TARGETS += \
 	kdf_hkdf \
 	kdf_hkdf2 \
 	kdf_hkdf3 \
+	kdf_hkdf4 \
 	pwhash_scrypt \
 	stream5 \
+	stream6 \
 	pwhash_scrypt_ll \
 	scalarmult_ed25519 \
 	scalarmult_ristretto255 \

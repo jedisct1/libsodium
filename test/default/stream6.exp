@@ -1,0 +1,5 @@
+xor_zero_len: ok
+xor_tail_block: ok
+xor_roundtrip_137: ok
+stream_zero_len: ok
+xor_roundtrip_256: ok

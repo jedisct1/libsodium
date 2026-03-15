@@ -1,0 +1,8 @@
+hash created: ok
+verify: ok
+needs_rehash opslimit overflow: rejected
+needs_rehash memlimit overflow: rejected
+needs_rehash same params: ok
+argon2i needs_rehash on argon2id: rejected
+verify wrong password: rejected
+pwhash argon2i alg: ok
