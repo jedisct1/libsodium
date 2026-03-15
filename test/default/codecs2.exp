@@ -1,0 +1,3 @@
+ip2bin: zone with whitespace rejected: OK
+ip2bin: IPv4 with zone rejected: OK
+ip2bin: valid IPv6 zone: OK

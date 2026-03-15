@@ -268,7 +268,23 @@ int
 main(void)
 {
     if (crypto_aead_aes256gcm_is_available()) {
+        crypto_aead_aes256gcm_state st;
+        unsigned char               key[crypto_aead_aes256gcm_KEYBYTES];
+        unsigned char               nonce[crypto_aead_aes256gcm_NPUBBYTES];
+        unsigned char               m[16] = { 0 };
+        unsigned char               c[16 + crypto_aead_aes256gcm_ABYTES];
+        unsigned long long          clen;
+
         tv();
+
+        crypto_aead_aes256gcm_keygen(key);
+        randombytes_buf(nonce, sizeof nonce);
+        crypto_aead_aes256gcm_beforenm(&st, key);
+        assert(crypto_aead_aes256gcm_encrypt_afternm(
+                   c, &clen, m, 16, NULL, 0, NULL, nonce, &st) == 0);
+        assert(clen == 16 + crypto_aead_aes256gcm_ABYTES);
+        assert(crypto_aead_aes256gcm_decrypt_afternm(
+                   m, NULL, NULL, c, clen, NULL, 0, nonce, &st) == 0);
     }
     printf("OK\n");
 
