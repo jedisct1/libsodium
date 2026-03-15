@@ -1,0 +1,4 @@
+shake128 update-after-squeeze: ok
+shake256 update-after-squeeze: ok
+turboshake128 update-after-squeeze: ok
+turboshake256 update-after-squeeze: ok

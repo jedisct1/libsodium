@@ -717,6 +717,12 @@ main(void)
     assert(crypto_aead_aegis256_npubbytes() == crypto_aead_aegis256_NPUBBYTES);
     assert(crypto_aead_aegis256_abytes() == crypto_aead_aegis256_ABYTES);
     assert(crypto_aead_aegis256_messagebytes_max() == crypto_aead_aegis256_MESSAGEBYTES_MAX);
+
+    {
+        unsigned char k[crypto_aead_aegis256_KEYBYTES];
+        crypto_aead_aegis256_keygen(k);
+        assert(!sodium_is_zero(k, sizeof k));
+    }
     printf("OK\n");
 
     return 0;

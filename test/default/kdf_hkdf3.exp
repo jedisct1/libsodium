@@ -1,0 +1,5 @@
+sha512 keygen: ok
+sha512 expand max+1: ok
+sha512 expand partial block: ok
+sha256 keygen: ok
+sha256 expand max+1: ok
