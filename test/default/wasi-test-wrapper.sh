@@ -89,6 +89,12 @@ if [ -z "$WASI_RUNTIME" ] || [ "$WASI_RUNTIME" = "wazero" ]; then
   fi
 fi
 
+if [ -z "$WASI_RUNTIME" ] || [ "$WASI_RUNTIME" = "zwasm" ]; then
+  if command -v zwasm >/dev/null; then
+    zwasm run --dir "$(pwd)::/" --allow-read --allow-write --allow-path "$1" && exit 0
+  fi
+fi
+
 if [ -z "$WASI_RUNTIME" ] || [ "$WASI_RUNTIME" = "wasmer-js" ]; then
   if command -v wasmer-js >/dev/null; then
     wasmer-js run "$1" --dir=. && exit 0
