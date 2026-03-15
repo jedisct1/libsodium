@@ -1,0 +1,7 @@
+allocarray: ok
+allocarray zero count: ok
+allocarray zero size: ok
+allocarray overflow: ok
+malloc SIZE_MAX-1: ok
+free NULL: ok
+mprotect cycle: ok

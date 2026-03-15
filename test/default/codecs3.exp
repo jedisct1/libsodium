@@ -1,0 +1,11 @@
+ipv6 double-colon full address: rejected
+ipv6 too few groups: rejected
+ipv6 too many groups: rejected
+ipv6 too many groups at end: rejected
+ipv6 embedded IPv4 too many groups: rejected
+ipv6 embedded IPv4 invalid: rejected
+ipv6 embedded IPv4 valid: ok
+ipv6 trailing colon: rejected
+ipv6 single leading colon: rejected
+ipv6 full 8 groups: ok
+ipv6 embedded IPv4 6 groups: ok
