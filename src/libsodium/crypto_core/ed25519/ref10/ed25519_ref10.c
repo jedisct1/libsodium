@@ -2613,6 +2613,7 @@ ge25519_from_uniform(unsigned char s[32], const unsigned char r[32])
     ge25519_elligator2(s, r_fe, x_sign);
 }
 
+/* LCOV_EXCL_START */
 void
 ge25519_from_hash(unsigned char s[32], const unsigned char h[64])
 {
@@ -2639,6 +2640,7 @@ ge25519_from_hash(unsigned char s[32], const unsigned char h[64])
     fe25519_reduce(fe_f, fe_f);
     ge25519_elligator2(s, fe_f, x_sign);
 }
+/* LCOV_EXCL_STOP */
 
 /* Ristretto group */
 

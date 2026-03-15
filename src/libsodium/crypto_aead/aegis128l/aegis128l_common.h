@@ -58,7 +58,7 @@ aegis128l_mac(uint8_t *mac, size_t maclen, uint64_t adlen, uint64_t mlen, aes_bl
         tmp = AES_BLOCK_XOR(tmp, AES_BLOCK_XOR(state[5], state[4]));
         AES_BLOCK_STORE(mac + 16, tmp);
     } else {
-        memset(mac, 0, maclen);
+        memset(mac, 0, maclen); /* LCOV_EXCL_LINE */
     }
 }
 

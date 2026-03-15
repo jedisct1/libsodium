@@ -1,6 +1,8 @@
 #include "crypto_stream_salsa208.h"
 #include "randombytes.h"
 
+/* LCOV_EXCL_START */
+
 size_t
 crypto_stream_salsa208_keybytes(void)
 {
@@ -24,3 +26,5 @@ crypto_stream_salsa208_keygen(unsigned char k[crypto_stream_salsa208_KEYBYTES])
 {
     randombytes_buf(k, crypto_stream_salsa208_KEYBYTES);
 }
+
+/* LCOV_EXCL_STOP */

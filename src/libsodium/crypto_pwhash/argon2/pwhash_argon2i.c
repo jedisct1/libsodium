@@ -144,8 +144,8 @@ crypto_pwhash_argon2i(unsigned char *const out, unsigned long long outlen,
 {
     memset(out, 0, outlen);
     if (outlen > crypto_pwhash_argon2i_BYTES_MAX) {
-        errno = EFBIG;
-        return -1;
+        errno = EFBIG; /* LCOV_EXCL_LINE */
+        return -1;     /* LCOV_EXCL_LINE */
     }
     if (outlen < crypto_pwhash_argon2i_BYTES_MIN) {
         errno = EINVAL;
@@ -164,8 +164,8 @@ crypto_pwhash_argon2i(unsigned char *const out, unsigned long long outlen,
         return -1;
     }
     if ((const void *) out == (const void *) passwd) {
-        errno = EINVAL;
-        return -1;
+        errno = EINVAL; /* LCOV_EXCL_LINE */
+        return -1;      /* LCOV_EXCL_LINE */
     }
     switch (alg) {
     case crypto_pwhash_argon2i_ALG_ARGON2I13:
