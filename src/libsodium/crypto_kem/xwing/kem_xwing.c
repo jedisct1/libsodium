@@ -132,14 +132,14 @@ crypto_kem_xwing_enc_deterministic(unsigned char *ct, unsigned char *ss, const u
     unsigned char ss_x25519[crypto_scalarmult_curve25519_BYTES];
 
     if (crypto_kem_mlkem768_enc_deterministic(ct_mlkem, ss_mlkem, pk_mlkem, seed_mlkem) != 0) {
-        return -1;
+        return -1; /* LCOV_EXCL_LINE */
     }
 
     crypto_scalarmult_curve25519_base(ct_x25519, sk_e_x25519);
 
     if (crypto_scalarmult_curve25519(ss_x25519, sk_e_x25519, pk_x25519) != 0) {
-        sodium_memzero(ss_mlkem, sizeof ss_mlkem);
-        return -1;
+        sodium_memzero(ss_mlkem, sizeof ss_mlkem); /* LCOV_EXCL_LINE */
+        return -1;                                 /* LCOV_EXCL_LINE */
     }
 
     memcpy(ct, ct_mlkem, crypto_kem_mlkem768_CIPHERTEXTBYTES);
@@ -160,8 +160,8 @@ crypto_kem_xwing_enc(unsigned char *ct, unsigned char *ss, const unsigned char *
 
     randombytes_buf(seed, 64);
     if (crypto_kem_xwing_enc_deterministic(ct, ss, pk, seed) != 0) {
-        sodium_memzero(seed, sizeof seed);
-        return -1;
+        sodium_memzero(seed, sizeof seed); /* LCOV_EXCL_LINE */
+        return -1;                         /* LCOV_EXCL_LINE */
     }
     sodium_memzero(seed, sizeof seed);
 
@@ -184,6 +184,7 @@ crypto_kem_xwing_dec(unsigned char *ss, const unsigned char *ct, const unsigned 
 
     expand_decaps_key(pk_mlkem, sk_mlkem, pk_x25519, sk_x25519, sk);
 
+    /* LCOV_EXCL_START */
     if (crypto_kem_mlkem768_dec(ss_mlkem, ct_mlkem, sk_mlkem) != 0) {
         sodium_memzero(sk_mlkem, sizeof sk_mlkem);
         sodium_memzero(sk_x25519, sizeof sk_x25519);
@@ -196,6 +197,7 @@ crypto_kem_xwing_dec(unsigned char *ss, const unsigned char *ct, const unsigned 
         sodium_memzero(sk_x25519, sizeof sk_x25519);
         return -1;
     }
+    /* LCOV_EXCL_STOP */
 
     combiner(ss, ss_mlkem, ss_x25519, ct_x25519, pk_x25519);
 

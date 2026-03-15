@@ -73,7 +73,7 @@ _string_to_element(unsigned char *p,
 
     if (core_h2c_string_to_hash(h, sizeof h, ctx, ctx_len, msg, msg_len,
                                 hash_alg) != 0) {
-        return -1;
+        return -1; /* LCOV_EXCL_LINE */
     }
     ristretto255_from_hash(p, h);
 

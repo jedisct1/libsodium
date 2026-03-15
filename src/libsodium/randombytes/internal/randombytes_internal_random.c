@@ -196,7 +196,7 @@ static int
 randombytes_getentropy(void * const buf, const size_t size)
 {
     if (CCRandomGenerateBytes(buf, size) != kCCSuccess) {
-        return -1;
+        return -1; /* LCOV_EXCL_LINE */
     }
     return 0;
 }

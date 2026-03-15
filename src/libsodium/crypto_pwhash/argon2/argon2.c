@@ -46,7 +46,7 @@ argon2_ctx(argon2_context *context, argon2_type type)
     memory_blocks = context->m_cost;
 
     if (memory_blocks < 2 * ARGON2_SYNC_POINTS * context->lanes) {
-        memory_blocks = 2 * ARGON2_SYNC_POINTS * context->lanes;
+        memory_blocks = 2 * ARGON2_SYNC_POINTS * context->lanes; /* LCOV_EXCL_LINE */
     }
 
     segment_length = memory_blocks / (context->lanes * ARGON2_SYNC_POINTS);

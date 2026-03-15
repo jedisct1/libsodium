@@ -165,7 +165,7 @@ argon2_decode_string(argon2_context *ctx, const char *str, argon2_type type)
     } else if (type == Argon2_i) {
         CC("$argon2i");
     } else {
-        return ARGON2_INCORRECT_TYPE;
+        return ARGON2_INCORRECT_TYPE; /* LCOV_EXCL_LINE */
     }
     CC("$v=");
     DECIMAL_U32(version);
@@ -175,17 +175,17 @@ argon2_decode_string(argon2_context *ctx, const char *str, argon2_type type)
     CC("$m=");
     DECIMAL_U32(ctx->m_cost);
     if (ctx->m_cost > UINT32_MAX) {
-        return ARGON2_INCORRECT_TYPE;
+        return ARGON2_INCORRECT_TYPE; /* LCOV_EXCL_LINE */
     }
     CC(",t=");
     DECIMAL_U32(ctx->t_cost);
     if (ctx->t_cost > UINT32_MAX) {
-        return ARGON2_INCORRECT_TYPE;
+        return ARGON2_INCORRECT_TYPE; /* LCOV_EXCL_LINE */
     }
     CC(",p=");
     DECIMAL_U32(ctx->lanes);
     if (ctx->lanes > UINT32_MAX) {
-        return ARGON2_INCORRECT_TYPE;
+        return ARGON2_INCORRECT_TYPE; /* LCOV_EXCL_LINE */
     }
     ctx->threads = ctx->lanes;
 

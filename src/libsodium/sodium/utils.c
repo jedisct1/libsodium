@@ -685,7 +685,7 @@ sodium_free(void *ptr)
     total_size = page_size + page_size + unprotected_size + page_size;
     _mprotect_readwrite(base_ptr, total_size);
     if (sodium_memcmp(canary_ptr, canary, sizeof canary) != 0) {
-        _out_of_bounds();
+        _out_of_bounds(); /* LCOV_EXCL_LINE */
     }
 # ifndef HAVE_PAGE_PROTECTION
     if (sodium_memcmp(unprotected_ptr + unprotected_size, canary,
@@ -762,7 +762,7 @@ sodium_pad(size_t *padded_buflen_p, unsigned char *buf,
         xpadlen -= unpadded_buflen % blocksize;
     }
     if ((size_t) SIZE_MAX - unpadded_buflen <= xpadlen) {
-        sodium_misuse();
+        sodium_misuse(); /* LCOV_EXCL_LINE */
     }
     xpadded_len = unpadded_buflen + xpadlen;
     if (xpadded_len >= max_buflen) {

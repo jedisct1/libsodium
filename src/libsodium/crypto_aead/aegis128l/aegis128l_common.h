@@ -46,10 +46,12 @@ aegis128l_mac(uint8_t *mac, size_t maclen, uint64_t adlen, uint64_t mlen, aes_bl
     }
 
     if (maclen == 16) {
+        /* LCOV_EXCL_START */
         tmp = AES_BLOCK_XOR(state[6], AES_BLOCK_XOR(state[5], state[4]));
         tmp = AES_BLOCK_XOR(tmp, AES_BLOCK_XOR(state[3], state[2]));
         tmp = AES_BLOCK_XOR(tmp, AES_BLOCK_XOR(state[1], state[0]));
         AES_BLOCK_STORE(mac, tmp);
+        /* LCOV_EXCL_STOP */
     } else if (maclen == 32) {
         tmp = AES_BLOCK_XOR(state[3], state[2]);
         tmp = AES_BLOCK_XOR(tmp, AES_BLOCK_XOR(state[1], state[0]));
@@ -237,7 +239,7 @@ decrypt_detached(uint8_t *m, const uint8_t *c, size_t clen, const uint8_t *mac, 
     ret = -1;
     if (aegis128l_mac(computed_mac, maclen, adlen, mlen, state) == 0) {
         if (maclen == 16) {
-            ret = crypto_verify_16(computed_mac, mac);
+            ret = crypto_verify_16(computed_mac, mac); /* LCOV_EXCL_LINE */
         } else if (maclen == 32) {
             ret = crypto_verify_32(computed_mac, mac);
         }

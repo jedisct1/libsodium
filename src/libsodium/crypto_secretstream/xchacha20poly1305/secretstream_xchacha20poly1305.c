@@ -126,7 +126,7 @@ crypto_secretstream_xchacha20poly1305_push
     COMPILER_ASSERT(crypto_secretstream_xchacha20poly1305_MESSAGEBYTES_MAX
                     <= crypto_aead_chacha20poly1305_ietf_MESSAGEBYTES_MAX);
     if (mlen > crypto_secretstream_xchacha20poly1305_MESSAGEBYTES_MAX) {
-        sodium_misuse();
+        sodium_misuse(); /* LCOV_EXCL_LINE */
     }
     crypto_stream_chacha20_ietf(block, sizeof block, state->nonce, state->k);
     crypto_onetimeauth_poly1305_init(&poly1305_state, block);
@@ -203,7 +203,7 @@ crypto_secretstream_xchacha20poly1305_pull
     }
     mlen = inlen - crypto_secretstream_xchacha20poly1305_ABYTES;
     if (mlen > crypto_secretstream_xchacha20poly1305_MESSAGEBYTES_MAX) {
-        sodium_misuse();
+        sodium_misuse(); /* LCOV_EXCL_LINE */
     }
     crypto_stream_chacha20_ietf(block, sizeof block, state->nonce, state->k);
     crypto_onetimeauth_poly1305_init(&poly1305_state, block);
