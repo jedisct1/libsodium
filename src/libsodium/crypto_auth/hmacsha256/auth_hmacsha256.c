@@ -50,7 +50,7 @@ crypto_auth_hmacsha256_init(crypto_auth_hmacsha256_state *state,
         keylen = 32;
     } else if (key == NULL) {
         if (keylen > 0) {
-            sodium_misuse();
+            sodium_misuse(); /* LCOV_EXCL_LINE */
         }
     }
     crypto_hash_sha256_init(&state->ictx);

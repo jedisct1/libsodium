@@ -79,7 +79,7 @@ crypto_secretbox_xchacha20poly1305_easy(unsigned char *c,
                                         const unsigned char *k)
 {
     if (mlen > crypto_secretbox_xchacha20poly1305_MESSAGEBYTES_MAX) {
-        sodium_misuse();
+        sodium_misuse(); /* LCOV_EXCL_LINE */
     }
     return crypto_secretbox_xchacha20poly1305_detached
         (c + crypto_secretbox_xchacha20poly1305_MACBYTES, c, m, mlen, n, k);

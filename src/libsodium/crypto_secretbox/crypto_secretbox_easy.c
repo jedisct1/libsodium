@@ -73,7 +73,7 @@ crypto_secretbox_easy(unsigned char *c, const unsigned char *m,
                       const unsigned char *k)
 {
     if (mlen > crypto_secretbox_MESSAGEBYTES_MAX) {
-        sodium_misuse();
+        sodium_misuse(); /* LCOV_EXCL_LINE */
     }
     return crypto_secretbox_detached(c + crypto_secretbox_MACBYTES,
                                      c, m, mlen, n, k);

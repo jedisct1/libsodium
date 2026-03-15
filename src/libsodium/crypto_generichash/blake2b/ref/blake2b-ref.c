@@ -52,7 +52,7 @@ static inline int
 blake2b_set_lastblock(blake2b_state *S)
 {
     if (S->last_node) {
-        blake2b_set_lastnode(S);
+        blake2b_set_lastnode(S); /* LCOV_EXCL_LINE */
     }
     S->f[0] = -1;
     return 0;
