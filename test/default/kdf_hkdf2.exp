@@ -1,0 +1,8 @@
+sha512 incremental (single update): ok
+sha512 incremental (byte-by-byte): ok
+sha512 incremental (null salt): ok
+sha512 expand consistency: ok
+sha512 prk: 2502bc897dc1b23f9f2d8c35d519c5280ea960bf9154ebb07d377a12a81a4794ea8bdc0cb6ec59ab3303f5cbd713027825715f8af2ac0203e560fd2e55f4ff2b
+sha256 incremental (two chunks): ok
+sha256 incremental (null salt): ok
+sha256 prk: 8c3725c0ea8e14106d8c342887ccd1218cc205acecd8095ae1efc099ec195e7e

@@ -130,6 +130,7 @@ test/default/hash_sha3512
 test/default/ipcrypt
 test/default/kdf
 test/default/kdf_hkdf
+test/default/kdf_hkdf2
 test/default/keygen
 test/default/kem
 test/default/kem_mlkem768
@@ -173,6 +174,7 @@ test/default/stream
 test/default/stream2
 test/default/stream3
 test/default/stream4
+test/default/stream5
 test/default/verify1
 test/default/xchacha20
 test/default/xof_shake128
