@@ -23,7 +23,7 @@
     defined(HAVE_EMMINTRIN_H) &&  defined(HAVE_TMMINTRIN_H) && defined(HAVE_SMMINTRIN_H)
 
 # ifdef __clang__
-#  if __clang_major__ >= 18
+#  if __clang_major__ >= 18 && __clang_major__ < 22
 #   pragma clang attribute push(__attribute__((target("sse2,ssse3,sse4.1,avx2,avx512f,evex512"))), apply_to = function)
 #  else
 #   pragma clang attribute push(__attribute__((target("sse2,ssse3,sse4.1,avx2,avx512f"))), apply_to = function)
