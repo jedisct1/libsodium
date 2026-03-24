@@ -77,7 +77,7 @@ int sodium_hex2bin(unsigned char *const bin, const size_t bin_maxlen, const char
 #define sodium_base64_ENCODED_LEN(BIN_LEN, VARIANT)                                              \
     (((BIN_LEN) / 3U) * 4U +                                                                     \
      ((((BIN_LEN) - ((BIN_LEN) / 3U) * 3U) | (((BIN_LEN) - ((BIN_LEN) / 3U) * 3U) >> 1)) & 1U) * \
-         (4U - (~((((VARIANT) & 2U) >> 1) - 1U) & (3U - ((BIN_LEN) - ((BIN_LEN) / 3U) * 3U)))) + \
+         (4U - ((size_t) ~((((VARIANT) & 2U) >> 1) - 1U) & (3U - ((BIN_LEN) - ((BIN_LEN) / 3U) * 3U)))) + \
      1U)
 
 SODIUM_EXPORT
