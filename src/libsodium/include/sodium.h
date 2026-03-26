@@ -30,8 +30,6 @@
 #include "sodium/crypto_hash_sha512.h"
 #include "sodium/crypto_ipcrypt.h"
 #include "sodium/crypto_kdf.h"
-#include "sodium/crypto_kdf_hkdf_sha256.h"
-#include "sodium/crypto_kdf_hkdf_sha512.h"
 #include "sodium/crypto_kdf_blake2b.h"
 #include "sodium/crypto_kem.h"
 #include "sodium/crypto_kem_mlkem768.h"
