@@ -85,6 +85,9 @@ EXTRA_DIST = \
 	stream2.exp \
 	stream3.exp \
 	stream4.exp \
+	stream5.exp \
+	stream6.exp \
+	stream_serpent256.exp \
 	verify1.exp \
 	xchacha20.exp \
 	xof_shake128.exp \
@@ -174,6 +177,9 @@ DISTCLEANFILES = \
 	stream2.res \
 	stream3.res \
 	stream4.res \
+	stream5.res \
+	stream6.res \
+	stream_serpent256.res \
 	verify1.res \
 	xchacha20.res \
 	xof_shake128.res \
@@ -539,12 +545,21 @@ xof_turboshake128_LDADD   = $(TESTS_LDADD)
 xof_turboshake256_SOURCE  = cmptest.h xof_turboshake256.c
 xof_turboshake256_LDADD   = $(TESTS_LDADD)
 
+xof2_SOURCE               = cmptest.h xof2.c
+xof2_LDADD                = $(TESTS_LDADD)
+
+stream_serpent256_SOURCE   = cmptest.h stream_serpent256.c
+stream_serpent256_LDADD    = $(TESTS_LDADD)
+
 if !MINIMAL
 TESTS_TARGETS += \
 	core_ed25519 \
 	core_ristretto255 \
 	kdf_hkdf \
 	pwhash_scrypt \
+	stream5 \
+	stream6 \
+	stream_serpent256 \
 	pwhash_scrypt_ll \
 	scalarmult_ed25519 \
 	scalarmult_ristretto255 \

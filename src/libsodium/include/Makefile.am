@@ -57,6 +57,7 @@ SODIUM_EXPORT = \
 	sodium/crypto_stream_salsa20.h \
 	sodium/crypto_stream_salsa2012.h \
 	sodium/crypto_stream_salsa208.h \
+	sodium/crypto_stream_serpent256.h \
 	sodium/crypto_stream_xchacha20.h \
 	sodium/crypto_stream_xsalsa20.h \
 	sodium/crypto_verify_16.h \

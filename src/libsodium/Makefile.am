@@ -203,6 +203,15 @@ libsodium_la_SOURCES += \
 	crypto_stream/salsa2012/stream_salsa2012.c \
 	crypto_stream/salsa208/ref/stream_salsa208_ref.c \
 	crypto_stream/salsa208/stream_salsa208.c \
+	crypto_stream/serpent256/stream_serpent256.c \
+	crypto_stream/serpent256/stream_serpent256.h \
+	crypto_stream/serpent256/ref/serpent.c \
+	crypto_stream/serpent256/ref/serpent.h \
+	crypto_stream/serpent256/ref/serpent_ctr.c \
+	crypto_stream/serpent256/ref/serpent_ctr.h \
+	crypto_stream/serpent256/wasm32/serpent_simd.c \
+	crypto_stream/serpent256/wasm32/serpent_simd.h \
+	crypto_stream/serpent256/wasm32/serpent_ctr_simd.c \
 	crypto_stream/xchacha20/stream_xchacha20.c
 endif
 

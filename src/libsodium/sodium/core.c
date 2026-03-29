@@ -15,6 +15,7 @@
 #include "crypto_scalarmult.h"
 #include "crypto_stream_chacha20.h"
 #include "crypto_stream_salsa20.h"
+#include "crypto_stream_serpent256.h"
 #include "randombytes.h"
 #include "runtime.h"
 #include "utils.h"
@@ -47,6 +48,8 @@ sodium_init(void)
     _crypto_stream_salsa20_pick_best_implementation();
     _crypto_aead_aegis128l_pick_best_implementation();
     _crypto_aead_aegis256_pick_best_implementation();
+    _crypto_ipcrypt_pick_best_implementation();
+    _crypto_stream_serpent256_pick_best_implementation();
     initialized = 1;
     if (sodium_crit_leave() != 0) {
         return -1; /* LCOV_EXCL_LINE */
