@@ -125,8 +125,9 @@ b64_byte_to_char(unsigned int x)
 }
 
 static unsigned int
-b64_char_to_byte(int c)
+b64_char_to_byte(int c_)
 {
+    const unsigned int c = (unsigned char) c_;
     const unsigned int x =
         (GE(c, 'A') & LE(c, 'Z') & (c - 'A')) |
         (GE(c, 'a') & LE(c, 'z') & (c - ('a' - 26))) |
@@ -146,8 +147,9 @@ b64_byte_to_urlsafe_char(unsigned int x)
 }
 
 static unsigned int
-b64_urlsafe_char_to_byte(int c)
+b64_urlsafe_char_to_byte(int c_)
 {
+    const unsigned int c = (unsigned char) c_;
     const unsigned x =
         (GE(c, 'A') & LE(c, 'Z') & (c - 'A')) |
         (GE(c, 'a') & LE(c, 'z') & (c - ('a' - 26))) |
