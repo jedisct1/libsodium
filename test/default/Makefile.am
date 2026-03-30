@@ -85,8 +85,6 @@ EXTRA_DIST = \
 	stream2.exp \
 	stream3.exp \
 	stream4.exp \
-	stream5.exp \
-	stream6.exp \
 	stream_serpent256.exp \
 	verify1.exp \
 	xchacha20.exp \
@@ -177,8 +175,6 @@ DISTCLEANFILES = \
 	stream2.res \
 	stream3.res \
 	stream4.res \
-	stream5.res \
-	stream6.res \
 	stream_serpent256.res \
 	verify1.res \
 	xchacha20.res \
@@ -557,8 +553,6 @@ TESTS_TARGETS += \
 	core_ristretto255 \
 	kdf_hkdf \
 	pwhash_scrypt \
-	stream5 \
-	stream6 \
 	stream_serpent256 \
 	pwhash_scrypt_ll \
 	scalarmult_ed25519 \

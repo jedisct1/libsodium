@@ -151,6 +151,15 @@ target_triplet = @target@
 @MINIMAL_FALSE@	crypto_stream/salsa2012/stream_salsa2012.c \
 @MINIMAL_FALSE@	crypto_stream/salsa208/ref/stream_salsa208_ref.c \
 @MINIMAL_FALSE@	crypto_stream/salsa208/stream_salsa208.c \
+@MINIMAL_FALSE@	crypto_stream/serpent256/stream_serpent256.c \
+@MINIMAL_FALSE@	crypto_stream/serpent256/stream_serpent256.h \
+@MINIMAL_FALSE@	crypto_stream/serpent256/ref/serpent.c \
+@MINIMAL_FALSE@	crypto_stream/serpent256/ref/serpent.h \
+@MINIMAL_FALSE@	crypto_stream/serpent256/ref/serpent_ctr.c \
+@MINIMAL_FALSE@	crypto_stream/serpent256/ref/serpent_ctr.h \
+@MINIMAL_FALSE@	crypto_stream/serpent256/wasm32/serpent_simd.c \
+@MINIMAL_FALSE@	crypto_stream/serpent256/wasm32/serpent_simd.h \
+@MINIMAL_FALSE@	crypto_stream/serpent256/wasm32/serpent_ctr_simd.c \
 @MINIMAL_FALSE@	crypto_stream/xchacha20/stream_xchacha20.c
 
 @HAVE_LD_OUTPUT_DEF_TRUE@am__append_7 = -Wl,--output-def,libsodium-$(DLL_VERSION).def
@@ -430,6 +439,15 @@ am__libsodium_la_SOURCES_DIST =  \
 	crypto_stream/salsa2012/stream_salsa2012.c \
 	crypto_stream/salsa208/ref/stream_salsa208_ref.c \
 	crypto_stream/salsa208/stream_salsa208.c \
+	crypto_stream/serpent256/stream_serpent256.c \
+	crypto_stream/serpent256/stream_serpent256.h \
+	crypto_stream/serpent256/ref/serpent.c \
+	crypto_stream/serpent256/ref/serpent.h \
+	crypto_stream/serpent256/ref/serpent_ctr.c \
+	crypto_stream/serpent256/ref/serpent_ctr.h \
+	crypto_stream/serpent256/wasm32/serpent_simd.c \
+	crypto_stream/serpent256/wasm32/serpent_simd.h \
+	crypto_stream/serpent256/wasm32/serpent_ctr_simd.c \
 	crypto_stream/xchacha20/stream_xchacha20.c \
 	randombytes/sysrandom/randombytes_sysrandom.c
 am__objects_1 =
@@ -459,6 +477,11 @@ am__objects_1 =
 @MINIMAL_FALSE@	crypto_stream/salsa2012/libsodium_la-stream_salsa2012.lo \
 @MINIMAL_FALSE@	crypto_stream/salsa208/ref/libsodium_la-stream_salsa208_ref.lo \
 @MINIMAL_FALSE@	crypto_stream/salsa208/libsodium_la-stream_salsa208.lo \
+@MINIMAL_FALSE@	crypto_stream/serpent256/libsodium_la-stream_serpent256.lo \
+@MINIMAL_FALSE@	crypto_stream/serpent256/ref/libsodium_la-serpent.lo \
+@MINIMAL_FALSE@	crypto_stream/serpent256/ref/libsodium_la-serpent_ctr.lo \
+@MINIMAL_FALSE@	crypto_stream/serpent256/wasm32/libsodium_la-serpent_simd.lo \
+@MINIMAL_FALSE@	crypto_stream/serpent256/wasm32/libsodium_la-serpent_ctr_simd.lo \
 @MINIMAL_FALSE@	crypto_stream/xchacha20/libsodium_la-stream_xchacha20.lo
 @EMSCRIPTEN_FALSE@am__objects_6 = randombytes/sysrandom/libsodium_la-randombytes_sysrandom.lo
 am_libsodium_la_OBJECTS =  \
@@ -716,6 +739,11 @@ am__depfiles_remade = crypto_aead/aegis128l/$(DEPDIR)/libaesni_la-aegis128l_aesn
 	crypto_stream/salsa2012/ref/$(DEPDIR)/libsodium_la-stream_salsa2012_ref.Plo \
 	crypto_stream/salsa208/$(DEPDIR)/libsodium_la-stream_salsa208.Plo \
 	crypto_stream/salsa208/ref/$(DEPDIR)/libsodium_la-stream_salsa208_ref.Plo \
+	crypto_stream/serpent256/$(DEPDIR)/libsodium_la-stream_serpent256.Plo \
+	crypto_stream/serpent256/ref/$(DEPDIR)/libsodium_la-serpent.Plo \
+	crypto_stream/serpent256/ref/$(DEPDIR)/libsodium_la-serpent_ctr.Plo \
+	crypto_stream/serpent256/wasm32/$(DEPDIR)/libsodium_la-serpent_ctr_simd.Plo \
+	crypto_stream/serpent256/wasm32/$(DEPDIR)/libsodium_la-serpent_simd.Plo \
 	crypto_stream/xchacha20/$(DEPDIR)/libsodium_la-stream_xchacha20.Plo \
 	crypto_stream/xsalsa20/$(DEPDIR)/libsodium_la-stream_xsalsa20.Plo \
 	crypto_verify/$(DEPDIR)/libsodium_la-verify.Plo \
@@ -2209,6 +2237,39 @@ crypto_stream/salsa208/$(DEPDIR)/$(am__dirstamp):
 crypto_stream/salsa208/libsodium_la-stream_salsa208.lo:  \
 	crypto_stream/salsa208/$(am__dirstamp) \
 	crypto_stream/salsa208/$(DEPDIR)/$(am__dirstamp)
+crypto_stream/serpent256/$(am__dirstamp):
+	@$(MKDIR_P) crypto_stream/serpent256
+	@: >>crypto_stream/serpent256/$(am__dirstamp)
+crypto_stream/serpent256/$(DEPDIR)/$(am__dirstamp):
+	@$(MKDIR_P) crypto_stream/serpent256/$(DEPDIR)
+	@: >>crypto_stream/serpent256/$(DEPDIR)/$(am__dirstamp)
+crypto_stream/serpent256/libsodium_la-stream_serpent256.lo:  \
+	crypto_stream/serpent256/$(am__dirstamp) \
+	crypto_stream/serpent256/$(DEPDIR)/$(am__dirstamp)
+crypto_stream/serpent256/ref/$(am__dirstamp):
+	@$(MKDIR_P) crypto_stream/serpent256/ref
+	@: >>crypto_stream/serpent256/ref/$(am__dirstamp)
+crypto_stream/serpent256/ref/$(DEPDIR)/$(am__dirstamp):
+	@$(MKDIR_P) crypto_stream/serpent256/ref/$(DEPDIR)
+	@: >>crypto_stream/serpent256/ref/$(DEPDIR)/$(am__dirstamp)
+crypto_stream/serpent256/ref/libsodium_la-serpent.lo:  \
+	crypto_stream/serpent256/ref/$(am__dirstamp) \
+	crypto_stream/serpent256/ref/$(DEPDIR)/$(am__dirstamp)
+crypto_stream/serpent256/ref/libsodium_la-serpent_ctr.lo:  \
+	crypto_stream/serpent256/ref/$(am__dirstamp) \
+	crypto_stream/serpent256/ref/$(DEPDIR)/$(am__dirstamp)
+crypto_stream/serpent256/wasm32/$(am__dirstamp):
+	@$(MKDIR_P) crypto_stream/serpent256/wasm32
+	@: >>crypto_stream/serpent256/wasm32/$(am__dirstamp)
+crypto_stream/serpent256/wasm32/$(DEPDIR)/$(am__dirstamp):
+	@$(MKDIR_P) crypto_stream/serpent256/wasm32/$(DEPDIR)
+	@: >>crypto_stream/serpent256/wasm32/$(DEPDIR)/$(am__dirstamp)
+crypto_stream/serpent256/wasm32/libsodium_la-serpent_simd.lo:  \
+	crypto_stream/serpent256/wasm32/$(am__dirstamp) \
+	crypto_stream/serpent256/wasm32/$(DEPDIR)/$(am__dirstamp)
+crypto_stream/serpent256/wasm32/libsodium_la-serpent_ctr_simd.lo:  \
+	crypto_stream/serpent256/wasm32/$(am__dirstamp) \
+	crypto_stream/serpent256/wasm32/$(DEPDIR)/$(am__dirstamp)
 crypto_stream/xchacha20/$(am__dirstamp):
 	@$(MKDIR_P) crypto_stream/xchacha20
 	@: >>crypto_stream/xchacha20/$(am__dirstamp)
@@ -2421,6 +2482,12 @@ mostlyclean-compile:
 	-rm -f crypto_stream/salsa208/*.lo
 	-rm -f crypto_stream/salsa208/ref/*.$(OBJEXT)
 	-rm -f crypto_stream/salsa208/ref/*.lo
+	-rm -f crypto_stream/serpent256/*.$(OBJEXT)
+	-rm -f crypto_stream/serpent256/*.lo
+	-rm -f crypto_stream/serpent256/ref/*.$(OBJEXT)
+	-rm -f crypto_stream/serpent256/ref/*.lo
+	-rm -f crypto_stream/serpent256/wasm32/*.$(OBJEXT)
+	-rm -f crypto_stream/serpent256/wasm32/*.lo
 	-rm -f crypto_stream/xchacha20/*.$(OBJEXT)
 	-rm -f crypto_stream/xchacha20/*.lo
 	-rm -f crypto_stream/xsalsa20/*.$(OBJEXT)
@@ -2571,6 +2638,11 @@ distclean-compile:
 @AMDEP_TRUE@@am__include@ @am__quote@crypto_stream/salsa2012/ref/$(DEPDIR)/libsodium_la-stream_salsa2012_ref.Plo@am__quote@ # am--include-marker
 @AMDEP_TRUE@@am__include@ @am__quote@crypto_stream/salsa208/$(DEPDIR)/libsodium_la-stream_salsa208.Plo@am__quote@ # am--include-marker
 @AMDEP_TRUE@@am__include@ @am__quote@crypto_stream/salsa208/ref/$(DEPDIR)/libsodium_la-stream_salsa208_ref.Plo@am__quote@ # am--include-marker
+@AMDEP_TRUE@@am__include@ @am__quote@crypto_stream/serpent256/$(DEPDIR)/libsodium_la-stream_serpent256.Plo@am__quote@ # am--include-marker
+@AMDEP_TRUE@@am__include@ @am__quote@crypto_stream/serpent256/ref/$(DEPDIR)/libsodium_la-serpent.Plo@am__quote@ # am--include-marker
+@AMDEP_TRUE@@am__include@ @am__quote@crypto_stream/serpent256/ref/$(DEPDIR)/libsodium_la-serpent_ctr.Plo@am__quote@ # am--include-marker
+@AMDEP_TRUE@@am__include@ @am__quote@crypto_stream/serpent256/wasm32/$(DEPDIR)/libsodium_la-serpent_ctr_simd.Plo@am__quote@ # am--include-marker
+@AMDEP_TRUE@@am__include@ @am__quote@crypto_stream/serpent256/wasm32/$(DEPDIR)/libsodium_la-serpent_simd.Plo@am__quote@ # am--include-marker
 @AMDEP_TRUE@@am__include@ @am__quote@crypto_stream/xchacha20/$(DEPDIR)/libsodium_la-stream_xchacha20.Plo@am__quote@ # am--include-marker
 @AMDEP_TRUE@@am__include@ @am__quote@crypto_stream/xsalsa20/$(DEPDIR)/libsodium_la-stream_xsalsa20.Plo@am__quote@ # am--include-marker
 @AMDEP_TRUE@@am__include@ @am__quote@crypto_verify/$(DEPDIR)/libsodium_la-verify.Plo@am__quote@ # am--include-marker
@@ -3527,6 +3599,41 @@ crypto_stream/salsa208/libsodium_la-stream_salsa208.lo: crypto_stream/salsa208/s
 @AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
 @am__fastdepCC_FALSE@	$(AM_V_CC@am__nodep@)$(LIBTOOL) $(AM_V_lt) --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libsodium_la_CPPFLAGS) $(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS) -c -o crypto_stream/salsa208/libsodium_la-stream_salsa208.lo `test -f 'crypto_stream/salsa208/stream_salsa208.c' || echo '$(srcdir)/'`crypto_stream/salsa208/stream_salsa208.c
 
+crypto_stream/serpent256/libsodium_la-stream_serpent256.lo: crypto_stream/serpent256/stream_serpent256.c
+@am__fastdepCC_TRUE@	$(AM_V_CC)$(LIBTOOL) $(AM_V_lt) --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libsodium_la_CPPFLAGS) $(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS) -MT crypto_stream/serpent256/libsodium_la-stream_serpent256.lo -MD -MP -MF crypto_stream/serpent256/$(DEPDIR)/libsodium_la-stream_serpent256.Tpo -c -o crypto_stream/serpent256/libsodium_la-stream_serpent256.lo `test -f 'crypto_stream/serpent256/stream_serpent256.c' || echo '$(srcdir)/'`crypto_stream/serpent256/stream_serpent256.c
+@am__fastdepCC_TRUE@	$(AM_V_at)$(am__mv) crypto_stream/serpent256/$(DEPDIR)/libsodium_la-stream_serpent256.Tpo crypto_stream/serpent256/$(DEPDIR)/libsodium_la-stream_serpent256.Plo
+@AMDEP_TRUE@@am__fastdepCC_FALSE@	$(AM_V_CC)source='crypto_stream/serpent256/stream_serpent256.c' object='crypto_stream/serpent256/libsodium_la-stream_serpent256.lo' libtool=yes @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCC_FALSE@	$(AM_V_CC@am__nodep@)$(LIBTOOL) $(AM_V_lt) --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libsodium_la_CPPFLAGS) $(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS) -c -o crypto_stream/serpent256/libsodium_la-stream_serpent256.lo `test -f 'crypto_stream/serpent256/stream_serpent256.c' || echo '$(srcdir)/'`crypto_stream/serpent256/stream_serpent256.c
+
+crypto_stream/serpent256/ref/libsodium_la-serpent.lo: crypto_stream/serpent256/ref/serpent.c
+@am__fastdepCC_TRUE@	$(AM_V_CC)$(LIBTOOL) $(AM_V_lt) --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libsodium_la_CPPFLAGS) $(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS) -MT crypto_stream/serpent256/ref/libsodium_la-serpent.lo -MD -MP -MF crypto_stream/serpent256/ref/$(DEPDIR)/libsodium_la-serpent.Tpo -c -o crypto_stream/serpent256/ref/libsodium_la-serpent.lo `test -f 'crypto_stream/serpent256/ref/serpent.c' || echo '$(srcdir)/'`crypto_stream/serpent256/ref/serpent.c
+@am__fastdepCC_TRUE@	$(AM_V_at)$(am__mv) crypto_stream/serpent256/ref/$(DEPDIR)/libsodium_la-serpent.Tpo crypto_stream/serpent256/ref/$(DEPDIR)/libsodium_la-serpent.Plo
+@AMDEP_TRUE@@am__fastdepCC_FALSE@	$(AM_V_CC)source='crypto_stream/serpent256/ref/serpent.c' object='crypto_stream/serpent256/ref/libsodium_la-serpent.lo' libtool=yes @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCC_FALSE@	$(AM_V_CC@am__nodep@)$(LIBTOOL) $(AM_V_lt) --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libsodium_la_CPPFLAGS) $(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS) -c -o crypto_stream/serpent256/ref/libsodium_la-serpent.lo `test -f 'crypto_stream/serpent256/ref/serpent.c' || echo '$(srcdir)/'`crypto_stream/serpent256/ref/serpent.c
+
+crypto_stream/serpent256/ref/libsodium_la-serpent_ctr.lo: crypto_stream/serpent256/ref/serpent_ctr.c
+@am__fastdepCC_TRUE@	$(AM_V_CC)$(LIBTOOL) $(AM_V_lt) --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libsodium_la_CPPFLAGS) $(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS) -MT crypto_stream/serpent256/ref/libsodium_la-serpent_ctr.lo -MD -MP -MF crypto_stream/serpent256/ref/$(DEPDIR)/libsodium_la-serpent_ctr.Tpo -c -o crypto_stream/serpent256/ref/libsodium_la-serpent_ctr.lo `test -f 'crypto_stream/serpent256/ref/serpent_ctr.c' || echo '$(srcdir)/'`crypto_stream/serpent256/ref/serpent_ctr.c
+@am__fastdepCC_TRUE@	$(AM_V_at)$(am__mv) crypto_stream/serpent256/ref/$(DEPDIR)/libsodium_la-serpent_ctr.Tpo crypto_stream/serpent256/ref/$(DEPDIR)/libsodium_la-serpent_ctr.Plo
+@AMDEP_TRUE@@am__fastdepCC_FALSE@	$(AM_V_CC)source='crypto_stream/serpent256/ref/serpent_ctr.c' object='crypto_stream/serpent256/ref/libsodium_la-serpent_ctr.lo' libtool=yes @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCC_FALSE@	$(AM_V_CC@am__nodep@)$(LIBTOOL) $(AM_V_lt) --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libsodium_la_CPPFLAGS) $(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS) -c -o crypto_stream/serpent256/ref/libsodium_la-serpent_ctr.lo `test -f 'crypto_stream/serpent256/ref/serpent_ctr.c' || echo '$(srcdir)/'`crypto_stream/serpent256/ref/serpent_ctr.c
+
+crypto_stream/serpent256/wasm32/libsodium_la-serpent_simd.lo: crypto_stream/serpent256/wasm32/serpent_simd.c
+@am__fastdepCC_TRUE@	$(AM_V_CC)$(LIBTOOL) $(AM_V_lt) --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libsodium_la_CPPFLAGS) $(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS) -MT crypto_stream/serpent256/wasm32/libsodium_la-serpent_simd.lo -MD -MP -MF crypto_stream/serpent256/wasm32/$(DEPDIR)/libsodium_la-serpent_simd.Tpo -c -o crypto_stream/serpent256/wasm32/libsodium_la-serpent_simd.lo `test -f 'crypto_stream/serpent256/wasm32/serpent_simd.c' || echo '$(srcdir)/'`crypto_stream/serpent256/wasm32/serpent_simd.c
+@am__fastdepCC_TRUE@	$(AM_V_at)$(am__mv) crypto_stream/serpent256/wasm32/$(DEPDIR)/libsodium_la-serpent_simd.Tpo crypto_stream/serpent256/wasm32/$(DEPDIR)/libsodium_la-serpent_simd.Plo
+@AMDEP_TRUE@@am__fastdepCC_FALSE@	$(AM_V_CC)source='crypto_stream/serpent256/wasm32/serpent_simd.c' object='crypto_stream/serpent256/wasm32/libsodium_la-serpent_simd.lo' libtool=yes @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCC_FALSE@	$(AM_V_CC@am__nodep@)$(LIBTOOL) $(AM_V_lt) --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libsodium_la_CPPFLAGS) $(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS) -c -o crypto_stream/serpent256/wasm32/libsodium_la-serpent_simd.lo `test -f 'crypto_stream/serpent256/wasm32/serpent_simd.c' || echo '$(srcdir)/'`crypto_stream/serpent256/wasm32/serpent_simd.c
+
+crypto_stream/serpent256/wasm32/libsodium_la-serpent_ctr_simd.lo: crypto_stream/serpent256/wasm32/serpent_ctr_simd.c
+@am__fastdepCC_TRUE@	$(AM_V_CC)$(LIBTOOL) $(AM_V_lt) --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libsodium_la_CPPFLAGS) $(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS) -MT crypto_stream/serpent256/wasm32/libsodium_la-serpent_ctr_simd.lo -MD -MP -MF crypto_stream/serpent256/wasm32/$(DEPDIR)/libsodium_la-serpent_ctr_simd.Tpo -c -o crypto_stream/serpent256/wasm32/libsodium_la-serpent_ctr_simd.lo `test -f 'crypto_stream/serpent256/wasm32/serpent_ctr_simd.c' || echo '$(srcdir)/'`crypto_stream/serpent256/wasm32/serpent_ctr_simd.c
+@am__fastdepCC_TRUE@	$(AM_V_at)$(am__mv) crypto_stream/serpent256/wasm32/$(DEPDIR)/libsodium_la-serpent_ctr_simd.Tpo crypto_stream/serpent256/wasm32/$(DEPDIR)/libsodium_la-serpent_ctr_simd.Plo
+@AMDEP_TRUE@@am__fastdepCC_FALSE@	$(AM_V_CC)source='crypto_stream/serpent256/wasm32/serpent_ctr_simd.c' object='crypto_stream/serpent256/wasm32/libsodium_la-serpent_ctr_simd.lo' libtool=yes @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCC_FALSE@	$(AM_V_CC@am__nodep@)$(LIBTOOL) $(AM_V_lt) --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libsodium_la_CPPFLAGS) $(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS) -c -o crypto_stream/serpent256/wasm32/libsodium_la-serpent_ctr_simd.lo `test -f 'crypto_stream/serpent256/wasm32/serpent_ctr_simd.c' || echo '$(srcdir)/'`crypto_stream/serpent256/wasm32/serpent_ctr_simd.c
+
 crypto_stream/xchacha20/libsodium_la-stream_xchacha20.lo: crypto_stream/xchacha20/stream_xchacha20.c
 @am__fastdepCC_TRUE@	$(AM_V_CC)$(LIBTOOL) $(AM_V_lt) --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libsodium_la_CPPFLAGS) $(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS) -MT crypto_stream/xchacha20/libsodium_la-stream_xchacha20.lo -MD -MP -MF crypto_stream/xchacha20/$(DEPDIR)/libsodium_la-stream_xchacha20.Tpo -c -o crypto_stream/xchacha20/libsodium_la-stream_xchacha20.lo `test -f 'crypto_stream/xchacha20/stream_xchacha20.c' || echo '$(srcdir)/'`crypto_stream/xchacha20/stream_xchacha20.c
 @am__fastdepCC_TRUE@	$(AM_V_at)$(am__mv) crypto_stream/xchacha20/$(DEPDIR)/libsodium_la-stream_xchacha20.Tpo crypto_stream/xchacha20/$(DEPDIR)/libsodium_la-stream_xchacha20.Plo
@@ -3668,6 +3775,9 @@ clean-libtool:
 	-rm -rf crypto_stream/salsa2012/ref/.libs crypto_stream/salsa2012/ref/_libs
 	-rm -rf crypto_stream/salsa208/.libs crypto_stream/salsa208/_libs
 	-rm -rf crypto_stream/salsa208/ref/.libs crypto_stream/salsa208/ref/_libs
+	-rm -rf crypto_stream/serpent256/.libs crypto_stream/serpent256/_libs
+	-rm -rf crypto_stream/serpent256/ref/.libs crypto_stream/serpent256/ref/_libs
+	-rm -rf crypto_stream/serpent256/wasm32/.libs crypto_stream/serpent256/wasm32/_libs
 	-rm -rf crypto_stream/xchacha20/.libs crypto_stream/xchacha20/_libs
 	-rm -rf crypto_stream/xsalsa20/.libs crypto_stream/xsalsa20/_libs
 	-rm -rf crypto_verify/.libs crypto_verify/_libs
@@ -4043,6 +4153,12 @@ distclean-generic:
 	-$(am__rm_f) crypto_stream/salsa208/$(am__dirstamp)
 	-$(am__rm_f) crypto_stream/salsa208/ref/$(DEPDIR)/$(am__dirstamp)
 	-$(am__rm_f) crypto_stream/salsa208/ref/$(am__dirstamp)
+	-$(am__rm_f) crypto_stream/serpent256/$(DEPDIR)/$(am__dirstamp)
+	-$(am__rm_f) crypto_stream/serpent256/$(am__dirstamp)
+	-$(am__rm_f) crypto_stream/serpent256/ref/$(DEPDIR)/$(am__dirstamp)
+	-$(am__rm_f) crypto_stream/serpent256/ref/$(am__dirstamp)
+	-$(am__rm_f) crypto_stream/serpent256/wasm32/$(DEPDIR)/$(am__dirstamp)
+	-$(am__rm_f) crypto_stream/serpent256/wasm32/$(am__dirstamp)
 	-$(am__rm_f) crypto_stream/xchacha20/$(DEPDIR)/$(am__dirstamp)
 	-$(am__rm_f) crypto_stream/xchacha20/$(am__dirstamp)
 	-$(am__rm_f) crypto_stream/xsalsa20/$(DEPDIR)/$(am__dirstamp)
@@ -4199,6 +4315,11 @@ distclean: distclean-recursive
 	-rm -f crypto_stream/salsa2012/ref/$(DEPDIR)/libsodium_la-stream_salsa2012_ref.Plo
 	-rm -f crypto_stream/salsa208/$(DEPDIR)/libsodium_la-stream_salsa208.Plo
 	-rm -f crypto_stream/salsa208/ref/$(DEPDIR)/libsodium_la-stream_salsa208_ref.Plo
+	-rm -f crypto_stream/serpent256/$(DEPDIR)/libsodium_la-stream_serpent256.Plo
+	-rm -f crypto_stream/serpent256/ref/$(DEPDIR)/libsodium_la-serpent.Plo
+	-rm -f crypto_stream/serpent256/ref/$(DEPDIR)/libsodium_la-serpent_ctr.Plo
+	-rm -f crypto_stream/serpent256/wasm32/$(DEPDIR)/libsodium_la-serpent_ctr_simd.Plo
+	-rm -f crypto_stream/serpent256/wasm32/$(DEPDIR)/libsodium_la-serpent_simd.Plo
 	-rm -f crypto_stream/xchacha20/$(DEPDIR)/libsodium_la-stream_xchacha20.Plo
 	-rm -f crypto_stream/xsalsa20/$(DEPDIR)/libsodium_la-stream_xsalsa20.Plo
 	-rm -f crypto_verify/$(DEPDIR)/libsodium_la-verify.Plo
@@ -4379,6 +4500,11 @@ maintainer-clean: maintainer-clean-recursive
 	-rm -f crypto_stream/salsa2012/ref/$(DEPDIR)/libsodium_la-stream_salsa2012_ref.Plo
 	-rm -f crypto_stream/salsa208/$(DEPDIR)/libsodium_la-stream_salsa208.Plo
 	-rm -f crypto_stream/salsa208/ref/$(DEPDIR)/libsodium_la-stream_salsa208_ref.Plo
+	-rm -f crypto_stream/serpent256/$(DEPDIR)/libsodium_la-stream_serpent256.Plo
+	-rm -f crypto_stream/serpent256/ref/$(DEPDIR)/libsodium_la-serpent.Plo
+	-rm -f crypto_stream/serpent256/ref/$(DEPDIR)/libsodium_la-serpent_ctr.Plo
+	-rm -f crypto_stream/serpent256/wasm32/$(DEPDIR)/libsodium_la-serpent_ctr_simd.Plo
+	-rm -f crypto_stream/serpent256/wasm32/$(DEPDIR)/libsodium_la-serpent_simd.Plo
 	-rm -f crypto_stream/xchacha20/$(DEPDIR)/libsodium_la-stream_xchacha20.Plo
 	-rm -f crypto_stream/xsalsa20/$(DEPDIR)/libsodium_la-stream_xsalsa20.Plo
 	-rm -f crypto_verify/$(DEPDIR)/libsodium_la-verify.Plo

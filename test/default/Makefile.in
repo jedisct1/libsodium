@@ -101,6 +101,7 @@ TESTS = $(am__EXEEXT_3)
 @MINIMAL_FALSE@	core_ristretto255 \
 @MINIMAL_FALSE@	kdf_hkdf \
 @MINIMAL_FALSE@	pwhash_scrypt \
+@MINIMAL_FALSE@	stream_serpent256 \
 @MINIMAL_FALSE@	pwhash_scrypt_ll \
 @MINIMAL_FALSE@	scalarmult_ed25519 \
 @MINIMAL_FALSE@	scalarmult_ristretto255 \
@@ -132,6 +133,7 @@ CONFIG_CLEAN_VPATH_FILES =
 @MINIMAL_FALSE@am__EXEEXT_2 = core_ed25519$(EXEEXT) \
 @MINIMAL_FALSE@	core_ristretto255$(EXEEXT) kdf_hkdf$(EXEEXT) \
 @MINIMAL_FALSE@	pwhash_scrypt$(EXEEXT) \
+@MINIMAL_FALSE@	stream_serpent256$(EXEEXT) \
 @MINIMAL_FALSE@	pwhash_scrypt_ll$(EXEEXT) \
 @MINIMAL_FALSE@	scalarmult_ed25519$(EXEEXT) \
 @MINIMAL_FALSE@	scalarmult_ristretto255$(EXEEXT) \
@@ -411,6 +413,9 @@ stream3_DEPENDENCIES = $(TESTS_LDADD)
 stream4_SOURCES = stream4.c
 stream4_OBJECTS = stream4.$(OBJEXT)
 stream4_DEPENDENCIES = $(TESTS_LDADD)
+stream_serpent256_SOURCES = stream_serpent256.c
+stream_serpent256_OBJECTS = stream_serpent256.$(OBJEXT)
+stream_serpent256_DEPENDENCIES = $(TESTS_LDADD)
 verify1_SOURCES = verify1.c
 verify1_OBJECTS = verify1.$(OBJEXT)
 verify1_DEPENDENCIES = $(TESTS_LDADD)
@@ -485,9 +490,9 @@ am__depfiles_remade = ./$(DEPDIR)/aead_aegis128l.Po \
 	./$(DEPDIR)/sodium_utils3.Po ./$(DEPDIR)/sodium_version.Po \
 	./$(DEPDIR)/stream.Po ./$(DEPDIR)/stream2.Po \
 	./$(DEPDIR)/stream3.Po ./$(DEPDIR)/stream4.Po \
-	./$(DEPDIR)/verify1.Po ./$(DEPDIR)/xchacha20.Po \
-	./$(DEPDIR)/xof_shake128.Po ./$(DEPDIR)/xof_shake256.Po \
-	./$(DEPDIR)/xof_turboshake128.Po \
+	./$(DEPDIR)/stream_serpent256.Po ./$(DEPDIR)/verify1.Po \
+	./$(DEPDIR)/xchacha20.Po ./$(DEPDIR)/xof_shake128.Po \
+	./$(DEPDIR)/xof_shake256.Po ./$(DEPDIR)/xof_turboshake128.Po \
 	./$(DEPDIR)/xof_turboshake256.Po
 am__mv = mv -f
 COMPILE = $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) \
@@ -527,8 +532,9 @@ SOURCES = aead_aegis128l.c aead_aegis256.c aead_aes256gcm.c \
 	secretstream_xchacha20poly1305.c shorthash.c sign.c \
 	siphashx24.c sodium_core.c sodium_utils.c sodium_utils2.c \
 	sodium_utils3.c sodium_version.c stream.c stream2.c stream3.c \
-	stream4.c verify1.c xchacha20.c xof_shake128.c xof_shake256.c \
-	xof_turboshake128.c xof_turboshake256.c
+	stream4.c stream_serpent256.c verify1.c xchacha20.c \
+	xof_shake128.c xof_shake256.c xof_turboshake128.c \
+	xof_turboshake256.c
 DIST_SOURCES = aead_aegis128l.c aead_aegis256.c aead_aes256gcm.c \
 	aead_aes256gcm2.c aead_chacha20poly1305.c \
 	aead_chacha20poly13052.c aead_xchacha20poly1305.c auth.c \
@@ -548,8 +554,9 @@ DIST_SOURCES = aead_aegis128l.c aead_aegis256.c aead_aes256gcm.c \
 	secretstream_xchacha20poly1305.c shorthash.c sign.c \
 	siphashx24.c sodium_core.c sodium_utils.c sodium_utils2.c \
 	sodium_utils3.c sodium_version.c stream.c stream2.c stream3.c \
-	stream4.c verify1.c xchacha20.c xof_shake128.c xof_shake256.c \
-	xof_turboshake128.c xof_turboshake256.c
+	stream4.c stream_serpent256.c verify1.c xchacha20.c \
+	xof_shake128.c xof_shake256.c xof_turboshake128.c \
+	xof_turboshake256.c
 am__can_run_installinfo = \
   case $$AM_UPDATE_INFO_DIR in \
     n|no|NO) false;; \
@@ -1043,6 +1050,7 @@ EXTRA_DIST = \
 	stream2.exp \
 	stream3.exp \
 	stream4.exp \
+	stream_serpent256.exp \
 	verify1.exp \
 	xchacha20.exp \
 	xof_shake128.exp \
@@ -1132,6 +1140,7 @@ DISTCLEANFILES = \
 	stream2.res \
 	stream3.res \
 	stream4.res \
+	stream_serpent256.res \
 	verify1.res \
 	xchacha20.res \
 	xof_shake128.res \
@@ -1338,6 +1347,10 @@ xof_turboshake128_SOURCE = cmptest.h xof_turboshake128.c
 xof_turboshake128_LDADD = $(TESTS_LDADD)
 xof_turboshake256_SOURCE = cmptest.h xof_turboshake256.c
 xof_turboshake256_LDADD = $(TESTS_LDADD)
+xof2_SOURCE = cmptest.h xof2.c
+xof2_LDADD = $(TESTS_LDADD)
+stream_serpent256_SOURCE = cmptest.h stream_serpent256.c
+stream_serpent256_LDADD = $(TESTS_LDADD)
 @WASI_TRUE@LOG_COMPILER = ./wasi-test-wrapper.sh
 all: all-am
 
@@ -1697,6 +1710,10 @@ stream4$(EXEEXT): $(stream4_OBJECTS) $(stream4_DEPENDENCIES) $(EXTRA_stream4_DEP
 	@rm -f stream4$(EXEEXT)
 	$(AM_V_CCLD)$(LINK) $(stream4_OBJECTS) $(stream4_LDADD) $(LIBS)
 
+stream_serpent256$(EXEEXT): $(stream_serpent256_OBJECTS) $(stream_serpent256_DEPENDENCIES) $(EXTRA_stream_serpent256_DEPENDENCIES) 
+	@rm -f stream_serpent256$(EXEEXT)
+	$(AM_V_CCLD)$(LINK) $(stream_serpent256_OBJECTS) $(stream_serpent256_LDADD) $(LIBS)
+
 verify1$(EXEEXT): $(verify1_OBJECTS) $(verify1_DEPENDENCIES) $(EXTRA_verify1_DEPENDENCIES) 
 	@rm -f verify1$(EXEEXT)
 	$(AM_V_CCLD)$(LINK) $(verify1_OBJECTS) $(verify1_LDADD) $(LIBS)
@@ -1807,6 +1824,7 @@ distclean-compile:
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/stream2.Po@am__quote@ # am--include-marker
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/stream3.Po@am__quote@ # am--include-marker
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/stream4.Po@am__quote@ # am--include-marker
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/stream_serpent256.Po@am__quote@ # am--include-marker
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/verify1.Po@am__quote@ # am--include-marker
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/xchacha20.Po@am__quote@ # am--include-marker
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/xof_shake128.Po@am__quote@ # am--include-marker
@@ -2635,6 +2653,13 @@ pwhash_scrypt.log: pwhash_scrypt$(EXEEXT)
 	--log-file $$b.log --trs-file $$b.trs \
 	$(am__common_driver_flags) $(AM_LOG_DRIVER_FLAGS) $(LOG_DRIVER_FLAGS) -- $(LOG_COMPILE) \
 	"$$tst" $(AM_TESTS_FD_REDIRECT)
+stream_serpent256.log: stream_serpent256$(EXEEXT)
+	@p='stream_serpent256$(EXEEXT)'; \
+	b='stream_serpent256'; \
+	$(am__check_pre) $(LOG_DRIVER) --test-name "$$f" \
+	--log-file $$b.log --trs-file $$b.trs \
+	$(am__common_driver_flags) $(AM_LOG_DRIVER_FLAGS) $(LOG_DRIVER_FLAGS) -- $(LOG_COMPILE) \
+	"$$tst" $(AM_TESTS_FD_REDIRECT)
 pwhash_scrypt_ll.log: pwhash_scrypt_ll$(EXEEXT)
 	@p='pwhash_scrypt_ll$(EXEEXT)'; \
 	b='pwhash_scrypt_ll'; \
@@ -2844,6 +2869,7 @@ distclean: distclean-am
 	-rm -f ./$(DEPDIR)/stream2.Po
 	-rm -f ./$(DEPDIR)/stream3.Po
 	-rm -f ./$(DEPDIR)/stream4.Po
+	-rm -f ./$(DEPDIR)/stream_serpent256.Po
 	-rm -f ./$(DEPDIR)/verify1.Po
 	-rm -f ./$(DEPDIR)/xchacha20.Po
 	-rm -f ./$(DEPDIR)/xof_shake128.Po
@@ -2975,6 +3001,7 @@ maintainer-clean: maintainer-clean-am
 	-rm -f ./$(DEPDIR)/stream2.Po
 	-rm -f ./$(DEPDIR)/stream3.Po
 	-rm -f ./$(DEPDIR)/stream4.Po
+	-rm -f ./$(DEPDIR)/stream_serpent256.Po
 	-rm -f ./$(DEPDIR)/verify1.Po
 	-rm -f ./$(DEPDIR)/xchacha20.Po
 	-rm -f ./$(DEPDIR)/xof_shake128.Po
