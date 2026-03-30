@@ -75,6 +75,7 @@
 # include "sodium/crypto_pwhash_scryptsalsa208sha256.h"
 # include "sodium/crypto_stream_salsa2012.h"
 # include "sodium/crypto_stream_salsa208.h"
+# include "sodium/crypto_stream_serpent256.h"
 # include "sodium/crypto_stream_xchacha20.h"
 #endif
 
