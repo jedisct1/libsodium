@@ -9,6 +9,7 @@
 #include "sodium/crypto_aead_aegis128l.h"
 #include "sodium/crypto_aead_aegis128x2.h"
 #include "sodium/crypto_aead_aegis256.h"
+#include "sodium/crypto_aead_aegis256x2.h"
 #include "sodium/crypto_aead_chacha20poly1305.h"
 #include "sodium/crypto_aead_xchacha20poly1305.h"
 #include "sodium/crypto_auth.h"

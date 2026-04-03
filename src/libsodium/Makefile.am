@@ -17,6 +17,11 @@ libsodium_la_SOURCES = \
 	crypto_aead/aegis256/aegis256_soft.c \
 	crypto_aead/aegis256/aegis256_soft.h \
 	crypto_aead/aegis256/implementations.h \
+	crypto_aead/aegis256x2/aead_aegis256x2.c \
+	crypto_aead/aegis256x2/aegis256x2_common.h \
+	crypto_aead/aegis256x2/aegis256x2_soft.c \
+	crypto_aead/aegis256x2/aegis256x2_soft.h \
+	crypto_aead/aegis256x2/implementations.h \
 	crypto_aead/aes256gcm/aead_aes256gcm.c \
 	crypto_aead/chacha20poly1305/aead_chacha20poly1305.c \
 	crypto_aead/xchacha20poly1305/aead_xchacha20poly1305.c \
@@ -286,6 +291,8 @@ libaesni_la_SOURCES = \
 	crypto_aead/aegis128x2/aegis128x2_aesni.h \
 	crypto_aead/aegis256/aegis256_aesni.c \
 	crypto_aead/aegis256/aegis256_aesni.h \
+	crypto_aead/aegis256x2/aegis256x2_aesni.c \
+	crypto_aead/aegis256x2/aegis256x2_aesni.h \
 	crypto_aead/aes256gcm/aesni/aead_aes256gcm_aesni.c \
 	crypto_ipcrypt/ipcrypt_aesni.c \
 	crypto_ipcrypt/ipcrypt_aesni.h

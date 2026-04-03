@@ -6,6 +6,7 @@ SODIUM_EXPORT = \
 	sodium/crypto_aead_aegis128l.h \
 	sodium/crypto_aead_aegis128x2.h \
 	sodium/crypto_aead_aegis256.h \
+	sodium/crypto_aead_aegis256x2.h \
 	sodium/crypto_aead_chacha20poly1305.h \
 	sodium/crypto_aead_xchacha20poly1305.h \
 	sodium/crypto_auth.h \

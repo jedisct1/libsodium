@@ -8,6 +8,7 @@ EXTRA_DIST = \
 	aead_aegis128l.exp \
 	aead_aegis128x2.exp \
 	aead_aegis256.exp \
+	aead_aegis256x2.exp \
 	aead_aes256gcm.exp \
 	aead_aes256gcm2.exp \
 	aead_chacha20poly1305.exp \
@@ -115,6 +116,7 @@ DISTCLEANFILES = \
 	aead_aegis128l.res \
 	aead_aegis128x2.res \
 	aead_aegis256.res \
+	aead_aegis256x2.res \
 	aead_aes256gcm.res \
 	aead_aes256gcm2.res \
 	aead_chacha20poly1305.res \
@@ -233,6 +235,7 @@ TESTS_TARGETS = \
 	aead_aegis128l \
 	aead_aegis128x2 \
 	aead_aegis256 \
+	aead_aegis256x2 \
 	aead_aes256gcm \
 	aead_aes256gcm2 \
 	aead_chacha20poly1305 \
@@ -339,6 +342,9 @@ aead_aegis128x2_LDADD                 = $(TESTS_LDADD)
 
 aead_aegis256_SOURCE                  = cmptest.h aead_aegis256.c
 aead_aegis256_LDADD                   = $(TESTS_LDADD)
+
+aead_aegis256x2_SOURCE                = cmptest.h aead_aegis256x2.c
+aead_aegis256x2_LDADD                 = $(TESTS_LDADD)
 
 aead_aes256gcm_SOURCE                 = cmptest.h aead_aes256gcm.c
 aead_aes256gcm_LDADD                  = $(TESTS_LDADD)
