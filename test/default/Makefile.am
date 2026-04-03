@@ -6,6 +6,7 @@ EXTRA_DIST = \
 	wintest.bat \
 	pre.js.inc \
 	aead_aegis128l.exp \
+	aead_aegis128x2.exp \
 	aead_aegis256.exp \
 	aead_aes256gcm.exp \
 	aead_aes256gcm2.exp \
@@ -112,6 +113,7 @@ EXTRA_DIST = \
 
 DISTCLEANFILES = \
 	aead_aegis128l.res \
+	aead_aegis128x2.res \
 	aead_aegis256.res \
 	aead_aes256gcm.res \
 	aead_aes256gcm2.res \
@@ -229,6 +231,7 @@ AM_LDFLAGS = @TEST_LDFLAGS@
 
 TESTS_TARGETS = \
 	aead_aegis128l \
+	aead_aegis128x2 \
 	aead_aegis256 \
 	aead_aes256gcm \
 	aead_aes256gcm2 \
@@ -330,6 +333,9 @@ TESTS_LDADD = \
 
 aead_aegis128l_SOURCE                 = cmptest.h aead_aegis128l.c
 aead_aegis128l_LDADD                  = $(TESTS_LDADD)
+
+aead_aegis128x2_SOURCE                = cmptest.h aead_aegis128x2.c
+aead_aegis128x2_LDADD                 = $(TESTS_LDADD)
 
 aead_aegis256_SOURCE                  = cmptest.h aead_aegis256.c
 aead_aegis256_LDADD                   = $(TESTS_LDADD)
