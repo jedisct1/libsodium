@@ -307,6 +307,10 @@ main(void)
 
         assert(sodium_ip2bin(ip_bytes, "fe80::1%eth0", strlen("fe80::1%eth0")) == 0);
         assert(sodium_ip2bin(ip_bytes, "fe80::1%15", strlen("fe80::1%15")) == 0);
+        assert(sodium_ip2bin(ip_bytes, "fe80::1%%eth0", strlen("fe80::1%%eth0")) == -1);
+        assert(sodium_ip2bin(ip_bytes, "fe80::1%eth0%1", strlen("fe80::1%eth0%1")) == -1);
+        assert(sodium_ip2bin(ip_bytes, "fe80::1%eth 0", strlen("fe80::1%eth 0")) == -1);
+        assert(sodium_ip2bin(ip_bytes, "192.168.1.1%eth0", strlen("192.168.1.1%eth0")) == -1);
         printf("ip2bytes IPv6 zone: OK\n");
 
         assert(sodium_ip2bin(ip_bytes, "2001:::1", strlen("2001:::1")) == -1);
