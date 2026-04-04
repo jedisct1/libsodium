@@ -91,12 +91,11 @@ BOOLEAN NTAPI RtlGenRandom(PVOID RandomBuffer, ULONG RandomBufferLength);
 # endif
 #endif
 
-#if !defined(TLS) && !defined(__STDC_NO_THREADS__) && \
-    defined(__STDC_VERSION__) && __STDC_VERSION__ >= 201112L
-# define TLS _Thread_local
-#endif
 #ifndef TLS
-# ifdef _WIN32
+# if !defined(CONFIGURED) && !defined(__STDC_NO_THREADS__) && \
+     defined(__STDC_VERSION__) && __STDC_VERSION__ >= 201112L
+#  define TLS _Thread_local
+# elif defined(_WIN32)
 #  define TLS __declspec(thread)
 # else
 #  define TLS
