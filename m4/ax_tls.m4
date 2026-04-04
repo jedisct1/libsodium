@@ -52,7 +52,7 @@ AC_DEFUN([AX_TLS], [
    [for ax_tls_keyword in thread_local _Thread_local __thread '__declspec(thread)' none; do
        AS_CASE([$ax_tls_keyword],
           [none], [ac_cv_tls=none ; break],
-          [AC_COMPILE_IFELSE([AC_LANG_PROGRAM(
+          [AC_LINK_IFELSE([AC_LANG_PROGRAM(
               [#include <stdlib.h>],
               [static  $ax_tls_keyword  int bar;]
             )],
