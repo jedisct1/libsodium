@@ -34,7 +34,7 @@
 # elif !defined(alloca)
 #  if defined(__clang__) || defined(__GNUC__)
 #   define alloca __builtin_alloca
-#  elif defined _AIX
+#  elif defined(_AIX)
 #   define alloca __alloca
 #  elif defined _MSC_VER
 #   include <malloc.h>
