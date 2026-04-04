@@ -1,5 +1,4 @@
 #include <assert.h>
-#include <ctype.h>
 #include <errno.h>
 #include <limits.h>
 #include <stddef.h>
@@ -10,11 +9,6 @@
 #include "core.h"
 #include "private/common.h"
 #include "utils.h"
-
-#ifdef __FreeBSD__
-/* gcc on FreeBSD can generate a bogus isspace implementation */
-# undef isspace
-#endif
 
 /* Derived from original code by CodesInChaos */
 char *
@@ -497,7 +491,8 @@ sodium_ip2bin(unsigned char bin[16], const char *ip,
     zone = memchr(ip, '%', (size_t) (end - ip));
     if (zone != NULL) {
         for (z = zone + 1; z < end; z++) {
-            if (*z == '%' || isspace((unsigned char) *z)) {
+            if (!((*z >= '0' && *z <= '9') || (*z >= 'a' && *z <= 'z') ||
+                  (*z >= 'A' && *z <= 'Z') || *z == '-' || *z == '_' || *z == '.')) {
                 return -1;
             }
         }
