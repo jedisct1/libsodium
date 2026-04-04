@@ -11,6 +11,11 @@
 #include "private/common.h"
 #include "utils.h"
 
+#ifdef __FreeBSD__
+/* gcc on FreeBSD can generate a bogus isspace implementation */
+# undef isspace
+#endif
+
 /* Derived from original code by CodesInChaos */
 char *
 sodium_bin2hex(char *const hex, const size_t hex_maxlen,
