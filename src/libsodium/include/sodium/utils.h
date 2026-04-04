@@ -93,7 +93,7 @@ int sodium_base642bin(unsigned char *const bin, const size_t bin_maxlen, const c
                       const char **const b64_end, const int variant) __attribute__((nonnull(1)));
 
 SODIUM_EXPORT
-int sodium_ip2bin(unsigned char bin[16], const char *ip, size_t ip_len)
+int sodium_ip2bin(unsigned char bin[16], const char *ip, size_t ip_len_)
     __attribute__((warn_unused_result)) __attribute__((nonnull));
 
 SODIUM_EXPORT

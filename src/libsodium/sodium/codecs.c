@@ -476,9 +476,10 @@ parse_ipv6(const char *src, const char *end, unsigned char out[16])
 }
 
 int
-sodium_ip2bin(unsigned char bin[16], const char *ip, size_t ip_len)
+sodium_ip2bin(unsigned char bin[16], const char *ip,
+              size_t ip_len_) /* Some AIX versions define a macro named "ip_len" */
 {
-    const char   *ip_end = ip + ip_len;
+    const char   *ip_end = ip + ip_len_;
     const char   *end;
     const char   *z;
     unsigned char v4[4];
