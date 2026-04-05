@@ -488,7 +488,7 @@ sodium_ip2bin(unsigned char bin[16], const char *ip,
     for (; end < ip_end && *end != 0; end++) {
         /* empty */
     }
-    zone = memchr(ip, '%', (size_t) (end - ip));
+    zone = (const char *) memchr(ip, '%', (size_t) (end - ip));
     if (zone != NULL) {
         for (z = zone + 1; z < end; z++) {
             if (!((*z >= '0' && *z <= '9') || (*z >= 'a' && *z <= 'z') ||
