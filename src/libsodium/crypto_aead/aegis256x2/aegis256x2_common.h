@@ -123,26 +123,6 @@ aegis256x2_absorb(const uint8_t *const src, aes_block_t *const state)
 }
 
 static inline void
-aegis256x2_absorb_rate(const uint8_t *const src, aes_block_t *const state)
-{
-    aes_block_t msg;
-
-    msg = AES_BLOCK_LOAD(src);
-    aegis256x2_update(state, msg);
-}
-
-static inline void
-aegis256x2_squeeze_keystream(uint8_t *const dst, aes_block_t *const state)
-{
-    aes_block_t tmp;
-
-    tmp = AES_BLOCK_XOR(state[5], state[4]);
-    tmp = AES_BLOCK_XOR(tmp, state[1]);
-    tmp = AES_BLOCK_XOR(tmp, AES_BLOCK_AND(state[2], state[3]));
-    AES_BLOCK_STORE(dst, tmp);
-}
-
-static inline void
 aegis256x2_enc(uint8_t *const dst, const uint8_t *const src, aes_block_t *const state)
 {
     aes_block_t msg;
@@ -196,74 +176,6 @@ aegis256x2_declast(uint8_t *const dst, const uint8_t *const src, size_t len,
     msg = AES_BLOCK_LOAD(pad);
 
     aegis256x2_update(state, msg);
-}
-
-static inline void
-aegis256x2_mac_nr(uint8_t *mac, size_t maclen, uint64_t adlen, aes_block_t *state)
-{
-    uint8_t     t[2 * AES_BLOCK_LENGTH];
-    uint8_t     r[RATE];
-    aes_block_t tmp;
-    int         i;
-    const int   d = AES_BLOCK_LENGTH / 16;
-
-    tmp = AES_BLOCK_LOAD_64x2(maclen << 3, adlen << 3);
-    tmp = AES_BLOCK_XOR(tmp, state[3]);
-
-    for (i = 0; i < 7; i++) {
-        aegis256x2_update(state, tmp);
-    }
-
-    memset(r, 0, sizeof r);
-    if (maclen == 16) {
-#if AES_BLOCK_LENGTH > 16
-        tmp = AES_BLOCK_XOR(state[5], state[4]);
-        tmp = AES_BLOCK_XOR(tmp, AES_BLOCK_XOR(state[3], state[2]));
-        tmp = AES_BLOCK_XOR(tmp, AES_BLOCK_XOR(state[1], state[0]));
-        AES_BLOCK_STORE(t, tmp);
-
-        for (i = 1; i < d; i++) {
-            memcpy(r, t + i * 16, 16);
-            aegis256x2_absorb(r, state);
-        }
-        tmp = AES_BLOCK_LOAD_64x2(maclen << 3, d);
-        tmp = AES_BLOCK_XOR(tmp, state[3]);
-        for (i = 0; i < 7; i++) {
-            aegis256x2_update(state, tmp);
-        }
-#endif
-        tmp = AES_BLOCK_XOR(state[5], state[4]);
-        tmp = AES_BLOCK_XOR(tmp, AES_BLOCK_XOR(state[3], state[2]));
-        tmp = AES_BLOCK_XOR(tmp, AES_BLOCK_XOR(state[1], state[0]));
-        AES_BLOCK_STORE(t, tmp);
-        memcpy(mac, t, 16);
-    } else if (maclen == 32) {
-#if AES_BLOCK_LENGTH > 16
-        tmp = AES_BLOCK_XOR(state[2], AES_BLOCK_XOR(state[1], state[0]));
-        AES_BLOCK_STORE(t, tmp);
-        tmp = AES_BLOCK_XOR(state[5], AES_BLOCK_XOR(state[4], state[3]));
-        AES_BLOCK_STORE(t + AES_BLOCK_LENGTH, tmp);
-        for (i = 1; i < d; i++) {
-            memcpy(r, t + i * 16, 16);
-            aegis256x2_absorb(r, state);
-            memcpy(r, t + AES_BLOCK_LENGTH + i * 16, 16);
-            aegis256x2_absorb(r, state);
-        }
-        tmp = AES_BLOCK_LOAD_64x2(maclen << 3, d);
-        tmp = AES_BLOCK_XOR(tmp, state[3]);
-        for (i = 0; i < 7; i++) {
-            aegis256x2_update(state, tmp);
-        }
-#endif
-        tmp = AES_BLOCK_XOR(state[2], AES_BLOCK_XOR(state[1], state[0]));
-        AES_BLOCK_STORE(t, tmp);
-        memcpy(mac, t, 16);
-        tmp = AES_BLOCK_XOR(state[5], AES_BLOCK_XOR(state[4], state[3]));
-        AES_BLOCK_STORE(t, tmp);
-        memcpy(mac + 16, t, 16);
-    } else {
-        memset(mac, 0, maclen);
-    }
 }
 
 static int
