@@ -6,4 +6,6 @@ Chunked update test passed
 Rate boundary test passed
 Rate+1 boundary test passed
 Rate-1 boundary test passed
+Update-after-final recovery test passed
+Final-after-final test passed
 OK
