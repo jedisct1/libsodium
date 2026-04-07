@@ -4,6 +4,7 @@
 .done
 .DS_Store
 .libs
+.swival/
 .zig-cache
 *.bc
 *.done
@@ -124,19 +125,19 @@ test/default/generichash
 test/default/generichash2
 test/default/generichash3
 test/default/hash
-test/default/hash3
 test/default/hash_sha3256
 test/default/hash_sha3512
+test/default/hash3
 test/default/ipcrypt
 test/default/kdf
 test/default/kdf_hkdf
 test/default/kdf_hkdf2
 test/default/kdf_hkdf3
 test/default/kdf_hkdf4
-test/default/keygen
 test/default/kem
 test/default/kem_mlkem768
 test/default/kem_xwing
+test/default/keygen
 test/default/kx
 test/default/metamorphic
 test/default/misuse
@@ -188,6 +189,7 @@ test/default/xof_turboshake256
 test/default/xof2
 test/js.done
 testing
+tmp/
 Vagrantfile
 zig-cache
 zig-out
