@@ -1,14 +1,9 @@
-#include <errno.h>
 #include <stddef.h>
 #include <stdint.h>
-#include <stdlib.h>
-#include <string.h>
 
-#include "core.h"
 #include "crypto_aead_aegis256x2.h"
 #include "crypto_verify_16.h"
 #include "crypto_verify_32.h"
-#include "export.h"
 #include "utils.h"
 
 #include "private/common.h"
@@ -86,7 +81,7 @@ aegis256x2_update(aes_block_t *const state, const aes_block_t d)
     state[0] = AES_BLOCK_XOR(AES_ENC(tmp, state[0]), d);
 }
 
-#    include "aegis256x2_common.h"
+#include "aegis256x2_common.h"
 
 struct aegis256x2_implementation aegis256x2_aesni_implementation = { SODIUM_C99(.encrypt_detached =)
                                                                        encrypt_detached,

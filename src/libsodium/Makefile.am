@@ -342,6 +342,10 @@ libavx2_la_LDFLAGS = $(libsodium_la_LDFLAGS)
 libavx2_la_CPPFLAGS = $(libsodium_la_CPPFLAGS) \
 	@CFLAGS_SSE2@ @CFLAGS_SSSE3@ @CFLAGS_SSE41@ @CFLAGS_AVX@ @CFLAGS_AVX2@
 libavx2_la_SOURCES = \
+	crypto_aead/aegis128x2/aegis128x2_avx2.c \
+	crypto_aead/aegis128x2/aegis128x2_avx2.h \
+	crypto_aead/aegis256x2/aegis256x2_avx2.c \
+	crypto_aead/aegis256x2/aegis256x2_avx2.h \
 	crypto_generichash/blake2b/ref/blake2b-compress-avx2.c \
 	crypto_generichash/blake2b/ref/blake2b-compress-avx2.h \
 	crypto_pwhash/argon2/argon2-fill-block-avx2.c \

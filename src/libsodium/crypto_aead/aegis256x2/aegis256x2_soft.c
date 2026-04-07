@@ -71,7 +71,7 @@ aegis256x2_update(aes_block_t *const state, const aes_block_t d)
 
 #    include "aegis256x2_common.h"
 
-struct aegis256x2_implementation aegis256x2_soft_implementation = {
-    .encrypt_detached        = encrypt_detached,
-    .decrypt_detached        = decrypt_detached,
-};
+struct aegis256x2_implementation aegis256x2_soft_implementation = { SODIUM_C99(.encrypt_detached =)
+                                                                      encrypt_detached,
+                                                                  SODIUM_C99(.decrypt_detached =)
+                                                                      decrypt_detached };

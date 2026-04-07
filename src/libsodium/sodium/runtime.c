@@ -31,6 +31,7 @@ typedef struct CPUFeatures_ {
     int has_avx512f;
     int has_pclmul;
     int has_aesni;
+    int has_vaes;
     int has_rdrand;
 } CPUFeatures;
 
@@ -48,6 +49,7 @@ static CPUFeatures _cpu_features;
 #define CPUID_ECX_OSXSAVE 0x08000000
 #define CPUID_ECX_AVX     0x10000000
 #define CPUID_ECX_RDRAND  0x40000000
+#define CPUID_ECX_VAES    0x00000200
 
 #define CPUID_EDX_SSE2    0x04000000
 
@@ -272,13 +274,23 @@ _sodium_runtime_intel_cpu_features(CPUFeatures * const cpu_features)
     }
 #endif
 
+#ifdef HAVE_WMMINTRIN_H
+    cpu_features->has_pclmul = ((cpu_info[2] & CPUID_ECX_PCLMUL) != 0x0);
+    cpu_features->has_aesni  = ((cpu_info[2] & CPUID_ECX_AESNI) != 0x0);
+#else
+    cpu_features->has_pclmul = 0;
+    cpu_features->has_aesni  = 0;
+#endif
+
     cpu_features->has_avx2 = 0;
+    cpu_features->has_vaes = 0;
 #ifdef HAVE_AVX2INTRIN_H
     if (cpu_features->has_avx) {
         unsigned int cpu_info7[4];
 
         _cpuid(cpu_info7, 0x00000007);
         cpu_features->has_avx2 = ((cpu_info7[1] & CPUID_EBX_AVX2) != 0x0);
+        cpu_features->has_vaes = cpu_features->has_aesni && ((cpu_info7[2] & CPUID_ECX_VAES) != 0x0);
     }
 #endif
 
@@ -296,14 +308,6 @@ _sodium_runtime_intel_cpu_features(CPUFeatures * const cpu_features)
         }
         /* LCOV_EXCL_STOP */
     }
-#endif
-
-#ifdef HAVE_WMMINTRIN_H
-    cpu_features->has_pclmul = ((cpu_info[2] & CPUID_ECX_PCLMUL) != 0x0);
-    cpu_features->has_aesni  = ((cpu_info[2] & CPUID_ECX_AESNI) != 0x0);
-#else
-    cpu_features->has_pclmul = 0;
-    cpu_features->has_aesni  = 0;
 #endif
 
 #ifdef HAVE_RDRAND
@@ -391,6 +395,12 @@ int
 sodium_runtime_has_aesni(void)
 {
     return _cpu_features.has_aesni;
+}
+
+int
+sodium_runtime_has_vaes(void)
+{
+    return _cpu_features.has_vaes;
 }
 
 int

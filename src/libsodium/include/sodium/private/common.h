@@ -251,6 +251,8 @@ xor_buf(unsigned char *out, const unsigned char *in, size_t n)
 #  define HAVE_TMMINTRIN_H 1
 #  define HAVE_SMMINTRIN_H 1
 #  define HAVE_AVXINTRIN_H 1
+#  define HAVE_VAESINTRIN_H 1
+#  define
 #  if _MSC_VER >= 1600
 #   define HAVE_WMMINTRIN_H 1
 #  endif

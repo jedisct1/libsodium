@@ -42,6 +42,9 @@ SODIUM_EXPORT_WEAK
 int sodium_runtime_has_aesni(void);
 
 SODIUM_EXPORT_WEAK
+int sodium_runtime_has_vaes(void);
+
+SODIUM_EXPORT_WEAK
 int sodium_runtime_has_rdrand(void);
 
 /* ------------------------------------------------------------------------- */

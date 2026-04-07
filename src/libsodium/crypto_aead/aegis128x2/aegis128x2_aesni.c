@@ -6,13 +6,15 @@
 #include "crypto_verify_16.h"
 #include "crypto_verify_32.h"
 
+#include "utils.h"
+
 #if defined(HAVE_AVXINTRIN_H) && defined(HAVE_WMMINTRIN_H)
 #include "aegis128x2_aesni.h"
 
 #ifdef __clang__
-#    pragma clang attribute push(__attribute__((target("aes,avx"))), apply_to = function)
+#pragma clang attribute push(__attribute__((target("aes,avx"))), apply_to = function)
 #elif defined(__GNUC__)
-#    pragma GCC target("aes,avx")
+#pragma GCC target("aes,avx")
 #endif
 
 #include <immintrin.h>
@@ -85,13 +87,13 @@ aegis128x2_update(aes_block_t *const state, const aes_block_t d1, const aes_bloc
 
 #include "aegis128x2_common.h"
 
-struct aegis128x2_implementation aegis128x2_aesni_implementation = {
-    .encrypt_detached        = encrypt_detached,
-    .decrypt_detached        = decrypt_detached,
-};
+struct aegis128x2_implementation aegis128x2_aesni_implementation = { SODIUM_C99(.encrypt_detached =)
+                                                                      encrypt_detached,
+                                                                  SODIUM_C99(.decrypt_detached =)
+                                                                      decrypt_detached };
 
 #ifdef __clang__
-#    pragma clang attribute pop
+#pragma clang attribute pop
 #endif
 
 #endif

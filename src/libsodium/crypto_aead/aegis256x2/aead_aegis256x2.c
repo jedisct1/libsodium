@@ -15,6 +15,10 @@
 #include "aegis256x2_aesni.h"
 #endif
 
+#if defined(HAVE_AVX2INTRIN_H) && defined(HAVE_VAESINTRIN_H)
+#include "aegis256x2_avx2.h"
+#endif
+
 static const aegis256x2_implementation *implementation = &aegis256x2_soft_implementation;
 
 size_t
@@ -140,6 +144,12 @@ _crypto_aead_aegis256x2_pick_best_implementation(void)
 {
     implementation = &aegis256x2_soft_implementation;
 
+#if defined(HAVE_AVX2INTRIN_H) && defined(HAVE_VAESINTRIN_H)
+    if (sodium_runtime_has_vaes() & sodium_runtime_has_avx2()) {
+        implementation = &aegis256x2_avx2_implementation;
+        return 0;
+    }
+#endif
 #if defined(HAVE_AVXINTRIN_H) && defined(HAVE_WMMINTRIN_H)
     if (sodium_runtime_has_aesni() & sodium_runtime_has_avx()) {
         implementation = &aegis256x2_aesni_implementation;
