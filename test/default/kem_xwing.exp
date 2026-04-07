@@ -1,0 +1,12 @@
+pk (first 32 bytes): [6f54098a0a0e641146614b6960ba60d8603d62f447f9ab499b47bd6906cc40b0]
+sk: [000102030405060708090a0b0c0d0e0f101112131415161718191a1b1c1d1e1f]
+ct (first 32 bytes): [332c248ecac774a5b9e28b7018565b7e07b57733b8e68a432084b39b9221e497]
+ss_enc: [f285b028f4de617b6adf9eccbd811327848dd44ac7078c15390b16682576ad8c]
+ss_dec: [f285b028f4de617b6adf9eccbd811327848dd44ac7078c15390b16682576ad8c]
+shared secrets match: ok
+random keypair test: ok
+constants: ok
+tv_kem_xwing: ok
+IETF KAT vector 0: ok
+IETF KAT vector 1: ok
+IETF KAT vector 2: ok

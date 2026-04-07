@@ -265,6 +265,7 @@ TESTS_TARGETS = \
 	ipcrypt \
 	kdf \
 	kem_mlkem768 \
+	kem_xwing \
 	keygen \
 	kx \
 	metamorphic \
@@ -471,7 +472,6 @@ kem_mlkem768_LDADD         = $(TESTS_LDADD)
 
 kem_xwing_SOURCE           = cmptest.h kem_xwing.c
 kem_xwing_LDADD            = $(TESTS_LDADD)
-
 
 keygen_SOURCE             = cmptest.h keygen.c
 keygen_LDADD              = $(TESTS_LDADD)
