@@ -1,5 +1,4 @@
 #include <assert.h>
-#include <ctype.h>
 #include <errno.h>
 #include <limits.h>
 #include <stddef.h>
@@ -476,31 +475,38 @@ parse_ipv6(const char *src, const char *end, unsigned char out[16])
 }
 
 int
-sodium_ip2bin(unsigned char bin[16], const char *ip, size_t ip_len)
+sodium_ip2bin(unsigned char bin[16], const char *ip,
+              size_t ip_len_) /* Some AIX versions define a macro named "ip_len" */
 {
-    const char   *ip_end = ip + ip_len;
-    const char   *end;
+    const char   *ip_end = ip + ip_len_;
+    const char   *end    = ip;
+    const char   *zone   = NULL;
     const char   *z;
     unsigned char v4[4];
+    int           is_ipv6;
 
-    for (end = ip; end < ip_end && *end != 0 && *end != '%'; end++) {
+    for (; end < ip_end && *end != 0; end++) {
         /* empty */
     }
-    if (end < ip_end && *end == '%') {
-        for (z = end + 1; z < ip_end && *z != 0; z++) {
-            if (isspace((unsigned char) *z)) {
+    zone = (const char *) memchr(ip, '%', (size_t) (end - ip));
+    if (zone != NULL) {
+        for (z = zone + 1; z < end; z++) {
+            if (!((*z >= '0' && *z <= '9') || (*z >= 'a' && *z <= 'z') ||
+                  (*z >= 'A' && *z <= 'Z') || *z == '-' || *z == '_' || *z == '.')) {
                 return -1;
             }
         }
-        if (z == end + 1) {
+        if (zone + 1 >= end) {
             return -1;
         }
+        end = zone;
     }
-    if (memchr(ip, ':', (size_t) (end - ip)) != NULL) {
-        return parse_ipv6(ip, end, bin) != 0 ? 0 : -1;
-    }
-    if (end < ip_end && *end == '%') {
+    is_ipv6 = memchr(ip, ':', (size_t) (end - ip)) != NULL;
+    if (zone != NULL && !is_ipv6) {
         return -1;
+    }
+    if (is_ipv6) {
+        return parse_ipv6(ip, end, bin) != 0 ? 0 : -1;
     }
     if (parse_ipv4(ip, end, v4) == 0) {
         return -1;
