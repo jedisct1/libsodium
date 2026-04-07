@@ -2,6 +2,8 @@
 #define TEST_NAME "hash_sha3512"
 #include "cmptest.h"
 
+#define TEST_SHA3_512_BYTES 64U
+
 int
 main(void)
 {
@@ -132,6 +134,77 @@ main(void)
 
         assert(memcmp(out1, out2, 64) == 0);
         printf("Rate-1 boundary test passed\n");
+    }
+
+    {
+        static const unsigned char resumed_msg[]       = { 0x78, 0x79 };
+        static const unsigned char resumed_msg_other[] = { 0x78, 0x7a };
+        unsigned char              resumed_out1[TEST_SHA3_512_BYTES];
+        unsigned char              resumed_out2[TEST_SHA3_512_BYTES];
+        unsigned char              resumed_out3[TEST_SHA3_512_BYTES];
+        crypto_hash_sha3512_state  state2;
+        crypto_hash_sha3512_state  state3;
+        int                        ret;
+
+        crypto_hash_sha3512_init(&state);
+        crypto_hash_sha3512_init(&state2);
+        crypto_hash_sha3512_init(&state3);
+        crypto_hash_sha3512_update(&state, msg_abc, 3);
+        crypto_hash_sha3512_update(&state2, msg_abc, 3);
+        crypto_hash_sha3512_update(&state3, msg_abc, 3);
+        crypto_hash_sha3512_final(&state, out);
+        crypto_hash_sha3512_final(&state2, resumed_out2);
+        crypto_hash_sha3512_final(&state3, resumed_out3);
+        assert(memcmp(out, out_abc, 64) == 0);
+        assert(memcmp(resumed_out2, out_abc, 64) == 0);
+        assert(memcmp(resumed_out3, out_abc, 64) == 0);
+
+        ret = crypto_hash_sha3512_update(&state, resumed_msg, sizeof resumed_msg);
+        assert(ret == -1);
+        ret = crypto_hash_sha3512_update(&state2, resumed_msg, sizeof resumed_msg);
+        assert(ret == -1);
+        ret = crypto_hash_sha3512_update(&state3, resumed_msg_other, sizeof resumed_msg_other);
+        assert(ret == -1);
+
+        ret = crypto_hash_sha3512_final(&state, resumed_out1);
+        assert(ret == 0);
+        ret = crypto_hash_sha3512_final(&state2, resumed_out2);
+        assert(ret == 0);
+        ret = crypto_hash_sha3512_final(&state3, resumed_out3);
+        assert(ret == 0);
+
+        assert(memcmp(resumed_out1, resumed_out2, TEST_SHA3_512_BYTES) == 0);
+        assert(memcmp(resumed_out1, resumed_out3, TEST_SHA3_512_BYTES) != 0);
+        printf("Update-after-final recovery test passed\n");
+    }
+
+    {
+        unsigned char             repeated_out1[TEST_SHA3_512_BYTES];
+        unsigned char             repeated_out2[TEST_SHA3_512_BYTES];
+        crypto_hash_sha3512_state state2;
+        int                       ret;
+
+        memset(repeated_out1, 0xAA, sizeof repeated_out1);
+        memset(repeated_out2, 0xAA, sizeof repeated_out2);
+
+        crypto_hash_sha3512_init(&state);
+        crypto_hash_sha3512_init(&state2);
+        crypto_hash_sha3512_update(&state, msg_abc, 3);
+        crypto_hash_sha3512_update(&state2, msg_abc, 3);
+        ret = crypto_hash_sha3512_final(&state, out);
+        assert(ret == 0);
+        ret = crypto_hash_sha3512_final(&state2, out);
+        assert(ret == 0);
+
+        ret = crypto_hash_sha3512_final(&state, repeated_out1);
+        assert(ret == -1);
+        ret = crypto_hash_sha3512_final(&state2, repeated_out2);
+        assert(ret == -1);
+
+        assert(memcmp(repeated_out1, repeated_out2, TEST_SHA3_512_BYTES) == 0);
+        assert(memcmp(repeated_out1, out, TEST_SHA3_512_BYTES) != 0);
+        assert(repeated_out1[0] != 0xAA);
+        printf("Final-after-final test passed\n");
     }
 
     printf("OK\n");

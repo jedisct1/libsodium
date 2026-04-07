@@ -37,6 +37,14 @@ sha3_update(sha3_state_internal *state, const unsigned char *in, size_t inlen)
 {
     size_t consumed = 0;
     size_t chunk_size;
+    int    ret = 0;
+
+    if (state->phase != SHA3_PHASE_ABSORBING) {
+        crypto_core_keccak1600_permute_24(&state->state);
+        state->phase  = SHA3_PHASE_ABSORBING;
+        state->offset = 0;
+        ret = -1;
+    }
 
     while (consumed < inlen) {
         if (state->offset == state->rate) {
@@ -52,36 +60,42 @@ sha3_update(sha3_state_internal *state, const unsigned char *in, size_t inlen)
         consumed += chunk_size;
     }
 
-    return 0;
+    return ret;
 }
 
 static int
 sha3_final(sha3_state_internal *state, unsigned char *out)
 {
     unsigned char pad;
+    int           ret = 0;
 
-    if (state->offset == state->rate) {
+    if (state->phase != SHA3_PHASE_ABSORBING) {
         crypto_core_keccak1600_permute_24(&state->state);
-        state->offset = 0;
-    }
-
-    if (state->offset == state->rate - 1) {
-        pad = (unsigned char) (SHA3_DOMAIN ^ 0x80);
-        crypto_core_keccak1600_xor_bytes(&state->state, &pad, state->offset, 1);
+        ret = -1;
     } else {
-        pad = SHA3_DOMAIN;
-        crypto_core_keccak1600_xor_bytes(&state->state, &pad, state->offset, 1);
-        pad = 0x80;
-        crypto_core_keccak1600_xor_bytes(&state->state, &pad, state->rate - 1, 1);
-    }
+        if (state->offset == state->rate) {
+            crypto_core_keccak1600_permute_24(&state->state);
+            state->offset = 0;
+        }
 
-    crypto_core_keccak1600_permute_24(&state->state);
+        if (state->offset == state->rate - 1) {
+            pad = (unsigned char) (SHA3_DOMAIN ^ 0x80);
+            crypto_core_keccak1600_xor_bytes(&state->state, &pad, state->offset, 1);
+        } else {
+            pad = SHA3_DOMAIN;
+            crypto_core_keccak1600_xor_bytes(&state->state, &pad, state->offset, 1);
+            pad = 0x80;
+            crypto_core_keccak1600_xor_bytes(&state->state, &pad, state->rate - 1, 1);
+        }
+
+        crypto_core_keccak1600_permute_24(&state->state);
+    }
 
     crypto_core_keccak1600_extract_bytes(&state->state, out, 0, state->outlen);
+    state->offset = 0;
+    state->phase  = SHA3_PHASE_FINALIZED;
 
-    sodium_memzero(state, sizeof *state);
-
-    return 0;
+    return ret;
 }
 
 size_t
@@ -125,6 +139,7 @@ crypto_hash_sha3256(unsigned char *out, const unsigned char *in, unsigned long l
     crypto_hash_sha3256_init(&state);
     crypto_hash_sha3256_update(&state, in, inlen);
     crypto_hash_sha3256_final(&state, out);
+    sodium_memzero(&state, sizeof state);
 
     return 0;
 }
@@ -170,6 +185,7 @@ crypto_hash_sha3512(unsigned char *out, const unsigned char *in, unsigned long l
     crypto_hash_sha3512_init(&state);
     crypto_hash_sha3512_update(&state, in, inlen);
     crypto_hash_sha3512_final(&state, out);
+    sodium_memzero(&state, sizeof state);
 
     return 0;
 }
