@@ -722,9 +722,13 @@ int
 mlkem768_ref_keypair(unsigned char *pk, unsigned char *sk)
 {
     unsigned char seed[crypto_kem_mlkem768_SEEDBYTES];
+    int           ret;
 
     randombytes_buf(seed, crypto_kem_mlkem768_SEEDBYTES);
-    return mlkem768_ref_seed_keypair(pk, sk, seed);
+    ret = mlkem768_ref_seed_keypair(pk, sk, seed);
+    sodium_memzero(seed, sizeof seed);
+
+    return ret;
 }
 
 int
@@ -758,9 +762,13 @@ int
 mlkem768_ref_enc(unsigned char *ct, unsigned char *ss, const unsigned char *pk)
 {
     unsigned char seed[32];
+    int           ret;
 
     randombytes_buf(seed, 32);
-    return mlkem768_ref_enc_deterministic(ct, ss, pk, seed);
+    ret = mlkem768_ref_enc_deterministic(ct, ss, pk, seed);
+    sodium_memzero(seed, sizeof seed);
+
+    return ret;
 }
 
 int

@@ -336,7 +336,6 @@ tv_wycheproof_modulus_overflow(void)
     unsigned char ss[crypto_kem_mlkem768_SHAREDSECRETBYTES];
     unsigned char m[32];
     size_t        i;
-    int           ret;
 
     memset(m, 0x42, 32);
 
@@ -344,13 +343,12 @@ tv_wycheproof_modulus_overflow(void)
     for (i = 0; i < sizeof wycheproof_invalid_ek / sizeof wycheproof_invalid_ek[0]; i++) {
         sodium_hex2bin(ek, sizeof ek, wycheproof_invalid_ek[i],
                        strlen(wycheproof_invalid_ek[i]), NULL, NULL, NULL);
-        ret = crypto_kem_mlkem768_enc_deterministic(ct, ss, ek, m);
-        if (ret != 0) {
-            printf("ok (rejected invalid ek)\n");
+        if (crypto_kem_mlkem768_enc_deterministic(ct, ss, ek, m) == 0) {
+            printf("FAILED (accepted invalid ek %u)\n", (unsigned int) i);
             return;
         }
     }
-    printf("accepted (no validation)\n");
+    printf("ok (rejected all invalid ek values)\n");
 }
 
 int
