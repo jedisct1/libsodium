@@ -50,6 +50,7 @@ combiner(unsigned char       ss[crypto_kem_xwing_SHAREDSECRETBYTES],
     crypto_hash_sha3256_update(&state, pk_x25519, crypto_scalarmult_curve25519_BYTES);
     crypto_hash_sha3256_update(&state, xwing_label, sizeof xwing_label);
     crypto_hash_sha3256_final(&state, ss);
+    sodium_memzero(&state, sizeof state);
 }
 
 size_t
