@@ -264,6 +264,7 @@ TESTS_TARGETS = \
 	hash_sha3512 \
 	ipcrypt \
 	kdf \
+	kem_mlkem768 \
 	keygen \
 	kx \
 	metamorphic \

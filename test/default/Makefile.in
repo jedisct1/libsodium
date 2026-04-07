@@ -92,7 +92,8 @@ host_triplet = @host@
 target_triplet = @target@
 @EMSCRIPTEN_FALSE@am__append_1 = \
 @EMSCRIPTEN_FALSE@	sodium_utils2 \
-@EMSCRIPTEN_FALSE@	sodium_utils3
+@EMSCRIPTEN_FALSE@	sodium_utils3 \
+@EMSCRIPTEN_FALSE@	sodium_utils4
 
 check_PROGRAMS = $(am__EXEEXT_3)
 TESTS = $(am__EXEEXT_3)
@@ -102,8 +103,10 @@ TESTS = $(am__EXEEXT_3)
 @MINIMAL_FALSE@	kdf_hkdf \
 @MINIMAL_FALSE@	kdf_hkdf2 \
 @MINIMAL_FALSE@	kdf_hkdf3 \
+@MINIMAL_FALSE@	kdf_hkdf4 \
 @MINIMAL_FALSE@	pwhash_scrypt \
 @MINIMAL_FALSE@	stream5 \
+@MINIMAL_FALSE@	stream6 \
 @MINIMAL_FALSE@	pwhash_scrypt_ll \
 @MINIMAL_FALSE@	scalarmult_ed25519 \
 @MINIMAL_FALSE@	scalarmult_ristretto255 \
@@ -131,11 +134,13 @@ mkinstalldirs = $(install_sh) -d
 CONFIG_CLEAN_FILES =
 CONFIG_CLEAN_VPATH_FILES =
 @EMSCRIPTEN_FALSE@am__EXEEXT_1 = sodium_utils2$(EXEEXT) \
-@EMSCRIPTEN_FALSE@	sodium_utils3$(EXEEXT)
+@EMSCRIPTEN_FALSE@	sodium_utils3$(EXEEXT) \
+@EMSCRIPTEN_FALSE@	sodium_utils4$(EXEEXT)
 @MINIMAL_FALSE@am__EXEEXT_2 = core_ed25519$(EXEEXT) \
 @MINIMAL_FALSE@	core_ristretto255$(EXEEXT) kdf_hkdf$(EXEEXT) \
 @MINIMAL_FALSE@	kdf_hkdf2$(EXEEXT) kdf_hkdf3$(EXEEXT) \
-@MINIMAL_FALSE@	pwhash_scrypt$(EXEEXT) stream5$(EXEEXT) \
+@MINIMAL_FALSE@	kdf_hkdf4$(EXEEXT) pwhash_scrypt$(EXEEXT) \
+@MINIMAL_FALSE@	stream5$(EXEEXT) stream6$(EXEEXT) \
 @MINIMAL_FALSE@	pwhash_scrypt_ll$(EXEEXT) \
 @MINIMAL_FALSE@	scalarmult_ed25519$(EXEEXT) \
 @MINIMAL_FALSE@	scalarmult_ristretto255$(EXEEXT) \
@@ -148,20 +153,21 @@ am__EXEEXT_3 = aead_aegis128l$(EXEEXT) aead_aegis256$(EXEEXT) \
 	box$(EXEEXT) box2$(EXEEXT) box7$(EXEEXT) box8$(EXEEXT) \
 	box_easy$(EXEEXT) box_easy2$(EXEEXT) box_seal$(EXEEXT) \
 	box_seed$(EXEEXT) chacha20$(EXEEXT) codecs$(EXEEXT) \
-	codecs2$(EXEEXT) core_keccak1600$(EXEEXT) core1$(EXEEXT) \
-	core2$(EXEEXT) core3$(EXEEXT) core4$(EXEEXT) core5$(EXEEXT) \
-	core6$(EXEEXT) ed25519_convert$(EXEEXT) generichash$(EXEEXT) \
-	generichash2$(EXEEXT) generichash3$(EXEEXT) hash$(EXEEXT) \
-	hash3$(EXEEXT) ipcrypt$(EXEEXT) kdf$(EXEEXT) keygen$(EXEEXT) \
-	kx$(EXEEXT) metamorphic$(EXEEXT) misuse$(EXEEXT) \
-	onetimeauth$(EXEEXT) onetimeauth2$(EXEEXT) \
+	codecs2$(EXEEXT) codecs3$(EXEEXT) core_keccak1600$(EXEEXT) \
+	core1$(EXEEXT) core2$(EXEEXT) core3$(EXEEXT) core4$(EXEEXT) \
+	core5$(EXEEXT) core6$(EXEEXT) ed25519_convert$(EXEEXT) \
+	generichash$(EXEEXT) generichash2$(EXEEXT) \
+	generichash3$(EXEEXT) hash$(EXEEXT) hash3$(EXEEXT) \
+	hash_sha3256$(EXEEXT) hash_sha3512$(EXEEXT) ipcrypt$(EXEEXT) \
+	kdf$(EXEEXT) keygen$(EXEEXT) kx$(EXEEXT) metamorphic$(EXEEXT) \
+	misuse$(EXEEXT) onetimeauth$(EXEEXT) onetimeauth2$(EXEEXT) \
 	onetimeauth7$(EXEEXT) pwhash_argon2i$(EXEEXT) \
-	pwhash_argon2id$(EXEEXT) randombytes$(EXEEXT) \
-	scalarmult$(EXEEXT) scalarmult2$(EXEEXT) scalarmult5$(EXEEXT) \
-	scalarmult6$(EXEEXT) scalarmult7$(EXEEXT) scalarmult8$(EXEEXT) \
-	secretbox$(EXEEXT) secretbox2$(EXEEXT) secretbox7$(EXEEXT) \
-	secretbox8$(EXEEXT) secretbox_easy$(EXEEXT) \
-	secretbox_easy2$(EXEEXT) \
+	pwhash_argon2id$(EXEEXT) pwhash_argon2id2$(EXEEXT) \
+	randombytes$(EXEEXT) scalarmult$(EXEEXT) scalarmult2$(EXEEXT) \
+	scalarmult5$(EXEEXT) scalarmult6$(EXEEXT) scalarmult7$(EXEEXT) \
+	scalarmult8$(EXEEXT) secretbox$(EXEEXT) secretbox2$(EXEEXT) \
+	secretbox7$(EXEEXT) secretbox8$(EXEEXT) \
+	secretbox_easy$(EXEEXT) secretbox_easy2$(EXEEXT) \
 	secretstream_xchacha20poly1305$(EXEEXT) shorthash$(EXEEXT) \
 	sign$(EXEEXT) sodium_core$(EXEEXT) sodium_utils$(EXEEXT) \
 	sodium_version$(EXEEXT) stream$(EXEEXT) stream2$(EXEEXT) \
@@ -245,6 +251,9 @@ codecs_DEPENDENCIES = $(TESTS_LDADD)
 codecs2_SOURCES = codecs2.c
 codecs2_OBJECTS = codecs2.$(OBJEXT)
 codecs2_DEPENDENCIES = $(TESTS_LDADD)
+codecs3_SOURCES = codecs3.c
+codecs3_OBJECTS = codecs3.$(OBJEXT)
+codecs3_DEPENDENCIES = $(TESTS_LDADD)
 core1_SOURCES = core1.c
 core1_OBJECTS = core1.$(OBJEXT)
 core1_DEPENDENCIES = $(TESTS_LDADD)
@@ -290,6 +299,12 @@ hash_DEPENDENCIES = $(TESTS_LDADD)
 hash3_SOURCES = hash3.c
 hash3_OBJECTS = hash3.$(OBJEXT)
 hash3_DEPENDENCIES = $(TESTS_LDADD)
+hash_sha3256_SOURCES = hash_sha3256.c
+hash_sha3256_OBJECTS = hash_sha3256.$(OBJEXT)
+hash_sha3256_DEPENDENCIES = $(TESTS_LDADD)
+hash_sha3512_SOURCES = hash_sha3512.c
+hash_sha3512_OBJECTS = hash_sha3512.$(OBJEXT)
+hash_sha3512_DEPENDENCIES = $(TESTS_LDADD)
 ipcrypt_SOURCES = ipcrypt.c
 ipcrypt_OBJECTS = ipcrypt.$(OBJEXT)
 ipcrypt_DEPENDENCIES = $(TESTS_LDADD)
@@ -305,6 +320,9 @@ kdf_hkdf2_DEPENDENCIES = $(TESTS_LDADD)
 kdf_hkdf3_SOURCES = kdf_hkdf3.c
 kdf_hkdf3_OBJECTS = kdf_hkdf3.$(OBJEXT)
 kdf_hkdf3_DEPENDENCIES = $(TESTS_LDADD)
+kdf_hkdf4_SOURCES = kdf_hkdf4.c
+kdf_hkdf4_OBJECTS = kdf_hkdf4.$(OBJEXT)
+kdf_hkdf4_DEPENDENCIES = $(TESTS_LDADD)
 keygen_SOURCES = keygen.c
 keygen_OBJECTS = keygen.$(OBJEXT)
 keygen_DEPENDENCIES = $(TESTS_LDADD)
@@ -332,6 +350,9 @@ pwhash_argon2i_DEPENDENCIES = $(TESTS_LDADD)
 pwhash_argon2id_SOURCES = pwhash_argon2id.c
 pwhash_argon2id_OBJECTS = pwhash_argon2id.$(OBJEXT)
 pwhash_argon2id_DEPENDENCIES = $(TESTS_LDADD)
+pwhash_argon2id2_SOURCES = pwhash_argon2id2.c
+pwhash_argon2id2_OBJECTS = pwhash_argon2id2.$(OBJEXT)
+pwhash_argon2id2_DEPENDENCIES = $(TESTS_LDADD)
 pwhash_scrypt_SOURCES = pwhash_scrypt.c
 pwhash_scrypt_OBJECTS = pwhash_scrypt.$(OBJEXT)
 pwhash_scrypt_DEPENDENCIES = $(TESTS_LDADD)
@@ -409,6 +430,9 @@ sodium_utils2_DEPENDENCIES = $(TESTS_LDADD)
 sodium_utils3_SOURCES = sodium_utils3.c
 sodium_utils3_OBJECTS = sodium_utils3.$(OBJEXT)
 sodium_utils3_DEPENDENCIES = $(TESTS_LDADD)
+sodium_utils4_SOURCES = sodium_utils4.c
+sodium_utils4_OBJECTS = sodium_utils4.$(OBJEXT)
+sodium_utils4_DEPENDENCIES = $(TESTS_LDADD)
 sodium_version_SOURCES = sodium_version.c
 sodium_version_OBJECTS = sodium_version.$(OBJEXT)
 sodium_version_DEPENDENCIES = $(TESTS_LDADD)
@@ -427,6 +451,9 @@ stream4_DEPENDENCIES = $(TESTS_LDADD)
 stream5_SOURCES = stream5.c
 stream5_OBJECTS = stream5.$(OBJEXT)
 stream5_DEPENDENCIES = $(TESTS_LDADD)
+stream6_SOURCES = stream6.c
+stream6_OBJECTS = stream6.$(OBJEXT)
+stream6_DEPENDENCIES = $(TESTS_LDADD)
 verify1_SOURCES = verify1.c
 verify1_OBJECTS = verify1.$(OBJEXT)
 verify1_DEPENDENCIES = $(TESTS_LDADD)
@@ -475,21 +502,23 @@ am__depfiles_remade = ./$(DEPDIR)/aead_aegis128l.Po \
 	./$(DEPDIR)/box_easy.Po ./$(DEPDIR)/box_easy2.Po \
 	./$(DEPDIR)/box_seal.Po ./$(DEPDIR)/box_seed.Po \
 	./$(DEPDIR)/chacha20.Po ./$(DEPDIR)/codecs.Po \
-	./$(DEPDIR)/codecs2.Po ./$(DEPDIR)/core1.Po \
-	./$(DEPDIR)/core2.Po ./$(DEPDIR)/core3.Po ./$(DEPDIR)/core4.Po \
-	./$(DEPDIR)/core5.Po ./$(DEPDIR)/core6.Po \
+	./$(DEPDIR)/codecs2.Po ./$(DEPDIR)/codecs3.Po \
+	./$(DEPDIR)/core1.Po ./$(DEPDIR)/core2.Po ./$(DEPDIR)/core3.Po \
+	./$(DEPDIR)/core4.Po ./$(DEPDIR)/core5.Po ./$(DEPDIR)/core6.Po \
 	./$(DEPDIR)/core_ed25519.Po ./$(DEPDIR)/core_keccak1600.Po \
 	./$(DEPDIR)/core_ristretto255.Po \
 	./$(DEPDIR)/ed25519_convert.Po ./$(DEPDIR)/generichash.Po \
 	./$(DEPDIR)/generichash2.Po ./$(DEPDIR)/generichash3.Po \
 	./$(DEPDIR)/hash.Po ./$(DEPDIR)/hash3.Po \
+	./$(DEPDIR)/hash_sha3256.Po ./$(DEPDIR)/hash_sha3512.Po \
 	./$(DEPDIR)/ipcrypt.Po ./$(DEPDIR)/kdf.Po \
 	./$(DEPDIR)/kdf_hkdf.Po ./$(DEPDIR)/kdf_hkdf2.Po \
-	./$(DEPDIR)/kdf_hkdf3.Po ./$(DEPDIR)/keygen.Po \
-	./$(DEPDIR)/kx.Po ./$(DEPDIR)/metamorphic.Po \
-	./$(DEPDIR)/misuse.Po ./$(DEPDIR)/onetimeauth.Po \
-	./$(DEPDIR)/onetimeauth2.Po ./$(DEPDIR)/onetimeauth7.Po \
-	./$(DEPDIR)/pwhash_argon2i.Po ./$(DEPDIR)/pwhash_argon2id.Po \
+	./$(DEPDIR)/kdf_hkdf3.Po ./$(DEPDIR)/kdf_hkdf4.Po \
+	./$(DEPDIR)/keygen.Po ./$(DEPDIR)/kx.Po \
+	./$(DEPDIR)/metamorphic.Po ./$(DEPDIR)/misuse.Po \
+	./$(DEPDIR)/onetimeauth.Po ./$(DEPDIR)/onetimeauth2.Po \
+	./$(DEPDIR)/onetimeauth7.Po ./$(DEPDIR)/pwhash_argon2i.Po \
+	./$(DEPDIR)/pwhash_argon2id.Po ./$(DEPDIR)/pwhash_argon2id2.Po \
 	./$(DEPDIR)/pwhash_scrypt.Po ./$(DEPDIR)/pwhash_scrypt_ll.Po \
 	./$(DEPDIR)/randombytes.Po ./$(DEPDIR)/scalarmult.Po \
 	./$(DEPDIR)/scalarmult2.Po ./$(DEPDIR)/scalarmult5.Po \
@@ -503,10 +532,11 @@ am__depfiles_remade = ./$(DEPDIR)/aead_aegis128l.Po \
 	./$(DEPDIR)/shorthash.Po ./$(DEPDIR)/sign.Po \
 	./$(DEPDIR)/siphashx24.Po ./$(DEPDIR)/sodium_core.Po \
 	./$(DEPDIR)/sodium_utils.Po ./$(DEPDIR)/sodium_utils2.Po \
-	./$(DEPDIR)/sodium_utils3.Po ./$(DEPDIR)/sodium_version.Po \
-	./$(DEPDIR)/stream.Po ./$(DEPDIR)/stream2.Po \
-	./$(DEPDIR)/stream3.Po ./$(DEPDIR)/stream4.Po \
-	./$(DEPDIR)/stream5.Po ./$(DEPDIR)/verify1.Po \
+	./$(DEPDIR)/sodium_utils3.Po ./$(DEPDIR)/sodium_utils4.Po \
+	./$(DEPDIR)/sodium_version.Po ./$(DEPDIR)/stream.Po \
+	./$(DEPDIR)/stream2.Po ./$(DEPDIR)/stream3.Po \
+	./$(DEPDIR)/stream4.Po ./$(DEPDIR)/stream5.Po \
+	./$(DEPDIR)/stream6.Po ./$(DEPDIR)/verify1.Po \
 	./$(DEPDIR)/xchacha20.Po ./$(DEPDIR)/xof2.Po \
 	./$(DEPDIR)/xof_shake128.Po ./$(DEPDIR)/xof_shake256.Po \
 	./$(DEPDIR)/xof_turboshake128.Po \
@@ -535,21 +565,23 @@ SOURCES = aead_aegis128l.c aead_aegis256.c aead_aes256gcm.c \
 	aead_chacha20poly13052.c aead_xchacha20poly1305.c auth.c \
 	auth2.c auth3.c auth5.c auth6.c auth7.c box.c box2.c box7.c \
 	box8.c box_easy.c box_easy2.c box_seal.c box_seed.c chacha20.c \
-	codecs.c codecs2.c core1.c core2.c core3.c core4.c core5.c \
-	core6.c core_ed25519.c core_keccak1600.c core_ristretto255.c \
-	ed25519_convert.c generichash.c generichash2.c generichash3.c \
-	hash.c hash3.c ipcrypt.c kdf.c kdf_hkdf.c kdf_hkdf2.c \
-	kdf_hkdf3.c keygen.c kx.c metamorphic.c misuse.c onetimeauth.c \
-	onetimeauth2.c onetimeauth7.c pwhash_argon2i.c \
-	pwhash_argon2id.c pwhash_scrypt.c pwhash_scrypt_ll.c \
-	randombytes.c scalarmult.c scalarmult2.c scalarmult5.c \
-	scalarmult6.c scalarmult7.c scalarmult8.c scalarmult_ed25519.c \
-	scalarmult_ristretto255.c secretbox.c secretbox2.c \
-	secretbox7.c secretbox8.c secretbox_easy.c secretbox_easy2.c \
-	secretstream_xchacha20poly1305.c shorthash.c sign.c \
-	siphashx24.c sodium_core.c sodium_utils.c sodium_utils2.c \
-	sodium_utils3.c sodium_version.c stream.c stream2.c stream3.c \
-	stream4.c stream5.c verify1.c xchacha20.c xof2.c \
+	codecs.c codecs2.c codecs3.c core1.c core2.c core3.c core4.c \
+	core5.c core6.c core_ed25519.c core_keccak1600.c \
+	core_ristretto255.c ed25519_convert.c generichash.c \
+	generichash2.c generichash3.c hash.c hash3.c hash_sha3256.c \
+	hash_sha3512.c ipcrypt.c kdf.c kdf_hkdf.c kdf_hkdf2.c \
+	kdf_hkdf3.c kdf_hkdf4.c keygen.c kx.c metamorphic.c misuse.c \
+	onetimeauth.c onetimeauth2.c onetimeauth7.c pwhash_argon2i.c \
+	pwhash_argon2id.c pwhash_argon2id2.c pwhash_scrypt.c \
+	pwhash_scrypt_ll.c randombytes.c scalarmult.c scalarmult2.c \
+	scalarmult5.c scalarmult6.c scalarmult7.c scalarmult8.c \
+	scalarmult_ed25519.c scalarmult_ristretto255.c secretbox.c \
+	secretbox2.c secretbox7.c secretbox8.c secretbox_easy.c \
+	secretbox_easy2.c secretstream_xchacha20poly1305.c shorthash.c \
+	sign.c siphashx24.c sodium_core.c sodium_utils.c \
+	sodium_utils2.c sodium_utils3.c sodium_utils4.c \
+	sodium_version.c stream.c stream2.c stream3.c stream4.c \
+	stream5.c stream6.c verify1.c xchacha20.c xof2.c \
 	xof_shake128.c xof_shake256.c xof_turboshake128.c \
 	xof_turboshake256.c
 DIST_SOURCES = aead_aegis128l.c aead_aegis256.c aead_aes256gcm.c \
@@ -557,21 +589,23 @@ DIST_SOURCES = aead_aegis128l.c aead_aegis256.c aead_aes256gcm.c \
 	aead_chacha20poly13052.c aead_xchacha20poly1305.c auth.c \
 	auth2.c auth3.c auth5.c auth6.c auth7.c box.c box2.c box7.c \
 	box8.c box_easy.c box_easy2.c box_seal.c box_seed.c chacha20.c \
-	codecs.c codecs2.c core1.c core2.c core3.c core4.c core5.c \
-	core6.c core_ed25519.c core_keccak1600.c core_ristretto255.c \
-	ed25519_convert.c generichash.c generichash2.c generichash3.c \
-	hash.c hash3.c ipcrypt.c kdf.c kdf_hkdf.c kdf_hkdf2.c \
-	kdf_hkdf3.c keygen.c kx.c metamorphic.c misuse.c onetimeauth.c \
-	onetimeauth2.c onetimeauth7.c pwhash_argon2i.c \
-	pwhash_argon2id.c pwhash_scrypt.c pwhash_scrypt_ll.c \
-	randombytes.c scalarmult.c scalarmult2.c scalarmult5.c \
-	scalarmult6.c scalarmult7.c scalarmult8.c scalarmult_ed25519.c \
-	scalarmult_ristretto255.c secretbox.c secretbox2.c \
-	secretbox7.c secretbox8.c secretbox_easy.c secretbox_easy2.c \
-	secretstream_xchacha20poly1305.c shorthash.c sign.c \
-	siphashx24.c sodium_core.c sodium_utils.c sodium_utils2.c \
-	sodium_utils3.c sodium_version.c stream.c stream2.c stream3.c \
-	stream4.c stream5.c verify1.c xchacha20.c xof2.c \
+	codecs.c codecs2.c codecs3.c core1.c core2.c core3.c core4.c \
+	core5.c core6.c core_ed25519.c core_keccak1600.c \
+	core_ristretto255.c ed25519_convert.c generichash.c \
+	generichash2.c generichash3.c hash.c hash3.c hash_sha3256.c \
+	hash_sha3512.c ipcrypt.c kdf.c kdf_hkdf.c kdf_hkdf2.c \
+	kdf_hkdf3.c kdf_hkdf4.c keygen.c kx.c metamorphic.c misuse.c \
+	onetimeauth.c onetimeauth2.c onetimeauth7.c pwhash_argon2i.c \
+	pwhash_argon2id.c pwhash_argon2id2.c pwhash_scrypt.c \
+	pwhash_scrypt_ll.c randombytes.c scalarmult.c scalarmult2.c \
+	scalarmult5.c scalarmult6.c scalarmult7.c scalarmult8.c \
+	scalarmult_ed25519.c scalarmult_ristretto255.c secretbox.c \
+	secretbox2.c secretbox7.c secretbox8.c secretbox_easy.c \
+	secretbox_easy2.c secretstream_xchacha20poly1305.c shorthash.c \
+	sign.c siphashx24.c sodium_core.c sodium_utils.c \
+	sodium_utils2.c sodium_utils3.c sodium_utils4.c \
+	sodium_version.c stream.c stream2.c stream3.c stream4.c \
+	stream5.c stream6.c verify1.c xchacha20.c xof2.c \
 	xof_shake128.c xof_shake256.c xof_turboshake128.c \
 	xof_turboshake256.c
 am__can_run_installinfo = \
@@ -1011,6 +1045,7 @@ EXTRA_DIST = \
 	chacha20.exp \
 	codecs.exp \
 	codecs2.exp \
+	codecs3.exp \
 	core_ed25519.exp \
 	core_keccak1600.exp \
 	core_ristretto255.exp \
@@ -1026,11 +1061,17 @@ EXTRA_DIST = \
 	generichash3.exp \
 	hash.exp \
 	hash3.exp \
+	hash_sha3256.exp \
+	hash_sha3512.exp \
 	ipcrypt.exp \
 	kdf.exp \
 	kdf_hkdf.exp \
 	kdf_hkdf2.exp \
 	kdf_hkdf3.exp \
+	kdf_hkdf4.exp \
+	kem.exp \
+	kem_mlkem768.exp \
+	kem_xwing.exp \
 	keygen.exp \
 	kx.exp \
 	metamorphic.exp \
@@ -1040,6 +1081,7 @@ EXTRA_DIST = \
 	onetimeauth7.exp \
 	pwhash_argon2i.exp \
 	pwhash_argon2id.exp \
+	pwhash_argon2id2.exp \
 	pwhash_scrypt.exp \
 	pwhash_scrypt_ll.exp \
 	randombytes.exp \
@@ -1065,12 +1107,14 @@ EXTRA_DIST = \
 	sodium_utils.exp \
 	sodium_utils2.exp \
 	sodium_utils3.exp \
+	sodium_utils4.exp \
 	sodium_version.exp \
 	stream.exp \
 	stream2.exp \
 	stream3.exp \
 	stream4.exp \
 	stream5.exp \
+	stream6.exp \
 	verify1.exp \
 	xchacha20.exp \
 	xof_shake128.exp \
@@ -1104,6 +1148,7 @@ DISTCLEANFILES = \
 	chacha20.res \
 	codecs.res \
 	codecs2.res \
+	codecs3.res \
 	core_ed25519.res \
 	core_keccak1600.res \
 	core_ristretto255.res \
@@ -1120,11 +1165,17 @@ DISTCLEANFILES = \
 	hash.res \
 	hash2.res \
 	hash3.res \
+	hash_sha3256.res \
+	hash_sha3512.res \
 	ipcrypt.res \
 	kdf.res \
 	kdf_hkdf.res \
 	kdf_hkdf2.res \
 	kdf_hkdf3.res \
+	kdf_hkdf4.res \
+	kem.res \
+	kem_mlkem768.res \
+	kem_xwing.res \
 	keygen.res \
 	kx.res \
 	metamorphic.res \
@@ -1134,6 +1185,7 @@ DISTCLEANFILES = \
 	onetimeauth7.res \
 	pwhash_argon2i.res \
 	pwhash_argon2id.res \
+	pwhash_argon2id2.res \
 	pwhash_scrypt.res \
 	pwhash_scrypt_ll.res \
 	randombytes.res \
@@ -1159,12 +1211,14 @@ DISTCLEANFILES = \
 	sodium_utils.res \
 	sodium_utils2.res \
 	sodium_utils3.res \
+	sodium_utils4.res \
 	sodium_version.res \
 	stream.res \
 	stream2.res \
 	stream3.res \
 	stream4.res \
 	stream5.res \
+	stream6.res \
 	verify1.res \
 	xchacha20.res \
 	xof_shake128.res \
@@ -1186,13 +1240,14 @@ TESTS_TARGETS = aead_aegis128l aead_aegis256 aead_aes256gcm \
 	aead_aes256gcm2 aead_chacha20poly1305 aead_chacha20poly13052 \
 	aead_xchacha20poly1305 auth auth2 auth3 auth5 auth6 auth7 box \
 	box2 box7 box8 box_easy box_easy2 box_seal box_seed chacha20 \
-	codecs codecs2 core_keccak1600 core1 core2 core3 core4 core5 \
-	core6 ed25519_convert generichash generichash2 generichash3 \
-	hash hash3 ipcrypt kdf keygen kx metamorphic misuse \
-	onetimeauth onetimeauth2 onetimeauth7 pwhash_argon2i \
-	pwhash_argon2id randombytes scalarmult scalarmult2 scalarmult5 \
-	scalarmult6 scalarmult7 scalarmult8 secretbox secretbox2 \
-	secretbox7 secretbox8 secretbox_easy secretbox_easy2 \
+	codecs codecs2 codecs3 core_keccak1600 core1 core2 core3 core4 \
+	core5 core6 ed25519_convert generichash generichash2 \
+	generichash3 hash hash3 hash_sha3256 hash_sha3512 ipcrypt kdf \
+	keygen kx metamorphic misuse onetimeauth onetimeauth2 \
+	onetimeauth7 pwhash_argon2i pwhash_argon2id pwhash_argon2id2 \
+	randombytes scalarmult scalarmult2 scalarmult5 scalarmult6 \
+	scalarmult7 scalarmult8 secretbox secretbox2 secretbox7 \
+	secretbox8 secretbox_easy secretbox_easy2 \
 	secretstream_xchacha20poly1305 shorthash sign sodium_core \
 	sodium_utils sodium_version stream stream2 stream3 stream4 \
 	verify1 xof_shake128 xof_shake256 xof_turboshake128 \
@@ -1248,6 +1303,8 @@ codecs_SOURCE = cmptest.h codecs.c
 codecs_LDADD = $(TESTS_LDADD)
 codecs2_SOURCE = cmptest.h codecs2.c
 codecs2_LDADD = $(TESTS_LDADD)
+codecs3_SOURCE = cmptest.h codecs3.c
+codecs3_LDADD = $(TESTS_LDADD)
 core_ed25519_SOURCE = cmptest.h core_ed25519.c
 core_ed25519_LDADD = $(TESTS_LDADD)
 core_keccak1600_SOURCE = cmptest.h core_keccak1600.c
@@ -1278,6 +1335,10 @@ hash_SOURCE = cmptest.h hash.c
 hash_LDADD = $(TESTS_LDADD)
 hash3_SOURCE = cmptest.h hash3.c
 hash3_LDADD = $(TESTS_LDADD)
+hash_sha3256_SOURCE = cmptest.h hash_sha3256.c
+hash_sha3256_LDADD = $(TESTS_LDADD)
+hash_sha3512_SOURCE = cmptest.h hash_sha3512.c
+hash_sha3512_LDADD = $(TESTS_LDADD)
 ipcrypt_SOURCE = cmptest.h ipcrypt.c
 ipcrypt_LDADD = $(TESTS_LDADD)
 kdf_SOURCE = cmptest.h kdf.c
@@ -1288,6 +1349,14 @@ kdf_hkdf2_SOURCE = cmptest.h kdf_hkdf2.c
 kdf_hkdf2_LDADD = $(TESTS_LDADD)
 kdf_hkdf3_SOURCE = cmptest.h kdf_hkdf3.c
 kdf_hkdf3_LDADD = $(TESTS_LDADD)
+kdf_hkdf4_SOURCE = cmptest.h kdf_hkdf4.c
+kdf_hkdf4_LDADD = $(TESTS_LDADD)
+kem_SOURCE = cmptest.h kem.c
+kem_LDADD = $(TESTS_LDADD)
+kem_mlkem768_SOURCE = cmptest.h kem_mlkem768.c
+kem_mlkem768_LDADD = $(TESTS_LDADD)
+kem_xwing_SOURCE = cmptest.h kem_xwing.c
+kem_xwing_LDADD = $(TESTS_LDADD)
 keygen_SOURCE = cmptest.h keygen.c
 keygen_LDADD = $(TESTS_LDADD)
 kx_SOURCE = cmptest.h kx.c
@@ -1306,6 +1375,8 @@ pwhash_argon2i_SOURCE = cmptest.h pwhash_argon2i.c
 pwhash_argon2i_LDADD = $(TESTS_LDADD)
 pwhash_argon2id_SOURCE = cmptest.h pwhash_argon2id.c
 pwhash_argon2id_LDADD = $(TESTS_LDADD)
+pwhash_argon2id2_SOURCE = cmptest.h pwhash_argon2id2.c
+pwhash_argon2id2_LDADD = $(TESTS_LDADD)
 pwhash_scrypt_SOURCE = cmptest.h pwhash_scrypt.c
 pwhash_scrypt_LDADD = $(TESTS_LDADD)
 pwhash_scrypt_ll_SOURCE = cmptest.h pwhash_scrypt_ll.c
@@ -1356,6 +1427,8 @@ sodium_utils2_SOURCE = cmptest.h sodium_utils2.c
 sodium_utils2_LDADD = $(TESTS_LDADD)
 sodium_utils3_SOURCE = cmptest.h sodium_utils3.c
 sodium_utils3_LDADD = $(TESTS_LDADD)
+sodium_utils4_SOURCE = cmptest.h sodium_utils4.c
+sodium_utils4_LDADD = $(TESTS_LDADD)
 sodium_version_SOURCE = cmptest.h sodium_version.c
 sodium_version_LDADD = $(TESTS_LDADD)
 stream_SOURCE = cmptest.h stream.c
@@ -1368,6 +1441,8 @@ stream4_SOURCE = cmptest.h stream4.c
 stream4_LDADD = $(TESTS_LDADD)
 stream5_SOURCE = cmptest.h stream5.c
 stream5_LDADD = $(TESTS_LDADD)
+stream6_SOURCE = cmptest.h stream6.c
+stream6_LDADD = $(TESTS_LDADD)
 verify1_SOURCE = cmptest.h verify1.c
 verify1_LDADD = $(TESTS_LDADD)
 xchacha20_SOURCE = cmptest.h xchacha20.c
@@ -1517,6 +1592,10 @@ codecs2$(EXEEXT): $(codecs2_OBJECTS) $(codecs2_DEPENDENCIES) $(EXTRA_codecs2_DEP
 	@rm -f codecs2$(EXEEXT)
 	$(AM_V_CCLD)$(LINK) $(codecs2_OBJECTS) $(codecs2_LDADD) $(LIBS)
 
+codecs3$(EXEEXT): $(codecs3_OBJECTS) $(codecs3_DEPENDENCIES) $(EXTRA_codecs3_DEPENDENCIES) 
+	@rm -f codecs3$(EXEEXT)
+	$(AM_V_CCLD)$(LINK) $(codecs3_OBJECTS) $(codecs3_LDADD) $(LIBS)
+
 core1$(EXEEXT): $(core1_OBJECTS) $(core1_DEPENDENCIES) $(EXTRA_core1_DEPENDENCIES) 
 	@rm -f core1$(EXEEXT)
 	$(AM_V_CCLD)$(LINK) $(core1_OBJECTS) $(core1_LDADD) $(LIBS)
@@ -1577,6 +1656,14 @@ hash3$(EXEEXT): $(hash3_OBJECTS) $(hash3_DEPENDENCIES) $(EXTRA_hash3_DEPENDENCIE
 	@rm -f hash3$(EXEEXT)
 	$(AM_V_CCLD)$(LINK) $(hash3_OBJECTS) $(hash3_LDADD) $(LIBS)
 
+hash_sha3256$(EXEEXT): $(hash_sha3256_OBJECTS) $(hash_sha3256_DEPENDENCIES) $(EXTRA_hash_sha3256_DEPENDENCIES) 
+	@rm -f hash_sha3256$(EXEEXT)
+	$(AM_V_CCLD)$(LINK) $(hash_sha3256_OBJECTS) $(hash_sha3256_LDADD) $(LIBS)
+
+hash_sha3512$(EXEEXT): $(hash_sha3512_OBJECTS) $(hash_sha3512_DEPENDENCIES) $(EXTRA_hash_sha3512_DEPENDENCIES) 
+	@rm -f hash_sha3512$(EXEEXT)
+	$(AM_V_CCLD)$(LINK) $(hash_sha3512_OBJECTS) $(hash_sha3512_LDADD) $(LIBS)
+
 ipcrypt$(EXEEXT): $(ipcrypt_OBJECTS) $(ipcrypt_DEPENDENCIES) $(EXTRA_ipcrypt_DEPENDENCIES) 
 	@rm -f ipcrypt$(EXEEXT)
 	$(AM_V_CCLD)$(LINK) $(ipcrypt_OBJECTS) $(ipcrypt_LDADD) $(LIBS)
@@ -1596,6 +1683,10 @@ kdf_hkdf2$(EXEEXT): $(kdf_hkdf2_OBJECTS) $(kdf_hkdf2_DEPENDENCIES) $(EXTRA_kdf_h
 kdf_hkdf3$(EXEEXT): $(kdf_hkdf3_OBJECTS) $(kdf_hkdf3_DEPENDENCIES) $(EXTRA_kdf_hkdf3_DEPENDENCIES) 
 	@rm -f kdf_hkdf3$(EXEEXT)
 	$(AM_V_CCLD)$(LINK) $(kdf_hkdf3_OBJECTS) $(kdf_hkdf3_LDADD) $(LIBS)
+
+kdf_hkdf4$(EXEEXT): $(kdf_hkdf4_OBJECTS) $(kdf_hkdf4_DEPENDENCIES) $(EXTRA_kdf_hkdf4_DEPENDENCIES) 
+	@rm -f kdf_hkdf4$(EXEEXT)
+	$(AM_V_CCLD)$(LINK) $(kdf_hkdf4_OBJECTS) $(kdf_hkdf4_LDADD) $(LIBS)
 
 keygen$(EXEEXT): $(keygen_OBJECTS) $(keygen_DEPENDENCIES) $(EXTRA_keygen_DEPENDENCIES) 
 	@rm -f keygen$(EXEEXT)
@@ -1632,6 +1723,10 @@ pwhash_argon2i$(EXEEXT): $(pwhash_argon2i_OBJECTS) $(pwhash_argon2i_DEPENDENCIES
 pwhash_argon2id$(EXEEXT): $(pwhash_argon2id_OBJECTS) $(pwhash_argon2id_DEPENDENCIES) $(EXTRA_pwhash_argon2id_DEPENDENCIES) 
 	@rm -f pwhash_argon2id$(EXEEXT)
 	$(AM_V_CCLD)$(LINK) $(pwhash_argon2id_OBJECTS) $(pwhash_argon2id_LDADD) $(LIBS)
+
+pwhash_argon2id2$(EXEEXT): $(pwhash_argon2id2_OBJECTS) $(pwhash_argon2id2_DEPENDENCIES) $(EXTRA_pwhash_argon2id2_DEPENDENCIES) 
+	@rm -f pwhash_argon2id2$(EXEEXT)
+	$(AM_V_CCLD)$(LINK) $(pwhash_argon2id2_OBJECTS) $(pwhash_argon2id2_LDADD) $(LIBS)
 
 pwhash_scrypt$(EXEEXT): $(pwhash_scrypt_OBJECTS) $(pwhash_scrypt_DEPENDENCIES) $(EXTRA_pwhash_scrypt_DEPENDENCIES) 
 	@rm -f pwhash_scrypt$(EXEEXT)
@@ -1733,6 +1828,10 @@ sodium_utils3$(EXEEXT): $(sodium_utils3_OBJECTS) $(sodium_utils3_DEPENDENCIES) $
 	@rm -f sodium_utils3$(EXEEXT)
 	$(AM_V_CCLD)$(LINK) $(sodium_utils3_OBJECTS) $(sodium_utils3_LDADD) $(LIBS)
 
+sodium_utils4$(EXEEXT): $(sodium_utils4_OBJECTS) $(sodium_utils4_DEPENDENCIES) $(EXTRA_sodium_utils4_DEPENDENCIES) 
+	@rm -f sodium_utils4$(EXEEXT)
+	$(AM_V_CCLD)$(LINK) $(sodium_utils4_OBJECTS) $(sodium_utils4_LDADD) $(LIBS)
+
 sodium_version$(EXEEXT): $(sodium_version_OBJECTS) $(sodium_version_DEPENDENCIES) $(EXTRA_sodium_version_DEPENDENCIES) 
 	@rm -f sodium_version$(EXEEXT)
 	$(AM_V_CCLD)$(LINK) $(sodium_version_OBJECTS) $(sodium_version_LDADD) $(LIBS)
@@ -1756,6 +1855,10 @@ stream4$(EXEEXT): $(stream4_OBJECTS) $(stream4_DEPENDENCIES) $(EXTRA_stream4_DEP
 stream5$(EXEEXT): $(stream5_OBJECTS) $(stream5_DEPENDENCIES) $(EXTRA_stream5_DEPENDENCIES) 
 	@rm -f stream5$(EXEEXT)
 	$(AM_V_CCLD)$(LINK) $(stream5_OBJECTS) $(stream5_LDADD) $(LIBS)
+
+stream6$(EXEEXT): $(stream6_OBJECTS) $(stream6_DEPENDENCIES) $(EXTRA_stream6_DEPENDENCIES) 
+	@rm -f stream6$(EXEEXT)
+	$(AM_V_CCLD)$(LINK) $(stream6_OBJECTS) $(stream6_LDADD) $(LIBS)
 
 verify1$(EXEEXT): $(verify1_OBJECTS) $(verify1_DEPENDENCIES) $(EXTRA_verify1_DEPENDENCIES) 
 	@rm -f verify1$(EXEEXT)
@@ -1815,6 +1918,7 @@ distclean-compile:
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/chacha20.Po@am__quote@ # am--include-marker
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/codecs.Po@am__quote@ # am--include-marker
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/codecs2.Po@am__quote@ # am--include-marker
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/codecs3.Po@am__quote@ # am--include-marker
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/core1.Po@am__quote@ # am--include-marker
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/core2.Po@am__quote@ # am--include-marker
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/core3.Po@am__quote@ # am--include-marker
@@ -1830,11 +1934,14 @@ distclean-compile:
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/generichash3.Po@am__quote@ # am--include-marker
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/hash.Po@am__quote@ # am--include-marker
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/hash3.Po@am__quote@ # am--include-marker
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/hash_sha3256.Po@am__quote@ # am--include-marker
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/hash_sha3512.Po@am__quote@ # am--include-marker
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/ipcrypt.Po@am__quote@ # am--include-marker
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/kdf.Po@am__quote@ # am--include-marker
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/kdf_hkdf.Po@am__quote@ # am--include-marker
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/kdf_hkdf2.Po@am__quote@ # am--include-marker
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/kdf_hkdf3.Po@am__quote@ # am--include-marker
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/kdf_hkdf4.Po@am__quote@ # am--include-marker
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/keygen.Po@am__quote@ # am--include-marker
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/kx.Po@am__quote@ # am--include-marker
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/metamorphic.Po@am__quote@ # am--include-marker
@@ -1844,6 +1951,7 @@ distclean-compile:
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/onetimeauth7.Po@am__quote@ # am--include-marker
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/pwhash_argon2i.Po@am__quote@ # am--include-marker
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/pwhash_argon2id.Po@am__quote@ # am--include-marker
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/pwhash_argon2id2.Po@am__quote@ # am--include-marker
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/pwhash_scrypt.Po@am__quote@ # am--include-marker
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/pwhash_scrypt_ll.Po@am__quote@ # am--include-marker
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/randombytes.Po@am__quote@ # am--include-marker
@@ -1869,12 +1977,14 @@ distclean-compile:
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/sodium_utils.Po@am__quote@ # am--include-marker
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/sodium_utils2.Po@am__quote@ # am--include-marker
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/sodium_utils3.Po@am__quote@ # am--include-marker
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/sodium_utils4.Po@am__quote@ # am--include-marker
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/sodium_version.Po@am__quote@ # am--include-marker
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/stream.Po@am__quote@ # am--include-marker
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/stream2.Po@am__quote@ # am--include-marker
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/stream3.Po@am__quote@ # am--include-marker
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/stream4.Po@am__quote@ # am--include-marker
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/stream5.Po@am__quote@ # am--include-marker
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/stream6.Po@am__quote@ # am--include-marker
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/verify1.Po@am__quote@ # am--include-marker
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/xchacha20.Po@am__quote@ # am--include-marker
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/xof2.Po@am__quote@ # am--include-marker
@@ -2305,6 +2415,13 @@ codecs2.log: codecs2$(EXEEXT)
 	--log-file $$b.log --trs-file $$b.trs \
 	$(am__common_driver_flags) $(AM_LOG_DRIVER_FLAGS) $(LOG_DRIVER_FLAGS) -- $(LOG_COMPILE) \
 	"$$tst" $(AM_TESTS_FD_REDIRECT)
+codecs3.log: codecs3$(EXEEXT)
+	@p='codecs3$(EXEEXT)'; \
+	b='codecs3'; \
+	$(am__check_pre) $(LOG_DRIVER) --test-name "$$f" \
+	--log-file $$b.log --trs-file $$b.trs \
+	$(am__common_driver_flags) $(AM_LOG_DRIVER_FLAGS) $(LOG_DRIVER_FLAGS) -- $(LOG_COMPILE) \
+	"$$tst" $(AM_TESTS_FD_REDIRECT)
 core_keccak1600.log: core_keccak1600$(EXEEXT)
 	@p='core_keccak1600$(EXEEXT)'; \
 	b='core_keccak1600'; \
@@ -2396,6 +2513,20 @@ hash3.log: hash3$(EXEEXT)
 	--log-file $$b.log --trs-file $$b.trs \
 	$(am__common_driver_flags) $(AM_LOG_DRIVER_FLAGS) $(LOG_DRIVER_FLAGS) -- $(LOG_COMPILE) \
 	"$$tst" $(AM_TESTS_FD_REDIRECT)
+hash_sha3256.log: hash_sha3256$(EXEEXT)
+	@p='hash_sha3256$(EXEEXT)'; \
+	b='hash_sha3256'; \
+	$(am__check_pre) $(LOG_DRIVER) --test-name "$$f" \
+	--log-file $$b.log --trs-file $$b.trs \
+	$(am__common_driver_flags) $(AM_LOG_DRIVER_FLAGS) $(LOG_DRIVER_FLAGS) -- $(LOG_COMPILE) \
+	"$$tst" $(AM_TESTS_FD_REDIRECT)
+hash_sha3512.log: hash_sha3512$(EXEEXT)
+	@p='hash_sha3512$(EXEEXT)'; \
+	b='hash_sha3512'; \
+	$(am__check_pre) $(LOG_DRIVER) --test-name "$$f" \
+	--log-file $$b.log --trs-file $$b.trs \
+	$(am__common_driver_flags) $(AM_LOG_DRIVER_FLAGS) $(LOG_DRIVER_FLAGS) -- $(LOG_COMPILE) \
+	"$$tst" $(AM_TESTS_FD_REDIRECT)
 ipcrypt.log: ipcrypt$(EXEEXT)
 	@p='ipcrypt$(EXEEXT)'; \
 	b='ipcrypt'; \
@@ -2469,6 +2600,13 @@ pwhash_argon2i.log: pwhash_argon2i$(EXEEXT)
 pwhash_argon2id.log: pwhash_argon2id$(EXEEXT)
 	@p='pwhash_argon2id$(EXEEXT)'; \
 	b='pwhash_argon2id'; \
+	$(am__check_pre) $(LOG_DRIVER) --test-name "$$f" \
+	--log-file $$b.log --trs-file $$b.trs \
+	$(am__common_driver_flags) $(AM_LOG_DRIVER_FLAGS) $(LOG_DRIVER_FLAGS) -- $(LOG_COMPILE) \
+	"$$tst" $(AM_TESTS_FD_REDIRECT)
+pwhash_argon2id2.log: pwhash_argon2id2$(EXEEXT)
+	@p='pwhash_argon2id2$(EXEEXT)'; \
+	b='pwhash_argon2id2'; \
 	$(am__check_pre) $(LOG_DRIVER) --test-name "$$f" \
 	--log-file $$b.log --trs-file $$b.trs \
 	$(am__common_driver_flags) $(AM_LOG_DRIVER_FLAGS) $(LOG_DRIVER_FLAGS) -- $(LOG_COMPILE) \
@@ -2690,6 +2828,13 @@ sodium_utils3.log: sodium_utils3$(EXEEXT)
 	--log-file $$b.log --trs-file $$b.trs \
 	$(am__common_driver_flags) $(AM_LOG_DRIVER_FLAGS) $(LOG_DRIVER_FLAGS) -- $(LOG_COMPILE) \
 	"$$tst" $(AM_TESTS_FD_REDIRECT)
+sodium_utils4.log: sodium_utils4$(EXEEXT)
+	@p='sodium_utils4$(EXEEXT)'; \
+	b='sodium_utils4'; \
+	$(am__check_pre) $(LOG_DRIVER) --test-name "$$f" \
+	--log-file $$b.log --trs-file $$b.trs \
+	$(am__common_driver_flags) $(AM_LOG_DRIVER_FLAGS) $(LOG_DRIVER_FLAGS) -- $(LOG_COMPILE) \
+	"$$tst" $(AM_TESTS_FD_REDIRECT)
 core_ed25519.log: core_ed25519$(EXEEXT)
 	@p='core_ed25519$(EXEEXT)'; \
 	b='core_ed25519'; \
@@ -2725,6 +2870,13 @@ kdf_hkdf3.log: kdf_hkdf3$(EXEEXT)
 	--log-file $$b.log --trs-file $$b.trs \
 	$(am__common_driver_flags) $(AM_LOG_DRIVER_FLAGS) $(LOG_DRIVER_FLAGS) -- $(LOG_COMPILE) \
 	"$$tst" $(AM_TESTS_FD_REDIRECT)
+kdf_hkdf4.log: kdf_hkdf4$(EXEEXT)
+	@p='kdf_hkdf4$(EXEEXT)'; \
+	b='kdf_hkdf4'; \
+	$(am__check_pre) $(LOG_DRIVER) --test-name "$$f" \
+	--log-file $$b.log --trs-file $$b.trs \
+	$(am__common_driver_flags) $(AM_LOG_DRIVER_FLAGS) $(LOG_DRIVER_FLAGS) -- $(LOG_COMPILE) \
+	"$$tst" $(AM_TESTS_FD_REDIRECT)
 pwhash_scrypt.log: pwhash_scrypt$(EXEEXT)
 	@p='pwhash_scrypt$(EXEEXT)'; \
 	b='pwhash_scrypt'; \
@@ -2735,6 +2887,13 @@ pwhash_scrypt.log: pwhash_scrypt$(EXEEXT)
 stream5.log: stream5$(EXEEXT)
 	@p='stream5$(EXEEXT)'; \
 	b='stream5'; \
+	$(am__check_pre) $(LOG_DRIVER) --test-name "$$f" \
+	--log-file $$b.log --trs-file $$b.trs \
+	$(am__common_driver_flags) $(AM_LOG_DRIVER_FLAGS) $(LOG_DRIVER_FLAGS) -- $(LOG_COMPILE) \
+	"$$tst" $(AM_TESTS_FD_REDIRECT)
+stream6.log: stream6$(EXEEXT)
+	@p='stream6$(EXEEXT)'; \
+	b='stream6'; \
 	$(am__check_pre) $(LOG_DRIVER) --test-name "$$f" \
 	--log-file $$b.log --trs-file $$b.trs \
 	$(am__common_driver_flags) $(AM_LOG_DRIVER_FLAGS) $(LOG_DRIVER_FLAGS) -- $(LOG_COMPILE) \
@@ -2892,6 +3051,7 @@ distclean: distclean-am
 	-rm -f ./$(DEPDIR)/chacha20.Po
 	-rm -f ./$(DEPDIR)/codecs.Po
 	-rm -f ./$(DEPDIR)/codecs2.Po
+	-rm -f ./$(DEPDIR)/codecs3.Po
 	-rm -f ./$(DEPDIR)/core1.Po
 	-rm -f ./$(DEPDIR)/core2.Po
 	-rm -f ./$(DEPDIR)/core3.Po
@@ -2907,11 +3067,14 @@ distclean: distclean-am
 	-rm -f ./$(DEPDIR)/generichash3.Po
 	-rm -f ./$(DEPDIR)/hash.Po
 	-rm -f ./$(DEPDIR)/hash3.Po
+	-rm -f ./$(DEPDIR)/hash_sha3256.Po
+	-rm -f ./$(DEPDIR)/hash_sha3512.Po
 	-rm -f ./$(DEPDIR)/ipcrypt.Po
 	-rm -f ./$(DEPDIR)/kdf.Po
 	-rm -f ./$(DEPDIR)/kdf_hkdf.Po
 	-rm -f ./$(DEPDIR)/kdf_hkdf2.Po
 	-rm -f ./$(DEPDIR)/kdf_hkdf3.Po
+	-rm -f ./$(DEPDIR)/kdf_hkdf4.Po
 	-rm -f ./$(DEPDIR)/keygen.Po
 	-rm -f ./$(DEPDIR)/kx.Po
 	-rm -f ./$(DEPDIR)/metamorphic.Po
@@ -2921,6 +3084,7 @@ distclean: distclean-am
 	-rm -f ./$(DEPDIR)/onetimeauth7.Po
 	-rm -f ./$(DEPDIR)/pwhash_argon2i.Po
 	-rm -f ./$(DEPDIR)/pwhash_argon2id.Po
+	-rm -f ./$(DEPDIR)/pwhash_argon2id2.Po
 	-rm -f ./$(DEPDIR)/pwhash_scrypt.Po
 	-rm -f ./$(DEPDIR)/pwhash_scrypt_ll.Po
 	-rm -f ./$(DEPDIR)/randombytes.Po
@@ -2946,12 +3110,14 @@ distclean: distclean-am
 	-rm -f ./$(DEPDIR)/sodium_utils.Po
 	-rm -f ./$(DEPDIR)/sodium_utils2.Po
 	-rm -f ./$(DEPDIR)/sodium_utils3.Po
+	-rm -f ./$(DEPDIR)/sodium_utils4.Po
 	-rm -f ./$(DEPDIR)/sodium_version.Po
 	-rm -f ./$(DEPDIR)/stream.Po
 	-rm -f ./$(DEPDIR)/stream2.Po
 	-rm -f ./$(DEPDIR)/stream3.Po
 	-rm -f ./$(DEPDIR)/stream4.Po
 	-rm -f ./$(DEPDIR)/stream5.Po
+	-rm -f ./$(DEPDIR)/stream6.Po
 	-rm -f ./$(DEPDIR)/verify1.Po
 	-rm -f ./$(DEPDIR)/xchacha20.Po
 	-rm -f ./$(DEPDIR)/xof2.Po
@@ -3028,6 +3194,7 @@ maintainer-clean: maintainer-clean-am
 	-rm -f ./$(DEPDIR)/chacha20.Po
 	-rm -f ./$(DEPDIR)/codecs.Po
 	-rm -f ./$(DEPDIR)/codecs2.Po
+	-rm -f ./$(DEPDIR)/codecs3.Po
 	-rm -f ./$(DEPDIR)/core1.Po
 	-rm -f ./$(DEPDIR)/core2.Po
 	-rm -f ./$(DEPDIR)/core3.Po
@@ -3043,11 +3210,14 @@ maintainer-clean: maintainer-clean-am
 	-rm -f ./$(DEPDIR)/generichash3.Po
 	-rm -f ./$(DEPDIR)/hash.Po
 	-rm -f ./$(DEPDIR)/hash3.Po
+	-rm -f ./$(DEPDIR)/hash_sha3256.Po
+	-rm -f ./$(DEPDIR)/hash_sha3512.Po
 	-rm -f ./$(DEPDIR)/ipcrypt.Po
 	-rm -f ./$(DEPDIR)/kdf.Po
 	-rm -f ./$(DEPDIR)/kdf_hkdf.Po
 	-rm -f ./$(DEPDIR)/kdf_hkdf2.Po
 	-rm -f ./$(DEPDIR)/kdf_hkdf3.Po
+	-rm -f ./$(DEPDIR)/kdf_hkdf4.Po
 	-rm -f ./$(DEPDIR)/keygen.Po
 	-rm -f ./$(DEPDIR)/kx.Po
 	-rm -f ./$(DEPDIR)/metamorphic.Po
@@ -3057,6 +3227,7 @@ maintainer-clean: maintainer-clean-am
 	-rm -f ./$(DEPDIR)/onetimeauth7.Po
 	-rm -f ./$(DEPDIR)/pwhash_argon2i.Po
 	-rm -f ./$(DEPDIR)/pwhash_argon2id.Po
+	-rm -f ./$(DEPDIR)/pwhash_argon2id2.Po
 	-rm -f ./$(DEPDIR)/pwhash_scrypt.Po
 	-rm -f ./$(DEPDIR)/pwhash_scrypt_ll.Po
 	-rm -f ./$(DEPDIR)/randombytes.Po
@@ -3082,12 +3253,14 @@ maintainer-clean: maintainer-clean-am
 	-rm -f ./$(DEPDIR)/sodium_utils.Po
 	-rm -f ./$(DEPDIR)/sodium_utils2.Po
 	-rm -f ./$(DEPDIR)/sodium_utils3.Po
+	-rm -f ./$(DEPDIR)/sodium_utils4.Po
 	-rm -f ./$(DEPDIR)/sodium_version.Po
 	-rm -f ./$(DEPDIR)/stream.Po
 	-rm -f ./$(DEPDIR)/stream2.Po
 	-rm -f ./$(DEPDIR)/stream3.Po
 	-rm -f ./$(DEPDIR)/stream4.Po
 	-rm -f ./$(DEPDIR)/stream5.Po
+	-rm -f ./$(DEPDIR)/stream6.Po
 	-rm -f ./$(DEPDIR)/verify1.Po
 	-rm -f ./$(DEPDIR)/xchacha20.Po
 	-rm -f ./$(DEPDIR)/xof2.Po
