@@ -320,7 +320,7 @@ am__libsodium_la_SOURCES_DIST =  \
 	crypto_ipcrypt/implementations.h \
 	crypto_kdf/blake2b/kdf_blake2b.c crypto_kdf/crypto_kdf.c \
 	crypto_kdf/hkdf/kdf_hkdf_sha256.c \
-	crypto_kdf/hkdf/kdf_hkdf_sha512.c \
+	crypto_kdf/hkdf/kdf_hkdf_sha512.c crypto_kem/crypto_kem.c \
 	crypto_kem/mlkem768/kem_mlkem768.c \
 	crypto_kem/mlkem768/ref/kem_mlkem768_ref.c \
 	crypto_kem/mlkem768/ref/kem_mlkem768_ref.h \
@@ -513,6 +513,7 @@ am_libsodium_la_OBJECTS =  \
 	crypto_kdf/libsodium_la-crypto_kdf.lo \
 	crypto_kdf/hkdf/libsodium_la-kdf_hkdf_sha256.lo \
 	crypto_kdf/hkdf/libsodium_la-kdf_hkdf_sha512.lo \
+	crypto_kem/libsodium_la-crypto_kem.lo \
 	crypto_kem/mlkem768/libsodium_la-kem_mlkem768.lo \
 	crypto_kem/mlkem768/ref/libsodium_la-kem_mlkem768_ref.lo \
 	crypto_kem/xwing/libsodium_la-kem_xwing.lo \
@@ -672,6 +673,7 @@ am__depfiles_remade = crypto_aead/aegis128l/$(DEPDIR)/libaesni_la-aegis128l_aesn
 	crypto_kdf/blake2b/$(DEPDIR)/libsodium_la-kdf_blake2b.Plo \
 	crypto_kdf/hkdf/$(DEPDIR)/libsodium_la-kdf_hkdf_sha256.Plo \
 	crypto_kdf/hkdf/$(DEPDIR)/libsodium_la-kdf_hkdf_sha512.Plo \
+	crypto_kem/$(DEPDIR)/libsodium_la-crypto_kem.Plo \
 	crypto_kem/mlkem768/$(DEPDIR)/libsodium_la-kem_mlkem768.Plo \
 	crypto_kem/mlkem768/ref/$(DEPDIR)/libsodium_la-kem_mlkem768_ref.Plo \
 	crypto_kem/xwing/$(DEPDIR)/libsodium_la-kem_xwing.Plo \
@@ -1089,7 +1091,7 @@ libsodium_la_SOURCES = crypto_aead/aegis128l/aead_aegis128l.c \
 	crypto_ipcrypt/implementations.h \
 	crypto_kdf/blake2b/kdf_blake2b.c crypto_kdf/crypto_kdf.c \
 	crypto_kdf/hkdf/kdf_hkdf_sha256.c \
-	crypto_kdf/hkdf/kdf_hkdf_sha512.c \
+	crypto_kdf/hkdf/kdf_hkdf_sha512.c crypto_kem/crypto_kem.c \
 	crypto_kem/mlkem768/kem_mlkem768.c \
 	crypto_kem/mlkem768/ref/kem_mlkem768_ref.c \
 	crypto_kem/mlkem768/ref/kem_mlkem768_ref.h \
@@ -1772,6 +1774,14 @@ crypto_kdf/hkdf/libsodium_la-kdf_hkdf_sha256.lo:  \
 crypto_kdf/hkdf/libsodium_la-kdf_hkdf_sha512.lo:  \
 	crypto_kdf/hkdf/$(am__dirstamp) \
 	crypto_kdf/hkdf/$(DEPDIR)/$(am__dirstamp)
+crypto_kem/$(am__dirstamp):
+	@$(MKDIR_P) crypto_kem
+	@: >>crypto_kem/$(am__dirstamp)
+crypto_kem/$(DEPDIR)/$(am__dirstamp):
+	@$(MKDIR_P) crypto_kem/$(DEPDIR)
+	@: >>crypto_kem/$(DEPDIR)/$(am__dirstamp)
+crypto_kem/libsodium_la-crypto_kem.lo: crypto_kem/$(am__dirstamp) \
+	crypto_kem/$(DEPDIR)/$(am__dirstamp)
 crypto_kem/mlkem768/$(am__dirstamp):
 	@$(MKDIR_P) crypto_kem/mlkem768
 	@: >>crypto_kem/mlkem768/$(am__dirstamp)
@@ -2434,6 +2444,8 @@ mostlyclean-compile:
 	-rm -f crypto_kdf/blake2b/*.lo
 	-rm -f crypto_kdf/hkdf/*.$(OBJEXT)
 	-rm -f crypto_kdf/hkdf/*.lo
+	-rm -f crypto_kem/*.$(OBJEXT)
+	-rm -f crypto_kem/*.lo
 	-rm -f crypto_kem/mlkem768/*.$(OBJEXT)
 	-rm -f crypto_kem/mlkem768/*.lo
 	-rm -f crypto_kem/mlkem768/ref/*.$(OBJEXT)
@@ -2606,6 +2618,7 @@ distclean-compile:
 @AMDEP_TRUE@@am__include@ @am__quote@crypto_kdf/blake2b/$(DEPDIR)/libsodium_la-kdf_blake2b.Plo@am__quote@ # am--include-marker
 @AMDEP_TRUE@@am__include@ @am__quote@crypto_kdf/hkdf/$(DEPDIR)/libsodium_la-kdf_hkdf_sha256.Plo@am__quote@ # am--include-marker
 @AMDEP_TRUE@@am__include@ @am__quote@crypto_kdf/hkdf/$(DEPDIR)/libsodium_la-kdf_hkdf_sha512.Plo@am__quote@ # am--include-marker
+@AMDEP_TRUE@@am__include@ @am__quote@crypto_kem/$(DEPDIR)/libsodium_la-crypto_kem.Plo@am__quote@ # am--include-marker
 @AMDEP_TRUE@@am__include@ @am__quote@crypto_kem/mlkem768/$(DEPDIR)/libsodium_la-kem_mlkem768.Plo@am__quote@ # am--include-marker
 @AMDEP_TRUE@@am__include@ @am__quote@crypto_kem/mlkem768/ref/$(DEPDIR)/libsodium_la-kem_mlkem768_ref.Plo@am__quote@ # am--include-marker
 @AMDEP_TRUE@@am__include@ @am__quote@crypto_kem/xwing/$(DEPDIR)/libsodium_la-kem_xwing.Plo@am__quote@ # am--include-marker
@@ -3152,6 +3165,13 @@ crypto_kdf/hkdf/libsodium_la-kdf_hkdf_sha512.lo: crypto_kdf/hkdf/kdf_hkdf_sha512
 @AMDEP_TRUE@@am__fastdepCC_FALSE@	$(AM_V_CC)source='crypto_kdf/hkdf/kdf_hkdf_sha512.c' object='crypto_kdf/hkdf/libsodium_la-kdf_hkdf_sha512.lo' libtool=yes @AMDEPBACKSLASH@
 @AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
 @am__fastdepCC_FALSE@	$(AM_V_CC@am__nodep@)$(LIBTOOL) $(AM_V_lt) --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libsodium_la_CPPFLAGS) $(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS) -c -o crypto_kdf/hkdf/libsodium_la-kdf_hkdf_sha512.lo `test -f 'crypto_kdf/hkdf/kdf_hkdf_sha512.c' || echo '$(srcdir)/'`crypto_kdf/hkdf/kdf_hkdf_sha512.c
+
+crypto_kem/libsodium_la-crypto_kem.lo: crypto_kem/crypto_kem.c
+@am__fastdepCC_TRUE@	$(AM_V_CC)$(LIBTOOL) $(AM_V_lt) --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libsodium_la_CPPFLAGS) $(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS) -MT crypto_kem/libsodium_la-crypto_kem.lo -MD -MP -MF crypto_kem/$(DEPDIR)/libsodium_la-crypto_kem.Tpo -c -o crypto_kem/libsodium_la-crypto_kem.lo `test -f 'crypto_kem/crypto_kem.c' || echo '$(srcdir)/'`crypto_kem/crypto_kem.c
+@am__fastdepCC_TRUE@	$(AM_V_at)$(am__mv) crypto_kem/$(DEPDIR)/libsodium_la-crypto_kem.Tpo crypto_kem/$(DEPDIR)/libsodium_la-crypto_kem.Plo
+@AMDEP_TRUE@@am__fastdepCC_FALSE@	$(AM_V_CC)source='crypto_kem/crypto_kem.c' object='crypto_kem/libsodium_la-crypto_kem.lo' libtool=yes @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCC_FALSE@	$(AM_V_CC@am__nodep@)$(LIBTOOL) $(AM_V_lt) --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libsodium_la_CPPFLAGS) $(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS) -c -o crypto_kem/libsodium_la-crypto_kem.lo `test -f 'crypto_kem/crypto_kem.c' || echo '$(srcdir)/'`crypto_kem/crypto_kem.c
 
 crypto_kem/mlkem768/libsodium_la-kem_mlkem768.lo: crypto_kem/mlkem768/kem_mlkem768.c
 @am__fastdepCC_TRUE@	$(AM_V_CC)$(LIBTOOL) $(AM_V_lt) --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libsodium_la_CPPFLAGS) $(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS) -MT crypto_kem/mlkem768/libsodium_la-kem_mlkem768.lo -MD -MP -MF crypto_kem/mlkem768/$(DEPDIR)/libsodium_la-kem_mlkem768.Tpo -c -o crypto_kem/mlkem768/libsodium_la-kem_mlkem768.lo `test -f 'crypto_kem/mlkem768/kem_mlkem768.c' || echo '$(srcdir)/'`crypto_kem/mlkem768/kem_mlkem768.c
@@ -3783,6 +3803,7 @@ clean-libtool:
 	-rm -rf crypto_kdf/.libs crypto_kdf/_libs
 	-rm -rf crypto_kdf/blake2b/.libs crypto_kdf/blake2b/_libs
 	-rm -rf crypto_kdf/hkdf/.libs crypto_kdf/hkdf/_libs
+	-rm -rf crypto_kem/.libs crypto_kem/_libs
 	-rm -rf crypto_kem/mlkem768/.libs crypto_kem/mlkem768/_libs
 	-rm -rf crypto_kem/mlkem768/ref/.libs crypto_kem/mlkem768/ref/_libs
 	-rm -rf crypto_kem/xwing/.libs crypto_kem/xwing/_libs
@@ -4127,6 +4148,8 @@ distclean-generic:
 	-$(am__rm_f) crypto_kdf/blake2b/$(am__dirstamp)
 	-$(am__rm_f) crypto_kdf/hkdf/$(DEPDIR)/$(am__dirstamp)
 	-$(am__rm_f) crypto_kdf/hkdf/$(am__dirstamp)
+	-$(am__rm_f) crypto_kem/$(DEPDIR)/$(am__dirstamp)
+	-$(am__rm_f) crypto_kem/$(am__dirstamp)
 	-$(am__rm_f) crypto_kem/mlkem768/$(DEPDIR)/$(am__dirstamp)
 	-$(am__rm_f) crypto_kem/mlkem768/$(am__dirstamp)
 	-$(am__rm_f) crypto_kem/mlkem768/ref/$(DEPDIR)/$(am__dirstamp)
@@ -4305,6 +4328,7 @@ distclean: distclean-recursive
 	-rm -f crypto_kdf/blake2b/$(DEPDIR)/libsodium_la-kdf_blake2b.Plo
 	-rm -f crypto_kdf/hkdf/$(DEPDIR)/libsodium_la-kdf_hkdf_sha256.Plo
 	-rm -f crypto_kdf/hkdf/$(DEPDIR)/libsodium_la-kdf_hkdf_sha512.Plo
+	-rm -f crypto_kem/$(DEPDIR)/libsodium_la-crypto_kem.Plo
 	-rm -f crypto_kem/mlkem768/$(DEPDIR)/libsodium_la-kem_mlkem768.Plo
 	-rm -f crypto_kem/mlkem768/ref/$(DEPDIR)/libsodium_la-kem_mlkem768_ref.Plo
 	-rm -f crypto_kem/xwing/$(DEPDIR)/libsodium_la-kem_xwing.Plo
@@ -4492,6 +4516,7 @@ maintainer-clean: maintainer-clean-recursive
 	-rm -f crypto_kdf/blake2b/$(DEPDIR)/libsodium_la-kdf_blake2b.Plo
 	-rm -f crypto_kdf/hkdf/$(DEPDIR)/libsodium_la-kdf_hkdf_sha256.Plo
 	-rm -f crypto_kdf/hkdf/$(DEPDIR)/libsodium_la-kdf_hkdf_sha512.Plo
+	-rm -f crypto_kem/$(DEPDIR)/libsodium_la-crypto_kem.Plo
 	-rm -f crypto_kem/mlkem768/$(DEPDIR)/libsodium_la-kem_mlkem768.Plo
 	-rm -f crypto_kem/mlkem768/ref/$(DEPDIR)/libsodium_la-kem_mlkem768_ref.Plo
 	-rm -f crypto_kem/xwing/$(DEPDIR)/libsodium_la-kem_xwing.Plo
