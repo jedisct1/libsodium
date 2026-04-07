@@ -264,6 +264,7 @@ TESTS_TARGETS = \
 	hash_sha3512 \
 	ipcrypt \
 	kdf \
+	kem \
 	kem_mlkem768 \
 	kem_xwing \
 	keygen \
