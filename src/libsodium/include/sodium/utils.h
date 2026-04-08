@@ -2,7 +2,9 @@
 #ifndef sodium_utils_H
 #define sodium_utils_H
 
+#include <limits.h>
 #include <stddef.h>
+#include <stdint.h>
 
 #include "export.h"
 
@@ -74,11 +76,16 @@ int sodium_hex2bin(unsigned char *const bin, const size_t bin_maxlen, const char
  * Computes the required length to encode BIN_LEN bytes as a base64 string
  * using the given variant. The computed length includes a trailing \0.
  */
-#define sodium_base64_ENCODED_LEN(BIN_LEN, VARIANT)                                              \
-    (((BIN_LEN) / 3U) * 4U +                                                                     \
-     ((((BIN_LEN) - ((BIN_LEN) / 3U) * 3U) | (((BIN_LEN) - ((BIN_LEN) / 3U) * 3U) >> 1)) & 1U) * \
-         (4U - ((0U - (((VARIANT) & 2U) >> 1)) & (3U - ((BIN_LEN) - ((BIN_LEN) / 3U) * 3U)))) + \
-     1U)
+#define sodium_base64_ENCODED_LEN(BIN_LEN, VARIANT)                            \
+  ((BIN_LEN) / 3U > (SIZE_MAX - 5) / 4U                                        \
+       ? (size_t)SIZE_MAX                                                      \
+       : (((BIN_LEN) / 3U) * 4U +                                              \
+          ((((BIN_LEN) - ((BIN_LEN) / 3U) * 3U) |                              \
+            (((BIN_LEN) - ((BIN_LEN) / 3U) * 3U) >> 1)) &                      \
+           1U) *                                                               \
+              (4U - ((0U - (((VARIANT) & 2U) >> 1)) &                          \
+                     (3U - ((BIN_LEN) - ((BIN_LEN) / 3U) * 3U)))) +            \
+          1U))
 
 SODIUM_EXPORT
 size_t sodium_base64_encoded_len(const size_t bin_len, const int variant);

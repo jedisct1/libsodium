@@ -175,6 +175,9 @@ sodium_base64_encoded_len(const size_t bin_len, const int variant)
 {
     sodium_base64_check_variant(variant);
 
+    if (bin_len / 3 > (SIZE_MAX - 5) / 4) {
+      sodium_misuse(); /* LCOV_EXCL_LINE */
+    }
     return sodium_base64_ENCODED_LEN(bin_len, variant);
 }
 
@@ -193,6 +196,9 @@ sodium_bin2base64(char * const b64, const size_t b64_maxlen,
 
     sodium_base64_check_variant(variant);
     nibbles = bin_len / 3;
+    if (nibbles > (SIZE_MAX - 5) / 4) {
+        sodium_misuse(); /* LCOV_EXCL_LINE */
+    }
     remainder = bin_len - 3 * nibbles;
     b64_len = nibbles * 4;
     if (remainder != 0) {
