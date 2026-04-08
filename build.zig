@@ -356,7 +356,7 @@ pub fn build(b: *std.Build) !void {
         }
     }
 
-    if (build_tests) {
+    {
         const offline = b.option(bool, "offline", "Skip downloading test vectors; use cached files only") orelse false;
         const tv_options = b.addOptions();
         tv_options.addOption(bool, "offline", offline);
@@ -376,7 +376,6 @@ pub fn build(b: *std.Build) !void {
             .name = "test-vectors",
             .root_module = tv_mod,
         });
-        b.installArtifact(tv_exe);
         const run_tv = b.addRunArtifact(tv_exe);
         const tv_step = b.step("test-vectors", "Run external test vectors (Rooterberg)");
         tv_step.dependOn(&run_tv.step);
