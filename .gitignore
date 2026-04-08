@@ -40,6 +40,8 @@ confdefs.h
 config.*
 configure
 configure.lineno
+conftest.c
+conftest.err
 coverage.info
 depcomp
 INSTALL
