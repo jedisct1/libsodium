@@ -81,17 +81,17 @@ REV128_(uint64x2_t x)
     vreinterpretq_u64_u32(vdupq_laneq_u32(vreinterpretq_u32_u64(x), 3))
 #define SWAP64HALVES(x) \
     vreinterpretq_u64_u32(vextq_u32(vreinterpretq_u32_u64(x), \
-                                     vreinterpretq_u32_u64(x), 2))
+                                    vreinterpretq_u32_u64(x), 2))
 
 #define CLMULLO128(a, b) \
-    vreinterpretq_u64_p128(vmull_p64(vget_low_p64(vreinterpretq_p64_u64(a)), \
-                                      vget_low_p64(vreinterpretq_p64_u64(b))))
+    vreinterpretq_u64_p128(vmull_p64(vgetq_lane_p64(vreinterpretq_p64_u64(a), 0), \
+                                     vgetq_lane_p64(vreinterpretq_p64_u64(b), 0)))
 #define CLMULLOHI128(a, b) \
-    vreinterpretq_u64_p128(vmull_p64(vget_low_p64(vreinterpretq_p64_u64(a)), \
-                                      vget_high_p64(vreinterpretq_p64_u64(b))))
+    vreinterpretq_u64_p128(vmull_p64(vgetq_lane_p64(vreinterpretq_p64_u64(a), 0), \
+                                     vgetq_lane_p64(vreinterpretq_p64_u64(b), 1)))
 #define CLMULHILO128(a, b) \
-    vreinterpretq_u64_p128(vmull_p64(vget_high_p64(vreinterpretq_p64_u64(a)), \
-                                      vget_low_p64(vreinterpretq_p64_u64(b))))
+    vreinterpretq_u64_p128(vmull_p64(vgetq_lane_p64(vreinterpretq_p64_u64(a), 1), \
+                                     vgetq_lane_p64(vreinterpretq_p64_u64(b), 0)))
 
 #if defined(__GNUC__) || defined(__clang__)
 #define PREFETCH_READ(x)  __builtin_prefetch((x), 0, 2)
