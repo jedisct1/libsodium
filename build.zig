@@ -355,4 +355,30 @@ pub fn build(b: *std.Build) !void {
             test_step.dependOn(&run_test.step);
         }
     }
+
+    if (build_tests) {
+        const offline = b.option(bool, "offline", "Skip downloading test vectors; use cached files only") orelse false;
+        const tv_options = b.addOptions();
+        tv_options.addOption(bool, "offline", offline);
+        tv_options.addOption([]const u8, "cache_dir", "test/vectors/cache");
+
+        const tv_mod = b.createModule(.{
+            .root_source_file = b.path("test/vectors/main.zig"),
+            .target = target,
+            .optimize = optimize,
+            .link_libc = true,
+        });
+        tv_mod.linkLibrary(static_lib);
+        tv_mod.addIncludePath(b.path("src/libsodium/include"));
+        tv_mod.addOptions("build_options", tv_options);
+
+        const tv_exe = b.addExecutable(.{
+            .name = "test-vectors",
+            .root_module = tv_mod,
+        });
+        b.installArtifact(tv_exe);
+        const run_tv = b.addRunArtifact(tv_exe);
+        const tv_step = b.step("test-vectors", "Run external test vectors (Rooterberg)");
+        tv_step.dependOn(&run_tv.step);
+    }
 }

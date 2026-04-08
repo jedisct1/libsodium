@@ -1,5 +1,6 @@
 SUBDIRS = \
-	default
+	default \
+	vectors
 
 EXTRA_DIST = \
 	quirks/quirks.h

@@ -71,6 +71,15 @@ jobs:
           zig build -Doptimize=ReleaseFast
           rm -fr zig-cache zig-out
 
+      - name: Tests with zig
+        run: |
+          zig build test
+          zig build test-vectors
+          zig build test -Doptimize=ReleaseSafe
+          zig build test-vectors -Doptimize=ReleaseSafe
+          zig build test -Doptimize=ReleaseFast
+          zig build test-vectors -Doptimize=ReleaseFast
+
   regular:
     runs-on: ubuntu-latest
     steps:
