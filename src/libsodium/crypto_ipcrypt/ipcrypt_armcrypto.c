@@ -59,7 +59,7 @@ static BlockVec
 AES_KEYGEN(BlockVec block_vec, const int rc)
 {
     static const uint8_t aes_keygen_shuffle[16] = {
-        4, 1, 14, 11, 1, 14, 11, 4, 12, 9, 6, 3, 9, 6, 3, 12,
+        4, 1, 14, 11, 1, 14, 11, 4, 12, 9, 6, 3, 9, 6, 3, 12
     };
     uint8x16_t       a = vaeseq_u8(vreinterpretq_u8_u64(block_vec), vmovq_n_u8(0));
     const BlockVec   b = vreinterpretq_u64_u8(vqtbl1q_u8(a, vld1q_u8(aes_keygen_shuffle)));
