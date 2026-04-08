@@ -496,6 +496,7 @@ rej_uniform(int16_t *r, unsigned int len, const unsigned char *buf, unsigned int
     uint16_t     val0, val1;
 
     ctr = pos = 0;
+    /* Variable-time rejection is fine here: callers only use public matrix seeds. */
     while (ctr < len && pos + 3 <= buflen) {
         val0 = ((buf[pos + 0] >> 0) | ((uint16_t) buf[pos + 1] << 8)) & 0xFFF;
         val1 = ((buf[pos + 1] >> 4) | ((uint16_t) buf[pos + 2] << 4)) & 0xFFF;
@@ -545,6 +546,7 @@ gen_matrix(polyvec *a, const unsigned char seed[32], int transposed)
 
             ctr = rej_uniform(a[i].vec[j].coeffs, MLKEM768_N, buf, buflen);
 
+            /* Refill count depends on public XOF output, not on secret key material. */
             while (ctr < MLKEM768_N) {
                 crypto_xof_shake128_squeeze(&state, buf, crypto_xof_shake128_BLOCKBYTES);
                 ctr += rej_uniform(a[i].vec[j].coeffs + ctr, MLKEM768_N - ctr, buf,
