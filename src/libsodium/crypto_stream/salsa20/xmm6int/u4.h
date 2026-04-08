@@ -374,33 +374,15 @@ if (bytes >= 256) {
     z##C  = _mm_shuffle_epi32(z##C, 0x39); \
     z##D  = _mm_shuffle_epi32(z##D, 0x39); \
                                            \
-    in##A ^= *(uint32_t *) (m + 0);        \
-    in##B ^= *(uint32_t *) (m + 4);        \
-    in##C ^= *(uint32_t *) (m + 8);        \
-    in##D ^= *(uint32_t *) (m + 12);       \
+    in##A ^= LOAD32_LE(m + 0);             \
+    in##B ^= LOAD32_LE(m + 4);             \
+    in##C ^= LOAD32_LE(m + 8);             \
+    in##D ^= LOAD32_LE(m + 12);            \
                                            \
-    *(uint32_t *) (c + 0)  = in##A;        \
-    *(uint32_t *) (c + 4)  = in##B;        \
-    *(uint32_t *) (c + 8)  = in##C;        \
-    *(uint32_t *) (c + 12) = in##D;        \
-                                           \
-    in##A = _mm_cvtsi128_si32(z##A);       \
-    in##B = _mm_cvtsi128_si32(z##B);       \
-    in##C = _mm_cvtsi128_si32(z##C);       \
-    in##D = _mm_cvtsi128_si32(z##D);       \
-    z##A  = _mm_shuffle_epi32(z##A, 0x39); \
-    z##B  = _mm_shuffle_epi32(z##B, 0x39); \
-    z##C  = _mm_shuffle_epi32(z##C, 0x39); \
-    z##D  = _mm_shuffle_epi32(z##D, 0x39); \
-                                           \
-    in##A ^= *(uint32_t *) (m + 64);       \
-    in##B ^= *(uint32_t *) (m + 68);       \
-    in##C ^= *(uint32_t *) (m + 72);       \
-    in##D ^= *(uint32_t *) (m + 76);       \
-    *(uint32_t *) (c + 64) = in##A;        \
-    *(uint32_t *) (c + 68) = in##B;        \
-    *(uint32_t *) (c + 72) = in##C;        \
-    *(uint32_t *) (c + 76) = in##D;        \
+    STORE32_LE(c + 0, in##A);              \
+    STORE32_LE(c + 4, in##B);              \
+    STORE32_LE(c + 8, in##C);              \
+    STORE32_LE(c + 12, in##D);             \
                                            \
     in##A = _mm_cvtsi128_si32(z##A);       \
     in##B = _mm_cvtsi128_si32(z##B);       \
@@ -411,28 +393,46 @@ if (bytes >= 256) {
     z##C  = _mm_shuffle_epi32(z##C, 0x39); \
     z##D  = _mm_shuffle_epi32(z##D, 0x39); \
                                            \
-    in##A ^= *(uint32_t *) (m + 128);      \
-    in##B ^= *(uint32_t *) (m + 132);      \
-    in##C ^= *(uint32_t *) (m + 136);      \
-    in##D ^= *(uint32_t *) (m + 140);      \
-    *(uint32_t *) (c + 128) = in##A;       \
-    *(uint32_t *) (c + 132) = in##B;       \
-    *(uint32_t *) (c + 136) = in##C;       \
-    *(uint32_t *) (c + 140) = in##D;       \
+    in##A ^= LOAD32_LE(m + 64);            \
+    in##B ^= LOAD32_LE(m + 68);            \
+    in##C ^= LOAD32_LE(m + 72);            \
+    in##D ^= LOAD32_LE(m + 76);            \
+    STORE32_LE(c + 64, in##A);             \
+    STORE32_LE(c + 68, in##B);             \
+    STORE32_LE(c + 72, in##C);             \
+    STORE32_LE(c + 76, in##D);             \
+                                           \
+    in##A = _mm_cvtsi128_si32(z##A);       \
+    in##B = _mm_cvtsi128_si32(z##B);       \
+    in##C = _mm_cvtsi128_si32(z##C);       \
+    in##D = _mm_cvtsi128_si32(z##D);       \
+    z##A  = _mm_shuffle_epi32(z##A, 0x39); \
+    z##B  = _mm_shuffle_epi32(z##B, 0x39); \
+    z##C  = _mm_shuffle_epi32(z##C, 0x39); \
+    z##D  = _mm_shuffle_epi32(z##D, 0x39); \
+                                           \
+    in##A ^= LOAD32_LE(m + 128);           \
+    in##B ^= LOAD32_LE(m + 132);           \
+    in##C ^= LOAD32_LE(m + 136);           \
+    in##D ^= LOAD32_LE(m + 140);           \
+    STORE32_LE(c + 128, in##A);            \
+    STORE32_LE(c + 132, in##B);            \
+    STORE32_LE(c + 136, in##C);            \
+    STORE32_LE(c + 140, in##D);            \
                                            \
     in##A = _mm_cvtsi128_si32(z##A);       \
     in##B = _mm_cvtsi128_si32(z##B);       \
     in##C = _mm_cvtsi128_si32(z##C);       \
     in##D = _mm_cvtsi128_si32(z##D);       \
                                            \
-    in##A ^= *(uint32_t *) (m + 192);      \
-    in##B ^= *(uint32_t *) (m + 196);      \
-    in##C ^= *(uint32_t *) (m + 200);      \
-    in##D ^= *(uint32_t *) (m + 204);      \
-    *(uint32_t *) (c + 192) = in##A;       \
-    *(uint32_t *) (c + 196) = in##B;       \
-    *(uint32_t *) (c + 200) = in##C;       \
-    *(uint32_t *) (c + 204) = in##D
+    in##A ^= LOAD32_LE(m + 192);           \
+    in##B ^= LOAD32_LE(m + 196);           \
+    in##C ^= LOAD32_LE(m + 200);           \
+    in##D ^= LOAD32_LE(m + 204);           \
+    STORE32_LE(c + 192, in##A);            \
+    STORE32_LE(c + 196, in##B);            \
+    STORE32_LE(c + 200, in##C);            \
+    STORE32_LE(c + 204, in##D)
 
 /* store data ; this macro replaces shuffle+mov by a direct extract; not much
  * difference */
@@ -445,56 +445,56 @@ if (bytes >= 256) {
     in##B = _mm_cvtsi128_si32(z##B);      \
     in##C = _mm_cvtsi128_si32(z##C);      \
     in##D = _mm_cvtsi128_si32(z##D);      \
-    in##A ^= *(uint32_t *) (m + 0);       \
-    in##B ^= *(uint32_t *) (m + 4);       \
-    in##C ^= *(uint32_t *) (m + 8);       \
-    in##D ^= *(uint32_t *) (m + 12);      \
-    *(uint32_t *) (c + 0)  = in##A;       \
-    *(uint32_t *) (c + 4)  = in##B;       \
-    *(uint32_t *) (c + 8)  = in##C;       \
-    *(uint32_t *) (c + 12) = in##D;       \
+    in##A ^= LOAD32_LE(m + 0);            \
+    in##B ^= LOAD32_LE(m + 4);            \
+    in##C ^= LOAD32_LE(m + 8);            \
+    in##D ^= LOAD32_LE(m + 12);           \
+    STORE32_LE(c + 0, in##A);             \
+    STORE32_LE(c + 4, in##B);             \
+    STORE32_LE(c + 8, in##C);             \
+    STORE32_LE(c + 12, in##D);            \
                                           \
     in##A = _mm_extract_epi32(z##A, 1);   \
     in##B = _mm_extract_epi32(z##B, 1);   \
     in##C = _mm_extract_epi32(z##C, 1);   \
     in##D = _mm_extract_epi32(z##D, 1);   \
                                           \
-    in##A ^= *(uint32_t *) (m + 64);      \
-    in##B ^= *(uint32_t *) (m + 68);      \
-    in##C ^= *(uint32_t *) (m + 72);      \
-    in##D ^= *(uint32_t *) (m + 76);      \
-    *(uint32_t *) (c + 64) = in##A;       \
-    *(uint32_t *) (c + 68) = in##B;       \
-    *(uint32_t *) (c + 72) = in##C;       \
-    *(uint32_t *) (c + 76) = in##D;       \
+    in##A ^= LOAD32_LE(m + 64);           \
+    in##B ^= LOAD32_LE(m + 68);           \
+    in##C ^= LOAD32_LE(m + 72);           \
+    in##D ^= LOAD32_LE(m + 76);           \
+    STORE32_LE(c + 64, in##A);            \
+    STORE32_LE(c + 68, in##B);            \
+    STORE32_LE(c + 72, in##C);            \
+    STORE32_LE(c + 76, in##D);            \
                                           \
     in##A = _mm_extract_epi32(z##A, 2);   \
     in##B = _mm_extract_epi32(z##B, 2);   \
     in##C = _mm_extract_epi32(z##C, 2);   \
     in##D = _mm_extract_epi32(z##D, 2);   \
                                           \
-    in##A ^= *(uint32_t *) (m + 128);     \
-    in##B ^= *(uint32_t *) (m + 132);     \
-    in##C ^= *(uint32_t *) (m + 136);     \
-    in##D ^= *(uint32_t *) (m + 140);     \
-    *(uint32_t *) (c + 128) = in##A;      \
-    *(uint32_t *) (c + 132) = in##B;      \
-    *(uint32_t *) (c + 136) = in##C;      \
-    *(uint32_t *) (c + 140) = in##D;      \
+    in##A ^= LOAD32_LE(m + 128);          \
+    in##B ^= LOAD32_LE(m + 132);          \
+    in##C ^= LOAD32_LE(m + 136);          \
+    in##D ^= LOAD32_LE(m + 140);          \
+    STORE32_LE(c + 128, in##A);           \
+    STORE32_LE(c + 132, in##B);           \
+    STORE32_LE(c + 136, in##C);           \
+    STORE32_LE(c + 140, in##D);           \
                                           \
     in##A = _mm_extract_epi32(z##A, 3);   \
     in##B = _mm_extract_epi32(z##B, 3);   \
     in##C = _mm_extract_epi32(z##C, 3);   \
     in##D = _mm_extract_epi32(z##D, 3);   \
                                           \
-    in##A ^= *(uint32_t *) (m + 192);     \
-    in##B ^= *(uint32_t *) (m + 196);     \
-    in##C ^= *(uint32_t *) (m + 200);     \
-    in##D ^= *(uint32_t *) (m + 204);     \
-    *(uint32_t *) (c + 192) = in##A;      \
-    *(uint32_t *) (c + 196) = in##B;      \
-    *(uint32_t *) (c + 200) = in##C;      \
-    *(uint32_t *) (c + 204) = in##D
+    in##A ^= LOAD32_LE(m + 192);          \
+    in##B ^= LOAD32_LE(m + 196);          \
+    in##C ^= LOAD32_LE(m + 200);          \
+    in##D ^= LOAD32_LE(m + 204);          \
+    STORE32_LE(c + 192, in##A);           \
+    STORE32_LE(c + 196, in##B);           \
+    STORE32_LE(c + 200, in##C);           \
+    STORE32_LE(c + 204, in##D)
 
 /* store data ; this macro first transpose data in-registers, and then store
  * them in memory. much faster with icc. */

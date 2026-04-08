@@ -172,14 +172,14 @@ while (bytes >= 64) {
         diag1          = _mm_shuffle_epi32(diag1, 0x39); \
         diag2          = _mm_shuffle_epi32(diag2, 0x39); \
         diag3          = _mm_shuffle_epi32(diag3, 0x39); \
-        in##A ^= *(const uint32_t *) (m + (A * 4));      \
-        in##B ^= *(const uint32_t *) (m + (B * 4));      \
-        in##C ^= *(const uint32_t *) (m + (C * 4));      \
-        in##D ^= *(const uint32_t *) (m + (D * 4));      \
-        *(uint32_t *) (c + (A * 4)) = in##A;             \
-        *(uint32_t *) (c + (B * 4)) = in##B;             \
-        *(uint32_t *) (c + (C * 4)) = in##C;             \
-        *(uint32_t *) (c + (D * 4)) = in##D;             \
+        in##A ^= LOAD32_LE(m + (A * 4));                 \
+        in##B ^= LOAD32_LE(m + (B * 4));                 \
+        in##C ^= LOAD32_LE(m + (C * 4));                 \
+        in##D ^= LOAD32_LE(m + (D * 4));                 \
+        STORE32_LE(c + (A * 4), in##A);                  \
+        STORE32_LE(c + (B * 4), in##B);                  \
+        STORE32_LE(c + (C * 4), in##C);                  \
+        STORE32_LE(c + (D * 4), in##D);                  \
     } while (0)
 
 #define ONEQUAD(A, B, C, D) ONEQUAD_SHUFFLE(A, B, C, D)
