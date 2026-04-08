@@ -12,6 +12,14 @@ permissions:
   contents: read
 
 jobs:
+  version-consistency:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v6
+
+      - name: Check version consistency
+        run: ./test/check-version-consistency.sh
+
   tcc:
     runs-on: ubuntu-latest
     steps:
