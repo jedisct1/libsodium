@@ -35,6 +35,9 @@ crypto_box_curve25519xchacha20poly1305_seal(unsigned char *c, const unsigned cha
     unsigned char esk[crypto_box_curve25519xchacha20poly1305_SECRETKEYBYTES];
     int           ret;
 
+    if (mlen > crypto_box_curve25519xchacha20poly1305_MESSAGEBYTES_MAX) {
+        sodium_misuse(); /* LCOV_EXCL_LINE */
+    }
     if (crypto_box_curve25519xchacha20poly1305_keypair(epk, esk) != 0) {
         return -1; /* LCOV_EXCL_LINE */
     }
