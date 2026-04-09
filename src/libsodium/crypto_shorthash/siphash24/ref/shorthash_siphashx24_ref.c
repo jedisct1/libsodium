@@ -14,7 +14,7 @@ crypto_shorthash_siphashx24(unsigned char *out, const unsigned char *in,
     uint64_t       k0 = LOAD64_LE(k);
     uint64_t       k1 = LOAD64_LE(k + 8);
     uint64_t       m;
-    const uint8_t *end  = in + inlen - (inlen % sizeof(uint64_t));
+    const uint8_t *end  = inlen ? in + inlen - (inlen % sizeof(uint64_t)) : in;
     const int      left = inlen & 7;
 
     b = ((uint64_t) inlen) << 56;
