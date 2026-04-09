@@ -1,6 +1,7 @@
 
 #include <string.h>
 
+#include "core.h"
 #include "crypto_box.h"
 #include "crypto_generichash.h"
 #include "private/common.h"
