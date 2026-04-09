@@ -60,6 +60,7 @@ crypto_auth_hmacsha512256_final(crypto_auth_hmacsha512256_state *state,
 
     crypto_auth_hmacsha512_final((crypto_auth_hmacsha512_state *) state, out0);
     memcpy(out, out0, 32);
+    sodium_memzero(out0, sizeof out0);
 
     return 0;
 }
