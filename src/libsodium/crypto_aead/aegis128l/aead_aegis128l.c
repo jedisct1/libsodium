@@ -66,6 +66,9 @@ crypto_aead_aegis128l_encrypt(unsigned char *c, unsigned long long *clen_p, cons
     unsigned long long clen = 0ULL;
     int                ret;
 
+    if (mlen > crypto_aead_aegis128l_MESSAGEBYTES_MAX) {
+        sodium_misuse(); /* LCOV_EXCL_LINE */
+    }
     ret = crypto_aead_aegis128l_encrypt_detached(c, c + mlen, NULL, m, mlen, ad, adlen, nsec, npub,
                                                  k);
     if (clen_p != NULL) {
