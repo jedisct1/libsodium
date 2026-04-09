@@ -11067,15 +11067,15 @@ printf '%s\n' "#define TLS $ac_cv_tls" >>confdefs.h
 
      { printf '%s\n' "$as_me:${as_lineno-$LINENO}: result: thread local storage is supported" >&5
 printf '%s\n' "thread local storage is supported" >&6; }
-          { printf '%s\n' "$as_me:${as_lineno-$LINENO}: checking whether C compiler accepts -ftls-model=local-dynamic" >&5
-printf %s "checking whether C compiler accepts -ftls-model=local-dynamic... " >&6; }
-if test ${ax_cv_check_cflags___ftls_model_local_dynamic+y}
+          { printf '%s\n' "$as_me:${as_lineno-$LINENO}: checking whether C compiler accepts -ftls-model=global-dynamic" >&5
+printf %s "checking whether C compiler accepts -ftls-model=global-dynamic... " >&6; }
+if test ${ax_cv_check_cflags___ftls_model_global_dynamic+y}
 then :
   printf %s "(cached) " >&6
 else case e in #(
   e)
   ax_check_save_flags=$CFLAGS
-  CFLAGS="$CFLAGS  -ftls-model=local-dynamic"
+  CFLAGS="$CFLAGS  -ftls-model=global-dynamic"
   cat confdefs.h - <<_ACEOF >conftest.$ac_ext
 /* end confdefs.h.  */
 #include <time.h>
@@ -11090,9 +11090,9 @@ time_t x; int fodder = 0; if (fodder > -1000 && time(&x)) return (int) x
 _ACEOF
 if ac_fn_c_try_link "$LINENO"
 then :
-  ax_cv_check_cflags___ftls_model_local_dynamic=yes
+  ax_cv_check_cflags___ftls_model_global_dynamic=yes
 else case e in #(
-  e) ax_cv_check_cflags___ftls_model_local_dynamic=no ;;
+  e) ax_cv_check_cflags___ftls_model_global_dynamic=no ;;
 esac
 fi
 rm -f core conftest.err conftest.$ac_objext conftest.beam \
@@ -11100,11 +11100,11 @@ rm -f core conftest.err conftest.$ac_objext conftest.beam \
   CFLAGS=$ax_check_save_flags ;;
 esac
 fi
-{ printf '%s\n' "$as_me:${as_lineno-$LINENO}: result: $ax_cv_check_cflags___ftls_model_local_dynamic" >&5
-printf '%s\n' "$ax_cv_check_cflags___ftls_model_local_dynamic" >&6; }
-if test "x$ax_cv_check_cflags___ftls_model_local_dynamic" = xyes
+{ printf '%s\n' "$as_me:${as_lineno-$LINENO}: result: $ax_cv_check_cflags___ftls_model_global_dynamic" >&5
+printf '%s\n' "$ax_cv_check_cflags___ftls_model_global_dynamic" >&6; }
+if test "x$ax_cv_check_cflags___ftls_model_global_dynamic" = xyes
 then :
-  CFLAGS="$CFLAGS -ftls-model=local-dynamic"
+  CFLAGS="$CFLAGS -ftls-model=global-dynamic"
 else case e in #(
   e) : ;;
 esac
