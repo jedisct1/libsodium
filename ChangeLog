@@ -1,3 +1,15 @@
+* Version 1.0.22
+  This point release includes all the changes from 1.0.21-stable, plus:
+ - Post-quantum key encapsulation is now available. ML-KEM768, the
+NIST-standardized lattice-based KEM, is accessible through the
+`crypto_kem_mlkem768_*()` functions.
+ - X-Wing, a hybrid KEM combining ML-KEM768 with X25519 for protection
+against both classical and quantum adversaries, is available through the
+`crypto_kem_*()` functions. X-Wing is the recommended KEM for most
+applications.
+ - SHA-3 hash functions are now available as `crypto_hash_sha3256_*()`
+and `crypto_hash_sha3512_*()`, with both one-shot and streaming APIs.
+
 * Version 1.0.21-stable
  - Performance: NEON optimizations for Argon2 on ARM platforms.
  - Performance: SHA3 (Keccak1600) now leverages ARM SHA3 instructions when
@@ -7,19 +19,25 @@ available on ARM platforms.
 WebAssembly modules with functions that ran significantly slower than
 without it.
  - Emscripten: a new option allows compilation with SIMD support.
+ - Emscripten: native ESM module generation is now supported.
  - JavaScript sumo builds now allow up to 80 MiB memory usage, so that
 `crypto_pwhash` with the interactive settings can be used in pure
 JavaScript, not just WebAssembly.
  - XOF state alignment has been relaxed.
  - `crypto_core_keccak1600_state` has been added.
  - Export missing `crypto_ipcrypt_nd_keygen()` helper function.
+ - `crypto_auth_hmacsha256_init` and `crypto_auth_hmacsha512_init` now
+accept NULL key pointers (with a zero key length), for consistency with
+other `_init` functions.
  - apple-xcframework: headers are now in a Clibsodium subdirectory
 to prevent module.modulemap collisions with other xcframeworks.
  - Fixed compilation with GCC on aarch64 and gcc 4.x.
- - On aarch64, aes256-gcm is now enabled even when not using clang.
+ - On aarch64, aes256-gcm is now enabled even when not using clang,
+including MSVC.
  - Added compatibility with Visual Studio 2026 when toolsets do not
 define PlatformToolsetVersion.
  - Libsodium can be directly used as a dependency in a Zig project.
+ - Performance of MSVC builds has been improved.
 
 * Version 1.0.21
   This point release includes all the changes from 1.0.20-stable, which
