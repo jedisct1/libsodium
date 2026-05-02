@@ -18,7 +18,7 @@ const kdf = @import("suites/kdf.zig");
 const pwhash = @import("suites/pwhash.zig");
 const xof = @import("suites/xof.zig");
 const kem = @import("suites/kem.zig");
-const c = @cImport(@cInclude("sodium.h"));
+const c = @import("c");
 
 const Result = parse.Result;
 

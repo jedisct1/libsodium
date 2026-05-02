@@ -2,7 +2,7 @@ const std = @import("std");
 const Allocator = std.mem.Allocator;
 const parse = @import("../parse.zig");
 const fetch = @import("../fetch.zig");
-const c = @cImport(@cInclude("sodium.h"));
+const c = @import("c");
 
 const Result = parse.Result;
 

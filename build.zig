@@ -362,6 +362,15 @@ pub fn build(b: *std.Build) !void {
         tv_options.addOption(bool, "offline", offline);
         tv_options.addOption([]const u8, "cache_dir", "test/vectors/cache");
 
+        const translate_c = b.addTranslateC(.{
+            .root_source_file = b.path("src/libsodium/include/sodium.h"),
+            .target = target,
+            .optimize = optimize,
+            .link_libc = true,
+        });
+        translate_c.addIncludePath(b.path("src/libsodium/include"));
+        const c_mod = translate_c.createModule();
+
         const tv_mod = b.createModule(.{
             .root_source_file = b.path("test/vectors/main.zig"),
             .target = target,
@@ -371,6 +380,7 @@ pub fn build(b: *std.Build) !void {
         tv_mod.linkLibrary(static_lib);
         tv_mod.addIncludePath(b.path("src/libsodium/include"));
         tv_mod.addOptions("build_options", tv_options);
+        tv_mod.addImport("c", c_mod);
 
         const tv_exe = b.addExecutable(.{
             .name = "test-vectors",
