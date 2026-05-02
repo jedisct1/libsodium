@@ -254,10 +254,26 @@ void
 keccak1600_armsha3_xor_bytes(void *state, const unsigned char *data, size_t offset, size_t length)
 {
     unsigned char *st = (unsigned char *) state;
-    size_t         i;
+    uint64_t       t;
 
-    for (i = 0U; i < length; i++) {
-        st[offset + i] ^= data[i];
+    while (length > 0U && (offset & 7U) != 0U) {
+        st[offset] ^= *data;
+        data++;
+        offset++;
+        length--;
+    }
+    while (length >= 8U) {
+        t = LOAD64_LE(st + offset) ^ LOAD64_LE(data);
+        STORE64_LE(st + offset, t);
+        data += 8U;
+        offset += 8U;
+        length -= 8U;
+    }
+    while (length > 0U) {
+        st[offset] ^= *data;
+        data++;
+        offset++;
+        length--;
     }
 }
 

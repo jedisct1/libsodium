@@ -37,18 +37,36 @@ turboshake128_ref_update(turboshake128_state_internal *state, const unsigned cha
         ret = -1;
     }
 
-    while (consumed < inlen) {
-        if (state->offset == TURBOSHAKE128_RATE) {
+    if (state->offset == TURBOSHAKE128_RATE && inlen > 0U) {
+        crypto_core_keccak1600_permute_12(&state->state);
+        state->offset = 0;
+    }
+    if (state->offset != 0U && inlen > 0U) {
+        chunk_size = TURBOSHAKE128_RATE - state->offset;
+        if (chunk_size > inlen) {
+            chunk_size = inlen;
+        }
+        crypto_core_keccak1600_xor_bytes(&state->state, in, state->offset, chunk_size);
+        state->offset += chunk_size;
+        consumed = chunk_size;
+        if (state->offset == TURBOSHAKE128_RATE && consumed < inlen) {
             crypto_core_keccak1600_permute_12(&state->state);
             state->offset = 0;
         }
-        chunk_size = TURBOSHAKE128_RATE - state->offset;
-        if (chunk_size > inlen - consumed) {
-            chunk_size = inlen - consumed;
+    }
+    while (inlen - consumed >= TURBOSHAKE128_RATE) {
+        crypto_core_keccak1600_xor_bytes(&state->state, &in[consumed], 0U, TURBOSHAKE128_RATE);
+        consumed += TURBOSHAKE128_RATE;
+        state->offset = TURBOSHAKE128_RATE;
+        if (consumed < inlen) {
+            crypto_core_keccak1600_permute_12(&state->state);
+            state->offset = 0;
         }
-        crypto_core_keccak1600_xor_bytes(&state->state, &in[consumed], state->offset, chunk_size);
-        state->offset += chunk_size;
-        consumed += chunk_size;
+    }
+    if (consumed < inlen) {
+        chunk_size = inlen - consumed;
+        crypto_core_keccak1600_xor_bytes(&state->state, &in[consumed], 0U, chunk_size);
+        state->offset = chunk_size;
     }
 
     return ret;
@@ -94,19 +112,36 @@ turboshake128_ref_squeeze(turboshake128_state_internal *state, unsigned char *ou
         turboshake128_finalize(state);
     }
 
-    while (extracted < outlen) {
-        if (state->offset == TURBOSHAKE128_RATE) {
+    if (state->offset == TURBOSHAKE128_RATE && outlen > 0U) {
+        crypto_core_keccak1600_permute_12(&state->state);
+        state->offset = 0;
+    }
+    if (state->offset != 0U && outlen > 0U) {
+        chunk_size = TURBOSHAKE128_RATE - state->offset;
+        if (chunk_size > outlen) {
+            chunk_size = outlen;
+        }
+        crypto_core_keccak1600_extract_bytes(&state->state, out, state->offset, chunk_size);
+        state->offset += chunk_size;
+        extracted = chunk_size;
+        if (state->offset == TURBOSHAKE128_RATE && extracted < outlen) {
             crypto_core_keccak1600_permute_12(&state->state);
             state->offset = 0;
         }
-        chunk_size = TURBOSHAKE128_RATE - state->offset;
-        if (chunk_size > outlen - extracted) {
-            chunk_size = outlen - extracted;
+    }
+    while (outlen - extracted >= TURBOSHAKE128_RATE) {
+        crypto_core_keccak1600_extract_bytes(&state->state, &out[extracted], 0U, TURBOSHAKE128_RATE);
+        extracted += TURBOSHAKE128_RATE;
+        state->offset = TURBOSHAKE128_RATE;
+        if (extracted < outlen) {
+            crypto_core_keccak1600_permute_12(&state->state);
+            state->offset = 0;
         }
-        crypto_core_keccak1600_extract_bytes(&state->state, &out[extracted], state->offset,
-                                             chunk_size);
-        state->offset += chunk_size;
-        extracted += chunk_size;
+    }
+    if (extracted < outlen) {
+        chunk_size = outlen - extracted;
+        crypto_core_keccak1600_extract_bytes(&state->state, &out[extracted], 0U, chunk_size);
+        state->offset = chunk_size;
     }
 
     return 0;
