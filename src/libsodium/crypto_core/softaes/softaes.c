@@ -517,130 +517,273 @@ softaes_block_decryptlast(const SoftAesBlock block, const SoftAesBlock rk)
 }
 #else
 
-uint32_t _aes_lut[256] __attribute__((visibility("hidden"))) = {
-    0xa56363c6, 0x847c7cf8, 0x997777ee, 0x8d7b7bf6, 0x0df2f2ff, 0xbd6b6bd6, 0xb16f6fde, 0x54c5c591,
-    0x50303060, 0x03010102, 0xa96767ce, 0x7d2b2b56, 0x19fefee7, 0x62d7d7b5, 0xe6abab4d, 0x9a7676ec,
-    0x45caca8f, 0x9d82821f, 0x40c9c989, 0x877d7dfa, 0x15fafaef, 0xeb5959b2, 0xc947478e, 0x0bf0f0fb,
-    0xecadad41, 0x67d4d4b3, 0xfda2a25f, 0xeaafaf45, 0xbf9c9c23, 0xf7a4a453, 0x967272e4, 0x5bc0c09b,
-    0xc2b7b775, 0x1cfdfde1, 0xae93933d, 0x6a26264c, 0x5a36366c, 0x413f3f7e, 0x02f7f7f5, 0x4fcccc83,
-    0x5c343468, 0xf4a5a551, 0x34e5e5d1, 0x08f1f1f9, 0x937171e2, 0x73d8d8ab, 0x53313162, 0x3f15152a,
-    0x0c040408, 0x52c7c795, 0x65232346, 0x5ec3c39d, 0x28181830, 0xa1969637, 0x0f05050a, 0xb59a9a2f,
-    0x0907070e, 0x36121224, 0x9b80801b, 0x3de2e2df, 0x26ebebcd, 0x6927274e, 0xcdb2b27f, 0x9f7575ea,
-    0x1b090912, 0x9e83831d, 0x742c2c58, 0x2e1a1a34, 0x2d1b1b36, 0xb26e6edc, 0xee5a5ab4, 0xfba0a05b,
-    0xf65252a4, 0x4d3b3b76, 0x61d6d6b7, 0xceb3b37d, 0x7b292952, 0x3ee3e3dd, 0x712f2f5e, 0x97848413,
-    0xf55353a6, 0x68d1d1b9, 0x00000000, 0x2cededc1, 0x60202040, 0x1ffcfce3, 0xc8b1b179, 0xed5b5bb6,
-    0xbe6a6ad4, 0x46cbcb8d, 0xd9bebe67, 0x4b393972, 0xde4a4a94, 0xd44c4c98, 0xe85858b0, 0x4acfcf85,
-    0x6bd0d0bb, 0x2aefefc5, 0xe5aaaa4f, 0x16fbfbed, 0xc5434386, 0xd74d4d9a, 0x55333366, 0x94858511,
-    0xcf45458a, 0x10f9f9e9, 0x06020204, 0x817f7ffe, 0xf05050a0, 0x443c3c78, 0xba9f9f25, 0xe3a8a84b,
-    0xf35151a2, 0xfea3a35d, 0xc0404080, 0x8a8f8f05, 0xad92923f, 0xbc9d9d21, 0x48383870, 0x04f5f5f1,
-    0xdfbcbc63, 0xc1b6b677, 0x75dadaaf, 0x63212142, 0x30101020, 0x1affffe5, 0x0ef3f3fd, 0x6dd2d2bf,
-    0x4ccdcd81, 0x140c0c18, 0x35131326, 0x2fececc3, 0xe15f5fbe, 0xa2979735, 0xcc444488, 0x3917172e,
-    0x57c4c493, 0xf2a7a755, 0x827e7efc, 0x473d3d7a, 0xac6464c8, 0xe75d5dba, 0x2b191932, 0x957373e6,
-    0xa06060c0, 0x98818119, 0xd14f4f9e, 0x7fdcdca3, 0x66222244, 0x7e2a2a54, 0xab90903b, 0x8388880b,
-    0xca46468c, 0x29eeeec7, 0xd3b8b86b, 0x3c141428, 0x79dedea7, 0xe25e5ebc, 0x1d0b0b16, 0x76dbdbad,
-    0x3be0e0db, 0x56323264, 0x4e3a3a74, 0x1e0a0a14, 0xdb494992, 0x0a06060c, 0x6c242448, 0xe45c5cb8,
-    0x5dc2c29f, 0x6ed3d3bd, 0xefacac43, 0xa66262c4, 0xa8919139, 0xa4959531, 0x37e4e4d3, 0x8b7979f2,
-    0x32e7e7d5, 0x43c8c88b, 0x5937376e, 0xb76d6dda, 0x8c8d8d01, 0x64d5d5b1, 0xd24e4e9c, 0xe0a9a949,
-    0xb46c6cd8, 0xfa5656ac, 0x07f4f4f3, 0x25eaeacf, 0xaf6565ca, 0x8e7a7af4, 0xe9aeae47, 0x18080810,
-    0xd5baba6f, 0x887878f0, 0x6f25254a, 0x722e2e5c, 0x241c1c38, 0xf1a6a657, 0xc7b4b473, 0x51c6c697,
-    0x23e8e8cb, 0x7cdddda1, 0x9c7474e8, 0x211f1f3e, 0xdd4b4b96, 0xdcbdbd61, 0x868b8b0d, 0x858a8a0f,
-    0x907070e0, 0x423e3e7c, 0xc4b5b571, 0xaa6666cc, 0xd8484890, 0x05030306, 0x01f6f6f7, 0x120e0e1c,
-    0xa36161c2, 0x5f35356a, 0xf95757ae, 0xd0b9b969, 0x91868617, 0x58c1c199, 0x271d1d3a, 0xb99e9e27,
-    0x38e1e1d9, 0x13f8f8eb, 0xb398982b, 0x33111122, 0xbb6969d2, 0x70d9d9a9, 0x898e8e07, 0xa7949433,
-    0xb69b9b2d, 0x221e1e3c, 0x92878715, 0x20e9e9c9, 0x49cece87, 0xff5555aa, 0x78282850, 0x7adfdfa5,
-    0x8f8c8c03, 0xf8a1a159, 0x80898909, 0x170d0d1a, 0xdabfbf65, 0x31e6e6d7, 0xc6424284, 0xb86868d0,
-    0xc3414182, 0xb0999929, 0x772d2d5a, 0x110f0f1e, 0xcbb0b07b, 0xfc5454a8, 0xd6bbbb6d, 0x3a16162c
-};
+/*
+ * Without FAVOR_PERFORMANCE the round is computed with SRM-1R, a bitsliced
+ * representation that holds the block as eight 32-bit bit planes (the real
+ * 16 lanes are duplicated into the high halfword so a row rotation is a
+ * plain 32-bit rotate). ShiftRows is folded into the input packing, SubBytes
+ * is a gate-only Boolean S-box circuit, and MixColumns is a fixed sequence of
+ * rotations and XORs. No step indexes memory with secret data, so the round
+ * is constant-time on every platform.
+ */
 
-static const uint32_t* const LUT = _aes_lut;
-
-static SoftAesBlock
-_encrypt(const uint8_t ix0[4], const uint8_t ix1[4], const uint8_t ix2[4], const uint8_t ix3[4])
+static inline uint32_t
+srm1r_dup16(uint32_t x)
 {
-    CRYPTO_ALIGN(64) uint32_t     t[4][4][256 / SOFTAES_STRIDE];
-    CRYPTO_ALIGN(64) uint8_t      of[4][4];
-    CRYPTO_ALIGN(64) SoftAesBlock out;
-    size_t                        i;
-    size_t                        j;
+    x &= 0xffff;
+    return x | (x << 16);
+}
 
-    for (j = 0; j < 4; j++) {
-        of[j][0] = ix0[j] % SOFTAES_STRIDE;
-        of[j][1] = ix1[j] % SOFTAES_STRIDE;
-        of[j][2] = ix2[j] % SOFTAES_STRIDE;
-        of[j][3] = ix3[j] % SOFTAES_STRIDE;
-    }
-    for (i = 0; i < 256 / SOFTAES_STRIDE; i++) {
-        for (j = 0; j < 4; j++) {
-            t[j][0][i] = LUT[(i * SOFTAES_STRIDE) | of[j][0]];
-            t[j][1][i] = LUT[(i * SOFTAES_STRIDE) | of[j][1]];
-            t[j][2][i] = LUT[(i * SOFTAES_STRIDE) | of[j][2]];
-            t[j][3][i] = LUT[(i * SOFTAES_STRIDE) | of[j][3]];
-        }
-    }
+static inline uint32_t
+srm1r_ror16(uint32_t x, unsigned int n)
+{
+    /* SRM-1R duplicates the low halfword, so a 16-lane rotate is a 32-bit rotate. */
+    return (x >> n) | (x << (32 - n));
+}
 
-#    ifdef HAVE_INLINE_ASM
-    __asm__ __volatile__("" : : "r"(t) : "memory");
-#    endif
+static inline uint32_t
+srm1r_ror32(uint32_t x, unsigned int n)
+{
+    return (x >> n) | (x << (32 - n));
+}
 
-    out.w0 = t[0][0][ix0[0] / SOFTAES_STRIDE];
-    out.w0 ^= ROTL32(t[0][1][ix1[0] / SOFTAES_STRIDE], 8);
-    out.w0 ^= ROTL32(t[0][2][ix2[0] / SOFTAES_STRIDE], 16);
-    out.w0 ^= ROTL32(t[0][3][ix3[0] / SOFTAES_STRIDE], 24);
+static inline uint32_t
+srm1r_load_row_words(const SoftAesBlock block, unsigned int shift)
+{
+    return ((block.w0 >> shift) & 0xffu) | (((block.w1 >> shift) & 0xffu) << 8) |
+           (((block.w2 >> shift) & 0xffu) << 16) | (((block.w3 >> shift) & 0xffu) << 24);
+}
 
-    out.w1 = t[1][0][ix0[1] / SOFTAES_STRIDE];
-    out.w1 ^= ROTL32(t[1][1][ix1[1] / SOFTAES_STRIDE], 8);
-    out.w1 ^= ROTL32(t[1][2][ix2[1] / SOFTAES_STRIDE], 16);
-    out.w1 ^= ROTL32(t[1][3][ix3[1] / SOFTAES_STRIDE], 24);
+static inline uint32_t
+srm1r_store_column_word(uint32_t row0, uint32_t row1, uint32_t row2, uint32_t row3, unsigned int shift)
+{
+    return ((row0 >> shift) & 0xffu) | (((row1 >> shift) & 0xffu) << 8) |
+           (((row2 >> shift) & 0xffu) << 16) | (((row3 >> shift) & 0xffu) << 24);
+}
 
-    out.w2 = t[2][0][ix0[2] / SOFTAES_STRIDE];
-    out.w2 ^= ROTL32(t[2][1][ix1[2] / SOFTAES_STRIDE], 8);
-    out.w2 ^= ROTL32(t[2][2][ix2[2] / SOFTAES_STRIDE], 16);
-    out.w2 ^= ROTL32(t[2][3][ix3[2] / SOFTAES_STRIDE], 24);
+static inline uint32_t
+srm1r_gather_row_bit(uint32_t row_word, unsigned int bit)
+{
+    return (((row_word >> bit) & 0x01010101u) * 0x01020408u) >> 24;
+}
 
-    out.w3 = t[3][0][ix0[3] / SOFTAES_STRIDE];
-    out.w3 ^= ROTL32(t[3][1][ix1[3] / SOFTAES_STRIDE], 8);
-    out.w3 ^= ROTL32(t[3][2][ix2[3] / SOFTAES_STRIDE], 16);
-    out.w3 ^= ROTL32(t[3][3][ix3[3] / SOFTAES_STRIDE], 24);
+static inline uint32_t
+srm1r_pack_rows_bit(uint32_t row0, uint32_t row1, uint32_t row2, uint32_t row3, unsigned int bit)
+{
+    return srm1r_dup16(srm1r_gather_row_bit(row0, bit) | (srm1r_gather_row_bit(row1, bit) << 4) |
+                       (srm1r_gather_row_bit(row2, bit) << 8) |
+                       (srm1r_gather_row_bit(row3, bit) << 12));
+}
 
-    return out;
+static inline uint32_t
+srm1r_spread_row_bits(uint32_t nibble, unsigned int bit)
+{
+    nibble &= 0x0fu;
+    return ((nibble * 0x00204081u) & 0x01010101u) << bit;
+}
+
+static inline uint32_t
+srm1r_unpack_row_word(const uint32_t planes[8], unsigned int row)
+{
+    const unsigned int lane_shift = 4u * row;
+
+    return srm1r_spread_row_bits(planes[0] >> lane_shift, 7) |
+           srm1r_spread_row_bits(planes[1] >> lane_shift, 6) |
+           srm1r_spread_row_bits(planes[2] >> lane_shift, 5) |
+           srm1r_spread_row_bits(planes[3] >> lane_shift, 4) |
+           srm1r_spread_row_bits(planes[4] >> lane_shift, 3) |
+           srm1r_spread_row_bits(planes[5] >> lane_shift, 2) |
+           srm1r_spread_row_bits(planes[6] >> lane_shift, 1) |
+           srm1r_spread_row_bits(planes[7] >> lane_shift, 0);
+}
+
+static inline void
+srm1r_pack_planes(uint32_t planes[8], uint32_t row0, uint32_t row1, uint32_t row2, uint32_t row3)
+{
+    planes[0] = srm1r_pack_rows_bit(row0, row1, row2, row3, 7);
+    planes[1] = srm1r_pack_rows_bit(row0, row1, row2, row3, 6);
+    planes[2] = srm1r_pack_rows_bit(row0, row1, row2, row3, 5);
+    planes[3] = srm1r_pack_rows_bit(row0, row1, row2, row3, 4);
+    planes[4] = srm1r_pack_rows_bit(row0, row1, row2, row3, 3);
+    planes[5] = srm1r_pack_rows_bit(row0, row1, row2, row3, 2);
+    planes[6] = srm1r_pack_rows_bit(row0, row1, row2, row3, 1);
+    planes[7] = srm1r_pack_rows_bit(row0, row1, row2, row3, 0);
+}
+
+static void
+srm1r_subbytes(uint32_t planes[8])
+{
+    const uint32_t s0  = planes[1] ^ planes[4];
+    const uint32_t s1  = planes[5] ^ planes[7];
+    const uint32_t s2  = planes[3] ^ s0;
+    const uint32_t s3  = planes[0] ^ planes[2];
+    const uint32_t q0  = s1 ^ s2;
+    const uint32_t s4  = planes[0] ^ planes[6];
+    const uint32_t s5  = planes[2] ^ planes[6];
+    const uint32_t s6  = planes[3] ^ s1;
+    const uint32_t s7  = planes[5] ^ s3;
+    const uint32_t q1  = s1 ^ s5;
+    const uint32_t q2  = planes[2] ^ q0;
+    const uint32_t q3  = s4 ^ s2;
+    const uint32_t q4  = s3 ^ q0;
+    const uint32_t s8  = planes[4] ^ s3;
+    const uint32_t q5  = s6 ^ s8;
+    const uint32_t q6  = planes[2] ^ planes[3];
+    const uint32_t q7  = planes[6] ^ s2;
+    const uint32_t s9  = planes[6] ^ s0;
+    const uint32_t q8  = s3 ^ s9;
+    const uint32_t q9  = s4 ^ s6;
+    const uint32_t q10 = s0 ^ s5;
+    const uint32_t q12 = planes[7] ^ s2;
+    const uint32_t q13 = planes[1] ^ s7;
+    const uint32_t q14 = planes[7] ^ s3;
+    const uint32_t q15 = s2 ^ s7;
+    const uint32_t q16 = planes[1] ^ s1;
+    const uint32_t q17 = planes[1] ^ planes[7];
+    const uint32_t q11 = planes[5];
+
+    const uint32_t t20 = q6 & q12;
+    const uint32_t t21 = q3 & q14;
+    const uint32_t t22 = q1 & q16;
+    const uint32_t t23 = q2 & q17;
+    const uint32_t x0  = ((q3 | q14) ^ (q0 & q7)) ^ (t20 ^ t22);
+    const uint32_t x1  = ((q4 | q13) ^ (q10 & q11)) ^ (t21 ^ t20);
+    const uint32_t x2  = ((q2 | q17) ^ (q5 & q9)) ^ (t21 ^ t22);
+    const uint32_t x3  = ((q8 | q15) ^ t23) ^ (t21 ^ (q4 & q13));
+
+    const uint32_t a   = x1 & ~x3;
+    const uint32_t b   = x0 & ~x3;
+    const uint32_t c   = x3 & ~x1;
+    const uint32_t d   = x2 & ~x1;
+    const uint32_t e   = x0 ^ a;
+    const uint32_t y0  = x3 ^ (x2 & ~e);
+    const uint32_t f   = x1 ^ b;
+    const uint32_t y1  = c ^ (x2 & f);
+    const uint32_t g   = x2 ^ c;
+    const uint32_t y2  = x1 ^ (x0 & ~g);
+    const uint32_t h   = x3 ^ d;
+    const uint32_t y3  = a ^ (x0 & h);
+    const uint32_t y02 = y2 ^ y0;
+    const uint32_t y13 = y3 ^ y1;
+    const uint32_t y23 = y3 ^ y2;
+    const uint32_t y01 = y1 ^ y0;
+    const uint32_t y00 = y02 ^ y13;
+
+    const uint32_t a0  = y01 & q11;
+    const uint32_t a1  = y0 & q12;
+    const uint32_t a2  = y1 & q0;
+    const uint32_t a3  = y23 & q17;
+    const uint32_t a4  = y2 & q5;
+    const uint32_t a5  = y3 & q15;
+    const uint32_t a6  = y13 & q14;
+    const uint32_t a7  = y00 & q16;
+    const uint32_t a8  = y02 & q13;
+    const uint32_t a9  = y01 & q7;
+    const uint32_t a10 = y0 & q10;
+    const uint32_t a11 = y1 & q6;
+    const uint32_t a12 = y23 & q2;
+    const uint32_t a13 = y2 & q9;
+    const uint32_t a14 = y3 & q8;
+    const uint32_t a15 = y13 & q3;
+    const uint32_t a16 = y00 & q1;
+    const uint32_t a17 = y02 & q4;
+
+    const uint32_t r0  = a1 ^ a5;
+    const uint32_t r1  = a9 ^ a15;
+    const uint32_t r2  = a4 ^ r0;
+    const uint32_t r3  = a2 ^ a10;
+    const uint32_t r4  = a11 ^ a17;
+    const uint32_t r5  = a8 ^ r1;
+    const uint32_t r6  = a0 ^ a16;
+    const uint32_t r7  = a7 ^ a13;
+    const uint32_t r8  = a11 ^ a14;
+    const uint32_t r9  = r3 ^ r4;
+    const uint32_t r10 = r5 ^ r6;
+    const uint32_t r11 = r2 ^ r9;
+    const uint32_t r12 = a3 ^ r0;
+    const uint32_t r13 = r7 ^ r8;
+    const uint32_t r14 = r12 ^ r13;
+    planes[0]          = r10 ^ r14;
+    const uint32_t r15 = a6 ^ a10;
+    const uint32_t r16 = r15 ^ r2;
+    planes[1]          = ~(r10 ^ r16);
+    planes[2]          = ~(a2 ^ r2);
+    const uint32_t r17 = a12 ^ a13;
+    const uint32_t r18 = a15 ^ r17;
+    planes[3]          = r18 ^ r11;
+    const uint32_t r19 = a1 ^ a14;
+    const uint32_t r20 = a17 ^ r3;
+    const uint32_t r21 = r7 ^ r19;
+    const uint32_t r22 = r5 ^ r20;
+    planes[4]          = r21 ^ r22;
+    const uint32_t r23 = a9 ^ a12;
+    planes[5]          = r8 ^ r23;
+    planes[6]          = ~(r1 ^ r4);
+    planes[7]          = ~(a16 ^ r11);
+}
+
+static void
+srm1r_mix_columns(uint32_t planes[8])
+{
+    const uint32_t adj0  = srm1r_ror16(planes[0], 4);
+    const uint32_t adj1  = srm1r_ror16(planes[1], 4);
+    const uint32_t adj2  = srm1r_ror16(planes[2], 4);
+    const uint32_t adj3  = srm1r_ror16(planes[3], 4);
+    const uint32_t adj4  = srm1r_ror16(planes[4], 4);
+    const uint32_t adj5  = srm1r_ror16(planes[5], 4);
+    const uint32_t adj6  = srm1r_ror16(planes[6], 4);
+    const uint32_t adj7  = srm1r_ror16(planes[7], 4);
+    const uint32_t pair0 = planes[0] ^ adj0;
+    const uint32_t pair1 = planes[1] ^ adj1;
+    const uint32_t pair2 = planes[2] ^ adj2;
+    const uint32_t pair3 = planes[3] ^ adj3;
+    const uint32_t pair4 = planes[4] ^ adj4;
+    const uint32_t pair5 = planes[5] ^ adj5;
+    const uint32_t pair6 = planes[6] ^ adj6;
+    const uint32_t pair7 = planes[7] ^ adj7;
+    const uint32_t opp0  = srm1r_ror16(pair0, 8);
+    const uint32_t opp1  = srm1r_ror16(pair1, 8);
+    const uint32_t opp2  = srm1r_ror16(pair2, 8);
+    const uint32_t opp3  = srm1r_ror16(pair3, 8);
+    const uint32_t opp4  = srm1r_ror16(pair4, 8);
+    const uint32_t opp5  = srm1r_ror16(pair5, 8);
+    const uint32_t opp6  = srm1r_ror16(pair6, 8);
+    const uint32_t opp7  = srm1r_ror16(pair7, 8);
+
+    planes[0] = pair1 ^ adj0 ^ opp0;
+    planes[1] = pair2 ^ adj1 ^ opp1;
+    planes[2] = pair3 ^ adj2 ^ opp2;
+    planes[3] = pair4 ^ adj3 ^ opp3 ^ pair0;
+    planes[4] = pair5 ^ adj4 ^ opp4 ^ pair0;
+    planes[5] = pair6 ^ adj5 ^ opp5;
+    planes[6] = pair7 ^ adj6 ^ opp6 ^ pair0;
+    planes[7] = pair0 ^ adj7 ^ opp7;
 }
 
 SoftAesBlock
 softaes_block_encrypt(const SoftAesBlock block, const SoftAesBlock rk)
 {
-    CRYPTO_ALIGN(64) SoftAesBlock out;
-    CRYPTO_ALIGN(64) uint8_t      ix0[4], ix1[4], ix2[4], ix3[4];
-    const uint32_t                s0 = block.w0;
-    const uint32_t                s1 = block.w1;
-    const uint32_t                s2 = block.w2;
-    const uint32_t                s3 = block.w3;
+    SoftAesBlock out;
+    uint32_t     planes[8];
+    uint32_t     row0, row1, row2, row3;
 
-    ix0[0] = (uint8_t) s0;
-    ix0[1] = (uint8_t) s1;
-    ix0[2] = (uint8_t) s2;
-    ix0[3] = (uint8_t) s3;
+    row0 = srm1r_load_row_words(block, 0);
+    row1 = srm1r_ror32(srm1r_load_row_words(block, 8), 8);
+    row2 = srm1r_ror32(srm1r_load_row_words(block, 16), 16);
+    row3 = srm1r_ror32(srm1r_load_row_words(block, 24), 24);
+    srm1r_pack_planes(planes, row0, row1, row2, row3);
 
-    ix1[0] = (uint8_t) (s1 >> 8);
-    ix1[1] = (uint8_t) (s2 >> 8);
-    ix1[2] = (uint8_t) (s3 >> 8);
-    ix1[3] = (uint8_t) (s0 >> 8);
+    srm1r_subbytes(planes);
+    srm1r_mix_columns(planes);
 
-    ix2[0] = (uint8_t) (s2 >> 16);
-    ix2[1] = (uint8_t) (s3 >> 16);
-    ix2[2] = (uint8_t) (s0 >> 16);
-    ix2[3] = (uint8_t) (s1 >> 16);
-
-    ix3[0] = (uint8_t) (s3 >> 24);
-    ix3[1] = (uint8_t) (s0 >> 24);
-    ix3[2] = (uint8_t) (s1 >> 24);
-    ix3[3] = (uint8_t) (s2 >> 24);
-
-    out = _encrypt(ix0, ix1, ix2, ix3);
-
-    out.w0 ^= rk.w0;
-    out.w1 ^= rk.w1;
-    out.w2 ^= rk.w2;
-    out.w3 ^= rk.w3;
+    row0   = srm1r_unpack_row_word(planes, 0);
+    row1   = srm1r_unpack_row_word(planes, 1);
+    row2   = srm1r_unpack_row_word(planes, 2);
+    row3   = srm1r_unpack_row_word(planes, 3);
+    out.w0 = srm1r_store_column_word(row0, row1, row2, row3, 0) ^ rk.w0;
+    out.w1 = srm1r_store_column_word(row0, row1, row2, row3, 8) ^ rk.w1;
+    out.w2 = srm1r_store_column_word(row0, row1, row2, row3, 16) ^ rk.w2;
+    out.w3 = srm1r_store_column_word(row0, row1, row2, row3, 24) ^ rk.w3;
 
     return out;
 }
