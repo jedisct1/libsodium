@@ -348,3 +348,4 @@ libavx512f_la_CPPFLAGS = $(libsodium_la_CPPFLAGS) \
 libavx512f_la_SOURCES = \
 	crypto_pwhash/argon2/argon2-fill-block-avx512f.c \
 	crypto_pwhash/argon2/blamka-round-avx512f.h
+libcrypto_la_SOURCES += crypto_sign/schnorr/schnorr.c

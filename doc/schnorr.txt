@@ -1,0 +1,16 @@
+SCHNORR Σ-PROTOCOL (RFC 8235) — libsodium Integration
+
+FUNCTIONS:
+crypto_sign_schnorr_keypair(pk, sk)
+crypto_sign_schnorr(sig, siglen, msg, msglen, sk)
+crypto_sign_schnorr_open(msg, msglen, sig, siglen, pk)
+
+ALGORITHM:
+c = H(R || Y || msg)
+s = k + c * x (mod order)
+Verification: s * G == R + c * Y
+
+TEST:
+gcc -Isrc/libsodium/include -Lsrc/libsodium/.libs test/schnorr.c -lsodium -o test/schnorr
+LD_LIBRARY_PATH=src/libsodium/.libs ./test/schnorr
+EXPECTED: Schnorr: PASS
