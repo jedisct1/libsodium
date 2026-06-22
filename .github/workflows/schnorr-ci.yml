@@ -7,13 +7,19 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-      
-      - name: Install OpenSSL
+
+      - name: Install dependencies
         run: |
           sudo apt-get update
-          sudo apt-get install -y libssl-dev build-essential
-      
-      - name: Build Schnorr
+          sudo apt-get install -y libssl-dev build-essential autoconf automake libtool
+
+      - name: Generate configure
+        run: ./autogen.sh
+
+      - name: Configure
+        run: ./configure
+
+      - name: Build Schnorr Test
         run: |
           gcc -std=c11 -O3 -Wno-deprecated-declarations \
             -I src/libsodium/include \
@@ -22,10 +28,10 @@ jobs:
             test/default/schnorr.c \
             -lssl -lcrypto \
             -o test_schnorr
-      
+
       - name: Quick Test
         run: timeout 10 ./test_schnorr
-      
+
       - name: Deep Test
         run: |
           gcc -std=c11 -O3 -Wno-deprecated-declarations \
