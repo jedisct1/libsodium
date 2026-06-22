@@ -1,25 +1,23 @@
 name: Schnorr Σ-Protocol CI
 
-on: [push, pull_request]
+on:
+  push:
+    branches: [ master ]
+  pull_request:
+    branches: [ master ]
 
 jobs:
-  test:
-    runs-on: ubuntu-latest
+  schnorr-test:
+    runs-on: ubuntu-22.04
     steps:
       - uses: actions/checkout@v4
 
-      - name: Install dependencies
+      - name: Install OpenSSL
         run: |
           sudo apt-get update
-          sudo apt-get install -y libssl-dev build-essential autoconf automake libtool
+          sudo apt-get install -y libssl-dev build-essential
 
-      - name: Generate configure
-        run: ./autogen.sh
-
-      - name: Configure
-        run: ./configure
-
-      - name: Build Schnorr Test
+      - name: Build Quick Test
         run: |
           gcc -std=c11 -O3 -Wno-deprecated-declarations \
             -I src/libsodium/include \
@@ -29,10 +27,10 @@ jobs:
             -lssl -lcrypto \
             -o test_schnorr
 
-      - name: Quick Test
+      - name: Run Quick Test
         run: timeout 10 ./test_schnorr
 
-      - name: Deep Test
+      - name: Build Deep Test
         run: |
           gcc -std=c11 -O3 -Wno-deprecated-declarations \
             -I src/libsodium/include \
@@ -41,4 +39,6 @@ jobs:
             test/default/schnorr_deep.c \
             -lssl -lcrypto \
             -o test_schnorr_deep
-          timeout 30 ./test_schnorr_deep
+
+      - name: Run Deep Test
+        run: timeout 30 ./test_schnorr_deep
