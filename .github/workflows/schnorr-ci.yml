@@ -1,0 +1,38 @@
+name: Schnorr Σ-Protocol CI
+
+on: [push, pull_request]
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      
+      - name: Install OpenSSL
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y libssl-dev build-essential
+      
+      - name: Build Schnorr
+        run: |
+          gcc -std=c11 -O3 -Wno-deprecated-declarations \
+            -I src/libsodium/include \
+            -I src/libsodium/crypto_sign/schnorr \
+            src/libsodium/crypto_sign/schnorr/schnorr.c \
+            test/default/schnorr.c \
+            -lssl -lcrypto \
+            -o test_schnorr
+      
+      - name: Quick Test
+        run: timeout 10 ./test_schnorr
+      
+      - name: Deep Test
+        run: |
+          gcc -std=c11 -O3 -Wno-deprecated-declarations \
+            -I src/libsodium/include \
+            -I src/libsodium/crypto_sign/schnorr \
+            src/libsodium/crypto_sign/schnorr/schnorr.c \
+            test/default/schnorr_deep.c \
+            -lssl -lcrypto \
+            -o test_schnorr_deep
+          timeout 30 ./test_schnorr_deep
