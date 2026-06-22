@@ -1,3 +1,5 @@
+#ifdef HAVE_OPENSSL
+
 #include <openssl/ec.h>
 #include <openssl/bn.h>
 #include <openssl/obj_mac.h>
@@ -88,25 +90,11 @@ int crypto_sign_schnorr(unsigned char *sig, unsigned long long *siglen,
     return ret;
 }
 
-int crypto_sign_schnorr_open(unsigned char *msg, unsigned long long *msglen,
-                              const unsigned char *sig, unsigned long long siglen,
-                              const unsigned char *pk) {
-    if (!msg || !msglen || !sig || !pk) return -1;
-    // FIXED: Use actual msg length from *msglen (set by caller to strlen(original_msg))
-    return schnorr_verify(sig, siglen, msg, (size_t)*msglen, pk);
-}
-
-// Override: open takes original message as input
-int crypto_sign_schnorr_open_verify(const unsigned char *msg, unsigned long long msglen,
-                                     const unsigned char *sig, unsigned long long siglen,
-                                     const unsigned char *pk) {
-    if (!msg || !sig || !pk) return -1;
-    return schnorr_verify(sig, siglen, msg, (size_t)msglen, pk);
-}
-
 int crypto_sign_schnorr_verify(const unsigned char *msg, unsigned long long msglen,
                                 const unsigned char *sig, unsigned long long siglen,
                                 const unsigned char *pk) {
     if (!msg || !sig || !pk) return -1;
     return schnorr_verify(sig, (size_t)siglen, msg, (size_t)msglen, pk);
 }
+
+#endif /* HAVE_OPENSSL */
