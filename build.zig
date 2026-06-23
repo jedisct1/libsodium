@@ -188,6 +188,7 @@ pub fn build(b: *std.Build) !void {
 
     const enable_benchmarks = b.option(bool, "enable_benchmarks", "Whether tests should be benchmarks.") orelse false;
     const benchmarks_iterations = b.option(u32, "iterations", "Number of iterations for benchmarks.") orelse 200;
+    const wasm_max_memory = b.option(u64, "wasm_max_memory", "Maximum WebAssembly linear memory size in bytes.") orelse null;
     var build_static = b.option(bool, "static", "Build libsodium as a static library.") orelse true;
     var build_shared = b.option(bool, "shared", "Build libsodium as a shared library.") orelse true;
 
@@ -337,6 +338,9 @@ pub fn build(b: *std.Build) !void {
                     .link_libc = true,
                 }),
             });
+            if (target.result.cpu.arch.isWasm()) {
+                exe.max_memory = wasm_max_memory;
+            }
             exe.root_module.linkLibrary(static_lib);
             exe.root_module.addIncludePath(b.path("src/libsodium/include"));
             exe.root_module.addIncludePath(b.path("test/quirks"));
