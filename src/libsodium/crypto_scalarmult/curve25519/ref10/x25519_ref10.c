@@ -69,6 +69,27 @@ has_small_order(const unsigned char s[32])
     return (int) ((k >> 8) & 1);
 }
 
+#ifdef HAVE_TI_MODE
+/*
+ h = f - g
+ Unlike fe25519_sub(), this doesn't normalize g first, so the limbs of g
+ must not exceed 2^52 - 38. In the ladder below, g is always the direct
+ output of fe25519_mul() or fe25519_sq(), whose limbs fit in 52 bits.
+ */
+static inline void
+fe25519_sub_lazy(fe25519 h, const fe25519 f, const fe25519 g)
+{
+    h[0] = (f[0] + 0xfffffffffffdaULL) - g[0];
+    h[1] = (f[1] + 0xffffffffffffeULL) - g[1];
+    h[2] = (f[2] + 0xffffffffffffeULL) - g[2];
+    h[3] = (f[3] + 0xffffffffffffeULL) - g[3];
+    h[4] = (f[4] + 0xffffffffffffeULL) - g[4];
+}
+#else
+/* limbs are signed and fe25519_sub() is a plain per-limb subtraction */
+# define fe25519_sub_lazy fe25519_sub
+#endif
+
 static int
 crypto_scalarmult_curve25519_ref10(unsigned char *q,
                                    const unsigned char *n,
@@ -106,18 +127,18 @@ crypto_scalarmult_curve25519_ref10(unsigned char *q,
         fe25519_cswap(z2, z3, swap);
         swap = bit;
         fe25519_add(a, x2, z2);
-        fe25519_sub(b, x2, z2);
+        fe25519_sub_lazy(b, x2, z2);
         fe25519_sq(aa, a);
         fe25519_sq(bb, b);
         fe25519_mul(x2, aa, bb);
-        fe25519_sub(e, aa, bb);
-        fe25519_sub(da, x3, z3);
+        fe25519_sub_lazy(e, aa, bb);
+        fe25519_sub_lazy(da, x3, z3);
         fe25519_mul(da, da, a);
         fe25519_add(cb, x3, z3);
         fe25519_mul(cb, cb, b);
         fe25519_add(x3, da, cb);
         fe25519_sq(x3, x3);
-        fe25519_sub(z3, da, cb);
+        fe25519_sub_lazy(z3, da, cb);
         fe25519_sq(z3, z3);
         fe25519_mul(z3, z3, x1);
         fe25519_mul32(z2, e, 121666);
