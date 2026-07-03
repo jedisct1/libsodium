@@ -275,7 +275,7 @@ fe25519_mul(fe25519 h, const fe25519 f, const fe25519 g)
     const uint64_t mask = 0x7ffffffffffffULL;
     uint128_t r0, r1, r2, r3, r4;
     uint128_t f0, f1, f2, f3, f4;
-    uint128_t f1_19, f2_19, f3_19, f4_19;
+    uint64_t  f1_19, f2_19, f3_19, f4_19;
     uint128_t g0, g1, g2, g3, g4;
     uint64_t  r00, r01, r02, r03, r04;
     uint64_t  carry;
@@ -292,10 +292,11 @@ fe25519_mul(fe25519 h, const fe25519 f, const fe25519 g)
     g3 = (uint128_t) g[3];
     g4 = (uint128_t) g[4];
 
-    f1_19 = 19ULL * f1;
-    f2_19 = 19ULL * f2;
-    f3_19 = 19ULL * f3;
-    f4_19 = 19ULL * f4;
+    /* limbs fit in 54 bits, so these products fit in 64 bits */
+    f1_19 = 19ULL * f[1];
+    f2_19 = 19ULL * f[2];
+    f3_19 = 19ULL * f[3];
+    f4_19 = 19ULL * f[4];
 
     r0 = f0 * g0 + f1_19 * g4 + f2_19 * g3 + f3_19 * g2 + f4_19 * g1;
     r1 = f0 * g1 +    f1 * g0 + f2_19 * g4 + f3_19 * g3 + f4_19 * g2;
@@ -343,7 +344,7 @@ fe25519_sq(fe25519 h, const fe25519 f)
     const uint64_t mask = 0x7ffffffffffffULL;
     uint128_t r0, r1, r2, r3, r4;
     uint128_t f0, f1, f2, f3, f4;
-    uint128_t f0_2, f1_2, f1_38, f2_38, f3_38, f3_19, f4_19;
+    uint64_t  f0_2, f1_2, f1_38, f2_38, f3_38, f3_19, f4_19;
     uint64_t  r00, r01, r02, r03, r04;
     uint64_t  carry;
 
@@ -353,15 +354,16 @@ fe25519_sq(fe25519 h, const fe25519 f)
     f3 = (uint128_t) f[3];
     f4 = (uint128_t) f[4];
 
-    f0_2 = f0 << 1;
-    f1_2 = f1 << 1;
+    /* limbs fit in 54 bits, so these products fit in 64 bits */
+    f0_2 = f[0] << 1;
+    f1_2 = f[1] << 1;
 
-    f1_38 = 38ULL * f1;
-    f2_38 = 38ULL * f2;
-    f3_38 = 38ULL * f3;
+    f1_38 = 38ULL * f[1];
+    f2_38 = 38ULL * f[2];
+    f3_38 = 38ULL * f[3];
 
-    f3_19 = 19ULL * f3;
-    f4_19 = 19ULL * f4;
+    f3_19 = 19ULL * f[3];
+    f4_19 = 19ULL * f[4];
 
     r0 =   f0 * f0 + f1_38 * f4 + f2_38 * f3;
     r1 = f0_2 * f1 + f2_38 * f4 + f3_19 * f3;
@@ -409,7 +411,7 @@ fe25519_sq2(fe25519 h, const fe25519 f)
     const uint64_t mask = 0x7ffffffffffffULL;
     uint128_t r0, r1, r2, r3, r4;
     uint128_t f0, f1, f2, f3, f4;
-    uint128_t f0_2, f1_2, f1_38, f2_38, f3_38, f3_19, f4_19;
+    uint64_t  f0_2, f1_2, f1_38, f2_38, f3_38, f3_19, f4_19;
     uint64_t  r00, r01, r02, r03, r04;
     uint64_t  carry;
 
@@ -419,15 +421,16 @@ fe25519_sq2(fe25519 h, const fe25519 f)
     f3 = (uint128_t) f[3];
     f4 = (uint128_t) f[4];
 
-    f0_2 = f0 << 1;
-    f1_2 = f1 << 1;
+    /* limbs fit in 54 bits, so these products fit in 64 bits */
+    f0_2 = f[0] << 1;
+    f1_2 = f[1] << 1;
 
-    f1_38 = 38ULL * f1;
-    f2_38 = 38ULL * f2;
-    f3_38 = 38ULL * f3;
+    f1_38 = 38ULL * f[1];
+    f2_38 = 38ULL * f[2];
+    f3_38 = 38ULL * f[3];
 
-    f3_19 = 19ULL * f3;
-    f4_19 = 19ULL * f4;
+    f3_19 = 19ULL * f[3];
+    f4_19 = 19ULL * f[4];
 
     r0 =   f0 * f0 + f1_38 * f4 + f2_38 * f3;
     r1 = f0_2 * f1 + f2_38 * f4 + f3_19 * f3;
