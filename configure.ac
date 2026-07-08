@@ -979,7 +979,11 @@ if (&getentropy != NULL) {
 ])
 
 AS_IF([test "x$WASI" = "x"],[
-  AC_CHECK_FUNCS([getpid])
+  dnl A plain link check false-passes when targeting the MSVC CRT: getpid()
+  dnl resolves through the oldnames.lib compatibility alias for _getpid(),
+  dnl but no header declares it, so the code fails to compile under C99+
+  dnl implicit-declaration rules. Require a declaration as well.
+  AC_CHECK_DECL([getpid], [AC_CHECK_FUNCS([getpid])], [])
   AC_CHECK_FUNCS([getauxval elf_aux_info])
 ])
 
