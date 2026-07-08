@@ -22796,9 +22796,7 @@ printf %s "checking for getrandom with a standard API... " >&6; }
 /* end confdefs.h.  */
 
 #include <stdlib.h>
-#ifdef HAVE_UNISTD_H
-# include <unistd.h>
-#endif
+#include <unistd.h>
 #ifdef HAVE_SYS_RANDOM_H
 # include <sys/random.h>
 #endif
@@ -22842,9 +22840,7 @@ printf %s "checking for getentropy with a standard API... " >&6; }
 /* end confdefs.h.  */
 
 #include <stdlib.h>
-#ifdef HAVE_UNISTD_H
-# include <unistd.h>
-#endif
+#include <unistd.h>
 #ifdef HAVE_SYS_RANDOM_H
 # include <sys/random.h>
 #endif
