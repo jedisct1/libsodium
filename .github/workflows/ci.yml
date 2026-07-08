@@ -216,7 +216,7 @@ jobs:
           for wasm in *.wasm; do
             name="${wasm%.wasm}"
             echo "[$name]"
-            if ! wasmer run "$wasm" --volume=./:.  2>&1; then
+            if ! wasmer run --volume="$(pwd):/" "$wasm" 2>&1; then
               echo "*** [$name] FAILED" >&2
               failed=1
             fi
