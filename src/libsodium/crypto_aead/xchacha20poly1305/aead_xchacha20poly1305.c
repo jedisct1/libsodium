@@ -19,6 +19,8 @@
 
 static const unsigned char _pad0[16] = { 0 };
 
+#define STREAM_POLY1305_CHUNK 131072
+
 static int
 _encrypt_detached(unsigned char *c,
                   unsigned char *mac,
@@ -43,9 +45,31 @@ _encrypt_detached(unsigned char *c,
     crypto_onetimeauth_poly1305_update(&state, ad, adlen);
     crypto_onetimeauth_poly1305_update(&state, _pad0, (0x10 - adlen) & 0xf);
 
-    crypto_stream_chacha20_ietf_ext_xor_ic(c, m, mlen, npub, 1U, k);
+    {
+        unsigned long long off   = 0U;
+        uint32_t           ic    = 1U;
+        /*
+         * The ietf_ext counter is 32-bit and overflows into the IV past
+         * ~256 GiB, which a chunk restart cannot reproduce, so oversized
+         * messages make a single pass instead.
+         */
+        unsigned long long chunk = mlen <= 64ULL * (0xffffffffULL - 1ULL)
+                                       ? STREAM_POLY1305_CHUNK
+                                       : mlen;
 
-    crypto_onetimeauth_poly1305_update(&state, c, mlen);
+        COMPILER_ASSERT(STREAM_POLY1305_CHUNK % 64U == 0U);
+        while (off < mlen) {
+            unsigned long long cl = mlen - off;
+            if (cl > chunk) {
+                cl = chunk;
+            }
+            crypto_stream_chacha20_ietf_ext_xor_ic(c + off, m + off, cl,
+                                                   npub, ic, k);
+            crypto_onetimeauth_poly1305_update(&state, c + off, cl);
+            off += cl;
+            ic += (uint32_t) (cl / 64U);
+        }
+    }
     crypto_onetimeauth_poly1305_update(&state, _pad0, (0x10 - mlen) & 0xf);
 
     STORE64_LE(slen, (uint64_t) adlen);

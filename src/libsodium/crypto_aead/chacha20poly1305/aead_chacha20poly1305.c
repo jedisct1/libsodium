@@ -17,6 +17,8 @@
 
 static const unsigned char _pad0[16] = { 0 };
 
+#define STREAM_POLY1305_CHUNK 131072
+
 int
 crypto_aead_chacha20poly1305_encrypt_detached(unsigned char *c,
                                               unsigned char *mac,
@@ -42,9 +44,22 @@ crypto_aead_chacha20poly1305_encrypt_detached(unsigned char *c,
     STORE64_LE(slen, (uint64_t) adlen);
     crypto_onetimeauth_poly1305_update(&state, slen, sizeof slen);
 
-    crypto_stream_chacha20_xor_ic(c, m, mlen, npub, 1U, k);
+    {
+        unsigned long long off = 0U;
+        uint64_t           ic  = 1U;
 
-    crypto_onetimeauth_poly1305_update(&state, c, mlen);
+        COMPILER_ASSERT(STREAM_POLY1305_CHUNK % 64U == 0U);
+        while (off < mlen) {
+            unsigned long long cl = mlen - off;
+            if (cl > STREAM_POLY1305_CHUNK) {
+                cl = STREAM_POLY1305_CHUNK;
+            }
+            crypto_stream_chacha20_xor_ic(c + off, m + off, cl, npub, ic, k);
+            crypto_onetimeauth_poly1305_update(&state, c + off, cl);
+            off += cl;
+            ic += cl / 64U;
+        }
+    }
     STORE64_LE(slen, (uint64_t) mlen);
     crypto_onetimeauth_poly1305_update(&state, slen, sizeof slen);
 
@@ -112,9 +127,22 @@ crypto_aead_chacha20poly1305_ietf_encrypt_detached(unsigned char *c,
     crypto_onetimeauth_poly1305_update(&state, ad, adlen);
     crypto_onetimeauth_poly1305_update(&state, _pad0, (0x10 - adlen) & 0xf);
 
-    crypto_stream_chacha20_ietf_xor_ic(c, m, mlen, npub, 1U, k);
+    {
+        unsigned long long off = 0U;
+        uint32_t           ic  = 1U;
 
-    crypto_onetimeauth_poly1305_update(&state, c, mlen);
+        while (off < mlen) {
+            unsigned long long cl = mlen - off;
+            if (cl > STREAM_POLY1305_CHUNK) {
+                cl = STREAM_POLY1305_CHUNK;
+            }
+            crypto_stream_chacha20_ietf_xor_ic(c + off, m + off, cl,
+                                               npub, ic, k);
+            crypto_onetimeauth_poly1305_update(&state, c + off, cl);
+            off += cl;
+            ic += (uint32_t) (cl / 64U);
+        }
+    }
     crypto_onetimeauth_poly1305_update(&state, _pad0, (0x10 - mlen) & 0xf);
 
     STORE64_LE(slen, (uint64_t) adlen);

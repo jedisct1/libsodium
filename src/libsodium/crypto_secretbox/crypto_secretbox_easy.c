@@ -13,6 +13,8 @@
 #include "private/common.h"
 #include "utils.h"
 
+#define STREAM_POLY1305_CHUNK 131072
+
 int
 crypto_secretbox_detached(unsigned char *c, unsigned char *mac,
                           const unsigned char *m,
@@ -60,13 +62,27 @@ crypto_secretbox_detached(unsigned char *c, unsigned char *mac,
         c[i] = block0[crypto_secretbox_ZEROBYTES + i];
     }
     sodium_memzero(block0, sizeof block0);
-    if (mlen > mlen0) {
-        crypto_stream_salsa20_xor_ic(c + mlen0, m + mlen0, mlen - mlen0,
-                                     n + 16, 1U, subkey);
+
+    crypto_onetimeauth_poly1305_update(&state, c, mlen0);
+    {
+        unsigned long long off = mlen0;
+        uint64_t           ic  = 1U;
+
+        COMPILER_ASSERT(STREAM_POLY1305_CHUNK % 64U == 0U);
+        while (off < mlen) {
+            unsigned long long cl = mlen - off;
+            if (cl > STREAM_POLY1305_CHUNK) {
+                cl = STREAM_POLY1305_CHUNK;
+            }
+            crypto_stream_salsa20_xor_ic(c + off, m + off, cl,
+                                         n + 16, ic, subkey);
+            crypto_onetimeauth_poly1305_update(&state, c + off, cl);
+            off += cl;
+            ic += cl / 64U;
+        }
     }
     sodium_memzero(subkey, sizeof subkey);
 
-    crypto_onetimeauth_poly1305_update(&state, c, mlen);
     crypto_onetimeauth_poly1305_final(&state, mac);
     sodium_memzero(&state, sizeof state);
 
