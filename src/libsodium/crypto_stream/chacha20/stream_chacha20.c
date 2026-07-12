@@ -20,6 +20,10 @@
 #if defined(HAVE_EMMINTRIN_H) && defined(HAVE_TMMINTRIN_H)
 # include "dolbeau/chacha20_dolbeau-ssse3.h"
 #endif
+#if (defined(__aarch64__) || defined(_M_ARM64)) && \
+    (defined(__ARM_NEON) || defined(__ARM_NEON__))
+# include "dolbeau/chacha20_dolbeau-neon.h"
+#endif
 
 static const crypto_stream_chacha20_implementation *implementation =
     &crypto_stream_chacha20_ref_implementation;
@@ -190,6 +194,13 @@ _crypto_stream_chacha20_pick_best_implementation(void)
 #if defined(HAVE_EMMINTRIN_H) && defined(HAVE_TMMINTRIN_H)
     if (sodium_runtime_has_ssse3()) {
         implementation = &crypto_stream_chacha20_dolbeau_ssse3_implementation;
+        return 0;
+    }
+#endif
+#if (defined(__aarch64__) || defined(_M_ARM64)) && \
+    (defined(__ARM_NEON) || defined(__ARM_NEON__))
+    if (sodium_runtime_has_neon()) {
+        implementation = &crypto_stream_chacha20_dolbeau_neon_implementation;
         return 0;
     }
 #endif
