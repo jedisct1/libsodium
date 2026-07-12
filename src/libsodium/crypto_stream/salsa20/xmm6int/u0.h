@@ -161,20 +161,20 @@ if (bytes > 0) {
     diag2 = _mm_add_epi32(diag2, _mm_loadu_si128((const __m128i *) (x + 8)));
     diag3 = _mm_add_epi32(diag3, _mm_loadu_si128((const __m128i *) (x + 12)));
 
-#define ONEQUAD_SHUFFLE(A, B, C, D)                                              \
-    do {                                                                         \
-        uint32_t in##A                         = _mm_cvtsi128_si32(diag0);       \
-        uint32_t in##B                         = _mm_cvtsi128_si32(diag1);       \
-        uint32_t in##C                         = _mm_cvtsi128_si32(diag2);       \
-        uint32_t in##D                         = _mm_cvtsi128_si32(diag3);       \
-        diag0                                  = _mm_shuffle_epi32(diag0, 0x39); \
-        diag1                                  = _mm_shuffle_epi32(diag1, 0x39); \
-        diag2                                  = _mm_shuffle_epi32(diag2, 0x39); \
-        diag3                                  = _mm_shuffle_epi32(diag3, 0x39); \
-        *(uint32_t *) (partialblock + (A * 4)) = in##A;                          \
-        *(uint32_t *) (partialblock + (B * 4)) = in##B;                          \
-        *(uint32_t *) (partialblock + (C * 4)) = in##C;                          \
-        *(uint32_t *) (partialblock + (D * 4)) = in##D;                          \
+#define ONEQUAD_SHUFFLE(A, B, C, D)                      \
+    do {                                                 \
+        uint32_t in##A = _mm_cvtsi128_si32(diag0);       \
+        uint32_t in##B = _mm_cvtsi128_si32(diag1);       \
+        uint32_t in##C = _mm_cvtsi128_si32(diag2);       \
+        uint32_t in##D = _mm_cvtsi128_si32(diag3);       \
+        diag0          = _mm_shuffle_epi32(diag0, 0x39); \
+        diag1          = _mm_shuffle_epi32(diag1, 0x39); \
+        diag2          = _mm_shuffle_epi32(diag2, 0x39); \
+        diag3          = _mm_shuffle_epi32(diag3, 0x39); \
+        STORE32_LE(partialblock + (A * 4), in##A);       \
+        STORE32_LE(partialblock + (B * 4), in##B);       \
+        STORE32_LE(partialblock + (C * 4), in##C);       \
+        STORE32_LE(partialblock + (D * 4), in##D);       \
     } while (0)
 
 #define ONEQUAD(A, B, C, D) ONEQUAD_SHUFFLE(A, B, C, D)
