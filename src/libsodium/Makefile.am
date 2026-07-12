@@ -347,4 +347,10 @@ libavx512f_la_CPPFLAGS = $(libsodium_la_CPPFLAGS) \
 	@CFLAGS_SSE2@ @CFLAGS_SSSE3@ @CFLAGS_SSE41@ @CFLAGS_AVX@ @CFLAGS_AVX2@ @CFLAGS_AVX512F@
 libavx512f_la_SOURCES = \
 	crypto_pwhash/argon2/argon2-fill-block-avx512f.c \
-	crypto_pwhash/argon2/blamka-round-avx512f.h
+	crypto_pwhash/argon2/blamka-round-avx512f.h \
+	crypto_stream/chacha20/dolbeau/chacha20_dolbeau-avx512.c \
+	crypto_stream/chacha20/dolbeau/chacha20_dolbeau-avx512.h \
+	crypto_stream/chacha20/dolbeau/u16.h \
+	crypto_stream/salsa20/xmm6int/salsa20_xmm6int-avx512.c \
+	crypto_stream/salsa20/xmm6int/salsa20_xmm6int-avx512.h \
+	crypto_stream/salsa20/xmm6int/u16.h
