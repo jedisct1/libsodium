@@ -186,6 +186,8 @@ pub fn build(b: *std.Build) !void {
     var target = b.standardTargetOptions(.{});
     const optimize = b.standardOptimizeOption(.{});
 
+    const debug_mode: @TypeOf(optimize) = if (@hasField(@TypeOf(optimize), "debug")) .debug else .Debug;
+
     const enable_benchmarks = b.option(bool, "enable_benchmarks", "Whether tests should be benchmarks.") orelse false;
     const benchmarks_iterations = b.option(u32, "iterations", "Number of iterations for benchmarks.") orelse 200;
     const wasm_max_memory = b.option(u64, "wasm_max_memory", "Maximum WebAssembly linear memory size in bytes.") orelse null;
@@ -205,7 +207,7 @@ pub fn build(b: *std.Build) !void {
         .aarch64, .aarch64_be => {
             // ARM CPUs supported by Windows are assumed to have NEON support
             if (target.result.isMinGW()) {
-                target.query.cpu_features_add.addFeature(@intFromEnum(Target.aarch64.Feature.neon));
+                target.query.cpu_features_add.addFeature(@backingInt(Target.aarch64.Feature.neon));
             }
         },
         else => {},
@@ -226,7 +228,7 @@ pub fn build(b: *std.Build) !void {
         .root_module = b.createModule(.{
             .target = target,
             .optimize = optimize,
-            .strip = optimize != .Debug and !target.result.isMinGW(),
+            .strip = optimize != debug_mode and !target.result.isMinGW(),
         }),
     });
 
@@ -334,7 +336,7 @@ pub fn build(b: *std.Build) !void {
                 .root_module = b.createModule(.{
                     .target = target,
                     .optimize = optimize,
-                    .strip = optimize != .Debug,
+                    .strip = optimize != debug_mode,
                     .link_libc = true,
                 }),
             });
