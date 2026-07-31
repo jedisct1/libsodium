@@ -226,7 +226,7 @@ pub fn build(b: *std.Build) !void {
         .root_module = b.createModule(.{
             .target = target,
             .optimize = optimize,
-            .strip = optimize != .Debug and !target.result.isMinGW(),
+            .strip = optimize != .debug and !target.result.isMinGW(),
         }),
     });
 
@@ -334,7 +334,7 @@ pub fn build(b: *std.Build) !void {
                 .root_module = b.createModule(.{
                     .target = target,
                     .optimize = optimize,
-                    .strip = optimize != .Debug,
+                    .strip = optimize != .debug,
                     .link_libc = true,
                 }),
             });
@@ -371,7 +371,7 @@ pub fn build(b: *std.Build) !void {
         const translate_c = b.addTranslateC(.{
             .root_source_file = b.path("src/libsodium/include/sodium.h"),
             .target = target,
-            .optimize = .Debug,
+            .optimize = .debug,
             .link_libc = true,
         });
         translate_c.addIncludePath(b.path("src/libsodium/include"));
