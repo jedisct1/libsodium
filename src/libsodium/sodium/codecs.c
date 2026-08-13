@@ -572,7 +572,7 @@ sodium_bin2ip(char *ip, size_t ip_maxlen, const unsigned char bin[16])
         if (len >= ip_maxlen) {
             return NULL;
         }
-        memcpy(ip, buf, len + 1U);
+        memcpy(ip, buf, len);
         ip[len] = 0;
 
         return ip;
