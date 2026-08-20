@@ -3,9 +3,7 @@
 #include <sys/types.h>
 
 #include <limits.h>
-#ifdef HAVE_CATCHABLE_SEGV
-# include <signal.h>
-#endif
+#include <signal.h>
 #ifndef _WIN32
 # include <unistd.h>
 #endif
