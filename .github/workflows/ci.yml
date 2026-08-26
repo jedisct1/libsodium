@@ -77,7 +77,6 @@ jobs:
           zig build -Dtarget=aarch64-macos
           zig build -Dtarget=x86_64-freebsd
           zig build -Dtarget=aarch64-freebsd
-          zig build -Dtarget=wasm32-wasi
           zig build -Dtarget=wasm32-freestanding
           zig build -Dtarget=wasm32-freestanding -Dwasm_freestanding_libc=false
           zig build -Doptimize=ReleaseFast
@@ -207,38 +206,6 @@ jobs:
             make -j $(nproc)
             make distclean > /dev/null
           done
-
-  wasi:
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
-        with:
-          persist-credentials: false
-
-      - name: Install Zig
-        uses: mlugg/setup-zig@d1434d08867e3ee9daa34448df10607b98908d29 # v2.2.1
-        with:
-          version: 0.16.0
-
-      - name: Install Wasmer
-        uses: wasmerio/setup-wasmer@24b15c95293d23f89c68bd40dac76338f773e924 # v3.1
-
-      - name: Build for wasi-core
-        run: zig build -Dtarget=wasm32-wasi -Doptimize=ReleaseSafe
-
-      - name: Run tests with Wasmer
-        run: |
-          cd zig-out/bin
-          failed=0
-          for wasm in *.wasm; do
-            name="${wasm%.wasm}"
-            echo "[$name]"
-            if ! wasmer run --volume="$(pwd):/" "$wasm" 2>&1; then
-              echo "*** [$name] FAILED" >&2
-              failed=1
-            fi
-          done
-          exit $failed
 
   aarch64-gcc:
     runs-on: ubuntu-24.04-arm

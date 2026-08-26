@@ -10,5 +10,4 @@ EXTRA_DIST = \
 	apple-xcframework.sh \
 	macos.sh \
 	msys2-win32.sh \
-	msys2-win64.sh \
-	wasm32-wasi.sh
+	msys2-win64.sh

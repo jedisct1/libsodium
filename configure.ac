@@ -237,8 +237,6 @@ dnl Checks
 
 AC_C_VARARRAYS
 
-AC_CHECK_DEFINE([__wasi__], [WASI="yes"], [])
-
 AS_CASE([$host_os], [linux-gnu], [AX_ADD_FORTIFY_SOURCE], [ ])
 
 AX_CHECK_COMPILE_FLAG([-fvisibility=hidden],
@@ -968,11 +966,9 @@ dnl Checks for functions and headers
 AC_FUNC_ALLOCA
 AS_IF([test "x$EMSCRIPTEN" = "x"],[
   AC_CHECK_FUNCS([arc4random arc4random_buf])
-  AS_IF([test "x$WASI" = "x"],[
-    AC_CHECK_FUNCS([mmap mlock madvise mprotect])
-    AC_CHECK_FUNCS([raise])
-    AC_CHECK_FUNCS([sysconf])
-  ])
+  AC_CHECK_FUNCS([mmap mlock madvise mprotect])
+  AC_CHECK_FUNCS([raise])
+  AC_CHECK_FUNCS([sysconf])
   AC_MSG_CHECKING(for getrandom with a standard API)
   AC_LINK_IFELSE([AC_LANG_PROGRAM([[
 #include <stdlib.h>
@@ -1010,16 +1006,12 @@ if (&getentropy != NULL) {
   ])
 ])
 
-AS_IF([test "x$WASI" = "x"],[
-  AC_CHECK_FUNCS([getpid])
-  AC_CHECK_FUNCS([getauxval elf_aux_info])
-])
+AC_CHECK_FUNCS([getpid])
+AC_CHECK_FUNCS([getauxval elf_aux_info])
 
 AC_CHECK_FUNCS([posix_memalign nanosleep clock_gettime])
 
-AS_IF([test "x$WASI" = "x"],[
-  AC_CHECK_FUNCS([memset_s explicit_bzero memset_explicit explicit_memset])
-])
+AC_CHECK_FUNCS([memset_s explicit_bzero memset_explicit explicit_memset])
 
 AC_SUBST([LIBTOOL_EXTRA_FLAGS])
 
@@ -1030,7 +1022,6 @@ AS_IF([test "x$EMSCRIPTEN" != "x"],[
 ])
 AC_SUBST(TEST_LDFLAGS)
 AM_CONDITIONAL([EMSCRIPTEN], [test "x$EMSCRIPTEN" != "x"])
-AM_CONDITIONAL([WASI], [test "x$WASI" != "x"])
 
 AC_DEFINE([CONFIGURED], [1], [the build system was properly configured])
 

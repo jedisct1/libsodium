@@ -642,8 +642,6 @@ LTLIBOBJS
 LIBOBJS
 HAVE_LD_OUTPUT_DEF_FALSE
 HAVE_LD_OUTPUT_DEF_TRUE
-WASI_FALSE
-WASI_TRUE
 EMSCRIPTEN_FALSE
 EMSCRIPTEN_TRUE
 TEST_LDFLAGS
@@ -8351,48 +8349,6 @@ printf '%s\n' "#define __STDC_NO_VLA__ 1" >>confdefs.h
 
   fi
 
-
-
-{ printf '%s\n' "$as_me:${as_lineno-$LINENO}: checking for __wasi__ defined" >&5
-printf %s "checking for __wasi__ defined... " >&6; }
-if test ${ac_cv_defined___wasi__+y}
-then :
-  printf %s "(cached) " >&6
-else case e in #(
-  e) cat confdefs.h - <<_ACEOF >conftest.$ac_ext
-/* end confdefs.h.  */
-
-int
-main (void)
-{
-
-  #ifdef __wasi__
-  int ok;
-  (void)ok;
-  #else
-  choke me
-  #endif
-
-  ;
-  return 0;
-}
-_ACEOF
-if ac_fn_c_try_compile "$LINENO"
-then :
-  ac_cv_defined___wasi__=yes
-else case e in #(
-  e) ac_cv_defined___wasi__=no ;;
-esac
-fi
-rm -f core conftest.err conftest.$ac_objext conftest.beam conftest.$ac_ext ;;
-esac
-fi
-{ printf '%s\n' "$as_me:${as_lineno-$LINENO}: result: $ac_cv_defined___wasi__" >&5
-printf '%s\n' "$ac_cv_defined___wasi__" >&6; }
-if test $ac_cv_defined___wasi__ != "no"
-then :
-  WASI="yes"
-fi
 
 case $host_os in #(
   linux-gnu) :
@@ -23155,10 +23111,7 @@ then :
 
 fi
 
-  if test "x$WASI" = "x"
-then :
-
-    ac_fn_c_check_func "$LINENO" "mmap" "ac_cv_func_mmap"
+  ac_fn_c_check_func "$LINENO" "mmap" "ac_cv_func_mmap"
 if test "x$ac_cv_func_mmap" = xyes
 then :
   printf '%s\n' "#define HAVE_MMAP 1" >>confdefs.h
@@ -23183,22 +23136,20 @@ then :
 
 fi
 
-    ac_fn_c_check_func "$LINENO" "raise" "ac_cv_func_raise"
+  ac_fn_c_check_func "$LINENO" "raise" "ac_cv_func_raise"
 if test "x$ac_cv_func_raise" = xyes
 then :
   printf '%s\n' "#define HAVE_RAISE 1" >>confdefs.h
 
 fi
 
-    ac_fn_c_check_func "$LINENO" "sysconf" "ac_cv_func_sysconf"
+  ac_fn_c_check_func "$LINENO" "sysconf" "ac_cv_func_sysconf"
 if test "x$ac_cv_func_sysconf" = xyes
 then :
   printf '%s\n' "#define HAVE_SYSCONF 1" >>confdefs.h
 
 fi
 
-
-fi
   { printf '%s\n' "$as_me:${as_lineno-$LINENO}: checking for getrandom with a standard API" >&5
 printf %s "checking for getrandom with a standard API... " >&6; }
   cat confdefs.h - <<_ACEOF >conftest.$ac_ext
@@ -23289,17 +23240,14 @@ rm -f core conftest.err conftest.$ac_objext conftest.beam \
 
 fi
 
-if test "x$WASI" = "x"
-then :
-
-  ac_fn_c_check_func "$LINENO" "getpid" "ac_cv_func_getpid"
+ac_fn_c_check_func "$LINENO" "getpid" "ac_cv_func_getpid"
 if test "x$ac_cv_func_getpid" = xyes
 then :
   printf '%s\n' "#define HAVE_GETPID 1" >>confdefs.h
 
 fi
 
-  ac_fn_c_check_func "$LINENO" "getauxval" "ac_cv_func_getauxval"
+ac_fn_c_check_func "$LINENO" "getauxval" "ac_cv_func_getauxval"
 if test "x$ac_cv_func_getauxval" = xyes
 then :
   printf '%s\n' "#define HAVE_GETAUXVAL 1" >>confdefs.h
@@ -23312,8 +23260,6 @@ then :
 
 fi
 
-
-fi
 
 ac_fn_c_check_func "$LINENO" "posix_memalign" "ac_cv_func_posix_memalign"
 if test "x$ac_cv_func_posix_memalign" = xyes
@@ -23335,10 +23281,7 @@ then :
 fi
 
 
-if test "x$WASI" = "x"
-then :
-
-  ac_fn_c_check_func "$LINENO" "memset_s" "ac_cv_func_memset_s"
+ac_fn_c_check_func "$LINENO" "memset_s" "ac_cv_func_memset_s"
 if test "x$ac_cv_func_memset_s" = xyes
 then :
   printf '%s\n' "#define HAVE_MEMSET_S 1" >>confdefs.h
@@ -23364,8 +23307,6 @@ then :
 fi
 
 
-fi
-
 
 
 TEST_LDFLAGS=''
@@ -23383,14 +23324,6 @@ fi
 else
   EMSCRIPTEN_TRUE='#'
   EMSCRIPTEN_FALSE=
-fi
-
- if test "x$WASI" != "x"; then
-  WASI_TRUE=
-  WASI_FALSE='#'
-else
-  WASI_TRUE='#'
-  WASI_FALSE=
 fi
 
 
@@ -23633,10 +23566,6 @@ Usually this means the macro was only invoked conditionally." "$LINENO" 5
 fi
 if test -z "${EMSCRIPTEN_TRUE}" && test -z "${EMSCRIPTEN_FALSE}"; then
   as_fn_error $? "conditional \"EMSCRIPTEN\" was never defined.
-Usually this means the macro was only invoked conditionally." "$LINENO" 5
-fi
-if test -z "${WASI_TRUE}" && test -z "${WASI_FALSE}"; then
-  as_fn_error $? "conditional \"WASI\" was never defined.
 Usually this means the macro was only invoked conditionally." "$LINENO" 5
 fi
 if test -z "${HAVE_LD_OUTPUT_DEF_TRUE}" && test -z "${HAVE_LD_OUTPUT_DEF_FALSE}"; then

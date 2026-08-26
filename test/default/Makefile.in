@@ -119,7 +119,6 @@ am__aclocal_m4_deps = $(top_srcdir)/m4/ax_add_fortify_source.m4 \
 	$(top_srcdir)/m4/ax_check_catchable_abrt.m4 \
 	$(top_srcdir)/m4/ax_check_catchable_segv.m4 \
 	$(top_srcdir)/m4/ax_check_compile_flag.m4 \
-	$(top_srcdir)/m4/ax_check_define.m4 \
 	$(top_srcdir)/m4/ax_check_link_flag.m4 \
 	$(top_srcdir)/m4/ax_pthread.m4 $(top_srcdir)/m4/ax_tls.m4 \
 	$(top_srcdir)/m4/ax_valgrind_check.m4 \
@@ -1038,7 +1037,6 @@ valgrind_tools = @valgrind_tools@
 EXTRA_DIST = \
 	run.sh \
 	cmptest.h \
-	wasi-test-wrapper.sh \
 	wintest.bat \
 	pre.js.inc \
 	aead_aegis128l.exp \
@@ -1477,7 +1475,6 @@ xof_turboshake256_SOURCE = cmptest.h xof_turboshake256.c
 xof_turboshake256_LDADD = $(TESTS_LDADD)
 xof2_SOURCE = cmptest.h xof2.c
 xof2_LDADD = $(TESTS_LDADD)
-@WASI_TRUE@LOG_COMPILER = ./wasi-test-wrapper.sh
 all: all-am
 
 .SUFFIXES:

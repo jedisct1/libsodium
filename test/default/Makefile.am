@@ -2,7 +2,6 @@
 EXTRA_DIST = \
 	run.sh \
 	cmptest.h \
-	wasi-test-wrapper.sh \
 	wintest.bat \
 	pre.js.inc \
 	aead_aegis128l.exp \
@@ -640,10 +639,6 @@ TESTS_TARGETS += \
 	scalarmult_ristretto255 \
 	siphashx24 \
 	xchacha20
-endif
-
-if WASI
-LOG_COMPILER = ./wasi-test-wrapper.sh
 endif
 
 verify: check

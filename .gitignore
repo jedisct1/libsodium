@@ -61,7 +61,6 @@ libsodium-nativeclient
 libsodium-nativeclient-*
 libsodium-osx
 libsodium-uninstalled.pc
-libsodium-wasm32-wasi
 libsodium-win32
 libsodium-win64
 libsodium.pc
