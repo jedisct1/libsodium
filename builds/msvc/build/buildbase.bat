@@ -12,7 +12,7 @@ IF NOT EXIST !vswhere! SET vswhere="%ProgramFiles%\Microsoft Visual Studio\Insta
 SET /A next_version=version + 1
 SET version_range=[%version%.0,!next_version!.0)
 SET required_components=Microsoft.VisualStudio.Component.VC.Tools.x86.x64
-IF %version% GEQ 16 SET required_components=!required_components! Microsoft.VisualStudio.Component.VC.Tools.ARM64
+IF %version% GEQ 17 SET required_components=!required_components! Microsoft.VisualStudio.Component.VC.Tools.ARM64
 
 IF %version% GEQ 15 (
   IF EXIST !vswhere! (
@@ -79,8 +79,8 @@ ECHO Configuration=StaticRelease
 msbuild /m /v:n /p:Configuration=StaticRelease /p:Platform=x64 %solution% >> %log%
 IF errorlevel 1 GOTO error
 
-@REM Build ARM64 packages only for Visual studio 2019 and later
-IF %version% GEQ 16 (
+@REM Build ARM64 packages only for Visual Studio 2022 and later
+IF %version% GEQ 17 (
   ENDLOCAL & SET solution=%solution% & SET version=%version% & SET log=%log% & SET environment=%environment%
   SETLOCAL enabledelayedexpansion
 

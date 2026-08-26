@@ -46,7 +46,7 @@ jobs:
       vmImage: "windows-2022"
     steps:
       - powershell: |
-          choco install visualstudio2019buildtools --package-parameters "--add Microsoft.VisualStudio.Workload.VCTools --includeRecommended --add Microsoft.VisualStudio.Component.VC.Tools.ARM64 --quiet --wait" -y
+          choco install visualstudio2019buildtools --package-parameters "--add Microsoft.VisualStudio.Workload.VCTools --includeRecommended --quiet --wait" -y
         displayName: Install VS2019 Build Tools
       - powershell: |
           cd builds\msvc\build
