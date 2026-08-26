@@ -2,7 +2,7 @@
 #include "argon2-core.h"
 #include "utils.h"
 #include <limits.h>
-#include <stdio.h>
+#include <stddef.h>
 #include <stdlib.h>
 #include <string.h>
 

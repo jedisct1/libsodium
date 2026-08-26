@@ -10,6 +10,7 @@ const Dir = if (pre_zig17) std.Io.Dir else std.fs.Dir;
 const Io = if (pre_zig17) std.Io else void;
 
 const has_build_root_handle = @hasField(std.Build, "build_root");
+const wasm_libc_path = "builds/wasm32-freestanding";
 
 fn initLibConfig(b: *std.Build, target: std.Build.ResolvedTarget, lib: *Compile) void {
     lib.root_module.link_libc = true;
@@ -102,6 +103,12 @@ fn initLibConfig(b: *std.Build, target: std.Build.ResolvedTarget, lib: *Compile)
             lib.root_module.addCMacro("HAVE_SYS_AUXV_H", "1");
             lib.root_module.addCMacro("HAVE_SYS_PARAM_H", "1");
             lib.root_module.addCMacro("HAVE_SYS_RANDOM_H", "1");
+        },
+        .freestanding => {
+            if (target.result.cpu.arch.isWasm()) {
+                lib.root_module.link_libc = false;
+                lib.root_module.addSystemIncludePath(b.path(wasm_libc_path ++ "/include"));
+            }
         },
         .freebsd => {
             lib.root_module.addCMacro("ASM_HIDE_SYMBOL", ".hidden");
@@ -197,10 +204,18 @@ pub fn build(b: *std.Build) !void {
     var build_static = b.option(bool, "static", "Build libsodium as a static library.") orelse true;
     var build_shared = b.option(bool, "shared", "Build libsodium as a shared library.") orelse true;
 
-    const build_tests = b.option(bool, "test", "Build the tests (implies -Dstatic=true)") orelse true;
+    var build_tests = b.option(bool, "test", "Build the tests (implies -Dstatic=true)") orelse true;
+
+    const wasm_freestanding =
+        target.result.cpu.arch.isWasm() and target.result.os.tag == .freestanding;
 
     if (target.result.cpu.arch.isWasm()) {
         build_shared = false;
+    }
+    // The test programs need a hosted environment: standard input and output,
+    // and files to read the expected results from.
+    if (wasm_freestanding) {
+        build_tests = false;
     }
     if (build_tests) {
         build_static = true;
@@ -267,6 +282,13 @@ pub fn build(b: *std.Build) !void {
             "-flax-vector-conversions",
             "-Werror=vla",
         };
+
+        if (wasm_freestanding) {
+            lib.root_module.addCSourceFiles(.{
+                .files = &.{wasm_libc_path ++ "/libc.c"},
+                .flags = flags,
+            });
+        }
 
         const allocator = heap.page_allocator;
 
