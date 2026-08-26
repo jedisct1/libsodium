@@ -5,10 +5,11 @@ const mem = std.mem;
 const Compile = std.Build.Step.Compile;
 const Target = std.Target;
 
-// Zig 0.16+ uses std.Io.Dir, 0.15 uses std.fs
-const is_zig_16 = @hasDecl(std, "Io") and @hasDecl(std.Io, "Dir");
-const Dir = if (is_zig_16) std.Io.Dir else std.fs.Dir;
-const Io = if (is_zig_16) std.Io else void;
+const pre_zig17 = @hasDecl(std, "Io") and @hasDecl(std.Io, "Dir");
+const Dir = if (pre_zig17) std.Io.Dir else std.fs.Dir;
+const Io = if (pre_zig17) std.Io else void;
+
+const has_build_root_handle = @hasField(std.Build, "build_root");
 
 fn initLibConfig(b: *std.Build, target: std.Build.ResolvedTarget, lib: *Compile) void {
     lib.root_module.link_libc = true;
@@ -169,15 +170,17 @@ fn initLibConfig(b: *std.Build, target: std.Build.ResolvedTarget, lib: *Compile)
 }
 
 pub fn build(b: *std.Build) !void {
-    const io: Io = if (is_zig_16) b.graph.io else {};
-    const cwd = if (is_zig_16)
-        try b.root.openDir(io, ".", .{})
+    const io: Io = if (pre_zig17) b.graph.io else {};
+    const cwd: Dir = if (!pre_zig17)
+        try std.fs.cwd().openDir(b.build_root.path orelse ".", .{})
+    else if (has_build_root_handle)
+        b.build_root.handle
     else
-        try std.fs.cwd().openDir(b.build_root.path orelse ".", .{});
+        try b.root.openDir(io, ".", .{});
 
     const src_path = "src/libsodium";
-    const src_dir = if (is_zig_16)
-        try b.root.openDir(io, src_path, .{ .iterate = true })
+    const src_dir = if (pre_zig17)
+        try cwd.openDir(io, src_path, .{ .iterate = true })
     else if (@hasField(Dir.OpenOptions, "follow_symlinks"))
         try cwd.openDir(src_path, .{ .iterate = true, .follow_symlinks = false })
     else
@@ -207,7 +210,7 @@ pub fn build(b: *std.Build) !void {
         .aarch64, .aarch64_be => {
             // ARM CPUs supported by Windows are assumed to have NEON support
             if (target.result.isMinGW()) {
-                target.query.cpu_features_add.addFeature(@backingInt(Target.aarch64.Feature.neon));
+                target.query.cpu_features_add.addFeatureSet(Target.aarch64.featureSet(&.{.neon}));
             }
         },
         else => {},
@@ -245,7 +248,7 @@ pub fn build(b: *std.Build) !void {
     const prebuilt_version_file_path = "builds/msvc/version.h";
     const version_file_path = "include/sodium/version.h";
 
-    if (is_zig_16) {
+    if (pre_zig17) {
         try Dir.copyFile(cwd, prebuilt_version_file_path, src_dir, version_file_path, io, .{});
     } else {
         try cwd.copyFile(prebuilt_version_file_path, src_dir, version_file_path, .{});
@@ -270,7 +273,7 @@ pub fn build(b: *std.Build) !void {
         const allocator = heap.page_allocator;
 
         var walker = try src_dir.walk(allocator);
-        while (if (is_zig_16) try walker.next(io) else try walker.next()) |entry| {
+        while (if (pre_zig17) try walker.next(io) else try walker.next()) |entry| {
             const name = entry.basename;
             if (mem.endsWith(u8, name, ".c")) {
                 const full_path = try fmt.allocPrint(allocator, "{s}/{s}", .{ src_path, entry.path });
@@ -288,24 +291,24 @@ pub fn build(b: *std.Build) !void {
 
     const test_path = "test/default";
     const out_bin_path = "zig-out/bin";
-    const test_dir = if (is_zig_16)
+    const test_dir = if (pre_zig17)
         try cwd.openDir(io, test_path, .{ .iterate = true })
     else if (@hasField(Dir.OpenOptions, "follow_symlinks"))
         try cwd.openDir(test_path, .{ .iterate = true, .follow_symlinks = false })
     else
         try cwd.openDir(test_path, .{ .iterate = true, .no_follow = true });
 
-    if (is_zig_16) {
+    if (pre_zig17) {
         cwd.createDirPath(io, out_bin_path) catch {};
     } else {
         cwd.makePath(out_bin_path) catch {};
     }
-    const out_bin_dir = if (is_zig_16)
+    const out_bin_dir = if (pre_zig17)
         try cwd.openDir(io, out_bin_path, .{})
     else
         try cwd.openDir(out_bin_path, .{});
 
-    if (is_zig_16) {
+    if (pre_zig17) {
         try Dir.copyFile(test_dir, "run.sh", out_bin_dir, "run.sh", io, .{});
     } else {
         try test_dir.copyFile("run.sh", out_bin_dir, "run.sh", .{});
@@ -317,10 +320,10 @@ pub fn build(b: *std.Build) !void {
     const test_step = b.step("test", "Run all libsodium tests");
 
     if (build_tests) {
-        while (if (is_zig_16) try walker.next(io) else try walker.next()) |entry| {
+        while (if (pre_zig17) try walker.next(io) else try walker.next()) |entry| {
             const name = entry.basename;
             if (mem.endsWith(u8, name, ".exp")) {
-                if (is_zig_16) {
+                if (pre_zig17) {
                     try Dir.copyFile(test_dir, name, out_bin_dir, name, io, .{});
                 } else {
                     try test_dir.copyFile(name, out_bin_dir, name, .{});
