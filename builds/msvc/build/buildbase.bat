@@ -6,58 +6,30 @@ SETLOCAL enabledelayedexpansion
 SET solution=%1
 SET version=%2
 SET log=build_%version%.log
-SET tools=Microsoft Visual Studio %version%.0\VC\vcvarsall.bat
+SET environment=
+SET vswhere="%ProgramFiles(x86)%\Microsoft Visual Studio\Installer\vswhere.exe"
+IF NOT EXIST !vswhere! SET vswhere="%ProgramFiles%\Microsoft Visual Studio\Installer\vswhere.exe"
+SET /A next_version=version + 1
+SET version_range=[%version%.0,!next_version!.0)
+SET required_components=Microsoft.VisualStudio.Component.VC.Tools.x86.x64
+IF %version% GEQ 16 SET required_components=!required_components! Microsoft.VisualStudio.Component.VC.Tools.ARM64
 
-IF %version% == 18 (
-  SET tools=Microsoft Visual Studio\18\Enterprise\VC\Auxiliary\Build\vcvarsall.bat
-  SET environment="%programfiles%\!tools!"
-  IF NOT EXIST !environment! (
-    SET environment="%programfiles(x86)%\!tools!"
-    IF NOT EXIST !environment! (
-      SET tools=Microsoft Visual Studio\18\Community\VC\Auxiliary\Build\vcvarsall.bat
+IF %version% GEQ 15 (
+  IF EXIST !vswhere! (
+    FOR /F "usebackq tokens=*" %%I IN (`!vswhere! -latest -prerelease -products * -version !version_range! -requires !required_components! -property installationPath`) DO (
+      SET environment="%%I\VC\Auxiliary\Build\vcvarsall.bat"
     )
   )
+) ELSE (
+  SET tools=Microsoft Visual Studio %version%.0\VC\vcvarsall.bat
+  SET environment="%ProgramFiles%\!tools!"
+  IF NOT EXIST !environment! SET environment="%ProgramFiles(x86)%\!tools!"
 )
 
-IF %version% == 17 (
-  SET tools=Microsoft Visual Studio\2022\Enterprise\VC\Auxiliary\Build\vcvarsall.bat
-  SET environment="%programfiles%\!tools!"
-  IF NOT EXIST !environment! (
-    SET environment="%programfiles(x86)%\!tools!"
-    IF NOT EXIST !environment! (
-      SET tools=Microsoft Visual Studio\2022\Community\VC\Auxiliary\Build\vcvarsall.bat
-    )
-  )
-)
-
-IF %version% == 16 (
-  SET tools=Microsoft Visual Studio\2019\Enterprise\VC\Auxiliary\Build\vcvarsall.bat
-  SET environment="%programfiles%\!tools!"
-  IF NOT EXIST !environment! (
-    SET environment="%programfiles(x86)%\!tools!"
-    IF NOT EXIST !environment! (
-      SET tools=Microsoft Visual Studio\2019\Community\VC\Auxiliary\Build\vcvarsall.bat
-    )
-  )
-)
-
-IF %version% == 15 (
-  SET tools=Microsoft Visual Studio\2017\Enterprise\VC\Auxiliary\Build\vcvarsall.bat
-  SET environment="%programfiles%\!tools!"
-  IF NOT EXIST !environment! (
-    SET environment="%programfiles(x86)%\!tools!"
-    IF NOT EXIST !environment! (
-      SET tools=Microsoft Visual Studio\2017\Community\VC\Auxiliary\Build\vcvarsall.bat
-    )
-  )
-)
-SET environment="%programfiles%\!tools!"
-IF NOT EXIST !environment! SET environment="%programfiles(x86)%\!tools!"
-
-ECHO Environment: !environment!
-
+IF NOT DEFINED environment GOTO no_tools
 IF NOT EXIST !environment! GOTO no_tools
 
+ECHO Environment: !environment!
 ECHO Building: %solution%
 
 CALL !environment! x86 > nul 2>&1
@@ -82,7 +54,7 @@ ECHO Configuration=StaticRelease
 msbuild /m /v:n /p:Configuration=StaticRelease /p:Platform=Win32 %solution% >> %log%
 IF errorlevel 1 GOTO error
 
-ENDLOCAL & SET solution=%solution% & SET version=%version% & SET log=%log% & SET tools=%tools% & SET environment=%environment%
+ENDLOCAL & SET solution=%solution% & SET version=%version% & SET log=%log% & SET environment=%environment%
 SETLOCAL enabledelayedexpansion
 
 CALL !environment! x86_amd64 > nul 2>&1
@@ -109,7 +81,7 @@ IF errorlevel 1 GOTO error
 
 @REM Build ARM64 packages only for Visual studio 2019 and later
 IF %version% GEQ 16 (
-  ENDLOCAL & SET solution=%solution% & SET version=%version% & SET log=%log% & SET tools=%tools% & SET environment=%environment%
+  ENDLOCAL & SET solution=%solution% & SET version=%version% & SET log=%log% & SET environment=%environment%
   SETLOCAL enabledelayedexpansion
 
   CALL !environment! amd64_arm64 > nul 2>&1
@@ -147,5 +119,5 @@ ECHO.
 EXIT /B 1
 
 :no_tools
-ECHO *** ERROR, build tools not found: !tools!
+ECHO *** ERROR, Visual Studio %version% C++ build tools not found
 EXIT /B 1
