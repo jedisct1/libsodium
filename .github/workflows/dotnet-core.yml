@@ -13,25 +13,25 @@ permissions:
 
 jobs:
   build-windows-msvc:
-    runs-on: windows-2022
+    runs-on: windows-latest
     steps:
       - uses: actions/checkout@v6
       - name: buildbase.bat
-        run: buildbase.bat ..\vs2022\libsodium.sln 17
+        run: buildbase.bat ..\vs2026\libsodium.sln 18
         working-directory: builds/msvc/build/
         shell: cmd
       - uses: actions/upload-artifact@v7
         with:
           name: build-win-x64
-          path: bin/x64/Release/v143/dynamic/libsodium.dll
+          path: bin/x64/Release/v145/dynamic/libsodium.dll
       - uses: actions/upload-artifact@v7
         with:
           name: build-win-x86
-          path: bin/Win32/Release/v143/dynamic/libsodium.dll
+          path: bin/Win32/Release/v145/dynamic/libsodium.dll
       - uses: actions/upload-artifact@v7
         with:
           name: build-win-arm64
-          path: bin/ARM64/Release/v143/dynamic/libsodium.dll
+          path: bin/ARM64/Release/v145/dynamic/libsodium.dll
 
   build-others:
     runs-on: ubuntu-latest

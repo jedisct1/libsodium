@@ -9,12 +9,12 @@ SET log=build_%version%.log
 SET tools=Microsoft Visual Studio %version%.0\VC\vcvarsall.bat
 
 IF %version% == 18 (
-  SET tools=Microsoft Visual Studio\2026\Enterprise\VC\Auxiliary\Build\vcvarsall.bat
+  SET tools=Microsoft Visual Studio\18\Enterprise\VC\Auxiliary\Build\vcvarsall.bat
   SET environment="%programfiles%\!tools!"
   IF NOT EXIST !environment! (
     SET environment="%programfiles(x86)%\!tools!"
     IF NOT EXIST !environment! (
-      SET tools=Microsoft Visual Studio\2026\Community\VC\Auxiliary\Build\vcvarsall.bat
+      SET tools=Microsoft Visual Studio\18\Community\VC\Auxiliary\Build\vcvarsall.bat
     )
   )
 )
@@ -112,7 +112,7 @@ IF %version% GEQ 16 (
   ENDLOCAL & SET solution=%solution% & SET version=%version% & SET log=%log% & SET tools=%tools% & SET environment=%environment%
   SETLOCAL enabledelayedexpansion
 
-  CALL !environment! ARM64 > nul 2>&1
+  CALL !environment! amd64_arm64 > nul 2>&1
   ECHO Platform=ARM64
 
   ECHO Configuration=DynDebug
@@ -136,7 +136,7 @@ IF %version% GEQ 16 (
 )
 
 ECHO Complete: %solution%
-GOTO end
+EXIT /B 0
 
 :error
 ECHO *** ERROR, build terminated early, see: %log%
@@ -144,10 +144,8 @@ ECHO.
 ECHO === Last errors from %log% ===
 findstr /i /c:"error " /c:"error:" /c:"fatal error" %log%
 ECHO.
-GOTO end
+EXIT /B 1
 
 :no_tools
 ECHO *** ERROR, build tools not found: !tools!
-
-:end
-
+EXIT /B 1
