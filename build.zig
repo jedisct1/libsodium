@@ -288,7 +288,6 @@ pub fn build(b: *std.Build) !void {
     }
 
     const test_path = "test/default";
-    const out_bin_path = "zig-out/bin";
     const test_dir = if (pre_zig17)
         try cwd.openDir(io, test_path, .{ .iterate = true })
     else if (@hasField(Dir.OpenOptions, "follow_symlinks"))
@@ -296,21 +295,7 @@ pub fn build(b: *std.Build) !void {
     else
         try cwd.openDir(test_path, .{ .iterate = true, .no_follow = true });
 
-    if (pre_zig17) {
-        cwd.createDirPath(io, out_bin_path) catch {};
-    } else {
-        cwd.makePath(out_bin_path) catch {};
-    }
-    const out_bin_dir = if (pre_zig17)
-        try cwd.openDir(io, out_bin_path, .{})
-    else
-        try cwd.openDir(out_bin_path, .{});
-
-    if (pre_zig17) {
-        try Dir.copyFile(test_dir, "run.sh", out_bin_dir, "run.sh", io, .{});
-    } else {
-        try test_dir.copyFile("run.sh", out_bin_dir, "run.sh", .{});
-    }
+    b.installBinFile(test_path ++ "/run.sh", "run.sh");
 
     const allocator = heap.page_allocator;
     var walker = try test_dir.walk(allocator);
@@ -321,11 +306,8 @@ pub fn build(b: *std.Build) !void {
         while (if (pre_zig17) try walker.next(io) else try walker.next()) |entry| {
             const name = entry.basename;
             if (mem.endsWith(u8, name, ".exp")) {
-                if (pre_zig17) {
-                    try Dir.copyFile(test_dir, name, out_bin_dir, name, io, .{});
-                } else {
-                    try test_dir.copyFile(name, out_bin_dir, name, .{});
-                }
+                const full_path = try fmt.allocPrint(allocator, "{s}/{s}", .{ test_path, entry.path });
+                b.installBinFile(full_path, name);
                 continue;
             }
             if (!mem.endsWith(u8, name, ".c")) {
