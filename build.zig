@@ -245,20 +245,18 @@ pub fn build(b: *std.Build) !void {
         try libs.append(heap.page_allocator, shared_lib);
     }
 
-    const prebuilt_version_file_path = "builds/msvc/version.h";
-    const version_file_path = "include/sodium/version.h";
-
-    if (pre_zig17) {
-        try Dir.copyFile(cwd, prebuilt_version_file_path, src_dir, version_file_path, io, .{});
-    } else {
-        try cwd.copyFile(prebuilt_version_file_path, src_dir, version_file_path, .{});
-    }
+    const version_files = b.addWriteFiles();
+    const version_file = version_files.addCopyFile(b.path("builds/msvc/version.h"), "version.h");
 
     for (libs.items) |lib| {
         b.installArtifact(lib);
         lib.installHeader(b.path(src_path ++ "/include/sodium.h"), "sodium.h");
-        lib.installHeadersDirectory(b.path(src_path ++ "/include/sodium"), "sodium", .{});
+        lib.installHeadersDirectory(b.path(src_path ++ "/include/sodium"), "sodium", .{
+            .exclude_extensions = &.{"version.h"},
+        });
+        lib.installHeader(version_file, "sodium/version.h");
 
+        lib.root_module.addIncludePath(version_files.getDirectory());
         initLibConfig(b, target, lib);
 
         const flags = &.{
