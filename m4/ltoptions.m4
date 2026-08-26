@@ -1,6 +1,6 @@
 # Helper functions for option handling.                    -*- Autoconf -*-
 #
-#   Copyright (C) 2004-2005, 2007-2009, 2011-2019, 2021-2024 Free
+#   Copyright (C) 2004-2005, 2007-2009, 2011-2019, 2021-2026 Free
 #   Software Foundation, Inc.
 #   Written by Gary V. Vaughan, 2004
 #
@@ -8,7 +8,7 @@
 # unlimited permission to copy and/or distribute it, with or without
 # modifications, as long as this notice is preserved.
 
-# serial 10 ltoptions.m4
+# serial 12 ltoptions.m4
 
 # This is to help aclocal find these macros, as it can't see m4_define.
 AC_DEFUN([LTOPTIONS_VERSION], [m4_if([1])])
@@ -80,6 +80,7 @@ m4_if([$1],[LT_INIT],[
   _LT_UNLESS_OPTIONS([LT_INIT], [shared disable-shared], [_LT_ENABLE_SHARED])
   _LT_UNLESS_OPTIONS([LT_INIT], [static disable-static], [_LT_ENABLE_STATIC])
   _LT_UNLESS_OPTIONS([LT_INIT], [pic-only no-pic], [_LT_WITH_PIC])
+  _LT_UNLESS_OPTIONS([LT_INIT], [cxx-stdlib no-cxx-stdlib], [_LT_ENABLE_CXX_STDLIB])
   _LT_UNLESS_OPTIONS([LT_INIT], [fast-install disable-fast-install],
 		   [_LT_ENABLE_FAST_INSTALL])
   _LT_UNLESS_OPTIONS([LT_INIT], [aix-soname=aix aix-soname=both aix-soname=svr4],
@@ -370,8 +371,16 @@ power*-*-aix[[5-9]]*,yes)
     fi
   fi
   ;;
-*)
+power*-*-aix[[5-9]]*,'')
+  AC_MSG_WARN([for $host, specify if building shared libraries for versioning (svr4|both)])
+  AC_MSG_CHECKING([which variant of shared library versioning to provide])
   with_aix_soname=aix
+  AC_MSG_RESULT([(default) $with_aix_soname])
+  ;;
+*)
+  AC_MSG_CHECKING([which variant of shared library versioning to provide])
+  with_aix_soname=aix
+  AC_MSG_RESULT([(default) $with_aix_soname])
   ;;
 esac
 
@@ -447,6 +456,49 @@ put the 'pic-only' option into LT_INIT's first parameter.])
 
 dnl aclocal-1.4 backwards compatibility:
 dnl AC_DEFUN([AC_LIBTOOL_PICMODE], [])
+
+
+# _LT_ENABLE_CXX_STDLIB([MODE])
+# --------------------
+# implement the --enable-cxx-stdlib flag, and support the 'cxx-stdlib' and 'no-cxx-stdlib'
+# LT_INIT options.
+# MODE is either 'yes' or 'no'.  If omitted, it defaults to 'no'.
+m4_define([_LT_ENABLE_CXX_STDLIB],
+[m4_define([_LT_ENABLE_CXX_STDLIB_DEFAULT], [m4_if($1, yes, yes, no)])dnl
+stdlibflag=-nostdlib
+AC_ARG_ENABLE([cxx-stdlib],
+    [AS_HELP_STRING([--enable-cxx-stdlib@<:@=PKGS@:>@],
+	  [let the compiler frontend decide what standard libraries to link when building C++ shared libraries and modules @<:@default=]_LT_ENABLE_CXX_STDLIB_DEFAULT[@:>@])],
+    [p=${PACKAGE-default}
+    case $enableval in
+    yes) enable_cxx_stdlib=yes ;;
+    no) enable_cxx_stdlib=no ;;
+    *)
+     enable_cxx_stdlib=no
+      # Look at the argument we got.  We use all the common list separators.
+      lt_save_ifs=$IFS; IFS=$IFS$PATH_SEPARATOR,
+      for pkg in $enableval; do
+	IFS=$lt_save_ifs
+	if test "X$pkg" = "X$p"; then
+	  enable_cxx_stdlib=yes
+	fi
+      done
+      IFS=$lt_save_ifs
+      ;;
+    esac],
+    [enable_cxx_stdlib=]_LT_ENABLE_CXX_STDLIB_DEFAULT)
+
+if test yes = "$enable_cxx_stdlib"; then
+  stdlibflag=
+fi
+
+_LT_DECL([], [enable_cxx_stdlib], [0], [Whether to let the compiler frontend decide what standard libraries to link when building C++ shared libraries and modules])dnl
+_LT_DECL([], [stdlibflag], [0], [Flag used for specifying not to link standard libraries])dnl
+])# _LT_ENABLE_CXX_STDLIB
+
+LT_OPTION_DEFINE([LT_INIT], [cxx-stdlib], [_LT_ENABLE_CXX_STDLIB([yes])])
+LT_OPTION_DEFINE([LT_INIT], [no-cxx-stdlib], [_LT_ENABLE_CXX_STDLIB([no])])
+
 
 ## ----------------- ##
 ## LTDL_INIT Options ##

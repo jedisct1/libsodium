@@ -2,11 +2,11 @@
 ## DO NOT EDIT - This file generated from ./build-aux/ltmain.in
 ##               by inline-source v2019-02-19.15
 
-# libtool (GNU libtool) 2.5.4
+# libtool (GNU libtool) 2.6.2
 # Provide generalized library-building support services.
 # Written by Gordon Matzigkeit <gord@gnu.ai.mit.edu>, 1996
 
-# Copyright (C) 1996-2019, 2021-2024 Free Software Foundation, Inc.
+# Copyright (C) 1996-2019, 2021-2026 Free Software Foundation, Inc.
 # This is free software; see the source for copying conditions.  There is NO
 # warranty; not even for MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
 
@@ -26,13 +26,13 @@
 # General Public License for more details.
 #
 # You should have received a copy of the GNU General Public License
-# along with this program.  If not, see <http://www.gnu.org/licenses/>.
+# along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
 
 PROGRAM=libtool
 PACKAGE=libtool
-VERSION=2.5.4
-package_revision=2.5.4
+VERSION=2.6.2
+package_revision=2.6.2
 
 
 ## ------ ##
@@ -2215,7 +2215,7 @@ func_version ()
 # End:
 
 # Set a version string.
-scriptversion='(GNU libtool) 2.5.4'
+scriptversion='(GNU libtool) 2.6.2'
 
 # func_version
 # ------------
@@ -2298,6 +2298,22 @@ func_help ()
 
     func_usage_message
     $ECHO "$long_help_message
+
+If a TAG is supplied, it must use one of the tag names below:
+
+    Tag Name        Language Name
+       CC              C
+       CXX             C++
+       OBJC            Objective-C
+       OBJCXX          Objective-C++
+       GCJ             Java
+       F77             Fortran 77
+       FC              Fortran
+       GO              Go
+       RC              Windows Resource
+
+If you do not see a tag name associated with your programming language, then
+you are using a compiler that $progname does not support.
 
 MODE must be one of the following:
 
@@ -2721,9 +2737,9 @@ libtool_validate_options ()
     test : = "$debug_cmd" || func_append preserve_args " --debug"
 
     case $host_os in
-      # Solaris2 added to fix http://debbugs.gnu.org/cgi/bugreport.cgi?bug=16452
-      # see also: http://gcc.gnu.org/bugzilla/show_bug.cgi?id=59788
-      cygwin* | mingw* | windows* | pw32* | cegcc* | solaris2* | os2*)
+      # Solaris2 added to fix https://debbugs.gnu.org/cgi/bugreport.cgi?bug=16452
+      # see also: https://gcc.gnu.org/bugzilla/show_bug.cgi?id=59788
+      cygwin* | mingw* | windows* | pw32* | cegcc* | solaris2* | os2* | *linux*)
         # don't eliminate duplications in $postdeps and $predeps
         opt_duplicate_compiler_generated_deps=:
         ;;
@@ -2999,8 +3015,9 @@ func_infer_tag ()
 	# was found and let the user know that the "--tag" command
 	# line option must be used.
 	if test -z "$tagname"; then
-	  func_echo "unable to infer tagged configuration"
-	  func_fatal_error "specify a tag with '--tag'"
+	  func_echo "unable to infer tagged configuration with compiler."
+	  func_echo "Possible use of unsupported compiler."
+	  func_fatal_error "specify a tag with '--tag'. For more information, try '$progname --help'."
 #	else
 #	  func_verbose "using $tagname tagged configuration"
 	fi
@@ -3162,11 +3179,39 @@ func_convert_core_msys_to_w32 ()
 {
   $debug_cmd
 
-  # awkward: cmd appends spaces to result
+  # Compatibility for original MSYS
+  if test "Xone" = "X$lt_cv_cmd_slashes"; then
+  func_convert_core_msys_to_w32_result=`( cmd /c echo "$1" ) 2>/dev/null |
+    $SED -e 's/[ ]*$//' -e "$sed_naive_backslashify"`
+  else # Assume 'lt_cv_cmd_slashes = "two"'
   func_convert_core_msys_to_w32_result=`( cmd //c echo "$1" ) 2>/dev/null |
     $SED -e 's/[ ]*$//' -e "$sed_naive_backslashify"`
+  fi
+  if test "$?" -ne 0; then
+      # on failure, ensure result is empty
+      func_convert_core_msys_to_w32_result=
+  fi
 }
 #end: func_convert_core_msys_to_w32
+
+
+# func_convert_core_msys_to_w32_with_cygpath ARG
+# Convert file name or path ARG with cygpath from MSYS format to w32
+# format. Return result in func_convert_core_msys_to_w32_with_cygpath_result.
+func_convert_core_msys_to_w32_with_cygpath ()
+{
+  $debug_cmd
+
+  # Since MSYS2 is packaged with cygpath, call cygpath in $PATH; no need
+  # to use LT_CYGPATH in this case.
+  func_convert_core_msys_to_w32_with_cygpath_result=`cygpath "$@" 2>/dev/null |
+	$SED -e 's/[ ]*$//' -e "$sed_naive_backslashify"`
+  if test "$?" -ne 0; then
+      # on failure, ensure result is empty
+      func_convert_core_msys_to_w32_with_cygpath_result=
+  fi
+}
+#end: func_convert_core_msys_to_w32_with_cygpath
 
 
 # func_convert_file_check ARG1 ARG2
@@ -3303,8 +3348,13 @@ func_convert_file_msys_to_w32 ()
 
   func_to_host_file_result=$1
   if test -n "$1"; then
-    func_convert_core_msys_to_w32 "$1"
-    func_to_host_file_result=$func_convert_core_msys_to_w32_result
+    if test "Xyes" = "X$cygpath_installed"; then
+      func_convert_core_msys_to_w32_with_cygpath -w "$1"
+      func_to_host_file_result=$func_convert_core_msys_to_w32_with_cygpath_result
+    else
+      func_convert_core_msys_to_w32 "$1"
+      func_to_host_file_result=$func_convert_core_msys_to_w32_result
+    fi
   fi
   func_convert_file_check "$1" "$func_to_host_file_result"
 }
@@ -3355,8 +3405,13 @@ func_convert_file_msys_to_cygwin ()
 
   func_to_host_file_result=$1
   if test -n "$1"; then
-    func_convert_core_msys_to_w32 "$1"
-    func_cygpath -u "$func_convert_core_msys_to_w32_result"
+    if test "Xyes" = "X$cygpath_installed"; then
+      func_convert_core_msys_to_w32_with_cygpath -w "$1"
+      func_cygpath -u "$func_convert_core_msys_to_w32_with_cygpath_result"
+    else
+      func_convert_core_msys_to_w32 "$1"
+      func_cygpath -u "$func_convert_core_msys_to_w32_result"
+    fi
     func_to_host_file_result=$func_cygpath_result
   fi
   func_convert_file_check "$1" "$func_to_host_file_result"
@@ -3457,8 +3512,13 @@ func_convert_path_msys_to_w32 ()
     # and winepath ignores them completely.
     func_stripname : : "$1"
     func_to_host_path_tmp1=$func_stripname_result
-    func_convert_core_msys_to_w32 "$func_to_host_path_tmp1"
-    func_to_host_path_result=$func_convert_core_msys_to_w32_result
+    if test "Xyes" = "X$cygpath_installed"; then
+      func_convert_core_msys_to_w32_with_cygpath -w -p "$func_to_host_path_tmp1"
+      func_to_host_path_result=$func_convert_core_msys_to_w32_with_cygpath_result
+    else
+      func_convert_core_msys_to_w32 "$func_to_host_path_tmp1"
+      func_to_host_path_result=$func_convert_core_msys_to_w32_result
+    fi
     func_convert_path_check : ";" \
       "$func_to_host_path_tmp1" "$func_to_host_path_result"
     func_convert_path_front_back_pathsep ":*" "*:" ";" "$1"
@@ -3522,8 +3582,13 @@ func_convert_path_msys_to_cygwin ()
     # See func_convert_path_msys_to_w32:
     func_stripname : : "$1"
     func_to_host_path_tmp1=$func_stripname_result
-    func_convert_core_msys_to_w32 "$func_to_host_path_tmp1"
-    func_cygpath -u -p "$func_convert_core_msys_to_w32_result"
+    if test "Xyes" = "X$cygpath_installed"; then
+      func_convert_core_msys_to_w32_with_cygpath -w -p "$func_to_host_path_tmp1"
+      func_cygpath -u -p "$func_convert_core_msys_to_w32_with_cygpath_result"
+    else
+      func_convert_core_msys_to_w32 "$func_to_host_path_tmp1"
+      func_cygpath -u -p "$func_convert_core_msys_to_w32_result"
+    fi
     func_to_host_path_result=$func_cygpath_result
     func_convert_path_check : : \
       "$func_to_host_path_tmp1" "$func_to_host_path_result"
@@ -4455,6 +4520,14 @@ func_mode_finish ()
       fi
       echo
 
+      echo "After a 'make install' for many GNU/Linux systems, 'ldconfig LIBDIR'"
+      echo "may need to be executed to help locate newly installed libraries,"
+      echo "but you should consult with a system administrator before updating"
+      echo "the shared library cache as this should be done with great care"
+      echo "and consideration. (See the 'Platform-specific configuration notes'"
+      echo "section of the documentation for more information.)"
+      echo
+
       echo "See any operating system documentation about shared libraries for"
       case $host in
 	solaris2.[6789]|solaris2.1[0-9])
@@ -4529,7 +4602,7 @@ func_mode_install ()
 	  prev=$arg
 	fi
 	;;
-      -g | -m | -o)
+      -g | -m | -o | -S | -t)
 	prev=$arg
 	;;
       -s)
@@ -5045,7 +5118,7 @@ extern \"C\" {
 
 	  # Prepare the list of exported symbols
 	  if test -z "$export_symbols"; then
-	    export_symbols=$output_objdir/$outputname.exp
+	    export_symbols=$output_objdir/$outputname.expsym
 	    $opt_dry_run || {
 	      $RM $export_symbols
 	      eval "$SED -n -e '/^: @PROGRAM@ $/d' -e 's/^.* \(.*\)$/\1/p' "'< "$nlist" > "$export_symbols"'
@@ -5058,8 +5131,8 @@ extern \"C\" {
 	    }
 	  else
 	    $opt_dry_run || {
-	      eval "$SED -e 's/\([].[*^$]\)/\\\\\1/g' -e 's/^/ /' -e 's/$/$/'"' < "$export_symbols" > "$output_objdir/$outputname.exp"'
-	      eval '$GREP -f "$output_objdir/$outputname.exp" < "$nlist" > "$nlist"T'
+	      eval "$SED -e 's/\([].[*^$]\)/\\\\\1/g' -e 's/^/ /' -e 's/$/$/'"' < "$export_symbols" > "$output_objdir/$outputname.expsym"'
+	      eval '$GREP -f "$output_objdir/$outputname.expsym" < "$nlist" > "$nlist"T'
 	      eval '$MV "$nlist"T "$nlist"'
 	      case $host in
 	        *cygwin* | *mingw* | *windows* | *cegcc* )
@@ -5582,7 +5655,7 @@ func_extract_archives ()
 	    $RM -rf unfat-$$
 	    cd "$darwin_orig_dir"
 	  else
-	    cd $darwin_orig_dir
+	    cd "$darwin_orig_dir"
 	    func_extract_an_archive "$my_xdir" "$my_xabs"
 	  fi # $darwin_arches
 	} # !$opt_dry_run
@@ -5979,6 +6052,7 @@ int setenv (const char *, const char *, int);
 # define getcwd  _getcwd
 # define putenv  _putenv
 # define S_IXUSR _S_IEXEC
+# define MSVC_ISDIR(m)(((m) & S_IFMT) == S_IFDIR)
 #elif defined __MINGW32__
 # define setmode _setmode
 # define stat    _stat
@@ -6374,8 +6448,13 @@ check_executable (const char *path)
   if ((!path) || (!*path))
     return 0;
 
-  if ((stat (path, &st) >= 0)
+#ifdef _MSC_VER
+  if ((stat (path, &st) >= 0) && !MSVC_ISDIR (st.st_mode)
       && (st.st_mode & (S_IXUSR | S_IXGRP | S_IXOTH)))
+#else
+  if ((stat (path, &st) >= 0) && !S_ISDIR (st.st_mode)
+      && (st.st_mode & (S_IXUSR | S_IXGRP | S_IXOTH)))
+#endif
     return 1;
   else
     return 0;
@@ -6909,7 +6988,15 @@ func_mode_link ()
       # even a static library is built.  For now, we need to specify
       # -no-undefined on the libtool link line when we can be certain
       # that all symbols are satisfied, otherwise we get a static library.
-      allow_undefined=yes
+      case $host in
+      *-*-os2*)
+        # OS/2 does not allow undefined symbols at all when linking a dll.
+        allow_undefined=no
+        ;;
+      *)
+        allow_undefined=yes
+        ;;
+      esac
       ;;
     *)
       allow_undefined=yes
@@ -6981,7 +7068,7 @@ func_mode_link ()
 	build_old_libs=no
 	break
 	;;
-      -all-static | -static | -static-libtool-libs)
+      -all-static | -static | -static-libtool-libs | --static | -Bstatic)
 	case $arg in
 	-all-static)
 	  if test yes = "$build_libtool_libs" && test -z "$link_static_flag"; then
@@ -6998,7 +7085,7 @@ func_mode_link ()
 	  fi
 	  prefer_static_libs=built
 	  ;;
-	-static-libtool-libs)
+	-static-libtool-libs | --static | -Bstatic)
 	  if test -z "$pic_flag" && test -n "$link_static_flag"; then
 	    dlopen_self=$dlopen_self_static
 	  fi
@@ -7014,6 +7101,16 @@ func_mode_link ()
 
     # See if our shared archives depend on static archives.
     test -n "$old_archive_from_new_cmds" && build_old_libs=yes
+
+    # make sure "-Xpreprocessor -fopenmp" is processed as one token
+    case $@ in
+    *-Xpreprocessor\ -fopenmp*)
+      fopenmp_match="-Xpreprocessor -fopenmp"
+      ;;
+    *)
+      fopenmp_match=-fopenmp
+      ;;
+    esac
 
     # Go through the arguments, transforming them on the way.
     while test "$#" -gt 0; do
@@ -7280,8 +7377,13 @@ func_mode_link ()
 	  continue
 	  ;;
 	xlinker)
-	  func_append linker_flags " $qarg"
-	  func_append compiler_flags " $wl$qarg"
+	  func_append linker_flags "$qarg,"
+	  # Args in the var 'compiler_flags' causes warnings in MSVC
+	  func_cc_basename "$CC"
+	  case $func_cc_basename_result in
+	    cl|cl.exe) ;;
+	    *) func_append compiler_flags " $wl$qarg" ;;
+	  esac
 	  prev=
 	  func_append compile_command " $wl$qarg"
 	  func_append finalize_command " $wl$qarg"
@@ -7499,7 +7601,7 @@ func_mode_link ()
 	continue
 	;;
       -mt|-mthreads|-kthread|-Kthread|-pthreads|--thread-safe \
-      |-threads|-fopenmp|-fopenmp=*|-openmp|-mp|-xopenmp|-omp|-qsmp=*)
+      |-threads|$fopenmp_match|fopenmp=*|-openmp|-mp|-xopenmp|-omp|-qsmp=*)
 	func_append compiler_flags " $arg"
 	func_append compile_command " $arg"
 	func_append finalize_command " $arg"
@@ -7525,8 +7627,6 @@ func_mode_link ()
 	*-*-cygwin* | *-*-mingw* | *-*-windows* | *-*-pw32* | *-*-os2* | *-*-darwin* | *-cegcc*)
 	  # The PATH hackery in wrapper scripts is required on Windows
 	  # and Darwin in order for the loader to find any dlls it needs.
-	  func_warning "'-no-install' is ignored for $host"
-	  func_warning "assuming '-no-fast-install' instead"
 	  fast_install=no
 	  ;;
 	*) no_install=yes ;;
@@ -7648,6 +7748,11 @@ func_mode_link ()
 	arg=$func_stripname_result
 	;;
 
+	-Wl,--as-needed|-Wl,--no-as-needed)
+	deplibs="$deplibs $arg"
+	continue
+	;;
+
       -Wl,*)
 	func_stripname '-Wl,' '' "$arg"
 	args=$func_stripname_result
@@ -7657,8 +7762,13 @@ func_mode_link ()
 	  IFS=$save_ifs
           func_quote_arg pretty "$flag"
 	  func_append arg " $wl$func_quote_arg_result"
-	  func_append compiler_flags " $wl$func_quote_arg_result"
-	  func_append linker_flags " $func_quote_arg_result"
+	  # Args in the var 'compiler_flags' causes warnings in MSVC
+	  func_cc_basename "$CC"
+	  case $func_cc_basename_result in
+	     cl|cl.exe) ;;
+	     *) func_append compiler_flags " $wl$func_quote_arg_result" ;;
+	  esac
+	  func_append linker_flags "$func_quote_arg_result,"
 	done
 	IFS=$save_ifs
 	func_stripname ' ' '' "$arg"
@@ -7704,6 +7814,7 @@ func_mode_link ()
       # @file                GCC response files
       # -tp=*                Portland pgcc target processor selection
       # --sysroot=*          for sysroot support
+      # --target=*           for target architecture support
       # -O*, -g*, -flto*, -fwhopr*, -fuse-linker-plugin GCC link-time optimization
       # -specs=*             GCC specs files
       # -stdlib=*            select c++ std lib with clang
@@ -7717,19 +7828,20 @@ func_mode_link ()
       # -fuse-ld=*           Linker select flags for GCC
       # -static-*            direct GCC to link specific libraries statically
       # -fcilkplus           Cilk Plus language extension features for C/C++
+      # -resource-dir=*      for selecting compiler resource directory with clang
       # -rtlib=*             select c runtime lib with clang
       # --unwindlib=*        select unwinder library with clang
       # -f{file|debug|macro|profile}-prefix-map=* needed for lto linking
       # -Wa,*                Pass flags directly to the assembler
-      # -Werror, -Werror=*   Report (specified) warnings as errors
+      # -W*                  Warnings, needed for lto
       -64|-mips[0-9]|-r[0-9][0-9]*|-xarch=*|-xtarget=*|+DA*|+DD*|-q*|-m*| \
-      -t[45]*|-txscale*|-p|-pg|--coverage|-fprofile-*|-F*|@*|-tp=*|--sysroot=*| \
+      -t[45]*|-txscale*|-p|-pg|--coverage|-fprofile-*|-F*|@*|-tp=*|--sysroot=*|--target=*| \
       -O*|-g*|-flto*|-fwhopr*|-fuse-linker-plugin|-fstack-protector*|-no-canonical-prefixes| \
-      -stdlib=*|-rtlib=*|--unwindlib=*| \
+      -stdlib=*|-resource-dir=*|-rtlib=*|--unwindlib=*| \
       -specs=*|-fsanitize=*|-fno-sanitize*|-shared-libsan|-static-libsan| \
       -ffile-prefix-map=*|-fdebug-prefix-map=*|-fmacro-prefix-map=*|-fprofile-prefix-map=*| \
       -fdiagnostics-color*|-frecord-gcc-switches| \
-      -fuse-ld=*|-static-*|-fcilkplus|-Wa,*|-Werror|-Werror=*)
+      -fuse-ld=*|-static-*|-fcilkplus|-W*)
         func_quote_arg pretty "$arg"
 	arg=$func_quote_arg_result
         func_append compile_command " $arg"
@@ -7851,10 +7963,9 @@ func_mode_link ()
 	fi
 	;;
 
-      *.$libext)
-	# An archive.
+      *.$libext|*.so)
+	# An archive or an explicit shared library.
 	func_append deplibs " $arg"
-	func_append old_deplibs " $arg"
 	continue
 	;;
 
@@ -8070,8 +8181,17 @@ func_mode_link ()
 	lib=
 	found=false
 	case $deplib in
+	-Wl,--as-needed|-Wl,--no-as-needed)
+	   if test prog,link = "$linkmode,$pass"; then
+         compile_deplibs="$deplib $compile_deplibs"
+         finalize_deplibs="$deplib $finalize_deplibs"
+       else
+         deplibs="$deplib $deplibs"
+       fi
+       continue
+       ;;
 	-mt|-mthreads|-kthread|-Kthread|-pthread|-pthreads|--thread-safe \
-        |-threads|-fopenmp|-fopenmp=*|-openmp|-mp|-xopenmp|-omp|-qsmp=*)
+        |-threads|$fopenmp_match|fopenmp=*|-openmp|-mp|-xopenmp|-omp|-qsmp=*)
 	  if test prog,link = "$linkmode,$pass"; then
 	    compile_deplibs="$deplib $compile_deplibs"
 	    finalize_deplibs="$deplib $finalize_deplibs"
@@ -8221,15 +8341,43 @@ func_mode_link ()
 	  func_resolve_sysroot "$deplib"
 	  lib=$func_resolve_sysroot_result
 	  ;;
+	 *.so)
+	   case $linkmode,$pass in
+	     lib,*)
+	       deplibs="$deplib $deplibs"
+	       newdependency_libs="$deplib $newdependency_libs"
+	       ;;
+	     prog,link)
+	       compile_deplibs="$deplib $compile_deplibs"
+	       finalize_deplibs="$deplib $finalize_deplibs"
+	       ;;
+	     prog,*)
+	       deplibs="$deplib $deplibs"
+	       ;;
+	     *)
+	       func_warning "'$deplib' is ignored for archives/objects"
+	       ;;
+	   esac
+	   continue
+	   ;;
 	*.$libext)
 	  if test conv = "$pass"; then
 	    deplibs="$deplib $deplibs"
 	    continue
+	  else
+	    func_append old_deplibs " $deplib"
 	  fi
 	  case $linkmode in
 	  lib)
-	    # Linking convenience modules into shared libraries is allowed,
-	    # but linking other static libraries is non-portable.
+	    # Linking convenience modules and compiler provided static libraries
+	    # into shared libraries is allowed, but linking other static
+	    # libraries is non-portable.
+	    case $deplib in
+	      */libgcc*.$libext | */libclang_rt*.$libext)
+		deplibs="$deplib $deplibs"
+		continue
+	      ;;
+	    esac
 	    case " $dlpreconveniencelibs " in
 	    *" $deplib "*) ;;
 	    *)
@@ -8248,7 +8396,9 @@ func_mode_link ()
 		;;
 	      esac
 	      if $valid_a_lib; then
-		func_warning "Linking the shared library $output against the static library $deplib is not portable!"
+		if test yes != "$build_old_libs"; then
+		  func_warning "Linking the shared library $output against the static library $deplib is not portable!"
+		fi
 		deplibs="$deplib $deplibs"
 	      else
 		func_warning "Trying to link with static lib archive $deplib."
@@ -8350,19 +8500,19 @@ func_mode_link ()
 	    # It is a libtool convenience library, so add in its objects.
 	    func_append convenience " $ladir/$objdir/$old_library"
 	    func_append old_convenience " $ladir/$objdir/$old_library"
+	    tmp_libs=
+	    for deplib in $dependency_libs; do
+	      deplibs="$deplib $deplibs"
+	      if $opt_preserve_dup_deps; then
+	        case "$tmp_libs " in
+	          *" $deplib "*) func_append specialdeplibs " $deplib" ;;
+	        esac
+	      fi
+	      func_append tmp_libs " $deplib"
+	    done
 	  elif test prog != "$linkmode" && test lib != "$linkmode"; then
 	    func_fatal_error "'$lib' is not a convenience library"
 	  fi
-	  tmp_libs=
-	  for deplib in $dependency_libs; do
-	    deplibs="$deplib $deplibs"
-	    if $opt_preserve_dup_deps; then
-	      case "$tmp_libs " in
-	      *" $deplib "*) func_append specialdeplibs " $deplib" ;;
-	      esac
-	    fi
-	    func_append tmp_libs " $deplib"
-	  done
 	  continue
 	fi # $pass = conv
 
@@ -9187,7 +9337,6 @@ func_mode_link ()
       # Now set the variables for building old libraries.
       build_libtool_libs=no
       oldlibs=$output
-      func_append objs "$old_deplibs"
       ;;
 
     lib)
@@ -9312,29 +9461,21 @@ func_mode_link ()
 	esac
 
 	# Check that each of the things are valid numbers.
-	case $current in
-	0|[1-9]|[1-9][0-9]|[1-9][0-9][0-9]|[1-9][0-9][0-9][0-9]|[1-9][0-9][0-9][0-9][0-9]) ;;
-	*)
-	  func_error "CURRENT '$current' must be a nonnegative integer"
+	if echo "$current" | $EGREP -v '(^0$)|(^[1-9]$)|(^[1-9][0-9]{1,4}$)' > /dev/null; then
+	  func_error "CURRENT '$current' must be a nonnegative integer and <= 5 digits"
 	  func_fatal_error "'$vinfo' is not valid version information"
-	  ;;
-	esac
+	fi
 
-	case $revision in
-	0|[1-9]|[1-9][0-9]|[1-9][0-9][0-9]|[1-9][0-9][0-9][0-9]|[1-9][0-9][0-9][0-9][0-9]) ;;
-	*)
-	  func_error "REVISION '$revision' must be a nonnegative integer"
+	# Currently limiting revision length by Unix epoch time in nanoseconds.
+	if echo "$revision" | $EGREP -v '(^0$)|(^[1-9]$)|(^[1-9][0-9]{1,18}$)' > /dev/null; then
+	  func_error "REVISION '$revision' must be a nonnegative integer and <= 19 digits"
 	  func_fatal_error "'$vinfo' is not valid version information"
-	  ;;
-	esac
+	fi
 
-	case $age in
-	0|[1-9]|[1-9][0-9]|[1-9][0-9][0-9]|[1-9][0-9][0-9][0-9]|[1-9][0-9][0-9][0-9][0-9]) ;;
-	*)
-	  func_error "AGE '$age' must be a nonnegative integer"
+	if echo "$age" | $EGREP -v '(^0$)|(^[1-9]$)|(^[1-9][0-9]{1,4}$)' > /dev/null; then
+	  func_error "AGE '$age' must be a nonnegative integer and <= 5 digits"
 	  func_fatal_error "'$vinfo' is not valid version information"
-	  ;;
-	esac
+	fi
 
 	if test "$age" -gt "$current"; then
 	  func_error "AGE '$age' is greater than the current interface number '$current'"
@@ -10022,7 +10163,7 @@ func_mode_link ()
 	if test -z "$export_symbols"; then
 	  if test yes = "$always_export_symbols" || test -n "$export_symbols_regex"; then
 	    func_verbose "generating symbol list for '$libname.la'"
-	    export_symbols=$output_objdir/$libname.exp
+	    export_symbols=$output_objdir/$libname.expsym
 	    $opt_dry_run || $RM $export_symbols
 	    cmds=$export_symbols_cmds
 	    save_ifs=$IFS; IFS='~'
@@ -10288,7 +10429,7 @@ func_mode_link ()
 
 	    ${skipped_export-false} && {
 	      func_verbose "generating symbol list for '$libname.la'"
-	      export_symbols=$output_objdir/$libname.exp
+	      export_symbols=$output_objdir/$libname.expsym
 	      $opt_dry_run || $RM $export_symbols
 	      libobjs=$output
 	      # Append the command to create the export file.
@@ -10918,7 +11059,13 @@ func_mode_link ()
 	    # compiling, it, like the target executable, must be
 	    # executed on the $host or under an emulation environment.
 	    $opt_dry_run || {
-	      $LTCC $LTCFLAGS -o $cwrapper $cwrappersource
+	      func_cc_basename "$LTCC"
+	      case $func_cc_basename_result in
+		cl|cl.exe)
+		  $LTCC $LTCFLAGS -Fe$cwrapper $cwrappersource ;;
+		*)
+		  $LTCC $LTCFLAGS -o $cwrapper $cwrappersource ;;
+	      esac
 	      $STRIP $cwrapper
 	    }
 
@@ -10963,7 +11110,11 @@ func_mode_link ()
 	  build_libtool_libs=no
           ;;
 	*)
-	  oldobjs="$old_deplibs $non_pic_objects"
+	  oldobjs=$non_pic_objects
+	  # This is not correct to add old_deplibs creating an archive
+	  # so append them only when creating an executable or a shared
+	  # library.
+	  test yes != "$build_old_libs" && oldobjs="$oldobjs $old_deplibs"
 	  $preload && test -f "$symfileobj" \
 	    && func_append oldobjs " $symfileobj"
 	  addlibs=$old_convenience
@@ -11223,6 +11374,20 @@ func_mode_link ()
 	      func_append newdlprefiles " $abs"
 	    done
 	    dlprefiles=$newdlprefiles
+	  fi
+
+	  # Forward old library dependencies only when no shared
+	  # library is being built. When building the shared library,
+	  # the linker uses $deplibs to link the archives into it, but
+	  # then we don't want to add it as transitive dependency.
+	  if test -z "$library_names"; then
+	    for lib in $old_deplibs; do
+	      case $lib in
+		[\\/]* | [A-Za-z]:[\\/]*) abs=$lib ;;
+		*) abs=`pwd`"/$lib" ;;
+	      esac
+	      func_append dependency_libs " $abs"
+	    done
 	  fi
 	  $RM $output
 	  # place dlname in correct position for cygwin
