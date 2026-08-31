@@ -251,7 +251,7 @@ _sodium_runtime_intel_cpu_features(CPUFeatures * const cpu_features)
             pop ecx
             pop eax
         }
-# elif defined(HAVE_AVX_ASM)
+# elif defined(HAVE_AVX_ASM) || defined(HAVE_XGETBV_ASM)
         __asm__ __volatile__(".byte 0x0f, 0x01, 0xd0" /* XGETBV */
                              : "=a"(xcr0)
                              : "c"((uint32_t) 0U)
