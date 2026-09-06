@@ -75,7 +75,20 @@ BOOLEAN NTAPI RtlGenRandom(PVOID RandomBuffer, ULONG RandomBufferLength);
 # pragma comment(lib, "advapi32.lib")
 #endif
 
+#if defined(__APPLE__) &&                                             \
+    ((defined(__ENVIRONMENT_MAC_OS_X_VERSION_MIN_REQUIRED__) &&       \
+      __ENVIRONMENT_MAC_OS_X_VERSION_MIN_REQUIRED__ >= 101200) ||     \
+     (defined(__ENVIRONMENT_IPHONE_OS_VERSION_MIN_REQUIRED__) &&      \
+      __ENVIRONMENT_IPHONE_OS_VERSION_MIN_REQUIRED__ >= 100000) ||    \
+     (defined(__ENVIRONMENT_TV_OS_VERSION_MIN_REQUIRED__) &&          \
+      __ENVIRONMENT_TV_OS_VERSION_MIN_REQUIRED__ >= 100000) ||        \
+     (defined(__ENVIRONMENT_WATCH_OS_VERSION_MIN_REQUIRED__) &&       \
+      __ENVIRONMENT_WATCH_OS_VERSION_MIN_REQUIRED__ >= 30000))
+# define HAVE_SAFE_APPLE_ARC4RANDOM 1
+#endif
+
 #if defined(__OpenBSD__) || defined(__CloudABI__) || \
+    defined(HAVE_SAFE_APPLE_ARC4RANDOM) ||             \
     (defined(__wasm__) && !defined(__EMSCRIPTEN__))
 # define HAVE_SAFE_ARC4RANDOM 1
 #endif
