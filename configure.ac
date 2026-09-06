@@ -841,6 +841,21 @@ __asm__ __volatile__ ("xchgl %%ebx, %k1; cpuid; xchgl %%ebx, %k1" :
   ])
 AC_SUBST(HAVE_CPUID_V)
 
+AS_CASE([$host_cpu], [i?86|amd64|x86_64], [
+  AS_IF([test "$enable_asm" != "no"],[
+    AC_MSG_CHECKING(whether XGETBV can be used with inline assembly)
+    AC_LINK_IFELSE([AC_LANG_PROGRAM([[ ]], [[
+unsigned int xcr0;
+__asm__ __volatile__(".byte 0x0f, 0x01, 0xd0" :
+                     "=a" (xcr0) :
+                     "c" ((unsigned int) 0U) : "%edx");
+    ]])],
+    [AC_MSG_RESULT(yes)
+     AC_DEFINE([HAVE_XGETBV_ASM], [1], [XGETBV can be used with inline assembly])],
+    [AC_MSG_RESULT(no)])
+  ])
+])
+
 asm_hide_symbol="unsupported"
 AS_IF([test "$enable_asm" != "no"],[
   AC_MSG_CHECKING(if the .private_extern asm directive is supported)

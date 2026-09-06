@@ -8,6 +8,11 @@
 #include "stream_chacha20.h"
 
 #include "ref/chacha20_ref.h"
+#if defined(HAVE_AVX512FINTRIN_H) && defined(HAVE_AVX2INTRIN_H) && \
+    defined(HAVE_EMMINTRIN_H) && defined(HAVE_TMMINTRIN_H) &&      \
+    defined(HAVE_SMMINTRIN_H)
+# include "dolbeau/chacha20_dolbeau-avx512.h"
+#endif
 #if defined(HAVE_AVX2INTRIN_H) && defined(HAVE_EMMINTRIN_H) && \
     defined(HAVE_TMMINTRIN_H) && defined(HAVE_SMMINTRIN_H)
 # include "dolbeau/chacha20_dolbeau-avx2.h"
@@ -167,6 +172,14 @@ int
 _crypto_stream_chacha20_pick_best_implementation(void)
 {
     implementation = &crypto_stream_chacha20_ref_implementation;
+#if defined(HAVE_AVX512FINTRIN_H) && defined(HAVE_AVX2INTRIN_H) && \
+    defined(HAVE_EMMINTRIN_H) && defined(HAVE_TMMINTRIN_H) &&      \
+    defined(HAVE_SMMINTRIN_H)
+    if (sodium_runtime_has_avx512f()) {
+        implementation = &crypto_stream_chacha20_dolbeau_avx512_implementation;
+        return 0;
+    }
+#endif
 #if defined(HAVE_AVX2INTRIN_H) && defined(HAVE_EMMINTRIN_H) && \
     defined(HAVE_TMMINTRIN_H) && defined(HAVE_SMMINTRIN_H)
     if (sodium_runtime_has_avx2()) {

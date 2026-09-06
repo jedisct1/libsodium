@@ -148,6 +148,7 @@ fn initLibConfig(b: *std.Build, target: std.Build.ResolvedTarget, lib: *Compile)
                 },
             }
             lib.root_module.addCMacro("HAVE_CPUID", "1");
+            lib.root_module.addCMacro("HAVE_XGETBV_ASM", "1");
             lib.root_module.addCMacro("HAVE_MMINTRIN_H", "1");
             lib.root_module.addCMacro("HAVE_EMMINTRIN_H", "1");
             lib.root_module.addCMacro("HAVE_PMMINTRIN_H", "1");
