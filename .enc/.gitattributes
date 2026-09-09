@@ -1,0 +1,1 @@
+* binary -filter -ident -working-tree-encoding -export-subst
