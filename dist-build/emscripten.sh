@@ -156,49 +156,6 @@ if [ "$DIST" = yes ]; then
         root = window;
       }
     }
-    if (typeof Module.getRandomValue === 'undefined') {
-      try {
-        var window_ = 'object' === typeof window ? window : self;
-        var crypto_ = typeof window_.crypto !== 'undefined' ? window_.crypto : window_.msCrypto;
-        var randomValuesStandard = function() {
-          var buf = new Uint32Array(1);
-          crypto_.getRandomValues(buf);
-          return buf[0] >>> 0;
-        };
-        randomValuesStandard();
-        Module.getRandomValue = randomValuesStandard;
-        Module.getRandomBytes = function(ptr, size) {
-          var heapu8 = Module.HEAPU8;
-          var chunk = 65536;
-          while (size > chunk) {
-            var buf = new Uint8Array(chunk);
-            crypto_.getRandomValues(buf);
-            heapu8.set(buf, ptr);
-            ptr += chunk;
-            size -= chunk;
-          }
-          var buf = new Uint8Array(size);
-          crypto_.getRandomValues(buf);
-          heapu8.set(buf, ptr);
-        };
-      } catch (e) {
-        try {
-          var crypto = require('crypto');
-          var randomValueNodeJS = function() {
-            var buf = crypto['randomBytes'](4);
-            return (buf[0] << 24 | buf[1] << 16 | buf[2] << 8 | buf[3]) >>> 0;
-          };
-          randomValueNodeJS();
-          Module.getRandomValue = randomValueNodeJS;
-          Module.getRandomBytes = function(ptr, size) {
-            var buf = crypto['randomBytes'](size);
-            Module.HEAPU8.set(buf, ptr);
-          };
-        } catch (e) {
-          throw 'No secure random number generator found';
-        }
-      }
-    }
     var _Module = Module;
     Module.ready = new Promise(function(resolve, reject) {
       var Module = _Module;
@@ -222,13 +179,10 @@ if [ "$DIST" = yes ]; then
         return new Promise(function(resolve, reject) {
           var Module = {};
           Module.onAbort = reject;
-          Module.getRandomValue = _Module.getRandomValue;
 
           Module.onRuntimeInitialized = function() {
             Object.keys(_Module).forEach(function(k) {
-              if (k !== 'getRandomValue') {
-                delete _Module[k];
-              }
+              delete _Module[k];
             });
             Object.keys(Module).forEach(function(k) {
               _Module[k] = Module[k];
