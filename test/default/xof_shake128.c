@@ -165,7 +165,7 @@ main(void)
         return 1;
     }
 
-    /* Test custom domain byte produces different output */
+    /* Test that a custom domain byte produces different output */
     crypto_xof_shake128_init(&state);
     crypto_xof_shake128_update(&state, msg_abc, 3);
     crypto_xof_shake128_squeeze(&state, out, 32);
