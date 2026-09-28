@@ -254,7 +254,7 @@ main(void)
     assert(ret == 0);
     assert(res_len == m1_len + crypto_secretstream_xchacha20poly1305_ABYTES);
 
-    /* Force a counter overflow, check that the key has been updated
+    /* Force a counter overflow and check that the key has been updated
      * even though the tag was not changed to REKEY */
 
     memset(state->nonce, 0xff, 4U);
