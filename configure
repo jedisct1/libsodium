@@ -755,6 +755,7 @@ AM_V
 CSCOPE
 ETAGS
 CTAGS
+am__tar_ignore_stderr
 am__untar
 am__tar
 AMTAR
@@ -3054,7 +3055,7 @@ test -n "$target_alias" &&
   test "$program_prefix$program_suffix$program_transform_name" = \
     NONENONEs,x,x, &&
   program_prefix=${target_alias}-
-am__api_version='1.18'
+am__api_version='1.19'
 
 
   # Find a good install program.  We prefer a C program (faster),
@@ -3789,10 +3790,15 @@ mkdir_p='$(MKDIR_P)'
 
 # We need awk for the "check" target (and possibly the TAP driver).  The
 # system "awk" is bad on some platforms.
-# Always define AMTAR for backward compatibility.  Yes, it's still used
-# in the wild :-(  We should find a proper way to deprecate it ...
+# Always define AMTAR for backward compatibility.  It's still used
+# in the wild, let's not break things.
 AMTAR='$${TAR-tar}'
 
+
+# The dist rules treat anything $(am__tar) writes to standard error as
+# a failure (automake bug#19614).  Set this to "yes" for archivers that
+# write there when all is well; cpio reports a block count.
+am__tar_ignore_stderr=no
 
 # We'll loop over all known methods to create a tar archive until one works.
 _am_tools='gnutar plaintar pax cpio none'
@@ -3844,11 +3850,12 @@ printf %s "checking how to create a ustar tar archive... " >&6; }
   _am_tools=${am_cv_prog_tar_ustar-$_am_tools}
 
   for _am_tool in $_am_tools; do
+    am__tar_ignore_stderr=no
     case $_am_tool in
     gnutar)
       for _am_tar in tar gnutar gtar; do
-        { echo "$as_me:$LINENO: $_am_tar --version" >&5
-   ($_am_tar --version) >&5 2>&5
+        { echo "$as_me:$LINENO: $_am_tar --version | grep GNU >/dev/null" >&5
+   ($_am_tar --version | grep GNU >/dev/null) >&5 2>&5
    ac_status=$?
    echo "$as_me:$LINENO: \$? = $ac_status" >&5
    (exit $ac_status); } && break
@@ -3860,7 +3867,7 @@ printf %s "checking how to create a ustar tar archive... " >&6; }
     plaintar)
       # Must skip GNU tar: if it does not support --format= it doesn't create
       # ustar tarball either.
-      (tar --version) >/dev/null 2>&1 && continue
+      (tar --version | grep GNU) >/dev/null 2>&1 && continue
       am__tar='tar chf - "$$tardir"'
       am__tar_='tar chf - "$tardir"'
       am__untar='tar xf -'
@@ -3874,6 +3881,7 @@ printf %s "checking how to create a ustar tar archive... " >&6; }
       am__tar='find "$$tardir" -print | cpio -o -H ustar -L'
       am__tar_='find "$tardir" -print | cpio -o -H ustar -L'
       am__untar='cpio -i -H ustar -d'
+      am__tar_ignore_stderr=yes
       ;;
     none)
       am__tar=false
@@ -3922,6 +3930,7 @@ fi
 
   { printf '%s\n' "$as_me:${as_lineno-$LINENO}: result: $am_cv_prog_tar_ustar" >&5
 printf '%s\n' "$am_cv_prog_tar_ustar" >&6; }
+
 
 
 
