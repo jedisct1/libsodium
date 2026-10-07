@@ -519,27 +519,17 @@ softaes_block_decryptlast(const SoftAesBlock block, const SoftAesBlock rk)
 
 /*
  * Without FAVOR_PERFORMANCE the round is computed with SRM-1R, a bitsliced
- * representation that holds the block as eight 32-bit bit planes (the real
- * 16 lanes are duplicated into the high halfword so a row rotation is a
- * plain 32-bit rotate). ShiftRows is folded into the input packing, SubBytes
- * is a gate-only Boolean S-box circuit, and MixColumns is a fixed sequence of
- * rotations and XORs. No step indexes memory with secret data, so the round
- * is constant-time on every platform.
+ * representation that holds the block as eight 32-bit bit planes, plane 0
+ * being the most significant bit of every byte.
+ * Row r of the state is byte r of a plane, with column c in bit c of that
+ * byte, so moving to the next row is a single 32-bit rotation.
+ * The high nibble of every byte is unused: whatever it holds never mixes
+ * with the low nibbles, and is masked out when unpacking.
+ * ShiftRows is folded into the packing, SubBytes is a gate-only Boolean
+ * S-box circuit, and MixColumns is a fixed sequence of rotations and XORs.
+ * No step indexes memory with secret data, so the round is constant-time on
+ * every platform.
  */
-
-static inline uint32_t
-srm1r_dup16(uint32_t x)
-{
-    x &= 0xffff;
-    return x | (x << 16);
-}
-
-static inline uint32_t
-srm1r_ror16(uint32_t x, unsigned int n)
-{
-    /* SRM-1R duplicates the low halfword, so a 16-lane rotate is a 32-bit rotate. */
-    return (x >> n) | (x << (32 - n));
-}
 
 static inline uint32_t
 srm1r_ror32(uint32_t x, unsigned int n)
@@ -547,67 +537,65 @@ srm1r_ror32(uint32_t x, unsigned int n)
     return (x >> n) | (x << (32 - n));
 }
 
-static inline uint32_t
-srm1r_load_row_words(const SoftAesBlock block, unsigned int shift)
+static inline void
+srm1r_swap_move(uint32_t *a, uint32_t *b, uint32_t mask, unsigned int shift)
 {
-    return ((block.w0 >> shift) & 0xffu) | (((block.w1 >> shift) & 0xffu) << 8) |
-           (((block.w2 >> shift) & 0xffu) << 16) | (((block.w3 >> shift) & 0xffu) << 24);
+    const uint32_t t = ((*a >> shift) ^ *b) & mask;
+
+    *b ^= t;
+    *a ^= t << shift;
 }
 
-static inline uint32_t
-srm1r_store_column_word(uint32_t row0, uint32_t row1, uint32_t row2, uint32_t row3, unsigned int shift)
+/*
+ * Exchanges the index of each word with the two low bits of the bit
+ * position in each byte, which makes this transformation its own inverse.
+ * Given four column words, word k ends up with bit k of every byte in its
+ * low nibbles and bit k + 4 in its high nibbles.
+ * Row r stays in byte r, and column c lands in bit c of each nibble.
+ */
+static inline void
+srm1r_transpose(uint32_t w[4])
 {
-    return ((row0 >> shift) & 0xffu) | (((row1 >> shift) & 0xffu) << 8) |
-           (((row2 >> shift) & 0xffu) << 16) | (((row3 >> shift) & 0xffu) << 24);
-}
-
-static inline uint32_t
-srm1r_gather_row_bit(uint32_t row_word, unsigned int bit)
-{
-    return (((row_word >> bit) & 0x01010101u) * 0x01020408u) >> 24;
-}
-
-static inline uint32_t
-srm1r_pack_rows_bit(uint32_t row0, uint32_t row1, uint32_t row2, uint32_t row3, unsigned int bit)
-{
-    return srm1r_dup16(srm1r_gather_row_bit(row0, bit) | (srm1r_gather_row_bit(row1, bit) << 4) |
-                       (srm1r_gather_row_bit(row2, bit) << 8) |
-                       (srm1r_gather_row_bit(row3, bit) << 12));
-}
-
-static inline uint32_t
-srm1r_spread_row_bits(uint32_t nibble, unsigned int bit)
-{
-    nibble &= 0x0fu;
-    return ((nibble * 0x00204081u) & 0x01010101u) << bit;
-}
-
-static inline uint32_t
-srm1r_unpack_row_word(const uint32_t planes[8], unsigned int row)
-{
-    const unsigned int lane_shift = 4u * row;
-
-    return srm1r_spread_row_bits(planes[0] >> lane_shift, 7) |
-           srm1r_spread_row_bits(planes[1] >> lane_shift, 6) |
-           srm1r_spread_row_bits(planes[2] >> lane_shift, 5) |
-           srm1r_spread_row_bits(planes[3] >> lane_shift, 4) |
-           srm1r_spread_row_bits(planes[4] >> lane_shift, 3) |
-           srm1r_spread_row_bits(planes[5] >> lane_shift, 2) |
-           srm1r_spread_row_bits(planes[6] >> lane_shift, 1) |
-           srm1r_spread_row_bits(planes[7] >> lane_shift, 0);
+    srm1r_swap_move(&w[0], &w[1], 0x55555555, 1);
+    srm1r_swap_move(&w[2], &w[3], 0x55555555, 1);
+    srm1r_swap_move(&w[0], &w[2], 0x33333333, 2);
+    srm1r_swap_move(&w[1], &w[3], 0x33333333, 2);
 }
 
 static inline void
-srm1r_pack_planes(uint32_t planes[8], uint32_t row0, uint32_t row1, uint32_t row2, uint32_t row3)
+srm1r_pack(uint32_t planes[8], const SoftAesBlock block)
 {
-    planes[0] = srm1r_pack_rows_bit(row0, row1, row2, row3, 7);
-    planes[1] = srm1r_pack_rows_bit(row0, row1, row2, row3, 6);
-    planes[2] = srm1r_pack_rows_bit(row0, row1, row2, row3, 5);
-    planes[3] = srm1r_pack_rows_bit(row0, row1, row2, row3, 4);
-    planes[4] = srm1r_pack_rows_bit(row0, row1, row2, row3, 3);
-    planes[5] = srm1r_pack_rows_bit(row0, row1, row2, row3, 2);
-    planes[6] = srm1r_pack_rows_bit(row0, row1, row2, row3, 1);
-    planes[7] = srm1r_pack_rows_bit(row0, row1, row2, row3, 0);
+    uint32_t w[4];
+
+    /* ShiftRows: row r of column c comes from column (c + r) mod 4 */
+    w[0] = (block.w0 & 0x000000ff) | (block.w1 & 0x0000ff00) | (block.w2 & 0x00ff0000) |
+           (block.w3 & 0xff000000);
+    w[1] = (block.w1 & 0x000000ff) | (block.w2 & 0x0000ff00) | (block.w3 & 0x00ff0000) |
+           (block.w0 & 0xff000000);
+    w[2] = (block.w2 & 0x000000ff) | (block.w3 & 0x0000ff00) | (block.w0 & 0x00ff0000) |
+           (block.w1 & 0xff000000);
+    w[3] = (block.w3 & 0x000000ff) | (block.w0 & 0x0000ff00) | (block.w1 & 0x00ff0000) |
+           (block.w2 & 0xff000000);
+    srm1r_transpose(w);
+
+    planes[0] = w[3] >> 4;
+    planes[1] = w[2] >> 4;
+    planes[2] = w[1] >> 4;
+    planes[3] = w[0] >> 4;
+    planes[4] = w[3];
+    planes[5] = w[2];
+    planes[6] = w[1];
+    planes[7] = w[0];
+}
+
+static inline void
+srm1r_unpack(uint32_t w[4], const uint32_t planes[8])
+{
+    w[0] = (planes[7] & 0x0f0f0f0f) | ((planes[3] & 0x0f0f0f0f) << 4);
+    w[1] = (planes[6] & 0x0f0f0f0f) | ((planes[2] & 0x0f0f0f0f) << 4);
+    w[2] = (planes[5] & 0x0f0f0f0f) | ((planes[1] & 0x0f0f0f0f) << 4);
+    w[3] = (planes[4] & 0x0f0f0f0f) | ((planes[0] & 0x0f0f0f0f) << 4);
+    srm1r_transpose(w);
 }
 
 static void
@@ -722,17 +710,22 @@ srm1r_subbytes(uint32_t planes[8])
     planes[7]          = ~(a16 ^ r11);
 }
 
+/*
+ * Row r of a column s becomes 2 * (s[r] ^ s[r + 1]) ^ s[r + 1] ^ s[r + 2] ^
+ * s[r + 3] in GF(2^8), with row indices taken modulo 4.
+ * Rotating a plane right by 8 bits lines every row up with the next one.
+ */
 static void
 srm1r_mix_columns(uint32_t planes[8])
 {
-    const uint32_t adj0  = srm1r_ror16(planes[0], 4);
-    const uint32_t adj1  = srm1r_ror16(planes[1], 4);
-    const uint32_t adj2  = srm1r_ror16(planes[2], 4);
-    const uint32_t adj3  = srm1r_ror16(planes[3], 4);
-    const uint32_t adj4  = srm1r_ror16(planes[4], 4);
-    const uint32_t adj5  = srm1r_ror16(planes[5], 4);
-    const uint32_t adj6  = srm1r_ror16(planes[6], 4);
-    const uint32_t adj7  = srm1r_ror16(planes[7], 4);
+    const uint32_t adj0  = srm1r_ror32(planes[0], 8);
+    const uint32_t adj1  = srm1r_ror32(planes[1], 8);
+    const uint32_t adj2  = srm1r_ror32(planes[2], 8);
+    const uint32_t adj3  = srm1r_ror32(planes[3], 8);
+    const uint32_t adj4  = srm1r_ror32(planes[4], 8);
+    const uint32_t adj5  = srm1r_ror32(planes[5], 8);
+    const uint32_t adj6  = srm1r_ror32(planes[6], 8);
+    const uint32_t adj7  = srm1r_ror32(planes[7], 8);
     const uint32_t pair0 = planes[0] ^ adj0;
     const uint32_t pair1 = planes[1] ^ adj1;
     const uint32_t pair2 = planes[2] ^ adj2;
@@ -741,14 +734,14 @@ srm1r_mix_columns(uint32_t planes[8])
     const uint32_t pair5 = planes[5] ^ adj5;
     const uint32_t pair6 = planes[6] ^ adj6;
     const uint32_t pair7 = planes[7] ^ adj7;
-    const uint32_t opp0  = srm1r_ror16(pair0, 8);
-    const uint32_t opp1  = srm1r_ror16(pair1, 8);
-    const uint32_t opp2  = srm1r_ror16(pair2, 8);
-    const uint32_t opp3  = srm1r_ror16(pair3, 8);
-    const uint32_t opp4  = srm1r_ror16(pair4, 8);
-    const uint32_t opp5  = srm1r_ror16(pair5, 8);
-    const uint32_t opp6  = srm1r_ror16(pair6, 8);
-    const uint32_t opp7  = srm1r_ror16(pair7, 8);
+    const uint32_t opp0  = srm1r_ror32(pair0, 16);
+    const uint32_t opp1  = srm1r_ror32(pair1, 16);
+    const uint32_t opp2  = srm1r_ror32(pair2, 16);
+    const uint32_t opp3  = srm1r_ror32(pair3, 16);
+    const uint32_t opp4  = srm1r_ror32(pair4, 16);
+    const uint32_t opp5  = srm1r_ror32(pair5, 16);
+    const uint32_t opp6  = srm1r_ror32(pair6, 16);
+    const uint32_t opp7  = srm1r_ror32(pair7, 16);
 
     planes[0] = pair1 ^ adj0 ^ opp0;
     planes[1] = pair2 ^ adj1 ^ opp1;
@@ -765,25 +758,17 @@ softaes_block_encrypt(const SoftAesBlock block, const SoftAesBlock rk)
 {
     SoftAesBlock out;
     uint32_t     planes[8];
-    uint32_t     row0, row1, row2, row3;
+    uint32_t     w[4];
 
-    row0 = srm1r_load_row_words(block, 0);
-    row1 = srm1r_ror32(srm1r_load_row_words(block, 8), 8);
-    row2 = srm1r_ror32(srm1r_load_row_words(block, 16), 16);
-    row3 = srm1r_ror32(srm1r_load_row_words(block, 24), 24);
-    srm1r_pack_planes(planes, row0, row1, row2, row3);
-
+    srm1r_pack(planes, block);
     srm1r_subbytes(planes);
     srm1r_mix_columns(planes);
+    srm1r_unpack(w, planes);
 
-    row0   = srm1r_unpack_row_word(planes, 0);
-    row1   = srm1r_unpack_row_word(planes, 1);
-    row2   = srm1r_unpack_row_word(planes, 2);
-    row3   = srm1r_unpack_row_word(planes, 3);
-    out.w0 = srm1r_store_column_word(row0, row1, row2, row3, 0) ^ rk.w0;
-    out.w1 = srm1r_store_column_word(row0, row1, row2, row3, 8) ^ rk.w1;
-    out.w2 = srm1r_store_column_word(row0, row1, row2, row3, 16) ^ rk.w2;
-    out.w3 = srm1r_store_column_word(row0, row1, row2, row3, 24) ^ rk.w3;
+    out.w0 = w[0] ^ rk.w0;
+    out.w1 = w[1] ^ rk.w1;
+    out.w2 = w[2] ^ rk.w2;
+    out.w3 = w[3] ^ rk.w3;
 
     return out;
 }
