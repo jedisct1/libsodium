@@ -78,6 +78,7 @@ jobs:
           %CD:~0,2%\msys64\usr\bin\bash -lc 'pacman --noconfirm -Syuu'
           %CD:~0,2%\msys64\usr\bin\bash -lc 'pacman --noconfirm -Syuu'
         displayName: Update MSYS2
+        continueOnError: true
       - script: |
           set PATH=%CD:~0,2%\msys64\usr\bin;C:\Windows\system32;C:\Windows;C:\Windows\System32\Wbem
           %CD:~0,2%\msys64\usr\bin\pacman --noconfirm --needed -S base-devel mingw-w64-x86_64-toolchain
@@ -117,6 +118,7 @@ jobs:
           %CD:~0,2%\msys64\usr\bin\bash -lc 'pacman --noconfirm -Syuu'
           %CD:~0,2%\msys64\usr\bin\bash -lc 'pacman --noconfirm -Syuu'
         displayName: Update MSYS2
+        continueOnError: true
       - script: |
           set PATH=%CD:~0,2%\msys64\usr\bin;C:\Windows\system32;C:\Windows;C:\Windows\System32\Wbem
           %CD:~0,2%\msys64\usr\bin\pacman --noconfirm --needed -S base-devel mingw-w64-i686-toolchain
