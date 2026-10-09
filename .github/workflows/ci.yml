@@ -175,7 +175,7 @@ jobs:
       - name: Install Zig
         uses: mlugg/setup-zig@v2
         with:
-          version: master
+          version: 0.16.0
 
       - name: Install Wasmer
         uses: wasmerio/setup-wasmer@v3.1
