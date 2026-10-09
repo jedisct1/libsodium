@@ -7,7 +7,9 @@
 static inline v128_t
 fBlaMka_wasm(v128_t x, v128_t y)
 {
-    const v128_t z = wasm_u64x2_extmul_low_u32x4(x, y);
+    const v128_t x_low = wasm_i32x4_shuffle(x, x, 0, 2, 0, 2);
+    const v128_t y_low = wasm_i32x4_shuffle(y, y, 0, 2, 0, 2);
+    const v128_t z = wasm_u64x2_extmul_low_u32x4(x_low, y_low);
     return wasm_i64x2_add(wasm_i64x2_add(x, y), wasm_i64x2_add(z, z));
 }
 
