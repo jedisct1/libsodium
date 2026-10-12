@@ -5,7 +5,6 @@
 
 #include "consts.S"
 #include "fe51_mul.S"
-#include "fe51_nsquare.S"
 #include "fe51_pack.S"
 #include "ladder.S"
 

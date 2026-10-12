@@ -950,6 +950,9 @@
     <ClInclude Include="..\..\..\..\src\libsodium\crypto_core\keccak1600\armsha3\keccak1600_armsha3.h">
       <Filter>crypto_core\keccak1600\armsha3</Filter>
     </ClInclude>
+    <ClInclude Include="..\..\..\..\src\libsodium\crypto_core\ed25519\ref10\safegcd.h">
+      <Filter>crypto_core\ed25519\ref10</Filter>
+    </ClInclude>
     <ClInclude Include="..\..\..\..\src\libsodium\crypto_core\ed25519\ref10\fe_25_5\constants.h">
       <Filter>crypto_core\ed25519\ref10\fe_25_5</Filter>
     </ClInclude>

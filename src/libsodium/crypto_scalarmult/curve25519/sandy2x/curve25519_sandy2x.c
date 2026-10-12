@@ -1,9 +1,4 @@
-/*
-   This file is adapted from ref10/scalarmult.c:
-   The code for Montgomery ladder is replaced by the ladder assembly function;
-   Inversion is done in the same way as amd64-51/.
-   (fe is first converted into fe51 after Montgomery ladder)
-*/
+/* Adapted from ref10/scalarmult.c to use the assembly ladder. */
 
 #include <stddef.h>
 

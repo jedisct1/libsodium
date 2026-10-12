@@ -626,6 +626,7 @@
     <ClInclude Include="..\..\src\libsodium\crypto_kem\mlkem768\ref\kem_mlkem768_ref.h" />
     <ClInclude Include="..\..\src\libsodium\crypto_core\keccak1600\ref\keccak1600_ref.h" />
     <ClInclude Include="..\..\src\libsodium\crypto_core\keccak1600\armsha3\keccak1600_armsha3.h" />
+    <ClInclude Include="..\..\src\libsodium\crypto_core\ed25519\ref10\safegcd.h" />
     <ClInclude Include="..\..\src\libsodium\crypto_core\ed25519\ref10\fe_25_5\constants.h" />
     <ClInclude Include="..\..\src\libsodium\crypto_core\ed25519\ref10\fe_25_5\fe.h" />
     <ClInclude Include="..\..\src\libsodium\crypto_core\ed25519\ref10\fe_25_5\base2.h" />
