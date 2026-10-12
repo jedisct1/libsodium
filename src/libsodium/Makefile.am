@@ -26,6 +26,7 @@ libsodium_la_SOURCES = \
 	crypto_core/ed25519/core_h2c.c \
 	crypto_core/ed25519/core_h2c.h \
 	crypto_core/ed25519/ref10/ed25519_ref10.c \
+	crypto_core/ed25519/ref10/safegcd.h \
 	crypto_core/hchacha20/core_hchacha20.c \
 	crypto_core/hsalsa20/ref2/core_hsalsa20_ref2.c \
 	crypto_core/hsalsa20/core_hsalsa20.c \
@@ -174,7 +175,6 @@ endif
 noinst_HEADERS = \
 	crypto_scalarmult/curve25519/sandy2x/consts.S \
 	crypto_scalarmult/curve25519/sandy2x/fe51_mul.S \
-	crypto_scalarmult/curve25519/sandy2x/fe51_nsquare.S \
 	crypto_scalarmult/curve25519/sandy2x/fe51_pack.S \
 	crypto_scalarmult/curve25519/sandy2x/ladder.S
 

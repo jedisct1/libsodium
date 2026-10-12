@@ -6,6 +6,7 @@
 #include "crypto_verify_32.h"
 #include "private/common.h"
 #include "private/ed25519_ref10.h"
+#include "safegcd.h"
 #include "utils.h"
 
 static inline uint64_t
@@ -67,53 +68,11 @@ fe25519_sqmul(fe25519 s, const int n, const fe25519 a)
 void
 fe25519_invert(fe25519 out, const fe25519 z)
 {
-    fe25519 t0, t1, t2, t3;
-    int     i;
+    unsigned char s[32];
 
-    fe25519_sq(t0, z);
-    fe25519_sq(t1, t0);
-    fe25519_sq(t1, t1);
-    fe25519_mul(t1, z, t1);
-    fe25519_mul(t0, t0, t1);
-    fe25519_sq(t2, t0);
-    fe25519_mul(t1, t1, t2);
-    fe25519_sq(t2, t1);
-    for (i = 1; i < 5; ++i) {
-        fe25519_sq(t2, t2);
-    }
-    fe25519_mul(t1, t2, t1);
-    fe25519_sq(t2, t1);
-    for (i = 1; i < 10; ++i) {
-        fe25519_sq(t2, t2);
-    }
-    fe25519_mul(t2, t2, t1);
-    fe25519_sq(t3, t2);
-    for (i = 1; i < 20; ++i) {
-        fe25519_sq(t3, t3);
-    }
-    fe25519_mul(t2, t3, t2);
-    for (i = 1; i < 11; ++i) {
-        fe25519_sq(t2, t2);
-    }
-    fe25519_mul(t1, t2, t1);
-    fe25519_sq(t2, t1);
-    for (i = 1; i < 50; ++i) {
-        fe25519_sq(t2, t2);
-    }
-    fe25519_mul(t2, t2, t1);
-    fe25519_sq(t3, t2);
-    for (i = 1; i < 100; ++i) {
-        fe25519_sq(t3, t3);
-    }
-    fe25519_mul(t2, t3, t2);
-    for (i = 1; i < 51; ++i) {
-        fe25519_sq(t2, t2);
-    }
-    fe25519_mul(t1, t2, t1);
-    for (i = 1; i < 6; ++i) {
-        fe25519_sq(t1, t1);
-    }
-    fe25519_mul(out, t1, t0);
+    fe25519_tobytes(s, z);
+    safegcd_invert(s, s, &fe25519_modulus);
+    fe25519_frombytes(out, s);
 }
 
 /*
@@ -2149,91 +2108,19 @@ sc25519_muladd(unsigned char s[32], const unsigned char a[32],
 }
 
 /*
- Input:
- a[0]+256*a[1]+...+256^31*a[31] = a
- *
- Output:
- s[0]+256*s[1]+...+256^31*s[31] = a^2 mod l
- where l = 2^252 + 27742317777372353535851937790883648493.
+ Invert s modulo l, returning zero for multiples of l.
+ Accepts unreduced inputs.
  */
-
-static inline void
-sc25519_sq(unsigned char *s, const unsigned char *a)
-{
-    sc25519_mul(s, a, a);
-}
-
-/*
- Input:
- s[0]+256*a[1]+...+256^31*a[31] = a
- n
- *
- Output:
- s[0]+256*s[1]+...+256^31*s[31] = x * s^(s^n) mod l
- where l = 2^252 + 27742317777372353535851937790883648493.
- Overwrites s in place.
- */
-
-static inline void
-sc25519_sqmul(unsigned char s[32], const int n, const unsigned char a[32])
-{
-    int i;
-
-    for (i = 0; i < n; i++) {
-        sc25519_sq(s, s);
-    }
-    sc25519_mul(s, s, a);
-}
 
 void
 sc25519_invert(unsigned char recip[32], const unsigned char s[32])
 {
-    unsigned char _10[32], _100[32], _1000[32], _10000[32], _100000[32],
-        _1000000[32], _10010011[32], _10010111[32], _100110[32], _1010[32],
-        _1010000[32], _1010011[32], _1011[32], _10110[32], _10111101[32],
-        _11[32], _1100011[32], _1100111[32], _11010011[32], _1101011[32],
-        _11100111[32], _11101011[32], _11110101[32];
+    unsigned char t[64];
 
-    sc25519_sq(_10, s);
-    sc25519_mul(_11, s, _10);
-    sc25519_mul(_100, s, _11);
-    sc25519_sq(_1000, _100);
-    sc25519_mul(_1010, _10, _1000);
-    sc25519_mul(_1011, s, _1010);
-    sc25519_sq(_10000, _1000);
-    sc25519_sq(_10110, _1011);
-    sc25519_mul(_100000, _1010, _10110);
-    sc25519_mul(_100110, _10000, _10110);
-    sc25519_sq(_1000000, _100000);
-    sc25519_mul(_1010000, _10000, _1000000);
-    sc25519_mul(_1010011, _11, _1010000);
-    sc25519_mul(_1100011, _10000, _1010011);
-    sc25519_mul(_1100111, _100, _1100011);
-    sc25519_mul(_1101011, _100, _1100111);
-    sc25519_mul(_10010011, _1000000, _1010011);
-    sc25519_mul(_10010111, _100, _10010011);
-    sc25519_mul(_10111101, _100110, _10010111);
-    sc25519_mul(_11010011, _10110, _10111101);
-    sc25519_mul(_11100111, _1010000, _10010111);
-    sc25519_mul(_11101011, _100, _11100111);
-    sc25519_mul(_11110101, _1010, _11101011);
-
-    sc25519_mul(recip, _1011, _11110101);
-    sc25519_sqmul(recip, 126, _1010011);
-    sc25519_sqmul(recip, 9, _10);
-    sc25519_mul(recip, recip, _11110101);
-    sc25519_sqmul(recip, 7, _1100111);
-    sc25519_sqmul(recip, 9, _11110101);
-    sc25519_sqmul(recip, 11, _10111101);
-    sc25519_sqmul(recip, 8, _11100111);
-    sc25519_sqmul(recip, 9, _1101011);
-    sc25519_sqmul(recip, 6, _1011);
-    sc25519_sqmul(recip, 14, _10010011);
-    sc25519_sqmul(recip, 10, _1100011);
-    sc25519_sqmul(recip, 9, _10010111);
-    sc25519_sqmul(recip, 10, _11110101);
-    sc25519_sqmul(recip, 8, _11010011);
-    sc25519_sqmul(recip, 8, _11101011);
+    memcpy(t, s, 32);
+    memset(t + 32, 0, 32);
+    sc25519_reduce(t);
+    safegcd_invert(recip, t, &sc25519_modulus);
 }
 
 /*

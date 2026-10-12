@@ -27,8 +27,10 @@
 #ifdef HAVE_TI_MODE
 # if defined(__SIZEOF_INT128__)
 typedef unsigned __int128 uint128_t;
+typedef __int128 int128_t;
 # else
 typedef unsigned uint128_t __attribute__((mode(TI)));
+typedef int int128_t __attribute__((mode(TI)));
 # endif
 #endif
 

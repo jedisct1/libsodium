@@ -37,6 +37,13 @@ static const unsigned char sc_highbit[32] = {
     0x08, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
     0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x80
 };
+/* Checks that inversion runs enough steps. */
+static const unsigned char sc_slow_invert[32] = {
+    0x78, 0x0d, 0xb2, 0xb5, 0x94, 0x5a, 0xcf, 0xdc,
+    0x38, 0x69, 0xae, 0x85, 0xf3, 0xb2, 0x6a, 0x90,
+    0x3f, 0xf4, 0x48, 0x35, 0x9b, 0xef, 0xb2, 0x68,
+    0xd1, 0x2f, 0xe5, 0xcb, 0x0b, 0x91, 0x14, 0x0f
+};
 
 static void
 add_P(unsigned char * const S)
@@ -49,6 +56,19 @@ add_P(unsigned char * const S)
     };
 
     sodium_add(S, P, sizeof P);
+}
+
+static void
+check_scalar_invert(const unsigned char *s)
+{
+    unsigned char inv[crypto_core_ed25519_SCALARBYTES];
+
+    if (crypto_core_ed25519_scalar_invert(inv, s) != 0) {
+        printf("crypto_core_ed25519_scalar_invert() failed\n");
+    }
+    crypto_core_ed25519_scalar_mul(inv, inv, s);
+    assert(inv[0] == 1);
+    assert(sodium_is_zero(inv + 1, crypto_core_ed25519_SCALARBYTES - 1));
 }
 
 static void
@@ -304,10 +324,19 @@ main(void)
         crypto_core_ed25519_scalar_add(sc3, sc, sc2);
         assert(!sodium_is_zero(sc, crypto_core_ed25519_SCALARBYTES));
         crypto_core_ed25519_scalar_sub(sc3, sc3, sc2);
-        assert(!sodium_is_zero(sc, crypto_core_ed25519_SCALARBYTES));
         crypto_core_ed25519_scalar_sub(sc3, sc3, sc);
         assert(sodium_is_zero(sc3, crypto_core_ed25519_SCALARBYTES));
+        check_scalar_invert(sc);
     }
+
+    check_scalar_invert(L_1);
+    check_scalar_invert(L_p1);
+    check_scalar_invert(sc_highbit);
+    check_scalar_invert(sc_slow_invert);
+    if (crypto_core_ed25519_scalar_invert(sc, L) != 0) {
+        printf("crypto_core_ed25519_scalar_invert() failed\n");
+    }
+    assert(sodium_is_zero(sc, crypto_core_ed25519_SCALARBYTES));
 
     memset(sc, 0x69, crypto_core_ed25519_SCALARBYTES);
     memset(sc2, 0x42, crypto_core_ed25519_SCALARBYTES);

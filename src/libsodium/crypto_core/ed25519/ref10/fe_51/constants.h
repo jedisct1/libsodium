@@ -45,3 +45,13 @@ static const fe25519 ed25519_onemsqd = {
 static const fe25519 ed25519_sqdmone = {
     1507062230895904, 1572317787530805, 683053064812840, 317374165784489, 1572899562415810
 };
+
+/* p = 2^255 - 19 */
+static const safegcd_modulus fe25519_modulus = {
+    { -19, 0, 0, 0, 128 }, 0x39435e50d79435e5ULL
+};
+
+/* l = 2^252 + 27742317777372353535851937790883648493 */
+static const safegcd_modulus sc25519_modulus = {
+    { 1734557771370976237, 1403970222374679385, 1, 0, 16 }, 0x2d4ae25cedab81e5ULL
+};
