@@ -67,10 +67,17 @@ jobs:
       vmImage: "windows-2022"
     steps:
       - powershell: |
-          (New-Object Net.WebClient).DownloadFile("https://github.com/msys2/msys2-installer/releases/download/2026-06-11/msys2-base-x86_64-20260611.sfx.exe", "sfx.exe")
+          (New-Object Net.WebClient).DownloadFile("https://github.com/msys2/msys2-installer/releases/download/2026-09-27/msys2-base-x86_64-20260927.sfx.exe", "sfx.exe")
           .\sfx.exe -y -o\
           del sfx.exe
         displayName: Install MSYS2
+      # mirror.msys2.org sends European runners to ftp.nluug.nl, which answers Azure with 429 errors.
+      # pacman fetches signatures from the redirect target with no fallback, so a single 429 aborts the transaction.
+      # repo.msys2.org goes away too, since MSYS2 asks CI users not to put load on their main server.
+      - script: |
+          set PATH=%CD:~0,2%\msys64\usr\bin;C:\Windows\system32;C:\Windows;C:\Windows\System32\Wbem
+          %CD:~0,2%\msys64\usr\bin\sed -i -e "/mirror\.msys2\.org/d" -e "/repo\.msys2\.org/d" -e "/ftp\.nluug\.nl/d" /etc/pacman.d/mirrorlist.mingw /etc/pacman.d/mirrorlist.msys
+        displayName: Configure MSYS2 mirrors
       - script: |
           set PATH=%CD:~0,2%\msys64\usr\bin;C:\Windows\system32;C:\Windows;C:\Windows\System32\Wbem
           %CD:~0,2%\msys64\usr\bin\bash -lc
@@ -81,7 +88,8 @@ jobs:
         continueOnError: true
       - script: |
           set PATH=%CD:~0,2%\msys64\usr\bin;C:\Windows\system32;C:\Windows;C:\Windows\System32\Wbem
-          %CD:~0,2%\msys64\usr\bin\pacman --noconfirm --needed -S base-devel mingw-w64-x86_64-toolchain
+          %CD:~0,2%\msys64\usr\bin\bash -lc "for i in 1 2 3; do pacman --noconfirm --needed -S base-devel mingw-w64-x86_64-toolchain && exit 0; sleep 60; done; exit 1"
+          if errorlevel 1 exit /b 1
           %CD:~0,2%\msys64\usr\bin\pacman --noconfirm -Scc
           %CD:~0,2%\msys64\usr\bin\sed -i "s|#CacheDir.*|CacheDir=/c/Users/%USERNAME%/AppData/Local/Temp|g" /etc/pacman.conf
         displayName: Install Toolchain
@@ -107,10 +115,17 @@ jobs:
       vmImage: "windows-2022"
     steps:
       - powershell: |
-          (New-Object Net.WebClient).DownloadFile("https://github.com/msys2/msys2-installer/releases/download/2026-06-11/msys2-base-x86_64-20260611.sfx.exe", "sfx.exe")
+          (New-Object Net.WebClient).DownloadFile("https://github.com/msys2/msys2-installer/releases/download/2026-09-27/msys2-base-x86_64-20260927.sfx.exe", "sfx.exe")
           .\sfx.exe -y -o\
           del sfx.exe
         displayName: Install MSYS2
+      # mirror.msys2.org sends European runners to ftp.nluug.nl, which answers Azure with 429 errors.
+      # pacman fetches signatures from the redirect target with no fallback, so a single 429 aborts the transaction.
+      # repo.msys2.org goes away too, since MSYS2 asks CI users not to put load on their main server.
+      - script: |
+          set PATH=%CD:~0,2%\msys64\usr\bin;C:\Windows\system32;C:\Windows;C:\Windows\System32\Wbem
+          %CD:~0,2%\msys64\usr\bin\sed -i -e "/mirror\.msys2\.org/d" -e "/repo\.msys2\.org/d" -e "/ftp\.nluug\.nl/d" /etc/pacman.d/mirrorlist.mingw /etc/pacman.d/mirrorlist.msys
+        displayName: Configure MSYS2 mirrors
       - script: |
           set PATH=%CD:~0,2%\msys64\usr\bin;C:\Windows\system32;C:\Windows;C:\Windows\System32\Wbem
           %CD:~0,2%\msys64\usr\bin\bash -lc
@@ -121,7 +136,8 @@ jobs:
         continueOnError: true
       - script: |
           set PATH=%CD:~0,2%\msys64\usr\bin;C:\Windows\system32;C:\Windows;C:\Windows\System32\Wbem
-          %CD:~0,2%\msys64\usr\bin\pacman --noconfirm --needed -S base-devel mingw-w64-i686-toolchain
+          %CD:~0,2%\msys64\usr\bin\bash -lc "for i in 1 2 3; do pacman --noconfirm --needed -S base-devel mingw-w64-i686-toolchain && exit 0; sleep 60; done; exit 1"
+          if errorlevel 1 exit /b 1
           %CD:~0,2%\msys64\usr\bin\pacman --noconfirm -Scc
           %CD:~0,2%\msys64\usr\bin\sed -i "s|#CacheDir.*|CacheDir=/c/Users/%USERNAME%/AppData/Local/Temp|g" /etc/pacman.conf
         displayName: Install Toolchain
