@@ -1,3 +1,22 @@
+* Version 1.0.22-stable
+  - `sodium_misuse()` no longer invokes an application-provided misuse
+    handler while holding the library-wide lock.
+  - Curve25519 and Ed25519 field and scalar inversion are faster.
+  - SHA-3, SHAKE, TurboSHAKE, SipHash, `sodium_memcmp()` and
+   `sodium_is_zero()` got faster as well.
+  - AVX-512 implementations of ChaCha20 and Salsa20 have been added for
+    supported x86 CPUs.
+  - Emscripten: `randombytes` now uses the Emscripten and WASI randomness
+    interfaces rather than custom JavaScript helpers.
+  - Zig builds now support `wasm32-freestanding`, including an optional
+    built-in libc compatibility layer for embedders that do not provide one.
+    The `-Dwasm_max_memory` option sets the maximum WebAssembly memory size.
+  - The Zig build system now supports Zig 0.16, 0.17 and 0.18.
+  - .NET: macOS libraries in the NuGet package are now architecture-specific,
+    allowing .NET 6 and later self-contained single-file applications to
+    embed libsodium on both x64 and arm64.
+  - Visual Studio build tools are now discovered using `vswhere`.
+
 * Version 1.0.22
   This point release includes all the changes from 1.0.21-stable, plus:
  - Post-quantum key encapsulation is now available. ML-KEM768, the
