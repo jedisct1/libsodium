@@ -178,9 +178,18 @@ pub fn build(b: *std.Build) !void {
         try cwd.openDir(src_path, .{ .iterate = true, .no_follow = true });
 
     var target = b.standardTargetOptions(.{});
-    const optimize = b.standardOptimizeOption(.{});
+    const optimize_option = b.standardOptimizeOption(.{});
 
-    const debug_mode: @TypeOf(optimize) = if (@hasField(@TypeOf(optimize), "debug")) .debug else .Debug;
+    const optimize_option_is_optional = @typeInfo(@TypeOf(optimize_option)) == .optional;
+    const Optimize = if (optimize_option_is_optional)
+        @typeInfo(@TypeOf(optimize_option)).optional.child
+    else
+        @TypeOf(optimize_option);
+    const debug_mode: Optimize = if (@hasField(Optimize, "debug")) .debug else .Debug;
+    const optimize: Optimize = if (optimize_option_is_optional)
+        optimize_option orelse debug_mode
+    else
+        optimize_option;
 
     const enable_benchmarks = b.option(bool, "enable_benchmarks", "Whether tests should be benchmarks.") orelse false;
     const benchmarks_iterations = b.option(u32, "iterations", "Number of iterations for benchmarks.") orelse 200;
