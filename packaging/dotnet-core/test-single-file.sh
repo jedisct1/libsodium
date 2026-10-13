@@ -34,14 +34,16 @@ publish() {
 # If it isn't, the package has nothing for that runtime identifier, and the
 # check below would pass for the wrong reason.
 publish -p:IncludeNativeLibrariesForSelfExtract=false -o "${WORK_DIR}/publish-unbundled"
-if [ -z "$(find "${WORK_DIR}/publish-unbundled" -name 'libsodium*')" ]; then
+unbundled=$(find "${WORK_DIR}/publish-unbundled" -name 'libsodium*')
+if [ -z "$unbundled" ]; then
   echo "The package doesn't provide libsodium for ${RID}" >&2
   exit 1
 fi
 
 publish -p:IncludeNativeLibrariesForSelfExtract=true -o "${WORK_DIR}/publish"
 ls -l "${WORK_DIR}/publish"
-if [ -n "$(find "${WORK_DIR}/publish" -name 'libsodium*')" ]; then
+leftovers=$(find "${WORK_DIR}/publish" -name 'libsodium*')
+if [ -n "$leftovers" ]; then
   echo "libsodium was not embedded into the single-file executable for ${RID}" >&2
   exit 1
 fi
