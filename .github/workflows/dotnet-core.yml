@@ -152,10 +152,20 @@ jobs:
         run: ./configure
       - name: build-xcframework
         run: env LIBSODIUM_FULL_BUILD=1 LIBSODIUM_SKIP_SIMULATORS=1 dist-build/apple-xcframework.sh
+      - name: Extract macOS libraries for NuGet
+        run: |
+          # .NET 6/8 single-file publishing does not recognize universal Mach-O binaries.
+          mkdir -p .libsodium-build/osx-x64 .libsodium-build/osx-arm64
+          lipo libsodium-apple/macos/lib/libsodium.dylib -thin x86_64 -output .libsodium-build/osx-x64/libsodium.dylib
+          lipo libsodium-apple/macos/lib/libsodium.dylib -thin arm64 -output .libsodium-build/osx-arm64/libsodium.dylib
       - uses: actions/upload-artifact@v7
         with:
-          name: build-macos
-          path: libsodium-apple/macos/lib/libsodium.dylib
+          name: build-macos-x64
+          path: .libsodium-build/osx-x64/libsodium.dylib
+      - uses: actions/upload-artifact@v7
+        with:
+          name: build-macos-arm64
+          path: .libsodium-build/osx-arm64/libsodium.dylib
       - uses: actions/upload-artifact@v7
         with:
           name: build-ios
@@ -222,11 +232,11 @@ jobs:
 
       - uses: actions/download-artifact@v8
         with:
-          name: build-macos
+          name: build-macos-x64
           path: .libsodium-pack/runtimes/osx-x64/native/
       - uses: actions/download-artifact@v8
         with:
-          name: build-macos
+          name: build-macos-arm64
           path: .libsodium-pack/runtimes/osx-arm64/native/
       - uses: actions/download-artifact@v8
         with:
@@ -319,6 +329,28 @@ jobs:
           name: test-builds
           path: .libsodium-builds/*
           include-hidden-files: true
+
+  test-single-file-publishing:
+    runs-on: ubuntu-latest
+    needs:
+      - pack
+    container:
+      image: mcr.microsoft.com/dotnet/sdk:8.0
+    env:
+      DOTNET_CLI_TELEMETRY_OPTOUT: 1
+      DOTNET_SKIP_FIRST_TIME_EXPERIENCE: 1
+      DOTNET_SYSTEM_GLOBALIZATION_INVARIANT: 1
+    strategy:
+      matrix:
+        rid: [osx-x64, osx-arm64, linux-musl-x64, linux-musl-arm, linux-musl-arm64, linux-x64]
+    steps:
+      - uses: actions/checkout@v6
+      - uses: actions/download-artifact@v8
+        with:
+          name: nuget-package
+          path: .libsodium-pack/
+      - name: Test single-file publishing
+        run: sh packaging/dotnet-core/test-single-file.sh "$PWD/.libsodium-pack" "${{ matrix.rid }}"
 
   run-test-binaries-os-versions:
     runs-on: ubuntu-latest
