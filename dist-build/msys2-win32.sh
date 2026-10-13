@@ -7,7 +7,7 @@ if (i686-w64-mingw32-gcc --version >/dev/null 2>&1); then
   echo MinGW found
 else
   echo Please install mingw-w64-i686-gcc >&2
-  exit
+  exit 1
 fi
 
 ./configure --prefix="$PREFIX" --exec-prefix="$PREFIX" \
