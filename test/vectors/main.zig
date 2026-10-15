@@ -18,6 +18,7 @@ const kdf = @import("suites/kdf.zig");
 const pwhash = @import("suites/pwhash.zig");
 const xof = @import("suites/xof.zig");
 const kem = @import("suites/kem.zig");
+const mldsa = @import("suites/mldsa.zig");
 const c = @import("c");
 
 const Result = parse.Result;
@@ -74,6 +75,11 @@ fn runSuite(allocator: Allocator, data: []const u8, tag: fetch.SuiteTag) !Result
         => xof.run(allocator, data, tag),
 
         .kem_mlkem768 => kem.run(allocator, data),
+
+        .sign_mldsa44_verify => mldsa.runVerify(allocator, data),
+        .sign_mldsa44_sign_seed,
+        .sign_mldsa44_sign_noseed,
+        => mldsa.runSign(allocator, data),
     };
 }
 

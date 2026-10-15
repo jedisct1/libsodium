@@ -9,6 +9,7 @@ EXTRA_DIST = \
 	suites/kdf.zig \
 	suites/kem.zig \
 	suites/mac.zig \
+	suites/mldsa.zig \
 	suites/pwhash.zig \
 	suites/secretbox.zig \
 	suites/stream.zig \

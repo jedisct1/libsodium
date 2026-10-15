@@ -42,6 +42,9 @@ pub const SuiteTag = enum {
     xof_shake128,
     xof_shake256,
     kem_mlkem768,
+    sign_mldsa44_verify,
+    sign_mldsa44_sign_seed,
+    sign_mldsa44_sign_noseed,
 };
 
 const rooterberg_base = "https://raw.githubusercontent.com/bleichenbacher-daniel/Rooterberg/master/test_vectors";
@@ -79,6 +82,9 @@ pub const rooterberg_sources = [_]Source{
     .{ .base_url = rooterberg_base, .category = "xof", .filename = "shake128.json", .suite_tag = .xof_shake128 },
     .{ .base_url = rooterberg_base, .category = "xof", .filename = "shake256.json", .suite_tag = .xof_shake256 },
     .{ .base_url = wycheproof_base, .category = "", .filename = "mlkem_768_test.json", .suite_tag = .kem_mlkem768 },
+    .{ .base_url = wycheproof_base, .category = "", .filename = "mldsa_44_verify_test.json", .suite_tag = .sign_mldsa44_verify },
+    .{ .base_url = wycheproof_base, .category = "", .filename = "mldsa_44_sign_seed_test.json", .suite_tag = .sign_mldsa44_sign_seed },
+    .{ .base_url = wycheproof_base, .category = "", .filename = "mldsa_44_sign_noseed_test.json", .suite_tag = .sign_mldsa44_sign_noseed },
 };
 
 pub fn cacheName(buf: []u8, category: []const u8, filename: []const u8) []const u8 {

@@ -132,6 +132,28 @@ pub const MlkemVector = struct {
     validity: Validity,
 };
 
+pub const MldsaVerifyVector = struct {
+    tc_id: u32,
+    pk: []const u8,
+    msg: []const u8,
+    ctx: []const u8,
+    sig: []const u8,
+    validity: Validity,
+};
+
+pub const MldsaSignVector = struct {
+    tc_id: u32,
+    seed: []const u8,
+    sk: []const u8,
+    pk: []const u8,
+    internal: bool,
+    msg: []const u8,
+    ctx: []const u8,
+    rnd: []const u8,
+    sig: []const u8,
+    validity: Validity,
+};
+
 const TestFile = struct {
     parsed: json.Parsed(json.Value),
     root: json.ObjectMap,
@@ -145,6 +167,20 @@ fn openTestFile(allocator: Allocator, data: []const u8) !TestFile {
     const root = getObj(parsed.value) orelse return error.InvalidVector;
     const tests = getArr(root.get("tests") orelse return error.InvalidVector) orelse return error.InvalidVector;
     return .{ .parsed = parsed, .root = root, .tests = tests };
+}
+
+const GroupedTestFile = struct {
+    parsed: json.Parsed(json.Value),
+    groups: []const json.Value,
+};
+
+fn openGroupedTestFile(allocator: Allocator, data: []const u8) !GroupedTestFile {
+    const parsed = try json.parseFromSlice(json.Value, allocator, data, .{
+        .ignore_unknown_fields = true,
+    });
+    const root = getObj(parsed.value) orelse return error.InvalidVector;
+    const groups = getArr(root.get("testGroups") orelse return error.InvalidVector) orelse return error.InvalidVector;
+    return .{ .parsed = parsed, .groups = groups };
 }
 
 fn getObj(val: json.Value) ?json.ObjectMap {
@@ -463,15 +499,11 @@ fn wycheproofValidity(obj: json.ObjectMap) Validity {
 }
 
 pub fn loadMlkemVectors(allocator: Allocator, data: []const u8) ![]MlkemVector {
-    const parsed = try json.parseFromSlice(json.Value, allocator, data, .{
-        .ignore_unknown_fields = true,
-    });
-    defer parsed.deinit();
-    const root = getObj(parsed.value) orelse return error.InvalidVector;
-    const groups = getArr(root.get("testGroups") orelse return error.InvalidVector) orelse return error.InvalidVector;
+    const tf = try openGroupedTestFile(allocator, data);
+    defer tf.parsed.deinit();
 
     var list: std.ArrayList(MlkemVector) = .empty;
-    for (groups) |g| {
+    for (tf.groups) |g| {
         const group = getObj(g) orelse continue;
         const tests = getArr(group.get("tests") orelse continue) orelse continue;
         for (tests) |t| {
@@ -482,6 +514,60 @@ pub fn loadMlkemVectors(allocator: Allocator, data: []const u8) ![]MlkemVector {
                 .ek = try hexField(allocator, obj, "ek"),
                 .ct = try hexField(allocator, obj, "c"),
                 .ss = try hexField(allocator, obj, "K"),
+                .validity = wycheproofValidity(obj),
+            });
+        }
+    }
+    return list.items;
+}
+
+pub fn loadMldsaVerifyVectors(allocator: Allocator, data: []const u8) ![]MldsaVerifyVector {
+    const tf = try openGroupedTestFile(allocator, data);
+    defer tf.parsed.deinit();
+
+    var list: std.ArrayList(MldsaVerifyVector) = .empty;
+    for (tf.groups) |g| {
+        const group = getObj(g) orelse continue;
+        const pk = try hexField(allocator, group, "publicKey");
+        const tests = getArr(group.get("tests") orelse continue) orelse continue;
+        for (tests) |t| {
+            const obj = getObj(t) orelse continue;
+            try list.append(allocator, .{
+                .tc_id = @intCast(getInt(obj, "tcId") orelse continue),
+                .pk = pk,
+                .msg = try hexField(allocator, obj, "msg"),
+                .ctx = try hexField(allocator, obj, "ctx"),
+                .sig = try hexField(allocator, obj, "sig"),
+                .validity = wycheproofValidity(obj),
+            });
+        }
+    }
+    return list.items;
+}
+
+pub fn loadMldsaSignVectors(allocator: Allocator, data: []const u8) ![]MldsaSignVector {
+    const tf = try openGroupedTestFile(allocator, data);
+    defer tf.parsed.deinit();
+
+    var list: std.ArrayList(MldsaSignVector) = .empty;
+    for (tf.groups) |g| {
+        const group = getObj(g) orelse continue;
+        const seed = try hexField(allocator, group, "privateSeed");
+        const sk = try hexField(allocator, group, "privateKey");
+        const pk = try hexField(allocator, group, "publicKey");
+        const tests = getArr(group.get("tests") orelse continue) orelse continue;
+        for (tests) |t| {
+            const obj = getObj(t) orelse continue;
+            try list.append(allocator, .{
+                .tc_id = @intCast(getInt(obj, "tcId") orelse continue),
+                .seed = seed,
+                .sk = sk,
+                .pk = pk,
+                .internal = hasFlag(obj, "Internal"),
+                .msg = try hexField(allocator, obj, "msg"),
+                .ctx = try hexField(allocator, obj, "ctx"),
+                .rnd = try hexField(allocator, obj, "rnd"),
+                .sig = try hexField(allocator, obj, "sig"),
                 .validity = wycheproofValidity(obj),
             });
         }
