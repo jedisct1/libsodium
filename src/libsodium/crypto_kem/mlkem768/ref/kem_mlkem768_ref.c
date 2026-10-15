@@ -224,13 +224,10 @@ poly_getnoise_eta2(poly *r, const unsigned char seed[32], uint8_t nonce)
 {
     unsigned char             buf[MLKEM768_ETA2 * MLKEM768_N / 4];
     crypto_xof_shake256_state state;
-    unsigned char             extseed[33];
-
-    memcpy(extseed, seed, 32);
-    extseed[32] = nonce;
 
     crypto_xof_shake256_init(&state);
-    crypto_xof_shake256_update(&state, extseed, 33);
+    crypto_xof_shake256_update(&state, seed, 32);
+    crypto_xof_shake256_update(&state, &nonce, 1);
     crypto_xof_shake256_squeeze(&state, buf, sizeof(buf));
 
     poly_cbd_eta2(r, buf);
