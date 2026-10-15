@@ -28,10 +28,6 @@ size_t crypto_sign_mldsa44_secretkeybytes(void);
 SODIUM_EXPORT
 size_t crypto_sign_mldsa44_seedbytes(void);
 
-#define crypto_sign_mldsa44_RANDOMBYTES 32U
-SODIUM_EXPORT
-size_t crypto_sign_mldsa44_randombytes(void);
-
 #define crypto_sign_mldsa44_CONTEXTBYTES_MAX 255U
 SODIUM_EXPORT
 size_t crypto_sign_mldsa44_contextbytes_max(void);
@@ -68,17 +64,6 @@ int crypto_sign_mldsa44_detached_ctx(unsigned char       sig[crypto_sign_mldsa44
                                      size_t               ctxlen,
                                      const unsigned char sk[crypto_sign_mldsa44_SECRETKEYBYTES])
     __attribute__((nonnull(1, 7)));
-
-SODIUM_EXPORT
-int crypto_sign_mldsa44_detached_deterministic(
-    unsigned char       sig[crypto_sign_mldsa44_BYTES],
-    unsigned long long *siglen_p,
-    const unsigned char *m,
-    unsigned long long   mlen,
-    const unsigned char *ctx,
-    size_t               ctxlen,
-    const unsigned char sk[crypto_sign_mldsa44_SECRETKEYBYTES],
-    const unsigned char rnd[crypto_sign_mldsa44_RANDOMBYTES]) __attribute__((nonnull(1, 7, 8)));
 
 SODIUM_EXPORT
 int crypto_sign_mldsa44_verify_detached(const unsigned char sig[crypto_sign_mldsa44_BYTES],

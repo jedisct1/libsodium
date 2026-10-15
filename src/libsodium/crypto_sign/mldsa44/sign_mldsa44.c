@@ -26,12 +26,6 @@ crypto_sign_mldsa44_seedbytes(void)
 }
 
 size_t
-crypto_sign_mldsa44_randombytes(void)
-{
-    return crypto_sign_mldsa44_RANDOMBYTES;
-}
-
-size_t
 crypto_sign_mldsa44_contextbytes_max(void)
 {
     return crypto_sign_mldsa44_CONTEXTBYTES_MAX;
@@ -69,15 +63,6 @@ crypto_sign_mldsa44_detached_ctx(unsigned char *sig, unsigned long long *siglen_
                                  const unsigned char *ctx, size_t ctxlen, const unsigned char *sk)
 {
     return mldsa44_ref_sign_detached(sig, siglen_p, m, mlen, ctx, ctxlen, sk);
-}
-
-int
-crypto_sign_mldsa44_detached_deterministic(unsigned char *sig, unsigned long long *siglen_p,
-                                           const unsigned char *m, unsigned long long mlen,
-                                           const unsigned char *ctx, size_t ctxlen,
-                                           const unsigned char *sk, const unsigned char *rnd)
-{
-    return mldsa44_ref_sign_detached_deterministic(sig, siglen_p, m, mlen, ctx, ctxlen, sk, rnd);
 }
 
 int

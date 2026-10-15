@@ -467,6 +467,33 @@ static const char acvp_sk_sha256[] =
 
 #define MLEN 33
 
+static unsigned char test_rnd[32];
+
+static const char *
+test_rng_name(void)
+{
+    return "test";
+}
+
+static void
+test_rng_buf(void *const buf, const size_t size)
+{
+    assert(size <= sizeof test_rnd);
+    memcpy(buf, test_rnd, size);
+}
+
+static uint32_t
+test_rng_random(void)
+{
+    uint32_t r;
+
+    test_rng_buf(&r, sizeof r);
+    return r;
+}
+
+static const randombytes_implementation test_rng = { test_rng_name, test_rng_random, NULL, NULL,
+                                                     test_rng_buf, NULL };
+
 static void
 sha256_hex(char hex[2 * crypto_hash_sha256_BYTES + 1], const unsigned char *in, size_t inlen)
 {
@@ -497,7 +524,6 @@ tv_sign_mldsa44(void)
     unsigned char     *sig2;
     unsigned char     *m;
     unsigned char     *ctx;
-    unsigned char     *rnd;
     unsigned long long siglen;
     size_t             i;
 
@@ -508,7 +534,6 @@ tv_sign_mldsa44(void)
     sig2 = (unsigned char *) sodium_malloc(crypto_sign_mldsa44_BYTES);
     m    = (unsigned char *) sodium_malloc(MLEN);
     ctx  = (unsigned char *) sodium_malloc(crypto_sign_mldsa44_CONTEXTBYTES_MAX + 1);
-    rnd  = (unsigned char *) sodium_malloc(crypto_sign_mldsa44_RANDOMBYTES);
 
     for (i = 0; i < MLEN; i++) {
         m[i] = (unsigned char) (i * 7);
@@ -516,14 +541,12 @@ tv_sign_mldsa44(void)
     for (i = 0; i < crypto_sign_mldsa44_CONTEXTBYTES_MAX + 1; i++) {
         ctx[i] = (unsigned char) (255 - i);
     }
-    memset(rnd, 0, crypto_sign_mldsa44_RANDOMBYTES);
+    memset(test_rnd, 0x5a, sizeof test_rnd);
     assert(crypto_sign_mldsa44_keypair(pk, sk) == 0);
 
-    assert(crypto_sign_mldsa44_detached_deterministic(sig, &siglen, m, MLEN, NULL, 0, sk, rnd) ==
-           0);
+    assert(crypto_sign_mldsa44_detached(sig, &siglen, m, MLEN, sk) == 0);
     assert(siglen == crypto_sign_mldsa44_BYTES);
-    assert(crypto_sign_mldsa44_detached_deterministic(sig2, NULL, m, MLEN, guard_page, 0, sk,
-                                                      rnd) == 0);
+    assert(crypto_sign_mldsa44_detached_ctx(sig2, NULL, m, MLEN, guard_page, 0, sk) == 0);
     assert(memcmp(sig, sig2, crypto_sign_mldsa44_BYTES) == 0);
     assert(crypto_sign_mldsa44_verify_detached(sig, m, MLEN, pk) == 0);
     assert(crypto_sign_mldsa44_verify_detached_ctx(sig, m, MLEN, guard_page, 0, pk) == 0);
@@ -552,34 +575,29 @@ tv_sign_mldsa44(void)
                                                    pk) == -1);
 
     assert(crypto_sign_mldsa44_detached(sig, NULL, guard_page, 0, sk) == 0);
-    assert(crypto_sign_mldsa44_detached(sig2, NULL, guard_page, 0, sk) == 0);
-    assert(memcmp(sig, sig2, crypto_sign_mldsa44_BYTES) != 0);
     assert(crypto_sign_mldsa44_verify_detached(sig, guard_page, 0, pk) == 0);
-    assert(crypto_sign_mldsa44_verify_detached_ctx(sig2, NULL, 0, NULL, 0, pk) == 0);
+    assert(crypto_sign_mldsa44_verify_detached_ctx(sig, NULL, 0, NULL, 0, pk) == 0);
 
     memcpy(sk2, sk, crypto_sign_mldsa44_SECRETKEYBYTES);
     sk2[128] |= 0x07;
     memset(sig, 0xa5, crypto_sign_mldsa44_BYTES);
     siglen = 1;
-    assert(crypto_sign_mldsa44_detached_deterministic(sig, &siglen, m, MLEN, NULL, 0, sk2, rnd) ==
-           -1);
+    assert(crypto_sign_mldsa44_detached(sig, &siglen, m, MLEN, sk2) == -1);
     assert(siglen == 0 && sodium_is_zero(sig, crypto_sign_mldsa44_BYTES));
     memcpy(sk2, sk, crypto_sign_mldsa44_SECRETKEYBYTES);
     sk2[128 + 4 * 96 + 95] |= 0xe0;
     memset(sig, 0xa5, crypto_sign_mldsa44_BYTES);
     siglen = 1;
-    assert(crypto_sign_mldsa44_detached(sig, &siglen, m, MLEN, sk2) == -1);
+    assert(crypto_sign_mldsa44_detached_ctx(sig, &siglen, m, MLEN, ctx, 1, sk2) == -1);
     assert(siglen == 0 && sodium_is_zero(sig, crypto_sign_mldsa44_BYTES));
 
     assert(crypto_sign_mldsa44_bytes() == crypto_sign_mldsa44_BYTES);
     assert(crypto_sign_mldsa44_publickeybytes() == crypto_sign_mldsa44_PUBLICKEYBYTES);
     assert(crypto_sign_mldsa44_secretkeybytes() == crypto_sign_mldsa44_SECRETKEYBYTES);
     assert(crypto_sign_mldsa44_seedbytes() == crypto_sign_mldsa44_SEEDBYTES);
-    assert(crypto_sign_mldsa44_randombytes() == crypto_sign_mldsa44_RANDOMBYTES);
     assert(crypto_sign_mldsa44_contextbytes_max() == crypto_sign_mldsa44_CONTEXTBYTES_MAX);
     assert(crypto_sign_mldsa44_messagebytes_max() == crypto_sign_mldsa44_MESSAGEBYTES_MAX);
 
-    sodium_free(rnd);
     sodium_free(ctx);
     sodium_free(m);
     sodium_free(sig2);
@@ -599,7 +617,6 @@ tv_sign_mldsa44_vectors(void)
     unsigned char     *sig;
     unsigned char     *base;
     unsigned char      seed[32];
-    unsigned char      rnd[32];
     unsigned char      msg[256];
     unsigned char      ctx[256];
     unsigned long long siglen;
@@ -636,11 +653,10 @@ tv_sign_mldsa44_vectors(void)
         }
         msglen = unhex(msg, sizeof msg, v->msg);
         ctxlen = unhex(ctx, sizeof ctx, v->ctx);
-        memset(rnd, 0, sizeof rnd);
-        unhex(rnd, sizeof rnd, v->rnd);
+        memset(test_rnd, 0, sizeof test_rnd);
+        unhex(test_rnd, sizeof test_rnd, v->rnd);
         siglen = 1;
-        ret = crypto_sign_mldsa44_detached_deterministic(sig, &siglen, msg, msglen, ctx, ctxlen, sk,
-                                                         rnd);
+        ret = crypto_sign_mldsa44_detached_ctx(sig, &siglen, msg, msglen, ctx, ctxlen, sk);
         if (v->sig_sha256 == NULL) {
             ok &= ret == -1 && siglen == 0 && sodium_is_zero(sig, crypto_sign_mldsa44_BYTES);
         } else {
@@ -697,6 +713,7 @@ tv_sign_mldsa44_vectors(void)
 int
 main(void)
 {
+    randombytes_set_implementation(&test_rng);
     tv_sign_mldsa44();
     tv_sign_mldsa44_vectors();
 

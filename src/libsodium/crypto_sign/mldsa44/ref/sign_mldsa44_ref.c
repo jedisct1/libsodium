@@ -24,6 +24,7 @@
 #define MLDSA44_OMEGA  80
 
 #define MLDSA44_SEEDBYTES   32
+#define MLDSA44_RNDBYTES    32
 #define MLDSA44_CRHBYTES    64
 #define MLDSA44_TRBYTES     64
 #define MLDSA44_CTILDEBYTES 32
@@ -1112,19 +1113,17 @@ mldsa44_ref_keypair(unsigned char *pk, unsigned char *sk)
 }
 
 int
-mldsa44_ref_sign_detached_deterministic(unsigned char *sig, unsigned long long *siglen_p,
-                                        const unsigned char *m, unsigned long long mlen,
-                                        const unsigned char *ctx, size_t ctxlen,
-                                        const unsigned char *sk, const unsigned char *rnd)
+mldsa44_ref_sign_detached(unsigned char *sig, unsigned long long *siglen_p,
+                          const unsigned char *m, unsigned long long mlen,
+                          const unsigned char *ctx, size_t ctxlen, const unsigned char *sk)
 {
     polyvec                   mat[MLDSA44_K], s1, s2, t0, y, z, w0, w1, h;
     poly                      cp;
     crypto_xof_shake256_state state;
-    unsigned char             buf[MLDSA44_SEEDBYTES + crypto_sign_mldsa44_RANDOMBYTES +
-                                  MLDSA44_CRHBYTES];
+    unsigned char             buf[MLDSA44_SEEDBYTES + MLDSA44_RNDBYTES + MLDSA44_CRHBYTES];
     unsigned char             rhoprime[MLDSA44_CRHBYTES];
     unsigned char             ctilde[MLDSA44_CTILDEBYTES];
-    unsigned char            *mu = buf + MLDSA44_SEEDBYTES + crypto_sign_mldsa44_RANDOMBYTES;
+    unsigned char            *mu = buf + MLDSA44_SEEDBYTES + MLDSA44_RNDBYTES;
     unsigned int              n, i;
     uint32_t                  bad;
     int                       ret = -1;
@@ -1136,7 +1135,7 @@ mldsa44_ref_sign_detached_deterministic(unsigned char *sig, unsigned long long *
     }
 
     memcpy(buf, sk + MLDSA44_SK_KEY_OFFSET, MLDSA44_SEEDBYTES);
-    memcpy(buf + MLDSA44_SEEDBYTES, rnd, crypto_sign_mldsa44_RANDOMBYTES);
+    randombytes_buf(buf + MLDSA44_SEEDBYTES, MLDSA44_RNDBYTES);
     bad = polyvec_unpack_eta(&s1, sk + MLDSA44_SK_S1_OFFSET);
     bad |= polyvec_unpack_eta(&s2, sk + MLDSA44_SK_S2_OFFSET);
     polyvec_unpack_t0(&t0, sk + MLDSA44_SK_T0_OFFSET);
@@ -1230,21 +1229,6 @@ end:
     if (siglen_p != NULL) {
         *siglen_p = (ret == 0) ? crypto_sign_mldsa44_BYTES : 0U;
     }
-    return ret;
-}
-
-int
-mldsa44_ref_sign_detached(unsigned char *sig, unsigned long long *siglen_p,
-                          const unsigned char *m, unsigned long long mlen,
-                          const unsigned char *ctx, size_t ctxlen, const unsigned char *sk)
-{
-    unsigned char rnd[crypto_sign_mldsa44_RANDOMBYTES];
-    int           ret;
-
-    randombytes_buf(rnd, sizeof rnd);
-    ret = mldsa44_ref_sign_detached_deterministic(sig, siglen_p, m, mlen, ctx, ctxlen, sk, rnd);
-    sodium_memzero(rnd, sizeof rnd);
-
     return ret;
 }
 

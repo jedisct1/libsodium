@@ -605,11 +605,9 @@ _crypto_sign_mldsa44_bytes 1 1
 _crypto_sign_mldsa44_contextbytes_max 1 1
 _crypto_sign_mldsa44_detached 1 1
 _crypto_sign_mldsa44_detached_ctx 1 1
-_crypto_sign_mldsa44_detached_deterministic 1 1
 _crypto_sign_mldsa44_keypair 1 1
 _crypto_sign_mldsa44_messagebytes_max 1 1
 _crypto_sign_mldsa44_publickeybytes 1 1
-_crypto_sign_mldsa44_randombytes 1 1
 _crypto_sign_mldsa44_secretkeybytes 1 1
 _crypto_sign_mldsa44_seed_keypair 1 1
 _crypto_sign_mldsa44_seedbytes 1 1

@@ -14,6 +14,13 @@ fn adapterReject(result: *Result, v_validity: parse.Validity, tc_id: u32) void {
     }
 }
 
+var fixed_rnd: [32]u8 = @splat(0);
+
+fn fixedRngBuf(buf: ?*anyopaque, size: usize) callconv(.c) void {
+    if (size > fixed_rnd.len) @panic("unexpected randombytes_buf() size");
+    @memcpy(@as([*]u8, @ptrCast(buf.?))[0..size], fixed_rnd[0..size]);
+}
+
 pub fn runVerify(allocator: Allocator, data: []const u8) !Result {
     const vectors = try parse.loadMldsaVerifyVectors(allocator, data);
     var result = Result{};
@@ -45,6 +52,10 @@ pub fn runVerify(allocator: Allocator, data: []const u8) !Result {
 pub fn runSign(allocator: Allocator, data: []const u8) !Result {
     const vectors = try parse.loadMldsaSignVectors(allocator, data);
     var result = Result{};
+    var fixed_rng = c.randombytes_sysrandom_implementation;
+    fixed_rng.buf = fixedRngBuf;
+    _ = c.randombytes_set_implementation(&fixed_rng);
+    defer _ = c.randombytes_set_implementation(&c.randombytes_sysrandom_implementation);
     for (vectors) |v| {
         var sk: [c.crypto_sign_mldsa44_SECRETKEYBYTES]u8 = undefined;
         if (v.pk.len != c.crypto_sign_mldsa44_PUBLICKEYBYTES or
@@ -69,18 +80,18 @@ pub fn runSign(allocator: Allocator, data: []const u8) !Result {
             result.skipped += 1;
             continue;
         }
-        var rnd: [c.crypto_sign_mldsa44_RANDOMBYTES]u8 = @splat(0);
+        fixed_rnd = @splat(0);
         if (v.rnd.len != 0) {
-            if (v.rnd.len != rnd.len) {
+            if (v.rnd.len != fixed_rnd.len) {
                 std.debug.print("FAIL tc={d}: unexpected rnd length\n", .{v.tc_id});
                 result.failed += 1;
                 continue;
             }
-            @memcpy(&rnd, v.rnd);
+            @memcpy(&fixed_rnd, v.rnd);
         }
         var sig: [c.crypto_sign_mldsa44_BYTES]u8 = @splat(0xa5);
         var siglen: c_ulonglong = 1;
-        const ret = c.crypto_sign_mldsa44_detached_deterministic(
+        const ret = c.crypto_sign_mldsa44_detached_ctx(
             &sig,
             &siglen,
             v.msg.ptr,
@@ -88,7 +99,6 @@ pub fn runSign(allocator: Allocator, data: []const u8) !Result {
             v.ctx.ptr,
             v.ctx.len,
             &sk,
-            &rnd,
         );
         if (v.validity == .valid) {
             if (ret != 0 or siglen != sig.len) {
