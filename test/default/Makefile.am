@@ -88,6 +88,7 @@ EXTRA_DIST = \
 	shorthash.exp \
 	sign.exp \
 	sign2.exp \
+	sign_mldsa44.exp \
 	siphashx24.exp \
 	sodium_core.exp \
 	sodium_utils.exp \
@@ -195,6 +196,7 @@ DISTCLEANFILES = \
 	shorthash.res \
 	sign.res \
 	sign2.res \
+	sign_mldsa44.res \
 	siphashx24.res \
 	sodium_core.res \
 	sodium_utils.res \
@@ -299,6 +301,7 @@ TESTS_TARGETS = \
 	shorthash \
 	sign \
 	sign2 \
+	sign_mldsa44 \
 	sodium_core \
 	sodium_utils \
 	sodium_version \
@@ -578,6 +581,9 @@ sign_LDADD                = $(TESTS_LDADD)
 
 sign2_SOURCE              = cmptest.h sign2.c
 sign2_LDADD               = $(TESTS_LDADD)
+
+sign_mldsa44_SOURCE       = cmptest.h sign_mldsa44.c
+sign_mldsa44_LDADD        = $(TESTS_LDADD)
 
 siphashx24_SOURCE         = cmptest.h siphashx24.c
 siphashx24_LDADD          = $(TESTS_LDADD)
