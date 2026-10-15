@@ -50,6 +50,7 @@
 #include "sodium/crypto_shorthash_siphash24.h"
 #include "sodium/crypto_sign.h"
 #include "sodium/crypto_sign_ed25519.h"
+#include "sodium/crypto_sign_mldsa44.h"
 #include "sodium/crypto_stream.h"
 #include "sodium/crypto_stream_chacha20.h"
 #include "sodium/crypto_stream_salsa20.h"

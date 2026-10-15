@@ -54,6 +54,12 @@
     <ClCompile Include="..\..\..\..\src\libsodium\crypto_sign\crypto_sign.c">
       <Filter>crypto_sign</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\..\..\src\libsodium\crypto_sign\mldsa44\sign_mldsa44.c">
+      <Filter>crypto_sign\mldsa44</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\src\libsodium\crypto_sign\mldsa44\ref\sign_mldsa44_ref.c">
+      <Filter>crypto_sign\mldsa44\ref</Filter>
+    </ClCompile>
     <ClCompile Include="..\..\..\..\src\libsodium\crypto_sign\ed25519\sign_ed25519.c">
       <Filter>crypto_sign\ed25519</Filter>
     </ClCompile>
@@ -482,6 +488,9 @@
     <ClInclude Include="..\..\..\..\src\libsodium\crypto_generichash\blake2b\ref\blake2b-compress-sse41.h">
       <Filter>crypto_generichash\blake2b\ref</Filter>
     </ClInclude>
+    <ClInclude Include="..\..\..\..\src\libsodium\crypto_sign\mldsa44\ref\sign_mldsa44_ref.h">
+      <Filter>crypto_sign\mldsa44\ref</Filter>
+    </ClInclude>
     <ClInclude Include="..\..\..\..\src\libsodium\crypto_sign\ed25519\ref10\sign_ed25519_ref10.h">
       <Filter>crypto_sign\ed25519\ref10</Filter>
     </ClInclude>
@@ -699,6 +708,9 @@
       <Filter>include\sodium</Filter>
     </ClInclude>
     <ClInclude Include="..\..\..\..\src\libsodium\include\sodium\crypto_scalarmult_ed25519.h">
+      <Filter>include\sodium</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\src\libsodium\include\sodium\crypto_sign_mldsa44.h">
       <Filter>include\sodium</Filter>
     </ClInclude>
     <ClInclude Include="..\..\..\..\src\libsodium\include\sodium\crypto_ipcrypt.h">
@@ -1239,6 +1251,12 @@
     </Filter>
     <Filter Include="crypto_sign\ed25519\ref10">
       <UniqueIdentifier>{5599d9ab-b5b2-3310-b541-ae0fb70eecf1}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="crypto_sign\mldsa44">
+      <UniqueIdentifier>{0ecc2cea-6694-31d3-afb1-14b24840c095}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="crypto_sign\mldsa44\ref">
+      <UniqueIdentifier>{089afc62-d66a-3775-b30f-b7f8629141f4}</UniqueIdentifier>
     </Filter>
     <Filter Include="crypto_stream">
       <UniqueIdentifier>{eaedd08a-46f8-3d12-9e8d-bb3ee3ead5f6}</UniqueIdentifier>

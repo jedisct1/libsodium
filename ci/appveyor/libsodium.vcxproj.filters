@@ -45,6 +45,12 @@
     <ClCompile Include="..\..\src\libsodium\crypto_sign\crypto_sign.c">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\src\libsodium\crypto_sign\mldsa44\sign_mldsa44.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\libsodium\crypto_sign\mldsa44\ref\sign_mldsa44_ref.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
     <ClCompile Include="..\..\src\libsodium\crypto_sign\ed25519\sign_ed25519.c">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -473,6 +479,9 @@
     <ClInclude Include="..\..\src\libsodium\crypto_generichash\blake2b\ref\blake2b-compress-sse41.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="..\..\src\libsodium\crypto_sign\mldsa44\ref\sign_mldsa44_ref.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
     <ClInclude Include="..\..\src\libsodium\crypto_sign\ed25519\ref10\sign_ed25519_ref10.h">
       <Filter>Header Files</Filter>
     </ClInclude>
@@ -690,6 +699,9 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="..\..\src\libsodium\include\sodium\crypto_scalarmult_ed25519.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\libsodium\include\sodium\crypto_sign_mldsa44.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="..\..\src\libsodium\include\sodium\crypto_ipcrypt.h">

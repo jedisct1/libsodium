@@ -78,6 +78,8 @@
     <ClCompile Include="..\..\..\..\src\libsodium\crypto_generichash\blake2b\ref\blake2b-ref.c" />
     <ClCompile Include="..\..\..\..\src\libsodium\crypto_kx\crypto_kx.c" />
     <ClCompile Include="..\..\..\..\src\libsodium\crypto_sign\crypto_sign.c" />
+    <ClCompile Include="..\..\..\..\src\libsodium\crypto_sign\mldsa44\sign_mldsa44.c" />
+    <ClCompile Include="..\..\..\..\src\libsodium\crypto_sign\mldsa44\ref\sign_mldsa44_ref.c" />
     <ClCompile Include="..\..\..\..\src\libsodium\crypto_sign\ed25519\sign_ed25519.c" />
     <ClCompile Include="..\..\..\..\src\libsodium\crypto_sign\ed25519\ref10\sign.c" />
     <ClCompile Include="..\..\..\..\src\libsodium\crypto_sign\ed25519\ref10\keypair.c" />
@@ -222,6 +224,7 @@
     <ClInclude Include="..\..\..\..\src\libsodium\crypto_generichash\blake2b\ref\blake2b-load-sse41.h" />
     <ClInclude Include="..\..\..\..\src\libsodium\crypto_generichash\blake2b\ref\blake2b-compress-avx2.h" />
     <ClInclude Include="..\..\..\..\src\libsodium\crypto_generichash\blake2b\ref\blake2b-compress-sse41.h" />
+    <ClInclude Include="..\..\..\..\src\libsodium\crypto_sign\mldsa44\ref\sign_mldsa44_ref.h" />
     <ClInclude Include="..\..\..\..\src\libsodium\crypto_sign\ed25519\ref10\sign_ed25519_ref10.h" />
     <ClInclude Include="..\..\..\..\src\libsodium\include\sodium.h" />
     <ClInclude Include="..\..\..\..\src\libsodium\include\sodium\crypto_stream_salsa2012.h" />
@@ -295,6 +298,7 @@
     <ClInclude Include="..\..\..\..\src\libsodium\include\sodium\crypto_secretbox_xsalsa20poly1305.h" />
     <ClInclude Include="..\..\..\..\src\libsodium\include\sodium\crypto_secretbox.h" />
     <ClInclude Include="..\..\..\..\src\libsodium\include\sodium\crypto_scalarmult_ed25519.h" />
+    <ClInclude Include="..\..\..\..\src\libsodium\include\sodium\crypto_sign_mldsa44.h" />
     <ClInclude Include="..\..\..\..\src\libsodium\include\sodium\crypto_ipcrypt.h" />
     <ClInclude Include="..\..\..\..\src\libsodium\include\sodium\crypto_box_curve25519xsalsa20poly1305.h" />
     <ClInclude Include="..\..\..\..\src\libsodium\include\sodium\crypto_generichash_blake2b.h" />
