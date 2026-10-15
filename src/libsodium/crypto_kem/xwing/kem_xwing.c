@@ -20,18 +20,15 @@ expand_decaps_key(unsigned char       pk_mlkem[crypto_kem_mlkem768_PUBLICKEYBYTE
                   const unsigned char seed[crypto_kem_xwing_SEEDBYTES])
 {
     unsigned char expanded[96];
-    unsigned char mlkem_seed[crypto_kem_mlkem768_SEEDBYTES];
 
     crypto_xof_shake256(expanded, 96, seed, crypto_kem_xwing_SEEDBYTES);
 
-    memcpy(mlkem_seed, expanded, 64);
     memcpy(sk_x25519, expanded + 64, 32);
 
-    crypto_kem_mlkem768_seed_keypair(pk_mlkem, sk_mlkem, mlkem_seed);
+    crypto_kem_mlkem768_seed_keypair(pk_mlkem, sk_mlkem, expanded);
     crypto_scalarmult_curve25519_base(pk_x25519, sk_x25519);
 
     sodium_memzero(expanded, sizeof expanded);
-    sodium_memzero(mlkem_seed, sizeof mlkem_seed);
 }
 
 static void
