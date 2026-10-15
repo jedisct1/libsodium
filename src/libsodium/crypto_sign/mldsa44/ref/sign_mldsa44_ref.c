@@ -439,7 +439,6 @@ poly_pack_eta(unsigned char r[MLDSA44_POLYETA_PACKEDBYTES], const poly *a)
         r[3 * i + 1] = (unsigned char) ((t[2] >> 2) | (t[3] << 1) | (t[4] << 4) | (t[5] << 7));
         r[3 * i + 2] = (unsigned char) ((t[5] >> 1) | (t[6] << 2) | (t[7] << 5));
     }
-    sodium_memzero(t, sizeof t);
 }
 
 static uint32_t
@@ -464,7 +463,6 @@ poly_unpack_eta(poly *r, const unsigned char a[MLDSA44_POLYETA_PACKEDBYTES])
             r->coeffs[8 * i + j] = MLDSA44_Q + MLDSA44_ETA - t[j];
         }
     }
-    sodium_memzero(t, sizeof t);
 
     return bad;
 }
@@ -521,7 +519,6 @@ poly_pack_t0(unsigned char r[MLDSA44_POLYT0_PACKEDBYTES], const poly *a)
         r[13 * i + 11] = (unsigned char) ((t[6] >> 10) | (t[7] << 3));
         r[13 * i + 12] = (unsigned char) (t[7] >> 5);
     }
-    sodium_memzero(t, sizeof t);
 }
 
 static void
@@ -548,7 +545,6 @@ poly_unpack_t0(poly *r, const unsigned char a[MLDSA44_POLYT0_PACKEDBYTES])
             r->coeffs[8 * i + j] = MLDSA44_Q + (1U << (MLDSA44_D - 1)) - t[j];
         }
     }
-    sodium_memzero(t, sizeof t);
 }
 
 static void
@@ -597,7 +593,6 @@ poly_unpack_z(poly *r, const unsigned char a[MLDSA44_POLYZ_PACKEDBYTES])
             r->coeffs[4 * i + j] = t[j];
         }
     }
-    sodium_memzero(t, sizeof t);
 }
 
 static void
