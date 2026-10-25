@@ -44,6 +44,7 @@ libsodium_la_SOURCES = \
 	crypto_generichash/blake2b/ref/blake2b-load-sse2.h \
 	crypto_generichash/blake2b/ref/blake2b-load-sse41.h \
 	crypto_generichash/blake2b/ref/blake2b-load-avx2.h \
+	crypto_generichash/blake2b/ref/blake2b-load-neon.h \
 	crypto_generichash/blake2b/ref/blake2b-ref.c \
 	crypto_generichash/blake2b/ref/generichash_blake2b.c \
 	crypto_hash/crypto_hash.c \
@@ -284,7 +285,9 @@ libarmcrypto_la_SOURCES = \
 	crypto_stream/salsa20/xmm6int/u0-neon.h \
 	crypto_stream/salsa20/xmm6int/u1-neon.h \
 	crypto_stream/salsa20/xmm6int/u2-neon.h \
-	crypto_stream/salsa20/xmm6int/u4-neon.h
+	crypto_stream/salsa20/xmm6int/u4-neon.h \
+	crypto_generichash/blake2b/ref/blake2b-compress-neon.h \
+	crypto_generichash/blake2b/ref/blake2b-compress-neon.c
 
 libaesni_la_LDFLAGS = $(libsodium_la_LDFLAGS)
 libaesni_la_CPPFLAGS = $(libsodium_la_CPPFLAGS) \

@@ -411,6 +411,13 @@ int
 blake2b_pick_best_implementation(void)
 {
 /* LCOV_EXCL_START */
+#if (defined(__aarch64__) || defined(_M_ARM64)) && \
+    (defined(__ARM_NEON) || defined(__ARM_NEON__))
+    if (sodium_runtime_has_neon()) {
+        blake2b_compress = blake2b_compress_neon;
+        return 0;
+    }
+#endif
 #if defined(HAVE_AVX2INTRIN_H) && defined(HAVE_TMMINTRIN_H) && \
     defined(HAVE_SMMINTRIN_H)
     if (sodium_runtime_has_avx2()) {
