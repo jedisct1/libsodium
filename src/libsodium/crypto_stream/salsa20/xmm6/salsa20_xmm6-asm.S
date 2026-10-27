@@ -960,27 +960,6 @@ jmp ._bytesbetween1and255
 
 #endif
 
-#if defined(__linux__) && defined(__ELF__)
-#if defined(__CET__)
-.section	.note.gnu.property,"a"
-.p2align 3
-.long	1f - 0f
-.long	4f - 1f
-.long	5
-0:
-.string	"GNU"
-1:
-.p2align 3
-.long	0xc0000002
-.long	3f - 2f
-2:
-.long	__CET__
-3:
-.p2align 3
-4:
-#endif
-#endif
-
 #if defined(__ELF__) && \
     (defined(__linux__) || defined(__FreeBSD__) || defined(__FreeBSD_kernel__) || \
      defined(__NetBSD__) || defined(__OpenBSD__) || defined(__DragonFly__) || \
