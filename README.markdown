@@ -35,7 +35,7 @@ It is a portable, cross-compilable, installable, and packageable fork of [NaCl](
 libsodium uses a two-tier release system:
 
 - **Point releases** (e.g., 1.0.19, 1.0.20, 1.0.21) are tagged when new features are added or significant changes are made.
-- **Stable releases** are frequent maintainance updates between point releases. They fix minor issues while remaining fully compatible with their parent point release. No new features, no breaking changes.
+- **Stable releases** are frequent maintenance updates between point releases. They fix minor issues while remaining fully compatible with their parent point release. No new features, no breaking changes.
 
 If your application depends on a specific point release, stable updates are safe to apply. Security fixes go to the `stable` branch immediately, with a new point release tagged shortly after.
 
