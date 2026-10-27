@@ -961,6 +961,9 @@ jmp ._bytesbetween1and255
 
 #endif
 
-#if defined(__linux__) && defined(__ELF__)
+#if defined(__ELF__) && \
+    (defined(__linux__) || defined(__FreeBSD__) || defined(__FreeBSD_kernel__) || \
+     defined(__NetBSD__) || defined(__OpenBSD__) || defined(__DragonFly__) || \
+     defined(__gnu_hurd__))
 .section .note.GNU-stack,"",%progbits
 #endif
