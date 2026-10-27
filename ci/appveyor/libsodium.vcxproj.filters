@@ -234,6 +234,9 @@
     <ClCompile Include="..\..\src\libsodium\crypto_onetimeauth\poly1305\sse2\poly1305_sse2.c">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\src\libsodium\crypto_onetimeauth\poly1305\neon\poly1305_neon.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
     <ClCompile Include="..\..\src\libsodium\randombytes\randombytes.c">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -837,6 +840,9 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="..\..\src\libsodium\crypto_onetimeauth\poly1305\sse2\poly1305_sse2.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\libsodium\crypto_onetimeauth\poly1305\neon\poly1305_neon.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="..\..\src\libsodium\crypto_ipcrypt\ipcrypt_soft.h">

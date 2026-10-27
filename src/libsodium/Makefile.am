@@ -271,6 +271,8 @@ libarmcrypto_la_SOURCES = \
 	crypto_aead/aes256gcm/armcrypto/aead_aes256gcm_armcrypto.c \
 	crypto_ipcrypt/ipcrypt_armcrypto.c \
 	crypto_ipcrypt/ipcrypt_armcrypto.h \
+	crypto_onetimeauth/poly1305/neon/poly1305_neon.c \
+	crypto_onetimeauth/poly1305/neon/poly1305_neon.h \
 	crypto_pwhash/argon2/argon2-fill-block-neon.c \
 	crypto_pwhash/argon2/blamka-round-neon.h \
 	crypto_stream/chacha20/dolbeau/chacha20_dolbeau-neon.c \

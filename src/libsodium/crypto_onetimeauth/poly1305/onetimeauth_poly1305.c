@@ -10,6 +10,11 @@
 #if defined(HAVE_TI_MODE) && defined(HAVE_EMMINTRIN_H)
 # include "sse2/poly1305_sse2.h"
 #endif
+#if (defined(__aarch64__) || defined(_M_ARM64)) && \
+    (defined(__ARM_NEON) || defined(__ARM_NEON__)) && \
+    defined(HAVE_TI_MODE) && defined(NATIVE_LITTLE_ENDIAN)
+# include "neon/poly1305_neon.h"
+#endif
 
 static const crypto_onetimeauth_poly1305_implementation *implementation =
     &crypto_onetimeauth_poly1305_donna_implementation;
@@ -84,6 +89,13 @@ _crypto_onetimeauth_poly1305_pick_best_implementation(void)
 #if defined(HAVE_TI_MODE) && defined(HAVE_EMMINTRIN_H)
     if (sodium_runtime_has_sse2()) {
         implementation = &crypto_onetimeauth_poly1305_sse2_implementation;
+    }
+#endif
+#if (defined(__aarch64__) || defined(_M_ARM64)) && \
+    (defined(__ARM_NEON) || defined(__ARM_NEON__)) && \
+    defined(HAVE_TI_MODE) && defined(NATIVE_LITTLE_ENDIAN)
+    if (sodium_runtime_has_neon()) {
+        implementation = &crypto_onetimeauth_poly1305_neon_implementation;
     }
 #endif
     return 0;

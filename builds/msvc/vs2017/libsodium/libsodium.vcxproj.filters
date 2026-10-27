@@ -243,6 +243,9 @@
     <ClCompile Include="..\..\..\..\src\libsodium\crypto_onetimeauth\poly1305\sse2\poly1305_sse2.c">
       <Filter>crypto_onetimeauth\poly1305\sse2</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\..\..\src\libsodium\crypto_onetimeauth\poly1305\neon\poly1305_neon.c">
+      <Filter>crypto_onetimeauth\poly1305\neon</Filter>
+    </ClCompile>
     <ClCompile Include="..\..\..\..\src\libsodium\randombytes\randombytes.c">
       <Filter>randombytes</Filter>
     </ClCompile>
@@ -848,6 +851,9 @@
     <ClInclude Include="..\..\..\..\src\libsodium\crypto_onetimeauth\poly1305\sse2\poly1305_sse2.h">
       <Filter>crypto_onetimeauth\poly1305\sse2</Filter>
     </ClInclude>
+    <ClInclude Include="..\..\..\..\src\libsodium\crypto_onetimeauth\poly1305\neon\poly1305_neon.h">
+      <Filter>crypto_onetimeauth\poly1305\neon</Filter>
+    </ClInclude>
     <ClInclude Include="..\..\..\..\src\libsodium\crypto_ipcrypt\ipcrypt_soft.h">
       <Filter>crypto_ipcrypt</Filter>
     </ClInclude>
@@ -1176,6 +1182,9 @@
     </Filter>
     <Filter Include="crypto_onetimeauth\poly1305\donna">
       <UniqueIdentifier>{ff618a41-caeb-3a18-ad36-d34b049a8f50}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="crypto_onetimeauth\poly1305\neon">
+      <UniqueIdentifier>{d93426b8-054b-3543-b69f-929169beae91}</UniqueIdentifier>
     </Filter>
     <Filter Include="crypto_onetimeauth\poly1305\sse2">
       <UniqueIdentifier>{ffc3712d-dfe0-3b51-8257-f5ffc9c9cea3}</UniqueIdentifier>

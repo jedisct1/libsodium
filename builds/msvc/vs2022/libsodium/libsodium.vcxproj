@@ -165,6 +165,7 @@
     <ClCompile Include="..\..\..\..\src\libsodium\crypto_onetimeauth\poly1305\onetimeauth_poly1305.c" />
     <ClCompile Include="..\..\..\..\src\libsodium\crypto_onetimeauth\poly1305\donna\poly1305_donna.c" />
     <ClCompile Include="..\..\..\..\src\libsodium\crypto_onetimeauth\poly1305\sse2\poly1305_sse2.c" />
+    <ClCompile Include="..\..\..\..\src\libsodium\crypto_onetimeauth\poly1305\neon\poly1305_neon.c" />
     <ClCompile Include="..\..\..\..\src\libsodium\randombytes\randombytes.c" />
     <ClCompile Include="..\..\..\..\src\libsodium\randombytes\sysrandom\randombytes_sysrandom.c" />
     <ClCompile Include="..\..\..\..\src\libsodium\randombytes\internal\randombytes_internal_random.c" />
@@ -368,6 +369,7 @@
     <ClInclude Include="..\..\..\..\src\libsodium\crypto_onetimeauth\poly1305\donna\poly1305_donna64.h" />
     <ClInclude Include="..\..\..\..\src\libsodium\crypto_onetimeauth\poly1305\donna\poly1305_donna32.h" />
     <ClInclude Include="..\..\..\..\src\libsodium\crypto_onetimeauth\poly1305\sse2\poly1305_sse2.h" />
+    <ClInclude Include="..\..\..\..\src\libsodium\crypto_onetimeauth\poly1305\neon\poly1305_neon.h" />
     <ClInclude Include="..\..\..\..\src\libsodium\crypto_ipcrypt\ipcrypt_soft.h" />
     <ClInclude Include="..\..\..\..\src\libsodium\crypto_ipcrypt\ipcrypt_aesni.h" />
     <ClInclude Include="..\..\..\..\src\libsodium\crypto_ipcrypt\ipcrypt_armcrypto.h" />
