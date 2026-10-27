@@ -27,7 +27,13 @@
 .p2align 3
 4:
 #endif
-.section .note.GNU-stack,"",%progbits
 #endif
 
+#endif
+
+#if defined(__ELF__) && \
+    (defined(__linux__) || defined(__FreeBSD__) || defined(__FreeBSD_kernel__) || \
+     defined(__NetBSD__) || defined(__OpenBSD__) || defined(__DragonFly__) || \
+     defined(__gnu_hurd__))
+.section .note.GNU-stack,"",%progbits
 #endif
