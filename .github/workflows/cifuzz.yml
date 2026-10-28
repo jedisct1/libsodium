@@ -15,20 +15,20 @@ jobs:
     steps:
       - name: Build Fuzzers
         id: build
-        uses: google/oss-fuzz/infra/cifuzz/actions/build_fuzzers@675ddfb89ae1c614f1dfa99d18b91cd6d1d6b88b # master 2026-04-09
+        uses: google/oss-fuzz/infra/cifuzz/actions/build_fuzzers@fd3ab6015eb1527422d92d360003895ad55b4234 # master 2026-10-28
         with:
           oss-fuzz-project-name: "libsodium"
           dry-run: false
           language: c++
       - name: Run Fuzzers
-        uses: google/oss-fuzz/infra/cifuzz/actions/run_fuzzers@675ddfb89ae1c614f1dfa99d18b91cd6d1d6b88b # master 2026-04-09
+        uses: google/oss-fuzz/infra/cifuzz/actions/run_fuzzers@fd3ab6015eb1527422d92d360003895ad55b4234 # master 2026-10-28
         with:
           oss-fuzz-project-name: "libsodium"
           fuzz-seconds: 300
           dry-run: false
           language: c++
       - name: Upload Crash
-        uses: actions/upload-artifact@bbbca2ddaa5d8feaa63e36b76fdaad77386f024f # v7
+        uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2
         if: failure() && steps.build.outcome == 'success'
         with:
           name: artifacts
