@@ -37,7 +37,7 @@ symbols() {
   } |
     sort |
     {
-      out='"_malloc","_free"'
+      out='"_malloc","_free","_emscripten_stack_get_end","_emscripten_stack_get_current"'
       while read symbol; do
         if [ ! -z "$out" ]; then
           out="${out},"
