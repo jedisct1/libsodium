@@ -106,11 +106,11 @@ pub fn main(init: std.process.Init) !void {
     var suite_fail: u32 = 0;
 
     for (&fetch.rooterberg_sources) |*src| {
-        const data = fetch.loadCached(allocator, io, cache_dir, src.*) catch |err| {
+        const data = (fetch.loadCached(allocator, io, cache_dir, src.*) catch |err| {
             std.debug.print("Cannot read {s}/{s}: {}\n", .{ src.category, src.filename, err });
             total.skipped += 1;
             continue;
-        } orelse {
+        }) orelse {
             if (!options.offline) {
                 std.debug.print("SKIP {s}/{s}: not cached\n", .{ src.category, src.filename });
             }
