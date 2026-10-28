@@ -15,7 +15,7 @@ jobs:
   build-windows-msvc:
     runs-on: windows-latest
     steps:
-      - uses: actions/checkout@v6
+      - uses: actions/checkout@v7
       - name: buildbase.bat
         run: buildbase.bat ..\vs2026\libsodium.sln 18
         working-directory: builds/msvc/build/
@@ -40,7 +40,7 @@ jobs:
         uses: mlugg/setup-zig@v2
         with:
           version: master
-      - uses: actions/checkout@v6
+      - uses: actions/checkout@v7
 
       - name: Build Android AAR
         run: sh ./dist-build/android-aar.sh
@@ -147,7 +147,7 @@ jobs:
   build-apple:
     runs-on: macos-latest
     steps:
-      - uses: actions/checkout@v6
+      - uses: actions/checkout@v7
       - name: configure
         run: ./configure
       - name: build-xcframework
@@ -191,7 +191,7 @@ jobs:
       DOTNET_SKIP_FIRST_TIME_EXPERIENCE: 1
       DOTNET_SYSTEM_GLOBALIZATION_INVARIANT: 1
     steps:
-      - uses: actions/checkout@v6
+      - uses: actions/checkout@v7
       - uses: actions/download-artifact@v8
         with:
           name: build-win-x64
@@ -297,7 +297,7 @@ jobs:
       DOTNET_SKIP_FIRST_TIME_EXPERIENCE: 1
       DOTNET_SYSTEM_GLOBALIZATION_INVARIANT: 1
     steps:
-      - uses: actions/checkout@v6
+      - uses: actions/checkout@v7
       - uses: actions/download-artifact@v8
         with:
           name: nuget-package
@@ -344,7 +344,7 @@ jobs:
       matrix:
         rid: [osx-x64, osx-arm64, linux-musl-x64, linux-musl-arm, linux-musl-arm64, linux-x64]
     steps:
-      - uses: actions/checkout@v6
+      - uses: actions/checkout@v7
       - uses: actions/download-artifact@v8
         with:
           name: nuget-package

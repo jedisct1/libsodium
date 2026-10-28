@@ -12,7 +12,7 @@ jobs:
   version-consistency:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v6
+      - uses: actions/checkout@v7
 
       - name: Check version consistency
         run: ./test/check-version-consistency.sh
@@ -20,7 +20,7 @@ jobs:
   tcc:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v6
+      - uses: actions/checkout@v7
 
       - name: Update packages list
         run: sudo apt-get update
@@ -43,7 +43,7 @@ jobs:
   zig:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v6
+      - uses: actions/checkout@v7
 
       - name: Update packages list
         run: sudo apt-get update
@@ -77,7 +77,7 @@ jobs:
   regular:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v6
+      - uses: actions/checkout@v7
 
       - name: Update packages list
         run: sudo apt-get update
@@ -106,7 +106,7 @@ jobs:
   check-globals:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v6
+      - uses: actions/checkout@v7
 
       - name: Update packages list
         run: sudo apt-get update
@@ -124,7 +124,7 @@ jobs:
   other-comp:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v6
+      - uses: actions/checkout@v7
 
       - name: Update packages list
         run: sudo apt-get update
@@ -150,7 +150,7 @@ jobs:
   other-arch:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v6
+      - uses: actions/checkout@v7
 
       - name: Update packages list
         run: sudo apt-get update
@@ -170,7 +170,7 @@ jobs:
   wasi:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v6
+      - uses: actions/checkout@v7
 
       - name: Install Zig
         uses: mlugg/setup-zig@v2
@@ -200,7 +200,7 @@ jobs:
   aarch64-gcc:
     runs-on: ubuntu-24.04-arm
     steps:
-      - uses: actions/checkout@v6
+      - uses: actions/checkout@v7
 
       - name: Update packages list
         run: sudo apt-get update
@@ -221,7 +221,7 @@ jobs:
   aarch64-gcc-crypto:
     runs-on: ubuntu-24.04-arm
     steps:
-      - uses: actions/checkout@v6
+      - uses: actions/checkout@v7
 
       - name: Update packages list
         run: sudo apt-get update
@@ -242,7 +242,7 @@ jobs:
   aarch64-gcc-sha3:
     runs-on: ubuntu-24.04-arm
     steps:
-      - uses: actions/checkout@v6
+      - uses: actions/checkout@v7
 
       - name: Update packages list
         run: sudo apt-get update
@@ -263,7 +263,7 @@ jobs:
   android:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v6
+      - uses: actions/checkout@v7
 
       - name: Update packages list
         run: sudo apt-get update
