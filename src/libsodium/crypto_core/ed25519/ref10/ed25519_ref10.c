@@ -141,6 +141,40 @@ fe25519_sqmul(fe25519 s, const int n, const fe25519 a)
     fe25519_mul(s, s, a);
 }
 
+/*
+ * Computes the square root of x, or of 2x if x is not a square.
+ * Returns 1 if x is a square.
+ */
+static int
+fe25519_sqrt_or_sqrt2(fe25519 y, const fe25519 x)
+{
+    fe25519 one, e, chi, check, m, m_alt;
+    int     has_m1, has_i, has_mi;
+
+    fe25519_pow22523(e, x);
+    fe25519_mul(y, e, x);
+    fe25519_mul(chi, y, e); /* y^2 = chi*x */
+
+    fe25519_1(one);
+    fe25519_add(check, chi, one);
+    has_m1 = fe25519_iszero(check);
+    fe25519_sub(check, chi, sqrtm1);
+    has_i = fe25519_iszero(check);
+    fe25519_add(check, chi, sqrtm1);
+    has_mi = fe25519_iszero(check);
+
+    /* Fix y so that y^2 is x or 2x */
+    fe25519_copy(m, one);
+    fe25519_cmov(m, sqrtm1, has_m1);
+    fe25519_add(m_alt, sqrtm1, one);
+    fe25519_cmov(m, m_alt, has_mi);
+    fe25519_sub(m_alt, sqrtm1, one);
+    fe25519_cmov(m, m_alt, has_i);
+    fe25519_mul(y, y, m);
+
+    return 1 - (has_i | has_mi);
+}
+
 static unsigned int
 fe25519_notsquare(const fe25519 x)
 {
@@ -918,61 +952,6 @@ ge25519_scalarmult_base(ge25519_p3 *h, const unsigned char *a)
     }
 }
 
-/* multiply by the order of the main subgroup l = 2^252+27742317777372353535851937790883648493 */
-static void
-ge25519_mul_l(ge25519_p3 *r, const ge25519_p3 *A)
-{
-    static const signed char aslide[253] = {
-        13, 0, 0, 0, 0, -1, 0, 0, 0, 0, -11, 0, 0, 0, 0, 0, 0, -5, 0, 0, 0, 0, 0, 0, -3, 0, 0, 0, 0, -13, 0, 0, 0, 0, 7, 0, 0, 0, 0, 0, 3, 0, 0, 0, 0, -13, 0, 0, 0, 0, 5, 0, 0, 0, 0, 0, 0, 0, 0, 11, 0, 0, 0, 0, 0, 11, 0, 0, 0, 0, -13, 0, 0, 0, 0, 0, 0, -3, 0, 0, 0, 0, 0, -1, 0, 0, 0, 0, 3, 0, 0, 0, 0, -11, 0, 0, 0, 0, 0, 0, 0, 15, 0, 0, 0, 0, 0, -1, 0, 0, 0, 0, -1, 0, 0, 0, 0, 7, 0, 0, 0, 0, 5, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1
-    };
-    ge25519_cached Ai[8];
-    ge25519_p1p1   t;
-    ge25519_p3     u;
-    ge25519_p3     A2;
-    int            i;
-
-    ge25519_p3_to_cached(&Ai[0], A);
-    ge25519_p3_dbl(&t, A);
-    ge25519_p1p1_to_p3(&A2, &t);
-    ge25519_add(&t, &A2, &Ai[0]);
-    ge25519_p1p1_to_p3(&u, &t);
-    ge25519_p3_to_cached(&Ai[1], &u);
-    ge25519_add(&t, &A2, &Ai[1]);
-    ge25519_p1p1_to_p3(&u, &t);
-    ge25519_p3_to_cached(&Ai[2], &u);
-    ge25519_add(&t, &A2, &Ai[2]);
-    ge25519_p1p1_to_p3(&u, &t);
-    ge25519_p3_to_cached(&Ai[3], &u);
-    ge25519_add(&t, &A2, &Ai[3]);
-    ge25519_p1p1_to_p3(&u, &t);
-    ge25519_p3_to_cached(&Ai[4], &u);
-    ge25519_add(&t, &A2, &Ai[4]);
-    ge25519_p1p1_to_p3(&u, &t);
-    ge25519_p3_to_cached(&Ai[5], &u);
-    ge25519_add(&t, &A2, &Ai[5]);
-    ge25519_p1p1_to_p3(&u, &t);
-    ge25519_p3_to_cached(&Ai[6], &u);
-    ge25519_add(&t, &A2, &Ai[6]);
-    ge25519_p1p1_to_p3(&u, &t);
-    ge25519_p3_to_cached(&Ai[7], &u);
-
-    ge25519_p3_0(r);
-
-    for (i = 252; i >= 0; --i) {
-        ge25519_p3_dbl(&t, r);
-
-        if (aslide[i] > 0) {
-            ge25519_p1p1_to_p3(&u, &t);
-            ge25519_add(&t, &u, &Ai[aslide[i] / 2]);
-        } else if (aslide[i] < 0) {
-            ge25519_p1p1_to_p3(&u, &t);
-            ge25519_sub(&t, &u, &Ai[(-aslide[i]) / 2]);
-        }
-
-        ge25519_p1p1_to_p3(r, &t);
-    }
-}
-
 int
 ge25519_is_on_curve(const ge25519_p3 *p)
 {
@@ -998,17 +977,76 @@ ge25519_is_on_curve(const ge25519_p3 *p)
     return fe25519_iszero(t0);
 }
 
+/*
+ * Divide-and-Pair method from https://eprint.iacr.org/2026/749
+ */
 int
 ge25519_is_on_main_subgroup(const ge25519_p3 *p)
 {
-    ge25519_p3 pl;
-    fe25519    t;
+    fe25519 one, a_minus_d, two_d_minus_two;
+    fe25519 z_minus_y, z_plus_y, e, e2, u, w;
+    fe25519 wp, up, wh, eh, uh, zeta;
+    fe25519 t;
+    int     has_half, up_is_square, is_fourth_power, is_identity;
 
-    ge25519_mul_l(&pl, p);
+    fe25519_1(one);
+    fe25519_add(a_minus_d, d, one);
+    fe25519_neg(a_minus_d, a_minus_d);
+    fe25519_add(t, one, one);
+    fe25519_sub(two_d_minus_two, d2, t);
 
-    fe25519_sub(t, pl.Y, pl.Z);
+    fe25519_sub(z_minus_y, p->Z, p->Y);
+    fe25519_add(z_plus_y, p->Z, p->Y);
+    fe25519_mul(e, p->X, z_minus_y);
+    fe25519_sq(e2, e);
+    fe25519_mul(u, a_minus_d, z_plus_y);
+    fe25519_mul(u, u, p->X);
+    fe25519_mul(u, u, e);
+    fe25519_add(w, p->Z, p->Z);
+    fe25519_mul(w, w, z_minus_y);
 
-    return fe25519_iszero(pl.X) & fe25519_iszero(t);
+    fe25519_mul32(t, u, 4);
+    has_half = fe25519_sqrt_or_sqrt2(wp, t);
+
+    fe25519_mul32(up, u, 2);
+    fe25519_mul(t, two_d_minus_two, e2);
+    fe25519_add(up, up, t);
+    fe25519_mul(t, w, wp);
+    fe25519_sub(up, up, t);
+    up_is_square = fe25519_sqrt_or_sqrt2(wh, up);
+
+    fe25519_mul(t, e, wh);
+    fe25519_copy(eh, e);
+    fe25519_cmov(eh, t, 1 - up_is_square);
+    fe25519_mul(t, wp, wh);
+    fe25519_cmov(wp, t, 1 - up_is_square);
+    fe25519_mul(t, sqrtm32d, e2);
+    fe25519_cmov(wh, t, 1 - up_is_square);
+
+    fe25519_sq(uh, wh);
+    fe25519_sq(t, eh);
+    fe25519_mul(t, two_d_minus_two, t);
+    fe25519_sub(uh, uh, t);
+    fe25519_mul(t, wh, wp);
+    fe25519_sub(uh, uh, t);
+    fe25519_mul32(uh, uh, 8);
+
+    fe25519_add(t, eh, eh);
+    fe25519_mul(t, t, sqrtm1);
+    fe25519_add(t, t, wh);
+    fe25519_sq(t, t);
+    fe25519_mul(zeta, uh, t);
+
+    fe25519_pow22523(t, zeta);
+    fe25519_sq(t, t);
+    fe25519_mul(t, t, zeta);
+    fe25519_sub(t, t, one);
+    is_fourth_power = fe25519_iszero(t);
+
+    fe25519_sub(t, p->Y, p->Z);
+    is_identity = fe25519_iszero(p->X) & fe25519_iszero(t);
+
+    return (has_half & is_fourth_power) | is_identity;
 }
 
 int
