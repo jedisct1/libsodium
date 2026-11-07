@@ -28,8 +28,12 @@ fn initLibConfig(b: *std.Build, target: std.Build.ResolvedTarget, lib: *Compile)
     lib.root_module.addCMacro("HAVE_STDINT_H", "1");
 
     const cpu = target.result.cpu;
-    if (!cpu.arch.isWasm() or cpu.has(.wasm, .wide_arithmetic)) {
-        lib.root_module.addCMacro("HAVE_TI_MODE", "1"); // Without wide arithmetic, 64x64 multiplication on WebAssembly is slow
+    const has_wide_mul = if (cpu.arch.isWasm())
+        cpu.has(.wasm, .wide_arithmetic)
+    else
+        Target.ptrBitWidth_arch_abi(cpu.arch, .none) == 64;
+    if (has_wide_mul) {
+        lib.root_module.addCMacro("HAVE_TI_MODE", "1"); // 64x64 multiplication is slow on 32-bit CPUs, and on WebAssembly without wide arithmetic
     }
 
     const endian = target.result.cpu.arch.endian();
