@@ -175,6 +175,12 @@ build_ios_simulator() {
   make -j${PROCESSORS} install || exit 1
 }
 
+can_link() {
+  # Clang can still compile for some architectures that the linker has dropped.
+  printf 'int main(void) { return 0; }\n' |
+    ${CC:-cc} ${LDFLAGS} -x c - -o /dev/null
+}
+
 build_watchos() {
   export BASEDIR="${XCODEDIR}/Platforms/WatchOS.platform/Developer"
   export PATH="${BASEDIR}/usr/bin:$BASEDIR/usr/sbin:$PATH"
@@ -184,10 +190,14 @@ build_watchos() {
   export CFLAGS="-O3 -mthumb -arch armv7k -isysroot ${SDK} -mwatchos-version-min=${WATCHOS_VERSION_MIN}"
   export LDFLAGS="-mthumb -arch armv7k -isysroot ${SDK} -mwatchos-version-min=${WATCHOS_VERSION_MIN}"
 
-  make distclean >/dev/null 2>&1
-  ./configure --build=aarch64-apple-darwin --host=arm-apple-darwin23 --prefix="$WATCHOS32_PREFIX" \
-    ${LIBSODIUM_ENABLE_MINIMAL_FLAG} || exit 1
-  make -j${PROCESSORS} install || exit 1
+  WATCHOS32_BUILT=false
+  if can_link; then
+    make distclean >/dev/null 2>&1
+    ./configure --build=aarch64-apple-darwin --host=arm-apple-darwin23 --prefix="$WATCHOS32_PREFIX" \
+      ${LIBSODIUM_ENABLE_MINIMAL_FLAG} || exit 1
+    make -j${PROCESSORS} install || exit 1
+    WATCHOS32_BUILT=true
+  fi
 
   ## 64-bit arm64_32 watchOS
   export CFLAGS="-O3 -mthumb -arch arm64_32 -isysroot ${SDK} -mwatchos-version-min=${WATCHOS_VERSION_MIN}"
@@ -244,10 +254,14 @@ build_watchos_simulator() {
   export CFLAGS="-O3 -arch i386 -isysroot ${SDK} -mwatchos-simulator-version-min=${WATCHOS_SIMULATOR_VERSION_MIN}"
   export LDFLAGS="-arch i386 -isysroot ${SDK} -mwatchos-simulator-version-min=${WATCHOS_SIMULATOR_VERSION_MIN}"
 
-  make distclean >/dev/null 2>&1
-  ./configure --build=aarch64-apple-darwin --host=i686-apple-darwin23 --prefix="$WATCHOS_SIMULATOR_I386_PREFIX" \
-    ${LIBSODIUM_ENABLE_MINIMAL_FLAG} || exit 1
-  make -j${PROCESSORS} install || exit 1
+  WATCHOS_SIMULATOR_I386_BUILT=false
+  if can_link; then
+    make distclean >/dev/null 2>&1
+    ./configure --build=aarch64-apple-darwin --host=i686-apple-darwin23 --prefix="$WATCHOS_SIMULATOR_I386_PREFIX" \
+      ${LIBSODIUM_ENABLE_MINIMAL_FLAG} || exit 1
+    make -j${PROCESSORS} install || exit 1
+    WATCHOS_SIMULATOR_I386_BUILT=true
+  fi
 
   ## x86_64 simulator
   export CFLAGS="-O3 -arch x86_64 -isysroot ${SDK} -mwatchos-simulator-version-min=${WATCHOS_SIMULATOR_VERSION_MIN}"
@@ -463,12 +477,14 @@ mkdir -p "${PREFIX}/watchos/lib"
 cp -a "${WATCHOS64_32_PREFIX}/include" "${PREFIX}/watchos/"
 reorganize_headers "${PREFIX}/watchos/include"
 for ext in a dylib; do
-  lipo -create \
-    "${WATCHOS32_PREFIX}/lib/libsodium.${ext}" \
+  set -- \
     "${WATCHOS64_32_PREFIX}/lib/libsodium.${ext}" \
     "${WATCHOS64_PREFIX}/lib/libsodium.${ext}" \
-    "${WATCHOS64E_PREFIX}/lib/libsodium.${ext}" \
-    -output "${PREFIX}/watchos/lib/libsodium.${ext}"
+    "${WATCHOS64E_PREFIX}/lib/libsodium.${ext}"
+  if [ "$WATCHOS32_BUILT" = true ]; then
+    set -- "$@" "${WATCHOS32_PREFIX}/lib/libsodium.${ext}"
+  fi
+  lipo -create "$@" -output "${PREFIX}/watchos/lib/libsodium.${ext}"
 done
 
 echo "Bundling tvOS targets..."
@@ -534,12 +550,14 @@ if [ -z "$LIBSODIUM_SKIP_SIMULATORS" ]; then
   cp -a "${WATCHOS_SIMULATOR_X86_64_PREFIX}/include" "${PREFIX}/watchos-simulators/"
   reorganize_headers "${PREFIX}/watchos-simulators/include"
   for ext in a dylib; do
-    lipo -create \
+    set -- \
       "${WATCHOS_SIMULATOR_ARM64_PREFIX}/lib/libsodium.${ext}" \
       "${WATCHOS_SIMULATOR_ARM64E_PREFIX}/lib/libsodium.${ext}" \
-      "${WATCHOS_SIMULATOR_I386_PREFIX}/lib/libsodium.${ext}" \
-      "${WATCHOS_SIMULATOR_X86_64_PREFIX}/lib/libsodium.${ext}" \
-      -output "${PREFIX}/watchos-simulators/lib/libsodium.${ext}"
+      "${WATCHOS_SIMULATOR_X86_64_PREFIX}/lib/libsodium.${ext}"
+    if [ "$WATCHOS_SIMULATOR_I386_BUILT" = true ]; then
+      set -- "$@" "${WATCHOS_SIMULATOR_I386_PREFIX}/lib/libsodium.${ext}"
+    fi
+    lipo -create "$@" -output "${PREFIX}/watchos-simulators/lib/libsodium.${ext}"
   done
 
   echo "Bundling tvOS simulators..."
