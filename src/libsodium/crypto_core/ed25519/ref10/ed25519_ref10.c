@@ -2453,7 +2453,7 @@ ge25519_elligator2(unsigned char s[32], const fe25519 r, const unsigned char x_s
     fe25519_mul32(x2, x2, curve25519_A[0]);
     fe25519_add(gx, x2, gx);
 
-    notsquare = fe25519_notsquare(gx);
+    notsquare = fe25519_notsquare(gx) ^ optblocker_u8;
     fe25519_neg(negx, x);
     fe25519_cmov(x, negx, notsquare);
     fe25519_0(x2);
