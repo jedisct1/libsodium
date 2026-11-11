@@ -115,7 +115,7 @@ static uint32_t
 csubq(uint32_t a)
 {
     a -= MLDSA44_Q;
-    a += (0U - (a >> 31)) & MLDSA44_Q;
+    a += (uint32_t) ((int32_t) a >> 30) & MLDSA44_Q;
 
     return a;
 }
@@ -246,7 +246,7 @@ power2round(uint32_t *a0, uint32_t a)
 
     t = a & ((1U << MLDSA44_D) - 1);
     t -= (1U << (MLDSA44_D - 1)) + 1;
-    t += (0U - (t >> 31)) & (1U << MLDSA44_D);
+    t += (uint32_t) ((int32_t) t >> 30) & (1U << MLDSA44_D);
     t -= (1U << (MLDSA44_D - 1)) - 1;
     *a0 = MLDSA44_Q + t;
 
@@ -260,9 +260,9 @@ decompose(uint32_t *a0, uint32_t a)
 
     a1 = (a + 127) >> 7;
     a1 = (a1 * 11275 + (1U << 23)) >> 24;
-    a1 ^= (0U - ((43 - a1) >> 31)) & a1;
+    a1 ^= (uint32_t) ((int32_t) (43 - a1) >> 30) & a1;
     *a0 = a - a1 * 2 * MLDSA44_GAMMA2;
-    *a0 += (0U - ((*a0 - (MLDSA44_Q - 1) / 2) >> 31)) & MLDSA44_Q;
+    *a0 += (uint32_t) ((int32_t) (*a0 - (MLDSA44_Q - 1) / 2) >> 30) & MLDSA44_Q;
 
     return a1;
 }
@@ -556,7 +556,7 @@ poly_pack_z(unsigned char r[MLDSA44_POLYZ_PACKEDBYTES], const poly *a)
     for (i = 0; i < MLDSA44_N / 4; i++) {
         for (j = 0; j < 4; j++) {
             t[j] = MLDSA44_GAMMA1 - a->coeffs[4 * i + j];
-            t[j] += (0U - (t[j] >> 31)) & MLDSA44_Q;
+            t[j] += (uint32_t) ((int32_t) t[j] >> 30) & MLDSA44_Q;
         }
 
         r[9 * i + 0] = (unsigned char) (t[0] >> 0);
@@ -589,7 +589,7 @@ poly_unpack_z(poly *r, const unsigned char a[MLDSA44_POLYZ_PACKEDBYTES])
 
         for (j = 0; j < 4; j++) {
             t[j] = MLDSA44_GAMMA1 - t[j];
-            t[j] += (0U - (t[j] >> 31)) & MLDSA44_Q;
+            t[j] += (uint32_t) ((int32_t) t[j] >> 30) & MLDSA44_Q;
             r->coeffs[4 * i + j] = t[j];
         }
     }
