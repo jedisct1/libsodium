@@ -109,7 +109,7 @@ BOOLEAN NTAPI RtlGenRandom(PVOID RandomBuffer, ULONG RandomBufferLength);
 #endif
 
 #ifdef HAVE_RDRAND
-# ifdef __clang__
+# if defined (__clang__) && (!defined(__MINGW32__) || !defined(__i386__))
 #  pragma clang attribute push(__attribute__((target("rdrnd"))), apply_to = function)
 # elif defined(__GNUC__)
 #  pragma GCC target("rdrnd")
@@ -664,7 +664,7 @@ struct randombytes_implementation randombytes_internal_implementation = {
 };
 
 #ifdef HAVE_RDRAND
-# ifdef __clang__
+# if defined (__clang__) && (!defined(__MINGW32__) || !defined(__i386__))
 #  pragma clang attribute pop
 # endif
 #endif
