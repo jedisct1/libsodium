@@ -2573,7 +2573,7 @@ ge25519_elligator2(fe25519 x, fe25519 y, const fe25519 r, int *notsquare_p)
     fe25519_add(gx1, x3, x);
     fe25519_add(gx1, gx1, x2); /* gx1 = x1^3 + A*x1^2 + x1 */
 
-    notsquare = fe25519_notsquare(gx1);
+    notsquare = fe25519_notsquare(gx1) ^ optblocker_u8;
 
     /* gx1 not a square  => x = -x1-A */
     fe25519_neg(negx, x);
