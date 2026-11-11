@@ -118,50 +118,22 @@ softaes_expand_key256(SoftAesBlock rkeys[15], const uint8_t key[32])
     }
 }
 
-static inline uint8_t
-xtime(uint8_t a)
+static inline uint32_t
+xtime(uint32_t col)
 {
-    return (uint8_t) ((a << 1) ^ (((a >> 7) & 1) * 0x1b));
-}
-
-static inline uint8_t
-gf_mul_09(uint8_t a)
-{
-    return xtime(xtime(xtime(a))) ^ a;
-}
-
-static inline uint8_t
-gf_mul_0b(uint8_t a)
-{
-    return xtime(xtime(xtime(a)) ^ a) ^ a;
-}
-
-static inline uint8_t
-gf_mul_0d(uint8_t a)
-{
-    return xtime(xtime(xtime(a) ^ a)) ^ a;
-}
-
-static inline uint8_t
-gf_mul_0e(uint8_t a)
-{
-    return xtime(xtime(xtime(a) ^ a) ^ a);
+    return ((col & 0x7f7f7f7f) << 1) ^ (((col >> 7) & 0x01010101) * 0x1b);
 }
 
 static uint32_t
 inv_mix_column(uint32_t col)
 {
-    uint8_t b0 = (uint8_t) col;
-    uint8_t b1 = (uint8_t) (col >> 8);
-    uint8_t b2 = (uint8_t) (col >> 16);
-    uint8_t b3 = (uint8_t) (col >> 24);
+    const uint32_t col2 = xtime(col);
+    const uint32_t col4 = xtime(col2);
+    const uint32_t col8 = xtime(col4);
+    const uint32_t col9 = col8 ^ col;
 
-    uint8_t r0 = gf_mul_0e(b0) ^ gf_mul_0b(b1) ^ gf_mul_0d(b2) ^ gf_mul_09(b3);
-    uint8_t r1 = gf_mul_09(b0) ^ gf_mul_0e(b1) ^ gf_mul_0b(b2) ^ gf_mul_0d(b3);
-    uint8_t r2 = gf_mul_0d(b0) ^ gf_mul_09(b1) ^ gf_mul_0e(b2) ^ gf_mul_0b(b3);
-    uint8_t r3 = gf_mul_0b(b0) ^ gf_mul_0d(b1) ^ gf_mul_09(b2) ^ gf_mul_0e(b3);
-
-    return (uint32_t) r0 | ((uint32_t) r1 << 8) | ((uint32_t) r2 << 16) | ((uint32_t) r3 << 24);
+    return col8 ^ col4 ^ col2 ^ ROTR32(col9 ^ col2, 8) ^ ROTR32(col9 ^ col4, 16) ^
+           ROTR32(col9, 24);
 }
 
 SoftAesBlock
