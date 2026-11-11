@@ -799,7 +799,7 @@ sodium_unpad(size_t *unpadded_buflen_p, const unsigned char *buf,
     unsigned char        valid = 0U;
     volatile size_t      pad_len = 0U;
     size_t               i;
-    size_t               is_barrier;
+    volatile size_t      is_barrier;
 
     if (padded_buflen < blocksize || blocksize <= 0U) {
         return -1;
