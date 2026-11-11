@@ -261,15 +261,19 @@ poly_tobytes(unsigned char r[MLKEM768_POLYBYTES], const poly *a)
     }
 }
 
+static volatile int16_t optblocker_i16;
+
 static void
 poly_frommsg(poly *r, const unsigned char msg[32])
 {
-    unsigned int i, j;
-    int16_t      mask;
+    const int16_t zero = optblocker_i16;
+    const int16_t one  = 1 ^ zero;
+    unsigned int  i, j;
+    int16_t       mask;
 
     for (i = 0; i < MLKEM768_N / 8; i++) {
         for (j = 0; j < 8; j++) {
-            mask                 = -((msg[i] >> j) & 1);
+            mask                 = -(((msg[i] ^ zero) >> j) & one);
             r->coeffs[8 * i + j] = mask & ((MLKEM768_Q + 1) / 2);
         }
     }
