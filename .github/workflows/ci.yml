@@ -192,6 +192,30 @@ jobs:
           make -j $(nproc)
           make clean > /dev/null
 
+  mingw-clang:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+
+      - name: Update packages list
+        run: sudo apt-get update
+
+      - name: Install dependencies
+        run: sudo apt-get install -y build-essential libtool autoconf automake clang mingw-w64
+
+      - name: Autogen
+        run: ./autogen.sh -s
+
+      - name: MinGW cross-compilation with clang
+        run: |
+          for arch in i686 x86_64; do
+            env CC="clang --target=${arch}-w64-mingw32" CPPFLAGS="-DDEV_MODE=1" ./configure --disable-dependency-tracking --host=${arch}-w64-mingw32
+            make -j $(nproc)
+            make distclean > /dev/null
+          done
+
   aarch64-gcc:
     runs-on: ubuntu-24.04-arm
     steps:
