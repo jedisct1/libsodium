@@ -51,6 +51,7 @@ fn initLibConfig(b: *std.Build, target: std.Build.ResolvedTarget, lib: *Compile)
             lib.root_module.addCMacro("HAVE_CATCHABLE_ABRT", "1");
             lib.root_module.addCMacro("HAVE_CATCHABLE_SEGV", "1");
             lib.root_module.addCMacro("HAVE_CLOCK_GETTIME", "1");
+            lib.root_module.addCMacro("HAVE_GETAUXVAL", "1");
             lib.root_module.addCMacro("HAVE_GETPID", "1");
             lib.root_module.addCMacro("HAVE_MADVISE", "1");
             lib.root_module.addCMacro("HAVE_MLOCK", "1");
