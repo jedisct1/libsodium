@@ -789,32 +789,36 @@ sodium_pad(size_t *padded_buflen_p, unsigned char *buf,
     return 0;
 }
 
+static volatile size_t optblocker_size;
+
 int
 sodium_unpad(size_t *unpadded_buflen_p, const unsigned char *buf,
              size_t padded_buflen, size_t blocksize)
 {
     const unsigned char *tail;
-    unsigned char        acc = 0U;
-    unsigned char        c;
-    unsigned char        valid = 0U;
-    volatile size_t      pad_len = 0U;
+    size_t               acc;
+    size_t               valid = 0U;
+    size_t               pad_len = 0U;
     size_t               i;
-    volatile size_t      is_barrier;
+    size_t               zero;
+    size_t               one;
 
     if (padded_buflen < blocksize || blocksize <= 0U) {
         return -1;
     }
+    zero = optblocker_size;
+    one = 1U ^ zero;
+    acc = zero;
     tail = &buf[padded_buflen - 1U];
 
     for (i = 0U; i < blocksize; i++) {
-        c = *(tail - i);
-        is_barrier =
-            (( (acc - 1U) & (pad_len - 1U) & ((c ^ 0x80) - 1U) ) >> 8) & 1U;
-        acc |= c;
-        pad_len |= i & (1U + ~is_barrier);
-        valid |= (unsigned char) is_barrier;
+        acc |= *(tail - i);
+        pad_len += ((acc - 1U) >> 8) & one;
+        valid |= (acc ^ 0x80) - 1U;
     }
+    valid = (valid >> 8) & one;
+    pad_len &= 0U - valid;
     *unpadded_buflen_p = padded_buflen - 1U - pad_len;
 
-    return (int) (valid - 1U);
+    return (int) valid - 1;
 }
