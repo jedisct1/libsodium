@@ -27,6 +27,8 @@
     CET annotations in x86-64 assembly have also been corrected.
   - A workaround against incorrect code generation with Clang 21 on s390x
     has been added.
+  - Edwards25519 group membership testing is faster, which also speeds
+    up low-level crypto_core_ed25519_*() functions of the public API.e
 
 * Version 1.0.22
   This point release includes all the changes from 1.0.21-stable, plus:
