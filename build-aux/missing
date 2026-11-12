@@ -10,7 +10,7 @@ scriptversion=2025-06-18.21; # UTC
 
 # This program is free software; you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
-# the Free Software Foundation; either version 2, or (at your option)
+# the Free Software Foundation; either version 3, or (at your option)
 # any later version.
 
 # This program is distributed in the hope that it will be useful,
@@ -199,7 +199,7 @@ give_advice ()
       echo "You might want to install the Texinfo package:"
       echo "<$gnu_software_URL/texinfo/>"
       echo "The spurious makeinfo call might also be the consequence of"
-      echo "using a buggy 'make' (AIX, DU, IRIX), in which case you might"
+      echo "using a buggy non-GNU 'make', in which case you might"
       echo "want to install GNU make:"
       echo "<$gnu_software_URL/make/>"
       ;;

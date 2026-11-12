@@ -278,6 +278,27 @@ int main(void) { return 0; }
     )
   ])
 
+AS_CASE([$host_cpu],
+  [s390x], [
+    AC_MSG_CHECKING(for clang 21 with the s390x vector facility)
+    AC_COMPILE_IFELSE(
+      [AC_LANG_SOURCE([
+#if defined(__clang__) && __clang_major__ == 21 && defined(__VX__)
+# error wrong code for widening vector multiplications
+#endif
+int main(void) { return 0; }
+       ])],
+      [AC_MSG_RESULT(no)],
+      [AC_MSG_RESULT(yes)
+       AX_CHECK_COMPILE_FLAG([-mno-vx], [
+         AC_MSG_WARN([clang 21 generates wrong vector code on s390x - vector facility disabled])
+         CFLAGS="$CFLAGS -mno-vx"
+       ], [
+         AC_MSG_ERROR([clang 21 generates wrong vector code on s390x - please use another compiler version])
+       ])
+      ])
+  ])
+
 LIBTOOL_OLD_FLAGS="$LIBTOOL_EXTRA_FLAGS"
 LIBTOOL_EXTRA_FLAGS="$LIBTOOL_EXTRA_FLAGS -version-info $SODIUM_LIBRARY_VERSION"
 AC_ARG_ENABLE(soname-versions,

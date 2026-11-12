@@ -1,4 +1,4 @@
-# generated automatically by aclocal 1.19 -*- Autoconf -*-
+# generated automatically by aclocal 1.20 -*- Autoconf -*-
 
 # Copyright (C) 1996-2026 Free Software Foundation, Inc.
 
@@ -32,10 +32,10 @@ To do so, use the procedure documented by the package, typically 'autoreconf'.])
 # generated from the m4 files accompanying Automake X.Y.
 # (This private macro should not be called outside this file.)
 AC_DEFUN([AM_AUTOMAKE_VERSION],
-[am__api_version='1.19'
+[am__api_version='1.20'
 dnl Some users find AM_AUTOMAKE_VERSION and mistake it for a way to
 dnl require some minimum version.  Point them to the right macro.
-m4_if([$1], [1.19], [],
+m4_if([$1], [1.20], [],
       [AC_FATAL([Do not call $0, use AM_INIT_AUTOMAKE([$1]).])])dnl
 ])
 
@@ -51,7 +51,7 @@ m4_define([_AM_AUTOCONF_VERSION], [])
 # Call AM_AUTOMAKE_VERSION and AM_AUTOMAKE_VERSION so they can be traced.
 # This function is AC_REQUIREd by AM_INIT_AUTOMAKE.
 AC_DEFUN([AM_SET_CURRENT_AUTOMAKE_VERSION],
-[AM_AUTOMAKE_VERSION([1.19])dnl
+[AM_AUTOMAKE_VERSION([1.20])dnl
 m4_ifndef([AC_AUTOCONF_VERSION],
   [m4_copy([m4_PACKAGE_VERSION], [AC_AUTOCONF_VERSION])])dnl
 _AM_AUTOCONF_VERSION(m4_defn([AC_AUTOCONF_VERSION]))])
@@ -556,6 +556,7 @@ fi
 AC_SUBST([CSCOPE])
 
 AC_REQUIRE([_AM_SILENT_RULES])dnl
+AC_REQUIRE([_AM_JOBSERVER])dnl
 dnl The testsuite driver may need to know about EXEEXT, so add the
 dnl 'am__EXEEXT' conditional if _AM_COMPILER_EXEEXT was seen.  This
 dnl macro is hooked onto _AC_COMPILER_EXEEXT early, see below.
@@ -618,6 +619,36 @@ if test x"${install_sh+set}" != xset; then
   esac
 fi
 AC_SUBST([install_sh])])
+
+# Enable compiler access to GNU make's jobserver.       -*- Autoconf -*-
+# Copyright (C) 2026 Free Software Foundation, Inc.
+#
+# This file is free software; the Free Software Foundation
+# gives unlimited permission to copy and/or distribute it,
+# with or without modifications, as long as this notice is preserved.
+
+# _AM_JOBSERVER
+# -------------
+AC_DEFUN([_AM_JOBSERVER],
+[AC_ARG_ENABLE([jobserver],
+  [AS_HELP_STRING([--enable-jobserver],
+    [let compilers and linkers use the GNU make jobserver])],
+  [], [enable_jobserver=no])
+AM_JOBSERVER=
+AS_CASE([$enable_jobserver],
+  [yes], [
+    AS_IF([${MAKE-make} --version 2>/dev/null | grep 'GNU Make' >/dev/null],
+      [], [AC_MSG_ERROR([--enable-jobserver requires GNU make])])
+    dnl MAKEFLAGS begins with the single-letter flags, without a dash.
+    dnl Prefix a dash so firstword does not pick up a later option or
+    dnl variable assignment when there are no single-letter flags.
+    dnl Do not mark commands recursive under -n, -q, or -t.
+    AM_JOBSERVER='$(if $(findstring n,$(firstword -$(MAKEFLAGS)))$(findstring q,$(firstword -$(MAKEFLAGS)))$(findstring t,$(firstword -$(MAKEFLAGS))),,+)'
+  ],
+  [no], [],
+  [AC_MSG_ERROR([bad value '$enable_jobserver' for --enable-jobserver])])
+AC_SUBST([AM_JOBSERVER])
+])
 
 # Copyright (C) 2003-2026 Free Software Foundation, Inc.
 #
@@ -818,7 +849,7 @@ AC_CACHE_CHECK(
   rm -f -r a.out a.exe b.out conftest.$ac_ext conftest.$ac_objext \
     conftest.dSYM conftest1.$ac_ext conftest1.$ac_objext conftest1.dSYM \
     conftest2.$ac_ext conftest2.$ac_objext conftest2.dSYM
-  unset am_i])
+  AS_UNSET([am_i])])
 if test "$am_cv_prog_cc_c_o" != yes; then
    # Losing compiler, so override with the script.
    # FIXME: It is wrong to rewrite CC.
@@ -1031,7 +1062,15 @@ AC_DEFUN([AM_SANITY_CHECK],
 # different projects.
 AC_MSG_CHECKING([whether build environment is sane])
 # Reject unsafe characters in $srcdir or the absolute working directory
-# name.  Accept space and tab only in the latter.
+# name.  Accept space and tab only in the latter.  Also reject ':', ';'
+# and '|' in $srcdir (`make' defect). '|' separates order-only prerequisites,
+# ';' breaks the dependency-tracking setup in config.status, and ':' separates
+# VPATH entries.  (Autoconf's search for auxiliary files usually fails on
+# ':' before we get here, though.)
+# Reject '<' and '>' in $srcdir as well: unquoted source paths in compiler
+# commands would be interpreted as shell redirections, possibly clobbering
+# files in the build directory.  Likewise reject '(' and ')', which are
+# shell syntax errors in those commands.
 am_lf='
 '
 case `pwd` in
@@ -1040,7 +1079,7 @@ case `pwd` in
     AC_MSG_ERROR([unsafe absolute working directory name]);;
 esac
 case $srcdir in
-  *[[\\\"\#\$\&\'\`$am_lf\ \	]]*)
+  *[[\\\"\#\$\&\'\`$am_lf\ \	:\;\|\<\>\(\)]]*)
     AC_MSG_RESULT([no])
     AC_MSG_ERROR([unsafe srcdir value: '$srcdir']);;
 esac
@@ -1080,7 +1119,7 @@ fi
 # If we didn't sleep, we still need to ensure time stamps of config.status and
 # generated files are strictly newer.
 am_sleep_pid=
-AS_IF([test -e conftest.file || grep 'slept: no' conftest.file >/dev/null 2>&1],, [dnl
+AS_IF([grep 'slept: no' conftest.file >/dev/null 2>&1], [dnl
   ( sleep "$am_cv_filesystem_timestamp_resolution" ) &
   am_sleep_pid=$!
 ])
@@ -1301,7 +1340,9 @@ m4_if([$1], [v7],
     case $_am_tool in
     gnutar)
       for _am_tar in tar gnutar gtar; do
-        AM_RUN_LOG([$_am_tar --version | grep GNU >/dev/null]) && break
+        if AM_RUN_LOG([$_am_tar --version]); then
+          ($_am_tar --version) 2>&1 | grep -i busybox >/dev/null || break
+        fi
       done
       am__tar="$_am_tar --format=m4_if([$1], [pax], [posix], [$1]) -chf - "'"$$tardir"'
       am__tar_="$_am_tar --format=m4_if([$1], [pax], [posix], [$1]) -chf - "'"$tardir"'
@@ -1309,8 +1350,11 @@ m4_if([$1], [v7],
       ;;
     plaintar)
       # Must skip GNU tar: if it does not support --format= it doesn't create
-      # ustar tarball either.
-      (tar --version | grep GNU) >/dev/null 2>&1 && continue
+      # ustar tarball either.  The same goes for bsdtar, whose default format
+      # is not ustar.  BusyBox tar, which lacks --format=, is fine here.
+      if (tar --version) >/dev/null 2>&1; then
+        (tar --version) 2>&1 | grep -i busybox >/dev/null || continue
+      fi
       am__tar='tar chf - "$$tardir"'
       am__tar_='tar chf - "$tardir"'
       am__untar='tar xf -'
@@ -1374,7 +1418,7 @@ AC_DEFUN([_AM_PROG_XARGS_N],
 AS_IF([test "`echo 1 2 3 | xargs -n2 echo`" = "1 2
 3"], [am_cv_xargs_n_works=yes], [am_cv_xargs_n_works=no])])
 AS_IF([test "$am_cv_xargs_n_works" = yes], [am__xargs_n='xargs -n'], [dnl
-  am__xargs_n='am__xargs_n () { shift; sed "s/ /\\n/g" | while read am__xargs_n_arg; do "$@" "$am__xargs_n_arg"; done; }'
+  am__xargs_n='$(SHELL) -c '\''shift; tr " " "\\012" | while read am__xargs_n_arg; do test -z "$$am__xargs_n_arg" || "$$@" "$$am__xargs_n_arg"; done'\'' am__xargs_n'
 ])dnl
 AC_SUBST(am__xargs_n)
 ])

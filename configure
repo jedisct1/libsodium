@@ -748,6 +748,7 @@ MAINTAINER_MODE_FALSE
 MAINTAINER_MODE_TRUE
 am__xargs_n
 am__rm_f_notfound
+AM_JOBSERVER
 AM_BACKSLASH
 AM_DEFAULT_VERBOSITY
 AM_DEFAULT_V
@@ -835,6 +836,7 @@ ac_subst_files=''
 ac_user_opts='
 enable_option_checking
 enable_silent_rules
+enable_jobserver
 enable_maintainer_mode
 enable_dependency_tracking
 enable_ssp
@@ -1511,6 +1513,7 @@ Optional Features:
   --enable-FEATURE[=ARG]  include FEATURE [ARG=yes]
   --enable-silent-rules   less verbose build output (undo: "make V=1")
   --disable-silent-rules  verbose build output (undo: "make V=0")
+  --enable-jobserver      let compilers and linkers use the GNU make jobserver
   --enable-maintainer-mode
                           enable make rules and dependencies not useful (and
                           sometimes confusing) to the casual installer
@@ -3055,7 +3058,7 @@ test -n "$target_alias" &&
   test "$program_prefix$program_suffix$program_transform_name" = \
     NONENONEs,x,x, &&
   program_prefix=${target_alias}-
-am__api_version='1.19'
+am__api_version='1.20'
 
 
   # Find a good install program.  We prefer a C program (faster),
@@ -3319,7 +3322,15 @@ printf '%s\n' "$am_cv_filesystem_timestamp_resolution" >&6; }
 { printf '%s\n' "$as_me:${as_lineno-$LINENO}: checking whether build environment is sane" >&5
 printf %s "checking whether build environment is sane... " >&6; }
 # Reject unsafe characters in $srcdir or the absolute working directory
-# name.  Accept space and tab only in the latter.
+# name.  Accept space and tab only in the latter.  Also reject ':', ';'
+# and '|' in $srcdir (`make' defect). '|' separates order-only prerequisites,
+# ';' breaks the dependency-tracking setup in config.status, and ':' separates
+# VPATH entries.  (Autoconf's search for auxiliary files usually fails on
+# ':' before we get here, though.)
+# Reject '<' and '>' in $srcdir as well: unquoted source paths in compiler
+# commands would be interpreted as shell redirections, possibly clobbering
+# files in the build directory.  Likewise reject '(' and ')', which are
+# shell syntax errors in those commands.
 am_lf='
 '
 case `pwd` in
@@ -3329,7 +3340,7 @@ printf '%s\n' "no" >&6; }
     as_fn_error $? "unsafe absolute working directory name" "$LINENO" 5;;
 esac
 case $srcdir in
-  *[\\\"\#\$\&\'\`$am_lf\ \	]*)
+  *[\\\"\#\$\&\'\`$am_lf\ \	:\;\|\<\>\(\)]*)
     { printf '%s\n' "$as_me:${as_lineno-$LINENO}: result: no" >&5
 printf '%s\n' "no" >&6; }
     as_fn_error $? "unsafe srcdir value: '$srcdir'" "$LINENO" 5;;
@@ -3371,14 +3382,11 @@ fi
 # If we didn't sleep, we still need to ensure time stamps of config.status and
 # generated files are strictly newer.
 am_sleep_pid=
-if test -e conftest.file || grep 'slept: no' conftest.file >/dev/null 2>&1
+if grep 'slept: no' conftest.file >/dev/null 2>&1
 then :
-
-else case e in #(
-  e)   ( sleep "$am_cv_filesystem_timestamp_resolution" ) &
+    ( sleep "$am_cv_filesystem_timestamp_resolution" ) &
   am_sleep_pid=$!
- ;;
-esac
+
 fi
 
 rm -f conftest.file
@@ -3699,6 +3707,35 @@ fi
 printf '%s\n' "$am_cv_make_support_nested_variables" >&6; }
 AM_BACKSLASH='\'
 
+# Check whether --enable-jobserver was given.
+if test ${enable_jobserver+y}
+then :
+  enableval=$enable_jobserver;
+else case e in #(
+  e) enable_jobserver=no ;;
+esac
+fi
+
+AM_JOBSERVER=
+case $enable_jobserver in #(
+  yes) :
+
+    if ${MAKE-make} --version 2>/dev/null | grep 'GNU Make' >/dev/null
+then :
+
+else case e in #(
+  e) as_fn_error $? "--enable-jobserver requires GNU make" "$LINENO" 5 ;;
+esac
+fi
+                    AM_JOBSERVER='$(if $(findstring n,$(firstword -$(MAKEFLAGS)))$(findstring q,$(firstword -$(MAKEFLAGS)))$(findstring t,$(firstword -$(MAKEFLAGS))),,+)'
+   ;; #(
+  no) :
+     ;; #(
+  *) :
+    as_fn_error $? "bad value '$enable_jobserver' for --enable-jobserver" "$LINENO" 5 ;;
+esac
+
+
 am__rm_f_notfound=
 if (rm -f && rm -fr && rm -rf) 2>/dev/null
 then :
@@ -3731,7 +3768,7 @@ if test "$am_cv_xargs_n_works" = yes
 then :
   am__xargs_n='xargs -n'
 else case e in #(
-  e)   am__xargs_n='am__xargs_n () { shift; sed "s/ /\\n/g" | while read am__xargs_n_arg; do "" "$am__xargs_n_arg"; done; }'
+  e)   am__xargs_n='$(SHELL) -c '\''shift; tr " " "\\012" | while read am__xargs_n_arg; do test -z "$$am__xargs_n_arg" || "$" "$$am__xargs_n_arg"; done'\'' am__xargs_n'
  ;;
 esac
 fi
@@ -3854,11 +3891,13 @@ printf %s "checking how to create a ustar tar archive... " >&6; }
     case $_am_tool in
     gnutar)
       for _am_tar in tar gnutar gtar; do
-        { echo "$as_me:$LINENO: $_am_tar --version | grep GNU >/dev/null" >&5
-   ($_am_tar --version | grep GNU >/dev/null) >&5 2>&5
+        if { echo "$as_me:$LINENO: $_am_tar --version" >&5
+   ($_am_tar --version) >&5 2>&5
    ac_status=$?
    echo "$as_me:$LINENO: \$? = $ac_status" >&5
-   (exit $ac_status); } && break
+   (exit $ac_status); }; then
+          ($_am_tar --version) 2>&1 | grep -i busybox >/dev/null || break
+        fi
       done
       am__tar="$_am_tar --format=ustar -chf - "'"$$tardir"'
       am__tar_="$_am_tar --format=ustar -chf - "'"$tardir"'
@@ -3866,8 +3905,11 @@ printf %s "checking how to create a ustar tar archive... " >&6; }
       ;;
     plaintar)
       # Must skip GNU tar: if it does not support --format= it doesn't create
-      # ustar tarball either.
-      (tar --version | grep GNU) >/dev/null 2>&1 && continue
+      # ustar tarball either.  The same goes for bsdtar, whose default format
+      # is not ustar.  BusyBox tar, which lacks --format=, is fine here.
+      if (tar --version) >/dev/null 2>&1; then
+        (tar --version) 2>&1 | grep -i busybox >/dev/null || continue
+      fi
       am__tar='tar chf - "$$tardir"'
       am__tar_='tar chf - "$tardir"'
       am__untar='tar xf -'
@@ -5163,7 +5205,7 @@ _ACEOF
   rm -f -r a.out a.exe b.out conftest.$ac_ext conftest.$ac_objext \
     conftest.dSYM conftest1.$ac_ext conftest1.$ac_objext conftest1.dSYM \
     conftest2.$ac_ext conftest2.$ac_objext conftest2.dSYM
-  unset am_i ;;
+  { am_i=; unset am_i;} ;;
 esac
 fi
 { printf '%s\n' "$as_me:${as_lineno-$LINENO}: result: $am_cv_prog_cc_c_o" >&5
@@ -8909,6 +8951,85 @@ rm -f core conftest.err conftest.$ac_objext conftest.beam conftest.$ac_ext
 esac
 
 fi
+
+case $host_cpu in #(
+  s390x) :
+
+    { printf '%s\n' "$as_me:${as_lineno-$LINENO}: checking for clang 21 with the s390x vector facility" >&5
+printf %s "checking for clang 21 with the s390x vector facility... " >&6; }
+    cat confdefs.h - <<_ACEOF >conftest.$ac_ext
+/* end confdefs.h.  */
+
+#if defined(__clang__) && __clang_major__ == 21 && defined(__VX__)
+# error wrong code for widening vector multiplications
+#endif
+int main(void) { return 0; }
+
+_ACEOF
+if ac_fn_c_try_compile "$LINENO"
+then :
+  { printf '%s\n' "$as_me:${as_lineno-$LINENO}: result: no" >&5
+printf '%s\n' "no" >&6; }
+else case e in #(
+  e) { printf '%s\n' "$as_me:${as_lineno-$LINENO}: result: yes" >&5
+printf '%s\n' "yes" >&6; }
+       { printf '%s\n' "$as_me:${as_lineno-$LINENO}: checking whether C compiler accepts -mno-vx" >&5
+printf %s "checking whether C compiler accepts -mno-vx... " >&6; }
+if test ${ax_cv_check_cflags___mno_vx+y}
+then :
+  printf %s "(cached) " >&6
+else case e in #(
+  e)
+  ax_check_save_flags=$CFLAGS
+  CFLAGS="$CFLAGS  -mno-vx"
+  cat confdefs.h - <<_ACEOF >conftest.$ac_ext
+/* end confdefs.h.  */
+#include <time.h>
+int
+main (void)
+{
+time_t x; int fodder = 0; if (fodder > -1000 && time(&x)) return (int) x
+
+  ;
+  return 0;
+}
+_ACEOF
+if ac_fn_c_try_link "$LINENO"
+then :
+  ax_cv_check_cflags___mno_vx=yes
+else case e in #(
+  e) ax_cv_check_cflags___mno_vx=no ;;
+esac
+fi
+rm -f core conftest.err conftest.$ac_objext conftest.beam \
+    conftest$ac_exeext conftest.$ac_ext
+  CFLAGS=$ax_check_save_flags ;;
+esac
+fi
+{ printf '%s\n' "$as_me:${as_lineno-$LINENO}: result: $ax_cv_check_cflags___mno_vx" >&5
+printf '%s\n' "$ax_cv_check_cflags___mno_vx" >&6; }
+if test "x$ax_cv_check_cflags___mno_vx" = xyes
+then :
+
+         { printf '%s\n' "$as_me:${as_lineno-$LINENO}: WARNING: clang 21 generates wrong vector code on s390x - vector facility disabled" >&5
+printf '%s\n' "$as_me: WARNING: clang 21 generates wrong vector code on s390x - vector facility disabled" >&2;}
+         CFLAGS="$CFLAGS -mno-vx"
+
+else case e in #(
+  e)
+         as_fn_error $? "clang 21 generates wrong vector code on s390x - please use another compiler version" "$LINENO" 5
+        ;;
+esac
+fi
+
+       ;;
+esac
+fi
+rm -f core conftest.err conftest.$ac_objext conftest.beam conftest.$ac_ext
+   ;; #(
+  *) :
+     ;;
+esac
 
 LIBTOOL_OLD_FLAGS="$LIBTOOL_EXTRA_FLAGS"
 LIBTOOL_EXTRA_FLAGS="$LIBTOOL_EXTRA_FLAGS -version-info $SODIUM_LIBRARY_VERSION"

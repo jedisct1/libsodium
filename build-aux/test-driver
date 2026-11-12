@@ -1,13 +1,13 @@
 #! /bin/sh
 # test-driver - basic testsuite driver script.
 
-scriptversion=2026-08-23.20; # UTC
+scriptversion=2026-10-18.21; # UTC
 
 # Copyright (C) 2011-2026 Free Software Foundation, Inc.
 #
 # This program is free software; you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
-# the Free Software Foundation; either version 2, or (at your option)
+# the Free Software Foundation; either version 3, or (at your option)
 # any later version.
 #
 # This program is distributed in the hope that it will be useful,
@@ -65,6 +65,11 @@ color_tests=no
 collect_skipped_logs=yes
 enable_hard_errors=yes
 while test $# -gt 0; do
+  case $1 in
+  --test-name|--log-file|--trs-file|--color-tests|--collect-skipped-logs|\
+  --expect-failure|--enable-hard-errors)
+    test $# -ge 2 || usage_error "option '$1' requires an argument";;
+  esac
   case $1 in
   --help) print_usage; exit $?;;
   --version) echo "test-driver (GNU Automake) $scriptversion"; exit $?;;
