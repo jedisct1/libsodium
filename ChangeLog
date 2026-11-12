@@ -28,7 +28,11 @@
   - A workaround against incorrect code generation with Clang 21 on s390x
     has been added.
   - Edwards25519 group membership testing is faster, which also speeds
-    up low-level crypto_core_ed25519_*() functions of the public API.e
+    up low-level crypto_core_ed25519_*() functions of the public API.
+  - AEGIS-128L, AEGIS-256, AES256-GCM and IPcrypt performance on ARM64
+    has been improved.
+  - Zig builds on Linux targeting the baseline CPU now detect ARM CPU
+    features, enabling hardware acceleration.
 
 * Version 1.0.22
   This point release includes all the changes from 1.0.21-stable, plus:
