@@ -69,7 +69,7 @@ static int16_t
 csubq(int16_t a)
 {
     a -= MLKEM768_Q;
-    a += (a >> 15) & MLKEM768_Q;
+    a += (a >> 14) & MLKEM768_Q;
 
     return a;
 }
@@ -289,7 +289,7 @@ poly_tomsg(unsigned char msg[32], const poly *a)
         msg[i] = 0;
         for (j = 0; j < 8; j++) {
             t = (uint32_t) a->coeffs[8 * i + j];
-            t += (uint32_t) (((int32_t) a->coeffs[8 * i + j] >> 15) & MLKEM768_Q);
+            t += (uint32_t) (((int32_t) a->coeffs[8 * i + j] >> 14) & MLKEM768_Q);
             t = (((t << 1) + MLKEM768_Q / 2) * 80635) >> 28;
             t &= 1;
             msg[i] |= t << j;
@@ -306,7 +306,7 @@ poly_compress_du(unsigned char r[MLKEM768_POLYCOMPRESSEDBYTES_DU], const poly *a
     for (i = 0; i < MLKEM768_N / 4; i++) {
         for (j = 0; j < 4; j++) {
             t[j] = (uint32_t) a->coeffs[4 * i + j];
-            t[j] += (uint32_t) (((int32_t) a->coeffs[4 * i + j] >> 15) & MLKEM768_Q);
+            t[j] += (uint32_t) (((int32_t) a->coeffs[4 * i + j] >> 14) & MLKEM768_Q);
             t[j] = (uint32_t) ((((uint64_t) t[j] << 10) + MLKEM768_Q / 2) * 161271ULL >> 29);
             t[j] &= 0x3ff;
         }
@@ -347,7 +347,7 @@ poly_compress_dv(unsigned char r[MLKEM768_POLYCOMPRESSEDBYTES_DV], const poly *a
     for (i = 0; i < MLKEM768_N / 8; i++) {
         for (j = 0; j < 8; j++) {
             t[j] = (uint32_t) a->coeffs[8 * i + j];
-            t[j] += (uint32_t) (((int32_t) a->coeffs[8 * i + j] >> 15) & MLKEM768_Q);
+            t[j] += (uint32_t) (((int32_t) a->coeffs[8 * i + j] >> 14) & MLKEM768_Q);
             t[j] = (uint32_t) ((((uint64_t) t[j] << 4) + MLKEM768_Q / 2) * 161271ULL >> 29);
             t[j] &= 0xf;
         }
