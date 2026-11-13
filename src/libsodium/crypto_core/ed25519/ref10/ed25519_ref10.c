@@ -471,10 +471,10 @@ ge25519_p1p1_to_p3(ge25519_p3 *r, const ge25519_p1p1 *p)
 void
 ge25519_p2_to_p3(ge25519_p3 *r, const ge25519_p2 *p)
 {
-    fe25519_copy(r->X, p->X);
-    fe25519_copy(r->Y, p->Y);
-    fe25519_copy(r->Z, p->Z);
     fe25519_mul(r->T, p->X, p->Y);
+    fe25519_mul(r->X, p->X, p->Z);
+    fe25519_mul(r->Y, p->Y, p->Z);
+    fe25519_sq(r->Z, p->Z);
 }
 
 static void
