@@ -93,6 +93,13 @@ static TestData test_data[] = {
         "a9d55260f765261eb9b84e106f665e00b867287a761990d7135963ee0a7d59dca5bb704786be79fc476f91d3f3"
         "f89b03984d8068dcf1bb7dfc6637b45450ac04",
         -1 /* IdentityElement */, /* 11 - small-order A */
+    },
+    {
+        "5220686173206f726465722d3820746f7273696f6e",
+        "890a295e4897664fa94ee040fd0eae8da22427da054f8a3b698ec9c5b8ae2aab",
+        "8840a2fd2579eb45fbbfd5a412f1f2ce080a0471658e2e0dbdfeb3592f669775ed36d7633c527310496dcf6917"
+        "38e63edf9b05569b4dd3eb9644b005cf023208",
+        0 /* acceptable */, /* 12 - cofactored verification, R has a component of order 8 */
     }
 };
 
