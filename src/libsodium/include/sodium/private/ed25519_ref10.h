@@ -12,9 +12,11 @@
  */
 
 #ifdef HAVE_TI_MODE
-typedef uint64_t fe25519[5];
+typedef uint64_t fe25519_limb;
+typedef fe25519_limb fe25519[5];
 #else
-typedef int32_t fe25519[10];
+typedef int32_t fe25519_limb;
+typedef fe25519_limb fe25519[10];
 #endif
 
 void fe25519_invert(fe25519 out, const fe25519 z);

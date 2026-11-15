@@ -514,15 +514,6 @@ ge25519_p3_0(ge25519_p3 *h)
     fe25519_0(h->T);
 }
 
-static void
-ge25519_cached_0(ge25519_cached *h)
-{
-    fe25519_1(h->YplusX);
-    fe25519_1(h->YminusX);
-    fe25519_1(h->Z);
-    fe25519_0(h->T2d);
-}
-
 /*
  r = p
  */
@@ -591,14 +582,6 @@ ge25519_p3_dbl(ge25519_p1p1 *r, const ge25519_p3 *p)
     ge25519_p2_dbl(r, &q);
 }
 
-static void
-ge25519_precomp_0(ge25519_precomp *h)
-{
-    fe25519_1(h->yplusx);
-    fe25519_1(h->yminusx);
-    fe25519_0(h->xy2d);
-}
-
 static unsigned char
 equal(signed char b, signed char c)
 {
@@ -637,43 +620,51 @@ negative(signed char b)
 #endif
 }
 
-static void
-ge25519_cmov(ge25519_precomp *t, const ge25519_precomp *u, unsigned char b)
+static inline fe25519_limb
+ge25519_cmov8_mask(const unsigned char babs, const signed char i)
 {
-    fe25519_cmov(t->yplusx, u->yplusx, b);
-    fe25519_cmov(t->yminusx, u->yminusx, b);
-    fe25519_cmov(t->xy2d, u->xy2d, b);
-}
+    fe25519_limb mask = (fe25519_limb) 0 - equal(babs, i);
 
-static void
-ge25519_cmov_cached(ge25519_cached *t, const ge25519_cached *u, unsigned char b)
-{
-    fe25519_cmov(t->YplusX, u->YplusX, b);
-    fe25519_cmov(t->YminusX, u->YminusX, b);
-    fe25519_cmov(t->Z, u->Z, b);
-    fe25519_cmov(t->T2d, u->T2d, b);
+#ifdef HAVE_INLINE_ASM
+    __asm__ __volatile__("" : "+r"(mask));
+#endif
+    return mask;
 }
 
 static void
 ge25519_cmov8(ge25519_precomp *t, const ge25519_precomp precomp[8], const signed char b)
 {
-    ge25519_precomp     minust;
+    fe25519             yplusx, yminusx, xy2d;
+    fe25519_limb        mask;
+    fe25519_limb        any = 0;
     const unsigned char bnegative = negative(b);
     const unsigned char babs      = b - (((-bnegative) & b) * ((signed char) 1 << 1));
+    int                 i;
 
-    ge25519_precomp_0(t);
-    ge25519_cmov(t, &precomp[0], equal(babs, 1));
-    ge25519_cmov(t, &precomp[1], equal(babs, 2));
-    ge25519_cmov(t, &precomp[2], equal(babs, 3));
-    ge25519_cmov(t, &precomp[3], equal(babs, 4));
-    ge25519_cmov(t, &precomp[4], equal(babs, 5));
-    ge25519_cmov(t, &precomp[5], equal(babs, 6));
-    ge25519_cmov(t, &precomp[6], equal(babs, 7));
-    ge25519_cmov(t, &precomp[7], equal(babs, 8));
-    fe25519_copy(minust.yplusx, t->yminusx);
-    fe25519_copy(minust.yminusx, t->yplusx);
-    fe25519_neg(minust.xy2d, t->xy2d);
-    ge25519_cmov(t, &minust, bnegative);
+    fe25519_0(yplusx);
+    fe25519_0(yminusx);
+    fe25519_0(xy2d);
+    /* gcc is faster with this loop unrolled */
+#if defined(__GNUC__) && __GNUC__ >= 8 && !defined(__clang__)
+# pragma GCC unroll 8
+#endif
+    for (i = 0; i < 8; i++) {
+        mask = ge25519_cmov8_mask(babs, (signed char) (i + 1));
+        fe25519_or_masked(yplusx, precomp[i].yplusx, mask);
+        fe25519_or_masked(yminusx, precomp[i].yminusx, mask);
+        fe25519_or_masked(xy2d, precomp[i].xy2d, mask);
+        any |= mask;
+    }
+    /* nothing matched (b == 0): neutral element */
+    yplusx[0] |= ~any & 1;
+    yminusx[0] |= ~any & 1;
+    /* write the negated point, then the point itself unless b < 0 */
+    fe25519_copy(t->yplusx, yminusx);
+    fe25519_copy(t->yminusx, yplusx);
+    fe25519_neg(t->xy2d, xy2d);
+    fe25519_cmov(t->yplusx, yplusx, bnegative ^ 1);
+    fe25519_cmov(t->yminusx, yminusx, bnegative ^ 1);
+    fe25519_cmov(t->xy2d, xy2d, bnegative ^ 1);
 }
 
 static void
@@ -692,24 +683,38 @@ ge25519_cmov8_base(ge25519_precomp *t, const int pos, const signed char b)
 static void
 ge25519_cmov8_cached(ge25519_cached *t, const ge25519_cached cached[8], const signed char b)
 {
-    ge25519_cached      minust;
+    fe25519             YplusX, YminusX, Z, T2d;
+    fe25519_limb        mask;
+    fe25519_limb        any = 0;
     const unsigned char bnegative = negative(b);
     const unsigned char babs      = b - (((-bnegative) & b) * ((signed char) 1 << 1));
+    int                 i;
 
-    ge25519_cached_0(t);
-    ge25519_cmov_cached(t, &cached[0], equal(babs, 1));
-    ge25519_cmov_cached(t, &cached[1], equal(babs, 2));
-    ge25519_cmov_cached(t, &cached[2], equal(babs, 3));
-    ge25519_cmov_cached(t, &cached[3], equal(babs, 4));
-    ge25519_cmov_cached(t, &cached[4], equal(babs, 5));
-    ge25519_cmov_cached(t, &cached[5], equal(babs, 6));
-    ge25519_cmov_cached(t, &cached[6], equal(babs, 7));
-    ge25519_cmov_cached(t, &cached[7], equal(babs, 8));
-    fe25519_copy(minust.YplusX, t->YminusX);
-    fe25519_copy(minust.YminusX, t->YplusX);
-    fe25519_copy(minust.Z, t->Z);
-    fe25519_neg(minust.T2d, t->T2d);
-    ge25519_cmov_cached(t, &minust, bnegative);
+    fe25519_0(YplusX);
+    fe25519_0(YminusX);
+    fe25519_0(Z);
+    fe25519_0(T2d);
+#if defined(__GNUC__) && __GNUC__ >= 8 && !defined(__clang__)
+# pragma GCC unroll 8
+#endif
+    for (i = 0; i < 8; i++) {
+        mask = ge25519_cmov8_mask(babs, (signed char) (i + 1));
+        fe25519_or_masked(YplusX, cached[i].YplusX, mask);
+        fe25519_or_masked(YminusX, cached[i].YminusX, mask);
+        fe25519_or_masked(Z, cached[i].Z, mask);
+        fe25519_or_masked(T2d, cached[i].T2d, mask);
+        any |= mask;
+    }
+    YplusX[0] |= ~any & 1;
+    YminusX[0] |= ~any & 1;
+    Z[0] |= ~any & 1;
+    fe25519_copy(t->YplusX, YminusX);
+    fe25519_copy(t->YminusX, YplusX);
+    fe25519_copy(t->Z, Z);
+    fe25519_neg(t->T2d, T2d);
+    fe25519_cmov(t->YplusX, YplusX, bnegative ^ 1);
+    fe25519_cmov(t->YminusX, YminusX, bnegative ^ 1);
+    fe25519_cmov(t->T2d, T2d, bnegative ^ 1);
 }
 
 /*
