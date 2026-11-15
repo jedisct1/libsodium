@@ -136,6 +136,23 @@ fe25519_cmov(fe25519 f, const fe25519 g, unsigned int b)
 }
 
 /*
+ h |= g if mask is all ones;
+ h is unchanged if mask is 0.
+ *
+ The mask is not protected here, the caller has to do it.
+ */
+
+static inline void
+fe25519_or_masked(fe25519 h, const fe25519 g, fe25519_limb mask)
+{
+    h[0] |= g[0] & mask;
+    h[1] |= g[1] & mask;
+    h[2] |= g[2] & mask;
+    h[3] |= g[3] & mask;
+    h[4] |= g[4] & mask;
+}
+
+/*
 Replace (f,g) with (g,f) if b == 1;
 replace (f,g) with (f,g) if b == 0.
 
