@@ -142,7 +142,7 @@ fe25519_cmov(fe25519 f, const fe25519 g, unsigned int b)
  The mask is not protected here, the caller has to do it.
  */
 
-static inline void
+static inline __attribute__((always_inline)) void
 fe25519_or_masked(fe25519 h, const fe25519 g, fe25519_limb mask)
 {
     h[0] |= g[0] & mask;

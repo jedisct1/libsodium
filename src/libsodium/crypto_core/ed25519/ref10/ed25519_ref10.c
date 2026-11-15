@@ -573,44 +573,58 @@ negative(signed char b)
 #endif
 }
 
-static inline fe25519_limb
-ge25519_cmov8_mask(const unsigned char babs, const signed char i)
-{
-    fe25519_limb mask = (fe25519_limb) 0 - equal(babs, i);
+/*
+ masks[i] is all ones if babs == i + 1, and 0 otherwise.
+ Return all ones if no mask is set.
+ */
 
+static inline fe25519_limb
+ge25519_cmov8_masks(fe25519_limb masks[8], const unsigned char babs)
+{
+    fe25519_limb mask;
+    fe25519_limb any = 0;
+    int          i;
+
+    for (i = 0; i < 8; i++) {
+        mask = (fe25519_limb) 0 - equal(babs, (signed char) (i + 1));
 #ifdef HAVE_INLINE_ASM
-    __asm__ __volatile__("" : "+r"(mask));
+        __asm__ __volatile__("" : "+r"(mask));
 #endif
-    return mask;
+        masks[i] = mask;
+        any |= mask;
+    }
+    return ~any;
 }
 
 static void
 ge25519_cmov8(ge25519_precomp *t, const ge25519_precomp precomp[8], const signed char b)
 {
     fe25519             yplusx, yminusx, xy2d;
-    fe25519_limb        mask;
-    fe25519_limb        any = 0;
+    fe25519_limb        masks[8];
     const unsigned char bnegative = negative(b);
     const unsigned char babs      = b - (((-bnegative) & b) * ((signed char) 1 << 1));
+    const fe25519_limb  none      = ge25519_cmov8_masks(masks, babs);
     int                 i;
 
     fe25519_0(yplusx);
     fe25519_0(yminusx);
     fe25519_0(xy2d);
-    /* gcc is faster with this loop unrolled */
-#if defined(__GNUC__) && __GNUC__ >= 8 && !defined(__clang__)
-# pragma GCC unroll 8
-#endif
+    /*
+     One element at a time, to keep few values live at once.
+     Cranelift produces poor code otherwise.
+     */
     for (i = 0; i < 8; i++) {
-        mask = ge25519_cmov8_mask(babs, (signed char) (i + 1));
-        fe25519_or_masked(yplusx, precomp[i].yplusx, mask);
-        fe25519_or_masked(yminusx, precomp[i].yminusx, mask);
-        fe25519_or_masked(xy2d, precomp[i].xy2d, mask);
-        any |= mask;
+        fe25519_or_masked(yplusx, precomp[i].yplusx, masks[i]);
+    }
+    for (i = 0; i < 8; i++) {
+        fe25519_or_masked(yminusx, precomp[i].yminusx, masks[i]);
+    }
+    for (i = 0; i < 8; i++) {
+        fe25519_or_masked(xy2d, precomp[i].xy2d, masks[i]);
     }
     /* nothing matched (b == 0): neutral element */
-    yplusx[0] |= ~any & 1;
-    yminusx[0] |= ~any & 1;
+    yplusx[0] |= none & 1;
+    yminusx[0] |= none & 1;
     /* write the negated point, then the point itself unless b < 0 */
     fe25519_copy(t->yplusx, yminusx);
     fe25519_copy(t->yminusx, yplusx);
@@ -637,30 +651,31 @@ static void
 ge25519_cmov8_cached(ge25519_cached *t, const ge25519_cached cached[8], const signed char b)
 {
     fe25519             YplusX, YminusX, Z, T2d;
-    fe25519_limb        mask;
-    fe25519_limb        any = 0;
+    fe25519_limb        masks[8];
     const unsigned char bnegative = negative(b);
     const unsigned char babs      = b - (((-bnegative) & b) * ((signed char) 1 << 1));
+    const fe25519_limb  none      = ge25519_cmov8_masks(masks, babs);
     int                 i;
 
     fe25519_0(YplusX);
     fe25519_0(YminusX);
     fe25519_0(Z);
     fe25519_0(T2d);
-#if defined(__GNUC__) && __GNUC__ >= 8 && !defined(__clang__)
-# pragma GCC unroll 8
-#endif
     for (i = 0; i < 8; i++) {
-        mask = ge25519_cmov8_mask(babs, (signed char) (i + 1));
-        fe25519_or_masked(YplusX, cached[i].YplusX, mask);
-        fe25519_or_masked(YminusX, cached[i].YminusX, mask);
-        fe25519_or_masked(Z, cached[i].Z, mask);
-        fe25519_or_masked(T2d, cached[i].T2d, mask);
-        any |= mask;
+        fe25519_or_masked(YplusX, cached[i].YplusX, masks[i]);
     }
-    YplusX[0] |= ~any & 1;
-    YminusX[0] |= ~any & 1;
-    Z[0] |= ~any & 1;
+    for (i = 0; i < 8; i++) {
+        fe25519_or_masked(YminusX, cached[i].YminusX, masks[i]);
+    }
+    for (i = 0; i < 8; i++) {
+        fe25519_or_masked(Z, cached[i].Z, masks[i]);
+    }
+    for (i = 0; i < 8; i++) {
+        fe25519_or_masked(T2d, cached[i].T2d, masks[i]);
+    }
+    YplusX[0] |= none & 1;
+    YminusX[0] |= none & 1;
+    Z[0] |= none & 1;
     fe25519_copy(t->YplusX, YminusX);
     fe25519_copy(t->YminusX, YplusX);
     fe25519_copy(t->Z, Z);
