@@ -27,7 +27,8 @@
 #include <arm_neon.h>
 
 #ifdef __clang__
-#pragma clang attribute push(__attribute__((target("neon,crypto,aes"))), apply_to = function)
+#pragma clang attribute push(__attribute__((target("neon,crypto,aes,fuse-aes"))), \
+                             apply_to = function)
 #elif defined(__GNUC__)
 #pragma GCC target("+simd+crypto")
 #endif
@@ -35,12 +36,25 @@
 #define AES_BLOCK_LENGTH 16
 
 typedef uint8x16_t aes_block_t;
+
+/* GCC copies a zeroed register before every AESE, which is slow. A fresh zero avoids the copy. */
+#if defined(__aarch64__) && defined(__GNUC__) && !defined(__clang__)
+#define AES_BLOCK_ZERO()                                    \
+    __extension__({                                         \
+        uint8x16_t z_;                                      \
+        __asm__ __volatile__("movi %0.16b, #0" : "=w"(z_)); \
+        z_;                                                 \
+    })
+#else
+#define AES_BLOCK_ZERO() vmovq_n_u8(0)
+#endif
+
 #define AES_BLOCK_XOR(A, B)       veorq_u8((A), (B))
 #define AES_BLOCK_AND(A, B)       vandq_u8((A), (B))
 #define AES_BLOCK_LOAD(A)         vld1q_u8(A)
 #define AES_BLOCK_LOAD_64x2(A, B) vreinterpretq_u8_u64(vsetq_lane_u64((A), vmovq_n_u64(B), 1))
 #define AES_BLOCK_STORE(A, B)     vst1q_u8((A), (B))
-#define AES_ENC(A, B)             veorq_u8(vaesmcq_u8(vaeseq_u8(vmovq_n_u8(0), (A))), (B))
+#define AES_ENC(A, B)             veorq_u8(vaesmcq_u8(vaeseq_u8(AES_BLOCK_ZERO(), (A))), (B))
 
 static inline void
 aegis256_update(aes_block_t *const state, const aes_block_t d)
