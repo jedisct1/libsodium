@@ -99,17 +99,12 @@ fe25519_neg(fe25519 h, const fe25519 f)
 }
 
 /*
- Replace (f,g) with (g,g) if b == 1;
- replace (f,g) with (f,g) if b == 0.
- *
- Preconditions: b in {0,1}.
+ Copy g to f if mask is all ones. Get mask from fe25519_mask().
  */
 
 static void
-fe25519_cmov(fe25519 f, const fe25519 g, unsigned int b)
+fe25519_cmov_masked(fe25519 f, const fe25519 g, const fe25519_limb mask)
 {
-    const uint64_t mask = (uint64_t) (-(int64_t) b);
-
     uint64_t f0 = f[0];
     uint64_t f1 = f[1];
     uint64_t f2 = f[2];
@@ -135,6 +130,14 @@ fe25519_cmov(fe25519 f, const fe25519 g, unsigned int b)
     f[4] = f4 ^ x4;
 }
 
+/* b must be 0 or 1. */
+
+static inline void
+fe25519_cmov(fe25519 f, const fe25519 g, unsigned int b)
+{
+    fe25519_cmov_masked(f, g, fe25519_mask(b));
+}
+
 /*
  h |= g if mask is all ones;
  h is unchanged if mask is 0.
@@ -153,17 +156,12 @@ fe25519_or_masked(fe25519 h, const fe25519 g, fe25519_limb mask)
 }
 
 /*
-Replace (f,g) with (g,f) if b == 1;
-replace (f,g) with (f,g) if b == 0.
-
-Preconditions: b in {0,1}.
-*/
+ Swap f and g if mask is all ones. Get mask from fe25519_mask().
+ */
 
 static void
-fe25519_cswap(fe25519 f, fe25519 g, unsigned int b)
+fe25519_cswap_masked(fe25519 f, fe25519 g, const fe25519_limb mask)
 {
-    const uint64_t mask = (uint64_t) (-(int64_t) b);
-
     uint64_t f0 = f[0];
     uint64_t f1 = f[1];
     uint64_t f2 = f[2];
@@ -199,6 +197,14 @@ fe25519_cswap(fe25519 f, fe25519 g, unsigned int b)
     g[2] = g2 ^ x2;
     g[3] = g3 ^ x3;
     g[4] = g4 ^ x4;
+}
+
+/* b must be 0 or 1. */
+
+static inline void
+fe25519_cswap(fe25519 f, fe25519 g, unsigned int b)
+{
+    fe25519_cswap_masked(f, g, fe25519_mask(b));
 }
 
 /*

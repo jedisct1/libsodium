@@ -21,6 +21,26 @@ void fe25519_invert(fe25519 out, const fe25519 z);
 void fe25519_frombytes(fe25519 h, const unsigned char *s);
 void fe25519_tobytes(unsigned char *s, const fe25519 h);
 
+#ifndef HAVE_INLINE_ASM
+static volatile unsigned int optblocker_fe25519_mask;
+#endif
+
+/*
+ b must be 0 or 1. Hide it from the compiler to prevent branches on secret bits.
+ Reuse the mask when several operations share the same condition.
+ */
+
+static inline fe25519_limb
+fe25519_mask(unsigned int b)
+{
+#ifdef HAVE_INLINE_ASM
+    __asm__ __volatile__("" : "+r"(b));
+#else
+    b ^= optblocker_fe25519_mask;
+#endif
+    return (fe25519_limb) 0 - (fe25519_limb) b;
+}
+
 #ifdef HAVE_TI_MODE
 # include "ed25519_ref10_fe_51.h"
 #else
