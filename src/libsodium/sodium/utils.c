@@ -431,7 +431,7 @@ _sodium_alloc_init(void)
         sodium_misuse(); /* LCOV_EXCL_LINE */
     }
 #endif
-    randombytes_buf(canary, sizeof canary);
+    randombytes_buf(canary, CANARY_SIZE);
 
     return 0;
 }
