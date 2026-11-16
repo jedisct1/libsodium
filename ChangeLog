@@ -8,9 +8,9 @@
     supported x86 CPUs.
   - Emscripten: `randombytes` now uses the Emscripten and WASI randomness
     interfaces rather than custom JavaScript helpers.
-  - Zig builds now support `wasm32-freestanding`, including an optional
-    built-in libc compatibility layer for embedders that do not provide one.
-    The `-Dwasm_max_memory` option sets the maximum WebAssembly memory size.
+  - Support for WebAssembly/WASI has been removed. Zig builds now support
+    `wasm32-freestanding` instead, including an optional built-in libc
+    compatibility layer for embedders that do not provide one.
   - The Zig build system now supports Zig 0.16, 0.17 and 0.18.
   - .NET: macOS libraries in the NuGet package are now architecture-specific,
     allowing .NET 6 and later self-contained single-file applications to
