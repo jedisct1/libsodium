@@ -195,7 +195,7 @@ _crypto_ipcrypt_pick_best_implementation(void)
 #endif
 
 #if defined(HAVE_AVXINTRIN_H) && defined(HAVE_WMMINTRIN_H)
-    if (sodium_runtime_has_aesni()) {
+    if (sodium_runtime_has_aesni() & sodium_runtime_has_avx()) {
         implementation = &ipcrypt_aesni_implementation;
         return 0;
     }
