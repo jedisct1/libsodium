@@ -104,17 +104,16 @@ fi
   command -v curl >/dev/null 2>&1 && {
   echo "Downloading config.guess and config.sub..."
 
-  curl -sSL --fail -o config.guess \
-    'https://git.savannah.gnu.org/gitweb/?p=config.git;a=blob_plain;f=config.guess;hb=HEAD' &&
-    chmod +x config.guess &&
-    chmod +x build-aux/config.guess
-
-  curl -sSL --fail -o config.sub \
-    'https://git.savannah.gnu.org/gitweb/?p=config.git;a=blob_plain;f=config.sub;hb=HEAD' &&
-    chmod +x build-aux/config.sub &&
-    mv -f config.sub build-aux/config.sub
-
-  echo "Done."
+  for file in config.guess config.sub; do
+    if curl -sSL --fail --retry 3 --connect-timeout 10 --max-time 60 \
+      -o "$file" "https://git.savannah.gnu.org/cgit/config.git/plain/$file" &&
+      chmod +x "$file" &&
+      mv -f "$file" "build-aux/$file"; then
+      echo "Updated $file."
+    else
+      echo "Warning: unable to update $file; keeping the existing copy." >&2
+    fi
+  done
 }
 
 rm -f config.guess config.sub
