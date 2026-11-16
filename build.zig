@@ -285,7 +285,7 @@ pub fn build(b: *std.Build) !void {
     }
 
     const version_files = b.addWriteFiles();
-    const version_file = version_files.addCopyFile(b.path("builds/msvc/version.h"), "version.h");
+    const version_file = version_files.addCopyFile(b.path("builds/msvc/version.h"), "sodium/version.h");
 
     for (libs.items) |lib| {
         b.installArtifact(lib);
@@ -295,7 +295,7 @@ pub fn build(b: *std.Build) !void {
         });
         lib.installHeader(version_file, "sodium/version.h");
 
-        lib.root_module.addIncludePath(version_files.getDirectory());
+        lib.root_module.addIncludePath(version_file.dirname());
         initLibConfig(b, target, lib);
 
         const flags = &.{
