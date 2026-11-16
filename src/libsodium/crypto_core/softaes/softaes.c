@@ -167,10 +167,6 @@ softaes_invert_key_schedule256(SoftAesBlock rkeys[15])
     }
 }
 
-#ifndef SOFTAES_STRIDE
-#    define SOFTAES_STRIDE 16
-#endif
-
 #ifdef FAVOR_PERFORMANCE
 static const uint32_t _aes_lut[1024] = {
     0xa56363c6, 0x847c7cf8, 0x997777ee, 0x8d7b7bf6, 0x0df2f2ff, 0xbd6b6bd6, 0xb16f6fde, 0x54c5c591,
@@ -490,7 +486,7 @@ softaes_block_decryptlast(const SoftAesBlock block, const SoftAesBlock rk)
 #else
 
 /*
- * Without FAVOR_PERFORMANCE the round is computed with SRM-1R, a bitsliced
+ * Without FAVOR_PERFORMANCE the rounds are computed with SRM-1R, a bitsliced
  * representation that holds the block as eight 32-bit bit planes, plane 0
  * being the most significant bit of every byte.
  * Row r of the state is byte r of a plane, with column c in bit c of that
@@ -499,8 +495,10 @@ softaes_block_decryptlast(const SoftAesBlock block, const SoftAesBlock rk)
  * with the low nibbles, and is masked out when unpacking.
  * ShiftRows is folded into the packing, SubBytes is a gate-only Boolean
  * S-box circuit, and MixColumns is a fixed sequence of rotations and XORs.
- * No step indexes memory with secret data, so the round is constant-time on
+ * No step indexes memory with secret data, so the rounds are constant-time on
  * every platform.
+ *
+ * The helpers are always inlined, or gcc makes the rounds up to 40% slower.
  */
 
 static inline uint32_t
@@ -534,7 +532,22 @@ srm1r_transpose(uint32_t w[4])
     srm1r_swap_move(&w[1], &w[3], 0x33333333, 2);
 }
 
-static inline void
+static inline __attribute__((always_inline)) void
+srm1r_to_planes(uint32_t planes[8], uint32_t w[4])
+{
+    srm1r_transpose(w);
+
+    planes[0] = w[3] >> 4;
+    planes[1] = w[2] >> 4;
+    planes[2] = w[1] >> 4;
+    planes[3] = w[0] >> 4;
+    planes[4] = w[3];
+    planes[5] = w[2];
+    planes[6] = w[1];
+    planes[7] = w[0];
+}
+
+static inline __attribute__((always_inline)) void
 srm1r_pack(uint32_t planes[8], const SoftAesBlock block)
 {
     uint32_t w[4];
@@ -548,19 +561,27 @@ srm1r_pack(uint32_t planes[8], const SoftAesBlock block)
            (block.w1 & 0xff000000);
     w[3] = (block.w3 & 0x000000ff) | (block.w0 & 0x0000ff00) | (block.w1 & 0x00ff0000) |
            (block.w2 & 0xff000000);
-    srm1r_transpose(w);
-
-    planes[0] = w[3] >> 4;
-    planes[1] = w[2] >> 4;
-    planes[2] = w[1] >> 4;
-    planes[3] = w[0] >> 4;
-    planes[4] = w[3];
-    planes[5] = w[2];
-    planes[6] = w[1];
-    planes[7] = w[0];
+    srm1r_to_planes(planes, w);
 }
 
-static inline void
+static inline __attribute__((always_inline)) void
+srm1r_inv_pack(uint32_t planes[8], const SoftAesBlock block)
+{
+    uint32_t w[4];
+
+    /* InvShiftRows: row r of column c comes from column (c - r) mod 4 */
+    w[0] = (block.w0 & 0x000000ff) | (block.w3 & 0x0000ff00) | (block.w2 & 0x00ff0000) |
+           (block.w1 & 0xff000000);
+    w[1] = (block.w1 & 0x000000ff) | (block.w0 & 0x0000ff00) | (block.w3 & 0x00ff0000) |
+           (block.w2 & 0xff000000);
+    w[2] = (block.w2 & 0x000000ff) | (block.w1 & 0x0000ff00) | (block.w0 & 0x00ff0000) |
+           (block.w3 & 0xff000000);
+    w[3] = (block.w3 & 0x000000ff) | (block.w2 & 0x0000ff00) | (block.w1 & 0x00ff0000) |
+           (block.w0 & 0xff000000);
+    srm1r_to_planes(planes, w);
+}
+
+static inline __attribute__((always_inline)) void
 srm1r_unpack(uint32_t w[4], const uint32_t planes[8])
 {
     w[0] = (planes[7] & 0x0f0f0f0f) | ((planes[3] & 0x0f0f0f0f) << 4);
@@ -570,7 +591,7 @@ srm1r_unpack(uint32_t w[4], const uint32_t planes[8])
     srm1r_transpose(w);
 }
 
-static void
+static inline __attribute__((always_inline)) void
 srm1r_subbytes(uint32_t planes[8])
 {
     const uint32_t s0  = planes[1] ^ planes[4];
@@ -682,12 +703,42 @@ srm1r_subbytes(uint32_t planes[8])
     planes[7]          = ~(a16 ^ r11);
 }
 
+static inline __attribute__((always_inline)) void
+srm1r_inv_affine(uint32_t planes[8])
+{
+    const uint32_t p0 = planes[0];
+    const uint32_t p1 = planes[1];
+    const uint32_t p2 = planes[2];
+    const uint32_t p3 = planes[3];
+    const uint32_t p4 = planes[4];
+    const uint32_t p5 = planes[5];
+    const uint32_t p6 = planes[6];
+    const uint32_t p7 = planes[7];
+
+    planes[0] = p1 ^ p3 ^ p6;
+    planes[1] = p2 ^ p4 ^ p7;
+    planes[2] = p0 ^ p3 ^ p5;
+    planes[3] = p1 ^ p4 ^ p6;
+    planes[4] = p2 ^ p5 ^ p7;
+    planes[5] = ~(p0 ^ p3 ^ p6);
+    planes[6] = p1 ^ p4 ^ p7;
+    planes[7] = ~(p0 ^ p2 ^ p5);
+}
+
+static inline __attribute__((always_inline)) void
+srm1r_inv_subbytes(uint32_t planes[8])
+{
+    srm1r_inv_affine(planes);
+    srm1r_subbytes(planes);
+    srm1r_inv_affine(planes);
+}
+
 /*
  * Row r of a column s becomes 2 * (s[r] ^ s[r + 1]) ^ s[r + 1] ^ s[r + 2] ^
  * s[r + 3] in GF(2^8), with row indices taken modulo 4.
  * Rotating a plane right by 8 bits lines every row up with the next one.
  */
-static void
+static inline __attribute__((always_inline)) void
 srm1r_mix_columns(uint32_t planes[8])
 {
     const uint32_t adj0  = srm1r_ror32(planes[0], 8);
@@ -725,6 +776,31 @@ srm1r_mix_columns(uint32_t planes[8])
     planes[7] = pair0 ^ adj7 ^ opp7;
 }
 
+/* MixColumns, after adding 4 * (row ^ the row two below it) to every row. */
+static inline __attribute__((always_inline)) void
+srm1r_inv_mix_columns(uint32_t planes[8])
+{
+    const uint32_t t0  = planes[0] ^ srm1r_ror32(planes[0], 16);
+    const uint32_t t1  = planes[1] ^ srm1r_ror32(planes[1], 16);
+    const uint32_t t2  = planes[2] ^ srm1r_ror32(planes[2], 16);
+    const uint32_t t3  = planes[3] ^ srm1r_ror32(planes[3], 16);
+    const uint32_t t4  = planes[4] ^ srm1r_ror32(planes[4], 16);
+    const uint32_t t5  = planes[5] ^ srm1r_ror32(planes[5], 16);
+    const uint32_t t6  = planes[6] ^ srm1r_ror32(planes[6], 16);
+    const uint32_t t7  = planes[7] ^ srm1r_ror32(planes[7], 16);
+    const uint32_t t01 = t0 ^ t1;
+
+    planes[0] ^= t2;
+    planes[1] ^= t3;
+    planes[2] ^= t4 ^ t0;
+    planes[3] ^= t5 ^ t01;
+    planes[4] ^= t6 ^ t1;
+    planes[5] ^= t7 ^ t0;
+    planes[6] ^= t01;
+    planes[7] ^= t1;
+    srm1r_mix_columns(planes);
+}
+
 SoftAesBlock
 softaes_block_encrypt(const SoftAesBlock block, const SoftAesBlock rk)
 {
@@ -745,59 +821,22 @@ softaes_block_encrypt(const SoftAesBlock block, const SoftAesBlock rk)
     return out;
 }
 
-static const uint8_t INV_SBOX[256] = {
-    0x52, 0x09, 0x6a, 0xd5, 0x30, 0x36, 0xa5, 0x38, 0xbf, 0x40, 0xa3, 0x9e, 0x81, 0xf3, 0xd7, 0xfb,
-    0x7c, 0xe3, 0x39, 0x82, 0x9b, 0x2f, 0xff, 0x87, 0x34, 0x8e, 0x43, 0x44, 0xc4, 0xde, 0xe9, 0xcb,
-    0x54, 0x7b, 0x94, 0x32, 0xa6, 0xc2, 0x23, 0x3d, 0xee, 0x4c, 0x95, 0x0b, 0x42, 0xfa, 0xc3, 0x4e,
-    0x08, 0x2e, 0xa1, 0x66, 0x28, 0xd9, 0x24, 0xb2, 0x76, 0x5b, 0xa2, 0x49, 0x6d, 0x8b, 0xd1, 0x25,
-    0x72, 0xf8, 0xf6, 0x64, 0x86, 0x68, 0x98, 0x16, 0xd4, 0xa4, 0x5c, 0xcc, 0x5d, 0x65, 0xb6, 0x92,
-    0x6c, 0x70, 0x48, 0x50, 0xfd, 0xed, 0xb9, 0xda, 0x5e, 0x15, 0x46, 0x57, 0xa7, 0x8d, 0x9d, 0x84,
-    0x90, 0xd8, 0xab, 0x00, 0x8c, 0xbc, 0xd3, 0x0a, 0xf7, 0xe4, 0x58, 0x05, 0xb8, 0xb3, 0x45, 0x06,
-    0xd0, 0x2c, 0x1e, 0x8f, 0xca, 0x3f, 0x0f, 0x02, 0xc1, 0xaf, 0xbd, 0x03, 0x01, 0x13, 0x8a, 0x6b,
-    0x3a, 0x91, 0x11, 0x41, 0x4f, 0x67, 0xdc, 0xea, 0x97, 0xf2, 0xcf, 0xce, 0xf0, 0xb4, 0xe6, 0x73,
-    0x96, 0xac, 0x74, 0x22, 0xe7, 0xad, 0x35, 0x85, 0xe2, 0xf9, 0x37, 0xe8, 0x1c, 0x75, 0xdf, 0x6e,
-    0x47, 0xf1, 0x1a, 0x71, 0x1d, 0x29, 0xc5, 0x89, 0x6f, 0xb7, 0x62, 0x0e, 0xaa, 0x18, 0xbe, 0x1b,
-    0xfc, 0x56, 0x3e, 0x4b, 0xc6, 0xd2, 0x79, 0x20, 0x9a, 0xdb, 0xc0, 0xfe, 0x78, 0xcd, 0x5a, 0xf4,
-    0x1f, 0xdd, 0xa8, 0x33, 0x88, 0x07, 0xc7, 0x31, 0xb1, 0x12, 0x10, 0x59, 0x27, 0x80, 0xec, 0x5f,
-    0x60, 0x51, 0x7f, 0xa9, 0x19, 0xb5, 0x4a, 0x0d, 0x2d, 0xe5, 0x7a, 0x9f, 0x93, 0xc9, 0x9c, 0xef,
-    0xa0, 0xe0, 0x3b, 0x4d, 0xae, 0x2a, 0xf5, 0xb0, 0xc8, 0xeb, 0xbb, 0x3c, 0x83, 0x53, 0x99, 0x61,
-    0x17, 0x2b, 0x04, 0x7e, 0xba, 0x77, 0xd6, 0x26, 0xe1, 0x69, 0x14, 0x63, 0x55, 0x21, 0x0c, 0x7d
-};
-
 SoftAesBlock
 softaes_block_decrypt(const SoftAesBlock block, const SoftAesBlock rk)
 {
-    CRYPTO_ALIGN(64) SoftAesBlock out;
-    uint32_t                      s0, s1, s2, s3;
-    uint32_t                      t0, t1, t2, t3;
+    SoftAesBlock out;
+    uint32_t     planes[8];
+    uint32_t     w[4];
 
-    s0 = block.w0;
-    s1 = block.w1;
-    s2 = block.w2;
-    s3 = block.w3;
+    srm1r_inv_pack(planes, block);
+    srm1r_inv_subbytes(planes);
+    srm1r_inv_mix_columns(planes);
+    srm1r_unpack(w, planes);
 
-    t0 = (s0 & 0x000000ff) | (s3 & 0x0000ff00) | (s2 & 0x00ff0000) | (s1 & 0xff000000);
-    t1 = (s1 & 0x000000ff) | (s0 & 0x0000ff00) | (s3 & 0x00ff0000) | (s2 & 0xff000000);
-    t2 = (s2 & 0x000000ff) | (s1 & 0x0000ff00) | (s0 & 0x00ff0000) | (s3 & 0xff000000);
-    t3 = (s3 & 0x000000ff) | (s2 & 0x0000ff00) | (s1 & 0x00ff0000) | (s0 & 0xff000000);
-
-    s0 = (uint32_t) INV_SBOX[t0 & 0xff] | ((uint32_t) INV_SBOX[(t0 >> 8) & 0xff] << 8) |
-         ((uint32_t) INV_SBOX[(t0 >> 16) & 0xff] << 16) |
-         ((uint32_t) INV_SBOX[(t0 >> 24) & 0xff] << 24);
-    s1 = (uint32_t) INV_SBOX[t1 & 0xff] | ((uint32_t) INV_SBOX[(t1 >> 8) & 0xff] << 8) |
-         ((uint32_t) INV_SBOX[(t1 >> 16) & 0xff] << 16) |
-         ((uint32_t) INV_SBOX[(t1 >> 24) & 0xff] << 24);
-    s2 = (uint32_t) INV_SBOX[t2 & 0xff] | ((uint32_t) INV_SBOX[(t2 >> 8) & 0xff] << 8) |
-         ((uint32_t) INV_SBOX[(t2 >> 16) & 0xff] << 16) |
-         ((uint32_t) INV_SBOX[(t2 >> 24) & 0xff] << 24);
-    s3 = (uint32_t) INV_SBOX[t3 & 0xff] | ((uint32_t) INV_SBOX[(t3 >> 8) & 0xff] << 8) |
-         ((uint32_t) INV_SBOX[(t3 >> 16) & 0xff] << 16) |
-         ((uint32_t) INV_SBOX[(t3 >> 24) & 0xff] << 24);
-
-    out.w0 = inv_mix_column(s0) ^ rk.w0;
-    out.w1 = inv_mix_column(s1) ^ rk.w1;
-    out.w2 = inv_mix_column(s2) ^ rk.w2;
-    out.w3 = inv_mix_column(s3) ^ rk.w3;
+    out.w0 = w[0] ^ rk.w0;
+    out.w1 = w[1] ^ rk.w1;
+    out.w2 = w[2] ^ rk.w2;
+    out.w3 = w[3] ^ rk.w3;
 
     return out;
 }
@@ -805,96 +844,18 @@ softaes_block_decrypt(const SoftAesBlock block, const SoftAesBlock rk)
 SoftAesBlock
 softaes_block_encryptlast(const SoftAesBlock block, const SoftAesBlock rk)
 {
-    CRYPTO_ALIGN(64) SoftAesBlock out;
-    CRYPTO_ALIGN(64) uint8_t      ix[4][4];
-    CRYPTO_ALIGN(64) uint8_t      t[4][256 / SOFTAES_STRIDE];
-    const uint32_t                s0 = block.w0;
-    const uint32_t                s1 = block.w1;
-    const uint32_t                s2 = block.w2;
-    const uint32_t                s3 = block.w3;
-    size_t                        i;
-    size_t                        j;
+    SoftAesBlock out;
+    uint32_t     planes[8];
+    uint32_t     w[4];
 
-    ix[0][0] = (uint8_t) s0;
-    ix[0][1] = (uint8_t) (s1 >> 8);
-    ix[0][2] = (uint8_t) (s2 >> 16);
-    ix[0][3] = (uint8_t) (s3 >> 24);
+    srm1r_pack(planes, block);
+    srm1r_subbytes(planes);
+    srm1r_unpack(w, planes);
 
-    ix[1][0] = (uint8_t) s1;
-    ix[1][1] = (uint8_t) (s2 >> 8);
-    ix[1][2] = (uint8_t) (s3 >> 16);
-    ix[1][3] = (uint8_t) (s0 >> 24);
-
-    ix[2][0] = (uint8_t) s2;
-    ix[2][1] = (uint8_t) (s3 >> 8);
-    ix[2][2] = (uint8_t) (s0 >> 16);
-    ix[2][3] = (uint8_t) (s1 >> 24);
-
-    ix[3][0] = (uint8_t) s3;
-    ix[3][1] = (uint8_t) (s0 >> 8);
-    ix[3][2] = (uint8_t) (s1 >> 16);
-    ix[3][3] = (uint8_t) (s2 >> 24);
-
-    for (i = 0; i < 256 / SOFTAES_STRIDE; i++) {
-        for (j = 0; j < 4; j++) {
-            t[j][i] = SBOX[(i * SOFTAES_STRIDE) | (ix[0][j] % SOFTAES_STRIDE)];
-        }
-    }
-#    ifdef HAVE_INLINE_ASM
-    __asm__ __volatile__("" : : "r"(t) : "memory");
-#    endif
-
-    out.w0 = ((uint32_t) t[0][ix[0][0] / SOFTAES_STRIDE] << 0) |
-             ((uint32_t) t[1][ix[0][1] / SOFTAES_STRIDE] << 8) |
-             ((uint32_t) t[2][ix[0][2] / SOFTAES_STRIDE] << 16) |
-             ((uint32_t) t[3][ix[0][3] / SOFTAES_STRIDE] << 24);
-
-    for (i = 0; i < 256 / SOFTAES_STRIDE; i++) {
-        for (j = 0; j < 4; j++) {
-            t[j][i] = SBOX[(i * SOFTAES_STRIDE) | (ix[1][j] % SOFTAES_STRIDE)];
-        }
-    }
-#    ifdef HAVE_INLINE_ASM
-    __asm__ __volatile__("" : : "r"(t) : "memory");
-#    endif
-
-    out.w1 = ((uint32_t) t[0][ix[1][0] / SOFTAES_STRIDE] << 0) |
-             ((uint32_t) t[1][ix[1][1] / SOFTAES_STRIDE] << 8) |
-             ((uint32_t) t[2][ix[1][2] / SOFTAES_STRIDE] << 16) |
-             ((uint32_t) t[3][ix[1][3] / SOFTAES_STRIDE] << 24);
-
-    for (i = 0; i < 256 / SOFTAES_STRIDE; i++) {
-        for (j = 0; j < 4; j++) {
-            t[j][i] = SBOX[(i * SOFTAES_STRIDE) | (ix[2][j] % SOFTAES_STRIDE)];
-        }
-    }
-#    ifdef HAVE_INLINE_ASM
-    __asm__ __volatile__("" : : "r"(t) : "memory");
-#    endif
-
-    out.w2 = ((uint32_t) t[0][ix[2][0] / SOFTAES_STRIDE] << 0) |
-             ((uint32_t) t[1][ix[2][1] / SOFTAES_STRIDE] << 8) |
-             ((uint32_t) t[2][ix[2][2] / SOFTAES_STRIDE] << 16) |
-             ((uint32_t) t[3][ix[2][3] / SOFTAES_STRIDE] << 24);
-
-    for (i = 0; i < 256 / SOFTAES_STRIDE; i++) {
-        for (j = 0; j < 4; j++) {
-            t[j][i] = SBOX[(i * SOFTAES_STRIDE) | (ix[3][j] % SOFTAES_STRIDE)];
-        }
-    }
-#    ifdef HAVE_INLINE_ASM
-    __asm__ __volatile__("" : : "r"(t) : "memory");
-#    endif
-
-    out.w3 = ((uint32_t) t[0][ix[3][0] / SOFTAES_STRIDE] << 0) |
-             ((uint32_t) t[1][ix[3][1] / SOFTAES_STRIDE] << 8) |
-             ((uint32_t) t[2][ix[3][2] / SOFTAES_STRIDE] << 16) |
-             ((uint32_t) t[3][ix[3][3] / SOFTAES_STRIDE] << 24);
-
-    out.w0 ^= rk.w0;
-    out.w1 ^= rk.w1;
-    out.w2 ^= rk.w2;
-    out.w3 ^= rk.w3;
+    out.w0 = w[0] ^ rk.w0;
+    out.w1 = w[1] ^ rk.w1;
+    out.w2 = w[2] ^ rk.w2;
+    out.w3 = w[3] ^ rk.w3;
 
     return out;
 }
@@ -902,34 +863,18 @@ softaes_block_encryptlast(const SoftAesBlock block, const SoftAesBlock rk)
 SoftAesBlock
 softaes_block_decryptlast(const SoftAesBlock block, const SoftAesBlock rk)
 {
-    CRYPTO_ALIGN(64) SoftAesBlock out;
-    const uint32_t                s0 = block.w0;
-    const uint32_t                s1 = block.w1;
-    const uint32_t                s2 = block.w2;
-    const uint32_t                s3 = block.w3;
-    uint32_t                      t0, t1, t2, t3;
+    SoftAesBlock out;
+    uint32_t     planes[8];
+    uint32_t     w[4];
 
-    t0 = (s0 & 0x000000ff) | (s3 & 0x0000ff00) | (s2 & 0x00ff0000) | (s1 & 0xff000000);
-    t1 = (s1 & 0x000000ff) | (s0 & 0x0000ff00) | (s3 & 0x00ff0000) | (s2 & 0xff000000);
-    t2 = (s2 & 0x000000ff) | (s1 & 0x0000ff00) | (s0 & 0x00ff0000) | (s3 & 0xff000000);
-    t3 = (s3 & 0x000000ff) | (s2 & 0x0000ff00) | (s1 & 0x00ff0000) | (s0 & 0xff000000);
+    srm1r_inv_pack(planes, block);
+    srm1r_inv_subbytes(planes);
+    srm1r_unpack(w, planes);
 
-    out.w0 = ((uint32_t) INV_SBOX[t0 & 0xff] | ((uint32_t) INV_SBOX[(t0 >> 8) & 0xff] << 8) |
-              ((uint32_t) INV_SBOX[(t0 >> 16) & 0xff] << 16) |
-              ((uint32_t) INV_SBOX[(t0 >> 24) & 0xff] << 24)) ^
-             rk.w0;
-    out.w1 = ((uint32_t) INV_SBOX[t1 & 0xff] | ((uint32_t) INV_SBOX[(t1 >> 8) & 0xff] << 8) |
-              ((uint32_t) INV_SBOX[(t1 >> 16) & 0xff] << 16) |
-              ((uint32_t) INV_SBOX[(t1 >> 24) & 0xff] << 24)) ^
-             rk.w1;
-    out.w2 = ((uint32_t) INV_SBOX[t2 & 0xff] | ((uint32_t) INV_SBOX[(t2 >> 8) & 0xff] << 8) |
-              ((uint32_t) INV_SBOX[(t2 >> 16) & 0xff] << 16) |
-              ((uint32_t) INV_SBOX[(t2 >> 24) & 0xff] << 24)) ^
-             rk.w2;
-    out.w3 = ((uint32_t) INV_SBOX[t3 & 0xff] | ((uint32_t) INV_SBOX[(t3 >> 8) & 0xff] << 8) |
-              ((uint32_t) INV_SBOX[(t3 >> 16) & 0xff] << 16) |
-              ((uint32_t) INV_SBOX[(t3 >> 24) & 0xff] << 24)) ^
-             rk.w3;
+    out.w0 = w[0] ^ rk.w0;
+    out.w1 = w[1] ^ rk.w1;
+    out.w2 = w[2] ^ rk.w2;
+    out.w3 = w[3] ^ rk.w3;
 
     return out;
 }
