@@ -109,18 +109,41 @@ aes_encrypt(uint8_t out[16], const uint8_t in[16], const BlockVec *rkeys)
     STORE128(out, t);
 }
 
+static BlockVec
+aes_decrypt_rounds(BlockVec t, const BlockVec *rkeys, const BlockVec first_key,
+                   const BlockVec mask, const BlockVec last_key)
+{
+    const BlockVec k9 = RKINVERT(XOR128(mask, rkeys[9]));
+    const BlockVec k8 = RKINVERT(XOR128(mask, rkeys[8]));
+    const BlockVec k7 = RKINVERT(XOR128(mask, rkeys[7]));
+    const BlockVec k6 = RKINVERT(XOR128(mask, rkeys[6]));
+    const BlockVec k5 = RKINVERT(XOR128(mask, rkeys[5]));
+    const BlockVec k4 = RKINVERT(XOR128(mask, rkeys[4]));
+    const BlockVec k3 = RKINVERT(XOR128(mask, rkeys[3]));
+    const BlockVec k2 = RKINVERT(XOR128(mask, rkeys[2]));
+    const BlockVec k1 = RKINVERT(XOR128(mask, rkeys[1]));
+
+    COMPILER_ASSERT(ROUNDS == 10);
+    t = AES_XDECRYPT(t, first_key);
+    t = AES_XDECRYPT(t, k9);
+    t = AES_XDECRYPT(t, k8);
+    t = AES_XDECRYPT(t, k7);
+    t = AES_XDECRYPT(t, k6);
+    t = AES_XDECRYPT(t, k5);
+    t = AES_XDECRYPT(t, k4);
+    t = AES_XDECRYPT(t, k3);
+    t = AES_XDECRYPT(t, k2);
+    t = AES_XDECRYPTLAST(t, k1);
+
+    return XOR128(t, last_key);
+}
+
 static void
 aes_decrypt(uint8_t out[16], const uint8_t in[16], const BlockVec *rkeys)
 {
-    BlockVec t;
-    size_t   i;
+    const BlockVec t =
+        aes_decrypt_rounds(LOAD128(in), rkeys, rkeys[ROUNDS], vdupq_n_u64(0), rkeys[0]);
 
-    t = AES_XDECRYPT(LOAD128(in), rkeys[ROUNDS]);
-    for (i = ROUNDS - 1; i > 1; i--) {
-        t = AES_XDECRYPT(t, RKINVERT(rkeys[i]));
-    }
-    t = AES_XDECRYPTLAST(t, RKINVERT(rkeys[i]));
-    t = XOR128(t, rkeys[0]);
     STORE128(out, t);
 }
 
@@ -151,17 +174,11 @@ static void
 aes_decrypt_with_tweak(uint8_t out[16], const uint8_t in[16], const uint8_t tweak[8],
                        const BlockVec *rkeys)
 {
-    const BlockVec tweak_block     = tweak_expand(tweak);
-    const BlockVec tweak_block_inv = RKINVERT(tweak_block);
-    BlockVec       t;
-    size_t         i;
+    const BlockVec tweak_block = tweak_expand(tweak);
+    const BlockVec t =
+        aes_decrypt_rounds(LOAD128(in), rkeys, XOR128(tweak_block, rkeys[ROUNDS]), tweak_block,
+                           XOR128(tweak_block, rkeys[0]));
 
-    t = AES_XDECRYPT(LOAD128(in), XOR128(tweak_block, rkeys[ROUNDS]));
-    for (i = ROUNDS - 1; i > 1; i--) {
-        t = AES_XDECRYPT(t, XOR128(tweak_block_inv, RKINVERT(rkeys[i])));
-    }
-    t = AES_XDECRYPTLAST(t, XOR128(tweak_block_inv, RKINVERT(rkeys[i])));
-    t = XOR128(t, XOR128(tweak_block, rkeys[0]));
     STORE128(out, t);
 }
 
@@ -202,15 +219,9 @@ aes_xex_decrypt(uint8_t out[16], const uint8_t in[16], const uint8_t tweak[16],
                 const BlockVec *tkeys, const BlockVec *rkeys)
 {
     const BlockVec tt = aes_xex_tweak(tweak, tkeys);
-    BlockVec       t;
-    size_t         i;
+    const BlockVec t  = aes_decrypt_rounds(XOR128(LOAD128(in), tt), rkeys, rkeys[ROUNDS],
+                                           vdupq_n_u64(0), XOR128(rkeys[0], tt));
 
-    t = AES_XDECRYPT(XOR128(LOAD128(in), tt), rkeys[ROUNDS]);
-    for (i = ROUNDS - 1; i > 1; i--) {
-        t = AES_XDECRYPT(t, RKINVERT(rkeys[i]));
-    }
-    t = AES_XDECRYPTLAST(t, RKINVERT(rkeys[i]));
-    t = XOR128_3(t, rkeys[0], tt);
     STORE128(out, t);
 }
 
