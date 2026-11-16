@@ -84,20 +84,15 @@ aes_encrypt(uint8_t out[16], const uint8_t in[16], const BlockVec *rkeys)
 static void
 aes_decrypt(uint8_t out[16], const uint8_t in[16], const BlockVec *rkeys)
 {
-    KeySchedule rkeys_inv;
-    BlockVec    t;
-    size_t      i;
+    BlockVec t;
+    size_t   i;
 
-    for (i = 0; i < ROUNDS - 1; i++) {
-        rkeys_inv[i] = AES_IMC(rkeys[ROUNDS - 1 - i]);
-    }
     t = XOR128(LOAD128(in), rkeys[ROUNDS]);
-    for (i = 0; i < ROUNDS - 1; i++) {
-        t = AES_DECRYPT(t, rkeys_inv[i]);
+    for (i = ROUNDS - 1; i > 0; i--) {
+        t = AES_DECRYPT(t, AES_IMC(rkeys[i]));
     }
     t = AES_DECRYPTLAST(t, rkeys[0]);
     STORE128(out, t);
-    sodium_memzero(rkeys_inv, sizeof rkeys_inv);
 }
 
 static BlockVec
@@ -128,22 +123,17 @@ static void
 aes_decrypt_with_tweak(uint8_t out[16], const uint8_t in[16], const uint8_t tweak[8],
                        const BlockVec *rkeys)
 {
-    KeySchedule    rkeys_inv;
     const BlockVec tweak_block     = tweak_expand(tweak);
     const BlockVec tweak_block_inv = AES_IMC(tweak_block);
     BlockVec       t;
     size_t         i;
 
-    for (i = 0; i < ROUNDS - 1; i++) {
-        rkeys_inv[i] = AES_IMC(rkeys[ROUNDS - 1 - i]);
-    }
     t = XOR128_3(LOAD128(in), tweak_block, rkeys[ROUNDS]);
-    for (i = 0; i < ROUNDS - 1; i++) {
-        t = AES_DECRYPT(t, XOR128(tweak_block_inv, rkeys_inv[i]));
+    for (i = ROUNDS - 1; i > 0; i--) {
+        t = AES_DECRYPT(t, XOR128(tweak_block_inv, AES_IMC(rkeys[i])));
     }
     t = AES_DECRYPTLAST(t, XOR128(tweak_block, rkeys[0]));
     STORE128(out, t);
-    sodium_memzero(rkeys_inv, sizeof rkeys_inv);
 }
 
 static BlockVec
@@ -180,21 +170,16 @@ static void
 aes_xex_decrypt(uint8_t out[16], const uint8_t in[16], const uint8_t tweak[16],
                 const BlockVec *tkeys, const BlockVec *rkeys)
 {
-    KeySchedule    rkeys_inv;
     const BlockVec tt = aes_xex_tweak(tweak, tkeys);
     BlockVec       t;
     size_t         i;
 
-    for (i = 0; i < ROUNDS - 1; i++) {
-        rkeys_inv[i] = AES_IMC(rkeys[ROUNDS - 1 - i]);
-    }
     t = XOR128(XOR128(LOAD128(in), tt), rkeys[ROUNDS]);
-    for (i = 0; i < ROUNDS - 1; i++) {
-        t = AES_DECRYPT(t, rkeys_inv[i]);
+    for (i = ROUNDS - 1; i > 0; i--) {
+        t = AES_DECRYPT(t, AES_IMC(rkeys[i]));
     }
     t = AES_DECRYPTLAST(t, XOR128(rkeys[0], tt));
     STORE128(out, t);
-    sodium_memzero(rkeys_inv, sizeof rkeys_inv);
 }
 
 static void
