@@ -6687,7 +6687,32 @@ fi
 # correctly enabled
 
 case $host_os in
-        darwin* | hpux* | linux* | osf* | solaris*)
+        solaris*)
+        # Solaris 11.4 introduced XPG7 support and did away with the need for
+        # _REENTRANT.
+
+        cat confdefs.h - <<_ACEOF >conftest.$ac_ext
+/* end confdefs.h.  */
+
+#            undef _XOPEN_SOURCE
+#            include <sys/feature_tests.h>
+#            if _XOPEN_VERSION < 700
+             AX_PTHREAD_SOLARIS__REENTRANT
+#            endif
+
+_ACEOF
+if (eval "$ac_cpp conftest.$ac_ext") 2>&5 |
+  $EGREP_TRADITIONAL "AX_PTHREAD_SOLARIS__REENTRANT" >/dev/null 2>&1
+then :
+  ax_pthread_check_macro="_REENTRANT"
+else case e in #(
+  e) ax_pthread_check_macro="--" ;;
+esac
+fi
+rm -rf conftest*
+
+        ;;
+        darwin* | hpux* | linux* | osf*)
         ax_pthread_check_macro="_REENTRANT"
         ;;
 
@@ -9590,7 +9615,7 @@ eval ac_res=\$$as_CACHEVAR
 printf '%s\n' "$ac_res" >&6; }
 if eval test \"x\$"$as_CACHEVAR"\" = x"yes"
 then :
-  CWFLAGS="$WCFLAGS -Wextra"
+  CWFLAGS="$CWFLAGS -Wextra"
 else case e in #(
   e) : ;;
 esac
@@ -10806,6 +10831,51 @@ printf '%s\n' "$ac_res" >&6; }
 if eval test \"x\$"$as_CACHEVAR"\" = x"yes"
 then :
   CWFLAGS="$CWFLAGS -Wvariable-decl"
+else case e in #(
+  e) : ;;
+esac
+fi
+
+as_CACHEVAR=`printf '%s\n' "ax_cv_check_cflags__$CWFLAGS -Wvla" | sed "$as_sed_sh"`
+{ printf '%s\n' "$as_me:${as_lineno-$LINENO}: checking whether C compiler accepts $CWFLAGS -Wvla" >&5
+printf %s "checking whether C compiler accepts $CWFLAGS -Wvla... " >&6; }
+if eval test \${$as_CACHEVAR+y}
+then :
+  printf %s "(cached) " >&6
+else case e in #(
+  e)
+  ax_check_save_flags=$CFLAGS
+  CFLAGS="$CFLAGS  $CWFLAGS -Wvla"
+  cat confdefs.h - <<_ACEOF >conftest.$ac_ext
+/* end confdefs.h.  */
+#include <time.h>
+int
+main (void)
+{
+time_t x; int fodder = 0; if (fodder > -1000 && time(&x)) return (int) x
+
+  ;
+  return 0;
+}
+_ACEOF
+if ac_fn_c_try_link "$LINENO"
+then :
+  eval "$as_CACHEVAR=yes"
+else case e in #(
+  e) eval "$as_CACHEVAR=no" ;;
+esac
+fi
+rm -f core conftest.err conftest.$ac_objext conftest.beam \
+    conftest$ac_exeext conftest.$ac_ext
+  CFLAGS=$ax_check_save_flags ;;
+esac
+fi
+eval ac_res=\$$as_CACHEVAR
+	       { printf '%s\n' "$as_me:${as_lineno-$LINENO}: result: $ac_res" >&5
+printf '%s\n' "$ac_res" >&6; }
+if eval test \"x\$"$as_CACHEVAR"\" = x"yes"
+then :
+  CWFLAGS="$CWFLAGS -Wvla"
 else case e in #(
   e) : ;;
 esac
@@ -22425,7 +22495,7 @@ main (void)
 {
 
 #if defined(__amd64) || defined(__amd64__) || defined(__x86_64__)
-# if defined(__CYGWIN__) || defined(__MINGW32__) || defined(__MINGW64__) || defined(_WIN32) || defined(_WIN64)
+# if defined(__CYGWIN__) || defined(__MINGW32__) || defined(__MINGW64__) || defined(_WIN32) || defined(_WIN64) || defined(__midipix__)
 #  error Windows x86_64 calling conventions are not supported yet
 # endif
 /* neat */
