@@ -87,7 +87,7 @@
 #   modified version of the Autoconf Macro, you may extend this special
 #   exception to the GPL to apply to your modified version as well.
 
-#serial 31
+#serial 32
 
 AU_ALIAS([ACX_PTHREAD], [AX_PTHREAD])
 AC_DEFUN([AX_PTHREAD], [
@@ -249,7 +249,22 @@ AS_IF([test "x$ax_pthread_clang" = "xyes"],
 # correctly enabled
 
 case $host_os in
-        darwin* | hpux* | linux* | osf* | solaris*)
+        solaris*)
+        # Solaris 11.4 introduced XPG7 support and did away with the need for
+        # _REENTRANT.
+
+        AC_EGREP_CPP([AX_PTHREAD_SOLARIS__REENTRANT],
+            [
+#            undef _XOPEN_SOURCE
+#            include <sys/feature_tests.h>
+#            if _XOPEN_VERSION < 700
+             AX_PTHREAD_SOLARIS__REENTRANT
+#            endif
+            ],
+            [ax_pthread_check_macro="_REENTRANT"],
+            [ax_pthread_check_macro="--"])
+        ;;
+        darwin* | hpux* | linux* | osf*)
         ax_pthread_check_macro="_REENTRANT"
         ;;
 
