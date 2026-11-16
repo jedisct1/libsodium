@@ -2,6 +2,9 @@
 Designers
 =========
 
+aegis                                  Hongjun Wu
+                                       Bart Preneel
+
 argon2                                 Alex Biryukov
                                        Daniel Dinu
                                        Dmitry Khovratovich
@@ -44,6 +47,9 @@ siphash                                Jean-Philippe Aumasson
 
 Implementors
 ============
+
+crypto_aead/aegis128l                  Frank Denis
+crypto_aead/aegis256
 
 crypto_aead/aes256gcm/aesni            Frank Denis
 
