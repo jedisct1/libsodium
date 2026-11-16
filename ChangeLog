@@ -1,3 +1,15 @@
+* Version 1.0.23
+  This point release includes all the changes from 1.0.22-stable, plus:
+  - Support for WebAssembly/WASI has been removed. Zig builds target
+    `wasm32-freestanding` instead.
+  - Building with `zig build` now requires Zig 0.17 or later.
+  - The XCFramework build script now skips the legacy 32-bit watchOS
+    slices when the installed Xcode version can no longer link them.
+  - A conflict with the `__cpuid()` macro from `<cpuid.h>` when compiling
+    with clang in Visual Studio compatibility mode has been resolved.
+  - Support for midipix has been added.
+  - Thread support is now properly detected on Solaris 11.4.
+
 * Version 1.0.22-stable
   - `sodium_misuse()` no longer invokes an application-provided misuse
     handler while holding the library-wide lock.
@@ -8,9 +20,8 @@
     supported x86 CPUs.
   - Emscripten: `randombytes` now uses the Emscripten and WASI randomness
     interfaces rather than custom JavaScript helpers.
-  - Support for WebAssembly/WASI has been removed. Zig builds now support
-    `wasm32-freestanding` instead, including an optional built-in libc
-    compatibility layer for embedders that do not provide one.
+  - Zig builds now support `wasm32-freestanding`, including an optional
+    built-in libc compatibility layer for embedders that do not provide one.
   - The Zig build system now supports Zig 0.16, 0.17 and 0.18.
   - .NET: macOS libraries in the NuGet package are now architecture-specific,
     allowing .NET 6 and later self-contained single-file applications to
