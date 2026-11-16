@@ -5,11 +5,6 @@ const mem = std.mem;
 const Compile = std.Build.Step.Compile;
 const Target = std.Target;
 
-const pre_zig17 = @hasDecl(std, "Io") and @hasDecl(std.Io, "Dir");
-const Dir = if (pre_zig17) std.Io.Dir else std.fs.Dir;
-const Io = if (pre_zig17) std.Io else void;
-
-const has_build_root_handle = @hasField(std.Build, "build_root");
 const wasm_libc_path = "builds/wasm32-freestanding";
 
 fn initLibConfig(b: *std.Build, target: std.Build.ResolvedTarget, lib: *Compile) void {
@@ -169,35 +164,14 @@ fn initLibConfig(b: *std.Build, target: std.Build.ResolvedTarget, lib: *Compile)
 }
 
 pub fn build(b: *std.Build) !void {
-    const io: Io = if (pre_zig17) b.graph.io else {};
-    const cwd: Dir = if (!pre_zig17)
-        try std.fs.cwd().openDir(b.build_root.path orelse ".", .{})
-    else if (has_build_root_handle)
-        b.build_root.handle
-    else
-        try b.root.openDir(io, ".", .{});
+    const io = b.graph.io;
+    const cwd = try b.root.openDir(io, ".", .{});
 
     const src_path = "src/libsodium";
-    const src_dir = if (pre_zig17)
-        try cwd.openDir(io, src_path, .{ .iterate = true })
-    else if (@hasField(Dir.OpenOptions, "follow_symlinks"))
-        try cwd.openDir(src_path, .{ .iterate = true, .follow_symlinks = false })
-    else
-        try cwd.openDir(src_path, .{ .iterate = true, .no_follow = true });
+    const src_dir = try cwd.openDir(io, src_path, .{ .iterate = true });
 
     var target = b.standardTargetOptions(.{});
-    const optimize_option = b.standardOptimizeOption(.{});
-
-    const optimize_option_is_optional = @typeInfo(@TypeOf(optimize_option)) == .optional;
-    const Optimize = if (optimize_option_is_optional)
-        @typeInfo(@TypeOf(optimize_option)).optional.child
-    else
-        @TypeOf(optimize_option);
-    const debug_mode: Optimize = if (@hasField(Optimize, "debug")) .debug else .Debug;
-    const optimize: Optimize = if (optimize_option_is_optional)
-        optimize_option orelse debug_mode
-    else
-        optimize_option;
+    const optimize = b.standardOptimizeOption(.{});
 
     const enable_benchmarks = b.option(bool, "enable_benchmarks", "Whether tests should be benchmarks.") orelse false;
     const benchmarks_iterations = b.option(u32, "iterations", "Number of iterations for benchmarks.") orelse 200;
@@ -251,7 +225,7 @@ pub fn build(b: *std.Build) !void {
         .root_module = b.createModule(.{
             .target = target,
             .optimize = optimize,
-            .strip = optimize != debug_mode and !target.result.isMinGW(),
+            .strip = optimize != .debug and !target.result.isMinGW(),
         }),
     });
 
@@ -298,7 +272,7 @@ pub fn build(b: *std.Build) !void {
         const allocator = heap.page_allocator;
 
         var walker = try src_dir.walk(allocator);
-        while (if (pre_zig17) try walker.next(io) else try walker.next()) |entry| {
+        while (try walker.next(io)) |entry| {
             const name = entry.basename;
             if (mem.endsWith(u8, name, ".c")) {
                 const full_path = try fmt.allocPrint(allocator, "{s}/{s}", .{ src_path, entry.path });
@@ -315,12 +289,7 @@ pub fn build(b: *std.Build) !void {
     }
 
     const test_path = "test/default";
-    const test_dir = if (pre_zig17)
-        try cwd.openDir(io, test_path, .{ .iterate = true })
-    else if (@hasField(Dir.OpenOptions, "follow_symlinks"))
-        try cwd.openDir(test_path, .{ .iterate = true, .follow_symlinks = false })
-    else
-        try cwd.openDir(test_path, .{ .iterate = true, .no_follow = true });
+    const test_dir = try cwd.openDir(io, test_path, .{ .iterate = true });
 
     b.installBinFile(test_path ++ "/run.sh", "run.sh");
 
@@ -330,7 +299,7 @@ pub fn build(b: *std.Build) !void {
     const test_step = b.step("test", "Run all libsodium tests");
 
     if (build_tests) {
-        while (if (pre_zig17) try walker.next(io) else try walker.next()) |entry| {
+        while (try walker.next(io)) |entry| {
             const name = entry.basename;
             if (mem.endsWith(u8, name, ".exp")) {
                 const full_path = try fmt.allocPrint(allocator, "{s}/{s}", .{ test_path, entry.path });
@@ -346,7 +315,7 @@ pub fn build(b: *std.Build) !void {
                 .root_module = b.createModule(.{
                     .target = target,
                     .optimize = optimize,
-                    .strip = optimize != debug_mode,
+                    .strip = optimize != .debug,
                     .link_libc = true,
                 }),
             });
