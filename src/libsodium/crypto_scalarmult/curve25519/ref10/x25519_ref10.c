@@ -100,6 +100,7 @@ crypto_scalarmult_curve25519_ref10(unsigned char *q,
     fe25519        x1, x2, x3, z2, z3;
     fe25519        a, b, aa, bb, e, da, cb;
     int            pos;
+    fe25519_limb   mask;
     unsigned int   swap;
     unsigned int   bit;
 
@@ -123,8 +124,9 @@ crypto_scalarmult_curve25519_ref10(unsigned char *q,
         bit = t[pos / 8] >> (pos & 7);
         bit &= 1;
         swap ^= bit;
-        fe25519_cswap(x2, x3, swap);
-        fe25519_cswap(z2, z3, swap);
+        mask = fe25519_mask(swap);
+        fe25519_cswap_masked(x2, x3, mask);
+        fe25519_cswap_masked(z2, z3, mask);
         swap = bit;
         fe25519_add(a, x2, z2);
         fe25519_sub_lazy(b, x2, z2);
@@ -145,8 +147,9 @@ crypto_scalarmult_curve25519_ref10(unsigned char *q,
         fe25519_add(z2, z2, bb);
         fe25519_mul(z2, z2, e);
     }
-    fe25519_cswap(x2, x3, swap);
-    fe25519_cswap(z2, z3, swap);
+    mask = fe25519_mask(swap);
+    fe25519_cswap_masked(x2, x3, mask);
+    fe25519_cswap_masked(z2, z3, mask);
 
     fe25519_invert(z2, z2);
     fe25519_mul(x2, x2, z2);
