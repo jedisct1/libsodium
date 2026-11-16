@@ -264,7 +264,6 @@ ndx_encrypt(uint8_t *out, const uint8_t *in, const uint8_t *t, const uint8_t *k)
 
     memcpy(out, t, 16);
     aes_xex_encrypt(out + 16, in, t, tkeys, rkeys);
-    sodium_memzero(diff, sizeof diff);
     sodium_memzero(rkeys, sizeof rkeys);
     sodium_memzero(tkeys, sizeof tkeys);
 }
@@ -294,7 +293,6 @@ ndx_decrypt(uint8_t *out, const uint8_t *in, const uint8_t *k)
     }
 
     aes_xex_decrypt(out, in + 16, in, tkeys, rkeys);
-    sodium_memzero(diff, sizeof diff);
     sodium_memzero(rkeys, sizeof rkeys);
     sodium_memzero(tkeys, sizeof tkeys);
 }
@@ -418,7 +416,6 @@ pfx_encrypt(uint8_t *out, const uint8_t *in, const uint8_t *k)
     }
 
     memcpy(out, encrypted, 16);
-    sodium_memzero(diff, sizeof diff);
     sodium_memzero(k2keys, sizeof k2keys);
     sodium_memzero(k1keys, sizeof k1keys);
 }
@@ -493,7 +490,6 @@ pfx_decrypt(uint8_t *out, const uint8_t *in, const uint8_t *k)
     }
 
     memcpy(out, decrypted, 16);
-    sodium_memzero(diff, sizeof diff);
     sodium_memzero(k2keys, sizeof k2keys);
     sodium_memzero(k1keys, sizeof k1keys);
 }
