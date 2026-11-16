@@ -1,0 +1,30 @@
+name: Zizmor
+
+on:
+  push:
+    branches: [master, stable, next]
+    paths:
+      - '.github/workflows/**'
+  pull_request:
+    branches: [master, stable, next]
+    paths:
+      - '.github/workflows/**'
+
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  zizmor:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+
+      - name: Install zizmor
+        run: pipx install zizmor
+
+      - name: Run zizmor
+        run: zizmor --min-severity medium .github/workflows/

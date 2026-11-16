@@ -6,26 +6,29 @@ on:
   pull_request:
     branches: [stable, next]
 
+permissions:
+  contents: read
+
 jobs:
   Fuzzing:
     runs-on: ubuntu-latest
     steps:
       - name: Build Fuzzers
         id: build
-        uses: google/oss-fuzz/infra/cifuzz/actions/build_fuzzers@master
+        uses: google/oss-fuzz/infra/cifuzz/actions/build_fuzzers@d204ac8a3f7589ad2b7b11d90b886f772aadc484 # master 2026-11-14
         with:
           oss-fuzz-project-name: "libsodium"
           dry-run: false
           language: c++
       - name: Run Fuzzers
-        uses: google/oss-fuzz/infra/cifuzz/actions/run_fuzzers@master
+        uses: google/oss-fuzz/infra/cifuzz/actions/run_fuzzers@d204ac8a3f7589ad2b7b11d90b886f772aadc484 # master 2026-11-14
         with:
           oss-fuzz-project-name: "libsodium"
           fuzz-seconds: 300
           dry-run: false
           language: c++
       - name: Upload Crash
-        uses: actions/upload-artifact@v7
+        uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2
         if: failure() && steps.build.outcome == 'success'
         with:
           name: artifacts

@@ -8,11 +8,16 @@ on:
 
   workflow_dispatch:
 
+permissions:
+  contents: read
+
 jobs:
   version-consistency:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v7
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
 
       - name: Check version consistency
         run: ./test/check-version-consistency.sh
@@ -20,7 +25,9 @@ jobs:
   tcc:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v7
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
 
       - name: Update packages list
         run: sudo apt-get update
@@ -43,13 +50,15 @@ jobs:
   zig:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v7
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
 
       - name: Update packages list
         run: sudo apt-get update
 
       - name: Install Zig
-        uses: mlugg/setup-zig@v2
+        uses: mlugg/setup-zig@d1434d08867e3ee9daa34448df10607b98908d29 # v2.2.1
         with:
           version: 0.16.0
 
@@ -77,7 +86,9 @@ jobs:
   regular:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v7
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
 
       - name: Update packages list
         run: sudo apt-get update
@@ -106,7 +117,9 @@ jobs:
   check-globals:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v7
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
 
       - name: Update packages list
         run: sudo apt-get update
@@ -124,7 +137,9 @@ jobs:
   other-comp:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v7
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
 
       - name: Update packages list
         run: sudo apt-get update
@@ -150,7 +165,9 @@ jobs:
   other-arch:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v7
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
 
       - name: Update packages list
         run: sudo apt-get update
@@ -167,18 +184,44 @@ jobs:
           make -j $(nproc)
           make clean > /dev/null
 
+  mingw-clang:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+
+      - name: Update packages list
+        run: sudo apt-get update
+
+      - name: Install dependencies
+        run: sudo apt-get install -y build-essential libtool autoconf automake clang mingw-w64
+
+      - name: Autogen
+        run: ./autogen.sh -s
+
+      - name: MinGW cross-compilation with clang
+        run: |
+          for arch in i686 x86_64; do
+            env CC="clang --target=${arch}-w64-mingw32" CPPFLAGS="-DDEV_MODE=1" ./configure --disable-dependency-tracking --host=${arch}-w64-mingw32
+            make -j $(nproc)
+            make distclean > /dev/null
+          done
+
   wasi:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v7
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
 
       - name: Install Zig
-        uses: mlugg/setup-zig@v2
+        uses: mlugg/setup-zig@d1434d08867e3ee9daa34448df10607b98908d29 # v2.2.1
         with:
           version: 0.16.0
 
       - name: Install Wasmer
-        uses: wasmerio/setup-wasmer@v3.1
+        uses: wasmerio/setup-wasmer@24b15c95293d23f89c68bd40dac76338f773e924 # v3.1
 
       - name: Build for wasi-core
         run: zig build -Dtarget=wasm32-wasi -Doptimize=ReleaseSafe
@@ -200,7 +243,9 @@ jobs:
   aarch64-gcc:
     runs-on: ubuntu-24.04-arm
     steps:
-      - uses: actions/checkout@v7
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
 
       - name: Update packages list
         run: sudo apt-get update
@@ -221,7 +266,9 @@ jobs:
   aarch64-gcc-crypto:
     runs-on: ubuntu-24.04-arm
     steps:
-      - uses: actions/checkout@v7
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
 
       - name: Update packages list
         run: sudo apt-get update
@@ -242,7 +289,9 @@ jobs:
   aarch64-gcc-sha3:
     runs-on: ubuntu-24.04-arm
     steps:
-      - uses: actions/checkout@v7
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
 
       - name: Update packages list
         run: sudo apt-get update
@@ -263,7 +312,9 @@ jobs:
   android:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v7
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
 
       - name: Update packages list
         run: sudo apt-get update
