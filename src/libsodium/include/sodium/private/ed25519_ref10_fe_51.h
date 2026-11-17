@@ -100,14 +100,11 @@ fe25519_neg(fe25519 h, const fe25519 f)
 }
 
 /*
- Replace (f,g) with (g,g) if b == 1;
- replace (f,g) with (f,g) if b == 0.
- *
- Preconditions: b in {0,1}.
+ Copy g to f if mask is all ones. Get mask from fe25519_mask().
  */
 
 static void
-fe25519_cmov(fe25519 f, const fe25519 g, unsigned int b)
+fe25519_cmov_masked(fe25519 f, const fe25519 g, const fe25519_limb mask)
 {
 #ifdef HAVE_AMD64_ASM
     uint64_t t0, t1, t2;
@@ -131,10 +128,9 @@ fe25519_cmov(fe25519 f, const fe25519 g, unsigned int b)
         "movq      %[t0], 24(%[a])\n"
         "movq      %[t1], 32(%[a])\n"
       : [ t0 ] "=&r"(t0), [ t1 ] "=&r"(t1), [ t2 ] "=&r"(t2)
-      : [ a ] "r"(f), [ b ] "r"(g), [ c ] "r"(b)
+      : [ a ] "r"(f), [ b ] "r"(g), [ c ] "r"(mask)
       : "cc", "memory");
 #else
-    uint64_t mask = (uint64_t) (-(int64_t) b);
     uint64_t f0, f1, f2, f3, f4;
     uint64_t x0, x1, x2, x3, x4;
 
@@ -150,10 +146,6 @@ fe25519_cmov(fe25519 f, const fe25519 g, unsigned int b)
     x3 = f3 ^ g[3];
     x4 = f4 ^ g[4];
 
-# ifdef HAVE_INLINE_ASM
-    __asm__ __volatile__("" : "+r"(mask));
-# endif
-
     x0 &= mask;
     x1 &= mask;
     x2 &= mask;
@@ -166,6 +158,14 @@ fe25519_cmov(fe25519 f, const fe25519 g, unsigned int b)
     f[3] = f3 ^ x3;
     f[4] = f4 ^ x4;
 #endif
+}
+
+/* b must be 0 or 1. */
+
+static inline void
+fe25519_cmov(fe25519 f, const fe25519 g, unsigned int b)
+{
+    fe25519_cmov_masked(f, g, fe25519_mask(b));
 }
 
 /*
@@ -186,16 +186,12 @@ fe25519_or_masked(fe25519 h, const fe25519 g, fe25519_limb mask)
 }
 
 /*
-Replace (f,g) with (g,f) if b == 1;
-replace (f,g) with (f,g) if b == 0.
-
-Preconditions: b in {0,1}.
-*/
+ Swap f and g if mask is all ones. Get mask from fe25519_mask().
+ */
 
 static void
-fe25519_cswap(fe25519 f, fe25519 g, unsigned int b)
+fe25519_cswap_masked(fe25519 f, fe25519 g, const fe25519_limb mask)
 {
-    uint64_t mask = (uint64_t) (-(int64_t) b);
     uint64_t f0, f1, f2, f3, f4;
     uint64_t g0, g1, g2, g3, g4;
     uint64_t x0, x1, x2, x3, x4;
@@ -218,10 +214,6 @@ fe25519_cswap(fe25519 f, fe25519 g, unsigned int b)
     x3 = f3 ^ g3;
     x4 = f4 ^ g4;
 
-# ifdef HAVE_INLINE_ASM
-    __asm__ __volatile__("" : "+r"(mask));
-# endif
-
     x0 &= mask;
     x1 &= mask;
     x2 &= mask;
@@ -239,6 +231,14 @@ fe25519_cswap(fe25519 f, fe25519 g, unsigned int b)
     g[2] = g2 ^ x2;
     g[3] = g3 ^ x3;
     g[4] = g4 ^ x4;
+}
+
+/* b must be 0 or 1. */
+
+static inline void
+fe25519_cswap(fe25519 f, fe25519 g, unsigned int b)
+{
+    fe25519_cswap_masked(f, g, fe25519_mask(b));
 }
 
 /*

@@ -648,6 +648,7 @@ ge25519_cmov8(ge25519_precomp *t, const ge25519_precomp precomp[8], const signed
 {
     fe25519             yplusx, yminusx, xy2d;
     fe25519_limb        masks[8];
+    fe25519_limb        mask;
     const unsigned char bnegative = negative(b);
     const unsigned char babs      = b - (((-bnegative) & b) * ((signed char) 1 << 1));
     const fe25519_limb  none      = ge25519_cmov8_masks(masks, babs);
@@ -672,13 +673,14 @@ ge25519_cmov8(ge25519_precomp *t, const ge25519_precomp precomp[8], const signed
     /* nothing matched (b == 0): neutral element */
     yplusx[0] |= none & 1;
     yminusx[0] |= none & 1;
+    mask = fe25519_mask(bnegative ^ 1);
     /* write the negated point, then the point itself unless b < 0 */
     fe25519_copy(t->yplusx, yminusx);
     fe25519_copy(t->yminusx, yplusx);
     fe25519_neg(t->xy2d, xy2d);
-    fe25519_cmov(t->yplusx, yplusx, bnegative ^ 1);
-    fe25519_cmov(t->yminusx, yminusx, bnegative ^ 1);
-    fe25519_cmov(t->xy2d, xy2d, bnegative ^ 1);
+    fe25519_cmov_masked(t->yplusx, yplusx, mask);
+    fe25519_cmov_masked(t->yminusx, yminusx, mask);
+    fe25519_cmov_masked(t->xy2d, xy2d, mask);
 }
 
 static void
@@ -699,6 +701,7 @@ ge25519_cmov8_cached(ge25519_cached *t, const ge25519_cached cached[8], const si
 {
     fe25519             YplusX, YminusX, Z, T2d;
     fe25519_limb        masks[8];
+    fe25519_limb        mask;
     const unsigned char bnegative = negative(b);
     const unsigned char babs      = b - (((-bnegative) & b) * ((signed char) 1 << 1));
     const fe25519_limb  none      = ge25519_cmov8_masks(masks, babs);
@@ -723,13 +726,14 @@ ge25519_cmov8_cached(ge25519_cached *t, const ge25519_cached cached[8], const si
     YplusX[0] |= none & 1;
     YminusX[0] |= none & 1;
     Z[0] |= none & 1;
+    mask = fe25519_mask(bnegative ^ 1);
     fe25519_copy(t->YplusX, YminusX);
     fe25519_copy(t->YminusX, YplusX);
     fe25519_copy(t->Z, Z);
     fe25519_neg(t->T2d, T2d);
-    fe25519_cmov(t->YplusX, YplusX, bnegative ^ 1);
-    fe25519_cmov(t->YminusX, YminusX, bnegative ^ 1);
-    fe25519_cmov(t->T2d, T2d, bnegative ^ 1);
+    fe25519_cmov_masked(t->YplusX, YplusX, mask);
+    fe25519_cmov_masked(t->YminusX, YminusX, mask);
+    fe25519_cmov_masked(t->T2d, T2d, mask);
 }
 
 /*
@@ -1086,6 +1090,7 @@ ge25519_is_on_main_subgroup(const ge25519_p3 *p)
     fe25519 z_minus_y, z_plus_y, e, e2, u, w;
     fe25519 wp, up, wh, eh, uh, zeta;
     fe25519 t;
+    fe25519_limb mask;
     int     has_half, up_is_square, is_fourth_power, is_identity;
 
     fe25519_1(one);
@@ -1114,13 +1119,14 @@ ge25519_is_on_main_subgroup(const ge25519_p3 *p)
     fe25519_sub(up, up, t);
     up_is_square = fe25519_sqrt_or_sqrt2(wh, up);
 
+    mask = fe25519_mask(1 - up_is_square);
     fe25519_mul(t, e, wh);
     fe25519_copy(eh, e);
-    fe25519_cmov(eh, t, 1 - up_is_square);
+    fe25519_cmov_masked(eh, t, mask);
     fe25519_mul(t, wp, wh);
-    fe25519_cmov(wp, t, 1 - up_is_square);
+    fe25519_cmov_masked(wp, t, mask);
     fe25519_mul(t, ed25519_sqrtm32d, e2);
-    fe25519_cmov(wh, t, 1 - up_is_square);
+    fe25519_cmov_masked(wh, t, mask);
 
     fe25519_sq(uh, wh);
     fe25519_sq(t, eh);
@@ -2579,6 +2585,7 @@ ge25519_elligator2(fe25519 x, fe25519 y, const fe25519 r, int *notsquare_p)
     fe25519       gx1;
     fe25519       rr2;
     fe25519       x2, x3, negx;
+    fe25519_limb  mask;
     int           notsquare;
 
     fe25519_sq2(rr2, r);
@@ -2593,13 +2600,14 @@ ge25519_elligator2(fe25519 x, fe25519 y, const fe25519 r, int *notsquare_p)
     fe25519_add(gx1, x3, x);
     fe25519_add(gx1, gx1, x2); /* gx1 = x1^3 + A*x1^2 + x1 */
 
-    notsquare = fe25519_notsquare(gx1) ^ optblocker_u8;
+    notsquare = fe25519_notsquare(gx1);
+    mask = fe25519_mask(notsquare);
 
     /* gx1 not a square  => x = -x1-A */
     fe25519_neg(negx, x);
-    fe25519_cmov(x, negx, notsquare);
+    fe25519_cmov_masked(x, negx, mask);
     fe25519_0(x2);
-    fe25519_cmov(x2, ed25519_A, notsquare);
+    fe25519_cmov_masked(x2, ed25519_A, mask);
     fe25519_sub(x, x, x2);
 
     /* y = sqrt(gx1) or sqrt(gx2) with gx2 = gx1 * (A+x1) / -x1 */
@@ -2808,6 +2816,7 @@ ristretto255_p3_tobytes(unsigned char *s, const ge25519_p3 *h)
     fe25519 x_z_inv;
     fe25519 z_inv;
     fe25519 zmy;
+    fe25519_limb mask;
     int     rotate;
 
     fe25519_add(u1, h->Z, h->Y);       /* u1 = Z+Y */
@@ -2832,13 +2841,14 @@ ristretto255_p3_tobytes(unsigned char *s, const ge25519_p3 *h)
     fe25519_mul(t_z_inv, h->T, z_inv); /* t_z_inv = T*z_inv */
     rotate = fe25519_isnegative(t_z_inv);
 
+    mask = fe25519_mask(rotate);
     fe25519_copy(x_, h->X);
     fe25519_copy(y_, h->Y);
     fe25519_copy(den_inv, den2);
 
-    fe25519_cmov(x_, iy, rotate);
-    fe25519_cmov(y_, ix, rotate);
-    fe25519_cmov(den_inv, eden, rotate);
+    fe25519_cmov_masked(x_, iy, mask);
+    fe25519_cmov_masked(y_, ix, mask);
+    fe25519_cmov_masked(den_inv, eden, mask);
 
     fe25519_mul(x_z_inv, x_, z_inv);
     fe25519_cneg(y_, fe25519_isnegative(x_z_inv));
@@ -2861,6 +2871,7 @@ ristretto255_elligator(ge25519_p3 *p, const fe25519 t)
     fe25519 ss;
     fe25519 u, v;
     fe25519 w0, w1, w2, w3;
+    fe25519_limb mask;
     int     wasnt_square;
 
     fe25519_1(one);
@@ -2876,11 +2887,12 @@ ristretto255_elligator(ge25519_p3 *p, const fe25519 t)
     fe25519_mul(v, v, rpd);            /* v = (c-r*d)*(r+d) */
 
     wasnt_square = 1 - ristretto255_sqrt_ratio_m1(s, u, v);
+    mask = fe25519_mask(wasnt_square);
     fe25519_mul(s_prime, s, t);
     fe25519_abs(s_prime);
     fe25519_neg(s_prime, s_prime);     /* s_prime = -|s*t| */
-    fe25519_cmov(s, s_prime, wasnt_square);
-    fe25519_cmov(c, r, wasnt_square);
+    fe25519_cmov_masked(s, s_prime, mask);
+    fe25519_cmov_masked(c, r, mask);
 
     fe25519_sub(n, r, one);            /* n = r-1 */
     fe25519_mul(n, n, c);              /* n = c*(r-1) */
