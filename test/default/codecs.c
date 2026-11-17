@@ -91,6 +91,11 @@ main(void)
     assert(sodium_hex2bin(buf4, sizeof buf4, "", 0U, NULL, &bin_len, NULL) == 0);
     assert(bin_len == 0);
 
+    assert(sodium_hex2bin(buf4, sizeof buf4, "4142\0" "4344", 9U, "", &bin_len,
+                          NULL) == -1);
+    assert(sodium_hex2bin(buf4, sizeof buf4, "4142\0" "4344", 9U, ":", &bin_len,
+                          NULL) == -1);
+
     printf("%s\n",
            sodium_bin2base64(buf3, 31U, (const unsigned char *) "\xfb\xf0\xf1" "0123456789ABCDEFab",
                              21U, sodium_base64_VARIANT_ORIGINAL));
@@ -226,6 +231,19 @@ main(void)
     assert(sodium_base642bin(buf1, sizeof buf1, "", 0U, NULL, &bin_len, NULL,
                              sodium_base64_VARIANT_ORIGINAL) == 0);
     assert(bin_len == 0);
+
+    b64 = "QUJD\0RUFZ";
+    assert(sodium_base642bin(buf1, sizeof buf1, b64, 9U, "", NULL, NULL,
+                             sodium_base64_VARIANT_ORIGINAL) == -1);
+    assert(sodium_base642bin(buf1, sizeof buf1, b64, 9U, " \n", NULL, NULL,
+                             sodium_base64_VARIANT_ORIGINAL) == -1);
+    assert(sodium_base642bin(buf1, sizeof buf1, b64, 9U, " \n", &bin_len, &b64_end,
+                             sodium_base64_VARIANT_ORIGINAL) == 0);
+    assert(bin_len == 3 && b64_end == b64 + 4);
+    assert(sodium_base642bin(buf1, sizeof buf1, "QUJDRA=\0=", 9U, " \n", NULL, NULL,
+                             sodium_base64_VARIANT_ORIGINAL) == -1);
+    assert(sodium_base642bin(buf1, sizeof buf1, "QUJDRA==\0", 9U, " \n", NULL, NULL,
+                             sodium_base64_VARIANT_ORIGINAL) == -1);
 
     for (i = 0; i < 1000; i++) {
         assert(sizeof buf1 >= 100);
