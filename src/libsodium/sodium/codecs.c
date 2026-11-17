@@ -61,7 +61,7 @@ sodium_hex2bin(unsigned char *const bin, const size_t bin_maxlen,
         c_alpha  = (c & ~32U) - 55U;
         c_alpha0 = ((c_alpha - 10U) ^ (c_alpha - 16U)) >> 8;
         if ((c_num0 | c_alpha0) == 0U) {
-            if (ignore != NULL && state == 0U && strchr(ignore, c) != NULL) {
+            if (ignore != NULL && state == 0U && c != 0U && strchr(ignore, c) != NULL) {
                 hex_pos++;
                 continue;
             }
@@ -263,7 +263,7 @@ _sodium_base642bin_skip_padding(const char * const b64, const size_t b64_len,
         c = b64[*b64_pos_p];
         if (c == '=') {
             padding_len--;
-        } else if (ignore == NULL || strchr(ignore, c) == NULL) {
+        } else if (ignore == NULL || c == 0 || strchr(ignore, c) == NULL) {
             errno = EINVAL;
             return -1;
         }
@@ -297,7 +297,7 @@ sodium_base642bin(unsigned char * const bin, const size_t bin_maxlen,
             d = b64_char_to_byte(c);
         }
         if (d == 0xFF) {
-            if (ignore != NULL && strchr(ignore, c) != NULL) {
+            if (ignore != NULL && c != 0 && strchr(ignore, c) != NULL) {
                 b64_pos++;
                 continue;
             }
@@ -326,7 +326,8 @@ sodium_base642bin(unsigned char * const bin, const size_t bin_maxlen,
     if (ret != 0) {
         bin_pos = (size_t) 0U;
     } else if (ignore != NULL) {
-        while (b64_pos < b64_len && strchr(ignore, b64[b64_pos]) != NULL) {
+        while (b64_pos < b64_len && b64[b64_pos] != 0 &&
+               strchr(ignore, b64[b64_pos]) != NULL) {
             b64_pos++;
         }
     }
