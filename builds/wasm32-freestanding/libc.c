@@ -20,11 +20,15 @@
 
 __attribute__((weak)) int errno;
 
-__attribute__((weak, no_builtin)) void abort(void) {
+__attribute__((weak, no_builtin)) void
+abort(void)
+{
     __builtin_trap();
 }
 
-__attribute__((weak, no_builtin)) uint32_t arc4random(void) {
+__attribute__((weak, no_builtin)) uint32_t
+arc4random(void)
+{
     uint32_t r;
 
     arc4random_buf(&r, sizeof r);
@@ -32,7 +36,9 @@ __attribute__((weak, no_builtin)) uint32_t arc4random(void) {
     return r;
 }
 
-__attribute__((weak, no_builtin)) void *calloc(size_t nmemb, size_t size) {
+__attribute__((weak, no_builtin)) void *
+calloc(size_t nmemb, size_t size)
+{
     void *ptr;
 
     if (nmemb > 0 && size > SIZE_MAX / nmemb) {
@@ -44,7 +50,9 @@ __attribute__((weak, no_builtin)) void *calloc(size_t nmemb, size_t size) {
     return ptr;
 }
 
-__attribute__((weak, no_builtin)) void *memchr(const void *s, int c, size_t n) {
+__attribute__((weak, no_builtin)) void *
+memchr(const void *s, int c, size_t n)
+{
     const unsigned char *p = (const unsigned char *) s;
 
     while (n-- > 0) {
@@ -56,7 +64,9 @@ __attribute__((weak, no_builtin)) void *memchr(const void *s, int c, size_t n) {
     return NULL;
 }
 
-__attribute__((weak, no_builtin)) int memcmp(const void *s1, const void *s2, size_t n) {
+__attribute__((weak, no_builtin)) int
+memcmp(const void *s1, const void *s2, size_t n)
+{
     const unsigned char *p1 = (const unsigned char *) s1;
     const unsigned char *p2 = (const unsigned char *) s2;
 
@@ -70,7 +80,9 @@ __attribute__((weak, no_builtin)) int memcmp(const void *s1, const void *s2, siz
     return 0;
 }
 
-__attribute__((weak, no_builtin)) void *memcpy(void *dest, const void *src, size_t n) {
+__attribute__((weak, no_builtin)) void *
+memcpy(void *dest, const void *src, size_t n)
+{
 #ifdef HAVE_BULK_MEMORY
     return __builtin_memcpy(dest, src, n);
 #else
@@ -84,7 +96,9 @@ __attribute__((weak, no_builtin)) void *memcpy(void *dest, const void *src, size
 #endif
 }
 
-__attribute__((weak, no_builtin)) void *memmove(void *dest, const void *src, size_t n) {
+__attribute__((weak, no_builtin)) void *
+memmove(void *dest, const void *src, size_t n)
+{
 #ifdef HAVE_BULK_MEMORY
     return __builtin_memmove(dest, src, n);
 #else
@@ -104,7 +118,9 @@ __attribute__((weak, no_builtin)) void *memmove(void *dest, const void *src, siz
 #endif
 }
 
-__attribute__((weak, no_builtin)) void *memset(void *s, int c, size_t n) {
+__attribute__((weak, no_builtin)) void *
+memset(void *s, int c, size_t n)
+{
 #ifdef HAVE_BULK_MEMORY
     return __builtin_memset(s, c, n);
 #else
@@ -117,7 +133,9 @@ __attribute__((weak, no_builtin)) void *memset(void *s, int c, size_t n) {
 #endif
 }
 
-__attribute__((weak, no_builtin)) char *strchr(const char *s, int c) {
+__attribute__((weak, no_builtin)) char *
+strchr(const char *s, int c)
+{
     for (;;) {
         if (*s == (char) c) {
             return (char *) (uintptr_t) s;
@@ -129,7 +147,9 @@ __attribute__((weak, no_builtin)) char *strchr(const char *s, int c) {
     }
 }
 
-__attribute__((weak, no_builtin)) int strcmp(const char *s1, const char *s2) {
+__attribute__((weak, no_builtin)) int
+strcmp(const char *s1, const char *s2)
+{
     while (*s1 != 0 && *s1 == *s2) {
         s1++;
         s2++;
@@ -137,7 +157,9 @@ __attribute__((weak, no_builtin)) int strcmp(const char *s1, const char *s2) {
     return (unsigned char) *s1 - (unsigned char) *s2;
 }
 
-__attribute__((weak, no_builtin)) size_t strlen(const char *s) {
+__attribute__((weak, no_builtin)) size_t
+strlen(const char *s)
+{
     const char *p = s;
 
     while (*p != 0) {
@@ -146,7 +168,9 @@ __attribute__((weak, no_builtin)) size_t strlen(const char *s) {
     return (size_t) (p - s);
 }
 
-__attribute__((weak, no_builtin)) int strncmp(const char *s1, const char *s2, size_t n) {
+__attribute__((weak, no_builtin)) int
+strncmp(const char *s1, const char *s2, size_t n)
+{
     while (n-- > 0) {
         if (*s1 != *s2) {
             return (unsigned char) *s1 - (unsigned char) *s2;
@@ -160,7 +184,9 @@ __attribute__((weak, no_builtin)) int strncmp(const char *s1, const char *s2, si
     return 0;
 }
 
-__attribute__((weak, no_builtin)) char *strrchr(const char *s, int c) {
+__attribute__((weak, no_builtin)) char *
+strrchr(const char *s, int c)
+{
     const char *found = NULL;
 
     for (;;) {

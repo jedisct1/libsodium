@@ -3,12 +3,12 @@
 
 #include <stdint.h>
 
-#define PRId8  __INT8_FMTd__
-#define PRIi8  __INT8_FMTi__
-#define PRIo8  __UINT8_FMTo__
-#define PRIu8  __UINT8_FMTu__
-#define PRIx8  __UINT8_FMTx__
-#define PRIX8  __UINT8_FMTX__
+#define PRId8 __INT8_FMTd__
+#define PRIi8 __INT8_FMTi__
+#define PRIo8 __UINT8_FMTo__
+#define PRIu8 __UINT8_FMTu__
+#define PRIx8 __UINT8_FMTx__
+#define PRIX8 __UINT8_FMTX__
 
 #define PRId16 __INT16_FMTd__
 #define PRIi16 __INT16_FMTi__
