@@ -90,14 +90,12 @@ jobs:
         run: |
           export DEBIAN_FRONTEND=noninteractive
           sudo apt-get update
-          sudo apt-get install -y build-essential qemu-system binfmt-support qemu-user-static qemu-system-arm gcc-arm-linux-gnueabihf libc6-armhf-cross gcc-aarch64-linux-gnu libc6-arm64-cross
+          sudo apt-get install -y build-essential qemu-user-binfmt gcc-arm-linux-gnueabihf libc6-armhf-cross gcc-aarch64-linux-gnu libc6-arm64-cross
+          sudo systemctl restart systemd-binfmt
+          cat /proc/sys/fs/binfmt_misc/qemu-arm /proc/sys/fs/binfmt_misc/qemu-aarch64
           sudo dpkg --add-architecture armhf
-          sudo update-binfmts --enable qemu-arm
-          sudo update-binfmts --display
           sudo ln -s /usr/arm-linux-gnueabihf/lib/ld-linux-armhf.so.* /lib
           sudo dpkg --add-architecture arm64
-          sudo update-binfmts --enable qemu-aarch64
-          sudo update-binfmts --display
           sudo ln -s /usr/aarch64-linux-gnu/lib/ld-linux-aarch64.so.* /lib
 
       - name: build-linux-arm
@@ -388,7 +386,7 @@ jobs:
         .libsodium-builds/linux-x64/Tests
 
   run-test-binaries-cross-plat:
-    runs-on: ubuntu-22.04
+    runs-on: ubuntu-latest
     needs:
       - build-test-binaries
     env:
@@ -414,12 +412,11 @@ jobs:
           # gcrypt, which the apt-get command relies on.
           sudo mkdir -p /etc/gcrypt && echo all | sudo tee /etc/gcrypt/hwf.deny
 
-          sudo apt-get update && sudo apt-get install -y qemu-system binfmt-support qemu-user-static qemu-system-arm gcc-arm-linux-gnueabihf gcc-aarch64-linux-gnu libc6-armhf-cross libc6-arm64-cross
+          sudo apt-get update && sudo apt-get install -y qemu-user-binfmt gcc-arm-linux-gnueabihf gcc-aarch64-linux-gnu libc6-armhf-cross libc6-arm64-cross
+          sudo systemctl restart systemd-binfmt
+          cat /proc/sys/fs/binfmt_misc/qemu-arm /proc/sys/fs/binfmt_misc/qemu-aarch64
           sudo dpkg --add-architecture armhf
           sudo dpkg --add-architecture arm64
-          sudo update-binfmts --enable qemu-aarch64
-          sudo update-binfmts --enable qemu-arm
-          sudo update-binfmts --display
           sudo ln -s /usr/aarch64-linux-gnu/lib/ld-linux-aarch64.so.* /lib
           sudo ln -s /usr/arm-linux-gnueabihf/lib/ld-linux-armhf.so.* /lib
 
