@@ -398,6 +398,7 @@ EXTRA_DIST = \
 	wasm32-freestanding/include/assert.h \
 	wasm32-freestanding/include/errno.h \
 	wasm32-freestanding/include/fcntl.h \
+	wasm32-freestanding/include/inttypes.h \
 	wasm32-freestanding/include/stdlib.h \
 	wasm32-freestanding/include/string.h \
 	wasm32-freestanding/include/time.h \

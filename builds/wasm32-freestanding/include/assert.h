@@ -1,7 +1,7 @@
 #undef assert
 
 #ifdef NDEBUG
-#define assert(cond) ((void)0)
+#define assert(cond) ((void) 0)
 #else
-#define assert(cond) ((cond) ? (void)0 : __builtin_trap())
+#define assert(cond) ((cond) ? (void) 0 : __builtin_trap())
 #endif
