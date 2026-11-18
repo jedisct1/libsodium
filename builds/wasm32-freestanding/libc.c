@@ -5,6 +5,12 @@
 #include <stdlib.h>
 #include <string.h>
 
+#undef memchr
+#undef strchr
+#undef strlen
+#undef strncmp
+#undef strrchr
+
 int errno;
 
 void *calloc(size_t nmemb, size_t size) {
