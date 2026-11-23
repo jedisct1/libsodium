@@ -53,6 +53,8 @@ export WATCHOS_VERSION_MIN=${WATCHOS_VERSION_MIN-"4.0.0"}
 export WATCHOS_SIMULATOR_VERSION_MIN=${WATCHOS_SIMULATOR_VERSION_MIN-$WATCHOS_VERSION_MIN}
 export TVOS_VERSION_MIN=${TVOS_VERSION_MIN-"9.0.0"}
 export TVOS_SIMULATOR_VERSION_MIN=${TVOS_SIMULATOR_VERSION_MIN-$TVOS_VERSION_MIN}
+export VISIONOS_VERSION_MIN=${VISIONOS_VERSION_MIN-"1.0"}
+export VISIONOS_SIMULATOR_VERSION_MIN=${VISIONOS_SIMULATOR_VERSION_MIN-$VISIONOS_VERSION_MIN}
 
 echo
 echo "Warnings related to headers being present but not usable are due to functions"
@@ -367,16 +369,16 @@ build_visionos() {
   export PATH="${BASEDIR}/usr/bin:$BASEDIR/usr/sbin:$PATH"
   export SDK="${BASEDIR}/SDKs/XROS.sdk"
 
-  export CFLAGS="-O3 -arch arm64 -isysroot ${SDK}"
-  export LDFLAGS="-arch arm64 -isysroot ${SDK}"
+  export CFLAGS="-O3 -arch arm64 -isysroot ${SDK} -mtargetos=xros${VISIONOS_VERSION_MIN}"
+  export LDFLAGS="-arch arm64 -isysroot ${SDK} -mtargetos=xros${VISIONOS_VERSION_MIN}"
 
   make distclean >/dev/null 2>&1
   ./configure --host=aarch64-apple-darwin23 --prefix="$VISIONOS_PREFIX" \
     ${LIBSODIUM_ENABLE_MINIMAL_FLAG} || exit 1
   make -j${PROCESSORS} install || exit 1
 
-  export CFLAGS="-O3 -arch arm64e -isysroot ${SDK}"
-  export LDFLAGS="-arch arm64e -isysroot ${SDK}"
+  export CFLAGS="-O3 -arch arm64e -isysroot ${SDK} -mtargetos=xros${VISIONOS_VERSION_MIN}"
+  export LDFLAGS="-arch arm64e -isysroot ${SDK} -mtargetos=xros${VISIONOS_VERSION_MIN}"
 
   make distclean >/dev/null 2>&1
   ./configure --host=aarch64-apple-darwin23 --prefix="$VISIONOSE_PREFIX" \
@@ -389,16 +391,16 @@ build_visionos_simulator() {
   export PATH="${BASEDIR}/usr/bin:$BASEDIR/usr/sbin:$PATH"
   export SDK="${BASEDIR}/SDKs/XRSimulator.sdk"
 
-  export CFLAGS="-O3 -arch arm64 -isysroot ${SDK}"
-  export LDFLAGS="-arch arm64 -isysroot ${SDK}"
+  export CFLAGS="-O3 -arch arm64 -isysroot ${SDK} -mtargetos=xros${VISIONOS_SIMULATOR_VERSION_MIN}-simulator"
+  export LDFLAGS="-arch arm64 -isysroot ${SDK} -mtargetos=xros${VISIONOS_SIMULATOR_VERSION_MIN}-simulator"
 
   make distclean >/dev/null 2>&1
   ./configure --host=aarch64-apple-darwin23 --prefix="$VISIONOS_SIMULATOR_PREFIX" \
     ${LIBSODIUM_ENABLE_MINIMAL_FLAG} || exit 1
   make -j${PROCESSORS} install || exit 1
 
-  export CFLAGS="-O3 -arch arm64e -isysroot ${SDK}"
-  export LDFLAGS="-arch arm64e -isysroot ${SDK}"
+  export CFLAGS="-O3 -arch arm64e -isysroot ${SDK} -mtargetos=xros${VISIONOS_SIMULATOR_VERSION_MIN}-simulator"
+  export LDFLAGS="-arch arm64e -isysroot ${SDK} -mtargetos=xros${VISIONOS_SIMULATOR_VERSION_MIN}-simulator"
 
   make distclean >/dev/null 2>&1
   ./configure --host=aarch64-apple-darwin23 --prefix="$VISIONOSE_SIMULATOR_PREFIX" \
