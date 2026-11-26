@@ -191,7 +191,7 @@ jobs:
       - build-apple
       - build-others
     container:
-      image: mcr.microsoft.com/dotnet/sdk:8.0
+      image: mcr.microsoft.com/dotnet/sdk:10.0
     env:
       DOTNET_CLI_TELEMETRY_OPTOUT: 1
       DOTNET_SKIP_FIRST_TIME_EXPERIENCE: 1
@@ -299,7 +299,7 @@ jobs:
     needs:
       - pack
     container:
-      image: mcr.microsoft.com/dotnet/sdk:8.0
+      image: mcr.microsoft.com/dotnet/sdk:10.0
     env:
       DOTNET_CLI_TELEMETRY_OPTOUT: 1
       DOTNET_SKIP_FIRST_TIME_EXPERIENCE: 1
@@ -331,9 +331,9 @@ jobs:
       - name: Move Build Output
         run: |
           mkdir .libsodium-builds
-          mv .libsodium-test/bin/Release/net8.0/linux-arm/publish .libsodium-builds/linux-arm
-          mv .libsodium-test/bin/Release/net8.0/linux-arm64/publish .libsodium-builds/linux-arm64
-          mv .libsodium-test/bin/Release/net8.0/linux-x64/publish .libsodium-builds/linux-x64
+          mv .libsodium-test/bin/Release/net10.0/linux-arm/publish .libsodium-builds/linux-arm
+          mv .libsodium-test/bin/Release/net10.0/linux-arm64/publish .libsodium-builds/linux-arm64
+          mv .libsodium-test/bin/Release/net10.0/linux-x64/publish .libsodium-builds/linux-x64
       - uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2
         with:
           name: test-builds
@@ -345,7 +345,7 @@ jobs:
     needs:
       - pack
     container:
-      image: mcr.microsoft.com/dotnet/sdk:8.0
+      image: mcr.microsoft.com/dotnet/sdk:10.0
     env:
       DOTNET_CLI_TELEMETRY_OPTOUT: 1
       DOTNET_SKIP_FIRST_TIME_EXPERIENCE: 1
