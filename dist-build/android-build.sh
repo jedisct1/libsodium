@@ -32,6 +32,14 @@ export PATH="${PATH}:${TOOLCHAIN_DIR}/bin"
 
 export CC=${CC:-"${HOST_COMPILER}${SDK_VERSION}-clang"}
 
+export AR="${TOOLCHAIN_DIR}/bin/llvm-ar"
+export RANLIB="${TOOLCHAIN_DIR}/bin/llvm-ranlib"
+export NM="${TOOLCHAIN_DIR}/bin/llvm-nm"
+export STRIP="${TOOLCHAIN_DIR}/bin/llvm-strip"
+export OBJDUMP="${TOOLCHAIN_DIR}/bin/llvm-objdump"
+
+export LDFLAGS="${LDFLAGS} -Wl,-z,defs"
+
 echo
 echo "Warnings related to headers being present but not usable are due to functions"
 echo "that didn't exist in the specified minimum API version level."
