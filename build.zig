@@ -242,6 +242,11 @@ pub fn build(b: *std.Build) !void {
     const version_files = b.addWriteFiles();
     const version_file = version_files.addCopyFile(b.path("builds/msvc/version.h"), "sodium/version.h");
 
+    const lifetime_flags = .{ "-Xclang", "-fexperimental-lifetime-safety-c", "-Werror=lifetime-safety" };
+    const probe = b.runFallible(&(.{
+        b.graph.zig_exe, "clang", "-fsyntax-only", "-x", "c", "-", "-Werror=unknown-warning-option",
+    } ++ lifetime_flags), .{ .stderr_behavior = .ignore });
+
     for (libs.items) |lib| {
         b.installArtifact(lib);
         lib.installHeader(b.path(src_path ++ "/include/sodium.h"), "sodium.h");
@@ -253,7 +258,7 @@ pub fn build(b: *std.Build) !void {
         lib.root_module.addIncludePath(version_file.dirname());
         initLibConfig(b, target, lib);
 
-        const flags = &.{
+        const base_flags = .{
             "-fvisibility=hidden",
             "-fno-strict-aliasing",
             "-fno-strict-overflow",
@@ -261,6 +266,7 @@ pub fn build(b: *std.Build) !void {
             "-flax-vector-conversions",
             "-Werror=vla",
         };
+        const flags: []const []const u8 = if (probe == .success) &(base_flags ++ lifetime_flags) else &base_flags;
 
         if (wasm_freestanding and wasm_freestanding_libc) {
             lib.root_module.addCSourceFiles(.{
